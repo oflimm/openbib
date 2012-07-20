@@ -19,7 +19,7 @@ msgstr ""
 msgid "${category}"
 msgstr ""
 
-#: ../templates/admin_library_record_edit:70 ../templates/admin_library_record_edit:79 ../templates/admin_library_record_html:86 ../templates/admin_library_record_html:95 ../templates/bibfuehrer_tex:480 ../templates/bibfuehrer_tex:481 ../templates/bibfuehrer_tex:632 ../templates/bibfuehrer_tex:633 ../templates/classification_html:86 ../templates/collection_html_as_text:38 ../templates/collection_html_full:220 ../templates/corporatebody_html:85 ../templates/database/inst001/title_html_categories:319 ../templates/database/inst001/title_html_categories:350 ../templates/database/openlibrary/person_html:100 ../templates/database/openlibrary/title_html_categories:205 ../templates/database/openlibrary/title_html_categories:255 ../templates/database/wikisource_de/search_showautset:69 ../templates/library_html:101 ../templates/library_include:59 ../templates/litlist_html_as_text:21 ../templates/litlist_html_full:221 ../templates/person_html:100 ../templates/person_include:53 ../templates/profile/mobile/views/richtermobile/title_html_categories:237 ../templates/profile/mobile/views/richtermobile/title_html_categories:268 ../templates/profile/usb/library_include:62 ../templates/profile/usb/resource_title_html_categories:237 ../templates/profile/usb/title_html_categories:240 ../templates/searchform_bottom_left:67 ../templates/subject_html:87 ../templates/title_collection_form:69 ../templates/title_collection_form:78 ../templates/title_html_categories:226 ../templates/title_html_categories:257 ../templates/views/richter/classification_html:86 ../templates/views/richter/collection_html_as_text:38 ../templates/views/richter/collection_html_full:220 ../templates/views/richter/corporatebody_html:85 ../templates/views/richter/litlist_html_as_text:21 ../templates/views/richter/litlist_html_full:221 ../templates/views/richter/person_html:89 ../templates/views/richter/subject_html:87
+#: ../templates/admin_library_record_edit:70 ../templates/admin_library_record_edit:79 ../templates/admin_library_record_html:86 ../templates/admin_library_record_html:95 ../templates/bibfuehrer_tex:480 ../templates/bibfuehrer_tex:481 ../templates/bibfuehrer_tex:632 ../templates/bibfuehrer_tex:633 ../templates/classification_html:86 ../templates/collection_html_as_text:38 ../templates/collection_html_full:220 ../templates/corporatebody_html:85 ../templates/database/inst001/title_html_categories:319 ../templates/database/inst001/title_html_categories:350 ../templates/database/openlibrary/person_html:100 ../templates/database/openlibrary/title_html_categories:205 ../templates/database/openlibrary/title_html_categories:255 ../templates/library_html:101 ../templates/library_include:59 ../templates/litlist_html_as_text:21 ../templates/litlist_html_full:221 ../templates/person_html:100 ../templates/person_include:53 ../templates/profile/mobile/views/richtermobile/title_html_categories:237 ../templates/profile/mobile/views/richtermobile/title_html_categories:268 ../templates/profile/usb/library_include:62 ../templates/profile/usb/resource_title_html_categories:237 ../templates/profile/usb/title_html_categories:240 ../templates/searchform_bottom_left:67 ../templates/subject_html:87 ../templates/title_collection_form:69 ../templates/title_collection_form:78 ../templates/title_html_categories:226 ../templates/title_html_categories:257 ../templates/views/richter/classification_html:86 ../templates/views/richter/collection_html_as_text:38 ../templates/views/richter/collection_html_full:220 ../templates/views/richter/corporatebody_html:85 ../templates/views/richter/litlist_html_as_text:21 ../templates/views/richter/litlist_html_full:221 ../templates/views/richter/person_html:89 ../templates/views/richter/subject_html:87
 msgid "${thiscategory}"
 msgstr ""
 
@@ -294,7 +294,7 @@ msgstr ""
 msgid "Abgleich zu BibSonomy"
 msgstr ""
 
-#: ../templates/corporate_banner:7 ../templates/corporate_banner~:7 ../templates/views/richter/corporate_banner:7
+#: ../templates/corporate_banner:7 ../templates/views/richter/corporate_banner:7
 msgid "Abmelden"
 msgstr ""
 
@@ -464,7 +464,7 @@ msgstr ""
 msgid "Anleitung"
 msgstr ""
 
-#: ../templates/corporate_banner:9 ../templates/corporate_banner~:9 ../templates/views/richter/corporate_banner:9
+#: ../templates/corporate_banner:9 ../templates/views/richter/corporate_banner:9
 msgid "Anmelden"
 msgstr ""
 
@@ -804,7 +804,7 @@ msgstr ""
 msgid "Beginnen Sie eine neue Recherche"
 msgstr ""
 
-#: ../templates/collection_html_full:68 ../templates/corporatebody_html:94 ../templates/database/inst001/title_html_categories:106 ../templates/database/openlibrary/person_html:131 ../templates/database/openlibrary/title_html_categories:25 ../templates/database/wikisource_de/search_showautset:78 ../templates/litlist_html_full:36 ../templates/person_html:119 ../templates/person_include:67 ../templates/profile/mobile/views/richtermobile/title_html_categories:24 ../templates/profile/usb/resource_title_html_categories:20 ../templates/profile/usb/title_html_categories:20 ../templates/subject_html:101 ../templates/title_html_categories:25 ../templates/views/richter/collection_html_full:68 ../templates/views/richter/corporatebody_html:94 ../templates/views/richter/litlist_html_full:36 ../templates/views/richter/person_html:103 ../templates/views/richter/subject_html:101
+#: ../templates/collection_html_full:68 ../templates/corporatebody_html:94 ../templates/database/inst001/title_html_categories:106 ../templates/database/openlibrary/person_html:131 ../templates/database/openlibrary/title_html_categories:25 ../templates/litlist_html_full:36 ../templates/person_html:119 ../templates/person_include:67 ../templates/profile/mobile/views/richtermobile/title_html_categories:24 ../templates/profile/usb/resource_title_html_categories:20 ../templates/profile/usb/title_html_categories:20 ../templates/subject_html:107 ../templates/title_html_categories:25 ../templates/views/richter/collection_html_full:68 ../templates/views/richter/corporatebody_html:94 ../templates/views/richter/litlist_html_full:36 ../templates/views/richter/person_html:103 ../templates/views/richter/subject_html:106
 msgid "Begriff in allen Katalogen suchen"
 msgstr ""
 
@@ -1099,47 +1099,27 @@ msgstr ""
 msgid "Browser"
 msgstr ""
 
-#: ../templates/visible_categories_corporatebody:16 ../templates/visible_categories_corporatebody~:16
-msgid "C0001"
-msgstr ""
-
-#: ../templates/visible_categories_corporatebody:18 ../templates/visible_categories_corporatebody~:18
-msgid "C0102"
-msgstr ""
-
-#: ../templates/visible_categories_corporatebody:20 ../templates/visible_categories_corporatebody~:20
-msgid "C0103"
-msgstr ""
-
-#: ../templates/visible_categories_corporatebody:22 ../templates/visible_categories_corporatebody~:22
-msgid "C0110"
-msgstr ""
-
-#: ../templates/visible_categories_corporatebody:24 ../templates/visible_categories_corporatebody~:24 ../templates/visible_categories_corporatebody~:25
-msgid "C0111"
-msgstr ""
-
-#: ../templates/visible_categories_corporatebody:17 ../templates/visible_categories_corporatebody~:17
+#: ../templates/visible_categories_corporatebody:16
 msgid "C0800"
 msgstr ""
 
-#: ../templates/visible_categories_corporatebody:19 ../templates/visible_categories_corporatebody~:19
+#: ../templates/visible_categories_corporatebody:17
 msgid "C0810"
 msgstr ""
 
-#: ../templates/visible_categories_corporatebody:21 ../templates/visible_categories_corporatebody~:21
+#: ../templates/visible_categories_corporatebody:18
 msgid "C0812"
 msgstr ""
 
-#: ../templates/visible_categories_corporatebody:25
+#: ../templates/visible_categories_corporatebody:20
 msgid "C0850"
 msgstr ""
 
-#: ../templates/visible_categories_corporatebody:23 ../templates/visible_categories_corporatebody~:23
+#: ../templates/visible_categories_corporatebody:19
 msgid "C0881"
 msgstr ""
 
-#: ../templates/visible_categories_corporatebody:26 ../templates/visible_categories_corporatebody~:26
+#: ../templates/visible_categories_corporatebody:21
 msgid "C5000"
 msgstr ""
 
@@ -1249,7 +1229,7 @@ msgid "Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile
 msgstr ""
 
 #. ("${searchterm}","<a href=\"${globalurl}\"><spanclass=\"globalsearch\">","</span></a>")
-#: ../templates/corporatebody_html:101 ../templates/database/openlibrary/person_html:140 ../templates/database/wikisource_de/search_showautset:84 ../templates/person_html:126 ../templates/person_include:74 ../templates/subject_html:109 ../templates/views/richter/corporatebody_html:101 ../templates/views/richter/person_html:110 ../templates/views/richter/subject_html:109
+#: ../templates/corporatebody_html:101 ../templates/database/openlibrary/person_html:140 ../templates/person_html:126 ../templates/person_include:74 ../templates/subject_html:115 ../templates/views/richter/corporatebody_html:101 ../templates/views/richter/person_html:110 ../templates/views/richter/subject_html:114
 msgid ""
 "Dehnen Sie Ihre Recherche nach <i>%1</i> über die\n"
 "%2G%3 lobale Suche auf alle\n"
@@ -1586,15 +1566,15 @@ msgstr ""
 msgid "E-Mail-Adresse"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:111 ../templates/database/wikisource_de/visible_categories_titset:104 ../templates/profile/usb/visible_categories_title:105 ../templates/visible_categories_title:106
+#: ../templates/database/inst001/visible_categories_title:111 ../templates/profile/usb/visible_categories_title:105 ../templates/visible_categories_title:106
 msgid "E4100"
 msgstr ""
 
-#: ../templates/database/wikisource_de/visible_categories_titset:112 ../templates/profile/usb/visible_categories_title:113 ../templates/visible_categories_title:114
+#: ../templates/profile/usb/visible_categories_title:113 ../templates/visible_categories_title:114
 msgid "E4110"
 msgstr ""
 
-#: ../templates/database/wikisource_de/visible_categories_titset:113 ../templates/profile/usb/visible_categories_title:114 ../templates/visible_categories_title:115
+#: ../templates/profile/usb/visible_categories_title:114 ../templates/visible_categories_title:115
 msgid "E4120"
 msgstr ""
 
@@ -1653,7 +1633,7 @@ msgstr ""
 msgid "Einfache Recherchemaske"
 msgstr ""
 
-#: ../templates/profile/usb/searchform_query:166 ../templates/searchform_query:145
+#: ../templates/profile/usb/searchform_query:166 ../templates/searchform_query:151
 msgid "Einfache Suche"
 msgstr ""
 
@@ -1661,7 +1641,7 @@ msgstr ""
 msgid "Eingabe neuer Tags"
 msgstr ""
 
-#: ../templates/profile/rheinlandbib/searchform_query:138 ../templates/profile/usb/searchform_query:138 ../templates/searchform_query:140 ../templates/views/richter/searchform_query:138
+#: ../templates/profile/rheinlandbib/searchform_query:138 ../templates/profile/usb/searchform_query:138 ../templates/searchform_query:146 ../templates/views/richter/searchform_query:138
 msgid "Eingrenzung auf Gesamttitel (Serien)"
 msgstr ""
 
@@ -1934,7 +1914,7 @@ msgstr ""
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache.pm:782 ../modules/OpenBib/RecordList/Title.pm:325
+#: ../modules/OpenBib/Handler/Apache.pm:786 ../modules/OpenBib/RecordList/Title.pm:325
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr ""
 
@@ -2235,7 +2215,7 @@ msgstr ""
 msgid "Hier sind auch Suchanfragen mit kombinierten UND- und ODER-Verkn&uuml;pfungen unter Verwendung von Klammern m&ouml;glich (siehe Beispiel 7)"
 msgstr ""
 
-#: ../templates/profile/rheinlandbib/searchform_query:141 ../templates/profile/rheinlandbib/searchform_simple:147 ../templates/profile/rheinlandbib/searchform_simple:238 ../templates/profile/rheinlandbib/searchform_simple:331 ../templates/profile/rheinlandbib/searchform_simple:425 ../templates/profile/usb/searchform_query:164 ../templates/searchform_query:143 ../templates/searchform_simple:158 ../templates/searchform_simple:201 ../templates/searchform_simple:245 ../templates/searchform_simple:290 ../templates/views/richter/searchform_query:140 ../templates/views/richter/searchform_simple:147 ../templates/views/richter/searchform_simple:238 ../templates/views/richter/searchform_simple:331 ../templates/views/richter/searchform_simple:425
+#: ../templates/profile/rheinlandbib/searchform_query:141 ../templates/profile/rheinlandbib/searchform_simple:147 ../templates/profile/rheinlandbib/searchform_simple:238 ../templates/profile/rheinlandbib/searchform_simple:331 ../templates/profile/rheinlandbib/searchform_simple:425 ../templates/profile/usb/searchform_query:164 ../templates/searchform_query:149 ../templates/searchform_simple:158 ../templates/searchform_simple:201 ../templates/searchform_simple:245 ../templates/searchform_simple:290 ../templates/views/richter/searchform_query:140 ../templates/views/richter/searchform_simple:147 ../templates/views/richter/searchform_simple:238 ../templates/views/richter/searchform_simple:331 ../templates/views/richter/searchform_simple:425
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgstr ""
 
@@ -2243,7 +2223,7 @@ msgstr ""
 msgid "Hilfe"
 msgstr ""
 
-#: ../templates/cloud_collection_html:54 ../templates/corporatebody_html:100 ../templates/database/openlibrary/person_html:139 ../templates/database/wikisource_de/search_showautset:83 ../templates/externaljump:49 ../templates/info_11:47 ../templates/info_15:35 ../templates/info_other_portals:40 ../templates/login_circulation:47 ../templates/mailpassword:47 ../templates/person_html:125 ../templates/person_include:73 ../templates/profile/usb/drilldown_categorized:475 ../templates/registration:46 ../templates/rssfeeds_html:48 ../templates/search_facet:487 ../templates/subject_html:108 ../templates/views/richter/corporatebody_html:100 ../templates/views/richter/drilldown_categorized:477 ../templates/views/richter/mailpassword:47 ../templates/views/richter/person_html:109 ../templates/views/richter/registration:46 ../templates/views/richter/subject_html:108
+#: ../templates/cloud_collection_html:54 ../templates/corporatebody_html:100 ../templates/database/openlibrary/person_html:139 ../templates/externaljump:49 ../templates/info_11:47 ../templates/info_15:35 ../templates/info_other_portals:40 ../templates/login_circulation:47 ../templates/mailpassword:47 ../templates/person_html:125 ../templates/person_include:73 ../templates/profile/usb/drilldown_categorized:475 ../templates/registration:46 ../templates/rssfeeds_html:48 ../templates/search_facet:487 ../templates/subject_html:114 ../templates/views/richter/corporatebody_html:100 ../templates/views/richter/drilldown_categorized:477 ../templates/views/richter/mailpassword:47 ../templates/views/richter/person_html:109 ../templates/views/richter/registration:46 ../templates/views/richter/subject_html:113
 msgid "Hinweis"
 msgstr ""
 
@@ -2679,7 +2659,7 @@ msgstr ""
 msgid "Informationen zur Zeitschrift"
 msgstr ""
 
-#: ../templates/classification_html:56 ../templates/collection_html_simple:42 ../templates/corporatebody_html:55 ../templates/database/openlibrary/person_html:69 ../templates/database/wikisource_de/search_showautset:31 ../templates/dbis_showdbinfo:68 ../templates/person_html:69 ../templates/person_include:22 ../templates/search_history:62 ../templates/search_title_combined_html:23 ../templates/subject_html:57 ../templates/title_html:70 ../templates/views/richter/classification_html:56 ../templates/views/richter/collection_html_simple:42 ../templates/views/richter/corporatebody_html:55 ../templates/views/richter/person_html:58 ../templates/views/richter/subject_html:57
+#: ../templates/classification_html:56 ../templates/collection_html_simple:42 ../templates/corporatebody_html:55 ../templates/database/openlibrary/person_html:69 ../templates/dbis_showdbinfo:68 ../templates/person_html:69 ../templates/person_include:22 ../templates/search_history:62 ../templates/search_title_combined_html:23 ../templates/subject_html:57 ../templates/title_html:70 ../templates/views/richter/classification_html:56 ../templates/views/richter/collection_html_simple:42 ../templates/views/richter/corporatebody_html:55 ../templates/views/richter/person_html:58 ../templates/views/richter/subject_html:57
 msgid "Inhalt"
 msgstr ""
 
@@ -2743,7 +2723,7 @@ msgstr ""
 msgid "Ja"
 msgstr ""
 
-#: ../templates/admin_statistic_access_html:47 ../templates/admin_statistic_query_html:92 ../templates/admin_statistic_request_html:47 ../templates/admin_statistic_view_html:47 ../templates/cloud_navigation:32 ../templates/cloud_navigation:34 ../templates/profile/rheinlandbib/searchform_query:135 ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:104 ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:106 ../templates/profile/usb/drilldown_categorized:150 ../templates/profile/usb/searchform_query:135 ../templates/search_facet:167 ../templates/search_history:69 ../templates/search_history:81 ../templates/search_title_combined_html:30 ../templates/search_title_combined_html:42 ../templates/searchform_query:137 ../templates/subnavigation:50 ../templates/subnavigation:52 ../templates/title_html:77 ../templates/title_html:89 ../templates/views/richter/cloud_navigation:29 ../templates/views/richter/cloud_navigation:31 ../templates/views/richter/drilldown_categorized:150 ../templates/views/richter/searchform_query:135 ../templates/views/richter/subnavigation:64 ../templates/views/richter/subnavigation:66
+#: ../templates/admin_statistic_access_html:47 ../templates/admin_statistic_query_html:92 ../templates/admin_statistic_request_html:47 ../templates/admin_statistic_view_html:47 ../templates/cloud_navigation:32 ../templates/cloud_navigation:34 ../templates/profile/rheinlandbib/searchform_query:135 ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:104 ../templates/profile/rheinlandbib/views/rheinlandbib/subnavigation:106 ../templates/profile/usb/drilldown_categorized:150 ../templates/profile/usb/searchform_query:135 ../templates/search_facet:167 ../templates/search_history:69 ../templates/search_history:81 ../templates/search_title_combined_html:30 ../templates/search_title_combined_html:42 ../templates/searchform_query:140 ../templates/subnavigation:50 ../templates/subnavigation:52 ../templates/title_html:77 ../templates/title_html:89 ../templates/views/richter/cloud_navigation:29 ../templates/views/richter/cloud_navigation:31 ../templates/views/richter/drilldown_categorized:150 ../templates/views/richter/searchform_query:135 ../templates/views/richter/subnavigation:64 ../templates/views/richter/subnavigation:66
 msgid "Jahr"
 msgstr ""
 
@@ -2835,7 +2815,7 @@ msgstr ""
 msgid "Katalogprofile"
 msgstr ""
 
-#: ../templates/classification_html:56 ../templates/collection_html_simple:42 ../templates/corporatebody_html:55 ../templates/database/openlibrary/person_html:69 ../templates/database/wikisource_de/search_showautset:31 ../templates/person_html:69 ../templates/person_include:22 ../templates/subject_html:57 ../templates/views/richter/classification_html:56 ../templates/views/richter/collection_html_simple:42 ../templates/views/richter/corporatebody_html:55 ../templates/views/richter/person_html:58 ../templates/views/richter/subject_html:57
+#: ../templates/classification_html:56 ../templates/collection_html_simple:42 ../templates/corporatebody_html:55 ../templates/database/openlibrary/person_html:69 ../templates/person_html:69 ../templates/person_include:22 ../templates/subject_html:57 ../templates/views/richter/classification_html:56 ../templates/views/richter/collection_html_simple:42 ../templates/views/richter/corporatebody_html:55 ../templates/views/richter/person_html:58 ../templates/views/richter/subject_html:57
 msgid "Kategorie"
 msgstr ""
 
@@ -3059,7 +3039,7 @@ msgstr ""
 msgid "MedPilot"
 msgstr ""
 
-#: ../templates/profile/rheinlandbib/searchform_query:130 ../templates/profile/usb/searchform_query:130 ../templates/searchform_query:130 ../templates/user_preferences_html:232 ../templates/views/richter/searchform_query:130
+#: ../templates/profile/rheinlandbib/searchform_query:130 ../templates/profile/usb/searchform_query:130 ../templates/searchform_query:135 ../templates/user_preferences_html:232 ../templates/views/richter/searchform_query:130
 msgid "Medienart"
 msgstr ""
 
@@ -3075,7 +3055,7 @@ msgstr ""
 msgid "Mein KUG"
 msgstr ""
 
-#: ../templates/corporate_banner:6 ../templates/corporate_banner~:6 ../templates/info_help:460 ../templates/info_help:73
+#: ../templates/corporate_banner:6 ../templates/info_help:460 ../templates/info_help:73
 msgid "Mein OpenBib"
 msgstr ""
 
@@ -3115,31 +3095,19 @@ msgstr ""
 msgid "N&auml;chster Titel"
 msgstr ""
 
-#: ../templates/visible_categories_classification:17 ../templates/visible_categories_classification~:17
-msgid "N0001"
-msgstr ""
-
-#: ../templates/visible_categories_classification:19 ../templates/visible_categories_classification~:18
-msgid "N0002"
-msgstr ""
-
-#: ../templates/visible_categories_classification:21 ../templates/visible_categories_classification~:19
-msgid "N0103"
-msgstr ""
-
-#: ../templates/visible_categories_classification:18
+#: ../templates/visible_categories_classification:17
 msgid "N0800"
 msgstr ""
 
-#: ../templates/visible_categories_classification:20
+#: ../templates/visible_categories_classification:18
 msgid "N0801"
 msgstr ""
 
-#: ../templates/visible_categories_classification:22
+#: ../templates/visible_categories_classification:19
 msgid "N0840"
 msgstr ""
 
-#: ../templates/visible_categories_classification:23 ../templates/visible_categories_classification~:20
+#: ../templates/visible_categories_classification:20
 msgid "N5000"
 msgstr ""
 
@@ -3410,91 +3378,83 @@ msgstr ""
 msgid "Ort"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:16 ../templates/database/openlibrary/visible_categories_person~:16 ../templates/visible_categories_person:16 ../templates/visible_categories_person~:16
-msgid "P0001"
-msgstr ""
-
-#: ../templates/database/openlibrary/visible_categories_person:18 ../templates/database/openlibrary/visible_categories_person~:17 ../templates/visible_categories_person:18 ../templates/visible_categories_person~:17
-msgid "P0102"
-msgstr ""
-
-#: ../templates/visible_categories_person:22 ../templates/visible_categories_person~:20
+#: ../templates/visible_categories_person:20
 msgid "P0200"
 msgstr ""
 
-#: ../templates/visible_categories_person:23 ../templates/visible_categories_person~:21
+#: ../templates/visible_categories_person:21
 msgid "P0201"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:22 ../templates/database/openlibrary/visible_categories_person~:20 ../templates/visible_categories_person:26 ../templates/visible_categories_person~:24
+#: ../templates/database/openlibrary/visible_categories_person:20 ../templates/visible_categories_person:24
 msgid "P0300"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:23 ../templates/database/openlibrary/visible_categories_person~:21 ../templates/visible_categories_person:27 ../templates/visible_categories_person~:25
+#: ../templates/database/openlibrary/visible_categories_person:21 ../templates/visible_categories_person:25
 msgid "P0301"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:24 ../templates/database/openlibrary/visible_categories_person~:22 ../templates/visible_categories_person:28 ../templates/visible_categories_person~:26
+#: ../templates/database/openlibrary/visible_categories_person:22 ../templates/visible_categories_person:26
 msgid "P0302"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:25 ../templates/database/openlibrary/visible_categories_person~:23 ../templates/visible_categories_person:29 ../templates/visible_categories_person~:27
+#: ../templates/database/openlibrary/visible_categories_person:23 ../templates/visible_categories_person:27
 msgid "P0303"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:26 ../templates/database/openlibrary/visible_categories_person~:24 ../templates/visible_categories_person:30 ../templates/visible_categories_person~:28
+#: ../templates/database/openlibrary/visible_categories_person:24 ../templates/visible_categories_person:28
 msgid "P0304"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:27 ../templates/database/openlibrary/visible_categories_person~:25 ../templates/visible_categories_person:31 ../templates/visible_categories_person~:29
+#: ../templates/database/openlibrary/visible_categories_person:25 ../templates/visible_categories_person:29
 msgid "P0305"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:28 ../templates/database/openlibrary/visible_categories_person~:26 ../templates/visible_categories_person:32 ../templates/visible_categories_person~:30
+#: ../templates/database/openlibrary/visible_categories_person:26 ../templates/visible_categories_person:30
 msgid "P0306"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:29 ../templates/database/openlibrary/visible_categories_person~:27 ../templates/visible_categories_person:33 ../templates/visible_categories_person~:31
+#: ../templates/database/openlibrary/visible_categories_person:27 ../templates/visible_categories_person:31
 msgid "P0307"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:30 ../templates/database/openlibrary/visible_categories_person~:28 ../templates/visible_categories_person:34 ../templates/visible_categories_person~:32
+#: ../templates/database/openlibrary/visible_categories_person:28 ../templates/visible_categories_person:32
 msgid "P0308"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:31 ../templates/database/openlibrary/visible_categories_person~:29 ../templates/visible_categories_person:35 ../templates/visible_categories_person~:33
+#: ../templates/database/openlibrary/visible_categories_person:29 ../templates/visible_categories_person:33
 msgid "P0309"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:32 ../templates/database/openlibrary/visible_categories_person~:30 ../templates/visible_categories_person:36 ../templates/visible_categories_person~:34
+#: ../templates/database/openlibrary/visible_categories_person:30 ../templates/visible_categories_person:34
 msgid "P0310"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:33 ../templates/database/openlibrary/visible_categories_person~:31 ../templates/visible_categories_person:37 ../templates/visible_categories_person~:35
+#: ../templates/database/openlibrary/visible_categories_person:31 ../templates/visible_categories_person:35
 msgid "P0311"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:34 ../templates/database/openlibrary/visible_categories_person~:32 ../templates/visible_categories_person:38 ../templates/visible_categories_person~:36
+#: ../templates/database/openlibrary/visible_categories_person:32 ../templates/visible_categories_person:36
 msgid "P0312"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:35 ../templates/database/openlibrary/visible_categories_person~:33 ../templates/visible_categories_person:39 ../templates/visible_categories_person~:37
+#: ../templates/database/openlibrary/visible_categories_person:33 ../templates/visible_categories_person:37
 msgid "P0313"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:36 ../templates/database/openlibrary/visible_categories_person~:34 ../templates/visible_categories_person:40 ../templates/visible_categories_person~:38
+#: ../templates/database/openlibrary/visible_categories_person:34 ../templates/visible_categories_person:38
 msgid "P0314"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:17 ../templates/visible_categories_person:17
+#: ../templates/database/openlibrary/visible_categories_person:16 ../templates/visible_categories_person:16
 msgid "P0800"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:19 ../templates/visible_categories_person:19
+#: ../templates/database/openlibrary/visible_categories_person:17 ../templates/visible_categories_person:17
 msgid "P0830"
 msgstr ""
 
-#: ../templates/database/openlibrary/visible_categories_person:38 ../templates/database/openlibrary/visible_categories_person~:36 ../templates/visible_categories_person:42 ../templates/visible_categories_person~:40
+#: ../templates/database/openlibrary/visible_categories_person:36 ../templates/visible_categories_person:40
 msgid "P5000"
 msgstr ""
 
@@ -3792,95 +3752,51 @@ msgstr ""
 msgid "Russisch"
 msgstr ""
 
-#: ../templates/visible_categories_subject:16 ../templates/visible_categories_subject~:16
-msgid "S0001"
-msgstr ""
-
-#: ../templates/visible_categories_subject:20 ../templates/visible_categories_subject~:18
-msgid "S0102"
-msgstr ""
-
-#: ../templates/visible_categories_subject:30 ../templates/visible_categories_subject~:23
-msgid "S0105"
-msgstr ""
-
-#: ../templates/visible_categories_subject:32 ../templates/visible_categories_subject~:24
-msgid "S0106"
-msgstr ""
-
-#: ../templates/visible_categories_subject:34 ../templates/visible_categories_subject~:25
-msgid "S0107"
-msgstr ""
-
-#: ../templates/visible_categories_subject:36 ../templates/visible_categories_subject~:26
-msgid "S0108"
-msgstr ""
-
-#: ../templates/visible_categories_subject:18 ../templates/visible_categories_subject~:17
-msgid "S0112"
-msgstr ""
-
-#: ../templates/visible_categories_subject:22 ../templates/visible_categories_subject~:19
-msgid "S0113"
-msgstr ""
-
-#: ../templates/visible_categories_subject:24 ../templates/visible_categories_subject~:20
-msgid "S0115"
-msgstr ""
-
-#: ../templates/visible_categories_subject:26 ../templates/visible_categories_subject~:21
-msgid "S0117"
-msgstr ""
-
-#: ../templates/visible_categories_subject:28 ../templates/visible_categories_subject~:22
-msgid "S0119"
-msgstr ""
-
-#: ../templates/visible_categories_subject:17
+#: ../templates/visible_categories_subject:16
 msgid "S0800"
 msgstr ""
 
-#: ../templates/visible_categories_subject:31
+#: ../templates/visible_categories_subject:23
 msgid "S0805"
 msgstr ""
 
-#: ../templates/visible_categories_subject:33
+#: ../templates/visible_categories_subject:24
 msgid "S0806"
 msgstr ""
 
-#: ../templates/visible_categories_subject:35
+#: ../templates/visible_categories_subject:25
 msgid "S0807"
 msgstr ""
 
-#: ../templates/visible_categories_subject:37
+#: ../templates/visible_categories_subject:26
 msgid "S0810"
 msgstr ""
 
-#: ../templates/visible_categories_subject:19
+#: ../templates/visible_categories_subject:17
 msgid "S0820"
 msgstr ""
 
-#: ../templates/visible_categories_subject:21
+#: ../templates/visible_categories_subject:18
 msgid "S0830"
 msgstr ""
 
-#: ../templates/visible_categories_subject:23
+#: ../templates/visible_categories_subject:19
 msgid "S0850"
 msgstr ""
 
-#: ../templates/visible_categories_subject:25
+#: ../templates/visible_categories_subject:20
 msgid "S0860"
 msgstr ""
 
-#: ../templates/visible_categories_subject:27
+#: ../templates/visible_categories_subject:21
 msgid "S0870"
 msgstr ""
 
-#: ../templates/visible_categories_subject:29
+#: ../templates/visible_categories_subject:22
 msgid "S0880"
 msgstr ""
 
-#: ../templates/visible_categories_subject:38 ../templates/visible_categories_subject~:27
+#: ../templates/visible_categories_subject:27
 msgid "S5000"
 msgstr ""
 
@@ -3950,7 +3866,7 @@ msgstr ""
 msgid "Selbstregistrierung"
 msgstr ""
 
-#: ../templates/admin_statistic_query_html:91 ../templates/profile/rheinlandbib/searchform_query:124 ../templates/profile/usb/searchform_query:124 ../templates/searchform_query:124 ../templates/user_preferences_html:227 ../templates/views/richter/searchform_query:124
+#: ../templates/admin_statistic_query_html:91 ../templates/profile/rheinlandbib/searchform_query:124 ../templates/profile/usb/searchform_query:124 ../templates/searchform_query:129 ../templates/user_preferences_html:227 ../templates/views/richter/searchform_query:124
 msgid "Serie/Band/Quelle"
 msgstr ""
 
@@ -3982,7 +3898,7 @@ msgstr ""
 msgid "Sie befinden sich derzeit auf einem Testsystem, das nicht f&uuml;r den produktiven Einsatz gedacht ist. Stattdessen k&ouml;nnen Sie hier die neuen in Entwicklung befindlichen Funktionen von OpenBib austesten. Da OpenBib auf diesem System kontinuierlich verbessert wird, k&ouml;nnen w&auml;hrend dieser &Auml;nderungen zeitweise sicherlich auch schon einmal 'Internal Server Errors' beobachtet werden. Dies ist vollkommen normal, solange die aktuelle Version auf diesem System nicht eingefroren und in eine offiziell bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache.pm:531 ../modules/OpenBib/Handler/Apache/Admin/Database.pm:270 ../modules/OpenBib/Handler/Apache/Admin/Database.pm:330 ../modules/OpenBib/Handler/Apache/Admin/Database.pm:490
+#: ../modules/OpenBib/Handler/Apache.pm:535 ../modules/OpenBib/Handler/Apache/Admin/Database.pm:270 ../modules/OpenBib/Handler/Apache/Admin/Database.pm:330 ../modules/OpenBib/Handler/Apache/Admin/Database.pm:490
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr ""
 
@@ -4255,7 +4171,7 @@ msgid "Spezialisierte Portale"
 msgstr ""
 
 #. (l)
-#: ../templates/corporate_banner:4 ../templates/corporate_banner~:4 ../templates/info_journaltocs:43 ../templates/profile/rheinlandbib/searchform_simple:511 ../templates/profile/rheinlandbib/searchform_simple:54 ../templates/views/richter/corporate_banner:4 ../templates/views/richter/searchform_simple:511 ../templates/views/richter/searchform_simple:54
+#: ../templates/corporate_banner:4 ../templates/info_journaltocs:43 ../templates/profile/rheinlandbib/searchform_simple:511 ../templates/profile/rheinlandbib/searchform_simple:54 ../templates/views/richter/corporate_banner:4 ../templates/views/richter/searchform_simple:511 ../templates/views/richter/searchform_simple:54
 msgid "Sprach-Icon für %1"
 msgstr ""
 
@@ -4335,7 +4251,7 @@ msgstr ""
 msgid "Suche nach Zeitschriften"
 msgstr ""
 
-#: ../templates/bibsonomy_collection_by_tag_html:76 ../templates/bibsonomy_collection_by_user_html:82 ../templates/dbis_searchdbs:83 ../templates/dbis_showdbs:52 ../templates/dbis_showsubjects:55 ../templates/ezb_searchjournals:87 ../templates/ezb_showjournals:52 ../templates/ezb_showsubjects:53 ../templates/mainnavigation:47 ../templates/mainnavigation:49 ../templates/profile/rheinlandbib/mainnavigation:37 ../templates/profile/rheinlandbib/mainnavigation:39 ../templates/profile/rheinlandbib/searchform_query:141 ../templates/profile/rheinlandbib/searchform_simple:147 ../templates/profile/rheinlandbib/searchform_simple:238 ../templates/profile/rheinlandbib/searchform_simple:331 ../templates/profile/rheinlandbib/searchform_simple:425 ../templates/profile/usb/searchform_query:164 ../templates/search_classification:75 ../templates/search_corporatebody:75 ../templates/search_person:75 ../templates/search_subject:75 ../templates/searchform_query:143 ../templates/searchform_simple:158 ../templates/searchform_simple:201 ../templates/searchform_simple:245 ../templates/searchform_simple:290 ../templates/views/richter/mainnavigation:37 ../templates/views/richter/mainnavigation:39 ../templates/views/richter/searchform_query:140 ../templates/views/richter/searchform_simple:147 ../templates/views/richter/searchform_simple:238 ../templates/views/richter/searchform_simple:331 ../templates/views/richter/searchform_simple:425
+#: ../templates/bibsonomy_collection_by_tag_html:76 ../templates/bibsonomy_collection_by_user_html:82 ../templates/dbis_searchdbs:83 ../templates/dbis_showdbs:52 ../templates/dbis_showsubjects:55 ../templates/ezb_searchjournals:87 ../templates/ezb_showjournals:52 ../templates/ezb_showsubjects:53 ../templates/mainnavigation:47 ../templates/mainnavigation:49 ../templates/profile/rheinlandbib/mainnavigation:37 ../templates/profile/rheinlandbib/mainnavigation:39 ../templates/profile/rheinlandbib/searchform_query:141 ../templates/profile/rheinlandbib/searchform_simple:147 ../templates/profile/rheinlandbib/searchform_simple:238 ../templates/profile/rheinlandbib/searchform_simple:331 ../templates/profile/rheinlandbib/searchform_simple:425 ../templates/profile/usb/searchform_query:164 ../templates/search_classification:75 ../templates/search_corporatebody:75 ../templates/search_person:75 ../templates/search_subject:75 ../templates/searchform_query:149 ../templates/searchform_simple:158 ../templates/searchform_simple:201 ../templates/searchform_simple:245 ../templates/searchform_simple:290 ../templates/views/richter/mainnavigation:37 ../templates/views/richter/mainnavigation:39 ../templates/views/richter/searchform_query:140 ../templates/views/richter/searchform_simple:147 ../templates/views/richter/searchform_simple:238 ../templates/views/richter/searchform_simple:331 ../templates/views/richter/searchform_simple:425
 msgid "Suchen"
 msgstr ""
 
@@ -4347,7 +4263,7 @@ msgstr ""
 msgid "Suchhilfe"
 msgstr ""
 
-#: ../templates/mainnavigation:57 ../templates/mainnavigation:59 ../templates/profile/rheinlandbib/mainnavigation:47 ../templates/profile/rheinlandbib/mainnavigation:49 ../templates/profile/rheinlandbib/searchform_query:141 ../templates/search_history:37 ../templates/searchform_query:145 ../templates/searchform_simple:161 ../templates/searchform_simple:204 ../templates/searchform_simple:248 ../templates/searchform_simple:293 ../templates/views/richter/mainnavigation:52 ../templates/views/richter/mainnavigation:54 ../templates/views/richter/searchform_query:140
+#: ../templates/mainnavigation:57 ../templates/mainnavigation:59 ../templates/profile/rheinlandbib/mainnavigation:47 ../templates/profile/rheinlandbib/mainnavigation:49 ../templates/profile/rheinlandbib/searchform_query:141 ../templates/search_history:37 ../templates/searchform_query:151 ../templates/searchform_simple:161 ../templates/searchform_simple:204 ../templates/searchform_simple:248 ../templates/searchform_simple:293 ../templates/views/richter/mainnavigation:52 ../templates/views/richter/mainnavigation:54 ../templates/views/richter/searchform_query:140
 msgid "Suchhistorie"
 msgstr ""
 
@@ -4392,23 +4308,23 @@ msgstr ""
 msgid "Systematisches Bl&auml;ttern"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:85 ../templates/database/richter/visible_categories_title:84 ../templates/database/wikisource_de/visible_categories_titset:86 ../templates/profile/usb/visible_categories_title:86 ../templates/visible_categories_title:87
+#: ../templates/database/inst001/visible_categories_title:85 ../templates/database/richter/visible_categories_title:84 ../templates/profile/usb/visible_categories_title:86 ../templates/visible_categories_title:87
 msgid "T0015"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:89 ../templates/database/richter/visible_categories_title:88 ../templates/database/wikisource_de/visible_categories_titset:90 ../templates/profile/usb/visible_categories_title:90 ../templates/visible_categories_title:91
+#: ../templates/database/inst001/visible_categories_title:89 ../templates/database/richter/visible_categories_title:88 ../templates/profile/usb/visible_categories_title:90 ../templates/visible_categories_title:91
 msgid "T0026"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:47 ../templates/database/richter/visible_categories_title:46 ../templates/database/wikisource_de/visible_categories_titset:47 ../templates/profile/usb/visible_categories_title:47 ../templates/visible_categories_title:48
+#: ../templates/database/inst001/visible_categories_title:47 ../templates/database/richter/visible_categories_title:46 ../templates/profile/usb/visible_categories_title:47 ../templates/visible_categories_title:48
 msgid "T0035"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:21 ../templates/database/richter/visible_categories_title:21 ../templates/database/wikisource_de/visible_categories_titset:21 ../templates/profile/usb/visible_categories_title:21 ../templates/visible_categories_title:21
+#: ../templates/database/inst001/visible_categories_title:21 ../templates/database/richter/visible_categories_title:21 ../templates/profile/usb/visible_categories_title:21 ../templates/visible_categories_title:21
 msgid "T0089"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:16 ../templates/database/richter/visible_categories_title:16 ../templates/database/wikisource_de/visible_categories_titset:16 ../templates/profile/usb/visible_categories_title:16 ../templates/visible_categories_title:16
+#: ../templates/database/inst001/visible_categories_title:16 ../templates/database/richter/visible_categories_title:16 ../templates/profile/usb/visible_categories_title:16 ../templates/visible_categories_title:16
 msgid "T0100"
 msgstr ""
 
@@ -4416,67 +4332,63 @@ msgstr ""
 msgid "T0101"
 msgstr ""
 
-#: ../templates/database/wikisource_de/visible_categories_titset:17
-msgid "T0101-wikisource_de"
-msgstr ""
-
-#: ../templates/database/inst001/visible_categories_title:18 ../templates/database/richter/visible_categories_title:18 ../templates/database/wikisource_de/visible_categories_titset:18 ../templates/profile/usb/visible_categories_title:18 ../templates/visible_categories_title:18
+#: ../templates/database/inst001/visible_categories_title:18 ../templates/database/richter/visible_categories_title:18 ../templates/profile/usb/visible_categories_title:18 ../templates/visible_categories_title:18
 msgid "T0103"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:19 ../templates/database/richter/visible_categories_title:19 ../templates/database/wikisource_de/visible_categories_titset:19 ../templates/profile/usb/visible_categories_title:19 ../templates/visible_categories_title:19
+#: ../templates/database/inst001/visible_categories_title:19 ../templates/database/richter/visible_categories_title:19 ../templates/profile/usb/visible_categories_title:19 ../templates/visible_categories_title:19
 msgid "T0200"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:20 ../templates/database/richter/visible_categories_title:20 ../templates/database/wikisource_de/visible_categories_titset:20 ../templates/profile/usb/visible_categories_title:20 ../templates/visible_categories_title:20
+#: ../templates/database/inst001/visible_categories_title:20 ../templates/database/richter/visible_categories_title:20 ../templates/profile/usb/visible_categories_title:20 ../templates/visible_categories_title:20
 msgid "T0201"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:25 ../templates/database/richter/visible_categories_title:25 ../templates/database/wikisource_de/visible_categories_titset:25 ../templates/profile/usb/visible_categories_title:25 ../templates/visible_categories_title:30
+#: ../templates/database/inst001/visible_categories_title:25 ../templates/database/richter/visible_categories_title:25 ../templates/profile/usb/visible_categories_title:25 ../templates/visible_categories_title:30
 msgid "T0300"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:23 ../templates/database/richter/visible_categories_title:23 ../templates/database/wikisource_de/visible_categories_titset:23 ../templates/profile/usb/visible_categories_title:23 ../templates/visible_categories_title:23
+#: ../templates/database/inst001/visible_categories_title:23 ../templates/database/richter/visible_categories_title:23 ../templates/profile/usb/visible_categories_title:23 ../templates/visible_categories_title:23
 msgid "T0304"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:22 ../templates/database/richter/visible_categories_title:22 ../templates/database/wikisource_de/visible_categories_titset:22 ../templates/profile/usb/visible_categories_title:22 ../templates/visible_categories_title:22
+#: ../templates/database/inst001/visible_categories_title:22 ../templates/database/richter/visible_categories_title:22 ../templates/profile/usb/visible_categories_title:22 ../templates/visible_categories_title:22
 msgid "T0310"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:24 ../templates/database/richter/visible_categories_title:24 ../templates/database/wikisource_de/visible_categories_titset:24 ../templates/profile/usb/visible_categories_title:24 ../templates/visible_categories_title:24
+#: ../templates/database/inst001/visible_categories_title:24 ../templates/database/richter/visible_categories_title:24 ../templates/profile/usb/visible_categories_title:24 ../templates/visible_categories_title:24
 msgid "T0331"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:29 ../templates/database/richter/visible_categories_title:28 ../templates/database/wikisource_de/visible_categories_titset:29 ../templates/profile/usb/visible_categories_title:29 ../templates/visible_categories_title:28
+#: ../templates/database/inst001/visible_categories_title:29 ../templates/database/richter/visible_categories_title:28 ../templates/profile/usb/visible_categories_title:29 ../templates/visible_categories_title:28
 msgid "T0333"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:51 ../templates/database/richter/visible_categories_title:50 ../templates/database/wikisource_de/visible_categories_titset:51 ../templates/profile/usb/visible_categories_title:51 ../templates/visible_categories_title:52
+#: ../templates/database/inst001/visible_categories_title:51 ../templates/database/richter/visible_categories_title:50 ../templates/profile/usb/visible_categories_title:51 ../templates/visible_categories_title:52
 msgid "T0334"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:30 ../templates/database/richter/visible_categories_title:29 ../templates/database/wikisource_de/visible_categories_titset:30 ../templates/profile/usb/visible_categories_title:30 ../templates/visible_categories_title:29
+#: ../templates/database/inst001/visible_categories_title:30 ../templates/database/richter/visible_categories_title:29 ../templates/profile/usb/visible_categories_title:30 ../templates/visible_categories_title:29
 msgid "T0335"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:27 ../templates/database/richter/visible_categories_title:27 ../templates/database/wikisource_de/visible_categories_titset:28 ../templates/profile/usb/visible_categories_title:28 ../templates/visible_categories_title:27
+#: ../templates/database/inst001/visible_categories_title:27 ../templates/database/richter/visible_categories_title:27 ../templates/profile/usb/visible_categories_title:28 ../templates/visible_categories_title:27
 msgid "T0341"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:33 ../templates/database/richter/visible_categories_title:32 ../templates/database/wikisource_de/visible_categories_titset:33 ../templates/profile/usb/visible_categories_title:33 ../templates/visible_categories_title:34
+#: ../templates/database/inst001/visible_categories_title:33 ../templates/database/richter/visible_categories_title:32 ../templates/profile/usb/visible_categories_title:33 ../templates/visible_categories_title:34
 msgid "T0359"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:34 ../templates/database/richter/visible_categories_title:33 ../templates/database/wikisource_de/visible_categories_titset:34 ../templates/profile/usb/visible_categories_title:34 ../templates/visible_categories_title:35
+#: ../templates/database/inst001/visible_categories_title:34 ../templates/database/richter/visible_categories_title:33 ../templates/profile/usb/visible_categories_title:34 ../templates/visible_categories_title:35
 msgid "T0360"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:28 ../templates/database/inst001/visible_categories_title:31 ../templates/database/richter/visible_categories_title:30 ../templates/database/wikisource_de/visible_categories_titset:31 ../templates/profile/usb/visible_categories_title:31 ../templates/visible_categories_title:31
+#: ../templates/database/inst001/visible_categories_title:28 ../templates/database/inst001/visible_categories_title:31 ../templates/database/richter/visible_categories_title:30 ../templates/profile/usb/visible_categories_title:31 ../templates/visible_categories_title:31
 msgid "T0361"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:32 ../templates/database/richter/visible_categories_title:31 ../templates/database/wikisource_de/visible_categories_titset:32 ../templates/profile/usb/visible_categories_title:32 ../templates/visible_categories_title:32
+#: ../templates/database/inst001/visible_categories_title:32 ../templates/database/richter/visible_categories_title:31 ../templates/profile/usb/visible_categories_title:32 ../templates/visible_categories_title:32
 msgid "T0365"
 msgstr ""
 
@@ -4484,63 +4396,63 @@ msgstr ""
 msgid "T0369"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:26 ../templates/database/richter/visible_categories_title:26 ../templates/database/wikisource_de/visible_categories_titset:26 ../templates/profile/usb/visible_categories_title:26 ../templates/visible_categories_title:25
+#: ../templates/database/inst001/visible_categories_title:26 ../templates/database/richter/visible_categories_title:26 ../templates/profile/usb/visible_categories_title:26 ../templates/visible_categories_title:25
 msgid "T0370"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:35 ../templates/database/richter/visible_categories_title:34 ../templates/database/wikisource_de/visible_categories_titset:35 ../templates/profile/usb/visible_categories_title:35 ../templates/visible_categories_title:36
+#: ../templates/database/inst001/visible_categories_title:35 ../templates/database/richter/visible_categories_title:34 ../templates/profile/usb/visible_categories_title:35 ../templates/visible_categories_title:36
 msgid "T0403"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:40 ../templates/database/richter/visible_categories_title:39 ../templates/database/wikisource_de/visible_categories_titset:40 ../templates/profile/usb/visible_categories_title:40 ../templates/visible_categories_title:41
+#: ../templates/database/inst001/visible_categories_title:40 ../templates/database/richter/visible_categories_title:39 ../templates/profile/usb/visible_categories_title:40 ../templates/visible_categories_title:41
 msgid "T0405"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:57 ../templates/database/richter/visible_categories_title:56 ../templates/database/wikisource_de/visible_categories_titset:57 ../templates/profile/usb/visible_categories_title:57 ../templates/visible_categories_title:58
+#: ../templates/database/inst001/visible_categories_title:57 ../templates/database/richter/visible_categories_title:56 ../templates/profile/usb/visible_categories_title:57 ../templates/visible_categories_title:58
 msgid "T0407"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:36 ../templates/database/richter/visible_categories_title:35 ../templates/database/wikisource_de/visible_categories_titset:36 ../templates/profile/usb/visible_categories_title:36 ../templates/visible_categories_title:37
+#: ../templates/database/inst001/visible_categories_title:36 ../templates/database/richter/visible_categories_title:35 ../templates/profile/usb/visible_categories_title:36 ../templates/visible_categories_title:37
 msgid "T0410"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:37 ../templates/database/richter/visible_categories_title:36 ../templates/database/wikisource_de/visible_categories_titset:37 ../templates/profile/usb/visible_categories_title:37 ../templates/visible_categories_title:38
+#: ../templates/database/inst001/visible_categories_title:37 ../templates/database/richter/visible_categories_title:36 ../templates/profile/usb/visible_categories_title:37 ../templates/visible_categories_title:38
 msgid "T0412"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:46 ../templates/database/richter/visible_categories_title:45 ../templates/database/wikisource_de/visible_categories_titset:46 ../templates/profile/usb/visible_categories_title:46 ../templates/visible_categories_title:47
+#: ../templates/database/inst001/visible_categories_title:46 ../templates/database/richter/visible_categories_title:45 ../templates/profile/usb/visible_categories_title:46 ../templates/visible_categories_title:47
 msgid "T0413"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:39 ../templates/database/richter/visible_categories_title:38 ../templates/database/wikisource_de/visible_categories_titset:39 ../templates/profile/usb/visible_categories_title:39 ../templates/visible_categories_title:40
+#: ../templates/database/inst001/visible_categories_title:39 ../templates/database/richter/visible_categories_title:38 ../templates/profile/usb/visible_categories_title:39 ../templates/visible_categories_title:40
 msgid "T0424"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:38 ../templates/database/richter/visible_categories_title:37 ../templates/database/wikisource_de/visible_categories_titset:38 ../templates/profile/usb/visible_categories_title:38 ../templates/visible_categories_title:39
+#: ../templates/database/inst001/visible_categories_title:38 ../templates/database/richter/visible_categories_title:37 ../templates/profile/usb/visible_categories_title:38 ../templates/visible_categories_title:39
 msgid "T0425"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:50 ../templates/database/richter/visible_categories_title:49 ../templates/database/wikisource_de/visible_categories_titset:50 ../templates/profile/usb/visible_categories_title:50 ../templates/visible_categories_title:51
+#: ../templates/database/inst001/visible_categories_title:50 ../templates/database/richter/visible_categories_title:49 ../templates/profile/usb/visible_categories_title:50 ../templates/visible_categories_title:51
 msgid "T0433"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:45 ../templates/database/inst001/visible_categories_title:58 ../templates/database/richter/visible_categories_title:44 ../templates/database/richter/visible_categories_title:57 ../templates/database/wikisource_de/visible_categories_titset:45 ../templates/database/wikisource_de/visible_categories_titset:58 ../templates/profile/usb/visible_categories_title:45 ../templates/profile/usb/visible_categories_title:58 ../templates/visible_categories_title:46 ../templates/visible_categories_title:59
+#: ../templates/database/inst001/visible_categories_title:45 ../templates/database/inst001/visible_categories_title:58 ../templates/database/richter/visible_categories_title:44 ../templates/database/richter/visible_categories_title:57 ../templates/profile/usb/visible_categories_title:45 ../templates/profile/usb/visible_categories_title:58 ../templates/visible_categories_title:46 ../templates/visible_categories_title:59
 msgid "T0434"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:48 ../templates/database/richter/visible_categories_title:47 ../templates/database/wikisource_de/visible_categories_titset:48 ../templates/profile/usb/visible_categories_title:48 ../templates/visible_categories_title:49
+#: ../templates/database/inst001/visible_categories_title:48 ../templates/database/richter/visible_categories_title:47 ../templates/profile/usb/visible_categories_title:48 ../templates/visible_categories_title:49
 msgid "T0435"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:59 ../templates/database/richter/visible_categories_title:58 ../templates/database/wikisource_de/visible_categories_titset:59 ../templates/profile/usb/visible_categories_title:59 ../templates/visible_categories_title:60
+#: ../templates/database/inst001/visible_categories_title:59 ../templates/database/richter/visible_categories_title:58 ../templates/profile/usb/visible_categories_title:59 ../templates/visible_categories_title:60
 msgid "T0437"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:54 ../templates/database/richter/visible_categories_title:53 ../templates/database/wikisource_de/visible_categories_titset:54 ../templates/profile/usb/visible_categories_title:54 ../templates/visible_categories_title:55
+#: ../templates/database/inst001/visible_categories_title:54 ../templates/database/richter/visible_categories_title:53 ../templates/profile/usb/visible_categories_title:54 ../templates/visible_categories_title:55
 msgid "T0451"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:60 ../templates/database/wikisource_de/visible_categories_titset:60 ../templates/profile/usb/visible_categories_title:60 ../templates/visible_categories_title:61
+#: ../templates/database/inst001/visible_categories_title:60 ../templates/profile/usb/visible_categories_title:60 ../templates/visible_categories_title:61
 msgid "T0501"
 msgstr ""
 
@@ -4548,223 +4460,223 @@ msgstr ""
 msgid "T0501-richter"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:88 ../templates/database/richter/visible_categories_title:87 ../templates/database/wikisource_de/visible_categories_titset:89 ../templates/profile/usb/visible_categories_title:89 ../templates/visible_categories_title:90
+#: ../templates/database/inst001/visible_categories_title:88 ../templates/database/richter/visible_categories_title:87 ../templates/profile/usb/visible_categories_title:89 ../templates/visible_categories_title:90
 msgid "T0503"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:61 ../templates/database/richter/visible_categories_title:60 ../templates/database/wikisource_de/visible_categories_titset:61 ../templates/profile/usb/visible_categories_title:61 ../templates/visible_categories_title:62
+#: ../templates/database/inst001/visible_categories_title:61 ../templates/database/richter/visible_categories_title:60 ../templates/profile/usb/visible_categories_title:61 ../templates/visible_categories_title:62
 msgid "T0504"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:62 ../templates/database/richter/visible_categories_title:61 ../templates/database/wikisource_de/visible_categories_titset:62 ../templates/profile/usb/visible_categories_title:62 ../templates/visible_categories_title:63
+#: ../templates/database/inst001/visible_categories_title:62 ../templates/database/richter/visible_categories_title:61 ../templates/profile/usb/visible_categories_title:62 ../templates/visible_categories_title:63
 msgid "T0505"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:63 ../templates/database/richter/visible_categories_title:62 ../templates/database/wikisource_de/visible_categories_titset:63 ../templates/profile/usb/visible_categories_title:63 ../templates/visible_categories_title:64
+#: ../templates/database/inst001/visible_categories_title:63 ../templates/database/richter/visible_categories_title:62 ../templates/profile/usb/visible_categories_title:63 ../templates/visible_categories_title:64
 msgid "T0507"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:49 ../templates/database/richter/visible_categories_title:48 ../templates/database/wikisource_de/visible_categories_titset:49 ../templates/profile/usb/visible_categories_title:49 ../templates/visible_categories_title:50
+#: ../templates/database/inst001/visible_categories_title:49 ../templates/database/richter/visible_categories_title:48 ../templates/profile/usb/visible_categories_title:49 ../templates/visible_categories_title:50
 msgid "T0508"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:64 ../templates/database/richter/visible_categories_title:63 ../templates/database/wikisource_de/visible_categories_titset:64 ../templates/profile/usb/visible_categories_title:64 ../templates/visible_categories_title:65
+#: ../templates/database/inst001/visible_categories_title:64 ../templates/database/richter/visible_categories_title:63 ../templates/profile/usb/visible_categories_title:64 ../templates/visible_categories_title:65
 msgid "T0509"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:65 ../templates/database/richter/visible_categories_title:64 ../templates/database/wikisource_de/visible_categories_titset:65 ../templates/profile/usb/visible_categories_title:65 ../templates/visible_categories_title:66
+#: ../templates/database/inst001/visible_categories_title:65 ../templates/database/richter/visible_categories_title:64 ../templates/profile/usb/visible_categories_title:65 ../templates/visible_categories_title:66
 msgid "T0510"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:66 ../templates/database/richter/visible_categories_title:65 ../templates/database/wikisource_de/visible_categories_titset:66 ../templates/profile/usb/visible_categories_title:66 ../templates/visible_categories_title:67
+#: ../templates/database/inst001/visible_categories_title:66 ../templates/database/richter/visible_categories_title:65 ../templates/profile/usb/visible_categories_title:66 ../templates/visible_categories_title:67
 msgid "T0511"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:67 ../templates/database/richter/visible_categories_title:66 ../templates/database/wikisource_de/visible_categories_titset:67 ../templates/profile/usb/visible_categories_title:67 ../templates/visible_categories_title:68
+#: ../templates/database/inst001/visible_categories_title:67 ../templates/database/richter/visible_categories_title:66 ../templates/profile/usb/visible_categories_title:67 ../templates/visible_categories_title:68
 msgid "T0512"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:68 ../templates/database/richter/visible_categories_title:67 ../templates/database/wikisource_de/visible_categories_titset:68 ../templates/profile/usb/visible_categories_title:68 ../templates/visible_categories_title:69
+#: ../templates/database/inst001/visible_categories_title:68 ../templates/database/richter/visible_categories_title:67 ../templates/profile/usb/visible_categories_title:68 ../templates/visible_categories_title:69
 msgid "T0513"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:69 ../templates/database/richter/visible_categories_title:68 ../templates/database/wikisource_de/visible_categories_titset:69 ../templates/profile/usb/visible_categories_title:69 ../templates/visible_categories_title:70
+#: ../templates/database/inst001/visible_categories_title:69 ../templates/database/richter/visible_categories_title:68 ../templates/profile/usb/visible_categories_title:69 ../templates/visible_categories_title:70
 msgid "T0515"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:86 ../templates/database/richter/visible_categories_title:85 ../templates/database/wikisource_de/visible_categories_titset:87 ../templates/profile/usb/visible_categories_title:87 ../templates/visible_categories_title:88
+#: ../templates/database/inst001/visible_categories_title:86 ../templates/database/richter/visible_categories_title:85 ../templates/profile/usb/visible_categories_title:87 ../templates/visible_categories_title:88
 msgid "T0516"
 msgstr ""
 
-#: ../templates/database/richter/visible_categories_title:69 ../templates/database/wikisource_de/visible_categories_titset:70 ../templates/profile/usb/visible_categories_title:70 ../templates/visible_categories_title:71
+#: ../templates/database/richter/visible_categories_title:69 ../templates/profile/usb/visible_categories_title:70 ../templates/visible_categories_title:71
 msgid "T0517"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:81 ../templates/database/richter/visible_categories_title:81 ../templates/database/wikisource_de/visible_categories_titset:82 ../templates/profile/usb/visible_categories_title:82 ../templates/visible_categories_title:83
+#: ../templates/database/inst001/visible_categories_title:81 ../templates/database/richter/visible_categories_title:81 ../templates/profile/usb/visible_categories_title:82 ../templates/visible_categories_title:83
 msgid "T0519"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:70 ../templates/database/richter/visible_categories_title:70 ../templates/database/wikisource_de/visible_categories_titset:71 ../templates/profile/usb/visible_categories_title:71 ../templates/visible_categories_title:72
+#: ../templates/database/inst001/visible_categories_title:70 ../templates/database/richter/visible_categories_title:70 ../templates/profile/usb/visible_categories_title:71 ../templates/visible_categories_title:72
 msgid "T0522"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:41 ../templates/database/richter/visible_categories_title:40 ../templates/database/wikisource_de/visible_categories_titset:41 ../templates/profile/usb/visible_categories_title:41 ../templates/visible_categories_title:42
+#: ../templates/database/inst001/visible_categories_title:41 ../templates/database/richter/visible_categories_title:40 ../templates/profile/usb/visible_categories_title:41 ../templates/visible_categories_title:42
 msgid "T0523"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:71 ../templates/database/richter/visible_categories_title:71 ../templates/database/wikisource_de/visible_categories_titset:72 ../templates/profile/usb/visible_categories_title:72 ../templates/visible_categories_title:73
+#: ../templates/database/inst001/visible_categories_title:71 ../templates/database/richter/visible_categories_title:71 ../templates/profile/usb/visible_categories_title:72 ../templates/visible_categories_title:73
 msgid "T0525"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:75 ../templates/database/richter/visible_categories_title:75 ../templates/database/wikisource_de/visible_categories_titset:76 ../templates/profile/usb/visible_categories_title:76 ../templates/visible_categories_title:77
+#: ../templates/database/inst001/visible_categories_title:75 ../templates/database/richter/visible_categories_title:75 ../templates/profile/usb/visible_categories_title:76 ../templates/visible_categories_title:77
 msgid "T0527"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:76 ../templates/database/richter/visible_categories_title:76 ../templates/database/wikisource_de/visible_categories_titset:77 ../templates/profile/usb/visible_categories_title:77 ../templates/visible_categories_title:78
+#: ../templates/database/inst001/visible_categories_title:76 ../templates/database/richter/visible_categories_title:76 ../templates/profile/usb/visible_categories_title:77 ../templates/visible_categories_title:78
 msgid "T0529"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:77 ../templates/database/richter/visible_categories_title:77 ../templates/database/wikisource_de/visible_categories_titset:78 ../templates/profile/usb/visible_categories_title:78 ../templates/visible_categories_title:79
+#: ../templates/database/inst001/visible_categories_title:77 ../templates/database/richter/visible_categories_title:77 ../templates/profile/usb/visible_categories_title:78 ../templates/visible_categories_title:79
 msgid "T0530"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:78 ../templates/database/richter/visible_categories_title:78 ../templates/database/wikisource_de/visible_categories_titset:79 ../templates/profile/usb/visible_categories_title:79 ../templates/visible_categories_title:80
+#: ../templates/database/inst001/visible_categories_title:78 ../templates/database/richter/visible_categories_title:78 ../templates/profile/usb/visible_categories_title:79 ../templates/visible_categories_title:80
 msgid "T0531"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:79 ../templates/database/richter/visible_categories_title:79 ../templates/database/wikisource_de/visible_categories_titset:80 ../templates/profile/usb/visible_categories_title:80 ../templates/visible_categories_title:81
+#: ../templates/database/inst001/visible_categories_title:79 ../templates/database/richter/visible_categories_title:79 ../templates/profile/usb/visible_categories_title:80 ../templates/visible_categories_title:81
 msgid "T0532"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:80 ../templates/database/richter/visible_categories_title:80 ../templates/database/wikisource_de/visible_categories_titset:81 ../templates/profile/usb/visible_categories_title:81 ../templates/visible_categories_title:82
+#: ../templates/database/inst001/visible_categories_title:80 ../templates/database/richter/visible_categories_title:80 ../templates/profile/usb/visible_categories_title:81 ../templates/visible_categories_title:82
 msgid "T0533"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:72 ../templates/database/richter/visible_categories_title:72 ../templates/database/wikisource_de/visible_categories_titset:73 ../templates/profile/usb/visible_categories_title:73 ../templates/visible_categories_title:74
+#: ../templates/database/inst001/visible_categories_title:72 ../templates/database/richter/visible_categories_title:72 ../templates/profile/usb/visible_categories_title:73 ../templates/visible_categories_title:74
 msgid "T0534"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:73 ../templates/database/richter/visible_categories_title:73 ../templates/database/wikisource_de/visible_categories_titset:74 ../templates/profile/usb/visible_categories_title:74 ../templates/visible_categories_title:75
+#: ../templates/database/inst001/visible_categories_title:73 ../templates/database/richter/visible_categories_title:73 ../templates/profile/usb/visible_categories_title:74 ../templates/visible_categories_title:75
 msgid "T0535"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:74 ../templates/database/richter/visible_categories_title:74 ../templates/database/wikisource_de/visible_categories_titset:75 ../templates/profile/usb/visible_categories_title:75 ../templates/visible_categories_title:76
+#: ../templates/database/inst001/visible_categories_title:74 ../templates/database/richter/visible_categories_title:74 ../templates/profile/usb/visible_categories_title:75 ../templates/visible_categories_title:76
 msgid "T0536"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:104 ../templates/database/richter/visible_categories_title:102 ../templates/database/wikisource_de/visible_categories_titset:105 ../templates/profile/usb/visible_categories_title:106 ../templates/visible_categories_title:107
+#: ../templates/database/inst001/visible_categories_title:104 ../templates/database/richter/visible_categories_title:102 ../templates/profile/usb/visible_categories_title:106 ../templates/visible_categories_title:107
 msgid "T0540"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:105 ../templates/database/richter/visible_categories_title:104 ../templates/database/wikisource_de/visible_categories_titset:107 ../templates/profile/usb/visible_categories_title:108 ../templates/visible_categories_title:109
+#: ../templates/database/inst001/visible_categories_title:105 ../templates/database/richter/visible_categories_title:104 ../templates/profile/usb/visible_categories_title:108 ../templates/visible_categories_title:109
 msgid "T0543"
 msgstr ""
 
-#: ../templates/database/richter/visible_categories_title:103 ../templates/database/wikisource_de/visible_categories_titset:106 ../templates/profile/usb/visible_categories_title:107 ../templates/visible_categories_title:108
+#: ../templates/database/richter/visible_categories_title:103 ../templates/profile/usb/visible_categories_title:107 ../templates/visible_categories_title:108
 msgid "T0553"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:83 ../templates/database/wikisource_de/visible_categories_titset:84 ../templates/profile/usb/visible_categories_title:84 ../templates/visible_categories_title:85
+#: ../templates/database/inst001/visible_categories_title:83 ../templates/profile/usb/visible_categories_title:84 ../templates/visible_categories_title:85
 msgid "T0580"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:55 ../templates/database/richter/visible_categories_title:54 ../templates/database/wikisource_de/visible_categories_titset:55 ../templates/profile/usb/visible_categories_title:55 ../templates/visible_categories_title:56
+#: ../templates/database/inst001/visible_categories_title:55 ../templates/database/richter/visible_categories_title:54 ../templates/profile/usb/visible_categories_title:55 ../templates/visible_categories_title:56
 msgid "T0590"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:42 ../templates/database/richter/visible_categories_title:41 ../templates/database/wikisource_de/visible_categories_titset:42 ../templates/profile/usb/visible_categories_title:42 ../templates/visible_categories_title:43
+#: ../templates/database/inst001/visible_categories_title:42 ../templates/database/richter/visible_categories_title:41 ../templates/profile/usb/visible_categories_title:42 ../templates/visible_categories_title:43
 msgid "T0591"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:43 ../templates/database/richter/visible_categories_title:42 ../templates/database/wikisource_de/visible_categories_titset:43 ../templates/profile/usb/visible_categories_title:43 ../templates/visible_categories_title:44
+#: ../templates/database/inst001/visible_categories_title:43 ../templates/database/richter/visible_categories_title:42 ../templates/profile/usb/visible_categories_title:43 ../templates/visible_categories_title:44
 msgid "T0594"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:44 ../templates/database/richter/visible_categories_title:43 ../templates/database/wikisource_de/visible_categories_titset:44 ../templates/profile/usb/visible_categories_title:44 ../templates/visible_categories_title:45
+#: ../templates/database/inst001/visible_categories_title:44 ../templates/database/richter/visible_categories_title:43 ../templates/profile/usb/visible_categories_title:44 ../templates/visible_categories_title:45
 msgid "T0595"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:56 ../templates/database/richter/visible_categories_title:55 ../templates/database/wikisource_de/visible_categories_titset:56 ../templates/profile/usb/visible_categories_title:56 ../templates/visible_categories_title:57
+#: ../templates/database/inst001/visible_categories_title:56 ../templates/database/richter/visible_categories_title:55 ../templates/profile/usb/visible_categories_title:56 ../templates/visible_categories_title:57
 msgid "T0600"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:82 ../templates/database/richter/visible_categories_title:82 ../templates/database/wikisource_de/visible_categories_titset:83 ../templates/profile/usb/visible_categories_title:83 ../templates/visible_categories_title:84
+#: ../templates/database/inst001/visible_categories_title:82 ../templates/database/richter/visible_categories_title:82 ../templates/profile/usb/visible_categories_title:83 ../templates/visible_categories_title:84
 msgid "T0619"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:84 ../templates/database/richter/visible_categories_title:83 ../templates/database/wikisource_de/visible_categories_titset:85 ../templates/profile/usb/visible_categories_title:85 ../templates/visible_categories_title:86
+#: ../templates/database/inst001/visible_categories_title:84 ../templates/database/richter/visible_categories_title:83 ../templates/profile/usb/visible_categories_title:85 ../templates/visible_categories_title:86
 msgid "T0646"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:52 ../templates/database/richter/visible_categories_title:51 ../templates/database/wikisource_de/visible_categories_titset:52 ../templates/profile/usb/visible_categories_title:52 ../templates/visible_categories_title:53
+#: ../templates/database/inst001/visible_categories_title:52 ../templates/database/richter/visible_categories_title:51 ../templates/profile/usb/visible_categories_title:52 ../templates/visible_categories_title:53
 msgid "T0652"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:53 ../templates/database/richter/visible_categories_title:52 ../templates/database/wikisource_de/visible_categories_titset:53 ../templates/profile/usb/visible_categories_title:53 ../templates/visible_categories_title:54
+#: ../templates/database/inst001/visible_categories_title:53 ../templates/database/richter/visible_categories_title:52 ../templates/profile/usb/visible_categories_title:53 ../templates/visible_categories_title:54
 msgid "T0655"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:106 ../templates/database/richter/visible_categories_title:105 ../templates/database/wikisource_de/visible_categories_titset:108 ../templates/profile/usb/visible_categories_title:109 ../templates/visible_categories_title:110
+#: ../templates/database/inst001/visible_categories_title:106 ../templates/database/richter/visible_categories_title:105 ../templates/profile/usb/visible_categories_title:109 ../templates/visible_categories_title:110
 msgid "T0662"
 msgstr ""
 
-#: ../templates/database/wikisource_de/visible_categories_titset:27 ../templates/profile/usb/visible_categories_title:27 ../templates/visible_categories_title:26
+#: ../templates/profile/usb/visible_categories_title:27 ../templates/visible_categories_title:26
 msgid "T0670"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:103 ../templates/database/richter/visible_categories_title:101 ../templates/database/wikisource_de/visible_categories_titset:103 ../templates/profile/usb/visible_categories_title:104 ../templates/visible_categories_title:105
+#: ../templates/database/inst001/visible_categories_title:103 ../templates/database/richter/visible_categories_title:101 ../templates/profile/usb/visible_categories_title:104 ../templates/visible_categories_title:105
 msgid "T0700"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:91 ../templates/database/richter/visible_categories_title:90 ../templates/database/wikisource_de/visible_categories_titset:92 ../templates/profile/usb/visible_categories_title:92 ../templates/visible_categories_title:93
+#: ../templates/database/inst001/visible_categories_title:91 ../templates/database/richter/visible_categories_title:90 ../templates/profile/usb/visible_categories_title:92 ../templates/visible_categories_title:93
 msgid "T0710"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:87 ../templates/database/richter/visible_categories_title:86 ../templates/database/wikisource_de/visible_categories_titset:88 ../templates/profile/usb/visible_categories_title:88 ../templates/visible_categories_title:89
+#: ../templates/database/inst001/visible_categories_title:87 ../templates/database/richter/visible_categories_title:86 ../templates/profile/usb/visible_categories_title:88 ../templates/visible_categories_title:89
 msgid "T0750"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:90 ../templates/database/richter/visible_categories_title:89 ../templates/database/wikisource_de/visible_categories_titset:91 ../templates/profile/usb/visible_categories_title:91 ../templates/visible_categories_title:92
+#: ../templates/database/inst001/visible_categories_title:90 ../templates/database/richter/visible_categories_title:89 ../templates/profile/usb/visible_categories_title:91 ../templates/visible_categories_title:92
 msgid "T0800"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:92 ../templates/database/richter/visible_categories_title:91 ../templates/database/wikisource_de/visible_categories_titset:93 ../templates/profile/usb/visible_categories_title:93 ../templates/visible_categories_title:94
+#: ../templates/database/inst001/visible_categories_title:92 ../templates/database/richter/visible_categories_title:91 ../templates/profile/usb/visible_categories_title:93 ../templates/visible_categories_title:94
 msgid "T0902"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:93 ../templates/database/richter/visible_categories_title:92 ../templates/database/wikisource_de/visible_categories_titset:94 ../templates/profile/usb/visible_categories_title:94 ../templates/visible_categories_title:95
+#: ../templates/database/inst001/visible_categories_title:93 ../templates/database/richter/visible_categories_title:92 ../templates/profile/usb/visible_categories_title:94 ../templates/visible_categories_title:95
 msgid "T0907"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:94 ../templates/database/richter/visible_categories_title:93 ../templates/database/wikisource_de/visible_categories_titset:95 ../templates/profile/usb/visible_categories_title:95 ../templates/visible_categories_title:96
+#: ../templates/database/inst001/visible_categories_title:94 ../templates/database/richter/visible_categories_title:93 ../templates/profile/usb/visible_categories_title:95 ../templates/visible_categories_title:96
 msgid "T0912"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:95 ../templates/database/richter/visible_categories_title:94 ../templates/database/wikisource_de/visible_categories_titset:96 ../templates/profile/usb/visible_categories_title:96 ../templates/visible_categories_title:97
+#: ../templates/database/inst001/visible_categories_title:95 ../templates/database/richter/visible_categories_title:94 ../templates/profile/usb/visible_categories_title:96 ../templates/visible_categories_title:97
 msgid "T0917"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:96 ../templates/database/richter/visible_categories_title:95 ../templates/database/wikisource_de/visible_categories_titset:97 ../templates/profile/usb/visible_categories_title:97 ../templates/visible_categories_title:98
+#: ../templates/database/inst001/visible_categories_title:96 ../templates/database/richter/visible_categories_title:95 ../templates/profile/usb/visible_categories_title:97 ../templates/visible_categories_title:98
 msgid "T0922"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:97 ../templates/database/richter/visible_categories_title:96 ../templates/database/wikisource_de/visible_categories_titset:98 ../templates/profile/usb/visible_categories_title:98 ../templates/visible_categories_title:99
+#: ../templates/database/inst001/visible_categories_title:97 ../templates/database/richter/visible_categories_title:96 ../templates/profile/usb/visible_categories_title:98 ../templates/visible_categories_title:99
 msgid "T0927"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:98 ../templates/database/richter/visible_categories_title:97 ../templates/database/wikisource_de/visible_categories_titset:99 ../templates/profile/usb/visible_categories_title:99 ../templates/visible_categories_title:100
+#: ../templates/database/inst001/visible_categories_title:98 ../templates/database/richter/visible_categories_title:97 ../templates/profile/usb/visible_categories_title:99 ../templates/visible_categories_title:100
 msgid "T0932"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:99 ../templates/database/richter/visible_categories_title:98 ../templates/database/wikisource_de/visible_categories_titset:100 ../templates/profile/usb/visible_categories_title:100 ../templates/visible_categories_title:101
+#: ../templates/database/inst001/visible_categories_title:99 ../templates/database/richter/visible_categories_title:98 ../templates/profile/usb/visible_categories_title:100 ../templates/visible_categories_title:101
 msgid "T0937"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:100 ../templates/database/richter/visible_categories_title:99 ../templates/database/wikisource_de/visible_categories_titset:101 ../templates/profile/usb/visible_categories_title:101 ../templates/visible_categories_title:102
+#: ../templates/database/inst001/visible_categories_title:100 ../templates/database/richter/visible_categories_title:99 ../templates/profile/usb/visible_categories_title:101 ../templates/visible_categories_title:102
 msgid "T0942"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:101 ../templates/database/richter/visible_categories_title:100 ../templates/database/wikisource_de/visible_categories_titset:102 ../templates/profile/usb/visible_categories_title:102 ../templates/visible_categories_title:103
+#: ../templates/database/inst001/visible_categories_title:101 ../templates/database/richter/visible_categories_title:100 ../templates/profile/usb/visible_categories_title:102 ../templates/visible_categories_title:103
 msgid "T0947"
 msgstr ""
 
@@ -4772,15 +4684,15 @@ msgstr ""
 msgid "T1600"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:107 ../templates/database/richter/visible_categories_title:106 ../templates/database/wikisource_de/visible_categories_titset:109 ../templates/profile/usb/visible_categories_title:110 ../templates/visible_categories_title:111
+#: ../templates/database/inst001/visible_categories_title:107 ../templates/database/richter/visible_categories_title:106 ../templates/profile/usb/visible_categories_title:110 ../templates/visible_categories_title:111
 msgid "T1664"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:108 ../templates/database/richter/visible_categories_title:107 ../templates/database/wikisource_de/visible_categories_titset:110 ../templates/profile/usb/visible_categories_title:111 ../templates/visible_categories_title:112
+#: ../templates/database/inst001/visible_categories_title:108 ../templates/database/richter/visible_categories_title:107 ../templates/profile/usb/visible_categories_title:111 ../templates/visible_categories_title:112
 msgid "T2662"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:109 ../templates/database/richter/visible_categories_title:108 ../templates/database/wikisource_de/visible_categories_titset:111 ../templates/profile/usb/visible_categories_title:112 ../templates/visible_categories_title:113
+#: ../templates/database/inst001/visible_categories_title:109 ../templates/database/richter/visible_categories_title:108 ../templates/profile/usb/visible_categories_title:112 ../templates/visible_categories_title:113
 msgid "T2663"
 msgstr ""
 
@@ -4796,7 +4708,7 @@ msgstr ""
 msgid "T3003"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:112 ../templates/database/richter/visible_categories_title:112 ../templates/database/wikisource_de/visible_categories_titset:114 ../templates/profile/usb/visible_categories_title:115 ../templates/visible_categories_title:116
+#: ../templates/database/inst001/visible_categories_title:112 ../templates/database/richter/visible_categories_title:112 ../templates/profile/usb/visible_categories_title:115 ../templates/visible_categories_title:116
 msgid "T4500"
 msgstr ""
 
@@ -4804,15 +4716,15 @@ msgstr ""
 msgid "T4600"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:114 ../templates/database/richter/visible_categories_title:113 ../templates/database/wikisource_de/visible_categories_titset:115 ../templates/profile/usb/visible_categories_title:116 ../templates/visible_categories_title:117
+#: ../templates/database/inst001/visible_categories_title:114 ../templates/database/richter/visible_categories_title:113 ../templates/profile/usb/visible_categories_title:116 ../templates/visible_categories_title:117
 msgid "T5001"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:115 ../templates/database/richter/visible_categories_title:114 ../templates/database/wikisource_de/visible_categories_titset:116 ../templates/profile/usb/visible_categories_title:117 ../templates/visible_categories_title:118
+#: ../templates/database/inst001/visible_categories_title:115 ../templates/database/richter/visible_categories_title:114 ../templates/profile/usb/visible_categories_title:117 ../templates/visible_categories_title:118
 msgid "T5002"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_title:116 ../templates/database/richter/visible_categories_title:115 ../templates/database/wikisource_de/visible_categories_titset:117 ../templates/profile/usb/visible_categories_title:118 ../templates/visible_categories_title:119
+#: ../templates/database/inst001/visible_categories_title:116 ../templates/database/richter/visible_categories_title:115 ../templates/profile/usb/visible_categories_title:118 ../templates/visible_categories_title:119
 msgid "T5100"
 msgstr ""
 
@@ -5160,6 +5072,10 @@ msgstr ""
 
 #: ../templates/info_help:187
 msgid "Verkn&uuml;pfungen mehrerer Suchfelder"
+msgstr ""
+
+#: ../templates/searchform_query:124
+msgid "Verlag"
 msgstr ""
 
 #: ../templates/info_help:976
@@ -5525,7 +5441,7 @@ msgstr ""
 msgid "Zahl Recherchen/Sessions"
 msgstr ""
 
-#: ../templates/searchform_query:138
+#: ../templates/searchform_query:144
 msgid "Zeitraum"
 msgstr ""
 
@@ -5630,7 +5546,7 @@ msgstr ""
 msgid "bestellt beim Lieferanten"
 msgstr ""
 
-#: ../templates/searchform_query:138
+#: ../templates/searchform_query:144
 msgid "bis"
 msgstr ""
 
@@ -5658,7 +5574,7 @@ msgstr ""
 msgid "im Gesch&auml;ftsgang"
 msgstr ""
 
-#: ../templates/dbis_searchdbs:79 ../templates/dbis_showdbs:48 ../templates/dbis_showsubjects:50 ../templates/ezb_searchjournals:83 ../templates/ezb_showjournals:48 ../templates/ezb_showsubjects:48 ../templates/profile/rheinlandbib/searchform_query:139 ../templates/profile/rheinlandbib/searchform_simple:148 ../templates/profile/rheinlandbib/searchform_simple:239 ../templates/profile/rheinlandbib/searchform_simple:332 ../templates/profile/rheinlandbib/searchform_simple:426 ../templates/profile/usb/searchform_query:141 ../templates/searchform_query:141 ../templates/searchform_simple:159 ../templates/searchform_simple:202 ../templates/searchform_simple:246 ../templates/searchform_simple:291 ../templates/views/richter/searchform_simple:148 ../templates/views/richter/searchform_simple:239 ../templates/views/richter/searchform_simple:332 ../templates/views/richter/searchform_simple:426
+#: ../templates/dbis_searchdbs:79 ../templates/dbis_showdbs:48 ../templates/dbis_showsubjects:50 ../templates/ezb_searchjournals:83 ../templates/ezb_showjournals:48 ../templates/ezb_showsubjects:48 ../templates/profile/rheinlandbib/searchform_query:139 ../templates/profile/rheinlandbib/searchform_simple:148 ../templates/profile/rheinlandbib/searchform_simple:239 ../templates/profile/rheinlandbib/searchform_simple:332 ../templates/profile/rheinlandbib/searchform_simple:426 ../templates/profile/usb/searchform_query:141 ../templates/searchform_query:147 ../templates/searchform_simple:159 ../templates/searchform_simple:202 ../templates/searchform_simple:246 ../templates/searchform_simple:291 ../templates/views/richter/searchform_simple:148 ../templates/views/richter/searchform_simple:239 ../templates/views/richter/searchform_simple:332 ../templates/views/richter/searchform_simple:426
 msgid "in:"
 msgstr ""
 

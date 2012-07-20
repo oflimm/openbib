@@ -7,7 +7,7 @@
 #  Konvertierung der Textdaten des Wikisource Formates in das OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
 #                      und
 #
@@ -46,21 +46,13 @@ use JSON::XS;
 use LWP::Simple;
 use Log::Log4perl qw(get_logger :levels);
 use XML::Twig;
+use JSON::XS;
 use YAML::Syck;
 
-our (%autbuf,%korbuf,%swtbuf,%notbuf,%metsbuf,$nextautidn,$nextkoridn,$nextnotidn,$nextswtidn);
-our ($pers_templatename,$title_templatename,$index_prefix,$wiki_category,$gfdltext,$pdtext);
+use OpenBib::Conv::Common::Util;
+
+our (%metsbuf,$pers_templatename,$title_templatename,$index_prefix,$wiki_category,$gfdltext,$pdtext);
 our ($baseurl,$commons_baseurl,$metsfile,$owner,$ownersiteurl,$ownerlogo);
-
-%autbuf = ();
-%korbuf = ();
-%swtbuf = ();
-%notbuf = ();
-
-$nextautidn=1;
-$nextkoridn=1;
-$nextnotidn=1;
-$nextswtidn=1;
 
 my ($inputfile,$configfile,$logfile);
 
@@ -202,7 +194,9 @@ sub parse_titset {
 
     return if (!$textdaten);
 
-    print TIT "0000:$id\n";
+    my $title_ref = {};
+
+    $title_ref->{id} = $id;
 
     # Zuerst zeilenweise bereinigen zum besseren Matchen und einfacherer Regexp
     my @textdatenset = split ("\n",$textdaten);
@@ -267,23 +261,36 @@ sub parse_titset {
                 push @parts, $content;
             }
 
+            my $mult=1;
             foreach my $part (@parts){
                 $part=~s/\[\[([^|\]]+?)]]/$1/g;
 
                 $part=konv($part);
 
-                my $autidn=get_id($part,"aut");
+                my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
                 
-                if ($autidn > 0){
-                    print AUT "0000:$autidn\n";
-                    print AUT "0001:$part\n";
-                    print AUT "9999:\n";
+                if ($new){
+                    my $item_ref = {};
+                    $item_ref->{id} = $person_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+                    
+                    print AUT encode_json $item_ref, "\n";
                 }
-                else {
-                    $autidn=(-1)*$autidn;
-                }
+
+                my $new_category = $convconfig->{perstit}{$category};
+
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $person_id,
+                    supplement => '',
+                };
                 
-                print TIT $convconfig->{perstit}{$category}."IDN: $autidn\n";
+                $mult++;
             }
         }
         # Autoren abarbeiten Ende
@@ -298,7 +305,8 @@ sub parse_titset {
             else {
                 push @parts, $content;
             }
-            
+
+            my $mult=1;
             foreach my $part (@parts){
 
                 if (!$convconfig->{no_wiki_filter}{$category}){
@@ -319,76 +327,151 @@ sub parse_titset {
                 
                 $part=konv($part);
 
-                print TIT $convconfig->{title}{$category}.$part."\n";
+                my $new_category = $convconfig->{title}{$category};
+
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    content    => $part,
+                };
+                
+                $mult++;
             }
         }
 
-
+        
     }
 
     # Kategorien als Schlagworte abarbeiten Anfang
+    my $mult=1;
     foreach my $schlagwort ( $textinhalt =~m/\[\[$wiki_category:(.+?)]]/g){
         $schlagwort=~s/\|.+?$//;
         $schlagwort=konv($schlagwort);
 
-        my $swtidn=get_id($schlagwort,"swt");        
+        my ($subject_id,$new)=OpenBib::Conv::Common::Util::get_subject_id($schlagwort);
         
-        if ($swtidn > 0){
-            print SWT "0000:$swtidn\n";
-            print SWT "0001:$schlagwort\n";
-            print SWT "9999:\n";
+        if ($new){
+            my $item_ref = {};
+            $item_ref->{id} = $subject_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $schlagwort,
+            };
+            
+            print SWT encode_json $item_ref, "\n";
         }
-        else {
-            $swtidn=(-1)*$swtidn;
-        }
+
+        push @{$title_ref->{'0710'}}, {
+            mult       => $mult,
+            subfield   => '',
+            id         => $subject_id,
+            supplement => '',
+        };
         
-        print TIT "0710:IDN: $swtidn\n";
+        $mult++;
     }
     # Kategorien als Schlagworte abarbeiten Ende
 
-    print TIT "0662:".$convconfig->{baseurl}."$titel\n";
+    push @{$title_ref->{'0662'}}, {
+        mult     => 1,
+        subfield => '',
+        content  => $convconfig->{baseurl}.$titel,
+    };
 
     if ($indexseite){
-        print TIT "4120:".$convconfig->{baseurl}.$convconfig->{index_prefix}.$indexseite."\n";
+        push @{$title_ref->{'4120'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $convconfig->{baseurl}.$convconfig->{index_prefix}.$indexseite,
+        };
     }
     
     my %mets = (exists $metsbuf{$indexseite})?%{$metsbuf{$indexseite}}:
         (exists $metsbuf{$titel})?%{$metsbuf{$titel}}:();
 
     if ($mets{autor}){
-        print TIT "6000:$mets{author}\n";
+        push @{$title_ref->{'6000'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $mets{author},
+        };
     }
     if ($mets{titel}){
-        print TIT "6001:$mets{titel}\n";
+        push @{$title_ref->{'6001'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $mets{titel},
+        };
     }   
     if ($mets{year}){
-        print TIT "6002:$mets{year}\n";
+        push @{$title_ref->{'6002'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $mets{year},
+        };
     }   
     if ($mets{location}){
-        print TIT "6003:$mets{location}\n";
+        push @{$title_ref->{'6003'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $mets{location},
+        };
     }   
 
     if ($owner){
-        print TIT "6040:$owner\n";
+        push @{$title_ref->{'6040'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $owner,
+        };
     }   
     if ($ownerlogo){
-        print TIT "6041:$ownerlogo\n";
+        push @{$title_ref->{'6041'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $ownerlogo,
+        };
     }   
     if ($ownersiteurl){
-        print TIT "6042:$ownersiteurl\n";
-    }   
+        push @{$title_ref->{'6042'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $ownersiteurl,
+        };
+    }
 
     my $i = 1;
 
     foreach my $item_ref (@{$mets{items}}){
-        printf TIT "6050.%03d:%s\n",$i,$item_ref->{label} if (exists $item_ref->{label});
-        printf TIT "6051.%03d:%s\n",$i,$item_ref->{url} if (exists $item_ref->{url});
-        printf TIT "6052.%03d:%s\n",$i,$item_ref->{thumburl} if (exists $item_ref->{thumburl});
-        printf TIT "6053.%03d:%s\n",$i,$item_ref->{page} if (exists $item_ref->{page});
+        push @{$title_ref->{'6050'}}, {
+            mult     => $i,
+            subfield => '',
+            content  => $item_ref->{label},
+        } if (exists $item_ref->{label});
+
+        push @{$title_ref->{'6051'}}, {
+            mult     => $i,
+            subfield => '',
+            content  => $item_ref->{url},
+        } if (exists $item_ref->{url});
+        
+        push @{$title_ref->{'6052'}}, {
+            mult     => $i,
+            subfield => '',
+            content  => $item_ref->{thumburl},
+        } if (exists $item_ref->{thumburl});
+        
+        push @{$title_ref->{'6053'}}, {
+            mult     => $i,
+            subfield => '',
+            content  => $item_ref->{page},
+        } if (exists $item_ref->{page});
+
         $i++;
     }   
 
-    print TIT "9999:\n";
+    print TIT encode_json $title_ref, "\n";
     
     # Release memory of processed tree
     # up to here
@@ -415,16 +498,21 @@ sub generate_aut {
     
     return if (!$personendaten);
     
-    my $autidn=get_id($titel,"aut");
+    my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($titel);
     
     $personendaten=~s/\n//sg;
     
     # Referenzen entfernen
     $personendaten=~s/<ref>.*?<\/ref>/$1/g;
     
-    if ($autidn > 0){
-        print AUT "0000:$autidn\n";
-        print AUT "0001:$titel\n";
+    if ($new){
+        my $item_ref = {};
+        $item_ref->{id} = $person_id;
+        push @{$item_ref->{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $titel,
+        };
         
         # Bei internen Links nur Alternativbezeichner uebriglassen
         # zuerst Commons
@@ -455,7 +543,8 @@ sub generate_aut {
                 else {
                     push @parts, $content;
                 }
-                
+
+                my $mult=1;
                 foreach my $part (@parts){
                     
                     if (!$convconfig->{no_wiki_filter}{$category}){
@@ -473,13 +562,17 @@ sub generate_aut {
                     }
                     
                     $part=konv($part);
-                    
-                    print AUT $convconfig->{pers}{$category}.$part."\n";
+
+                    push @{$item_ref->{$convconfig->{pers}{$category}}}, {
+                        mult     => $mult,
+                        subfield => '',
+                        content  => $part,
+                    };
                 }
             }
         }
-        
-        print AUT "9999:\n";
+
+        print AUT encode_json $item_ref, "\n";
     }    
 }
 
@@ -616,39 +709,6 @@ sub generate_mets {
     $metsbuf{$ursprungstitel} = $thisitem_ref;
 
     return;
-}
-
-sub get_id {
-    my ($content,$type)=@_;
-
-    my $buffer_ref;
-    my $nextid_ref;
-    
-    if    ($type eq "aut"){
-        $buffer_ref=\%autbuf;
-        $nextid_ref=\$nextautidn;
-    }
-    elsif ($type eq "kor"){
-        $buffer_ref=\%korbuf;
-        $nextid_ref=\$nextkoridn;
-    }
-    elsif ($type eq "swt"){
-        $buffer_ref=\%swtbuf;
-        $nextid_ref=\$nextswtidn;
-    }
-    elsif ($type eq "not"){
-        $buffer_ref=\%notbuf;
-        $nextid_ref=\$nextnotidn;
-    }
-    
-    if (exists $buffer_ref->{$content}){
-        return (-1)*$buffer_ref->{$content};
-    }
-    else {
-        $buffer_ref->{$content}=$$nextid_ref;
-        $$nextid_ref++;
-        return $buffer_ref->{$content};
-    }
 }
 
 sub konv {

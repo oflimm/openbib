@@ -509,7 +509,8 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     id         => $id,
                     supplement => $supplement,
                 };
-            } else {
+            }
+            else {
 
                 push @{$title_ref->{$field}}, {
                     mult       => $mult,

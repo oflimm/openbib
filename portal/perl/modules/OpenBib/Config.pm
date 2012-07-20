@@ -1477,6 +1477,15 @@ sub load_bk {
     return YAML::Syck::LoadFile("/opt/openbib/conf/bk.yml");
 }
 
+sub load_lcc {
+    my ($self) = @_;
+
+    $YAML::Syck::ImplicitTyping  = 1;
+    $YAML::Syck::ImplicitUnicode = 1;
+
+    return YAML::Syck::LoadFile("/opt/openbib/conf/lcc.yml");
+}
+
 sub get_geoposition {
     my ($self,$address)=@_;
 

@@ -78,7 +78,9 @@ sub cgiapp_init {
     my $view         = $self->param('view');    # || $config->get('defaultview');
     my $session      = $self->param('session'); #OpenBib::Session->instance({ apreq => $r , view => $view });
 
+    $logger->debug("Main objects initialized");
     if (!$self->param('disable_content_negotiation')){
+        $logger->debug("Doing content negotiation");
         my $servername           = $r->get_server_name;
         
         my $path_prefix          = $config->get('base_loc');
@@ -87,7 +89,9 @@ sub cgiapp_init {
         if (! $config->strip_view_from_uri($view)){
             $path_prefix = $complete_path_prefix;
         }
-        
+
+        $logger->debug("Gott servername $servername - complete path_prefix $complete_path_prefix");
+
         # Letztes Pfad-Element bestimmen
         my $uri  = $r->parsed_uri;
         my $path = $uri->path;

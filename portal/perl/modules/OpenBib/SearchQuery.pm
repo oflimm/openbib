@@ -283,7 +283,8 @@ sub set_from_apache_request {
                 }
                 
                 if ($config->{'searchfield'}{$searchfield}{type} eq "string"){
-                    $thissearchfield_norm_content =~s/\W/_/g;
+                    # Stringsuche auch mit Trunkierung via * moeglich
+                    $thissearchfield_norm_content =~s/[^\w*]/_/g;
                 }
                 
                 if ($config->{'searchfield'}{$searchfield}{type} eq "integer"){

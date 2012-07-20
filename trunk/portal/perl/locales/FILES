@@ -375,7 +375,6 @@
 ../templates/connector_unapi_mods
 ../templates/connector_unapi_oai_dc
 ../templates/corporate_banner
-../templates/corporate_banner~
 ../templates/corporatebody
 ../templates/corporatebody_html
 ../templates/corporatebody_json
@@ -396,13 +395,10 @@
 ../templates/database/openlibrary/title_html_images
 ../templates/database/openlibrary/titlist_item_html_short
 ../templates/database/openlibrary/visible_categories_person
-../templates/database/openlibrary/visible_categories_person~
 ../templates/database_record
 ../templates/database_record_html
 ../templates/database_record_json
 ../templates/database/richter/visible_categories_title
-../templates/database/wikisource_de/search_showautset
-../templates/database/wikisource_de/visible_categories_titset
 ../templates/dbis_searchdbs
 ../templates/dbis_showdbinfo
 ../templates/dbis_showdbs
@@ -731,14 +727,10 @@
 ../templates/views/richter/title_html
 ../templates/views/richter/titlist_item_html_short
 ../templates/visible_categories_classification
-../templates/visible_categories_classification~
 ../templates/visible_categories_corporatebody
-../templates/visible_categories_corporatebody~
 ../templates/visible_categories_library
 ../templates/visible_categories_person
-../templates/visible_categories_person~
 ../templates/visible_categories_subject
-../templates/visible_categories_subject~
 ../templates/visible_categories_title
 ../templates/zsstlist_pdf
 ../templates/zsstlist_tex

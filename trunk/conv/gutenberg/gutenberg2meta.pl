@@ -7,7 +7,7 @@
 #  Konvertierung des Gutenberg RDF-Formates in das OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,6 +38,7 @@ use Encode 'decode';
 use Getopt::Long;
 use XML::LibXML;
 use YAML::Syck;
+use JSON::XS;
 
 use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
@@ -70,110 +71,228 @@ $parser->keep_blanks(0);
 my $tree = $parser->parse_file($inputfile);
 my $root = $tree->getDocumentElement;
 
+my $count=1;
 foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     my $etext_number = $etext_node->getAttribute ('rdf:ID');
     $etext_number =~ s/^etext//;
     
     next unless ($etext_number);
-    
-    print TIT "0000:$etext_number\n";
+
+    my $title_ref = {};
+
+    $title_ref->{id} = $etext_number;
     
     # Neuaufnahmedatum
     foreach my $item ($etext_node->findnodes ('dc:created//text()')) {
         my ($year,$month,$day)=split("-",$item->textContent);
-        print TIT "0002:$day.$month.$year\n";
+        push @{$title_ref->{'0002'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => "$year$month$day",
+        };
+        last;
     }
     
     # Sprache
+    my $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:language//text()')) {
-        print TIT "0015:".$item->textContent."\n";
+        push @{$title_ref->{'0015'}}, {
+            mult     => $mult,
+            subfield => '',
+            content  => konv($item->textContent),
+        };
+        $mult++;
     }
     
     # Verfasser, Personen
     # Einzelner Verfasser
+    $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:creator//text()')) {
-        my $content = $item->textContent;
-        my ($autidn,$flag_new)  = OpenBib::Conv::Common::Util::get_person_id($content);
+        my $content = konv($item->textContent);
+        my ($person_id,$new)  = OpenBib::Conv::Common::Util::get_person_id($content);
         
-        if ($autidn > 0){
-            print AUT "0000:$autidn\n";
-            print AUT "0001:$content\n";
-            print AUT "9999:\n";
+        if ($new){
+            my $item_ref = {};
+            $item_ref->{id} = $person_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $content,
+            };
+            
+            print AUT encode_json $item_ref, "\n";
         }
-        else {
-            $autidn=(-1)*$autidn;
-        }
+
+        push @{$title_ref->{'0100'}}, {
+            mult       => $mult,
+            subfield   => '',
+            id         => $person_id,
+            supplement => '',
+        };
         
-        print TIT "0100:IDN: $autidn\n";
+        $mult++;
     }
-    
+
     # Verfasser, Personen
     foreach my $item ($etext_node->findnodes ('dc:contributor//text()')) {
-        my $content = $item->textContent;
-        my ($autidn,$flag_new) = OpenBib::Conv::Common::Util::get_person_id($content);
+        my $content = konv($item->textContent);
+        my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
         
-        if ($autidn > 0){
-            print AUT "0000:$autidn\n";
-            print AUT "0001:$content\n";
-            print AUT "9999:\n";
-        }
-        else {
-            $autidn=(-1)*$autidn;
+        if ($new){
+            my $item_ref = {};
+            $item_ref->{id} = $person_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $content,
+            };
+            
+            print AUT encode_json $item_ref, "\n";
         }
         
-        print TIT "0101:IDN: $autidn\n";
+        push @{$title_ref->{'0101'}}, {
+            mult       => $mult,
+            subfield   => '',
+            id         => $person_id,
+            supplement => '',
+        };
+        
+        $mult++;
     }
-    
+
     # Titel
+    $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:title//text()')) {
         my $content = $item->textContent;
-        if (my ($hst,$zusatz)=$content=~m/^(.+?)\n(.*)/ms){
-            $zusatz=~s/\n/ /msg;
-            print TIT "0331:$hst\n";
-            print TIT "0335:$zusatz\n";
-        }
-        else {
-            print TIT "0331:$content\n";
-        }
-        
+        $content=~s/>/&gt;/g;
+        $content=~s/</&lt;/g;
+        $content=~s/\n/ - /g;
+
+        push @{$title_ref->{'0331'}}, {
+            mult     => $mult,
+            subfield => '',
+            content  => $content,
+        };
+        $mult++
+    }
+
+    $mult=1;
+    foreach my $item ($etext_node->findnodes ('pgterms:friendlytitle//text()')) {
+        my $content = konv($item->textContent);
+        push @{$title_ref->{'0370'}}, {
+            mult     => $mult,
+            subfield => '',
+            content  => $content,
+        };
+        $mult++;
     }
     
     # Verlag
-    print TIT "0412:Project Gutenberg\n";
+    push @{$title_ref->{'0412'}}, {
+        mult     => 1,
+        subfield => '',
+        content  => 'Project Gutenberg',
+    };
     
     # E-Text-URL
-    print TIT "0662:http://www.gutenberg.org/etext/$etext_number\n";
+    push @{$title_ref->{'0662'}}, {
+        mult     => 1,
+        subfield => '',
+        content  => "http://www.gutenberg.org/etext/$etext_number",
+    };
     
     # Beschreibung
+    $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:description//text()')) {
-        my $content = $item->textContent;
-        print TIT "0501:$content\n";
+        my $content = konv($item->textContent);
+        push @{$title_ref->{'0501'}}, {
+            mult     => $mult,
+            subfield => '',
+            content  => $content,
+        };
+        $mult++;
     }
     
     # Medientyp
+    push @{$title_ref->{'0800'}}, {
+        mult     => 1,
+        subfield => '',
+        content  => 'Digital',
+    };
+    $mult=2;
     foreach my $item ($etext_node->findnodes ('dc:type//text()')) {
-        my $content = $item->textContent;
-        print TIT "0800:$content\n";
+        my $content = konv($item->textContent);
+        push @{$title_ref->{'0800'}}, {
+            mult     => $mult,
+            subfield => '',
+            content  => $content,
+        };
+        $mult++;
     }
     
     # Schlagworte
+    $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:subject/dcterms:LCSH//text()')) {
-        my $content = $item->textContent;
-        my ($swtidn,$flag_new)  = OpenBib::Conv::Common::Util::get_subject_id($content);
+        my $content = konv($item->textContent);
+        my ($subject_id,$new)  = OpenBib::Conv::Common::Util::get_subject_id($content);
         
-        if ($swtidn > 0){
-            print SWT "0000:$swtidn\n";
-            print SWT "0001:$content\n";
-            print SWT "9999:\n";
+        if ($new){
+            my $item_ref = {};
+            $item_ref->{id} = $subject_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $content,
+            };
+            
+            print SWT encode_json $item_ref, "\n";
         }
-        else {
-            $swtidn=(-1)*$swtidn;
-        }
+
+        push @{$title_ref->{'0710'}}, {
+            mult       => $mult,
+            subfield   => '',
+            id         => $subject_id,
+            supplement => '',
+        };
         
-        print TIT "0710:IDN: $swtidn\n";
+        $mult++;
+    }
+
+    # Klassifikation LCC
+    $mult=1;
+    foreach my $item ($etext_node->findnodes ('dc:subject/dcterms:LCC//text()')) {
+        my $content = konv($item->textContent);
+        my ($classification_id,$new)  = OpenBib::Conv::Common::Util::get_classification_id($content);
+        
+        if ($new){
+            my $item_ref = {};
+            $item_ref->{id} = $classification_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $content,
+            };
+            
+            print NOTATION encode_json $item_ref, "\n";
+        }
+
+        push @{$title_ref->{'0700'}}, {
+            mult       => $mult,
+            subfield   => '',
+            id         => $classification_id,
+            supplement => '',
+        };
+        
+        $mult++;
+    }
+
+    print TIT encode_json $title_ref, "\n";
+
+    if ($count % 1000 == 0){
+        print STDERR "$count Titel konvertiert\n";
     }
     
-    print TIT "9999:\n";
+    $count++
 }
 
 close(TIT);
@@ -189,6 +308,7 @@ sub konv {
 #    $content=~s/\&/&amp;/g;
     $content=~s/>/&gt;/g;
     $content=~s/</&lt;/g;
+    $content=~s/\n/<br\/>/g;
 
     return $content;
 }

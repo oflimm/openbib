@@ -70,7 +70,7 @@ __PACKAGE__->belongs_to(
   "target_titleid",
   "OpenBib::Schema::Catalog::Result::Title",
   { id => "target_titleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 source_titleid
@@ -85,13 +85,13 @@ __PACKAGE__->belongs_to(
   "source_titleid",
   "OpenBib::Schema::Catalog::Result::Title",
   { id => "source_titleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-07-12 11:41:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lrWJqiVKuNi7JIBCaMwF+A
+# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-21 12:51:30
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GFQYtq1wi2SmOd5UVHY7Rg
 
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

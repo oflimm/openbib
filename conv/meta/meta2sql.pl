@@ -356,6 +356,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 }
                 
                 if ($id && $field && $item_ref->{content}){
+                    $item_ref->{content} = cleanup_content($item_ref->{content});
                     # Abhaengige Feldspezifische Saetze erstellen und schreiben
                     print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
                 }
@@ -458,8 +459,6 @@ while (my $jsonline=<IN>){
         next if ($field eq "id" || defined $stammdateien_ref->{holding}{blacklist_ref}->{$field} );
         
         foreach my $item_ref (@{$record_ref->{$field}}) {
-            $item_ref->{content} = cleanup_content($item_ref->{content});
-            
             next unless ($item_ref->{content});
             
             my $contentnorm   = "";
@@ -486,6 +485,7 @@ while (my $jsonline=<IN>){
             }
             
             if ($id && $field && $item_ref->{content}){
+                $item_ref->{content} = cleanup_content($item_ref->{content});
                 # Abhaengige Feldspezifische Saetze erstellen und schreiben        
                 print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
             }
@@ -499,7 +499,7 @@ while (my $jsonline=<IN>){
         if (exists $listitemdata_holding{$titleid}){
             $array_ref = $listitemdata_holding{$titleid};
         }
-        push @$array_ref, cleanup_content($record_ref->{'0014'}[0]{content});
+        push @$array_ref, $record_ref->{'0014'}[0]{content};
         $listitemdata_holding{$titleid}=$array_ref;
     }
     
@@ -1463,8 +1463,6 @@ while (my $jsonline=<IN>){
         foreach my $item_ref (@{$record_ref->{$field}}) {
             next if ($item_ref->{ignore});
 
-            $item_ref->{content} = cleanup_content($item_ref->{content});
-            
             if (! defined $item_ref->{norm} && defined $field && defined $stammdateien_ref->{title}{inverted_ref}->{$field}){
                 $item_ref->{norm} = OpenBib::Common::Util::grundform({
                     category => $field,
@@ -1474,6 +1472,7 @@ while (my $jsonline=<IN>){
             
             $item_ref->{norm} = "" unless ($item_ref->{norm});
             if ($id && $field && $item_ref->{content}){
+                $item_ref->{content} = cleanup_content($item_ref->{content});
                 print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$item_ref->{norm}\n";
             }
         }
@@ -1634,6 +1633,7 @@ sub cleanup_content {
     $content =~s/\\/\\\\/g; # Escape Literal Backslash
     $content =~s/\r/\\r/g;
     $content =~s///g;
+    $content =~s/\x{00}//g;
             
     return $content;
 }

@@ -695,6 +695,7 @@ while (my $jsonline=<IN>){
             push @superids, $target_titleid;
             
             if (defined $listitemdata_superid{$target_titleid} && $source_titleid && $target_titleid){
+                $supplement = cleanup_content($supplement);
                 print OUTTITLETITLE "$field$source_titleid$target_titleid$supplement\n";
             }
         }
@@ -721,6 +722,7 @@ while (my $jsonline=<IN>){
                 next unless $personid;
                 
                 if (defined $listitemdata_person{$personid}){
+                    $supplement = cleanup_content($supplement);
                     print OUTTITLEPERSON "$field$id$personid$supplement\n";
                 }
                 
@@ -780,6 +782,7 @@ while (my $jsonline=<IN>){
                 next unless $corporatebodyid;
                 
                 if (defined $listitemdata_corporatebody{$corporatebodyid}){
+                    $supplement = cleanup_content($supplement);
                     print OUTTITLECORPORATEBODY "$field$id$corporatebodyid$supplement\n";
                 }
                 
@@ -882,6 +885,7 @@ while (my $jsonline=<IN>){
                 next unless $subjectid;
                 
                 if (defined $listitemdata_subject{$subjectid}){
+                    $supplement = cleanup_content($supplement);
                     print OUTTITLESUBJECT "$field$id$subjectid$supplement\n";
                 }
                 
@@ -1429,7 +1433,8 @@ while (my $jsonline=<IN>){
     
     my $titlecache = encode_json $titlecache_ref;
     
-    $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
+   # $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
+    $titlecache = cleanup_content($titlecache);
     
     my $create_tstamp = "1970-01-01 12:00:00";
     

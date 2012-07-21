@@ -312,20 +312,16 @@ my $atime = new Benchmark;
                 ];
                 
                 my $title_listitem_ref;
+
+                # Korrekturen fuer PostgreSQL rueckgaengig machen
+                $listitem =~s/\\r/\r/g;
+                $listitem =~s/\\\\/\\/g; # Escape Literal Backslash
                 
-                if ($config->{internal_serialize_type} eq "packed_storable"){
-                    $title_listitem_ref = Storable::thaw(pack "H*", $listitem);
-                }
-                elsif ($config->{internal_serialize_type} eq "json"){
-                    eval {
-                         $title_listitem_ref = decode_json $listitem;
-                    };
-                    if ($@){
-                         next;
-                    }
-                }
-                else {
-                    $title_listitem_ref = Storable::thaw(pack "H*", $listitem);
+                eval {
+                     $title_listitem_ref = decode_json $listitem;
+                };
+                if ($@){
+                     next;
                 }
                 
                 foreach my $this_sorting_ref (@{$sorting_ref}){

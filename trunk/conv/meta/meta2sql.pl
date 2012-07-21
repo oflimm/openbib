@@ -281,8 +281,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         my $create_tstamp = 0;
         
-        if (defined $record_ref->{'0100'} && defined $record_ref->{'0100'}[0]) {
-            $create_tstamp = $record_ref->{'0100'}[0]{content};
+        if (defined $record_ref->{'0002'} && defined $record_ref->{'0002'}[0]) {
+            $create_tstamp = $record_ref->{'0002'}[0]{content};
             if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
                 $create_tstamp=$3.$2.$1;
             }
@@ -290,8 +290,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         my $update_tstamp = 0;
         
-        if (exists $record_ref->{'0101'} && exists $record_ref->{'0101'}[0]) {
-            $update_tstamp = $record_ref->{'0101'}[0]{content};
+        if (exists $record_ref->{'0003'} && exists $record_ref->{'0003'}[0]) {
+            $update_tstamp = $record_ref->{'0003'}[0]{content};
             if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
                 $update_tstamp=$3.$2.$1;
             }            

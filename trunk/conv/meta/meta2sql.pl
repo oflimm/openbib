@@ -279,21 +279,21 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         # Primaeren Normdatensatz erstellen und schreiben
         
-        my $create_tstamp = 0;
+        my $create_tstamp = "1970-01-01 12:00:00";
         
         if (defined $record_ref->{'0002'} && defined $record_ref->{'0002'}[0]) {
             $create_tstamp = $record_ref->{'0002'}[0]{content};
             if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-                $create_tstamp=$3.$2.$1;
+                $create_tstamp=$3."-".$2."-".$1." 12:00:00";
             }
         }
         
-        my $update_tstamp = 0;
+        my $update_tstamp = "1970-01-01 12:00:00";
         
         if (exists $record_ref->{'0003'} && exists $record_ref->{'0003'}[0]) {
             $update_tstamp = $record_ref->{'0003'}[0]{content};
             if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-                $update_tstamp=$3.$2.$1;
+                $update_tstamp=$3."-".$2."-".$1." 12:00:00";
             }            
         }
         
@@ -1431,21 +1431,21 @@ while (my $jsonline=<IN>){
     
     $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
     
-    my $create_tstamp = 0;
+    my $create_tstamp = "1970-01-01 12:00:00";
     
     if (defined $record_ref->{'0002'} && defined $record_ref->{'0002'}[0]) {
         $create_tstamp = $record_ref->{'0002'}[0]{content};
         if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-            $create_tstamp=$3.$2.$1;
+            $create_tstamp=$3."-".$2."-".$1." 12:00:00";
         }
     }
     
-    my $update_tstamp = 0;
+    my $update_tstamp = "1970-01-01 12:00:00";
     
     if (defined $record_ref->{'0003'} && defined $record_ref->{'0003'}[0]) {
         $update_tstamp = $record_ref->{'0003'}[0]{content};
         if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-            $update_tstamp=$3.$2.$1;
+            $update_tstamp=$3."-".$2."-".$1." 12:00:00";
         }
         
     }

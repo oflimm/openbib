@@ -9,8 +9,8 @@
 drop table IF EXISTS person;
 create table person (
  id            VARCHAR(255),
- tstamp_create BIGINT,
- tstamp_update BIGINT
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP
 );
 
 drop table IF EXISTS person_fields;
@@ -30,8 +30,8 @@ create table person_fields (
 drop table IF EXISTS corporatebody;
 create table corporatebody (
  id            VARCHAR(255),
- tstamp_create BIGINT,
- tstamp_update BIGINT
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP
 );
 
 drop table IF EXISTS corporatebody_fields;
@@ -51,8 +51,8 @@ create table corporatebody_fields (
 drop table IF EXISTS subject;
 create table subject (
  id            VARCHAR(255),
- tstamp_create BIGINT,
- tstamp_update BIGINT
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP
 );
 
 drop table IF EXISTS subject_fields;
@@ -72,8 +72,8 @@ create table subject_fields (
 drop table IF EXISTS classification;
 create table classification (
  id            VARCHAR(255),
- tstamp_create BIGINT,
- tstamp_update BIGINT
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP
 );
 
 drop table IF EXISTS classification_fields;
@@ -93,8 +93,8 @@ create table classification_fields (
 drop table IF EXISTS title;
 create table title (
  id            VARCHAR(255),
- tstamp_create BIGINT,
- tstamp_update BIGINT,
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP,
  titlecache    TEXT,
  popularity    INT
 );

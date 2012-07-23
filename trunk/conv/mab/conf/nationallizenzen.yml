@@ -425,14 +425,11 @@ holding:
     '200 ':
          # Bestandsverlauf
         'mult': 0
-        'subfields':
-            '1200':
-                 - 'a'
-            '1204':
-                 - 'b'
-                 - 'c'
-            '0014':
-                 - 'f'
+        'subfield':
+            'a': '1200'
+            'b': '1204'
+            'c': '1204'
+            'f': '0014'
     '071 ':
         'newcat': '3330' # Bestandsverlauf
         'mult': 0

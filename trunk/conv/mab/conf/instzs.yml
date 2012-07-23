@@ -187,7 +187,7 @@ title:
     '002a':
         'newcat': '0002' # SDN
         'mult': 0
-    '010':           # identifikationsnummer des direkt uebergeordneten datensatzes
+    '010 ':           # identifikationsnummer des direkt uebergeordneten datensatzes
         'newcat': '0004' # Uebergeordn. Satz
         mut: 1
     '020a':              # ZDBID
@@ -199,7 +199,7 @@ title:
     '037b':           # Sprache
         'newcat': '0015' # Sprache
         mut: 1
-    '089':            # bandangaben in vorlageform
+    '089 ':            # bandangaben in vorlageform
         'newcat': '0089' # bandangaben in vorlageform
         'mult': 1
     '310 ':            # ansetzungssachtitel
@@ -208,10 +208,22 @@ title:
     '331 ':            # hauptsachtitel in vorlageform oder mischform
         'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
         'mult': 1
+    '331a':            # hauptsachtitel in vorlageform oder mischform
+        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
+        'mult': 1
+    '331b':            # hauptsachtitel in vorlageform oder mischform
+        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
+        'mult': 1
     '333 ':            # Zu erg. URH
         'newcat': '0333' # Zu erg. URH
         'mult': 1
     '335 ':            # zusaetze zum hauptsachtitel
+        'newcat': '0335' # zusaetze zum hauptsachtitel
+        'mult': 1
+    '335a':            # zusaetze zum hauptsachtitel
+        'newcat': '0335' # zusaetze zum hauptsachtitel
+        'mult': 1
+    '335b':            # zusaetze zum hauptsachtitel
         'newcat': '0335' # zusaetze zum hauptsachtitel
         'mult': 1
     '359 ':            # Vorl. Verf/Koerp
@@ -220,7 +232,7 @@ title:
     '370a':            # WST
         'newcat': '0370' # WST
         'mult': 1
-    '403':            # ausgabebezeichnung in vorlageform
+    '403 ':            # ausgabebezeichnung in vorlageform
         'newcat': '0403' # ausgabebezeichnung in vorlageform
         'mult': 1
     '405 ':            # Erschverlauf
@@ -253,6 +265,9 @@ title:
     '523 ':            # Erscheinungsweise
         'newcat': '0523' # Erscheinungsweise
         'mult': 1
+    '524 ':            # Darin:
+        'newcat': '0524' # Darin:
+        'mult': 1
     '527z':            # Parallele Ausg.
         'newcat': '0527' # Parallele Ausg.
         'mult': 1
@@ -271,15 +286,43 @@ title:
     '533z':            # SpaetAusg.
         'newcat': '0533' # SpaetAusg.
         'mult': 1
-    '534':            # Titelkonk.
+    '534 ':            # Titelkonk.
         'newcat': '0534' # Titelkonk.
         'mult': 1
-    '540':            # internationale standardbuchnummer (isbn)
+    '540 ':            # internationale standardbuchnummer (isbn)
+        'newcat': '0540' # internationale standardbuchnummer (isbn)
+        'mult': 1
+    '540a':            # internationale standardbuchnummer (isbn)
         'newcat': '0540' # internationale standardbuchnummer (isbn)
         'mult': 1
     '542a':            # ISSN
         'newcat': '0543' # ISSN
         'mult': 1
+    '611 ':              # Herstellungsort
+        'newcat': '0611' # Herstellungsort
+        'mult': 1
+    '613 ':              # Hersteller
+        'newcat': '0613' # Hersteller
+        'mult': 1
+    '619 ':              # Herstellungsjahr
+        'newcat': '0619' # Herstellungsjahr
+        'mult': 1
+    '621 ':              # 1. gesamttitel der sekundaerform in vorlageform
+        'newcat': '0508' # Quelle
+        'mult': 1
+    '634a':            # internationale standardbuchnummer (isbn)
+        'newcat': '0540' # internationale standardbuchnummer (isbn)
+        'mult': 1
+    '655 ':
+         # URLs
+        'mult': 1
+        'subfield':
+            'u': '0662'
+    '659 ':
+         # URL Beschreibungen
+        'mult': 1
+        'subfield':
+            '3': '0663'
 #     '710':            # schlagwoerter und schlagwortketten
 #         'newcat': '0710' # schlagwoerter und schlagwortketten
 #         'mult': 1
@@ -382,14 +425,25 @@ holding:
     '200 ':
          # Bestandsverlauf
         'mult': 0
-        'subfields':
-            '1200':
-                 - 'a'
-            '1204':
-                 - 'b'
-                 - 'c'
-            '0014':
-                 - 'f'
+        'subfield':
+            'a': '1200'
+            'b': '1204'
+            'c': '1204'
+            'f': '0014'
     '071 ':
         'newcat': '3330' # Bestandsverlauf
         'mult': 0
+
+filter:
+  '540 ':
+    'filter_generic':
+       - from: 'ISBN '
+         to: ''
+  '540a':
+    'filter_generic':
+       - from: 'ISBN '
+         to: ''
+  '634a':
+    'filter_generic':
+       - from: 'ISBN '
+         to: ''

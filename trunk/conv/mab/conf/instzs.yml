@@ -14,7 +14,7 @@ mex-selector: 'Z30'
 # Personen
 person:
     '001':
-        'newcat': '0000' # ID
+        'newcat': 'id' # ID
         'mult': 0
     '002':
         'newcat': '0100' # SDN
@@ -32,7 +32,7 @@ person:
 # Koerperschaften
 corporatebody:
     '001':
-        'newcat': '0000' # ID
+        'newcat': 'id' # ID
         'mult': 0
     '002':
         'newcat': '0100' # SDN
@@ -152,7 +152,7 @@ corporatebody:
 # Schlagworte
 subject: 
     '001':
-        'newcat': '0000' # ID
+        'newcat': 'id' # ID
         'mult': 0
     '002':
         'newcat': '0100' # SDN
@@ -182,7 +182,7 @@ subject:
 # Titel
 title:
     '001 ':
-        'newcat': '0000' # ID
+        'newcat': 'id' # ID
         'mult': 0
     '002a':
         'newcat': '0002' # SDN
@@ -371,7 +371,7 @@ title:
 
 holding:
     '001 ':
-        'newcat': '0000' # ID
+        'newcat': 'id' # ID
         'mult'  : 0
     '012 ':
         'newcat': '0004' # TitelID

@@ -1,20 +1,22 @@
 #!/usr/bin/perl
 
-use YAML::Syck;
+use strict;
+use warnings;
 
-my @buffer  = ();
-my $id      = 0;
-my $localid = 0;
+use YAML::Syck;
+use JSON::XS;
 
 my $id2zdbid_ref = LoadFile("/tmp/instzs-id2zdbid.yml");
 
 while (<>){
-       
-    if (/^0004:(.*)/){
-        print "0004:".$id2zdbid_ref->{$1}."\n";
+    my $record_ref = decode_json $_;
+
+    if (defined $record_ref->{'0004'}){
+        foreach my $item_ref (@{$record_ref->{'0004'}}){
+            $item_ref->{content} = $id2zdbid_ref->{$item_ref->{content}};
+        }
     }
-    else {
-        print;
-    }
+    
+    print encode_json $record_ref, "\n";
 }
 

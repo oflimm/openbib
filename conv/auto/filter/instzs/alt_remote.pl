@@ -41,7 +41,7 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -v ";
-my $alephmab2metaexe   = "$konvdir/alephmab2meta.pl";
+my $mab2metaexe   = "$konvdir/mab2meta.pl";
 
 my $pool          = $ARGV[0];
 
@@ -83,6 +83,6 @@ foreach my $file(@FILES){
     }
 }
 
-system("cd $pooldir/$pool; $alephmab2metaexe --titlefile=tmp.TIT --holdingfile=tmp.MEX --configfile=/opt/openbib/conf/$pool.yml");
+system("cd $pooldir/$pool; $mab2metaexe --titlefile=tmp.TIT --holdingfile=tmp.MEX --configfile=/opt/openbib/conf/$pool.yml");
 system("cd $pooldir/$pool; gzip meta.*");
 

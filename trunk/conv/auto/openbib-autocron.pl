@@ -104,6 +104,12 @@ my $blacklist_ref = {
 
 $logger->info("###### Beginn der automatischen Konvertierung");
 
+$logger->info("### VUBPDA");
+
+autoconvert({ sync => 1, databases => ['vubpda'] });
+
+goto ENDGAME;
+
 ##############################
 
 $logger->info("### Standard-Institutskataloge");
@@ -142,6 +148,7 @@ autoconvert({ sync => 1, databases => ['afrikaans','alff','baeumker','becker','d
 
 ##############################
 
+ENDGAME:
 $logger->info("### Generierung der Suchprofil-Indizes");
 
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");

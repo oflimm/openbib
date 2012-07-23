@@ -135,7 +135,7 @@ my $atime = new Benchmark;
             }
             
             
-            system("cd $pooldir/$database ; rm meta.* ; rm unload.*");
+            system("cd $pooldir/$database ; rm meta.*");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->titlefile." > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->personfile." > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->corporatebodyfile." > /dev/null 2>&1 ");
@@ -144,14 +144,6 @@ my $atime = new Benchmark;
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->holdingfile." > /dev/null 2>&1 ");
 
             system("ls -l $pooldir/$database/");
-            
-            # Legacy unload.*
-            system("mv $pooldir/$database/unload.TIT.gz  $pooldir/$database/meta.title.gz")          if ($dbinfo->titlefile          eq "unload.TIT.gz");
-            system("mv $pooldir/$database/unload.PER.gz  $pooldir/$database/meta.person.gz")         if ($dbinfo->personfile         eq "unload.PER.gz");
-            system("mv $pooldir/$database/unload.KOE.gz  $pooldir/$database/meta.corporatebody.gz")  if ($dbinfo->corporatebodyfile  eq "unload.KOE.gz");
-            system("mv $pooldir/$database/unload.SWD.gz  $pooldir/$database/meta.subject.gz")        if ($dbinfo->subjectfile        eq "unload.SWD.gz");
-            system("mv $pooldir/$database/unload.SYS.gz  $pooldir/$database/meta.classification.gz") if ($dbinfo->classificationfile eq "unload.SYS.gz");
-            system("mv $pooldir/$database/unload.MEX.gz  $pooldir/$database/meta.holding.gz")        if ($dbinfo->holdingfile        eq "unload.MEX.gz");
         }
 
     
@@ -394,7 +386,7 @@ $logger->info("### $database: Cleanup");
 # Temporaer Zugriffspassword setzen
 system("rm ~/.pgpass ");
 
-system("rm $rootdir/data/$database/*") unless ($database eq "openbib");
+#system("rm $rootdir/data/$database/*") unless ($database eq "openbib");
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

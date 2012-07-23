@@ -1,40 +1,32 @@
 #!/usr/bin/perl
 
-use YAML::Syck;
+use strict;
+use warnings;
 
-my @buffer  = ();
-my $id      = 0;
-my $localid = 0;
+use utf8;
+
+use YAML::Syck;
+use JSON::XS;
 
 my %id2zdbid = ();
 
 while (<>){
-       
-    if (/^0000:(.+)/){
-        $localid=$1;
-        $id = 0;
-        @buffer=($_);
-    }
-    else {
-        push @buffer,$_;
+    my $record_ref = decode_json $_;
 
-        if (/^0572\.\d\d\d:(.*)$/){
-            $id = $1;
+    my $id    = $record_ref->{id};
+    my $zdbid = 0;
+
+    if (defined $record_ref->{'0572'}){
+        foreach my $item_ref (@{$record_ref->{'0572'}}){
+            $zdbid = $item_ref->{content};
         }
-    }
-    
-    if (/^9999/){
-        if ($id){
-            $id2zdbid{$localid}=$id;
-            
-            $buffer[0]="0000:$id\n";
-            print STDOUT join("",@buffer);
-        }
-        #else {
-        #    print STDERR join("",@buffer);
-        #}
-    }
         
+        $record_ref->{id} = $zdbid;
+        
+        $id2zdbid{$id}=$zdbid;
+        
+        print encode_json $record_ref, "\n";
+    }
 }
 
 unlink "/tmp/instzs-id2zdbid.yml";

@@ -314,6 +314,7 @@ title:
         'newcat': '0540' # internationale standardbuchnummer (isbn)
         'mult': 1
     '655 ':
+        'no_conv': 1
          # URLs
         'mult': 1
         'subfield':

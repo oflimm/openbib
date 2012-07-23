@@ -587,8 +587,9 @@ if (-e $titlefile){
                 foreach my $item (split("",$content)){
                     if ($item=~/^(.)(.+)/){
                         my $subfield = $1;
-                        my $thiscontent  = konv($2);
-                        
+                        my $thiscontent  = $2;
+
+                        $thiscontent=konv($thiscontent) unless ($convconfig->{title}{$category}{no_conv});
                         if ($convconfig->{filter}{$category}{filter_generic}){
                             foreach my $filter (@{$convconfig->{filter}{$category}{filter_generic}}){
                                 my $from = $filter->{from};

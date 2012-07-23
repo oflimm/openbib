@@ -2,9 +2,9 @@
 
 #####################################################################
 #
-#  alephmab2meta.pl
+#  mab2meta.pl
 #
-#  Konvertierung von Aleph MAB2-Daten in das Meta-Format
+#  Konvertierung von MAB2-Daten in das Meta-Format
 #
 #  Dieses File ist (C) 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -35,6 +35,7 @@ use utf8;
 
 use Getopt::Long;
 use Encode::MAB2;
+use JSON::XS;
 use MAB2::Record::Base;
 use Tie::MAB2::Recno;
 use Data::Dumper;
@@ -56,9 +57,9 @@ my ($titlefile,$personfile,$corporatebodyfile,$subjectfile,$classificationfile,$
 
 if (!$configfile){
     print << "HELP";
-alephmab2meta.pl - Aufrufsyntax
+mab2meta.pl - Aufrufsyntax
 
-    alephmab2meta.pl --titlefile=xxx --configfile=yyy.yml
+    mab2meta.pl --titlefile=xxx --holdingfile=yyy --configfile=config.yml
 HELP
 exit;
 }
@@ -74,6 +75,8 @@ if (-e $personfile){
     tie @mab2perdata, 'Tie::MAB2::Recno', file => $personfile;
     
     foreach my $rawrec (@mab2perdata){
+        my $item_ref = {};
+        
         my $rec = MAB2::Record::Base->new($rawrec);
         #    print $rec->readable."\n----------------------\n";    
         my $multcount_ref = {};
@@ -82,6 +85,7 @@ if (-e $personfile){
             my $category  = $category_ref->[0];
             my $indicator = $category_ref->[1];
             my $content   = konv($category_ref->[2]);
+
             
             my $newcategory = "";
             
@@ -101,22 +105,35 @@ if (-e $personfile){
             # Standard-Konvertierung mit perkonv
             
             if (!$convconfig->{person}{$category}{mult}){
-                $indicator="";
+                $indicator=1;
             }
-            
+
             if (exists $convconfig->{person}{$category}{newcat}){
                 $newcategory = $convconfig->{person}{$category}{newcat};
             }
-            
+
+            if ($newcategory eq "id" && $content){
+                $item_ref->{id} = $content;
+                next;
+            }
+
             if ($newcategory && $convconfig->{person}{$category}{mult} && $content){
-                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-                print PEROUT "$newcategory.$multcount:$content\n";
+                my $multcount=++$multcount_ref->{$newcategory};
+                push @{$item_ref->{$newcategory}},{
+                    mult     => $multcount,
+                    content  => $content,
+                    subfield => '',
+                };
             }
             elsif ($newcategory && $content){
-                print PEROUT "$newcategory:$content\n";
+                push @{$item_ref->{$newcategory}},{
+                    mult     => 1,
+                    content  => $content,
+                    subfield => '',
+                };
             }
         }
-        print PEROUT "9999:\n\n";
+        print PEROUT encode_json $item_ref, "\n";
     }
     
     close(PEROUT);
@@ -136,6 +153,8 @@ if (-e $corporatebodyfile){
     tie @mab2kordata, 'Tie::MAB2::Recno', file => $corporatebodyfile;
     
     foreach my $rawrec (@mab2kordata){
+        my $item_ref = {};
+
         my $rec = MAB2::Record::Base->new($rawrec);
         #    print $rec->readable."\n----------------------\n";    
         my $multcount_ref = {};
@@ -169,16 +188,29 @@ if (-e $corporatebodyfile){
             if (exists $convconfig->{corporatebody}{$category}{newcat}){
                 $newcategory = $convconfig->{corporatebody}{$category}{newcat};
             }
+
+            if ($newcategory eq "id" && $content){
+                $item_ref->{id} = $content;
+                next;
+            }
             
             if ($newcategory && $convconfig->{corporatebody}{$category}{mult} && $content){
-                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-                print KOROUT "$newcategory.$multcount:$content\n";
+                my $multcount=++$multcount_ref->{$newcategory};
+                push @{$item_ref->{$newcategory}},{
+                    mult     => $multcount,
+                    content  => $content,
+                    subfield => '',
+                };
             }
             elsif ($newcategory && $content){
-                print KOROUT "$newcategory:$content\n";
+                push @{$item_ref->{$newcategory}},{
+                    mult     => 1,
+                    content  => $content,
+                    subfield => '',
+                };
             }
         }
-        print KOROUT "9999:\n\n";
+        print KOROUT encode_json $item_ref, "\n";
     }
     
     close(KOROUT);
@@ -198,6 +230,8 @@ if (-e $subjectfile){
     tie @mab2swtdata, 'Tie::MAB2::Recno', file => $subjectfile;
     
   SWTLOOP: foreach my $rawrec (@mab2swtdata){
+        my $item_ref = {};
+
         my $rec = MAB2::Record::Base->new($rawrec);
         #    print $rec->readable."\n----------------------\n";    
         my $multcount_ref = {};
@@ -233,16 +267,29 @@ if (-e $subjectfile){
             if (exists $convconfig->{subject}{$category}{newcat}){
                 $newcategory = $convconfig->{subject}{$category}{newcat};
             }
+
+            if ($newcategory eq "id" && $content){
+                $item_ref->{id} = $content;
+                next;
+            }
             
             if ($newcategory && $convconfig->{subject}{$category}{mult} && $content){
-                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-                print SWTOUT "$newcategory.$multcount:$content\n";
+                my $multcount=++$multcount_ref->{$newcategory};
+                push @{$item_ref->{$newcategory}},{
+                    mult     => $multcount,
+                    content  => $content,
+                    subfield => '',
+                };
             }
             elsif ($newcategory && $content){
-                print SWTOUT "$newcategory:$content\n";
+                push @{$item_ref->{$newcategory}},{
+                    mult     => 1,
+                    content  => $content,
+                    subfield => '',
+                };
             }
         }
-        print SWTOUT "9999:\n\n";
+        print SWTOUT encode_json $item_ref, "\n";
     }
     
     close(SWTOUT);
@@ -263,6 +310,8 @@ if (-e $classificationfile){
     tie @mab2notdata, 'Tie::MAB2::Recno', file => $classificationfile;
     
     foreach my $rawrec (@mab2notdata){
+        my $item_ref = {};
+                
         my $rec = MAB2::Record::Base->new($rawrec);
         print $rec->readable."\n----------------------\n";    
         my $multcount_ref = {};
@@ -296,16 +345,29 @@ if (-e $classificationfile){
             if (exists $convconfig->{classification}{$category}{newcat}){
                 $newcategory = $convconfig->{classification}{$category}{newcat};
             }
+
+            if ($newcategory eq "id" && $content){
+                $item_ref->{id} = $content;
+                next;
+            }
             
             if ($newcategory && $convconfig->{classification}{$category}{mult} && $content){
-                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-                print NOTOUT "$newcategory.$multcount:$content\n";
+                my $multcount=++$multcount_ref->{$newcategory};
+                push @{$item_ref->{$newcategory}},{
+                    mult     => $multcount,
+                    content  => $content,
+                    subfield => '',
+                };
             }
             elsif ($newcategory && $content){
-                print NOTOUT "$newcategory:$content\n";
+                push @{$item_ref->{$newcategory}},{
+                    mult     => 1,
+                    content  => $content,
+                    subfield => '',
+                };
             }
         }
-        print NOTOUT "9999:\n\n";
+        print NOTOUT encode_json $item_ref, "\n";
     }
     
     close(NOTOUT);
@@ -322,15 +384,27 @@ print "Bearbeite Titel\n";
 if (-e $titlefile){
     open(TITOUT,'>:utf8','meta.title');
 
-    if (!$personfile && !$corporatebodyfile && !$subjectfile){
+    if (!$personfile){
         open(PEROUT,'>:utf8','meta.person');
+    }
+    if (!$corporatebodyfile){
         open(KOROUT,'>:utf8','meta.corporatebody');
+    }
+    if (!$subjectfile){
         open(SWTOUT,'>:utf8','meta.subject');
+    }
+    if (!$classificationfile){
+        open(NOTOUT,'>:utf8','meta.classification');
+    }
+    if (!$holdingfile){
+        open(MEXOUT,'>:utf8','meta.holding');
     }
     
     tie @mab2titdata, 'Tie::MAB2::Recno', file => $titlefile;
     
     foreach my $rawrec (@mab2titdata){
+        my $title_ref = {};
+
         my $rec = MAB2::Record::Base->new($rawrec);
 #        print $rec->readable."\n----------------------\n";    
         my $multcount_ref = {};
@@ -343,7 +417,7 @@ if (-e $titlefile){
             # print "$category - $indicator - $content\n";
 
             $category = $category.$indicator;
-            
+
             my $newcategory = "";
             
             if (!exists $convconfig->{title}{$category}){
@@ -383,87 +457,235 @@ if (-e $titlefile){
             if (exists $convconfig->{title}{$category}{newcat}){
                 $newcategory = $convconfig->{title}{$category}{newcat};
             }
-            
+
+            if ($newcategory eq "id" && $content){
+                $title_ref->{id} = $content;
+                next;
+            }
+
+            # 1) Verweise
             if (exists $convconfig->{title}{$category}{ref}){
                 
                 if ($category =~/^9[0123][27][kgs]/){
                     my $tmpcontent=$content;
                     ($content)=$tmpcontent=~m/(\d+-.)/;
                 }
-                #            print "REF: Category $category Content $content\n";
-                #            my $tmpcontent=$content;
-                #            ($content)=$tmpcontent=~m/^(\d+.*)/;
-                $content="IDN: $content" if ($content);
+
+                push @{$title_ref->{$newcategory}}, {
+                    mult       => $multcount,
+                    subfield   => '',
+                    id         => $content,
+                    supplement => '',
+                } if ($content);
+
             }
+            # 2) Inhalte, aus denen Verweise generiert werden
             elsif (exists $convconfig->{title}{$category}{type}){
                 my $type = $convconfig->{title}{$category}{type};
 
                 if ($type eq "person"){
-                    my $autidn=OpenBib::Conv::Common::Util::get_autidn($content);
+                    my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($content);
                     
-                    if ($autidn > 0){
-                        print PEROUT "0000:$autidn\n";
-                        print PEROUT "0800:$content\n";
-                        print PEROUT "9999:\n";
+                    if ($new){
+                        my $item_ref = {};
+                        $item_ref->{id} = $person_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $content,
+                        };
                         
-                    }
-                    else {
-                        $autidn=(-1)*$autidn;
+                        print PEROUT encode_json $item_ref, "\n";
                     }
 
-                    
-                    $content = "IDN: $autidn";
-                    
+                    my $multcount=++$multcount_ref->{$newcategory};
+
+                    push @{$title_ref->{$newcategory}}, {
+                        mult       => $multcount,
+                        subfield   => '',
+                        id         => $person_id,
+                        supplement => '',
+                    };
                 }
                 elsif ($type eq "corporatebody"){
-                    my $koridn=OpenBib::Conv::Common::Util::get_koridn($content);
+                    my ($corporatebody_id,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($content);
                     
-                    if ($koridn > 0){
-                        print KOROUT "0000:$koridn\n";
-                        print KOROUT "0800:$content\n";
-                        print KOROUT "9999:\n";
+                    if ($new){
+                        my $item_ref = {};
+                        $item_ref->{id} = $corporatebody_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => $multcount,
+                            subfield => '',
+                            content  => $content,
+                        };
                         
+                        print KOROUT encode_json $item_ref, "\n";
                     }
-                    else {
-                        $koridn=(-1)*$koridn;
-                    }
-                    
-                    
-                    $content = "IDN: $koridn";
-                }                        
+
+                    my $multcount=++$multcount_ref->{$newcategory};
+
+                    push @{$title_ref->{$newcategory}}, {
+                        mult       => $multcount,
+                        subfield   => '',
+                        id         => $corporatebody_id,
+                        supplement => '',
+                    };
+                }
                 elsif ($type eq "subject"){
-                    my $swtidn=OpenBib::Conv::Common::Util::get_swtidn($content);
+                    my ($subject_id,$new)=OpenBib::Conv::Common::Util::get_subject_id($content);
                     
-                    if ($swtidn > 0){
-                        print KOROUT "0000:$swtidn\n";
-                        print KOROUT "0800:$content\n";
-                        print KOROUT "9999:\n";
+                    if ($new){
+                        my $item_ref = {};
+                        $item_ref->{id} = $subject_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $content,
+                        };
+                        print SWTOUT encode_json $item_ref, "\n";
+                    }
+
+                    my $multcount=++$multcount_ref->{$newcategory};
+
+                    push @{$title_ref->{$newcategory}}, {
+                        mult       => $multcount,
+                        subfield   => '',
+                        id         => $subject_id,
+                        supplement => '',
+                    };
+                }
+                elsif ($type eq "classification"){
+                    my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($content);
+                    
+                    if ($new){
+                        my $item_ref = {};
+                        $item_ref->{id} = $classification_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $content,
+                        };
+
+                        print NOTOUT encode_json $item_ref, "\n";
+                    }
+
+                    my $multcount=++$multcount_ref->{$newcategory};
+
+                    push @{$title_ref->{$newcategory}}, {
+                        mult       => $multcount,
+                        subfield   => '',
+                        id         => $classification_id,
+                        supplement => '',
+                    };
+                }
+
+                next;
+            }
+            # 3) Felder mit Unterfeldern
+            elsif (exists $convconfig->{title}{$category}{subfield}){
+
+                foreach my $item (split("",$content)){
+                    if ($item=~/^(.)(.+)/){
+                        my $subfield = $1;
+                        my $thiscontent  = konv($2);
                         
+                        if ($convconfig->{filter}{$category}{filter_generic}){
+                            foreach my $filter (@{$convconfig->{filter}{$category}{filter_generic}}){
+                                my $from = $filter->{from};
+                                my $to   = $filter->{to};
+                                $thiscontent =~s/$from/$to/g;
+                            }
+                        }
+                        
+                        if ($convconfig->{filter}{$category}{filter_junk}){
+                            $thiscontent = filter_junk($thiscontent);
+                        }
+                        
+                        if ($convconfig->{filter}{$category}{filter_newline2br}){
+                            $thiscontent = filter_newline2br($thiscontent);
+                        }
+                        
+                        if ($convconfig->{filter}{$category}{filter_match}){
+                            $thiscontent = filter_match($thiscontent,$convconfig->{filter}{$category}{filter_match});
+                        }
+
+                        #print STDERR "$category - $subfield - $thiscontent\n";
+                        my $newcategory = $convconfig->{title}{$category}{subfield}{$subfield};
+
+                        if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
+                            my $multcount=++$multcount_ref->{$newcategory};
+                            push @{$title_ref->{$newcategory}},{
+                                mult     => $multcount,
+                                content  => $thiscontent,
+                                subfield => $subfield,
+                            };
+                        }
+                        elsif ($newcategory && $content){
+                            push @{$title_ref->{$newcategory}},{
+                                mult     => 1,
+                                content  => $thiscontent,
+                                subfield => $subfield,
+                            };
+                        }
                     }
-                    else {
-                        $swtidn=(-1)*$swtidn;
+                }
+            }
+            # Ansonsten normale Umwandlung
+            else {
+                if ($convconfig->{filter}{$category}{filter_generic}){
+                    foreach my $filter (@{$convconfig->{filter}{$category}{filter_generic}}){
+                        my $from = $filter->{from};
+                        my $to   = $filter->{to};
+                        $content =~s/$from/$to/g;
                     }
-                    
-                    
-                    $content = "IDN: $swtidn";
-                }                                        
-            }
-            
-            if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
-                my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-                print TITOUT "$newcategory.$multcount:$content\n";
-            }
-            elsif ($newcategory && $content){
-                print TITOUT "$newcategory:$content\n";
+                }
+                
+                if ($convconfig->{filter}{$category}{filter_junk}){
+                    $content = filter_junk($content);
+                }
+                
+                if ($convconfig->{filter}{$category}{filter_newline2br}){
+                    $content = filter_newline2br($content);
+                }
+                
+                if ($convconfig->{filter}{$category}{filter_match}){
+                    $content = filter_match($content,$convconfig->{filter}{$category}{filter_match});
+                }
+                
+                if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
+                    my $multcount=++$multcount_ref->{$newcategory};
+                    push @{$title_ref->{$newcategory}},{
+                        mult     => $multcount,
+                        content  => $content,
+                        subfield => '',
+                    };
+                }
+                elsif ($newcategory && $content){
+                    push @{$title_ref->{$newcategory}},{
+                        mult     => 1,
+                        content  => $content,
+                        subfield => '',
+                    };
+                }
             }
         }
-        print TITOUT "9999:\n\n";
+        print TITOUT encode_json $title_ref, "\n";
     }
 
-    if (!$personfile && !$corporatebodyfile && !$subjectfile){
+    if (!$personfile){
         close(PEROUT);
+    }
+    if (!$corporatebodyfile){
         close(KOROUT);
+    }
+    if (!$subjectfile){
         close(SWTOUT);
+    }
+    if (!$classificationfile){
+        close(NOTOUT);
+    }
+    if (!$holdingfile){
+        close(MEXOUT);
     }
     
     close(TITOUT);
@@ -484,6 +706,8 @@ if (-e $holdingfile){
     tie @mab2mexdata, 'Tie::MAB2::Recno', file => $holdingfile;
     
     foreach my $rawrec (@mab2mexdata){
+        my $item_ref = {};
+
         my $rec = MAB2::Record::Base->new($rawrec);
         #print $rec->readable."\n----------------------\n";    
         my $multcount_ref = {};
@@ -496,15 +720,6 @@ if (-e $holdingfile){
             #        print "$category - $indicator - $content\n";
             
             $category = $category.$indicator;
-            
-            my %subfield=();        
-            if (exists $convconfig->{holding}{$category}{subfields}){
-                foreach my $item (split("",$content)){
-                    if ($item=~/^(.)(.+)/){
-                        $subfield{$1}=$2;
-                    }
-                }
-            }
             
             my $newcategory = "";
             
@@ -534,23 +749,30 @@ if (-e $holdingfile){
             
             #        print YAML::Dump(\%subfield);
             
-            if (exists $convconfig->{holding}{$category}{subfields}){
-                foreach my $newcategory (keys %{$convconfig->{holding}{$category}{subfields}}){
-                    my @newcontent=();
-                    foreach my $thissubfield (@{$convconfig->{holding}{$category}{subfields}{$newcategory}}){
-                        if ($subfield{$thissubfield}){
-                            push @newcontent,$subfield{$thissubfield};
+            if (exists $convconfig->{holding}{$category}{subfield}){
+                foreach my $item (split("",$content)){
+                    if ($item=~/^(.)(.+)/){
+                        my $subfield = $1;
+                        my $thiscontent  = konv($2);
+                        
+                        #print STDERR $item, " - $subfield - $thiscontent\n";
+                        my $newcategory = $convconfig->{holding}{$category}{subfield}{$subfield};
+                        
+                        if ($newcategory && $convconfig->{holding}{$category}{mult} && $content){
+                            my $multcount=++$multcount_ref->{$newcategory};
+                            push @{$item_ref->{$newcategory}},{
+                                mult     => $multcount,
+                                content  => $thiscontent,
+                                subfield => $subfield,
+                            };
                         }
-                    }
-                    
-                    $content=konv(join(" ",@newcontent));
-                    
-                    if ($newcategory && $convconfig->{holding}{$category}{mult} && $content){
-                        my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-                        print MEXOUT "$newcategory.$multcount:$content\n";
-                    }
-                    elsif ($newcategory && $content){
-                        print MEXOUT "$newcategory:$content\n";
+                        elsif ($newcategory && $content){
+                            push @{$item_ref->{$newcategory}},{
+                                mult     => 1,
+                                content  => $thiscontent,
+                                subfield => $subfield,
+                            };
+                        }
                     }
                 }
             }
@@ -559,18 +781,31 @@ if (-e $holdingfile){
                 if (exists $convconfig->{holding}{$category}{newcat}){
                     $newcategory = $convconfig->{holding}{$category}{newcat};
                 }
+
+                if ($newcategory eq "id" && $content){
+                    $item_ref->{id} = $content;
+                    next;
+                }
                 
                 if ($newcategory && $convconfig->{holding}{$category}{mult} && $content){
-                    my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-                    print MEXOUT "$newcategory.$multcount:$content\n";
+                    my $multcount=++$multcount_ref->{$newcategory};
+                    push @{$item_ref->{$newcategory}},{
+                        mult     => $multcount,
+                        content  => $content,
+                        subfield => '',
+                    };
                 }
                 elsif ($newcategory && $content){
-                    print MEXOUT "$newcategory:$content\n";
+                    push @{$item_ref->{$newcategory}},{
+                        mult     => 1,
+                        content  => $content,
+                        subfield => '',
+                    };
                 }
             }
             
         }
-        print MEXOUT "9999:\n\n";
+        print MEXOUT encode_json $item_ref, "\n";
     }
 
     close(MEXOUT);
@@ -588,4 +823,31 @@ sub konv {
   $line=~s/‡/ /g;
   $line=~s/^\|//;
   return $line;
+}
+
+sub filter_junk {
+    my ($content) = @_;
+
+    $content=~s/\W/ /g;
+    $content=~s/\s+/ /g;
+    $content=~s/\s\D\s/ /g;
+
+    
+    return $content;
+}
+
+sub filter_newline2br {
+    my ($content) = @_;
+
+    $content=~s/\n/<br\/>/g;
+    
+    return $content;
+}
+
+sub filter_match {
+    my ($content,$regexp) = @_;
+
+    my ($match)=$content=~m/$regexp/g;
+
+    return $match;
 }

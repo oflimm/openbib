@@ -1635,6 +1635,7 @@ sub cleanup_content {
     my $content = shift;
 
     # Make PostgreSQL Happy
+    $content =~s/\n/<br\/>/g;
     $content =~s/\\/\\\\/g; # Escape Literal Backslash
     $content =~s/\r/\\r/g;
     $content =~s///g;

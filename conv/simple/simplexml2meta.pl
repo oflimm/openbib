@@ -38,7 +38,7 @@ use Encode 'decode';
 use Getopt::Long;
 use XML::Twig::XPath;
 use XML::Simple;
-
+use JSON::XS;
 use YAML::Syck;
 
 use OpenBib::Config;

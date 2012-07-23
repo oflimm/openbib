@@ -48,4 +48,4 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Konvertieren\n";
 system("cd $pooldir/$pool ; rm *.bdbrecno ; rm meta.*");
-system("cd $pooldir/$pool; $mab2metaexe --filename=pool.dat ; gzip meta.* ");
+system("cd $pooldir/$pool; $mab2metaexe --titlefile=pool.dat --configfile=/opt/openbib/conf/$pool.yml; gzip meta.* ");

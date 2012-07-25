@@ -43,6 +43,6 @@ print "### $pool: Umwandlung in das Meta-Format\n";
 
 system("cd $pooldir/$pool ; rm meta.* pool.dat");
 system("gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");
-system("cd $pooldir/$pool ; $konvdir/lidos32meta.pl --filename=$pooldir/$pool/pool.dat");
+system("cd $pooldir/$pool ; $konvdir/lidos32meta.pl --inputfile=$pooldir/$pool/pool.dat --configfile=/opt/openbib/conf/$pool.yml");
 system("rm $pooldir/$pool/pool.dat");
 system("cd $pooldir/$pool ; gzip meta.*");

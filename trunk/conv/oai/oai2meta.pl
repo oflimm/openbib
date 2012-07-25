@@ -85,12 +85,12 @@ $twig->parsefile($inputfile);
 sub parse_titset {
     my($t, $titset)= @_;
 
+    my $title_ref = {};
+    
     # Id
     foreach my $desk ($titset->children('id')){
         my $id=$desk->text();
-
-        print TIT "0000:$id\n";
-
+        $title_ref->{id}=$id;
         last; # Nur ein Durchlauf, d.h. erste gefundene ID wird genommen
     }
 
@@ -98,37 +98,63 @@ sub parse_titset {
         foreach my $oainode ($mdnode->children('oai_dc:dc')){
             
             # Verfasser/Personen
+            my $mult = 1;
             foreach my $desk ($oainode->children('dc:creator')){
                 my $content = $desk->text();
                 
-                my ($autidn,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
+                my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                 
                 if ($new) {
-                    print AUT "0000:$autidn\n";
-                    print AUT "0001:$content\n";
-                    print AUT "9999:\n";
+                    my $item_ref = {};
+                    $item_ref->{id} = $person_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content,
+                    };
+
+                    print AUT encode_json $item_ref, "\n";
                 }
-                
-                print TIT "0100:IDN: $autidn\n";
+
+                push @{$title_ref->{'0100'}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $person_id,
+                    supplement => '',
+                };
+                $mult++;
             }
             
             # Koerperschaften
+            $mult=1;
             foreach my $desk ($oainode->children('dc:publisher')){
                 my $content = $desk->text();
                 
-                my ($koridn,$new)  = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
-                
-                if ($new) {
-                    print KOR "0000:$koridn\n";
-                    print KOR "0001:$content\n";
-                    print KOR "9999:\n";
-                }
-                
-                print TIT "0201:IDN: $koridn\n";
+                my ($corporatebody_id,$new)  = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
 
+                if ($new) {
+                    my $item_ref = {};
+                    $item_ref->{id} = $corporatebody_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content,
+                    };
+
+                    print KOR encode_json $item_ref, "\n";
+                }
+
+                push @{$title_ref->{'0201'}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $corporatebody_id,
+                    supplement => '',
+                };
+                $mult++;
             }
         
             # Schlagworte
+            $mult=1;
             foreach my $desk ($oainode->children('dc:subject')){
                 my $content = $desk->text();
 
@@ -144,18 +170,27 @@ sub parse_titset {
                     
                     foreach my $part (@parts){
                         $part=~s/^(\w)/\u$1/;
-                        my ($swtidn,$new) = OpenBib::Conv::Common::Util::get_subject_id($part);
-                        
-                        if ($swtidn > 0) {
-                            print SWT "0000:$swtidn\n";
-                            print SWT "0001:$part\n";
-                            print SWT "9999:\n";
+                        my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($part);
+
+                        if ($new) {
+                            my $item_ref = {};
+                            $item_ref->{id} = $subject_id;
+                            push @{$item_ref->{'0800'}}, {
+                                mult     => 1,
+                                subfield => '',
+                                content  => $part,
+                            };
+                            
+                            print SWT encode_json $item_ref, "\n";
                         }
-                        else {
-                            $swtidn=(-1)*$swtidn;
-                        }
                         
-                        print TIT "0710:IDN: $swtidn\n";
+                        push @{$title_ref->{'0710'}}, {
+                            mult       => $mult,
+                            subfield   => '',
+                            id         => $subject_id,
+                            supplement => '',
+                        };
+                        $mult++;
                     }
                 }
             }
@@ -164,7 +199,11 @@ sub parse_titset {
             
             # Titel
             if(defined $oainode->first_child('dc:title') && $oainode->first_child('dc:title')->text()){
-                print TIT "0331:".$oainode->first_child('dc:title')->text()."\n";
+                push @{$title_ref->{'0331'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $oainode->first_child('dc:title')->text(),
+                };
             }
             
             # Datum
@@ -186,10 +225,15 @@ sub parse_titset {
                     $type="Dissertations-Abstract";
                 }
 
-                print TIT "0519:$type\n";
+                push @{$title_ref->{'0519'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $type,
+                };
             }
 
             # Abstract
+            $mult=1;
             foreach my $desk ($oainode->children('dc:description')) {
                 my $abstract = $desk->text();
         
@@ -200,40 +244,68 @@ sub parse_titset {
                 $abstract=~s/^Summary<br>//g;
                 $abstract=~s/\|/&#124;/g;
 
-                print TIT "0750:$abstract\n";
+                push @{$title_ref->{'0750'}}, {
+                    mult     => $mult,
+                    subfield => '',
+                    content  => $abstract,
+                };
+                $mult++;
             }
 
             # URL
+            $mult=1;
             foreach my $desk ($oainode->children('dc:identifier')) {
                 my $url=$desk->text();
 
-                print TIT "0662:$url\n" if ($url=~/http/);
+                if ($url=~/http/){
+                    push @{$title_ref->{'0622'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $url,
+                    };
+                    $mult++;
+                }
             }
 
             # Format
+            $mult=1;
             foreach my $desk ($oainode->children('dc:format')) {
                 my $format=$desk->text();
 
-                print TIT "0435:$format\n";
+                push @{$title_ref->{'0435'}}, {
+                    mult     => $mult,
+                    subfield => '',
+                    content  => $format,
+                };
+                $mult++;
             }
 
             # Sprache
+            $mult=1;
             foreach my $desk ($oainode->children('dc:language')) {
                 my $lang=$desk->text();
 
-                print TIT "0516:$lang\n";
+                push @{$title_ref->{'0516'}}, {
+                    mult     => $mult,
+                    subfield => '',
+                    content  => $lang,
+                };
+                $mult++;
             }
 
     
             # Jahr
             if (defined $oainode->first_child('dc:date') && $oainode->first_child('dc:date')->text()) {
-                print TIT "0425:".$oainode->first_child('dc:date')->text()."\n";
+                push @{$title_ref->{'0425'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $oainode->first_child('dc:date')->text(),
+                };
             }
         }
     }
     
-
-    print TIT "9999:\n";
+    print TIT encode_json $title_ref, "\n";
     
     # Release memory of processed tree
     # up to here

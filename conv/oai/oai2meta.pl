@@ -37,6 +37,7 @@ use strict;
 use XML::Twig;
 use Getopt::Long;
 use YAML::Syck;
+use JSON::XS;
 use Encode qw /decode_utf8/;
 
 use OpenBib::Conv::Common::Util;
@@ -258,8 +259,8 @@ sub parse_titset {
                 my $url=$desk->text();
 
                 if ($url=~/http/){
-                    push @{$title_ref->{'0622'}}, {
-                        mult     => 1,
+                    push @{$title_ref->{'0662'}}, {
+                        mult     => $mult,
                         subfield => '',
                         content  => $url,
                     };

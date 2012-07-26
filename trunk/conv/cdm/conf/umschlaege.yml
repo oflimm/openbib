@@ -12,34 +12,34 @@ category_split_chars:
 
 # Personen
 pers:
-  'creator': '0100:'      # Verfasser
+  'creator': '0100'      # Verfasser
 
 # Koerperschaften
 corp:
-  'team': '0200:' # Team
+  'team': '0200' # Team
 
 # Systematik
 sys: 
 
 # Schlagworte
 subj:
-  'contributor': '0710:'
+  'contributor': '0710'
 
 # Titel
 title:
-  'title': '0331:'
-  'publisher': '0412:'
-  'description': '0750:'
-  'date': '0425:'
-  'language': '0005:'
-  'relation': '0508:'
-  'edition': '0403:'
-  'extent': '0435:'
-  'isbn': '0540:'
-  'hbzid': '0010:'
-  'thumbnailURL': '2662:'
-  'viewerURL': '0662:'
+  'title': '0331'
+  'publisher': '0412'
+  'description': '0750'
+  'date': '0425'
+  'language': '0005'
+  'relation': '0508'
+  'edition': '0403'
+  'extent': '0435'
+  'isbn': '0540'
+  'hbzid': '0010'
+  'thumbnailURL': '2662'
+  'viewerURL': '0662'
 
 # Exemplare
 exempl:
-  'shelfmark': '0014.001:'
+  'shelfmark': '0014'

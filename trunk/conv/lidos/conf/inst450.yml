@@ -13,6 +13,7 @@ category_split_chars:
 continued_line_fields:
  '0100': 1
  '0331': 1
+ '0501': 1
  '0509': 1
  '0590': 1
 

@@ -34,6 +34,7 @@ use utf8;
 
 use Encode 'decode';
 use Getopt::Long;
+use JSON::XS;
 use XML::Twig;
 use YAML::Syck;
 
@@ -88,22 +89,35 @@ close(HOLDING);
 
 sub parse_titset {
     my($t, $titset)= @_;
-    
-    print TITLE "0000:".$titset->first_child($convconfig->{uniqueidfield})->text()."\n";
+
+    my $title_ref = {};
+
+    $title_ref->{id} = $titset->first_child($convconfig->{uniqueidfield})->text();
 
     # Erstellungsdatum
-#    if(defined $titset->first_child('cdmcreated') && $titset->first_child('cdmcreated')->text()){
-#        my ($year,$month,$day)=split("-",$titset->first_child('cdmcreated')->text());
-#        print TITLE "0002:$day.$month.$year\n";
-#    }
+    if(defined $titset->first_child('cdmcreated') && $titset->first_child('cdmcreated')->text()){
+        my ($year,$month,$day)=split("-",$titset->first_child('cdmcreated')->text());
+
+        push @{$title_ref->{'0002'}}, {
+            content  => "$day.$month.$year",
+            subfield => '',
+            mult     => 1,
+        };
+    }
     
     # Aenderungsdatum
-#    if(defined $titset->first_child('cdmmodified') && $titset->first_child('cdmmodified')->text()){
-#        my ($year,$month,$day)=split("-",$titset->first_child('cdmmodified')->text());
-#        print TITLE "0003:$day.$month.$year\n";
-#    }
+    if(defined $titset->first_child('cdmmodified') && $titset->first_child('cdmmodified')->text()){
+        my ($year,$month,$day)=split("-",$titset->first_child('cdmmodified')->text());
+        push @{$title_ref->{'0003'}}, {
+            content  => "$day.$month.$year",
+            subfield => '',
+            mult     => 1,
+        };
+    }
 
     foreach my $kateg (keys %{$convconfig->{title}}){
+        my $mult = 1;
+
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
             my $content = konv($titset->first_child($kateg)->text());
 #            my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
@@ -118,7 +132,12 @@ sub parse_titset {
                 }
 
                 foreach my $part (@parts){
-                    print TITLE $convconfig->{title}{$kateg}.$part."\n";
+                    push @{$title_ref->{$convconfig->{title}{$kateg}}}, {
+                        content  => $part,
+                        subfield => '',
+                        mult     => $mult,
+                    };
+                    $mult++;
                 }
             }
         }
@@ -140,15 +159,30 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my ($autidn,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
+                    my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
                     
                     if ($new){
-                        print PERSON "0000:$autidn\n";
-                        print PERSON "0001:$part\n";
-                        print PERSON "9999:\n";
+                        my $item_ref = {};
+                        $item_ref->{id} = $person_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print PERSON encode_json $item_ref, "\n";
                     }
+
+                    my $new_category = $convconfig->{pers}{$kateg};
                     
-                    print TITLE $convconfig->{pers}{$kateg}."IDN: $autidn\n";
+                    push @{$title_ref->{$new_category}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $person_id,
+                        supplement => '',
+                    };
+                    
+                    $mult++;
                 }
             }
             # Autoren abarbeiten Ende
@@ -157,6 +191,7 @@ sub parse_titset {
 
     # Koerperschaften abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{corp}}){
+        my $mult = 1;
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
             my $content = konv($titset->first_child($kateg)->text());
             #my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
@@ -171,15 +206,30 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my ($koridn,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($part);
-                
+                    my ($corporatebody_id,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($part);
+                    
                     if ($new){
-                        print CORPORATEBODY "0000:$koridn\n";
-                        print CORPORATEBODY "0001:$part\n";
-                        print CORPORATEBODY "9999:\n";
+                        my $item_ref = {};
+                        $item_ref->{id} = $corporatebody_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print CORPORATEBODY encode_json $item_ref, "\n";
                     }
                     
-                    print TITLE $convconfig->{corp}{$kateg}."IDN: $koridn\n";
+                    my $new_category = $convconfig->{corp}{$kateg};
+                    
+                    push @{$title_ref->{$new_category}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $corporatebody_id,
+                        supplement => '',
+                    };
+                    
+                    $mult++;
                 }
             }
         }
@@ -202,15 +252,30 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my ($notidn,$new)=OpenBib::Conv::Common::Util::get_classification_id($part);
+                    my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($part);
                 
                     if ($new){
-                        print CLASSIFICATION "0000:$notidn\n";
-                        print CLASSIFICATION "0001:$content\n";
-                        print CLASSIFICATION "9999:\n";
+                        my $item_ref = {};
+                        $item_ref->{id} = $classification_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print CLASSIFICATION encode_json $item_ref, "\n";
                     }
 
-                    print TITLE $convconfig->{sys}{$kateg}."IDN: $notidn\n";
+                    my $new_category = $convconfig->{sys}{$kateg};
+                    
+                    push @{$title_ref->{$new_category}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $classification_id,
+                        supplement => '',
+                    };
+                    
+                    $mult++;
                 }
             }
         }
@@ -233,15 +298,30 @@ sub parse_titset {
                 }
                 
                 foreach my $part (@parts){
-                    my ($swtidn,$new)=OpenBib::Conv::Common::Util::get_subject_id($part);
+                    my ($subject_id,$new)=OpenBib::Conv::Common::Util::get_subject_id($part);
                     
                     if ($new){	  
-                        print SUBJECT "0000:$swtidn\n";
-                        print SUBJECT "0001:$part\n";
-                        print SUBJECT "9999:\n";
+                        my $item_ref = {};
+                        $item_ref->{id} = $subject_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print SUBJECT encode_json $item_ref, "\n";
                     }
 
-                    print TITLE $convconfig->{subj}{$kateg}."IDN: $swtidn\n";
+                    my $new_category = $convconfig->{subj}{$kateg};
+                    
+                    push @{$title_ref->{$new_category}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $subject_id,
+                        supplement => '',
+                    };
+                    
+                    $mult++;
                 }
             }
         }
@@ -263,10 +343,21 @@ sub parse_titset {
                 }
 
                 foreach my $part (@parts){
-                    print HOLDING "0000:$mexidn\n";
-                    print HOLDING "0004:".$titset->first_child($convconfig->{uniqueidfield})->text()."\n";
-                    print HOLDING $convconfig->{exempl}{$kateg}.$part."\n";
-                    print HOLDING "9999:\n";
+                    my $item_ref = {};
+                    $item_ref->{id} = $mexidn;
+                    push @{$item_ref->{'0004'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $titset->first_child($convconfig->{uniqueidfield})->text(),
+                    };
+
+                    push @{$item_ref->{$convconfig->{exempl}{$kateg}}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+
+                    print HOLDING encode_json $item_ref, "\n"; 
                     $mexidn++;
                 }
             }
@@ -274,7 +365,7 @@ sub parse_titset {
     }
     # Exemplardaten abarbeiten Ende
 
-    print TITLE "9999:\n";
+    print TITLE encode_json $title_ref, "\n";
     
     # Release memory of processed tree
     # up to here

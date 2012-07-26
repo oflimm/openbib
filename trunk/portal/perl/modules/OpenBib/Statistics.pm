@@ -215,7 +215,7 @@ sub get_result {
 
     my $data_ref;
     foreach my $resultdata ($resultdatas->all){
-        my $datastring = $resultdata->data;
+        my $datastring = encode_utf8($resultdata->data);
 
 	$logger->debug("Found a Record: $datastring");
 

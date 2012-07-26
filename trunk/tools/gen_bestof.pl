@@ -213,7 +213,7 @@ if ($type == 3){
         # DBI: "select subject.content , count(distinct sourceid) as scount from conn, subject where sourcetype=1 and targettype=4 and subject.category=1 and subject.id=conn.targetid group by targetid order by scount desc limit 200"
         my $usage = $catalog->{schema}->resultset('Subject')->search_rs(
             {
-                'subject_fields.field' => 1,
+                'subject_fields.field' => 800,
             },
             {
                 select   => ['subject_fields.content', {'count' => 'title_subjects.titleid'}],
@@ -292,7 +292,7 @@ if ($type == 4){
         # DBI: "select classification.content , count(distinct sourceid) as scount from conn, classification where sourcetype=1 and targettype=5 and classification.category=1 and classification.id=conn.targetid group by targetid order by scount desc limit 200"
         my $usage = $catalog->{schema}->resultset('Classification')->search_rs(
             {
-                'classification_fields.field' => 1,
+                'classification_fields.field' => 800,
             },
             {
                 select   => ['classification_fields.content', {'count' => 'title_classifications.titleid'}],
@@ -369,7 +369,7 @@ if ($type == 5){
         # DBI: "select corporatebody.content , count(distinct sourceid) as scount from conn, corporatebody where sourcetype=1 and targettype=3 and corporatebody.category=1 and corporatebody.id=conn.targetid group by targetid order by scount desc limit 200"
         my $usage = $catalog->{schema}->resultset('Corporatebody')->search_rs(
             {
-                'corporatebody_fields.field' => 1,
+                'corporatebody_fields.field' => 800,
             },
             {
                 select   => ['corporatebody_fields.content', {'count' => 'title_corporatebodies.titleid'}],
@@ -445,7 +445,7 @@ if ($type == 6){
         # DBI: "select person.content , count(distinct sourceid) as scount from conn, person where sourcetype=1 and targettype=2 and person.category=1 and person.id=conn.targetid group by targetid order by scount desc limit 200"
         my $usage = $catalog->{schema}->resultset('Person')->search_rs(
             {
-                'person_fields.field' => 1,
+                'person_fields.field' => 800,
             },
             {
                 select   => ['person_fields.content', {'count' => 'title_people.titleid'}],
@@ -489,7 +489,7 @@ if ($type == 6){
             sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
                     @{$bestof_ref};
-        
+
         $statistics->cache_data({
             type => 6,
             id   => $database,

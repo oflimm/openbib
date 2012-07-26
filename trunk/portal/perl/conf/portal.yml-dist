@@ -22,7 +22,7 @@ dbpasswd: StrengGeheim
 # Einstellungen fuer den Zugriff auf die System-Datenbank
 systemdbimodule: Pg
 systemdbhost: localhost
-systemdbport: 5433
+systemdbport: 5432
 systemdbname: openbib_system
 systemdbuser: root
 systemdbpasswd: StrengGeheim
@@ -30,7 +30,7 @@ systemdbpasswd: StrengGeheim
 # Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
 enrichmntdbimodule: Pg
 enrichmntdbhost: localhost
-enrichmntdbport: 5433
+enrichmntdbport: 5432
 enrichmntdbname: openbib_enrichmnt
 enrichmntdbuser: root
 enrichmntdbpasswd: StrengGeheim
@@ -38,17 +38,17 @@ enrichmntdbpasswd: StrengGeheim
 # Einstellungen fuer den Zugriff auf die Statistik-Datenbank
 statisticsdbimodule: Pg
 statisticsdbhost: localhost
-statisticsdbport: 5433
+statisticsdbport: 5432
 statisticsdbname: openbib_statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
 # Einstellungen fuer Memcached
 
-memcached:
-  servers:
-     - '127.0.0.1:11211'
-  compress_threshold: 10000
+#memcached:
+  #servers:
+     #- '127.0.0.1:11211'
+  #compress_threshold: 10000
 
 # Einstellungen fuer ElasticSearch
 
@@ -2054,6 +2054,12 @@ searchfield:
   'id':
      'prefix': 'id'
      'type': 'id'
+  'hbzid':
+     'prefix': 'hbzid'
+     'type': 'id'
+  'zdbid':
+     'prefix': 'zdbid'
+     'type': 'id'
   'personid':
      'prefix': 'perid'
      'type': 'id'
@@ -2438,6 +2444,8 @@ xapian_search_prefix:
   'corpid': 'I2'
   'subjid': 'I3'
   'clnid': 'I4'
+  'hbzid': 'I5'
+  'zdbid': 'I6'
 
   'fs': ''
 
@@ -2869,7 +2877,7 @@ bibsonomy_api_user: ''
 librarything_api_key: ''
 
 # Zugriffsinformationen fuer ReCaptcha
-recaptcha_user: ''
+recaptcha_user: 'kug'
 recaptcha_public_key: ''
 recaptcha_private_key: ''
 

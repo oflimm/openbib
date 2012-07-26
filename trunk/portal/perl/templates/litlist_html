@@ -36,14 +36,19 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="breadcrumb">
+   <div class="functional_nav">
+     <div class="breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
          <li><a href="#" class="lastitem">[% litlist.properties.title %]</a></li>
       </ul>
+     </div>
+     <div class="representation">
+<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+     </div>
    </div>
-
 <p/>
 
 <div class="page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
@@ -60,10 +65,6 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-<div class="representation">
-<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
-</div>
 [% PROCESS common/subtemplate name="litlist_navigation" %] 
         </div>
       </div>

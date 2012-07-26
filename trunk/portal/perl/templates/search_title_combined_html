@@ -46,7 +46,8 @@
 
 %]
 
-   <div class="breadcrumb">
+   <div class="functional_nav">
+     <div class="breadcrumb">
        <ul>
          <li><a href="[% config.get('home_loc') %]">Start</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Recherche") %]:&nbsp;
@@ -61,8 +62,8 @@
 <em>[% used_fields.join(' ; ') %]</em></a>
         </li>
       </ul>
-   </div>
-
+     </div>
+   </div> 
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">

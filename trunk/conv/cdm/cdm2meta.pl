@@ -523,7 +523,7 @@ sub parse_titset {
 
         foreach my $new_category (keys %{$mexdaten_ref->{$idx}}){
             push @{$item_ref->{$new_category}}, {
-                mult     => 1,
+                mult     => $idx,
                 subfield => '',
                 content  => $mexdaten_ref->{$idx}->{$new_category},
             };

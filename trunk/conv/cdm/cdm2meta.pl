@@ -36,14 +36,14 @@ use Encode 'decode';
 use Getopt::Long;
 use JSON::XS;
 use XML::Twig;
+use XML::Simple;
+
 use YAML::Syck;
 
 use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 
-our ($mexidn);
-
-$mexidn  =  1;
+our $mexidn  =  1;
 
 my ($inputfile,$configfile);
 
@@ -64,12 +64,12 @@ exit;
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
-open (TITLE,     ">:utf8","meta.title");
-open (PERSON,     ">:utf8","meta.person");
-open (CORPORATEBODY,     ">:utf8","meta.corporatebody");
+open (TITLE,         ">:utf8","meta.title");
+open (PERSON,        ">:utf8","meta.person");
+open (CORPORATEBODY, ">:utf8","meta.corporatebody");
 open (CLASSIFICATION,">:utf8","meta.classification");
-open (SUBJECT,     ">:utf8","meta.subject");
-open (HOLDING,     ">:utf8","meta.holding");
+open (SUBJECT,       ">:utf8","meta.subject");
+open (HOLDING,       ">:utf8","meta.holding");
 
 my $twig= XML::Twig->new(
    TwigHandlers => {
@@ -78,7 +78,7 @@ my $twig= XML::Twig->new(
  );
 
 
-$twig->parsefile($inputfile);
+$twig->safe_parsefile($inputfile);
 
 close(TITLE);
 close(PERSON);
@@ -108,6 +108,7 @@ sub parse_titset {
     # Aenderungsdatum
     if(defined $titset->first_child('cdmmodified') && $titset->first_child('cdmmodified')->text()){
         my ($year,$month,$day)=split("-",$titset->first_child('cdmmodified')->text());
+
         push @{$title_ref->{'0003'}}, {
             content  => "$day.$month.$year",
             subfield => '',
@@ -121,6 +122,27 @@ sub parse_titset {
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
             my $content = konv($titset->first_child($kateg)->text());
 #            my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
+
+            if ($convconfig->{filter}{$kateg}{filter_junk}){
+                $content = filter_junk($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+                $content = filter_newline2br($content);
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_match}){
+                $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
+            }
+
+            if ($convconfig->{filter}{$kateg}{filter_add_year}){
+                my $new_content = filter_match($content,$convconfig->{filter}{$kateg}{filter_add_year}{regexp});
+                push @{$title_ref->{$convconfig->{filter}{$kateg}{filter_add_year}{category}}}, {
+                    content  => $new_content,
+                    subfield => '',
+                    mult     => $mult,
+                };
+            }
             
             if ($content){
                 my @parts = ();
@@ -145,6 +167,7 @@ sub parse_titset {
     
     # Autoren abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{pers}}){
+        my $mult = 1;
         if (defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
             my $content = konv($titset->first_child($kateg)->text());
             #my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
@@ -238,6 +261,7 @@ sub parse_titset {
 
     # Notationen abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{sys}}){
+        my $mult = 1;
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
             my $content = konv($titset->first_child($kateg)->text());
             #my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
@@ -284,6 +308,7 @@ sub parse_titset {
         
     # Schlagworte abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{subj}}){
+        my $mult = 1;
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
             my $content = konv($titset->first_child($kateg)->text());
 #            $content    = decode($convconfig->{encoding},$content) if (exists $convconfig->{encoding});
@@ -327,42 +352,187 @@ sub parse_titset {
         }
     }
     # Schlagworte abarbeiten Ende
-    
-    # Exemplardaten abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{exempl}}){
-        if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
-            my $content = konv($titset->first_child($kateg)->text());
+
+    # Strukturdaten    
+    if (defined $titset->first_child('structure')){
+        my $structure = $titset->first_child('structure')->sprint();
+        
+        my $xs = new XML::Simple(ForceArray => ['node','page','pagefile']);
+        
+        my $structure_ref = $xs->XMLin($structure);
+        
+        print YAML::Syck::Dump($structure_ref);
+        
+        
+        if (@{$structure_ref->{page}} > 0){
+            my $mult = 1;
             
-            if ($content){
-                my @parts = ();
-                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+            foreach my $page_ref (@{$structure_ref->{page}}){
+                push @{$title_ref->{'6050'}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    content    => $page_ref->{pagetitle},
+                } if (defined $page_ref->{pagetitle});
+
+                foreach my $pagefile_ref (@{$page_ref->{pagefile}}){
+                    if ($pagefile_ref->{pagefiletype} eq "access"){
+                        push @{$title_ref->{'6051'}}, {
+                            mult       => $mult,
+                            subfield   => '',
+                            content    => $pagefile_ref->{pagefilelocation},
+                        } if (defined $pagefile_ref->{pagefilelocation});
+                    }
+                    
+                    
+                    if ($pagefile_ref->{pagefiletype} eq "thumbnail"){
+                        push @{$title_ref->{'6052'}}, {
+                            mult       => $mult,
+                            subfield   => '',
+                            content    => $pagefile_ref->{pagefilelocation},
+                        } if (defined $pagefile_ref->{pagefilelocation});
+                    }
                 }
-                else {
-                    push @parts, $content;
-                }
+                push @{$title_ref->{'6053'}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    content    => $page_ref->{pagetext},
+                } if (defined $page_ref->{pagetext});
 
-                foreach my $part (@parts){
-                    my $item_ref = {};
-                    $item_ref->{id} = $mexidn;
-                    push @{$item_ref->{'0004'}}, {
-                        mult     => 1,
-                        subfield => '',
-                        content  => $titset->first_child($convconfig->{uniqueidfield})->text(),
-                    };
+                push @{$title_ref->{'6054'}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    content    => $page_ref->{pageptr},
+                } if (defined $page_ref->{pageptr});
+                $mult++;
+            }   
+        }
 
-                    push @{$item_ref->{$convconfig->{exempl}{$kateg}}}, {
-                        mult     => 1,
-                        subfield => '',
-                        content  => $part,
-                    };
+        if (@{$structure_ref->{node}} > 0){
 
-                    print HOLDING encode_json $item_ref, "\n"; 
-                    $mexidn++;
+            foreach my $node_ref (@{$structure_ref->{node}}){
+                my $i = 1;
+            
+                foreach my $page_ref (@{$node_ref->{page}}){
+                    push @{$title_ref->{'6050'}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        content    => $page_ref->{pagetitle},
+                    } if (defined $page_ref->{pagetitle});
+                    
+                    foreach my $pagefile_ref (@{$page_ref->{pagefile}}){
+                        if ($pagefile_ref->{pagefiletype} eq "access"){
+                            push @{$title_ref->{'6051'}}, {
+                                mult       => $mult,
+                                subfield   => '',
+                                content    => $pagefile_ref->{pagefilelocation},
+                            } if (defined $pagefile_ref->{pagefilelocation});
+                        }
+                        
+                        
+                        if ($pagefile_ref->{pagefiletype} eq "thumbnail"){
+                            push @{$title_ref->{'6052'}}, {
+                                mult       => $mult,
+                                subfield   => '',
+                                content    => $pagefile_ref->{pagefilelocation},
+                            } if (defined $pagefile_ref->{pagefilelocation});
+                        }
+                    }
+                    
+                    push @{$title_ref->{'6053'}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        content    => $page_ref->{pagetext},
+                    } if (defined $page_ref->{pagetext});
+                    
+                    push @{$title_ref->{'6054'}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        content    => $page_ref->{pageptr},
+                    } if (defined $page_ref->{pageptr});
+                    $mult++;
                 }
             }
         }
     }
+        
+        
+#         m
+#         my $structure_ref = {};
+#         foreach my $node ($structure->children('node'){
+#             if(defined $titset->first_child('nodetitle') && $titset->first_child('nodetitle')->text()){
+#                 $structure_ref->{nodetitle} = konv($titset->first_child('nodetitle')->text());
+#             }
+
+#             my $page_ref = [];
+#             foreach my $page ($node->children('page'){
+#                 my $thispage_ref = {};
+#                 if(defined $titset->first_child('pagetitle') && $titset->first_child('pagetitle')->text()){
+#                     $thispage_ref->{pagetitle} = konv($titset->first_child('pagetitle')->text());
+#                 }
+#                 if(defined $titset->first_child('pageptr') && $titset->first_child('pageptr')->text()){
+#                     $thispage_ref->{pageptr} = konv($titset->first_child('pageptr')->text());
+#                 }
+
+                
+#             }            
+#         }                
+
+
+    my $mexdaten_ref = {};
+    
+    # Exemplardaten abarbeiten Anfang
+    foreach my $kateg (keys %{$convconfig->{exempl}}){
+        my ($new_category)=$convconfig->{exempl}{$kateg}=~m/^(\d\d\d\d)/;
+        my ($new_mult)    =$convconfig->{exempl}{$kateg}=~m/^\d\d\d\d\.(\d\d\d)/;
+        if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
+            my $content = konv($titset->first_child($kateg)->text());
+            
+            if ($content){
+                if (exists $convconfig->{category_split_chars}{$kateg}){
+                    my @parts = ();
+                    if ($content=~/$convconfig->{category_split_chars}{$kateg}/){
+                        push @parts, split($convconfig->{category_split_chars}{$kateg},$content);
+                    }
+                    else {
+                        push @parts, $content;
+                    }
+                    
+                    my $idx=1;
+                    foreach my $part (@parts){
+                        $f_idx=sprintf "%03d", $idx;;
+                        $mexdaten_ref->{$f_idx}{$new_category}=$part;
+                        $idx++;
+                    }
+
+                }
+                else {
+                    $mexdaten_ref->{$new_mult}{$new_category}=$content;
+                }
+            }
+        }
+    }
+
+    foreach my $idx (keys %$mexdaten_ref){
+        my $item_ref = {};
+        $item_ref->{id} = $mexidn;
+        push @{$item_ref->{'0004'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $titset->first_child($convconfig->{uniqueidfield})->text(),
+        };
+
+        foreach my $new_category (keys %{$mexdaten_ref->{$idx}}){
+            push @{$item_ref->{$new_category}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $mexdaten_ref->{$idx}->{$new_category},
+            };
+        }
+        
+        print HOLDING encode_json $item_ref, "\n";
+        $mexidn++;
+    }
+
     # Exemplardaten abarbeiten Ende
 
     print TITLE encode_json $title_ref, "\n";
@@ -371,7 +541,7 @@ sub parse_titset {
     # up to here
     $t->purge();
 }
-                                   
+
 sub konv {
     my ($content)=@_;
 
@@ -381,3 +551,33 @@ sub konv {
 
     return $content;
 }
+
+# Filter
+
+sub filter_junk {
+    my ($content) = @_;
+
+    $content=~s/\W/ /g;
+    $content=~s/\s+/ /g;
+    $content=~s/\s\D\s/ /g;
+
+    
+    return $content;
+}
+
+sub filter_newline2br {
+    my ($content) = @_;
+
+    $content=~s/\n/<br\/>/g;
+    
+    return $content;
+}
+
+sub filter_match {
+    my ($content,$regexp) = @_;
+
+    my ($match)=$content=~m/($regexp)/g;
+    
+    return $match;
+}
+

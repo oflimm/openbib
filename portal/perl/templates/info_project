@@ -30,11 +30,13 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="breadcrumb">
+   <div class="functional_nav">
+     <div class="breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Projekt") %]</a></li>
       </ul>
+     </div>
    </div>
 
  <!-- begin: #col1 - first float column -->

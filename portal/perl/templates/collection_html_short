@@ -139,7 +139,7 @@
 [%-   END -%]
 [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>[%- IF titleinfo -%]&nbsp;[ [% titleinfo %] ][%- END -%]
       </div>
-      <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
+      <div class="titlemark">[% signatur | truncate(config.get('maxlength_mark')) %]</div>
       <div class="titleactions">
 <a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?_method=POST;id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
 &nbsp;<a href="[% path_prefix %]/[% config.get('collection_loc') %]/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>

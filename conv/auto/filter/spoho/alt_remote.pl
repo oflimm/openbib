@@ -41,7 +41,7 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $aleph2metaexe = "$konvdir/aleph18seq2meta.pl";
+my $aleph2metaexe = "$konvdir/alephseq2meta.pl";
 
 my $pool          = $ARGV[0];
 
@@ -57,6 +57,6 @@ if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotep
 }
 
 print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm unload* ; rm $titlefile");
+system("cd $pooldir/$pool ; rm meta.* ; rm $titlefile");
 system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; zcat $titlefile > pool.dat ; $aleph2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/spoho.yml; gzip unload.*");
+system("cd $pooldir/$pool; zcat $titlefile > pool.dat ; $aleph2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/spoho.yml; gzip meta.*");

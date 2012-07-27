@@ -6,7 +6,7 @@
 #
 #  Konverierung von Aleph 18 Sequential MAB Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,18 +37,13 @@ use utf8;
 
 use Encode 'decode';
 use Getopt::Long;
+use JSON::XS;
 use YAML::Syck;
 
 use OpenBib::Config;
+use OpenBib::Conv::Common::Util;
 
 my $config = OpenBib::Config->instance;
-
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
-
-@autdubbuf = ();
-@kordubbuf = ();
-@swtdubbuf = ();
-@notdubbuf = ();
 
 my ($inputfile,$configfile);
 
@@ -78,7 +73,7 @@ our $ht2id_ref={};
 # Pass 1: Titel-IDs zu HT-Nummern bestimmen
 while (<DAT>){
     if (/$convconfig->{'ht-selector'}/){
-        $ht2id_ref->{$2}=$1;
+        $ht2id_ref->{$2}= sprintf "%d", $1;
     }
 }
 
@@ -88,23 +83,14 @@ close(DAT);
 
 our @buffer = ();
 
-my $autidn=1;
-my $swtidn=1;
-my $mexidn=1;
-my $koridn=1;
-my $notidn=1;
+our $holding_id=1;
 
-my $autdublastidx=1;
-my $kordublastidx=1;
-my $notdublastidx=1;
-my $swtdublastidx=1;
-
-open (TIT,     ">:utf8","unload.TIT");
-open (AUT,     ">:utf8","unload.PER");
-open (KOR,     ">:utf8","unload.KOE");
-open (NOTATION,">:utf8","unload.SYS");
-open (SWT,     ">:utf8","unload.SWD");
-open (MEX,     ">:utf8","unload.MEX");
+open (TITLE,         ">:utf8","meta.title");
+open (PERSON,        ">:utf8","meta.person");
+open (CORPORATEBODY, ">:utf8","meta.corporatebody");
+open (CLASSIFICATION,">:utf8","meta.classification");
+open (SUBJECT,       ">:utf8","meta.subject");
+open (HOLDING,       ">:utf8","meta.holding");
 
 open(DAT,"<","$inputfile");
 while (<DAT>){
@@ -122,14 +108,15 @@ while (<DAT>){
         push @buffer, decode($convconfig->{encoding},$_);
     }
 }
+
 convert_buffer() if (@buffer);
 
-close(MEX);
-close(TIT);
-close(SWT);
-close(KOR);
-close(NOTATION);
-close(AUT);
+close(HOLDING);
+close(TITLE);
+close(SUBJECT);
+close(CORPORATEBODY);
+close(CLASSIFICATION);
+close(PERSON);
 
 
 close(DAT);
@@ -140,11 +127,12 @@ sub convert_buffer {
     my $have_id  = 0;
     my $have_lok = 0;
 
-    my $mexidx = 1;
-    my $titid  = 0;
+    my $titid;
     
     #######################################################################
     # Umwandeln
+
+    my $title_ref = {};
     
     # Titel ID und Existenz Lokaldaten bestimmen
     foreach my $line (@buffer){
@@ -155,15 +143,19 @@ sub convert_buffer {
     }
 
     if ($titid){
-        print TIT "0000:".sprintf "%d\n", $titid;
+        $title_ref->{id} = sprintf "%d", $titid; # remove leading zeros
         $have_id=$titid;
     }
 
     return if (!$have_id);
 
+    my $multcount_ref = {};
+
     foreach my $line (@buffer){
         my ($titid,$kateg,$indikator,$type,$content)=$line=~/$convconfig->{'parse-line'}/;
 
+        $titid = sprintf "%d", $titid;
+        
 #        print "-------------------------------------\n";
 #        print "$kateg,$indikator,$type,$content\n";
         my $is_mex=0;
@@ -183,14 +175,45 @@ sub convert_buffer {
         foreach my $kategind (keys %$content_ref){
 
             # Verweisungen
-            if ($kateg eq "453"){
-                if ($ht2id_ref->{$content_ref->{"4531a"}}){
-                    print TIT "0004:".$ht2id_ref->{$content_ref->{"4531a"}}."\n";
+            if ($kateg eq "453" || $kateg eq "463" || $kateg eq "473"){
+                if (defined $ht2id_ref->{$content_ref->{"4531a"}} && $ht2id_ref->{$content_ref->{"4531a"}}){
+                    my $multcount=++$multcount_ref->{'0004'};
+
+                    push @{$title_ref->{'0004'}}, {
+                        content  => $ht2id_ref->{$content_ref->{"4531a"}},
+                        subfield => '',
+                        mult     => $multcount,
+                    };
+                }
+                if (defined $ht2id_ref->{$content_ref->{"4631a"}} && $ht2id_ref->{$content_ref->{"4631a"}}){
+                    my $multcount=++$multcount_ref->{'0004'};
+
+                    push @{$title_ref->{'0004'}}, {
+                        content  => $ht2id_ref->{$content_ref->{"4631a"}},
+                        subfield => '',
+                        mult     => $multcount,
+                    };
+                }
+                if (defined $ht2id_ref->{$content_ref->{"4731a"}} && $ht2id_ref->{$content_ref->{"4731a"}}){
+                    my $multcount=++$multcount_ref->{'0004'};
+
+                    push @{$title_ref->{'0004'}}, {
+                        content  => $ht2id_ref->{$content_ref->{"4731a"}},
+                        subfield => '',
+                        mult     => $multcount,
+                    };
                 }
             }
 
-            if (exists $convconfig->{'title'}{$kategind}){
-                print TIT $convconfig->{'title'}{$kategind}.":".$content_ref->{$kategind}."\n";
+            if (defined $convconfig->{'title'}{$kategind}){
+                my $new_category = $convconfig->{'title'}{$kategind};
+                my $multcount=++$multcount_ref->{$new_category};
+                
+                push @{$title_ref->{$new_category}}, {
+                    content  => $content_ref->{$kategind},
+                    subfield => '',
+                    mult     => $multcount,
+                };
             }
             
             # Autoren abarbeiten Anfang
@@ -202,23 +225,34 @@ sub convert_buffer {
                     $content    = $1;
                     $supplement = $2;
                 }
-                $autidn=get_autidn($content);
                 
-                if ($autidn > 0){
-                    print AUT "0000:$autidn\n";
-                    print AUT "0800:$content\n";
-                    print AUT "9999:\n";
+                my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
+                
+                if ($new){
+                    my $item_ref = {};
+                    $item_ref->{id} = $person_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content,
+                    };
                     
+                    print PERSON encode_json $item_ref, "\n";
                 }
-                else {
-                    $autidn=(-1)*$autidn;
-                }
-                
+
+                my $new_category = $convconfig->{pers}{$kategind};
+                my $multcount=++$multcount_ref->{$new_category};
+
                 if ($supplement){
                     $supplement=" ; $supplement";
                 }
-                
-                print TIT $convconfig->{'pers'}{$kategind}.":IDN: ".$autidn.$supplement."\n";
+
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $multcount,
+                    subfield   => '',
+                    id         => $person_id,
+                    supplement => $supplement,
+                };
             }
             # Autoren abarbeiten Ende
             
@@ -227,19 +261,29 @@ sub convert_buffer {
             elsif (exists $convconfig->{'corp'}{$kategind}){
                 my $content = $content_ref->{$kategind};
                 
-                $koridn=get_koridn($content);
+                my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
                 
-                if ($koridn > 0){
-                    print KOR "0000:$koridn\n";
-                    print KOR "0800:$content\n";
-                    print KOR "9999:\n";
+                if ($new){
+                    my $item_ref = {};
+                    $item_ref->{id} = $corporatebody_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content,
+                    };
                     
+                    print CORPORATEBODY encode_json $item_ref, "\n";
                 }
-                else {
-                    $koridn=(-1)*$koridn;
-                }
-                
-                print TIT $convconfig->{'corp'}{$kategind}.":IDN: ".$koridn."\n";
+
+                my $new_category = $convconfig->{corp}{$kategind};
+                my $multcount=++$multcount_ref->{$new_category};
+
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $multcount,
+                    subfield   => '',
+                    id         => $corporatebody_id,
+                    supplement => '',
+                };
             }
             # Koerperschaften abarbeiten Ende
             
@@ -248,39 +292,59 @@ sub convert_buffer {
             elsif (exists $convconfig->{'sys'}{$kategind}){
                 my $content = $content_ref->{$kategind};
                 
-                $notidn=get_notidn($content);
+                my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
                 
-                if ($notidn > 0){
-                    print NOTATION "0000:$notidn\n";
-                    print NOTATION "0800:$content\n";
-                    print NOTATION "9999:\n";
+                if ($new){
+                    my $item_ref = {};
+                    $item_ref->{id} = $classification_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content,
+                    };
                     
+                    print CLASSIFICATION encode_json $item_ref, "\n";
                 }
-                else {
-                    $notidn=(-1)*$notidn;
-                }
-                
-                print TIT $convconfig->{'sys'}{$kategind}.":IDN: ".$notidn."\n";
+
+                my $new_category = $convconfig->{sys}{$kategind};
+                my $multcount=++$multcount_ref->{$new_category};
+
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $multcount,
+                    subfield   => '',
+                    id         => $classification_id,
+                    supplement => '',
+                };
             }
             # Notationen abarbeiten Ende
             
             # Schlagworte abarbeiten Anfang            
             elsif (exists $convconfig->{'subj'}{$kategind}){
                 my $content = $content_ref->{$kategind};
-                $swtidn=get_swtidn($content);
+
+                my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
                 
-                if ($swtidn > 0){	  
-                    print SWT "0000:$swtidn\n";
-                    print SWT "0800:$content\n";
-                    print SWT "9999:\n";
+                if ($new){
+                    my $item_ref = {};
+                    $item_ref->{id} = $subject_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content,
+                    };
+                    
+                    print SUBJECT encode_json $item_ref, "\n";
                 }
-                else {
-                    $swtidn=(-1)*$swtidn;
-                }
-                
-                print TIT $convconfig->{'subj'}{$kategind}.":IDN: ".$swtidn."\n";
-                # Schlagworte abarbeiten Ende
-                
+
+                my $new_category = $convconfig->{subj}{$kategind};
+                my $multcount=++$multcount_ref->{$new_category};
+
+                push @{$title_ref->{$new_category}}, {
+                    mult       => $multcount,
+                    subfield   => '',
+                    id         => $subject_id,
+                    supplement => '',
+                };
             }
             # Schlagworte abarbeiten Ende
 
@@ -288,114 +352,29 @@ sub convert_buffer {
 
         # Exemplare abarbeiten Anfang
         if ($kateg eq $convconfig->{'mex-selector'}){
-            $mexidx=sprintf "%03d", $mexidx;
-            print MEX "0000:$mexidx\n";
-            print MEX "0004:$titid\n";
+            my $item_ref = {};
+
+            $item_ref->{id} = $holding_id++;
+            
+            push @{$item_ref->{'0004'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $titid,
+            };
+            
             foreach my $kategind (keys %$content_ref){
-                if (exists $convconfig->{'mex'}{$kategind}){
-                    print MEX $convconfig->{'mex'}{$kategind}.":".$content_ref->{$kategind}."\n";
+                if (defined $convconfig->{'mex'}{$kategind}){
+                    push @{$item_ref->{$convconfig->{'mex'}{$kategind}}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $content_ref->{$kategind},
+                    };
                 }
             }
-            print MEX "9999:\n";
             
-            $mexidx++;
-
+            print HOLDING encode_json $item_ref, "\n";
         }
     }
-    print TIT "9999:\n";
-
+    
+    print TITLE encode_json $title_ref, "\n";
 }
-
-
-sub get_autidn {
-    my ($autans)=@_;
-
-#    print "AUT $autans\n";
-
-    my $autdubidx=1;
-    my $autdubidn=0;
-
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-
-    while ($autdubidx <= $#autdubbuf){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;      
-        }
-        $autdubidx++;
-    }
-    if (!$autdubidn){
-        $autdubbuf[$autdubidx]=$autans;
-        $autdubidn=$autdubidx;
-    }
-
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-    
-#    print $autdubidn,"\n";
-    return $autdubidn;
-}
-
-sub get_swtidn {
-    my ($swtans)=@_;
-
-#    print "SWT $swtans\n";
-    
-    my $swtdubidx=1;
-    my $swtdubidn=0;
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-    
-    while ($swtdubidx <= $#swtdubbuf){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;      
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdubidx]=$swtans;
-        $swtdubidn=$swtdubidx;
-    }
-#    print $swtdubidn,"\n";
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-#    print "-----\n";
-    return $swtdubidn;
-}
-
-sub get_koridn {
-    my ($korans)=@_;
-    
-    my $kordubidx=1;
-    my $kordubidn=0;
-    
-    while ($kordubidx <= $#kordubbuf){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;      
-        }
-        $kordubidx++;
-    }
-    if (!$kordubidn){
-        $kordubbuf[$kordubidx]=$korans;
-        $kordubidn=$kordubidx;
-    }
-    return $kordubidn;
-}
-
-sub get_notidn {
-    my ($notans)=@_;
-    
-    my $notdubidx=1;
-    my $notdubidn=0;
-    
-    while ($notdubidx <= $#notdubbuf){
-        if ($notans eq $notdubbuf[$notdubidx]){
-            $notdubidn=(-1)*$notdubidx;      
-        }
-        $notdubidx++;
-    }
-    if (!$notdubidn){
-        $notdubbuf[$notdubidx]=$notans;
-        $notdubidn=$notdubidx;
-    }
-    return $notdubidn;
-}
-

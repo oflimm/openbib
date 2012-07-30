@@ -2899,9 +2899,9 @@ internal_serialize_type: 'json'
 
 # Maximale Laenge an Inhalt in Kurztitelliste, ab der Personen
 # gekuerzt werden soll
-maxlength_pers: 100
-maxlength_tit: 100
-maxlength_sign: 70
+maxlength_person: 100
+maxlength_title: 100
+maxlength_mark: 70
 maxlength_dbname: 70
 
 # https fuer Admin und Nutzer verwenden

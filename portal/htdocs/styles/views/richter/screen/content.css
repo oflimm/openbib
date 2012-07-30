@@ -177,7 +177,8 @@
   * @section content-tables
   */
 
-  table { width:auto; border-collapse:collapse; margin-bottom:0.5em; border-top:2px #888 solid; border-bottom:2px #888 solid; }
+/*  table { width:auto; border-collapse:collapse; margin-bottom:0.5em; border-top:2px #888 solid; border-bottom:2px #888 solid; } */
+  table { width:auto; margin-bottom:0.5em; }  
   table caption { font-variant:small-caps; }
   table.full { width:100%; }
   table.fixed { table-layout:fixed; }
@@ -190,9 +191,9 @@
   tbody th { border-bottom:1px solid #fff; text-align:left; }
   tbody td { border-bottom:1px solid #eee; }
 
-  tbody tr:hover th[scope="row"],
+/*  tbody tr:hover th[scope="row"],
   tbody tr:hover tbody th.sub { background:#f0e8e8; }
-  tbody tr:hover td { background:#fff8f8; }
+  tbody tr:hover td { background:#fff8f8; } */
 
  /**
   * ------------------------------------------------------------------------------------------------- #
@@ -204,8 +205,8 @@
 
 #header_logo_image {
 background: url(/images/openbib/views/richter/logo.png) center no-repeat;
- width: 400px;
- height: 110px;
+ width: 300px;
+ height: 114px;
  position: absolute;
  top: 6px;
  left: 7px;
@@ -607,48 +608,103 @@ dl.categorized_items {
 }
 
 
-  .breadcrumb {
-    position:relative;
-    height:30px;
+  .functional_nav {
     width:100%;
-  }
-
-  .breadcrumb ul {
-    border-top: 1px #e3e3e3 solid;
-    border-bottom: 1px #e3e3e3 solid;
-
-    position:relative;
-    margin:0 5px 0 5px;
+    margin:0 0 0 0;
     padding:0;
     height:32px;
+    border-top: 1px #e3e3e3 solid;
+    border-bottom: 1px #e3e3e3 solid;
   }
-  .breadcrumb ul li {
+
+  .functional_nav .breadcrumb {
     padding:0;
-    margin:0;
+    margin-top:-15px;
+    margin-left: 0px;
+  }
+  
+  .functional_nav .breadcrumb ul li {
     list-style:none;
     float:left;
     height:30px
     display:inline;
   }
-  .breadcrumb ul li a {
+  .functional_nav .breadcrumb ul li a {
     font:12px Arial, Helvetica, sans-serif;
     color:rgb(0,0,0);
     text-decoration:none;
     line-height:30px;
     display:block;
     background:url('/images/openbib/breadcrumb.png') 100% no-repeat;
-    padding:0 17px 0 15px;
+    padding:5px 17px 0 0;
   }
-  .breadcrumb ul li a:hover {
+  .functional_nav .breadcrumb ul li a:hover {
     text-decoration:underline;
     color:rbg(0,0,0);
   }
-  .breadcrumb ul li a.lastitem {
+  .functional_nav .breadcrumb ul li a.lastitem {
     background:none;
     color:rgb(0,0,0);
   }
-  .breadcrumb ul li a.lastitem:hover {
+  .functional_nav .breadcrumb ul li a.lastitem:hover {
     text-decoration:none;
+  }
+
+  .functional_nav .representation {
+    float: right;
+    margin-top: 8px;
+    margin-right: 20px;
+  }
+
+  .searchbar_container {
+    width:100%;
+    margin:0 0 0 0;
+    padding-top:0px;
+    padding-bottom:10px;
+    height:30px;
+    line-height: 30px;
+    background: #eee;
+/*    border-top: 1px #e3e3e3 solid;
+    border-bottom: 1px #e3e3e3 solid; */
+    border-top: 1px slategrey solid;
+    border-bottom: 1px slategrey solid;
+  }
+
+  .searchbar_container .fs_field {
+    margin-left: 0;
+    height: 25px;
+    font:14px Arial, Helvetica, sans-serif;
+    display: inline;
+  }
+
+  .searchbar_container table {
+    margin-left: 10px;
+    border-collapse: none;
+    border: 0;
+    padding: 0;
+  }
+  
+  .searchbar_container .search_where {
+    display: none;
+  }
+
+  .searchbar_container .search_submit {
+    display: inline;
+    overflow: hidden;
+  }
+
+  .searchbar_container div.cssbutton {
+    float:none;
+    display: inline;
+  }
+
+  .searchbar_container button.cssbutton {
+    float:none;
+  }
+   
+  .searchbar_container .search_links {
+    margin-top: 0;
+    display: inline;
   }
 
 }

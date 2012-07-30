@@ -1,0 +1,100 @@
+[%#-
+#######################################################################
+#
+# Templatename: login
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Authentifizierung am Portal
+# entsprechend verschiedener Authentifizierungs-Ziele
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Anmelden") %]</a></li>
+      </ul>
+     </div>
+   </div>
+
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<h1>[% Login %]</h1>
+<div id="login_container">
+
+<div class="left_side">
+<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="yform">
+
+<input type="hidden" name="redirect_to" value="[% redirect_to %]">
+
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.type == 'self' -%]
+<input type="hidden" name="targetid" value="[% target.id %]">
+[%-   END -%]
+[%- END -%]
+
+<fieldset class="full">
+<legend>Anmelden</legend>
+<div class="type-text">
+<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+<input type="text" name="username" id="email_username" value="[% username %]" />
+</div>
+<div class="type-text">
+<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
+<input type="password" name="password" id="email_username" />
+</div>
+<div>
+<a href="[% path_prefix %]/[% config.get('registration_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('mailpassword_loc') %]?action=show">[% msg.maketext("Passwort vergessen?") %]</a>
+</div>
+
+<p/>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div>
+</fieldset>
+
+</div><!-- End right_side -->
+</div><!-- End login_container -->
+</form>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -93,28 +93,27 @@ sub show {
 
     # CGI Args
   
-    # Standard ist 'einfache Suche'
-    my $setmask="simple";
-    
-    $session->set_mask($setmask);
-  
     $logger->debug("Home-sID: $session->{ID}");
     $logger->debug("Path-Prefix: ".$path_prefix);
-
-    # Standard-URL
-    my $redirecturl = "$config->{base_loc}/$view/$config->{searchform_loc}/$setmask.html?l=".$self->param('lang');
 
     my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
 
     $logger->debug("Alternative Interne Startseite: $viewstartpage");
     
     if ($viewstartpage){
-        $redirecturl = $viewstartpage.".".$self->param('representation')."?l=".$self->param('lang');
+        my $redirecturl = $viewstartpage.".".$self->param('representation')."?l=".$self->param('lang');
+
+        $logger->info("Redirecting to $redirecturl");
+
+        $r->internal_redirect($redirecturl);
     }
-    
-    $logger->info("Redirecting to $redirecturl");
-    
-    $r->internal_redirect($redirecturl);
+    else {
+        # TT-Data erzeugen
+        my $ttdata={
+        };
+        
+        $self->print_page($config->{'tt_home_tname'},$ttdata);
+    }
 
     return Apache2::Const::OK;
 }

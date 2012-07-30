@@ -63,7 +63,7 @@ local_search_backend: xapian
 
 # Benutzer, Passwort und Default view fuer die Administration
 adminuser: admin
-adminpasswd: StrengGeheim..
+adminpasswd: StrengGeheim
 
 defaultview: openbib
 
@@ -2430,7 +2430,7 @@ elasticsearch_sorttype_value:
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
 xapian_option:
-  maxmatch: 2000
+  maxmatch: 4000
   max_key_length: 240
 
 # Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
@@ -2710,9 +2710,17 @@ tt_ezb_showjournals_tname: ezb_showjournals
 tt_ezb_searchjournals_tname: ezb_searchjournals
 tt_ezb_showjournalinfo_tname: ezb_showjournalinfo
 tt_ezb_showjournalreadme_tname: ezb_showjournalreadme
+tt_home_tname: home
 tt_info_11_tname: info_11
 tt_info_popular_databases_tname: info_popular_databases
 tt_info_13_tname: info_13
+tt_info_richterbibliothek_heute_tname: info_richterbibliothek_heute
+tt_info_externe_nachweise_tname: info_externe_nachweise
+tt_info_buecherlisten_tname: info_buecherlisten
+tt_info_arbeitsablauf_tname: info_arbeitsablauf
+tt_info_internetquellen_tname: info_internetquellen
+tt_info_publikationen_tname: info_publikationen
+tt_info_ansprechpartner_tname: info_ansprechpartner
 tt_info_elise_richter_tname: info_elise_richter
 tt_info_helene_richter_tname: info_helene_richter
 tt_info_portal_tname: info_portal

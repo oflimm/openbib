@@ -190,12 +190,6 @@ sub cgiapp_init {
                 $self->negotiate_language;
             }
             
-            # Pfade sind immer mit base_loc und view
-            my $baseloc    = $config->get('base_loc');
-            $path =~s{^$baseloc/[^/]+}{$path_prefix};
-            
-            $logger->debug("Corrected External Path: $path");
-            
             my $args = "?l=".$self->param('lang');
             
             $args=$args.";".$self->query->args() if ($self->query->args());

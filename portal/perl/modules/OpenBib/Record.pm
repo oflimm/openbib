@@ -44,11 +44,7 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Schema::Catalog;
-use OpenBib::Record::Person;
-use OpenBib::Record::CorporateBody;
-use OpenBib::Record::Subject;
-use OpenBib::Record::Classification;
-use OpenBib::Search::Util;
+use OpenBib::Schema::Enrichment;
 
 sub connectDB {
     my $self = shift;

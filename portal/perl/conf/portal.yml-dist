@@ -368,6 +368,32 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Title'
      rule: '/portal/:view/title/:database/popular'
      runmode: 'show_popular'
+
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/recent.html'
+     runmode: 'show_recent'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/recent.json'
+     runmode: 'show_recent'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/recent.rdf'
+     runmode: 'show_recent'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/recent.rss'
+     runmode: 'show_recent'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/recent.include'
+     runmode: 'show_recent'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/recent'
+     runmode: 'show_recent'
+
   - # title_loc:
      module: 'OpenBib::Handler::Apache::Title'
      rule: '/portal/:view/title/:database/new.html[get]'
@@ -2799,6 +2825,7 @@ tt_title_searchindex_tname: title_searchindex
 tt_title_collection_form_tname: title_collection_form
 tt_title_record_form_tname: title_record_form
 tt_title_popular_by_database_tname: title_popular_by_database
+tt_title_recent_by_database_tname: title_recent_by_database
 tt_title_popular_tname: title_popular
 tt_person_tname: person
 tt_corporatebody_tname: corporatebody

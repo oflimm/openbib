@@ -284,6 +284,10 @@ sub set_from_apache_request {
                 
                 if ($config->{'searchfield'}{$searchfield}{type} eq "string"){
                     # Stringsuche auch mit Trunkierung via * moeglich
+                    $thissearchfield_norm_content = OpenBib::Common::Util::grundform({
+                        content   => $thissearchfield_norm_content,
+                    });
+
                     $thissearchfield_norm_content =~s/[^\w*]/_/g;
                 }
                 

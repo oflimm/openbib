@@ -42,6 +42,7 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::Config;
 use OpenBib::Schema::Catalog;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;

@@ -36,8 +36,11 @@ use utf8;
 
 use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
+use Date::Manip;
 
+use OpenBib::Catalog;
 use OpenBib::Search::Backend::Xapian;
+use OpenBib::Search::Util;
 use OpenBib::Record::Title;
 use OpenBib::Template::Utilities;
 
@@ -56,6 +59,7 @@ sub setup {
         'show_record'             => 'show_record',
         'show_record_searchindex' => 'show_record_searchindex',
         'show_popular'            => 'show_popular',
+        'show_recent'             => 'show_recent',
     );
 
     # Use current path as template path,
@@ -102,6 +106,58 @@ sub show_popular {
     };
 
     my $templatename = "tt_title_popular".(($database)?'_by_database':'')."_tname";
+    $self->print_page($config->{$templatename},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
+sub show_recent {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    
+    my $statistics  = new OpenBib::Statistics();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $utils       = new OpenBib::Template::Utilities;
+
+    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
+    my $profile       = $config->get_profilename_of_view($view);
+
+    my $catalog = new OpenBib::Catalog($database);
+    
+    my $recordlist = $catalog->get_recent_titles({
+        limit    => 50,
+    });
+
+    # TT-Data erzeugen
+    my $ttdata={
+        database      => $database,
+        recordlist    => $recordlist,
+        profile       => $profile,
+        viewdesc      => $viewdesc,
+        dbinfo        => $dbinfotable,
+        statistics    => $statistics,
+        utils         => $utils,
+    };
+
+    my $templatename = "tt_title_recent".(($database)?'_by_database':'')."_tname";
+
     $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;

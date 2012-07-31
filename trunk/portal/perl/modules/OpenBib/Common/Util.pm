@@ -178,7 +178,7 @@ sub grundform {
     }
     else {
         # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
-        $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: ']//g;
+        $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/:* ']//g;
 
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;

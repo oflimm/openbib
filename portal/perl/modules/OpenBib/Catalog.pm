@@ -41,6 +41,7 @@ use Storable ();
 use OpenBib::Config;
 use OpenBib::Schema::DBI;
 use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 
 sub new {
     my ($class,$database) = @_;
@@ -52,11 +53,42 @@ sub new {
 
     bless ($self, $class);
 
+    $self->{database} = $database;
+    
     $self->connectDB($database);
     
     return $self;
 }
 
+
+sub get_recent_titles {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+
+    my $titles = $self->{schema}->resultset('Title')->search_rs(
+        undef,
+        {
+            order_by => ['tstamp_create DESC'],
+            rows     => $limit,
+        }
+    );
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    foreach my $title ($titles->all){
+        $logger->debug("Adding Title ".$title->id);
+        $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
+    }
+
+    return $recordlist;
+}
 
 sub connectDB {
     my $self = shift;

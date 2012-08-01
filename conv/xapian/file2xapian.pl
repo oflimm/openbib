@@ -49,15 +49,17 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Common::Util;
 
-my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel);
+my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath);
 
-&GetOptions("database=s"      => \$database,
-            "logfile=s"       => \$logfile,
-            "loglevel=s"      => \$loglevel,
-            "with-sorting"    => \$withsorting,
-            "with-positions"  => \$withpositions,
-	    "help"            => \$help
-	    );
+&GetOptions(
+    "indexpath=s"     => \$indexpath,
+    "database=s"      => \$database,
+    "logfile=s"       => \$logfile,
+    "loglevel=s"      => \$loglevel,
+    "with-sorting"    => \$withsorting,
+    "with-positions"  => \$withpositions,
+    "help"            => \$help
+);
 
 if ($help){
     print_help();
@@ -85,6 +87,8 @@ my $logger = get_logger();
 
 my $config = new OpenBib::Config();
 
+$indexpath=($indexpath)?$indexpath:$config->{xapian_index_base_path}."/".$database;
+
 if (!$database){
   $logger->fatal("Kein Pool mit --database= ausgewaehlt");
   exit;
@@ -101,29 +105,20 @@ tie %xapian_idmapping, 'DB_File', $config->{'autoconv_dir'}."/pools/$database/xa
 open(TITLECACHE,   "<:utf8","title.dump" ) || die "TITLECACHE konnte nicht geoeffnet werden";
 open(SEARCHENGINE, "<:utf8","searchengine.csv"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
 
-my $dbbasedir=$config->{xapian_index_base_path};
-
-my $thisdbpath="$dbbasedir/$database";
-my $thistmpdbpath="$dbbasedir/$database.temp";
-
-if (! -d "$thistmpdbpath"){
-    mkdir "$thistmpdbpath";
+if (! -d "$indexpath"){
+    mkdir "$indexpath";
 }
 
-if (! -d "$thisdbpath"){
-    mkdir "$thisdbpath";
-}
+$logger->info("Loeschung des alten Index fuer Datenbank $database");
 
-$logger->info("Loeschung des alten temporaeren Index fuer Datenbank $database");
-
-system("rm -f $thistmpdbpath/*");
+system("rm $indexpath/*");
 
 my $atime = new Benchmark;
 
 {    
     $logger->info("Aufbau eines neuen temporaeren Index fuer Datenbank $database");
     
-    my $db = Search::Xapian::WritableDatabase->new( $thistmpdbpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
+    my $db = Search::Xapian::WritableDatabase->new( $indexpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
     
     my $stopword_ref={};
     
@@ -392,16 +387,6 @@ close(SEARCHENGINE);
 
 untie(%xapian_idmapping);
 
-
-$logger->info("Aktiviere temporaeren Suchindex");
-
-#my $cmd = "rm $thisddbpath/* ; xapian-compact -n $thistmpdbpath $thisdbpath";
-#my $cmd = "rm -f $thisdbpath/* ; copydatabase $thistmpdbpath $thisdbpath";
-my $cmd = "rm -f $thisdbpath/* ; rmdir $thisdbpath ; mv $thistmpdbpath $thisdbpath";
-
-$logger->info($cmd);
-
-system($cmd);
 
 my $btime      = new Benchmark;
 my $timeall    = timediff($btime,$atime);

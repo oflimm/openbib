@@ -93,7 +93,7 @@
 [% IF fullresultcount > 0 %]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};jn=${queryoptions.get_option('jn')};" ;
+    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;jn=1;page=1;" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= fullresultcount ;

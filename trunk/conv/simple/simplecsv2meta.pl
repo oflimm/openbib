@@ -105,12 +105,12 @@ our $mexidn=1;
 
 open my $in,   "<:encoding($inputencoding)",$inputfile;
 
-open (TIT,     ">:encoding($outputencoding)","meta.title");
-open (AUT,     ">:encoding($outputencoding)","meta.person");
-open (KOR,     ">:encoding($outputencoding)","meta.corporatebody");
-open (NOTATION,">:encoding($outputencoding)","meta.classification");
-open (SWT,     ">:encoding($outputencoding)","meta.subject");
-open (MEX,     ">:encoding($outputencoding)","meta.holding");
+open (TITLE,         ">:encoding($outputencoding)","meta.title");
+open (PERSON,        ">:encoding($outputencoding)","meta.person");
+open (CORPORATEBODY, ">:encoding($outputencoding)","meta.corporatebody");
+open (CLASSIFICATION,">:encoding($outputencoding)","meta.classification");
+open (SUBJECT,       ">:encoding($outputencoding)","meta.subject");
+open (HOLDING,       ">:encoding($outputencoding)","meta.holding");
 
 my $titid = 1;
 my $have_titid_ref = {};
@@ -271,7 +271,7 @@ while ($csv->getline ($in)){
                         content  => $part,
                     };
 
-                    print AUT encode_json $item_ref, "\n";
+                    print PERSON encode_json $item_ref, "\n";
                 }
 
                 my $new_category = $convconfig->{person}{$kateg};
@@ -338,7 +338,7 @@ while ($csv->getline ($in)){
                         content  => $part,
                     };
 
-                    print KOR encode_json $item_ref, "\n";
+                    print CORPORATEBODY encode_json $item_ref, "\n";
                 }
 
                 my $new_category = $convconfig->{corporatebody}{$kateg};
@@ -405,7 +405,7 @@ while ($csv->getline ($in)){
                         content  => $part,
                     };
 
-                    print NOTATION encode_json $item_ref, "\n";
+                    print CLASSIFICATION encode_json $item_ref, "\n";
                 }
 
                 my $new_category = $convconfig->{classification}{$kateg};
@@ -471,7 +471,7 @@ while ($csv->getline ($in)){
                         content  => $part,
                     };
 
-                    print SWT encode_json $item_ref, "\n";
+                    print SUBJECT encode_json $item_ref, "\n";
                 }
 
                 my $new_category = $convconfig->{subject}{$kateg};
@@ -554,22 +554,22 @@ while ($csv->getline ($in)){
         
         $mexidn++;
         
-        print MEX encode_json $item_ref, "\n";
+        print HOLDING encode_json $item_ref, "\n";
     }
 
     # Exemplare abarbeiten Ende
 
-    print TIT encode_json $title_ref, "\n";
+    print TITLE encode_json $title_ref, "\n";
 }
 
 $logger->info("Excluded titles: $excluded_titles");
 
-close(TIT);
-close(AUT);
-close(KOR);
-close(NOTATION);
-close(SWT);
-close(MEX);
+close(TITLE);
+close(PERSON);
+close(CORPORATEBODY);
+close(CLASSIFICATION);
+close(SUBJECT);
+close(HOLDING);
 
 # Filter
 

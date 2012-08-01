@@ -473,7 +473,7 @@ sub save  {
         my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $sessionID })->single()->id;
 
         # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
-        $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile });
+        $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile, tstamp => \'NOW()' });
 
         # $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string");
     }

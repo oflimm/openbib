@@ -44,6 +44,7 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
+use OpenBib::Catalog;
 
 my ($database,$sync,$genmex,$help,$logfile,$loglevel);
 
@@ -297,8 +298,9 @@ my $atime = new Benchmark;
 {
     my $atime = new Benchmark;
 
+    my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
     $logger->info("### $database: Importing data into searchengine");   
-    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-fields -with-sorting -with-positions --database=$database");
+    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-fields -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
@@ -347,15 +349,79 @@ my $atime = new Benchmark;
 #     }
 # }
 
-# Tabellen aus temporaerer Datenbank in finale Datenbank verschieben
+my $loading_error = 0;
 
+# Konsistenzcheck zwischen Einlade-Daten und eingeladenen Daten in der temporaeren Datenbank
+{
+
+    my $table_map_ref = {
+        'Title'               => 'title',
+        'TitleField'          => 'title_fields',
+        'Person'              => 'person',
+        'PersonField'         => 'person_fields',
+        'Corporatebody'       => 'corporatebody',
+        'CorporatebodyField'  => 'corporatebody_fields',
+        'Subject'             => 'subject',
+        'SubjectField'        => 'subject_fields',
+        'Classification'      => 'classification',
+        'ClassificationField' => 'classification_fields',
+        'Holding'             => 'holding',
+        'HoldingField'        => 'holding_fields',
+        'TitlePerson'         => 'title_person',
+        'TitleCorporatebody'  => 'title_corporatebody',
+        'TitleClassification' => 'title_classification',
+        'TitleSubject'        => 'title_subject',
+        'TitleHolding'        => 'title_holding',
+    };
+    
+    my $catalog = new OpenBib::Catalog($databasetmp);
+
+    foreach my $resultset (keys %$table_map_ref){
+        my $dumpfilename = "$config->{autoconv_dir}/data/$database/$table_map_ref->{$resultset}.dump";
+        
+        my $count_in_db = $catalog->{schema}->resultset($resultset)->count;
+        my ($count_in_file) = `wc -l $dumpfilename` =~m/(\d+)\s+/;
+
+        $loading_error = 1 unless ($count_in_db == $count_in_file);
+    }
+
+    
+}
+
+if ($loading_error){
+    $logger->fatal("### $database: Problem beim Einladen. Exit.");
+    $logger->fatal("### $database: Loesche temporaere Datenbank/Index.");
+
+    system("$pgsqlexe -c 'drop database $databasetmp $config->{systemdbname}");
+    system("rm $config->{xapian_index_base_path}/${databasetmp}/* ; rmdir $config->{xapian_index_base_path}/${databasetmp}");
+
+    goto CLEANUP;
+}
+else {
+    $logger->info("### $database: Daten fehlerfrei eingeladen.")
+}
+
+# Tabellen aus temporaerer Datenbank in finale Datenbank verschieben
 {
     my $atime = new Benchmark;
 
     $logger->info("### $database: Tabellen aus temporaerer Datenbank in finale Datenbank verschieben");
 
-    system("$pgsqlexe -c 'drop database $database' $config->{systemdbname}");
+    system("$pgsqlexe -c 'alter database $database rename to ${database}tmp2' $config->{systemdbname}");
     system("$pgsqlexe -c 'alter database $databasetmp rename to $database' $config->{systemdbname}");
+
+    $logger->info("### $database: Temporaeren Suchindex aktivieren");
+    if (-d "$config->{xapian_index_base_path}/$database"){
+        system("mv $config->{xapian_index_base_path}/$database $config->{xapian_index_base_path}/${database}tmp2");
+    }
+
+    system("mv $config->{xapian_index_base_path}/$databasetmp $config->{xapian_index_base_path}/$database");
+
+    if (-d "$config->{xapian_index_base_path}/${database}tmp2"){
+        system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
+    }
+    
+    system("$pgsqlexe -c 'drop database ${database}tmp2' $config->{systemdbname}");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

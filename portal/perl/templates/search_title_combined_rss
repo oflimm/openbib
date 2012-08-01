@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%-#
+[%-
 
 channel_link        = "${path_prefix}/${config.get('search_loc')}.rss?${searchquery.to_cgi_params};${queryoptions.to_cgi_params}";
 channel_description = "RSS Feed Ihrer Suchanfrage" ;

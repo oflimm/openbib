@@ -30,6 +30,17 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="#">[% username %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Grundeinstellungen") %]</a></li>
+       </ul>
+     </div>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
@@ -41,7 +52,7 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<h2>OpenBib Benutzerinformationen</h2>
+<h2>[% msg.maketext("Grundeinstellungen") %]</h2>
 
 <table>
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% username %]</td>

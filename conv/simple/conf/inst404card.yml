@@ -20,18 +20,18 @@ category_split_chars:
   '101x': '\s*;\s*'
 
 # Personen
-pers:
+person:
   '100x': '0100'        # Verfasser
   '101x': '0101'  # Person
 
 # Koerperschaften
-corp:
+corporatebody:
 
 # Systematik
-sys: 
+classification: 
 
 # Schlagworte
-subj:
+subject:
 
 
 # Titel

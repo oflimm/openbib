@@ -24,18 +24,18 @@ category_split_chars:
   'STANDORT': '\s*;\s*'
 
 # Personen
-pers:
+person:
   'AUTOR': '0100'        # Verfasser
 
 # Koerperschaften
-corp:
+corporatebody:
   'KÖRPERSCHAFT': '0201'        # Verfasser
 
 # Systematik
-sys: 
+classification: 
 
 # Schlagworte
-subj:
+subject:
   'SCHLAGWORT': '0710'
 
 # Titel
@@ -57,6 +57,6 @@ title:
   'BEMERKUNGEN': '0600'
 
 # Exemplare
-exempl:
+holding:
   'SIGNATUR ALT': '0014'
   'STANDORT': '0016'

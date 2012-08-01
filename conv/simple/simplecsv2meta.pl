@@ -223,7 +223,7 @@ while ($csv->getline ($in)){
     }
 
     # Autoren abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{pers}}){
+    foreach my $kateg (keys %{$convconfig->{person}}){
         my $content = $row->{$kateg};
         #my $content = decode($convconfig->{encoding},$row->{$kateg});
 
@@ -274,7 +274,7 @@ while ($csv->getline ($in)){
                     print AUT encode_json $item_ref, "\n";
                 }
 
-                my $new_category = $convconfig->{pers}{$kateg};
+                my $new_category = $convconfig->{person}{$kateg};
 
                 push @{$title_ref->{$new_category}}, {
                     mult       => $mult,
@@ -291,7 +291,7 @@ while ($csv->getline ($in)){
     # Autoren abarbeiten Ende
     
     # Koerperschaften abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{corp}}){
+    foreach my $kateg (keys %{$convconfig->{corporatebody}}){
         my $content = $row->{$kateg};
         #my $content = decode($convconfig->{encoding},$row->{$kateg});
         
@@ -341,7 +341,7 @@ while ($csv->getline ($in)){
                     print KOR encode_json $item_ref, "\n";
                 }
 
-                my $new_category = $convconfig->{corp}{$kateg};
+                my $new_category = $convconfig->{corporatebody}{$kateg};
 
                 push @{$title_ref->{$new_category}}, {
                     mult       => $mult,
@@ -358,7 +358,7 @@ while ($csv->getline ($in)){
 
 
     # Notationen abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{sys}}){
+    foreach my $kateg (keys %{$convconfig->{classification}}){
         my $content = $row->{$kateg};
         #my $content = decode($convconfig->{encoding},$row->{$kateg});
         
@@ -408,7 +408,7 @@ while ($csv->getline ($in)){
                     print NOTATION encode_json $item_ref, "\n";
                 }
 
-                my $new_category = $convconfig->{sys}{$kateg};
+                my $new_category = $convconfig->{classification}{$kateg};
 
                 push @{$title_ref->{$new_category}}, {
                     mult       => $mult,
@@ -424,7 +424,7 @@ while ($csv->getline ($in)){
     # Notationen abarbeiten Ende
 
     # Schlagworte abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{subj}}){
+    foreach my $kateg (keys %{$convconfig->{subject}}){
         my $content = $row->{$kateg};
         #my $content = decode($convconfig->{encoding},$row->{$kateg});
 
@@ -474,7 +474,7 @@ while ($csv->getline ($in)){
                     print SWT encode_json $item_ref, "\n";
                 }
 
-                my $new_category = $convconfig->{subj}{$kateg};
+                my $new_category = $convconfig->{subject}{$kateg};
 
                 push @{$title_ref->{$new_category}}, {
                     mult       => $mult,
@@ -493,7 +493,7 @@ while ($csv->getline ($in)){
 
     my %mex = ();
     # Exemplare abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{exempl}}){
+    foreach my $kateg (keys %{$convconfig->{holding}}){
 #        my $content = decode($convconfig->{encoding},$row->{$kateg});
         my $content = $row->{$kateg};
 
@@ -529,7 +529,7 @@ while ($csv->getline ($in)){
             }
 
             foreach my $part (@parts){
-                 $mex{$multiple}{$convconfig->{exempl}{$kateg}} = $part; 
+                 $mex{$multiple}{$convconfig->{holding}{$kateg}} = $part; 
             }
         }
     }

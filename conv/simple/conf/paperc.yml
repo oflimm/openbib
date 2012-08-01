@@ -14,17 +14,17 @@ recordselector: /ONIXMessage/product
 uniqueidfield: 'a001'
 
 # Personen
-pers:
+person:
   'Contributor/PersonName': '0100'        # Verfasser
 
 # Koerperschaften
-corp:
+corporatebody:
 
 # Systematik
-sys: 
+classification: 
 
 # Schlagworte
-subj:
+subject:
 
 # Titel
 title:

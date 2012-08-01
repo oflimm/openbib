@@ -12,19 +12,19 @@ file:
 #uniqueidfield: 'ID'
 
 # Personen
-pers:
+person:
   '40': '0100'        # Verfasser
   '41': '0101'        # Herausgeber
 
 # Koerperschaften
-corp:
+corporatebody:
   '61': '0200'        # Koerpeschaft
 
 # Systematik
-sys: 
+classification: 
 
 # Schlagworte
-subj:
+subject:
 
 # Titel
 title:
@@ -38,6 +38,6 @@ title:
   '85': '0451'
 
 # Exemplare
-exempl:
+holding:
   '90': '0014'
 

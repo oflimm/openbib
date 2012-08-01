@@ -433,16 +433,9 @@ sub get_categorized_drilldown {
     foreach my $type (keys %{$tmp_category_map_ref}) {
         my $contents_ref = [] ;
         foreach my $content (keys %{$tmp_category_map_ref->{$type}}) {
-            my $normcontent = OpenBib::Common::Util::grundform({
-                content   => decode_utf8($content),
-                searchreq => 1,
-            });
-            
-            $normcontent=~s/\W/_/g;
             push @{$contents_ref}, [
                 decode_utf8($content),
                 $tmp_category_map_ref->{$type}{$content},
-                $normcontent,
             ];
         }
         

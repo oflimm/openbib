@@ -31,15 +31,19 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
+use strict;
+use warnings;
+
 use Encode 'decode';
 use Getopt::Long;
 use DBI;
+use JSON::XS;
 use YAML::Syck;
 
 use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 
-$mexidn  =  1;
+my $mexidn  =  1;
 
 my $config = OpenBib::Config->instance;
 
@@ -66,203 +70,257 @@ my $convconfig = YAML::Syck::LoadFile($configfile);
 
 open(DAT,"$inputfile");
 
-open (TIT,     ">:utf8","unload.TIT");
-open (AUT,     ">:utf8","unload.PER");
-open (KOR,     ">:utf8","unload.KOE");
-open (NOTATION,">:utf8","unload.SYS");
-open (SWT,     ">:utf8","unload.SWD");
-open (MEX,     ">:utf8","unload.MEX");
+open (TITLE,         ">:utf8","meta.title");
+open (PERSON,        ">:utf8","meta.person");
+open (CORPORATEBODY, ">:utf8","meta.corporatebody");
+open (CLASSIFICATION,">:utf8","meta.classification");
+open (SUBJECT,       ">:utf8","meta.subject");
+open (HOLDING,       ">:utf8","meta.holding");
 
 my $titid = 1;
 
-my @buffer = ();
+my $multcount_ref = {};
+
+my $buffer_ref = {};
 while (my $line=<DAT>){
     
     # Ende erreicht
     if ($line=~/^$convconfig->{file}{rec_sep}/){
-
-        my $title_ref = {};
-
+        #print encode_json $buffer_ref, "\n";
+        my $title_ref  = {};
+        $multcount_ref = {};
+        
+        if ($convconfig->{uniqueidfield}){
+            $titid=pop @{$buffer_ref->{$convconfig->{uniqueidfield}}};
+        }
+        
         $title_ref->{id} = $titid;
         
-        foreach my $thisline (@buffer){
-            my ($kateg,$content)=$thisline=~/^(.+?)$convconfig->{file}{sep_char}(.*?)$/;
-            my $content = decode($convconfig->{encoding},$content);
-            
-            if (exists $convconfig->{title}{$kateg}){
+        if (defined $convconfig->{filter}{join}){
+            foreach my $rule_ref (@{$convconfig->{filter}{join}}){
+                my $from = $rule_ref->{from};
+                my $to   = $rule_ref->{to};
+
+                my @temp = ();
+                push @temp, @{$buffer_ref->{$to}} if (defined $buffer_ref->{$to});
+                push @temp, @{$buffer_ref->{$from}} if (defined $buffer_ref->{$from});
                 
-                if ($content){
-                    push @{$title_ref->{$convconfig->{title}{$kateg}}}, {
-                        mult     => 0,
+                $buffer_ref->{$to} = [];
+                push @{$buffer_ref->{$to}}, join(' ',@temp);
+                delete $buffer_ref->{$from};
+            }
+        }
+        
+        # convert title fields
+        foreach my $field (keys %{$convconfig->{title}}){
+            if (defined $buffer_ref->{$field}){
+                my $new_field = $convconfig->{title}{$field};
+                
+                foreach my $content (@{$buffer_ref->{$field}}){
+                    my $mult = ++$multcount_ref->{$new_field};
+                    
+                    push @{$title_ref->{$new_field}}, {
+                        mult     => $mult,
                         subfield => '',
                         content  => $content,
                     };
                 }
             }
-            
-            # Autoren abarbeiten Anfang
-            elsif (exists $convconfig->{pers}{$kateg} && $content){
+        }
+        
+        # convert person fields
+        foreach my $field (keys %{$convconfig->{person}}){
+            if (defined $buffer_ref->{$field}){
+                my $new_field = $convconfig->{person}{$field};
+                
                 my @parts = ();
-                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                
+                foreach my $content (@{$buffer_ref->{$field}}){
+                    if (exists $convconfig->{category_split_chars}{$field} && $content=~/$convconfig->{category_split_chars}{$field}/){
+                        @parts = split($convconfig->{category_split_chars}{$field},$content);
+                    }
+                    else {
+                        push @parts, $content;
+                    }
                 }
-                else {
-                    push @parts, $content;
-                }
-
-                my $mult = 1;
+                
                 foreach my $part (@parts){
-                    my ($autidn,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
+                    my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
                     
                     if ($new){
                         my $item_ref = {};
-                        $item_ref->{id} = $autidn;
+                        $item_ref->{id} = $person_id;
                         push @{$item_ref->{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $part,
                         };
                         
-                        print AUT encode_json $item_ref, "\n";
+                        print PERSON encode_json $item_ref, "\n";
                     }
-
-                    push @{$title_ref->{$convconfig->{pers}{$kateg}}}, {
-                        mult       => $mult,
-                        subfield   => '',
-                        id         => $autidn,
-                        supplement => '',
-                    };
-
-                    $mult++;
-                }
-            }       
-            # Autoren abarbeiten Ende
-            
-            # Koerperschaften abarbeiten Anfang
-            elsif (exists $convconfig->{corp}{$kateg} && $content){
-                my @parts = ();
-                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-                }
-                else {
-                    push @parts, $content;
-                }
-                
-                foreach my $part (@parts){
-
-                    my ($koridn,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($part);
-                
-                    if ($new){
-                        my $item_ref = {};
-                        $item_ref->{id} = $koridn;
-                        push @{$item_ref->{'0800'}}, {
-                            mult     => 1,
-                            subfield => '',
-                            content  => $part,
-                        };
-                        
-                        print KOR encode_json $item_ref, "\n";
-                    }
-
-                    push @{$title_ref->{$convconfig->{corp}{$kateg}}}, {
-                        mult       => $mult,
-                        subfield   => '',
-                        id         => $koridn,
-                        supplement => '',
-                    };
-
-                    $mult++;
-                }
-            }
-            # Koerperschaften abarbeiten Ende
-
-            # Notationen abarbeiten Anfang
-            elsif (exists $convconfig->{sys}{$kateg} && $content){
-                my @parts = ();
-                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-                }
-                else {
-                    push @parts, $content;
-                }
-                
-                foreach my $part (@parts){
-                    my ($notidn,$new)=OpenBib::Conv::Common::Util::get_classification_id($part);
                     
-                    if ($new){	  
-                        my $item_ref = {};
-                        $item_ref->{id} = $notidn;
-                        push @{$item_ref->{'0800'}}, {
-                            mult     => 1,
-                            subfield => '',
-                            content  => $part,
-                        };
-                        
-                        print NOTATION encode_json $item_ref, "\n";
-                    }
-
-                    push @{$title_ref->{$convconfig->{sys}{$kateg}}}, {
+                    my $mult = ++$multcount_ref->{$new_field};
+                    
+                    push @{$title_ref->{$new_field}}, {
                         mult       => $mult,
                         subfield   => '',
-                        id         => $notidn,
+                        id         => $person_id,
                         supplement => '',
                     };
-
-                    $mult++;
                 }
             }
-            # Schlagworte abarbeiten Ende
+        }
+        
+        # convert corporatebody fields
+        foreach my $field (keys %{$convconfig->{corporatebody}}){
+            if (defined $buffer_ref->{$field}){
+                my $new_field = $convconfig->{corporatebody}{$field};
 
-            
-            # Schlagworte abarbeiten Anfang
-            elsif (exists $convconfig->{subj}{$kateg} && $content){
                 my @parts = ();
-                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-                }
-                else {
-                    push @parts, $content;
+
+                foreach my $content (@{$buffer_ref->{$field}}){
+                    if (exists $convconfig->{category_split_chars}{$field} && $content=~/$convconfig->{category_split_chars}{$field}/){
+                        @parts = split($convconfig->{category_split_chars}{$field},$content);
+                    }
+                    else {
+                        push @parts, $content;
+                    }
                 }
                 
                 foreach my $part (@parts){
-                    my ($swtidn,$new)=OpenBib::Conv::Common::Util::get_subject_id($part);
+                    my ($corporatebody_id,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                     
                     if ($new){
                         my $item_ref = {};
-                        $item_ref->{id} = $swtidn;
+                        $item_ref->{id} = $corporatebody_id;
                         push @{$item_ref->{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $part,
                         };
                         
-                        print SWT encode_json $item_ref, "\n";
+                        print CORPORATEBODY encode_json $item_ref, "\n";
                     }
-
-                    push @{$title_ref->{$convconfig->{subj}{$kateg}}}, {
+                    
+                    my $mult = ++$multcount_ref->{$new_field};
+                    
+                    push @{$title_ref->{$new_field}}, {
                         mult       => $mult,
                         subfield   => '',
-                        id         => $swtidn,
+                        id         => $corporatebody_id,
                         supplement => '',
                     };
-
-                    $mult++;
                 }
             }
-            # Schlagworte abarbeiten Ende
+        }
 
-            # Achtung: Es wird nur die 0014 = Signatur verarbeitet!!!!!
-            # Es darf maximal diese Definition unter exempl in der Konfigurationsdatei stehen
-            elsif (exists $convconfig->{exempl}{$kateg} && $content){
+        # convert classification fields
+        foreach my $field (keys %{$convconfig->{classification}}){
+            if (defined $buffer_ref->{$field}){
+                my $new_field = $convconfig->{classification}{$field};
+
                 my @parts = ();
-                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-                }
-                else {
-                    push @parts, $content;
+
+                foreach my $content (@{$buffer_ref->{$field}}){
+                    if (exists $convconfig->{category_split_chars}{$field} && $content=~/$convconfig->{category_split_chars}{$field}/){
+                        @parts = split($convconfig->{category_split_chars}{$field},$content);
+                    }
+                    else {
+                        push @parts, $content;
+                    }
                 }
                 
                 foreach my $part (@parts){
+                    my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($part);
+                    
+                    if ($new){
+                        my $item_ref = {};
+                        $item_ref->{id} = $classification_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print CLASSIFICATION encode_json $item_ref, "\n";
+                    }
+                    
+                    my $mult = ++$multcount_ref->{$new_field};
+                    
+                    push @{$title_ref->{$new_field}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $classification_id,
+                        supplement => '',
+                    };
+                }
+            }
+        }
+
+        # convert subject fields
+        foreach my $field (keys %{$convconfig->{subject}}){
+            if (defined $buffer_ref->{$field}){
+                my $new_field = $convconfig->{subject}{$field};
+
+                my @parts = ();
+
+                foreach my $content (@{$buffer_ref->{$field}}){
+                    if (exists $convconfig->{category_split_chars}{$field} && $content=~/$convconfig->{category_split_chars}{$field}/){
+                        @parts = split($convconfig->{category_split_chars}{$field},$content);
+                    }
+                    else {
+                        push @parts, $content;
+                    }
+                }
+                
+                foreach my $part (@parts){
+                    my ($subject_id,$new)=OpenBib::Conv::Common::Util::get_subject_id($part);
+                    
+                    if ($new){
+                        my $item_ref = {};
+                        $item_ref->{id} = $subject_id;
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print SUBJECT encode_json $item_ref, "\n";
+                    }
+                    
+                    my $mult = ++$multcount_ref->{$new_field};
+                    
+                    push @{$title_ref->{$new_field}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $subject_id,
+                        supplement => '',
+                    };
+                }
+            }
+        }
+
+        # convert holding fields
+
+        # Achtung: Es wird nur die 0014 = Signatur verarbeitet!!!!!
+        # Es darf maximal diese Definition unter exempl in der Konfigurationsdatei stehen
+        foreach my $field (keys %{$convconfig->{holding}}){
+            if (defined $buffer_ref->{$field}){
+                my $new_field = $convconfig->{holding}{$field};
+
+                my @parts = ();
+
+                foreach my $content (@{$buffer_ref->{$field}}){
+                    if (exists $convconfig->{category_split_chars}{$field} && $content=~/$convconfig->{category_split_chars}{$field}/){
+                        @parts = split($convconfig->{category_split_chars}{$field},$content);
+                    }
+                    else {
+                        push @parts, $content;
+                    }
+                }
+                
+                foreach my $part (@parts){
+                    print STDERR $part, "\n";
                     my $item_ref = {};
                     $item_ref->{id} = $mexidn;
 
@@ -272,125 +330,38 @@ while (my $line=<DAT>){
                         content  => $titid,
                     };
 
-                    push @{$convconfig->{exempl}{$kateg}}, {
+                    push @{$item_ref->{$new_field}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $part,
                     };
 
-                    print MEX encode_json $item_ref, "\n";
+                    print HOLDING encode_json $item_ref, "\n";
 
                     $mexidn++;
                 }
             }
         }
-        print encode_json "9999:\n";
+        
+        print TITLE encode_json $title_ref, "\n";
         $titid++;
-        @buffer=();
+        $buffer_ref={};
     }
     else {
-        push @buffer, $line;
+        my ($field,$content)=$line=~/^(.+?)$convconfig->{file}{sep_char}(.*?)\r?$/;
+
+        if ($field && $content){
+            push @{$buffer_ref->{$field}}, decode($convconfig->{encoding},$content);
+        }
     }
 }
 
-close(TIT);
-close(AUT);
-close(KOR);
-close(NOTATION);
-close(SWT);
-close(MEX);
+close(TITLE);
+close(PERSON);
+close(CORPORATEBODY);
+close(CLASSIFICATION);
+close(SUBJECT);
+close(HOLDING);
 
 close(DAT);
-
-sub get_autidn {
-    my ($autans)=@_;
-
-#    print "AUT $autans\n";
-
-    my $autdubidx=1;
-    my $autdubidn=0;
-
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-
-    while ($autdubidx <= $#autdubbuf){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;      
-        }
-        $autdubidx++;
-    }
-    if (!$autdubidn){
-        $autdubbuf[$autdubidx]=$autans;
-        $autdubidn=$autdubidx;
-    }
-
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-    
-#    print $autdubidn,"\n";
-    return $autdubidn;
-}
-
-sub get_swtidn {
-    my ($swtans)=@_;
-
-#    print "SWT $swtans\n";
-    
-    my $swtdubidx=1;
-    my $swtdubidn=0;
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-    
-    while ($swtdubidx <= $#swtdubbuf){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;      
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdubidx]=$swtans;
-        $swtdubidn=$swtdubidx;
-    }
-#    print $swtdubidn,"\n";
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-#    print "-----\n";
-    return $swtdubidn;
-}
-
-sub get_koridn {
-    my ($korans)=@_;
-    
-    my $kordubidx=1;
-    my $kordubidn=0;
-    
-    while ($kordubidx <= $#kordubbuf){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;      
-        }
-        $kordubidx++;
-    }
-    if (!$kordubidn){
-        $kordubbuf[$kordubidx]=$korans;
-        $kordubidn=$kordubidx;
-    }
-    return $kordubidn;
-}
-
-sub get_notidn {
-    my ($notans)=@_;
-    
-    my $notdubidx=1;
-    my $notdubidn=0;
-    
-    while ($notdubidx <= $#notdubbuf){
-        if ($notans eq $notdubbuf[$notdubidx]){
-            $notdubidn=(-1)*$notdubidx;      
-        }
-        $notdubidx++;
-    }
-    if (!$notdubidn){
-        $notdubbuf[$notdubidx]=$notans;
-        $notdubidn=$notdubidx;
-    }
-    return $notdubidn;
-}
 

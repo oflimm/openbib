@@ -20,17 +20,17 @@ category_split_chars:
   'person_all': ';'
 
 # Personen
-pers:
+person:
   'person_all': '0100'        # Verfasser
 
 # Koerperschaften
-corp:
+corporatebody:
 
 # Systematik
-sys: 
+classification: 
 
 # Schlagworte
-subj:
+subject:
 
 # Titel
 title:

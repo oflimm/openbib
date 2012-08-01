@@ -20,18 +20,18 @@ category_split_chars:
   'VolltextURL': '\*\*\*'
 
 # Personen
-pers:
+person:
 
 
 # Koerperschaften
-corp:
+corporatebody:
 
 # Systematik
-sys: 
+classification: 
   'Ampelfarbe': '0700'
 
 # Schlagworte
-subj:
+subject:
   'Fach': '0710'
 
 # Titel
@@ -48,4 +48,4 @@ title:
   'bibliographische URL(s)': '2662'
 
 # Exemplare
-exempl:
+holding:

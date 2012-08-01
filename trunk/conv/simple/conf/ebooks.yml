@@ -20,20 +20,20 @@ category_split_chars:
   'Herausgeber': '\s*;\s*'
 
 # Personen
-pers:
+person:
   'Autor': '0100'        # Verfasser
   'Herausgeber': '0101'  # Person
 
 # Koerperschaften
-corp:
+corporatebody:
 
 # Systematik
-sys: 
+classification: 
   'Paket1': '0700'
   'Paket2': '0700'
 
 # Schlagworte
-subj:
+subject:
   'Paket': '0710' # GBV-Schlagwoerter
   'Subject': '0710'
   'Subject2': '0710'

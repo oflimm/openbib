@@ -63,12 +63,12 @@ exit;
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
-open (TIT,     ">:utf8","meta.title");
-open (AUT,     ">:utf8","meta.person");
-open (KOR,     ">:utf8","meta.corporatebody");
-open (NOTATION,">:utf8","meta.classification");
-open (SWT,     ">:utf8","meta.subject");
-open (MEX,     ">:utf8","meta.holding");
+open (TITLE,         ">:utf8","meta.title");
+open (PERSON,        ">:utf8","meta.person");
+open (CORPORATEBODY, ">:utf8","meta.corporatebody");
+open (CLASSIFICATION,">:utf8","meta.classification");
+open (SUBJECT,       ">:utf8","meta.subject");
+open (HOLDING,       ">:utf8","meta.holding");
 
 my $twig= XML::Twig::XPath->new(
    TwigHandlers => {
@@ -82,12 +82,12 @@ $twig->safe_parsefile($inputfile);
 
 print STDERR "All $counter records converted\n";
 
-close(TIT);
-close(AUT);
-close(KOR);
-close(NOTATION);
-close(SWT);
-close(MEX);
+close(TITLE);
+close(PERSON);
+close(CORPORATEBODY);
+close(CLASSIFICATION);
+close(SUBJECT);
+close(HOLDING);
 
 sub parse_record {
     my($t, $titset)= @_;
@@ -153,7 +153,7 @@ sub parse_record {
     }
     
     # Autoren abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{pers}}){
+    foreach my $kateg (keys %{$convconfig->{person}}){
         my @elements = $titset->get_xpath($kateg);
 
         my @parts = ();
@@ -199,10 +199,10 @@ sub parse_record {
                     content  => $part,
                 };
                 
-                print AUT encode_json $item_ref, "\n";
+                print PERSON encode_json $item_ref, "\n";
             }
             
-            my $new_category = $convconfig->{pers}{$kateg};
+            my $new_category = $convconfig->{person}{$kateg};
 
             push @{$title_ref->{$new_category}}, {
                 mult       => $mult,
@@ -217,7 +217,7 @@ sub parse_record {
     }
 
     # Koerperschaften abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{corp}}){
+    foreach my $kateg (keys %{$convconfig->{corporatebody}}){
         my @elements = $titset->get_xpath($kateg);
         
         my @parts = ();
@@ -263,10 +263,10 @@ sub parse_record {
                     content  => $part,
                 };
                 
-                print KOR encode_json $item_ref, "\n";
+                print CORPORATEBODY encode_json $item_ref, "\n";
             }
             
-            my $new_category = $convconfig->{corp}{$kateg};
+            my $new_category = $convconfig->{corporatebody}{$kateg};
 
             push @{$title_ref->{$new_category}}, {
                 mult       => $mult,
@@ -281,7 +281,7 @@ sub parse_record {
     # Koerperschaften abarbeiten Ende
 
     # Notationen abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{sys}}){
+    foreach my $kateg (keys %{$convconfig->{classification}}){
         my @elements = $titset->get_xpath($kateg);
         
         my @parts = ();
@@ -327,10 +327,10 @@ sub parse_record {
                     content  => $part,
                 };
                 
-                print NOTATION encode_json $item_ref, "\n";
+                print CLASSIFICATION encode_json $item_ref, "\n";
             }
             
-            my $new_category = $convconfig->{sys}{$kateg};
+            my $new_category = $convconfig->{classification}{$kateg};
 
             push @{$title_ref->{$new_category}}, {
                 mult       => $mult,
@@ -345,7 +345,7 @@ sub parse_record {
     # Notationen abarbeiten Ende
         
     # Schlagworte abarbeiten Anfang
-    foreach my $kateg (keys %{$convconfig->{subj}}){
+    foreach my $kateg (keys %{$convconfig->{subject}}){
         my @elements = $titset->get_xpath($kateg);
 
         my @parts = ();
@@ -391,10 +391,10 @@ sub parse_record {
                     content  => $part,
                 };
                 
-                print SWT encode_json $item_ref, "\n";
+                print SUBJECT encode_json $item_ref, "\n";
             }
             
-            my $new_category = $convconfig->{subj}{$kateg};
+            my $new_category = $convconfig->{subject}{$kateg};
 
             push @{$title_ref->{$new_category}}, {
                 mult       => $mult,
@@ -408,7 +408,7 @@ sub parse_record {
     }
     # Schlagworte abarbeiten Ende
 
-    print TIT encode_json $title_ref, "\n";
+    print TITLE encode_json $title_ref, "\n";
 
     $counter++;
 

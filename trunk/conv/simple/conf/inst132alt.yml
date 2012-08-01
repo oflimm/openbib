@@ -15,17 +15,17 @@ category_split_chars:
   'AU': '\s*·\s*'
 
 # Personen
-pers:
+person:
   'AU': '0100'        # Verfasser
 
 # Koerperschaften
-corp:
+corporatebody:
 
 # Systematik
-sys: 
+classification: 
 
 # Schlagworte
-subj:
+subject:
   'SW': '0710'
 
 # Titel
@@ -39,6 +39,6 @@ title:
   'IS': '0540'
 
 # Exemplare
-exempl:
+holding:
   'SI': '0014'
 

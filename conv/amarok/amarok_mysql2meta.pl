@@ -6,7 +6,7 @@
 #
 #  Konverierung von Amarok-Daten aus dem MySQL-Backend in das Meta-Format
 #
-#  Dieses File ist (C) 2007-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -35,6 +35,7 @@ use utf8;
 
 use DBI;
 use Encode qw(decode_utf8 encode_utf8);
+use JSON::XS;
 
 use OpenBib::Config;
 
@@ -43,7 +44,7 @@ use OpenBib::Config;
 
 my $config = new OpenBib::Config;
 
-my $database=($ARGV[0])?$ARGV[0]:'audiosmlg';
+my $database=($ARGV[0])?$ARGV[0]:'audio';
 
 my $dbinfo     = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
 
@@ -58,7 +59,7 @@ my $dbh=DBI->connect("DBI:mysql:dbname=$dbname;host=$dbhost;port=$port", $dbuser
 # Interpreten/Verfasser
 
 {
-    open(AUT,">:utf8", "meta.person");
+    open(PERSON,">:utf8", "meta.person");
 
     my $sql_statement = "select * from artists";
     my $result=$dbh->prepare($sql_statement) or die "Error -- $DBI::errstr";
@@ -69,22 +70,25 @@ my $dbh=DBI->connect("DBI:mysql:dbname=$dbname;host=$dbhost;port=$port", $dbuser
         my $id    = $res->{'id'};
         my $name  = decode_utf8($res->{'name'});
 
-        print AUT << "PERSET"
-0000:$id
-0001:$name
-9999:
+        my $item_ref = {};
+        $item_ref->{id} = $id;
+        push @{$item_ref->{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $name,
+        };
 
-PERSET
+        print PERSON encode_json $item_ref, "\n";
     }
-    
-    close(AUT);
+
+    close(PERSON);
 }
 
 #########################################################################
 # Albenname/Koerperschaft
 
 {
-    open(KOR,">:utf8", "meta.corporatebody");
+    open(CORPORATEBODY,">:utf8", "meta.corporatebody");
     
     my $sql_statement = "select * from albums";
     my $result=$dbh->prepare($sql_statement) or die "Error -- $DBI::errstr";
@@ -94,23 +98,26 @@ PERSET
     while (my $res=$result->fetchrow_hashref){
         my $id    = $res->{'id'};
         my $name  = decode_utf8($res->{'name'});
-        
-        print KOR << "KOESET"
-0000:$id
-0001:$name
-9999:
 
-KOESET
+        my $item_ref = {};
+        $item_ref->{id} = $id;
+        push @{$item_ref->{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $name,
+        };
+
+        print CORPORATEBODY encode_json $item_ref, "\n";
     }
-    
-    close(KOR);
+
+    close(CORPORATEBODY);
 }
 
 #########################################################################
 # Genre/Notation
 
 {
-    open(NOTATION,">:utf8", "meta.classification");
+    open(CLASSIFICATION,">:utf8", "meta.classification");
     
     my $sql_statement = "select * from genres";
     my $result=$dbh->prepare($sql_statement) or die "Error -- $DBI::errstr";
@@ -121,38 +128,57 @@ KOESET
         my $id    = $res->{'id'};
         my $name  = decode_utf8($res->{'name'});
 
-        print NOTATION << "SYSSET"
-0000:$id
-0001:$name
-9999:
+        my $item_ref = {};
+        $item_ref->{id} = $id;
+        push @{$item_ref->{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $name,
+        };
 
-SYSSET
+        print CLASSIFICATION encode_json $item_ref, "\n";
     }
 
-    close(NOTATION);
+    close(CLASSIFICATION);
 }
 
 #########################################################################
 # Titel
 
 {
-    my $titid=1;
-    open(TIT,">:utf8", "meta.title");
+    open(TITLE,">:utf8", "meta.title");
     
-    my $sql_statement = "select tracks.*,years.name as thisyear from tracks left join years on tracks.year=years.id";
+    my $sql_statement = "select urls.uniqueid,urls.rpath,tracks.id,tracks.artist,tracks.album,tracks.genre,FROM_UNIXTIME(tracks.createdate) as createdate,FROM_UNIXTIME(tracks.modifydate) as modifydate,tracks.tracknumber,tracks.length,tracks.title,years.name as thisyear from tracks left join years on tracks.year=years.id left join urls on tracks.url=urls.id";
     my $result=$dbh->prepare($sql_statement) or die "Error -- $DBI::errstr";
     
     $result->execute();
     
     while (my $res=$result->fetchrow_hashref){
-        my $artistid  = $res->{'artist'};
-        my $albumid   = $res->{'album'};
-        my $genreid   = $res->{'genre'};
-        my $year      = $res->{'thisyear'};
-        my $track     = $res->{'track'};
-        my $length    = $res->{'length'};
-        my $title     = decode_utf8($res->{'title'});
+        my $id         = $res->{'id'};
+        my $artistid   = $res->{'artist'};
+        my $albumid    = $res->{'album'};
+        my $genreid    = $res->{'genre'};
+        my $year       = $res->{'thisyear'};
+        my $track      = $res->{'tracknumber'};
+        my $length     = $res->{'length'};
+        my $title      = decode_utf8($res->{'title'});
+        my $createdate = $res->{'createdate'};
+        my $modifydate = $res->{'modifydate'};
+        my $rpath      = $res->{'rpath'};
+        my ($uniqueid) = $res->{'uniqueid'} =~m/\/\/(.+)$/;
 
+        next unless ($rpath=~m/\/[es]c\d+\// || $rpath=~m/\/ia\d+\// || $rpath=~m/\/km\d+\// || $rpath=~m/\/em\d+\//);
+        
+        my ($year,$month,$day) = $createdate =~m/^(\d\d\d\d)-(\d\d)-(\d\d)/;
+
+        my $tstamp_create = "$day.$month.$year";
+
+        ($year,$month,$day) = $modifydate =~m/^(\d\d\d\d)-(\d\d)-(\d\d)/;
+
+        my $tstamp_update = "$day.$month.$year";
+        
+        my $item_ref = {};
+        $item_ref->{id} = $uniqueid;
 
         my $sec = $length % 60;
         $length = ($length - $sec) / 60;
@@ -162,18 +188,66 @@ SYSSET
 
         $length=sprintf "%d:%02d (min:sec)",$minute,$sec;
 #        $length="$hour:$length" if ($hour);
+
+        push @{$item_ref->{'0002'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $tstamp_create,
+        };
+
+        push @{$item_ref->{'0003'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $tstamp_update,
+        };
+
+        push @{$item_ref->{'0089'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $track,
+        } if ($track);
+
+        push @{$item_ref->{'0100'}}, {
+            mult       => 1,
+            subfield   => '',
+            id         => $artistid,
+            supplement => '',
+        } if ($artistid);
+
+        push @{$item_ref->{'0200'}}, {
+            mult       => 1,
+            subfield   => '',
+            id         => $albumid,
+            supplement => '',
+        } if ($albumid);
+
+        push @{$item_ref->{'0331'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $title,
+        };
         
-        print TIT "0000:$titid\n";
-        print TIT "0089:$track\n" if ($track);
-        print TIT "0100:IDN: $artistid\n" if ($artistid);
-        print TIT "0200:IDN: $albumid\n" if ($albumid);
-        print TIT "0331:$title\n";
-        print TIT "0425:$year\n" if ($year);
-        print TIT "0433:$length\n" if ($length);
-        print TIT "0700:IDN: $genreid\n" if ($genreid);
-        print TIT "9999:\n\n";
-        $titid++;
+        push @{$item_ref->{'0425'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $year,
+        } if ($year);
+
+        push @{$item_ref->{'0433'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $length,
+        } if ($length);
+
+        push @{$item_ref->{'0700'}}, {
+            mult       => 1,
+            subfield   => '',
+            id         => $genreid,
+            supplement => '',
+        } if ($genreid);
+
+        print TITLE encode_json $item_ref, "\n";
     }
 
-    close(TIT);
+    close(TITLE);
 }

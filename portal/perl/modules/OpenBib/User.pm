@@ -561,7 +561,7 @@ sub get_profilename_of_usersearchprofileid {
             userid => $self->{ID},
         },
         {
-            columns => ['usersearchprofilename'],
+            columns => ['profilename'],
         }
     )->single();
 
@@ -3155,7 +3155,7 @@ sub dbprofile_exists {
     )->first;
 
     if ($profile){
-        return $profile->profileid,
+        return $profile->id,
     }
     else {
         return 0;

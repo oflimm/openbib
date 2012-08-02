@@ -25,7 +25,7 @@
 -%]
 [%- IF NOT have_searchbar -%]
 [%- username = user.get_username -%]
-    <script>
+<!--    <script>
 $(document).ready(function(){
 $.get("[% path_prefix %]/[% config.get('collection_loc') %]/count",
  function (txt){
@@ -34,7 +34,7 @@ $.get("[% path_prefix %]/[% config.get('collection_loc') %]/count",
 
 });
 
-    </script>
+    </script> -->
 <form id="searchbar" method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 
 <input type="hidden" name="num"        value="20" />
@@ -45,7 +45,7 @@ $.get("[% path_prefix %]/[% config.get('collection_loc') %]/count",
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="searchprofile" value="[% config.get_searchprofile_of_view(view) %]" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-
+<input type="hidden" name="l"          value="[% lang %]" />
     <!-- begin: main navigation #nav -->
     <div id="nav" role="navigation">
       <div class="hlist">
@@ -82,14 +82,14 @@ $.get("[% path_prefix %]/[% config.get('collection_loc') %]/count",
 [% END %]
 [%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]
 [%-   IF active_menu == "admin" -%]
-         <li class="active"><strong>[% msg.maketext("admin") %]</strong></li>
+         <li class="active"><strong>Admin</strong></li>
 [%    ELSE %]
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">[% msg.maketext("admin") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">Admin</a></li>
 [%    END %]
 [%- END -%]
         </ul>
 [% IF NOT without_navigation_search %]
-      <div style="float:right;height:25px;margin-top:-5px;margin-right:10px;font-size:0.9em;">
+      <div style="float:right;height:25px;margin-top:-5px;margin-right:5px;font-size:0.9em;">
 <table class="full">
 <tr>
   <td><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" size="30" maxlength="200" /></td>
@@ -98,7 +98,7 @@ $.get("[% path_prefix %]/[% config.get('collection_loc') %]/count",
  </div>
   </td>
   <td>
-<a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>
+<a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>
   </td>
 </tr>
 </table>

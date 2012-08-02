@@ -38,7 +38,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -56,7 +56,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -70,7 +70,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -84,7 +84,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -142,7 +142,10 @@
     IF item.tags ;
       tags = [];
       FOREACH tag IN item.tags ;
-         tag_url = "${path_prefix}/${config.get('search_loc')}.html?fs=${tag.tag}" ;
+         searchterm    = tag.tag;
+         searchprefix  = config.get('searchfield').tag.prefix;
+
+         tag_url = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}" ;
          tags.push("<a href=\"${tag_url}\">${tag.tag}</a>");
       END ;
       titleinfos.push("Tags: ${tags.join(' ')}") ;

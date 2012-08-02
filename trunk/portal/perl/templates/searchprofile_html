@@ -30,13 +30,24 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Suchprofil") %]</a></li>
+         <li><a href="#" class="lastitem">[% profileid %]</a></li>
+      </ul>
+     </div>
+     <div class="representation">
+<a href="[% path_prefix %]/[% config.get('searchprofile_loc') %]/[% profileid %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('searchprofile_loc') %]/[% profileid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+     </div>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-<a href="[% path_prefix %]/[% config.get('searchprofile_loc') %]/[% profileid %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('searchprofile_loc') %]/[% profileid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-
-
         </div>
       </div>
       <!-- end: #col1 -->
@@ -44,7 +55,7 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<h1>Kataloge im Recherche-Profil [% profileid %]</h1>
+<h1>Kataloge im Suchprofil [% profileid %]</h1>
 [%# USE dumper; dumper.dump(dbinfo) %]
 [% IF databases.size > 0 %]
 <ul>

@@ -272,6 +272,11 @@ my $atime = new Benchmark;
                         id         => $config->{xapian_sorttype_value}{'title'},
                         category   => 'T0331',
                         type       => 'stringcategory',
+                        filter     => sub {
+                            my $string=shift;
+                            $string=~s/^¬\w+¬?\s+//; # Mit Nichtsortierzeichen gekennzeichnetes Wort ausfiltern;
+                            return $string;
+                        },
                     },
                     {
                         # Zaehlung
@@ -324,13 +329,17 @@ my $atime = new Benchmark;
                     if ($this_sorting_ref->{type} eq "stringcategory"){
                         my $content = (exists $title_listitem_ref->{$this_sorting_ref->{category}}[0]{content})?$title_listitem_ref->{$this_sorting_ref->{category}}[0]{content}:"";
                         next unless ($content);
+
+                        if (defined $this_sorting_ref->{filter}){
+                            $content = &{$this_sorting_ref->{filter}}($content);
+                        }
                         
                         $content = OpenBib::Common::Util::grundform({
                             content   => $content,
                         });
                         
                         if ($content){
-                            $logger->debug("Adding $content as sortvalue");                        
+                            $logger->debug("Adding $content as sortvalue");
                             $doc->add_value($this_sorting_ref->{id},$content);
                         }
                     }

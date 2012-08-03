@@ -433,20 +433,35 @@ sub negotiate_type {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
-    my $config         = $self->param('config');
+    my $config         = OpenBib::Config->instance;
     
+    my $content_type = $r->headers_in->{'Content-Type'} || '';
     my $accept       = $r->headers_in->{'Accept'} || '';
     my @accepted_types      = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
 
-    $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
-    
-    foreach my $information_type (keys %{$config->{content_type_map}}){
-        if (any { $_ eq $information_type } @accepted_types) {
-            $logger->debug("Negotiated Type: $information_type - Suffix: ".$config->{content_type_map}->{$information_type});
-            $self->param('content_type',$information_type);
-            $self->param('representation',$config->{content_type_map}->{$information_type});
-            last;
+    if ($content_type){
+        $logger->debug("Content-Type: |$content_type|");
+        $logger->debug(YAML::Dump($config->{content_type_map}));
+        if ($config->{content_type_map}{$content_type}){
+            $self->param('content_type',$content_type);
+            $self->param('representation',$config->{content_type_map}->{$content_type});
         }
+
+        $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation'));
+    }
+    elsif (@accepted_types){
+        $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
+    
+        foreach my $information_type (keys %{$config->{content_type_map}}){
+            if (any { $_ eq $information_type } @accepted_types) {
+                $logger->debug("Negotiated Type: $information_type - Suffix: ".$config->{content_type_map}->{$information_type});
+                $self->param('content_type',$information_type);
+                $self->param('representation',$config->{content_type_map}->{$information_type});
+                last;
+            }
+        }
+
+        $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation'));
     }
 
     if (!$self->param('content_type') && !$self->param('representation') ){

@@ -300,7 +300,7 @@ my $atime = new Benchmark;
 
     my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
     $logger->info("### $database: Importing data into searchengine");   
-    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-fields -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp");
+    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

@@ -881,34 +881,34 @@ sub get_cascaded_templatepath {
 
     my $config = OpenBib::Config->instance;
 
-    if ($profile && -e "$config->{tt_include_path}/profile/$profile") {
+    if ($profile && -e "$config->{tt_include_path}/_profile/$profile") {
 
         # Database-Template ist spezifischer als View-Template und geht vor
-        if ($database && -e "$config->{tt_include_path}/profile/$profile/database/$database/$templatename") {
-            $templatename="profile/$profile/database/$database/$templatename";
+        if ($database && -e "$config->{tt_include_path}/_profile/$profile/_database/$database/$templatename") {
+            $templatename="_profile/$profile/_database/$database/$templatename";
         }
-        elsif ($view && -e "$config->{tt_include_path}/profile/$profile/views/$view/$templatename") {
-            $templatename="profile/$profile/views/$view/$templatename";
+        elsif ($view && -e "$config->{tt_include_path}/_profile/$profile/_view/$view/$templatename") {
+            $templatename="_profile/$profile/_view/$view/$templatename";
         }
-        elsif ($view && -e "$config->{tt_include_path}/profile/$profile/$templatename") {
-            $templatename="profile/$profile/$templatename";
+        elsif ($view && -e "$config->{tt_include_path}/_profile/$profile/$templatename") {
+            $templatename="_profile/$profile/$templatename";
         }
         # Database-Template ist spezifischer als View-Template und geht vor
-        elsif ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
-            $templatename="database/$database/$templatename";
+        elsif ($database && -e "$config->{tt_include_path}/_database/$database/$templatename") {
+            $templatename="_database/$database/$templatename";
         }                
-        elsif ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
-            $templatename="views/$view/$templatename";
+        elsif ($view && -e "$config->{tt_include_path}/_view/$view/$templatename") {
+            $templatename="_view/$view/$templatename";
         }
         
     }
     else {
         # Database-Template ist spezifischer als View-Template und geht vor
-        if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
-            $templatename="database/$database/$templatename";
+        if ($database && -e "$config->{tt_include_path}/_database/$database/$templatename") {
+            $templatename="_database/$database/$templatename";
         }
-        elsif ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
-            $templatename="views/$view/$templatename";
+        elsif ($view && -e "$config->{tt_include_path}/_view/$view/$templatename") {
+            $templatename="_view/$view/$templatename";
         }        
     }
 

@@ -1330,11 +1330,11 @@ sub get_system_of_db {
            dbname => $dbname,
         },
         {
-            select => 'system',
+            select => ['system'],
         }
-    )->first->system;
+    )->first;
 
-    return $system;
+    return ($system)?$system->system:'';
 }
 
 sub get_infomatrix_of_active_databases {

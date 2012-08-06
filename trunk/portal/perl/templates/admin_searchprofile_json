@@ -1,0 +1,10 @@
+[%- searchprofiles = config.get_searchprofiles ;
+
+  jsonprofiles = [];
+  FOREACH searchprofile IN searchprofiles ;
+    jsonprofiles.push({ id = searchprofile.id, number_of_databases = config.get_databases_of_searchprofile(searchprofile.id).size, own_index = searchprofile.own_index });
+  END;
+
+to_json(jsonprofiles)
+
+-%]

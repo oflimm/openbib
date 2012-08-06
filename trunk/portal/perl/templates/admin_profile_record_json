@@ -1,0 +1,35 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_profile_record_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Profiles
+#
+#######################################################################
+-%]
+[%-
+
+this_profile = {
+   profilename = profileinfo.profilename
+   description = profileinfo.description
+};
+
+thisorgunits = [];
+
+FOREACH thisorgunit IN orgunits.all ;
+ thisdbnames = [];
+ FOREACH item IN config.get_orgunitdbs(profileinfo.profilename,thisorgunit.orgunitname).sort;
+   thisdbnames.push({dbname = item, description = dbinfo.dbnames.${item}.full});
+ END;
+ thisorgunits.push({orgunitname = thisorgunit.orgunitname, description = thisorgunit.description, nr = thisorgunit.nr, databases = thisdbnames});
+END ;
+
+this_profile.orgunits = thisorgunits;
+
+to_json(this_profile) ;
+
+-%]

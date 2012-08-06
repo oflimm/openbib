@@ -62,8 +62,8 @@
 <tr><td class="boxedclear">
 <table>
 <tr><td><b>Name</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>Kataloge</b></td><td></td></tr>
-[% FOREACH thisorgunit IN orgunits %]
-<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profile.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td>[% thisorgunit.dbnames.join(',') %]</td></tr>
+[% FOREACH thisorgunit IN orgunits.all %]
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profile.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profileinfo.profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
 [% END %]
 </table>
 </td></tr>

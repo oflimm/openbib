@@ -14,7 +14,7 @@
 [%
 
 this_databaseinfo = {
-    database    = databaseinfo.dbname
+    dbname      = databaseinfo.dbname
     description = databaseinfo.description
     shortdesc   = databaseinfo.shortdesc
     active      = databaseinfo.active

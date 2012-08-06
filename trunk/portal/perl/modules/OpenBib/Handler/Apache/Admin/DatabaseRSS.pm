@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Admin::DatabaseRSS
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -201,9 +201,8 @@ sub create_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $rsstype         = $query->param('rss_type')        || '';
-    my $active          = $query->param('active')          || 0;
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -211,7 +210,8 @@ sub create_record {
     
     $logger->debug("Server: ".$r->get_server_name);
 
-    if ($rsstype eq "") {
+    
+    if ($input_data_ref->{type} eq "") {
         $self->print_warning($msg->maketext("Sie müssen einen RSS-Typ eingeben."));
         return Apache2::Const::OK;
     }
@@ -223,13 +223,11 @@ sub create_record {
 
     my $dbid = $config->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
 
-    my $thisrssfeed_ref = {
-        dbid    => $dbid,
-        type    => $rsstype,
-        active  => $active,
-    };
+    $input_data_ref->{dbid} = $dbid;
 
-    $config->new_databaseinfo_rss($thisrssfeed_ref);
+    $config->new_databaseinfo_rss($input_data_ref);
+
+    return unless ($self->param('representation') eq "html");
     
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");
@@ -313,9 +311,10 @@ sub update_record {
     # CGI Args
     my $method          = decode_utf8($query->param('_method')) || '';
     my $confirm         = $query->param('confirm') || 0;
-    my $rsstype         = $query->param('rss_type')        || '';
-    my $active          = $query->param('active')          || 0;
 
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    
     if (!$self->is_authenticated('admin')){
         return;
     }
@@ -355,16 +354,14 @@ sub update_record {
 
     my $dbid = $config->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
 
-    my $thisrssfeed_ref = {
-        dbid    => $dbid,
-        type    => $rsstype,
-        active  => $active,
-        id      => $rssid,
-    };
-        
-    # Ansonsten POST oder PUT => Aktualisieren
-    $config->update_databaseinfo_rss($thisrssfeed_ref);
+    $input_data_ref->{dbid} = $dbid;
+    $input_data_ref->{id}   = $rssid;
     
+    # Ansonsten POST oder PUT => Aktualisieren
+    $config->update_databaseinfo_rss($input_data_ref);
+
+    return unless ($self->param('representation') eq "html");
+
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
@@ -409,11 +406,30 @@ sub delete_record {
 
     $config->del_databaseinfo_rss($rssid);
 
+    return unless ($self->param('representation') eq "html");
+
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        type => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        active => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
 }
 
 1;

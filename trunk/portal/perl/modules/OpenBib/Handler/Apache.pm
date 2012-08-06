@@ -40,7 +40,7 @@ use Log::Log4perl qw(get_logger :levels);
 use List::MoreUtils qw(none any);
 use Apache2::Access ();
 use Apache2::RequestUtil ();
-use Apache2::Const -compile => qw(OK DECLINED HTTP_UNAUTHORIZED);
+use Apache2::Const -compile => qw(OK DECLINED HTTP_UNAUTHORIZED MODE_READBYTES);
 use Apache2::URI ();
 use APR::URI ();
 use Encode qw(decode_utf8 encode_utf8);
@@ -49,6 +49,14 @@ use Template;
 use URI::Escape;
 use XML::RSS;
 use YAML ();
+
+use APR::Brigade ();
+use APR::Bucket ();
+use Apache2::Filter ();
+
+use APR::Const    -compile => qw(SUCCESS BLOCK_READ);
+
+use constant IOBUFSIZE => 8192;
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
@@ -231,6 +239,12 @@ sub cgiapp_init {
                 
                 return $self->redirect($dispatch_url,'303 See Other');
             }
+        }
+        # CUD-operations always use the resource-URI, so no redirect neccessary
+        elsif ($r->method eq "POST" || $r->method eq "PUT" || $r->method eq "DELETE"){
+            $self->negotiate_type;
+            $self->negotiate_language;
+            return;
         }
         else {
             $logger->debug("No additional negotiation necessary");
@@ -547,9 +561,10 @@ sub is_authenticated {
 }
 
 sub print_warning {
-    my $self = shift;
-    my $warning = shift;
-
+    my $self      = shift;
+    my $warning   = shift;
+    my $warningnr = shift || 1;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -557,6 +572,7 @@ sub print_warning {
     my $config         = $self->param('config');
 
     my $ttdata = {
+        err_nr  => $warningnr,
         err_msg => $warning,
     };
 
@@ -1050,6 +1066,106 @@ sub to_cgi_hidden_input {
     }   
 
     return join("\n",@cgiparams);
+}
+
+# Kudos to Stas Bekman: mod_per2 Users's Guide
+
+sub read_json_input {
+    my $self = shift;
+    
+    my $r  = $self->param('r');
+    
+    my $bb = APR::Brigade->new($r->pool,
+                               $r->connection->bucket_alloc);
+    
+    my $data = '';
+    my $seen_eos = 0;
+    do {
+        $r->input_filters->get_brigade($bb, Apache2::Const::MODE_READBYTES,
+                                       APR::Const::BLOCK_READ, IOBUFSIZE);
+        
+        for (my $b = $bb->first; $b; $b = $bb->next($b)) {
+            if ($b->is_eos) {
+                $seen_eos++;
+                last;
+            }
+            
+            if ($b->read(my $buf)) {
+                $data .= $buf;
+            }
+            
+            $b->remove; # optimization to reuse memory
+        }
+        
+    } while (!$seen_eos);
+    
+    $bb->destroy;
+    
+    return $data;
+}
+
+sub parse_valid_input {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $query = $self->query();
+
+    my $valid_input_params_ref = $self->get_input_definition;
+    
+    my $input_params_ref = {};
+
+    # JSON Processing
+    if ($self->param('representation') eq "json"){
+        my $json_input=$self->read_json_input();
+        
+        $logger->debug("JSON Input $json_input");
+
+        my $input_data_ref;
+        
+        eval {
+            $input_data_ref = decode_json $json_input;
+        };
+
+        
+        if ($@){
+            $logger->error("Couldn't decode JSON POST-data");
+            return;
+        }
+
+        foreach my $param (keys %$valid_input_params_ref){
+            my $type     = $valid_input_params_ref->{$param}{type};
+            my $encoding = $valid_input_params_ref->{$param}{encoding};
+            my $default  = $valid_input_params_ref->{$param}{default};
+
+            $input_params_ref->{$param} = $input_data_ref->{$param} || $default;
+        }    
+
+    }
+    # CGI Processing
+    else {
+        foreach my $param (keys %$valid_input_params_ref){
+            my $type     = $valid_input_params_ref->{$param}{type};
+            my $encoding = $valid_input_params_ref->{$param}{encoding};
+            my $default  = $valid_input_params_ref->{$param}{default};
+            
+            if ($type eq "scalar"){
+                if ($encoding eq "utf8"){
+                    $input_params_ref->{$param} = decode_utf8($query->param($param)) || $default;
+                }
+                else {
+                    $input_params_ref->{$param} = $query->param($param);
+                }
+            }
+            # sonst array
+            else {
+            }
+            
+        }
+    }
+    
+    return $input_params_ref;
 }
 
 1;

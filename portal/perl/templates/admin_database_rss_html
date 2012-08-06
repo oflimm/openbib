@@ -82,7 +82,7 @@ END ;
 
 <tr>
 <td>
-<select name="rss_type">
+<select name="type">
 [% FOREACH type IN available_types.keys %]
 <option value="[% type%]">[% typedescription.${type} %]</option>
 [% END %]

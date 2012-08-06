@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Admin::Database
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,6 +38,7 @@ use Apache2::Const -compile => qw(:common :http);
 use Apache2::Log;
 use Apache2::Reload;
 use Apache2::RequestRec ();
+use Apache2::RequestIO ();
 use Apache2::Request ();
 use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
@@ -117,7 +118,7 @@ sub show_record {
     # Shared Args
     my $r              = $self->param('r');
     my $config         = $self->param('config');
-    my $dbname         = $self->param('id');
+    my $dbname         = $self->strip_suffix($self->param('databaseid'));
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -144,84 +145,34 @@ sub create_record {
     my $view           = $self->param('view');
 
     # Shared Args
-    my $query          = $self->query();
     my $r              = $self->param('r');
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $shortdesc       = decode_utf8($query->param('shortdesc'))       || '';
-    my $system          = $query->param('system')          || '';
-    my $dbname          = $query->param('dbname')          || '';
-    my $sigel           = $query->param('sigel')           || '';
-    my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('use_libinfo')     || 'false';
-    my $active          = $query->param('active')          || 'false';
-
-    my $host               = $query->param('host')               || '';
-    my $protocol           = $query->param('protocol')           || '';
-    my $remotepath         = $query->param('remotepath')         || '';
-    my $remoteuser         = $query->param('remoteuser')         || '';
-    my $remotepassword     = $query->param('remotepassword')    || '';
-    my $titlefile          = $query->param('titlefile')          || '';
-    my $personfile         = $query->param('personfile')         || '';
-    my $corporatebodyfile  = $query->param('corporatebodyfile')  || '';
-    my $subjectfile        = $query->param('subjectfile')        || '';
-    my $classificationfile = $query->param('classificationfile') || '';
-    my $holdingfile        = $query->param('holdingfile')        || '';
-    my $autoconvert        = $query->param('autoconvert')        || 'false';
-    my $circ               = $query->param('circ')               || 'false';
-    my $circurl            = $query->param('circurl')            || '';
-    my $circcheckurl       = $query->param('circcheckurl')       || '';
-    my $circdb             = $query->param('circdb')             || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
     if (!$self->is_authenticated('admin')){
         return;
     }
 
-    if ($dbname eq "" || $description eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."));
+    if ($input_data_ref->{dbname} eq "" || $input_data_ref->{description} eq "") {
+        $self->print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."),2);
         return Apache2::Const::OK;
     }
     
-    if ($config->db_exists($dbname)) {
-        $self->print_warning($msg->maketext("Es existiert bereits ein Katalog unter diesem Namen"));
+    if ($config->db_exists($input_data_ref->{dbname})) {
+        $self->print_warning($msg->maketext("Es existiert bereits ein Katalog unter diesem Namen"),3);
         return Apache2::Const::OK;
     }
 
-    my $thisdbinfo_ref = {
-        description        => $description,
-        shortdesc          => $shortdesc,
-        system             => $system,
-        dbname             => $dbname,
-        sigel              => $sigel,
-        url                => $url,
-        use_libinfo        => $use_libinfo,
-        active             => $active,
-        host               => $host,
-        protocol           => $protocol,
-        remotepath         => $remotepath,
-        remoteuser         => $remoteuser,
-        remotepassword     => $remotepassword,
-        titlefile          => $titlefile,
-        personfile         => $personfile,
-        corporatebodyfile  => $corporatebodyfile,
-        subjectfile        => $subjectfile,
-        classificationfile => $classificationfile,
-        holdingfile        => $holdingfile,
-        autoconvert        => $autoconvert,
-        circ               => $circ,
-        circurl            => $circurl,
-        circwsurl          => $circcheckurl,
-        circdb             => $circdb,
-    };
+    $config->new_databaseinfo($input_data_ref);
 
-    $config->new_databaseinfo($thisdbinfo_ref);
-
+    return unless ($self->param('representation') eq "html");
+    
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/edit");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$input_data_ref->{dbname}/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -238,53 +189,22 @@ sub show_record_form {
     my $view           = $self->param('view')           || '';
     my $dbname         = $self->param('databaseid')             || '';
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
+    
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
 
     if (!$config->db_exists($dbname)) {        
         $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
-            
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
-        return Apache2::Const::OK;
-    }
-
-    $logger->debug("Server: ".$r->get_server_name);
-
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
     
     my $ttdata={
-        stylesheet   => $stylesheet,        
         databaseinfo => $dbinfo_ref,
-
-        view       => $view,
-        
-        config     => $config,
-        session    => $session,
-        user       => $user,
-        msg        => $msg,
     };
     
     $self->print_page($config->{tt_admin_database_record_edit_tname},$ttdata);
@@ -300,38 +220,22 @@ sub update_record {
     
     my $r              = $self->param('r');
 
+    my $query          = $self->query();
+    
     my $view           = $self->param('view')           || '';
     my $dbname         = $self->param('databaseid')             || '';
     my $path_prefix    = $self->param('path_prefix');
+    my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
-        return Apache2::Const::OK;
+    if (!$self->is_authenticated('admin')){
+        return;
     }
 
-    $logger->debug("Server: ".$r->get_server_name);
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    $logger->debug("Info: ".YAML::Dump($input_data_ref));
 
     if (!$config->db_exists($dbname)) {        
         $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
@@ -354,15 +258,7 @@ sub update_record {
             my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
             
             my $ttdata={
-                stylesheet   => $stylesheet,
                 databaseinfo => $dbinfo_ref,
-
-                view       => $view,
-                
-                config     => $config,
-                session    => $session,
-                user       => $user,
-                msg        => $msg,
             };
 
             $logger->debug("Asking for confirmation");
@@ -379,65 +275,12 @@ sub update_record {
             return;
         }
     }
-
+    
     # Ansonsten POST oder PUT => Aktualisieren
     
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $shortdesc       = decode_utf8($query->param('shortdesc'))       || '';
-    my $system          = $query->param('system')          || '';
-    my $sigel           = $query->param('sigel')           || '';
-    my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('use_libinfo')     || 'false';
-    my $active          = $query->param('active')          || 'false';
+    $config->update_databaseinfo($input_data_ref);
 
-    my $host               = $query->param('host')               || '';
-    my $protocol           = $query->param('protocol')           || '';
-    my $remotepath         = $query->param('remotepath')         || '';
-    my $remoteuser         = $query->param('remoteuser')         || '';
-    my $remotepassword       = $query->param('remotepassword')       || '';
-    my $titlefile          = $query->param('titlefile')          || '';
-    my $personfile         = $query->param('personfile')         || '';
-    my $corporatebodyfile  = $query->param('corporatebodyfile')  || '';
-    my $subjectfile        = $query->param('subjectfile')        || '';
-    my $classificationfile = $query->param('classificationfile') || '';
-    my $holdingfile        = $query->param('holdingfile')        || '';
-    my $autoconvert        = $query->param('autoconvert')        || 'false';
-    my $circ               = $query->param('circ')               || 'false';
-    my $circurl            = $query->param('circurl')            || '';
-    my $circcheckurl       = $query->param('circcheckurl')       || '';
-    my $circdb             = $query->param('circdb')             || '';
-
-    
-    my $thisdbinfo_ref = {
-        description        => $description,
-        shortdesc          => $shortdesc,
-        system             => $system,
-        dbname             => $dbname,
-        sigel              => $sigel,
-        url                => $url,
-        use_libinfo        => $use_libinfo,
-        active             => $active,
-        host               => $host,
-        protocol           => $protocol,
-        remotepath         => $remotepath,
-        remoteuser         => $remoteuser,
-        remotepassword     => $remotepassword,
-        titlefile          => $titlefile,
-        personfile         => $personfile,
-        corporatebodyfile  => $corporatebodyfile,
-        subjectfile        => $subjectfile,
-        classificationfile => $classificationfile,
-        holdingfile        => $holdingfile,
-        autoconvert        => $autoconvert,
-        circ               => $circ,
-        circurl            => $circurl,
-        circwsurl          => $circcheckurl,
-        circdb             => $circdb,
-    };
-        
-    $logger->debug("Info: ".YAML::Dump($thisdbinfo_ref));
-    
-    $config->update_databaseinfo($thisdbinfo_ref);
+    return unless ($self->param('representation') eq "html");
 
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}");
@@ -454,52 +297,158 @@ sub delete_record {
     
     my $r              = $self->param('r');
 
-    my $view           = $self->param('view')           || '';
-    my $dbname         = $self->param('databaseid')             || '';
+    my $view           = $self->param('view');
+    my $dbname         = $self->param('databaseid');
     my $path_prefix    = $self->param('path_prefix');
+    my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
 
-    my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance({ apreq => $r });
-    my $query   = Apache2::Request->new($r);
-
-    my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
+    
     if (!$config->db_exists($dbname)) {        
         $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
             
-    my $adminuser   = $config->{adminuser};
-    my $adminpasswd = $config->{adminpasswd};
-    
-    # Ist der Nutzer ein Admin?
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    # Admin-SessionID ueberpruefen
-    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
-    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
-
-    if (!$adminsession) {
-        $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
-        return Apache2::Const::OK;
-    }
-
-    $logger->debug("Server: ".$r->get_server_name);
-
     $config->del_databaseinfo($dbname);
 
+    return unless ($self->param('representation') eq "html");
+    
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        description => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        shortdesc => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        system => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        dbname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        sigel => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        url => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        use_libinfo => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        active => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        host => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        protocol => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        remotepath => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        remoteuser => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        remotepassword => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        titlefile => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        personfile => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        corporatebodyfile => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        subjectfile => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        classificationfile => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        holdingfile => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        autoconvert => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'bool',
+        },
+        circ => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'bool',
+        },
+        circurl => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        circwsurl => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        circdb => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
 }
 
 1;

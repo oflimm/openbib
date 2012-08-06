@@ -51,7 +51,7 @@
 
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
-<input type="hidden" name="rss_type"       value="1" />
+<input type="hidden" name="type"           value="1" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuaufnahmen (generell)") %]</th></tr>
@@ -108,7 +108,7 @@ selected
 
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
-<input type="hidden" name="rss_type"       value="2" />
+<input type="hidden" name="type"           value="2" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuaufnahmen nach Verfasser") %]</th></tr>
@@ -165,7 +165,7 @@ selected
 
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
-<input type="hidden" name="rss_type"       value="3" />
+<input type="hidden" name="type"           value="3" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuaufnahmen nach K&ouml;rperschaft") %]</th></tr>
@@ -222,7 +222,7 @@ selected
 
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
-<input type="hidden" name="rss_type"       value="4" />
+<input type="hidden" name="type"           value="4" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuaufnahmen nach Schlagwort") %]</th></tr>
@@ -279,7 +279,7 @@ selected
 
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
-<input type="hidden" name="rss_type"       value="5" />
+<input type="hidden" name="type"           value="5" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuaufnahmen nach Systematik") %]</th></tr>
@@ -337,7 +337,7 @@ selected
 
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
-<input type="hidden" name="rss_type"       value="2" />
+<input type="hidden" name="type"           value="2" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuerwerbungen") %]</th></tr>

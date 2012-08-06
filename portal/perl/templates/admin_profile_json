@@ -15,12 +15,21 @@
 [%-
 
 all_profiles = [] ;
-FOREACH profile IN profiles ;
+
+FOREACH profile IN profiles.all ;
   this_profile = {
      profilename = profile.profilename
      description = profile.description
-     profiledb   = profile.profiledb
   };
+
+  profiledbs = [];
+
+  FOREACH item IN config.get_profiledbs(profile.profilename).sort ;
+    profiledbs.push({ dbname = item, description = dbinfo.dbnames.${item}.full});
+  END ;
+
+  this_profile.databases = profiledbs;
+  
   all_profiles.push(this_profile);
 END;
 

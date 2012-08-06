@@ -135,17 +135,19 @@ sub show_record {
         return Apache2::Const::OK;
     }
 
-    my $profileinfo_ref = $config->get_profileinfo->search({ profilename => $profilename })->single();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
+    my $orgunits_ref    = $config->get_orgunitinfo_overview($profilename);
     
     my $activedbs_ref = $config->get_active_database_names();
 
     my @profiledbs    = $config->get_profiledbs($profilename);
-    my $orgunits_ref  = $config->get_orgunitinfo_overview($profilename);
     
     my $ttdata = {
         profileinfo => $profileinfo_ref,
-        profiledbs   => \@profiledbs,
+        profiledbs  => \@profiledbs,
         orgunits    => $orgunits_ref,
+        dbinfo      => $dbinfotable,
         activedbs   => $activedbs_ref,
     };
 
@@ -167,22 +169,21 @@ sub create_record {
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $profilename     = $query->param('profilename')                  || '';
-    my $description     = decode_utf8($query->param('description'))     || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->is_authenticated('admin')){
         return;
     }
 
-    if ($profilename eq "" || $description eq "") {
+    if ($input_data_ref->{profilename} eq "" || $input_data_ref->{description} eq "") {
         $self->print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."));
         return Apache2::Const::OK;
     }
     
     my $ret = $config->new_profile({
-        profilename => $profilename,
-        description => $description,
+        profilename => $input_data_ref->{profilename},
+        description => $input_data_ref->{description},
     });
     
     if ($ret == -1){
@@ -190,8 +191,10 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
+    return unless ($self->param('representation') eq "html");
+
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename/edit");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$input_data_ref->{profilename}/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -255,8 +258,12 @@ sub update_record {
     # CGI Args
     my $method          = decode_utf8($query->param('_method'))     || '';
     my $confirm         = $query->param('confirm')                  || 0;
-    my $description     = decode_utf8($query->param('description')) || '';
 
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    $input_data_ref->{profilename} = $profilename;
+    
     if (!$self->is_authenticated('admin')){
         return;
     }
@@ -293,9 +300,11 @@ sub update_record {
     }
 
     $config->update_profile({
-        profilename => $profilename,
-        description => $description,
+        profilename => $input_data_ref->{profilename},
+        description => $input_data_ref->{description},
     });
+
+    return unless ($self->param('representation') eq "html");
 
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}");
@@ -330,11 +339,30 @@ sub delete_record {
 
     $config->del_profile($profilename);
 
+    return unless ($self->param('representation') eq "html");
+
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        profilename => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        description => {
+            default  => 'false',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+    };
 }
 
 1;

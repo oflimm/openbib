@@ -30,6 +30,21 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_view_loc') %].html?l=[% lang %]">[% msg.maketext("Views") %]</a></li>
+         <li><a href="#" class="lastitem">[% viewinfo.viewname %]</a></li>
+       </ul>
+     </div>
+    <div class="representation">
+<a href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
@@ -67,8 +82,8 @@
 </select>
 </td>
 </tr>
-<tr><td><b>Anderer Servername in URI</b></td><td><input type="text" name="viewservername" value="[% viewinfo.servername %]" size="40" /></td></tr>
-<tr><td><b>Andere Start-URI-Pfad</b></td><td><input type="text" name="viewstart_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
+<tr><td><b>Anderer Servername in URI</b></td><td><input type="text" name="servername" value="[% viewinfo.servername %]" size="40" /></td></tr>
+<tr><td><b>Andere Start-URI-Pfad</b></td><td><input type="text" name="start_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
 </table>
 
 </td></tr>
@@ -77,7 +92,7 @@
 <p />
 <b>[% msg.maketext("Katalogauswahl zu diesem View") %]</b><br /><br />
 [%# USE dumper;dumper.dump(dbnames)%]
-<select name="viewdb" multiple="multiple" size="20">
+<select name="databases" multiple="multiple" size="20">
 [% FOREACH singledb IN dbnames %]
 <option value="[% singledb %]" [% IF viewdbs.${singledb} %]selected="selected"[% END %]>[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</option>
 [% END %]

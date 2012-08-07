@@ -3,7 +3,7 @@
 databases = [];
 
 FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid);
-  databases.push({ database = dbname, description = dbinfo.dbnames.${dbname}.short });
+  databases.push({ dbname = dbname, description = dbinfo.dbnames.${dbname}.short });
 END ;
 
 to_json({ id = searchprofile.id, number_of_databases = config.get_databases_of_searchprofile(searchprofile.id).size, own_index = searchprofile.own_index, databases = databases})

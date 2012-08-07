@@ -62,7 +62,7 @@
 
 [%# USE dumper;dumper.dump(orgunitdb_map)%]
 
-<select name="orgunitdb" multiple="multiple" size="20">
+<select name="databases" multiple="multiple" size="20">
 
 [% FOREACH singledb IN activedbs.all %]
 

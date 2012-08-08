@@ -763,12 +763,16 @@ sub create_record {
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
 
     if (! $user->{ID}){
-        # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
-        
-        return Apache2::Const::OK;
+        if ($self->param('representation') eq "html"){
+            # Aufruf-URL
+            my $return_uri = uri_escape($r->parsed_uri->unparse);
+            
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+        }
+        else  {
+            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+            return Apache2::Const::OK;
+        }
     }
 
     $self->param('userid',$user->{ID});

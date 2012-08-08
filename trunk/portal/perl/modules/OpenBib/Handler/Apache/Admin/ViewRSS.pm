@@ -71,8 +71,8 @@ sub setup {
     $self->run_modes(
         'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
+        'create_record'             => 'create_record',
         'update_record'             => 'update_record',
-        'delete_record'             => 'delete_record',
     );
 
     # Use current path as template path,
@@ -113,24 +113,17 @@ sub show_record {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $viewinfo_obj  = $config->get_viewinfo->search({ viewname => $viewname })->single();
-
-    my $description = $viewinfo_obj->description;
-    my $primrssfeed = $viewinfo_obj->get_column('rssid');
+    my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
     my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
 
-    my $viewinfo={
-        viewname     => $viewname,
-        description  => $description,
+    my $ttdata={
+        viewinfo     => $viewinfo,
+
         allrssfeeds  => $all_rssfeeds_ref,
         viewrssfeed  => $viewrssfeed_ref,
-        primrssfeed  => $primrssfeed,
-    };
 
-    my $ttdata={
-        viewinfo   => $viewinfo,
         dbinfo     => $dbinfotable,
     };
     
@@ -178,7 +171,7 @@ sub show_record_form {
     my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
 
     my $ttdata={
-        viewinfo   => $viewinfo,
+        viewinfo     => $viewinfo,
 
         allrssfeeds  => $all_rssfeeds_ref,
         viewrssfeed  => $viewrssfeed_ref,
@@ -189,6 +182,17 @@ sub show_record_form {
     $self->print_page($config->{tt_admin_view_rss_record_edit_tname},$ttdata);
 
     return Apache2::Const::OK;
+}
+
+sub create_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $self->update_record;
+
+    return;
 }
 
 sub update_record {
@@ -216,14 +220,13 @@ sub update_record {
     # CGI Args
     my $method          = decode_utf8($query->param('_method')) || '';
     my $confirm         = $query->param('confirm') || 0;
-    my $primrssfeed     = $query->param('primrssfeed')     || '';
-    my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->is_authenticated('admin')){
         return;
     }
-
-    $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->view_exists($viewname)) {
         $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
@@ -231,13 +234,33 @@ sub update_record {
     }
 
     # Ansonsten POST oder PUT => Aktualisieren
-    $config->update_view_rss($viewname,$primrssfeed,\@rssfeeds);
+    $config->update_view_rss($viewname,$input_data_ref);
+
+    return unless ($self->param('representation') eq "html");
     
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}/$viewname/rss/edit.html");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        primrssfeed => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        rssfeeds => {
+            default  => [],
+            encoding => 'none',
+            type     => 'array',
+        },
+        
+    };
 }
 
 1;

@@ -103,6 +103,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->is_authenticated('user',$userid)){
+        $self->print_warning($msg->maketext("Sie sind nicht korrekt authentifiziert"));
         return;
     }
 

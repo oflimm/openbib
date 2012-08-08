@@ -160,9 +160,9 @@ sub show_record {
         $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
         return Apache2::Const::OK;
     }
-    
+
     my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
-    my $orgunitinfo_ref = $config->get_orgunitinfo->search_rs({ profilename => $profilename, orgunitname => $orgunitname})->single();
+    my $orgunitinfo_ref = $config->get_orgunitinfo->search_rs({ profileid => $profileinfo_ref->id, orgunitname => $orgunitname})->single();
     
     my @orgunitdbs   = $config->get_orgunitdbs($profilename,$orgunitname);
     
@@ -199,9 +199,11 @@ sub create_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $orgunit         = decode_utf8($query->param('orgunit'))         || '';
-    my $description     = decode_utf8($query->param('description'))     || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    # Profilenamen aus Pfad hinzufuegen
+    $input_data_ref->{profilename} = $profilename;
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -212,24 +214,27 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
-    if ($profilename eq "" || $orgunit eq "" || $description eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen, den Namen einer Organisationseinheit und deren Beschreibung eingeben."));
+    if ($input_data_ref->{orgunitname} eq "" || $input_data_ref->{description} eq "") {
+        $self->print_warning($msg->maketext("Sie müssen mindestens den Namen einer Organisationseinheit und deren Beschreibung eingeben."));
+        return Apache2::Const::OK;
+    }
+
+    if ($config->orgunit_exists($profilename,$input_data_ref->{orgunitname})){
+        $self->print_warning($msg->maketext("In diesem Profil existiert bereits eine Organisationseinheit diesen Namens"));
         return Apache2::Const::OK;
     }
     
-    my $ret = $config->new_orgunit({
-        profilename => $profilename,
-        orgunit     => $orgunit,
-        description => $description,
-    });
+    my $ret = $config->new_orgunit($input_data_ref);
     
     if ($ret == -1){
         $self->print_warning($msg->maketext("Es existiert bereits eine Organisationseinheit unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
+    return unless ($self->param('representation') eq "html");
+    
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename/orgunit/$orgunit/edit");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename/orgunit/$input_data_ref->{orgunitname}/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -322,10 +327,14 @@ sub update_record {
     # CGI Args
     my $method          = decode_utf8($query->param('_method')) || '';
     my $confirm         = $query->param('confirm') || 0;
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my @orgunitdb       = ($query->param('orgunitdb'))?$query->param('orgunitdb'):();
-    my $nr              = $query->param('nr')              || 0;
 
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    # Profilenamen und Orgunit aus Pfad hinzufuegen
+    $input_data_ref->{profilename} = $profilename;
+    $input_data_ref->{orgunitname} = $orgunitname;
+    
     if (!$self->is_authenticated('admin')){
         return;
     }
@@ -366,14 +375,10 @@ sub update_record {
         }
     }
 
-    $config->update_orgunit({
-        profilename => $profilename,
-        orgunitname => $orgunitname,
-        description => $description,
-        orgunitdb   => \@orgunitdb,
-        nr          => $nr,
-    });
+    $config->update_orgunit($input_data_ref);
 
+    return unless ($self->param('representation') eq "html");
+    
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename/edit");
     $self->query->status(Apache2::Const::REDIRECT);
@@ -422,11 +427,46 @@ sub delete_record {
 
     $config->del_orgunit($profilename,$orgunitname);
 
+    return unless ($self->param('representation') eq "html");
+    
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename/edit");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        orgunitname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        description => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        profilename => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        nr => {
+            default  => 1,
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        databases => {
+            default  => [],
+            encoding => 'none',
+            type     => 'array',
+        },
+        
+    };
 }
 
 1;

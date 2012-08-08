@@ -70,6 +70,7 @@ sub setup {
     $self->run_modes(
         'show_collection'           => 'show_collection',
         'show_record_form'          => 'show_record_form',
+        'show_record'               => 'show_record',
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',
         'delete_record'             => 'delete_record',
@@ -104,6 +105,39 @@ sub show_collection {
     };
     
     $self->print_page($config->{tt_admin_subject_tname},$ttdata);
+
+    return;
+}
+
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view             = $self->param('view');
+    my $subjectid        = $self->strip_suffix($self->param('subjectid'));
+
+    # Shared Args
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
+
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
+
+    my $subject_ref = $user->get_subject({ id => $subjectid});
+    my $ezb         = OpenBib::EZB->new;
+    my $dbis        = OpenBib::DBIS->new;
+    
+    my $ttdata={
+        subject    => $subject_ref,
+        ezb        => $ezb,
+        dbis       => $dbis,
+    };
+    
+    $self->print_page($config->{tt_admin_subject_record_tname},$ttdata);
 
     return;
 }

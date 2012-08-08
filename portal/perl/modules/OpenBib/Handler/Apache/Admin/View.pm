@@ -125,47 +125,35 @@ sub show_record {
 
     # Shared Args
     my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
 
     if (!$self->is_authenticated('admin')){
         return;
     }
 
+    # View muss existieren
+    unless ($config->view_exists($viewname)) {
+        $self->print_warning($msg->maketext("Ein View dieses Namens existiert nicht."));
+        return Apache2::Const::OK;
+    }
+
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $viewinfo_obj  = $config->get_viewinfo->search({ viewname => $viewname })->single();
+    my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
-    my $description = $viewinfo_obj->description;
-    my $primrssfeed = $viewinfo_obj->rssfeed;
-    my $start_loc   = $viewinfo_obj->start_loc;
-    my $servername  = $viewinfo_obj->servername;
-    my $profilename = $config->get_profilename_of_view($viewname);
-    my $stripuri    = $viewinfo_obj->stripuri;
-    my $active      = $viewinfo_obj->active;
-             
+    my $profilename = $viewinfo->profileid->profilename;
+    
     my @profiledbs       = $config->get_profiledbs($profilename);
     my @viewdbs          = $config->get_viewdbs($viewname);
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
     my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
 
-    my $viewinfo={
-        viewname     => $viewname,
-        description  => $description,
-        stripuri     => $stripuri,
-        active       => $active,
-        start_loc    => $start_loc,
-        servername   => $servername,
-        profilename  => $profilename,
-        viewdbs      => \@viewdbs,
-        allrssfeeds  => $all_rssfeeds_ref,
-        viewrssfeed  => $viewrssfeed_ref,
-        primrssfeed  => $primrssfeed,
-    };
-
-    
     my $ttdata={
-        dbnames    => \@profiledbs,
-        viewinfo   => $viewinfo,
-        dbinfo     => $dbinfotable,
+        dbnames     => \@profiledbs,
+        viewdbs     => \@viewdbs,
+        viewinfo    => $viewinfo,
+        dbinfo      => $dbinfotable,
+        allrssfeeds => $all_rssfeeds_ref,
     };
     
     $self->print_page($config->{tt_admin_view_record_tname},$ttdata);
@@ -186,53 +174,41 @@ sub create_record {
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $viewname        = $query->param('viewname')                     || '';
-    my $profilename     = $query->param('profilename')                  || '';
-    my $stripuri        = $query->param('stripuri')       || 0;
-    my $active          = $query->param('active')          || 0;
-    my $viewstart_loc   = $query->param('viewstart_loc')             || '';
-    my $viewservername  = $query->param('viewservername')            || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->is_authenticated('admin')){
         return;
     }
 
-    if ($viewname eq "" || $description eq "" || $profilename eq "") {
+    if ($input_data_ref->{viewname} eq "" || $input_data_ref->{description} eq "" || $input_data_ref->{profilename} eq "") {
         $self->print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-Profil eingeben."));
         return Apache2::Const::OK;
     }
 
     # Profile muss vorhanden sein.
-    if (!$config->profile_exists($profilename)) {
+    if (!$config->profile_exists($input_data_ref->{profilename})) {
         $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
     # View darf noch nicht existieren
-    if ($config->view_exists($viewname)) {
+    if ($config->view_exists($input_data_ref->{viewname})) {
         $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
         return Apache2::Const::OK;
     }
     
-    my $ret = $config->new_view({
-        viewname    => $viewname,
-        description => $description,
-        profilename => $profilename,
-        stripuri    => $stripuri,
-        active      => $active,
-        start_loc   => $viewstart_loc,
-        servername  => $viewservername,
-    });
+    my $ret = $config->new_view($input_data_ref);
     
     if ($ret == -1){
         $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
+    return unless ($self->param('representation') eq "html");
+
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}/$viewname/edit");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}/$input_data_ref->{viewname}/edit");
     $self->query->status(Apache2::Const::REDIRECT);
     
     return;
@@ -303,16 +279,11 @@ sub update_record {
     # CGI Args
     my $method          = decode_utf8($query->param('_method')) || '';
     my $confirm         = $query->param('confirm') || 0;
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $stripuri        = $query->param('stripuri')        || 0;
-    my $active          = $query->param('active')          || 0;
-    my $primrssfeed     = $query->param('primrssfeed')     || '';
-    my $viewstart_loc   = $query->param('viewstart_loc')             || '';
-    my $viewservername  = $query->param('viewservername')            || '';
-    my $profilename     = $query->param('profilename')     || '';
-    my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
-    my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
-    
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    $input_data_ref->{viewname} = $viewname;
+        
     if (!$self->is_authenticated('admin')){
         return;
     }
@@ -350,27 +321,15 @@ sub update_record {
     # Ansonsten POST oder PUT => Aktualisieren
 
     # Profile muss vorhanden sein.
-    if (!$config->profile_exists($profilename)) {
+    if (!$config->profile_exists($input_data_ref->{profilename})) {
         $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
-    my $profileinfo_ref = $config->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
+    $config->update_view($input_data_ref);
 
-    my $thisviewinfo_ref = {
-        viewname    => $viewname,
-        description => $description,
-        stripuri    => $stripuri,
-        active      => $active,
-        start_loc   => $viewstart_loc,
-        servername  => $viewservername,
-        profileid   => $profileinfo_ref->id,
-    };
-
-    $logger->debug("Info: ".YAML::Dump($thisviewinfo_ref));
+    return unless ($self->param('representation') eq "html");
     
-    $config->update_view($thisviewinfo_ref,\@viewdb);
-
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
@@ -398,11 +357,61 @@ sub delete_record {
 
     $config->del_view($viewname);
 
+    return unless ($self->param('representation') eq "html");
+    
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        viewname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        description => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        profilename => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        stripuri => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        active => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        start_loc => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        servername => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        databases => {
+            default  => [],
+            encoding => 'none',
+            type     => 'array',
+        },
+        
+    };
 }
 
 1;

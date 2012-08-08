@@ -70,6 +70,7 @@ sub setup {
     $self->run_modes(
         'show_collection'           => 'show_collection',
         'show_record_form'          => 'show_record_form',
+        'show_record'               => 'show_record',
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',
         'delete_record'             => 'delete_record',
@@ -103,6 +104,43 @@ sub show_collection {
     };
     
     $self->print_page($config->{tt_admin_authentication_tname},$ttdata);
+}
+
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view             = $self->param('view')                   || '';
+    my $authenticationid = $self->strip_suffix($self->param('authenticationid'))       || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    if (!$self->is_authenticated('admin')){
+        return;
+    }
+
+    $logger->debug("Server: ".$r->get_server_name);
+
+    my $logintarget_ref = $config->get_logintarget_by_id($authenticationid);
+    
+    my $ttdata={
+        logintarget => $logintarget_ref,
+    };
+    
+    $self->print_page($config->{tt_admin_authentication_record_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -163,14 +201,8 @@ sub create_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $targetid        = $query->param('targetid')        || '';
-    my $hostname        = $query->param('hostname')        || '';
-    my $port            = $query->param('port')            || '';
-    my $username        = $query->param('username')        || '';
-    my $dbname          = $query->param('dbname')          || '';
-    my $type            = $query->param('type')            || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->is_authenticated('admin')){
         return;
@@ -178,32 +210,24 @@ sub create_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    my $thislogintarget_ref = {
-        id          => $targetid,
-        hostname    => $hostname,
-        port        => $port,
-        remoteuser  => $username,
-        remotedb    => $dbname,
-        description => $description,
-        type        => $type,
-    };
-
-    if ($description eq "") {
+    if ($input_data_ref->{description} eq "") {
         
         $self->print_warning($msg->maketext("Sie müssen mindestens eine Beschreibung eingeben."));
         
         return Apache2::Const::OK;
     }
     
-    if ($config->logintarget_exists({description => $thislogintarget_ref->{description}})) {
+    if ($config->logintarget_exists({description => $input_data_ref->{description}})) {
         
         $self->print_warning($msg->maketext("Es existiert bereits ein Anmeldeziel unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
     
-    $config->new_logintarget($thislogintarget_ref);
+    $config->new_logintarget($input_data_ref);
 
+    return unless ($self->param('representation') eq "html");
+    
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
@@ -236,14 +260,11 @@ sub update_record {
     # CGI Args
     my $method          = decode_utf8($query->param('_method')) || '';
     my $confirm         = $query->param('confirm') || 0;
-    
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $hostname        = $query->param('hostname')        || '';
-    my $port            = $query->param('port')            || '';
-    my $username        = $query->param('username')        || '';
-    my $dbname          = $query->param('dbname')          || '';
-    my $type            = $query->param('type')            || '';
 
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    $input_data_ref->{id} = $authenticationid;
+    
     if (!$self->is_authenticated('admin')){
         return;
     }
@@ -285,19 +306,9 @@ sub update_record {
 
     # Ansonsten POST oder PUT => Aktualisieren
     
-    my $thislogintarget_ref = {
-        id          => $authenticationid,
-        hostname    => $hostname,
-        port        => $port,
-        remoteuser  => $username,
-        remotedb    => $dbname,
-        description => $description,
-        type        => $type,
-    };
+    $config->update_logintarget($input_data_ref);
 
-    $logger->debug("Info: ".YAML::Dump($thislogintarget_ref));
-
-    $config->update_logintarget($thislogintarget_ref);
+    return unless ($self->param('representation') eq "html");
 
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
@@ -328,6 +339,8 @@ sub delete_record {
     $logger->debug("Server: ".$r->get_server_name);
 
     $config->delete_logintarget($authenticationid);
+
+    return unless ($self->param('representation') eq "html");
     
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
@@ -336,5 +349,36 @@ sub delete_record {
     return;
 }
 
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        description => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        hostname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        port => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        remoteuser => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        type => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },        
+    };
+}
     
 1;

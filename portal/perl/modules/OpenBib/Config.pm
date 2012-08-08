@@ -1099,6 +1099,8 @@ sub get_profiledbs {
             $profiledbs_done{$dbname} = 1;
         }
     }
+
+    $logger->debug("Profile $profilename: ".YAML::Dump(\@profiledbs));
     return @profiledbs;
 }
 
@@ -1685,42 +1687,55 @@ sub update_libinfo {
 }
 
 sub update_view {
-    my ($self,$view_ref,$db_ref) = @_;
+    my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $viewname               = exists $view_ref->{viewname}
-        ? $view_ref->{viewname}            : undef;
-    my $description            = exists $view_ref->{description}
-        ? $view_ref->{description}         : undef;
-    my $active                 = exists $view_ref->{active}
-        ? $view_ref->{active}              : undef;
-    my $primrssfeed            = exists $view_ref->{rssid}
-        ? $view_ref->{primrssfeed}         : undef;
-    my $start_loc              = exists $view_ref->{start_loc}
-        ? $view_ref->{start_loc}           : undef;
-    my $servername             = exists $view_ref->{servername}
-        ? $view_ref->{servername}          : undef;
-    my $profilename            = exists $view_ref->{profilename}
-        ? $view_ref->{profilename}         : undef;
-    my $stripuri               = exists $view_ref->{stripuri}
-        ? $view_ref->{stripuri}            : undef;
+    my $viewname               = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}            : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+    my $active                 = exists $arg_ref->{active}
+        ? $arg_ref->{active}              : undef;
+    my $primrssfeed            = exists $arg_ref->{rssid}
+        ? $arg_ref->{primrssfeed}         : undef;
+    my $start_loc              = exists $arg_ref->{start_loc}
+        ? $arg_ref->{start_loc}           : undef;
+    my $servername             = exists $arg_ref->{servername}
+        ? $arg_ref->{servername}          : undef;
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}         : undef;
+    my $stripuri               = exists $arg_ref->{stripuri}
+        ? $arg_ref->{stripuri}            : undef;
+
+    my $databases_ref          = exists $arg_ref->{databases}
+        ? $arg_ref->{databases}           : [];
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    delete $view_ref->{viewname};
+    my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
     
     my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->update($view_ref);
+    $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->update(
+        {
+            profileid   => $profileinfo_ref->id,
+            viewname    => $viewname,
+            description => $description,
+            start_loc   => $start_loc,
+            servername  => $servername,
+            stripuri    => $stripuri,
+            active      => $active
+        }
+    );
     
     # Datenbanken zunaechst loeschen
     $self->{schema}->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
 
-    if (@$db_ref){
+    if (@$databases_ref){
         my $this_db_ref = [];
-        foreach my $dbname (@$db_ref){
+        foreach my $dbname (@$databases_ref){
             my $dbid = $self->get_databaseinfo->single({ dbname => $dbname })->id;
                 
             push @$this_db_ref, {
@@ -1737,8 +1752,14 @@ sub update_view {
 }
 
 sub update_view_rss {
-    my ($self,$viewname,$primrssfeed,$rss_ref) = @_;
+    my ($self,$viewname,$arg_ref) = @_;
 
+    my $rssfeeds_ref           = exists $arg_ref->{rssfeeds}
+        ? $arg_ref->{rssfeeds}            : [];
+    my $primrssfeed            = exists $arg_ref->{primrssfeed}
+        ? $arg_ref->{primrssfeed}         : undef;
+
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -1750,10 +1771,10 @@ sub update_view_rss {
     # RSS-Feeds zunaechst loeschen
     $self->{schema}->resultset('ViewRss')->search({ viewid => $viewid })->delete;
 
-    if (@$rss_ref){
+    if (@$rssfeeds_ref){
         my $this_rss_ref = [];
         
-        foreach my $rssfeed (@$rss_ref){
+        foreach my $rssfeed (@$rssfeeds_ref){
             push @$this_rss_ref, {
                 viewid => $viewid,
                 rssid  => $rssfeed,
@@ -1804,12 +1825,17 @@ sub new_view {
     my $active                 = exists $arg_ref->{active}
         ? $arg_ref->{active}              : undef;
 
+    my $databases_ref          = exists $arg_ref->{databases}
+        ? $arg_ref->{databases}           : [];
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Argumente".YAML::Dump($arg_ref));
+    
     my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
     
-    $self->{schema}->resultset('Viewinfo')->create(
+    my $new_view = $self->{schema}->resultset('Viewinfo')->create(
         {
             profileid   => $profileinfo_ref->id,
             viewname    => $viewname,
@@ -1821,6 +1847,38 @@ sub new_view {
         }
     );
 
+    my $viewid = $new_view->id;
+    
+    # Datenbanken zunaechst loeschen
+    $self->{schema}->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
+
+    my @profiledbs = $self->get_profiledbs($profilename);
+
+    my $profile_lookup_ref = {};
+
+    foreach my $profiledb (@profiledbs){
+        $profile_lookup_ref->{$profiledb} = 1;
+    }
+
+    $logger->debug("Valide Kataloge".YAML::Dump($profile_lookup_ref));
+    
+    if (@$databases_ref){
+        my $this_db_ref = [];
+        foreach my $dbname (@$databases_ref){
+            next unless ($profile_lookup_ref->{$dbname} == 1);
+            
+            my $dbid = $self->get_databaseinfo->single({ dbname => $dbname })->id;
+                
+            push @$this_db_ref, {
+                viewid => $viewid,
+                dbid   => $dbid,
+            };
+        }
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $self->{schema}->resultset('ViewDb')->populate($this_db_ref);
+    }
+    
     return 1;
 }
 
@@ -1926,8 +1984,8 @@ sub update_orgunit {
         ? $arg_ref->{orgunitname}         : undef;
     my $description            = exists $arg_ref->{description}
         ? $arg_ref->{description}         : undef;
-    my $orgunitdb_ref          = exists $arg_ref->{orgunitdb}
-        ? $arg_ref->{orgunitdb}           : [];
+    my $databases_ref          = exists $arg_ref->{databases}
+        ? $arg_ref->{databases}           : [];
     my $nr                     = exists $arg_ref->{nr}
         ? $arg_ref->{nr}                  : 0;
 
@@ -1946,9 +2004,9 @@ sub update_orgunit {
     $self->{schema}->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitinfo_ref->id})->delete;
 
     # DBI: "insert into orgunit_db values (?,?,?)"
-    if (@$orgunitdb_ref){
+    if (@$databases_ref){
         my $this_db_ref = [];
-        foreach my $dbname (@$orgunitdb_ref){
+        foreach my $dbname (@$databases_ref){
             my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });
             push @$this_db_ref, {
                 orgunitid   => $orgunitinfo_ref->id,
@@ -1969,20 +2027,44 @@ sub new_orgunit {
     # Set defaults
     my $profilename            = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}            : undef;
-    my $orgunit                = exists $arg_ref->{orgunit}
-        ? $arg_ref->{orgunit}                : undef;
+    my $orgunitname            = exists $arg_ref->{orgunitname}
+        ? $arg_ref->{orgunitname}            : undef;
     my $description            = exists $arg_ref->{description}
         ? $arg_ref->{description}            : undef;
     my $nr                     = exists $arg_ref->{nr}
         ? $arg_ref->{nr}                     : undef;
+
+    my $databases_ref          = exists $arg_ref->{databases}
+        ? $arg_ref->{databases}              : [];
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
 
-    $self->{schema}->resultset('Orgunitinfo')->create({ profileid => $profileinfo_ref->id, orgunitname => $orgunit, description => $description, nr => $nr});
+    my $new_orgunit = $self->{schema}->resultset('Orgunitinfo')->create({ profileid => $profileinfo_ref->id, orgunitname => $orgunitname, description => $description, nr => $nr});
 
+    my $orgunitid = $new_orgunit->id;
+
+    # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
+    # Datenbanken zunaechst loeschen
+    $self->{schema}->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitid})->delete;
+
+    # DBI: "insert into orgunit_db values (?,?,?)"
+    if (@$databases_ref){
+        my $this_db_ref = [];
+        foreach my $dbname (@$databases_ref){
+            my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });
+            push @$this_db_ref, {
+                orgunitid  => $orgunitid,
+                dbid       => $dbinfo_ref->id,
+            };
+        }
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $self->{schema}->resultset('OrgunitDb')->populate($this_db_ref);
+    }
+    
     return 1;
 }
 
@@ -2214,6 +2296,7 @@ sub new_logintarget {
   
     my $logger = get_logger();
 
+    $logger->debug(YAML::Dump($arg_ref));
     # DBI: "insert into logintarget (hostname,port,user,db,description,type) values (?,?,?,?,?,?)"
     $self->{schema}->resultset('Logintarget')->create(
         $arg_ref,

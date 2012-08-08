@@ -180,7 +180,13 @@ sub create_record {
         $self->print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."));
         return Apache2::Const::OK;
     }
-    
+
+    # Profile darf noch nicht existieren
+    if ($config->profile_exists($input_data_ref->{profilename})) {
+        $self->print_warning($msg->maketext("Ein Profil dieses Namens existiert bereits."));
+        return Apache2::Const::OK;
+    }
+
     my $ret = $config->new_profile({
         profilename => $input_data_ref->{profilename},
         description => $input_data_ref->{description},

@@ -538,7 +538,7 @@ sub is_authenticated {
     $logger->debug("Args: Role: $role UserID: $userid");
     $logger->debug("Session-UserID: ".$user->{ID});
     
-    if (! $user->{ID}){
+    if (! $user->{ID} && $self->param('represenation') eq "html"){
         # Aufruf-URL
         my $return_uri  = uri_escape($r->parsed_uri->path);
         
@@ -1036,7 +1036,7 @@ sub to_cgi_querystring {
     my @cgiparams = ();
     
     foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
-        push @cgiparams, "$arg_ref->{param}=$arg_ref->{val}";
+        push @cgiparams, "$arg_ref->{param}=".uri_escape($arg_ref->{val});
     }   
         
     return join(';',@cgiparams);
@@ -1155,13 +1155,13 @@ sub parse_valid_input {
                     $input_params_ref->{$param} = decode_utf8($query->param($param)) || $default;
                 }
                 else {
-                    $input_params_ref->{$param} = $query->param($param);
+                    $input_params_ref->{$param} = $query->param($param)  || $default;
                 }
             }
             # sonst array
-            else {
+            elsif ($type eq "array") {
+                @{$input_params_ref->{$param}} = $query->param($param) || $default;
             }
-            
         }
     }
     

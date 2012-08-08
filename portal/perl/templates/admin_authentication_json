@@ -1,0 +1,20 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_authentication
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste der Anmeldeziele.
+#
+#######################################################################
+-%]
+[%-
+
+ logintargets = config.get_logintargets;
+
+ to_json(logintargets);
+
+-%]

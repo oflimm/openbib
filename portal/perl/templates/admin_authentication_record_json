@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editlogintarget
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines Anmeldeziels
+#
+#######################################################################
+-%]
+[%-
+
+to_json(logintarget);
+
+-%]

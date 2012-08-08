@@ -4377,9 +4377,9 @@ sub search {
             $where_ref->{vorname} = $surname;
         }
 
-        my $foundusers = $self->{schema}->resultset('Userinfo')->search($where_ref);
-        foreach my $founduser ($foundusers->all){
-            my $userid = founduser->get_column('id');
+        my $users = $self->{schema}->resultset('Userinfo')->search($where_ref);
+        foreach my $user ($users->all){
+            my $userid = $user->get_column('id');
             push @found_userids, $userid;
         }
     }

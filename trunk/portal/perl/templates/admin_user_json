@@ -1,0 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_user
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsseite zur Nutzerverwaltung
+#
+#######################################################################
+-%]
+[%-
+
+  general_userinfo = {
+     number_of_users = user.get_number_of_users
+     number_of_searchprofiles = user.get_number_of_dbprofiles
+     number_of_collections = user.get_number_of_collections
+     number_of_collection_entries = user.get_number_of_collection_entries
+  };
+
+  to_json(general_userinfo);
+
+-%]

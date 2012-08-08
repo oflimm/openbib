@@ -1,0 +1,21 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_subject
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Views
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%-
+
+to_json(subjects);
+
+
+
+-%]

@@ -160,7 +160,7 @@
 [% IF active_submenu == "user" %]
 <li><span>[% msg.maketext("Nutzerverwaltung") %]</span>
     <ul>
-[%   IF active_subsubmenu == "general" %]
+[%   IF active_subsubmenu == "overview" %]
       <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
 [%   ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_user_loc') %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>

@@ -45,6 +45,21 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_subject_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+         <li><a href="#" class="lastitem">[% subject.name %]</a></li>
+       </ul>
+     </div>
+    <div class="representation">
+<a href="[% path_prefix %]/[% config.get('admin_subject_loc') %]/[% subject.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">

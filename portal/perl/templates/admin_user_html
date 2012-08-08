@@ -30,10 +30,24 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+       </ul>
+     </div>
+    <div class="representation">
+<a href="[% path_prefix %]/[% config.get('admin_user_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="user" subsubmenu="overview" %]
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="user" active_subsubmenu="overview" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -45,7 +59,6 @@
 <tr><td>[% msg.maketext("Anzahl der Nutzer") %]</td><td><b>[% user.get_number_of_users %]</b></td><td></td></tr>
 <tr><td>[% msg.maketext("Anzahl der Suchprofile von Nutzern") %]</td><td><b>[% user.get_number_of_dbprofiles %]</b></td><td></td></tr>
 <tr><td>[% msg.maketext("Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)") %]</td><td><b>[% user.get_number_of_collection_entries %] / [% user.get_number_of_collections %]</b></td><td></td></tr> 
-<tr><td>[% msg.maketext("Anzahl der Anmeldeziele") %]</td><td><b>[% user.get_number_of_logintargets %]</b></td><td></td></tr> 
 </table>
 </td></td>
 </table>

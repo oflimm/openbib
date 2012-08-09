@@ -669,29 +669,41 @@ dispatch_rules:
      rule: '/portal/:view/litlist[post]'
      runmode: 'create_record'
   - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitList'
+     module: 'OpenBib::Handler::Apache::LitList::Item'
+     rule: '/portal/:view/litlist/:litlistid/item[get]'
+     runmode: 'show_collection'
+  - # litlist_loc:
+     module: 'OpenBib::Handler::Apache::LitList::Item'
+     rule: '/portal/:view/litlist/:litlistid/item.html[get]'
+     runmode: 'show_collection'
+  - # litlist_loc:
+     module: 'OpenBib::Handler::Apache::LitList::Item'
+     rule: '/portal/:view/litlist/:litlistid/item.json[get]'
+     runmode: 'show_collection'
+  - # litlist_loc:
+     module: 'OpenBib::Handler::Apache::LitList::Item'
      rule: '/portal/:view/litlist/:litlistid/item[post]'
-     runmode: 'create_entry'
+     runmode: 'create_record'
   - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:id[get]'
-     runmode: 'show_entry'
+     module: 'OpenBib::Handler::Apache::LitList::Item'
+     rule: '/portal/:view/litlist/:litlistid/item/:itemid[get]'
+     runmode: 'show_record'
   - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:id/edit[get]'
-     runmode: 'edit_entry'
+     module: 'OpenBib::Handler::Apache::LitList::Item'
+     rule: '/portal/:view/litlist/:litlistid/item/:itemid/edit[get]'
+     runmode: 'edit_record'
   - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:id/edit.html[get]'
-     runmode: 'edit_entry'
+     module: 'OpenBib::Handler::Apache::LitList::Item'
+     rule: '/portal/:view/litlist/:litlistid/item/:itemid/edit.html[get]'
+     runmode: 'edit_record'
   - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:id[put]'
-     runmode: 'update_entry'
+     module: 'OpenBib::Handler::Apache::LitList::Item'
+     rule: '/portal/:view/litlist/:litlistid/item/:itemid[put]'
+     runmode: 'update_record'
   - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/:litlistid/item/:id[delete]'
-     runmode: 'delete_entry'
+     module: 'OpenBib::Handler::Apache::LitList::Item'
+     rule: '/portal/:view/litlist/:litlistid/item/:itemid[delete]'
+     runmode: 'delete_record'
 
 # Anzeige privater Listen ueber separaten user_loc
 
@@ -996,21 +1008,86 @@ dispatch_rules:
      runmode: 'update_record'
 
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::User::Collection'
+     module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/user/:userid/collection.html[get]'
      runmode: 'show_collection'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::User::Collection'
+     module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/user/:userid/collection.json[get]'
      runmode: 'show_collection'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::User::Collection'
+     module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/user/:userid/collection.rdf[get]'
      runmode: 'show_collection'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::User::Collection'
+     module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/user/:userid/collection[get]'
      runmode: 'show_collection'
+
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection[post]'
+     runmode: 'create_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/save.html[get]'
+     runmode: 'save_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/save[get]'
+     runmode: 'save_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/save.html[get]'
+     runmode: 'save_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/mail[get]'
+     runmode: 'mail_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/mail.html[get]'
+     runmode: 'mail_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/mail[post]'
+     runmode: 'mail_collection_send'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/print[get]'
+     runmode: 'print_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/print.html[get]'
+     runmode: 'print_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/item[get]'
+     runmode: 'show_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/item.html[get]'
+     runmode: 'show_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/item.json[get]'
+     runmode: 'show_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/item/:itemid[get]'
+     runmode: 'show_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/item/:itemid[post]'
+     runmode: 'update_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/item/:itemid[put]'
+     runmode: 'update_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/item/:itemid[delete]'
+     runmode: 'delete_record'
 
   - # cloud_loc:
      module: 'OpenBib::Handler::Apache::Cloud'
@@ -1210,6 +1287,10 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/count[get]'
      runmode: 'show_collection_count'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/user/:userid/collection/count[get]'
+     runmode: 'show_collection_count'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/count.html[get]'
@@ -1272,23 +1353,35 @@ dispatch_rules:
      runmode: 'create_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:id[get]'
+     rule: '/portal/:view/collection/item[get]'
+     runmode: 'show_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/item.html[get]'
+     runmode: 'show_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/item.json[get]'
+     runmode: 'show_collection'
+  - # collection_loc:
+     module: 'OpenBib::Handler::Apache::Collection'
+     rule: '/portal/:view/collection/item/:itemid[get]'
      runmode: 'show_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:id/edit[get]'
+     rule: '/portal/:view/collection/item/:itemid/edit[get]'
      runmode: 'edit_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:id/edit.html[get]'
+     rule: '/portal/:view/collection/item/:itemid/edit.html[get]'
      runmode: 'edit_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:id[put]'
+     rule: '/portal/:view/collection/item/:itemid[put]'
      runmode: 'update_record'
   - # collection_loc:
      module: 'OpenBib::Handler::Apache::Collection'
-     rule: '/portal/:view/collection/:id[delete]'
+     rule: '/portal/:view/collection/item/:itemid[delete]'
      runmode: 'delete_record'
   - # redirect_loc:
      module: 'OpenBib::Handler::Apache::Redirect'
@@ -1894,7 +1987,11 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Admin::Authentication'
      rule: '/portal/:view/admin/authentication/:authenticationid/edit.html[get]'
      runmode: 'show_record_form'
-  - # admin_authentication_loc: Update Record
+  - # admin_authentication_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Authentication'
+     rule: '/portal/:view/admin/authentication/:authenticationid[get]'
+     runmode: 'show_record'
+  - # admin_authentication_loc: Create Record
      module: 'OpenBib::Handler::Apache::Admin::Authentication'
      rule: '/portal/:view/admin/authentication[post]'
      runmode: 'create_record'
@@ -1927,6 +2024,10 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Admin::Subject'
      rule: '/portal/:view/admin/subject[get]'
      runmode: 'show_collection'
+  - # admin_subject_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Subject'
+     rule: '/portal/:view/admin/subject/:subjectid[get]'
+     runmode: 'show_record'
   - # admin_subject_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Subject'
      rule: '/portal/:view/admin/subject/:subjectid/edit[get]'
@@ -2456,7 +2557,7 @@ elasticsearch_sorttype_value:
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
 xapian_option:
-  maxmatch: 4000
+  maxmatch: 2000
   max_key_length: 240
 
 # Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
@@ -2634,6 +2735,7 @@ tt_admin_view_record_edit_tname: admin_view_record_edit
 tt_admin_searchuser_tname: admin_searchuser
 
 tt_admin_authentication_tname: admin_authentication
+tt_admin_authentication_record_tname: admin_authentication_record
 tt_admin_authentication_record_edit_tname: admin_authentication_record_edit
 tt_admin_authentication_record_delete_confirm_tname: admin_authentication_record_delete_confirm
 
@@ -2693,6 +2795,7 @@ tt_admin_user_search_tname: admin_user_search
 tt_admin_user_search_form_tname: admin_user_search_form
 
 tt_admin_subject_tname: admin_subject
+tt_admin_subject_record_tname: admin_subject_record
 tt_admin_subject_record_edit_tname: admin_subject_record_edit
 
 tt_admin_showstat_tname: admin_showstat
@@ -2797,6 +2900,8 @@ tt_info_project_tname: info_project
 tt_info_feedback_tname: info_feedback
 tt_info_tutorials_tname: info_tutorials
 tt_logout_tname: logout
+tt_litlist_item_tname: litlist_item
+tt_litlist_item_record_tname: litlist_item_record
 tt_litlist_collection_tname: litlist_collection
 tt_litlist_collection_recent_tname: litlist_collection_recent
 tt_litlist_collection_by_subject_tname: litlist_collection_by_subject
@@ -3011,7 +3116,7 @@ social_tagging: 1
 litlists: 1
 
 # Reviews/Ratings
-reviews: 1
+reviews: 0
 
 # Cover-Scans
 coverscans:

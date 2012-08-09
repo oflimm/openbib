@@ -48,6 +48,17 @@ __PACKAGE__->table("collection");
   data_type: 'text'
   is_nullable: 1
 
+=head2 comment
+
+  data_type: 'text'
+  default_value: (empty string)
+  is_nullable: 1
+
+=head2 tstamp
+
+  data_type: 'timestamp'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -66,6 +77,10 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "titlecache",
   { data_type => "text", is_nullable => 1 },
+  "comment",
+  { data_type => "text", default_value => "", is_nullable => 1 },
+  "tstamp",
+  { data_type => "timestamp", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -83,13 +98,13 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Schema::System::Result::Userinfo",
   { id => "userid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FxR0J0yx3a7ZU6zyAmQk5Q
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LxvU+p1Hz4U7YdL8dhW+VA
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

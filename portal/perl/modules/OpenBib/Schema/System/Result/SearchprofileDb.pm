@@ -54,7 +54,7 @@ __PACKAGE__->belongs_to(
   "searchprofileid",
   "OpenBib::Schema::System::Result::Searchprofile",
   { id => "searchprofileid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 dbid
@@ -69,13 +69,13 @@ __PACKAGE__->belongs_to(
   "dbid",
   "OpenBib::Schema::System::Result::Databaseinfo",
   { id => "dbid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:e/yDPlPJbOOuvLQMEubByQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Q4CzZm20/AmWyIL+Df5A4g
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

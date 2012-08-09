@@ -29,7 +29,6 @@
 
   <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% IF format == 'short' %]
-[%- recordlist = recordlist.load_brief_records -%]
 [%- FOREACH record IN recordlist.get_records -%]
 [%- item = record.get_brief_normdata -%]
 [%# USE dumper;dumper.dump(item)%]
@@ -142,7 +141,7 @@
       <div class="titlemark">[% signatur | truncate(config.get('maxlength_mark')) %]</div>
       <div class="titleactions">
 <a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?_method=POST;id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
-&nbsp;<a href="[% path_prefix %]/[% config.get('collection_loc') %]/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+&nbsp;<a href="[% path_prefix %]/[% IF user.ID %]user/[% user.ID %]/collection[% ELSE %][% config.get('collection_loc') %][% END %]/item/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
       </div>
     </div><!-- item -->
 <!-- Ende einzelner Treffer -->

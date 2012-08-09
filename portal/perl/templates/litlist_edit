@@ -95,8 +95,8 @@
 [%- END -%]
 
 <div class="type-select">
-<label for="subjectids">Ordnen Sie Ihre Literaturliste thematisch ein</label>
-<select name="subjectids" id="subjectids" multiple="multiple" size="5">
+<label for="subjects">Ordnen Sie Ihre Literaturliste thematisch ein</label>
+<select name="subjects" id="subjects" multiple="multiple" size="5">
 
 [% FOREACH subject IN subjects %]
 <option value="[% subject.id %]" [% IF litlist.properties.subject_selected.${subject.id} %] selected="selected"[% END %]>[% subject.name | truncate(40) %]</option>

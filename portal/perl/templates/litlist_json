@@ -3,7 +3,18 @@
   records = [];
 
   FOREACH record IN litlist.recordlist.get_records ;
-      records.push(record.get_brief_normdata);
+      thisrecord = {
+         record  = record.get_brief_normdata
+         comment = record.comment
+         tstamp  = record.date
+         itemid  = record.listid
+      };
+      IF record.id && record.database ;
+         thisrecord.titleid = record.id;
+         thisrecord.dbname  = record.database;
+ 
+      END;
+      records.push(thisrecord);
   END ;
 
  thislitlist = {

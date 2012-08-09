@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: collection_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Anzeigen der Merkliste
+#
+#######################################################################
+-%]
+[%-
+   records = [];
+   FOREACH record IN recordlist.get_records ;
+     thisrecord = {
+       record = record.get_brief_normdata
+       itemid  = record.listid
+     };
+
+     IF record.id && record.database ;
+       thisrecord.titleid = record.id;
+       thisrecord.dbname  = record.database;
+     END;
+
+     records.push(thisrecord);
+   END;
+
+   to_json(records);
+-%]

@@ -69,7 +69,7 @@ __PACKAGE__->belongs_to(
   "userid",
   "OpenBib::Schema::System::Result::Userinfo",
   { id => "userid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 roleid
@@ -84,13 +84,13 @@ __PACKAGE__->belongs_to(
   "roleid",
   "OpenBib::Schema::System::Result::Role",
   { id => "roleid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZA1s3CtXtyK6H5glLHFv9g
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8X3iQXNxjdM7JDpwMHZJQQ
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

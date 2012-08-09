@@ -61,6 +61,12 @@ __PACKAGE__->table("litlistitem");
   data_type: 'text'
   is_nullable: 1
 
+=head2 comment
+
+  data_type: 'text'
+  default_value: (empty string)
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -83,6 +89,8 @@ __PACKAGE__->add_columns(
   { data_type => "char", default_value => "", is_nullable => 0, size => 14 },
   "titlecache",
   { data_type => "text", is_nullable => 1 },
+  "comment",
+  { data_type => "text", default_value => "", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -100,13 +108,13 @@ __PACKAGE__->belongs_to(
   "litlistid",
   "OpenBib::Schema::System::Result::Litlist",
   { id => "litlistid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:uNsKF8r+LW0Qa1AnkZjVyw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FvzY7SZ36OVTGrPFOcsiXg
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

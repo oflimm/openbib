@@ -54,7 +54,7 @@ __PACKAGE__->belongs_to(
   "viewid",
   "OpenBib::Schema::System::Result::Viewinfo",
   { id => "viewid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 rssid
@@ -69,13 +69,13 @@ __PACKAGE__->belongs_to(
   "rssid",
   "OpenBib::Schema::System::Result::Rssinfo",
   { id => "rssid" },
-  { on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:30:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mH/7P1fL6vMc8HLMFgdGfw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hKJZZbkJdNRH0Os4hy/a/A
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

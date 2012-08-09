@@ -55,16 +55,18 @@ function update_collection(yourform, checked, item) {
      </div>
    </div>
 
-    <form method="post" action="[% path_prefix %]/[% config.get('collection_loc') %]">
+    <form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('user_loc') %]/[% user.ID %]/collection[% ELSE %][% config.get('collection_loc') %][% END %]">
       
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
+[% IF recordlist.get_size > 0 %]
 [% IF format == 'short' ;
       extended_actions=1;
    END ;
 %]
-[% PROCESS common/subtemplate name="collection_html_actions" %] 
+[% PROCESS common/subtemplate name="collection_html_actions" %]
+[% END %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -72,6 +74,7 @@ function update_collection(yourform, checked, item) {
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
+[% IF recordlist.get_size > 0 %]
 [% IF format == 'short' %]
   [%- PROCESS common/subtemplate name="collection_html_short"  show_bibsonomy=1 -%]
 [% ELSIF format == 'full' %]
@@ -85,7 +88,9 @@ function update_collection(yourform, checked, item) {
 [% END %]
 
 </form>
-
+[% ELSE %]
+<h1>[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>
+[% END %]
         </div>
         <div id="ie_clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

@@ -93,7 +93,8 @@ sub show_collection {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-
+    my $userid         = $self->param('userid')         || '';
+    
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
@@ -106,13 +107,17 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    if ($userid && !$self->is_authenticated('user',$userid)){
+        $self->print_warning($msg->maketext("Sie sind nicht korrekt authentifiziert"));
+        return;
+    }
+    
     # CGI Args
-    my $method                  = $query->param('_method')     || '';
-    my $database                = $query->param('db')                || '';
-    my $singleidn               = $query->param('singleidn')               || '';
+    my $method                  = $query->param('_method')                 || '';
+    my $dbname                  = $query->param('dbname')                  || '';
+    my $titleid                 = $query->param('titleid')                 || '';
     my $litlistid               = $query->param('litlistid')               || '';
     my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
-    my $do_collection_showcount = $query->param('do_collection_showcount') || '';
     my $do_litlist_addentry     = $query->param('do_litlist_addentry')     || '';
     my $do_addlitlist           = $query->param('do_addlitlist')           || '';
     my $do_addtags              = $query->param('do_addtags')              || '';
@@ -156,49 +161,7 @@ sub show_collection {
     
     my $idnresult="";
 
-    if ($do_collection_showcount) {
-        
-        # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
-        # die Session nicht authentifiziert ist
-        # Dementsprechend einen LoginLink oder ein ProfilLink ausgeben
-        my $anzahl="";
-        
-        if ($user->{ID}) {
-            # Anzahl Eintraege der privaten Merkliste bestimmen
-            # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-            $anzahl =    $user->get_number_of_items_in_collection();
-        } else {
-            #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-            $anzahl = $session->get_number_of_items_in_collection();
-        }
-        
-        # Start der Ausgabe mit korrektem Header
-        $r->content_type("text/plain");
-        
-        $r->print($anzahl);
-        
-        return Apache2::Const::OK;
-    }
-    elsif ($do_collection_delentry) {
-        foreach my $listid ($query->param('id')) {
-            if ($user->{ID}) {
-                $user->delete_item_from_collection({
-                    id       => $listid,
-                });
-            }
-            else {
-                $session->delete_item_from_collection({
-                    id       => $listid,
-                });
-            }
-        }
-        
-        my $redirecturl   = "$config->{base_loc}/$view/$config->{collection_loc}";
-        
-        $r->internal_redirect($redirecturl);
-        return Apache2::Const::OK;
-    }
-    elsif ($do_litlist_addentry) {
+    if ($do_litlist_addentry) {
         my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
         
         foreach my $listid ($query->param('id')) {
@@ -269,31 +232,22 @@ sub show_collection {
     
     my $recordlist = new OpenBib::RecordList::Title();
     
-    if ($user->{ID}) {
+    if ($userid && $userid == $user->{ID}) {
         $recordlist = $user->get_items_in_collection();
     }
     else {
         $recordlist = $session->get_items_in_collection();
     }
 
-    if ($recordlist->get_size() == 0) {
+    if ($recordlist->get_size() != 0) {
+        my $sorttype          = $queryoptions->get_option('srt');
+        my $sortorder         = $queryoptions->get_option('srto');
         
-        # TT-Data erzeugen
-        my $ttdata={
-            qopts          => $queryoptions->get_options,
-        };
-        
-        $self->print_page($config->{tt_collection_empty_tname},$ttdata);
-        return Apache2::Const::OK;
+        if ($sortorder && $sorttype){
+            $recordlist->sort({order=>$sortorder,type=>$sorttype});
+        }
     }
-
-    my $sorttype          = $queryoptions->get_option('srt');
-    my $sortorder         = $queryoptions->get_option('srto');
-
-    if ($sortorder && $sorttype){
-         $recordlist->sort({order=>$sortorder,type=>$sorttype});
-    }
-
+    
     # TT-Data erzeugen
     my $ttdata={
         qopts             => $queryoptions->get_options,
@@ -388,7 +342,7 @@ sub show_record {
     my $r              = $self->param('r');
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->strip_suffix($self->param('itemid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -431,6 +385,7 @@ sub create_record {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
+    my $userid         = $self->param('userid')         || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -443,61 +398,23 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    # CGI Args
-    my $database                = $query->param('db')                      || '';
-    my $id                      = $query->param('id')                      || '';
-    my $json                    = $query->param('json')                    || {};
-    my $litlistid               = $query->param('litlistid')               || '';
-    my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
-    my $do_collection_showcount = $query->param('do_collection_showcount') || '';
-    my $do_litlist_addentry     = $query->param('do_litlist_addentry')     || '';
-    my $do_addlitlist           = $query->param('do_addlitlist')           || '';
-    my $do_addtags              = $query->param('do_addtags')              || '';
-    my $title                   = $query->param('title')                   || '';
-    my $action                  = $query->param('action')                  || 'show';
-    my $show                    = $query->param('show')                    || 'short';
-    my $type                    = $query->param('type')                    || 'HTML';
-    my $tags                    = $query->param('tags')                    || '';
-    my $tags_type               = $query->param('tags_type')               || 1;
-    my $littype                 = $query->param('littype')                 || 1;
-
-    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
-    # die Session nicht authentifiziert ist
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    $logger->debug("Trying to create record $database - $id");
-
-    $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
     
-    if (! $user->is_authenticated && $do_addlitlist) {
-        $logger->debug("Nicht authentifizierter Nutzer versucht Literaturliste anzulegen");
-
-        $self->return_loginurl;
-
-        return;
-    }
-    elsif (! $user->is_authenticated && $do_addtags) {
-        $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
-
-        $self->return_loginurl;
-
+    if ($userid && !$self->is_authenticated('user',$userid)){
+        $self->print_warning($msg->maketext("Sie sind nicht korrekt authentifiziert"));
         return;
     }
 
-    $logger->info("SessionID: $session->{ID}");
-
-    if ($do_collection_delentry) {
+    # Shortcut: Delete multiple items via POST
+    if ($query->param('do_collection_delentry')) {
         foreach my $listid ($query->param('id')) {
             if ($user->{ID}) {
                 $user->delete_item_from_collection({
-                    id => $listid,
+                    id       => $listid,
                 });
             }
             else {
                 $session->delete_item_from_collection({
-                    id => $listid,
+                    id       => $listid,
                 });
             }
         }
@@ -506,91 +423,78 @@ sub create_record {
 
         return;
     }
-    elsif ($do_litlist_addentry) {
-        my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
-        
-        foreach my $tit ($query->param('titid')) {
-            my ($titdb,$titid)=split(":",$tit);
-	    
-            if ($litlist_properties_ref->{userid} eq $user->{ID}) {
-                $user->add_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
-            }
-        }
 
-        $self->return_baseurl;
-#        $r->internal_redirect("$config->{base_loc}/$config->{user_loc}/$user->{ID}/$litlistid.html");
-#        return Apache2::Const::OK;
-        return
-    }
-    elsif ($do_addlitlist) {
-        if (!$title) {
-            $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
-	    
-            return Apache2::Const::OK;
-        }
-        
-        $user->add_litlist({ title =>$title, type => $littype});
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
-        $self->return_baseurl;
-
-        return;
-    }
-    elsif ($do_addtags) {
-        if (!$tags) {
-            $self->print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."));
-            return Apache2::Const::OK;
-        }
-        
-        if ($user->{ID}){
-            my $username = $user->get_username;
-            
-            if ($query->param('titid')){
-                foreach my $tit ($query->param('titid')) {
-                    my ($titdb,$titid)=split(":",$tit);
-                    
-                    $user->add_tags({
-                        tags      => $tags,
-                        titid     => $titid,
-                        titdb     => $titdb,
-                        username  => $username,
-                        type      => $tags_type,
-                    });
-                    
-                }
-            }
-            else {
-                $self->print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."));
-                return Apache2::Const::OK;
-            }
-        }
-        else {
-            $self->print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein OpenBib."));
-        }
-
-        $self->return_baseurl;
-
-        return;
-    }
-
-    my $create_args = {};
-
-    if ($id && $database){
-        $create_args->{id}       = $id;
-        $create_args->{database} = $database;
-    }
-    elsif ($json){
-        $create_args->{json}     = $json;        
+    if (defined $input_data_ref->{error} && $input_data_ref->{error} == 1){
+        $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
+        return Apache2::Const::OK;
     }
     
     # Einfuegen eines Titels in die Merkliste
-    if ($user->{ID}) {
-        $user->add_item_to_collection($create_args);
+    if ($userid && $userid == $user->{ID}) {
+        $user->add_item_to_collection($input_data_ref);
     }
     # Anonyme Session
     else {
-        $session->add_item_to_collection($create_args);
+        $session->add_item_to_collection($input_data_ref);
+    }
+
+    return unless ($self->param('representation') eq "html");
+
+    $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
+    return Apache2::Const::OK;
+}
+
+sub update_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    my $userid         = $self->param('userid')         || '';
+    my $itemid         = $self->strip_suffix($self->param('itemid'))         || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    if ($userid && !$self->is_authenticated('user',$userid)){
+        $self->print_warning($msg->maketext("Sie sind nicht korrekt authentifiziert"));
+        return;
+    }
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    $input_data_ref->{itemid} = $itemid;
+    
+    if (defined $input_data_ref->{error} && $input_data_ref->{error} == 1){
+        $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
+        return Apache2::Const::OK;
     }
     
+    # Einfuegen eines Titels in die Merkliste
+    if ($userid && $userid == $user->{ID}) {
+        $user->update_item_in_collection($input_data_ref);
+    }
+    # Anonyme Session
+    else {
+        $session->update_item_in_collection($input_data_ref);
+    }
+
+    return unless ($self->param('representation') eq "html");
+
     $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
     return Apache2::Const::OK;
 }
@@ -603,7 +507,7 @@ sub delete_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->strip_suffix($self->param('itemid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -649,7 +553,7 @@ sub print_collection {
     # Dispatches Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->strip_suffix($self->param('itemid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -717,7 +621,7 @@ sub save_collection {
     # Dispatched_args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->strip_suffix($self->param('itemid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -789,7 +693,7 @@ sub mail_collection {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('id'));
+    my $id             = $self->strip_suffix($self->param('itemid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -1032,7 +936,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{collection_loc}.html";
+    my $new_location = ($userid)?"$path_prefix/$config->{user_loc}/$userid/collection.html":"$path_prefix/$config->{collection_loc}.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -1065,6 +969,33 @@ sub return_loginurl {
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        titleid => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        dbname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        record => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+         comment => {
+             default  => '',
+             encoding => 'utf8',
+             type     => 'scalar',
+         },
+    };
 }
 
 1;

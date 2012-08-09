@@ -153,9 +153,13 @@ CREATE TABLE sessioncollection (
  id         BIGSERIAL,
  sid        BIGINT NOT NULL,
 
+ tstamp     TIMESTAMP,
+
  dbname     TEXT,
  titleid    VARCHAR(255),
- titlecache TEXT
+ titlecache TEXT,
+
+ comment    TEXT default ''
 );
 
 drop table IF EXISTS recordhistory;
@@ -345,9 +349,14 @@ CREATE TABLE collection (
  id         BIGSERIAL,
  userid     BIGINT  NOT NULL,
 
+ tstamp     TIMESTAMP,
+
  dbname     TEXT,
  titleid    VARCHAR(255),
- titlecache TEXT
+ titlecache TEXT,
+
+ comment   TEXT default ''
+
 );
 
 DROP TABLE IF EXISTS tag;
@@ -415,9 +424,11 @@ CREATE TABLE litlistitem (
 
  tstamp    TIMESTAMP,
 
- dbname    VARCHAR(25)  NOT NULL,
- titleid   VARCHAR(255) NOT NULL,
- titleisbn CHAR(14)     NOT NULL default '',
+ dbname    VARCHAR(25),
+ titleid   VARCHAR(255),
+ titleisbn CHAR(14),
+
+ comment   TEXT default ''
 
  titlecache  TEXT
 );

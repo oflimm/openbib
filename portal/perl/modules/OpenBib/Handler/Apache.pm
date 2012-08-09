@@ -1131,7 +1131,7 @@ sub parse_valid_input {
         
         if ($@){
             $logger->error("Couldn't decode JSON POST-data");
-            return;
+            return { error => 1 };
         }
 
         foreach my $param (keys %$valid_input_params_ref){

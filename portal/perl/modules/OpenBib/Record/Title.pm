@@ -80,7 +80,10 @@ sub new {
         ? $arg_ref->{date}           : undef;
 
     my $listid    = exists $arg_ref->{listid}
-        ? $arg_ref->{listid}           : undef;
+        ? $arg_ref->{listid}         : undef;
+
+    my $comment   = exists $arg_ref->{comment}
+        ? $arg_ref->{comment}        : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -102,6 +105,10 @@ sub new {
         $self->{date}     = $date;
     }
 
+    if (defined $comment){
+        $self->{comment}  = $comment;
+    }
+    
     if (defined $listid){
         $self->{listid}   = $listid;
     }
@@ -834,14 +841,14 @@ sub load_brief_record {
     $logger->debug("Getting cached brief title for id $id");
     
     # DBI: "select listitem from title_listitem where id = ?"
-    my $titlecache = $self->{schema}->resultset('Title')->single(
+    my $record = $self->{schema}->resultset('Title')->single(
         {
             'id' => $id,
         },
     );
     
-    if ($titlecache){
-        my $titlecache_json = $titlecache->titlecache;
+    if ($record){
+        my $titlecache_json = $record->titlecache;
 
         $logger->debug("Stored listitem: $titlecache_json");
 
@@ -1792,11 +1799,18 @@ sub to_drilldown_term {
 sub to_json {
     my ($self)=@_;
 
-    my $title_ref = {
-        'metadata'    => $self->{_normdata},
-        'items'       => $self->{_holding},
-        'circulation' => $self->{_circulation},
-    };
+    my $title_ref = {};
+    
+    if ($self->{_brief_normdata}){
+        $title_ref = $self->{_brief_normdata};
+    }
+    elsif ($self->{_normdata}){
+        $title_ref = {
+            'metadata'    => $self->{_normdata},
+            'items'       => $self->{_holding},
+            'circulation' => $self->{_circulation},
+        };
+    }
 
     return encode_json $title_ref;
 }

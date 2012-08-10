@@ -8,18 +8,18 @@
 
 drop table IF EXISTS person;
 create table person (
- id            VARCHAR(255),
+ id            TEXT,
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP
 );
 
 drop table IF EXISTS person_fields;
 create table person_fields (
- personid      VARCHAR(255) NOT NULL,
- field         SMALLINT  NOT NULL,
+ personid      TEXT        NOT NULL,
+ field         SMALLINT    NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
- content       TEXT NOT NULL,
+ content       TEXT        NOT NULL,
  content_norm  TEXT
 );
 
@@ -29,19 +29,19 @@ create table person_fields (
 
 drop table IF EXISTS corporatebody;
 create table corporatebody (
- id            VARCHAR(255),
+ id            TEXT,
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP
 );
 
 drop table IF EXISTS corporatebody_fields;
 create table corporatebody_fields (
- corporatebodyid      VARCHAR(255) NOT NULL,
- field         SMALLINT  NOT NULL,
- mult          SMALLINT,
- subfield      VARCHAR(2),
- content       TEXT NOT NULL,
- content_norm  TEXT
+ corporatebodyid  TEXT        NOT NULL,
+ field            SMALLINT    NOT NULL,
+ mult             SMALLINT,
+ subfield         VARCHAR(2),
+ content          TEXT        NOT NULL,
+ content_norm     TEXT
 );
 
 -------------------------------------------------
@@ -50,18 +50,18 @@ create table corporatebody_fields (
 
 drop table IF EXISTS subject;
 create table subject (
- id            VARCHAR(255),
+ id            TEXT,
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP
 );
 
 drop table IF EXISTS subject_fields;
 create table subject_fields (
- subjectid      VARCHAR(255) NOT NULL,
- field         SMALLINT  NOT NULL,
+ subjectid     TEXT       NOT NULL,
+ field         SMALLINT   NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
- content       TEXT NOT NULL,
+ content       TEXT       NOT NULL,
  content_norm  TEXT
 );
 
@@ -71,19 +71,19 @@ create table subject_fields (
 
 drop table IF EXISTS classification;
 create table classification (
- id            VARCHAR(255),
+ id            TEXT,
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP
 );
 
 drop table IF EXISTS classification_fields;
 create table classification_fields (
- classificationid      VARCHAR(255) NOT NULL,
- field         SMALLINT  NOT NULL,
- mult          SMALLINT,
- subfield      VARCHAR(2),
- content       TEXT NOT NULL,
- content_norm  TEXT
+ classificationid  TEXT        NOT NULL,
+ field             SMALLINT    NOT NULL,
+ mult              SMALLINT,
+ subfield          VARCHAR(2),
+ content           TEXT        NOT NULL,
+ content_norm      TEXT
 );
 
 -------------------------------------------------
@@ -92,7 +92,7 @@ create table classification_fields (
 
 drop table IF EXISTS title;
 create table title (
- id            VARCHAR(255),
+ id            TEXT,
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP,
  titlecache    TEXT,
@@ -101,7 +101,7 @@ create table title (
 
 drop table IF EXISTS title_fields;
 create table title_fields (
- titleid      VARCHAR(255) NOT NULL,
+ titleid       TEXT NOT NULL,
  field         SMALLINT  NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
@@ -115,16 +115,16 @@ create table title_fields (
 
 drop table IF EXISTS holding;
 create table holding (
- id            VARCHAR(255)
+ id            TEXT
 );
 
 drop table IF EXISTS holding_fields;
 create table holding_fields (
- holdingid      VARCHAR(255) NOT NULL,
- field         SMALLINT  NOT NULL,
+ holdingid     TEXT        NOT NULL,
+ field         SMALLINT    NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
- content       TEXT NOT NULL,
+ content       TEXT        NOT NULL,
  content_norm  TEXT
 );
 
@@ -133,47 +133,47 @@ create table holding_fields (
 drop table IF EXISTS title_title;
 create table title_title (
 field             SMALLINT,
-source_titleid    VARCHAR(255) NOT NULL,
-target_titleid    VARCHAR(255) NOT NULL,
+source_titleid    TEXT     NOT NULL,
+target_titleid    TEXT     NOT NULL,
 supplement        TEXT
 );
 
 drop table IF EXISTS title_person;
 create table title_person (
 field      SMALLINT,
-titleid    VARCHAR(255) NOT NULL,
-personid   VARCHAR(255) NOT NULL,
+titleid    TEXT         NOT NULL,
+personid   TEXT          NOT NULL,
 supplement TEXT
 );
 
 drop table IF EXISTS title_corporatebody;
 create table title_corporatebody (
 field             SMALLINT,
-titleid           VARCHAR(255) NOT NULL,
-corporatebodyid   VARCHAR(255) NOT NULL,
+titleid           TEXT NOT NULL,
+corporatebodyid   TEXT NOT NULL,
 supplement        TEXT
 );
 
 drop table IF EXISTS title_subject;
 create table title_subject (
 field      SMALLINT,
-titleid    VARCHAR(255) NOT NULL,
-subjectid  VARCHAR(255) NOT NULL,
+titleid    TEXT NOT NULL,
+subjectid  TEXT NOT NULL,
 supplement TEXT
 );
 
 drop table IF EXISTS title_classification;
 create table title_classification (
 field             SMALLINT,
-titleid           VARCHAR(255) NOT NULL,
-classificationid  VARCHAR(255) NOT NULL,
+titleid           TEXT NOT NULL,
+classificationid  TEXT NOT NULL,
 supplement        TEXT
 );
 
 drop table IF EXISTS title_holding;
 create table title_holding (
 field      SMALLINT,
-titleid    VARCHAR(255) NOT NULL,
-holdingid  VARCHAR(255) NOT NULL,
+titleid    TEXT NOT NULL,
+holdingid  TEXT NOT NULL,
 supplement TEXT
 );

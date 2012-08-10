@@ -13,24 +13,24 @@ CREATE TABLE databaseinfo (
  description TEXT,
  shortdesc   TEXT,
  system      TEXT, 
- dbname      VARCHAR(25),
- sigel       VARCHAR(20),
+ dbname      TEXT,
+ sigel       TEXT,
  url         TEXT,
  use_libinfo BOOL,
  active      BOOL,
 
 /* Import Configuration */
- protocol           VARCHAR(255),
- host               VARCHAR(255),
+ protocol           TEXT,
+ host               TEXT,
  remotepath         TEXT,
- remoteuser         VARCHAR(255),
- remotepassword     VARCHAR(255),
- titlefile          VARCHAR(255),
- personfile         VARCHAR(255),
- corporatebodyfile  VARCHAR(255),
- subjectfile        VARCHAR(255),
- classificationfile VARCHAR(255),
- holdingfile        VARCHAR(255),
+ remoteuser         TEXT,
+ remotepassword     TEXT,
+ titlefile          TEXT,
+ personfile         TEXT,
+ corporatebodyfile  TEXT,
+ subjectfile        TEXT,
+ classificationfile TEXT,
+ holdingfile        TEXT,
 
  autoconvert  BOOL,
  circ         BOOL,
@@ -72,7 +72,7 @@ drop table IF EXISTS profileinfo;
 CREATE TABLE profileinfo (
  id          BIGSERIAL,
 
- profilename VARCHAR(20) NOT NULL,
+ profilename TEXT NOT NULL,
  description TEXT
 );
 
@@ -81,7 +81,7 @@ CREATE TABLE orgunitinfo (
  id          BIGSERIAL,
  profileid   BIGINT NOT NULL,
 
- orgunitname VARCHAR(20) NOT NULL,
+ orgunitname TEXT NOT NULL,
  description TEXT,
  nr          INT
 );
@@ -96,7 +96,7 @@ drop table IF EXISTS viewinfo;
 CREATE TABLE viewinfo (
  id          BIGSERIAL,
 
- viewname    VARCHAR(20) NOT NULL,
+ viewname    TEXT   NOT NULL,
  description TEXT,
  rssid       BIGINT,
  start_loc   TEXT,
@@ -131,14 +131,14 @@ CREATE TABLE serverinfo (
 
 drop table IF EXISTS sessioninfo;
 CREATE TABLE sessioninfo (
- id            BIGSERIAL,
- sessionid     CHAR(33) NOT NULL,
- createtime    TIMESTAMP,
- lastresultset TEXT,
- username      TEXT,
- userpassword  TEXT,
+ id             BIGSERIAL,
+ sessionid      TEXT        NOT NULL,
+ createtime     TIMESTAMP,
+ lastresultset  TEXT,
+ username       TEXT,
+ userpassword   TEXT,
 
- queryoptions  TEXT,
+ queryoptions   TEXT,
 
  searchform     TEXT,
  searchprofile  TEXT,
@@ -156,7 +156,7 @@ CREATE TABLE sessioncollection (
  tstamp     TIMESTAMP,
 
  dbname     TEXT,
- titleid    VARCHAR(255),
+ titleid    TEXT,
  titlecache TEXT,
 
  comment    TEXT default ''
@@ -167,7 +167,7 @@ CREATE TABLE recordhistory (
  sid       BIGINT NOT NULL,
 
  dbname    TEXT,
- titleid   VARCHAR(255)
+ titleid   TEXT
 );
 
 drop table IF EXISTS eventlog;
@@ -176,7 +176,7 @@ CREATE TABLE eventlog (
 
  tstamp     TIMESTAMP,
  type       INT,
- content    VARCHAR(255)
+ content    TEXT
 );
 
 drop table IF EXISTS eventlogjson;
@@ -206,7 +206,7 @@ CREATE TABLE searchhistory (
 
  tstamp       TIMESTAMP,
 
- dbname       VARCHAR(255) NOT NULL,
+ dbname       TEXT NOT NULL,
  "offset"       INT,
  hitrange     INT,
  searchresult TEXT,
@@ -222,7 +222,7 @@ CREATE TABLE userinfo (
  id         BIGSERIAL,
  lastlogin  TIMESTAMP,
 
- username  VARCHAR(255),
+ username  TEXT,
  password  TEXT,
 
  /* User informatin from library system */
@@ -261,7 +261,7 @@ CREATE TABLE userinfo (
 DROP TABLE IF EXISTS role;
 CREATE TABLE role (
   id        BIGSERIAL,
-  name      VARCHAR(255) NOT NULL
+  name      TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS user_role;
@@ -273,7 +273,7 @@ CREATE TABLE user_role (
 
 DROP TABLE IF EXISTS registration;
 CREATE TABLE registration (
-  id                  VARCHAR(60),
+  id                  TEXT,
   tstamp              TIMESTAMP,
  
   username            TEXT,
@@ -332,27 +332,27 @@ DROP TABLE IF EXISTS searchfield;
 CREATE TABLE searchfield (
  userid      BIGINT NOT NULL,
 
- searchfield VARCHAR(255),
+ searchfield TEXT,
  active      BOOL
 );
 
 DROP TABLE IF EXISTS livesearch;
 CREATE TABLE livesearch (
  userid      BIGINT NOT NULL,
- searchfield VARCHAR(255),
+ searchfield TEXT,
  exact       BOOL,
  active      BOOL
 );
 
-DROP TABLE IF EXISTS collection;
-CREATE TABLE collection (
+DROP TABLE IF EXISTS usercollection;
+CREATE TABLE usercollection (
  id         BIGSERIAL,
  userid     BIGINT  NOT NULL,
 
  tstamp     TIMESTAMP,
 
  dbname     TEXT,
- titleid    VARCHAR(255),
+ titleid    TEXT,
  titlecache TEXT,
 
  comment   TEXT default ''
@@ -362,18 +362,18 @@ CREATE TABLE collection (
 DROP TABLE IF EXISTS tag;
 CREATE TABLE tag (
  id     BIGSERIAL,
- name   VARCHAR(255) NOT NULL default ''
+ name   TEXT NOT NULL default ''
 );
 
 DROP TABLE IF EXISTS tit_tag;
 CREATE TABLE tit_tag (
  id         BIGSERIAL,
  tagid      BIGINT      NOT NULL,
- userid     BIGINT       NOT NULL,
+ userid     BIGINT      NOT NULL,
 
- dbname     VARCHAR(25)  NOT NULL,
- titleid    VARCHAR(255) NOT NULL,
- titleisbn  CHAR(14)     NOT NULL default '',
+ dbname     TEXT        NOT NULL,
+ titleid    TEXT        NOT NULL,
+ titleisbn  TEXT        NOT NULL default '',
 
  titlecache TEXT,
  type       SMALLINT       NOT NULL default '1'
@@ -381,25 +381,25 @@ CREATE TABLE tit_tag (
 
 DROP TABLE IF EXISTS review;
 CREATE TABLE review (
- id        BIGSERIAL,
- userid    BIGINT       NOT NULL,
- tstamp    TIMESTAMP,
+ id         BIGSERIAL,
+ userid     BIGINT       NOT NULL,
+ tstamp     TIMESTAMP,
 
- nickname   VARCHAR(30)  NOT NULL default '',
- title      VARCHAR(100) NOT NULL default '',
+ nickname   TEXT         NOT NULL default '',
+ title      TEXT         NOT NULL default '',
  reviewtext TEXT         NOT NULL default '',
  rating     SMALLINT     NOT NULL default '0',
 
- dbname    VARCHAR(25)  NOT NULL default '',
- titleid   VARCHAR(255) NOT NULL default '0',
- titleisbn CHAR(14)     NOT NULL default ''
+ dbname     TEXT         NOT NULL default '',
+ titleid    TEXT         NOT NULL default '0',
+ titleisbn  TEXT         NOT NULL default ''
 );
 
 DROP TABLE IF EXISTS reviewrating;
 CREATE TABLE reviewrating (
  id        BIGSERIAL,
- userid    BIGINT      NOT NULL,
- reviewid  BIGINT     NOT NULL,
+ userid    BIGINT        NOT NULL,
+ reviewid  BIGINT        NOT NULL,
 
  tstamp    TIMESTAMP,
  rating    SMALLINT      NOT NULL default '0'
@@ -424,9 +424,9 @@ CREATE TABLE litlistitem (
 
  tstamp    TIMESTAMP,
 
- dbname    VARCHAR(25),
- titleid   VARCHAR(255),
- titleisbn CHAR(14),
+ dbname    TEXT,
+ titleid   TEXT,
+ titleisbn TEXT,
 
  comment   TEXT default ''
 
@@ -436,21 +436,21 @@ CREATE TABLE litlistitem (
 DROP TABLE IF EXISTS subject;
 CREATE TABLE subject (
  id           BIGSERIAL,
- name         TEXT        NOT NULL default '',
- description  TEXT        NOT NULL default ''
+ name         TEXT      NOT NULL default '',
+ description  TEXT      NOT NULL default ''
 );
 
 DROP TABLE IF EXISTS litlist_subject;
 CREATE TABLE litlist_subject (
  id           BIGSERIAL,
- litlistid    BIGINT     NOT NULL,
- subjectid    BIGINT     NOT NULL
+ litlistid    BIGINT    NOT NULL,
+ subjectid    BIGINT    NOT NULL
 );
 
 DROP TABLE IF EXISTS subjectclassification;
 CREATE TABLE subjectclassification (
- subjectid      BIGINT     NOT NULL,
- classification VARCHAR(20) NOT NULL,
- type           VARCHAR(5)  NOT NULL
+ subjectid      BIGINT  NOT NULL,
+ classification TEXT    NOT NULL,
+ type           TEXT    NOT NULL
 );
 

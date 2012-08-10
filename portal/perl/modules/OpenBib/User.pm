@@ -611,7 +611,7 @@ sub get_number_of_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $numofitems = $self->{schema}->resultset('Collection')->search_rs(
+    my $numofitems = $self->{schema}->resultset('Usercollection')->search_rs(
         {
             userid => $self->{ID},
         }
@@ -845,7 +845,7 @@ sub get_number_of_collections {
     my $logger = get_logger();
 
     # DBI: "select count(distinct(userid)) as rowcount from collection"
-    my $numofcollections = $self->{schema}->resultset('Collection')->search_rs(
+    my $numofcollections = $self->{schema}->resultset('Usercollection')->search_rs(
         undef,
         {
             group_by => ['userid'], # distinct
@@ -862,7 +862,7 @@ sub get_number_of_collection_entries {
     my $logger = get_logger();
 
     # DBI: "select count(userid) as rowcount from collection"
-    my $numofentries = $self->{schema}->resultset('Collection')->search_rs(
+    my $numofentries = $self->{schema}->resultset('Usercollection')->search_rs(
         undef,
     )->count;
 
@@ -3079,7 +3079,7 @@ sub get_single_item_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $collectionitem = $self->{schema}->resultset('Collection')->search_rs(
+    my $collectionitem = $self->{schema}->resultset('Usercollection')->search_rs(
         id     => $listid,
         userid => $self->{ID},
     )->single;
@@ -3107,7 +3107,7 @@ sub get_items_in_collection {
     my $recordlist = new OpenBib::RecordList::Title();
 
     # DBI: "select * from collection where userid = ? order by dbname"
-    my $collectionitems = $self->{schema}->resultset('Collection')->search_rs(
+    my $collectionitems = $self->{schema}->resultset('Usercollection')->search_rs(
         {
             userid => $self->{ID},
         }
@@ -3159,7 +3159,7 @@ sub add_item_to_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('Collection')->search_rs(
+        my $have_title = $self->{schema}->resultset('Usercollection')->search_rs(
             {
                 userid  => $thisuserid,
                 dbname  => $dbname,
@@ -3171,10 +3171,10 @@ sub add_item_to_collection {
             my $cached_title = new OpenBib::Record::Title({ database => $dbname , id => $titleid});
             my $record_json = $cached_title->load_brief_record->to_json;
             
-            $logger->debug("Adding Title to Collection: $cached_title");
+            $logger->debug("Adding Title to Usercollection: $cached_title");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $self->{schema}->resultset('Collection')->create(
+            $self->{schema}->resultset('Usercollection')->create(
                 {
                     userid     => $thisuserid,
                     dbname     => $dbname,
@@ -3192,7 +3192,7 @@ sub add_item_to_collection {
         my $record_json = encode_json $record;
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('Collection')->search_rs(
+        my $have_title = $self->{schema}->resultset('Usercollection')->search_rs(
             {
                 userid     => $thisuserid,
                 titlecache => $record_json,
@@ -3200,10 +3200,10 @@ sub add_item_to_collection {
         )->count;
         
         if (!$have_title) {
-            $logger->debug("Adding Title to Collection: $record_json");
+            $logger->debug("Adding Title to Usercollection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $self->{schema}->resultset('Collection')->create(
+            $self->{schema}->resultset('Usercollection')->create(
                 {
                     userid     => $thisuserid,
                     titleid    => 0,
@@ -3250,7 +3250,7 @@ sub update_item_in_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $title = $self->{schema}->resultset('Collection')->search_rs(
+        my $title = $self->{schema}->resultset('Usercollection')->search_rs(
             {
                 userid  => $thisuserid,
                 listid  => $itemid,
@@ -3261,7 +3261,7 @@ sub update_item_in_collection {
             my $cached_title = new OpenBib::Record::Title({ database => $dbname , id => $titleid});
             my $record_json = $cached_title->load_brief_record->to_json;
             
-            $logger->debug("Updating Title in Collection: $cached_title");
+            $logger->debug("Updating Title in Usercollection: $cached_title");
             
             $title->update(
                 {
@@ -3280,7 +3280,7 @@ sub update_item_in_collection {
         my $record_json = encode_json $record;
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $title = $self->{schema}->resultset('Collection')->search_rs(
+        my $title = $self->{schema}->resultset('Usercollection')->search_rs(
             {
                 listid     => $itemid,
                 userid     => $thisuserid,
@@ -3289,7 +3289,7 @@ sub update_item_in_collection {
         );
         
         if ($title) {
-            $logger->debug("Adding Title to Collection: $record_json");
+            $logger->debug("Adding Title to Usercollection: $record_json");
             
             $title->update(
                 {
@@ -3321,7 +3321,7 @@ sub delete_item_from_collection {
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
     # DBI: "delete from collection where userid = ? and dbname = ? and titleid = ?"
-    $self->{schema}->resultset('Collection')->search_rs(
+    $self->{schema}->resultset('Usercollection')->search_rs(
         {
             userid  => $thisuserid,
             id      => $id,

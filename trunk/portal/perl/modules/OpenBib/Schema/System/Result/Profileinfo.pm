@@ -28,9 +28,8 @@ __PACKAGE__->table("profileinfo");
 
 =head2 profilename
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 0
-  size: 20
 
 =head2 description
 
@@ -48,7 +47,7 @@ __PACKAGE__->add_columns(
     sequence          => "profileinfo_id_seq",
   },
   "profilename",
-  { data_type => "varchar", is_nullable => 0, size => 20 },
+  { data_type => "text", is_nullable => 0 },
   "description",
   { data_type => "text", is_nullable => 1 },
 );
@@ -88,8 +87,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pbEynU71r4ta1sdcDeVfyg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:luQmf6afnh01+1gXyPHeIw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

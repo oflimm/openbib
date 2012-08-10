@@ -40,22 +40,19 @@ __PACKAGE__->table("tit_tag");
 
 =head2 dbname
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 0
-  size: 25
 
 =head2 titleid
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 0
-  size: 255
 
 =head2 titleisbn
 
-  data_type: 'char'
+  data_type: 'text'
   default_value: (empty string)
   is_nullable: 0
-  size: 14
 
 =head2 titlecache
 
@@ -83,11 +80,11 @@ __PACKAGE__->add_columns(
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "dbname",
-  { data_type => "varchar", is_nullable => 0, size => 25 },
+  { data_type => "text", is_nullable => 0 },
   "titleid",
-  { data_type => "varchar", is_nullable => 0, size => 255 },
+  { data_type => "text", is_nullable => 0 },
   "titleisbn",
-  { data_type => "char", default_value => "", is_nullable => 0, size => 14 },
+  { data_type => "text", default_value => "", is_nullable => 0 },
   "titlecache",
   { data_type => "text", is_nullable => 1 },
   "type",
@@ -132,8 +129,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xfhZAZ/kaQBOkcxqgRuhZg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:r4JexoqNTgBiUHj6E5LD0g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

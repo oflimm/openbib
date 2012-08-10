@@ -27,9 +27,8 @@ __PACKAGE__->table("searchfield");
 
 =head2 searchfield
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 active
 
@@ -42,7 +41,7 @@ __PACKAGE__->add_columns(
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "searchfield",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "active",
   { data_type => "boolean", is_nullable => 1 },
 );
@@ -65,8 +64,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+iYBJosU9yte6+uyVq8lmQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1w4DCASc91zC0mzYLeWCng
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

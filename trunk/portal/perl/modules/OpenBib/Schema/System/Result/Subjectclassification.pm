@@ -27,15 +27,13 @@ __PACKAGE__->table("subjectclassification");
 
 =head2 classification
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 0
-  size: 20
 
 =head2 type
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 0
-  size: 5
 
 =cut
 
@@ -43,9 +41,9 @@ __PACKAGE__->add_columns(
   "subjectid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "classification",
-  { data_type => "varchar", is_nullable => 0, size => 20 },
+  { data_type => "text", is_nullable => 0 },
   "type",
-  { data_type => "varchar", is_nullable => 0, size => 5 },
+  { data_type => "text", is_nullable => 0 },
 );
 
 =head1 RELATIONS
@@ -66,8 +64,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4vNkc9rl1c/6+pUwn36TJA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+5sg0PQ3uhTxY9Mwf3B9+A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

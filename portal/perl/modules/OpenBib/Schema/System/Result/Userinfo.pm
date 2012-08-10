@@ -33,9 +33,8 @@ __PACKAGE__->table("userinfo");
 
 =head2 username
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 password
 
@@ -175,7 +174,7 @@ __PACKAGE__->add_columns(
   "lastlogin",
   { data_type => "timestamp", is_nullable => 1 },
   "username",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "password",
   { data_type => "text", is_nullable => 1 },
   "nachname",
@@ -231,21 +230,6 @@ __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint("uq_userinfo_username", ["username"]);
 
 =head1 RELATIONS
-
-=head2 collections
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::System::Result::Collection>
-
-=cut
-
-__PACKAGE__->has_many(
-  "collections",
-  "OpenBib::Schema::System::Result::Collection",
-  { "foreign.userid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
 
 =head2 litlists
 
@@ -337,6 +321,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 usercollections
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Usercollection>
+
+=cut
+
+__PACKAGE__->has_many(
+  "usercollections",
+  "OpenBib::Schema::System::Result::Usercollection",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 user_roles
 
 Type: has_many
@@ -383,8 +382,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EP1fYBiJcjT9ycrChdn2jw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:++tytYHMqwfUWU/LN1zFbg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

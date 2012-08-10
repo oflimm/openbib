@@ -39,17 +39,15 @@ __PACKAGE__->table("review");
 
 =head2 nickname
 
-  data_type: 'varchar'
+  data_type: 'text'
   default_value: (empty string)
   is_nullable: 0
-  size: 30
 
 =head2 title
 
-  data_type: 'varchar'
+  data_type: 'text'
   default_value: (empty string)
   is_nullable: 0
-  size: 100
 
 =head2 reviewtext
 
@@ -65,24 +63,21 @@ __PACKAGE__->table("review");
 
 =head2 dbname
 
-  data_type: 'varchar'
+  data_type: 'text'
   default_value: (empty string)
   is_nullable: 0
-  size: 25
 
 =head2 titleid
 
-  data_type: 'varchar'
+  data_type: 'text'
   default_value: 0
   is_nullable: 0
-  size: 255
 
 =head2 titleisbn
 
-  data_type: 'char'
+  data_type: 'text'
   default_value: (empty string)
   is_nullable: 0
-  size: 14
 
 =cut
 
@@ -99,9 +94,9 @@ __PACKAGE__->add_columns(
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
   "nickname",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
+  { data_type => "text", default_value => "", is_nullable => 0 },
   "title",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 100 },
+  { data_type => "text", default_value => "", is_nullable => 0 },
   "reviewtext",
   { data_type => "text", default_value => "", is_nullable => 0 },
   "rating",
@@ -111,11 +106,11 @@ __PACKAGE__->add_columns(
     is_nullable   => 0,
   },
   "dbname",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 25 },
+  { data_type => "text", default_value => "", is_nullable => 0 },
   "titleid",
-  { data_type => "varchar", default_value => 0, is_nullable => 0, size => 255 },
+  { data_type => "text", default_value => 0, is_nullable => 0 },
   "titleisbn",
-  { data_type => "char", default_value => "", is_nullable => 0, size => 14 },
+  { data_type => "text", default_value => "", is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -152,8 +147,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kY2zicKBMZMXWBiYtC7g+Q
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:N2NQ5q2mUWk0q3Qb2b4SSw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

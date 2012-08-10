@@ -32,9 +32,8 @@ __PACKAGE__->table("recordhistory");
 
 =head2 titleid
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =cut
 
@@ -44,7 +43,7 @@ __PACKAGE__->add_columns(
   "dbname",
   { data_type => "text", is_nullable => 1 },
   "titleid",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 RELATIONS
@@ -65,8 +64,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u7nKEsgrIP7fCIQkrIn0EQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ip6KSafVtueMHJFF9TINyg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

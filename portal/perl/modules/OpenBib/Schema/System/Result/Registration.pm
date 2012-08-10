@@ -21,9 +21,8 @@ __PACKAGE__->table("registration");
 
 =head2 id
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 0
-  size: 60
 
 =head2 tstamp
 
@@ -44,7 +43,7 @@ __PACKAGE__->table("registration");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "varchar", is_nullable => 0, size => 60 },
+  { data_type => "text", is_nullable => 0 },
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
   "username",
@@ -55,8 +54,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:A9fZrA3dIJ4QWi5f9LSXSA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:epXyDwbtjYnZGxGdz5VAww
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

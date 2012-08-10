@@ -32,9 +32,8 @@ __PACKAGE__->table("searchhistory");
 
 =head2 dbname
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 0
-  size: 255
 
 =head2 offset
 
@@ -69,7 +68,7 @@ __PACKAGE__->add_columns(
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
   "dbname",
-  { data_type => "varchar", is_nullable => 0, size => 255 },
+  { data_type => "text", is_nullable => 0 },
   "offset",
   { data_type => "integer", is_nullable => 1 },
   "hitrange",
@@ -100,8 +99,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XtLyK5iILhOx5RY0RDTuRA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0ugki+HVgz1uacKR07B8OQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

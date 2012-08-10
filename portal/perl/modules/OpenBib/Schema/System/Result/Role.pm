@@ -28,9 +28,8 @@ __PACKAGE__->table("role");
 
 =head2 name
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 0
-  size: 255
 
 =cut
 
@@ -43,7 +42,7 @@ __PACKAGE__->add_columns(
     sequence          => "role_id_seq",
   },
   "name",
-  { data_type => "varchar", is_nullable => 0, size => 255 },
+  { data_type => "text", is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -65,8 +64,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XzGcKKGQxJZs+nUElKe19Q
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ODFtdYAdDIqYXSFf9AUL0A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

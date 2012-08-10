@@ -43,15 +43,13 @@ __PACKAGE__->table("databaseinfo");
 
 =head2 dbname
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 25
 
 =head2 sigel
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 20
 
 =head2 url
 
@@ -70,15 +68,13 @@ __PACKAGE__->table("databaseinfo");
 
 =head2 protocol
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 host
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 remotepath
 
@@ -87,51 +83,43 @@ __PACKAGE__->table("databaseinfo");
 
 =head2 remoteuser
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 remotepassword
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 titlefile
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 personfile
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 corporatebodyfile
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 subjectfile
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 classificationfile
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 holdingfile
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 autoconvert
 
@@ -199,9 +187,9 @@ __PACKAGE__->add_columns(
   "system",
   { data_type => "text", is_nullable => 1 },
   "dbname",
-  { data_type => "varchar", is_nullable => 1, size => 25 },
+  { data_type => "text", is_nullable => 1 },
   "sigel",
-  { data_type => "varchar", is_nullable => 1, size => 20 },
+  { data_type => "text", is_nullable => 1 },
   "url",
   { data_type => "text", is_nullable => 1 },
   "use_libinfo",
@@ -209,27 +197,27 @@ __PACKAGE__->add_columns(
   "active",
   { data_type => "boolean", is_nullable => 1 },
   "protocol",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "host",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "remotepath",
   { data_type => "text", is_nullable => 1 },
   "remoteuser",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "remotepassword",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "titlefile",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "personfile",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "corporatebodyfile",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "subjectfile",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "classificationfile",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "holdingfile",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "autoconvert",
   { data_type => "boolean", is_nullable => 1 },
   "circ",
@@ -330,8 +318,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xNA9QbZnFe8QOcFPeGKgSA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CbU1ur50Av1ryRxrfJTF1g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

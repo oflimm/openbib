@@ -59,7 +59,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::User';
 
 # Run at startup
 sub setup {
@@ -105,7 +105,8 @@ sub show_collection {
     # CGI Args
     my $format         = $query->param('format')      || 'cloud';
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -157,7 +158,8 @@ sub show_record {
     my $sortorder      = $query->param('srto')   || "asc";
     my $format         = $query->param('format') || 'cloud';
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -241,7 +243,8 @@ sub show_collection_form {
     my $content_type   = $self->param('content_type');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

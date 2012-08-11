@@ -61,7 +61,7 @@ use OpenBib::User;
 
 use CGI::Application::Plugin::Redirect;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::Admin';
 
 # Run at startup
 sub setup {
@@ -105,7 +105,8 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -155,7 +156,8 @@ sub show_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -204,7 +206,8 @@ sub create_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
     
@@ -259,7 +262,8 @@ sub show_record_form {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -315,7 +319,8 @@ sub update_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
     
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -392,7 +397,8 @@ sub delete_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

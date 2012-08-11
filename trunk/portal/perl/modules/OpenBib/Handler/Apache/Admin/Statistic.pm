@@ -58,7 +58,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::Admin';
 
 # Run at startup
 sub setup {
@@ -97,7 +97,8 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -140,7 +141,8 @@ sub show_graph {
     # CGI Args
     my $year       = $query->param('year')       || '';
     
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -191,7 +193,8 @@ sub show_statistic {
     # CGI Args
     my $year       = $query->param('year')       || '';
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

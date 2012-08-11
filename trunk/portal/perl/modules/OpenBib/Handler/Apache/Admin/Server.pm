@@ -58,7 +58,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::Admin';
 
 # Run at startup
 sub setup {
@@ -90,7 +90,8 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -121,7 +122,8 @@ sub show_record_form {
     # Shared Args
     my $config           = $self->param('config');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -154,7 +156,8 @@ sub create_record {
     my $host           = $query->param('host')     || '';
     my $active         = $query->param('active')   || '';
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -197,7 +200,8 @@ sub update_record {
     my $confirm         = $query->param('confirm')              || 0;
     my $active          = $query->param('active')               || '';
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -253,7 +257,8 @@ sub delete_record {
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

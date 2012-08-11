@@ -40,7 +40,7 @@ use Log::Log4perl qw(get_logger :levels);
 use List::MoreUtils qw(none any);
 use Apache2::Access ();
 use Apache2::RequestUtil ();
-use Apache2::Const -compile => qw(OK DECLINED HTTP_UNAUTHORIZED MODE_READBYTES);
+use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_UNAUTHORIZED MODE_READBYTES);
 use Apache2::URI ();
 use APR::URI ();
 use Encode qw(decode_utf8 encode_utf8);
@@ -84,9 +84,119 @@ sub cgiapp_init {
     my $r            = $self->param('r');
     my $config       = OpenBib::Config->instance;
     my $view         = $self->param('view');    # || $config->get('defaultview');
-    my $session      = $self->param('session'); #OpenBib::Session->instance({ apreq => $r , view => $view });
+    my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
+    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
-    $logger->debug("Main objects initialized");
+    $self->param('config',$config);
+    $self->param('session',$session);
+    $self->param('user',$user);
+
+    $self->negotiate_content;
+    $self->check_http_basic_authentication;
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    $self->param('msg',$msg);
+    
+    $logger->debug("Main objects initialized");    
+    
+    return;
+}
+
+sub cgiapp_prerun {
+   my $self = shift;
+
+   # Log4perl logger erzeugen
+   my $logger = get_logger();
+
+   $logger->debug("Entering cgiapp_prerun");
+   
+   my $r            = $self->param('r');
+
+   my $config       = $self->param('config'); #OpenBib::Config->instance;
+   my $view         = $self->param('view'); # || $config->get('defaultview');
+   my $session      = $self->param('session'); #OpenBib::Session->instance({ apreq => $r , view => $view });
+   my $user         = $self->param('user'); #OpenBib::User->instance({sessionID => $session->{ID}});
+   my $query        = $self->query();
+   
+   my $useragent    = $r->headers_in->{'User-Agent'} || "OpenBib Search Portal: http://search.openbib.org/";
+   
+   my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
+   my $queryoptions = OpenBib::QueryOptions->instance($query);
+
+   my $servername   = $r->get_server_name;
+   
+   my $path_prefix          = $config->get('base_loc');
+   my $complete_path_prefix = "$path_prefix/$view";
+
+   $logger->debug("User-ID:".$user->{ID});
+   
+   # Letztes Pfad-Element bestimmen
+   my $uri  = $r->parsed_uri;
+   my $path = $uri->path;
+
+   my ($last_uri_element) = $path =~m/\/([^\/]+)$/;
+
+   $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$self->query->args());
+
+   if (! $config->strip_view_from_uri($view)){
+       $path_prefix = $complete_path_prefix;
+   }
+   else {
+       $path =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
+   }
+
+   my $id = "";
+   if ($last_uri_element=~/^(.+?)(\.html|\.json|\.rdf|\.rss|\.include)$/){
+       $id               = $1;
+       my ($representation) = $2 =~/^\.(.+?)$/;
+       my $content_type   = $config->{'content_type_map_rev'}{$representation};
+
+       # Korrektur des ausgehandelten Typs bei direkter Auswahl einer bestimmten Repraesentation
+       $self->param('content_type',$content_type);
+       $self->param('representation',$representation);
+   }
+
+   # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
+   if ($self->query->param('l')){
+       $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$self->query->param('l'));
+       $self->param('lang',$self->query->param('l'));
+
+       # Setzen als Cookie
+       $session->set_cookie($r,'lang',$self->param('lang'));
+   }
+   # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
+   elsif ($session->{lang}){
+       $logger->debug("Korrektur der ausgehandelten Sprache durch Cookie: ".$session->{lang});
+       $self->param('lang',$session->{lang});
+   }
+
+   $self->param('useragent',$useragent);
+   $self->param('stylesheet',$stylesheet);
+
+   $self->param('qopts',$queryoptions);
+   $self->param('servername',$servername);
+   $self->param('path_prefix',$path_prefix);
+   $self->param('id',$id);
+   $self->param('path',$path);
+   
+   $logger->debug("Exit cgiapp_prerun");
+   #   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
+}
+
+
+sub negotiate_content {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $r       = $self->param('r');
+    my $view    = $self->param('view');
+    my $config  = $self->param('config');
+    my $session = $self->param('session');
+    
     if (!$self->param('disable_content_negotiation')){
         $logger->debug("Doing content negotiation");
         my $servername           = $r->get_server_name;
@@ -123,7 +233,7 @@ sub cgiapp_init {
 
             # Personalisierte URIs
             if ($self->param('personalized_loc')){
-                my $user = OpenBib::User->instance({sessionID => $session->{ID}});
+                my $user = $self->param('user'); #OpenBib::User->instance({sessionID => $session->{ID}});
                 if ($user->{ID}){
                     my $loc = $self->param('personalized_loc');
                     $logger->debug("Replacing $path_prefix/$loc with $path_prefix/user/$user->{ID}/$loc");
@@ -244,7 +354,6 @@ sub cgiapp_init {
         elsif ($r->method eq "POST" || $r->method eq "PUT" || $r->method eq "DELETE"){
             $self->negotiate_type;
             $self->negotiate_language;
-            return;
         }
         else {
             $logger->debug("No additional negotiation necessary");
@@ -252,190 +361,6 @@ sub cgiapp_init {
         }
     }
     
-    return;
-}
-
-sub cgiapp_prerun {
-   my $self = shift;
-
-   # Log4perl logger erzeugen
-   my $logger = get_logger();
-
-   $logger->debug("Entering cgiapp_prerun");
-   
-   my $r            = $self->param('r');
-
-   my $config       = OpenBib::Config->instance;
-   my $view         = $self->param('view') || $config->get('defaultview');
-   my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
-   my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-   my $query        = $self->query();
-   
-   my $useragent    = $r->headers_in->{'User-Agent'} || "OpenBib Search Portal: http://search.openbib.org/";
-   
-   my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-   my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-   my $servername   = $r->get_server_name;
-   
-   my $path_prefix          = $config->get('base_loc');
-   my $complete_path_prefix = "$path_prefix/$view";
-
-   # Shortcut fuer HTTP Basic Authentication anhand lokaler Datenbank
-   # Wenn beim Aufruf ein Username und ein Passwort uebergeben wird, dann
-   # wird der Nutzer damit authentifiziert und die Session automatisch authorisiert
-
-   # Es interessiert nicht der per so in der Apache-Konfiguration openbib.conf definierte Authentifizierungstyp,
-   # sondern der etwaig mit dem aktuellen Request gesendete Typ!
-   my ($http_authtype) = $r->headers_in->{'Authorization'} =~/^(\S+)\s+/; #  $r->ap_auth_type(); #
-
-   $logger->debug("HTTP Authtype: $http_authtype");
-
-   # Nur wenn konkrete Authentifizierungsinformationen geliefert wurden, wird per shortcut
-   # und HTTP Basic Authentication authentifiziert, ansonsten gilt die Cookie based authentication
-   if ($http_authtype eq "Basic"){
-
-       my ($status, $password) = $r->get_basic_auth_pw;
-
-       $logger->debug("get_basic_auth: Status $status / Password $password");
-       
-       return $status unless $status == Apache2::Const::OK;
-
-       my $http_user     = $r->user;
-
-       $logger->debug("Authentication Shortcut for user $http_user : Status $status / Password: $password");
-
-       my $userid = $user->authenticate_self_user({ username => $http_user, password => $password });
-
-       my $targetid = $config->get_logintarget_self();
-       
-       if ($userid > 0){
-           $user->connect_session({
-               sessionID => $session->{ID},
-               userid    => $userid,
-               targetid  => $targetid,
-           });
-           $user->{ID} = $userid;
-       }
-       else {
-           $r->note_basic_auth_failure;
-           $logger->debug("Unauthorized");
-           return Apache2::Const::HTTP_UNAUTHORIZED;
-       }
-   }
-
-   $logger->debug("User-ID:".$user->{ID});
-   
-   # Letztes Pfad-Element bestimmen
-   my $uri  = $r->parsed_uri;
-   my $path = $uri->path;
-
-   my ($last_uri_element) = $path =~m/\/([^\/]+)$/;
-
-   $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$self->query->args());
-
-   if (! $config->strip_view_from_uri($view)){
-       $path_prefix = $complete_path_prefix;
-   }
-   else {
-       $path =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
-   }
-
-   my $id = "";
-   if ($last_uri_element=~/^(.+?)(\.html|\.json|\.rdf|\.rss|\.include)$/){
-       $id               = $1;
-       my ($representation) = $2 =~/^\.(.+?)$/;
-       my $content_type   = $config->{'content_type_map_rev'}{$representation};
-
-       # Korrektur des ausgehandelten Typs bei direkter Auswahl einer bestimmten Repraesentation
-       $self->param('content_type',$content_type);
-       $self->param('representation',$representation);
-   }
-
-   # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
-   if ($self->query->param('l')){
-       $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$self->query->param('l'));
-       $self->param('lang',$self->query->param('l'));
-
-       # Setzen als Cookie
-       $session->set_cookie($r,'lang',$self->param('lang'));
-   }
-   # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
-   elsif ($session->{lang}){
-       $logger->debug("Korrektur der ausgehandelten Sprache durch Cookie: ".$session->{lang});
-       $self->param('lang',$session->{lang});
-   }
-
-   # Message Katalog laden
-   my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
-   $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-   $self->param('config',$config);
-   $self->param('session',$session);
-   $self->param('user',$user);
-   $self->param('useragent',$useragent);
-   $self->param('stylesheet',$stylesheet);
-   $self->param('msg',$msg);
-   $self->param('qopts',$queryoptions);
-   $self->param('servername',$servername);
-   $self->param('path_prefix',$path_prefix);
-   $self->param('id',$id);
-   $self->param('path',$path);
-   
-   $logger->debug("Exit cgiapp_prerun");
-   #   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
-}
-
-
-sub negotiate_content {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    
-    my $accept       = $r->headers_in->{'Accept'} || '';
-    my @accepted_types      = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
-
-    my $lang         = $r->headers_in->{'Accept-Language'} || '';
-    my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
-    
-    $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
-    $logger->debug("Accept-Language: $lang - Languages: ".YAML::Dump(\@accepted_languages));
-    
-    foreach my $information_type (keys %{$config->{content_type_map}}){
-        if (any { $_ eq $information_type } @accepted_types) {
-            $logger->debug("Negotiated Type: $information_type - Suffix: ".$config->{content_type_map}->{$information_type});
-            $self->param('content_type',$information_type);
-            $self->param('representation',$config->{content_type_map}->{$information_type});
-            last;
-        }
-    }
-
-    if (!$self->param('content_type') && !$self->param('representation') ){
-        $logger->debug("Default Type: text/html - Suffix: html");
-        $self->param('content_type','text/html');
-        $self->param('representation','html');
-    }
-    
-    if (!$self->param('lang')){
-        my $language_found = 0;
-        foreach my $language (@{$config->{lang}}){
-            if (any { $_ eq $language } @accepted_languages) {
-                $logger->debug("Negotiated Language: $language");
-                $self->param('lang',$language);
-                last;
-            }
-        }
-
-        if (!$self->param('lang')){
-            # Default language ist die erste definierte Sprache unter 'lang' in portal.yml
-            $logger->debug("Default Language: ".$config->{lang}[0]);
-            $self->param('lang',$config->{lang}[0]);
-        }
-    }
 
     return;
 }
@@ -519,8 +444,8 @@ sub negotiate_language {
 
 sub is_authenticated {
     my $self   = shift;
-    my $role   = shift;
-    my $userid = shift;
+    my $role   = shift || '';
+    my $userid = shift || '';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1166,6 +1091,91 @@ sub parse_valid_input {
     }
     
     return $input_params_ref;
+}
+
+sub print_authorization_error {
+    my $self = shift;
+
+    my $r   = $self->param('r');
+    my $msg = $self->param('msg');
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($self->param('representation') ne "html"){
+        $r->status(Apache2::Const::FORBIDDEN);
+    }
+
+    $self->print_warning($msg->maketext("Sie sind nicht authorisiert"));
+    
+    return;
+}
+
+sub authorization_successful {
+    my $self   = shift;
+
+    # On Success 1
+    return 1;
+}
+
+sub check_http_basic_authentication {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r       = $self->param('r');
+    my $config  = $self->param('config');
+    my $user    = $self->param('user');
+    my $session = $self->param('session');
+    
+    # Shortcut fuer HTTP Basic Authentication anhand lokaler Datenbank
+    # Wenn beim Aufruf ein Username und ein Passwort uebergeben wird, dann
+    # wird der Nutzer damit authentifiziert und die Session automatisch authorisiert
+    
+    # Es interessiert nicht der per so in der Apache-Konfiguration openbib.conf definierte Authentifizierungstyp,
+    # sondern der etwaig mit dem aktuellen Request gesendete Typ!
+    my ($http_authtype) = $r->headers_in->{'Authorization'} =~/^(\S+)\s+/; #  $r->ap_auth_type(); #
+    
+    $logger->debug("HTTP Authtype: $http_authtype");
+    
+    # Nur wenn konkrete Authentifizierungsinformationen geliefert wurden, wird per shortcut
+    # und HTTP Basic Authentication authentifiziert, ansonsten gilt die Cookie based authentication
+    if ($http_authtype eq "Basic"){
+        
+        my ($status, $password) = $r->get_basic_auth_pw;
+        
+        $logger->debug("get_basic_auth: Status $status / Password $password");
+        
+        return $status unless $status == Apache2::Const::OK;
+        
+        my $http_user     = $r->user;
+        
+        $logger->debug("Authentication Shortcut for user $http_user : Status $status / Password: $password");
+        
+        my $userid   = $user->authenticate_self_user({ username => $http_user, password => $password });
+        
+        my $targetid = $config->get_logintarget_self();
+
+        if ($userid > 0){
+            $user->connect_session({
+                sessionID => $session->{ID},
+                userid    => $userid,
+                targetid  => $targetid,
+            });
+            $user->{ID} = $userid;
+        }
+        else {
+            $self->param('basic_auth_failure',1);
+#            $r->note_basic_auth_failure;
+#            $logger->debug("Unauthorized");
+#            return Apache2::Const::HTTP_UNAUTHORIZED;
+        }
+
+        # User zurueckchreiben
+        $self->param('user',$user);
+        
+    }
 }
 
 1;

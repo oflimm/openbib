@@ -66,7 +66,7 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show_collection');
+#    $self->start_mode('show_collection');
     $self->run_modes(
         'save_collection'                      => 'save_collection',
         'mail_collection'                      => 'mail_collection',
@@ -78,8 +78,9 @@ sub setup {
         'create_record'                        => 'create_record',
         'update_record'                        => 'update_record',
         'delete_record'                        => 'delete_record',
+        'print_authorization_error'           => 'print_authentication_error',
     );
-
+        
     # Use current path as template path,
     # i.e. the template is in the same directory as this script
 #    $self->tmpl_path('./');
@@ -107,11 +108,6 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if ($userid && !$self->is_authenticated('user',$userid)){
-        $self->print_warning($msg->maketext("Sie sind nicht korrekt authentifiziert"));
-        return;
-    }
-    
     # CGI Args
     my $method                  = $query->param('_method')                 || '';
     my $dbname                  = $query->param('dbname')                  || '';
@@ -130,6 +126,11 @@ sub show_collection {
     my $littype                 = $query->param('littype')                 || 1;
     my $format                  = $query->param('format')                  || 'short';
 
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
+    
     # Shortcuts via Method
 
     if ($method eq "POST"){
@@ -165,13 +166,7 @@ sub show_collection {
         my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
         
         foreach my $listid ($query->param('id')) {
-            my $record;
-            if ($user->{ID}) {
-                $record = $user->get_single_item_in_collection($listid);
-            }
-            else {
-                $record = $session->get_single_item_in_collection($listid);
-            }
+            my $record = $self->get_single_item_in_collection($listid);
 
             if ($record && $litlist_properties_ref->{userid} eq $user->{ID}) {
                 $user->add_litlistentry({ titid => $record->{id}, titdb => $record->{database}, litlistid => $litlistid});
@@ -205,7 +200,7 @@ sub show_collection {
             
             if ($query->param('id')){
                 foreach my $listid ($query->param('id')) {
-                    my $record = $user->get_single_item_in_collection($listid);
+                    my $record = $self->get_single_item_in_collection($listid);
 
                     if ($record){
                         $user->add_tags({
@@ -230,14 +225,7 @@ sub show_collection {
         $self->return_baseurl;
     }
     
-    my $recordlist = new OpenBib::RecordList::Title();
-    
-    if ($userid && $userid == $user->{ID}) {
-        $recordlist = $user->get_items_in_collection();
-    }
-    else {
-        $recordlist = $session->get_items_in_collection();
-    }
+    my $recordlist = $self->get_items_in_collection();
 
     if ($recordlist->get_size() != 0) {
         my $sorttype          = $queryoptions->get_option('srt');
@@ -300,6 +288,11 @@ sub show_collection_count {
     my $littype                 = $query->param('littype')                 || 1;
 
     my $format                  = $query->param('format')                  || 'short';
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -313,16 +306,8 @@ sub show_collection_count {
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     # Dementsprechend einen LoginLink oder ein ProfilLink ausgeben
-    my $anzahl="";
     
-    if ($user->{ID}) {
-        # Anzahl Eintraege der privaten Merkliste bestimmen
-        # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        $anzahl =    $user->get_number_of_items_in_collection();
-    } else {
-        #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        $anzahl = $session->get_number_of_items_in_collection();
-    }
+    my $anzahl = $self->get_number_of_items_in_collection();
     
     # Start der Ausgabe mit korrektem Header
     $r->content_type("text/plain");
@@ -357,6 +342,11 @@ sub show_record {
     # CGI Args
     my $method         = $query->param('_method')     || '';
 
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
+    
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
 
     if ($method eq "DELETE"){
@@ -398,25 +388,18 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-    
-    if ($userid && !$self->is_authenticated('user',$userid)){
-        $self->print_warning($msg->maketext("Sie sind nicht korrekt authentifiziert"));
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
     # Shortcut: Delete multiple items via POST
     if ($query->param('do_collection_delentry')) {
         foreach my $listid ($query->param('id')) {
-            if ($user->{ID}) {
-                $user->delete_item_from_collection({
-                    id       => $listid,
-                });
-            }
-            else {
-                $session->delete_item_from_collection({
-                    id       => $listid,
-                });
-            }
+            $self->delete_item_from_collection({
+                id       => $listid,
+            });
         }
 
         $self->return_baseurl;
@@ -433,13 +416,7 @@ sub create_record {
     }
     
     # Einfuegen eines Titels in die Merkliste
-    if ($userid && $userid == $user->{ID}) {
-        $user->add_item_to_collection($input_data_ref);
-    }
-    # Anonyme Session
-    else {
-        $session->add_item_to_collection($input_data_ref);
-    }
+    $self->add_item_to_collection($input_data_ref);
 
     return unless ($self->param('representation') eq "html");
 
@@ -452,11 +429,10 @@ sub update_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-    my $itemid         = $self->strip_suffix($self->param('itemid'))         || '';
+    my $view           = $self->param('view')                        || '';
+    my $itemid         = $self->strip_suffix($self->param('itemid')) || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -469,12 +445,12 @@ sub update_record {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-    
-    if ($userid && !$self->is_authenticated('user',$userid)){
-        $self->print_warning($msg->maketext("Sie sind nicht korrekt authentifiziert"));
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
-
+    
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
     $input_data_ref->{itemid} = $itemid;
@@ -483,20 +459,14 @@ sub update_record {
         $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
         return Apache2::Const::OK;
     }
-    
+
     # Einfuegen eines Titels in die Merkliste
-    if ($userid && $userid == $user->{ID}) {
-        $user->update_item_in_collection($input_data_ref);
-    }
-    # Anonyme Session
-    else {
-        $session->update_item_in_collection($input_data_ref);
-    }
+    $self->update_item_in_collection($input_data_ref);
 
     return unless ($self->param('representation') eq "html");
 
     $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
-    return Apache2::Const::OK;
+    return;
 }
 
 sub delete_record {
@@ -509,6 +479,7 @@ sub delete_record {
     my $view           = $self->param('view');
     my $id             = $self->strip_suffix($self->param('itemid'));
 
+
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
@@ -520,25 +491,21 @@ sub delete_record {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    $logger->info("Trying to delete $id in SessionID: $session->{ID}");
+    $self->delete_item_from_collection($id);
 
-    if ($user->{ID}) {
-        $user->delete_item_from_collection({
-            id => $id,
-        });
-    }
-    else {
-        $session->delete_item_from_collection({
-            id       => $id,
-        });
-    }
-
+    return unless ($self->param('representation') eq "html");
+    
     $self->return_baseurl;
 
     return;
@@ -586,12 +553,7 @@ sub print_collection {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
     }
     else {
-        if ($user->{ID}) {
-            $recordlist = $user->get_items_in_collection();
-        }
-        else {
-            $recordlist = $session->get_items_in_collection()
-        }
+        $recordlist = $self->get_items_in_collection()
     }
     
     $recordlist->load_full_records;
@@ -653,12 +615,7 @@ sub save_collection {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
     }
     else {
-        if ($user->{ID}) {
-            $recordlist = $user->get_items_in_collection();
-        }
-        else {
-            $recordlist = $session->get_items_in_collection()
-        }
+        $recordlist = $self->get_items_in_collection()
     }
     
     $recordlist->load_full_records;
@@ -725,12 +682,7 @@ sub mail_collection {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
     }
     else {
-        if ($user->{ID}) {
-            $recordlist = $user->get_items_in_collection();
-        }
-        else {
-            $recordlist = $session->get_items_in_collection()
-        }
+        $recordlist = $self->get_items_in_collection()
     }
     
     $recordlist->load_full_records;
@@ -800,12 +752,7 @@ sub mail_collection_send {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
     }
     else {
-        if ($user->{ID}) {
-            $recordlist = $user->get_items_in_collection();
-        }
-        else {
-            $recordlist = $session->get_items_in_collection()
-        }
+        $recordlist = $self->get_items_in_collection();
     }
 
     $recordlist->load_full_records;
@@ -990,12 +937,78 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
-         comment => {
+        comment => {
              default  => '',
              encoding => 'utf8',
              type     => 'scalar',
-         },
+        },
     };
 }
 
+sub update_item_in_collection {
+    my $self = shift;
+    my $input_data_ref = shift;
+
+    my $session = $self->param('session');
+    
+    $session->update_item_in_collection($input_data_ref);
+
+    return;
+}
+
+sub add_item_to_collection {
+    my $self = shift;
+    my $input_data_ref = shift;
+
+    my $session = $self->param('session');
+
+    $session->add_item_to_collection($input_data_ref);
+    
+    return;
+}
+
+sub delete_item_from_collection {
+    my $self = shift;
+    my $id = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $session = $self->param('session');
+
+    $logger->info("Trying to delete $id in SessionID: $session->{ID}");
+    
+    $session->delete_item_from_collection({
+        id       => $id,
+    });
+
+    return;
+}
+
+sub get_number_of_items_in_collection {
+    my $self = shift;
+
+    my $session = $self->param('session');
+
+    return $session->get_number_of_items_in_collection();
+}
+
+sub get_single_item_in_collection {
+    my $self = shift;
+    my $listid = shift;
+
+    my $session = $self->param('session');
+
+    return $session->get_single_item_in_collection($listid);
+}
+
+sub get_items_in_collection {
+    my $self = shift;
+
+    my $session = $self->param('session');
+
+    return $session->get_items_in_collection();
+}
+
+    
 1;

@@ -58,175 +58,97 @@ use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::Collection';
 
-# Run at startup
-sub setup {
-    my $self = shift;
+# Authentifizierung wird spezialisiert
 
-    $self->start_mode('show_collection');
-    $self->run_modes(
-        'show_collection'       => 'show_collection',
-    );
-
-    # Use current path as template path,
-    # i.e. the template is in the same directory as this script
-#    $self->tmpl_path('./');
-}
-
-sub show_collection {
-    my $self = shift;
+sub authorization_successful {
+    my $self   = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
+    my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
+    my $userid             = $self->param('userid')             || '';
 
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
+    $logger->debug("Basic http auth failure: $basic_auth_failure / Userid: $userid ");
 
-    if (!$self->is_authenticated('user',$userid)){
-        return;
+    if ($basic_auth_failure || ($userid && !$self->is_authenticated('user',$userid))){
+        return 0;
     }
 
-        
-    my $recordlist = $user->get_items_in_collection();
+    return 1;
+}
 
-    if ($recordlist->get_size() == 0) {
-        # TT-Data erzeugen
-        my $ttdata={
-            qopts          => $queryoptions->get_options,
-        };
-        
-        $self->print_page($config->{tt_managecollection_empty_tname},$ttdata);
-        return Apache2::Const::OK;
+sub update_item_in_collection {
+    my $self = shift;
+    my $input_data_ref = shift;
+
+    my $userid  = $self->param('userid')                      || '';    
+    my $user    = $self->param('user');
+
+    if ($userid && $userid == $user->{ID}) {
+        $user->update_item_in_collection($input_data_ref);
     }
-
-    # TT-Data erzeugen
-    my $ttdata={
-        view              => $view,
-        stylesheet        => $stylesheet,
-        sessionID         => $session->{ID},
-        qopts             => $queryoptions->get_options,
-        type              => $type,
-        show              => $show,
-        recordlist        => $recordlist,
-        dbinfo            => $dbinfotable,
-        
-        user              => $user,
-        config            => $config,
-        user              => $user,
-        msg               => $msg,
-    };
     
-    $self->print_page($config->{tt_user_collection_tname},$ttdata,$r);
-        return Apache2::Const::OK;
+    return;
+}
+
+sub add_item_to_collection {
+    my $self = shift;
+    my $input_data_ref = shift;
+
+    my $userid  = $self->param('userid')                      || '';
+
+    my $user = $self->param('user');
+
+    if ($userid && $userid == $user->{ID}) {
+        $user->add_item_to_collection($input_data_ref);
     }
-    # Abspeichern der Merkliste
-    elsif ($action eq "save" || $action eq "print" || $action eq "mail") {
-        my $recordlist = new OpenBib::RecordList::Title();
+    
+    return;
+}
 
-        if ($singleidn && $database) {
-            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $singleidn}));
-        }
-        else {
-            if ($user->{ID}) {
-                $recordlist = $user->get_items_in_collection();
-            }
-            else {
-                $recordlist = $session->get_items_in_collection()
-            }
-        }
+sub delete_item_from_collection {
+    my $self = shift;
+    my $id   = shift;
 
-        $recordlist->load_full_records;
+    my $userid  = $self->param('userid')                      || '';
 
-        if ($action eq "save"){
-            # TT-Data erzeugen
-            my $ttdata={
-                view        => $view,
-                stylesheet  => $stylesheet,
-                sessionID   => $session->{ID},
-                qopts       => $queryoptions->get_options,		
-                type        => $type,
-                show        => $show,
-                recordlist  => $recordlist,
-                dbinfo      => $dbinfotable,
-                
-                config     => $config,
-                msg        => $msg,
-            };
+    my $user = $self->param('user');
 
-            if ($type eq "HTML") {
-                $r->content_type('text/html');
-                $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
-                $self->print_page($config->{tt_managecollection_save_html_tname},$ttdata);
-            }
-            else {
-                $r->content_type('text/plain');
-                $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
-                $self->print_page($config->{tt_managecollection_save_plain_tname},$ttdata);
-            }
-            return Apache2::Const::OK;
-        }
-        elsif ($action eq "print"){
-            # TT-Data erzeugen
-            my $ttdata={
-                view       => $view,
-                stylesheet => $stylesheet,		
-                sessionID  => $session->{ID},
-                qopts      => $queryoptions->get_options,		
-                type       => $type,
-                show       => $show,
-                singleidn  => $singleidn,
-                database   => $database,
-                recordlist => $recordlist,
-                dbinfo     => $dbinfotable,
-
-                config     => $config,
-                msg        => $msg,
-            };
-            
-            $self->print_page($config->{tt_managecollection_print_tname},$ttdata);
-            return Apache2::Const::OK;
-        }
-        elsif ($action eq "mail"){
-            # TT-Data erzeugen
-            my $ttdata={
-                view        => $view,
-                stylesheet  => $stylesheet,
-                sessionID   => $session->{ID},
-                qopts       => $queryoptions->get_options,				
-                type        => $type,
-                show        => $show,
-                singleidn   => $singleidn,
-                database    => $database,
-                recordlist  => $recordlist,
-                dbinfo      => $dbinfotable,
-                
-                config      => $config,
-                msg         => $msg,
-            };
-            
-            $self->print_page($config->{tt_managecollection_mail_tname},$ttdata);
-            return Apache2::Const::OK;
-        }
+    if ($userid && $userid == $user->{ID}) {
+        $user->delete_item_from_collection({
+            id       => $id,
+        });
     }
-    else {
-        $self->print_warning($msg->maketext("Unerlaubte Aktion"));
-        return Apache2::Const::OK;
-    }
-    return Apache2::Const::OK;
+    
+    return;
+}
+
+sub get_number_of_items_in_collection {
+    my $self = shift;
+
+    my $user = $self->param('user');
+
+    return $user->get_number_of_items_in_collection();
+}
+
+sub get_single_item_in_collection {
+    my $self = shift;
+    my $listid = shift;
+
+    my $user = $self->param('user');
+
+    return $user->get_single_item_in_collection($listid);
+}
+
+sub get_items_in_collection {
+    my $self = shift;
+
+    my $user = $self->param('user');
+
+    return $user->get_items_in_collection();
 }
 
 1;

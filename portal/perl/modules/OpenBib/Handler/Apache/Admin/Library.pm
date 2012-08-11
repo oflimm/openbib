@@ -61,7 +61,7 @@ use OpenBib::User;
 
 use CGI::Application::Plugin::Redirect;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::Admin';
 
 # Run at startup
 sub setup {
@@ -103,7 +103,8 @@ sub show_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -172,7 +173,8 @@ sub create_record {
     my $circcheckurl    = $query->param('circcheckurl')    || '';
     my $circdb          = $query->param('circdb')          || '';
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -248,7 +250,8 @@ sub show_record_form {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -323,7 +326,8 @@ sub update_record {
     my $li_0260         = $query->param('I0260')          || '';
     my $li_1000         = $query->param('I1000')          || '';
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -426,7 +430,8 @@ sub delete_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

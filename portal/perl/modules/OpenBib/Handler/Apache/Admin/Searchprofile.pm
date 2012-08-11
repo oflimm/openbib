@@ -61,7 +61,7 @@ use OpenBib::User;
 
 use CGI::Application::Plugin::Redirect;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::Admin';
 
 # Run at startup
 sub setup {
@@ -97,7 +97,8 @@ sub show_collection {
     # CGI Args
     my $year           = $query->param('year');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -128,7 +129,8 @@ sub show_record {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -158,7 +160,8 @@ sub show_record_form {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -199,7 +202,8 @@ sub update_record {
     my $method          = decode_utf8($query->param('_method')) || '';
     my $ownindex        = $query->param('own_index')       || 'false';
     
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

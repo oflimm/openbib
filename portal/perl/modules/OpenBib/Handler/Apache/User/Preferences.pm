@@ -53,7 +53,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::User';
 
 # Run at startup
 sub setup {
@@ -100,7 +100,8 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -176,7 +177,8 @@ sub update_searchfields {
     my $mediatype      = ($query->param('mediatype'))?$query->param('mediatype'):'0';
     my $year           = ($query->param('year'))?$query->param('year'):'0';
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -229,7 +231,8 @@ sub update_bibsonomy {
     my $bibsonomy_user = ($query->param('bibsonomy_user'))?$query->param('bibsonomy_user'):0;
     my $bibsonomy_key  = ($query->param('bibsonomy_key'))?$query->param('bibsonomy_key'):0;
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -266,7 +269,8 @@ sub update_bibsonomy_sync {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -302,7 +306,8 @@ sub update_searchform {
     # CGI Args
     my $setmask       = ($query->param('setmask'))?$query->param('setmask'):'';
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -345,7 +350,8 @@ sub update_password {
     my $password1     = ($query->param('password1'))?$query->param('password1'):'';
     my $password2     = ($query->param('password2'))?$query->param('password2'):'';
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -389,7 +395,8 @@ sub update_spelling {
     my $spelling_as_you_type   = ($query->param('spelling_as_you_type'))?$query->param('spelling_as_you_type'):'0';
     my $spelling_resultlist    = ($query->param('spelling_resultlist'))?$query->param('spelling_resultlist'):'0';
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -433,7 +440,8 @@ sub update_livesearch {
     my $livesearch_subject          = ($query->param('livesearch_subject'))?$query->param('livesearch_subject'):'0';
     my $livesearch_subject_exact    = ($query->param('livesearch_subject_exact'))?$query->param('livesearch_subject_exact'):'0';
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -476,7 +484,8 @@ sub update_autocompletion {
     # CGI Args
     my $setautocompletion = ($query->param('setautocompletion'))?$query->param('setautocompletion'):'livesearch';
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

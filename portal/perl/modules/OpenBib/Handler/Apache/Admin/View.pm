@@ -61,7 +61,7 @@ use OpenBib::User;
 
 use CGI::Application::Plugin::Redirect;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::Admin';
 
 # Run at startup
 sub setup {
@@ -95,7 +95,8 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -127,7 +128,8 @@ sub show_record {
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -177,7 +179,8 @@ sub create_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -227,7 +230,8 @@ sub show_record_form {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -284,7 +288,8 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
     $input_data_ref->{viewname} = $viewname;
         
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -351,7 +356,8 @@ sub delete_record {
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

@@ -101,7 +101,8 @@ sub show_record_form {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -141,7 +142,8 @@ sub update_record {
     # CGI Args
     my @roles           = ($query->param('roles'))?$query->param('roles'):();
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -156,5 +158,23 @@ sub update_record {
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_user_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 }
+
+sub authorization_successful {
+    my $self   = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
+    my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
+    my $user               = $self->param('user')             || '';
+
+    $logger->debug("Basic http auth failure: $basic_auth_failure");
+
+    if (($basic_auth_failure && !$user->is_admin) || !$self->is_authenticated('admin'))){
+        return 0;
+    }
+
+    return 1;
+}
+
 1;

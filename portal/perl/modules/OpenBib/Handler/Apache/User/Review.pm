@@ -56,7 +56,7 @@ use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::User';
 
 # Run at startup
 sub setup {
@@ -94,7 +94,8 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->is_authenticated('user',$userid)){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

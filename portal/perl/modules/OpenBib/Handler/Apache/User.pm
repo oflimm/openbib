@@ -153,6 +153,26 @@ sub delete_account {
     return;
 }
 
+# Authentifizierung wird spezialisiert
+
+sub authorization_successful {
+    my $self   = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
+    my $userid             = $self->param('userid')             || '';
+
+    $logger->debug("Basic http auth failure: $basic_auth_failure / Userid: $userid ");
+
+    if ($basic_auth_failure || ($userid && !$self->is_authenticated('user',$userid))){
+        return 0;
+    }
+
+    return 1;
+}
+
 1;
 __END__
 

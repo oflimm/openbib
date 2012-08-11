@@ -61,7 +61,7 @@ use OpenBib::User;
 
 use CGI::Application::Plugin::Redirect;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::Admin';
 
 # Run at startup
 sub setup {
@@ -91,7 +91,8 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 
@@ -116,7 +117,8 @@ sub show_search_form {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
     
@@ -153,7 +155,8 @@ sub show_search {
     $args_ref->{surname}    = $query->param('surname') if ($query->param('surname'));
     $args_ref->{commonname} = $query->param('commonname') if ($query->param('commonname'));
     
-    if (!$self->is_authenticated('admin')){
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
         return;
     }
 

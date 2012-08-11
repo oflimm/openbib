@@ -3205,9 +3205,9 @@ sub add_item_to_collection {
             # DBI "insert into treffer values (?,?,?,?)"
             $self->{schema}->resultset('Usercollection')->create(
                 {
-                    userid     => $thisuserid,
-                    titleid    => 0,
                     dbname     => '',
+                    titleid    => '',
+                    userid     => $thisuserid,
                     titlecache => $record_json,
                     comment    => $comment,
                     tstamp     => \'NOW()',
@@ -3253,7 +3253,7 @@ sub update_item_in_collection {
         my $title = $self->{schema}->resultset('Usercollection')->search_rs(
             {
                 userid  => $thisuserid,
-                listid  => $itemid,
+                id      => $itemid,
             }
         );
         
@@ -3282,9 +3282,8 @@ sub update_item_in_collection {
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
         my $title = $self->{schema}->resultset('Usercollection')->search_rs(
             {
-                listid     => $itemid,
+                id         => $itemid,
                 userid     => $thisuserid,
-                titlecache => $record_json,
             }
         );
         
@@ -3293,8 +3292,8 @@ sub update_item_in_collection {
             
             $title->update(
                 {
-                    titleid    => 0,
                     dbname     => '',
+                    titleid    => '',
                     titlecache => $record_json,
                     comment    => $comment,
                     tstamp     => \'NOW()',

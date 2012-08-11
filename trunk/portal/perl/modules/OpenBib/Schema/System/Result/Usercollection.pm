@@ -1,4 +1,4 @@
-package OpenBib::Schema::System::Result::Collection;
+package OpenBib::Schema::System::Result::Usercollection;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,11 +11,11 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::Collection
+OpenBib::Schema::System::Result::Usercollection
 
 =cut
 
-__PACKAGE__->table("collection");
+__PACKAGE__->table("usercollection");
 
 =head1 ACCESSORS
 
@@ -39,9 +39,8 @@ __PACKAGE__->table("collection");
 
 =head2 titleid
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 255
 
 =head2 titlecache
 
@@ -74,7 +73,7 @@ __PACKAGE__->add_columns(
   "dbname",
   { data_type => "text", is_nullable => 1 },
   "titleid",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "text", is_nullable => 1 },
   "titlecache",
   { data_type => "text", is_nullable => 1 },
   "comment",
@@ -102,8 +101,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-09 15:06:23
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LxvU+p1Hz4U7YdL8dhW+VA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-10 10:01:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BYA11TI6GYdCyq/CwO9AEw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

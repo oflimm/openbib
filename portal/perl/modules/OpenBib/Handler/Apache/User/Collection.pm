@@ -88,7 +88,7 @@ sub update_item_in_collection {
     my $user    = $self->param('user');
 
     if ($userid && $userid == $user->{ID}) {
-        $user->update_item_in_collection($input_data_ref);
+        return $user->update_item_in_collection($input_data_ref);
     }
     
     return;
@@ -103,7 +103,7 @@ sub add_item_to_collection {
     my $user = $self->param('user');
 
     if ($userid && $userid == $user->{ID}) {
-        $user->add_item_to_collection($input_data_ref);
+        return $user->add_item_to_collection($input_data_ref);
     }
     
     return;
@@ -118,7 +118,7 @@ sub delete_item_from_collection {
     my $user = $self->param('user');
 
     if ($userid && $userid == $user->{ID}) {
-        $user->delete_item_from_collection({
+        return $user->delete_item_from_collection({
             id       => $id,
         });
     }

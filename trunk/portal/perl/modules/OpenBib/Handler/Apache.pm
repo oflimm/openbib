@@ -82,18 +82,39 @@ sub cgiapp_init {
     $logger->debug("Entering cgiapp_init");
    
     my $r            = $self->param('r');
-    my $config       = OpenBib::Config->instance;
-    my $view         = $self->param('view');    # || $config->get('defaultview');
+    my $view         = $self->param('view');
     my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    $self->param('config',$config);
+    
+    $self->param('config',OpenBib::Config->instance);
     $self->param('session',$session);
     $self->param('user',$user);
+    $self->param('useragent',$r->headers_in->{'User-Agent'});
+    $self->param('qopts',OpenBib::QueryOptions->instance($self->query()));
+    $self->param('servername',$r->get_server_name);
 
+    # Bestimmung diverser Parameter aus dem URI
+    # Setzt: location,path,path_prefix,uri
+    $self->process_uri;
+
+    # Setzen von content_type/representation, wenn konkrete Repraesentation ausgewaehlt wurde
+    $self->set_content_type_from_uri;
+
+    # Ggf Redirect zu Personalisiertem URI
+    $self->dispatch_to_personalized_uri;
+    
+    # content_type, representation und lang durch content-Negotiation bestimmen
+    # und ggf. zum konkreten Repraesenations-URI redirecten
+    # Setzt: content_type,represenation,lang
     $self->negotiate_content;
+
+    # Bearbeitung HTTP Basic Authentication als Shortcut
+    # Setzt ggf: basic_auth_failure (auf 1)
     $self->check_http_basic_authentication;
 
+    # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
+    $self->alter_negotiated_language;
+    
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
@@ -111,76 +132,7 @@ sub cgiapp_prerun {
    my $logger = get_logger();
 
    $logger->debug("Entering cgiapp_prerun");
-   
-   my $r            = $self->param('r');
-
-   my $config       = $self->param('config'); #OpenBib::Config->instance;
-   my $view         = $self->param('view'); # || $config->get('defaultview');
-   my $session      = $self->param('session'); #OpenBib::Session->instance({ apreq => $r , view => $view });
-   my $user         = $self->param('user'); #OpenBib::User->instance({sessionID => $session->{ID}});
-   my $query        = $self->query();
-   
-   my $useragent    = $r->headers_in->{'User-Agent'} || "OpenBib Search Portal: http://search.openbib.org/";
-   
-   my $stylesheet   = OpenBib::Common::Util::get_css_by_browsertype($r);
-   my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-   my $servername   = $r->get_server_name;
-   
-   my $path_prefix          = $config->get('base_loc');
-   my $complete_path_prefix = "$path_prefix/$view";
-
-   $logger->debug("User-ID:".$user->{ID});
-   
-   # Letztes Pfad-Element bestimmen
-   my $uri  = $r->parsed_uri;
-   my $path = $uri->path;
-
-   my ($last_uri_element) = $path =~m/\/([^\/]+)$/;
-
-   $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$self->query->args());
-
-   if (! $config->strip_view_from_uri($view)){
-       $path_prefix = $complete_path_prefix;
-   }
-   else {
-       $path =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
-   }
-
-   my $id = "";
-   if ($last_uri_element=~/^(.+?)(\.html|\.json|\.rdf|\.rss|\.include)$/){
-       $id               = $1;
-       my ($representation) = $2 =~/^\.(.+?)$/;
-       my $content_type   = $config->{'content_type_map_rev'}{$representation};
-
-       # Korrektur des ausgehandelten Typs bei direkter Auswahl einer bestimmten Repraesentation
-       $self->param('content_type',$content_type);
-       $self->param('representation',$representation);
-   }
-
-   # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
-   if ($self->query->param('l')){
-       $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$self->query->param('l'));
-       $self->param('lang',$self->query->param('l'));
-
-       # Setzen als Cookie
-       $session->set_cookie($r,'lang',$self->param('lang'));
-   }
-   # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
-   elsif ($session->{lang}){
-       $logger->debug("Korrektur der ausgehandelten Sprache durch Cookie: ".$session->{lang});
-       $self->param('lang',$session->{lang});
-   }
-
-   $self->param('useragent',$useragent);
-   $self->param('stylesheet',$stylesheet);
-
-   $self->param('qopts',$queryoptions);
-   $self->param('servername',$servername);
-   $self->param('path_prefix',$path_prefix);
-   $self->param('id',$id);
-   $self->param('path',$path);
-   
+      
    $logger->debug("Exit cgiapp_prerun");
    #   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
 }
@@ -199,54 +151,56 @@ sub negotiate_content {
     
     if (!$self->param('disable_content_negotiation')){
         $logger->debug("Doing content negotiation");
-        my $servername           = $r->get_server_name;
-        
-        my $path_prefix          = $config->get('base_loc');
-        my $complete_path_prefix = "$path_prefix/$view";
-        
-        if (! $config->strip_view_from_uri($view)){
-            $path_prefix = $complete_path_prefix;
-        }
-
-        $logger->debug("Gott servername $servername - complete path_prefix $complete_path_prefix");
-
-        # Letztes Pfad-Element bestimmen
-        my $uri  = $r->parsed_uri;
-        my $path = $uri->path;
-        
-        my ($last_uri_element) = $path =~m/\/([^\/]+)$/;
-        
-        $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$self->query->args());
 
         # Wird keine konkrete Reprasentation angesprochen, dann
         # - Typ verhandeln
-        # - ggf zu personalisiertem URI weiterleiten
         # - Sprache verhandeln
-        if ($r->method eq "GET" && $last_uri_element !~/(\.html|\.json|\.rdf|\.rss|\.include)$/){
-            $logger->debug("No specific representation given - negotiating content and language");
+        if ($r->method eq "GET"){
+            if (!$self->param('representation') && !$self->param('content_type')){
+                $logger->debug("No specific representation given - negotiating content and language");
+                
+                $self->negotiate_type;
+                
+                # Pfade sind immer mit base_loc und view
+                #my $baseloc    = $config->get('base_loc');
+                #$path =~s{^$baseloc/[^/]+}{$path_prefix};
 
-            $self->negotiate_type;
-            
-            # Pfade sind immer mit base_loc und view
-            my $baseloc    = $config->get('base_loc');
-            $path =~s{^$baseloc/[^/]+}{$path_prefix};
-
-            # Personalisierte URIs
-            if ($self->param('personalized_loc')){
-                my $user = $self->param('user'); #OpenBib::User->instance({sessionID => $session->{ID}});
-                if ($user->{ID}){
-                    my $loc = $self->param('personalized_loc');
-                    $logger->debug("Replacing $path_prefix/$loc with $path_prefix/user/$user->{ID}/$loc");
-                    my $old_loc = "$path_prefix/$loc";
-                    my $new_loc = "$path_prefix/user/$user->{ID}/$loc";
-                    $path=~s{^$old_loc}{^$new_loc};
+                # Zusaetzlich auch Sprache verhandeln
+                my $args="";
+                if (!$self->query->param('l')){
+                    if ($session->{lang}){
+                        $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
+                        $self->param('lang',$session->{lang});
+                    }
+                    else {
+                        $self->negotiate_language;
+                    }
+                    
+                    $args="?l=".$self->param('lang');
+                    if ($self->query->args()){
+                        $args="$args;".$self->query->args();
+                    }
                 }
+                else {
+                    $args="?".$self->query->args();
+                }
+            
+                my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').".".$self->param('representation').$args;
+
+                $logger->debug("Dispatching to $dispatch_url");
+                
+                return $self->redirect($dispatch_url,'303 See Other');
             }
 
-            $logger->debug("Corrected External Path: $path");
-            
-            my $args="";
-            if (!$self->query->param('l')){
+            # Wenn eine konkrete Repraesentation angesprochen wird, jedoch ohne Sprach-Parameter,
+            # dann muss dieser verhandelt werden.
+            if (!$self->query->param('l') ){
+                $logger->debug("Specific representation given, but without language - negotiating");
+                
+                # Pfade sind immer mit base_loc und view
+                #my $baseloc    = $config->get('base_loc');
+                #$path =~s{^$baseloc/[^/]+}{$path_prefix};
+                
                 if ($session->{lang}){
                     $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
                     $self->param('lang',$session->{lang});
@@ -255,96 +209,12 @@ sub negotiate_content {
                     $self->negotiate_language;
                 }
                 
-                $args="?l=".$self->param('lang');
-                if ($self->query->args()){
-                    $args="$args;".$self->query->args();
-                }
-            }
-            else {
-                $args="?".$self->query->args();
-            }
-            
-            #        $self->query->method('GET');
-            #        $self->query->content_type($self->param('content_type'));
-            #        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
-            #        $self->query->status(Apache2::Const::REDIRECT);
-            #        return;
-
-            my $dispatch_url = $path.".".$self->param('representation').$args;
-
-            $logger->debug("Dispatching to $dispatch_url");
-            
-            return $self->redirect($dispatch_url,'303 See Other');
-        }
-        # Wenn eine konkrete Repraesentation angesprochen wird, jedoch ohne Sprach-Parameter,
-        # dann muss dieser verhandelt werden.
-        elsif ($r->method eq "GET" && !$self->query->param('l') ){
-            $logger->debug("Specific representation given, but without language - negotiating");
-
-
-            # Pfade sind immer mit base_loc und view
-            my $baseloc    = $config->get('base_loc');
-            $path =~s{^$baseloc/[^/]+}{$path_prefix};
-
-            # Personalisierte URIs
-            if ($self->param('personalized_loc')){
-                my $user = OpenBib::User->instance({sessionID => $session->{ID}});
-                if ($user->{ID}){
-                    my $loc = $self->param('personalized_loc');
-                    $logger->debug("Replacing $path_prefix/$loc with $path_prefix/user/$user->{ID}/$loc");
-                    my $old_loc = "$path_prefix/$loc";
-                    my $new_loc = "$path_prefix/user/$user->{ID}/$loc";
-                    $path=~s{^$old_loc}{^$new_loc};
-                }
-            }
-
-            $logger->debug("Corrected External Path: $path");
-
-            if ($session->{lang}){
-                $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
-                $self->param('lang',$session->{lang});
-            }
-            else {
-                $self->negotiate_language;
-            }
-            
-            my $args = "?l=".$self->param('lang');
-            
-            $args=$args.";".$self->query->args() if ($self->query->args());
-            
-            #        $self->query->method('GET');
-            #        $self->query->content_type($self->param('content_type'));
-            #        $self->query->headers_out->add(Location => $path.$self->param('representation').$args);
-            #        $self->query->status(Apache2::Const::REDIRECT);
-            #        return;
-
-            my $dispatch_url = $path.$args;
-
-            $logger->debug("Dispatching to $dispatch_url");
-            
-            return $self->redirect($dispatch_url,'303 See Other');
-        }
-        elsif ($r->method eq "GET" && $self->param('personalized_loc')){
-            # Pfade sind immer mit base_loc und view
-            my $baseloc    = $config->get('base_loc');
-            $path =~s{^$baseloc/[^/]+}{$path_prefix};
-
-            my $user = OpenBib::User->instance({sessionID => $session->{ID}});
-            if ($user->{ID}){
-                my $loc = $self->param('personalized_loc');
-                $logger->debug("Replacing $path_prefix/$loc with $path_prefix/user/$user->{ID}/$loc");
-                my $old_loc = "$path_prefix/$loc";
-                my $new_loc = "$path_prefix/user/$user->{ID}/$loc";
-                $path=~s{^$old_loc}{^$new_loc};
-
-                $logger->debug("Corrected External Path: $path");
+                my $args = "?l=".$self->param('lang');
                 
-                my $dispatch_url = $path;
-                
-                if ($self->query->args()){
-                    $dispatch_url.="?".$self->query->args();
-                }   
-                
+                $args=$args.";".$self->query->args() if ($self->query->args());
+
+                my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').$args;
+            
                 $logger->debug("Dispatching to $dispatch_url");
                 
                 return $self->redirect($dispatch_url,'303 See Other');
@@ -357,11 +227,150 @@ sub negotiate_content {
         }
         else {
             $logger->debug("No additional negotiation necessary");
-            $logger->debug("Current URL is $path with args ".$self->query->args());
+            $logger->debug("Current URL is ".$self->param('path')." with args ".$self->query->args());
         }
     }
     
 
+    return;
+}
+
+sub alter_negotiated_language {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r       = $self->param('r');
+    my $session = $self->param('session');
+
+    # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
+    if ($self->query->param('l')){
+        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$self->query->param('l'));
+        $self->param('lang',$self->query->param('l'));
+        
+        # Setzen als Cookie
+        $session->set_cookie($r,'lang',$self->param('lang'));
+    }
+    # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
+    elsif ($session->{lang}){
+        $logger->debug("Korrektur der ausgehandelten Sprache durch Cookie: ".$session->{lang});
+        $self->param('lang',$session->{lang});
+    }
+
+    return;
+}
+
+sub process_uri {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $r          = $self->param('r');
+    my $config     = $self->param('config');
+    my $view       = $self->param('view');
+    my $servername = $self->param('servername');
+
+    my $path_prefix          = $config->get('base_loc');
+    my $complete_path_prefix = "$path_prefix/$view";
+    
+    # Letztes Pfad-Element bestimmen
+    my $uri    = $r->parsed_uri;
+    my $path   = $uri->path;
+    my $scheme = $uri->scheme || 'http';
+    
+    my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
+    
+    $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$self->query->args());
+    
+    if (! $config->strip_view_from_uri($view)){
+        $path_prefix = $complete_path_prefix;
+    }
+    else {
+        $path =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
+    }
+
+    my ($id) = $last_uri_element =~m/^(.+?)\.(html|include|json|rdf|rss)$/;
+    
+    if ($id){
+        $location_uri.="/$id";
+    }
+    else {
+        $location_uri.="/$last_uri_element";
+    }
+
+    $self->param('location',"$scheme://$servername$location_uri");
+    $self->param('path_prefix',$path_prefix);
+    $self->param('path',$path);
+    $self->param('scheme',$scheme);
+
+    my $url = $uri->unparse;
+    
+    $self->param('url',$url);
+}
+
+sub dispatch_to_personalized_uri {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Personalisierte URIs
+    if ($self->param('personalized_loc')){
+        my $dispatch_url = $self->param('scheme')."://".$self->param('servername');   
+        
+        my $user        = $self->param('user');
+        my $config      = $self->param('config');
+        my $path_prefix = $self->param('path_prefix');
+        my $path        = $self->param('path');
+        
+#        # Interne Pfade sind immer mit base_loc und view
+#        my $baseloc    = $config->get('base_loc');
+#        $path =~s{^$baseloc/[^/]+}{$path_prefix};
+        
+        if ($user->{ID}){
+            my $loc = $self->param('personalized_loc');
+            $logger->debug("Replacing $path_prefix/$loc with $path_prefix/user/$user->{ID}/$loc");
+            my $old_loc = "$path_prefix/$loc";
+            my $new_loc = "$path_prefix/user/$user->{ID}/$loc";
+            $path=~s{^$old_loc}{^$new_loc};
+
+            $dispatch_url .=$path;
+            
+            if ($self->query->args()){
+                $dispatch_url.="?".$self->query->args();
+            }
+
+            $logger->debug("Dispatching to $dispatch_url");
+            
+            return $self->redirect($dispatch_url,'303 See Other');
+            
+        }
+    }
+    
+    return;
+}
+
+sub set_content_type_from_uri {
+    my $self = shift;
+    my $uri  = shift || $self->param('path');
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->param('config');
+    
+    my ($representation) = $uri =~m/^.*?\/[^\/]*?\.(json|html|include|rdf|rss)$/;
+
+    $logger->debug("Setting type from URI $uri. Got Represenation $representation");
+
+    # Korrektur des ausgehandelten Typs bei direkter Auswahl einer bestimmten Repraesentation
+    if (defined $representation && $config->{content_type_map_rev}{$representation}){
+        $self->param('content_type',$config->{content_type_map_rev}{$representation});
+        $self->param('representation',$representation);
+    }
+    
     return;
 }
 
@@ -549,8 +558,11 @@ sub print_page {
     my $path_prefix    = $self->param('path_prefix');
     my $path           = $self->param('path');
     my $representation = $self->param('representation');
+    my $status         = $self->param('status') || Apache2::Const::OK;
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
-
+    my $location       = $self->param('location');
+    my $url            = $self->param('url');
+    
     $ttdata = $self->add_default_ttdata($ttdata);
     
     $logger->debug("Using base Template $templatename");
@@ -575,12 +587,21 @@ sub print_page {
   
     # Dann Ausgabe des neuen Headers
     $r->content_type($content_type);
-  
+
+    # Location- und Content-Location-Header setzen
+    my $head = $r->headers_out;
+    $head->set('Location' => $location);
+    $head->set('Content-Location' => $location);
+
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
     };
-  
+
+    if ($self->param('status')){
+        $r->status($self->param('status'));
+    }
+        
     return;
 }
 
@@ -599,6 +620,7 @@ sub add_default_ttdata {
     my $servername     = $self->param('servername');
     my $path_prefix    = $self->param('path_prefix');
     my $path           = $self->param('path');
+    my $location       = $self->param('location');
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     
@@ -647,6 +669,8 @@ sub add_default_ttdata {
     $ttdata->{'username'}       = $username;
     $ttdata->{'sysprofile'}     = $sysprofile;
     $ttdata->{'path'}           = $path;
+    $ttdata->{'url'}            = $url;
+    $ttdata->{'location'}       = $location;
     $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'to_json'}        = sub {
         my $ref = shift;

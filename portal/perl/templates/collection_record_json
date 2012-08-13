@@ -12,12 +12,11 @@
 #######################################################################
 -%]
 [%-
-   records = [];
-   FOREACH record IN recordlist.get_records ;
+
      thisrecord = {
        link = {
           rel = 'self'
-          href = "${location}/${record.listid}"
+          href = location
        }
        record = record.get_brief_normdata
        itemid  = record.listid
@@ -28,8 +27,5 @@
        thisrecord.dbname  = record.database;
      END;
 
-     records.push(thisrecord);
-   END;
-
-   to_json(records);
+     to_json(thisrecord);
 -%]

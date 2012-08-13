@@ -29,6 +29,11 @@
 
 
    search_result = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+
      meta = {
               'start_range' = start_range
               'end_range'   = end_range

@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common M_GET);
+use Apache2::Const -compile => qw(:common M_GET HTTP_CREATED);
 use Apache2::Reload;
 use Apache2::Request ();
 use Apache2::RequestIO (); # print, rflush
@@ -354,8 +354,11 @@ sub show_record {
         return;
     }
 
+    my $record = $self->get_single_item_in_collection($id);
+    
     # TT-Data erzeugen
     my $ttdata={
+        record         => $record,
         query          => $query,
         qopts          => $queryoptions->get_options,
         
@@ -364,7 +367,7 @@ sub show_record {
     
     $self->print_page($config->{tt_collection_record_tname},$ttdata);
 
-    return Apache2::Const::OK;
+    return;
 }
 
 sub create_record {
@@ -388,6 +391,7 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
@@ -416,12 +420,23 @@ sub create_record {
     }
     
     # Einfuegen eines Titels in die Merkliste
-    $self->add_item_to_collection($input_data_ref);
+    my $new_titleid = $self->add_item_to_collection($input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
-
-    $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
-    return Apache2::Const::OK;
+    if ($self->param('representation') eq "html"){
+        $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
+        return Apache2::Const::OK;
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($new_titleid){
+            $logger->debug("Weiter zur Titelid $new_titleid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('itemid',$new_titleid);
+            $self->param('location',"$location/item/$new_titleid");
+            $self->show_record;
+            return;
+        }
+    }
 }
 
 sub update_record {
@@ -951,9 +966,7 @@ sub update_item_in_collection {
 
     my $session = $self->param('session');
     
-    $session->update_item_in_collection($input_data_ref);
-
-    return;
+    return $session->update_item_in_collection($input_data_ref);
 }
 
 sub add_item_to_collection {
@@ -962,9 +975,7 @@ sub add_item_to_collection {
 
     my $session = $self->param('session');
 
-    $session->add_item_to_collection($input_data_ref);
-    
-    return;
+    return $session->add_item_to_collection($input_data_ref);
 }
 
 sub delete_item_from_collection {
@@ -978,11 +989,9 @@ sub delete_item_from_collection {
 
     $logger->info("Trying to delete $id in SessionID: $session->{ID}");
     
-    $session->delete_item_from_collection({
+    return $session->delete_item_from_collection({
         id       => $id,
     });
-
-    return;
 }
 
 sub get_number_of_items_in_collection {

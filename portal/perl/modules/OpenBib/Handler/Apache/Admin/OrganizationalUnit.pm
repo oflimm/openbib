@@ -117,7 +117,8 @@ sub show_collection {
     my $orgunits_ref = $config->get_orgunitinfo_overview($profilename);
 
     my $ttdata={
-        orgunits   => $orgunits_ref,
+        profilename => $profilename,
+        orgunits    => $orgunits_ref,
     };
     
     $self->print_page($config->{tt_admin_orgunit_tname},$ttdata);

@@ -868,17 +868,17 @@ sub get_libinfo {
     $libinfo_ref->{database} = $dbname;
 
     foreach my $item ($libraryinfos->all){
-        my $category  = "I".sprintf "%04d",$item->category;
-        my $indicator =         decode_utf8($item->indicator);
-        my $content   =         decode_utf8($item->content);
-#        my $indicator = $item->indicator;
-#        my $content   = $item->content;
+        my $field    = "I".sprintf "%04d",$item->field;
+        my $subfield =                    $item->subfield || '';
+        my $mult     =                    $item->mult     || 1;
+        my $content  =                    $item->content;
 
         next if ($content=~/^\s*$/);
-#        $content =~s/"/%22/g;
-        push @{$libinfo_ref->{$category}}, {
-            indicator => $indicator,
-            content   => $content,
+
+        push @{$libinfo_ref->{$field}}, {
+            mult     => $mult,
+            subfield => $subfield,
+            content  => $content,
         };
     }
 

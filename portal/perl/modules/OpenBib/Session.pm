@@ -643,6 +643,7 @@ sub get_all_searchqueries {
     my @queries=();
 
     foreach my $item ($searchqueries->all){
+        $logger->debug("Found Searchquery with id ".$item->get_column('thisqueryid'));
         my $searchquery = OpenBib::SearchQuery->new->load({sessionID => $thissessionid, queryid => $item->get_column('thisqueryid') });
         push @queries, $searchquery;
     }
@@ -751,6 +752,8 @@ sub add_item_to_collection {
         
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $new_title;
     
     if ($dbname && $titleid){
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
@@ -770,7 +773,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Collection: $cached_title");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $self->{schema}->resultset('Sessioncollection')->create(
+            $new_title = $self->{schema}->resultset('Sessioncollection')->create(
                 {
                     dbname     => $dbname,
                     titleid    => $titleid,
@@ -797,7 +800,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Collection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $self->{schema}->resultset('Sessioncollection')->create(
+            $new_title = $self->{schema}->resultset('Sessioncollection')->create(
                 {
                     titleid    => 0,
                     dbname     => '',
@@ -809,7 +812,11 @@ sub add_item_to_collection {
         }
     }
 
-    return ;
+    if ($new_title){
+        return $new_title->id;
+    }
+
+    return;
 }
 
 sub update_item_in_collection {
@@ -987,31 +994,19 @@ sub save_eventlog_to_statisticsdb {
         }
     )->single;
 
-    $statistics->create_session({
-        id         => $sessioninfo->id,
+    my $new_sid = $statistics->create_session({
         sessionid  => $self->{ID},
         createtime => $sessioninfo->createtime,
     });
     
-    # Alle Events in Statistics-DB uebertragen
-    # DBI: "select * from eventlog where sessionid = ?"
-    my $events = $self->{schema}->resultset('Eventlog')->search_rs(
-        {
-            'sid.sessionid' => $self->{ID}
-        },
-        {
-            join => 'sid'
-        }
-    );
-
-    foreach my $event ($events->all){
+    # Alle skalaren Events in Statistics-DB uebertragen
+    foreach my $event ($sessioninfo->eventlogs->all){
         my $tstamp        = $event->tstamp;
         my $type          = $event->type;
         my $content       = $event->content;
-        my $sid           = $event->sid->id;
 
         $statistics->log_event({
-            sid       => $sid,
+            sid       => $new_sid,
             tstamp    => $tstamp,
             type      => $type,
             content   => $content,
@@ -1019,28 +1014,17 @@ sub save_eventlog_to_statisticsdb {
     }
 
     # Alle Events im JSON-Format in Statistics-DB uebertragen
-    # DBI: "select * from eventlog where sessionid = ?"
-    my $jsonevents = $self->{schema}->resultset('Eventlogjson')->search_rs(
-        {
-            'sid.sessionid' => $self->{ID}
-        },
-        {
-            join => 'sid'
-        }
-    );
-
-    foreach my $event ($events->all){
+    foreach my $event ($sessioninfo->eventlogjsons->all){
         my $tstamp        = $event->tstamp;
         my $type          = $event->type;
         my $content       = $event->content;
-        my $sid           = $event->sid->id;
 
         $statistics->log_event({
-            sid       => $sid,
+            sid       => $new_sid,
             tstamp    => $tstamp,
             type      => $type,
             content   => $content,
-            serialize => 1,
+            serialize => 1, # in Eventlogjson
         });
 
 	if ($type == 1){
@@ -1049,6 +1033,7 @@ sub save_eventlog_to_statisticsdb {
             $logger->debug("Query: $content");
             
             $statistics->log_query({
+                sid             => $new_sid,
                 tstamp          => $tstamp,
                 view            => $view,
                 searchquery_ref => $searchquery_ref,
@@ -1058,16 +1043,10 @@ sub save_eventlog_to_statisticsdb {
 
     # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)
     # DBI: "select tstamp,content from eventlog where sessionid = ? and type=10"
-    my $records = $self->{schema}->resultset('Eventlogjson')->search_rs(
+    my $records = $sessioninfo->eventlogjsons->search_rs(
         {
-            'sid.sessionid' => $self->{ID},
-            'me.type' => 10,
+            'type' => 10,
         },
-        {
-            select => [ 'me.tstamp', 'me.content' ],
-            as     => [ 'thiststamp' ,'thisview' ],
-            join => 'sid'
-        }
     );
 
     my ($wkday,$month,$day,$time,$year) = split(/\s+/, localtime);
@@ -1075,8 +1054,8 @@ sub save_eventlog_to_statisticsdb {
     my %seen_title=();
 
     foreach my $item ($records->all){
-        my $tstamp        = $item->get_column('thiststamp');
-        my $content       = $item->get_column('content');
+        my $tstamp        = $item->tstamp;
+        my $content       = $item->content;
 
         $logger->debug("Content: $content");
         
@@ -1546,24 +1525,22 @@ sub get_info_of_all_active_sessions {
     my $logger = get_logger();
 
     # DBI: "select * from session order by createtime"
-    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->search(undef, { order_by => 'createtime'});
+    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->search(undef, { order_by => 'createtime ASC'});
     
     my @sessions=();
 
     foreach my $item ($sessioninfos->all){
-        my $singlesessionid = decode_utf8($item->sessionid);
-        my $createtime      = decode_utf8($item->createtime);
-        my $username        = decode_utf8($item->username);
-
-        # DBI: "select count(*) as rowcount from queries where sessionid = ?"
-        my $numqueries = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $singlesessionid }, { join => 'sid' })->count;
+        my $singlesessionid = $item->sessionid;
+        my $createtime      = $item->createtime;
+        my $username        = $item->username;
+        my $numqueries      = $item->queries->count; #$self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $singlesessionid }, { join => 'sid' })->count;
 
         if (!$username) {
             $username="Anonym";
         }
 
         push @sessions, {
-            singlesessionid => $singlesessionid,
+            id              => $singlesessionid,
             createtime      => $createtime,
             username        => $username,
             numqueries      => $numqueries,
@@ -1588,8 +1565,8 @@ sub get_info {
     my $username;
     
     if ($sessioninfos){
-        $createtime = decode_utf8($sessioninfos->createtime);
-        $username   = decode_utf8($sessioninfos->username);
+        $createtime = $sessioninfos->createtime;
+        $username   = $sessioninfos->username;
     }
     
     return ($username,$createtime);

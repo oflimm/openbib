@@ -269,9 +269,6 @@ sub create_session {
     my $logger = get_logger();
 
     # Set defaults
-    my $id           = exists $arg_ref->{id}
-        ? $arg_ref->{id}                : undef;
-
     my $sessionid    = exists $arg_ref->{sessionid}
         ? $arg_ref->{sessionid}         : undef;
 
@@ -281,8 +278,7 @@ sub create_session {
     my $parsed_tstamp = new Date::Manip::Date;
     $parsed_tstamp->parse($createtime);
 
-    $self->{schema}->resultset('Sessioninfo')->find_or_create({
-        id         => $id,
+    my $new_session = $self->{schema}->resultset('Sessioninfo')->create({
         sessionid  => $sessionid,
         createtime => $createtime,
         createtime_year  => $parsed_tstamp->printf("%y"),
@@ -290,7 +286,9 @@ sub create_session {
         createtime_day   => $parsed_tstamp->printf("%d"),
     });
 
-    return;
+    my $new_sessionid = $new_session->id;
+    
+    return $new_sessionid;
 }       
 
 sub log_event {
@@ -650,6 +648,9 @@ sub get_ranking_of_event {
 sub log_query {
     my ($self,$arg_ref)=@_;
 
+    my $sid          = exists $arg_ref->{sid}
+        ? $arg_ref->{sid}                : undef;
+
     my $tstamp       = exists $arg_ref->{tstamp}
         ? $arg_ref->{tstamp}             : undef;
 
@@ -773,6 +774,7 @@ sub log_query {
           # DBI: "insert into queryterm values (?,?,?,?)"
           $self->{schema}->resultset('Searchterm')->create(
               {
+                  sid          => $sid,
                   tstamp       => $parsed_tstamp->printf("%y%m%d%H%M%S"),
                   tstamp_year  => $parsed_tstamp->printf("%y"),
                   tstamp_month => $parsed_tstamp->printf("%m"),

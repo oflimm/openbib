@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_showsessions
+# Templatename: admin_sessio_archived_search
 #
 # Typ         : Mastertemplate       
 #
@@ -14,12 +14,20 @@
 -%]
 [%-
 
-  FOREACH sessioninfo IN sessions ;
-    sessioninfo.link = {
+ sessioninfos = [];
+
+ FOREACH thissession IN sessions;
+
+  thissessioninfo = {
+     link = {
           rel = 'self'
-          href = "${location}/${sessioninfo.id}"
-    };
-  END;
+          href = "${location}/${thissession.id}"
+     }
+     id => thissession.id
+     createtime => thissession.createtime
+  };
+  sessioninfos.push(thissessioninfo);
+ END;
 
   this_json_output = {
      link = {
@@ -27,7 +35,7 @@
           href = location
      }
 
-     sessions = sessions
+     sessions = sessioninfos
   };
 
 to_json(this_json_output) -%]

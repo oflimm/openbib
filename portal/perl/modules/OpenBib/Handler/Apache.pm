@@ -54,7 +54,7 @@ use APR::Brigade ();
 use APR::Bucket ();
 use Apache2::Filter ();
 
-use APR::Const    -compile => qw(SUCCESS BLOCK_READ);
+use APR::Const -compile => qw(SUCCESS BLOCK_READ);
 
 use constant IOBUFSIZE => 8192;
 
@@ -307,7 +307,7 @@ sub process_uri {
 
     my $url = $uri->unparse;
     
-    $self->param('url',$url);
+    $self->param('full_url',$url);
 }
 
 sub dispatch_to_personalized_uri {
@@ -561,7 +561,7 @@ sub print_page {
     my $status         = $self->param('status') || Apache2::Const::OK;
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $location       = $self->param('location');
-    my $url            = $self->param('url');
+    my $full_url       = $self->param('full_url');
     
     $ttdata = $self->add_default_ttdata($ttdata);
     
@@ -620,6 +620,7 @@ sub add_default_ttdata {
     my $servername     = $self->param('servername');
     my $path_prefix    = $self->param('path_prefix');
     my $path           = $self->param('path');
+    my $full_url       = $self->param('full_url');
     my $location       = $self->param('location');
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
@@ -669,7 +670,7 @@ sub add_default_ttdata {
     $ttdata->{'username'}       = $username;
     $ttdata->{'sysprofile'}     = $sysprofile;
     $ttdata->{'path'}           = $path;
-    $ttdata->{'url'}            = $url;
+    $ttdata->{'full_url'}       = $full_url;
     $ttdata->{'location'}       = $location;
     $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'to_json'}        = sub {
@@ -1169,7 +1170,7 @@ sub check_http_basic_authentication {
         
         my ($status, $password) = $r->get_basic_auth_pw;
         
-        $logger->debug("get_basic_auth: Status $status / Password $password");
+        $logger->debug("get_basic_auth: Status $status");
         
         return $status unless $status == Apache2::Const::OK;
         

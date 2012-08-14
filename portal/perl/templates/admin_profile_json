@@ -14,25 +14,31 @@
 -%]
 [%-
 
-all_profiles = [] ;
+profileinfos = [] ;
 
 FOREACH profile IN profiles.all ;
   this_profile = {
+     link = {
+          rel = 'self'
+          href = "${location}/${profile.profilename}"
+     }
+
      profilename = profile.profilename
      description = profile.description
   };
 
-  profiledbs = [];
-
-  FOREACH item IN config.get_profiledbs(profile.profilename).sort ;
-    profiledbs.push({ dbname = item, description = dbinfo.dbnames.${item}.full});
-  END ;
-
-  this_profile.databases = profiledbs;
-  
-  all_profiles.push(this_profile);
+  profileinfos.push(this_profile);
 END;
 
-to_json(all_profiles) ;
+this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+
+     profiles = profileinfos
+};
+
+to_json(this_json_output) ;
 
 -%]

@@ -16,6 +16,15 @@ FOREACH katalog IN kataloge.all ;
   all_databaseinfo.push(this_databaseinfo);
 END;
 
-to_json(all_databaseinfo) ;
+this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+
+    databases = all_databaseinfo
+};
+
+to_json(this_json_output) ;
 
 -%]

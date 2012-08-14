@@ -13,7 +13,7 @@ CREATE TABLE datacache (
 
 drop table IF EXISTS sessioninfo;
 CREATE TABLE sessioninfo (
- id            BIGINT,
+ id            BIGSERIAL,
  sessionid     VARCHAR(70),
  createtime    TIMESTAMP,
 

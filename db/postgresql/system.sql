@@ -50,8 +50,9 @@ drop table IF EXISTS libraryinfo;
 create table libraryinfo (
  dbid          BIGINT NOT NULL,
 
- category      SMALLINT  NOT NULL,
- indicator     SMALLINT,
+ field         SMALLINT  NOT NULL,
+ mult          SMALLINT,
+ subfield      VARCHAR(2),
  content       TEXT NOT NULL
 );
 

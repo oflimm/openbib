@@ -12,4 +12,32 @@
 #
 #######################################################################
 -%]
-[% to_json(thissession) %]
+[%-
+
+queriesinfos = [];
+FOREACH query IN queries;
+  thisqueryinfo = {
+    link = {
+          rel = 'self'
+          href = "${location}/${query.get_id}"
+    }
+    id  = query.get_id
+    query = query.get_searchquery
+    searchprofile = query.get_searchprofile
+  };
+  queriesinfos.push(thisqueryinfo);
+END;
+
+this_json_output = {
+    link = {
+          rel = 'self'
+          href = location
+    }
+
+    id = thissession.sessionid
+    createtime = thissession.createtime
+    numqueries = thissession.numqueries
+    queries = queriesinfos
+};
+
+to_json(this_json_output) %]

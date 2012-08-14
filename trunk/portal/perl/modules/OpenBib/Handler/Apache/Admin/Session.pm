@@ -231,7 +231,6 @@ sub show_archived_search {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $clientip        = $query->param('clientip') || '';
     my $fromdate        = $query->param('fromdate') || '';
     my $todate          = $query->param('todate')   || '';
 
@@ -240,50 +239,44 @@ sub show_archived_search {
         return;
     }
 
-    my $statisticsdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    unless (($fromdate && $todate) || $clientip){
-        $self->print_warning($msg->maketext("Bitte geben Sie ein Anfangs- sowie ein End-Datum oder alternativ eine IP-Adresse an!"));
+    unless ($fromdate && $todate){
+        $logger->debug("No dates given.");
+        $self->print_warning($msg->maketext("Bitte geben Sie ein Anfangs- sowie ein End-Datum an."));
         return Apache2::Const::OK;
     }
 
-    my @sql_where = ();
-    my @sql_args  = ();
-    # Eventtyp 102 = Client-IP
-    if ($clientip){
-        push @sql_where, "type=102 and content = ?";
-        push @sql_args, $clientip;
-    }
+    my $statistics = new OpenBib::Statistics;
 
-    push @sql_where, "tstamp > ? and tstamp < ?";
-    push @sql_args, ($fromdate,$todate);
+    my $sessions = $statistics->{schema}->resultset('Sessioninfo')->search_rs(
+        {
+            -and => [
+                { 'createtime' => { '>=' => $fromdate }},
+                { 'createtime' => { '<=' => $todate }}                
+            ],
+        },
+        {
+            order_by => ['createtime ASC'],
+        }
+    );
     
-    my $sqlstring="select sessionid,tstamp from eventlog where ".join(" and ",@sql_where);
-    
-    $logger->debug("$sqlstring - $clientip / $fromdate / $todate");
-    
-    my $idnresult=$statisticsdbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-    $idnresult->execute(@sql_args) or $logger->error($DBI::errstr);
+    $logger->debug("$fromdate / $todate");
 
-    my @sessions=();
+    my @archived_sessions=();
     
-    while (my $result=$idnresult->fetchrow_hashref()) {
-        my $singlesessionid = decode_utf8($result->{'sessionid'});
-        my $tstamp          = decode_utf8($result->{'tstamp'});
+    foreach my $thissession ($sessions->all) {
+        my $sessionid       = $thissession->sessionid;
+        my $createtime      = $thissession->createtime;
         
-        push @sessions, {
-            sessionid  => $singlesessionid,
-            createtime => $tstamp,
+        push @archived_sessions, {
+            id         => $sessionid,
+            createtime => $createtime,
         };
     }
     
     
     my $ttdata={
-        sessions   => \@sessions,
+        sessions   => \@archived_sessions,
         
-        clientip   => $clientip,
         fromdate   => $fromdate,
         todate     => $todate,
     };
@@ -320,30 +313,32 @@ sub show_archived_record {
         return;
     }
 
-    my $statisticsdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
+    my $statistics = new OpenBib::Statistics;
+
+    my $thissession = $statistics->{schema}->resultset('Sessioninfo')->search_rs(
+        {
+            sessionid => $sessionid,
+        }
+    )->single;
+
+    if (!$thissession){
+        $logger->debug("No such session with id $sessionid");
+        $self->print_warning($msg->maketext("Diese Session existiert nicht."));
+        return;
+    }
     
     my $serialized_type_ref = {
         1  => 1,
         10 => 1,
     };
     
-    
-    my $idnresult=$statisticsdbh->prepare("select * from eventlog where sessionid = ? order by tstamp ASC") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionid) or $logger->error($DBI::errstr);
-    
     my @events = ();
     
-    while (my $result=$idnresult->fetchrow_hashref()) {
-        my $type        = decode_utf8($result->{'type'});
-        my $tstamp      = decode_utf8($result->{'tstamp'});
-        my $content     = decode_utf8($result->{'content'});
+    foreach my $event ($thissession->eventlogs->all){
+        my $type        = $event->type;
+        my $tstamp      = $event->tstamp;
+        my $content     = $event->content;
 
-        if (exists $serialized_type_ref->{$type}){
-            $content=Storable::thaw(pack "H*", $content);
-        }
-        
         push @events, {
             type       => $type,
             content    => $content,
@@ -351,6 +346,23 @@ sub show_archived_record {
         };
     }
 
+    foreach my $event ($thissession->eventlogjsons->all){
+        my $type        = $event->type;
+        my $tstamp      = $event->tstamp;
+        my $content     = $event->content;
+
+        push @events, {
+            type       => $type,
+            content    => $content,
+            createtime => $tstamp,
+        };
+    }
+
+    @events = map { $_->[0] }
+        sort { $b->[1] <=> $a->[1] }
+            map { [$_, $_->{createtime}] }
+                @events;
+    
     my $ttdata = {
         singlesessionid => $sessionid,
         events          => \@events,

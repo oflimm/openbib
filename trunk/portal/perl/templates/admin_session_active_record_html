@@ -31,6 +31,22 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Aktiv") %]</a></li>
+         <li><a href="#" class="lastitem">[% thissession.sessionid %]</a></li>
+       </ul>
+     </div>
+    <div class="representation">
+<a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active/[% thissession.sessionid %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
@@ -69,7 +85,7 @@
 
 [% IF queries.size > 0 %]
 <table cellpadding="3">
-<tr><td><b>[% msg.maketext("Recherche") %]</b></td><td><b>[% msg.maketext("Treffer") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td></tr>
+<tr><td><b>[% msg.maketext("Recherche") %]</b></td><td><b>[% msg.maketext("Treffer") %]</b></td><td><b>[% msg.maketext("Suchprofil") %]</b></td></tr>
 
 [% FOREACH query IN queries %]
 
@@ -110,7 +126,7 @@
 [%- IF query.get_searchquery.titlestring.val -%]
 &nbsp;[% query.get_searchquery.titlestring.bool %]&nbsp;TITSTR: [% query.get_searchquery.titlestring.val %] 
 [%- END -%]
-</td><td align="center">[% query.get_hits %]</td><td>[% FOREACH dbname IN query.get_databases %][% dbinfo.get('dbnames').${dbname}.full %]<br/>[% END %]</td></tr>
+</td><td align="center">[% query.get_hits %]</td><td><a href="[% path_prefix %]/[% config.get('searchprofile_loc') %]/[% query.get_searchprofile %].html?l=[% lang %]">[% query.get_searchprofile %]</a>[% FOREACH dbname IN query.get_databases %][% dbinfo.get('dbnames').${dbname}.full %]<br/>[% END %]</td></tr>
 
 [% END %]
 

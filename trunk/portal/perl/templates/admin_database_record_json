@@ -13,7 +13,12 @@
 -%]
 [%
 
-this_databaseinfo = {
+this_json_output = {
+    link = {
+          rel = 'self'
+          href = location
+    }
+
     dbname      = databaseinfo.dbname
     description = databaseinfo.description
     shortdesc   = databaseinfo.shortdesc
@@ -43,6 +48,6 @@ this_databaseinfo = {
     circurl            = databaseinfo.circurl
 };
 
-to_json(this_databaseinfo)
+to_json(this_json_output)
 
 %]

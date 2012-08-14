@@ -11,4 +11,33 @@
 #
 #######################################################################
 -%]
-[% to_json(orgunits) %]
+[%-
+
+ orgunitinfos = [];
+
+ FOREACH orgunit IN orgunits.all ;
+
+     thisorgunit = {
+        link = {
+          rel = 'self'
+          href = "${location}/${orgunit.orgunitname}"
+        }
+        orgunitname = orgunit.orgunitname
+        description = orgunit.description
+        nr          = orgunit.nr
+        databases   = config.get_orgunitdbs(profilename,orgunit.orgunitname).sort
+     };
+     orgunitinfos.push(thisorgunit);
+ END;
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     orgunits = orgunitinfos
+ };
+
+ to_json(this_json_output);
+
+-%]

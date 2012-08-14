@@ -169,7 +169,7 @@ sub show_record {
         return Apache2::Const::OK;
     }
 
-    my $rssinfo_ref = $config->get_rssfeeds_of_db_by_type($dbname)->{$rssid};
+    my $rssinfo_ref = $config->get_rssfeed_by_id($rssid);
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
     
     my $ttdata={

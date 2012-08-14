@@ -3154,6 +3154,8 @@ sub add_item_to_collection {
     my $logger = get_logger();
     
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
+
+    my $new_title ;
     
     if ($dbname && $titleid){
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
@@ -3171,10 +3173,10 @@ sub add_item_to_collection {
             my $cached_title = new OpenBib::Record::Title({ database => $dbname , id => $titleid});
             my $record_json = $cached_title->load_brief_record->to_json;
             
-            $logger->debug("Adding Title to Usercollection: $cached_title");
+            $logger->debug("Adding Title to Usercollection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $self->{schema}->resultset('Usercollection')->create(
+            $new_title = $self->{schema}->resultset('Usercollection')->create(
                 {
                     userid     => $thisuserid,
                     dbname     => $dbname,
@@ -3203,7 +3205,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Usercollection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $self->{schema}->resultset('Usercollection')->create(
+            $new_title = $self->{schema}->resultset('Usercollection')->create(
                 {
                     dbname     => '',
                     titleid    => '',
@@ -3216,6 +3218,12 @@ sub add_item_to_collection {
         }
     }
 
+    if ($new_title){
+        my $new_titleid = $new_title->id;
+        $logger->debug("Created new collection entry with id $new_titleid");
+        return $new_titleid;
+    }
+    
     return ;
 }
 

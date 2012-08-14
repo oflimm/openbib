@@ -12,7 +12,13 @@
 #######################################################################
 -%]
 [%-
+     this_json_output = logintarget;
 
-to_json(logintarget);
+     this_json_output.link = {
+          rel = 'self'
+          href = location
+     };
+
+     to_json(this_json_output);
 
 -%]

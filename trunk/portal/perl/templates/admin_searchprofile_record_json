@@ -1,11 +1,16 @@
 [%- 
 
-databases = [];
+this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
 
-FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid);
-  databases.push({ dbname = dbname, description = dbinfo.dbnames.${dbname}.short });
-END ;
+     id = searchprofile.id
+     own_index = searchprofile.own_index
+     databases = config.get_databases_of_searchprofile(searchprofile.id)
+};
 
-to_json({ id = searchprofile.id, number_of_databases = config.get_databases_of_searchprofile(searchprofile.id).size, own_index = searchprofile.own_index, databases = databases})
+to_json(this_json_output);
 
 -%]

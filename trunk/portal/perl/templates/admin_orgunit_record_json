@@ -13,12 +13,18 @@
 -%]
 [%-
 
-thisorgunitinfo = {
+this_json_output = {
+  link = {
+          rel = 'self'
+          href = location
+  }
+
   description = orgunitinfo.description
   orgunitname = orgunitinfo.orgunitname
   nr          = orgunitinfo.nr
   databases   = orgunitdbs
 };
 
-to_json(thisorgunitinfo);
+to_json(this_json_output);
+
 -%]

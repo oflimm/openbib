@@ -15,6 +15,14 @@
 
  logintargets = config.get_logintargets;
 
- to_json(logintargets);
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     authentication_targets = logintargets
+ };
+
+ to_json(this_json_output);
 
 -%]

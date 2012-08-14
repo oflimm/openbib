@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_session_active_html
+# Templatename: admin_sessio_archived_search
 #
 # Typ         : Mastertemplate       
 #
@@ -38,18 +38,19 @@
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Aktiv") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/archived/search/form.html?l=[% lang %]">[% msg.maketext("Archiviert") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Suchergebnis") %]</a></li>
        </ul>
      </div>
     <div class="representation">
-<a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/archived/search.json?[% cgiapp.to_cgi_querystring %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="session" active_subsubmenu="active" %]
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="session" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -57,18 +58,16 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-[% sessions.size %] Sessions aktiv.
-
-<table width="100%">
-<tr><th>[% msg.maketext("Bestehende Sessions") %]</th></tr>
+<table class="full">
+<tr><th>Session-Explorer</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table cellpadding="2">
-<tr><td><b>[% msg.maketext("Session-ID") %]</b></td><td><b>[% msg.maketext("Beginn") %]</b></td><td align="middle"><b>[% msg.maketext("Benutzer") %]</b></td><td align="middle">
-<b>[% msg.maketext("Initiale Suchen") %]</b></td></tr>
-[% FOREACH session IN sessions %]
+<tr><td><b>[% msg.maketext("Session-ID") %]</b></td><td><b>[% msg.maketext("Beginn") %]</b></td></tr>
 
-<tr><td><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active/[% session.id %]">[% session.id %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.username %]</td><td align="middle">[% session.numqueries %]</td></tr>
+[% FOREACH thissession IN sessions %]
+
+<tr><td><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/archived/[% thissession.id %].html?l=[% lang %]">[% thissession.id %]</a></td><td>[% thissession.createtime %]</td></tr>
 
 [% END %]
 

@@ -49,38 +49,6 @@ use OpenBib::Config;
 use OpenBib::Template::Provider;
 use OpenBib::Session;
 
-sub get_css_by_browsertype {
-    my ($r)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
-
-    $logger->debug("User-Agent: $useragent");
-
-    my $stylesheet="";
-  
-    if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE [5-9]/ || $useragent=~/Konqueror"/ ) {
-        if ($useragent=~/MSIE/) {
-            $stylesheet="openbib-ie.css";
-        }
-        else {
-            $stylesheet="openbib.css";
-        }
-    }
-    else {
-        if ($useragent=~/MSIE/) {
-            $stylesheet="openbib-simple-ie.css";
-        }
-        else {
-            $stylesheet="openbib-simple.css";
-        }
-    }
-
-    return $stylesheet;
-}
-
 sub grundform {
     my ($arg_ref) = @_;
     

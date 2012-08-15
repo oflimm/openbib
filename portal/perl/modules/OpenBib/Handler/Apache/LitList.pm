@@ -760,12 +760,14 @@ sub create_record {
     # Wenn Litlistid mitgegeben wurde, dann Shortcut zu create_entry
     # Hintergrund: So kann der Nutzer im Web-UI auch eine bestehende Literaturliste
     #              auswaehlen
-    
-#     if ($litlistid && $titid && $titdb) {
-#         $self->param('litlistid',$litlistid);
-#         $self->OpenBib::Handler::Apache::LitList::Item::create_entry;
-#         return;
-#     }
+
+    # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
+    # der soeben erzeugten Literaturliste hinzugefuegt.
+    if ($titid && $titdb && $litlistid){
+        $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
+        $self->return_baseurl;
+        return;
+    }
 
     my $userrole_ref = $user->get_roles_of_user($user->{ID});
     
@@ -775,20 +777,23 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
-    
     # Sonst muss Litlist neu erzeugt werden
     
     $litlistid = $user->add_litlist({ title =>$input_data_ref->{title}, type => $input_data_ref->{type}, subjects => $input_data_ref->{subjects} });
 
-    return unless ($self->param('representation') eq "html");
-        
-    # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
-    # der soeben erzeugten Literaturliste hinzugefuegt.
-    if ($titid && $titdb && $litlistid){
-        $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
     }
-
-    $self->return_baseurl;
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($litlistid){
+            $logger->debug("Weiter zum Record $litlistid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('litlistid',$litlistid);
+            $self->param('location',"$location/$litlistid");
+            $self->show_record;
+        }
+    }
     
     return;
 }

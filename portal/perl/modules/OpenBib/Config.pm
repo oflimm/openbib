@@ -1566,7 +1566,15 @@ sub del_databaseinfo {
     my $logger = get_logger();
 
     eval {
-        $self->{schema}->resultset('Databaseinfo')->single({ dbname => $dbname})->delete;
+        my $databaseinfo =  $self->{schema}->resultset('Databaseinfo')->single({ dbname => $dbname});
+
+        if ($databaseinfo){
+            $databaseinfo->libraryinfos->delete;
+            $databaseinfo->orgunit_dbs->delete;
+            $databaseinfo->searchprofile_dbs->delete;
+            $databaseinfo->view_dbs->delete;
+            $databaseinfo->delete
+        }
     };
     
     if ($@){
@@ -1600,8 +1608,8 @@ sub new_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Databaseinfo')->create($dbinfo_ref);
-    
+    my $new_database = $self->{schema}->resultset('Databaseinfo')->create($dbinfo_ref);
+
     if ($self->get_system_of_db($dbinfo_ref->{dbname}) ne "Z39.50"){
         # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
         system("$self->{tool_dir}/destroypool.pl $dbinfo_ref->{dbname} > /dev/null 2>&1");
@@ -1609,6 +1617,11 @@ sub new_databaseinfo {
         # ... und dann wieder anlegen
         system("$self->{tool_dir}/createpool.pl $dbinfo_ref->{dbname} > /dev/null 2>&1");
     }
+
+    if ($new_database){
+        return $new_database->id;
+    }
+
     return;
 }
 
@@ -1629,7 +1642,11 @@ sub new_databaseinfo_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Rssinfo')->create($rss_ref);
+    my $new_rss = $self->{schema}->resultset('Rssinfo')->create($rss_ref);
+
+    if ($new_rss){
+        return $new_rss->id;
+    }
 
     return;
 }
@@ -1878,8 +1895,12 @@ sub new_view {
         # Dann die zugehoerigen Datenbanken eintragen
         $self->{schema}->resultset('ViewDb')->populate($this_db_ref);
     }
+
+    if ($viewid){
+        return $viewid;
+    }
     
-    return 1;
+    return;
 }
 
 sub del_profile {
@@ -1935,9 +1956,13 @@ sub new_profile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Profileinfo')->create($arg_ref);
+    my $new_profile = $self->{schema}->resultset('Profileinfo')->create($arg_ref);
 
-    return 1;
+    if ($new_profile){
+        return $new_profile->id;
+    }
+
+    return;
 }
 
 sub del_orgunit {
@@ -2064,8 +2089,12 @@ sub new_orgunit {
         # Dann die zugehoerigen Datenbanken eintragen
         $self->{schema}->resultset('OrgunitDb')->populate($this_db_ref);
     }
-    
-    return 1;
+
+    if ($new_orgunit){
+        return $new_orgunit->id;
+    }
+
+    return;
 }
 
 sub del_server {
@@ -2121,9 +2150,13 @@ sub new_server {
     }
 
     # DBI: "insert into serverinfo (id,host,active) values (NULL,?,?)"
-    $self->{schema}->resultset('Serverinfo')->create({ host => $host, active => $active });
+    my $new_server = $self->{schema}->resultset('Serverinfo')->create({ host => $host, active => $active });
 
-    return 1;
+    if ($new_server){
+        return $new_server->id;
+    }
+
+    return;
 }
 
 sub authentication_exists {
@@ -2298,9 +2331,13 @@ sub new_logintarget {
 
     $logger->debug(YAML::Dump($arg_ref));
     # DBI: "insert into logintarget (hostname,port,user,db,description,type) values (?,?,?,?,?,?)"
-    $self->{schema}->resultset('Logintarget')->create(
+    my $new_logintarget = $self->{schema}->resultset('Logintarget')->create(
         $arg_ref,
     );
+
+    if ($new_logintarget){
+        return $new_logintarget->id;
+    }
 
     return;
 }

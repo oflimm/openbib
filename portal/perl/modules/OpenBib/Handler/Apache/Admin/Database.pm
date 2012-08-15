@@ -127,6 +127,10 @@ sub show_record {
     }
     
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
+
+    if (!$dbinfo_ref){
+        $logger->error("Database $dbname couldn't be found.");
+    }
     
     my $ttdata={
         databaseinfo => $dbinfo_ref,
@@ -134,7 +138,7 @@ sub show_record {
     
     $self->print_page($config->{tt_admin_database_record_tname},$ttdata);
 
-    return Apache2::Const::OK;
+    return;
 }
 
 sub create_record {
@@ -151,6 +155,7 @@ sub create_record {
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
@@ -170,13 +175,23 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
-    $config->new_databaseinfo($input_data_ref);
+    my $new_databaseid = $config->new_databaseinfo($input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$input_data_ref->{dbname}/edit");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$input_data_ref->{dbname}/edit");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($new_databaseid){
+            $logger->debug("Weiter zur DB $new_databaseid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('databaseid',$new_databaseid);
+            $self->param('location',"$location/$new_databaseid");
+            $self->show_record;
+        }
+    }
 
     return;
 }
@@ -239,7 +254,8 @@ sub update_record {
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
-
+    $input_data_ref->{dbname} = $dbname; # dbname wird durch Resourcenbestandteil ueberschrieben
+    
     $logger->debug("Info: ".YAML::Dump($input_data_ref));
 
     if (!$config->db_exists($dbname)) {        

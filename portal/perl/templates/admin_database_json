@@ -1,17 +1,45 @@
 [%-
 
 all_databaseinfo = [] ;
-FOREACH katalog IN kataloge.all ;
+FOREACH database IN kataloge.all ;
   this_databaseinfo = {
-    description = katalog.description
-    active      = katalog.active
-    dbname      = katalog.dbname
-    system      = katalog.system
-    sigel       = katalog.sigel
-    url         = katalog.url
-    use_libinfo = katalog.use_libinfo
-    autoconvert = katalog.autoconvert
-    count       = katalog.count
+    link = {
+          rel = 'self'
+          href = "${location}/${database.dbname}"
+    }
+
+    description = database.description
+    shortdesc   = database.shortdesc
+    active      = database.active
+    dbname      = database.dbname
+    system      = database.system
+    sigel       = database.sigel
+    url         = database.url
+    use_libinfo = database.use_libinfo
+
+    host        = database.host
+    protocol    = database.protocol
+    remotepath  = database.remotepath
+    remoteuser  = database.remoteuser
+    remotepassword  = database.remotepassword
+    titlefile   = database.titlefile
+    personfile  = database.personfile
+    corporatebodyfile = database.corporatebodyfile
+    subjectfile = database.subjectfile
+    classificationfile = database.classificationfile
+    holdingfile = database.holdingfile
+    autoconvert = database.autoconvert
+
+    autoconvert = database.autoconvert
+    circ        = database.circ
+    circurl     = database.circurl
+    circwsurl   = database.circwsurl
+    circdb      = database.circdb
+
+    count_all      = database.allcount
+    count_digital  = database.digitalcount
+    count_journals = database.journalscount
+    count_articles = database.articlecount
   };
   all_databaseinfo.push(this_databaseinfo);
 END;

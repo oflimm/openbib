@@ -170,6 +170,7 @@ sub create_record {
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
@@ -190,21 +191,31 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
-    my $ret = $config->new_profile({
+    my $new_profileid = $config->new_profile({
         profilename => $input_data_ref->{profilename},
         description => $input_data_ref->{description},
     });
     
-    if ($ret == -1){
+    if (!$new_profileid){
         $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
-    return unless ($self->param('representation') eq "html");
-
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$input_data_ref->{profilename}/edit");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$input_data_ref->{profilename}/edit");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($new_profileid){
+            $logger->debug("Weiter zum Record $new_profileid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('profileid',$new_profileid);
+            $self->param('location',"$location/$new_profileid");
+            $self->show_record;
+        }
+    }
 
     return;
 }

@@ -240,16 +240,26 @@ sub create_record {
         return;
     }
 
-    $user->add_litlistentry($input_data_ref);
+    my $new_itemid = $user->add_litlistentry($input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
-
-    my $new_location = "$path_prefix/$config->{litlist_loc}/$litlistid/edit";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        my $new_location = "$path_prefix/$config->{litlist_loc}/$litlistid/edit";
+        
+        $self->query->method('GET');
+        $self->query->content_type('text/html');
+        $self->query->headers_out->add(Location => $new_location);
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($new_itemid){
+            $logger->debug("Weiter zum Record $new_itemid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('itemid',$new_itemid);
+            $self->param('location',"$location/$new_itemid");
+            $self->show_record;
+        }
+    }
 
     return;
 }

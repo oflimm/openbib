@@ -145,6 +145,7 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     # CGI Args
     my $description     = decode_utf8($query->param('description'))     || '';
@@ -221,9 +222,20 @@ sub create_record {
     
     $config->new_databaseinfo($thisdbinfo_ref);
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/edit");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/edit");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($dbname){
+            $logger->debug("Weiter zum Record $dbname");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->show_record;
+        }
+    }
+    
 
     return;
 }

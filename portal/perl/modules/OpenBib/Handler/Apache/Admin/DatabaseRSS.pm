@@ -202,6 +202,7 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
@@ -228,13 +229,23 @@ sub create_record {
 
     $input_data_ref->{dbid} = $dbid;
 
-    $config->new_databaseinfo_rss($input_data_ref);
+    my $new_rssid = $config->new_databaseinfo_rss($input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($new_rssid){
+            $logger->debug("Weiter zum Record $new_rssid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('rssid',$new_rssid);
+            $self->param('location',"$location/$new_rssid");
+            $self->show_record;
+        }
+    }
 
     return;
 }

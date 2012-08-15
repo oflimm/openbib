@@ -47,21 +47,18 @@ __PACKAGE__->table("titleusage");
 
 =head2 isbn
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 15
 
 =head2 dbname
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 25
 
 =head2 id
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 0
-  size: 255
 
 =head2 origin
 
@@ -82,11 +79,11 @@ __PACKAGE__->add_columns(
   "tstamp_day",
   { data_type => "smallint", is_nullable => 1 },
   "isbn",
-  { data_type => "varchar", is_nullable => 1, size => 15 },
+  { data_type => "text", is_nullable => 1 },
   "dbname",
-  { data_type => "varchar", is_nullable => 1, size => 25 },
+  { data_type => "text", is_nullable => 1 },
   "id",
-  { data_type => "varchar", is_nullable => 0, size => 255 },
+  { data_type => "text", is_nullable => 0 },
   "origin",
   { data_type => "smallint", is_nullable => 1 },
 );
@@ -105,13 +102,18 @@ __PACKAGE__->belongs_to(
   "sid",
   "OpenBib::Schema::Statistics::Result::Sessioninfo",
   { id => "sid" },
-  { join_type => "LEFT", on_delete => "CASCADE", on_update => "CASCADE" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:29:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:G4vHWlOM0A1NpFlOyRdMow
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 09:19:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dQ0EWFMBVHC1MkD1NmI7kA
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

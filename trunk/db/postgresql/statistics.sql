@@ -4,10 +4,10 @@
 
 drop table IF EXISTS datacache;
 CREATE TABLE datacache (
- id          VARCHAR(100),
+ id          TEXT,
  tstamp      TIMESTAMP,
  type        INT,
- subkey      VARCHAR(50),
+ subkey      TEXT,
  data        TEXT
 );
 
@@ -31,9 +31,9 @@ CREATE TABLE titleusage (
  tstamp_month SMALLINT,
  tstamp_day   SMALLINT,
 
- isbn         VARCHAR(15),
- dbname       VARCHAR(25),
- id           VARCHAR(255) NOT NULL,
+ isbn         TEXT,
+ dbname       TEXT NOT NULL,
+ id           TEXT NOT NULL,
  origin       SMALLINT
 );
 
@@ -72,9 +72,9 @@ CREATE TABLE searchterms (
  tstamp_month SMALLINT,
  tstamp_day   SMALLINT,
 
- viewname   VARCHAR(20),
+ viewname   TEXT,
  type       INT,
- content    VARCHAR(40)
+ content    TEXT
 );
 
 drop table IF EXISTS searchfields;
@@ -86,7 +86,7 @@ CREATE TABLE searchfields (
  tstamp_month SMALLINT,
  tstamp_day   SMALLINT,
 
- viewname       VARCHAR(20),
+ viewname       TEXT,
  freesearch     BOOL,
  title          BOOL,
  person         BOOL,

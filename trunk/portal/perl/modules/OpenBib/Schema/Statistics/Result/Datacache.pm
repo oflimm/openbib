@@ -21,9 +21,8 @@ __PACKAGE__->table("datacache");
 
 =head2 id
 
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 100
+  data_type: 'text'
+  is_nullable: 0
 
 =head2 tstamp
 
@@ -37,9 +36,8 @@ __PACKAGE__->table("datacache");
 
 =head2 subkey
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 50
 
 =head2 data
 
@@ -50,21 +48,21 @@ __PACKAGE__->table("datacache");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "varchar", is_nullable => 1, size => 100 },
+  { data_type => "text", is_nullable => 0 },
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
   "type",
   { data_type => "integer", is_nullable => 1 },
   "subkey",
-  { data_type => "varchar", is_nullable => 1, size => 50 },
+  { data_type => "text", is_nullable => 1 },
   "data",
   { data_type => "text", is_nullable => 1 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07000 @ 2012-07-12 11:29:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cEFI48KEz0kZ0SuPXeJQYQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 09:19:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:s291pmoCpcNp8z3ApYxq/Q
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

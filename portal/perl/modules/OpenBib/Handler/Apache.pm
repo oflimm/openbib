@@ -307,7 +307,7 @@ sub process_uri {
 
     my $url = $uri->unparse;
     
-    $self->param('full_url',$url);
+    $self->param('url',$url);
 }
 
 sub dispatch_to_personalized_uri {
@@ -561,7 +561,7 @@ sub print_page {
     my $status         = $self->param('status') || Apache2::Const::OK;
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $location       = $self->param('location');
-    my $full_url       = $self->param('full_url');
+    my $url            = $self->param('url');
     
     $ttdata = $self->add_default_ttdata($ttdata);
     
@@ -620,7 +620,7 @@ sub add_default_ttdata {
     my $servername     = $self->param('servername');
     my $path_prefix    = $self->param('path_prefix');
     my $path           = $self->param('path');
-    my $full_url       = $self->param('full_url');
+    my $url            = $self->param('url');
     my $location       = $self->param('location');
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
@@ -670,13 +670,16 @@ sub add_default_ttdata {
     $ttdata->{'username'}       = $username;
     $ttdata->{'sysprofile'}     = $sysprofile;
     $ttdata->{'path'}           = $path;
-    $ttdata->{'full_url'}       = $full_url;
+    $ttdata->{'url'}            = $url;
     $ttdata->{'location'}       = $location;
     $ttdata->{'cgiapp'}         = $self;
+
+    # Helper functions
     $ttdata->{'to_json'}        = sub {
         my $ref = shift;
         return encode_json $ref;
     };
+    
     $ttdata->{'uri_escape'}     = sub {
         my $string = shift;
         return uri_escape($string);

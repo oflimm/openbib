@@ -1023,12 +1023,20 @@ sub save_eventlog_to_statisticsdb {
             sid       => $new_sid,
             tstamp    => $tstamp,
             type      => $type,
-            content   => $content,
+            content   => decode_utf8($content),
             serialize => 1, # in Eventlogjson
         });
 
 	if ($type == 1){
-            my $searchquery_ref = decode_json $content;
+            my $searchquery_ref = {};
+
+            eval {
+                $searchquery_ref = decode_json $content;
+            };
+
+            if ($@){
+                $logger->error("Error decoding JSON content: $@");
+            }
             
             $logger->debug("Query: $content");
             
@@ -1080,7 +1088,7 @@ sub save_eventlog_to_statisticsdb {
             isbn   => $isbn,
             dbname => $dbname,
             id     => $id,
-            type   => 2,
+            origin => 2,
         });
 
 	$seen_title{"$dbname:$id"}=1;
@@ -1103,13 +1111,14 @@ sub clear_data {
     if ($sessioninfo){
 
         eval {
-            $sessioninfo->delete_related('eventlogs');
-            $sessioninfo->delete_related('queries');
-            $sessioninfo->delete_related('sessioncollections');
-            $sessioninfo->delete_related('recordhistories');
-            $sessioninfo->delete_related('searchhistories');
-            $sessioninfo->delete_related('session_searchprofiles');
-            $sessioninfo->delete_related('user_sessions');
+            $sessioninfo->eventlogs->delete;
+            $sessioninfo->eventlogjsons->delete;
+            $sessioninfo->queries->delete;
+            $sessioninfo->sessioncollections->delete;
+            $sessioninfo->recordhistories->delete;
+            $sessioninfo->searchhistories->delete;
+            $sessioninfo->session_searchprofiles->delete;
+            $sessioninfo->user_sessions->delete;
             $sessioninfo->delete;
         };
         
@@ -1590,7 +1599,15 @@ sub get_recently_selected_titles {
     my $recordlist = new OpenBib::RecordList::Title;
 
     foreach my $item ($lastrecords->all){
-        my $content_ref = decode_json $item->get_column('thiscontent');
+        my $content_ref = {};
+        eval {
+            $content_ref = decode_json $item->get_column('thiscontent');
+        };
+
+        if ($@){
+            $logger->error("Error decoding JSON $@ ".$item->get_column('thiscontent'));
+        }
+        
         $recordlist->add(new OpenBib::Record::Title({database => $content_ref->{database}, id => $content_ref->{id}}));
     }
 

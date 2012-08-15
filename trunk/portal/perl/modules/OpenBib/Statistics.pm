@@ -100,7 +100,7 @@ sub store_titleusage {
     # DBI: insert into relevance values (?,?,?,?,?,?)
     $self->{schema}->resultset('Titleusage')->create(
         {
-            tstamp       => $parsed_tstamp->printf("%y%m%d%H%M%S"),
+            tstamp       => $tstamp,
             tstamp_year  => $parsed_tstamp->printf("%y"),
             tstamp_month => $parsed_tstamp->printf("%m"),
             tstamp_day   => $parsed_tstamp->printf("%d"),
@@ -775,7 +775,7 @@ sub log_query {
           $self->{schema}->resultset('Searchterm')->create(
               {
                   sid          => $sid,
-                  tstamp       => $parsed_tstamp->printf("%y%m%d%H%M%S"),
+                  tstamp       => $tstamp,
                   tstamp_year  => $parsed_tstamp->printf("%y"),
                   tstamp_month => $parsed_tstamp->printf("%m"),
                   tstamp_day   => $parsed_tstamp->printf("%d"),
@@ -791,7 +791,7 @@ sub log_query {
     # DBI: "insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     $self->{schema}->resultset('Searchfield')->create(
               {
-                  tstamp       => $parsed_tstamp->printf("%y%m%d%H%M%S"),
+                  tstamp       => $tstamp,
                   tstamp_year  => $parsed_tstamp->printf("%y"),
                   tstamp_month => $parsed_tstamp->printf("%m"),
                   tstamp_day   => $parsed_tstamp->printf("%d"),
@@ -800,7 +800,7 @@ sub log_query {
                   freesearch     => $used_category_ref->{freesearch},
                   title          => $used_category_ref->{title},
                   person         => $used_category_ref->{person},
-                  corporategody  => $used_category_ref->{corporatebody},
+                  corporatebody  => $used_category_ref->{corporatebody},
                   subject        => $used_category_ref->{subject},
                   classification => $used_category_ref->{classification},
                   isbn           => $used_category_ref->{isbn},

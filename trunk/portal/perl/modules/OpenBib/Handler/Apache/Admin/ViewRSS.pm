@@ -192,7 +192,30 @@ sub create_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Dispatched Args
+    my $viewid      = $self->param('viewid');
+
+    # Shared
+    my $config      = $self->param('config');
+    my $location    = $self->param('location');
+    my $path_prefix = $self->param('path_prefix');
+    
     $self->update_record;
+ 
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($viewid){
+            $logger->debug("Weiter zum Record $viewid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('location',"$location/$viewid");
+            $self->show_record;
+        }
+    }
 
     return;
 }

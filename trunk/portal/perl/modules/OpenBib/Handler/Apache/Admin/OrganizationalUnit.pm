@@ -201,6 +201,7 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
@@ -228,18 +229,28 @@ sub create_record {
         return Apache2::Const::OK;
     }
     
-    my $ret = $config->new_orgunit($input_data_ref);
+    my $new_orgunitid = $config->new_orgunit($input_data_ref);
     
-    if ($ret == -1){
+    if (!$new_orgunitid){
         $self->print_warning($msg->maketext("Es existiert bereits eine Organisationseinheit unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
-    return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename/orgunit/$input_data_ref->{orgunitname}/edit");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}/$profilename/orgunit/$input_data_ref->{orgunitname}/edit");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($new_orgunitid){
+            $logger->debug("Weiter zum Record $new_orgunitid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('orgunitid',$new_orgunitid);
+            $self->param('location',"$location/$new_orgunitid");
+            $self->show_record;
+        }
+    }
 
     return;
 }

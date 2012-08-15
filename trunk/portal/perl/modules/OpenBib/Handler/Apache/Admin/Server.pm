@@ -151,6 +151,7 @@ sub create_record {
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     # CGI Args
     my $host           = $query->param('host')     || '';
@@ -168,14 +169,26 @@ sub create_record {
     
     $logger->debug("Host: $host Active: $active");
     
-    my $ret = $config->new_server({
+    my $new_serverid = $config->new_server({
         host                 => $host,
         active               => $active,
     });
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($new_serverid){
+            $logger->debug("Weiter zum Record $new_serverid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('serverid',$new_serverid);
+            $self->param('location',"$location/$new_serverid");
+            $self->show_record;
+        }
+    }
 
     return;
 }

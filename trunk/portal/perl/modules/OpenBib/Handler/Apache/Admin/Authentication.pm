@@ -203,6 +203,7 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
@@ -228,14 +229,24 @@ sub create_record {
         return Apache2::Const::OK;
     }
     
-    $config->new_logintarget($input_data_ref);
+    my $new_logintargetid = $config->new_logintarget($input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($new_logintargetid){
+            $logger->debug("Weiter zum Record $new_logintargetid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('authenticationid',$new_logintargetid);
+            $self->param('location',"$location/$new_logintargetid");
+            $self->show_record;
+        }
+    }
     
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
-
     return;
 }
 

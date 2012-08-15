@@ -31,5 +31,14 @@
      records.push(thisrecord);
    END;
 
-   to_json(records);
+   this_json_output = {
+       link = {
+          rel = 'self'
+          href = location
+       }
+
+      collection => records
+   };
+
+   to_json(this_json_output);
 -%]

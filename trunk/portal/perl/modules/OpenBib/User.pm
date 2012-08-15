@@ -2149,6 +2149,8 @@ sub add_litlistentry {
   
     my $logger = get_logger();
 
+    my $new_litlistitem;
+    
     if ($titleid && $dbname){
         # DBI: "delete from litlistitem where litlistid=? and titid=? and titdb=?"
         my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
@@ -2166,7 +2168,7 @@ sub add_litlistentry {
         $logger->debug("Caching Bibliographic Data: $cached_title");
 
         # DBI: "insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)"
-        $self->{schema}->resultset('Litlistitem')->create(
+        $new_litlistitem = $self->{schema}->resultset('Litlistitem')->create(
             {
                 litlistid  => $litlistid,
                 dbname     => $dbname,
@@ -2194,7 +2196,7 @@ sub add_litlistentry {
         $logger->debug("Caching Bibliographic Data: $record_json");
         
         # DBI: "insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)"
-        $self->{schema}->resultset('Litlistitem')->create(
+        $new_litlistitem = $self->{schema}->resultset('Litlistitem')->create(
             {
                 litlistid  => $litlistid,
                 titleid    => 0,
@@ -2204,6 +2206,10 @@ sub add_litlistentry {
                 tstamp     => \'NOW()',                
             }
         );
+    }
+
+    if ($new_litlistitem){
+        return $new_litlistitem->id;
     }
 
     return;

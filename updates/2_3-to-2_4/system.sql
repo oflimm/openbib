@@ -47,4 +47,6 @@ alter table registration alter column id type text;
 alter table subjectclassification alter column classification type text;
 alter table subjectclassification alter column type type text;
 alter table sessioninfo alter column sessionid type text;
-
+alter table libraryinfo rename column indicator to mult;
+alter table libraryinfo rename column category to field;
+alter table libraryinfo add column subfield varchar(2);

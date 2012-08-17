@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
-
+[% show_foot_banner = 1%]
 <body>
 
 <!-- skip link navigation -->
@@ -28,14 +28,6 @@
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
 
-[%
-   thissubject = "";
-   FOREACH subject IN subjects;
-     IF subject.id == subjectid;
-       thissubject = subject.name ;
-     END;
-   END;
-%]
     <!-- begin: main content area #main -->
     <div id="main">
 
@@ -44,20 +36,18 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/subject.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
-         <li><a href="#" class="lastitem">[% thissubject %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Themengebiete") %]</a></li>
       </ul>
      </div>
      <div class="representation">
-<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/subject/[% subjectid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/subject/[% subjectid %]/recent.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/topic.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
-   </div>
+  </div>
 
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% PROCESS common/subtemplate name="litlist_navigation" active_submenu="litlist_subject_all" %] 
+[% PROCESS common/subtemplate name="litlist_navigation" active_submenu="litlist_topics" %] 
         </div>
       </div>
       <!-- end: #col1 -->
@@ -66,16 +56,12 @@
         <div id="col3_content" class="clearfix">
 
    <h1>[% msg.maketext("Literaturlisten") %]</h1>
-
-<h2>[% thissubject %]</h2>
-
-[%# USE dumper;dumper.dump(public_litlists)%]
-<ul class="subjectlist">
-[%- FOREACH thisitem IN public_litlists -%]
-<li><a <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% thisitem.id %].html">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+[%# USE dumper;dumper.dump(topics)%]
+<ul class="topiclist">
+[%- FOREACH topic IN topics -%]
+<li><a <a href="[% path_prefix %]/[% config.get('litlist_public_topic_loc') %]/[% topic.id %].html">[% topic.name %]</a> ([% msg.maketext("[_1] Listen",topic.litlistcount.public) %])</li>
 [% END %]
 </ul>
-
         </div>
         <div id="ie_clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

@@ -69,7 +69,7 @@ Bibliothek authentifizieren.") %]
 <tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
 %]:</b></td><td>
 <select name="targetid">
-[%- FOREACH target IN logintargets -%]
+[%- FOREACH target IN authenticationtargets -%]
 [%-   IF target.dbname == validtarget -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]

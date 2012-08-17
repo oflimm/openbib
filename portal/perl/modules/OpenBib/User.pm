@@ -462,8 +462,8 @@ sub get_targetdb_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: select db from user_session,logintarget where user_session.sessionid = ? and user_session.targetid = logintarget.targetid"
-    my $logintarget = $self->{schema}->resultset('UserSession')->search_rs(
+    # DBI: select db from user_session,authenticationtarget where user_session.sessionid = ? and user_session.targetid = authenticationtarget.targetid"
+    my $authenticationtarget = $self->{schema}->resultset('UserSession')->search_rs(
         {
             'sid.sessionid' => $sessionID,
         },
@@ -477,8 +477,8 @@ sub get_targetdb_of_session {
     
     my $targetdb;
 
-    if ($logintarget){
-        $targetdb = $logintarget->get_column('thisdbname');
+    if ($authenticationtarget){
+        $targetdb = $authenticationtarget->get_column('thisdbname');
     }
     
     return $targetdb;
@@ -490,8 +490,8 @@ sub get_targettype_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: select type from user_session,logintarget where user_session.sessionid = ? and user_session.targetid = logintarget.targetid"
-    my $logintarget = $self->{schema}->resultset('UserSession')->search_rs(
+    # DBI: select type from user_session,authenticationtarget where user_session.sessionid = ? and user_session.targetid = authenticationtarget.targetid"
+    my $authenticationtarget = $self->{schema}->resultset('UserSession')->search_rs(
         {
             'sid.sessionid' => $sessionID,
         },
@@ -505,8 +505,8 @@ sub get_targettype_of_session {
     
     my $targettype;
 
-    if ($logintarget){
-        $targettype = $logintarget->get_column('thistype');
+    if ($authenticationtarget){
+        $targettype = $authenticationtarget->get_column('thistype');
     }
 
     return $targettype;
@@ -1980,8 +1980,8 @@ sub add_litlist {
         ? $arg_ref->{title}               : 'Literaturliste';
     my $type                = exists $arg_ref->{type}
         ? $arg_ref->{type}                : 1;
-    my $subjects_ref        = exists $arg_ref->{subjects}
-        ? $arg_ref->{subjects}            : 1;
+    my $topics_ref        = exists $arg_ref->{topics}
+        ? $arg_ref->{topics}            : 1;
 
     # Log4perl logger erzeugen
   
@@ -2022,16 +2022,16 @@ sub add_litlist {
     
     # Litlist-ID bestimmen und zurueckgeben
 
-    unless (ref($subjects_ref) eq 'ARRAY') {
-        $subjects_ref = [ $subjects_ref ];
+    unless (ref($topics_ref) eq 'ARRAY') {
+        $topics_ref = [ $topics_ref ];
     }
 
-    if (@{$subjects_ref}){
-        foreach my $subjectid (@{$subjects_ref}){
-            # DBI "insert into litlist_subject (litlistid,subjectid) values (?,?)") or $logger->error($DBI::errstr);
-            $new_litlist->create_related('litlist_subjects',
+    if (@{$topics_ref}){
+        foreach my $topicid (@{$topics_ref}){
+            # DBI "insert into litlist_topic (litlistid,topicid) values (?,?)") or $logger->error($DBI::errstr);
+            $new_litlist->create_related('litlist_topics',
                                          {
-                                             subjectid => $subjectid,
+                                             topicid => $topicid,
                                          }
                                      );
         }
@@ -2079,8 +2079,8 @@ sub change_litlist {
         ? $arg_ref->{type}                : undef;
     my $lecture             = exists $arg_ref->{lecture}
         ? $arg_ref->{lecture}             : 0;
-    my $subjects_ref        = exists $arg_ref->{subjects}
-        ? $arg_ref->{subjects}            : undef;
+    my $topics_ref        = exists $arg_ref->{topics}
+        ? $arg_ref->{topics}            : undef;
 
     # Log4perl logger erzeugen
   
@@ -2108,20 +2108,20 @@ sub change_litlist {
         }
     );
     
-    unless (ref($subjects_ref) eq 'ARRAY') {
-        $subjects_ref = [ $subjects_ref ];
+    unless (ref($topics_ref) eq 'ARRAY') {
+        $topics_ref = [ $topics_ref ];
     }
     
-    if (@{$subjects_ref}){
-        # DBI: "delete from litlist_subject where litlistid = ?"
+    if (@{$topics_ref}){
+        # DBI: "delete from litlist_topic where litlistid = ?"
 
-        $litlist->delete_related('litlist_subjects');
+        $litlist->delete_related('litlist_topics');
 
-        foreach my $subjectid (@{$subjects_ref}){
-            # DBI: "insert into litlist_subject (litlistid,subjectid) values (?,?)"
-            $litlist->create_related('litlist_subjects',
+        foreach my $topicid (@{$topics_ref}){
+            # DBI: "insert into litlist_topic (litlistid,topicid) values (?,?)"
+            $litlist->create_related('litlist_topics',
                                      {
-                                         subjectid => $subjectid,
+                                         topicid => $topicid,
                                      }      
                                  );
         }
@@ -2341,8 +2341,8 @@ sub get_recent_litlists {
     my $count        = exists $arg_ref->{count}
         ? $arg_ref->{count}           : 5;
 
-    my $subjectid      = exists $arg_ref->{subjectid}
-        ? $arg_ref->{subjectid}           : undef;
+    my $topicid      = exists $arg_ref->{topicid}
+        ? $arg_ref->{topicid}           : undef;
 
     # Log4perl logger erzeugen
   
@@ -2350,10 +2350,10 @@ sub get_recent_litlists {
 
     my $litlists;
     
-    if ($subjectid){
+    if ($topicid){
 #        $litlists = $self->{schema}->resultset('Litlist')->search(
 #             {
-#                 'subjectid.id'  => $subjectid,
+#                 'topicid.id'  => $topicid,
 #                 'me.type'       => 1,
 #             },
 #             {
@@ -2361,13 +2361,13 @@ sub get_recent_litlists {
 #                 as       => ['thislitlistid'],
 #                 order_by => [ 'me.id DESC' ],
 #                 rows     => $count,
-#                 prefetch => [{ 'litlist_subjects' => 'subjectid' }],
-#                 join     => [ 'litlist_subjects' ],
+#                 prefetch => [{ 'litlist_topics' => 'topicid' }],
+#                 join     => [ 'litlist_topics' ],
 #             }
 #         );
-        $litlists = $self->{schema}->resultset('LitlistSubject')->search(
+        $litlists = $self->{schema}->resultset('LitlistTopic')->search(
             {
-                'subjectid.id'   => $subjectid,
+                'topicid.id'   => $topicid,
                 'litlistid.type' => 1,
             },
             {
@@ -2375,7 +2375,7 @@ sub get_recent_litlists {
                 as       => ['thislitlistid'],
                 order_by => [ 'litlistid.id DESC' ],
                 rows     => $count,
-                join     => [ 'litlistid', 'subjectid' ],
+                join     => [ 'litlistid', 'topicid' ],
             }
         );
     }
@@ -2410,8 +2410,8 @@ sub get_public_litlists {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $subjectid      = exists $arg_ref->{subjectid}
-        ? $arg_ref->{subjectid}        : undef;
+    my $topicid      = exists $arg_ref->{topicid}
+        ? $arg_ref->{topicid}        : undef;
 
     # Log4perl logger erzeugen
   
@@ -2419,23 +2419,23 @@ sub get_public_litlists {
 
     my $litlists;
     
-    if ($subjectid){
+    if ($topicid){
         $litlists = $self->{schema}->resultset('Litlist')->search(
             {
-                'subjectid.id'  => $subjectid,
+                'topicid.id'  => $topicid,
                 'me.type'       => 1,
             },
             {
 #                select   => [ {distinct => 'me.id'} ],
                 select   => [ 'me.id' ],
                 as       => ['thislitlistid'],
-                prefetch => [{ 'litlist_subjects' => 'subjectid' }],
-                join     => [ 'litlist_subjects' ],
+                prefetch => [{ 'litlist_topics' => 'topicid' }],
+                join     => [ 'litlist_topics' ],
             }
         );
 
-#        $sql_stmnt = "select distinct(ls.litlistid) as id from litlist_subject as ls, litlist as l where ls.subjectid = ? and ls.litlistid = l.id and l.type = 1";
-#        push @sql_args, $subjectid;
+#        $sql_stmnt = "select distinct(ls.litlistid) as id from litlist_topic as ls, litlist as l where ls.topicid = ? and ls.litlistid = l.id and l.type = 1";
+#        push @sql_args, $topicid;
     }
     else {
         $litlists = $self->{schema}->resultset('Litlist')->search(
@@ -2694,33 +2694,33 @@ sub get_litlist_properties {
     my $userid    = $litlist->userid->id;
     my $itemcount = $self->get_number_of_litlistentries({litlistid => $litlistid});
 
-    # DBI: "select s.* from litlist_subject as ls, subject as s where ls.litlistid=? and ls.subjectid=s.id"
-    my $subjects = $self->{schema}->resultset('LitlistSubject')->search_rs(
+    # DBI: "select s.* from litlist_topic as ls, topic as s where ls.litlistid=? and ls.topicid=s.id"
+    my $topics = $self->{schema}->resultset('LitlistTopic')->search_rs(
         {
             'litlistid.id' => $litlistid,
         },
         {
-            select => ['subjectid.id','subjectid.description','subjectid.name'],
-            as     => ['thissubjectid','thissubjectdescription','thissubjectname'],
+            select => ['topicid.id','topicid.description','topicid.name'],
+            as     => ['thistopicid','thistopicdescription','thistopicname'],
             
-            join => ['litlistid','subjectid'],
+            join => ['litlistid','topicid'],
         }
     );
     
-    my $subjects_ref          = [];
-    my $subject_selected_ref  = {};
+    my $topics_ref          = [];
+    my $topic_selected_ref  = {};
 
-    foreach my $subject ($subjects->all){
-        my $subjectid   = $subject->get_column('thissubjectid');
-        my $name        = $subject->get_column('thissubjectname');
-        my $description = $subject->get_column('thissubjectdescription');
+    foreach my $topic ($topics->all){
+        my $topicid   = $topic->get_column('thistopicid');
+        my $name        = $topic->get_column('thistopicname');
+        my $description = $topic->get_column('thistopicdescription');
 
-        $subject_selected_ref->{$subjectid}=1;
-        push @{$subjects_ref}, {
-            id          => $subjectid,
+        $topic_selected_ref->{$topicid}=1;
+        push @{$topics_ref}, {
+            id          => $topicid,
             name        => $name,
             description => $description,
-            litlistcount => $self->get_number_of_litlists_by_subject({subjectid => $subjectid}),
+            litlistcount => $self->get_number_of_litlists_by_topic({topicid => $topicid}),
         };
     }
     
@@ -2733,43 +2733,43 @@ sub get_litlist_properties {
                         lecture          => $lecture,
 		        itemcount        => $itemcount,
 			tstamp           => $tstamp,
-                        subjects         => $subjects_ref,
-                        subject_selected => $subject_selected_ref,
+                        topics         => $topics_ref,
+                        topic_selected => $topic_selected_ref,
 		       };
 
     return $litlist_ref;
 }
 
-sub get_subjects {
+sub get_topics {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # DBI: "select * from subjects order by name"
-    my $subjects = $self->{schema}->resultset('Subject')->search_rs(
+    # DBI: "select * from topics order by name"
+    my $topics = $self->{schema}->resultset('Topic')->search_rs(
         undef,        
         {
             'order_by' => ['name'],
         }
     );
 
-    my $subjects_ref = [];
+    my $topics_ref = [];
     
-    foreach my $subject ($subjects->all){
-        push @{$subjects_ref}, {
-            id           => $subject->id,
-            name         => $subject->name,
-            description  => $subject->description,
-            litlistcount => $self->get_number_of_litlists_by_subject({subjectid => $subject->id}),
+    foreach my $topic ($topics->all){
+        push @{$topics_ref}, {
+            id           => $topic->id,
+            name         => $topic->name,
+            description  => $topic->description,
+            litlistcount => $self->get_number_of_litlists_by_topic({topicid => $topic->id}),
         };
     }
 
-    return $subjects_ref;
+    return $topics_ref;
 }
 
-sub get_subjects_of_litlist {
+sub get_topics_of_litlist {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
@@ -2780,42 +2780,42 @@ sub get_subjects_of_litlist {
   
     my $logger = get_logger();
 
-    my $subjects = $self->{schema}->resultset('LitlistSubject')->search_rs(
+    my $topics = $self->{schema}->resultset('LitlistTopic')->search_rs(
         {
             'litlistid.id' => $litlistid,
         },
         {
-            select => ['subjectid.id','subjectid.description','subjectid.name'],
-            as     => ['thissubjectid','thissubjectdescription','thissubjectname'],
+            select => ['topicid.id','topicid.description','topicid.name'],
+            as     => ['thistopicid','thistopicdescription','thistopicname'],
             
-            join => ['litlistid','subjectid'],
+            join => ['litlistid','topicid'],
         }
     );
     
-    my $subjects_ref = [];
+    my $topics_ref = [];
     
-    foreach my $subject ($subjects->all){
-        my $subjectid   = $subject->get_column('thissubjectid');
-        my $name        = $subject->get_column('thissubjectname');
-        my $description = $subject->get_column('thissubjectdescription');
+    foreach my $topic ($topics->all){
+        my $topicid   = $topic->get_column('thistopicid');
+        my $name        = $topic->get_column('thistopicname');
+        my $description = $topic->get_column('thistopicdescription');
 
-        push @{$subjects_ref}, {
-            id          => $subjectid,
+        push @{$topics_ref}, {
+            id          => $topicid,
             name        => $name,
             description => $description,
-            litlistcount => $self->get_number_of_litlists_by_subject({subjectid => $subjectid}),
+            litlistcount => $self->get_number_of_litlists_by_topic({topicid => $topicid}),
         };
     }
 
-    return $subjects_ref;
+    return $topics_ref;
 }
 
-sub get_classifications_of_subject {
+sub get_classifications_of_topic {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $subjectid           = exists $arg_ref->{subjectid}
-        ? $arg_ref->{subjectid}           : undef;
+    my $topicid           = exists $arg_ref->{topicid}
+        ? $arg_ref->{topicid}           : undef;
 
     my $type                = exists $arg_ref->{type}
         ? $arg_ref->{type}                : 'BK';
@@ -2824,12 +2824,12 @@ sub get_classifications_of_subject {
   
     my $logger = get_logger();
 
-    return [] if (!defined $subjectid);
+    return [] if (!defined $topicid);
 
-    # DBI: "select * from subjectclassification where subjectid = ? and type = ?"
-    my $classifications = $self->{schema}->resultset('Subjectclassification')->search_rs(
+    # DBI: "select * from topicclassification where topicid = ? and type = ?"
+    my $classifications = $self->{schema}->resultset('Topicclassification')->search_rs(
         {
-            subjectid => $subjectid,
+            topicid => $topicid,
             type      => $type,
         }   
     );
@@ -2845,12 +2845,12 @@ sub get_classifications_of_subject {
     return $classifications_ref;
 }
 
-sub set_classifications_of_subject {
+sub set_classifications_of_topic {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $subjectid           = exists $arg_ref->{subjectid}
-        ? $arg_ref->{subjectid}           : undef;
+    my $topicid           = exists $arg_ref->{topicid}
+        ? $arg_ref->{topicid}           : undef;
 
     my $classifications_ref = exists $arg_ref->{classifications}
         ? $arg_ref->{classifications}     : undef;
@@ -2868,10 +2868,10 @@ sub set_classifications_of_subject {
         $classifications_ref = [ $classifications_ref ];
     }
 
-    # DBI: "delete from subjectclassification where subjectid=? and type = ?"
-    my $subjectclassifications = $self->{schema}->resultset('Subjectclassification')->search_rs(
+    # DBI: "delete from topicclassification where topicid=? and type = ?"
+    my $topicclassifications = $self->{schema}->resultset('Topicclassification')->search_rs(
         {
-            subjectid => $subjectid,
+            topicid => $topicid,
             type      => $type,
         }
     )->delete;
@@ -2879,11 +2879,11 @@ sub set_classifications_of_subject {
     foreach my $classification (@{$classifications_ref}){
         $logger->debug("Adding Classification $classification of type $type");
         
-        # DBI: "insert into subjectclassification values (?,?,?);"
-        $self->{schema}->resultset('Subjectclassification')->create(
+        # DBI: "insert into topicclassification values (?,?,?);"
+        $self->{schema}->resultset('Topicclassification')->create(
             {
                 classification => $classification,
-                subjectid      => $subjectid,
+                topicid      => $topicid,
                 type           => $type,
             }
         );
@@ -2892,12 +2892,12 @@ sub set_classifications_of_subject {
     return;
 }
 
-sub get_number_of_litlists_by_subject {
+sub get_number_of_litlists_by_topic {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $subjectid           = exists $arg_ref->{subjectid}
-        ? $arg_ref->{subjectid}           : undef;
+    my $topicid           = exists $arg_ref->{topicid}
+        ? $arg_ref->{topicid}           : undef;
 
     # Log4perl logger erzeugen
   
@@ -2906,26 +2906,26 @@ sub get_number_of_litlists_by_subject {
     my $count_ref={};
 
     $self->{schema}->storage->debug(1);
-    # DBI: "select count(distinct l2s.litlistid) as llcount from litlist_subject as l2s, litlist as l where l2s.litlistid=l.id and l2s.subjectid=? and l.type=1 and (select count(li.litlistid) > 0 from litlistitem as li where l2s.litlistid=li.litlistid)"
+    # DBI: "select count(distinct l2s.litlistid) as llcount from litlist_topic as l2s, litlist as l where l2s.litlistid=l.id and l2s.topicid=? and l.type=1 and (select count(li.litlistid) > 0 from litlistitem as li where l2s.litlistid=li.litlistid)"
     $count_ref->{public} = $self->{schema}->resultset('Litlist')->search(
         {
-            'subjectid.id'  => $subjectid,
+            'topicid.id'  => $topicid,
             'me.type' => 1,
         },
         {
-            prefetch => [{ 'litlist_subjects' => 'subjectid' }],
-            join     => [ 'litlist_subjects', 'litlistitems' ],
+            prefetch => [{ 'litlist_topics' => 'topicid' }],
+            join     => [ 'litlist_topics', 'litlistitems' ],
         }
     )->count;
 
-    # "select count(distinct litlistid) as llcount from litlist2subject as l2s where subjectid=? and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)"
+    # "select count(distinct litlistid) as llcount from litlist2topic as l2s where topicid=? and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)"
     $count_ref->{all}=$self->{schema}->resultset('Litlist')->search(
         {
-            'subjectid.id'  => $subjectid,
+            'topicid.id'  => $topicid,
         },
         {
-            prefetch => [{ 'litlist_subjects' => 'subjectid' }],
-            join     => [ 'litlist_subjects', 'litlistitems' ],
+            prefetch => [{ 'litlist_topics' => 'topicid' }],
+            join     => [ 'litlist_topics', 'litlistitems' ],
         }
     )->count;
 
@@ -2934,34 +2934,34 @@ sub get_number_of_litlists_by_subject {
     return $count_ref;
 }
 
-sub set_subjects_of_litlist {
+sub set_topics_of_litlist {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
     my $litlistid           = exists $arg_ref->{litlistid}
         ? $arg_ref->{litlistid}           : undef;
 
-    my $subjects_ref        = exists $arg_ref->{subjects}
-        ? $arg_ref->{subjects}            : undef;
+    my $topics_ref        = exists $arg_ref->{topics}
+        ? $arg_ref->{topics}            : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # DBI: "delete from litlist_subject where litlistid=?"
-    $self->{schema}->resultset('LitlistSubject')->search_rs(
+    # DBI: "delete from litlist_topic where litlistid=?"
+    $self->{schema}->resultset('LitlistTopic')->search_rs(
         {
             litlistid => $litlistid,
         }   
     )->delete_all;
     
-    # DBI: "insert into litlist_subject values (?,?);"
+    # DBI: "insert into litlist_topic values (?,?);"
 
-    foreach my $subjectid (@{$subjects_ref}){
-        $self->{schema}->resultset('LitlistSubject')->create(
+    foreach my $topicid (@{$topics_ref}){
+        $self->{schema}->resultset('LitlistTopic')->create(
             {
                 litlistid => $litlistid,
-                subjectid => $subjectid,
+                topicid => $topicid,
             }
         );
     }
@@ -2969,7 +2969,7 @@ sub set_subjects_of_litlist {
     return;
 }
 
-sub get_subject {
+sub get_topic {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
@@ -2980,24 +2980,24 @@ sub get_subject {
   
     my $logger = get_logger();
 
-    # DBI: "select * from subject where id = ?"
-    my $subject = $self->{schema}->resultset('Subject')->search_rs(
+    # DBI: "select * from topic where id = ?"
+    my $topic = $self->{schema}->resultset('Topic')->search_rs(
         {
             id => $id,
         }
     )->first;
 
-    my $subject_ref = {};
+    my $topic_ref = {};
     
-    if ($subject){
-        $subject_ref = {
-            id           => $subject->id,
-            name         => $subject->name,
-            description  => $subject->description,
+    if ($topic){
+        $topic_ref = {
+            id           => $topic->id,
+            name         => $topic->name,
+            description  => $topic->description,
         };
     }
 
-    return $subject_ref;
+    return $topic_ref;
 }
 
 sub is_authenticated {
@@ -4464,7 +4464,7 @@ sub is_admin {
     return $count;
 }
 
-sub del_subject {
+sub del_topic {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -4475,14 +4475,14 @@ sub del_subject {
     my $logger = get_logger();
 
     eval {
-        # DBI: "delete from subject where id = ?"
-        $self->{schema}->resultset('Subject')->single({id => $id})->delete;
+        # DBI: "delete from topic where id = ?"
+        $self->{schema}->resultset('Topic')->single({id => $id})->delete;
     };
 
     return;
 }
 
-sub update_subject {
+sub update_topic {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -4500,8 +4500,8 @@ sub update_subject {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "update subject set name = ?, description = ? where id = ?"
-    $self->{schema}->resultset('Subject')->single({id => $id})->update(
+    # DBI: "update topic set name = ?, description = ? where id = ?"
+    $self->{schema}->resultset('Topic')->single({id => $id})->update(
         {
             name        => $name,
             description => $description,
@@ -4512,8 +4512,8 @@ sub update_subject {
     if ($type){       
         $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
 
-        $self->set_classifications_of_subject({
-            subjectid       => $id,
+        $self->set_classifications_of_topic({
+            topicid       => $id,
             classifications => $classifications_ref,
             type            => $type,
         });
@@ -4522,7 +4522,7 @@ sub update_subject {
     return;
 }
 
-sub new_subject {
+sub new_topic {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -4534,17 +4534,17 @@ sub new_subject {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $have_subject = $self->{schema}->resultset('Subject')->search_rs(
+    my $have_topic = $self->{schema}->resultset('Topic')->search_rs(
         {
             name        => $name,
         }   
     )->count;
 
-    if ($have_subject) {
+    if ($have_topic) {
       return -1;
     }
 
-    $self->{schema}->resultset('Subject')->create(
+    $self->{schema}->resultset('Topic')->create(
         {
             name        => $name,
             description => $description,
@@ -4554,20 +4554,20 @@ sub new_subject {
     return 1;
 }
 
-sub subject_exists {
+sub topic_exists {
     my ($self,$name) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select count(*) as rowcount from subjects where name = ?"
-    my $have_subject = $self->{schema}->resultset('Subject')->search_rs(
+    # DBI: "select count(*) as rowcount from topics where name = ?"
+    my $have_topic = $self->{schema}->resultset('Topic')->search_rs(
         {
             name        => $name,
         }   
     )->count;
 
-    return $have_subject;
+    return $have_topic;
 }
 
 sub search {

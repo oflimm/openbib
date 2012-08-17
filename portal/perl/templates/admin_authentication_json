@@ -14,7 +14,7 @@
 [%-
 
  targets = [];
- FOREACH target IN config.get_logintargets;
+ FOREACH target IN config.get_authenticationtargets;
    target.link = {
           rel = 'self'
           href = "${location}/${target.id}"

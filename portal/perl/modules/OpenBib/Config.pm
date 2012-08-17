@@ -2166,8 +2166,8 @@ sub authentication_exists {
   
     my $logger = get_logger();
 
-    # DBI: "select count(*) as rowcount from logintarget where targetid = ?"
-    my $targetcount = $self->{schema}->resultset('Logintarget')->search_rs(
+    # DBI: "select count(*) as rowcount from authenticationtarget where targetid = ?"
+    my $targetcount = $self->{schema}->resultset('Authenticationtarget')->search_rs(
         {
             id => $targetid,
         }
@@ -2176,117 +2176,117 @@ sub authentication_exists {
     return $targetcount;
 }
 
-sub get_logintargets {
+sub get_authenticationtargets {
     my ($self) = @_;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # DBI: "select * from logintarget order by type DESC,description"
-    my $logintargets = $self->{schema}->resultset('Logintarget')->search_rs(
+    # DBI: "select * from authenticationtarget order by type DESC,description"
+    my $authenticationtargets = $self->{schema}->resultset('Authenticationtarget')->search_rs(
         undef,
         {
             order_by => ['type DESC','description']
         }
     );
 
-    my $logintargets_ref = [];
+    my $authenticationtargets_ref = [];
 
-    foreach my $logintarget ($logintargets->all){
-        push @$logintargets_ref, {
-            id          => $logintarget->id,
-            hostname    => $logintarget->hostname,
-            port        => $logintarget->port,
-            remoteuser  => $logintarget->remoteuser,
-            remotedb    => $logintarget->remotedb,
-            description => $logintarget->description,
-            type        => $logintarget->type,
+    foreach my $authenticationtarget ($authenticationtargets->all){
+        push @$authenticationtargets_ref, {
+            id          => $authenticationtarget->id,
+            hostname    => $authenticationtarget->hostname,
+            port        => $authenticationtarget->port,
+            remoteuser  => $authenticationtarget->remoteuser,
+            remotedb    => $authenticationtarget->remotedb,
+            description => $authenticationtarget->description,
+            type        => $authenticationtarget->type,
         };
     }
 
-    return $logintargets_ref;
+    return $authenticationtargets_ref;
 }
 
-sub get_logintarget_by_id {
+sub get_authenticationtarget_by_id {
     my ($self,$targetid) = @_;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # DBI: "select * from logintarget where targetid = ?"
-    my $logintarget = $self->{schema}->resultset('Logintarget')->single(
+    # DBI: "select * from authenticationtarget where targetid = ?"
+    my $authenticationtarget = $self->{schema}->resultset('Authenticationtarget')->single(
         {
             id => $targetid,
         },
     );
 
-    my $logintarget_ref = {};
+    my $authenticationtarget_ref = {};
     
-    if ($logintarget){
-        $logintarget_ref = {
-            id          => $logintarget->id,
-            hostname    => $logintarget->hostname,
-            port        => $logintarget->port,
-            remoteuser  => $logintarget->remoteuser,
-            remotedb    => $logintarget->remotedb,
-            description => $logintarget->description,
-            type        => $logintarget->type,
+    if ($authenticationtarget){
+        $authenticationtarget_ref = {
+            id          => $authenticationtarget->id,
+            hostname    => $authenticationtarget->hostname,
+            port        => $authenticationtarget->port,
+            remoteuser  => $authenticationtarget->remoteuser,
+            remotedb    => $authenticationtarget->remotedb,
+            description => $authenticationtarget->description,
+            type        => $authenticationtarget->type,
         };
     }
 
-    $logger->debug("Getting Info for Targetid: $targetid -> Got: ".YAML::Dump($logintarget_ref));
-    return $logintarget_ref;
+    $logger->debug("Getting Info for Targetid: $targetid -> Got: ".YAML::Dump($authenticationtarget_ref));
+    return $authenticationtarget_ref;
 }
 
-sub get_logintarget_self {
+sub get_authenticationtarget_self {
     my ($self) = @_;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # DBI: "select * from logintarget where type = ?"
-    my $logintarget = $self->{schema}->resultset('Logintarget')->single(
+    # DBI: "select * from authenticationtarget where type = ?"
+    my $authenticationtarget = $self->{schema}->resultset('Authenticationtarget')->single(
         {
             type => 'self',
         },
     );
 
-    my $logintarget_ref = {};
+    my $authenticationtarget_ref = {};
     
-    if ($logintarget){
-        $logintarget_ref = {
-            id          => $logintarget->id,
-            hostname    => $logintarget->hostname,
-            port        => $logintarget->port,
-            remoteuser  => $logintarget->remoteuser,
-            remotedb    => $logintarget->remotedb,
-            description => $logintarget->description,
-            type        => $logintarget->type,
+    if ($authenticationtarget){
+        $authenticationtarget_ref = {
+            id          => $authenticationtarget->id,
+            hostname    => $authenticationtarget->hostname,
+            port        => $authenticationtarget->port,
+            remoteuser  => $authenticationtarget->remoteuser,
+            remotedb    => $authenticationtarget->remotedb,
+            description => $authenticationtarget->description,
+            type        => $authenticationtarget->type,
         };
     }
 
-    $logger->debug("Getting Info for Type self:  -> Got: ".YAML::Dump($logintarget_ref));
-    return $logintarget_ref;
+    $logger->debug("Getting Info for Type self:  -> Got: ".YAML::Dump($authenticationtarget_ref));
+    return $authenticationtarget_ref;
 }
 
-sub get_number_of_logintargets {
+sub get_number_of_authenticationtargets {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select count(targetid) as rowcount from logintarget"
-    my $numoftargets = $self->{schema}->resultset('Logintarget')->search_rs(
+    # DBI: "select count(targetid) as rowcount from authenticationtarget"
+    my $numoftargets = $self->{schema}->resultset('Authenticationtarget')->search_rs(
         undef,
     )->count;
 
     return $numoftargets;
 }
 
-sub logintarget_exists {
+sub authenticationtarget_exists {
     my ($self,$arg_ref)=@_;
 
     my $description         = exists $arg_ref->{description}
@@ -2296,8 +2296,8 @@ sub logintarget_exists {
   
     my $logger = get_logger();
 
-    # DBI: "select count(description) as rowcount from logintarget where description = ?"
-    my $targetcount = $self->{schema}->resultset('Logintarget')->search_rs(
+    # DBI: "select count(description) as rowcount from authenticationtarget where description = ?"
+    my $targetcount = $self->{schema}->resultset('Authenticationtarget')->search_rs(
         {
             description => $description,
         }   
@@ -2306,14 +2306,14 @@ sub logintarget_exists {
     return $targetcount;
 }
 
-sub delete_logintarget {
+sub delete_authenticationtarget {
     my ($self,$targetid)=@_;
     
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Logintarget')->search_rs(
+    $self->{schema}->resultset('Authenticationtarget')->search_rs(
         {
             id => $targetid,
         }   
@@ -2322,7 +2322,7 @@ sub delete_logintarget {
     return;
 }
 
-sub new_logintarget {
+sub new_authenticationtarget {
     my ($self,$arg_ref)=@_;
     
     # Log4perl logger erzeugen
@@ -2330,25 +2330,25 @@ sub new_logintarget {
     my $logger = get_logger();
 
     $logger->debug(YAML::Dump($arg_ref));
-    # DBI: "insert into logintarget (hostname,port,user,db,description,type) values (?,?,?,?,?,?)"
-    my $new_logintarget = $self->{schema}->resultset('Logintarget')->create(
+    # DBI: "insert into authenticationtarget (hostname,port,user,db,description,type) values (?,?,?,?,?,?)"
+    my $new_authenticationtarget = $self->{schema}->resultset('Authenticationtarget')->create(
         $arg_ref,
     );
 
-    if ($new_logintarget){
-        return $new_logintarget->id;
+    if ($new_authenticationtarget){
+        return $new_authenticationtarget->id;
     }
 
     return;
 }
 
-sub update_logintarget {
+sub update_authenticationtarget {
     my ($self,$arg_ref)=@_;
     
     my $logger = get_logger();
 
-    # DBI: "update logintarget set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where id = ?"
-    $self->{schema}->resultset('Logintarget')->single(
+    # DBI: "update authenticationtarget set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where id = ?"
+    $self->{schema}->resultset('Authenticationtarget')->single(
         {
             id => $arg_ref->{id},
         }   
@@ -2356,12 +2356,12 @@ sub update_logintarget {
         $arg_ref,
     );
 
-    $logger->debug("Logintarget updated");
+    $logger->debug("Authenticationtarget updated");
     
     return;
 }
 
-sub get_id_of_selfreg_logintarget {
+sub get_id_of_selfreg_authenticationtarget {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
@@ -2376,8 +2376,8 @@ sub get_id_of_selfreg_logintarget {
 
     return undef if (!defined $dbh);
 
-    # DBI: "select id from logintarget where type = 'self'"
-    my $logintarget = $self->{schema}->resultset('Logintarget')->search_rs(
+    # DBI: "select id from authenticationtarget where type = 'self'"
+    my $authenticationtarget = $self->{schema}->resultset('Authenticationtarget')->search_rs(
         {
             type => 'self',
         }
@@ -2385,8 +2385,8 @@ sub get_id_of_selfreg_logintarget {
 
     my $targetid;
     
-    if ($logintarget){
-        $targetid = $logintarget->id;
+    if ($authenticationtarget){
+        $targetid = $authenticationtarget->id;
     }
     
     return $targetid;

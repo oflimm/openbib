@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Subject
+#  OpenBib::Handler::Apache::Topic
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Subject;
+package OpenBib::Handler::Apache::Topic;
 
 use strict;
 use warnings;
@@ -99,13 +99,13 @@ sub show_collection {
         return;
     }
 
-    my $subjects_ref = $user->get_subjects;
+    my $topics_ref = $user->get_topics;
     
     my $ttdata={
-        subjects   => $subjects_ref,
+        topics   => $topics_ref,
     };
     
-    $self->print_page($config->{tt_admin_subject_tname},$ttdata);
+    $self->print_page($config->{tt_topic_tname},$ttdata);
 
     return;
 }
@@ -118,7 +118,7 @@ sub show_record {
 
     # Dispatched Args
     my $view             = $self->param('view');
-    my $subjectid        = $self->strip_suffix($self->param('subjectid'));
+    my $topicid        = $self->strip_suffix($self->param('topicid'));
 
     # Shared Args
     my $config         = $self->param('config');
@@ -129,17 +129,17 @@ sub show_record {
         return;
     }
 
-    my $subject_ref = $user->get_subject({ id => $subjectid});
+    my $topic_ref = $user->get_topic({ id => $topicid});
     my $ezb         = OpenBib::EZB->new;
     my $dbis        = OpenBib::DBIS->new;
     
     my $ttdata={
-        subject    => $subject_ref,
+        topic    => $topic_ref,
         ezb        => $ezb,
         dbis       => $dbis,
     };
     
-    $self->print_page($config->{tt_admin_subject_record_tname},$ttdata);
+    $self->print_page($config->{tt_topic_record_tname},$ttdata);
 
     return;
 }
@@ -152,7 +152,7 @@ sub show_record_form {
 
     # Dispatched Args
     my $view             = $self->param('view');
-    my $subjectid        = $self->param('subjectid');
+    my $topicid        = $self->param('topicid');
 
     # Shared Args
     my $config         = $self->param('config');
@@ -163,17 +163,17 @@ sub show_record_form {
         return;
     }
 
-    my $subject_ref = $user->get_subject({ id => $subjectid});
+    my $topic_ref = $user->get_topic({ id => $topicid});
     my $ezb         = OpenBib::EZB->new;
     my $dbis        = OpenBib::DBIS->new;
     
     my $ttdata={
-        subject    => $subject_ref,
+        topic    => $topic_ref,
         ezb        => $ezb,
         dbis       => $dbis,
     };
     
-    $self->print_page($config->{tt_admin_subject_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_topic_record_edit_tname},$ttdata);
 
     return;
 }
@@ -208,30 +208,30 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
-    if ($user->subject_exists($input_data_ref->{name})){
+    if ($user->topic_exists($input_data_ref->{name})){
         $self->print_warning($msg->maketext("Ein Themenbebiet diesen Namens existiert bereits."));
         return Apache2::Const::OK;
     }
     
-    my $new_subjectid = $user->new_subject($input_data_ref);
+    my $new_topicid = $user->new_topic($input_data_ref);
     
-    if (!$new_subjectid ){
+    if (!$new_topicid ){
         $self->print_warning($msg->maketext("Es existiert bereits ein Themengebiet unter diesem Namen"));
         return Apache2::Const::OK;
     }
     
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subject_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{topic_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($new_subjectid){
-            $logger->debug("Weiter zum Record $new_subjectid");
+        if ($new_topicid){
+            $logger->debug("Weiter zum Record $new_topicid");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('subjectid',$new_subjectid);
-            $self->param('location',"$location/$new_subjectid");
+            $self->param('topicid',$new_topicid);
+            $self->param('location',"$location/$new_topicid");
             $self->show_record;
         }
     }
@@ -247,7 +247,7 @@ sub update_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $subjectid      = $self->param('subjectid');
+    my $topicid      = $self->param('topicid');
 
     # Shared Args
     my $query          = $self->query();
@@ -271,15 +271,15 @@ sub update_record {
     # zu verwenden
 
     if ($method eq "DELETE"){
-        $logger->debug("About to delete $subjectid");
+        $logger->debug("About to delete $topicid");
         
         if ($confirm){
             my $ttdata={
-                subjectid  => $subjectid,
+                topicid  => $topicid,
             };
 
             $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_subject_record_delete_confirm_tname},$ttdata);
+            $self->print_page($config->{tt_topic_record_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }
@@ -292,20 +292,20 @@ sub update_record {
 
     # Ansonsten POST oder PUT => Aktualisieren
 
-    $user->update_subject({
+    $user->update_topic({
         name                 => $input_data_ref->{name},
         description          => $input_data_ref->{description},
-        id                   => $subjectid,
+        id                   => $topicid,
     });
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subject_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{topic_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         $logger->debug("Weiter zum Record");
-        $logger->debug("Weiter zum Record $subjectid");
+        $logger->debug("Weiter zum Record $topicid");
         $self->show_record;
     }
     
@@ -321,7 +321,7 @@ sub delete_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $subjectid      = $self->param('subjectid');
+    my $topicid      = $self->param('topicid');
 
     # Shared Args
     my $config         = $self->param('config');
@@ -333,10 +333,10 @@ sub delete_record {
         return;
     }
 
-    $user->del_subject({ id => $subjectid });
+    $user->del_topic({ id => $topicid });
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subject_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{topic_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

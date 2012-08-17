@@ -61,7 +61,7 @@
 <tr><td align="right"><b>[% msg.maketext("mit")
 %]:</b></td><td>
 <select name="targetid">
-[%- FOREACH target IN logintargets -%]
+[%- FOREACH target IN authenticationtargets -%]
 [%-   IF target.type != 'self' -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
@@ -88,7 +88,7 @@
 <input type="hidden" name="redirect_to" value="[% redirect_to %]">
 [% END %]
 
-[%- FOREACH target IN logintargets -%]
+[%- FOREACH target IN authenticationtargets -%]
 [%-   IF target.type == 'self' -%]
 <input type="hidden" name="targetid" value="[% target.id %]">
 [%-   END -%]

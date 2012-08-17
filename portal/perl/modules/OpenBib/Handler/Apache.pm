@@ -1183,7 +1183,7 @@ sub check_http_basic_authentication {
         
         my $userid   = $user->authenticate_self_user({ username => $http_user, password => $password });
         
-        my $targetid = $config->get_logintarget_self();
+        my $targetid = $config->get_authenticationtarget_self();
 
         if ($userid > 0){
             $user->connect_session({

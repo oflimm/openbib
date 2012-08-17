@@ -92,7 +92,7 @@ sub show_record {
         
         my $record = OpenBib::Record::Subject->new({database => $database, id => $subjectid})->load_full_record;
         
-        my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
+        my $authenticationtargetdb = $user->get_targetdb_of_session($session->{ID});
 
         # TT-Data erzeugen
         my $ttdata={
@@ -103,7 +103,7 @@ sub show_record {
             id            => $subjectid,
             format        => $format,
             activefeed    => $config->get_activefeeds_of_db($database),
-            logintargetdb => $logintargetdb,
+            authenticationtargetdb => $authenticationtargetdb,
         };
 
         $self->print_page($config->{'tt_subject_tname'},$ttdata);

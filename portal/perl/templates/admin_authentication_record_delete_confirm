@@ -48,7 +48,7 @@
 <table>
 <tr>
 <td>
-<form method="post" action="[% path_prefix %]/[% config.get('admin_authentication_loc') %]/[% logintarget.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_authentication_loc') %]/[% authenticationtarget.id %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="0" />
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ja") %]"></div>
@@ -56,7 +56,7 @@
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>
-<form method="get" action="[% path_prefix %]/[% config.get('admin_authentication_loc') %]/[% logintarget.id %]/edit">
+<form method="get" action="[% path_prefix %]/[% config.get('admin_authentication_loc') %]/[% authenticationtarget.id %]/edit">
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Nein") %]"></div>
 </form>
 </td>

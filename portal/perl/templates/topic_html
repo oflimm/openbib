@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_subject
+# Templatename: topic
 #
 # Typ         : Mastertemplate       
 #
@@ -42,14 +42,14 @@
        </ul>
      </div>
     <div class="representation">
-<a href="[% path_prefix %]/[% config.get('admin_subject_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('topic_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="subject" %]
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="topic" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -57,7 +57,7 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_subject_loc') %]">
+<form method="post" action="[% path_prefix %]/[% config.get('topic_loc') %]">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neues Themengebiet anlegen") %]</th></tr>
@@ -74,7 +74,7 @@
 
 <p />
 
-[% IF subjects.size > 0 %]
+[% IF topics.size > 0 %]
 
 <table width="100%">
 <tr><th>[% msg.maketext("Bereits existierende Themengebiete") %]</th></tr>
@@ -84,9 +84,9 @@
 <table>
 <tr><td><b>[% msg.maketext("Themengebiet") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Systematik-Gruppen") %]</b></td></tr>
 [% listrow = 'listrow1' %]
-[% FOREACH subject IN subjects %]
+[% FOREACH topic IN topics %]
 
-<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('admin_subject_loc') %]/[% subject.id %]/edit">[% subject.name %]</a></td><td>[% subject.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
+<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %]/edit">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]

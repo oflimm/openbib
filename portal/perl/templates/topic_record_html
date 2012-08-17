@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_subject_record_edit
+# Templatename: topic_record_edit
 #
 # Typ         : Mastertemplate       
 #
@@ -51,19 +51,19 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_subject_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
-         <li><a href="#" class="lastitem">[% subject.name %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('topic_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+         <li><a href="#" class="lastitem">[% topic.name %]</a></li>
        </ul>
      </div>
     <div class="representation">
-<a href="[% path_prefix %]/[% config.get('admin_subject_loc') %]/[% subject.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="subject" %]
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="topic" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -81,7 +81,7 @@
 <tr><td colspan="3">
 [%
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 %]
@@ -114,14 +114,14 @@
 <tr><td colspan="3">
 [%-
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_subject({ type => 'EZB', subjectid => subject.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'EZB', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 -%]
 <ul>
-[% FOREACH ezb_subject IN ezb.get_subjects %]
-[%   IF classification_selected.${ezb_subject.notation}  %]
-<li>[% ezb_subject.notation %]: [% ezb_subject.desc %]</li>
+[% FOREACH ezb_topic IN ezb.get_topics %]
+[%   IF classification_selected.${ezb_topic.notation}  %]
+<li>[% ezb_topic.notation %]: [% ezb_topic.desc %]</li>
 [%   END %]
 [% END %]
 </ul>
@@ -150,14 +150,14 @@
 <tr><td colspan="3">
 [%-
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_subject({ type => 'DBIS', subjectid => subject.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'DBIS', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 -%]
 <ul>
-[% FOREACH dbis_subject IN dbis.get_subjects %]
-[%   IF classification_selected.${dbis_subject.notation}  %]
-<li>[% dbis_subject.notation %]: [% dbis_subject.desc %]</li>
+[% FOREACH dbis_topic IN dbis.get_topics %]
+[%   IF classification_selected.${dbis_topic.notation}  %]
+<li>[% dbis_topic.notation %]: [% dbis_topic.desc %]</li>
 [%   END %]
 [% END %]
 </ul>

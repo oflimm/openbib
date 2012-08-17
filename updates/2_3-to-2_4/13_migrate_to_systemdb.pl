@@ -588,7 +588,7 @@ my %userid_exists = ();
     $request->execute();
     
     while (my $result=$request->fetchrow_hashref){
-        my $new_logintarget = $newschema->resultset('Logintarget')->create(
+        my $new_logintarget = $newschema->resultset('Authenticationtarget')->create(
             {
                 id => $result->{targetid},
                 hostname => $result->{hostname},
@@ -1083,7 +1083,7 @@ my %litlistid_exists = ();
 
         print STDERR "$id - $name - $description\n";
         
-        $newschema->resultset('Subject')->create(
+        $newschema->resultset('Topic')->create(
             {
                 id => $id,
                 name => $name,
@@ -1108,10 +1108,10 @@ my %litlistid_exists = ();
 
         next unless ($litlistid_exists{$litlistid});
 
-        $newschema->resultset('LitlistSubject')->create(
+        $newschema->resultset('LitlistTopic')->create(
             {
                 litlistid => $litlistid,
-                subjectid => $subjectid,
+                topicid => $subjectid,
                 }
         );
     }
@@ -1131,9 +1131,9 @@ my %litlistid_exists = ();
         my $classification   = $result->{classification};
         my $type             = $result->{type};
         
-        $newschema->resultset('Subjectclassification')->create(
+        $newschema->resultset('Topicclassification')->create(
             {
-                subjectid      => $subjectid,
+                topicid        => $subjectid,
                 classification => $classification,
                 type           => $type,
             }

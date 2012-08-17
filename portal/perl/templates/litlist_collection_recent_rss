@@ -25,15 +25,15 @@ item_title       = thisitem.title;
 item_link        = "http://${config.get('frontendservername')}${path_prefix}/${config.get('litlist_loc')}/${thisitem.id}";
 item_tstamp      = thisitem.tstamp.split(' ').first;
 
-subjects = [];
-FOREACH subject IN thisitem.subjects ;
-  subjects.push(subject.name);
+topics = [];
+FOREACH topic IN thisitem.topics ;
+  topics.push(topic.name);
 END;
 
-IF subjects.size > 0 ;
-  item_subjects = subjects.join(' ; ');
+IF topics.size > 0 ;
+  item_topics = topics.join(' ; ');
 ELSE ;
-  item_subjects = "Keine";
+  item_topics = "Keine";
 END;
 
 IF thisitem.lecture ;
@@ -44,7 +44,7 @@ item_desc = "
 <![CDATA[
 ${thisitem.itemcount} Titel enthalten<br/><br/>
 ${item_lecture}
-Themengebiet(e): ${item_subjects}<br/>
+Themengebiet(e): ${item_topics}<br/>
 Zuletzt aktualisiert: ${item_tstamp}<br/>
 ]]>";
 

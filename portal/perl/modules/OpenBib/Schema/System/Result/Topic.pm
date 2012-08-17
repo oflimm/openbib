@@ -1,4 +1,4 @@
-package OpenBib::Schema::System::Result::Subject;
+package OpenBib::Schema::System::Result::Topic;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,11 +11,11 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::Subject
+OpenBib::Schema::System::Result::Topic
 
 =cut
 
-__PACKAGE__->table("subject");
+__PACKAGE__->table("topic");
 
 =head1 ACCESSORS
 
@@ -57,39 +57,39 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 litlist_subjects
+=head2 litlist_topics
 
 Type: has_many
 
-Related object: L<OpenBib::Schema::System::Result::LitlistSubject>
+Related object: L<OpenBib::Schema::System::Result::LitlistTopic>
 
 =cut
 
 __PACKAGE__->has_many(
-  "litlist_subjects",
-  "OpenBib::Schema::System::Result::LitlistSubject",
-  { "foreign.subjectid" => "self.id" },
+  "litlist_topics",
+  "OpenBib::Schema::System::Result::LitlistTopic",
+  { "foreign.topicid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 subjectclassifications
+=head2 topicclassifications
 
 Type: has_many
 
-Related object: L<OpenBib::Schema::System::Result::Subjectclassification>
+Related object: L<OpenBib::Schema::System::Result::Topicclassification>
 
 =cut
 
 __PACKAGE__->has_many(
-  "subjectclassifications",
-  "OpenBib::Schema::System::Result::Subjectclassification",
-  { "foreign.subjectid" => "self.id" },
+  "topicclassifications",
+  "OpenBib::Schema::System::Result::Topicclassification",
+  { "foreign.topicid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 08:28:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5NjdyEpX5fE8vN4RoCATuA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-17 09:17:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:n8nbLhjdhb3F+iZMaEuySA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

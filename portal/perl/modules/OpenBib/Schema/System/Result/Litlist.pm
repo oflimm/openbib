@@ -113,24 +113,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 litlist_subjects
+=head2 litlist_topics
 
 Type: has_many
 
-Related object: L<OpenBib::Schema::System::Result::LitlistSubject>
+Related object: L<OpenBib::Schema::System::Result::LitlistTopic>
 
 =cut
 
 __PACKAGE__->has_many(
-  "litlist_subjects",
-  "OpenBib::Schema::System::Result::LitlistSubject",
+  "litlist_topics",
+  "OpenBib::Schema::System::Result::LitlistTopic",
   { "foreign.litlistid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 08:28:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:G8neSD2NcyVdNX5U4XXtcA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-17 09:17:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:c8O80BcOC2dlNvXDCNzOKA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

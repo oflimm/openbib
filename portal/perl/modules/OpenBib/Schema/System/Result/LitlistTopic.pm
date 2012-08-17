@@ -1,4 +1,4 @@
-package OpenBib::Schema::System::Result::LitlistSubject;
+package OpenBib::Schema::System::Result::LitlistTopic;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,11 +11,11 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::LitlistSubject
+OpenBib::Schema::System::Result::LitlistTopic
 
 =cut
 
-__PACKAGE__->table("litlist_subject");
+__PACKAGE__->table("litlist_topic");
 
 =head1 ACCESSORS
 
@@ -32,7 +32,7 @@ __PACKAGE__->table("litlist_subject");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 subjectid
+=head2 topicid
 
   data_type: 'bigint'
   is_foreign_key: 1
@@ -50,25 +50,25 @@ __PACKAGE__->add_columns(
   },
   "litlistid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
-  "subjectid",
+  "topicid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 subjectid
+=head2 topicid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Subject>
+Related object: L<OpenBib::Schema::System::Result::Topic>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "subjectid",
-  "OpenBib::Schema::System::Result::Subject",
-  { id => "subjectid" },
+  "topicid",
+  "OpenBib::Schema::System::Result::Topic",
+  { id => "topicid" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
@@ -88,8 +88,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 08:28:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:nP1qhCmgySF0EsJXm3NkCg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-17 09:17:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WoE1MD9PQtneI451ZuE7ug
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

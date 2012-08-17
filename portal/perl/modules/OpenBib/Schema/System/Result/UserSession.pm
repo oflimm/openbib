@@ -99,20 +99,20 @@ __PACKAGE__->belongs_to(
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Logintarget>
+Related object: L<OpenBib::Schema::System::Result::Authenticationtarget>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "targetid",
-  "OpenBib::Schema::System::Result::Logintarget",
+  "OpenBib::Schema::System::Result::Authenticationtarget",
   { id => "targetid" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 08:28:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jCrUfm5rgzZ4crClXkQhEw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-17 09:17:39
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:c4j31y6maF4d7hqG/mPHdA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

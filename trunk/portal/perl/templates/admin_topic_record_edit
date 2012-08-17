@@ -51,12 +51,12 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('topic_loc') %]/edit.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_topic_loc') %]/edit.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
          <li><a href="#" class="lastitem">[% topic.name %]</a></li>
        </ul>
      </div>
     <div class="representation">
-<a href="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_topic_loc') %]/[% topic.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -77,7 +77,7 @@
 <tr><th>[% msg.maketext("Themengebiet bearbeiten") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
-<form method="post" action="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_topic_loc') %]/[% topic.id %]">
 <input type="hidden" name="_method" value="PUT" />
 
 <table>
@@ -90,7 +90,7 @@
 <div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div>
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_topic_loc') %]/[% topic.id %]">
 <input type="hidden" name="_method" value="DELETE" />
 <input type="hidden" name="confirm" value="1" />
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Löschen") %]" /></div>
@@ -105,7 +105,7 @@
 
 <div class="boxedclear">
 
-<form method="post" action="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_topic_loc') %]/[% topic.id %]">
 <input type="hidden" name="_method"     value="PUT" />
 <input type="hidden" name="topic"     value="[% topic.name %]" />
 <input type="hidden" name="description" value="[% topic.description %]" />
@@ -153,7 +153,7 @@ selected="selected"
 <p/>
 
 <div class="boxedclear">
-<form method="post" action="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_topic_loc') %]/[% topic.id %]">
 
 <input type="hidden" name="topicid" value="[% topic.id %]" />
 <input type="hidden" name="do_edittopic" value="1" />
@@ -200,7 +200,7 @@ selected="selected"
 
 <p/>
 <div class="boxedclear">
-<form method="post" action="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_topic_loc') %]/[% topic.id %]">
 
 <input type="hidden" name="topicid" value="[% topic.id %]" />
 <input type="hidden" name="do_edittopic" value="1" />

@@ -136,10 +136,10 @@ sub show_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    my $logintarget_ref = $config->get_logintarget_by_id($authenticationid);
+    my $authenticationtarget_ref = $config->get_authenticationtarget_by_id($authenticationid);
     
     my $ttdata={
-        logintarget => $logintarget_ref,
+        authenticationtarget => $authenticationtarget_ref,
     };
     
     $self->print_page($config->{tt_admin_authentication_record_tname},$ttdata);
@@ -174,10 +174,10 @@ sub show_record_form {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    my $logintarget_ref = $config->get_logintarget_by_id($authenticationid);
+    my $authenticationtarget_ref = $config->get_authenticationtarget_by_id($authenticationid);
     
     my $ttdata={
-        logintarget => $logintarget_ref,
+        authenticationtarget => $authenticationtarget_ref,
     };
     
     $self->print_page($config->{tt_admin_authentication_record_edit_tname},$ttdata);
@@ -222,14 +222,14 @@ sub create_record {
         return Apache2::Const::OK;
     }
     
-    if ($config->logintarget_exists({description => $input_data_ref->{description}})) {
+    if ($config->authenticationtarget_exists({description => $input_data_ref->{description}})) {
         
         $self->print_warning($msg->maketext("Es existiert bereits ein Anmeldeziel unter diesem Namen"));
         
         return Apache2::Const::OK;
     }
     
-    my $new_logintargetid = $config->new_logintarget($input_data_ref);
+    my $new_authenticationtargetid = $config->new_authenticationtarget($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
@@ -238,11 +238,11 @@ sub create_record {
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($new_logintargetid){
-            $logger->debug("Weiter zum Record $new_logintargetid");
+        if ($new_authenticationtargetid){
+            $logger->debug("Weiter zum Record $new_authenticationtargetid");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('authenticationid',$new_logintargetid);
-            $self->param('location',"$location/$new_logintargetid");
+            $self->param('authenticationid',$new_authenticationtargetid);
+            $self->param('location',"$location/$new_authenticationtargetid");
             $self->show_record;
         }
     }
@@ -294,11 +294,11 @@ sub update_record {
         $logger->debug("About to delete $authenticationid");
         
         if ($confirm){
-            my $logintarget_ref = $config->get_logintarget_by_id($authenticationid);
+            my $authenticationtarget_ref = $config->get_authenticationtarget_by_id($authenticationid);
             
             my $ttdata={
                 stylesheet => $stylesheet,
-                logintarget  => $logintarget_ref,
+                authenticationtarget  => $authenticationtarget_ref,
 
                 view       => $view,
                 
@@ -322,7 +322,7 @@ sub update_record {
 
     # Ansonsten POST oder PUT => Aktualisieren
     
-    $config->update_logintarget($input_data_ref);
+    $config->update_authenticationtarget($input_data_ref);
 
     return unless ($self->param('representation') eq "html");
 
@@ -361,7 +361,7 @@ sub delete_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    $config->delete_logintarget($authenticationid);
+    $config->delete_authenticationtarget($authenticationid);
 
     return unless ($self->param('representation') eq "html");
     

@@ -73,11 +73,11 @@ sub setup {
     $self->run_modes(
         'show_collection'                          => 'show_collection',
         'show_collection_recent'                   => 'show_collection_recent',
-        'show_collection_by_subject'               => 'show_collection_by_subject',
+        'show_collection_by_topic'               => 'show_collection_by_topic',
         'show_collection_by_user'                  => 'show_collection_by_user',
-        'show_collection_by_single_subject'        => 'show_collection_by_single_subject',
+        'show_collection_by_single_topic'        => 'show_collection_by_single_topic',
         'show_collection_by_single_user'           => 'show_collection_by_single_user',
-        'show_collection_by_single_subject_recent' => 'show_collection_by_single_subject_recent',
+        'show_collection_by_single_topic_recent' => 'show_collection_by_single_topic_recent',
         'show_record'                              => 'show_record',
         'show_record_form'                         => 'show_record_form',
         'create_record'                            => 'create_record',
@@ -111,12 +111,12 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     
-    my $subjects_ref         = $user->get_subjects;
+    my $topics_ref         = $user->get_topics;
     my $public_litlists_ref  = $user->get_public_litlists();
 
     # TT-Data erzeugen
     my $ttdata={
-        subjects       => $subjects_ref,
+        topics       => $topics_ref,
         public_litlists=> $public_litlists_ref,
     };
     
@@ -148,12 +148,12 @@ sub show_collection_recent {
     # CGI Args
     my $hitrange       = $query->param('num')    || 50;
 
-    my $subjects_ref         = $user->get_subjects;
+    my $topics_ref         = $user->get_topics;
     my $public_litlists_ref  = $user->get_recent_litlists({ count => $hitrange });
 
     # TT-Data erzeugen
     my $ttdata={
-        subjects       => $subjects_ref,
+        topics       => $topics_ref,
         public_litlists=> $public_litlists_ref,
     };
     
@@ -161,7 +161,7 @@ sub show_collection_recent {
     return Apache2::Const::OK;
 }
 
-sub show_collection_by_subject {
+sub show_collection_by_topic {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -181,21 +181,21 @@ sub show_collection_by_subject {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
-    my $subjects_ref         = $user->get_subjects;
+    my $topics_ref         = $user->get_topics;
     my $public_litlists_ref  = $user->get_public_litlists();
 
     # TT-Data erzeugen
     my $ttdata={
-        showsubjects   => 1,
-        subjects       => $subjects_ref,
+        showtopics   => 1,
+        topics       => $topics_ref,
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlist_collection_by_subject_tname},$ttdata);
+    $self->print_page($config->{tt_litlist_collection_by_topic_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
-sub show_collection_by_single_subject_recent {
+sub show_collection_by_single_topic_recent {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -203,7 +203,7 @@ sub show_collection_by_single_subject_recent {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $subjectid      = $self->param('subjectid');
+    my $topicid      = $self->param('topicid');
 
     # Shared Args
     my $query          = $self->query();
@@ -219,21 +219,21 @@ sub show_collection_by_single_subject_recent {
     # CGI Args
     my $hitrange       = $query->param('num')    || 50;
 
-    my $subjects_ref         = $user->get_subjects;
-    my $public_litlists_ref  = $user->get_recent_litlists({ subjectid => $subjectid, count => $hitrange });
+    my $topics_ref         = $user->get_topics;
+    my $public_litlists_ref  = $user->get_recent_litlists({ topicid => $topicid, count => $hitrange });
 
     # TT-Data erzeugen
     my $ttdata={
-        subjects       => $subjects_ref,
-        subjectid      => $subjectid,
+        topics       => $topics_ref,
+        topicid      => $topicid,
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlist_collection_by_single_subject_recent_tname},$ttdata);
+    $self->print_page($config->{tt_litlist_collection_by_single_topic_recent_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
-sub show_collection_by_single_subject {
+sub show_collection_by_single_topic {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -241,7 +241,7 @@ sub show_collection_by_single_subject {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $subjectid      = $self->strip_suffix($self->param('subjectid'));
+    my $topicid      = $self->strip_suffix($self->param('topicid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -254,17 +254,17 @@ sub show_collection_by_single_subject {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
-    my $subjects_ref         = $user->get_subjects;
-    my $public_litlists_ref  = $user->get_public_litlists({ subjectid => $subjectid });
+    my $topics_ref         = $user->get_topics;
+    my $public_litlists_ref  = $user->get_public_litlists({ topicid => $topicid });
 
     # TT-Data erzeugen
     my $ttdata={
-        subjects       => $subjects_ref,
-        subjectid      => $subjectid,
+        topics       => $topics_ref,
+        topicid      => $topicid,
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlist_collection_by_single_subject_tname},$ttdata);
+    $self->print_page($config->{tt_litlist_collection_by_single_topic_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -307,11 +307,11 @@ sub show_collection_by_single_userxxx {
     my $do_dellist     = $query->param('do_dellist')     || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
-    my $subjectid      = $query->param('subjectid')   || undef;
+    my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
+    my $topicid      = $query->param('topicid')   || undef;
 
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = $user->get_subjects;
+    my $topics_ref   = $user->get_topics;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -363,14 +363,14 @@ sub show_collection_by_single_userxxx {
         
     # Thematische Einordnung
         
-    my $litlist_subjects_ref   = $user->get_subjects_of_litlist({id => $litlistid});
+    my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
     
     # TT-Data erzeugen
     my $ttdata={
         user_owns_litlist => $user_owns_litlist,
-        subjects       => $subjects_ref,
-        thissubjects   => $litlist_subjects_ref,
+        topics       => $topics_ref,
+        thistopics   => $litlist_topics_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
         userrole       => $userrole_ref,
@@ -426,12 +426,12 @@ sub show_collection_by_single_user {
     my $do_dellist     = $query->param('do_dellist')     || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
-    my $subjectid      = $query->param('subjectid')   || undef;
+    my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
+    my $topicid      = $query->param('topicid')   || undef;
 
     
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = $user->get_subjects;
+    my $topics_ref   = $user->get_topics;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -483,14 +483,14 @@ sub show_collection_by_single_user {
         
     # Thematische Einordnung
         
-    my $litlist_subjects_ref   = $user->get_subjects_of_litlist({id => $litlistid});
+    my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
     
     # TT-Data erzeugen
     my $ttdata={
         user_owns_litlist => $user_owns_litlist,
-        subjects       => $subjects_ref,
-        thissubjects   => $litlist_subjects_ref,
+        topics       => $topics_ref,
+        thistopics   => $litlist_topics_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
         userrole       => $userrole_ref,
@@ -539,11 +539,11 @@ sub show_record {
     my $format         = $query->param('format')      || 'short';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
-    my $subjectid      = $query->param('subjectid')   || undef;
+    my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
+    my $topicid      = $query->param('topicid')   || undef;
 
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = $user->get_subjects;
+    my $topics_ref   = $user->get_topics;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -595,14 +595,14 @@ sub show_record {
         
     # Thematische Einordnung
         
-    my $litlist_subjects_ref   = $user->get_subjects_of_litlist({id => $litlistid});
+    my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
     
     # TT-Data erzeugen
     my $ttdata={
         user_owns_litlist => $user_owns_litlist,
-        subjects       => $subjects_ref,
-        thissubjects   => $litlist_subjects_ref,
+        topics       => $topics_ref,
+        thistopics   => $litlist_topics_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
         userrole       => $userrole_ref,
@@ -655,11 +655,11 @@ sub show_record_form {
     my $do_dellist     = $query->param('do_dellist')     || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
-    my $subjectid      = $query->param('subjectid')   || undef;
+    my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
+    my $topicid      = $query->param('topicid')   || undef;
 
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = $user->get_subjects;
+    my $topics_ref   = $user->get_topics;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -690,14 +690,14 @@ sub show_record_form {
         
     # Thematische Einordnung
         
-    my $litlist_subjects_ref   = $user->get_subjects_of_litlist({id => $litlistid});
+    my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
     
     # TT-Data erzeugen
     my $ttdata={
         user_owns_litlist => $user_owns_litlist,
-        subjects       => $subjects_ref,
-        thissubjects   => $litlist_subjects_ref,
+        topics       => $topics_ref,
+        thistopics   => $litlist_topics_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
         userrole       => $userrole_ref,
@@ -779,7 +779,7 @@ sub create_record {
 
     # Sonst muss Litlist neu erzeugt werden
     
-    $litlistid = $user->add_litlist({ title =>$input_data_ref->{title}, type => $input_data_ref->{type}, subjects => $input_data_ref->{subjects} });
+    $litlistid = $user->add_litlist({ title =>$input_data_ref->{title}, type => $input_data_ref->{type}, topics => $input_data_ref->{topics} });
 
     if ($self->param('representation') eq "html"){
         $self->return_baseurl;
@@ -823,7 +823,7 @@ sub update_record {
     # CGI Args
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
-    my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
+    my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
@@ -959,7 +959,7 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
-        subjects => {
+        topics => {
             default  => [],
             encoding => 'none',
             type     => 'array',

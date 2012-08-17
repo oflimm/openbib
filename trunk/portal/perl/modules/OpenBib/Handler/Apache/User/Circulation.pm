@@ -100,7 +100,7 @@ sub show_collection {
 
     # CGI Args
     my $validtarget        = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+    my $sessionauthenticationtarget = $user->get_targetdb_of_session($session->{ID});
     
     unless($user->{ID}){
         # Aufruf-URL
@@ -116,7 +116,7 @@ sub show_collection {
     }
     # wenn der Benutzer bereits fuer ein anderes Target authentifiziert ist
     else {
-        if ($validtarget && $validtarget ne $sessionlogintarget){
+        if ($validtarget && $validtarget ne $sessionauthenticationtarget){
             $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget");
             return Apache2::Const::OK;
         }
@@ -175,7 +175,7 @@ sub show_reservations {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
-    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+    my $sessionauthenticationtarget = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
@@ -260,7 +260,7 @@ sub show_reminders {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
-    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+    my $sessionauthenticationtarget = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
@@ -343,7 +343,7 @@ sub show_orders {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
-    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+    my $sessionauthenticationtarget = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
@@ -425,7 +425,7 @@ sub show_borrows {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
-    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+    my $sessionauthenticationtarget = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
@@ -506,14 +506,14 @@ sub make_reservation {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
-    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+    my $sessionauthenticationtarget = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
-    unless($sessionlogintarget eq $validtarget){
+    unless($sessionauthenticationtarget eq $validtarget){
         # Aufruf-URL
         my $return_uri = uri_escape($r->parsed_uri->unparse);
         
@@ -597,14 +597,14 @@ sub cancel_reservation {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
-    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+    my $sessionauthenticationtarget = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
-    unless($sessionlogintarget eq $validtarget){
+    unless($sessionauthenticationtarget eq $validtarget){
         # Aufruf-URL
         my $return_uri = uri_escape($r->parsed_uri->unparse);
         
@@ -681,14 +681,14 @@ sub make_order {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
-    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+    my $sessionauthenticationtarget = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
-    unless($sessionlogintarget eq $validtarget){
+    unless($sessionauthenticationtarget eq $validtarget){
         # Aufruf-URL
         my $return_uri = uri_escape($r->parsed_uri->unparse);
         
@@ -771,14 +771,14 @@ sub renew_loans {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
-    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+    my $sessionauthenticationtarget = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
-    unless($sessionlogintarget eq $validtarget){
+    unless($sessionauthenticationtarget eq $validtarget){
         # Aufruf-URL
         my $return_uri = uri_escape($r->parsed_uri->unparse);
         

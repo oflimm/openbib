@@ -83,12 +83,12 @@ ALTER TABLE user_role ADD CONSTRAINT fk_userrole_role FOREIGN KEY (roleid) REFER
 
 ALTER TABLE registration ADD PRIMARY KEY (id);
 
-ALTER TABLE logintarget ADD PRIMARY KEY (id);
+ALTER TABLE authenticationtarget ADD PRIMARY KEY (id);
 
 ALTER TABLE user_session ADD PRIMARY KEY (id);
 ALTER TABLE user_session ADD CONSTRAINT fk_usersession_user FOREIGN KEY (userid) REFERENCES userinfo (id);
 ALTER TABLE user_session ADD CONSTRAINT fk_usersession_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
-ALTER TABLE user_session ADD CONSTRAINT fk_usersession_logintarget FOREIGN KEY (targetid) REFERENCES logintarget (id);
+ALTER TABLE user_session ADD CONSTRAINT fk_usersession_authenticationtarget FOREIGN KEY (targetid) REFERENCES authenticationtarget (id);
 
 ALTER TABLE searchprofile ADD PRIMARY KEY (id);
 CREATE INDEX searchprofile_dbases_as_json ON searchprofile (databases_as_json);
@@ -144,12 +144,12 @@ CREATE INDEX litlistitem_dbname ON litlistitem (dbname);
 CREATE INDEX litlistitem_titleid ON litlistitem (titleid);
 CREATE INDEX litlistitem_titleisbn ON litlistitem (titleisbn);
 
-ALTER TABLE subject ADD PRIMARY KEY (id);
+ALTER TABLE topic ADD PRIMARY KEY (id);
 
-ALTER TABLE litlist_subject ADD PRIMARY KEY (id);
-ALTER TABLE litlist_subject ADD CONSTRAINT fk_litlistsubject_litlist FOREIGN KEY (litlistid) REFERENCES litlist (id);
-ALTER TABLE litlist_subject ADD CONSTRAINT fk_litlistsubject_subject FOREIGN KEY (subjectid) REFERENCES subject (id);
+ALTER TABLE litlist_topic ADD PRIMARY KEY (id);
+ALTER TABLE litlist_topic ADD CONSTRAINT fk_litlisttopic_litlist FOREIGN KEY (litlistid) REFERENCES litlist (id);
+ALTER TABLE litlist_topic ADD CONSTRAINT fk_litlisttopic_topic FOREIGN KEY (topicid) REFERENCES topic (id);
 
-ALTER TABLE subjectclassification ADD CONSTRAINT fk_subjectclassification_subject FOREIGN KEY (subjectid) REFERENCES subject (id);
-CREATE INDEX subjectclassification_type ON subjectclassification (type);
-CREATE INDEX subjectclassification_classification ON subjectclassification (classification);
+ALTER TABLE topicclassification ADD CONSTRAINT fk_topicclassification_topic FOREIGN KEY (topicid) REFERENCES topic (id);
+CREATE INDEX topicclassification_type ON topicclassification (type);
+CREATE INDEX topicclassification_classification ON topicclassification (classification);

@@ -70,11 +70,11 @@
 </div>
 
 <div class="type-select">
-<label for="subjectids">[% msg.maketext("Ordnen Sie Ihre Literaturliste thematisch ein") %]</label>
-<select name="subjectids" multiple="multiple" size="5">
+<label for="topicids">[% msg.maketext("Ordnen Sie Ihre Literaturliste thematisch ein") %]</label>
+<select name="topicids" multiple="multiple" size="5">
 
-[% FOREACH subject IN subjects %]
-<option value="[% subject.id %]">[% subject.name %][% IF subject.description%] ([% subject.description %])[% END %]</option>
+[% FOREACH topic IN topics %]
+<option value="[% topic.id %]">[% topic.name %][% IF topic.description%] ([% topic.description %])[% END %]</option>
 
 [% END %]
 </select>
@@ -102,7 +102,7 @@
 [% ELSE %] 
 [% msg.maketext("privat") %]
 [% END %]
-</td><td>[%- FOREACH subject IN litlist.subjects -%][% subject.name %]<br/>[%- END -%]</td><td>[% litlist.tstamp %]</td><td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td></tr>
+</td><td>[%- FOREACH topic IN litlist.topics -%][% topic.name %]<br/>[%- END -%]</td><td>[% litlist.tstamp %]</td><td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

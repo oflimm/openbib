@@ -281,8 +281,8 @@ CREATE TABLE registration (
   password            TEXT
 );
 
-DROP TABLE IF EXISTS logintarget;
-CREATE TABLE logintarget (
+DROP TABLE IF EXISTS authenticationtarget;
+CREATE TABLE authenticationtarget (
  id          BIGSERIAL,
 
  hostname    TEXT,
@@ -434,23 +434,23 @@ CREATE TABLE litlistitem (
  titlecache  TEXT
 );
 
-DROP TABLE IF EXISTS subject;
-CREATE TABLE subject (
+DROP TABLE IF EXISTS topic;
+CREATE TABLE topic (
  id           BIGSERIAL,
  name         TEXT      NOT NULL default '',
  description  TEXT      NOT NULL default ''
 );
 
-DROP TABLE IF EXISTS litlist_subject;
-CREATE TABLE litlist_subject (
+DROP TABLE IF EXISTS litlist_topic;
+CREATE TABLE litlist_topic (
  id           BIGSERIAL,
  litlistid    BIGINT    NOT NULL,
- subjectid    BIGINT    NOT NULL
+ topicid      BIGINT    NOT NULL
 );
 
-DROP TABLE IF EXISTS subjectclassification;
-CREATE TABLE subjectclassification (
- subjectid      BIGINT  NOT NULL,
+DROP TABLE IF EXISTS topicclassification;
+CREATE TABLE topicclassification (
+ topicid        BIGINT  NOT NULL,
  classification TEXT    NOT NULL,
  type           TEXT    NOT NULL
 );

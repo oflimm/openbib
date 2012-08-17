@@ -519,33 +519,33 @@ Literaturlisten usw.<p/>") %]
 <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][%- END -%][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
 
 <p />
-[% logintargets = user.get_logintargets %]
+[% authenticationtargets = user.get_authenticationtargets %]
 <table>
 <tr><td align="right"><b>[% msg.maketext("mit")
 %]</b></td><td>
-[% IF view_config.${view}.validlogintargets && view_config.${view}.defaultlogintarget %]
+[% IF view_config.${view}.validauthenticationtargets && view_config.${view}.defaultauthenticationtarget %]
 <select name="targetid">
-[%- FOREACH target IN logintargets -%]
-[%-   NEXT IF view_config.${view}.validlogintargets.${target.id} != 1 -%]
-[%-   IF target.id == view_config.${view}.defaultlogintarget -%]
+[%- FOREACH target IN authenticationtargets -%]
+[%-   NEXT IF view_config.${view}.validauthenticationtargets.${target.id} != 1 -%]
+[%-   IF target.id == view_config.${view}.defaultauthenticationtarget -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
-[%- FOREACH target IN logintargets -%]
-[%-   NEXT IF view_config.${view}.validlogintargets.${target.id} != 1 -%]
-[%-   IF target.id != view_config.${view}.defaultlogintarget -%]
+[%- FOREACH target IN authenticationtargets -%]
+[%-   NEXT IF view_config.${view}.validauthenticationtargets.${target.id} != 1 -%]
+[%-   IF target.id != view_config.${view}.defaultauthenticationtarget -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
 </select>
 [% ELSE %]
 <select name="targetid">
-[%- FOREACH target IN logintargets -%]
+[%- FOREACH target IN authenticationtargets -%]
 [%-   IF target.id == 4 -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
-[%- FOREACH target IN logintargets -%]
+[%- FOREACH target IN authenticationtargets -%]
 [%-   IF target.id != 4 -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]

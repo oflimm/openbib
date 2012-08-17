@@ -272,7 +272,7 @@ sub show_record {
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $searchquery   = OpenBib::SearchQuery->instance({r => $r, view => $view});
-    my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
+    my $authenticationtargetdb = $user->get_targetdb_of_session($session->{ID});
 
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
@@ -345,7 +345,7 @@ sub show_record {
             searchquery => $searchquery,
             activefeed  => $config->get_activefeeds_of_db($self->{database}),
             
-            logintargetdb => $logintargetdb,
+            authenticationtargetdb => $authenticationtargetdb,
             
             litlists          => $litlists_ref,
             highlightquery    => \&highlightquery,

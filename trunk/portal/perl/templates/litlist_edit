@@ -53,9 +53,9 @@
 
 <div class="page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
 <div class="page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
-[%- IF litlist.properties.subjects.size -%]
-[%- FOREACH subject IN litlist.properties.subjects-%]
-<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/subject/[% subject.id %].html">[% subject.name %]</a>&nbsp;&nbsp;
+[%- IF litlist.properties.topics.size -%]
+[%- FOREACH topic IN litlist.properties.topics-%]
+<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/topic/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
 [%- END-%]
 [%- ELSE -%]
 [% msg.maketext("Keine") %]
@@ -95,11 +95,11 @@
 [%- END -%]
 
 <div class="type-select">
-<label for="subjects">Ordnen Sie Ihre Literaturliste thematisch ein</label>
-<select name="subjects" id="subjects" multiple="multiple" size="5">
+<label for="topics">Ordnen Sie Ihre Literaturliste thematisch ein</label>
+<select name="topics" id="topics" multiple="multiple" size="5">
 
-[% FOREACH subject IN subjects %]
-<option value="[% subject.id %]" [% IF litlist.properties.subject_selected.${subject.id} %] selected="selected"[% END %]>[% subject.name | truncate(40) %]</option>
+[% FOREACH topic IN topics %]
+<option value="[% topic.id %]" [% IF litlist.properties.topic_selected.${topic.id} %] selected="selected"[% END %]>[% topic.name | truncate(40) %]</option>
 [% END %]
 
 </select>

@@ -70,8 +70,8 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'                      => 'show_collection',
-#        'show_collection_by_subject'           => 'show_collection_by_subject',
-#        'show_record_by_subject'               => 'show_record_by_subject',
+#        'show_collection_by_topic'           => 'show_collection_by_topic',
+#        'show_record_by_topic'               => 'show_record_by_topic',
     );
 
     # Use current path as template path,
@@ -107,14 +107,14 @@ sub show_collection {
         return;
     }
 
-    my $subjects_ref = $user->get_subjects;
+    my $topics_ref = $user->get_topics;
     my $userrole_ref = $user->get_roles_of_user($user->{ID});
     my $litlists     = $user->get_litlists();
     my $targettype   = $user->get_targettype_of_session($session->{ID});
     
     # TT-Data erzeugen
     my $ttdata={
-        subjects   => $subjects_ref,
+        topics   => $topics_ref,
         litlists   => $litlists,
         qopts      => $queryoptions->get_options,
         targettype => $targettype,

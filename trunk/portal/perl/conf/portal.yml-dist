@@ -105,7 +105,6 @@ admin_searchprofile_loc: admin/searchprofile
 admin_user_loc: admin/user
 admin_statistic_loc: admin/statistic
 admin_server_loc: admin/server
-admin_subject_loc: admin/subject
 admin_login_loc: admin/login
 admin_logout_loc: admin/logout
 bibsonomy_loc: bibsonomy
@@ -146,12 +145,13 @@ title_loc: title
 person_loc: person
 corporatebody_loc: corporatebody
 subject_loc: subject
+topic_loc: topic
 classification_loc: classification
 tag_loc: tag
 review_loc: review
 litlist_loc: litlist
 litlist_public_loc: litlist
-litlist_public_subject_loc: litlist/subject
+litlist_public_topic_loc: litlist/topic
 litlist_public_user_loc: litlist/user
 library_loc: library
 user_loc: user
@@ -594,48 +594,48 @@ dispatch_rules:
      runmode: 'show_collection_recent'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject.html[get]'
-     runmode: 'show_collection_by_subject'
+     rule: '/portal/:view/litlist/topic.html[get]'
+     runmode: 'show_collection_by_topic'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject.json[get]'
-     runmode: 'show_collection_by_subject'
+     rule: '/portal/:view/litlist/topic.json[get]'
+     runmode: 'show_collection_by_topic'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject.rdf[get]'
-     runmode: 'show_collection_by_subject'
+     rule: '/portal/:view/litlist/topic.rdf[get]'
+     runmode: 'show_collection_by_topic'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject[get]'
-     runmode: 'show_collection_by_subject'
+     rule: '/portal/:view/litlist/topic[get]'
+     runmode: 'show_collection_by_topic'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject/:subjectid/recent.html[get]'
-     runmode: 'show_collection_by_single_subject_recent'
+     rule: '/portal/:view/litlist/topic/:topicid/recent.html[get]'
+     runmode: 'show_collection_by_single_topic_recent'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject/:subjectid/recent.json[get]'
-     runmode: 'show_collection_by_single_subject_recent'
+     rule: '/portal/:view/litlist/topic/:topicid/recent.json[get]'
+     runmode: 'show_collection_by_single_topic_recent'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject/:subjectid/recent.rdf[get]'
-     runmode: 'show_collection_by_single_subject_recent'
+     rule: '/portal/:view/litlist/topic/:topicid/recent.rdf[get]'
+     runmode: 'show_collection_by_single_topic_recent'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject/:subjectid/recent.rss[get]'
-     runmode: 'show_collection_by_single_subject_recent'
+     rule: '/portal/:view/litlist/topic/:topicid/recent.rss[get]'
+     runmode: 'show_collection_by_single_topic_recent'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject/:subjectid/recent.include[get]'
-     runmode: 'show_collection_by_single_subject_recent'
+     rule: '/portal/:view/litlist/topic/:topicid/recent.include[get]'
+     runmode: 'show_collection_by_single_topic_recent'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject/:subjectid/recent[get]'
-     runmode: 'show_collection_by_single_subject_recent'
+     rule: '/portal/:view/litlist/topic/:topicid/recent[get]'
+     runmode: 'show_collection_by_single_topic_recent'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
-     rule: '/portal/:view/litlist/subject/:subjectid[get]'
-     runmode: 'show_collection_by_single_subject'
+     rule: '/portal/:view/litlist/topic/:topicid[get]'
+     runmode: 'show_collection_by_single_topic'
   - # litlist_loc: 
      module: 'OpenBib::Handler::Apache::LitList'
      rule: '/portal/:view/litlist/user/:userid[get]'
@@ -1815,7 +1815,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Admin::Searchprofile'
      rule: '/portal/:view/admin/searchprofile/:searchprofileid[delete]'
      runmode: 'delete_record'
-
   - # admin_session_loc: Search form for archived sessions
      module: 'OpenBib::Handler::Apache::Admin::Session'
      rule: '/portal/:view/admin/session/archived/search/form[get]'
@@ -1825,8 +1824,16 @@ dispatch_rules:
      rule: '/portal/:view/admin/session/archived/search/form.html[get]'
      runmode: 'show_archived_search_form'
   - # admin_session_loc: Search results
-     module: 'OpenBib::Handler:Apache::Admin::Session'
-     rule: '/portal/:view/admin/session/archived/search[post]'
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/:view/admin/session/archived/search[get]'
+     runmode: 'show_archived_search'
+  - # admin_session_loc: Search results
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/:view/admin/session/archived/search.html[get]'
+     runmode: 'show_archived_search'
+  - # admin_session_loc: Search results
+     module: 'OpenBib::Handler::Apache::Admin::Session'
+     rule: '/portal/:view/admin/session/archived/search.json[get]'
      runmode: 'show_archived_search'
   - # admin_session_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin::Session'
@@ -2012,49 +2019,74 @@ dispatch_rules:
      rule: '/portal/:view/admin/authentication/:authenticationid[delete]'
      runmode: 'delete_record'
 
-  - # admin_subject_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject.html[get]'
+  - # admin_topic_loc:
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic.html[get]'
      runmode: 'show_collection'
-  - # admin_subject_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject.json[get]'
+  - # admin_topic_loc:
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic.json[get]'
      runmode: 'show_collection'
-  - # admin_subject_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject.rdf[get]'
+  - # admin_topic_loc:
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic.rdf[get]'
      runmode: 'show_collection'
-  - # admin_subject_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject[get]'
+  - # admin_topic_loc:
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic[get]'
      runmode: 'show_collection'
-  - # admin_subject_loc: Record show
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject/:subjectid[get]'
+  - # admin_topic_loc: Record show
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic/:topicid[get]'
      runmode: 'show_record'
-  - # admin_subject_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject/:subjectid/edit[get]'
+  - # admin_topic_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic/:topicid/edit[get]'
      runmode: 'show_record_form'
-  - # admin_subject_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject/:subjectid/edit.html[get]'
+  - # admin_topic_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic/:topicid/edit.html[get]'
      runmode: 'show_record_form'
-  - # admin_subject_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject[post]'
+  - # admin_topic_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic[post]'
      runmode: 'create_record'
-  - # admin_subject_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject/:subjectid[post]'
+  - # admin_topic_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic/:topicid[post]'
      runmode: 'update_record'
-  - # admin_subject_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject/:subjectid[put]'
+  - # admin_topic_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic/:topicid[put]'
      runmode: 'update_record'
-  - # admin_subject_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Admin::Subject'
-     rule: '/portal/:view/admin/subject/:subjectid[delete]'
+  - # admin_topic_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Topic'
+     rule: '/portal/:view/topic/:topicid[delete]'
+     runmode: 'delete_record'
+
+  - # admin_topic_loc: Record show
+     module: 'OpenBib::Handler::Apache::Topic::Mapping'
+     rule: '/portal/:view/topic/:topicid/mapping/:mappingid[get]'
+     runmode: 'show_record'
+  - # admin_topic_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Topic::Mapping'
+     rule: '/portal/:view/topic/:topicid/mapping/:mappingid/edit[get]'
+     runmode: 'show_record_form'
+  - # admin_topic_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Topic::Mapping'
+     rule: '/portal/:view/topic/:topicid/mapping/:mappingid/edit.html[get]'
+     runmode: 'show_record_form'
+  - # admin_topic_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Topic::Mapping'
+     rule: '/portal/:view/topic/:topicid/mapping/:mappingid[post]'
+     runmode: 'update_record'
+  - # admin_topic_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Topic::Mapping'
+     rule: '/portal/:view/topic/:topicid/mapping/:mappingid[put]'
+     runmode: 'update_record'
+  - # admin_topic_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Topic::Mapping'
+     rule: '/portal/:view/topic/:topicid/mapping/:mappingid[delete]'
      runmode: 'delete_record'
 
 
@@ -2561,7 +2593,7 @@ elasticsearch_sorttype_value:
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
 xapian_option:
-  maxmatch: 2000
+  maxmatch: 10000
   max_key_length: 240
 
 # Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
@@ -2798,9 +2830,9 @@ tt_admin_user_tname: admin_user
 tt_admin_user_search_tname: admin_user_search
 tt_admin_user_search_form_tname: admin_user_search_form
 
-tt_admin_subject_tname: admin_subject
-tt_admin_subject_record_tname: admin_subject_record
-tt_admin_subject_record_edit_tname: admin_subject_record_edit
+tt_admin_topic_tname: admin_topic
+tt_admin_topic_record_tname: admin_topic_record
+tt_admin_topic_record_edit_tname: admin_topic_record_edit
 
 tt_admin_showstat_tname: admin_showstat
 tt_admin_showuser_tname: admin_showuser
@@ -2908,9 +2940,9 @@ tt_litlist_item_tname: litlist_item
 tt_litlist_item_record_tname: litlist_item_record
 tt_litlist_collection_tname: litlist_collection
 tt_litlist_collection_recent_tname: litlist_collection_recent
-tt_litlist_collection_by_subject_tname: litlist_collection_by_subject
-tt_litlist_collection_by_single_subject_tname: litlist_collection_by_single_subject
-tt_litlist_collection_by_single_subject_recent_tname: litlist_collection_by_single_subject_recent
+tt_litlist_collection_by_topic_tname: litlist_collection_by_topic
+tt_litlist_collection_by_single_topic_tname: litlist_collection_by_single_topic
+tt_litlist_collection_by_single_topic_recent_tname: litlist_collection_by_single_topic_recent
 tt_litlist_collection_by_user_tname: litlist_collection_by_user
 tt_litlist_collection_by_single_user_tname: litlist_collection_by_single_user
 tt_loadbalancer_tname: loadbalancer
@@ -2939,6 +2971,7 @@ tt_title_popular_tname: title_popular
 tt_person_tname: person
 tt_corporatebody_tname: corporatebody
 tt_subject_tname: subject
+tt_topic_tname: topic
 tt_classification_tname: classification
 tt_library_tname: library
 tt_tag_tname: tag

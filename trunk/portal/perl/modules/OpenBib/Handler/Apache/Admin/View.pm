@@ -216,11 +216,11 @@ sub create_record {
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($new_viewid){
-            $logger->debug("Weiter zum Record $new_viewid");
+        if ($new_viewid){ # Datensatz erzeugt, wenn neue id
+            $logger->debug("Weiter zum Record $input_data_ref->{viewname}");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('viewid',$new_viewid);
-            $self->param('location',"$location/$new_viewid");
+            $self->param('viewid',$input_data_ref->{viewname});
+            $self->param('location',"$location/$input_data_ref->{viewname}");
             $self->show_record;
         }
     }
@@ -344,11 +344,15 @@ sub update_record {
 
     $config->update_view($input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record $viewname");
+        $self->show_record;
+    }
 
     return;
 }

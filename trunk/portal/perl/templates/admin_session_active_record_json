@@ -28,6 +28,7 @@ FOREACH query IN queries;
   queriesinfos.push(thisqueryinfo);
 END;
 
+
 this_json_output = {
     link = {
           rel = 'self'
@@ -38,6 +39,7 @@ this_json_output = {
     createtime = thissession.createtime
     numqueries = thissession.numqueries
     queries = queriesinfos
+    events = events
 };
 
 to_json(this_json_output) %]

@@ -376,11 +376,15 @@ sub update_record {
     # Ansonsten POST oder PUT => Aktualisieren
     $config->update_databaseinfo_rss($input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
-
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/rss");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record $rssid");
+        $self->show_record;
+    }
 
     return;
 }

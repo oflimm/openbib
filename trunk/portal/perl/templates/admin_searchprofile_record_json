@@ -1,5 +1,7 @@
 [%- 
 
+databases = config.get_databases_of_searchprofile(searchprofile.id);
+
 this_json_output = {
      link = {
           rel = 'self'
@@ -8,7 +10,9 @@ this_json_output = {
 
      id = searchprofile.id
      own_index = searchprofile.own_index
-     databases = config.get_databases_of_searchprofile(searchprofile.id)
+     number_of_databases = databases.size
+
+     databases = databases 
 };
 
 to_json(this_json_output);

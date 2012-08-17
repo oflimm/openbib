@@ -208,11 +208,11 @@ sub create_record {
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($new_profileid){
-            $logger->debug("Weiter zum Record $new_profileid");
+        if ($new_profileid){ # Datensatz erzeugt, wenn neue id
+            $logger->debug("Weiter zum Record $input_data_ref->{profilename}");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('profileid',$new_profileid);
-            $self->param('location',"$location/$new_profileid");
+            $self->param('profileid',$input_data_ref->{profilename});
+            $self->param('location',"$location/$input_data_ref->{profilename}");
             $self->show_record;
         }
     }
@@ -326,11 +326,15 @@ sub update_record {
         description => $input_data_ref->{description},
     });
 
-    return unless ($self->param('representation') eq "html");
-
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profile_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record $profilename");
+        $self->show_record;
+    }
 
     return;
 }

@@ -105,6 +105,7 @@ admin_searchprofile_loc: admin/searchprofile
 admin_user_loc: admin/user
 admin_statistic_loc: admin/statistic
 admin_server_loc: admin/server
+admin_topic_loc: admin/topic
 admin_login_loc: admin/login
 admin_logout_loc: admin/logout
 bibsonomy_loc: bibsonomy
@@ -2019,74 +2020,98 @@ dispatch_rules:
      rule: '/portal/:view/admin/authentication/:authenticationid[delete]'
      runmode: 'delete_record'
 
-  - # admin_topic_loc:
+  - # topic_loc:
      module: 'OpenBib::Handler::Apache::Topic'
      rule: '/portal/:view/topic.html[get]'
      runmode: 'show_collection'
-  - # admin_topic_loc:
+  - # topic_loc:
      module: 'OpenBib::Handler::Apache::Topic'
      rule: '/portal/:view/topic.json[get]'
      runmode: 'show_collection'
-  - # admin_topic_loc:
+  - # topic_loc:
      module: 'OpenBib::Handler::Apache::Topic'
      rule: '/portal/:view/topic.rdf[get]'
      runmode: 'show_collection'
-  - # admin_topic_loc:
+  - # topic_loc:
      module: 'OpenBib::Handler::Apache::Topic'
      rule: '/portal/:view/topic[get]'
      runmode: 'show_collection'
-  - # admin_topic_loc: Record show
+  - # topic_loc: Record show
      module: 'OpenBib::Handler::Apache::Topic'
      rule: '/portal/:view/topic/:topicid[get]'
      runmode: 'show_record'
-  - # admin_topic_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Topic'
-     rule: '/portal/:view/topic/:topicid/edit[get]'
-     runmode: 'show_record_form'
-  - # admin_topic_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Topic'
-     rule: '/portal/:view/topic/:topicid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # admin_topic_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Topic'
-     rule: '/portal/:view/topic[post]'
-     runmode: 'create_record'
-  - # admin_topic_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Topic'
-     rule: '/portal/:view/topic/:topicid[post]'
-     runmode: 'update_record'
-  - # admin_topic_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Topic'
-     rule: '/portal/:view/topic/:topicid[put]'
-     runmode: 'update_record'
-  - # admin_topic_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Topic'
-     rule: '/portal/:view/topic/:topicid[delete]'
-     runmode: 'delete_record'
-
-  - # admin_topic_loc: Record show
+  - # topic_loc: Record show
      module: 'OpenBib::Handler::Apache::Topic::Mapping'
      rule: '/portal/:view/topic/:topicid/mapping/:mappingid[get]'
      runmode: 'show_record'
+
+  - # admin_topic_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic.html[get]'
+     runmode: 'show_collection'
+  - # admin_topic_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic.json[get]'
+     runmode: 'show_collection'
+  - # admin_topic_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic.rdf[get]'
+     runmode: 'show_collection'
+  - # admin_topic_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic[get]'
+     runmode: 'show_collection'
+  - # admin_topic_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic/:topicid[get]'
+     runmode: 'show_record'
   - # admin_topic_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Topic::Mapping'
-     rule: '/portal/:view/topic/:topicid/mapping/:mappingid/edit[get]'
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic/:topicid/edit[get]'
      runmode: 'show_record_form'
   - # admin_topic_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Topic::Mapping'
-     rule: '/portal/:view/topic/:topicid/mapping/:mappingid/edit.html[get]'
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic/:topicid/edit.html[get]'
      runmode: 'show_record_form'
   - # admin_topic_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Topic::Mapping'
-     rule: '/portal/:view/topic/:topicid/mapping/:mappingid[post]'
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic[post]'
+     runmode: 'create_record'
+  - # admin_topic_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic/:topicid[post]'
      runmode: 'update_record'
   - # admin_topic_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Topic::Mapping'
-     rule: '/portal/:view/topic/:topicid/mapping/:mappingid[put]'
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic/:topicid[put]'
      runmode: 'update_record'
   - # admin_topic_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Topic::Mapping'
-     rule: '/portal/:view/topic/:topicid/mapping/:mappingid[delete]'
+     module: 'OpenBib::Handler::Apache::Admin::Topic'
+     rule: '/portal/:view/admin/topic/:topicid[delete]'
+     runmode: 'delete_record'
+  - # admin_topic_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Topic::Mapping'
+     rule: '/portal/:view/admin/topic/:topicid/mapping/:mappingid[get]'
+     runmode: 'show_record'
+  - # admin_topic_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Topic::Mapping'
+     rule: '/portal/:view/admin/topic/:topicid/mapping/:mappingid/edit[get]'
+     runmode: 'show_record_form'
+  - # admin_topic_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Topic::Mapping'
+     rule: '/portal/:view/admin/topic/:topicid/mapping/:mappingid/edit.html[get]'
+     runmode: 'show_record_form'
+  - # admin_topic_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Topic::Mapping'
+     rule: '/portal/:view/admin/topic/:topicid/mapping/:mappingid[post]'
+     runmode: 'update_record'
+  - # admin_topic_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Topic::Mapping'
+     rule: '/portal/:view/admin/topic/:topicid/mapping/:mappingid[put]'
+     runmode: 'update_record'
+  - # admin_topic_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Topic::Mapping'
+     rule: '/portal/:view/admin/topic/:topicid/mapping/:mappingid[delete]'
      runmode: 'delete_record'
 
 
@@ -2593,7 +2618,7 @@ elasticsearch_sorttype_value:
 # xapian index basepath
 xapian_index_base_path: /opt/openbib/ft/xapian/index
 xapian_option:
-  maxmatch: 10000
+  maxmatch: 2000
   max_key_length: 240
 
 # Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
@@ -2830,6 +2855,10 @@ tt_admin_user_tname: admin_user
 tt_admin_user_search_tname: admin_user_search
 tt_admin_user_search_form_tname: admin_user_search_form
 
+tt_topic_tname: topic
+tt_topic_record_tname: topic_record
+tt_topic_record_mapping_tname: topic_record_mapping
+tt_admin_topic_record_mapping_tname: admin_topic_record_mapping
 tt_admin_topic_tname: admin_topic
 tt_admin_topic_record_tname: admin_topic_record
 tt_admin_topic_record_edit_tname: admin_topic_record_edit
@@ -2971,7 +3000,6 @@ tt_title_popular_tname: title_popular
 tt_person_tname: person
 tt_corporatebody_tname: corporatebody
 tt_subject_tname: subject
-tt_topic_tname: topic
 tt_classification_tname: classification
 tt_library_tname: library
 tt_tag_tname: tag

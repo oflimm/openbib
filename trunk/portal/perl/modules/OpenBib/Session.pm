@@ -1005,6 +1005,11 @@ sub save_eventlog_to_statisticsdb {
         my $type          = $event->type;
         my $content       = $event->content;
 
+        # Nutzer-IP's anonymisieren, indem letztes Octet auf Null gesetzt wird.
+        if ($type == 102){
+            $content =~s/\d+$/0/;
+        }
+        
         $statistics->log_event({
             sid       => $new_sid,
             tstamp    => $tstamp,

@@ -311,7 +311,7 @@ sub update_record {
     }
     else {
         $logger->debug("Weiter zum Record");
-        $logger->debug("Weiter zur DB $databaseid");
+        $logger->debug("Weiter zur DB $dbname");
         $self->show_record;
     }
     

@@ -13,14 +13,23 @@
 -%]
 [%-
 
- logintargets = config.get_logintargets;
+ targets = [];
+ FOREACH target IN config.get_logintargets;
+   target.link = {
+          rel = 'self'
+          href = "${location}/${target.id}"
+   };
+
+   targets.push(target);
+ END;
+ 
 
  this_json_output = {
      link = {
           rel = 'self'
           href = location
      }
-     authentication_targets = logintargets
+     authentication_targets = targets
  };
 
  to_json(this_json_output);

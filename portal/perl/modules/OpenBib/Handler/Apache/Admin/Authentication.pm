@@ -326,9 +326,15 @@ sub update_record {
 
     return unless ($self->param('representation') eq "html");
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record $authenticationid");
+        $self->show_record;
+    }
 
     return;
 }
@@ -386,6 +392,16 @@ sub get_input_definition {
             type     => 'scalar',
         },
         remoteuser => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        remoteuser => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        remotedb => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

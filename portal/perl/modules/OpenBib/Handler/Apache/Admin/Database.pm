@@ -108,39 +108,6 @@ sub show_collection {
     return Apache2::Const::OK;
 }
 
-sub show_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    # Dispatched Args
-
-    # Shared Args
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $dbname         = $self->strip_suffix($self->param('databaseid'));
-
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-    
-    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
-
-    if (!$dbinfo_ref){
-        $logger->error("Database $dbname couldn't be found.");
-    }
-    
-    my $ttdata={
-        databaseinfo => $dbinfo_ref,
-    };
-    
-    $self->print_page($config->{tt_admin_database_record_tname},$ttdata);
-
-    return;
-}
-
 sub create_record {
     my $self = shift;
 
@@ -184,17 +151,53 @@ sub create_record {
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($new_databaseid){
-            $logger->debug("Weiter zur DB $new_databaseid");
+        if ($new_databaseid){ # Datensatz erzeugt, wenn neue id
+            $logger->debug("Weiter zur DB $input_data_ref->{dbname}");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('databaseid',$new_databaseid);
-            $self->param('location',"$location/$new_databaseid");
+            $self->param('databaseid',$input_data_ref->{dbname});
+            $self->param('location',"$location/$input_data_ref->{dbname}");
             $self->show_record;
         }
     }
 
     return;
 }
+
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $dbname         = $self->strip_suffix($self->param('databaseid'));
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
+
+    $logger->debug("Show Record $dbname");
+
+    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
+
+    if (!$dbinfo_ref){
+        $logger->error("Database $dbname couldn't be found.");
+    }
+    
+    my $ttdata={
+        databaseinfo => $dbinfo_ref,
+    };
+    
+    $self->print_page($config->{tt_admin_database_record_tname},$ttdata);
+
+    return;
+}
+
 
 sub show_record_form {
     my $self = shift;
@@ -301,11 +304,17 @@ sub update_record {
     
     $config->update_databaseinfo($input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
-
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        $logger->debug("Weiter zur DB $databaseid");
+        $self->show_record;
+    }
+    
 
     return;
 }

@@ -195,24 +195,25 @@ sub create_record {
     my $path_prefix    = $self->param('path_prefix');
     my $location       = $self->param('location');
 
-    # CGI Args
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $subject         = $query->param('subject')                      || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    if ($subject eq "") {
+    if ($input_data_ref->{name} eq "") {
         $self->print_warning($msg->maketext("Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."));
         return Apache2::Const::OK;
     }
+
+    if ($user->subject_exists($input_data_ref->{name})){
+        $self->print_warning($msg->maketext("Ein Themenbebiet diesen Namens existiert bereits."));
+        return Apache2::Const::OK;
+    }
     
-    my $new_subjectid = $user->new_subject({
-        name        => $subject,
-        description => $description,
-    });
+    my $new_subjectid = $user->new_subject($input_data_ref);
     
     if (!$new_subjectid ){
         $self->print_warning($msg->maketext("Es existiert bereits ein Themengebiet unter diesem Namen"));
@@ -254,14 +255,13 @@ sub update_record {
     my $user           = $self->param('user');
     my $path_prefix    = $self->param('path_prefix');
 
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
     # CGI Args
     my $method          = decode_utf8($query->param('_method')) || '';
     my $confirm         = $query->param('confirm') || 0;
-    my $subject         = decode_utf8($query->param('subject'))         || '';
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my @classifications = ($query->param('classifications'))?$query->param('classifications'):();
-    my $type            = $query->param('type')            || '';
-    
+
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
@@ -293,16 +293,22 @@ sub update_record {
     # Ansonsten POST oder PUT => Aktualisieren
 
     $user->update_subject({
-        name                 => $subject,
-        description          => $description,
+        name                 => $input_data_ref->{name},
+        description          => $input_data_ref->{description},
         id                   => $subjectid,
-        classifications      => \@classifications,
-        type                 => $type,
     });
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subject_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subject_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        $logger->debug("Weiter zum Record $subjectid");
+        $self->show_record;
+    }
+    
 
     return;
 }
@@ -336,4 +342,21 @@ sub delete_record {
     return;
 }
 
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        description => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        name => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+    };
+}
+    
 1;

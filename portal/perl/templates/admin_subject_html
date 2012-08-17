@@ -64,7 +64,7 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Themengebiet") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
-<tr><td><input type="text" name="subject" /></td><td><input type="text" name="description" size="20" />
+<tr><td><input type="text" name="name" /></td><td><input type="text" name="description" size="20" />
 </td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 </table>
 </td></tr>

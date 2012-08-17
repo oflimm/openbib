@@ -262,11 +262,15 @@ sub update_record {
     # Ansonsten POST oder PUT => Aktualisieren
     $config->update_view_rss($viewname,$input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}/$viewname/rss/edit.html");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_view_loc}/$viewname/rss/edit.html");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record $viewname");
+        $self->show_record;
+    }
 
     return;
 }

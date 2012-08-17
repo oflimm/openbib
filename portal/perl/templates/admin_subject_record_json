@@ -13,65 +13,13 @@
 -%]
 [%-
 
-  thissubject = {
-     meta    = subject
-     mapping = {}
+  this_json_output = subject;
+
+  this_json_output.link = {
+          rel = 'self'
+          href = location
   };
 
-  bks         = config.load_bk;
-
-  bklist = [];
-  FOREACH bk IN bks;
-    IF bk.key.length == 2;
-      thisbk = {
-        classification   => bk.key,
-        desc             => bk.value,
-      };
-      bklist.push(thisbk);
-    END ;
-  END ;
-
-  classification_selected = {};
-  FOREACH classification IN user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id});
-     classification_selected.${classification} = 1;
-  END;
-
-  bkmapping = [];
-  FOREACH bk IN bklist;
-   IF classification_selected.${bk.classification};
-     bkmapping.push({ id = bk.classification, description = bk.desc});
-   END;
-  END;
-
-  classification_selected = {};
-  FOREACH classification IN user.get_classifications_of_subject({ type => 'EZB', subjectid => subject.id});
-     classification_selected.${classification} = 1;
-  END;
-
-  ezbmapping = [];
-  
-  FOREACH ezb_subject IN ezb.get_subjects;
-   IF classification_selected.${ezb_subject.notation};
-     ezbmapping.push({id = ezb_subject.notation, description = ezb_subject.desc});
-   END;
-  END;
-
-  classification_selected = {};
-  FOREACH classification IN user.get_classifications_of_subject({ type => 'DBIS', subjectid => subject.id});
-    classification_selected.${classification} = 1;
-  END;
-
-  dbismapping = [];
-  FOREACH dbis_subject IN dbis.get_subjects;
-   IF classification_selected.${dbis_subject.notation};
-     dbismapping.push({id = dbis_subject.notation, description = dbis_subject.desc});
-   END;
-  END;
-
-  thissubject.mapping.bk   = bkmapping;
-  thissubject.mapping.ezb  = ezbmapping;
-  thissubject.mapping.dbis = dbismapping;
-
-  to_json(thissubject);
+  to_json(this_json_output);
 
 -%]

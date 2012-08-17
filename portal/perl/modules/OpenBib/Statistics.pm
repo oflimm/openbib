@@ -286,9 +286,11 @@ sub create_session {
         createtime_day   => $parsed_tstamp->printf("%d"),
     });
 
-    my $new_sessionid = $new_session->id;
+    if ($new_session){
+        return $new_session->id;
+    }
     
-    return $new_sessionid;
+    return;
 }       
 
 sub log_event {

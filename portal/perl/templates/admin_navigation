@@ -180,9 +180,9 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_authentication_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
 [% END %]
-[% IF active_submenu == "subject" %]
+[% IF active_submenu == "topic" %]
   <li class="active"><strong>[% msg.maketext("Themengebiete") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('admin_subject_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('topic_loc') %]/edit.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
 [% END %]
 </ul>

@@ -147,14 +147,69 @@ sub show_active_record {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my ($username,$createtime) = $session->get_info($sessionid);
+    my $thissession = $session->{schema}->resultset('Sessioninfo')->search_rs(
+        {
+            sessionid => $sessionid,
+        }
+    )->single;
+
+    if (!$thissession){
+        $logger->debug("No such session with id $sessionid");
+        $self->print_warning($msg->maketext("Diese Session existiert nicht."));
+        return;
+    }
+    
+    my ($username,$createtime) = ($thissession->username,$thissession->createtime);
+    
     my @queries                = $session->get_all_searchqueries({
         sessionid => $sessionid,
     });
     
-    if (!$username) {
-        $username="anonymous";
+    my @events = ();
+    
+    foreach my $event ($thissession->eventlogs->all){
+        my $type        = $event->type;
+        my $tstamp      = $event->tstamp;
+        my $content     = $event->content;
+
+        next unless ($content);
+        
+        push @events, {
+            type       => $type,
+            content    => $content,
+            createtime => $tstamp,
+        };
     }
+
+    foreach my $event ($thissession->eventlogjsons->all){
+        my $type        = $event->type;
+        my $tstamp      = $event->tstamp;
+        my $content     = $event->content;
+
+        next if (!$content || $type == 1);
+
+        my $json_ref;
+
+        eval {
+            $json_ref = decode_json $content;
+        };
+
+        if ($@){
+            $logger->error("Error decoding JSON ".$@);
+            next;
+        }
+            
+        push @events, {
+            type       => $type,
+            content    => $json_ref,
+            createtime => $tstamp,
+        };
+    }
+
+    @events = map { $_->[0] }
+        sort { $b->[1] <=> $a->[1] }
+            map { [$_, $_->{createtime}] }
+                @events;
     
     my $singlesession={
         sessionid       => $sessionid,
@@ -168,6 +223,7 @@ sub show_active_record {
         dbinfo      => $dbinfotable,
         thissession => $singlesession,
         queries     => \@queries,
+        events      => \@events,
     };
     
     $self->print_page($config->{tt_admin_session_active_record_tname},$ttdata);

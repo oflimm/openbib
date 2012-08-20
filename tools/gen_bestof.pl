@@ -769,7 +769,7 @@ if ($type == 10){
         my $bk_ref = {};
 
         my $in_select_string = join(',',map {'?'} @databases);
-        my $sqlstring="select count(distinct ai.dbname, ai.id) as bkcount,n.content as bk from all_isbn as ai, normdata as n where n.category=4100 and n.isbn=ai.isbn and ai.dbname in ($in_select_string) group by n.content";
+        my $sqlstring="select count(distinct ai.titleid) as bkcount,n.content as bk from all_titles_by_isbn as ai, enriched_content_by_isbn as n where n.field=4100 and n.isbn=ai.isbn and ai.dbname in ($in_select_string) group by n.content,ai.dbname";
         my $request=$enrichdbh->prepare($sqlstring) or $logger->error($DBI::errstr);
         $request->execute(@databases);
 

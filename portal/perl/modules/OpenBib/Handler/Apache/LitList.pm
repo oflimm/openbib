@@ -241,7 +241,7 @@ sub show_collection_by_single_topic {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $topicid      = $self->strip_suffix($self->param('topicid'));
+    my $topicid        = $self->strip_suffix($self->param('topicid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -253,15 +253,16 @@ sub show_collection_by_single_topic {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
+#    my $location       = $self->param('location');
 
-    my $topics_ref         = $user->get_topics;
+    my $topics_ref           = $user->get_topics;
     my $public_litlists_ref  = $user->get_public_litlists({ topicid => $topicid });
 
     # TT-Data erzeugen
     my $ttdata={
-        topics       => $topics_ref,
-        topicid      => $topicid,
-        public_litlists=> $public_litlists_ref,
+        topics          => $topics_ref,
+        topicid         => $topicid,
+        public_litlists => $public_litlists_ref,
     };
     
     $self->print_page($config->{tt_litlist_collection_by_single_topic_tname},$ttdata);
@@ -733,6 +734,7 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
     
     # CGI Args
     my $titid          = $query->param('titid')       || '';

@@ -2423,7 +2423,7 @@ sub get_public_litlists {
         $litlists = $self->{schema}->resultset('Litlist')->search(
             {
                 'topicid.id'  => $topicid,
-                'me.type'       => 1,
+                'me.type'     => 1,
             },
             {
 #                select   => [ {distinct => 'me.id'} ],

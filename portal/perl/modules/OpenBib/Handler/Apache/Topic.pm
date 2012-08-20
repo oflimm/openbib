@@ -60,7 +60,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::Apache';
 
 # Run at startup
 sub setup {

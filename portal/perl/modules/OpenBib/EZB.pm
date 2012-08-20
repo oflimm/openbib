@@ -78,7 +78,7 @@ sub new {
     $self->{client_ip}  = (defined $client_ip )?$client_ip:undef;
     $self->{lang}       = (defined $lang )?$lang:undef;
 
-    $self->{client}  = LWP::UserAgent->new;            # HTTP client
+    $self->{client}     = LWP::UserAgent->new;            # HTTP client
 
     return $self;
 }

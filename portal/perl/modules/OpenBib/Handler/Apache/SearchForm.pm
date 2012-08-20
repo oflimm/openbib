@@ -81,7 +81,7 @@ sub show {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $type           = $self->strip_suffix($self->param('type'));
+    my $type           = $self->strip_suffix($self->param('type')) || 'simple';
 
     # Shared Args
     my $query          = $self->query();

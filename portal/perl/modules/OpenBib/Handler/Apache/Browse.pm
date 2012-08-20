@@ -53,6 +53,8 @@ use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::Catalog;
+use OpenBib::DBIS;
+use OpenBib::EZB;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -72,7 +74,8 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show'       => 'show',
+        'show_collection_by_field'       => 'show_collection_by_field',
+        'show_collection_by_topic'       => 'show_collection_by_topic',
     );
 
     # Use current path as template path,
@@ -80,7 +83,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show {
+sub show_collection_by_field {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -89,7 +92,8 @@ sub show {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $category       = $self->strip_suffix($self->param('category'));
+    my $type           = $self->param('type');
+    my $field          = $self->strip_suffix($self->param('field'));
 
     # Shared Args
     my $query          = $self->query();
@@ -138,36 +142,19 @@ sub show {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
-    return unless ($database && $category);
+    return unless ($database && $field);
 
     my $schema;
-    
-    if ($config->{dbimodule} eq "Pg"){
-        eval {
-            # UTF8: {'pg_enable_utf8'    => 1}
-            $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
-        }
-    }
-    elsif ($config->{dbimodule} eq "mysql"){
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
-        }
-    }
 
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
+    eval {
+        # UTF8: {'pg_enable_utf8'    => 1}
+        $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+    };
+    
+    if ($@){
+        $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
+        next;
+    }
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
@@ -194,7 +181,7 @@ sub show {
                     my $result = $soap->browse(
                         SOAP::Data->name(parameter  =>\SOAP::Data->value(
                             SOAP::Data->name(collection => $collection)->type('string'),
-                            SOAP::Data->name(category   => $category)->type('string'),
+                            SOAP::Data->name(category   => $field)->type('string'),
                             SOAP::Data->name(content    => $browsecontent)->type('string'))));
                     
                     unless ($result->fault) {
@@ -220,7 +207,7 @@ sub show {
 
                     collection    => $collection,
                     browsecontent => $browsecontent,
-                    browsecat     => $category,
+                    browsecat     => $field,
                 };
 
                 $stid=~s/[^0-9]//g;
@@ -244,46 +231,43 @@ sub show {
     my $browselist_ref = [];
     my $hits           = 0;
     
-    my ($type,$thisfield)=$category=~/^([A-Z])(\d+)/;
-    
-    $type =
-        ($type eq "P")?'person':
-            ($type eq "C")?'corporatebody':
-                ($type eq "S")?'subject':
-                    ($type eq "N")?'classification':'title';
-    
-    my $conn_cat_ref = {
-        'T0100' => 'person',
-        'T0101' => 'person',
-        'T0102' => 'person',
-        'T0103' => 'person',
-        'T0200' => 'corporatebody',
-        'T0201' => 'corporatebody',
-        'T0700' => 'classificatio',
-        'T0710' => 'subject',
-        'T0902' => 'subject',
-        'T0902' => 'subject',
-        'T0907' => 'subject',
-        'T0912' => 'subject',
-        'T0917' => 'subject',
-        'T0922' => 'subject',
-        'T0927' => 'subject',
-        'T0932' => 'subject',
-        'T0937' => 'subject',
-        'T0942' => 'subject',
-        'T0947' => 'subject',
+    my $conn_field_ref = {
+        '0100' => 'person',
+        '0101' => 'person',
+        '0102' => 'person',
+        '0103' => 'person',
+        '0200' => 'corporatebody',
+        '0201' => 'corporatebody',
+        '0700' => 'classification',
+        '0710' => 'subject',
+        '0902' => 'subject',
+        '0902' => 'subject',
+        '0907' => 'subject',
+        '0912' => 'subject',
+        '0917' => 'subject',
+        '0922' => 'subject',
+        '0927' => 'subject',
+        '0932' => 'subject',
+        '0937' => 'subject',
+        '0942' => 'subject',
+        '0947' => 'subject',
     };
 
     my $contents;
-    
-    if ($type eq "title" && exists $conn_cat_ref->{$category}){
+
+    # Browsen in Titelnormdaten vie verknuepfter anderer Normdaten 
+    if ($type eq "title"){
         # Bestimmung der Titel
-        my $table  = $conn_cat_ref->{$category};
-        
-        my $regexp_op = ($config->{dbimodule} eq "mysql")?"rlike":
-            ($config->{dbimodule} eq "Pg")?"~":"rlike";
-        
-        if ($table eq "title"){
+        my $table= "";
+
+        if (defined $conn_field_ref->{$field}){
+            $table = $conn_field_ref->{$field};
+        }
+
+        # Wenn verknuepfte Normdatei
+        if ($table){
+            $logger->debug("Searching title field via connected normdata");
+
             my %table_type = (
                 'person'         => {
                     resultset => 'TitlePerson',
@@ -317,12 +301,12 @@ sub show {
                 },
             );
 
-            # DBI: "select distinct norm.content as content from $normtable as norm, conn where conn.category=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.category=1 order by content $limits ";
+            # DBI: "select distinct norm.content as content from $normtable as norm, conn where conn.field=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.field=1 order by content $limits ";
             $logger->debug("Type $table -> $table_type{$table}{resultset}");
             $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
                 {
-                    $table_type{$table}{field} => 1, # Ansetzungsform
-                    'me.field' => $thisfield
+                    $table_type{$table}{field} => 800, # Ansetzungsform
+                    'me.field' => $field
                 },
                 {
                     select   => [$table_type{$table}{select}],
@@ -336,8 +320,8 @@ sub show {
 
             $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
                 {
-                    $table_type{$table}{field} => 1, # Ansetzungsform
-                    'me.field' => $thisfield
+                    $table_type{$table}{field} => 800, # Ansetzungsform
+                    'me.field' => $field
                 },
                 {
                     select   => [$table_type{$table}{select}],
@@ -351,10 +335,13 @@ sub show {
             );            
 
         }
+        # Sonst direkt in den Titelfeldern
         else {
+            $logger->debug("Searching title field directly with hitrange $hitrange / offset $offset");
+            
             $contents = $schema->resultset('TitleField')->search_rs(
                 {
-                    'field'   => $thisfield,
+                    'field'   => $field,
                 },
                 {
                     select   => ['content'],
@@ -367,20 +354,22 @@ sub show {
             
             $contents = $schema->resultset('TitleField')->search_rs(
                             {
-                    'field'   => $thisfield,
+                    'field'   => $field,
                 },
                 {
                     select   => ['content'],
                     as       => ['thiscontent'],
                     group_by => ['content'],
-                    rows => $hitrange,
-                    offset => $offset,
+                    rows     => $hitrange,
+                    offset   => $offset,
                 }
             );
 
         }
     }
+    # Browsen direkt in entsprechenden Normdaten
     else {
+        $logger->debug("Searching $type field");
         my %table_type = (
             'title'         => {
                 resultset => 'TitleField',
@@ -403,10 +392,10 @@ sub show {
         );
 
         $logger->debug("Type $type -> $table_type{$type}{resultset}");
-        # DBI: "select distinct content from $type where category=? order by content $limits 
+        # DBI: "select distinct content from $type where field=? order by content $limits 
         $contents = $schema->resultset($table_type{$type}{resultset})->search_rs(
             {
-                'field'   => $thisfield,
+                'field'   => $field,
             },
             {
                 select   => ['content'],
@@ -419,7 +408,7 @@ sub show {
 
         $contents = $schema->resultset($table_type{$type}{resultset})->search_rs(
             {
-                'field'   => $thisfield,
+                'field'   => $field,
             },
             {
                 select   => ['content'],
@@ -439,7 +428,7 @@ sub show {
     }
     
     # Bestimmung der Titelzahl
-    # DBI: "select count(distinct content) as rowcount from tit where category=?") or $logger->error($DBI::errstr);
+    # DBI: "select count(distinct content) as rowcount from tit where field=?") or $logger->error($DBI::errstr);
     
 
     my $nav = Data::Pageset->new({
@@ -452,13 +441,72 @@ sub show {
     # TT-Data erzeugen
     my $ttdata={
         database   => $database,
-        category   => $category,
+        field      => $field,
         qopts      => $queryoptions->get_options,
         browselist => $browselist_ref,
         hits       => $hits,
         nav        => $nav,
     };
     $self->print_page($config->{"tt_browse_".$type."_tname"},$ttdata);
+    return Apache2::Const::OK;
+}
+
+sub show_collection_by_topic {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $topicid        = $self->strip_suffix($self->param('topicid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    #####################################################################
+    ## Hitrange: Anzahl gleichzeitig ausgegebener Treffer (Blaettern)
+    ##          >0  - gibt die maximale Zahl an
+    ##          <=0 - gibt immer alle Treffer aus
+  
+    my $hitrange=($query->param('num'))?$query->param('num'):20;
+    ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
+
+    my $page=($query->param('page'))?$query->param('page'):1;
+    ($page)=$page=~/^(-?\d+)$/; # page muss numerisch sein (SQL-Injection)
+
+    #####################################################################
+    ## Offset: Maximale Anzahl ausgegebener Treffer bei Anfangs-Suche
+    ##          >0  - hitrange Treffer werden ab dieser Nr. ausgegeben 
+  
+    my $offset=$page*$hitrange-$hitrange;
+  
+    #####################################################################
+    # Verbindung zur SQL-Datenbank herstellen
+
+    return unless ($topicid);
+
+    my $ezb  = new OpenBib::EZB;
+    my $dbis = new OpenBib::DBIS;
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        ezb        => $ezb,
+        dbis       => $dbis,
+        topicid    => $topicid,
+        qopts      => $queryoptions->get_options,
+    };
+    $self->print_page($config->{"tt_browse_topic_tname"},$ttdata);
     return Apache2::Const::OK;
 }
 

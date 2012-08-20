@@ -42,6 +42,7 @@
           "yearstring" = msg.maketext("Jahr")
           "tagstring" = msg.maketext("Tag")
           "litliststring" = msg.maketext("Literaturliste")
+          "t0720" = msg.maketext("Provenienz")
 };
 
           cgi_querystring     = cgiapp.to_cgi_querystring;

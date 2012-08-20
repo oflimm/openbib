@@ -209,6 +209,7 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();

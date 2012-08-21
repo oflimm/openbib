@@ -67,11 +67,11 @@
 <h1>[% msg.maketext("Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten") %]</h1>
 <p/>
 <div class="listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('ezb_loc') %]?action=show_subjects;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('ezb_loc') %]?action=show_subjects;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('ezb_loc') %]/subject.html?l=[% lang %];type=cloud"[% IF type == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('ezb_loc') %]/subject.html?l=[% lang %];type=list"[% IF type == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
 <div class="left_side23">
-[% IF show_cloud %]
+[% IF type == 'cloud' %]
 <!-- Beginn Tag-Cloud -->
 [%
    css_classes = [
@@ -89,14 +89,14 @@
 [%- classnr   = subject.class;
    itemclass = css_classes.$classnr;
 -%]
-<li class="[% itemclass %]"><span>[% subject.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('ezb_loc') %]?notation=[% subject.notation %];action=show_journals"  class="tag" title="[% subject.count %] Zeitschriften sind in der Fachgruppe [% subject.desc %]">[% subject.desc %]</a></li>
+<li class="[% itemclass %]"><span>[% subject.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('ezb_loc') %]/subject/[% subject.notation %].html?l=[% lang %]"  class="tag" title="[% subject.count %] Zeitschriften sind in der Fachgruppe [% subject.desc %]">[% subject.desc %]</a></li>
 [% END %]
 </ol>
 <!-- Ende Tag-Cloud -->
 [% ELSE %]
 <ul class="subjectlist">
 [% FOREACH subject IN subjects %]
-<li><a href="[% path_prefix %]/[% config.get('ezb_loc') %]?notation=[% subject.notation %];action=show_journals">[% subject.desc %]</a> ([% subject.count %])</li>
+<li><a href="[% path_prefix %]/[% config.get('ezb_loc') %]/subject/[% subject.notation %].html?l=[% lang %]">[% subject.desc %]</a> ([% subject.count %])</li>
 [% END %]
 </ul>
 [% END %]

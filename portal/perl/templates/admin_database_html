@@ -77,13 +77,9 @@
  <td><input type="text" name="dbname" size="8" /></td>
  <td><input type="text" name="description" /></td>
  <td><select name="system">
-       <option value="Lars">Lars</option>
-       <option value="Allegro">Allegro</option>
-       <option value="Bis-lok">Bis-lok</option>
-       <option value="Sisis" selected="selected">Sisis</option>
-       <option value="OAI">OAI</option>
-       <option value="Aleph">Aleph</option>
-       <option value="Anderes">Anderes</option>
+[% FOREACH source_system IN config.get('source_systems') %]
+       <option value="[% source_system %]">[% source_system %]</option>
+[% END %]
      </select></td>
  <td><input type="text" name="sigel" size="3" /></td>
  <td><input type="text" name="url" size="20" /></td>

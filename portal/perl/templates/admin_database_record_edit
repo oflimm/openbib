@@ -102,6 +102,7 @@
 <option value="ftp" [% IF databaseinfo.protocol == 'ftp' %]selected[% END %]>[% msg.maketext("FTP") %]</option>
 <option value="http" [% IF databaseinfo.protocol == 'http' %]selected[% END %]>[% msg.maketext("HTTP") %]</option>
 <option value="lokal" [% IF databaseinfo.protocol == 'lokal' %]selected[% END %]>[% msg.maketext("Lokal") %]</option>
+<option value="api" [% IF databaseinfo.protocol == 'api' %]selected[% END %]>[% msg.maketext("API") %]</option>
 </td></tr>
 <tr><td><b>[% msg.maketext("Entfernter Rechnername") %]</b></td><td><input type="text" size="20" name="host" value="[% databaseinfo.host %]" /></td></tr>
 <tr><td><b>[% msg.maketext("Entferntes Verzeichnis") %]</b></td><td><input type="text" size="20" name="remotepath" value="[% databaseinfo.remotepath %]" /></td></tr>

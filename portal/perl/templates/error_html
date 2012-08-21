@@ -17,6 +17,16 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Fehler") %]</a></li>
+      </ul>
+     </div>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
@@ -29,12 +39,7 @@
 
    <h1>[% msg.maketext("Fehler") %]</h1>
 
-<table width="100%">
-<tr><th>[% msg.maketext("Fehlerbeschreibung") %]</th></tr>
-<tr><td class="boxedclear">
 [% err_msg %]
-</td></tr>
-</table>
 
         </div>
         <div id="ie_clearing">&nbsp;</div>

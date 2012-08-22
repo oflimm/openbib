@@ -83,6 +83,9 @@ source_systems:
   - Lars
   - OAI
   - MAB
+  - 'Backend: Z3950'
+  - 'Backend: EZB'
+  - 'Backend: DBIS'
   - Anderes
 
 # Spracheinstellungen
@@ -485,6 +488,10 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Subject'
      rule: '/portal/:view/subject/:database/:subjectid[get]'
      runmode: 'show_record'
+  - # classification_loc:
+     module: 'OpenBib::Handler::Apache::Subject'
+     rule: '/portal/:view/subject/:database[get]'
+     runmode: 'show_collection'
   - # classification_loc:
      module: 'OpenBib::Handler::Apache::Classification'
      rule: '/portal/:view/classification/:database/:classificationid[get]'
@@ -1234,20 +1241,80 @@ dispatch_rules:
      runmode: 'show'
   - # ezb_loc:
      module: 'OpenBib::Handler::Apache::EZB'
-     rule: '/portal/:view/ezb'
-     runmode: 'show'
+     rule: '/portal/:view/ezb/search'
+     runmode: 'search_collection'
   - # ezb_loc:
      module: 'OpenBib::Handler::Apache::EZB'
-     rule: '/portal/:view/ezb.html'
-     runmode: 'show'
+     rule: '/portal/:view/ezb/search.html'
+     runmode: 'search_collection'
+  - # ezb_loc:
+     module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb/search.json'
+     runmode: 'search_collection'
+  - # ezb_loc:
+     module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb/subject'
+     runmode: 'show_collection'
+  - # ezb_loc:
+     module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb/subject.html'
+     runmode: 'show_collection'
+  - # ezb_loc:
+     module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb/subject.json'
+     runmode: 'show_collection'
+  - # ezb_loc:
+     module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb/subject/:subjectid'
+     runmode: 'show_collection_by_subject'
+  - # ezb_loc:
+     module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb/journal/:journalid'
+     runmode: 'show_record'
+  - # ezb_loc:
+     module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb/journal/:journalid/readme'
+     runmode: 'show_record_readme'
+  - # ezb_loc:
+     module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb/journal/:journalid/readme.html'
+     runmode: 'show_record_readme'
+  - # ezb_loc:
+     module: 'OpenBib::Handler::Apache::EZB'
+     rule: '/portal/:view/ezb/journal/:journalid/readme.json'
+     runmode: 'show_record_readme'
   - # dbis_loc:
      module: 'OpenBib::Handler::Apache::DBIS'
-     rule: '/portal/:view/dbis'
-     runmode: 'show'
+     rule: '/portal/:view/dbis/search'
+     runmode: 'search_collection'
   - # dbis_loc:
      module: 'OpenBib::Handler::Apache::DBIS'
-     rule: '/portal/:view/dbis.html'
-     runmode: 'show'
+     rule: '/portal/:view/dbis/search.html'
+     runmode: 'search_collection'
+  - # dbis_loc:
+     module: 'OpenBib::Handler::Apache::DBIS'
+     rule: '/portal/:view/dbis/search.json'
+     runmode: 'search_collection'
+  - # dbis_loc:
+     module: 'OpenBib::Handler::Apache::DBIS'
+     rule: '/portal/:view/dbis/topic'
+     runmode: 'show_collection'
+  - # dbis_loc:
+     module: 'OpenBib::Handler::Apache::DBIS'
+     rule: '/portal/:view/dbis/topic.html'
+     runmode: 'show_collection'
+  - # dbis_loc:
+     module: 'OpenBib::Handler::Apache::DBIS'
+     rule: '/portal/:view/dbis/topic.json'
+     runmode: 'show_collection'
+  - # dbis_loc:
+     module: 'OpenBib::Handler::Apache::DBIS'
+     rule: '/portal/:view/dbis/topic/:topicid'
+     runmode: 'show_collection_by_topic'
+  - # dbis_loc:
+     module: 'OpenBib::Handler::Apache::DBIS'
+     rule: '/portal/:view/dbis/database/:databaseid'
+     runmode: 'show_record'
   - # logout_loc:
      module: 'OpenBib::Handler::Apache::Logout'
      rule: '/portal/:view/logout'
@@ -1420,8 +1487,12 @@ dispatch_rules:
      runmode: 'show_collection'
   - # browse_loc:
      module: 'OpenBib::Handler::Apache::Browse'
-     rule: '/portal/:view/browse/:database/:category'
-     runmode: 'show'
+     rule: '/portal/:view/browse/topic/:topicid'
+     runmode: 'show_collection_by_topic'
+  - # browse_loc:
+     module: 'OpenBib::Handler::Apache::Browse'
+     rule: '/portal/:view/browse/database/:database/:type/:field'
+     runmode: 'show_collection_by_field'
   - # searchform_loc:
      module: 'OpenBib::Handler::Apache::SearchForm'
      rule: '/portal/:view/searchform/:type'
@@ -2863,6 +2934,20 @@ tt_admin_topic_tname: admin_topic
 tt_admin_topic_record_tname: admin_topic_record
 tt_admin_topic_record_edit_tname: admin_topic_record_edit
 
+tt_subject_collection_tname: subject_collection
+
+tt_dbis_database_collection_by_subject_tname: dbis_database_collection_by_subject
+tt_dbis_database_search_tname: dbis_database_search
+tt_dbis_database_record_tname: dbis_database_record
+tt_dbis_database_record_readme_tname: dbis_database_record_readme
+
+tt_ezb_journal_collection_by_subject_tname: ezb_journal_collection_by_subject
+tt_ezb_journal_search_tname: ezb_journal_search
+tt_ezb_journal_record_tname: ezb_journal_record
+tt_ezb_journal_record_readme_tname: ezb_journal_record_readme
+
+tt_home_tname: home
+
 tt_admin_showstat_tname: admin_showstat
 tt_admin_showuser_tname: admin_showuser
 tt_admin_showuser_1_tname: admin_showuser_1
@@ -2894,17 +2979,8 @@ tt_database_collection_tname: database_collection
 tt_database_record_tname: database_record
 tt_error_tname: error
 tt_externaljump_tname: externaljump
-tt_dbis_showsubjects_tname: dbis_showsubjects
-tt_dbis_showdbs_tname: dbis_showdbs
-tt_dbis_searchdbs_tname: dbis_searchdbs
-tt_dbis_showdbinfo_tname: dbis_showdbinfo
-tt_dbis_showdbreadme_tname: dbis_showdbreadme
-tt_ezb_showsubjects_tname: ezb_showsubjects
-tt_ezb_showjournals_tname: ezb_showjournals
-tt_ezb_searchjournals_tname: ezb_searchjournals
-tt_ezb_showjournalinfo_tname: ezb_showjournalinfo
-tt_ezb_showjournalreadme_tname: ezb_showjournalreadme
-tt_home_tname: home
+
+
 tt_info_11_tname: info_11
 tt_info_popular_databases_tname: info_popular_databases
 tt_info_13_tname: info_13
@@ -3029,8 +3105,9 @@ tt_browse_corporatebody_tname: browse_corporatebody
 tt_browse_classification_tname: browse_classification
 tt_browse_subject_tname: browse_subject
 tt_browse_title_tname: browse_title
+tt_browse_topic_tname: browse_topic 
 tt_browse_olws_tname: browse_olws
-tt_searchform_advanced_tname: searchform
+tt_searchform_advanced_tname: searchform_advanced
 tt_searchform_simple_tname: searchform_simple
 tt_searchprofile_tname: searchprofile
 tt_registration_success_tname: registration_success

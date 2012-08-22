@@ -84,7 +84,10 @@ sub new {
 
     my $comment   = exists $arg_ref->{comment}
         ? $arg_ref->{comment}        : undef;
-    
+
+    my $generic_attributes = exists $arg_ref->{generic_attributes}
+        ? $arg_ref->{generic_attributes}   : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -111,6 +114,10 @@ sub new {
     
     if (defined $listid){
         $self->{listid}   = $listid;
+    }
+
+    if (defined $generic_attributes){
+        $self->{generic_attributes}   = $generic_attributes;
     }
 
     $logger->debug("Title-Record-Object created with id $id in database $database");

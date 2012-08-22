@@ -46,7 +46,8 @@ sub setup {
 
     $self->start_mode('show_record');
     $self->run_modes(
-        'show_record' => 'show_record',
+        'show_record'     => 'show_record',
+        'show_collection' => 'show_collection',
     );
 
     # Use current path as template path,

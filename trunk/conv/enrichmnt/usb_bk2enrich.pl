@@ -80,8 +80,8 @@ my $enrichdbh
     or $logger->error_die($DBI::errstr);
 
 # 20 = USB
-my $deleterequest = $enrichdbh->prepare("delete from normdata where category=4100 and origin=20");
-my $enrichrequest = $enrichdbh->prepare("insert into normdata values(?,20,4100,?,?)");
+my $deleterequest = $enrichdbh->prepare("delete from enriched_content_by_isbn where field=4100 and origin=20");
+my $enrichrequest = $enrichdbh->prepare("insert into enriched_content_by_isbn values(?,20,4100,?,?)");
 
 my $isbn_ref = {};
 
@@ -96,7 +96,7 @@ else {
     
     $logger->info("Bestimmung der BK");
     
-    my $request=$dbh->prepare("select tit.content as isbn,notation.content as bk from notation,tit,conn where notation.content regexp '^[0-9][0-9].[0-9][0-9]\$' and conn.targettype=5 and conn.targetid=notation.id and conn.sourcetype=1 and tit.id=conn.sourceid and tit.category in (540,553)");
+    my $request=$dbh->prepare("select title_fields.content as isbn,classification_fields.content as bk from classification_fields,title_fields,title_classification where classification_fields.content ~ '^[0-9][0-9].[0-9][0-9]\$' and title_classification.classificationid=classification_fields.classificationid and title_classification.titleid=title_fields.titleid and title_fields.field in (540,553)");
     $request->execute();
     
     while (my $res=$request->fetchrow_hashref){

@@ -654,6 +654,49 @@ dl.categorized_items {
     margin-right: 20px;
   }
 
+
+  .alphanav {
+    width:100%;
+    margin:0 0 0 0;
+    padding:0;
+    height:25px;
+    border-top: 1px #e3e3e3 solid;
+    border-bottom: 1px #e3e3e3 solid;
+  }
+
+  .alphanav .horizontal {
+    padding:0;
+    margin-top:-20px;
+    margin-left: 0px;
+  }
+  
+  .alphanav .horizontal ul li {
+    list-style:none;
+    float:left;
+    height:20px
+    display:inline;
+  }
+  .alphanav .horizontal ul li a {
+    font:12px Arial, Helvetica, sans-serif;
+    color:rgb(0,0,0);
+    text-decoration:none;
+    line-height:30px;
+    display:block;
+/*    background:url('/images/openbib/horizontal.png') 100% no-repeat; */
+    padding:5px 3px 0 0;
+  }
+  .alphanav .horizontal ul li a:hover {
+    text-decoration:underline;
+    color:rbg(0,0,0);
+  }
+  .alphanav .horizontal ul li a.active {
+    background:none;
+    color:rgb(0,0,0);
+  }
+  .alphanav .horizontal ul li a.active:hover {
+    text-decoration:none;
+  }
+
   .searchbar_container {
     width:100%;
     margin:0 0 0 0;

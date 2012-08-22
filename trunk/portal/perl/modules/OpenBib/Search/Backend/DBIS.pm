@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::DBIS.pm
+#  OpenBib::Search::Backend::DBIS.pm
 #
 #  Objektorientiertes Interface zum DBIS XML-API
 #
@@ -25,7 +25,7 @@
 #
 #####################################################################
 
-package OpenBib::DBIS;
+package OpenBib::Search::Backend::DBIS;
 
 use strict;
 use warnings;

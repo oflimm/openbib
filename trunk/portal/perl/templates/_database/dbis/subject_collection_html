@@ -69,11 +69,11 @@
 <h2>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h2>
 <p/>
 <div class="listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('dbis_loc') %]?action=show_subjects;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('dbis_loc') %]?action=show_subjects;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('subject_loc') %]/dbis.html?l=[% lang %];type=cloud"[% IF type == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('subject_loc') %]/dbis.html?l=[% lang %];typ=list"[% IF type == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
 <div class="left_side23">
-[% IF show_cloud %]
+[% IF type == 'cloud' %]
 <!-- Beginn Tag-Cloud -->
 [%
    css_classes = [

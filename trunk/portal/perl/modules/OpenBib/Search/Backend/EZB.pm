@@ -1,10 +1,10 @@
 #####################################################################
 #
-#  OpenBib::EZB.pm
+#  OpenBib::Search::Backend::EZB.pm
 #
 #  Objektorientiertes Interface zum EZB XML-API
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -25,7 +25,7 @@
 #
 #####################################################################
 
-package OpenBib::EZB;
+package OpenBib::Search::Backend::EZB;
 
 use strict;
 use warnings;
@@ -50,6 +50,28 @@ sub new {
     my ($class,$arg_ref) = @_;
 
     # Set defaults
+    my $searchprofile   = exists $arg_ref->{searchprofile}
+        ? $arg_ref->{searchprofile}           : undef;
+
+    my $database        = exists $arg_ref->{database}
+        ? $arg_ref->{database}                : undef;
+
+    my $self = { };
+
+    bless ($self, $class);
+
+    # Entweder genau eine Datenbank via database oder (allgemeiner) ein Suchprofil via searchprofile mit einer oder mehr Datenbanken
+    
+    $self->{_searchprofile} = $searchprofile if ($searchprofile);
+    $self->{_database}      = $database if ($database);
+    
+    return $self;
+}
+
+sub new {
+    my ($class,$arg_ref) = @_;
+
+    # Set defaults
     my $bibid     = exists $arg_ref->{bibid}
         ? $arg_ref->{bibid}       : undef;
 
@@ -61,6 +83,9 @@ sub new {
 
     my $lang      = exists $arg_ref->{lang}
         ? $arg_ref->{lang}        : undef;
+
+    my $database        = exists $arg_ref->{database}
+        ? $arg_ref->{database}                : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -79,6 +104,7 @@ sub new {
     $self->{lang}       = (defined $lang )?$lang:undef;
 
     $self->{client}     = LWP::UserAgent->new;            # HTTP client
+    $self->{_database}  = $database if ($database);
 
     return $self;
 }
@@ -261,15 +287,15 @@ sub get_journals {
     };
 }
 
-sub search_journals {
+sub initial_search {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $fs       = exists $arg_ref->{fs}
-        ? $arg_ref->{fs}           : '';
+    my $colors   = exists $arg_ref->{colors}
+        ? $arg_ref->{colors}           : '';
 
-    my $notation = exists $arg_ref->{notation}
-        ? $arg_ref->{notation}     : '';
+    my $bibid    = exists $arg_ref->{bibid}
+        ? $arg_ref->{bibid}            : '';
 
     my $sc       = exists $arg_ref->{sc}
         ? $arg_ref->{sc}           : '';
@@ -283,8 +309,26 @@ sub search_journals {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&jq_type1=KT&jq_term1=$fs&Notations[]=$notation&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
-#    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=KT&jq_term1=review&jq_bool2=AND&jq_not2=+&jq_type2=KS&jq_term2=&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&jq_bool4=AND&jq_not4=+&jq_type4=IS&jq_term4=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations[]=AZ&colors=3&xmloutput=1";
+    my $config       = OpenBib::Config->instance;
+    my $searchquery  = OpenBib::SearchQuery->instance;
+    my $queryoptions = OpenBib::QueryOptions->instance;
+
+    # Pagination parameters
+    my $page              = $queryoptions->get_option('page');
+    my $num               = $queryoptions->get_option('num');
+
+    my $offset            = $page*$num-$num;
+
+#     my ($atime,$btime,$timeall);
+  
+#     if ($config->{benchmark}) {
+#         $atime=new Benchmark;
+#     }
+
+    $self->parse_query($searchquery);
+
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$colors&bibid=$self->{bibid}&sc=$sc&lc=$lc&sindex=$sindex&".$self->{_searchquery}."&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
+
     my $titles_ref = [];
     
     $logger->debug("Request: $url");
@@ -382,14 +426,163 @@ sub search_journals {
         push @{$journals_ref}, $singlejournal_ref;
     }
 
-    return {
-        search_count   => $search_count,
-        nav            => $nav_ref,
-        journals       => $journals_ref,
-        current_page   => $current_page_ref,
-        other_pages    => $alphabetical_nav_ref,
-    };
+#     $btime       = new Benchmark;
+#     $timeall     = timediff($btime,$atime);
+#     $logger->debug("Time: ".timestr($timeall,"nop"));
+
+    $self->{resultcount}   = $search_count;
+    $self->{_matches}      = $journals_ref;
+    $self->{_nav}          = $nav_ref;
+    $self->{_current_page} = $current_page_ref;
+    $self->{_other_pages}  = $alphabetical_nav_ref;
+    
+    return $self;
 }
+
+sub get_records {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config     = OpenBib::Config->instance;
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    my @matches = $self->matches;
+    
+    foreach my $match_ref (@matches) {        
+        $logger->debug("Record: ".$match_ref );
+
+        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, generic_attributes => $match_ref->{color}});
+        $record->set_database('ezb');
+        $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $match_ref->{title}});
+        $recordlist->add($record);
+    }
+
+    return $recordlist;
+}
+
+sub get_nav {
+    my $self = shift;
+
+    return $self->{_nav};
+}
+
+sub get_current_page {
+    my $self = shift;
+
+    return $self->{_current_page};
+}
+sub get_other_pages {
+    my $self = shift;
+
+    return $self->{_other_pages};
+}
+
+sub matches {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug(YAML::Dump($self->{_matches}));
+    return @{$self->{_matches}};
+}
+
+sub querystring {
+    my $self=shift;
+    return $self->{_querystring};
+}
+
+sub have_results {
+    my $self = shift;
+    return ($self->{resultcount})?$self->{resultcount}:0;
+}
+
+sub get_resultcount {
+    my $self = shift;
+    return $self->{resultcount};
+}
+
+sub parse_query {
+    my ($self,$searchquery)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my @searchterms = ();
+    foreach my $field (keys %{$config->{searchfield}}){
+        my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
+#        my $searchtermop     = (defined $searchquery->get_searchfield($field)->{bool} && defined $ops_ref->{$searchquery->get_searchfield($field)->{bool}})?$ops_ref->{$searchquery->get_searchfield($field)->{bool}}:'';
+        if ($searchtermstring) {
+            # Freie Suche einfach uebernehmen
+            if    ($field eq "title" && $searchtermstring) {
+                push @searchterms, {
+                    field   => 'KT',
+                    content => $searchtermstring
+                };
+            }
+            elsif ($field eq "titlestring" && $searchtermstring) {
+                push @searchterms, {
+                    field   => 'KS',
+                    content => $searchtermstring
+                };
+            }
+            elsif ($field eq "subject" && $searchtermstring) {
+                push @searchterms, {
+                    field   => 'KW',
+                    content => $searchtermstring
+                };
+            }
+            elsif ($field eq "classification" && $searchtermstring) {
+                push @searchterms, {
+                    string   => 'Notations[]=$searchtermstring',
+                };
+            }
+            elsif ($field eq "publisher" && $searchtermstring) {
+                push @searchterms, {
+                    field   => 'PU',
+                    content => $searchtermstring
+                };
+            }
+        }
+    }
+
+    my @searchstrings = ();
+    my $i = 1;
+    foreach my $search_ref (@searchterms){
+        last if ($i > 3);
+
+        if ($search_ref->{field} && $search_ref->{content}){
+            push @searchstrings, "jq_type${i}=$search_ref->{field}&jq_term${i}=$search_ref->{content}&jq_bool${i}=AND";
+            $i++;
+        }
+    }
+    
+    if (defined $searchquery->get_searchfield('classification')->{val}){
+        push @searchstrings, "Notations[]=".$searchquery->get_searchfield('classification')->{val};
+    }
+    else {
+        push @searchstrings, "Notations[]=all";
+    }
+
+    my $ezbquerystring = join("&",@searchstrings);
+    $logger->debug("EZB-Querystring: $ezbquerystring");
+    $self->{_querystring} = $ezbquerystring;
+
+    return $self;
+}
+
+
+sub DESTROY {
+    my $self = shift;
+
+    return;
+}
+
 
 sub get_journalinfo {
     my ($self,$arg_ref) = @_;
@@ -538,19 +731,13 @@ sub get_journalreadme {
     };
 }
 
-sub DESTROY {
-    my $self = shift;
-
-    return;
-}
-
 
 1;
 __END__
 
 =head1 NAME
 
-OpenBib::EZB - Objektorientiertes Interface zum EZB XML-API
+OpenBib::Search::Backend::EZB - Objektorientiertes Interface zum EZB XML-API
 
 =head1 DESCRIPTION
 

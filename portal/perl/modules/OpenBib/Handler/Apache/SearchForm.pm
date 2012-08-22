@@ -212,7 +212,7 @@ sub show {
     };
 
     $logger->debug("TT-Data: ".YAML::Dump($ttdata));
-    my $templatename = ($type)?"tt_searchform_".$type."_tname":"tt_searchform_tname";
+    my $templatename = "tt_searchform_".$type."_tname";
 
     $self->print_page($config->{$templatename},$ttdata);
 

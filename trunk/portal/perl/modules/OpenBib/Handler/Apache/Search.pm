@@ -812,6 +812,8 @@ sub sequential_search {
 
         my $system = $config->get_system_of_db($database);
 
+        $self->param('database',$database);
+
         $logger->debug("System of Database $database is $system");
         # Entfernte Ziele
         if    ($system eq "Backend: EZB"){
@@ -1000,10 +1002,10 @@ sub search_ezb {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $query  = $self->query();
-    my $config = OpenBib::Config->instance;    
+    my $query        = $self->query();
+    my $config       = $self->param('config');
+    my $queryoptions = $self->param('qopts');
     my $searchquery  = OpenBib::SearchQuery->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
 
     my $access_green   = decode_utf8($query->param('access_green'))     || 0;
     my $access_yellow  = decode_utf8($query->param('access_yellow'))    || 0;
@@ -1044,7 +1046,7 @@ sub search_ezb {
     }
 
     $request_args->{bibid}  = $arg_ref->{bibid};
-    $request_args->{colors} = $arg_ref->{colors};
+    $request_args->{colors} = $colors;
     $request_args->{lang}   = $self->param('lang');
     
     if ($arg_ref->{searchprofile}){
@@ -1088,6 +1090,16 @@ sub search_ezb {
     
     # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
     # den einzeltreffern
+
+    my $generic_attributes = {
+        current_page => $request->{_current_page},
+        other_pages  => $request->{_other_pages},
+        sc           => $sc,
+        lc           => $lc,
+        sindex       => $sindex,
+    };
+
+    $self->param('generic_attributes',$generic_attributes);
 
     $self->param('searchtime',$resulttime);
     $self->param('nav',$nav);
@@ -1214,12 +1226,15 @@ sub print_resultitem {
     my $path           = $self->param('path');
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
-
+    my $database       = $self->param('database') || '';
+    my $generic_attributes = $self->param('generic_attributes') || {};
+    
     my $searchquery  = OpenBib::SearchQuery->instance;
     my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->instance;
 
     # TT-Data erzeugen
     my $ttdata={
+        database        => $database,
         dbinfo          => $dbinfotable,
         
         searchquery     => $searchquery,
@@ -1229,6 +1244,8 @@ sub print_resultitem {
 
         
         query           => $query,
+
+        generic_attributes  => $self->param('generic_attributes'),
         
         treffer         => $self->param('hits'),
         
@@ -1246,7 +1263,7 @@ sub print_resultitem {
     $ttdata = $self->add_default_ttdata($ttdata);
 
     $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => '', # Template ist nicht datenbankabhaengig
+        database     => $database, # Template ist fuer joined-search nicht datenbankabhaengig (=''), aber fuer sequential search
         view         => $ttdata->{view},
         profile      => $ttdata->{sysprofile},
         templatename => $templatename,
@@ -1269,7 +1286,7 @@ sub print_resultitem {
     });            
     
     
-    $logger->debug("Printing Combined Result");
+    $logger->debug("Printing Result item");
     
     $itemtemplate->process($templatename, $ttdata) || do {
         $r->log_error($itemtemplate->error(), $r->filename);

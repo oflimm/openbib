@@ -36,8 +36,10 @@
 <p/>
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 <input type="hidden" name="db"        value="ezb" />
+<input type="hidden" name="l"         value="[% lang %]" />
 <input type="hidden" name="jn"        value="0" />
-<input type="hidden" name="lett"      value="[% journals.current_page.lett %]" />
+<input type="hidden" name="page"      value="1" />
+<input type="hidden" name="num"       value="20" />
 
 <table>
 <tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</td></tr>

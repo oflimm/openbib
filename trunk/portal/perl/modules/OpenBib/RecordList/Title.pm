@@ -50,7 +50,10 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 
 sub new {
-    my ($class) = @_;
+    my ($class, $arg_ref) = @_;
+
+    my $generic_attributes = exists $arg_ref->{generic_attributes}
+        ? $arg_ref->{generic_attributes}   : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -58,6 +61,10 @@ sub new {
     my $self = { };
 
     bless ($self, $class);
+
+    if (defined $generic_attributes){
+        $self->{generic_attributes}   = $generic_attributes;
+    }
 
     $self->{recordlist}     = [];
     $self->{_size}          = 0;

@@ -327,7 +327,7 @@ sub initial_search {
 
     $self->parse_query($searchquery);
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$colors&bibid=$self->{bibid}&sc=$sc&lc=$lc&sindex=$sindex&".$self->{_searchquery}."&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$colors&bibid=$self->{bibid}&sc=$sc&lc=$lc&sindex=$sindex&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
 
     my $titles_ref = [];
     
@@ -415,7 +415,6 @@ sub initial_search {
     my $journals_ref = [];
 
     foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/alphabetical_order/journals/journal')) {
-        
         my $singlejournal_ref = {} ;
         
         $singlejournal_ref->{id}          = $journal_node->findvalue('@jourid');
@@ -447,16 +446,26 @@ sub get_records {
 
     my $config     = OpenBib::Config->instance;
 
-    my $recordlist = new OpenBib::RecordList::Title();
+    my $generic_attributes = {
+        nav           => $self->{_nav},
+        other_pages   => $self->{_other_pages},
+        current_pages => $self->{_current_pages},
+    };
+    
+    my $recordlist = new OpenBib::RecordList::Title({generic_attributes => $generic_attributes});
 
     my @matches = $self->matches;
     
     foreach my $match_ref (@matches) {        
         $logger->debug("Record: ".$match_ref );
-
+        
         my $record = new OpenBib::Record::Title({id => $match_ref->{id}, generic_attributes => $match_ref->{color}});
         $record->set_database('ezb');
+        $logger->debug("Title is ".$match_ref->{title});
+        
         $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $match_ref->{title}});
+
+        $logger->debug("Adding Record with ".YAML::Dump($record->get_normdata));
         $recordlist->add($record);
     }
 
@@ -562,7 +571,7 @@ sub parse_query {
         }
     }
     
-    if (defined $searchquery->get_searchfield('classification')->{val}){
+    if (defined $searchquery->get_searchfield('classification')->{val} && $searchquery->get_searchfield('classification')->{val}){
         push @searchstrings, "Notations[]=".$searchquery->get_searchfield('classification')->{val};
     }
     else {

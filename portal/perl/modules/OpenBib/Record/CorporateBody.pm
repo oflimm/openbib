@@ -167,7 +167,7 @@ sub load_full_record {
 
     $logger->debug(YAML::Dump($normset_ref));
     
-    $self->{_normset}=$normset_ref;
+    $self->{_normdata}=$normset_ref;
 
     return $self;
 }
@@ -263,14 +263,14 @@ sub get_number_of_titles {
 sub to_rawdata {
     my ($self) = @_;
 
-    return $self->{_normset};
+    return $self->{_normdata};
 }
 
 sub to_json {
     my ($self)=@_;
 
     my $title_ref = {
-        'metadata'    => $self->{_normset},
+        'metadata'    => $self->{_normdata},
     };
 
     return encode_json $title_ref;

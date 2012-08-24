@@ -130,9 +130,9 @@ sub set_field {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    push @{$self->{_normset}{$field}}, {
+    push @{$self->{_normdata}{$field}}, {
         mult      => $mult,
-        subfield => $subfield,
+        subfield  => $subfield,
         content   => $content,
     };
 

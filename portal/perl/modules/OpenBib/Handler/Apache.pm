@@ -934,7 +934,7 @@ sub to_cgi_params {
         $exclude_ref->{$param} = 1;
     }
 
-    $logger->debug("Args".YAML::Dump($arg_ref));
+#    $logger->debug("Args".YAML::Dump($arg_ref));
 
     my @cgiparams = ();
 
@@ -1010,7 +1010,7 @@ sub to_cgi_hidden_input {
 
     $logger->debug("Modify Querystring as hidden input");
     
-    $logger->debug("Args".YAML::Dump($arg_ref));
+#    $logger->debug("Args".YAML::Dump($arg_ref));
 
     my @cgiparams = ();
 

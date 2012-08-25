@@ -429,7 +429,7 @@ CREATE TABLE litlistitem (
  titleid   TEXT,
  titleisbn TEXT,
 
- comment   TEXT default ''
+ comment   TEXT default '',
 
  titlecache  TEXT
 );

@@ -297,7 +297,19 @@ sub show_search {
 
     # Kombinierte Suche ueber alle Kataloge
 
-    if ($queryoptions->get_option('jn')){
+    # Alternativ: getrennte Suche uber alle Kataloge
+    if ($query->param('sm') eq "seq"){
+        # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
+        #
+
+        $self->sequential_search({sb => $sb});
+
+        ######################################################################
+        #
+        # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
+    }
+    # Default: joined_search
+    else {
         # BEGIN Anfrage an virtuelle (oder physikalisch zusammengefuegte)
         # Gesamtdatenbank aus allen ausgewaehlten Recherche-Datenbanken schicken und Ergebniss ausgeben
         #
@@ -308,18 +320,7 @@ sub show_search {
         #
         # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
     }
-    # Alternativ: getrennte Suche uber alle Kataloge
-    else {
-        # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
-        #
-
-        $self->sequential_search({sb => $sb});
-
-        ######################################################################
-        #
-        # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
-    }
-
+                                                  
     # TT-Data erzeugen
     my $endttdata={
         fullresultcount => $self->param('total_hits'),

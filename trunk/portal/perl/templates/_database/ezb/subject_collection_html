@@ -37,7 +37,7 @@
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 <input type="hidden" name="db"        value="ezb" />
 <input type="hidden" name="l"         value="[% lang %]" />
-<input type="hidden" name="jn"        value="0" />
+<input type="hidden" name="sm"        value="seq" />
 <input type="hidden" name="page"      value="1" />
 <input type="hidden" name="num"       value="20" />
 

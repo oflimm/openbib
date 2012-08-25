@@ -74,7 +74,7 @@
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-[% IF fullresultcount > 0%]
+[% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
 [% END %]
         </div>
@@ -91,14 +91,14 @@
 [%     END %]
 [% END %]
 
-[% IF fullresultcount > 0 %]
+[% IF hits > 0 %]
 <!-- Beginn Result Item -->
 [%-
     request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;jn=1;page=1;" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
-    IF end_range >= fullresultcount ;
-       end_range       = fullresultcount;
+    IF end_range >= hits ;
+       end_range       = hits;
     END;
 
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
@@ -107,7 +107,7 @@
 <div class="resultlist">
   <div class="resultheader">
     <div class="left">
-[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% fullresultcount %]</b>
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
     <div class="right">
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">

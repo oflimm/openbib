@@ -35,12 +35,11 @@ use OpenBib::Config;
 
 my $config = OpenBib::Config->instance;
 
-# Anlegen der System-DB
-
-system("/usr/bin/mysqladmin -u $config->{'systemdbuser'} --password=$config->{'systemdbpasswd'} drop $config->{'systemdbname'}");
-system("/usr/bin/mysqladmin -u $config->{'systemdbuser'} --password=$config->{'systemdbpasswd'} create $config->{'systemdbname'}");
+system("echo \"*:*:*:$config->{'systemdbuser'}:$config->{'systemdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
+system("/usr/bin/dropdb -U $config->{'systemdbuser'} $config->{systemdbname}");
+system("/usr/bin/createdb -U $config->{'systemdbuser'} -E UTF-8 -O $config->{'systemdbuser'} $config->{systemdbname}");
 
 # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/mysql -u $config->{'systemdbuser'} --password=$config->{'systemdbpasswd'} $config->{'systemdbname'} < $config->{'dbdesc_dir'}/mysql/system.mysql");
-
+system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system.sql' $config->{systemdbname}");
+system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system_create_index.sql' $config->{systemdbname}");

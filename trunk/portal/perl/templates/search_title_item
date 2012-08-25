@@ -32,10 +32,10 @@
 
     request_base = request_base.join(";");
 
-    start_range     = nav.current_page*searchquery.get_option('num')-searchquery.get_option('num') + 1;
-    end_range       = nav.current_page*searchquery.get_option('num');
-    IF end_range >= fullresultcount ;
-       end_range       = fullresultcount;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
     END;
 -%]
 
@@ -50,7 +50,7 @@
      [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
     </div>
     <div class="hits">
-[% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% fullresultcount %]
+[% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]
     </div>
     <div class="navigation">
 [% msg.maketext("Seite:") %]&nbsp;
@@ -70,7 +70,7 @@
 [%- END -%]
     </div>
   </div>
-[% IF fullresultcount > 0 %]
+[% IF hits > 0 %]
   <div class="resultdrilldown">
 [% PROCESS common/subtemplate name="search_facet" %]
   </div>

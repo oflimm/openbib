@@ -1,4 +1,4 @@
-[% IF fullresultcount <= config.get('xapian_option').maxmatch %]
+[% IF hits <= config.get('xapian_option').maxmatch %]
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 [%
 

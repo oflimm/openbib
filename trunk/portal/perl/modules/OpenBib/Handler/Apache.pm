@@ -662,6 +662,7 @@ sub add_default_ttdata {
     $ttdata->{'content_type'}   = $content_type;
     $ttdata->{'session'}        = $session;
     $ttdata->{'config'}         = $config;
+    $ttdata->{'qopts'}          = $queryoptions;
     $ttdata->{'user'}           = $user;
     $ttdata->{'msg'}            = $msg;
     $ttdata->{'lang'}           = $lang;

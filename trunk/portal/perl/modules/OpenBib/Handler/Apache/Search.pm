@@ -1248,11 +1248,11 @@ sub print_resultitem {
 
         generic_attributes  => $self->param('generic_attributes'),
         
-        treffer         => $self->param('hits'),
+        hits            => $self->param('hits'),
         
         category_map    => $self->param('facets'),
         
-        fullresultcount => $self->param('total_hits'),
+        total_hits      => $self->param('total_hits'),
         recordlist      => $self->param('recordlist'),
         
         nav             => $self->param('nav'),

@@ -35,20 +35,11 @@ use OpenBib::Config;
 
 my $config = OpenBib::Config->instance;
 
-if ($config->{'statisticsdbimodule'} eq "mysql"){
-    system("/usr/bin/mysqladmin -u $config->{'statisticsdbuser'} --password=$config->{'statisticsdbpasswd'} create $config->{'statisticsdbname'}");
-    
-    # Einladen der Datenbankdefinitionen
-    
-    system("/usr/bin/mysql -u $config->{'statisticsdbuser'} --password=$config->{'statisticsdbpasswd'} $config->{'statisticsdbname'} < $config->{'statisticsdbdesc_dir'}/mysql/pool.mysql");
-}
-elsif ($config->{'statisticsdbimodule'} eq "Pg"){
-    system("echo \"*:*:*:$config->{'statisticsdbuser'}:$config->{'statisticsdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-    system("/usr/bin/dropdb -U $config->{'statisticsdbuser'} $config->{'statisticsdbname'}");
-    system("/usr/bin/createdb -U $config->{'statisticsdbuser'} -E UTF-8 -O $config->{'statisticsdbuser'} $config->{'statisticsdbname'}");
+system("echo \"*:*:*:$config->{'statisticsdbuser'}:$config->{'statisticsdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
+system("/usr/bin/dropdb -U $config->{'statisticsdbuser'} $config->{'statisticsdbname'}");
+system("/usr/bin/createdb -U $config->{'statisticsdbuser'} -E UTF-8 -O $config->{'statisticsdbuser'} $config->{'statisticsdbname'}");
 
-    # Einladen der Datenbankdefinitionen
+# Einladen der Datenbankdefinitionen
 
-    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/statistics.sql' $config->{'statisticsdbname'}");
-    system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/statistics_create_index.sql' $config->{'statisticsdbname'}");
-}
+system("/usr/bin/psql -U $config->{'statisticsdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/statistics.sql' $config->{'statisticsdbname'}");
+system("/usr/bin/psql -U $config->{'statisticsdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/statistics_create_index.sql' $config->{'statisticsdbname'}");

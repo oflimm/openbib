@@ -5,8 +5,9 @@ CREATE INDEX databaseinfo_active ON databaseinfo (active);
 CREATE INDEX databaseinfo_description ON databaseinfo (description);
 
 ALTER TABLE libraryinfo ADD CONSTRAINT fk_libraryinfo_db FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
-CREATE INDEX libraryinfo_category ON libraryinfo (category);
-CREATE INDEX libraryinfo_indicator ON libraryinfo (indicator);
+CREATE INDEX libraryinfo_field ON libraryinfo (field);
+CREATE INDEX libraryinfo_subfield ON libraryinfo (subfield);
+CREATE INDEX libraryinfo_mult ON libraryinfo (mult);
 CREATE INDEX libraryinfo_content ON libraryinfo (content);
 
 ALTER TABLE rssinfo ADD PRIMARY KEY (id);
@@ -62,12 +63,6 @@ ALTER TABLE eventlogjson ADD CONSTRAINT fk_eventlogjson_session FOREIGN KEY (sid
 CREATE INDEX eventlogjson_tstamp ON eventlogjson (tstamp);
 CREATE INDEX eventlogjson_type ON eventlogjson (type);
 
-ALTER TABLE queries ADD PRIMARY KEY (queryid);
-ALTER TABLE queries ADD CONSTRAINT fk_queries_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
-ALTER TABLE queries ADD CONSTRAINT fk_queries_searchprofile FOREIGN KEY (searchprofileid) REFERENCES searchprofile (id);
-CREATE INDEX queries_searchprofileid ON queries (searchprofileid);
-CREATE INDEX queries_query ON queries (query);
-
 ALTER TABLE searchhistory ADD CONSTRAINT fk_searchhistory_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX searchhistory_dbname ON searchhistory (dbname);
 CREATE INDEX searchhistory_queryid ON searchhistory (queryid);
@@ -103,15 +98,21 @@ ALTER TABLE user_searchprofile ADD PRIMARY KEY (id);
 ALTER TABLE user_searchprofile ADD CONSTRAINT fk_usersearchprofile_profile FOREIGN KEY (searchprofileid) REFERENCES searchprofile (id);
 ALTER TABLE user_searchprofile ADD CONSTRAINT fk_usersearchprofile_user FOREIGN KEY (userid) REFERENCES userinfo (id);
 
+ALTER TABLE queries ADD PRIMARY KEY (queryid);
+ALTER TABLE queries ADD CONSTRAINT fk_queries_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
+ALTER TABLE queries ADD CONSTRAINT fk_queries_searchprofile FOREIGN KEY (searchprofileid) REFERENCES searchprofile (id);
+CREATE INDEX queries_searchprofileid ON queries (searchprofileid);
+CREATE INDEX queries_query ON queries (query);
+
 ALTER TABLE searchfield ADD CONSTRAINT fk_searchfield_user FOREIGN KEY (userid) REFERENCES userinfo (id);
 CREATE INDEX searchfield_searchfield ON searchfield (searchfield);
 
 ALTER TABLE livesearch ADD CONSTRAINT fk_livesearch_user FOREIGN KEY (userid) REFERENCES userinfo (id);
 
-ALTER TABLE collection ADD PRIMARY KEY (id);
-ALTER TABLE collection ADD CONSTRAINT fk_collection_user FOREIGN KEY (userid) REFERENCES userinfo (id);
-CREATE INDEX collection_dbname ON collection (dbname);
-CREATE INDEX collection_titleid ON collection (titleid);
+ALTER TABLE usercollection ADD PRIMARY KEY (id);
+ALTER TABLE usercollection ADD CONSTRAINT fk_usercollection_user FOREIGN KEY (userid) REFERENCES userinfo (id);
+CREATE INDEX usercollection_dbname ON usercollection (dbname);
+CREATE INDEX usercollection_titleid ON usercollection (titleid);
 
 ALTER TABLE tag ADD PRIMARY KEY (id);
 CREATE INDEX tag_name ON tag (name);

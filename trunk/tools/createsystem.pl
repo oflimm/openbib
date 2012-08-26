@@ -43,3 +43,4 @@ system("/usr/bin/createdb -U $config->{'systemdbuser'} -E UTF-8 -O $config->{'sy
 
 system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system.sql' $config->{systemdbname}");
 system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system_create_index.sql' $config->{systemdbname}");
+system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system_defaultinit.sql' $config->{systemdbname}");

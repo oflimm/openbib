@@ -276,14 +276,23 @@ sub get_number_of_titles {
             })->first;
     }
 
-    my $alltitles_ref = {   
-        allcount     => $counts->get_column('allcount'),
-        journalcount => $counts->get_column('journalcount'),
-        articlecount => $counts->get_column('articlecount'),
-        digitalcount => $counts->get_column('digitalcount'),
-    };
+    if ($counts){
+        my $alltitles_ref = {   
+            allcount     => $counts->get_column('allcount'),
+            journalcount => $counts->get_column('journalcount'),
+            articlecount => $counts->get_column('articlecount'),
+            digitalcount => $counts->get_column('digitalcount'),
+        };
         
-    return $alltitles_ref;
+        return $alltitles_ref;
+    };
+
+    return {
+        allcount     => 0,
+        journalcount => 0,
+        articlecount => 0,
+        digitalcount => 0,
+    };
 }
 
 sub get_viewdesc_from_viewname {

@@ -1,5 +1,5 @@
 /* Standard ist Selbstregistrierung */
-insert into logintarget values(1,NULL,NULL,NULL,NULL,'Registrierte E-Mail Adresse','self');
+insert into authenticationtarget values(1,NULL,NULL,NULL,NULL,'Registrierte E-Mail Adresse','self');
 
 /* Standard sind Rollen Admin und Bibliothekar */
 insert into role values (1,'admin');

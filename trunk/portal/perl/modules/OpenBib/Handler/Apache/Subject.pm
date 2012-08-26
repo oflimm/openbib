@@ -258,6 +258,7 @@ sub show_collection_ezb {
     
     # TT-Data erzeugen
     my $ttdata={
+        dbinfo        => $dbinfotable,
         database      => $database,
         type          => $type,
         access_green  => $access_green,

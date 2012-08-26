@@ -96,7 +96,7 @@ $.get("[% IF user.ID %][% path_prefix %]/[% config.get('user_loc') %]/[% user.ID
       <div style="float:right;height:25px;margin-top:-5px;margin-right:5px;font-size:0.9em;">
 <table class="full">
 <tr>
-  <td><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" size="25" maxlength="200" /></td>
+  <td><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" size="22" maxlength="200" /></td>
   <td> <div class="cssbutton glass kug">
    <input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" />
  </div>

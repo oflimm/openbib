@@ -718,7 +718,7 @@ sub load_full_record {
                     bibkey => $bibkey,
                 },
                 {                        
-                    group_by => ['field','content'],
+                    group_by => ['field','content','bibkey','origin','subfield'],
                     order_by => ['field','content'],
                 }
             );
@@ -768,7 +768,7 @@ sub load_full_record {
                     issn => \@issn_refs,
                 },
                 {                        
-                    group_by => ['field','content'],
+                    group_by => ['field','content','issn','origin','subfield'],
                     order_by => ['field','content'],
                 }
             );

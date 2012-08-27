@@ -1056,7 +1056,9 @@ sub search_ezb {
 
     # Recherche starten
     my $request = new OpenBib::Search::Backend::EZB($request_args);
-    
+
+    my $subjects_ref = $request->get_subjects();
+
     $request->initial_search({
         sc       => $sc,
         lc       => $lc,
@@ -1093,11 +1095,15 @@ sub search_ezb {
     # den einzeltreffern
 
     my $generic_attributes = {
+        access_green  => $access_green,
+        access_yellow => $access_yellow, 
+        access_red   => $access_red, 
         current_page => $request->{_current_page},
         other_pages  => $request->{_other_pages},
         sc           => $sc,
         lc           => $lc,
         sindex       => $sindex,
+        subjects     => $subjects_ref,
     };
 
     $self->param('generic_attributes',$generic_attributes);
@@ -1228,7 +1234,6 @@ sub print_resultitem {
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $database       = $self->param('database') || '';
-    my $generic_attributes = $self->param('generic_attributes') || {};
     
     my $searchquery  = OpenBib::SearchQuery->instance;
     my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->instance;
@@ -1246,7 +1251,7 @@ sub print_resultitem {
         
         query           => $query,
 
-        generic_attributes  => $self->param('generic_attributes'),
+        gatt            => $self->param('generic_attributes'),
         
         hits            => $self->param('hits'),
         

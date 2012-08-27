@@ -2039,6 +2039,9 @@ sub update_orgunit {
 
     # DBI: "insert into orgunit_db values (?,?,?)"
     if (@$databases_ref){
+
+        $logger->debug("Datenbanken ".YAML::Dump($databases_ref));
+
         my $this_db_ref = [];
         foreach my $dbname (@$databases_ref){
             my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });
@@ -2086,6 +2089,9 @@ sub new_orgunit {
 
     # DBI: "insert into orgunit_db values (?,?,?)"
     if (@$databases_ref){
+
+        $logger->debug("Datenbanken ".YAML::Dump($databases_ref));
+        
         my $this_db_ref = [];
         foreach my $dbname (@$databases_ref){
             my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });

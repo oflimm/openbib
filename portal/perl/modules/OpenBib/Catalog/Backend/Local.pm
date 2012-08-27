@@ -691,6 +691,30 @@ sub get_connected_titles {
     return @titles;
 }
 
+sub get_normdata {
+    my ($self)=@_;
+
+    return $self->{_normdata}
+}
+
+sub get_holding {
+    my ($self)=@_;
+
+    return $self->{_holding}
+}
+
+sub get_circulation {
+    my ($self)=@_;
+
+    return $self->{_circulation}
+}
+
+sub record_exists {
+    my ($self) = @_;
+
+    return $self->{_exists};
+}
+
 sub connectDB {
     my $self = shift;
     my $database = shift;

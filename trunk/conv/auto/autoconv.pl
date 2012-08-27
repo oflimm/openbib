@@ -392,7 +392,8 @@ if ($loading_error){
     $logger->fatal("### $database: Problem beim Einladen. Exit.");
     $logger->fatal("### $database: Loesche temporaere Datenbank/Index.");
 
-    system("$pgsqlexe -c 'drop database $databasetmp $config->{systemdbname}");
+    $config->{schema}->storage->dbh->do("drop database $databasetmp");
+
     system("rm $config->{xapian_index_base_path}/${databasetmp}/* ; rmdir $config->{xapian_index_base_path}/${databasetmp}");
 
     goto CLEANUP;
@@ -407,8 +408,9 @@ else {
 
     $logger->info("### $database: Tabellen aus temporaerer Datenbank in finale Datenbank verschieben");
 
-    system("$pgsqlexe -c 'alter database $database rename to ${database}tmp2' $config->{systemdbname}");
-    system("$pgsqlexe -c 'alter database $databasetmp rename to $database' $config->{systemdbname}");
+    $config->{schema}->storage->dbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
+    $config->{schema}->storage->dbh->do("ALTER database $database RENAME TO ${database}tmp2");
+    $config->{schema}->storage->dbh->do("ALTER database $databasetmp RENAME TO $database");
 
     $logger->info("### $database: Temporaeren Suchindex aktivieren");
     if (-d "$config->{xapian_index_base_path}/$database"){
@@ -420,8 +422,8 @@ else {
     if (-d "$config->{xapian_index_base_path}/${database}tmp2"){
         system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
     }
-    
-    system("$pgsqlexe -c 'drop database ${database}tmp2' $config->{systemdbname}");
+
+    $config->{schema}->storage->dbh->do("drop database ${database}tmp2");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

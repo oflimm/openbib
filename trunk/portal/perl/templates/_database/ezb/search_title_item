@@ -24,6 +24,53 @@
 
 -%]
 
+<p/>
+
+<div class="subcolumns">
+  <div class="c25r">
+    <div class="subcl">
+<div class="headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
+<p/>
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="db"        value="ezb" />
+<input type="hidden" name="l"         value="[% lang %]" />
+<input type="hidden" name="sm"        value="seq" />
+<input type="hidden" name="page"      value="1" />
+<input type="hidden" name="num"       value="20" />
+
+[% subject_notation = searchquery.get_searchfield('subject').val %]
+
+<table>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF gatt.access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF gatt.access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF gatt.access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
+<tr><td colspan="3"></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="subj"><option value="all" [% IF subject_notation == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH subject IN gatt.subjects -%]
+<option value="[% subject.notation %]" [% IF subject_notation == subject.notation %]selected="selected"[% END %]>[% subject.desc | truncate(25) %]</option>[%- END -%]</select></td></tr>
+</table>
+<p/>
+<table>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="tit" value="" size="13" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</form>
+
+<p/>
+
+<h4>[% msg.maketext("Gesamtübersicht") %]</h4>
+<ul class="subjectlist">
+[% FOREACH subject IN gatt.subjects;
+   searchterm    = subject.notation;
+   searchprefix  = config.get('searchfield').subject.prefix;
+ %]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% searchprefix %]=[% searchterm %]">[% IF subject_notation == subject.notation %]<b>[% subject.desc %]</b>[% ELSE %][% subject.desc %][% END %]</a> ([% subject.count %])</li>
+[% END %]
+</ul>
+
+    </div>
+  </div>
+
+  <div class="c75l">
+    <div class="subcl">
 <h4>[%-   IF dbinfo.get('use_libinfo').${database} %]
 <a href="[% path_prefix %]/[% config.get('library_loc') %]/[% database %]">
 [%-   ELSE -%]

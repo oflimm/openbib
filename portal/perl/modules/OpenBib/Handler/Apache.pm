@@ -394,7 +394,6 @@ sub negotiate_type {
             $self->param('content_type',$content_type);
             $self->param('representation',$config->{content_type_map}->{$content_type});
         }
-
         $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation'));
     }
     elsif (@accepted_types){
@@ -1114,7 +1113,12 @@ sub parse_valid_input {
             }
             # sonst array
             elsif ($type eq "array") {
-                @{$input_params_ref->{$param}} = $query->param($param) || $default;
+                if ($query->param($param)){
+                    @{$input_params_ref->{$param}} = $query->param($param);
+                }
+                else {
+                    $input_params_ref->{$param} = $default;
+                }
             }
         }
     }

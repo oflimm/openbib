@@ -82,7 +82,7 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table class="full">
 <tr><td>Name der Organisationseinheit</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
-<tr><td><input type="text" name="orgunit" /></td><td><input type="text" name="description" size="20" />
+<tr><td><input type="text" name="orgunitname" /></td><td><input type="text" name="description" size="20" />
 </td><td><div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 </table>
 </td></tr>

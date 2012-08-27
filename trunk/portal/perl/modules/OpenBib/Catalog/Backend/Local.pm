@@ -111,7 +111,7 @@ sub load_full_record {
 
     my $normset_ref   = {};
 
-    $record->{id}            = $id;
+    $self->{id}              = $id;
     $normset_ref->{id      } = $id;
     $normset_ref->{database} = $self->{database};
 

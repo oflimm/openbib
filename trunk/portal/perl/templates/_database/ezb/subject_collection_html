@@ -112,8 +112,11 @@
 <!-- Ende Tag-Cloud -->
 [% ELSE %]
 <ul class="subjectlist">
-[% FOREACH subject IN subjects %]
-<li><a href="[% path_prefix %]/[% config.get('subject_loc') %]/ezb/[% subject.notation %].html?l=[% lang %]">[% subject.desc %]</a> ([% subject.count %])</li>
+[% FOREACH subject IN subjects;
+   searchterm    = subject.notation;
+   searchprefix  = config.get('searchfield').subject.prefix;
+%]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% searchprefix %]=[% searchterm %]">[% subject.desc %]</a> ([% subject.count %])</li>
 [% END %]
 </ul>
 [% END %]

@@ -477,13 +477,11 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </dl>
 [%        END %]
 <!-- End language facet -->
-</table>
 
 </div>
 </form>
 
 [% ELSE %]
-<div class="drilldown">
 <h2><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h2>
 
 <p>
@@ -498,7 +496,5 @@ Sie diese auf sinntragende Worte reduzieren (z.B. der, die das
 weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)
 durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 </p>
-
-</div>
 
 [% END %]

@@ -46,6 +46,8 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
 
+use base qw(OpenBib::Catalog);
+
 sub new {
     my ($class,$arg_ref) = @_;
 

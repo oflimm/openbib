@@ -1097,7 +1097,7 @@ sub search_ezb {
     my $generic_attributes = {
         access_green  => $access_green,
         access_yellow => $access_yellow, 
-        access_red   => $access_red, 
+        access_red   => $access_red,
         current_page => $request->{_current_page},
         other_pages  => $request->{_other_pages},
         sc           => $sc,

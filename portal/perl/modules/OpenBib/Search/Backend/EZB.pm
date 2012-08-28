@@ -459,7 +459,7 @@ sub get_records {
     foreach my $match_ref (@matches) {        
         $logger->debug("Record: ".$match_ref );
         
-        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, generic_attributes => $match_ref->{color}});
+        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, generic_attributes => { color => $match_ref->{color}}});
         $record->set_database('ezb');
         $logger->debug("Title is ".$match_ref->{title});
         

@@ -112,7 +112,6 @@
 [%- END -%]
     </div>
     <div class="resulttime">
-in: [% resulttime %] [% msg.maketext("Sekunden") %]
     </div>
   </div>
 </div>

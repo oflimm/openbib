@@ -1117,6 +1117,126 @@ sub search_ezb {
     return;
 }
 
+sub search_dbis {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $query        = $self->query();
+    my $config       = $self->param('config');
+    my $queryoptions = $self->param('qopts');
+    my $searchquery  = OpenBib::SearchQuery->instance;
+
+    my $access_green   = decode_utf8($query->param('access_green'))     || 0;
+    my $access_yellow  = decode_utf8($query->param('access_yellow'))    || 0;
+    my $access_red     = decode_utf8($query->param('access_red'))       || 0;
+    my $id             = decode_utf8($query->param('id'))       || undef;
+    my $sc             = decode_utf8($query->param('sc'))       || '';
+    my $lc             = decode_utf8($query->param('lc'))       || '';
+    my $sindex         = decode_utf8($query->param('sindex'))   || 0;
+
+    my $colors = $access_green + $access_yellow*2 + $access_red*4;
+    
+    if (!$colors){
+        $colors=$config->{ezb_colors};
+
+        my $colors_mask  = dec2bin($colors);
+
+        $logger->debug("Access: mask($colors_mask)");
+        
+        $access_green  = ($colors_mask & 0b001)?1:0;
+        $access_yellow = ($colors_mask & 0b010)?1:0;
+        $access_red    = ($colors_mask & 0b100)?1:0;
+    }
+
+    $logger->debug("Access: colors($colors) green($access_green) yellow($access_yellow) red($access_red)");
+
+    my $atime=new Benchmark;
+    my $timeall;
+    
+    my $recordlist;
+    my $category_map_ref = ();
+    my $resulttime;
+    my $nav;
+
+    my $request_args = {};
+
+    if ($arg_ref->{database}){
+        $request_args->{database} = $arg_ref->{database};
+    }
+
+    $request_args->{bibid}  = $arg_ref->{bibid};
+    $request_args->{colors} = $colors;
+    $request_args->{lang}   = $self->param('lang');
+    
+    if ($arg_ref->{searchprofile}){
+        $request_args->{searchprofile} = $arg_ref->{searchprofile};
+    }
+
+    # Recherche starten
+    my $request = new OpenBib::Search::Backend::EZB($request_args);
+
+    my $subjects_ref = $request->get_subjects();
+
+    $request->initial_search({
+        sc       => $sc,
+        lc       => $lc,
+        sindex   => $sindex,
+    });
+    
+    my $btime   = new Benchmark;
+    $timeall    = timediff($btime,$atime);
+    $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    
+    $logger->info($request->get_resultcount . " results found in $resulttime");
+    
+    $searchquery->set_hits($request->get_resultcount);
+    
+    if ($request->have_results) {
+
+        $logger->debug("Results found #".$request->get_resultcount);
+        
+        $nav = Data::Pageset->new({
+            'total_entries'    => $request->get_resultcount,
+            'entries_per_page' => $queryoptions->get_option('num'),
+            'current_page'     => $queryoptions->get_option('page'),
+            'mode'             => 'slide',
+        });
+        
+        $recordlist = $request->get_records();
+    }
+    else {
+        $logger->debug("No results found #".$request->get_resultcount);
+    }
+    
+    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
+    # den einzeltreffern
+
+    my $generic_attributes = {
+        access_green  => $access_green,
+        access_yellow => $access_yellow, 
+        access_red   => $access_red,
+        current_page => $request->{_current_page},
+        other_pages  => $request->{_other_pages},
+        sc           => $sc,
+        lc           => $lc,
+        sindex       => $sindex,
+        subjects     => $subjects_ref,
+    };
+
+    $self->param('generic_attributes',$generic_attributes);
+
+    $self->param('searchtime',$resulttime);
+    $self->param('nav',$nav);
+    $self->param('recordlist',$recordlist);
+    $self->param('hits',$request->get_resultcount);
+    $self->param('total_hits',$self->param('total_hits')+$request->get_resultcount);
+
+    return;
+}
+
 sub search_z3950 {
     my ($self,$arg_ref) = @_;
 

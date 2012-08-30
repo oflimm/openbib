@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: dbis_showsubjects
+# Templatename: ezb_showsubjects
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe der DBIS Fachgebiete
+# Ausgabe der EZB Fachgebiete
 #
 #######################################################################
 -%]
@@ -29,30 +29,43 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Schlagworte") %]</a></li>
+         <li><a href="#" class="lastitem">[% dbinfo.dbnames.${database}.short %]</a></li>
+      </ul>
+     </div>
+     <div class="representation">
+<a href="[% path_prefix %]/[% config.get('subject_loc') %]/[% database %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+     </div>
+   </div>
+
  <!-- begin: #col1 - first float column -->
       <div id="col1" role="complementary">
         <div id="col1_content" class="clearfix">
-
-[% msg.maketext("Suche nach Datenbanken") %]
+<div class="headline">[% msg.maketext("Suche nach Datenbanken") %]</div>
 <p/>
-<form method="get" action="[% path_prefix %]/[% config.get('dbis_loc') %]">
-
-
-<input type="hidden" name="lett"      value="[% subject.lett %]" />
-<input type="hidden" name="action"    value="search_dbs" />
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="db"        value="dbis" />
+<input type="hidden" name="l"         value="[% lang %]" />
+<input type="hidden" name="sm"        value="seq" />
+<input type="hidden" name="page"      value="1" />
+<input type="hidden" name="num"       value="20" />
 
 <table>
-<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("frei im Web") %]</td></tr>
-<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("online im Hochschulnetz") %]</td></tr>
-<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("kostenpflichtiges Pay-per-Use-Angebot") %]</td></tr>
-<tr><td><input type="checkbox" name="access_de" value="1" [%- IF access_de -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_de_img') %]" alt="red"/></td><td>[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</td></tr>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
 <tr><td colspan="3"></td></tr>
-<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="notation"><option value="">[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH subject IN subjects -%]
-<option value="[% subject.notation %]">[% subject.desc | truncate(25) %]</option>[%- END -%]</select></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="cln"><option value="all" [% IF subject_notation == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH subject IN gatt.subjects -%]
+<option value="[% subject.notation %]" [% IF subject_notation == subject.notation %]selected="selected"[% END %]>[% subject.desc | truncate(25) %]</option>[%- END -%]</select></td></tr>
 </table>
 <p/>
 <table>
-<tr><td><input id="to_focus" class="fs_field" type="text" name="fs" value="" size="13" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="tit" value="" size="13" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 </table>
 </form>
         </div>
@@ -62,14 +75,14 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<h1>[% msg.maketext("Elektronisch verf&uuml;gbare Datenbanken (DBIS)") %]</h1>
-
 [%# USE dumper; dumper.dump(subjects) %]
+
+<h1>[% msg.maketext("Elektronisch verf&uuml;gbare Datenbanken (DBIS)") %]</h1>
 
 <h2>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h2>
 <p/>
 <div class="listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('subject_loc') %]/dbis.html?l=[% lang %];type=cloud"[% IF type == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('subject_loc') %]/dbis.html?l=[% lang %];typ=list"[% IF type == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('subject_loc') %]/ezb.html?l=[% lang %];type=cloud"[% IF type == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('subject_loc') %]/ezb.html?l=[% lang %];type=list"[% IF type == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
 <div class="left_side23">
@@ -89,16 +102,21 @@
 <ol class="cloud">
 [% FOREACH subject IN subjects %]
 [%- classnr   = subject.class;
-    itemclass = css_classes.$classnr;
+   itemclass = css_classes.$classnr;
+   searchterm    = subject.notation;
+   searchprefix  = config.get('searchfield').subject.prefix;
 -%]
-<li class="[% itemclass %]"><span>[% subject.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('dbis_loc') %]?notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs"  class="tag" title="[% subject.count %] Datenbanken sind in der Fachgruppe [% subject.desc %]">[% subject.desc %]</a></li>
+<li class="[% itemclass %]"><span>[% subject.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% searchprefix %]=[% searchterm %]"  class="tag" title="[% subject.count %] Zeitschriften sind in der Fachgruppe [% subject.desc %]">[% subject.desc %]</a></li>
 [% END %]
 </ol>
 <!-- Ende Tag-Cloud -->
 [% ELSE %]
 <ul class="subjectlist">
-[% FOREACH subject IN subjects %]
-<li><a href="[% path_prefix %]/[% config.get('dbis_loc') %]?notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs">[% subject.desc %]</a> ([% subject.count %])</li>
+[% FOREACH subject IN subjects;
+   searchterm    = subject.notation;
+   searchprefix  = config.get('searchfield').subject.prefix;
+%]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% searchprefix %]=[% searchterm %]">[% subject.desc %]</a> ([% subject.count %])</li>
 [% END %]
 </ul>
 [% END %]

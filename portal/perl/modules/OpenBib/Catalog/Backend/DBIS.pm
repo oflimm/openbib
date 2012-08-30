@@ -166,8 +166,11 @@ sub load_full_record {
 
     my $mult=1;
 
-    foreach my $othertitle (@$title_ref->{other}){
-        $record->set_field({field => 'T0370', subfield => '', mult => $mult, content => $othertitle});
+    if (defined $title_ref->{other}){
+        foreach my $othertitle (@{$title_ref->{other}}){
+            $record->set_field({field => 'T0370', subfield => '', mult => $mult, content => $othertitle});
+            $mult++;
+        }
     }
     
 #    $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{url}}) if ($zdb_node_ref->{ZDB_number}{url});

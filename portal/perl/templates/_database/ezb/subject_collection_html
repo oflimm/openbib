@@ -60,8 +60,8 @@
 <tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
 <tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
 <tr><td colspan="3"></td></tr>
-<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="cln">[% IF journals.subject.notation %]<option value="[% journals.subject.notation %]">[% journals.subject.desc %]</option>[%- END -%]<option value="">[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH subject IN subjects -%]
-<option value="[% subject.notation %]">[% subject.desc | truncate(25) %]</option>[%- END -%]</select></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="cln"><option value="all" [% IF subject_notation == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH subject IN gatt.subjects -%]
+<option value="[% subject.notation %]" [% IF subject_notation == subject.notation %]selected="selected"[% END %]>[% subject.desc | truncate(25) %]</option>[%- END -%]</select></td></tr>
 </table>
 <p/>
 <table>

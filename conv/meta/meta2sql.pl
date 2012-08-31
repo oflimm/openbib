@@ -920,6 +920,15 @@ while (my $jsonline=<IN>){
         foreach my $field (keys %{$stammdateien_ref->{title}{inverted_ref}}){
             # a) Indexierung in der Suchmaschine
             if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}){
+
+                my $flag_isbn = 0;
+                # Wird dieses Feld als ISBN genutzt, dann zusaetzlicher Inhalt
+                foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}) {
+                    if ($searchfield eq "isbn"){
+                        $flag_isbn=1;
+                    }
+                }
+                
                 foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}) {
                     my $weight = $stammdateien_ref->{title}{inverted_ref}{$field}->{index}{$searchfield};
                     if    ($field eq "tag"){
@@ -957,8 +966,12 @@ while (my $jsonline=<IN>){
                                 category => $field,
                                 content  => $item_ref->{content},
                             }) if (!$item_ref->{norm});
-                            
-                            if ($searchfield eq "isbn") {
+
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, $item_ref->{norm};
+
+                            # Wird diese Kategorie als isbn verwendet?
+                            if ($flag_isbn) {
+                                
                                 # Alternative ISBN zur Rechercheanreicherung erzeugen
                                 my $isbn = Business::ISBN->new($item_ref->{norm});
                                 
@@ -971,15 +984,14 @@ while (my $jsonline=<IN>){
                                     }
                                     
                                     if (defined $isbnXX) {
-                                        my $isbn13 = OpenBib::Common::Util::grundform({
+                                        my $enriched_isbn = OpenBib::Common::Util::grundform({
                                             category => $field,
-                                            content  => $isbnXX->as_isbn13->as_string,
+                                            content  => $isbnXX->as_string,
                                         });
-                                        $item_ref->{norm} = $isbn13;
+                                        push @{$searchengine_ref->{$searchfield}{$weight}}, $enriched_isbn;
                                     }
                                 }
                             }
-                            push @{$searchengine_ref->{$searchfield}{$weight}}, $item_ref->{norm};
                         }
                     }
                 }

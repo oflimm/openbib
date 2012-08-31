@@ -80,7 +80,8 @@ sub load_full_record {
 
     $logger->debug("Request: $url");
 
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+    #    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+    my $response = $self->{client}->get($url)->decoded_content(charset => 'utf8');
 
     $logger->debug("Response: $response");
     
@@ -125,7 +126,7 @@ sub load_full_record {
     }
     
     my $hints   =  decode_utf8($root->findvalue('/dbis_page/details/hints'));
-    my $content =  decode_utf8($root->findvalue('/dbis_page/details/content'));
+    my $content =  $root->findvalue('/dbis_page/details/content');
     my $instructions =  decode_utf8($root->findvalue('/dbis_page/details/instructions'));
 
     my @subjects_nodes =  $root->findnodes('/dbis_page/details/subjects/subject');
@@ -143,8 +144,6 @@ sub load_full_record {
     foreach my $keyword_node (@keywords_nodes){
         push @{$keywords_ref}, decode_utf8($keyword_node->textContent);
     }
-
-    my $appearence  =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_db/db/detail/appearence'));
 
 #     return {
 #             id             => $id,
@@ -165,32 +164,40 @@ sub load_full_record {
     $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title_ref->{main}}) if ($title_ref->{main});
 
     my $mult=1;
-
     if (defined $title_ref->{other}){
         foreach my $othertitle (@{$title_ref->{other}}){
             $record->set_field({field => 'T0370', subfield => '', mult => $mult, content => $othertitle});
             $mult++;
         }
     }
-    
-#    $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{url}}) if ($zdb_node_ref->{ZDB_number}{url});
-#    $record->set_field({field => 'T0663', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{content}}) if ($zdb_node_ref->{ZDB_number}{content});
+
+    $mult=1;
+    if (defined $access_ref->{main}){
+        $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{main}}) if ($access_ref->{main});
+        $mult++;
+    }
+
+    if (defined $access_ref->{other}){
+        foreach my $access (@{$access_ref->{other}}){
+            $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $config->{dbis_baseurl}.$access }) if ($access);
+            $mult++;
+        }
+    }
 
     $mult=1;
     foreach my $subject (@$subjects_ref){
-        $record->set_field({field => 'T0710', subfield => '', mult => $mult, content => $subject});
+        $record->set_field({field => 'T0700', subfield => '', mult => $mult, content => $subject});
         $mult++;
     }
 
     $mult=1;
     foreach my $keyword (@$keywords_ref){
-        $record->set_field({field => 'T0700', subfield => '', mult => $mult, content => $keyword});
+        $record->set_field({field => 'T0710', subfield => '', mult => $mult, content => $keyword});
         $mult++;
     }
     
-    $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $appearence}) if ($appearence);
-#    $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $costs}) if ($costs);
-#    $record->set_field({field => 'T0501', subfield => '', mult => 1, content => $remarks}) if ($remarks);
+    $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $content}) if ($content);
+    $record->set_field({field => 'T0501', subfield => '', mult => 1, content => $instructions}) if ($instructions);
 
 #    foreach my $homepage (@$homepages_ref){
 #        $record->set_field({field => 'T2662', subfield => '', mult => 1, content => $homepage});

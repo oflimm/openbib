@@ -1175,7 +1175,7 @@ sub search_dbis {
     }
 
     # Recherche starten
-    my $request = new OpenBib::Search::Backend::EZB($request_args);
+    my $request = new OpenBib::Search::Backend::DBIS($request_args);
 
     my $subjects_ref = $request->get_subjects();
 

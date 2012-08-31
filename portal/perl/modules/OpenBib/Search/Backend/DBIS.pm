@@ -50,28 +50,6 @@ sub new {
     my ($class,$arg_ref) = @_;
 
     # Set defaults
-    my $searchprofile   = exists $arg_ref->{searchprofile}
-        ? $arg_ref->{searchprofile}           : undef;
-
-    my $database        = exists $arg_ref->{database}
-        ? $arg_ref->{database}                : undef;
-
-    my $self = { };
-
-    bless ($self, $class);
-
-    # Entweder genau eine Datenbank via database oder (allgemeiner) ein Suchprofil via searchprofile mit einer oder mehr Datenbanken
-    
-    $self->{_searchprofile} = $searchprofile if ($searchprofile);
-    $self->{_database}      = $database if ($database);
-    
-    return $self;
-}
-
-sub new {
-    my ($class,$arg_ref) = @_;
-
-    # Set defaults
     my $bibid     = exists $arg_ref->{bibid}
         ? $arg_ref->{bibid}       : undef;
 
@@ -377,8 +355,12 @@ sub initial_search {
     my $search_count = 0;
     foreach my $dbs_node ($root->findnodes('/dbis_page/list_dbs/dbs')) {
         $search_count = $dbs_node->findvalue('@db_count');
-        
+        my $i=0;
         foreach my $db_node ($dbs_node->findnodes('db')) {
+            $i++;
+            # DBIS-Suche verfuegt ueber kein Paging
+            next if ($i <= $offset || $i > $offset+$page*$num);
+            
             my $single_db_ref = {};
 
             $single_db_ref->{id}       = $db_node->findvalue('@title_id');
@@ -442,7 +424,7 @@ sub get_records {
     my $recordlist = new OpenBib::RecordList::Title();
 
     my @matches = $self->matches;
-    
+
     foreach my $match_ref (@matches) {        
         $logger->debug("Record: ".$match_ref );
 
@@ -455,12 +437,14 @@ sub get_records {
         $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $match_ref->{title}});
 
         my $mult = 1;
-        foreach my $type (@$match_ref->{db_types}){
-            my $dbtype       =  $self->{_db_type}{$type}{desc};
-            my $dbtype_short =  $self->{_db_type}{$type}{desc_short}; 
-            $record->set_field({field => 'T0517', subfield => '', mult => $mult, content => $dbtype});
-            $record->set_field({field => 'T0800', subfield => '', mult => $mult, content => $dbtype_short});
-            $mult++;
+        if (defined $match_ref->{db_types}){
+            foreach my $type (@{$match_ref->{db_types}}){
+                my $dbtype       =  $self->{_db_type}{$type}{desc};
+                my $dbtype_short =  $self->{_db_type}{$type}{desc_short}; 
+                $record->set_field({field => 'T0517', subfield => '', mult => $mult, content => $dbtype});
+                $record->set_field({field => 'T0800', subfield => '', mult => $mult, content => $dbtype_short});
+                $mult++;
+            }
         }
         
         $logger->debug("Adding Record with ".YAML::Dump($record->get_normdata));
@@ -583,9 +567,9 @@ sub parse_query {
         push @searchstrings, "gebiete[]=all";
     }
 
-    my $ezbquerystring = join("&",@searchstrings);
-    $logger->debug("EZB-Querystring: $ezbquerystring");
-    $self->{_querystring} = $ezbquerystring;
+    my $dbisquerystring = join("&",@searchstrings);
+    $logger->debug("DBIS-Querystring: $dbisquerystring");
+    $self->{_querystring} = $dbisquerystring;
 
     return $self;
 }

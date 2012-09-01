@@ -34,12 +34,12 @@
      <div class="breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="#">[% msg.maketext("Schlagworte") %]</a></li>
+         <li><a href="#">[% msg.maketext("Fachgebiete") %]</a></li>
          <li><a href="#" class="lastitem">[% dbinfo.dbnames.${database}.short %]</a></li>
       </ul>
      </div>
      <div class="representation">
-<a href="[% path_prefix %]/[% config.get('subject_loc') %]/[% database %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('classification_loc') %]/[% database %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
    </div>
 
@@ -104,7 +104,7 @@
 [%- classnr   = subject.class;
    itemclass = css_classes.$classnr;
    searchterm    = subject.notation;
-   searchprefix  = config.get('searchfield').subject.prefix;
+   searchprefix  = config.get('searchfield').classification.prefix;
 -%]
 <li class="[% itemclass %]"><span>[% subject.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% searchprefix %]=[% searchterm %]"  class="tag" title="[% subject.count %] Zeitschriften sind in der Fachgruppe [% subject.desc %]">[% subject.desc %]</a></li>
 [% END %]
@@ -114,7 +114,7 @@
 <ul class="subjectlist">
 [% FOREACH subject IN subjects;
    searchterm    = subject.notation;
-   searchprefix  = config.get('searchfield').subject.prefix;
+   searchprefix  = config.get('searchfield').classification.prefix;
 %]
 <li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% searchprefix %]=[% searchterm %]">[% subject.desc %]</a> ([% subject.count %])</li>
 [% END %]

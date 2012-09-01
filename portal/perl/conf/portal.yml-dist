@@ -489,8 +489,8 @@ dispatch_rules:
      rule: '/portal/:view/subject/:database/:subjectid[get]'
      runmode: 'show_record'
   - # classification_loc:
-     module: 'OpenBib::Handler::Apache::Subject'
-     rule: '/portal/:view/subject/:database[get]'
+     module: 'OpenBib::Handler::Apache::Classification'
+     rule: '/portal/:view/classification/:database[get]'
      runmode: 'show_collection'
   - # classification_loc:
      module: 'OpenBib::Handler::Apache::Classification'
@@ -2935,6 +2935,7 @@ tt_admin_topic_record_tname: admin_topic_record
 tt_admin_topic_record_edit_tname: admin_topic_record_edit
 
 tt_subject_collection_tname: subject_collection
+tt_classification_collection_tname: classification_collection
 
 tt_dbis_database_collection_by_subject_tname: dbis_database_collection_by_subject
 tt_dbis_database_search_tname: dbis_database_search

@@ -135,7 +135,7 @@ sub get_relevant_terms {
     return $fullterm_ref;
 }
 
-sub initial_search {
+sub search {
     my ($self) = @_;
 
     # Set defaults search parameters

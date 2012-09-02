@@ -270,7 +270,7 @@ sub get_journals {
     };
 }
 
-sub initial_search {
+sub search {
     my ($self,$arg_ref) = @_;
 
     # Set defaults

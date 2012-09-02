@@ -310,7 +310,7 @@ sub show {
             if (!$fallbacksb){
                 my $request = new OpenBib::Search::Backend::Xapian();
                 
-                $request->initial_search({
+                $request->search({
                     serien          => $serien,
                     dbh             => $dbh,
                     database        => $database,

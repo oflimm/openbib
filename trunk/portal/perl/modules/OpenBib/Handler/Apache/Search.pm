@@ -875,7 +875,7 @@ sub search_xapian {
     # Recherche starten
     my $request = new OpenBib::Search::Backend::Xapian($request_args);
     
-    $request->initial_search();
+    $request->search();
     
     my $btime      = new Benchmark;
     $timeall    = timediff($btime,$atime);
@@ -956,7 +956,7 @@ sub search_elasticsearch {
     # Recherche starten
     my $request = new OpenBib::Search::Backend::ElasticSearch($request_args);
 
-    $request->initial_search();
+    $request->search();
     
     my $btime      = new Benchmark;
     $timeall    = timediff($btime,$atime);
@@ -1059,7 +1059,7 @@ sub search_ezb {
 
     my $subjects_ref = $request->get_subjects();
 
-    $request->initial_search({
+    $request->search({
         sc       => $sc,
         lc       => $lc,
         sindex   => $sindex,
@@ -1179,7 +1179,7 @@ sub search_dbis {
 
     my $subjects_ref = $request->get_subjects();
 
-    $request->initial_search({
+    $request->search({
         sc       => $sc,
         lc       => $lc,
         sindex   => $sindex,

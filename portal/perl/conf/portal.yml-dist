@@ -2246,12 +2246,14 @@ hbzzeitfernleih_exturl: http://www.ub.uni-koeln.de/usbportal?service=search&dbgr
 # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
 # fuer den entsprechenden Standort (hier USBK)
 ezb_exturl: http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4
+ezb_baseurl: http://rzblx1.uni-regensburg.de/ezeit/
 
 ezb_bibid: USBK
 ezb_colors: 3
 
 # Externer Link zum DatenBankInfoSystem (DBIS)
 dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
+dbis_baseurl: http://www.bibliothek.uni-regensburg.de/dbinfo/
 
 dbis_bibid: usb_k
 # 1 (frei) + 4 (Hochschulnetz online) + 8 (Hochschulnetz Citrix) + 32 (Hochschulnetz eingeschraenkt)

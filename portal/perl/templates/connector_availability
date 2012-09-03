@@ -61,6 +61,7 @@
 <size>[% num_of_available_records %]</size>
 [% FOREACH record IN available_recordlist.get_records %]
 <catalogue>
+  <sigel>[% dbinfo.dbases.${record.database} %]</sigel>
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
   <description>[% dbinfo.get('dbnames').${record.database}.short %]</description>
@@ -73,6 +74,7 @@
 <size>[% num_of_similar_records %]</size>
 [% FOREACH record IN similar_recordlist.get_records %]
 <catalogue>
+  <sigel>[% dbinfo.dbases.${record.database} %]</sigel>
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
   <description>[% dbinfo.get('dbnames').${record.database}.short %]</description>

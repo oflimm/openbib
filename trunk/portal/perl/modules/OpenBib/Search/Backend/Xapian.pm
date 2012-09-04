@@ -66,7 +66,9 @@ sub new {
     
     $self->{_searchprofile} = $searchprofile if ($searchprofile);
     $self->{_database}      = $database if ($database);
-    
+
+    # Achtung: searchprofile und database werden fuer search direkt aus dem SearchQuery-Objekt verwendet.
+
     return $self;
 }
 

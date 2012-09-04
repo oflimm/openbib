@@ -53,6 +53,7 @@ use String::Tokenizer;
 use Search::Xapian;
 use YAML ();
 
+use OpenBib::Container;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
@@ -62,6 +63,7 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
+use OpenBib::Search::Factory;
 use OpenBib::Search::Backend::Xapian;
 use OpenBib::Search::Backend::ElasticSearch;
 use OpenBib::Search::Backend::Z3950;
@@ -152,6 +154,10 @@ sub show_search {
 
     #     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
 #     my $drilldown     = $query->param('dd')            || 1;     # Drill-Down?
+
+
+    my $container = OpenBib::Container->instance;
+    $container->register('query',$query);
     
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
@@ -302,7 +308,7 @@ sub show_search {
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
 
-        $self->sequential_search({sb => $sb});
+        $self->sequential_search;
 
         ######################################################################
         #
@@ -314,7 +320,7 @@ sub show_search {
         # Gesamtdatenbank aus allen ausgewaehlten Recherche-Datenbanken schicken und Ergebniss ausgeben
         #
 
-        $self->joined_search({sb => $sb});
+        $self->joined_search;
 
         ######################################################################
         #
@@ -811,33 +817,91 @@ sub sequential_search {
         # Trefferliste
         my $recordlist;
 
-        my $system = $config->get_system_of_db($database);
-
         $self->param('database',$database);
 
-        $logger->debug("System of Database $database is $system");
-        # Entfernte Ziele
-        if    ($system eq "Backend: EZB"){
-            $self->search_ezb({ database => $database });
-        }
-        elsif ($system eq "Backend: DBIS"){
-            $self->search_dbis({ database => $database });
-        }
-        elsif ($system eq "Backend: Z3950"){
-            $self->search_z3950({ database => $database });
-        }
-        # Lokale Suchindizes
-        else {
-            if ($arg_ref->{sb} eq "xapian"){
-                $self->search_xapian({ database => $database });
-            }
-            elsif ($arg_ref->{sb} eq "elasticsearch"){
-                $self->search_elasticsearch({ database => $database });
-            }
-        }
+        $self->search({database => $database});
         
         $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
     }
+
+    return;
+}
+
+sub search {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database           = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
+    
+    my $query        = $self->query();
+    my $config       = $self->param('config');
+    my $queryoptions = $self->param('qopts');
+    my $searchquery  = OpenBib::SearchQuery->instance;
+
+    my $atime=new Benchmark;
+    my $timeall;
+    
+    my $recordlist;
+    my $resulttime;
+    my $nav;
+
+    my $search_args_ref = {};
+    {
+        my @param_names = $query->param;
+        foreach my $param (@param_names){
+            $search_args_ref->{$param} = $query->param($param);
+        }
+        $search_args_ref->{database} = $database if (defined $database);
+    }
+
+    # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
+    # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
+    # und OpenBib::QueryOptions - alle weiteren benoetigten Parameter individuell
+    # heraussuchen.
+    # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
+    
+    my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
+
+    # Recherche starten
+    $searcher->search;
+
+    my $btime   = new Benchmark;
+    $timeall    = timediff($btime,$atime);
+    $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    
+    $logger->info($searcher->get_resultcount . " results found in $resulttime");
+    
+    $searchquery->set_hits($searcher->get_resultcount);
+    
+    if ($searcher->have_results) {
+
+        $logger->debug("Results found #".$searcher->get_resultcount);
+        
+        $nav = Data::Pageset->new({
+            'total_entries'    => $searcher->get_resultcount,
+            'entries_per_page' => $queryoptions->get_option('num'),
+            'current_page'     => $queryoptions->get_option('page'),
+            'mode'             => 'slide',
+        });
+        
+        $recordlist = $searcher->get_records();
+    }
+    else {
+        $logger->debug("No results found #".$searcher->get_resultcount);
+    }
+    
+    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
+    # den einzeltreffern
+
+    $self->param('searchtime',$resulttime);
+    $self->param('nav',$nav);
+    $self->param('recordlist',$recordlist);
+    $self->param('hits',$searcher->get_resultcount);
+    $self->param('total_hits',$self->param('total_hits')+$searcher->get_resultcount);
 
     return;
 }

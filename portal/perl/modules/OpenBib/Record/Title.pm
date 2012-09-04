@@ -162,7 +162,7 @@ sub load_full_record {
         return $self;
     }
 
-    my $catalog = OpenBib::Catalog::Factory->create_catalog($self->{database});
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}});
     
     my $record = $catalog->load_full_record({id => $id});
 

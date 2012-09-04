@@ -623,6 +623,8 @@ sub add_default_ttdata {
     my $location       = $self->param('location');
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+    my $query          = $self->query();
+
     
     # View- und Datenbank-spezifisches Templating
     my $database  = $ttdata->{'database'};
@@ -655,6 +657,7 @@ sub add_default_ttdata {
     }
 
     # TT-Data anreichern
+    $ttdata->{'query'}          = $query;
     $ttdata->{'view'}           = $view;
     $ttdata->{'sessionID'}      = $sessionID;
     $ttdata->{'representation'} = $representation;

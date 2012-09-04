@@ -982,6 +982,27 @@ sub dispatch_to_content_type {
     return Apache2::Const::HTTP_SEE_OTHER;
 }
 
+sub query2hashref {
+    my $query=shift;
+
+    my $args_ref = {};
+    my @param_names = $query->param;
+    foreach my $param (@param_names){
+        $args_ref->{$param} = $query->param($param);
+    }
+
+    return $args_ref;
+}
+
+sub dec2bin {
+    my $str = unpack("B32", pack("N", shift));
+    $str =~ s/^0+(?=\d)//;   # strip leading zeroes
+    return $str;
+}
+sub bin2dec {
+    return unpack("N", pack("B32", substr("0" x 32 . shift, -32)));
+}
+
 1;
 __END__
 

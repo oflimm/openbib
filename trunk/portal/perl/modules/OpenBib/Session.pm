@@ -265,7 +265,7 @@ sub _init_new_session {
       
             my $createtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
 
-            my $queryoptions = OpenBib::QueryOptions->get_default_options;
+            my $queryoptions = OpenBib::QueryOptions->get_session_defaults;
 
             my $new_session = $self->{schema}->resultset('Sessioninfo')->create(
                 {

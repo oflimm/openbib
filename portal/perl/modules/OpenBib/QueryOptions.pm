@@ -41,7 +41,7 @@ use YAML::Syck;
 
 
 use OpenBib::Config;
-use OpenBib::Schema::DBI;
+use OpenBib::Schema::System;
 use OpenBib::Session;
 
 sub _new_instance {
@@ -51,14 +51,17 @@ sub _new_instance {
     my $logger = get_logger();
 
     my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance;
-
-    $logger->debug("SessionID:".$session->{ID}) if (defined $session->{ID});
 
     my $self = {};
 
     bless ($self, $class);
 
+    $self->{_altered} = 0;
+    
+    if (defined $query){
+        $self->set_query($query);
+    }
+    
     $self->connectDB();
     $self->connectMemcached();
 
@@ -71,51 +74,18 @@ sub _new_instance {
     # Problem. Andere Informationen lassen sich ueber das $r
     # aber sehr wohl extrahieren, z.B. der Useragent.
 
-    if (!defined $session->{ID}){
-      $logger->fatal("No SessionID");
-      return $self;
-    }	
-
-    # Queryoptions zur Session einladen (default: alles undef via Session.pm)
-    $self->load;
-
-    my $default_queryoptions_ref = $self->get_default_options;
+    # Initializierung mit Defaults
+    $self->initialize_defaults;
     
-    my $altered=0;
+    # Queryoptions zur Session einladen, falls Session existiert
+    $self->load_from_session;
+    
     # Abgleich mit uebergebenen Parametern
     # Uebergebene Parameter 'ueberschreiben'und gehen vor
-    foreach my $option (keys %$default_queryoptions_ref){
-        if (defined $query->param($option)){
-            # Es darf nicht hitrange = -1 (= hole alles) dauerhaft gespeichert
-            # werden - speziell nicht bei einer anfaenglichen Suche
-            # Dennoch darf - derzeit ausgehend von den Normdaten - alles
-            # geholt werden
-            unless ($option eq "num" && $query->param($option) eq "-1"){
-                $self->{option}->{$option}=$query->param($option);
-                
-                $logger->debug("Option $option received via HTTP");
-                $altered=1;
-            }
-        }
-        else {
-            $logger->debug("Option $option NOT received via HTTP");
-        }
-    }
+    $self->load_from_query;
 
-    # Abgleich mit Default-Werten:
-    # Verbliebene "undefined"-Werte werden mit Standard-Werten belegt
-    foreach my $option (keys %{$self->{option}}){
-        if (!defined $self->{option}->{$option}){
-            $self->{option}->{$option}=$default_queryoptions_ref->{$option};
-	    $logger->debug("Option $option got default value");
-	    $altered=1;
-        }
-    }
-
-    if ($altered){
-      $self->dump;
-      $logger->debug("Options changed and dumped to DB");
-    }
+    # Entsprechende Optionen wieder zurueck in die Session schreiben
+    $self->dump_into_session;
 
     $logger->debug("srt Option: ".$self->{option}->{'srt'});
     
@@ -132,7 +102,38 @@ sub _new_instance {
     return $self;
 }
 
-sub load {
+sub load_from_query {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return unless (defined $self->{_query});
+                   
+    my $config  = OpenBib::Config->instance;
+
+    my $queryoptions_ref = $self->get_option_definition;
+
+    foreach my $option (keys %$queryoptions_ref){
+        if (defined $self->get_query->param($option)){
+            # Es darf nicht hitrange = -1 (= hole alles) dauerhaft gespeichert
+            # werden - speziell nicht bei einer anfaenglichen Suche
+            # Dennoch darf - derzeit ausgehend von den Normdaten - alles
+            # geholt werden
+            $self->{option}->{$option}=$self->get_query->param($option);
+            if ($queryoptions_ref->{$option}{storage} eq "session"){
+                $self->{_altered} = 1;
+            }
+        }
+        else {
+            $logger->debug("Option $option NOT received via HTTP");
+        }
+    }
+    
+    return;
+}
+
+sub load_from_session {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
@@ -141,76 +142,151 @@ sub load {
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance;
 
+    $logger->debug("SessionID:".$session->{ID}) if (defined $session->{ID});
+
+    
     # DBI: "select queryoptions from sessioninfo where sessionid = ?"
     my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({id => $session->{sid}});
 
     if ($queryoptions_rs){
       my $queryoptions = $queryoptions_rs->queryoptions;
       $logger->debug("Loaded Queryoptions: $queryoptions");
-      $self->{option} = decode_json($queryoptions);    
-    }
+      my $stored_options_ref = decode_json($queryoptions);
 
+      my $queryoptions_ref = $self->get_option_definition;
+
+      foreach my $option (keys %$queryoptions_ref){
+          if ($queryoptions_ref->{$option}->{storage} eq "session"){
+              if (defined $stored_options_ref->{$option}){
+                  $self->set_option($option,$stored_options_ref->{$option});
+              }
+          }
+          else {
+              $self->set_option($option,$queryoptions_ref->{$option}{value});
+          }
+      }
+  }
+    
     return $self;
 }
 
-sub dump {
+sub dump_into_session {
     my ($self)=@_;
-
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
+    return unless ($self->{_altered});
+    
     my $config = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance;
-
+    
     my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({id => $session->{sid}});
     
     if ($queryoptions_rs){
-      $queryoptions_rs->update(
-			      {
-			       queryoptions => encode_json($self->{option}),
-			      }
-			     );
+        $queryoptions_rs->update(
+            {
+                queryoptions => encode_json($self->get_session_options),
+            }
+        );
     }
     
-    $logger->debug("Dumped Options: ".encode_json($self->{option})." for session $session->{ID}");
-
+    $logger->debug("Dumped Options: ".encode_json($self->get_session_options)." for session $session->{ID}");
+    
     return;
 }
 
 sub get_options {
     my ($self)=@_;
-
+    
     return $self->{option};
+}
+
+sub get_session_options {
+    my ($self)=@_;
+    
+    my $options_ref = {};
+    
+    my $queryoptions_ref = $self->get_option_definition;
+    
+    foreach my $option (keys %$queryoptions_ref){
+        if ($queryoptions_ref->{$option}->{storage} eq "session"){
+            $options_ref->{$option}= $self->get_option($option);
+        }
+    }
+    
+    return $options_ref;
+}
+
+sub get_session_defaults {
+    my ($self)=@_;
+    
+    my $options_ref = {};
+    
+    my $queryoptions_ref = $self->get_option_definition;
+    
+    foreach my $option (keys %$queryoptions_ref){
+        if ($queryoptions_ref->{$option}->{storage} eq "session"){
+            $options_ref->{$option} = $queryoptions_ref->{$option}->{value};
+        }
+    }
+    
+    return $options_ref;
 }
 
 sub get_option {
     my ($self,$option)=@_;
-
+    
     return $self->{option}->{$option};
 }
 
 sub set_option {
     my ($self,$option,$value)=@_;
-
+    
     $self->{option}->{$option} = $value;
     return;
 }
 
-sub get_default_options {
+sub get_query {
+    my ($self)=@_;
+    
+    return $self->{_query};
+}
+
+sub set_query {
+    my ($self,$query)=@_;
+    
+    $self->{_query} = $query;
+    return;
+}
+
+sub get_option_definition {
     my ($class)=@_;
-
+    
     my $config  = OpenBib::Config->instance;
+    
+    return $config->{queryoptions};
+}
 
-    return $config->{default_query_options};
-};
+sub initialize_defaults {
+    my ($self)=@_;
+    
+    my $queryoptions_ref = $self->get_option_definition;
+    
+    foreach my $option (keys %$queryoptions_ref){
+        $self->set_option($option,$queryoptions_ref->{$option}{value});
+    }
+    
+    return $self;
+}
 
 sub to_cgi_params {
     my ($self,$arg_ref)=@_;
-
+    
     # Set defaults
     my $exclude_array_ref    = exists $arg_ref->{exclude}
         ? $arg_ref->{exclude}        : [];
-
+    
     my $exclude_ref = {};
 
     foreach my $param (@{$exclude_array_ref}){
@@ -326,7 +402,7 @@ Liefert alle QueryOptions als Hashreferenz
 
 Liefert den Wert der Option $option
 
-=item get_default_options
+=item get_option_definition
 
 Liefert die Standardeinstellung default_query_options aus der
 Konfigurationsdatei portal.yml.

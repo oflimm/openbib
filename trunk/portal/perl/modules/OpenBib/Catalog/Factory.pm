@@ -36,16 +36,19 @@ use OpenBib::Catalog::Backend::DBIS;
 use OpenBib::Catalog::Backend::Local;
     
 sub create_catalog {
-    my $self = shift;
-    my $database = shift;
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database           = exists $arg_ref->{database}
+        ? $arg_ref->{database}        : undef;
 
     my $config = OpenBib::Config->instance;
 
     my $system = $config->get_system_of_db($database);
 
-    return new OpenBib::Catalog::Backend::EZB($database)  if ($system eq "Backend: EZB");
-    return new OpenBib::Catalog::Backend::DBIS($database) if ($system eq "Backend: DBIS");
-    return new OpenBib::Catalog::Backend::Local($database); # Default
+    return new OpenBib::Catalog::Backend::EZB($arg_ref)  if ($system eq "Backend: EZB");
+    return new OpenBib::Catalog::Backend::DBIS($arg_ref) if ($system eq "Backend: DBIS");
+    return new OpenBib::Catalog::Backend::Local($arg_ref); # Default
 }
 
 1;

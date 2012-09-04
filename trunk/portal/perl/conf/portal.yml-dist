@@ -3224,15 +3224,28 @@ representation:
    'html': 'text/html'
 
 # Default Query-Options (Session)
-default_query_options:
-  num: 20
-  page: 1
-#  srto: 'asc'
-  srt: 'relevance_desc'
-  srta: 0
-  profil: ''
-  lt: 'cover'
-  ips_user: '' 
+default_queryoptions:
+  num:
+    value: 20
+    storage: session
+  page:
+    value: 1
+    storage: none
+  srt:
+    value: 'relevance_desc'
+    storage: none
+  srta:
+    value: 0
+    storage: none
+  profil:
+    value: ''
+    storage: none
+  lt:
+    value: 'cover'
+    storage: session
+  ips_user:
+    value: ''
+    storage: none
 
 # Generierte BestOf-Daten
 best_of:

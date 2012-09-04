@@ -49,262 +49,82 @@ use OpenBib::Record::Title;
 sub new {
     my ($class,$arg_ref) = @_;
 
-    # Set defaults
-    my $searchprofile   = exists $arg_ref->{searchprofile}
-        ? $arg_ref->{searchprofile}           : undef;
-
-    my $database        = exists $arg_ref->{database}
-        ? $arg_ref->{database}                : undef;
-
-    my $self = { };
-
-    bless ($self, $class);
-
-    # Entweder genau eine Datenbank via database oder (allgemeiner) ein Suchprofil via searchprofile mit einer oder mehr Datenbanken
-    
-    $self->{_searchprofile} = $searchprofile if ($searchprofile);
-    $self->{_database}      = $database if ($database);
-    
-    return $self;
-}
-
-sub new {
-    my ($class,$arg_ref) = @_;
-
-    # Set defaults
-    my $bibid     = exists $arg_ref->{bibid}
-        ? $arg_ref->{bibid}       : undef;
-
-    my $client_ip = exists $arg_ref->{client_ip}
-        ? $arg_ref->{client_ip}   : undef;
-
-    my $colors    = exists $arg_ref->{colors}
-        ? $arg_ref->{colors}      : undef;
-
-    my $lang      = exists $arg_ref->{lang}
-        ? $arg_ref->{lang}        : undef;
-
-    my $database        = exists $arg_ref->{database}
-        ? $arg_ref->{database}                : undef;
-
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
+
+    # Set defaults
+    my $bibid     = exists $arg_ref->{bibid}
+        ? $arg_ref->{bibid}       : $config->{ezb_bibid};
+
+    my $client_ip = exists $arg_ref->{client_ip}
+        ? $arg_ref->{client_ip}   : undef;
+
+    my $lang      = exists $arg_ref->{l}
+        ? $arg_ref->{l}           : undef;
+
+    my $sc      = exists $arg_ref->{sc}
+        ? $arg_ref->{sc}           : undef;
+
+    my $lc       = exists $arg_ref->{lc}
+        ? $arg_ref->{lc}           : undef;
+
+    my $sindex   = exists $arg_ref->{sindex}
+        ? $arg_ref->{sindex}           : undef;
     
+    my $database        = exists $arg_ref->{database}
+        ? $arg_ref->{database}         : undef;
+
+    my $access_green           = exists $arg_ref->{access_green}
+        ? $arg_ref->{access_green}            : 0;
+
+    my $access_yellow          = exists $arg_ref->{access_yellow}
+        ? $arg_ref->{access_yellow}           : 0;
+
+    my $access_red             = exists $arg_ref->{access_red}
+        ? $arg_ref->{access_red}              : 0;
+
+    my $colors = $access_green + $access_yellow*2 + $access_red*4;
+
+    if (!$colors){
+        $colors=$config->{ezb_colors};
+
+        my $colors_mask  = OpenBib::Common::Util::dec2bin($colors);
+
+        $logger->debug("Access: mask($colors_mask)");
+        
+        $access_green  = ($colors_mask & 0b001)?1:0;
+        $access_yellow = ($colors_mask & 0b010)?1:0;
+        $access_red    = ($colors_mask & 0b100)?1:0;
+    }
+
     my $self = { };
 
     bless ($self, $class);
 
     $logger->debug("Initializing with colors = ".(defined $colors || '')." and lang = ".(defined $lang || ''));
 
-    $self->{bibid}      = (defined $bibid)?$bibid:(defined $config->{ezb_bibid})?$config->{ezb_bibid}:undef;
-    $self->{colors}     = (defined $colors)?$colors:(defined $config->{ezb_colors})?$config->{ezb_colors}:undef;
-    $self->{client_ip}  = (defined $client_ip )?$client_ip:undef;
-    $self->{lang}       = (defined $lang )?$lang:undef;
-
     $self->{client}     = LWP::UserAgent->new;            # HTTP client
-    $self->{_database}  = $database if ($database);
+    $self->{_database}      = $database if ($database);
+
+    # Backend Specific Attributes
+    $self->{access_green}  = $access_green;
+    $self->{access_yellow} = $access_yellow;
+    $self->{access_red}    = $access_red;
+    $self->{bibid}         = $bibid;
+    $self->{lang}          = $lang if ($lang);
+    $self->{colors}        = $colors if ($colors);
+    $self->{sc}            = $sc if ($sc);
+    $self->{lc}            = $lc if ($lc);
+    $self->{sindex}        = $sindex if ($sindex);
+
 
     return $self;
 }
 
-sub get_subjects {
-    my ($self) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=&colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
-
-    my $subjects_ref = [];
-    
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
-
-    $logger->debug("Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $maxcount=0;
-    my $mincount=999999999;
-
-    foreach my $subject_node ($root->findnodes('/ezb_page/ezb_subject_list/subject')) {
-        my $singlesubject_ref = {} ;
-
-        $singlesubject_ref->{notation}   = $subject_node->findvalue('@notation');
-        $singlesubject_ref->{count}      = $subject_node->findvalue('@journalcount');
-        $singlesubject_ref->{desc}       = $subject_node->textContent();
-
-        if ($maxcount < $singlesubject_ref->{count}){
-            $maxcount = $singlesubject_ref->{count};
-        }
-        
-        if ($mincount > $singlesubject_ref->{count}){
-            $mincount = $singlesubject_ref->{count};
-        }
-        
-        push @{$subjects_ref}, $singlesubject_ref;
-    }
-
-    $subjects_ref = OpenBib::Common::Util::gen_cloud_class({
-        items => $subjects_ref, 
-        min   => $mincount, 
-        max   => $maxcount, 
-        type  => 'log'});
-    
-    $logger->debug(YAML::Dump($subjects_ref));
-
-    return $subjects_ref;
-}
-
-sub get_journals {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $notation = exists $arg_ref->{notation}
-        ? $arg_ref->{notation}     : '';
-
-    my $sc       = exists $arg_ref->{sc}
-        ? $arg_ref->{sc}           : '';
-    
-    my $lc       = exists $arg_ref->{lc}
-        ? $arg_ref->{lc}           : '';
-
-    my $sindex   = exists $arg_ref->{sindex}
-        ? $arg_ref->{sindex}       : 0;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=$notation&colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
-    
-    my $titles_ref = [];
-    
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
-
-    $logger->debug("Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $current_page_ref = {};
-    
-    foreach my $nav_node ($root->findnodes('/ezb_page/page_vars')) {        
-        $current_page_ref->{sc}   = $nav_node->findvalue('sc/@value');
-        $current_page_ref->{lc}   = $nav_node->findvalue('lc/@value');
-        $current_page_ref->{sindex}   = $nav_node->findvalue('sindex/@value');
-        $current_page_ref->{sindex}   = $nav_node->findvalue('sindex/@value');
-    }
-    
-    my $subjectinfo_ref = {};
-
-    $subjectinfo_ref->{notation} = decode_utf8($root->findvalue('/ezb_page/ezb_alphabetical_list/subject/@notation'));
-    $subjectinfo_ref->{desc}     = decode_utf8($root->findvalue('/ezb_page/ezb_alphabetical_list/subject'));
-
-    my $nav_ref = [];
-
-    my @first_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list/first_fifty');
-    if (@first_nodes){
-        foreach my $nav_node (@first_nodes){
-            my $current_nav_ref = {};
-            $current_nav_ref->{sc}     = $nav_node->findvalue('@sc');
-            $current_nav_ref->{lc}     = $nav_node->findvalue('@lc');
-            $current_nav_ref->{sindex} = $nav_node->findvalue('@sindex');
-            push @{$nav_ref}, $current_nav_ref;
-        }
-        push @{$nav_ref}, {
-            sc     => $current_page_ref->{sc},
-            lc     => $current_page_ref->{lc},
-            sindex => $current_page_ref->{sindex},
-        };
-
-    }
-    else {
-        push @{$nav_ref}, {
-            sc     => $current_page_ref->{sc},
-            lc     => $current_page_ref->{lc},
-            sindex => $current_page_ref->{sindex},
-        };
-    }
-
-    my @next_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list/next_fifty');
-    if (@next_nodes){
-        foreach my $nav_node (@next_nodes){
-            my $current_nav_ref = {};
-            $current_nav_ref->{sc}     = $nav_node->findvalue('@sc');
-            $current_nav_ref->{lc}     = $nav_node->findvalue('@lc');
-            $current_nav_ref->{sindex} = $nav_node->findvalue('@sindex');
-            push @{$nav_ref}, $current_nav_ref;
-        }
-    }
-
-    my $alphabetical_nav_ref = [];
-
-    foreach my $nav_node ($root->findnodes('/ezb_page/ezb_alphabetical_list/navlist/current_page')) {        
-        $current_page_ref->{desc}   = decode_utf8($nav_node->textContent);
-    }
-
-    my @nav_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list/navlist');
-    if (@nav_nodes){
-        foreach my $this_node ($nav_nodes[0]->childNodes){
-            my $singlenav_ref = {} ;
-            
-            $logger->debug($this_node->toString);
-            $singlenav_ref->{sc}   = $this_node->findvalue('@sc');
-            $singlenav_ref->{lc}   = $this_node->findvalue('@lc');
-            $singlenav_ref->{desc} = $this_node->textContent;
-            
-            push @{$alphabetical_nav_ref}, $singlenav_ref if ($singlenav_ref->{desc} && $singlenav_ref->{desc} ne "\n");
-        }
-    }
-    my $journals_ref = [];
-
-    foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list/alphabetical_order/journals/journal')) {
-        
-        my $singlejournal_ref = {} ;
-        
-        $singlejournal_ref->{id}          = $journal_node->findvalue('@jourid');
-        $singlejournal_ref->{title}       = decode_utf8($journal_node->findvalue('title'));
-        $singlejournal_ref->{color}{code} = $journal_node->findvalue('journal_color/@color_code');
-        $singlejournal_ref->{color}{desc} = $journal_node->findvalue('journal_color/@color');
-
-        push @{$journals_ref}, $singlejournal_ref;
-    }
-
-    return {
-        nav            => $nav_ref,
-        subject        => $subjectinfo_ref,
-        journals       => $journals_ref,
-        current_page   => $current_page_ref,
-        other_pages    => $alphabetical_nav_ref,
-    };
-}
-
 sub search {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $colors   = exists $arg_ref->{colors}
-        ? $arg_ref->{colors}           : '';
-
-    my $bibid    = exists $arg_ref->{bibid}
-        ? $arg_ref->{bibid}            : '';
-
-    my $sc       = exists $arg_ref->{sc}
-        ? $arg_ref->{sc}           : '';
-    
-    my $lc       = exists $arg_ref->{lc}
-        ? $arg_ref->{lc}           : '';
-
-    my $sindex   = exists $arg_ref->{sindex}
-        ? $arg_ref->{sindex}       : 0;
+    my ($self) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -327,7 +147,7 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$colors&bibid=$self->{bibid}&sc=$sc&lc=$lc&sindex=$sindex&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&sc=$self->{sc}&lc=$self->{lc}&sindex=$self->{sindex}&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
 
     my $titles_ref = [];
     
@@ -446,10 +266,12 @@ sub get_records {
 
     my $config     = OpenBib::Config->instance;
 
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database} });
+    
+    my $classifications_ref = $catalog->get_classifications;
+
     my $generic_attributes = {
-        nav           => $self->{_nav},
-        other_pages   => $self->{_other_pages},
-        current_pages => $self->{_current_pages},
+        classifications  => $classifications_ref,
     };
     
     my $recordlist = new OpenBib::RecordList::Title({generic_attributes => $generic_attributes});

@@ -30,6 +30,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Log::Log4perl qw(get_logger :levels);
+
 use OpenBib::Config;
 use OpenBib::Search::Backend::EZB;
 use OpenBib::Search::Backend::DBIS;
@@ -37,22 +39,56 @@ use OpenBib::Search::Backend::Xapian;
 use OpenBib::Search::Backend::ElasticSearch;
 
 sub create_searcher {
-    my $self = shift;
-    my $database = shift;
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database           = exists $arg_ref->{database}
+        ? $arg_ref->{database}        : undef;
+
+    my $sb                 = exists $arg_ref->{sb}
+        ? $arg_ref->{sb}              : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
 
-    my $system = $config->get_system_of_db($database);
-
-    return new OpenBib::Search::Backend::EZB($database)  if ($system eq "Backend: EZB");
-    return new OpenBib::Search::Backend::DBIS($database) if ($system eq "Backend: DBIS");
-
-    if ($config->{local_search_backend} eq "xapian"){ # Default
-        return new OpenBib::Search::Backend::Xapian($database);
+    if (!defined $database && !defined $sb){
+        $sb = $config->{local_search_backend};
     }
-    elsif ($config->{local_search_backend} eq "elasticsearch"){ # Default
-        return new OpenBib::Search::Backend::ElasticSearch($database);
+    
+    elsif (defined $database && !defined $sb){
+        my $system = $config->get_system_of_db($database);
+        if    ($system eq "Backend: EZB"){
+            $sb = "ezb";
+        }
+        elsif ($system eq "Backend: DBIS"){
+            $sb = "dbis";
+        }
+        else {
+            $sb = $config->{local_search_backend};
+        }
     }
+
+    $logger->debug("Dispatching to Search Backend $sb");
+    
+    if    ($sb eq "ezb"){        
+        return new OpenBib::Search::Backend::EZB($arg_ref);
+    }
+    elsif ($sb eq "dbis"){        
+        return new OpenBib::Search::Backend::DBIS($arg_ref);
+    }
+    elsif ($sb eq "xapian"){        
+        return new OpenBib::Search::Backend::Xapian($arg_ref);
+    }
+    elsif ($sb eq "elasticsearch"){        
+        return new OpenBib::Search::Backend::ElasticSearch($arg_ref);
+    }
+    else {
+        $logger->fatal("Couldn't dispatch to any Search Backend");
+    }
+
+    return;
 }
 
 1;

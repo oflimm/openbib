@@ -39,16 +39,24 @@ use MLDBM qw(DB_File Storable);
 use Storable ();
 
 use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::DBI;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 
 sub new {
-    my ($class,$database) = @_;
+    my ($class,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
+    # Set defaults
+    my $database        = exists $arg_ref->{database}
+        ? $arg_ref->{database}         : undef;
+    
     my $self = { };
 
     bless ($self, $class);

@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: ezb_showsubjects
+# Templatename: classification_collection_html
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe der EZB Fachgebiete
+# Ausgabe der DBIS Fachgruppen
 #
 #######################################################################
 -%]
@@ -34,12 +34,12 @@
      <div class="breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="#">[% msg.maketext("Schlagworte") %]</a></li>
+         <li><a href="#">[% msg.maketext("Fachgruppen") %]</a></li>
          <li><a href="#" class="lastitem">[% dbinfo.dbnames.${database}.short %]</a></li>
       </ul>
      </div>
      <div class="representation">
-<a href="[% path_prefix %]/[% config.get('subject_loc') %]/[% database %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('classification_loc') %]/[% database %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
    </div>
 
@@ -56,12 +56,13 @@
 <input type="hidden" name="num"       value="20" />
 
 <table>
-<tr><td><input type="checkbox" name="access_green" value="1" [%- IF access_green -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</td></tr>
-<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF access_yellow -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
-<tr><td><input type="checkbox" name="access_red" value="1" [%- IF access_red -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF query.param('access_green') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF query.param('access_yellow') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF query.param('access_red') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
+<tr><td><input type="checkbox" name="access_national" value="1" [%- IF query.param('access_national') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_de_img') %]" alt="red"/></td><td>[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</td></tr>
 <tr><td colspan="3"></td></tr>
-<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="cln"><option value="all" [% IF subject_notation == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH subject IN gatt.subjects -%]
-<option value="[% subject.notation %]" [% IF subject_notation == subject.notation %]selected="selected"[% END %]>[% subject.desc | truncate(25) %]</option>[%- END -%]</select></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH classification IN classifications -%]
+<option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>[%- END -%]</select></td></tr>
 </table>
 <p/>
 <table>
@@ -75,18 +76,18 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-[%# USE dumper; dumper.dump(subjects) %]
+[%# USE dumper; dumper.dump(classifications) %]
 
 <h1>[% msg.maketext("Elektronisch verf&uuml;gbare Datenbanken (DBIS)") %]</h1>
 
 <h2>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h2>
 <p/>
 <div class="listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('subject_loc') %]/ezb.html?l=[% lang %];type=cloud"[% IF type == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('subject_loc') %]/ezb.html?l=[% lang %];type=list"[% IF type == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('classification_loc') %]/dbis.html?[% cgiapp.to_cgi_querystring({ change => { type => 'cloud' }}) %]"[% IF query.param('type') == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('classification_loc') %]/dbis.html?[% cgiapp.to_cgi_querystring({ change => { type => 'list' }}) %]"[% IF query.param('type') == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
 <div class="left_side23">
-[% IF type == 'cloud' %]
+[% IF query.param('type') == 'cloud' %]
 <!-- Beginn Tag-Cloud -->
 [%
    css_classes = [
@@ -100,23 +101,24 @@
    ];
 %]
 <ol class="cloud">
-[% FOREACH subject IN subjects %]
-[%- classnr   = subject.class;
-   itemclass = css_classes.$classnr;
-   searchterm    = subject.notation;
+[% FOREACH classification IN classifications %]
+[%-
+   classnr       = classification.class;
+   itemclass     = css_classes.$classnr;
+   searchterm    = classification.name;
    searchprefix  = config.get('searchfield').classification.prefix;
 -%]
-<li class="[% itemclass %]"><span>[% subject.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% searchprefix %]=[% searchterm %]"  class="tag" title="[% subject.count %] Zeitschriften sind in der Fachgruppe [% subject.desc %]">[% subject.desc %]</a></li>
+<li class="[% itemclass %]"><span>[% classification.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]"  class="tag" title="[% classification.count %] Zeitschriften sind in der Fachgruppe [% classification.desc %]">[% classification.desc %]</a></li>
 [% END %]
 </ol>
 <!-- Ende Tag-Cloud -->
 [% ELSE %]
-<ul class="subjectlist">
-[% FOREACH subject IN subjects;
-   searchterm    = subject.notation;
-   searchprefix  = config.get('searchfield').subject.prefix;
+<ul class="classificationlist">
+[% FOREACH classification IN classifications;
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
 %]
-<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% searchprefix %]=[% searchterm %]">[% subject.desc %]</a> ([% subject.count %])</li>
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %]</a> ([% classification.count %])</li>
 [% END %]
 </ul>
 [% END %]

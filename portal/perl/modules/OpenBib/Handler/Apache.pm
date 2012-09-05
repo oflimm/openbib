@@ -60,6 +60,7 @@ use constant IOBUFSIZE => 8192;
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
+use OpenBib::Container;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -279,6 +280,8 @@ sub process_uri {
     my $uri    = $r->parsed_uri;
     my $path   = $uri->path;
     my $scheme = $uri->scheme || 'http';
+    my $args   = $r->args;
+
     
     my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
     
@@ -300,7 +303,12 @@ sub process_uri {
         $location_uri.="/$last_uri_element";
     }
 
-    $self->param('location',"$scheme://$servername$location_uri");
+    my $location = "$scheme://$servername$location_uri";
+    if ($args){
+        $location.="?$args";
+    }
+    
+    $self->param('location',$location);
     $self->param('path_prefix',$path_prefix);
     $self->param('path',$path);
     $self->param('scheme',$scheme);
@@ -624,7 +632,7 @@ sub add_default_ttdata {
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $query          = $self->query();
-
+    my $container      = OpenBib::Container->instance;
     
     # View- und Datenbank-spezifisches Templating
     my $database  = $ttdata->{'database'};
@@ -676,6 +684,7 @@ sub add_default_ttdata {
     $ttdata->{'url'}            = $url;
     $ttdata->{'location'}       = $location;
     $ttdata->{'cgiapp'}         = $self;
+    $ttdata->{'container'}      = $container;
 
     # Helper functions
     $ttdata->{'to_json'}        = sub {

@@ -1,0 +1,109 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+<!-- Beginn Result Item -->
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
+    dburl    = dbinfo.get('urls').${database} ;
+    request_base    = [] ;#num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
+
+    IF searchquery.get_option('num') ;
+       request_base.push("num=${searchquery.get_option('num')}");
+    END;
+    IF searchquery.get_option('srt') ;
+       request_base.push("srt=${searchquery.get_option('srt')}");
+    END;
+    IF searchquery.get_option('srto') ;
+       request_base.push("srto=${searchquery.get_option('srto')}");
+    END;
+    FOREACH thisdb IN db ;
+       request_base.push("db=${thisdb}");
+    END;
+
+    request_base = request_base.join(";");
+
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+-%]
+
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[%-   IF dbinfo.get('use_libinfo').${database} %]
+<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% database %]">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+     [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
+    </div>
+    <div class="hits">
+[% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]
+    </div>
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% request_base %];page=[% page %];[% searchquery.to_cgi_params %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+    </div>
+  </div>
+[% IF hits > 0 %]
+  <div class="resultdrilldown">
+[% PROCESS common/subtemplate name="search_facet" %]
+  </div>
+[% END %]
+  <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
+[%- END -%]
+  <div class="footer">
+    <div class="navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% request_base %];page=[% page %];[% searchquery.to_cgi_params %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+    </div>
+    <div class="resulttime">
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
+    </div>
+  </div>
+</div>
+<div class="resultfooter">
+&nbsp;
+</div>
+
+<p/>

@@ -45,6 +45,9 @@ use YAML ();
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
+use OpenBib::Catalog::Factory;
+
+use base qw(OpenBib::Search);
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -87,210 +90,13 @@ sub new {
 
     $self->{client}     = LWP::UserAgent->new;            # HTTP client
     $self->{_database}  = $database if ($database);
+    $self->{args}          = $arg_ref;
 
     return $self;
 }
 
-sub get_subjects {
-    my ($self) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/fachliste.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&bib_id=".((defined $self->{bibid})?$self->{bibid}:"")."&lett=l&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
-
-    my $subjects_ref = [];
-    
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'utf8');
-
-    $logger->debug("Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $maxcount=0;
-    my $mincount=999999999;
-
-    foreach my $subject_node ($root->findnodes('/dbis_page/list_subjects_collections/list_subjects_collections_item')) {
-        my $singlesubject_ref = {} ;
-
-        $singlesubject_ref->{notation}   = $subject_node->findvalue('@notation');
-        $singlesubject_ref->{count}      = $subject_node->findvalue('@number');
-        $singlesubject_ref->{lett}      = $subject_node->findvalue('@lett');
-        $singlesubject_ref->{desc}       = decode_utf8($subject_node->textContent());
-
-        if ($maxcount < $singlesubject_ref->{count}){
-            $maxcount = $singlesubject_ref->{count};
-        }
-        
-        if ($mincount > $singlesubject_ref->{count}){
-            $mincount = $singlesubject_ref->{count};
-        }
-
-        push @{$subjects_ref}, $singlesubject_ref;
-    }
-
-    $subjects_ref = OpenBib::Common::Util::gen_cloud_class({
-        items => $subjects_ref, 
-        min   => $mincount, 
-        max   => $maxcount, 
-        type  => 'log'});
-
-    $logger->debug(YAML::Dump($subjects_ref));
-
-    return $subjects_ref;
-}
-
-sub get_journals {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $notation = exists $arg_ref->{notation}
-        ? $arg_ref->{notation}     : '';
-
-    my $sc       = exists $arg_ref->{sc}
-        ? $arg_ref->{sc}           : '';
-    
-    my $lc       = exists $arg_ref->{lc}
-        ? $arg_ref->{lc}           : '';
-
-    my $sindex   = exists $arg_ref->{sindex}
-        ? $arg_ref->{sindex}       : 0;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=$notation&colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&sc=$sc&lc=$lc&sindex=$sindex&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
-    
-    my $titles_ref = [];
-    
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
-
-    $logger->debug("Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $current_page_ref = {};
-    
-    foreach my $nav_node ($root->findnodes('/ezb_page/page_vars')) {        
-        $current_page_ref->{sc}   = $nav_node->findvalue('sc/@value');
-        $current_page_ref->{lc}   = $nav_node->findvalue('lc/@value');
-        $current_page_ref->{sindex}   = $nav_node->findvalue('sindex/@value');
-        $current_page_ref->{sindex}   = $nav_node->findvalue('sindex/@value');
-    }
-    
-    my $subjectinfo_ref = {};
-
-    $subjectinfo_ref->{notation} = decode_utf8($root->findvalue('/ezb_page/ezb_alphabetical_list/subject/@notation'));
-    $subjectinfo_ref->{desc}     = decode_utf8($root->findvalue('/ezb_page/ezb_alphabetical_list/subject'));
-
-    my $nav_ref = [];
-
-    my @first_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list/first_fifty');
-    if (@first_nodes){
-        foreach my $nav_node (@first_nodes){
-            my $current_nav_ref = {};
-            $current_nav_ref->{sc}     = $nav_node->findvalue('@sc');
-            $current_nav_ref->{lc}     = $nav_node->findvalue('@lc');
-            $current_nav_ref->{sindex} = $nav_node->findvalue('@sindex');
-            push @{$nav_ref}, $current_nav_ref;
-        }
-        push @{$nav_ref}, {
-            sc     => $current_page_ref->{sc},
-            lc     => $current_page_ref->{lc},
-            sindex => $current_page_ref->{sindex},
-        };
-
-    }
-    else {
-        push @{$nav_ref}, {
-            sc     => $current_page_ref->{sc},
-            lc     => $current_page_ref->{lc},
-            sindex => $current_page_ref->{sindex},
-        };
-    }
-
-    my @next_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list/next_fifty');
-    if (@next_nodes){
-        foreach my $nav_node (@next_nodes){
-            my $current_nav_ref = {};
-            $current_nav_ref->{sc}     = $nav_node->findvalue('@sc');
-            $current_nav_ref->{lc}     = $nav_node->findvalue('@lc');
-            $current_nav_ref->{sindex} = $nav_node->findvalue('@sindex');
-            push @{$nav_ref}, $current_nav_ref;
-        }
-    }
-
-    my $alphabetical_nav_ref = [];
-
-    foreach my $nav_node ($root->findnodes('/ezb_page/ezb_alphabetical_list/navlist/current_page')) {        
-        $current_page_ref->{desc}   = decode_utf8($nav_node->textContent);
-    }
-
-    my @nav_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list/navlist');
-    if (@nav_nodes){
-        foreach my $this_node ($nav_nodes[0]->childNodes){
-            my $singlenav_ref = {} ;
-            
-            $logger->debug($this_node->toString);
-            $singlenav_ref->{sc}   = $this_node->findvalue('@sc');
-            $singlenav_ref->{lc}   = $this_node->findvalue('@lc');
-            $singlenav_ref->{desc} = $this_node->textContent;
-            
-            push @{$alphabetical_nav_ref}, $singlenav_ref if ($singlenav_ref->{desc} && $singlenav_ref->{desc} ne "\n");
-        }
-    }
-    my $journals_ref = [];
-
-    foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list/alphabetical_order/journals/journal')) {
-        
-        my $singlejournal_ref = {} ;
-        
-        $singlejournal_ref->{id}          = $journal_node->findvalue('@jourid');
-        $singlejournal_ref->{title}       = decode_utf8($journal_node->findvalue('title'));
-        $singlejournal_ref->{color}{code} = $journal_node->findvalue('journal_color/@color_code');
-        $singlejournal_ref->{color}{desc} = $journal_node->findvalue('journal_color/@color');
-
-        push @{$journals_ref}, $singlejournal_ref;
-    }
-
-    return {
-        nav            => $nav_ref,
-        subject        => $subjectinfo_ref,
-        journals       => $journals_ref,
-        current_page   => $current_page_ref,
-        other_pages    => $alphabetical_nav_ref,
-    };
-}
-
 sub search {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $colors   = exists $arg_ref->{colors}
-        ? $arg_ref->{colors}       : '';
-
-    my $ocolors  = exists $arg_ref->{ocolors}
-        ? $arg_ref->{ocolors}      : '';
-
-    my $bibid    = exists $arg_ref->{bibid}
-        ? $arg_ref->{bibid}        : 'usb_k';
-
-    my $sc       = exists $arg_ref->{sc}
-        ? $arg_ref->{sc}           : '';
-    
-    my $lc       = exists $arg_ref->{lc}
-        ? $arg_ref->{lc}           : '';
-
-    my $sindex   = exists $arg_ref->{sindex}
-        ? $arg_ref->{sindex}       : 0;
+    my ($self) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -305,15 +111,9 @@ sub search {
 
     my $offset            = $page*$num-$num;
 
-#     my ($atime,$btime,$timeall);
-  
-#     if ($config->{benchmark}) {
-#         $atime=new Benchmark;
-#     }
-
     $self->parse_query($searchquery);
 
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=$bibid&colors=$colors&ocolors=$ocolors&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
+    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=$self->{lang}&xmloutput=1";
     
     my $titles_ref = [];
     
@@ -421,10 +221,20 @@ sub get_records {
 
     my $config     = OpenBib::Config->instance;
 
+    my $catalog = OpenBib::Catalog::Factory->create_catalog($self->{args});
+    
+    my $classifications_ref = $catalog->get_classifications;
+
+    my $container = OpenBib::Container->instance;
+
+    $container->register('classifications',$classifications_ref);
+    
     my $recordlist = new OpenBib::RecordList::Title();
 
     my @matches = $self->matches;
 
+    $logger->debug("Getting Matches ".YAML::Dump(\@matches));
+    
     foreach my $match_ref (@matches) {        
         $logger->debug("Record: ".$match_ref );
 
@@ -452,48 +262,6 @@ sub get_records {
     }
 
     return $recordlist;
-}
-
-sub get_nav {
-    my $self = shift;
-
-    return $self->{_nav};
-}
-
-sub get_current_page {
-    my $self = shift;
-
-    return $self->{_current_page};
-}
-sub get_other_pages {
-    my $self = shift;
-
-    return $self->{_other_pages};
-}
-
-sub matches {
-    my $self=shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    $logger->debug(YAML::Dump($self->{_matches}));
-    return @{$self->{_matches}};
-}
-
-sub querystring {
-    my $self=shift;
-    return $self->{_querystring};
-}
-
-sub have_results {
-    my $self = shift;
-    return ($self->{resultcount})?$self->{resultcount}:0;
-}
-
-sub get_resultcount {
-    my $self = shift;
-    return $self->{resultcount};
 }
 
 sub parse_query {
@@ -574,232 +342,25 @@ sub parse_query {
     return $self;
 }
 
-
-sub DESTROY {
-    my $self = shift;
-
-    return;
-}
-
-
-sub get_journalinfo {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $id = exists $arg_ref->{id}
-        ? $arg_ref->{id}     : '';
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&jour_id=$id&xmloutput=1";
-
-    my $titles_ref = [];
-    
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
-
-    $logger->debug("Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $title     =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/title'));
-    my $publisher =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/publisher'));
-    my @zdb_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/ZDB_number');
-
-    my $zdb_node_ref = {};
-    
-    foreach my $zdb_node (@zdb_nodes){
-        $zdb_node_ref->{ZDB_number}{url} = $zdb_node->findvalue('@url');
-        $zdb_node_ref->{ZDB_number}{content} = decode_utf8($zdb_node->textContent);
-    }
-
-    my @subjects_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/subjects/subject');
-
-    my $subjects_ref = [];
-
-    foreach my $subject_node (@subjects_nodes){
-        push @{$subjects_ref}, decode_utf8($subject_node->textContent);
-    }
-
-    my @keywords_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/keywords/keyword');
-
-    my $keywords_ref = [];
-
-    foreach my $keyword_node (@keywords_nodes){
-        push @{$keywords_ref}, decode_utf8($keyword_node->textContent);
-    }
-
-    my @homepages_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/hompages/homepage');
-
-    my $homepages_ref = [];
-
-    foreach my $homepage_node (@homepages_nodes){
-        push @{$homepages_ref}, decode_utf8($homepage_node->textContent);
-    }
-    
-    my $firstvolume =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_volume'));
-    my $firstdate   =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_date'));
-    my $appearence  =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/appearence'));
-    my $costs       =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs'));
-    my $remarks     =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks'));
-
-    return {
-        id             => $id,
-        title          => $title,
-        publisher      => $publisher,
-        ZDB_number     => $zdb_node_ref,
-        subjects       => $subjects_ref,
-        keywords       => $keywords_ref,
-        firstvolume    => $firstvolume,
-        firstdate      => $firstdate,
-        appearence     => $appearence,
-        costs          => $costs,
-        homepages      => $homepages_ref,
-        remarks        => $remarks,
-    };
-}
-
-sub get_journalreadme {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $id = exists $arg_ref->{id}
-        ? $arg_ref->{id}     : '';
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/show_readme.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&jour_id=$id&xmloutput=1";
-
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
-
-    $logger->debug("Response: $response");
-
-    # Fehlermeldungen im XML entfernen
-
-    $response=~s/^.*?<\?xml/<?xml/smx;
-
-    $logger->debug("gereinigte Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    $parser->recover(1);
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $location =  $root->findvalue('/ezb_page/ezb_readme_page/location');
-
-    if ($location){
-        # Lokaler Link in der EZB
-        unless ($location=~m/^http/){
-            $location="http://rzblx1.uni-regensburg.de/ezeit/$location";
-        }
-        
-        return {
-            location => $location
-        };
-    }
-
-    my $title    =  decode_utf8($root->findvalue('/ezb_page/ezb_readme_page/journal/title'));
-
-    my @periods_nodes =  $root->findnodes('/ezb_page/ezb_readme_page/journal/periods/period');
-
-    my $periods_ref = [];
-
-    foreach my $period_node (@periods_nodes){
-        my $this_period_ref = {};
-
-        $this_period_ref->{color}       = decode_utf8($period_node->findvalue('journal_color/@color'));
-        $this_period_ref->{label}       = decode_utf8($period_node->findvalue('label'));
-        $this_period_ref->{readme_link} = decode_utf8($period_node->findvalue('readme_link/@url'));
-        $this_period_ref->{warpto_link} = decode_utf8($period_node->findvalue('warpto_link/@url'));
-
-        $logger->debug(YAML::Dump($this_period_ref));
-        push @{$periods_ref}, $this_period_ref;
-    }
-
-    return {
-        periods  => $periods_ref,
-        title    => $title,
-    };
-}
-
-
 1;
 __END__
 
 =head1 NAME
 
-OpenBib::DBIS - Objektorientiertes Interface zum DBIS XML-API
+OpenBib::Search::Backend::DBIS - Objektorientiertes Interface zum DBIS XML-API
 
 =head1 DESCRIPTION
 
 Mit diesem Objekt kann auf das XML-API des
-Datenbankinformationssystems (DBIS) in Regensburg zugegriffen werden.
+Datenbankinformationssystems (DBIS) in Regensburg für Rechercheanfragen zugegriffen werden.
 
 =head1 SYNOPSIS
-
- use OpenBib::DBIS;
-
- my $dbis = OpenBib::DBIS->new({});
 
 =head1 METHODS
 
 =over 4
 
-=item new({ bibid => $bibid, client_ip => $client_ip, colors => $colors, ocolors => $ocolors, lang => $lang })
-
-Erzeugung des DBIS Objektes. Dabei wird die DBIS-Kennung $bibid der
-Bibliothek, die IP des aufrufenden Clients (zur Statistik), die
-Sprachversion lang, sowie die Spezifikation der gewünschten
-Zugriffsbedingungen color und ocolor benötigt.
-
-=item get_subjects
-
-Liefert eine Listenreferenz der vorhandenen Fachgruppen zurück mit
-einer Hashreferenz auf die jeweilige Notation notation, der
-Datenbankanzahl count, des Anfangbuchstabens lett sowie der
-Beschreibung der Fachgruppe desc. Zusätzlich werden für eine
-Wolkenanzeige die entsprechenden Klasseninformationen hinzugefügt.
-
-=item search_dbs({ fs => $fs, notation => $notation })
-
-Stellt die Suchanfrage $fs - optional eingeschränkt auf die Fachgruppe
-$notation - an DBIS und liefert als Ergebnis verschiedene Informatinen
-als Hashreferenz zurück.
-
-Es sind dies die Informationen über die aktuelle Ergebnisseite
-current_page (mit lett, colors, ocolors), die Fachgruppe subject, die
-Kategorisierung von Datenbanken db_groups, die Zugriffsbedingungen
-access_info sowie die jeweiligen Datenbanktypen db_type.
-
-=item get_dbs({ notation => $notation, fs => $fs, lett => $lett, sc => $sc, lc => $lc, sindex => $sindex })
-
-Liefert eine Liste mit Informationen über alle Datenbanken der
-Fachgruppe $notation aus DBIS als Hashreferenz zurück.
-
-Es sind dies die Informationen über die Fachgruppe subject, die
-Kategorisierung von Datenbanken db_groups, die Zugriffsbedingungen
-access_info sowie die jeweiligen Datenbanktypen db_type.
-
-=item get_dbinfo({ id => $id })
-
-Liefert Informationen über die Datenbank mit der Id $id als
-Hashreferenz zurück. Es sind dies neben der Id $id auch Informationen
-über den Titel title, hints, content, instructions, subjects,
-keywords, appearance, access, access_info sowie db_type.
-
-=item get_dbreadme({ id => $id })
-
-Liefert zur Datenbank mit der Id $id generelle Nutzungsinformationen
-als Hashreferenz zurück. Neben dem Titel title sind das Informationen
-periods (color, label, readme_link, warpto_link) über alle
-verschiedenen Zeiträume.
+=item XXX
 
 =back
 

@@ -165,7 +165,7 @@ sub show {
         foreach my $titid_ref (@sortedtitids) {
             my $id = $titid_ref->{id};
 
-            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database})->load_brief_record({ dbh => $dbh })->get_brief_normdata;
+            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database})->load_brief_record({ dbh => $dbh })->get_normdata;
             
             # Bereinigung der Signaturen. Alle Signaturen, die nicht zur Grundsignatur gehoeren,
             # werden entfernt.

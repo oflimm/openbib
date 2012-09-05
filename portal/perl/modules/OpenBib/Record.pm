@@ -116,25 +116,40 @@ sub set_field {
 
     # Set defaults
     my $field          = exists $arg_ref->{field}
-        ? $arg_ref->{field}          : undef;
+        ? $arg_ref->{field}            : undef;
 
-    my $mult              = exists $arg_ref->{mult}
-        ? $arg_ref->{mult}              : 1;
+    my $id             = exists $arg_ref->{id}
+        ? $arg_ref->{id}               : undef;
+    
+    my $mult           = exists $arg_ref->{mult}
+        ? $arg_ref->{mult}             : 1;
 
-    my $subfield         = exists $arg_ref->{subfield}
+    my $subfield       = exists $arg_ref->{subfield}
         ? $arg_ref->{subfield}         : undef;
 
-    my $content            = exists $arg_ref->{content}
-        ? $arg_ref->{content}           : undef;
+    my $content        = exists $arg_ref->{content}
+        ? $arg_ref->{content}          : undef;
 
+    my $supplement     = exists $arg_ref->{supplement}
+        ? $arg_ref->{supplement}       : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    push @{$self->{_normdata}{$field}}, {
-        mult      => $mult,
-        subfield  => $subfield,
-        content   => $content,
-    };
+
+    if ($id){
+        push @{$self->{_normset}{$field}}, {
+            id         => $id,
+            content    => $content,
+            supplement => $supplement,
+        };
+    }
+    else {
+        push @{$self->{_normdata}{$field}}, {
+            mult      => $mult,
+            subfield  => $subfield,
+            content   => $content,
+        };
+    }
 
     return $self;
 }

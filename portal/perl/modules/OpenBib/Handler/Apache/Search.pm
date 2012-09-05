@@ -848,14 +848,8 @@ sub search {
     my $resulttime;
     my $nav;
 
-    my $search_args_ref = {};
-    {
-        my @param_names = $query->param;
-        foreach my $param (@param_names){
-            $search_args_ref->{$param} = $query->param($param);
-        }
-        $search_args_ref->{database} = $database if (defined $database);
-    }
+    my $search_args_ref = OpenBib::Common::Util::query2hashref($query);
+    $search_args_ref->{database} = $database if (defined $database);
 
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
     # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery

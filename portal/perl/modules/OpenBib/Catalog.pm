@@ -112,6 +112,12 @@ sub connectDB {
 
 }
 
+sub DESTROY {
+    my $self = shift;
+
+    return;
+}
+
 1;
 __END__
 

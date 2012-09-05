@@ -91,8 +91,8 @@ sub new {
         $colors  = $config->{dbis_colors};
         $ocolors = $config->{dbis_ocolors};
 
-        my $colors_mask  = dec2bin($colors);
-        my $ocolors_mask = dec2bin($ocolors);
+        my $colors_mask  = OpenBib::Common::Util::dec2bin($colors);
+        my $ocolors_mask = OpenBib::Common::Util::dec2bin($ocolors);
         
         $access_red      = ($ocolors_mask & 0b001000)?1:0;
         $access_national = ($ocolors_mask & 0b100000)?1:0;
@@ -242,8 +242,22 @@ sub load_full_record {
     
     $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $content}) if ($content);
     $record->set_field({field => 'T0501', subfield => '', mult => 1, content => $instructions}) if ($instructions);
-
+    
     return $record;
+}
+
+sub load_brief_record {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->load_full_record($arg_ref);
 }
 
 sub get_classifications {
@@ -297,12 +311,6 @@ sub get_classifications {
     $logger->debug(YAML::Dump($classifications_ref));
 
     return $classifications_ref;
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    return;
 }
 
 1;

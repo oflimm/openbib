@@ -251,8 +251,8 @@ sub show {
             $record->load_brief_record;
             
             my $desc  = "";
-            my $title = $record->get_category({category => 'T0331', indicator => 1});
-            my $ast   = $record->get_category({category => 'T0310', indicator => 1});
+            my $title = $record->get_field({field => 'T0331', mult => 1});
+            my $ast   = $record->get_field({field => 'T0310', mult => 1});
 
             $title = $ast if ($ast);
             

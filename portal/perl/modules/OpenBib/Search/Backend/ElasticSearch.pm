@@ -49,27 +49,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::SearchQuery;
 use OpenBib::QueryOptions;
 
-sub new {
-    my ($class,$arg_ref) = @_;
-
-    # Set defaults
-    my $searchprofile   = exists $arg_ref->{searchprofile}
-        ? $arg_ref->{searchprofile}           : undef;
-
-    my $database        = exists $arg_ref->{database}
-        ? $arg_ref->{database}                : undef;
-
-    my $self = { };
-
-    bless ($self, $class);
-
-    # Entweder genau eine Datenbank via database oder (allgemeiner) ein Suchprofil via searchprofile mit einer oder mehr Datenbanken
-    
-    $self->{_searchprofile} = $searchprofile if ($searchprofile);
-    $self->{_database}      = $database if ($database);
-    
-    return $self;
-}
+use base qw(OpenBib::Search);
 
 sub get_relevant_terms {
     my ($arg_ref) = @_;
@@ -311,26 +291,6 @@ sub get_records {
     return $recordlist;
 }
 
-sub matches {
-    my $self=shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    $logger->debug(YAML::Dump($self->{_matches}));
-    return @{$self->{_matches}};
-}
-
-sub querystring {
-    my $self=shift;
-    return $self->{_querystring};
-}
-
-sub enq {
-    my $self=shift;
-    return $self->{_enq};
-}
-
 sub get_categorized_drilldown {
     my $self=shift;
 
@@ -498,16 +458,6 @@ sub get_values {
     return $values_ref;
 }
 
-sub have_results {
-    my $self = shift;
-    return ($self->{resultcount})?$self->{resultcount}:0;
-}
-
-sub get_resultcount {
-    my $self = shift;
-    return $self->{resultcount};
-}
-
 sub parse_query {
     my ($self,$searchquery)=@_;
 
@@ -631,16 +581,10 @@ sub parse_query {
     $logger->debug("Query: ".YAML::Dump($query_ref));
     $logger->debug("Filter: ".YAML::Dump($filter_ref));
 
-    $self->{_query} = $query_ref;
+    $self->{_query}  = $query_ref;
     $self->{_filter} = $filter_ref;
 
     return $self;
-}
-
-sub DESTROY {
-    my $self=shift;
-
-    return;
 }
 
 1;

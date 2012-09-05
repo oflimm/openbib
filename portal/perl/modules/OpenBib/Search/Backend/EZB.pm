@@ -45,6 +45,10 @@ use YAML ();
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
+use OpenBib::Catalog::Factory;
+use OpenBib::Container;
+
+use base qw(OpenBib::Search);
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -57,9 +61,6 @@ sub new {
     # Set defaults
     my $bibid     = exists $arg_ref->{bibid}
         ? $arg_ref->{bibid}       : $config->{ezb_bibid};
-
-    my $client_ip = exists $arg_ref->{client_ip}
-        ? $arg_ref->{client_ip}   : undef;
 
     my $lang      = exists $arg_ref->{l}
         ? $arg_ref->{l}           : undef;
@@ -118,6 +119,7 @@ sub new {
     $self->{sc}            = $sc if ($sc);
     $self->{lc}            = $lc if ($lc);
     $self->{sindex}        = $sindex if ($sindex);
+    $self->{args}          = $arg_ref;
 
 
     return $self;
@@ -138,12 +140,6 @@ sub search {
     my $num               = $queryoptions->get_option('num');
 
     my $offset            = $page*$num-$num;
-
-#     my ($atime,$btime,$timeall);
-  
-#     if ($config->{benchmark}) {
-#         $atime=new Benchmark;
-#     }
 
     $self->parse_query($searchquery);
 
@@ -245,15 +241,8 @@ sub search {
         push @{$journals_ref}, $singlejournal_ref;
     }
 
-#     $btime       = new Benchmark;
-#     $timeall     = timediff($btime,$atime);
-#     $logger->debug("Time: ".timestr($timeall,"nop"));
-
     $self->{resultcount}   = $search_count;
     $self->{_matches}      = $journals_ref;
-    $self->{_nav}          = $nav_ref;
-    $self->{_current_page} = $current_page_ref;
-    $self->{_other_pages}  = $alphabetical_nav_ref;
     
     return $self;
 }
@@ -266,15 +255,15 @@ sub get_records {
 
     my $config     = OpenBib::Config->instance;
 
-    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database} });
+    my $catalog = OpenBib::Catalog::Factory->create_catalog($self->{args});
     
     my $classifications_ref = $catalog->get_classifications;
 
-    my $generic_attributes = {
-        classifications  => $classifications_ref,
-    };
-    
-    my $recordlist = new OpenBib::RecordList::Title({generic_attributes => $generic_attributes});
+    my $container = OpenBib::Container->instance;
+
+    $container->register('classifications',$classifications_ref);
+
+    my $recordlist = new OpenBib::RecordList::Title;
 
     my @matches = $self->matches;
     
@@ -294,48 +283,6 @@ sub get_records {
     return $recordlist;
 }
 
-sub get_nav {
-    my $self = shift;
-
-    return $self->{_nav};
-}
-
-sub get_current_page {
-    my $self = shift;
-
-    return $self->{_current_page};
-}
-sub get_other_pages {
-    my $self = shift;
-
-    return $self->{_other_pages};
-}
-
-sub matches {
-    my $self=shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    $logger->debug(YAML::Dump($self->{_matches}));
-    return @{$self->{_matches}};
-}
-
-sub querystring {
-    my $self=shift;
-    return $self->{_querystring};
-}
-
-sub have_results {
-    my $self = shift;
-    return ($self->{resultcount})?$self->{resultcount}:0;
-}
-
-sub get_resultcount {
-    my $self = shift;
-    return $self->{resultcount};
-}
-
 sub parse_query {
     my ($self,$searchquery)=@_;
 
@@ -347,7 +294,6 @@ sub parse_query {
     my @searchterms = ();
     foreach my $field (keys %{$config->{searchfield}}){
         my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
-#        my $searchtermop     = (defined $searchquery->get_searchfield($field)->{bool} && defined $ops_ref->{$searchquery->get_searchfield($field)->{bool}})?$ops_ref->{$searchquery->get_searchfield($field)->{bool}}:'';
         if ($searchtermstring) {
             # Freie Suche einfach uebernehmen
             if    ($field eq "title" && $searchtermstring) {
@@ -407,162 +353,6 @@ sub parse_query {
     return $self;
 }
 
-
-sub DESTROY {
-    my $self = shift;
-
-    return;
-}
-
-
-sub get_journalinfo {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $id = exists $arg_ref->{id}
-        ? $arg_ref->{id}     : '';
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&jour_id=$id&xmloutput=1";
-
-    my $titles_ref = [];
-    
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
-
-    $logger->debug("Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $title     =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/title'));
-    my $publisher =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/publisher'));
-    my @zdb_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/ZDB_number');
-
-    my $zdb_node_ref = {};
-    
-    foreach my $zdb_node (@zdb_nodes){
-        $zdb_node_ref->{ZDB_number}{url} = $zdb_node->findvalue('@url');
-        $zdb_node_ref->{ZDB_number}{content} = decode_utf8($zdb_node->textContent);
-    }
-
-    my @subjects_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/subjects/subject');
-
-    my $subjects_ref = [];
-
-    foreach my $subject_node (@subjects_nodes){
-        push @{$subjects_ref}, decode_utf8($subject_node->textContent);
-    }
-
-    my @keywords_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/keywords/keyword');
-
-    my $keywords_ref = [];
-
-    foreach my $keyword_node (@keywords_nodes){
-        push @{$keywords_ref}, decode_utf8($keyword_node->textContent);
-    }
-
-    my @homepages_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/hompages/homepage');
-
-    my $homepages_ref = [];
-
-    foreach my $homepage_node (@homepages_nodes){
-        push @{$homepages_ref}, decode_utf8($homepage_node->textContent);
-    }
-    
-    my $firstvolume =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_volume'));
-    my $firstdate   =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_date'));
-    my $appearence  =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/appearence'));
-    my $costs       =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs'));
-    my $remarks     =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks'));
-
-    return {
-        id             => $id,
-        title          => $title,
-        publisher      => $publisher,
-        ZDB_number     => $zdb_node_ref,
-        subjects       => $subjects_ref,
-        keywords       => $keywords_ref,
-        firstvolume    => $firstvolume,
-        firstdate      => $firstdate,
-        appearence     => $appearence,
-        costs          => $costs,
-        homepages      => $homepages_ref,
-        remarks        => $remarks,
-    };
-}
-
-sub get_journalreadme {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $id = exists $arg_ref->{id}
-        ? $arg_ref->{id}     : '';
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/show_readme.phtml?colors=".((defined $self->{colors})?$self->{colors}:"")."&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&jour_id=$id&xmloutput=1";
-
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
-
-    $logger->debug("Response: $response");
-
-    # Fehlermeldungen im XML entfernen
-
-    $response=~s/^.*?<\?xml/<?xml/smx;
-
-    $logger->debug("gereinigte Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    $parser->recover(1);
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $location =  $root->findvalue('/ezb_page/ezb_readme_page/location');
-
-    if ($location){
-        # Lokaler Link in der EZB
-        unless ($location=~m/^http/){
-            $location="http://rzblx1.uni-regensburg.de/ezeit/$location";
-        }
-        
-        return {
-            location => $location
-        };
-    }
-
-    my $title    =  decode_utf8($root->findvalue('/ezb_page/ezb_readme_page/journal/title'));
-
-    my @periods_nodes =  $root->findnodes('/ezb_page/ezb_readme_page/journal/periods/period');
-
-    my $periods_ref = [];
-
-    foreach my $period_node (@periods_nodes){
-        my $this_period_ref = {};
-
-        $this_period_ref->{color}       = decode_utf8($period_node->findvalue('journal_color/@color'));
-        $this_period_ref->{label}       = decode_utf8($period_node->findvalue('label'));
-        $this_period_ref->{readme_link} = decode_utf8($period_node->findvalue('readme_link/@url'));
-        $this_period_ref->{warpto_link} = decode_utf8($period_node->findvalue('warpto_link/@url'));
-
-        $logger->debug(YAML::Dump($this_period_ref));
-        push @{$periods_ref}, $this_period_ref;
-    }
-
-    return {
-        periods  => $periods_ref,
-        title    => $title,
-    };
-}
-
-
 1;
 __END__
 
@@ -577,62 +367,11 @@ Elektronischen Zeitschriftenbibliothek (EZB) in Regensburg zugegriffen werden.
 
 =head1 SYNOPSIS
 
- use OpenBib::DBIS;
-
- my $dbis = OpenBib::DBIS->new({});
-
 =head1 METHODS
 
 =over 4
 
-=item new({ bibid => $bibid, client_ip => $client_ip, colors => $colors, lang => $lang })
-
-Erzeugung des EZB Objektes. Dabei wird die EZB-Kennung $bibid der
-Bibliothek, die IP des aufrufenden Clients (zur Statistik), die
-Sprachversion lang, sowie die Spezifikation der gewünschten
-Zugriffsbedingungen color benötigt.
-
-=item get_subjects
-
-Liefert eine Listenreferenz der vorhandenen Fachgruppen zurück mit
-einer Hashreferenz auf die jeweilige Notation notation, der
-Datenbankanzahl count sowie der Beschreibung der Fachgruppe
-desc. Zusätzlich werden für eine Wolkenanzeige die entsprechenden
-Klasseninformationen hinzugefügt.
-
-=item search_journals({ fs => $fs, notation => $notation,  sc => $sc, lc => $lc, sindex => $sindex })
-
-Stellt die Suchanfrage $fs - optional eingeschränkt auf die Fachgruppe
-$notation - an die EZB und liefert als Ergebnis verschiedene
-Informatinen als Hashreferenz zurück. Weitere
-Einschränkungsmöglichkeiten sind sc, lc und sindex.
-
-Es sind dies die Informationen über die Ergebnisanzahl search_count,
-die Navigation nav, die Fachgruppe subject, die Zeitschriften
-journals, die aktuellen Einstellungen current_page sowie weitere
-verfügbare Seiten other_pages.
-
-=item get_journals({ notation => $notation, sc => $sc, lc => $lc, sindex => $sindex })
-
-Liefert eine Liste mit Informationen über alle Zeitschriften der
-Fachgruppe $notation aus der EZB als Hashreferenz zurück.
-
-Es sind dies die Informationen über die Navigation nav, die Fachgruppe
-subject, die Zeitschriften journals, die aktuellen Einstellungen
-current_page sowie weitere verfügbare Seiten other_pages.
-
-=item get_journalinfo({ id => $id })
-
-Liefert Informationen über die Zeitschrift mit der Id $id als
-Hashreferenz zurück. Es sind dies neben der Id $id auch Informationen
-über den Titel title, publisher, ZDB_number, subjects, keywords, firstvolume, firstdate, appearence, costs, homepages sowie remarks.
-
-=item get_journalreadme({ id => $id })
-
-Liefert zur Zeitschriftk mit der Id $id generelle Nutzungsinformationen
-als Hashreferenz zurück. Neben dem Titel title sind das Informationen
-periods (color, label, readme_link, warpto_link) über alle
-verschiedenen Zeiträume.
+=item XXX
 
 =back
 

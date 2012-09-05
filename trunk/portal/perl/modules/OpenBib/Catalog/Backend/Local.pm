@@ -113,10 +113,8 @@ sub load_full_record {
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
+    my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
-    my $record_exists = 0;
-
     my $normset_ref   = {};
 
     $self->{id}              = $id;
@@ -124,10 +122,8 @@ sub load_full_record {
     $normset_ref->{database} = $self->{database};
 
     unless (defined $self->{id} && defined $self->{database}){
-        ($self->{_normdata},$self->{_holding},$self->{_circulation},$self->{_exists})=({},(),[],$record_exists);
-
         $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
-        return $self;
+        return $title_record;
     }
 
     # Titelkategorien
@@ -157,13 +153,12 @@ sub load_full_record {
             my $mult     =                    $item->get_column('thismult');
             my $content  =                    $item->get_column('thiscontent');
 
-            push @{$normset_ref->{$field}}, {
+            $title_record->set_field({
+                field     => $field,
                 mult      => $mult,
                 subfield  => $subfield,
                 content   => $content,
-            };
-
-            $record_exists = 1 if (!$record_exists);
+            });
         }
 
         if ($config->{benchmark}) {
@@ -195,6 +190,7 @@ sub load_full_record {
             }
         );
 
+        my $mult = 1;
         foreach my $item ($title_persons->all){
             my $field      = "T".sprintf "%04d",$item->get_column('thisfield');
             my $personid   =                    $item->get_column('thispersonid');
@@ -204,11 +200,15 @@ sub load_full_record {
             $record->load_name({id=>$personid});
             my $content = $record->name_as_string;
 
-            push @{$normset_ref->{$field}}, {
+            $title_record->set_field({                
+                field      => $field,
                 id         => $personid,
                 content    => $content,
                 supplement => $supplement,
-            };
+                mult       => $mult,
+            });
+
+            $mult++;
         }
 
         # Koerperschaften
@@ -224,6 +224,7 @@ sub load_full_record {
             }
         );
 
+        $mult = 1;        
         foreach my $item ($title_corporatebodies->all){
             my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
             my $corporatebodyid   =                    $item->get_column('thiscorporatebodyid');
@@ -233,11 +234,15 @@ sub load_full_record {
             $record->load_name({id=>$corporatebodyid});
             my $content = $record->name_as_string;
 
-            push @{$normset_ref->{$field}}, {
+            $title_record->set_field({                
+                field      => $field,
                 id         => $corporatebodyid,
                 content    => $content,
                 supplement => $supplement,
-            };
+                mult       => $mult,
+            });
+
+            $mult++;
         }
 
         # Schlagworte
@@ -253,6 +258,7 @@ sub load_full_record {
             }
         );
 
+        $mult = 1;
         foreach my $item ($title_subjects->all){
             my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
             my $subjectid         =                    $item->get_column('thissubjectid');
@@ -262,11 +268,15 @@ sub load_full_record {
             $record->load_name({id=>$subjectid});
             my $content = $record->name_as_string;
 
-            push @{$normset_ref->{$field}}, {
+            $title_record->set_field({                
+                field      => $field,
                 id         => $subjectid,
                 content    => $content,
                 supplement => $supplement,
-            };
+                mult       => $mult,
+            });
+
+            $mult++;
         }
 
         # Klassifikationen
@@ -282,6 +292,7 @@ sub load_full_record {
             }
         );
 
+        $mult = 1;
         foreach my $item ($title_classifications->all){
             my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
             my $classificationid  =                    $item->get_column('thisclassificationid');
@@ -291,11 +302,15 @@ sub load_full_record {
             $record->load_name({id=>$classificationid});
             my $content = $record->name_as_string;
 
-            push @{$normset_ref->{$field}}, {
+            $title_record->set_field({                
+                field      => $field,
                 id         => $classificationid,
                 content    => $content,
                 supplement => $supplement,
-            };
+                mult       => $mult,
+            });
+
+            $mult++;
         }
 
         if ($config->{benchmark}) {
@@ -320,14 +335,24 @@ sub load_full_record {
         my @sub = $self->get_connected_titles({ type => 'sub' });
 
         if (@sub){
-            push @{$normset_ref->{T5001}}, {
-                content => scalar(@sub),
-            };
-            
+
+            $title_record->set_field({                
+                field      => 'T5001',
+                content    => scalar(@sub),
+                subfield   => '',
+                mult       => 1,
+            });
+
+            my $mult = 1;
             foreach my $id (@sub){
-                push @{$normset_ref->{T5003}}, {
-                    content => $id,
-                };
+                $title_record->set_field({                
+                    field      => 'T5003',
+                    content    => $id,
+                    subfield   => '',
+                    mult       => $mult,
+                });
+
+                $mult++;
             }
         }
 
@@ -345,14 +370,23 @@ sub load_full_record {
         my @super = $self->get_connected_titles({ type => 'super' });
 
         if (@super){
-            push @{$normset_ref->{T5002}}, {
-                content => scalar(@super),
-            };
+            $title_record->set_field({                
+                field      => 'T5002',
+                content    => scalar(@super),
+                subfield   => '',
+                mult       => 1,
+            });
 
+            my $mult = 1;
             foreach my $id (@super){
-                push @{$normset_ref->{T5004}}, {
-                    content => $id,
-                };
+                $title_record->set_field({                
+                    field      => 'T5004',
+                    content    => $id,
+                    subfield   => '',
+                    mult       => $mult,
+                });
+
+                $mult++;
             }
         }
         
@@ -469,10 +503,61 @@ sub load_full_record {
         }
     }
 
-    $logger->debug(YAML::Dump($normset_ref));
-    ($self->{_normdata},$self->{_holding},$self->{_circulation},$self->{_exists})=($normset_ref,$holding_ref,$circulation_ref,$record_exists);
+    $title_record->set_holding($holding_ref);
+    $title_record->set_circulation($circulation_ref);
 
-    return $self;
+    return $title_record;
+}
+
+sub load_brief_record {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
+
+    # Titel-ID und zugehoerige Datenbank setzen
+
+    $self->connectDB($self->{database});
+    
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($config->{benchmark}) {
+        $atime  = new Benchmark;
+    }
+
+    $logger->debug("Getting cached brief title for id $id");
+    
+    # DBI: "select listitem from title_listitem where id = ?"
+    my $record = $self->{schema}->resultset('Title')->single(
+        {
+            'id' => $id,
+        },
+    );
+
+    my $record_exists = 0;
+    
+    if ($record){
+        $title_record->set_normdata_from_json($record->titlecache);
+        $record_exists = 1;
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        my $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
+    }
+
+    return $title_record;
 }
 
 sub _get_holding {

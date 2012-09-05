@@ -395,7 +395,7 @@ sub get_common_holdings {
             if (exists $all_isbn{$isbn}{$database}){
                 my @signaturen = ();
                 foreach my $id (@{$all_isbn{$isbn}{$database}}){
-                    my $record=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record->get_brief_normdata;
+                    my $record=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record->get_normdata;
                     if (!$persons){
                         $persons=$record->{PC0001}[0]{content};
                     }

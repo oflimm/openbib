@@ -39,6 +39,7 @@ use LWP;
 use Encode qw(decode decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
+use URI::Escape;
 use XML::LibXML;
 use YAML ();
 
@@ -83,7 +84,7 @@ sub new {
     if (!$colors){
         $colors=$config->{ezb_colors};
 
-        my $colors_mask  = dec2bin($colors);
+        my $colors_mask  = OpenBib::Common::Util::dec2bin($colors);
 
         $logger->debug("Access: mask($colors_mask)");
         
@@ -109,61 +110,6 @@ sub new {
     
     return $self;
 }
-
-sub get_classifications {
-    my ($self) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?colors=$self->{colors}&bibid=$self->{bibid}&lang=$self->{lang}&xmloutput=1";
-
-    my $classifications_ref = [];
-    
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
-
-    $logger->debug("Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $maxcount=0;
-    my $mincount=999999999;
-
-    foreach my $classification_node ($root->findnodes('/ezb_page/ezb_subject_list/subject')) {
-        my $singleclassification_ref = {} ;
-
-        $singleclassification_ref->{name}       = $classification_node->findvalue('@notation');
-        $singleclassification_ref->{count}      = $classification_node->findvalue('@journalcount');
-        $singleclassification_ref->{desc}       = $classification_node->textContent();
-
-        if ($maxcount < $singleclassification_ref->{count}){
-            $maxcount = $singleclassification_ref->{count};
-        }
-        
-        if ($mincount > $singleclassification_ref->{count}){
-            $mincount = $singleclassification_ref->{count};
-        }
-        
-        push @{$classifications_ref}, $singleclassification_ref;
-    }
-
-    $classifications_ref = OpenBib::Common::Util::gen_cloud_class({
-        items => $classifications_ref, 
-        min   => $mincount, 
-        max   => $maxcount, 
-        type  => 'log'});
-    
-    $logger->debug(YAML::Dump($classifications_ref));
-
-    return $classifications_ref;
-}
-
 
 sub load_full_record {
     my ($self,$arg_ref) = @_;
@@ -237,8 +183,15 @@ sub load_full_record {
     $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title}) if ($title);
     $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
 
-    $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{url}}) if ($zdb_node_ref->{ZDB_number}{url});
-    $record->set_field({field => 'T0663', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{content}}) if ($zdb_node_ref->{ZDB_number}{content});
+    if ($zdb_node_ref->{ZDB_number}{url}){
+        $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{url}})
+    }
+    if ($zdb_node_ref->{ZDB_number}{content}){
+        $record->set_field({field => 'T0663', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{content}}) ;
+    }
+    else {
+        $record->set_field({field => 'T0663', subfield => '', mult => 1, content => 'Weiter zur Zeitschrift' }) ;
+    }
 
     my $mult=1;
     foreach my $classification (@$classifications_ref){
@@ -259,24 +212,194 @@ sub load_full_record {
     foreach my $homepage (@$homepages_ref){
         $record->set_field({field => 'T2662', subfield => '', mult => 1, content => $homepage});
     }
-    
+
+    # Readme-Informationen verarbeiten
+
+    my $readme = $self->_get_readme({id => $id});
+
+    $mult=2;
+    if ($readme->{location}){
+        $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $readme->{location} });
+        $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => 'ReadMe'});
+    }
+    elsif ($readme->{periods}){
+        foreach my $period (@{$readme->{periods}}){
+            my $color = $period->{color};
+
+            $logger->debug("Color: $color");
+            
+            my $image = $config->get('dbis_green_yellow_red_img');
+
+            if    ($color == 'green'){
+                $image = $config->get('dbis_green_img');
+            }
+            elsif ($color == 'yellow'){
+                $image = $config->get('dbis_yellow_img');
+            }
+            elsif ($color == 3){
+                $image = $config->get('dbis_green_yellow_img');
+            }
+            elsif ($color == 'red'){
+                $image = $config->get('dbis_red_img');
+            }
+            elsif ($color == 5){
+                $image = $config->get('dbis_green_green_red_img');
+            }
+            elsif ($color == 6){
+                $image = $config->get('dbis_yellow_red_img');
+            }
+            
+            $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "<img src=\"$image\" alt=\"$period->{color}\"/>&nbsp;$period->{label}" });
+            $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $period->{warpto_link} });
+            $mult++;
+            $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "ReadMe: $period->{label}" });
+            $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $period->{readme_link} });
+            $mult++;
+        }
+    }
+
     return $record;
 }
 
+sub load_brief_record {
+    my ($self,$arg_ref) = @_;
 
-sub DESTROY {
-    my $self = shift;
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
 
-    return;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->load_full_record($arg_ref);
 }
 
-sub dec2bin {
-    my $str = unpack("B32", pack("N", shift));
-    $str =~ s/^0+(?=\d)//;   # strip leading zeroes
-    return $str;
+sub _get_readme {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id = exists $arg_ref->{id}
+        ? $arg_ref->{id}     : '';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/show_readme.phtml?bibid=$self->{bibid}&lang=$self->{lang}&jour_id=$id&xmloutput=1";
+
+    $logger->debug("Request: $url");
+
+    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
+
+    $logger->debug("Response: $response");
+
+    # Fehlermeldungen im XML entfernen
+
+    $response=~s/^.*?<\?xml/<?xml/smx;
+
+    $logger->debug("gereinigte Response: $response");
+    
+    my $parser = XML::LibXML->new();
+    $parser->recover(1);
+    my $tree   = $parser->parse_string($response);
+    my $root   = $tree->getDocumentElement;
+
+    my $location =  $root->findvalue('/ezb_page/ezb_readme_page/location');
+
+    if ($location){
+        # Lokaler Link in der EZB
+        unless ($location=~m/^http/){
+            $location="http://rzblx1.uni-regensburg.de/ezeit/$location";
+        }
+        
+        return {
+            location => $location
+        };
+    }
+
+    my $title    =  decode_utf8($root->findvalue('/ezb_page/ezb_readme_page/journal/title'));
+
+    my @periods_nodes =  $root->findnodes('/ezb_page/ezb_readme_page/journal/periods/period');
+
+    my $periods_ref = [];
+
+    foreach my $period_node (@periods_nodes){
+        my $this_period_ref = {};
+
+        $this_period_ref->{color}       = decode_utf8($period_node->findvalue('journal_color/@color'));
+        $this_period_ref->{label}       = decode_utf8($period_node->findvalue('label'));
+        $this_period_ref->{readme_link} = uri_unescape($period_node->findvalue('readme_link/@url'));
+        $this_period_ref->{warpto_link} = uri_unescape($period_node->findvalue('warpto_link/@url'));
+
+        unless ($this_period_ref->{readme_link}=~m/^http/){
+            $this_period_ref->{readme_link}="http://rzblx1.uni-regensburg.de/ezeit/$this_period_ref->{readme_link}";
+        }
+        unless ($this_period_ref->{warpto_link}=~m/^http/){
+            $this_period_ref->{warpto_link}="http://rzblx1.uni-regensburg.de/ezeit/$this_period_ref->{readme_link}";
+        }
+
+        $logger->debug(YAML::Dump($this_period_ref));
+        push @{$periods_ref}, $this_period_ref;
+    }
+
+    return {
+        periods  => $periods_ref,
+        title    => $title,
+    };
 }
-sub bin2dec {
-    return unpack("N", pack("B32", substr("0" x 32 . shift, -32)));
+
+sub get_classifications {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?colors=$self->{colors}&bibid=$self->{bibid}&lang=$self->{lang}&xmloutput=1";
+
+    my $classifications_ref = [];
+    
+    $logger->debug("Request: $url");
+
+    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
+
+    $logger->debug("Response: $response");
+    
+    my $parser = XML::LibXML->new();
+    my $tree   = $parser->parse_string($response);
+    my $root   = $tree->getDocumentElement;
+
+    my $maxcount=0;
+    my $mincount=999999999;
+
+    foreach my $classification_node ($root->findnodes('/ezb_page/ezb_subject_list/subject')) {
+        my $singleclassification_ref = {} ;
+
+        $singleclassification_ref->{name}       = $classification_node->findvalue('@notation');
+        $singleclassification_ref->{count}      = $classification_node->findvalue('@journalcount');
+        $singleclassification_ref->{desc}       = $classification_node->textContent();
+
+        if ($maxcount < $singleclassification_ref->{count}){
+            $maxcount = $singleclassification_ref->{count};
+        }
+        
+        if ($mincount > $singleclassification_ref->{count}){
+            $mincount = $singleclassification_ref->{count};
+        }
+        
+        push @{$classifications_ref}, $singleclassification_ref;
+    }
+
+    $classifications_ref = OpenBib::Common::Util::gen_cloud_class({
+        items => $classifications_ref, 
+        min   => $mincount, 
+        max   => $maxcount, 
+        type  => 'log'});
+    
+    $logger->debug(YAML::Dump($classifications_ref));
+
+    return $classifications_ref;
 }
 
 1;

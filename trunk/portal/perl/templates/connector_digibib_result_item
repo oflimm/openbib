@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%- FOREACH result IN resultlist -%]
-[%- item = result.get_brief_normdata -%]
+[%- item = result.get_normdata -%]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]

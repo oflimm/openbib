@@ -98,10 +98,12 @@ sub new {
 
     if (defined $database){
         $self->{database} = $database;
+        $self->{_normset}{database} = $database;
     }
 
     if (defined $id){
-        $self->{id}       = $id;
+        $self->{id}           = $id;
+        $self->{_normset}{id} = $id;
     }
 
     if (defined $date){
@@ -141,22 +143,16 @@ sub load_full_record {
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     # (Re-)Initialisierung
-    delete $self->{_exists}         if (exists $self->{_exists});
     delete $self->{_normdata}       if (exists $self->{_normdata});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
-    delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
-
-    my $record_exists = 0;
 
     my $normset_ref   = {};
 
     $self->{id      }        = $id;
-    $normset_ref->{id      } = $id;
-    $normset_ref->{database} = $self->{database};
 
     unless (defined $self->{id} && defined $self->{database}){
-        ($self->{_normdata},$self->{_holding},$self->{_circulation},$self->{_exists})=({},(),[],$record_exists);
+        ($self->{_normdata},$self->{_holding},$self->{_circulation})=({},(),[]);
 
         $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
         return $self;
@@ -166,12 +162,6 @@ sub load_full_record {
     
     my $record = $catalog->load_full_record({id => $id});
 
-    my $holding_ref     = $record->get_holding;
-    my $circulation_ref = $record->get_circulation;
-    
-    $normset_ref        = $record->get_normdata;
-    $record_exists      = $record->record_exists;
-    
     # Anreicherung mit zentralen Enrichmentdaten
     {
         my ($atime,$btime,$timeall);
@@ -185,19 +175,21 @@ sub load_full_record {
         }
         
         my @isbn_refs = ();
-        push @isbn_refs, @{$normset_ref->{T0540}} if (exists $normset_ref->{T0540});
-        push @isbn_refs, @{$normset_ref->{T0553}} if (exists $normset_ref->{T0553});
+        push @isbn_refs, @{$record->get_field({field => 'T0540'})} if ($record->have_field('T0540'));
+        push @isbn_refs, @{$record->get_field({field => 'T0553'})} if ($record->have_field('T0553'));
 
-        my $bibkey    = $normset_ref->{T5050}[0]{content};
+        my $bibkey    = $record->get_field({field => 'T5050', mult => 1});
 
         my @issn_refs = ();
-        push @issn_refs, @{$normset_ref->{T0543}} if (exists $normset_ref->{T0543});
+        push @issn_refs, @{$record->get_field({field => 'T0543'})} if ($record->have_field('T0543'));                                           
         
         $logger->debug("Enrichment ISBN's ".YAML::Dump(\@isbn_refs));
         $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
 
         my %seen_content = ();            
 
+        my $mult_map_ref = {};
+        
         if (@isbn_refs){
             my @isbn_refs_tmp = ();
 
@@ -249,11 +241,15 @@ sub load_full_record {
                     } else {
                         $seen_content{$content} = 1;
                     }                    
-                        
-                    push @{$normset_ref->{$field}}, {
+
+                    my $mult = ++$mult_map_ref->{$field};
+                    
+                    $record->set_field({
+                        field      => $field,
                         subfield   => $subfield,
+                        mult       => $mult,
                         content    => $content,
-                    };
+                    });
                 }
             }
                 
@@ -405,11 +401,15 @@ sub load_full_record {
                 else {
                     $seen_content{$content} = 1;
                 }                    
+
+                my $mult = ++$mult_map_ref->{$field};
                 
-                push @{$normset_ref->{$field}}, {
+                $record->set_field({
+                    field      => $field,
                     subfield   => $subfield,
+                    mult       => $mult,
                     content    => $content,
-                };
+                });
             }
         }
         elsif (@issn_refs){
@@ -454,11 +454,15 @@ sub load_full_record {
                 } else {
                     $seen_content{$content} = 1;
                 }                    
+
+                my $mult = ++$mult_map_ref->{$field};
                 
-                push @{$normset_ref->{$field}}, {
+                $record->set_field({
+                    field      => $field,
                     subfield   => $subfield,
+                    mult       => $mult,
                     content    => $content,
-                };
+                });
             }
 
 
@@ -474,9 +478,10 @@ sub load_full_record {
         }
     }
 
-    $logger->debug(YAML::Dump($normset_ref));
-    ($self->{_normdata},$self->{_holding},$self->{_circulation},$self->{_exists})=($normset_ref,$holding_ref,$circulation_ref,$record_exists);
-
+    $self->set_normdata($record->get_normdata);
+    $self->set_holding($record->get_holding);
+    $self->set_circulation($record->get_circulation);
+    
     return $self;
 }
 
@@ -498,19 +503,19 @@ sub load_brief_record {
     delete $self->{_normdata}       if (exists $self->{_normdata});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
-    delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
 
     my $record_exists = 0;
-    
-    my $listitem_ref={};
-    
-    # Titel-ID und zugehoerige Datenbank setzen
 
-    $self->connectDB($self->{database});
-    
-    $self->{id    }           = $id;
-    $listitem_ref->{id      } = $id;
-    $listitem_ref->{database} = $self->{database};
+    my $normset_ref   = {};
+
+    $self->{id      }        = $id;
+
+    unless (defined $self->{id} && defined $self->{database}){
+        ($self->{_normdata},$self->{_holding},$self->{_circulation},$self->{_exists})=({},(),[],$record_exists);
+
+        $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
+        return $self;
+    }
 
     my ($atime,$btime,$timeall)=(0,0,0);
     
@@ -518,35 +523,17 @@ sub load_brief_record {
         $atime  = new Benchmark;
     }
 
-    $logger->debug("Getting cached brief title for id $id");
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}});
     
-    # DBI: "select listitem from title_listitem where id = ?"
-    my $record = $self->{schema}->resultset('Title')->single(
-        {
-            'id' => $id,
-        },
-    );
-    
-    if ($record){
-        my $titlecache_json = $record->titlecache;
+    my $record = $catalog->load_brief_record({id => $id});
 
-        $logger->debug("Stored listitem: $titlecache_json");
+    $normset_ref         = $record->get_normdata;
+    $record_exists       = $record->record_exists;
 
-        if ($titlecache_json){
-            my $titlecache_ref = {};
-            eval {                
-                $titlecache_ref = decode_json $titlecache_json;
-            };
-            if ($@){
-                $logger->error("Can't decode JSON string $titlecache_json");
-            }
-            else {
-                %$listitem_ref=(%$listitem_ref,%$titlecache_ref);
-                
-                $record_exists = 1 if (!$record_exists);
-            }
-        }
-    }
+    # Titel-ID und zugehoerige Datenbank setzen
+
+    $normset_ref->{id      } = $id;
+    $normset_ref->{database} = $self->{database};
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -555,11 +542,23 @@ sub load_brief_record {
         $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
     }
 
-    $logger->debug(YAML::Dump($listitem_ref));
+    $logger->debug(YAML::Dump($normset_ref));
 
-    ($self->{_brief_normdata},$self->{_exists})=($listitem_ref,$record_exists);
+    ($self->{_normdata},$self->{_exists},$self->{_type})=($normset_ref,$record_exists,'brief');
 
     return $self;
+}
+
+sub is_brief {
+    my ($self)=@_;
+
+    return ($self->{_type} eq "brief")?1:0;
+}
+
+sub is_full {
+    my ($self)=@_;
+
+    return ($self->{_type} eq "full")?1:0;
 }
 
 sub get_normdata {
@@ -574,10 +573,26 @@ sub get_holding {
     return $self->{_holding}
 }
 
+sub set_holding {
+    my ($self,$holding_ref)=@_;
+
+    $self->{_holding} = $holding_ref;
+
+    return;
+}
+
 sub get_circulation {
     my ($self)=@_;
 
     return $self->{_circulation}
+}
+
+sub set_circulation {
+    my ($self,$circulation_ref)=@_;
+
+    $self->{_circulation} = $circulation_ref;
+
+    return;
 }
 
 sub get_same_records {
@@ -598,25 +613,13 @@ sub get_related_records {
     return $self->{_related_records}
 }
 
-sub get_brief_normdata {
-    my ($self)=@_;
-
-    return $self->{_brief_normdata}
-}
-
-sub is_brief_normdata {
-    my ($self)=@_;
-
-    return (exists $self->{_brief_normdata})?1:0;
-}
-
 sub is_normdata {
     my ($self)=@_;
 
     return (exists $self->{_normdata})?1:0;
 }
 
-sub set_brief_normdata_from_storable {
+sub set_normdata_from_storable {
     my ($self,$storable_ref)=@_;
 
     # Log4perl logger erzeugen
@@ -626,16 +629,16 @@ sub set_brief_normdata_from_storable {
     delete $self->{_exists}        if (exists $self->{_exists});
     delete $self->{_normdata}       if (exists $self->{_normdata});
     delete $self->{_holding}        if (exists $self->{_holding});
-    delete $self->{_circulation}       if (exists $self->{_circulation});
-    delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
+    delete $self->{_circulation}    if (exists $self->{_circulation});
 
     $logger->debug("Got :".YAML::Dump($storable_ref));
-    $self->{_brief_normdata} = $storable_ref;
-
+    $self->{_normdata} = $storable_ref;
+    $self->{_type} = 'brief';
+    
     return $self;
 }
 
-sub set_brief_normdata_from_json {
+sub set_normdata_from_json {
     my ($self,$json_string)=@_;
 
     # Log4perl logger erzeugen
@@ -646,10 +649,20 @@ sub set_brief_normdata_from_json {
     delete $self->{_normdata}       if (exists $self->{_normdata});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
-    delete $self->{_brief_normdata} if (exists $self->{_brief_normdata});
 
-    my $json_ref = decode_json $json_string;
-    $self->{_brief_normdata} = $json_ref;
+    my $json_ref = {};
+
+    eval {
+        $json_ref = decode_json $json_string;
+    };
+    
+    if ($@){
+        $logger->error("Can't decode JSON string $json_string");
+    }
+    else {
+        $self->{_normdata} = $json_ref;
+        $self->{_type} = 'brief';
+    }
 
     return $self;
 }
@@ -1200,37 +1213,51 @@ sub utf2bibtex {
 sub to_rawdata {
     my ($self) = @_;
 
-    if (exists $self->{_brief_normdata}){
-        return $self->{_brief_normdata};
-    }
-    else {
-        return ($self->{_normdata},$self->{_holding},$self->{_circulation});
-    }
+    return ($self->{_normdata},$self->{_holding},$self->{_circulation});
 }
 
-sub get_category {
+sub get_field {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $category            = exists $arg_ref->{category}
-        ? $arg_ref->{category}               : undef;
+    my $field            = exists $arg_ref->{field}
+        ? $arg_ref->{field}               : undef;
 
-    my $indicator           = exists $arg_ref->{indicator}
-        ? $arg_ref->{indicator}              : 1;
+    my $mult             = exists $arg_ref->{mult}
+        ? $arg_ref->{mult}                : 1;
 
-
-    if (exists $self->{_brief_normdata}){
-        return $self->{_brief_normdata}->{$category}->[$indicator-1]->{content};
+    if ($mult){
+        foreach my $field_ref (@{$self->{_normdata}->{$field}}){
+            if ($field_ref->{mult} eq $mult){
+                return $field_ref->{content};
+            }
+        }
     }
     else {
-        return $self->{_normdata}->{$category}->[$indicator-1]->{content};
+        return $self->{_normdata}->{$field};
     }
+}
+
+sub have_field {
+    my ($self,$field) = @_;
+
+    return (defined $self->{_normdata}->{$field})?1:0;
 }
 
 sub record_exists {
     my ($self) = @_;
 
-    return $self->{_exists};
+    my @categories = grep { /^[TX]/ } keys %{$self->{_normdata}};
+    
+    return (@categories)?1:0;
+}
+
+sub set_record_exists {
+    my ($self) = @_;
+
+    $self->{_exists} = 1;
+
+    return $self;
 }
 
 sub to_drilldown_term {
@@ -1274,7 +1301,8 @@ sub to_json {
 sub set_id {
     my ($self,$id) = @_;
 
-    $self->{id} = $id;
+    $self->{id}           = $id;
+    $self->{_normset}{id} = $id;
 
     return $self;
 }
@@ -1282,7 +1310,8 @@ sub set_id {
 sub set_database {
     my ($self,$database) = @_;
 
-    $self->{database} = $database;
+    $self->{database}           = $database;
+    $self->{_normset}{database} = $database;
 
     return $self;
 }
@@ -1316,10 +1345,10 @@ sub set_from_apache_request {
 
         if ($query->param($category_arg)){
             if ($category_arg=~m/^T/){
-                $self->set_category({ category => $category_arg, content => $query->param($category_arg) });
+                $self->set_field({ field => $category_arg, subfield => '', mult => 1, content => $query->param($category_arg) });
             }
             elsif ($category_arg=~m/^X/){
-                $self->set_holding_category({ category => $category_arg, content => $query->param($category_arg) });
+                $self->set_holding_field({ field => $category_arg, subfield => '', mult => 1, content => $query->param($category_arg) });
             }
         } 
     } 
@@ -1524,18 +1553,6 @@ sub set_from_apache_request {
     
 #     return $self;
 # }
-
-sub have_brief_record {
-    my ($self) = @_;
-    
-    return (exists $self->{_brief_normdata} && keys %{$self->{_brief_normdata}})?1:0;
-}
-
-sub have_full_record {
-    my ($self) = @_;
-    
-    return (exists $self->{_normdata})?1:0;
-}
 
 sub enrich_cdm {
     my ($self,$id,$url)=@_;

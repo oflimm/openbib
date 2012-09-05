@@ -66,7 +66,7 @@ Die 20 meist aufgerufenen Titel
 [%- FOREACH thisitem IN resultlist -%]
 [% record    = thisitem.item;
    itemcount = thisitem.count;
-   item      = record.get_brief_normdata; %]
+   item      = record.get_normdata; %]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]

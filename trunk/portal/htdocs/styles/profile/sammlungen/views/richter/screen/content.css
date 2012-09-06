@@ -547,26 +547,26 @@ background: url(/images/openbib/views/richter/logo.png) center no-repeat;
     border-bottom:2px solid #ddd;
 }
 
-dl.categorized_items a:hover {
+dl.items a:hover {
     /*text-decoration: underline;*/
 }
-dl.categorized_items a {
+dl.items a {
     text-decoration: none;
 }
 
-dl.categorized_items {
+dl.items {
    padding: 0px;
    margin-left: 0px;
     
 }
-.categorized_items dd {
+.items dd {
     padding: 0.1em 0 0.1em 0.4em;
     list-style-type: none;
     border-bottom: 1px solid #e3e3e3;
     margin: 0;
 }
 
-.categorized_items dt {
+.items dt {
     margin-top:.75em;
     font-weight:bold;
     padding:0.2em 0.4em;

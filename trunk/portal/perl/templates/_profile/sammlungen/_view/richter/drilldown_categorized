@@ -192,7 +192,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </td></tr>
 [%         END %]
 -->
-[%         IF config.get('drilldown_option').categorized_person && category_map.3.size > 0 %]
+[%         IF config.get('facets').person && category_map.3.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Personen") %]</th></tr>
@@ -217,7 +217,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
-[%         IF config.get('drilldown_option').categorized_corporatebody && category_map.7.size > 0 %]
+[%         IF config.get('facets').corporatebody && category_map.7.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</th></tr>
@@ -242,7 +242,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
-[%         IF config.get('drilldown_option').categorized_subject && category_map.1.size > 0 %]
+[%         IF config.get('facets').subject && category_map.1.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_subject_[% database %]_anchor">[% msg.maketext("nach Themen") %]</th></tr>
@@ -267,7 +267,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
-[%         IF config.get('drilldown_option').categorized_classification && category_map.2.size > 0 %]
+[%         IF config.get('facets').classification && category_map.2.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</th></tr>
@@ -292,7 +292,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
-[%         IF config.get('drilldown_option').categorized_year && category_map.5.size > 0 %]
+[%         IF config.get('facets').year && category_map.5.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</th></tr>
@@ -317,7 +317,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
-[%         IF config.get('drilldown_option').categorized_mediatype && category_map.4.size > 0 %]
+[%         IF config.get('facets').mediatype && category_map.4.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Medienart") %]</th></tr>
@@ -342,7 +342,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
-[%         IF config.get('drilldown_option').categorized_tag && category_map.9.size > 0 %]
+[%         IF config.get('facets').tag && category_map.9.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_tag_[% database %]_anchor">[% msg.maketext("nach Tags") %]</th></tr>
@@ -367,7 +367,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
-[%         IF config.get('drilldown_option').categorized_litlist && category_map.10.size > 0 %]
+[%         IF config.get('facets').litlist && category_map.10.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_litlist_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</th></tr>
@@ -392,7 +392,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </table>
 </td></tr>
 [%         END %]
-[%         IF config.get('drilldown_option').categorized_language && category_map.6.size > 0 %]
+[%         IF config.get('facets').language && category_map.6.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_language_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</th></tr>

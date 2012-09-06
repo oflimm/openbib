@@ -3198,18 +3198,18 @@ testsystem: 0
 
 # Drill-Down
 drilldown: 1
-drilldown_option:
+facets:
   categorized: 1
-  categorized_person: 3
-  categorized_mediatype: 4
-  categorized_classification: 2
-  categorized_language: 6
-  categorized_subject: 1
-  categorized_year: 5
-  categorized_corporatebody: 7
-  categorized_database: 8
-  categorized_tag: 9
-  categorized_litlist: 10
+  person: 3
+  mediatype: 4
+  classification: 2
+  language: 6
+  subject: 1
+  year: 5
+  corporatebody: 7
+  database: 8
+  tag: 9
+  litlist: 10
   cloud: 0
   cloud_min: 6
 

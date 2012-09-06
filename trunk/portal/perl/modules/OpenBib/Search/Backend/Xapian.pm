@@ -377,7 +377,7 @@ sub get_records {
     return $recordlist;
 }
 
-sub get_categorized_drilldown {
+sub get_facets {
     my $self=shift;
 
     # Log4perl logger erzeugen

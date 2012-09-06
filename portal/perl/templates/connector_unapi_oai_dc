@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
-[% normset = record.get_normdata  %]
+[% normset = record.get_fields  %]
 [% IF normset.${"T0331"}.first.content %]
 <title xmlns="http://purl.org/dc/elements/1.1/" xmlns:zs="http://www.loc.gov/zing/srw/" xmlns:srw_dc="info:srw/schema/1/dc-schema">[% normset.${"T0331"}.first.content %]</title>
 [% END %]

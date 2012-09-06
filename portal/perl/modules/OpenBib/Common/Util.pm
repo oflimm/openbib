@@ -704,25 +704,25 @@ sub gen_bibkey_base {
     my ($arg_ref) = @_;
 
     # Set defaults
-    my $normdata_ref  = exists $arg_ref->{normdata}
-        ? $arg_ref->{normdata}             : undef;
+    my $fields_ref  = exists $arg_ref->{fields}
+        ? $arg_ref->{fields}             : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return "" unless (defined $normdata_ref);
+    return "" unless (defined $fields_ref);
 
 
     # Nur Bibkeys mit allen relevanten Informationen sinnvoll!
     
-    return "" unless ( (exists $normdata_ref->{0100} || exists $normdata_ref->{0101}) && exists $normdata_ref->{0331} && exists $normdata_ref->{0425});
+    return "" unless ( (exists $fields_ref->{0100} || exists $fields_ref->{0101}) && exists $fields_ref->{0331} && exists $fields_ref->{0425});
     
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];
     my $editors_ref=[];
     foreach my $category (qw/0100 0101/){
-        next if (!exists $normdata_ref->{$category});
-        foreach my $part_ref (@{$normdata_ref->{$category}}){
+        next if (!exists $fields_ref->{$category});
+        foreach my $part_ref (@{$fields_ref->{$category}}){
             my $single_person = lc($part_ref->{content});
             $single_person    =~ s/[^0-9\p{L}\. ]+//g;
             my ($lastname,$firstname) = split(/\s+/,$single_person);
@@ -755,11 +755,11 @@ sub gen_bibkey_base {
     $author    = "[".join(",", sort(@$persons_ref))."]" if (defined $persons_ref && @$persons_ref);
 
     # Titel
-    my $title  = (exists $normdata_ref->{0331})?lc($normdata_ref->{0331}[0]{content}):"";
+    my $title  = (exists $fields_ref->{0331})?lc($fields_ref->{0331}[0]{content}):"";
     $title     =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
 
     # Jahr
-    my $year   = (exists $normdata_ref->{0425})?$normdata_ref->{0425}[0]{content}:undef;
+    my $year   = (exists $fields_ref->{0425})?$fields_ref->{0425}[0]{content}:undef;
     $year      =~ s/[^0-9]+//g if ($year);
 
     if ($author && $title && $year){
@@ -774,8 +774,8 @@ sub gen_bibkey {
     my ($arg_ref) = @_;
 
     # Set defaults
-    my $normdata_ref  = exists $arg_ref->{normdata}
-        ? $arg_ref->{normdata}             : undef;
+    my $fields_ref    = exists $arg_ref->{fields}
+        ? $arg_ref->{fields}               : undef;
 
     my $bibkey_base   = exists $arg_ref->{bibkey_base}
         ? $arg_ref->{bibkey_base}          : undef;
@@ -783,8 +783,8 @@ sub gen_bibkey {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if ($normdata_ref){
-        $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({normdata => $normdata_ref});
+    if ($fields_ref){
+        $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({fields => $fields_ref});
     }
     
     if ($bibkey_base){
@@ -1027,7 +1027,7 @@ von mehr als einem mod_perl-Modul verwendet werden.
 
  my $bibtex_entry = OpenBib::Common::Util::normset2bibtex($normset_ref,$utf8);
 
- my $bibkey = OpenBib::Common::Util::gen_bibkey({ normdata => $normdata_ref});
+ my $bibkey = OpenBib::Common::Util::gen_bibkey({ fields => $fields_ref});
 
  my $nomalized_isbn13 = OpenBib::Common::Util::to_isbn13($isbn10);
 
@@ -1080,15 +1080,15 @@ Filtert nicht akzeptierte Zeichen aus $string und wandelt die
 UTF8-kodierten Sonderzeichen des Strings $string, wenn $utf8 nicht
 besetzt ist, in das plain (La)TeX-Format.
 
-=item gen_bibkey_base({ normdata => $normdata_ref })
+=item gen_bibkey_base({ fields => $fields_ref })
 
 Generiere die Basiszeichenkette aus den bibliographischen Daten für
 die Bildung des BibKeys. Dies ist eine Hilfsfunktion für gen_bibkey
 
-=item gen_bibkey({ normdata => $normdata_ref, bibkey_base => $bibkey_base})
+=item gen_bibkey({ fields => $fields_ref, bibkey_base => $bibkey_base})
 
 Erzeuge einen BibKey entweder aus den bibliographischen Daten
-$normdata_ref oder aus einer schon generierten Basis-Zeichenkette
+$fields_ref oder aus einer schon generierten Basis-Zeichenkette
 $bibkey_base.
 
 =item to_isbn13($isbn10)

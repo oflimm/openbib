@@ -357,8 +357,8 @@ sub show_record {
 
         my $isbn;
         
-        if (exists $record->get_normdata->{T0540}[0]{content}){
-            $isbn = $record->get_normdata->{T0540}[0]{content};
+        if (exists $record->get_fields->{T0540}[0]{content}){
+            $isbn = $record->get_fields->{T0540}[0]{content};
             $isbn =~s/ //g;
             $isbn =~s/-//g;
             $isbn =~s/X/x/g;

@@ -784,7 +784,7 @@ sub get_connected_titles {
     return @titles;
 }
 
-sub get_normdata {
+sub get_fields {
     my ($self)=@_;
 
     return $self->{_normdata}

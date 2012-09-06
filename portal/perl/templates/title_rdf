@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%- normdata        = record.get_normdata -%]
+[%- normdata        = record.get_fields -%]
 [%- holding         = record.get_holding -%]
 [%- circulation     = record.get_circulation -%] 
 [%- same_records    = record.get_same_records -%]

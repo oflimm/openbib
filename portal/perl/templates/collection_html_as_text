@@ -17,7 +17,7 @@
 <pre>
 [% END %]
 [%- FOREACH record IN recordlist.load_full_records.get_records -%]
-[%- normset    = record.get_normdata -%]
+[%- normset    = record.get_fields -%]
 [%- mexnormset = record.get_mexdata -%]
 [%-
 

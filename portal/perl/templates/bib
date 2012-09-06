@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%- normset         = record.get_normdata -%]
+[%- normset         = record.get_fields -%]
 [%- mexnormset      = record.get_mexdata -%]
 [%- cirset          = record.get_circdata -%] 
 [%- same_records    = record.get_same_records -%]

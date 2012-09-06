@@ -23,7 +23,7 @@
    records = [];
 
    FOREACH record IN recordlist.get_records ;
-      records.push(record.get_normdata);
+      records.push(record.get_fields);
    END ;
 
 

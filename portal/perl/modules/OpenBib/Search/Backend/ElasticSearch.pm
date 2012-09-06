@@ -285,7 +285,7 @@ sub get_records {
 
     foreach my $match (@matches) {
     
-        $recordlist->add(OpenBib::Record::Title->new({database => $match->{database}, id => $match->{id}})->set_brief_normdata_from_storable($match->{listitem}));
+        $recordlist->add(OpenBib::Record::Title->new({database => $match->{database}, id => $match->{id}})->set_fields_from_storable($match->{listitem}));
     }
 
     return $recordlist;

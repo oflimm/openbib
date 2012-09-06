@@ -1,4 +1,4 @@
-[%- normset = record.get_normdata -%]
+[%- normset = record.get_fields -%]
 <?xml version="1.0"?>
 <mets:mets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/"

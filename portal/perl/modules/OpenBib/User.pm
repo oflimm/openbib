@@ -2569,7 +2569,7 @@ sub get_litlistentries {
         my $comment    = $litlistitem->comment;
         my $titlecache = $litlistitem->titlecache;
         
-        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment })->set_brief_normdata_from_json($titlecache);
+        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment })->set_fields_from_json($titlecache);
         
         $recordlist->add($record);
     }
@@ -2609,7 +2609,7 @@ sub get_single_litlistentry {
         my $comment    = $litlistitem->comment;
         my $titlecache = $litlistitem->titlecache;
         
-        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment })->set_brief_normdata_from_json($titlecache);
+        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment })->set_fields_from_json($titlecache);
 
         return $record;
     }
@@ -3096,7 +3096,7 @@ sub get_single_item_in_collection {
         my $listid     = $collectionitem->id;
         my $titlecache = $collectionitem->titlecache;
         
-        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, listid => $listid })->load_brief_record:OpenBib::Record::Title->new({ listid => $listid })->set_brief_normdata_from_json($titlecache);
+        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, listid => $listid })->load_brief_record:OpenBib::Record::Title->new({ listid => $listid })->set_fields_from_json($titlecache);
 
         return $record;
     }
@@ -3129,7 +3129,7 @@ sub get_items_in_collection {
 
         $logger->debug("Processing Item $listid with DB: $database ID: $titleid / Record: $titlecache");
 
-        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, listid => $listid, date => $tstamp, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ listid => $listid, date => $tstamp, comment => $comment })->set_brief_normdata_from_json($titlecache);
+        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, listid => $listid, date => $tstamp, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ listid => $listid, date => $tstamp, comment => $comment })->set_fields_from_json($titlecache);
         
         $recordlist->add($record);
     }

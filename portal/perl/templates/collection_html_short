@@ -30,7 +30,7 @@
   <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% IF format == 'short' %]
 [%- FOREACH record IN recordlist.get_records -%]
-[%- item = record.get_normdata -%]
+[%- item = record.get_fields -%]
 [%# USE dumper;dumper.dump(item)%]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]

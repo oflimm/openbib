@@ -19,7 +19,7 @@
           rel = 'self'
           href = "${location}/${record.listid}"
        }
-       record = record.get_normdata
+       record = record.get_fields
        itemid  = record.listid
      };
 

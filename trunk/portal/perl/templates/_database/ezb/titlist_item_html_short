@@ -19,7 +19,7 @@
 -%]
 <!-- Anfang einzelner Treffer -->
 [%-
-    item   = record.get_normdata;
+    item   = record.get_fields;
 
     # Titel konstruieren
     title = item.${'T0331'}.first.content;

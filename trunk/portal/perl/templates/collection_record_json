@@ -18,7 +18,7 @@
           rel = 'self'
           href = location
        }
-       record = record.get_normdata
+       record = record.get_fields
        itemid  = record.listid
      };
 

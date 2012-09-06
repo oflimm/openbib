@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <mods:modsCollection xmlns:mods="http://www.loc.gov/mods/" version="3.0">
   <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/" xmlns:mods="http://www.loc.gov/mods/" xsi:schemaLocation="http://www.loc.gov/mods/ http://www.loc.gov/standards/mods/mods.xsd">
-[% normset = record.get_normdata  %]
+[% normset = record.get_fields  %]
 [% IF normset.${"T0331"}.first.content %]
     <titleInfo>
       <title>[% normset.${"T0331"}.first.content %]</title>

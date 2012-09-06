@@ -14,7 +14,7 @@
 [%-
 
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) ;
-  normdata        = record.get_normdata ;
+  normdata        = record.get_fields ;
   holding         = record.get_holding ;
   circulation     = record.get_circulation ; 
   same_records    = record.get_same_records ;
@@ -349,7 +349,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <ul>
 [% FOREACH related_record IN related_records.get_records %]
-[% item = related_record.get_normdata %]
+[% item = related_record.get_fields %]
 [% related_url = "${path_prefix}/${config.get('title_loc')}/${related_record.database}/${related_record.id}.html?l=${lang}" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
@@ -526,7 +526,7 @@ $("#history_toggle").click(function(){
 <h4 id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h4><p/>
 
 [% FOREACH recent_record IN recent_titles.get_records %]
-[%- item = recent_record.get_normdata -%]
+[%- item = recent_record.get_fields -%]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
@@ -818,7 +818,7 @@ href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?_method=DEL
 <p />
 <ol>
 [% FOREACH similar_record IN similar_records.get_records %]
-[% item = similar_record.get_normdata %]
+[% item = similar_record.get_fields %]
 [% similar_url = "${path_prefix}/${config.get('loc')}/title/${similar_record.database}/${similar_record.id}.html" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]

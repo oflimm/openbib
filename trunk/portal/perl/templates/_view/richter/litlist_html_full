@@ -1,7 +1,7 @@
 [%- FOREACH record IN litlist.recordlist.load_full_records.get_records -%]
 [% activefeed = config.get_activefeeds_of_db(record.database) %]
 [% database        = record.database %]
-[% normdata         = record.get_normdata %]
+[% normdata         = record.get_fields %]
 [% holding      = record.get_holding %]
 [% circulation     = record.get_circulation %] 
 [%- bibkey = record.to_bibkey -%]

@@ -20,9 +20,9 @@
    normset_type = "";
    
    IF     num_of_available_records > 0;
-      normset = available_recordlist.get_records.first.get_normdata;
+      normset = available_recordlist.get_records.first.get_fields;
    ELSIF num_of_similar_records > 0;
-      normset = similar_recordlist.get_records.first.get_normdata;
+      normset = similar_recordlist.get_records.first.get_fields;
       normset_type = "similar";
    END;
 -%]

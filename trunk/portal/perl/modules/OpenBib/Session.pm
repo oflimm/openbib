@@ -696,7 +696,7 @@ sub get_items_in_collection {
         }
         elsif ($titlecache) {
             my $record = new OpenBib::Record::Title({listid => $listid});
-            $record->set_brief_normdata_from_json($titlecache);
+            $record->set_fields_from_json($titlecache);
             $recordlist->add($record);
         }
     }

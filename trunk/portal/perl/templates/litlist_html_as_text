@@ -1,6 +1,6 @@
 <pre>
 [%- FOREACH record IN litlist.recordlist.load_full_records.get_records -%]
-[%- normset    = record.get_normdata -%]
+[%- normset    = record.get_fields -%]
 [%- holding = record.get_holding -%]
 [%-
 

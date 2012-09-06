@@ -14,7 +14,7 @@
 [%-
 
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) ;
-  normdata        = record.get_normdata ;
+  normdata        = record.get_fields ;
   holding         = record.get_mexdata ;
   circulation     = record.get_circdata ; 
   same_records    = record.get_same_records ;

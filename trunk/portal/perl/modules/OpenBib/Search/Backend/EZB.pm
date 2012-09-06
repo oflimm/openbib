@@ -276,7 +276,7 @@ sub get_records {
         
         $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $match_ref->{title}});
 
-        $logger->debug("Adding Record with ".YAML::Dump($record->get_normdata));
+        $logger->debug("Adding Record with ".YAML::Dump($record->get_fields));
         $recordlist->add($record);
     }
 

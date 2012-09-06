@@ -143,16 +143,16 @@ sub load_full_record {
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     # (Re-)Initialisierung
-    delete $self->{_normdata}       if (exists $self->{_normdata});
+    delete $self->{_fields}       if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
 
-    my $normset_ref   = {};
+    my $fields_ref   = {};
 
     $self->{id      }        = $id;
 
     unless (defined $self->{id} && defined $self->{database}){
-        ($self->{_normdata},$self->{_holding},$self->{_circulation})=({},(),[]);
+        ($self->{_fields},$self->{_holding},$self->{_circulation})=({},(),[]);
 
         $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
         return $self;
@@ -478,7 +478,7 @@ sub load_full_record {
         }
     }
 
-    $self->set_normdata($record->get_normdata);
+    $self->set_fields($record->get_fields);
     $self->set_holding($record->get_holding);
     $self->set_circulation($record->get_circulation);
     
@@ -499,19 +499,18 @@ sub load_brief_record {
     my $config = OpenBib::Config->instance;
 
     # (Re-)Initialisierung
-    delete $self->{_exists}         if (exists $self->{_exists});
-    delete $self->{_normdata}       if (exists $self->{_normdata});
+    delete $self->{_fields}       if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
 
     my $record_exists = 0;
 
-    my $normset_ref   = {};
+    my $fields_ref   = {};
 
     $self->{id      }        = $id;
 
     unless (defined $self->{id} && defined $self->{database}){
-        ($self->{_normdata},$self->{_holding},$self->{_circulation},$self->{_exists})=({},(),[],$record_exists);
+        ($self->{_fields},$self->{_holding},$self->{_circulation})=({},(),[]);
 
         $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
         return $self;
@@ -527,13 +526,13 @@ sub load_brief_record {
     
     my $record = $catalog->load_brief_record({id => $id});
 
-    $normset_ref         = $record->get_normdata;
-    $record_exists       = $record->record_exists;
+    $fields_ref         = $record->get_fields;
+    $record_exists      = $record->record_exists;
 
     # Titel-ID und zugehoerige Datenbank setzen
 
-    $normset_ref->{id      } = $id;
-    $normset_ref->{database} = $self->{database};
+    $fields_ref->{id      } = $id;
+    $fields_ref->{database} = $self->{database};
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -542,9 +541,9 @@ sub load_brief_record {
         $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
     }
 
-    $logger->debug(YAML::Dump($normset_ref));
+    $logger->debug(YAML::Dump($fields_ref));
 
-    ($self->{_normdata},$self->{_exists},$self->{_type})=($normset_ref,$record_exists,'brief');
+    ($self->{_fields},$self->{_exists},$self->{_type})=($fields_ref,$record_exists,'brief');
 
     return $self;
 }
@@ -561,10 +560,10 @@ sub is_full {
     return ($self->{_type} eq "full")?1:0;
 }
 
-sub get_normdata {
+sub get_fields {
     my ($self)=@_;
 
-    return $self->{_normdata}
+    return $self->{_fields}
 }
 
 sub get_holding {
@@ -577,6 +576,14 @@ sub set_holding {
     my ($self,$holding_ref)=@_;
 
     $self->{_holding} = $holding_ref;
+
+    return;
+}
+
+sub set_fields {
+    my ($self,$fields_ref)=@_;
+
+    $self->{_fields} = $fields_ref;
 
     return;
 }
@@ -613,13 +620,7 @@ sub get_related_records {
     return $self->{_related_records}
 }
 
-sub is_normdata {
-    my ($self)=@_;
-
-    return (exists $self->{_normdata})?1:0;
-}
-
-sub set_normdata_from_storable {
+sub set_fields_from_storable {
     my ($self,$storable_ref)=@_;
 
     # Log4perl logger erzeugen
@@ -627,18 +628,18 @@ sub set_normdata_from_storable {
 
     # (Re-)Initialisierung
     delete $self->{_exists}        if (exists $self->{_exists});
-    delete $self->{_normdata}       if (exists $self->{_normdata});
+    delete $self->{_fields}       if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
 
     $logger->debug("Got :".YAML::Dump($storable_ref));
-    $self->{_normdata} = $storable_ref;
+    $self->{_fields} = $storable_ref;
     $self->{_type} = 'brief';
     
     return $self;
 }
 
-sub set_normdata_from_json {
+sub set_fields_from_json {
     my ($self,$json_string)=@_;
 
     # Log4perl logger erzeugen
@@ -646,7 +647,7 @@ sub set_normdata_from_json {
 
     # (Re-)Initialisierung
     delete $self->{_exists}         if (exists $self->{_exists});
-    delete $self->{_normdata}       if (exists $self->{_normdata});
+    delete $self->{_fields}       if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
 
@@ -660,7 +661,7 @@ sub set_normdata_from_json {
         $logger->error("Can't decode JSON string $json_string");
     }
     else {
-        $self->{_normdata} = $json_ref;
+        $self->{_fields} = $json_ref;
         $self->{_type} = 'brief';
     }
 
@@ -673,7 +674,7 @@ sub to_bibkey {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return OpenBib::Common::Util::gen_bibkey({ normdata => $self->{_normdata}});
+    return OpenBib::Common::Util::gen_bibkey({ fields => $self->{_fields}});
 }
 
 sub to_normalized_isbn13 {
@@ -682,7 +683,7 @@ sub to_normalized_isbn13 {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $thisisbn = $self->{_normdata}{"T0540"}[0]{content};
+    my $thisisbn = $self->{_fields}{"T0540"}[0]{content};
 
     $logger->debug("ISBN: $thisisbn");
 
@@ -742,12 +743,12 @@ sub to_endnote {
 
     # Titelkategorien
     foreach my $category (keys %{$endnote_category_map_ref}) {
-        if (exists $self->{_normdata}{$category}) {
-            foreach my $content_ref (@{$self->{_normdata}{$category}}){                
+        if (exists $self->{_fields}{$category}) {
+            foreach my $content_ref (@{$self->{_fields}{$category}}){                
                 my $content = $endnote_category_map_ref->{$category}." ".$content_ref->{content};
                 
-                if ($category eq "T0331" && exists $self->{_normdata}{"T0335"}){
-                    $content.=" : ".$self->{_normdata}{"T0335"}[0]{content};
+                if ($category eq "T0331" && exists $self->{_fields}{"T0335"}){
+                    $content.=" : ".$self->{_fields}{"T0335"}[0]{content};
                 }
                 
                 push @{$endnote_ref}, $content;
@@ -786,8 +787,8 @@ sub to_bibsonomy_post {
     my $authors_ref=[];
     my $editors_ref=[];
     foreach my $category (qw/T0100 T0101/){
-        next if (!exists $self->{_normdata}->{$category});
-        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
                 push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
@@ -802,27 +803,27 @@ sub to_bibsonomy_post {
     # Schlagworte
     my $keywords_ref=[];
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
-        next if (!exists $self->{_normdata}->{$category});
-        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
             push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
         }
     }
     my $keyword = join(' ; ',@$keywords_ref);
     
     # Auflage
-    my $edition   = (exists $self->{_normdata}->{T0403})?utf2bibtex($self->{_normdata}->{T0403}[0]{content},$utf8):'';
+    my $edition   = (exists $self->{_fields}->{T0403})?utf2bibtex($self->{_fields}->{T0403}[0]{content},$utf8):'';
 
     # Verleger
-    my $publisher = (exists $self->{_normdata}->{T0412})?utf2bibtex($self->{_normdata}->{T0412}[0]{content},$utf8):'';
+    my $publisher = (exists $self->{_fields}->{T0412})?utf2bibtex($self->{_fields}->{T0412}[0]{content},$utf8):'';
 
     # Verlagsort
-    my $address   = (exists $self->{_normdata}->{T0410})?utf2bibtex($self->{_normdata}->{T0410}[0]{content},$utf8):'';
+    my $address   = (exists $self->{_fields}->{T0410})?utf2bibtex($self->{_fields}->{T0410}[0]{content},$utf8):'';
 
     # Titel
-    my $title     = (exists $self->{_normdata}->{T0331})?utf2bibtex($self->{_normdata}->{T0331}[0]{content},$utf8):'';
+    my $title     = (exists $self->{_fields}->{T0331})?utf2bibtex($self->{_fields}->{T0331}[0]{content},$utf8):'';
 
     # Zusatz zum Titel
-    my $titlesup  = (exists $self->{_normdata}->{T0335})?utf2bibtex($self->{_normdata}->{T0335}[0]{content},$utf8):'';
+    my $titlesup  = (exists $self->{_fields}->{T0335})?utf2bibtex($self->{_fields}->{T0335}[0]{content},$utf8):'';
 
     #    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
     #    Bibkey-Bildung entgegen
@@ -832,22 +833,22 @@ sub to_bibsonomy_post {
 #    }
 
     # Jahr
-    my $year      = (exists $self->{_normdata}->{T0425})?utf2bibtex($self->{_normdata}->{T0425}[0]{content},$utf8):'';
+    my $year      = (exists $self->{_fields}->{T0425})?utf2bibtex($self->{_fields}->{T0425}[0]{content},$utf8):'';
 
     # ISBN
-    my $isbn      = (exists $self->{_normdata}->{T0540})?utf2bibtex($self->{_normdata}->{T0540}[0]{content},$utf8):'';
+    my $isbn      = (exists $self->{_fields}->{T0540})?utf2bibtex($self->{_fields}->{T0540}[0]{content},$utf8):'';
 
     # ISSN
-    my $issn      = (exists $self->{_normdata}->{T0543})?utf2bibtex($self->{_normdata}->{T0543}[0]{content},$utf8):'';
+    my $issn      = (exists $self->{_fields}->{T0543})?utf2bibtex($self->{_fields}->{T0543}[0]{content},$utf8):'';
 
     # Sprache
-    my $language  = (exists $self->{_normdata}->{T0516})?utf2bibtex($self->{_normdata}->{T0516}[0]{content},$utf8):'';
+    my $language  = (exists $self->{_fields}->{T0516})?utf2bibtex($self->{_fields}->{T0516}[0]{content},$utf8):'';
 
     # Abstract
-    my $abstract  = (exists $self->{_normdata}->{T0750})?utf2bibtex($self->{_normdata}->{T0750}[0]{content},$utf8):'';
+    my $abstract  = (exists $self->{_fields}->{T0750})?utf2bibtex($self->{_fields}->{T0750}[0]{content},$utf8):'';
 
     # Origin
-    my $origin    = (exists $self->{_normdata}->{T0590})?utf2bibtex($self->{_normdata}->{T0590}[0]{content},$utf8):'';
+    my $origin    = (exists $self->{_fields}->{T0590})?utf2bibtex($self->{_fields}->{T0590}[0]{content},$utf8):'';
 
     if ($author){
         $bibtex->setAttribute("author",$author);
@@ -970,8 +971,8 @@ sub to_bibtex {
     my $authors_ref=[];
     my $editors_ref=[];
     foreach my $category (qw/T0100 T0101/){
-        next if (!exists $self->{_normdata}->{$category});
-        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
                 push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
@@ -986,27 +987,27 @@ sub to_bibtex {
     # Schlagworte
     my $keywords_ref=[];
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
-        next if (!exists $self->{_normdata}->{$category});
-        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
             push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
         }
     }
     my $keyword = join(' ; ',@$keywords_ref);
     
     # Auflage
-    my $edition   = (exists $self->{_normdata}->{T0403})?utf2bibtex($self->{_normdata}->{T0403}[0]{content},$utf8):'';
+    my $edition   = (exists $self->{_fields}->{T0403})?utf2bibtex($self->{_fields}->{T0403}[0]{content},$utf8):'';
 
     # Verleger
-    my $publisher = (exists $self->{_normdata}->{T0412})?utf2bibtex($self->{_normdata}->{T0412}[0]{content},$utf8):'';
+    my $publisher = (exists $self->{_fields}->{T0412})?utf2bibtex($self->{_fields}->{T0412}[0]{content},$utf8):'';
 
     # Verlagsort
-    my $address   = (exists $self->{_normdata}->{T0410})?utf2bibtex($self->{_normdata}->{T0410}[0]{content},$utf8):'';
+    my $address   = (exists $self->{_fields}->{T0410})?utf2bibtex($self->{_fields}->{T0410}[0]{content},$utf8):'';
 
     # Titel
-    my $title     = (exists $self->{_normdata}->{T0331})?utf2bibtex($self->{_normdata}->{T0331}[0]{content},$utf8):'';
+    my $title     = (exists $self->{_fields}->{T0331})?utf2bibtex($self->{_fields}->{T0331}[0]{content},$utf8):'';
 
     # Zusatz zum Titel
-    my $titlesup  = (exists $self->{_normdata}->{T0335})?utf2bibtex($self->{_normdata}->{T0335}[0]{content},$utf8):'';
+    my $titlesup  = (exists $self->{_fields}->{T0335})?utf2bibtex($self->{_fields}->{T0335}[0]{content},$utf8):'';
 #    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
 #    Bibkey-Bildung entgegen
 #    if ($title && $titlesup){
@@ -1014,22 +1015,22 @@ sub to_bibtex {
 #    }
 
     # Jahr
-    my $year      = (exists $self->{_normdata}->{T0425})?utf2bibtex($self->{_normdata}->{T0425}[0]{content},$utf8):'';
+    my $year      = (exists $self->{_fields}->{T0425})?utf2bibtex($self->{_fields}->{T0425}[0]{content},$utf8):'';
 
     # ISBN
-    my $isbn      = (exists $self->{_normdata}->{T0540})?utf2bibtex($self->{_normdata}->{T0540}[0]{content},$utf8):'';
+    my $isbn      = (exists $self->{_fields}->{T0540})?utf2bibtex($self->{_fields}->{T0540}[0]{content},$utf8):'';
 
     # ISSN
-    my $issn      = (exists $self->{_normdata}->{T0543})?utf2bibtex($self->{_normdata}->{T0543}[0]{content},$utf8):'';
+    my $issn      = (exists $self->{_fields}->{T0543})?utf2bibtex($self->{_fields}->{T0543}[0]{content},$utf8):'';
 
     # Sprache
-    my $language  = (exists $self->{_normdata}->{T0516})?utf2bibtex($self->{_normdata}->{T0516}[0]{content},$utf8):'';
+    my $language  = (exists $self->{_fields}->{T0516})?utf2bibtex($self->{_fields}->{T0516}[0]{content},$utf8):'';
 
     # Abstract
-    my $abstract  = (exists $self->{_normdata}->{T0750})?utf2bibtex($self->{_normdata}->{T0750}[0]{content},$utf8):'';
+    my $abstract  = (exists $self->{_fields}->{T0750})?utf2bibtex($self->{_fields}->{T0750}[0]{content},$utf8):'';
 
     # Origin
-    my $origin    = (exists $self->{_normdata}->{T0590})?utf2bibtex($self->{_normdata}->{T0590}[0]{content},$utf8):'';
+    my $origin    = (exists $self->{_fields}->{T0590})?utf2bibtex($self->{_fields}->{T0590}[0]{content},$utf8):'';
 
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
@@ -1150,8 +1151,8 @@ sub to_tags {
     # Schlagworte
     my $keywords_ref=[];
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
-        next if (!exists $self->{_normdata}->{$category});
-        foreach my $part_ref (@{$self->{_normdata}->{$category}}){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
             foreach my $content_part (split('\s+',$part_ref->{content})){
                 push @$keywords_ref, OpenBib::Common::Util::grundform({
                     tagging => 1,
@@ -1213,7 +1214,7 @@ sub utf2bibtex {
 sub to_rawdata {
     my ($self) = @_;
 
-    return ($self->{_normdata},$self->{_holding},$self->{_circulation});
+    return ($self->{_fields},$self->{_holding},$self->{_circulation});
 }
 
 sub get_field {
@@ -1227,27 +1228,27 @@ sub get_field {
         ? $arg_ref->{mult}                : 1;
 
     if ($mult){
-        foreach my $field_ref (@{$self->{_normdata}->{$field}}){
+        foreach my $field_ref (@{$self->{_fields}->{$field}}){
             if ($field_ref->{mult} eq $mult){
                 return $field_ref->{content};
             }
         }
     }
     else {
-        return $self->{_normdata}->{$field};
+        return $self->{_fields}->{$field};
     }
 }
 
 sub have_field {
     my ($self,$field) = @_;
 
-    return (defined $self->{_normdata}->{$field})?1:0;
+    return (defined $self->{_fields}->{$field})?1:0;
 }
 
 sub record_exists {
     my ($self) = @_;
 
-    my @categories = grep { /^[TX]/ } keys %{$self->{_normdata}};
+    my @categories = grep { /^[TX]/ } keys %{$self->{_fields}};
     
     return (@categories)?1:0;
 }
@@ -1282,20 +1283,15 @@ sub to_drilldown_term {
 sub to_json {
     my ($self)=@_;
 
-    my $title_ref = {};
-    
-    if ($self->{_brief_normdata}){
-        $title_ref = $self->{_brief_normdata};
-    }
-    elsif ($self->{_normdata}){
-        $title_ref = {
-            'metadata'    => $self->{_normdata},
-            'items'       => $self->{_holding},
-            'circulation' => $self->{_circulation},
-        };
-    }
+    my $json_ref = {
+        'id'          => $self->{id},
+        'database'    => $self->{database},
+        'fields'      => $self->{_fields},
+        'items'       => $self->{_holding},
+        'circulation' => $self->{_circulation},
+    };
 
-    return encode_json $title_ref;
+    return encode_json $json_ref;
 }
 
 sub set_id {
@@ -1353,7 +1349,7 @@ sub set_from_apache_request {
         } 
     } 
 
-    $logger->debug(YAML::Dump($self->{_normdata}));
+    $logger->debug(YAML::Dump($self->{_fields}));
     return $self;
 }
 
@@ -1400,21 +1396,21 @@ sub set_from_apache_request {
 #         my $reqstring="insert into title (id,category,indicator,content) values(?,?,?,?)";
 #         $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
 
-#         foreach my $category (keys %{$self->{_normdata}}){
+#         foreach my $category (keys %{$self->{_fields}}){
 #             $category=~s/^T//;
 
 #             # Hierarchieverknuepfung
 #             if ($category eq "0004"){
 #                 my $reqstring2 = "insert into conn (category,sourceid,sourcetype,targetid,targettype) values ('0004',?,1,?,1);where targetid=? and sourcetype=1 and targettype=1";
 #                 my $request2 = $dbh->prepare($reqstring2);
-#                 foreach my $item (@{$self->{_normdata}->{$category}}){
+#                 foreach my $item (@{$self->{_fields}->{$category}}){
 #                     $request2->execute($item->{content},$self->{id});
 #                 }
 #                 $request2->finish;
 #             }
 #             # oder 'normale' Kategorie
 #             else {
-#                 foreach my $item (@{$self->{_normdata}->{$category}}){
+#                 foreach my $item (@{$self->{_fields}->{$category}}){
 #                     $request->execute($self->{id},$category,$item->{indicator},$item->{content});
 #                 }
 #             }
@@ -1463,7 +1459,7 @@ sub set_from_apache_request {
 # #                 $content=$record->name_as_string;
 # #             }
             
-# #             push @{$normset_ref->{$category}}, {
+# #             push @{$fields_ref->{$category}}, {
 # #                 id         => $targetid,
 # #                 content    => $content,
 # #                 supplement => $supplement,

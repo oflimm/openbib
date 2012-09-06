@@ -137,14 +137,14 @@ sub set_field {
     my $logger = get_logger();
 
     if ($id){
-        push @{$self->{_normset}{$field}}, {
+        push @{$self->{_fields}{$field}}, {
             id         => $id,
             content    => $content,
             supplement => $supplement,
         };
     }
     else {
-        push @{$self->{_normdata}{$field}}, {
+        push @{$self->{_fields}{$field}}, {
             mult      => $mult,
             subfield  => $subfield,
             content   => $content,

@@ -20,7 +20,7 @@
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" >
 [%-
    FOREACH record IN recordlist.get_records ;
-      normset         = record.get_normdata;
+      normset         = record.get_fields;
 -%]
 
   <rdf:Description rdf:about="http://[% servername %][% path_prefix %]/[% config.get('title_loc') %]/[%- record.database -%]/[%- record.id -%]">

@@ -295,8 +295,8 @@ sub filterchars {
 # }
 
 sub by_title {
-    my %line1=%{$a->get_normdata()};
-    my %line2=%{$b->get_normdata()};
+    my %line1=%{$a->get_fields()};
+    my %line2=%{$b->get_fields()};
 
     my $line1=(exists $line1{T0331}[0]{content} && defined $line1{T0331}[0]{content})?cleanrl($line1{T0331}[0]{content}):"";
     my $line2=(exists $line2{T0331}[0]{content} && defined $line2{T0331}[0]{content})?cleanrl($line2{T0331}[0]{content}):"";

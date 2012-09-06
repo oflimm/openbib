@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%- item         = record.get_normdata -%]
+[%- item         = record.get_fields -%]
 [%- itemholding      = record.get_holding -%]
 [%- itemcirc     = record.get_circulation -%]
 [%# USE dumper;dumper.dump(item)%]
@@ -141,7 +141,7 @@
 [% END %]
 <LI> LNKDB=http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html
 [% IF has_sb %]
-[%- sbitem         = sbrecord.get_normdata -%]
+[%- sbitem         = sbrecord.get_fields -%]
 [%- sbitemholding  = sbrecord.get_holding -%]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]

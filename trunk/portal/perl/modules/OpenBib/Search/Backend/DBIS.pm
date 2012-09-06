@@ -257,7 +257,7 @@ sub get_records {
             }
         }
         
-        $logger->debug("Adding Record with ".YAML::Dump($record->get_normdata));
+        $logger->debug("Adding Record with ".YAML::Dump($record->get_fields));
         $recordlist->add($record);
     }
 

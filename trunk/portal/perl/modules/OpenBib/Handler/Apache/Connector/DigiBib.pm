@@ -343,7 +343,7 @@ sub show {
                             $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
                         }
 
-                        $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
+                        $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_fields_from_storable($titlistitem_ref));
                         $i++;
                     }
                     

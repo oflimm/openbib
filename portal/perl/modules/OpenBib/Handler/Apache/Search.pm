@@ -788,16 +788,30 @@ sub joined_search {
 
     my $config = OpenBib::Config->instance;
 
+    my $query        = $self->query();
+
     my $recordlist;
+
+    $logger->debug("Starting joined search");
+
+    my $search_args_ref = OpenBib::Common::Util::query2hashref($query);
+
+    # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
+    # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
+    # und OpenBib::QueryOptions - alle weiteren benoetigten Parameter individuell
+    # heraussuchen.
+    # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
     
-    if    ($arg_ref->{sb} eq "xapian"){
-        $self->search_xapian($arg_ref);
-    }
-    elsif ($arg_ref->{sb} eq "elasticsearch"){
-        $self->search_elasticsearch($arg_ref);
-    }
+    my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
+
+    # Recherche starten
+    $searcher->search;
+    
+    $self->search;
 
     $self->print_resultitem({templatename => $config->{tt_search_title_combined_tname}});
+
+    return;
 }
 
 sub sequential_search {
@@ -811,8 +825,11 @@ sub sequential_search {
 
     ######################################################################
     # Schleife ueber alle Datenbanken 
+
     ######################################################################
 
+    $logger->debug("Starting sequential search");
+    
     foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
         # Trefferliste
         my $recordlist;
@@ -862,6 +879,9 @@ sub search {
     # Recherche starten
     $searcher->search;
 
+    my $facets_ref = $searcher->get_facets;
+    $searchquery->set_results($facets_ref->{8}) unless (defined $database); # Verteilung nach Datenbanken
+
     my $btime   = new Benchmark;
     $timeall    = timediff($btime,$atime);
     $resulttime = timestr($timeall,"nop");
@@ -893,497 +913,13 @@ sub search {
 
     $self->param('searchtime',$resulttime);
     $self->param('nav',$nav);
+    $self->param('facets',$facets_ref);
     $self->param('recordlist',$recordlist);
     $self->param('hits',$searcher->get_resultcount);
     $self->param('total_hits',$self->param('total_hits')+$searcher->get_resultcount);
 
     return;
 }
-
-sub search_xapian {
-    my ($self,$arg_ref) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    my $searchquery  = OpenBib::SearchQuery->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
-
-
-    my $atime=new Benchmark;
-    my $timeall;
-    
-    my $recordlist;
-    my $category_map_ref = ();
-    my $resulttime;
-    my $nav;
-
-    my $request_args = {};
-
-    if ($arg_ref->{database}){
-        $request_args->{database} = $arg_ref->{database};
-    }
-
-    if ($arg_ref->{searchprofile}){
-        $request_args->{searchprofile} = $arg_ref->{searchprofile};
-    }
-
-    # Recherche starten
-    my $request = new OpenBib::Search::Backend::Xapian($request_args);
-    
-    $request->search();
-    
-    my $btime      = new Benchmark;
-    $timeall    = timediff($btime,$atime);
-    $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-    
-    $logger->info($request->get_resultcount . " results found in $resulttime");
-    
-    $searchquery->set_hits($request->get_resultcount);
-    
-    if ($request->have_results) {
-
-        $logger->debug("Results found #".$request->get_resultcount);
-        
-        $nav = Data::Pageset->new({
-            'total_entries'    => $request->get_resultcount,
-            'entries_per_page' => $queryoptions->get_option('num'),
-            'current_page'     => $queryoptions->get_option('page'),
-            'mode'             => 'slide',
-        });
-        
-        $recordlist = $request->get_records();
-        
-#        if ($queryoptions->get_option('dd')) {
-            $category_map_ref = $request->get_categorized_drilldown;
-            $searchquery->set_results($category_map_ref->{8}); # Verteilung nach Datenbanken
-#        }
-
-    }
-    else {
-        $logger->debug("No results found #".$request->get_resultcount);
-    }
-    
-    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
-    # den einzeltreffern
-
-    $self->param('searchtime',$resulttime);
-    $self->param('nav',$nav);
-    $self->param('recordlist',$recordlist);
-    $self->param('facets',$category_map_ref);
-    $self->param('hits',$request->get_resultcount);
-    $self->param('total_hits',$self->param('total_hits')+$request->get_resultcount);
-
-    return;
-}
-
-
-sub search_elasticsearch {
-    my ($self,$arg_ref) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    my $searchquery  = OpenBib::SearchQuery->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
-
-
-    my $atime=new Benchmark;
-    my $timeall;
-    
-    my $recordlist;
-    my $category_map_ref = ();
-    my $resulttime;
-    my $nav;
-
-    my $request_args = {};
-    
-    if ($arg_ref->{database}){
-        $request_args->{database} = $arg_ref->{database};
-    }
-
-    if ($arg_ref->{searchprofile}){
-        $request_args->{searchprofile} = $arg_ref->{searchprofile};
-    }
-
-    # Recherche starten
-    my $request = new OpenBib::Search::Backend::ElasticSearch($request_args);
-
-    $request->search();
-    
-    my $btime      = new Benchmark;
-    $timeall    = timediff($btime,$atime);
-    $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-    
-    $logger->info($request->get_resultcount . " results found in $resulttime");
-    
-    $searchquery->set_hits($request->get_resultcount);
-    
-    if ($request->have_results) {
-        $nav = Data::Pageset->new({
-            'total_entries'    => $request->get_resultcount,
-            'entries_per_page' => $queryoptions->get_option('num'),
-            'current_page'     => $queryoptions->get_option('page'),
-            'mode'             => 'slide',
-        });
-        
-        $recordlist = $request->get_records();
-        
-#        if ($queryoptions->get_option('dd')) {
-            $category_map_ref = $request->get_categorized_drilldown;
-            $searchquery->set_results($category_map_ref->{8}); # Verteilung nach Datenbanken
-#        }
-
-    }
-    
-    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
-    # den einzeltreffern
-
-    $self->param('searchtime',$resulttime);
-    $self->param('nav',$nav);
-    $self->param('recordlist',$recordlist);
-    $self->param('facets',$category_map_ref);
-    $self->param('hits',$request->get_resultcount);
-    $self->param('total_hits',$self->param('total_hits')+$request->get_resultcount);
-
-    return;
-}
-
-sub search_ezb {
-    my ($self,$arg_ref) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $query        = $self->query();
-    my $config       = $self->param('config');
-    my $queryoptions = $self->param('qopts');
-    my $searchquery  = OpenBib::SearchQuery->instance;
-
-    my $access_green   = decode_utf8($query->param('access_green'))     || 0;
-    my $access_yellow  = decode_utf8($query->param('access_yellow'))    || 0;
-    my $access_red     = decode_utf8($query->param('access_red'))       || 0;
-    my $id             = decode_utf8($query->param('id'))       || undef;
-    my $sc             = decode_utf8($query->param('sc'))       || '';
-    my $lc             = decode_utf8($query->param('lc'))       || '';
-    my $sindex         = decode_utf8($query->param('sindex'))   || 0;
-
-    my $colors = $access_green + $access_yellow*2 + $access_red*4;
-    
-    if (!$colors){
-        $colors=$config->{ezb_colors};
-
-        my $colors_mask  = dec2bin($colors);
-
-        $logger->debug("Access: mask($colors_mask)");
-        
-        $access_green  = ($colors_mask & 0b001)?1:0;
-        $access_yellow = ($colors_mask & 0b010)?1:0;
-        $access_red    = ($colors_mask & 0b100)?1:0;
-    }
-
-    $logger->debug("Access: colors($colors) green($access_green) yellow($access_yellow) red($access_red)");
-
-    my $atime=new Benchmark;
-    my $timeall;
-    
-    my $recordlist;
-    my $category_map_ref = ();
-    my $resulttime;
-    my $nav;
-
-    my $request_args = {};
-
-    if ($arg_ref->{database}){
-        $request_args->{database} = $arg_ref->{database};
-    }
-
-    $request_args->{bibid}  = $arg_ref->{bibid};
-    $request_args->{colors} = $colors;
-    $request_args->{lang}   = $self->param('lang');
-    
-    if ($arg_ref->{searchprofile}){
-        $request_args->{searchprofile} = $arg_ref->{searchprofile};
-    }
-
-    # Recherche starten
-    my $request = new OpenBib::Search::Backend::EZB($request_args);
-
-    my $subjects_ref = $request->get_subjects();
-
-    $request->search({
-        sc       => $sc,
-        lc       => $lc,
-        sindex   => $sindex,
-    });
-    
-    my $btime   = new Benchmark;
-    $timeall    = timediff($btime,$atime);
-    $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-    
-    $logger->info($request->get_resultcount . " results found in $resulttime");
-    
-    $searchquery->set_hits($request->get_resultcount);
-    
-    if ($request->have_results) {
-
-        $logger->debug("Results found #".$request->get_resultcount);
-        
-        $nav = Data::Pageset->new({
-            'total_entries'    => $request->get_resultcount,
-            'entries_per_page' => $queryoptions->get_option('num'),
-            'current_page'     => $queryoptions->get_option('page'),
-            'mode'             => 'slide',
-        });
-        
-        $recordlist = $request->get_records();
-    }
-    else {
-        $logger->debug("No results found #".$request->get_resultcount);
-    }
-    
-    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
-    # den einzeltreffern
-
-    my $generic_attributes = {
-        access_green  => $access_green,
-        access_yellow => $access_yellow, 
-        access_red   => $access_red,
-        current_page => $request->{_current_page},
-        other_pages  => $request->{_other_pages},
-        sc           => $sc,
-        lc           => $lc,
-        sindex       => $sindex,
-        subjects     => $subjects_ref,
-    };
-
-    $self->param('generic_attributes',$generic_attributes);
-
-    $self->param('searchtime',$resulttime);
-    $self->param('nav',$nav);
-    $self->param('recordlist',$recordlist);
-    $self->param('hits',$request->get_resultcount);
-    $self->param('total_hits',$self->param('total_hits')+$request->get_resultcount);
-
-    return;
-}
-
-sub search_dbis {
-    my ($self,$arg_ref) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $query        = $self->query();
-    my $config       = $self->param('config');
-    my $queryoptions = $self->param('qopts');
-    my $searchquery  = OpenBib::SearchQuery->instance;
-
-    my $access_green   = decode_utf8($query->param('access_green'))     || 0;
-    my $access_yellow  = decode_utf8($query->param('access_yellow'))    || 0;
-    my $access_red     = decode_utf8($query->param('access_red'))       || 0;
-    my $id             = decode_utf8($query->param('id'))       || undef;
-    my $sc             = decode_utf8($query->param('sc'))       || '';
-    my $lc             = decode_utf8($query->param('lc'))       || '';
-    my $sindex         = decode_utf8($query->param('sindex'))   || 0;
-
-    my $colors = $access_green + $access_yellow*2 + $access_red*4;
-    
-    if (!$colors){
-        $colors=$config->{ezb_colors};
-
-        my $colors_mask  = dec2bin($colors);
-
-        $logger->debug("Access: mask($colors_mask)");
-        
-        $access_green  = ($colors_mask & 0b001)?1:0;
-        $access_yellow = ($colors_mask & 0b010)?1:0;
-        $access_red    = ($colors_mask & 0b100)?1:0;
-    }
-
-    $logger->debug("Access: colors($colors) green($access_green) yellow($access_yellow) red($access_red)");
-
-    my $atime=new Benchmark;
-    my $timeall;
-    
-    my $recordlist;
-    my $category_map_ref = ();
-    my $resulttime;
-    my $nav;
-
-    my $request_args = {};
-
-    if ($arg_ref->{database}){
-        $request_args->{database} = $arg_ref->{database};
-    }
-
-    $request_args->{bibid}  = $arg_ref->{bibid};
-    $request_args->{colors} = $colors;
-    $request_args->{lang}   = $self->param('lang');
-    
-    if ($arg_ref->{searchprofile}){
-        $request_args->{searchprofile} = $arg_ref->{searchprofile};
-    }
-
-    # Recherche starten
-    my $request = new OpenBib::Search::Backend::DBIS($request_args);
-
-    my $subjects_ref = $request->get_subjects();
-
-    $request->search({
-        sc       => $sc,
-        lc       => $lc,
-        sindex   => $sindex,
-    });
-    
-    my $btime   = new Benchmark;
-    $timeall    = timediff($btime,$atime);
-    $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-    
-    $logger->info($request->get_resultcount . " results found in $resulttime");
-    
-    $searchquery->set_hits($request->get_resultcount);
-    
-    if ($request->have_results) {
-
-        $logger->debug("Results found #".$request->get_resultcount);
-        
-        $nav = Data::Pageset->new({
-            'total_entries'    => $request->get_resultcount,
-            'entries_per_page' => $queryoptions->get_option('num'),
-            'current_page'     => $queryoptions->get_option('page'),
-            'mode'             => 'slide',
-        });
-        
-        $recordlist = $request->get_records();
-    }
-    else {
-        $logger->debug("No results found #".$request->get_resultcount);
-    }
-    
-    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
-    # den einzeltreffern
-
-    my $generic_attributes = {
-        access_green  => $access_green,
-        access_yellow => $access_yellow, 
-        access_red   => $access_red,
-        current_page => $request->{_current_page},
-        other_pages  => $request->{_other_pages},
-        sc           => $sc,
-        lc           => $lc,
-        sindex       => $sindex,
-        subjects     => $subjects_ref,
-    };
-
-    $self->param('generic_attributes',$generic_attributes);
-
-    $self->param('searchtime',$resulttime);
-    $self->param('nav',$nav);
-    $self->param('recordlist',$recordlist);
-    $self->param('hits',$request->get_resultcount);
-    $self->param('total_hits',$self->param('total_hits')+$request->get_resultcount);
-
-    return;
-}
-
-sub search_z3950 {
-    my ($self,$arg_ref) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    my $searchquery  = OpenBib::SearchQuery->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
-
-    my $atime=new Benchmark;
-    my $timeall;
-    my $resulttime;
-    my $recordlist;
-    my $nav;
-
-    my $database = $arg_ref->{database};
-
-    return unless ($database);
-    
-    # Beschraenkung der Treffer pro Datenbank auf 10, da Z39.50-Abragen
-    # sehr langsam sind
-    # $hitrange = 10;
-    my $z3950dbh = new OpenBib::Search::Z3950($database);
-    
-    $z3950dbh->search;
-
-    my $btime      = new Benchmark;
-    $timeall    = timediff($btime,$atime);
-    $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-
-    $z3950dbh->{rs}->option(elementSetName => "B");
-    
-    my $fullresultcount = $z3950dbh->{rs}->size();
-    
-    # Wenn mindestens ein Treffer gefunden wurde
-    if ($fullresultcount >= 0) {
-        
-        my $a2time;
-        
-        if ($config->{benchmark}) {
-            $a2time=new Benchmark;
-        }
-        
-        my $end=($fullresultcount < $z3950dbh->{hitrange})?$fullresultcount:$z3950dbh->{hitrange};
-
-        $nav = Data::Pageset->new({
-            'total_entries'    => $fullresultcount,
-            'entries_per_page' => $queryoptions->get_option('num'),
-            'current_page'     => $queryoptions->get_option('page'),
-            'mode'             => 'slide',
-        });
-
-        my $start_range = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num') + 1;
-        my $end_range   = $queryoptions->get_option('page')*$queryoptions->get_option('num');
-        if ($end_range >= $fullresultcount){
-            $end_range       = $fullresultcount;
-        }
-        
-        $recordlist = $z3950dbh->get_resultlist($start_range-1,$end_range);
-        
-        if ($config->{benchmark}) {
-            my $b2time     = new Benchmark;
-            my $timeall2   = timediff($b2time,$a2time);
-            
-            $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (holen)       : ist ".timestr($timeall2));
-            $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (suchen+holen): ist ".timestr($timeall));
-        }
-        
-        $recordlist->sort({order=>$queryoptions->get_option('srto'),type=>$queryoptions->get_option('srt')});
-        
-        $searchquery->set_hits($fullresultcount);
-    }
-    
-    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
-    # den einzeltreffern
-
-    $self->param('searchtime',$resulttime);
-    $self->param('nav',$nav);
-    $self->param('recordlist',$recordlist);
-    $self->param('facets',{});
-    $self->param('hits',$fullresultcount);
-    $self->param('total_hits',$self->param('total_hits')+$fullresultcount);
-
-    return;
-}
-
 
 sub print_resultitem {
     my ($self,$arg_ref) = @_;

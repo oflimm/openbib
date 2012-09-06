@@ -51,12 +51,12 @@ sub process_file {
     $slurped_file=~s/drilldown=1/dd=1/g;
     $slurped_file=~s/drilldown_categorized=1//g;
     $slurped_file=~s/drilldown_cloud=1//g;
-    $slurped_file=~s/\[\%-?\s+IF\s+config.get\('drilldown_option'\).cloud\s+-?\%]dd_cloud=1;\[\%-?\s+END\s+-?\%]//smg;
-    $slurped_file=~s/\[\%-?\s+IF\s+config.get\('drilldown_option'\).categorized\s+-?\%]dd_categorized=1;\[\%-?\s+END\s+-?\%]//smg;
+    $slurped_file=~s/\[\%-?\s+IF\s+config.get\('facets'\).cloud\s+-?\%]dd_cloud=1;\[\%-?\s+END\s+-?\%]//smg;
+    $slurped_file=~s/\[\%-?\s+IF\s+config.get\('facets'\).categorized\s+-?\%]dd_categorized=1;\[\%-?\s+END\s+-?\%]//smg;
 
-    $slurped_file=~s/\[\%-?\s+IF\s+config.get\('drilldown_option'\).cloud\s+-?\%]\s*^<input\s*type="hidden"\s*name="dd_cloud"\s*value="\w+"\s*\/>\s*^\[\%-?\s+END\s+-?\%]//smg;
+    $slurped_file=~s/\[\%-?\s+IF\s+config.get\('facets'\).cloud\s+-?\%]\s*^<input\s*type="hidden"\s*name="dd_cloud"\s*value="\w+"\s*\/>\s*^\[\%-?\s+END\s+-?\%]//smg;
 
-    $slurped_file=~s/\[\%-?\s+IF\s+config.get\('drilldown_option'\).categorized\s+-?\%]\s*^<input\s*type="hidden"\s*name="dd_categorized"\s*value="\w+"\s*\/>\s*^\[\%-?\s+END\s+-?\%]//smg;
+    $slurped_file=~s/\[\%-?\s+IF\s+config.get\('facets'\).categorized\s+-?\%]\s*^<input\s*type="hidden"\s*name="dd_categorized"\s*value="\w+"\s*\/>\s*^\[\%-?\s+END\s+-?\%]//smg;
 
     $slurped_file=~s/type="hidden"\s*name="drilldown"/type="hidden" name="dd"/g;
     $slurped_file=~s/type="hidden"\s*name="database"/type="hidden" name="db"/g;

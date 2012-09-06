@@ -98,12 +98,10 @@ sub new {
 
     if (defined $database){
         $self->{database} = $database;
-        $self->{_normset}{database} = $database;
     }
 
     if (defined $id){
         $self->{id}           = $id;
-        $self->{_normset}{id} = $id;
     }
 
     if (defined $date){
@@ -143,7 +141,7 @@ sub load_full_record {
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     # (Re-)Initialisierung
-    delete $self->{_fields}       if (exists $self->{_fields});
+    delete $self->{_fields}         if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
 
@@ -160,8 +158,10 @@ sub load_full_record {
 
     my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}});
     
-    my $record = $catalog->load_full_record({id => $id});
+    my $record = $catalog->load_full_title_record({id => $id});
 
+    $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
+    
     # Anreicherung mit zentralen Enrichmentdaten
     {
         my ($atime,$btime,$timeall);
@@ -173,15 +173,15 @@ sub load_full_record {
         if (!exists $self->{enrich_schema}){
             $self->connectEnrichmentDB;
         }
-        
+
         my @isbn_refs = ();
-        push @isbn_refs, @{$record->get_field({field => 'T0540'})} if ($record->have_field('T0540'));
-        push @isbn_refs, @{$record->get_field({field => 'T0553'})} if ($record->have_field('T0553'));
+        push @isbn_refs, @{$record->get_field({field => 'T0540'})} if ($record->has_field('T0540'));
+        push @isbn_refs, @{$record->get_field({field => 'T0553'})} if ($record->has_field('T0553'));
 
         my $bibkey    = $record->get_field({field => 'T5050', mult => 1});
 
         my @issn_refs = ();
-        push @issn_refs, @{$record->get_field({field => 'T0543'})} if ($record->have_field('T0543'));                                           
+        push @issn_refs, @{$record->get_field({field => 'T0543'})} if ($record->has_field('T0543'));                                           
         
         $logger->debug("Enrichment ISBN's ".YAML::Dump(\@isbn_refs));
         $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
@@ -524,7 +524,7 @@ sub load_brief_record {
 
     my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}});
     
-    my $record = $catalog->load_brief_record({id => $id});
+    my $record = $catalog->load_brief_title_record({id => $id});
 
     $fields_ref         = $record->get_fields;
     $record_exists      = $record->record_exists;
@@ -1225,9 +1225,9 @@ sub get_field {
         ? $arg_ref->{field}               : undef;
 
     my $mult             = exists $arg_ref->{mult}
-        ? $arg_ref->{mult}                : 1;
+        ? $arg_ref->{mult}                : undef;
 
-    if ($mult){
+    if (defined $mult && $mult){
         foreach my $field_ref (@{$self->{_fields}->{$field}}){
             if ($field_ref->{mult} eq $mult){
                 return $field_ref->{content};
@@ -1239,7 +1239,7 @@ sub get_field {
     }
 }
 
-sub have_field {
+sub has_field {
     my ($self,$field) = @_;
 
     return (defined $self->{_fields}->{$field})?1:0;

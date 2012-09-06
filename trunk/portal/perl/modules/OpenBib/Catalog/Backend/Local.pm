@@ -98,7 +98,7 @@ sub get_recent_titles {
     return $recordlist;
 }
 
-sub load_full_record {
+sub load_full_title_record {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -115,17 +115,6 @@ sub load_full_record {
 
     my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
-    my $normset_ref   = {};
-
-    $self->{id}              = $id;
-    $normset_ref->{id      } = $id;
-    $normset_ref->{database} = $self->{database};
-
-    unless (defined $self->{id} && defined $self->{database}){
-        $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
-        return $title_record;
-    }
-
     # Titelkategorien
     {
         
@@ -432,7 +421,7 @@ sub load_full_record {
 
         if (exists $circinfotable->{$self->{database}}{circ}) {
 
-            my $circid=(exists $normset_ref->{'T0001'}[0]{content} && $normset_ref->{'T0001'}[0]{content} > 0 && $normset_ref->{'T0001'}[0]{content} != $id )?$normset_ref->{'T0001'}[0]{content}:$id;
+            my $circid=($title_record->has_field('T0001') && $title_record->get_field({ field => 'T0001', mult => 1}) && $title_record->get_field({ field => 'T0001', mult => 1}) > 0 && $title_record->get_field({ field => 'T0001', mult => 1}) != $id )?$title_record->get_field({ field => 'T0001', mult => 1}):$id;
 
             $logger->debug("Katkey: $id - Circ-ID: $circid");
 
@@ -503,13 +492,14 @@ sub load_full_record {
         }
     }
 
+    $logger->debug(YAML::Dump($title_record->get_fields));
     $title_record->set_holding($holding_ref);
     $title_record->set_circulation($circulation_ref);
 
     return $title_record;
 }
 
-sub load_brief_record {
+sub load_brief_title_record {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -546,7 +536,7 @@ sub load_brief_record {
     my $record_exists = 0;
     
     if ($record){
-        $title_record->set_normdata_from_json($record->titlecache);
+        $title_record->set_fields_from_json($record->titlecache);
         $record_exists = 1;
     }
 
@@ -573,17 +563,17 @@ sub _get_holding {
     my $config      = OpenBib::Config->instance;
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
-    my $normset_ref={};
+    my $fields_ref={};
 
-    $normset_ref->{id}=$id;
+    $fields_ref->{id}=$id;
     
     # Defaultwerte setzen
-    $normset_ref->{X0005}{content}="-";
-    $normset_ref->{X0014}{content}="-";
-    $normset_ref->{X0016}{content}="-";
-    $normset_ref->{X1204}{content}="-";
-    $normset_ref->{X4000}{content}="-"; # Katalogname
-    $normset_ref->{X4001}{content}="";  # Katalog-URL laut Admin
+    $fields_ref->{X0005}{content}="-";
+    $fields_ref->{X0014}{content}="-";
+    $fields_ref->{X0016}{content}="-";
+    $fields_ref->{X1204}{content}="-";
+    $fields_ref->{X4000}{content}="-"; # Katalogname
+    $fields_ref->{X4001}{content}="";  # Katalog-URL laut Admin
     
     my ($atime,$btime,$timeall);
     if ($config->{benchmark}) {
@@ -611,7 +601,7 @@ sub _get_holding {
         # Exemplar-Normdaten werden als nicht multipel angenommen
         # und dementsprechend vereinfacht in einer Datenstruktur
         # abgelegt
-        $normset_ref->{$field} = {
+        $fields_ref->{$field} = {
             mult      => $mult,
             subfield  => $subfield,
             content   => $content,
@@ -631,13 +621,13 @@ sub _get_holding {
     my $sigel      = "";
     # Bestimmung des Bibliotheksnamens
     # Ein im Exemplar-Datensatz gefundenes Sigel geht vor
-    if (exists $normset_ref->{X3330}{content}) {
-        $sigel=$normset_ref->{X3330}{content};
+    if (exists $fields_ref->{X3330}{content}) {
+        $sigel=$fields_ref->{X3330}{content};
         if (exists $dbinfotable->{sigel}{$sigel}) {
-            $normset_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
+            $fields_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
         }
         else {
-            $normset_ref->{X4000}{content}= {
+            $fields_ref->{X4000}{content}= {
 					     full  => "($sigel)",
 					     short => "($sigel)",
 					    };
@@ -647,7 +637,7 @@ sub _get_holding {
     else {
         $sigel=$dbinfotable->{dbases}{$self->{database}};
         if (exists $dbinfotable->{sigel}{$sigel}) {
-            $normset_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
+            $fields_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
         }
     }
 
@@ -655,12 +645,12 @@ sub _get_holding {
 
     # Bestimmung der Bibinfo-Url
     if (exists $dbinfotable->{bibinfo}{$sigel}) {
-        $normset_ref->{X4001}{content}=$dbinfotable->{bibinfo}{$sigel};
+        $fields_ref->{X4001}{content}=$dbinfotable->{bibinfo}{$sigel};
     }
 
-    $logger->debug(YAML::Dump($normset_ref));
+    $logger->debug(YAML::Dump($fields_ref));
     
-    return $normset_ref;
+    return $fields_ref;
 }
 
 sub get_number_of_titles {
@@ -787,7 +777,7 @@ sub get_connected_titles {
 sub get_fields {
     my ($self)=@_;
 
-    return $self->{_normdata}
+    return $self->{_fields}
 }
 
 sub get_holding {

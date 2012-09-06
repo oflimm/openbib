@@ -97,11 +97,11 @@ sub load_full_record {
 
     my $config = OpenBib::Config->instance;
 
-    my $normset_ref={};
+    my $fields_ref={};
 
     $self->{id      }        = $id;
-    $normset_ref->{id      } = $id;
-    $normset_ref->{database} = $self->{database};
+    $fields_ref->{id      } = $id;
+    $fields_ref->{database} = $self->{database};
 
     my ($atime,$btime,$timeall);
 
@@ -127,7 +127,7 @@ sub load_full_record {
         my $mult     =                    $item->get_column('thismult');
         my $content  =                    $item->get_column('thiscontent');
         
-        push @{$normset_ref->{$field}}, {
+        push @{$fields_ref->{$field}}, {
             mult      => $mult,
             subfield  => $subfield,
             content   => $content,
@@ -150,7 +150,7 @@ sub load_full_record {
     # Ausgabe der Anzahl verkuepfter Titel
     my $titcount = $self->get_number_of_titles;
     
-    push @{$normset_ref->{S5000}}, {
+    push @{$fields_ref->{S5000}}, {
         content => $titcount,
     };
 
@@ -163,9 +163,9 @@ sub load_full_record {
 	undef $timeall;
     }
 
-    $logger->debug(YAML::Dump($normset_ref));
+    $logger->debug(YAML::Dump($fields_ref));
     
-    $self->{_normdata}=$normset_ref;
+    $self->{_fields}=$fields_ref;
 
     return $self;
 }
@@ -266,17 +266,19 @@ sub get_number_of_titles {
 sub to_rawdata {
     my ($self) = @_;
 
-    return $self->{_normdata};
+    return $self->{_fields};
 }
 
 sub to_json {
     my ($self)=@_;
 
-    my $title_ref = {
-        'metadata'    => $self->{_normdata},
+    my $json_ref = {
+        'id'        => $self->{id},
+        'database'  => $self->{database},
+        'fields'    => $self->{_fields},
     };
 
-    return encode_json $title_ref;
+    return encode_json $json_ref;
 }
 
 sub name_as_string {

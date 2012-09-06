@@ -30,6 +30,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Log::Log4perl qw(get_logger :levels);
+
 use OpenBib::Config;
 use OpenBib::Catalog::Backend::EZB;
 use OpenBib::Catalog::Backend::DBIS;
@@ -42,10 +44,15 @@ sub create_catalog {
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}        : undef;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $config = OpenBib::Config->instance;
 
     my $system = $config->get_system_of_db($database);
 
+    $logger->debug("Factory for database $database with system $system");
+    
     return new OpenBib::Catalog::Backend::EZB($arg_ref)  if ($system eq "Backend: EZB");
     return new OpenBib::Catalog::Backend::DBIS($arg_ref) if ($system eq "Backend: DBIS");
     return new OpenBib::Catalog::Backend::Local($arg_ref); # Default

@@ -111,7 +111,7 @@ sub new {
     return $self;
 }
 
-sub load_full_record {
+sub load_full_title_record {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -261,7 +261,7 @@ sub load_full_record {
     return $record;
 }
 
-sub load_brief_record {
+sub load_brief_title_record {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -272,7 +272,7 @@ sub load_brief_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return $self->load_full_record($arg_ref);
+    return $self->load_full_title_record($arg_ref);
 }
 
 sub _get_readme {

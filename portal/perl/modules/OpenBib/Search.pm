@@ -146,6 +146,14 @@ sub parse_query {
     return $self;
 }
 
+sub get_facets {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return {};
+}
 
 sub DESTROY {
     my $self = shift;

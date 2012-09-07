@@ -1,0 +1,122 @@
+\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\usepackage{german}
+\usepackage{typearea}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[utf8x]{inputenc}
+
+% Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
+\usepackage{picins}
+
+% Header anpassbar
+\usepackage{fancyhdr}
+
+% Headings umdefinieren
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyhead[LE]{\nouppercase{\leftmark}}
+\fancyfoot[RO, LE]{\thepage}
+
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+\addtolength{\headwidth}{1cm}
+
+\parindent0.0mm
+\parskip0.3cm    
+\typearea{13}
+
+\begin{document}
+
+\frontmatter
+\begin{titlepage}
+
+\begin{center}
+[%- beschreibung = filterchars(dbinfo.get('dbnames').${database}.full) -%]
+
+\vspace{2cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Liste aller Titel des Katalogs}
+
+  \vspace{0.5cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont [% beschreibung %]}
+
+  \vspace{4cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Stand: \today}
+
+\end{center}
+
+\end{titlepage}
+
+%\thispagestyle{empty}
+
+%\begin{verbatim}
+
+
+%Copyright (c) 2005 Oliver Flimm <flimm@openbib.org>
+
+%Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
+%und/oder zu veraendern unter den Bedingungen der GNU Free
+%Documentation License, Version 1.1 oder einer spaeteren, von der Free 
+%Software Foundation veroeffentlichten Version; mit den
+%Unveraenderlichen Abschnitten DEREN TITEL AUFGEZAEHLT sind, mit den 
+%Vorderseitentexten die AUFGEZAEHLT sind, und mit den Rueckseitentexten
+%die AUFGEZAEHLT sind. Eine Kopie dieser Lizenz ist in dem Abschnitt 
+%enthalten, der mit "GNU Free Documentation License"
+%\end{verbatim}
+
+\mainmatter
+
+\section*{Aufstellung der Katalogtitel}
+
+[% FOREACH record IN recordlist %]
+[% thistitset = record.get_normdata %]
+[% thismexset = record.get_mexdata %]
+
+[% 
+   signaturen = [] ;
+
+   FOREACH item IN thismexset ;
+      IF item.${"X0014"}.content && item.${"X0014"}.content != '-' ;
+        signaturen.push(item.${"X0014"}.content);
+      END ;
+   END ;
+%]
+
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Id & [% filterchars(record.id) %]\\
+[% FOREACH category IN categories;
+    FOREACH item IN thistitset.$category;
+    content = item.content;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+%]
+  [% filterchars(msg.maketext("${thiscategory}")) %] & [% filterchars(content) %]\\
+[%
+   END;
+END;
+-%]
+[% IF signaturen.first %]
+Signatur & [% filterchars(signaturen.join(' ; '))  %]\\
+[% END %]
+\end{tabular}
+\end{shadowenv}
+
+[% END %]
+
+\end{document}

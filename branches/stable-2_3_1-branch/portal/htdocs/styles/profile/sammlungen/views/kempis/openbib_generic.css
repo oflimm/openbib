@@ -527,7 +527,7 @@ dt.review {
 
 #header #header_logo {
   float: left;
-  width: 120px;
+  width: 491px;
 }
 
 #header #header_right {
@@ -547,11 +547,11 @@ dt.review {
 
 #header_logo_image {
   background: url(/images/openbib/views/kempis/logo.png) center no-repeat;
-  width: 400px;
-  height: 105px;
+  width: 491px;
+  height: 100px;
   position: absolute;
-  top: 10px;
-  left: 15px;
+  top: 7px;
+  left: -5px;
 }
 
 .listnavigation {

@@ -241,6 +241,8 @@ sub search {
         push @{$journals_ref}, $singlejournal_ref;
     }
 
+    $logger->debug("Found $search_count titles");
+    
     $self->{resultcount}   = $search_count;
     $self->{_matches}      = $journals_ref;
     
@@ -270,8 +272,7 @@ sub get_records {
     foreach my $match_ref (@matches) {        
         $logger->debug("Record: ".$match_ref );
         
-        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, generic_attributes => { color => $match_ref->{color}}});
-        $record->set_database('ezb');
+        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'ezb', generic_attributes => { color => $match_ref->{color}}});
         $logger->debug("Title is ".$match_ref->{title});
         
         $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $match_ref->{title}});

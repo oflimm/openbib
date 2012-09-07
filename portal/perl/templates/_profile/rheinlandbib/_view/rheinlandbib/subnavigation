@@ -23,7 +23,7 @@
 [% IF active_submenu == "portal" %]
   <li class="active"><strong>Die RheinlandBib</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=[% lang %]">Die RheinlandBib</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]">Die Rheinische Abteilung der USB</a></li>
 [% END %]
 [% IF active_submenu == "gdonck"  %]
   <li class="active"><strong>Bibliotheca Domus Presbyterorum Gaesdonck</strong></li>

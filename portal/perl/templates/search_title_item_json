@@ -23,7 +23,7 @@
    records = [];
 
    FOREACH record IN recordlist.get_records ;
-      records.push(record.get_fields);
+      records.push({ id => record.id, database => record.database, fields => record.get_fields });
    END ;
 
 

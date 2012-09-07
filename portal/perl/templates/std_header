@@ -79,6 +79,6 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
 
 
-    <title>[% IF title %][% title %][% ELSE %][% msg.maketext("OpenBib - Demo-Portal") %][% END %]</title>
+    <title>[% IF page_title %][% page_title %][% ELSE %][% msg.maketext("OpenBib - Demo-Portal") %][% END %]</title>
 
    </head>

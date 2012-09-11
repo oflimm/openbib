@@ -680,6 +680,7 @@ sub add_default_ttdata {
     $ttdata->{'servername'}     = $servername;
     $ttdata->{'username'}       = $username;
     $ttdata->{'sysprofile'}     = $sysprofile;
+    $ttdata->{'path_prefix'}    = $path_prefix;
     $ttdata->{'path'}           = $path;
     $ttdata->{'url'}            = $url;
     $ttdata->{'location'}       = $location;

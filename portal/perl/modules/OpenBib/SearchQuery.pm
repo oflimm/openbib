@@ -30,8 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
-#use base qw(Class::Singleton);
+use base qw(Apache::Singleton); # per request
 
 use Apache2::Request ();
 use Benchmark ':hireswallclock';
@@ -380,6 +379,7 @@ sub set_from_apache_request {
     
     $self->{_searchprofile}  = $self->_get_searchprofile;
 
+    $logger->debug("Searchquery-Terms: ".YAML::Dump($self->get_searchquery));
     return $self;
 }
 
@@ -888,6 +888,8 @@ sub from_json {
     my $logger = get_logger();
 
     return unless ($json);
+
+    $logger->debug("Decoding $json");
 
     eval {
         my $tmp_ref = decode_json $json;

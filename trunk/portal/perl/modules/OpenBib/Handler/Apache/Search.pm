@@ -163,6 +163,8 @@ sub show_search {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
+
+    $logger->debug("SearchQuery Terms:".YAML::Dump($searchquery->get_searchquery));
     
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
@@ -377,7 +379,7 @@ sub show_search {
     }
 
     # Jetzt update der Trefferinformationen, wenn keine ID
-    $searchquery->save({sessionID => $session->{ID}}); 
+    $searchquery->save({sessionID => $session->{ID}});
     
     # Wurde in allen Katalogen recherchiert?
     
@@ -429,7 +431,6 @@ sub show_index {
     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"person";
     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'asc';
     my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
-    my $joindbs       = $query->param('jn') || $query->param('combinedbs')    || 1;
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 

@@ -32,6 +32,7 @@ no warnings 'redefine';
 use utf8;
 
 use base qw(Apache::Singleton);
+
 use Digest::MD5;
 use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;

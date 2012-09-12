@@ -18,25 +18,25 @@ wiki_category: 'Kategorie'
 # Personen
 perstit:
   # Fuer Titelnormdaten
-  'AUTOR': '0100:'            # Verfasser
-  'HERAUSGEBER': '0101:'      # Person
+  'AUTOR': '0100'            # Verfasser
+  'HERAUSGEBER': '0101'      # Person
 
 pers:
   # Fuer Personennormdaten
-  'ALTERNATIVNAMEN': '0102:'   # Verweisung
-  'NACHNAME': '0300:'
-  'VORNAMEN': '0301:'
-  'KURZBESCHREIBUNG': '0302:'
-  'SONSTIGES': '0303:'
-  'GEBURTSDATUM': '0304:'
-  'GEBURTSORT': '0305:'
-  'STERBEDATUM': '0306:'
-  'STERBEORT': '0307:'
-  'BILD': '0308:'
-  'WIKIPEDIA': '0309:'
-  'WIKIQUOTE': '0310:'
-  'COMMONS': '0311:'
-  'PND': '0312:'
+  'ALTERNATIVNAMEN': '0102'   # Verweisung
+  'NACHNAME': '0300'
+  'VORNAMEN': '0301'
+  'KURZBESCHREIBUNG': '0302'
+  'SONSTIGES': '0303'
+  'GEBURTSDATUM': '0304'
+  'GEBURTSORT': '0305'
+  'STERBEDATUM': '0306'
+  'STERBEORT': '0307'
+  'BILD': '0308'
+  'WIKIPEDIA': '0309'
+  'WIKIQUOTE': '0310'
+  'COMMONS': '0311'
+  'PND': '0312'
 
 
 # Koerperschaften
@@ -50,25 +50,25 @@ subj:
 
 # Titel
 title:
-  'TITEL': '0331:'
-  'SUBTITEL': '0335:'
-  'HERKUNFT': '0590:'
-  'AUFLAGE': '0403:'
-  'ENTSTEHUNGSJAHR': '0595:'
-  'ERSCHEINUNGSJAHR': '0425:'
-  'VERLAG': '0412:'
-  'ERSCHEINUNGSORT': '0410:'
+  'TITEL': '0331'
+  'SUBTITEL': '0335'
+  'HERKUNFT': '0590'
+  'AUFLAGE': '0403'
+  'ENTSTEHUNGSJAHR': '0595'
+  'ERSCHEINUNGSJAHR': '0425'
+  'VERLAG': '0412'
+  'ERSCHEINUNGSORT': '0410'
 #  'ÜBERSETZER': ''
 #  'ORIGINALTITEL': ''
 #  'ORIGINALSUBTITEL': ''
 #  'ORIGINALHERKUNFT': ''
 #  'WIKIPEDIA': ''
 #  'BILD': ''
-  'QUELLE': '0508:'
-  'KURZBESCHREIBUNG': '0750:'
-  'SONSTIGES': '0501:'
-  'BEARBEITUNGSSTAND': '0501:'
-#  'INDEXSEITE': '4120:'
+  'QUELLE': '0508'
+  'KURZBESCHREIBUNG': '0750'
+  'SONSTIGES': '0501'
+  'BEARBEITUNGSSTAND': '0501'
+#  'INDEXSEITE': '4120'
 
 
 # Exemplare

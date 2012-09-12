@@ -111,7 +111,6 @@ $(document).ready(function(){
 <input type="hidden" name="page"       value="1" />
 
 <input type="hidden" name="srt"        value="relevance_desc" />
-<input type="hidden" name="jn"         value="1" />
 <input type="hidden" name="st"         value="2" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 

@@ -21,12 +21,4 @@
   <option value="title_asc"[%- IF query.param('srt') == 'title_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
   <option value="order_asc"[%- IF query.param('srt') == 'order_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
 </select>
-[% IF NOT no_jn %]
-&nbsp;
-&nbsp;
-<select name="jn">
-  <option value="0"[%- IF query.param('jn') == '0' -%] selected="selected"[%- END -%]>[% msg.maketext("pro Katalog") %]</option>
-  <option value="1"[%- IF query.param('jn') == '1' && NOT database -%] selected="selected"[%- END -%]>[% msg.maketext("katalogübergreifend") %]</option>
-</select>
-[% END %]
 &nbsp;&nbsp;<div class="nojs_show cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div>

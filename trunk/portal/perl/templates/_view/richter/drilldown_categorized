@@ -170,7 +170,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 </td></tr>
 [%         END %]
 <!--
-[%         IF jn == 1 && category_map.8.size > 0 %]
+[%         IF category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th class="headline" id="dd_database_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>

@@ -29,14 +29,14 @@
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% search_loc %]?num=[% query.param('num') %]&view=[% view %];srt=relevance_desc;st=[% query.param('st') %];autoplus=0;jn=0;fs=[% suggestion %]">[% suggestion %]</b>
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% query.param('num') %];srt=relevance_desc;st=[% query.param('st') %]fs=[% suggestion %]">[% suggestion %]</b>
 [%     END %]
 [% END %]
 
 [% IF hits > 0 %]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;jn=1;page=1;" ;
+    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= hits ;
@@ -60,7 +60,7 @@
 [%-   END -%]
 [%- END -%]
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') no_jn=1 %]
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
 </form>
 
     </div>

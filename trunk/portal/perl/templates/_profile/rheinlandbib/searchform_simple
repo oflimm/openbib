@@ -132,7 +132,6 @@ $(document).ready(function(){
 
 <input type="hidden" name="srt"        value="relevance" />
 <input type="hidden" name="srto"       value="desc" />
-<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 [% IF config.get('drilldown') %]
@@ -222,7 +221,6 @@ $(document).ready(function(){
 
 <input type="hidden" name="srt"  value="relevance" />
 <input type="hidden" name="srto" value="desc" />
-<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 [% IF config.get('drilldown') %]
@@ -315,7 +313,6 @@ $(document).ready(function(){
 
 <input type="hidden" name="srt"  value="relevance" />
 <input type="hidden" name="srto" value="desc" />
-<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 [% IF config.get('drilldown') %]
@@ -409,7 +406,6 @@ $(document).ready(function(){
 
 <input type="hidden" name="srt"  value="relevance" />
 <input type="hidden" name="srto" value="desc" />
-<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 [% IF config.get('drilldown') %]

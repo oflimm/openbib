@@ -186,7 +186,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%  END %]
 [%         END %]
 <!-- Begin database facet -->
-[%         IF queryoptions.get_option('jn') == 1 && category_map.8.size > 0 %]
+[%         IF category_map.8.size > 0 %]
 <dl class="items">
 <dt class="headline" id="dd_database_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
 [%             FOREACH termitem IN category_map.8 ;

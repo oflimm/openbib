@@ -56,95 +56,190 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% databaseinfo.dbname %]" class="yform">
 <input type="hidden" name="_method"    value="PUT" />
 
-<table class="full">
-<tr><th>[% msg.maketext("Katalog bearbeiten") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table class="full">
-<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% databaseinfo.dbname %]</td></tr>
-<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% databaseinfo.description %]" size="60" /></td></tr>
-<tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td><input type="text" name="shortdesc" value="[% databaseinfo.shortdesc %]" size="60" /></td></tr>
-<tr><td><b>[% msg.maketext("System") %]</b></td><td>
-<select name="system">
-[% FOREACH thissystem IN config.get('source_systems') %]
-<option value="[% thissystem %]" [% IF databaseinfo.system == thissystem %]selected[% END %]>[% thissystem %]</option>
+<fieldset class="columnar">
+
+<legend>[% msg.maketext("Katalog bearbeiten") %]</legend>
+
+<div class="type-text">
+<label for="dbname">[% msg.maketext("DB-Name") %]</label>
+[% databaseinfo.dbname %]
+</div>
+
+<div class="type-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" value="[% databaseinfo.description %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="shortdesc">[% msg.maketext("Kurzbeschreibung") %]</label>
+<input type="text" name="shortdesc" id="shortdesc" value="[% databaseinfo.shortdesc %]" size="20" />
+</div>
+
+<div class="type-select">
+<label for="system">[% msg.maketext("System") %]</label>
+  <select name="system" id="system">
+[% FOREACH source_system IN config.get('source_systems') %]
+       <option value="[% source_system %]" [% IF databaseinfo.system == source_system %]selected[% END %]>[% source_system %]</option>
 [% END %]
-</select>
-</td></tr>
-<tr><td><b>[% msg.maketext("Sigel") %]</b></td><td><input type="text" name="sigel" value="[% databaseinfo.sigel %]" size="3" /></td></tr>
-<tr><td><b>[% msg.maketext("URL") %]</b></td><td><input type="text" name="url" value="[% databaseinfo.url %]" size="60" /></td></tr>
-<tr><td><b>[% msg.maketext("Bibliotheksinformationen statt URL") %]</b></td><td>
-<select name="use_libinfo">
-<option value="true" [%- IF databaseinfo.use_libinfo == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
-<option value="false" [%- IF databaseinfo.use_libinfo == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
-</td></tr>
-<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>
-<select name="active">
-<option value="true" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
-<option value="false" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
-</td></tr>
-</table>
+   </select>
+</div>
+
+<div class="type-text">
+<label for="sigel">[% msg.maketext("Sigel") %]</label>
+<input type="text" name="sigel" id="sigel" value="[% databaseinfo.sigel %]" size="3" />
+</div>
+
+<div class="type-text">
+<label for="url">[% msg.maketext("URL") %]</label>
+<input type="text" name="url" id="url" value="[% databaseinfo.url %]" size="15" />
+</div>
+
+<div class="type-select">
+<label for="use_libinfo">[% msg.maketext("Bibliotheksinformationen statt URL") %]</label>
+  <select name="use_libinfo" id ="use_libinfo">
+    <option value="true" [%- IF databaseinfo.use_libinfo == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+    <option value="false" [%- IF databaseinfo.use_libinfo == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option>
+  </select>
+</div>
+
+<div class="type-select">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+  <select name="active" id="active">
+    <option value="true" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+    <option value="false" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+  </select>
+</div>
+
+</fieldset>
+
+<p/>
+
+<fieldset class="columnar">
+
+<legend>[% msg.maketext("Import-Einstellungen") %]</legend>
+
+<div class="type-select">
+<label for="protocol">[% msg.maketext("Protokoll") %]</label>
+  <select name="protocol" id="protocol">
+    <option value="ftp" [% IF databaseinfo.protocol == 'ftp' %]selected[% END %]>[% msg.maketext("FTP") %]</option>
+    <option value="http" [% IF databaseinfo.protocol == 'http' %]selected[% END %]>[% msg.maketext("HTTP") %]</option>
+    <option value="lokal" [% IF databaseinfo.protocol == 'lokal' %]selected[% END %]>[% msg.maketext("Lokal") %]</option>
+    <option value="api" [% IF databaseinfo.protocol == 'api' %]selected[% END %]>[% msg.maketext("API") %]</option>
+  </select>
+</div>
+
+<div class="type-text">
+<label for="host">[% msg.maketext("Entfernter Rechnername") %]</label>
+<input type="text" name="host" id="host" value="[% databaseinfo.host %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="remotepath">[% msg.maketext("Entferntes Verzeichnis") %]</label>
+<input type="text" name="remotepath" id="remotepath" value="[% databaseinfo.remotepath %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="remoteuser">[% msg.maketext("Entfernter Nutzername") %]</label>
+<input type="text" name="remoteuser" id="remoteuser" value="[% databaseinfo.remoteuser %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="remotepassword">[% msg.maketext("Entferntes Passwort") %]</label>
+<input type="password" name="remotepassword" id="remotepassword" value="[% databaseinfo.remotepassword %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="titlefile">[% msg.maketext("Titel-Datei") %]</label>
+<input type="text" name="titlefile" id="titlefile" value="[% databaseinfo.titlefile %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="personfile">[% msg.maketext("Personen-Datei") %]</label>
+<input type="text" name="personfile" id="personfile" value="[% databaseinfo.personfile %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="corporatebodyfile">[% msg.maketext("K&ouml;rperschafts-Datei") %]</label>
+<input type="text" name="corporatebodyfile" id="corporatebodyfile" value="[% databaseinfo.corporatebodyfile %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="classificationfile">[% msg.maketext("Notations-Datei") %]</label>
+<input type="text" name="classificationfile" id="classificationfile" value="[% databaseinfo.classificationfile %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="subjectfile">[% msg.maketext("Schlagwort-Datei") %]</label>
+<input type="text" name="subjectfile" id="subjectfile" value="[% databaseinfo.subjectfile %]" size="20" />
+</div>
+
+<div class="type-text">
+<label for="holdingfile">[% msg.maketext("Exemplar-Datei") %]</label>
+<input type="text" name="holdingfile" id="holdingfile" value="[% databaseinfo.holdingfile %]" size="20" />
+</div>
+
+<div class="type-select">
+<label for="autoconvert">[% msg.maketext("Autokonvertierung (cron)") %]</label>
+  <select name="autoconvert" id="autoconvert">
+    <option value="false" [% IF databaseinfo.autoconvert == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+    <option value="true" [% IF databaseinfo.autoconvert == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+  </select>
+</div>
+
+<div class="type-text">
+<label for="sigel">[% msg.maketext("Sigel") %]</label>
+<input type="text" name="sigel" id="sigel" value="[% databaseinfo.sigel %]" size="3" />
+</div>
+
+<div class="type-text">
+<label for="url">[% msg.maketext("URL") %]</label>
+<input type="text" name="url" id="url" value="[% databaseinfo.url %]" size="15" />
+</div>
+
+
+<div class="type-select">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+  <select name="active" id="active">
+    <option value="true" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+    <option value="false" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+  </select>
+</div>
+
+</fieldset>
+
+
 <p />
 
-</td></tr>
-</table>
+<fieldset class="columnar">
 
-<p />
+<legend>[% msg.maketext("Ausleih-Einstellungen") %]</legend>
 
-<table class="full">
-<tr><th>[% msg.maketext("Import-Einstellungen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table class="full">
-<tr><td><b>[% msg.maketext("Protokoll") %]</b></td><td>
-<select name="protocol">
-<option value="ftp" [% IF databaseinfo.protocol == 'ftp' %]selected[% END %]>[% msg.maketext("FTP") %]</option>
-<option value="http" [% IF databaseinfo.protocol == 'http' %]selected[% END %]>[% msg.maketext("HTTP") %]</option>
-<option value="lokal" [% IF databaseinfo.protocol == 'lokal' %]selected[% END %]>[% msg.maketext("Lokal") %]</option>
-<option value="api" [% IF databaseinfo.protocol == 'api' %]selected[% END %]>[% msg.maketext("API") %]</option>
-</td></tr>
-<tr><td><b>[% msg.maketext("Entfernter Rechnername") %]</b></td><td><input type="text" size="20" name="host" value="[% databaseinfo.host %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Entferntes Verzeichnis") %]</b></td><td><input type="text" size="20" name="remotepath" value="[% databaseinfo.remotepath %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Entfernter Nutzername") %]</b></td><td><input type="text" size="20" name="remoteuser" value="[% databaseinfo.remoteuser %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Entferntes Passwort") %]</b></td><td><input type="password" size="20" name="remotepassword" value="[% databaseinfo.remotepassword %]" /></td></tr>
-<tr><td><b></b></td><td></td></tr>
-<tr><td><b>[% msg.maketext("Titel-Datei") %]</b></td><td><input type="text" size="20" name="titlefile" value="[% databaseinfo.titlefile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Personen-Datei") %]</b></td><td><input type="text" size="20" name="personfile" value="[% databaseinfo.personfile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("K&ouml;rperschafts-Datei") %]</b></td><td><input type="text" size="20" name="corporatebodyfile" value="[% databaseinfo.corporatebodyfile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Schlagwort-Datei") %]</b></td><td><input type="text" size="20" name="subjectfile" value="[% databaseinfo.subjectfile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Notations-Datei") %]</b></td><td><input type="text" size="20" name="classificationfile" value="[% databaseinfo.classificationfile %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Exemplar-Datei") %]</b></td><td><input type="text" size="20" name="holdingfile" value="[% databaseinfo.holdingfile %]" /></td></tr>
-    
-<tr><td><b>[% msg.maketext("Autokonvertierung (cron)") %]</b></td><td>
-<select name="autoconvert">
-<option value="false" [% IF databaseinfo.autoconvert == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
-<option value="true" [% IF databaseinfo.autoconvert == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
-</select>
-</td></tr>
-</table>
-</td></tr>
-</table>
+<div class="type-select">
+<label for="cird">[% msg.maketext("Zugriff &uuml;ber OLWS") %]</label>
+  <select name="circ" id="circ">
+    <option value="false" [% IF databaseinfo.circ == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+    <option value="true" [% IF databaseinfo.circ == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+  </select>
+</div>
 
-<p />
+<div class="type-text">
+<label for="host">[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</label>
+<input type="text" name="circdb" id="circdb" value="[% databaseinfo.circdb %]" size="20" />
+</div>
 
-<table class="full">
-<tr><th>[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table class="full">
-<tr><td><b>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</b></td><td>
-<select name="circ">
-<option value="false" [% IF databaseinfo.circ == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
-<option value="true" [% IF databaseinfo.circ == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
-</select>
-</td></tr>
-<tr><td><b>[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</b></td><td><input type="text" size="50" name="circdb" value="[% databaseinfo.circdb %]" /></td></tr>
-<tr><td><b>[% msg.maketext("OLWS Zugriffs-URL") %]</b></td><td><input type="text" size="50" name="circcheckurl" value="[% databaseinfo.circwsurl %]" /></td></tr>
-<tr><td><b>[% msg.maketext("WebOPAC-URL") %]</b></td><td><input type="text" size="50" name="circurl" value="[% databaseinfo.circurl %]" /></td></tr>
-</table>
-</td></tr>
-</table>
+<div class="type-text">
+<label for="circwsurl">[% msg.maketext("OLWS Zugriffs-URL") %]</label>
+<input type="text" name="circwsurl" id="circwsurl" value="[% databaseinfo.circwsurl %]" size="20" />
+</div>
 
+<div class="type-text">
+<label for="circurl">[% msg.maketext("WebOPAC-URL") %]</label>
+<input type="text" name="circurl" id="circurl" value="[% databaseinfo.circurl %]" size="20" />
+</div>
+</fieldset>
 
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ändern") %]"></div>
 

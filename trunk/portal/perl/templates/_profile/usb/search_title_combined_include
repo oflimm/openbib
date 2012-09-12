@@ -27,7 +27,7 @@
 [% IF fullresultcount > 0 %]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};jn=${jn};dd=1;" ;
+    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
     start_range     = nav.current_page*qopts.num-qopts.num + 1;
     end_range       = nav.current_page*qopts.num;
     IF end_range >= fullresultcount ;

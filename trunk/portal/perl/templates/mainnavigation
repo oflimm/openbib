@@ -41,7 +41,6 @@ $.get("[% IF user.ID %][% path_prefix %]/[% config.get('user_loc') %]/[% user.ID
 <input type="hidden" name="page"       value="1" />
 
 <input type="hidden" name="srt"        value="relevance_desc" />
-<input type="hidden" name="jn"         value="1" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="searchprofile" value="[% config.get_searchprofile_of_view(view) %]" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
@@ -188,7 +187,6 @@ $(document).ready(function(){
 <input type="hidden" name="page"       value="1" />
 
 <input type="hidden" name="srt"        value="relevance_desc" />
-<input type="hidden" name="jn"         value="1" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="searchprofile" value="[% config.get_searchprofile_of_view(view) %]" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />

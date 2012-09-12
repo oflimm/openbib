@@ -65,7 +65,7 @@
     </div>
     <div class="right">
 <form method="get" action="[% path_prefix %]/[% config.get('tag_loc') %]/[% tagid %]">
-[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('tags_loc')}" no_jn=1 %]
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('tags_loc')}" %]
 
 </form>
     </div>    

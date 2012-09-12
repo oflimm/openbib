@@ -13,7 +13,7 @@
 -%]
 [%-
 
-  request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) ;
+  request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
   circulation     = record.get_circulation ; 
@@ -323,7 +323,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base};jn=1;isbn=${isbnitem.content}" -%]
+[%-   globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base};isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
 <tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
 [%-   END -%]

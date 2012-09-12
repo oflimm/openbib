@@ -20,8 +20,8 @@
 [% IF active_menu == "info" %]
 <h6 class="vlist">[% msg.maketext("Informationen") %]</h6>
 <ul class="vlist">
-[% IF active_submenu == "portal" %]
-  <li class="active"><strong>Die RheinlandBib</strong></li>
+[% IF active_submenu == "rheinischeabteilung" %]
+  <li class="active"><strong>Die Rheinische Abteilung der USB</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]">Die Rheinische Abteilung der USB</a></li>
 [% END %]

@@ -15,7 +15,7 @@
 
 dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata;   
-request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
+request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db']});
 
 -%]
 <table cellpadding="2">
@@ -59,7 +59,7 @@ END;
 [%# USE dumper;dumper.dump(normset)%]
 [%
 
-    request_base = "page=1;num=20;srt=person_asc;jn=1;";
+    request_base = "page=1;num=20;srt=person_asc;";
 
     searchterm        = normset.${"P0800"}.first.content;
     searchprefix      = config.get('searchfield').personstring.prefix;

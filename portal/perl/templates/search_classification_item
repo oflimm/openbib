@@ -20,7 +20,7 @@
 <tr><td align="left" class="headline">&nbsp;<b>[% loop.count %]</b>&nbsp;&nbsp;[% item.content %]</td><td align="right" class="headline">[% item.titcount %]</td></tr>
 [%-
 
-request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) -%];
+request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%];
 searchprefix  = config.get('searchfield').classificationid.prefix;
 
 -%]

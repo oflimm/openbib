@@ -132,13 +132,8 @@ $(document).ready(function(){
 
 <input type="hidden" name="srt"        value="relevance" />
 <input type="hidden" name="srto"       value="desc" />
-<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="dd"         value="1" />
-[% END %]
-
 [%# sysprofile%]
 [%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
 [%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
@@ -222,13 +217,8 @@ $(document).ready(function(){
 
 <input type="hidden" name="srt"  value="relevance" />
 <input type="hidden" name="srto" value="desc" />
-<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="dd"      value="1" />
-[% END %]
-
 
 
 <input type="hidden" name="ftyp"      value="Zeitschrift_Serie" />
@@ -315,14 +305,8 @@ $(document).ready(function(){
 
 <input type="hidden" name="srt"  value="relevance" />
 <input type="hidden" name="srto" value="desc" />
-<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="dd"      value="1" />
-[% END %]
-
-
 
 <input type="hidden" name="ftyp"      value="Aufsatz" />
 <input type="hidden" name="bftyp"     value="AND" />
@@ -409,13 +393,8 @@ $(document).ready(function(){
 
 <input type="hidden" name="srt"  value="relevance" />
 <input type="hidden" name="srto" value="desc" />
-<input type="hidden" name="jn" value="1" />
 <input type="hidden" name="st"        value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-[% IF config.get('drilldown') %]
-<input type="hidden" name="dd"      value="1" />
-[% END %]
-
 
 
 <input type="hidden" name="ftyp"      value="E-Medien mit Online-Zugriff" />

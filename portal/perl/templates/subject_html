@@ -15,7 +15,7 @@
 
 dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata;   
-request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
+request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db']});
 
 recordname = normset.${'S0800'}.first.content;
 title      = msg.maketext("Schlagwort-Information: [_1] in Katalog [_2]",recordname,dbdesc)

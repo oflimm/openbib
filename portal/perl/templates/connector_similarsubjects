@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
-[%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) -%]
+[%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%]
 [%- IF format == 'ajax' -%]
 [%- IF similar_subjects.size > 1 %]
 <!-- Beginn Tag-Cloud -->
@@ -40,7 +40,7 @@
    searchterm    = item;
    searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-   localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
+   localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};db=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
@@ -92,7 +92,7 @@
    searchterm    = item;
    searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-   localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};jn=1;db=${database};fs=${searchprefix}:|${searchterm}|";
+   localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};db=${database};fs=${searchprefix}:|${searchterm}|";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>

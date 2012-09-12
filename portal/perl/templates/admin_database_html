@@ -58,53 +58,64 @@
       <div id="col3" role="main" >
         <div id="col3_content" class="clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]" class="yform">
+<fieldset class="columnar">
 
-<table class="full">
-<tr><th>[% msg.maketext("Neuen Katalog anlegen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr>
- <td><b>[% msg.maketext("DB-Name") %]</b></td>
- <td><b>[% msg.maketext("Beschreibung") %]</b></td>
- <td><b>[% msg.maketext("System") %]</b></td>
- <td><b>[% msg.maketext("Sigel") %]</b></td>
- <td><b>[% msg.maketext("URL") %]</b></td>
- <td><b>[% msg.maketext("Aktiv") %]</b></td>
- <td></td>
-</tr>
-<tr>
- <td><input type="text" name="dbname" size="8" /></td>
- <td><input type="text" name="description" /></td>
- <td><select name="system">
+<legend>[% msg.maketext("Neuen Katalog anlegen") %]</legend>
+
+<div class="type-text">
+<label for="dbname">[% msg.maketext("DB-Name") %]</label>
+<input type="text" name="dbname" id="dbname" size="8" />
+</div>
+
+<div class="type-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" size="20" />
+</div>
+
+<!--
+<div class="type-select">
+<label for="system">[% msg.maketext("System") %]</label>
+  <select name="system" id="system">
 [% FOREACH source_system IN config.get('source_systems') %]
        <option value="[% source_system %]">[% source_system %]</option>
 [% END %]
-     </select></td>
- <td><input type="text" name="sigel" size="3" /></td>
- <td><input type="text" name="url" size="20" /></td>
- <td><select name="active">
-       <option value="true">[% msg.maketext("Ja") %]</option>
-       <option value="false" selected>[% msg.maketext("Nein") %]</option>
-     </select></td>
- <td><div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td>
-</tr>
-</table>
-</td></tr>
-</table>
+   </select>
+</div>
 
+<div class="type-text">
+<label for="sigel">[% msg.maketext("Sigel") %]</label>
+<input type="text" name="sigel" id="sigel" size="3" />
+</div>
+
+<div class="type-text">
+<label for="url">[% msg.maketext("URL") %]</label>
+<input type="text" name="url" id="url" size="15" />
+</div>
+-->
+<div class="type-select">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+  <select name="active" id="active">
+     <option value="true">[% msg.maketext("Ja") %]</option>
+     <option value="false" selected>[% msg.maketext("Nein") %]</option>
+  </select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div>
+
+</fieldset>
 </form>
 
 <p />
 
 [% IF kataloge.size > 0 %]
-<table class="full">
-<tr><th>[% msg.maketext("Bereits existierende Kataloge") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+
+<h3>[% msg.maketext("Bereits existierende Kataloge") %]</h3>
+
 <table>
 <tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Info") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Bibinfo statt URL / vorhanden") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
 [% FOREACH katalog IN kataloge.all %]
-<tr[% IF katalog.active == 1 %] bgcolor="aliceblue"[% END %]>
+<tr [% IF katalog.active == 1 %]class="active_item"[% ELSE %]class="inactive_item"[% END %]>
 <td>[% katalog.dbname %]</td>
 <td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/library/edit.html?l=[% lang %]">Info</a></td>
 <td align="center"><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss.html?l=[% lang %]"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td>
@@ -117,9 +128,6 @@
 </table>
 
 [% END %]
-
-</td></tr>
-</table>
 
         </div>
         <div id="ie_clearing">&nbsp;</div>

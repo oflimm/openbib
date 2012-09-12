@@ -748,4 +748,11 @@ dl.items {
     display: inline;
   }
 
+  .active_item {
+    border-left: 5px green solid;    
+  }
+
+  .inactive_item {
+    border-left: 5px red solid;    
+  }
 }

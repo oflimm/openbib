@@ -203,6 +203,23 @@
   * @section content-misc
   */
 
+#header #logo {
+  padding: 0px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  with: 70%;
+}
+
+#header #institution {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  with: 30%;
+}
+
+    
 #header_logo_image {
 background: url(/images/openbib/views/rheinlandbib/logo.png) center no-repeat;
  width: 432px;
@@ -211,6 +228,16 @@ background: url(/images/openbib/views/rheinlandbib/logo.png) center no-repeat;
  top: 6px;
  left: 7px;
 }
+
+#header_institution_image {
+background: url(/images/openbib/views/rheinlandbib/usb-logo.png) center no-repeat;
+ width: 188px;
+ height: 80px;
+ position: absolute;
+ top: 30px;
+ right: 0px;
+}
+
   
  /**
   * (en) Emphasizing external Hyperlinks via CSS

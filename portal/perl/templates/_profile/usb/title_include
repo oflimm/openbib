@@ -20,7 +20,7 @@
 }
   </style>
 <div class="hit">
-[%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) -%]
+[%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%]
 [%- normdata        = record.get_fields -%]
 [%- holding         = record.get_holding -%]
 [%- circulation     = record.get_circulation -%] 

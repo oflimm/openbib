@@ -124,7 +124,7 @@
     <div class="right">
 <form method="get" action="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %]/edit">
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlist_loc')}/${litlist.properties.id}" no_jn=1 no_relevance=1 %]
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlist_loc')}/${litlist.properties.id}" no_relevance=1 %]
 
 </form>
     </div>

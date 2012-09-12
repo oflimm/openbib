@@ -15,7 +15,7 @@
 
 dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata;   
-request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']});
+request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db']});
 
 recordname = normset.${'P0800'}.first.content;
 title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordname,dbdesc)
@@ -121,7 +121,7 @@ END;
 [%# USE dumper;dumper.dump(normset)%]
 [%
 
-    request_base = "page=1;num=20;srt=relevance_desc;jn=1;";
+    request_base = "page=1;num=20;srt=relevance_desc;";
 
     searchterm        = normset.${"P0800"}.first.content;
     searchprefix      = config.get('searchfield').personstring.prefix;

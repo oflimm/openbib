@@ -16,13 +16,13 @@
   <body>
 
 <!-- skip link navigation -->
-<ul id="skiplinks">
-	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#col3">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="page_margins">
-  <div class="page">
+<div class="ym-wrapper">
+  <div class="ym-wbox">
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
@@ -41,16 +41,16 @@
      </div>
    </div>
 
- <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary">
-        <div id="col1_content" class="clearfix">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
 [% PROCESS common/subtemplate name="user_navigation" active_submenu="userprefs" %] 
         </div>
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
-        <div id="col3_content" class="clearfix">
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
 
 <h2>[% msg.maketext("Grundeinstellungen") %]</h2>
 
@@ -151,11 +151,11 @@
 <h2>[% msg.maketext("Einstellungen") %]</h2>
 
 <form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/searchform" enctype="application/x-www-form-urlencoded" class="yform">
-<fieldset class="full">
+<fieldset class="ym-full">
 <legend>[% msg.maketext("Recherchemaske") %]</legend>
 <input type="hidden" name="_method"    value="PUT" />
 
-<div class="type-select">
+<div class="ym-fbox-select">
 <select name="setmask">
 <option value="simple"[%- IF userinfo.masktype == 'simple' -%] selected="selected"[%- END -%]>[% msg.maketext("Einfache Recherchemaske") %]</option>
 <option value="advanced"[%- IF userinfo.masktype == 'advanced' -%] selected="selected"[%- END -%]>[% msg.maketext("Erweitere Recherchemaske") %]</option>
@@ -171,7 +171,7 @@
 <fieldset>
 <legend>[% msg.maketext("Suchfelder") %]</legend>
 
-<div class="subcolumns">
+<div class="ym-grid">
 <div class="c50l">
 
 <div class="subcl type-check">
@@ -258,10 +258,10 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded" class="yform">
 <input type="hidden" name="_method"    value="PUT" />
-<fieldset class="full">
+<fieldset class="ym-full">
 <legend>[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</legend>
 
-<div class="type-select">
+<div class="ym-fbox-select">
 <select name="setautocompletion">
 <option value="none"[%- IF userinfo.autocompletiontype == 'none' -%] selected="selected"[%- END -%]>[% msg.maketext("Keine") %]</option>
 <option value="livesearch"[%- IF userinfo.autocompletiontype == 'livesearch' -%] selected="selected"[%- END -%]>[% msg.maketext("LiveSearch") %]</option>
@@ -281,12 +281,12 @@
 <fieldset>
 <legend>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</legend>
 
-<div class="type-check">
+<div class="ym-fbox-check">
 <input type="checkbox" name="livesearch_freesearch" id="livesearch_freesearch" value="1" [% IF livesearch.freesearch.active %]checked="checked"[% END %]/>
 <label for="livesearch_freesearch">[% msg.maketext("Aktiv") %]</label>
 </div>
 
-<div class="type-check">
+<div class="ym-fbox-check">
 <input type="checkbox" name="livesearch_freesearch_exact" id="livesearch_freesearch_exact" value="1" [% IF livesearch.freesearch.exact %]checked="checked"[% END %]/>
 <label for="livesearch_freesearch_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
 </div>
@@ -295,12 +295,12 @@
 <fieldset>
 <legend>[% msg.maketext("Bei der Eingabe von Personen") %]</legend>
 
-<div class="type-check">
+<div class="ym-fbox-check">
 <input type="checkbox" name="livesearch_person" id="livesearch_person" "value="1" [% IF livesearch.person.active %]checked="checked"[% END %] />
 <label for="livesearch_person">[% msg.maketext("Aktiv") %]</label>
 </div>
 
-<div class="type-check">
+<div class="ym-fbox-check">
 <input type="checkbox" name="livesearch_person_exact" id="livesearch_person_exact" value="1" [% IF livesearch.person.exact %]checked="checked"[% END %]/>
 <label for="livesearch_person_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
 </div>
@@ -308,12 +308,12 @@
 
 <fieldset>
 <legend>[% msg.maketext("Bei der Eingabe von Schlagworten") %]</legend>
-<div class="type-check">
+<div class="ym-fbox-check">
 <input type="checkbox" name="livesearch_subject" id="livesearch_subject" "value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
 <label for="livesearch_subject">[% msg.maketext("Aktiv") %]</label>
 </div>
 
-<div class="type-check">
+<div class="ym-fbox-check">
 <input type="checkbox" name="livesearch_subject_exact" id="livesearch_subject_exact" value="1" [% IF livesearch.subject.exact %]checked="checked"[% END %]/>
 <label for="livesearch_subject_exact">Keine Wortbestandteile bei Schlagwortangaben suchen</label>
 </div>
@@ -329,12 +329,12 @@
 <fieldset>
 <legend>[% msg.maketext("Rechtschreibvorschläge") %]</legend>
 
-<div class="type-check">
+<div class="ym-fbox-check">
 <input type="checkbox" name="spelling_as_you_type" id="spelling_as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/>
 <label for="spelling_as_you_type">[% msg.maketext("In der Recherchemaske") %]</label>
 </div>
 
-<div class="type-check">
+<div class="ym-fbox-check">
 <input type="checkbox" name="spelling_resultlist" id="spelling_resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] />
 <label for="spelling_resultlist">[% msg.maketext("In der Trefferliste") %]</label>
 </div>
@@ -350,17 +350,17 @@
 <legend>[% msg.maketext("BibSonomy") %]</legend>
 [% bibsonomy = user.get_bibsonomy %]
 
-<div class="type-check">
+<div class="ym-fbox-check">
 <input type="checkbox" name="bibsonomy_sync" id="bibsonomy_sync" [% IF bibsonomy.sync == 'on' %]checked="checked"[% END %]/>
 <label for="bibsonomy_sync">[% msg.maketext("Abgleich zu BibSonomy") %]</label>
 </div>
 
-<div class="type-text">
+<div class="ym-fbox-text">
 <label for="bibsonomy_user">[% msg.maketext("BibSonomy-API-User") %]</label>
 <input type="text" name="bibsonomy_user" id="bibsonomy_user" value="[% bibsonomy.user %]"/>
 </div>
 
-<div class="type-text">
+<div class="ym-fbox-text">
 <label for="bibsonomy_key">[% msg.maketext("BibSonomy-API-Key") %]</label>
 <input type="text" name="bibsonomy_key" id="bibsonomy_key" value="[% bibsonomy.key %]"/>
 </div>
@@ -382,7 +382,7 @@
 [%- END -%]
 
         </div>
-        <div id="ie_clearing">&nbsp;</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
       <!-- end: #col3 -->

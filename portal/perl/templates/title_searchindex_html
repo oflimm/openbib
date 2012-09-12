@@ -19,13 +19,13 @@
 <body>
 
 <!-- skip link navigation -->
-<ul id="skiplinks">
-	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#col3">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="page_margins">
-  <div class="page">
+<div class="ym-wrapper">
+  <div class="ym-wbox">
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
@@ -33,9 +33,9 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
- <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary" style="width: 32%;">
-        <div id="col1_content" class="clearfix">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1" style="width: 32%;">
+        <div class="ym-cbox" class="ym-clearfix">
 
 <div class="representation">
 <!-- <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/searchindex.rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
@@ -46,8 +46,8 @@
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main"  style="width: 65%;">
-        <div id="col3_content" class="clearfix">
+      <div class="ym-col3"  style="width: 65%;">
+        <div class="ym-cbox" class="ym-clearfix">
 
 <h1>Informationen im Suchindex</h1>
 
@@ -60,7 +60,7 @@
 <h2>Values</h2>
 
 
-<table class="full">
+<table class="ym-full">
 <tr><td>Typ</td><td>Slot</td><td>Kategorie</td><td>Inhalt</td></tr>
 [% facets    = config.get('xapian_drilldown_value');
    sorttypes = config.get('xapian_sorttype_value');
@@ -74,7 +74,7 @@
 [% END %]
 </table>
         </div>
-        <div id="ie_clearing">&nbsp;</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
       <!-- end: #col3 -->

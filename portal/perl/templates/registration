@@ -16,13 +16,13 @@
   <body>
 
 <!-- skip link navigation -->
-<ul id="skiplinks">
-	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#col3">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="page_margins">
-  <div class="page">
+<div class="ym-wrapper">
+  <div class="ym-wbox">
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
@@ -40,9 +40,9 @@
      </div>
    </div>
 
- <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary">
-        <div id="col1_content" class="clearfix">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
 <div id="infobox">
 <h3><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h3>
 [% msg.maketext("Geben Sie f&uuml;r die Selbstregistrierung bitte als
@@ -55,15 +55,15 @@ verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitt
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
-        <div id="col3_content" class="clearfix">
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
 
 <form method="post" action="[% path_prefix %]/[% config.get('registration_loc') %]" enctype="application/x-www-form-urlencoded" class="yform">
 <input type="hidden" name="action"    value="auth" />
 
-<fieldset class="full">
+<fieldset class="ym-full">
 <legend>Registrieren</legend>
-<div class="subcolumns">
+<div class="ym-grid">
 <div class="c50l">
 
 <div class="subcl type-text">
@@ -98,7 +98,7 @@ verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitt
 </form>
 
         </div>
-        <div id="ie_clearing">&nbsp;</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
       <!-- end: #col3 -->

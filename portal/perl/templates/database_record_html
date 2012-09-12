@@ -16,13 +16,13 @@
   <body>
 
 <!-- skip link navigation -->
-<ul id="skiplinks">
-	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#col3">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="page_margins">
-  <div class="page">
+<div class="ym-wrapper">
+  <div class="ym-wbox">
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
@@ -30,22 +30,22 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
- <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary">
-        <div id="col1_content" class="clearfix">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
 <!-- <a href="[% path_prefix %]/[% config.get('database_loc') %]/[% databaseinfo.dbname %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
 <a href="[% path_prefix %]/[% config.get('database_loc') %]/[% databaseinfo.dbname %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
         </div>
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
-        <div id="col3_content" class="clearfix">
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
 
-<table class="full">
+<table class="ym-full">
 <tr><th>[% msg.maketext("Datenbank") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
-<table class="full">
+<table class="ym-full">
 <tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% databaseinfo.dbname %]</td></tr>
 <tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% databaseinfo.description %]</td></tr>
 <tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td>[% databaseinfo.shortdesc %]</td></tr>
@@ -59,17 +59,17 @@
 </td></tr>
 </table>
 
-<table class="full">
+<table class="ym-full">
 <tr><th>[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
-<table class="full">
+<table class="ym-full">
 <tr><td><b>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</b></td><td>[% IF databaseinfo.circ == '0' %][% msg.maketext("Nein") %][% END %][% IF databaseinfo.circ == '1' %][% msg.maketext("Ja") %][% END %]</td></tr>
 </table>
 </td></tr>
 </table>
 
         </div>
-        <div id="ie_clearing">&nbsp;</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
       <!-- end: #col3 -->

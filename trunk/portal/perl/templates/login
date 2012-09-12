@@ -17,13 +17,13 @@
   <body>
 
 <!-- skip link navigation -->
-<ul id="skiplinks">
-	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#col3">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="page_margins">
-  <div class="page">
+<div class="ym-wrapper">
+  <div class="ym-wbox">
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
@@ -41,16 +41,16 @@
      </div>
    </div>
 
- <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary">
-        <div id="col1_content" class="clearfix">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
 
         </div>
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
-        <div id="col3_content" class="clearfix">
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
 
 <h1>[% Login %]</h1>
 <div id="login_container">
@@ -66,13 +66,13 @@
 [%-   END -%]
 [%- END -%]
 
-<fieldset class="full">
+<fieldset class="ym-full">
 <legend>Anmelden</legend>
-<div class="type-text">
+<div class="ym-fbox-text">
 <label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 <input type="text" name="username" id="email_username" value="[% username %]" />
 </div>
-<div class="type-text">
+<div class="ym-fbox-text">
 <label for="email_password"/>[% msg.maketext("Passwort") %]</label>
 <input type="password" name="password" id="email_username" />
 </div>
@@ -90,7 +90,7 @@
 </form>
 
         </div>
-        <div id="ie_clearing">&nbsp;</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
       <!-- end: #col3 -->

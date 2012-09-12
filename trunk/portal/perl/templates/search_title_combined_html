@@ -15,9 +15,9 @@
 
 <p/>
 
-<div class="subcolumns">
+<div class="ym-grid">
   <div class="c25r">
-    <div class="subcl">
+    <div class="ym-gbox-left">
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
 [% END %]
@@ -25,7 +25,7 @@
   </div>
 
   <div class="c75l">
-    <div class="subcl">
+    <div class="ym-gbox-left">
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]

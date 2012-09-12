@@ -27,7 +27,7 @@
 [% PROCESS common/subtemplate name="search_more_tips" %]
 
         </div>
-        <div id="ie_clearing">&nbsp;</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
       <!-- end: #col3 -->

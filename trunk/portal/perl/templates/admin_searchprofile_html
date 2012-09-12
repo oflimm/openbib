@@ -18,13 +18,13 @@
   <body>
 
 <!-- skip link navigation -->
-<ul id="skiplinks">
-	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#col3">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="page_margins">
-  <div class="page">
+<div class="ym-wrapper">
+  <div class="ym-wbox">
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
@@ -46,16 +46,16 @@
     </div>
    </div>
 
- <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary">
-        <div id="col1_content" class="clearfix">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
 [% PROCESS common/subtemplate name="admin_navigation" active_submenu="searchprofile" %]
         </div>
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
-        <div id="col3_content" class="clearfix">
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
 
 [% searchprofiles = config.get_searchprofiles %]
 
@@ -63,7 +63,7 @@
 <tr><th>[% msg.maketext("Vorhandene Suchprofile") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 
-<table class="full">
+<table class="ym-full">
 <tr><th>ID</th><th># Datenbanken</th><th>Eigener Index</th></tr>
 [% FOREACH searchprofile IN searchprofiles %]
 <tr><td><a href="[% path_prefix %]/[% config.get('admin_searchprofile_loc') %]/[% searchprofile.id %]/edit.html?l=[% lang %]">[% searchprofile.id %]</a></td><td align="center">[% config.get_databases_of_searchprofile(searchprofile.id).size %]</td><td>[% IF searchprofile.own_index %]Index[% END %]</td></tr>
@@ -73,7 +73,7 @@
 </table>
 
         </div>
-        <div id="ie_clearing">&nbsp;</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
       <!-- end: #col3 -->

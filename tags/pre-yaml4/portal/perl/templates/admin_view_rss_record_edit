@@ -1,0 +1,106 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - View bearbeiten' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="view_record" active_subsubmenu="view_record_rss" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/rss">
+<input type="hidden" name="_method"     value="PUT" />
+
+<table class="full">
+<tr><th>[% msg.maketext("RSS bearbeiten") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><span style="color:blue">[% viewinfo.viewname %]</span></td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% viewinfo.description %]"</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+<b>[% msg.maketext("RSS-Feed zu diesem View") %]</b><br /><br />
+
+<select name="rssfeeds" multiple="multiple" size="10">
+
+[% FOREACH singlefeed IN allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+[% NEXT IF singlefeed.type != 1 %]
+<option value="[% feedid %]" [% IF viewrssfeed.${feedid} %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
+[% END %]
+
+
+</select>
+
+
+<p />
+
+<p />
+
+<b>[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</b><br /><br />
+
+<select name="primrssfeed">
+
+[% FOREACH singlefeed IN allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+[% NEXT IF singlefeed.type != 1 %]
+
+<option value="[% feedid %]" [% IF viewinfo.rssid.id == feedid %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
+
+[% END %]
+
+
+</select>
+
+
+<p />
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ändern") %]" /></div>
+
+</form>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

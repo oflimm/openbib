@@ -1,0 +1,74 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'Dokumentennummer:'
+
+category_split_chars:
+
+continued_line_fields:
+ '0100': 1
+ '0331': 1
+ '0501': 1
+ '0509': 1
+ '0590': 1
+
+# Personen
+pers:
+  'Autor:': '0100'        # Verfasser
+  'Co-Autor:': '0101'  # Person
+
+# Koerperschaften
+corp:
+ 'Beh�rden, Betriebe, Institutionen:': '0200'
+ 'Herausgebende Institution:': '0201'
+
+# Systematik
+sys: 
+
+# Schlagworte
+subj:
+  'Deskriptoren:': '0710' # 
+  'Freie Stichworte:': '0710'
+
+# Titel
+title:
+  'Titel:': '0331'
+  'Reihe:': '0451'
+  'Jahr:': '0425'
+  'Personennamen:': '0509'
+  'Ortsnamen:': '0525'
+  'Werke:': '0501'
+  'Typ (M-ono.,A-rtik.,P-eriodik.,Z-eitg.):': '0800'
+  'Verlag:': '0412'
+  'Ort:': '0410'
+  'Seiten:': '0433'
+  'Gimm-Standorte:': '0434'
+  'In (Sammelband/Zeitschrift/Zeitung):': '0590'
+  'Band, H.(Zs.) / Tag, Monat (Ztg.):': '0089'
+  'Sprache (D/E/C/F/J/R):': '0015'
+
+holding:
+  'Inventarnummer:': '0005'
+  'Signatur-Kommentar:': '0016'
+  'Standort/Signatur:': '0014'
+
+filter:
+  '0015':
+    'filter_generic':
+       - from: 'E'
+         to: 'eng'
+       - from: 'D'
+         to: 'ger'
+       - from: 'F'
+         to: 'fre'
+       - from: 'J'
+         to: 'jpn'
+       - from: 'R'
+         to: 'rus'
+       - from: 'C'
+         to: 'chi'

@@ -1,0 +1,24 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editauthenticationtarget
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines Anmeldeziels
+#
+#######################################################################
+-%]
+[%-
+     this_json_output = authenticationtarget;
+
+     this_json_output.link = {
+          rel = 'self'
+          href = location
+     };
+
+     to_json(this_json_output);
+
+-%]

@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: leave
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung beim Abmelden aus dem Portal, sowie
+# einer view-sensitiven Verlinkung fuer einen erneuten Aufruf
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary" style="display:none;">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="subnavigation" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" style="width: 100%;">
+        <div id="col3_content" class="clearfix">
+
+<br />
+  <br />
+  <center>
+    <p style="font-size:1.5em">
+[% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
+        <br />[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch.") %]
+
+    </p>
+  </center>
+
+  <center>
+    <p>
+      <a style="font-size:2.5em" href="[% path_prefix %]/[% config.get('startopac_loc') %]">[% msg.maketext("Neue Sitzung beginnen?") %]</a>
+    </p>
+  </center>
+<br />
+<br />
+<br />
+<br />
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" hide_foot_banner=1 %]

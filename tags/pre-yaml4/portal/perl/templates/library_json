@@ -1,0 +1,14 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_60
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% to_json(libinfo) %]

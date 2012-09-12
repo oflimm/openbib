@@ -1,0 +1,44 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_holding
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Exemplar-Informationen aus den bibliograph. Daten
+#
+#######################################################################
+-%]
+[% IF circulation.size <= 0 %]
+<table width="100%">
+<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Inventarnummer") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Bestand") %]</td></tr>
+
+[% FOREACH thisholding IN holding %]
+<tr align="center"><td><strong>
+[%- IF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
+[%-   thisdbname = thisholding.${"X4000"}.content.dbname -%]
+[%-   IF dbinfo.get('use_libinfo').${thisdbname} %]
+<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% thisdbname %]">[% thisholding.${"X4000"}.content.full %]</a>
+[%-   ELSE -%]
+<a href="[% thisholding.${"X4001"}.content %]" target="_blank">[% thisholding.${"X4000"}.content.full %]</a>
+[%-   END -%]
+[%- ELSE -%]
+[% thisholding.${"X4000"}.content.full %]
+[%- END -%]
+</strong>
+</td>
+[%-
+
+  title    = normset.${"T0331"}.first.content ;
+  IF  normset.${"T0310"}.first.content ;
+     title = normset.${"T0310"}.first.content ;
+  END ;
+
+-%]
+<td><a class="qrcode" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td>[% thisholding.${"X0016"}.content %]</td><td>[% thisholding.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% thisholding.${"X0014"}.content %]</span></strong></td><td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]</td></tr>
+[% END %]
+</table>
+[% END %]

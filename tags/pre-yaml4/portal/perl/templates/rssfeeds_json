@@ -1,0 +1,14 @@
+[%#-
+#######################################################################
+#
+# Templatename: rssframe
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller verfuegbaren RSS-Feeds
+#
+#######################################################################
+-%]
+[% to_json(rssfeedinfo) %]

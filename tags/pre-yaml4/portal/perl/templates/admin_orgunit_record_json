@@ -1,0 +1,30 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_orgunit_record_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Zuordnung der Datenbanken zu einer Organisationseinheit eines einzelnen Profiles
+#b
+#######################################################################
+-%]
+[%-
+
+this_json_output = {
+  link = {
+          rel = 'self'
+          href = location
+  }
+
+  description = orgunitinfo.description
+  orgunitname = orgunitinfo.orgunitname
+  nr          = orgunitinfo.nr
+  databases   = orgunitdbs
+};
+
+to_json(this_json_output);
+
+-%]

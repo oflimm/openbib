@@ -1,0 +1,392 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen ueber den Benutzer
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="#">[% username %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Grundeinstellungen") %]</a></li>
+       </ul>
+     </div>
+   </div>
+
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="user_navigation" active_submenu="userprefs" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<h2>[% msg.maketext("Grundeinstellungen") %]</h2>
+
+<table>
+<tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% username %]</td>
+
+[% IF targettype == 'self' && username != 'admin' %]
+<td><form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="confirm" value="1" /><input type="hidden" name="_method" value="DELETE" /><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></div></form></td>
+[% END %]
+
+</tr>
+
+[% IF targettype == 'self' %]
+<tr><form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded"><input type="hidden" name="_method"    value="PUT" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="" /></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></div></td></form></tr>
+[% END %]
+
+</table>
+
+<p />
+
+[% IF targettype != 'self' %]
+<table width="100%">
+<tr><th>[% msg.maketext("Personendaten") %]</th><td></td><th>[% msg.maketext("Ausleihinformationen") %]</th></tr>
+<tr><td class="boxedclear">
+<table>
+<tr><td><b>[% msg.maketext("Nachname") %]:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
+<tr><td><b>[% msg.maketext("Vorname") %]:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
+<tr><td><b>[% msg.maketext("Geburtsdatum") %]:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
+<tr><td><b>[% msg.maketext("Strasse") %]:</b></td><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
+<tr><td><b>[% msg.maketext("Ort") %]:</b></td><td align="left">
+[% IF userinfo.plz %]
+&nbsp;[% userinfo.plz %]
+[% END %] 
+&nbsp;[% userinfo.ort %]</td></tr>
+[% IF userinfo.email %]
+<tr><td><b>[% msg.maketext("E-Mail") %]:</b></td><td align="left">&nbsp;[% userinfo.email %]</td></tr>
+[% END %]
+<tr><td><b>[% msg.maketext("Sperre") %]:</b></td><td align="left">&nbsp;
+[%- IF userinfo.sperre -%]
+[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
+[%- ELSE -%]
+[% msg.maketext("nein") %]
+[%- END -%]
+</td></tr>
+</table>
+<br />
+<span style="font-size:0.8em">&nbsp;[% msg.maketext("Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.") %]</span>
+</td>
+<td>
+&nbsp;&nbsp;
+</td>
+<td class="boxedclear" valign="bottom">
+<table>
+<tr><td><b>[% msg.maketext("Guthaben") %]:</b></td><td align="right">[% userinfo.gut %] </td><td>&nbsp;EUR</td></tr>
+<tr><td><b>[% msg.maketext("Soll") %]:</b></td><td align="right"><span class="warning">[% userinfo.soll %] </td><td>&nbsp;EUR</span></td></tr>
+</table>
+<table>
+<tr><td><b>[% msg.maketext("Ausgeliehen") %]:</b></td><td align="left">&nbsp;
+[%- IF userinfo.avanz > 0 -%]
+<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
+[%- ELSE -%]
+[%- userinfo.avanz -%]
+[%- END -%]
+</td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Vorgemerkt") %]:</b></td><td>
+
+[%- IF userinfo.vmanz > 0 -%]
+<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
+[%- ELSE -%]
+[%- userinfo.vmanz -%]
+[%- END -%]
+
+</td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Offene Geb&uuml;hren") %]:</b></td><td><span class="warning">
+
+[% IF userinfo.maanz > 0 %]
+<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
+[% ELSE %]
+[% userinfo.maanz %]
+[% END %]
+
+</span></td></tr>
+
+
+<tr><td><b>[% msg.maketext("Bestellungen") %]:</b></td><td align="left">&nbsp;
+[%- IF userinfo.bsanz > 0 -%]
+<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
+[%- ELSE -%]
+[%- userinfo.bsanz -%]
+[%- END -%]
+</td><td>&nbsp;&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+</table>
+</td>
+</tr>
+</table>
+
+<p />
+[% END %]
+
+<h2>[% msg.maketext("Einstellungen") %]</h2>
+
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/searchform" enctype="application/x-www-form-urlencoded" class="yform">
+<fieldset class="full">
+<legend>[% msg.maketext("Recherchemaske") %]</legend>
+<input type="hidden" name="_method"    value="PUT" />
+
+<div class="type-select">
+<select name="setmask">
+<option value="simple"[%- IF userinfo.masktype == 'simple' -%] selected="selected"[%- END -%]>[% msg.maketext("Einfache Recherchemaske") %]</option>
+<option value="advanced"[%- IF userinfo.masktype == 'advanced' -%] selected="selected"[%- END -%]>[% msg.maketext("Erweitere Recherchemaske") %]</option>
+</select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div>
+</fieldset>
+</form>
+
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/searchfields" enctype="application/x-www-form-urlencoded" class="yform">
+<input type="hidden" name="_method" value="PUT" />
+<fieldset>
+<legend>[% msg.maketext("Suchfelder") %]</legend>
+
+<div class="subcolumns">
+<div class="c50l">
+
+<div class="subcl type-check">
+<input type="checkbox" name="freesearch" id="freesearch" value="1" [% IF searchfields.freesearch.active %]checked="checked"[% END %]/>
+<label for="freesearch">[% msg.maketext("Freie Suche") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="title" id="title" value="1" [% IF searchfields.title.active %]checked="checked"[% END %]/>
+<label for="title">[% msg.maketext("Hauptsachtitel (HST)") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="person"     value="1" [% IF searchfields.person.active %]checked="checked"[% END %]/>
+<label for="person">[% msg.maketext("Verfasser") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="corporatebody"     value="1" [% IF searchfields.corporatebody.active %]checked="checked"[% END %]/>
+<label for="corporatebody">[% msg.maketext("K&ouml;rperschaft") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="subject"     value="1" [% IF searchfields.subject.active %]checked="checked"[% END %]/>
+<label for="subject">[% msg.maketext("Schlagwort") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="classification"     value="1" [% IF searchfields.classification.active %]checked="checked"[% END %]/>
+<label for="classification">[% msg.maketext("Notation") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="isbn"     value="1" [% IF searchfields.isbn.active %]checked="checked"[% END %]/>
+<label for="isbn">[% msg.maketext("ISBN") %]</label>
+</div>
+
+</div>
+
+<div class="c50r">
+
+<div class="subcl type-check">
+<input type="checkbox" name="issn"     value="1" [% IF searchfields.issn.active %]checked="checked"[% END %]/>
+<label for="issn">[% msg.maketext("ISSN") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="mark"     value="1" [% IF searchfields.mark.active %]checked="checked"[% END %]/>
+<label for="mark">[% msg.maketext("Signatur") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="titlestring"     value="1" [% IF searchfields.titlestring.active %]checked="checked"[% END %]/>
+<label for="titlestring">[% msg.maketext("Titel-String") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="content"     value="1" [% IF searchfields.content.active %]checked="checked"[% END %]/>
+<label for="content">[% msg.maketext("Abstrakt/Inhalt") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="source"     value="1" [% IF searchfields.source.active %]checked="checked"[% END %]/>
+<label for="source">[% msg.maketext("Serie/Band/Quelle") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="mediatype"     value="1" [% IF searchfields.mediatype.active %]checked="checked"[% END %]/>
+<label for="mediatype">[% msg.maketext("Medienart") %]</label>
+</div>
+
+<div class="subcl type-check">
+<input type="checkbox" name="year"     value="1" [% IF searchfields.year.active %]checked="checked"[% END %]/>
+<label for="year">[% msg.maketext("Erscheinungsjahr") %]</label>
+</div>
+
+</div>
+</div><!-- End subcolumns -->
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div>
+
+</fieldset>
+</form>
+
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded" class="yform">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset class="full">
+<legend>[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</legend>
+
+<div class="type-select">
+<select name="setautocompletion">
+<option value="none"[%- IF userinfo.autocompletiontype == 'none' -%] selected="selected"[%- END -%]>[% msg.maketext("Keine") %]</option>
+<option value="livesearch"[%- IF userinfo.autocompletiontype == 'livesearch' -%] selected="selected"[%- END -%]>[% msg.maketext("LiveSearch") %]</option>
+<option value="spelling"[%- IF userinfo.autocompletiontype == 'spelling' -%] selected="selected"[%- END -%]>[% msg.maketext("Rechtschreibvorschläge") %]</option>
+</select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div>
+</fieldset>
+</form>
+
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/livesearch" enctype="application/x-www-form-urlencoded" class="yform">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset>
+<legend>[% msg.maketext("LiveSearch") %]</legend>
+
+<fieldset>
+<legend>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</legend>
+
+<div class="type-check">
+<input type="checkbox" name="livesearch_freesearch" id="livesearch_freesearch" value="1" [% IF livesearch.freesearch.active %]checked="checked"[% END %]/>
+<label for="livesearch_freesearch">[% msg.maketext("Aktiv") %]</label>
+</div>
+
+<div class="type-check">
+<input type="checkbox" name="livesearch_freesearch_exact" id="livesearch_freesearch_exact" value="1" [% IF livesearch.freesearch.exact %]checked="checked"[% END %]/>
+<label for="livesearch_freesearch_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend>[% msg.maketext("Bei der Eingabe von Personen") %]</legend>
+
+<div class="type-check">
+<input type="checkbox" name="livesearch_person" id="livesearch_person" "value="1" [% IF livesearch.person.active %]checked="checked"[% END %] />
+<label for="livesearch_person">[% msg.maketext("Aktiv") %]</label>
+</div>
+
+<div class="type-check">
+<input type="checkbox" name="livesearch_person_exact" id="livesearch_person_exact" value="1" [% IF livesearch.person.exact %]checked="checked"[% END %]/>
+<label for="livesearch_person_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend>[% msg.maketext("Bei der Eingabe von Schlagworten") %]</legend>
+<div class="type-check">
+<input type="checkbox" name="livesearch_subject" id="livesearch_subject" "value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
+<label for="livesearch_subject">[% msg.maketext("Aktiv") %]</label>
+</div>
+
+<div class="type-check">
+<input type="checkbox" name="livesearch_subject_exact" id="livesearch_subject_exact" value="1" [% IF livesearch.subject.exact %]checked="checked"[% END %]/>
+<label for="livesearch_subject_exact">Keine Wortbestandteile bei Schlagwortangaben suchen</label>
+</div>
+</fieldset>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div>
+</fieldset>
+</form>
+
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/spelling" enctype="application/x-www-form-urlencoded" class="yform">
+<input type="hidden" name="_method"    value="PUT" />
+
+<fieldset>
+<legend>[% msg.maketext("Rechtschreibvorschläge") %]</legend>
+
+<div class="type-check">
+<input type="checkbox" name="spelling_as_you_type" id="spelling_as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/>
+<label for="spelling_as_you_type">[% msg.maketext("In der Recherchemaske") %]</label>
+</div>
+
+<div class="type-check">
+<input type="checkbox" name="spelling_resultlist" id="spelling_resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] />
+<label for="spelling_resultlist">[% msg.maketext("In der Trefferliste") %]</label>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div>
+
+</fieldset>
+</form>
+
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/bibsonomy" enctype="application/x-www-form-urlencoded" class="yform">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset>
+<legend>[% msg.maketext("BibSonomy") %]</legend>
+[% bibsonomy = user.get_bibsonomy %]
+
+<div class="type-check">
+<input type="checkbox" name="bibsonomy_sync" id="bibsonomy_sync" [% IF bibsonomy.sync == 'on' %]checked="checked"[% END %]/>
+<label for="bibsonomy_sync">[% msg.maketext("Abgleich zu BibSonomy") %]</label>
+</div>
+
+<div class="type-text">
+<label for="bibsonomy_user">[% msg.maketext("BibSonomy-API-User") %]</label>
+<input type="text" name="bibsonomy_user" id="bibsonomy_user" value="[% bibsonomy.user %]"/>
+</div>
+
+<div class="type-text">
+<label for="bibsonomy_key">[% msg.maketext("BibSonomy-API-Key") %]</label>
+<input type="text" name="bibsonomy_key" id="bibsonomy_key" value="[% bibsonomy.key %]"/>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div>
+</fieldset>
+</form>
+
+[%- IF bibsonomy.sync == "on" -%]
+<p/>
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/bibsonomysync" enctype="application/x-www-form-urlencoded" class="yform">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset>
+<legend>[% msg.maketext("Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen") %]</legend>
+
+<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div>
+</fieldset>
+</form>
+[%- END -%]
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

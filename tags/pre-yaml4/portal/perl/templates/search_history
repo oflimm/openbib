@@ -1,0 +1,149 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_history
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe des Ergebnisses der zurueckliegenden Recherchen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "searchhistory" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Suchhistorie") %]</a></li>
+      </ul>
+     </div>
+   </div>
+
+<p/>
+    <div class="page_title">[% msg.maketext("Ihre bisherigen Recherchen") %]</div>
+
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<p />
+
+[% IF queries.size > 0 %]
+
+[%    field_map = {
+          "freesearch" = msg.maketext("Freie Suche")
+          "title"      = msg.maketext("Titel")
+          "database"   = msg.maketext("Katalog")
+          "content" = msg.maketext("Inhalt")
+          "person" = msg.maketext("Person")
+          "corporatebody" = msg.maketext("K&ouml;perschaft")
+          "subject" = msg.maketext("Thema")
+          "classification" = msg.maketext("Systematik")
+          "mediatype" = msg.maketext("Medientyp")
+          "language" = msg.maketext("Sprache")
+          "year" = msg.maketext("Jahr")
+          "year_from" = msg.maketext("Jahr von")
+          "year_to" = msg.maketext("Jahr bis")
+          "tag" = msg.maketext("Tag")
+          "litlist" = msg.maketext("Literaturliste")
+          "dbstring" = msg.maketext("Katalog")
+          "personstring" = msg.maketext("Person")
+          "corporatebodystring" = msg.maketext("K&ouml;perschaft")
+          "subjectstring" = msg.maketext("Thema")
+          "classificationstring" = msg.maketext("Systematik")
+          "mediatypestring" = msg.maketext("Medientyp")
+          "languagestring" = msg.maketext("Sprache")
+          "yearstring" = msg.maketext("Jahr")
+          "tagstring" = msg.maketext("Tag")
+          "litliststring" = msg.maketext("Literaturliste")
+};
+
+    field_prefix_map = {};
+
+    FOREACH searchfield IN config.get('searchfield').keys ;
+          prefix = config.get('searchfield').${searchfield}.prefix;
+          IF field_map.${searchfield} ;
+              field_prefix_map.${prefix} = field_map.${searchfield};
+          END ;
+    END;
+
+
+%]
+[% count = 1 %]
+<table class="full">
+<tr><th>[% msg.maketext("Wann") %]</th><th>[% msg.maketext("Suchanfrage") %]</th><th>[% msg.maketext("Filter") %]</th><th>[% msg.maketext("Suchprofil") %]</th><th>[% msg.maketext("Treffer") %]</th></tr>
+[% FOREACH query IN queries %]	  
+<tr><td>[% query.get_tstamp.substr(0,19) %]</td><td>
+<a href="[% path_prefix%]/[% config.get('search_loc')%].html?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% query.to_cgi_querystring %]"><img style="vertical-align: bottom;" src="[% config.get('search_small_img') %]" alt="Search Icon"/>&nbsp;
+[% used_fields = [] %]
+[%- FOREACH field IN query.get_searchquery.keys  -%]
+[%-
+    fieldname    = field_map.${field};
+    fieldcontent = query.get_searchquery.${field}.val;
+    NEXT IF NOT fieldcontent ;
+-%]
+[% used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" ) %]
+[%- END -%]
+[% used_fields.join(' ; ') %] 
+[%# USE dumper;dumper.dump(query.get_searchquery);%]
+</a>
+</td>
+<td>
+[% used_filters = [] %]
+[%- FOREACH filter IN query.get_filter  -%]
+[%-
+    filtername = field_prefix_map.${filter.field};
+-%]
+[% used_filters.push( "<b>${filtername}</b>:${filter.term}" ) %]
+[%- END -%]
+[% used_filters.join(' ; ') %] 
+</td>
+<td>
+<a href="[% path_prefix %]/[% config.get('searchprofile_loc') %]/[% query.get_searchprofile %].html?l=[% lang %]">[% query.get_searchprofile %]</a>
+</td>
+<td>
+[% query.get_hits %]
+</td>
+[%- count = count + 1 -%]
+[% END %]
+</tr>
+</table>
+[% ELSE %]
+[% msg.maketext("Sie haben noch keine Suchanfragen gestellt.") %]
+[% END %]
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,95 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_start
+#
+# Typ         : Mastertemplate (1/3)
+#
+# Aufgabe:
+#
+# Ausgabe des Anfangs der initialen Trefferliste
+#
+#######################################################################
+-%]
+[%- IF representation == 'html' -%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+[%- request_base    = "num=${hitrange};srt=${sorttype}_${sortorder};"  -%]
+<body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+[%    field_map = {
+          "freesearch" = msg.maketext("Freie Suche")
+          "title"      = msg.maketext("Titel")
+          "database"   = msg.maketext("Katalog")
+          "content" = msg.maketext("Inhalt")
+          "person" = msg.maketext("Person")
+          "corporatebody" = msg.maketext("K&ouml;perschaft")
+          "subject" = msg.maketext("Thema")
+          "classification" = msg.maketext("Systematik")
+          "mediatype" = msg.maketext("Medientyp")
+          "language" = msg.maketext("Sprache")
+          "year" = msg.maketext("Jahr")
+          "year_from" = msg.maketext("Jahr von")
+          "year_to" = msg.maketext("Jahr bis")
+          "tag" = msg.maketext("Tag")
+          "litlist" = msg.maketext("Literaturliste")
+          "dbstring" = msg.maketext("Katalog")
+          "personstring" = msg.maketext("Person")
+          "corporatebodystring" = msg.maketext("K&ouml;perschaft")
+          "subjectstring" = msg.maketext("Thema")
+          "classificationstring" = msg.maketext("Systematik")
+          "mediatypestring" = msg.maketext("Medientyp")
+          "languagestring" = msg.maketext("Sprache")
+          "yearstring" = msg.maketext("Jahr")
+          "tagstring" = msg.maketext("Tag")
+          "litliststring" = msg.maketext("Literaturliste")
+          "t0720" = msg.maketext("Provenienz")
+};
+
+          cgi_querystring     = cgiapp.to_cgi_querystring;
+%]
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Recherche") %]:&nbsp;
+[%- used_fields = [] ;
+    FOREACH field IN searchquery.get_searchquery.keys ;
+       fieldname    = field_map.${field};
+       fieldcontent = searchquery.get_searchquery.${field}.val;
+       NEXT IF NOT fieldcontent ;
+       used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
+     END;
+-%]
+<em>[% used_fields.join(' ; ') %]</em></a>
+        </li>
+      </ul>
+     </div>
+    <div class="representation">
+<a href="[% path_prefix %]/[% config.get('search_loc') %].rdf?[% cgi_querystring %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('search_loc') %].json?[% cgi_querystring %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('search_loc') %].rss?[% cgi_querystring %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+    </div>
+   </div> 
+
+      <!-- begin: static full column -->
+      <div class="full" >
+        <div class="clearfix">
+
+[%- END -%]

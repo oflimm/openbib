@@ -1,0 +1,183 @@
+[%#-
+#######################################################################
+#
+# Templatename: topic_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Themengebietes
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Themengebiet bearbeiten' %]
+
+  <body>
+[%
+  bks         = config.load_bk;
+
+  bklist = [];
+  FOREACH bk IN bks;
+    IF bk.key.length == 2;
+      thisbk = {
+        classification   => bk.key,
+        desc             => bk.value,
+      };
+      bklist.push(thisbk);
+    END ;
+  END ;
+
+%]
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('topic_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+         <li><a href="#" class="lastitem">[% topic.name %]</a></li>
+       </ul>
+     </div>
+    <div class="representation">
+<a href="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="topic" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<div class="boxedclear">
+
+<table class="full">
+<tr><th>[% msg.maketext("Der Basisklassifikation zugeordnete Themengebiete") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
+<tr><td colspan="3">
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+
+<ul>
+[% FOREACH bk IN bklist %]
+[%   IF classification_selected.${bk.classification}  %]
+<li>[% bk.classification %]: [% bk.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+</td>
+</tr>
+</table>
+
+</td></tr>
+</table>
+
+</div>
+
+<p/>
+
+<div class="boxedclear">
+
+<table class="full">
+<tr><th>[% msg.maketext("Der EZB zugeordnete Themengebiete") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
+<tr><td colspan="3">
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'EZB', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+<ul>
+[% FOREACH ezb_topic IN ezb.get_topics %]
+[%   IF classification_selected.${ezb_topic.notation}  %]
+<li>[% ezb_topic.notation %]: [% ezb_topic.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+</td>
+
+
+</tr>
+</table>
+
+</td></tr>
+</table>
+
+</form>
+
+</div>
+
+
+<p/>
+<div class="boxedclear">
+
+<table class="full">
+<tr><th>[% msg.maketext("DBIS zugeordnete Themengebiete") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
+<tr><td colspan="3">
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'DBIS', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+<ul>
+[% FOREACH dbis_topic IN dbis.get_topics %]
+[%   IF classification_selected.${dbis_topic.notation}  %]
+<li>[% dbis_topic.notation %]: [% dbis_topic.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+
+</td>
+</tr>
+</table>
+
+</td></tr>
+</table>
+
+</form>
+</div>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

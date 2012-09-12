@@ -1,0 +1,81 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editauthenticationtarget
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines Anmeldeziels
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul id="skiplinks">
+	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="page_margins">
+  <div class="page">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="functional_nav">
+     <div class="breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_authentication_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
+         <li><a href="#" class="lastitem">[% authenticationtarget.description %]</a></li>
+       </ul>
+     </div>
+    <div class="representation">
+<a href="[% path_prefix %]/[% config.get('admin_authentication_loc') %]/[% authenticationtarget.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+ <!-- begin: #col1 - first float column -->
+      <div id="col1" role="complementary">
+        <div id="col1_content" class="clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="authentication" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" role="main" >
+        <div id="col3_content" class="clearfix">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Anmeldeziel") %]</th></tr>
+<tr><td class="boxedclear">
+<table>
+<tr><td><b>[% msg.maketext("Hostname") %]</b></td><td>[% authenticationtarget.hostname %]</td></tr>
+<tr><td><b>[% msg.maketext("Port") %]</b></td><td>[% authenticationtarget.port %]"</td></tr>
+<tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td>[% authenticationtarget.remoteuser %]</td></tr>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% authenticationtarget.remotedb %]</td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% authenticationtarget.description %]</td></tr>
+<tr><td><b>[% msg.maketext("Typ") %]</b></td><td>[% authenticationtarget.type %]</td></tr>
+</table>
+</td></tr>
+</table>
+
+        </div>
+        <div id="ie_clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+      <!-- end: #col3 -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

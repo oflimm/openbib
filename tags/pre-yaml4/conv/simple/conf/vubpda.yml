@@ -1,0 +1,53 @@
+# Encoding der Daten
+#encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': ','
+  'quote_char': '"'
+  'escape_char': '"'
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'upi'
+
+category_split_chars:
+  'identifier': ';'
+  'person_all': ';'
+
+# Personen
+person:
+  'person_all': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+
+# Titel
+title:
+  'title': '0331'
+  'subtitle': '0370'
+  'identifier': '0540'
+  'releasedate_': '0425'
+  'publisher': '0412'
+
+filter:
+  'releasedate_':
+     filter_match: "^(\d\d\d\d)"
+
+exclude:
+  'by_availability':
+     field: 'identifier'
+     databases:
+        - inst001
+        - ebooks
+        - freebooks

@@ -1,0 +1,21 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_title_combined_rss
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%-#
+
+channel_link        = "${path_prefix}/${config.get('title_loc')}/${database}/recent.rss?l=${lang}";
+channel_description = "RSS Feed der letzten Neuzugänge" ;
+channel_title       = "RSS Feed der letzten Neuzugänge" ;
+recordlist.load_brief_records.to_rss({ view = view, channel_title = channel_title, channel_link = channel_link  });
+
+-%]

@@ -1,0 +1,20 @@
+[%-
+
+  records = [];
+
+  FOREACH record IN items.get_records ;
+      thisrecord = {
+         record  = record.get_fields
+         comment = record.comment
+         tstamp  = record.date
+         itemid  = record.listid
+      };
+      IF record.id && record.database ;
+         thisrecord.titleid = record.id;
+         thisrecord.dbname  = record.database;
+ 
+      END;
+      records.push(thisrecord);
+  END ;
+
+to_json(records) -%]

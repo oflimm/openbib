@@ -1,0 +1,3 @@
+alter table user add bibsonomy_user TEXT after masktype;
+alter table user add bibsonomy_key TEXT after bibsonomy_user;
+alter table user add bibsonomy_sync TEXT after bibsonomy_key;

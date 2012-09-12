@@ -635,7 +635,9 @@ while (my $jsonline=<IN>){
     # Basisinformationen setzen
     {
         push @{$searchengine_ref->{id}{1}}, $id;
-        push @{$searchengine_ref->{dbstring}{1}}, $database;
+        push @{$searchengine_ref->{dbstring}{1}}, OpenBib::Common::Util::grundform({
+            content  => $database,
+        });
         push @{$searchengine_ref->{facet_database}}, $database;
         
         $titlecache_ref->{id}       = $id;

@@ -171,7 +171,7 @@ href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=404b" ta
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
-      <!-- end: #col3 -->
+     </div> <!-- end: ym-column -->
     </div>
     <!-- end: #main -->
 

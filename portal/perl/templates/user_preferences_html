@@ -172,84 +172,84 @@
 <legend>[% msg.maketext("Suchfelder") %]</legend>
 
 <div class="ym-grid">
-<div class="c50l">
+<div class="ym-g50 ym-gl">
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="freesearch" id="freesearch" value="1" [% IF searchfields.freesearch.active %]checked="checked"[% END %]/>
 <label for="freesearch">[% msg.maketext("Freie Suche") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="title" id="title" value="1" [% IF searchfields.title.active %]checked="checked"[% END %]/>
 <label for="title">[% msg.maketext("Hauptsachtitel (HST)") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="person"     value="1" [% IF searchfields.person.active %]checked="checked"[% END %]/>
 <label for="person">[% msg.maketext("Verfasser") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="corporatebody"     value="1" [% IF searchfields.corporatebody.active %]checked="checked"[% END %]/>
 <label for="corporatebody">[% msg.maketext("K&ouml;rperschaft") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="subject"     value="1" [% IF searchfields.subject.active %]checked="checked"[% END %]/>
 <label for="subject">[% msg.maketext("Schlagwort") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="classification"     value="1" [% IF searchfields.classification.active %]checked="checked"[% END %]/>
 <label for="classification">[% msg.maketext("Notation") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="isbn"     value="1" [% IF searchfields.isbn.active %]checked="checked"[% END %]/>
 <label for="isbn">[% msg.maketext("ISBN") %]</label>
 </div>
 
 </div>
 
-<div class="c50r">
+<div class="ym-g50 ym-gr">
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="issn"     value="1" [% IF searchfields.issn.active %]checked="checked"[% END %]/>
 <label for="issn">[% msg.maketext("ISSN") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="mark"     value="1" [% IF searchfields.mark.active %]checked="checked"[% END %]/>
 <label for="mark">[% msg.maketext("Signatur") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="titlestring"     value="1" [% IF searchfields.titlestring.active %]checked="checked"[% END %]/>
 <label for="titlestring">[% msg.maketext("Titel-String") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="content"     value="1" [% IF searchfields.content.active %]checked="checked"[% END %]/>
 <label for="content">[% msg.maketext("Abstrakt/Inhalt") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="source"     value="1" [% IF searchfields.source.active %]checked="checked"[% END %]/>
 <label for="source">[% msg.maketext("Serie/Band/Quelle") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="mediatype"     value="1" [% IF searchfields.mediatype.active %]checked="checked"[% END %]/>
 <label for="mediatype">[% msg.maketext("Medienart") %]</label>
 </div>
 
-<div class="subcl type-check">
+<div class="ym-gbox-left type-check">
 <input type="checkbox" name="year"     value="1" [% IF searchfields.year.active %]checked="checked"[% END %]/>
 <label for="year">[% msg.maketext("Erscheinungsjahr") %]</label>
 </div>
 
 </div>
-</div><!-- End subcolumns -->
+</div><!-- End grid -->
 
 <div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></div>
 

@@ -64,15 +64,15 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<div class="details subcolumns"><!-- Begin Details -->
+<div class="details ym-grid"><!-- Begin Details -->
 <!-- Person begins here -->
-<div class="images c50r"><!-- Begin Images -->
+<div class="images ym-g50 ym-gr"><!-- Begin Images -->
   <div class="ym-gbox-right">
 [% PROCESS common/subtemplate name="person_html_images" %]
   </div>
 </div><!-- End Images -->
 
-<div class="categories c50l"><!-- Begin Categories -->
+<div class="categories ym-g50 ym-gl"><!-- Begin Categories -->
 
   <div class="ym-gbox-left">
 <table cellpadding="2">

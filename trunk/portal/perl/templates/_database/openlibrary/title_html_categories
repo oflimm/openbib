@@ -15,7 +15,7 @@
 [% IF format == "full" %]
 
 [%# USE dumper;dumper.dump(record) %]
-<table class="full">
+<table class="ym-full">
 <tr><td class="category">id</td><td>[% record.id %]</td></tr>
 
 [%-
@@ -211,7 +211,7 @@ END;
 <tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
 [%- END -%]
 <tr><td colspan="2">
-<table class="full">
+<table class="ym-full">
 <tr><th><img style="vertical-align:bottom"
 src="/images/openbib/hint.png" alt="Hinweis"/>&nbsp;Hinweis</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">

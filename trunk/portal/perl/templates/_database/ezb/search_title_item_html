@@ -26,9 +26,9 @@
 
 <p/>
 
-<div class="subcolumns">
+<div class="ym-grid">
   <div class="c25r">
-    <div class="subcl">
+    <div class="ym-gbox-left">
 <div class="headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
 <p/>
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
@@ -70,7 +70,7 @@
   </div>
 
   <div class="c75l">
-    <div class="subcl">
+    <div class="ym-gbox-left">
 <h4>[%-   IF dbinfo.get('use_libinfo').${database} %]
 <a href="[% path_prefix %]/[% config.get('library_loc') %]/[% database %]">
 [%-   ELSE -%]

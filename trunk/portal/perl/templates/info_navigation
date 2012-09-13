@@ -1,5 +1,6 @@
-<h6 class="vlist">[% msg.maketext("Hilfe") %]</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Hilfe") %]</h6>
+ <ul>
 [% IF active_submenu == "help" %]
   <li class="active"><strong>[% msg.maketext("Suchhilfe") %]</strong></li>
 [% ELSE %]
@@ -20,4 +21,5 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/feedback.html?l=[% lang %]">[% msg.maketext("Artikel/Stimmen") %]</a></li>
 [% END %]
-</ul>
+ </ul>
+</nav>

@@ -18,8 +18,9 @@
 #######################################################################
 -%]
 [% IF active_menu == "project" %]
-<h6 class="vlist">Informationen zum Projekt</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">Informationen zum Projekt</h6>
+ <ul>
 [% IF active_submenu == "buecherlisten" %]
   <li class="active"><strong>Die B&uuml;cherlisten</strong></li>
 [% ELSE %]
@@ -45,5 +46,6 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]">Ansprechpartner</a></li>
 [% END %]
-</ul>
+ </ul>
+</nav>
 [% END %]

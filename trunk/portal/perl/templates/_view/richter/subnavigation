@@ -18,8 +18,9 @@
 #######################################################################
 -%]
 [% IF active_menu == "info" %]
-<h6 class="vlist">[% msg.maketext("Informationen") %]</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Informationen") %]</h6>
+ <ul>
 [% IF active_submenu == "portal" %]
   <li class="active"><strong>Die Bibliothek</strong></li>
 [% ELSE %]
@@ -35,31 +36,37 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/helene_richter.html?l=[% lang %]">Helene Richter</a></li>
 [% END %]
-</ul> 
+ </ul>
+</nav>
 [% END %]
 [% IF active_menu == "searchform" %]
-<h6 class="vlist">Recherche</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">Recherche</h6>
+ <ul>
 [% IF active_submenu == "search_advanced" %]
   <li class="active"><strong>Erweiterte Recherche</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]">Erweiterte Recherche</a></li>
 [% END %]
-</ul>
+ </ul>
+</nav>
 [% END %]
 [% IF active_menu == "register" %]
-<h6 class="vlist">Register</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">Register</h6>
+ <ul>
 [% IF active_submenu == "register_T0720" %]
   <li class="active"><strong>Provenienzen</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('browse_loc') %]/richter/T0720.html?l=[% lang %]">Provenienzen</a></li>
 [% END %]
-</ul> 
+ </ul>
+</nav>
 [% END %]
 [% IF active_menu == "cloud" %]
-<h6 class="vlist">[% msg.maketext("&Uuml;bersichten") %]</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("&Uuml;bersichten") %]</h6>
+ <ul>
 [% IF active_submenu == "cloud_year" %]
   <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
 [% ELSE %]
@@ -85,5 +92,6 @@
 [% ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/classification/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
 [% END %]
-</ul> 
+ </ul>
+</nav>
 [% END %]

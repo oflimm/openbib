@@ -11,9 +11,10 @@
 #
 #######################################################################
 -%]
-<h6 class="vlist">[% username %]</h6>
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% username %]</h6>
 
-<ul class="vlist">
+ <ul>
 [% IF active_submenu == "userprefs" %]
   <li class="active"><strong>[% msg.maketext("Grundeinstellungen") %]</strong></li>
 [% ELSE %]
@@ -80,4 +81,5 @@
 [% ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/profile.html">[% msg.maketext("Katalogprofile") %]</a></li>
 [% END %]
-</ul>
+ </ul>
+</nav>

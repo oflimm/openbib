@@ -17,8 +17,9 @@
 #
 #######################################################################
 -%]
-<h6 class="vlist">[% msg.maketext("&Uuml;bersichten") %]</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("&Uuml;bersichten") %]</h6>
+ <ul>
 [% IF active_submenu == "cloud_choice" %]
   <li class="active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
 [% ELSE %]
@@ -89,4 +90,5 @@
    <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 [% END %]
 
-</ul>
+ </ul>
+</nav>

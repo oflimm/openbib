@@ -49,8 +49,9 @@
 [%   END %]
 [% END %]
 
-<h6 class="vlist">Nutzer: [% bsuser %]</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">Nutzer: [% bsuser %]</h6>
+ <ul>
 [% IF type == "publication" %]
   <li class="active"><strong>[% msg.maketext("Publikationen") %]</strong></li>
 [% ELSE %]
@@ -61,20 +62,24 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/bookmark/user/[% bsuser %].html?l=[% lang %]">[% msg.maketext("Web") %]</a></li>
 [% END %]
-</ul>
+ </ul>
+</nav>
 
 <p/>
 
-<h6 class="vlist">Tags in den angezeigten Titeln</h6>
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Tags in den angezeigten Titeln") %]</h6>
 <div style="padding: 10px;">
 [% FOREACH thistag IN alltags.unique.sort %]
 <a class="tag" style="display: inline; cursor: pointer;" href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/tag/[% thistag %].html?l=[% lang %]">[% thistag %]</a>&nbsp;
 [% END %]
 </div>
+</nav>
 
 <p/>
 
-<h6 class="vlist">Tag suchen</h6>
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Tag suchen") %]</h6>
 <form method="get" action="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags">
 
 <table>
@@ -83,7 +88,7 @@ type="text" name="tags" value="" id="inputfield" size="20" maxlength="200" title
 </table>
 
 </form>
-
+</nav>
         </div>
       </div>
       <!-- end: #col1 -->

@@ -24,10 +24,9 @@
 #######################################################################
 -%]
 [%- username = user.get_username -%]
-    <!-- begin: main navigation #nav -->
-    <div id="nav" role="navigation">
-      <div class="hlist">
-        <ul>
+    <!-- begin: main navigation  -->
+    <nav class="ym-hlist">
+      <ul>
 [% IF active_menu == "info" %]
          <li class="active"><strong>[% msg.maketext("Informationen") %]</strong></li>
 [% ELSE %]
@@ -64,7 +63,6 @@
           <li><a href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></li>
 [% END %]
 [%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">[% msg.maketext("admin") %]</a></li>[%- END -%]
-       </ul>
-      </div>
-    </div>
+     </ul>
+    </nav>
     <!-- end: main navigation -->

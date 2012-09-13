@@ -18,8 +18,9 @@
 #######################################################################
 -%]
 [% IF active_menu == "searchform" %]
-<h6 class="vlist">Recherche</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Recherche") %]</h6>
+ <ul>
 [% IF active_submenu == "searchform_simple" %]
   <li class="active"><strong>Einfache Recherche</strong></li>
 [% ELSE %]
@@ -31,16 +32,20 @@
   <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]">Erweiterte Recherche</a></li>
 [% END %]
 </ul>
+</nav>
 [% END %]
 [% IF active_menu == "register" %]
-<h6 class="vlist">Register</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Register") %]</h6>
+ <ul>
   <li><a [% IF active_submenu == "register_T0720" %]class="active" [% END %] href="[% path_prefix %]/[% config.get('browse_loc') %]/richter/T0720.html?l=[% lang %]">Provenienzen</a></li>
-</ul> 
+ </ul>
+</nav>
 [% END %]
 [% IF active_menu == "cloud" %]
-<h6 class="vlist">[% msg.maketext("&Uuml;bersichten") %]</h6>
-<ul class="vlist">
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("&Uuml;bersichten") %]</h6>
+ <ul>
 [% IF active_submenu == "cloud_choice" %]
   <li class="active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
 [% ELSE %]
@@ -71,5 +76,6 @@
 [% ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/classification/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
 [% END %]
-</ul> 
+ </ul>
+</nav>
 [% END %]

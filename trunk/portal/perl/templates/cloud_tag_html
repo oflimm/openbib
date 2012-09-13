@@ -105,7 +105,7 @@ verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('tags_loc') %
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
-      <!-- end: #col3 -->
+     </div> <!-- end: ym-column -->
     </div>
     <!-- end: #main -->
 

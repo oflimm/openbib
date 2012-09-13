@@ -117,7 +117,7 @@ target="_blank">http://jwa.org/encyclopedia/article/richter-elise</a></dd>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
-      <!-- end: #col3 -->
+     </div> <!-- end: ym-column -->
     </div>
     <!-- end: #main -->
 

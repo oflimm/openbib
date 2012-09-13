@@ -68,7 +68,7 @@ Telefon:	02234-4351540<br/>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
-      <!-- end: #col3 -->
+     </div> <!-- end: ym-column -->
     </div>
     <!-- end: #main -->
 

@@ -180,7 +180,7 @@ erh&auml;lt man die Titelanzahl von 2720 B&auml;nden.</p>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
-      <!-- end: #col3 -->
+     </div> <!-- end: ym-column -->
     </div>
     <!-- end: #main -->
 

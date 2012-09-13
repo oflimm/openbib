@@ -97,7 +97,7 @@ href="http://[% hostpart %]/portal[% IF NOT viewinfo.stripuri %]/[% viewname %][
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
-      <!-- end: #col3 -->
+     </div> <!-- end: ym-column -->
     </div>
     <!-- end: #main -->
 

@@ -47,13 +47,13 @@
                 </script>
 
 <!-- skip link navigation -->
-<ul id="skiplinks">
-	<li><a class="skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="skip" href="#col3">Skip to main content (Press Enter).</a></li>
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
 </ul>
 
-<div class="page_margins">
-  <div class="page">
+<div class="ym-wrapper">
+  <div class="ym-wbox">
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
@@ -61,9 +61,9 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
- <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary" style="width: 32%;">
-        <div id="col1_content" class="clearfix">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1" style="width: 32%;">
+        <div class="ym-cbox" class="ym-clearfix">
 <div class="representation">
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
@@ -512,21 +512,21 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main"  style="width: 65%;">
-        <div id="col3_content" class="clearfix">
+      <div class="ym-col3"  style="width: 65%;">
+        <div class="ym-cbox" class="ym-clearfix">
 
 <div class="fulltitle"><!-- Begin Fulltitle -->
 <div class="details subcolumns"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="images c20r"><!-- Begin Images -->
-  <div class="subcr">
+  <div class="ym-gbox-right">
 [% PROCESS common/subtemplate name="title_html_images" %]
   </div>
 </div><!-- End Images -->
 
 <div class="categories c80l"><!-- Begin Categories -->
 
-  <div class="subcl">
+  <div class="ym-gbox-left">
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
 [%
@@ -813,7 +813,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 <script src="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN:[% isbn %]&callback=addFullCover"></script>
 
         </div>
-        <div id="ie_clearing">&nbsp;</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
       <!-- end: #col3 -->

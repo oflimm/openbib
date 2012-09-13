@@ -13,16 +13,16 @@
 #######################################################################
 -%]
 
- <!-- begin: #col1 - first float column -->
-      <div id="col1" role="complementary">
-        <div id="col1_content" class="clearfix">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
 [% PROCESS common/subtemplate name="collection_html_actions" %] 
         </div>
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div id="col3" role="main" >
-        <div id="col3_content" class="clearfix">
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
 
 [% FOREACH record IN recordlist.get_records %]
 [%- database = record.database -%]
@@ -83,7 +83,7 @@ FOREACH category IN categories;
 
 
         </div>
-        <div id="ie_clearing">&nbsp;</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>
       <!-- end: #col3 -->

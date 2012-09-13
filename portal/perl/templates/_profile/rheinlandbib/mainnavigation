@@ -72,7 +72,7 @@
        </ul>
 [% IF NOT without_navigation_search %]
       <div style="float:right;height:25px;margin-top:-5px;margin-right:5px;font-size:0.9em;">
-<table class="full">
+<table class="ym-full">
 <tr>
   <td><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" size="22" maxlength="200" /></td>
   <td> <div class="cssbutton glass kug">

@@ -31,7 +31,7 @@
 %]
 <p/>
 
-<fieldset class="full">
+<fieldset class="ym-full">
 <legend>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</legend>
 
 <div class="type-select">
@@ -48,7 +48,7 @@
 [%    END %]
 <p/>
 
-<fieldset class="full">
+<fieldset class="ym-full">
 <legend>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</legend>
 
 <div class="type-text">
@@ -82,7 +82,7 @@
 <p/>
 [% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
 
-<fieldset class="full">
+<fieldset class="ym-full">
 <legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
 
 <div class="type-text">

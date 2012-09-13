@@ -516,9 +516,9 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
         <div class="ym-cbox" class="ym-clearfix">
 
 <div class="fulltitle"><!-- Begin Fulltitle -->
-<div class="details subcolumns"><!-- Begin Details -->
+<div class="details ym-grid"><!-- Begin Details -->
 <!-- Title begins here -->
-<div class="images c20r"><!-- Begin Images -->
+<div class="images ym-g20 ym-gr"><!-- Begin Images -->
   <div class="ym-gbox-right">
 [% PROCESS common/subtemplate name="title_html_images" %]
   </div>
@@ -573,7 +573,7 @@ END ;
 [% IF config.get('unAPI') %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
 [% END %]
-  </div> <!-- End subcl -->
+  </div> <!-- End grid -->
 </div><!-- End Categories -->
 </div><!-- End Details -->
 

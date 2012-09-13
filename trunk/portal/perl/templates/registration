@@ -64,23 +64,23 @@ verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitt
 <fieldset class="ym-full">
 <legend>Registrieren</legend>
 <div class="ym-grid">
-<div class="c50l">
+<div class="ym-g50 ym-gl">
 
-<div class="subcl type-text">
+<div class="ym-gbox-left type-text">
 <label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 <input type="text" name="username" id="email_username" value="[% username %]" />
 </div>
-<div class="subcl type-text">
+<div class="ym-gbox-left type-text">
 <label for="email_password1"/>[% msg.maketext("Passwort") %]</label>
 <input type="password" name="password1" id="email_password1" />
 </div>
-<div class="subcl type-text">
+<div class="ym-gbox-left type-text">
 <label for="email_password"/>[% msg.maketext("Passwort (wiederholt)") %]</label>
 <input type="password" name="password" id="email_password" />
 </div>
 
 </div>
-<div class="c50r">
+<div class="ym-g50 ym-gr">
 [%- IF config.${"recaptcha_public_key"} -%]
 [%- recaptcha_options = { lang => lang, theme => 'white' } -%]
 [% recaptcha.get_html(config.${"recaptcha_public_key"},'',0,recaptcha_options) %]

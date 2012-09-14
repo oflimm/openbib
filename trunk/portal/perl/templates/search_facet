@@ -1,4 +1,6 @@
+<div class="facets">
 [% IF hits <= config.get('xapian_option').maxmatch %]
+
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 [%
 
@@ -147,7 +149,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 
 </script>
 [%# USE dumper;dumper.dump(category_map)%]
-<div class="facets">
+
 <h4>[% msg.maketext("Treffermenge eingrenzen") %]</h4>
 
 [% IF separate_refine %]
@@ -478,9 +480,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%        END %]
 <!-- End language facet -->
 
-</div>
 </form>
-
 [% ELSE %]
 <h2><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h2>
 
@@ -498,3 +498,4 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 </p>
 
 [% END %]
+</div>

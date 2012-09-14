@@ -121,9 +121,10 @@
     </div>
    </div>
 
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1" style="width: 32%;">
-        <div class="ym-cbox" class="ym-clearfix">
+    <!-- grid -->
+    <div class="ym-grid linearize-level-1">
+      <div class="ym-g33 ym-gr">
+        <div class="ym-gbox" class="ym-clearfix">
 
 <p />
 
@@ -554,15 +555,15 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
 
 </div><!-- End User-Specific -->
 
-        </div>
       </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3"  style="width: 65%;">
-        <div class="ym-cbox" class="ym-clearfix">
+
+      <!-- end: grid right -->
+      <!-- begin: grid left -->
+      <div class="ym-g66 ym-gl">
+        <div class="ym-gbox" class="ym-clearfix">
 
 <div class="fulltitle"><!-- Begin Fulltitle -->
-<div class="details ym-grid"><!-- Begin Details -->
+<div class="details ym-grid linearize-level-2"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="images ym-g25 ym-gr"><!-- Begin Images -->
   <div class="ym-gbox-right">

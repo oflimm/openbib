@@ -14,10 +14,10 @@
 
 [%
 
-   start_range     = nav.current_page*qopts.num-qopts.num + 1;
-   end_range       = nav.current_page*qopts.num;
-   IF end_range >= fullresultcount ;
-      end_range       = fullresultcount;
+   start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+   end_range       = nav.current_page*queryoptions.get_option('num');
+   IF end_range >= hits ;
+      end_range       = hits;
    END;
 
    records = [];
@@ -37,7 +37,7 @@
      meta = {
               'start_range' = start_range
               'end_range'   = end_range
-              'hits'        = fullresultcount
+              'hits'        = hits
               'ips_user'    = queryoptions.get_option('ips_user')
      }
 

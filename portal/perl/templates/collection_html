@@ -89,7 +89,7 @@ function update_collection(yourform, checked, item) {
 
 </form>
 [% ELSE %]
-<h1>[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>
+<h3>[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h3>
 [% END %]
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

@@ -52,20 +52,31 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<table width="100%">
-<tr align="center">
-  <td><img src="/images/openbib/views/richter/HeleneRichter.jpg" height="320" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; &Ouml;sterreichische Nationalbibliothek</span></td>
-  <td><img src="/images/openbib/views/richter/Helene.jpg" height="320" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; &Ouml;sterreichische Nationalbibliothek</span></td>
-</tr>
-<tr align="center">
-  <td><span style="font-size:1.1em;text-align:center">Portrait Helene Richter</span></td>
-  <td><span style="font-size:1.1em;text-align:center">Verleihung der
+        <div class="ym-grid">
+          <div class="ym-g33 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+           <img src="/images/openbib/views/richter/HeleneRichter.jpg" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; &Ouml;sterreichische Nationalbibliothek</span>
+
+           <p/>
+
+           <span style="font-size:1.1em;text-align:center">Portrait Helene Richter</span>
+          </div>
+         </div>
+          <div class="ym-g66 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+           <img src="/images/openbib/views/richter/Helene.jpg" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; &Ouml;sterreichische Nationalbibliothek</span>
+
+           <p/>
+
+           <span style="font-size:1.1em;text-align:center">Verleihung der
 Ehrenb&uuml;rgerschaft der Stadt Wien an Helene Richter, Alfred
 Adler <br />und Rudolf von Larisch im Januar 1932, rechts Bürgermeister Karl Seitz
 </span>
-</td>
-</tr>
-</table>
+          </div>
+         </div>
+      </div>
 
 <p/>
 

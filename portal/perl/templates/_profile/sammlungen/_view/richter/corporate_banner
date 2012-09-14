@@ -1,5 +1,5 @@
 <!-- Begin Template: corporate_banner -->
-    <div id="header" role="banner">
+    <header role="banner">
       <div id="topnav" role="contentinfo">
         <span><a href="[% path_prefix %]/[% config.get('connector_rssfeeds_loc') %].html?l=[% lang %]"><img style="vertical-align: bottom;" src="[% config.get('rssfeed_img') %]" alt="RSS-Feed"/></a> | [% IF config.get('login_active') == 1 %]
 [% IF username %]
@@ -11,5 +11,5 @@
 [% END %]
       </div>
       <div id="logo"><a href="[% path_prefix %]/[% config.get('home_loc') %]?l=[% lang %]" title="Startseite der Richter-Bibliothek" id="header_logo_image"></a></div>
-    </div>
+    </header>
 <!-- End Template: corporate_banner -->

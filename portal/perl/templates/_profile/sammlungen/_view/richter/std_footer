@@ -14,11 +14,11 @@
 
 [% IF NOT hide_foot_banner %]
     <!-- begin: #footer -->
-    <div id="footer" role="contentinfo">[% msg.maketext("Diese Website demonstriert ein Recherche-Portal") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;Layout based on <a href="http://www.yaml.de/">YAML</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>[% config.get('version')%] </tt></div>
+    <footer role="contentinfo">[% msg.maketext("Dieses Sammlungsportal ist ein Dienst der Universtit&auml;ts- und Stadtbibliothek K&ouml;ln") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;Layout based on <a href="http://www.yaml.de/">YAML</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a></footer>
     <!-- end: #footer -->
 [% END %]
 
-</div> <!-- page -->
-</div> <!-- page_margins -->
+</div> <!-- ym-wbox -->
+</div> <!-- ym-wrapper -->
 </body>
 </html>

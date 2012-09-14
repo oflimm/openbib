@@ -16,15 +16,15 @@
 <p/>
 
 <div class="ym-grid">
-  <div class="c25r">
-    <div class="ym-gbox-left">
+  <div class="ym-g25 ym-gr">
+    <div class="ym-gbox">
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
 [% END %]
     </div>
   </div>
 
-  <div class="c75l">
+  <div class="ym-g75 ym-gl">
     <div class="ym-gbox-left">
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]

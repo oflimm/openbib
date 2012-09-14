@@ -30,18 +30,25 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-<table cellpadding="10">
+         <div class="ym-grid">
+          <div class="ym-g33 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
 
-<tr>
+           <center style="padding-top: 70px;">
 
-<td style="vertical-align:top;padding:40px;"> <center> <img src="/images/openbib/views/richter/richterexlibris_270px.jpg"
-alt="Ex Libris" /><br /><br /><i
-style="font-size:0.8em">Exlibris der Richter-Bibliothek<br/></center>
-</td>
+             <img src="/images/openbib/views/richter/richterexlibris_270px.jpg" alt="Ex Libris" />
 
-<td valign="top" style="padding-top:25px;">
+             <br /><br />
 
-<h1>Die Virtuelle Bibliothek Elise und Helene Richter</h1>
+             <i style="font-size:0.8em">Exlibris der Richter-Bibliothek</i>
+
+             <br/></center>
+          </div>
+         </div>
+          <div class="ym-g66 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+<h3>Die Virtuelle Bibliothek Elise und Helene Richter</h3>
 
 
 <p> Die Bibliothek der Schwestern Elise und Helene Richter wurde im Rahmen der NS-Provenienzforschung
@@ -56,7 +63,7 @@ config.get('info_loc') %]/externe_nachweise.html?l=[% lang %]">weiteren Institut
 </p>
 
 
-<h2> Elise und Helene Richter</h2>
+<h4> Elise und Helene Richter</h4>
 
 <p>
 Die Wiener Philologinnen <a href="[% path_prefix %]/[%
@@ -90,8 +97,9 @@ target="_blank">Bücherspuren - Das Schicksal von Elise und Helene
 Richter und ihrer Bibliothek im "Dritten Reich"</a></b>
 <p/>
 
-</td></tr>
-</table>
+          </div>
+         </div>
+      </div>
 
     </div>
     <!-- end: #main -->

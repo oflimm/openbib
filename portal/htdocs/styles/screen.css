@@ -1,0 +1,595 @@
+@media all
+{
+  #header_logo_image {
+    background: url(/images/openbib/openbib-logo_small.gif) center no-repeat;
+    width: 200px;
+    height: 58px;
+    position: absolute;
+    top: 10px;
+    left: 5px;
+  }
+
+  #topnav a { color:#999; font-weight:normal; background:transparent; text-decoration:none; }
+  #topnav a:focus,
+  #topnav a:hover,
+  #topnav a:active { text-decoration:underline; background-color:transparent; }
+
+  #topnav { 
+	background:transparent; 
+  	color:#aaa; 
+	
+    position:absolute;
+    top:10px;
+    right:10px; /* LTR */
+	text-align:right; /* LTR */
+  }
+
+  .tabbingmenu {
+    color: #FFFDF3;
+    border-bottom: 1px solid #919191;
+    margin: 12px 0px 0px 0px;
+    padding: 0px;
+    z-index: 1;
+    padding-left: 10px 
+  }
+
+  .tabbingmenu li {
+    display: inline;
+    overflow: hidden;
+    list-style-type: none; 
+  }
+
+  .tabbingmenu a, a.active {
+    color: #000000;
+    background: #FFFDF3; /* Hintergrundfarbe Tab 'weiss'*/
+    font: bold 1em "Trebuchet MS", Arial, sans-serif;
+    border: 1px solid #919191;
+    padding: 2px 5px 0px 5px;
+    margin: 0px;
+    text-decoration: none; 
+    moz-border-radius-topleft: 8px;
+    moz-border-radius-topright: 8px;
+    webkit-border-radius-topleft: 8px;
+    webkit-border-radius-topright: 8px;
+  }
+
+  .tabbingmenu a.active {
+    background: #FFFDF3;
+    border-bottom: 3px solid #FFFDF3; 
+  }
+
+  .tabbingmenu a:visited {
+    color: #000000; 
+    background: #FFFDF3; 
+  }
+
+  
+  .fulltitle {
+    width: 100%;
+  }
+  
+  .cloud {
+    margin:0;
+    padding:0;
+  }
+  .cloud li {
+    margin:0;
+    padding:0;
+    display: inline;
+  }
+  .cloud span {
+    position: absolute;
+    left: -1999px;
+    width: 1990px;
+  }
+  .cloud .fast-nicht-genutzt {
+    font-size: 0.7em;
+  }
+  .cloud .nicht-sehr-genutzt {
+    font-size: 1.0em;
+  }
+  .cloud .etwas-genutzt {
+    font-size: 1.3em;
+  }
+  .cloud .genutzt {
+    font-size: 1.5em;
+  }
+  .cloud .sehr-viel-genutzt {
+    font-size: 1.9em;
+  }
+  .cloud .ultra-genutzt {
+    font-size: 2.2em;
+  }
+  .cloud .am-meisten-genutzt {
+    font-size: 2.4em;
+  }
+
+  .representation {
+    text-align: right;
+  }
+
+  .page_title {
+    font-size: 1.2em;
+    margin-left: 20px;
+    font-weight: bold; 
+  }
+
+  .page_subtitle {
+    font-size: 1.0em;
+    margin-left: 20px;
+  }
+
+  .facets {
+    margin-top: -5px;
+  }
+  .resultlist {
+    width: 100%;
+    padding: 1em;
+    overflow: hidden; 
+  }
+
+  .resultheader {
+    position: relative;
+    width: 99%;  
+    padding: 5px;
+    min-height: 10px;
+    height: auto;
+    /*  height: 35px;
+       background-color: #fef6e2;
+       border-left-style: solid;
+       border-left-color: #edebe3;
+       border-left-width: 1px;
+       border-right-style: solid;
+       border-right-color: #edebe3;
+       border-right-width: 1px;
+       border-top-style: solid;
+       border-top-color: #edebe3;
+       border-top-width: 1px;
+       border-bottom-style: solid;
+       border-bottom-color: #edebe3;
+       border-bottom-width: 1px;
+       moz-border-radius-topright: 12px;
+       moz-border-radius-topleft: 12px;
+       webkit-border-radius-topright: 12px;
+       webkit-border-radius-topleft: 12px;*/
+  }
+
+  .resultheader .left {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 500px;
+    font-size: 1.2em;
+    /*  font-weight: bold; 
+       padding: 5px; */
+  }
+
+  .resultheader .right {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 300px;
+    /*  padding: 5px; */
+    text-align: right;
+  }
+
+  .resultitems {
+    width: 99%;
+    margin-top: 5px;
+  }
+
+  .item {
+    width: 100%;
+    position: relative;
+    border-style: solid;
+    border-color: #edebe3;
+    border-width: 1px;
+    margin-bottom: 5px;
+  }
+
+  .item .numbering {
+    position: absolute;
+    background: #ffffff none repeat scroll 0 0;
+    border-color:#E1E1E1;
+    border-style:solid;
+    border-width:1px;	
+    line-height: 1em;
+    margin-left:4px;
+    margin-top: 5px;
+    padding:1px 5px;
+    color: gray;
+  }
+
+  .item .thumbnail {
+    position: relative;
+    top: 5px;
+    left:40px;
+    width: 60px;
+    height: 90px;
+    
+    background: none repeat scroll 0 0; 
+
+  }
+
+  .item .dbis_availability {
+    position: relative;
+    top: 22px;
+    left:40px;
+    width: 60px;
+    height: 90px;
+    
+    background: none repeat scroll 0 0; 
+
+  }
+
+  .item .brieftitle {
+    position: absolute;
+    top: 20px;
+    left:120px;
+    width: auto; 
+  }
+
+  .liststyle .thumbnail {
+    width: 1px;
+  }
+
+  .liststyle .brieftitle {
+    left: 50px;
+  }
+
+  .item .titlemark {
+    position: absolute;
+    bottom:0;
+    right:0;
+    padding: 10px; 
+    font-weight:bold;
+    /*  float: right;
+       margin: -20px 5px 80px 120px;*/
+  }
+
+  .item .titleactions {
+    position: absolute;
+    text-align: right;
+    top: 0;
+    right: 0;
+    padding: 10px;
+  }
+
+  .resultitems .footer {
+    width: 99%;
+    /*  float: left; */
+    position: relative;
+    /*  margin-top: 5px;  */
+    /*  border-style: solid;
+       border-color: #E1E1E1;
+       border-width: 1px;
+       moz-border-radius-bottomright: 12px;
+       moz-border-radius-bottomleft: 12px;
+       webkit-border-radius-bottomright: 12px;
+       webkit-border-radius-bottomleft: 12px; */
+  }
+
+  .footer .navigation {
+    float: left;
+    text-align: left;
+    width: auto;
+    padding-top:  2px;
+    padding-left: 0px;
+    font-size: 1.2em;
+    font-weight: bold; 
+  }
+
+  .resultitems .footer .resulttime {
+    float: right;
+    width: 30%;
+    text-align: right;
+    padding-right: 0px;
+  }
+
+  .resultfooter {
+    float:left;
+    width: 99%;
+  }
+
+  .refine_query {
+    float: left;
+    width: auto;
+    margin-top:10px;
+    padding-bottom:20px;
+    
+  }
+
+  .listoptions {
+    overflow: hidden;   
+    background: #fef6e2;
+    margin-top: 5px;
+    width: 99.7%;
+    border-top-style: solid;
+    border-top-color: #edebe3;
+    border-top-width: 1px; 
+    border-bottom-style: solid;
+    border-bottom-color: #edebe3;
+    border-bottom-width: 1px; 
+
+  }
+
+  .listoptions table {
+    width: 99%;
+  }
+
+  
+  .drilldown {
+    width: 95%;
+    padding: 5px;
+    /*  font-size:0.9em; */
+    /*  background-color: white;
+       border-top-style: solid;
+       border-top-color: lightblue;
+       border-top-width: 1px;
+       border-left-style: solid;
+       border-left-color: lightblue;
+       border-left-width: 1px;
+       border-right-style: solid;
+       border-right-color: lightblue;
+       border-right-width: 1px;
+       border-bottom-style: solid;
+       border-bottom-color: lightblue;
+       border-bottom-width: 1px;
+       moz-border-radius-bottomright: 12px;
+       moz-border-radius-bottomleft: 12px;
+       webkit-border-radius-bottomright: 12px;
+       webkit-border-radius-bottomleft: 12px; */
+  }
+
+  .drilldown h4 {
+    border-bottom:2px solid #ddd;
+  }
+
+  dl.items a:hover {
+    /*text-decoration: underline;*/
+  }
+  dl.items a {
+    text-decoration: none;
+  }
+
+  dl.items {
+    padding: 0px;
+    margin-left: 0px;
+    
+  }
+  .items dd {
+    padding: 0.1em 0 0.1em 0.4em;
+    list-style-type: none;
+    border-bottom: 1px solid #e3e3e3;
+    margin: 0;
+  }
+
+  .items dt {
+    margin-top:.75em;
+    font-weight:bold;
+    padding:0.2em 0.4em;
+    background-color: #eee;
+  }
+
+  
+  .reuse_data h4, .discover_sources h4 {
+    display: block;
+    margin: 10px 5px 5px 5px;
+    border-bottom: 1px #c88 solid;
+    font-style:normal;
+    font-variant:small-caps;
+  }
+
+  #newreview_do { 
+    font-size: 0.8em;
+  }
+
+  #qr {
+    margin-top:-416px;
+    position:absolute;
+    border:1px solid #ccc;
+    background: aliceblue;
+    padding:5px;
+    display:none;
+    color:#000;
+    text-align: center;
+  }
+
+  #qr .closebutton {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    cursor: pointer;
+  }
+
+
+  .functional_nav {
+    width:100%;
+    margin:0 0 0 0;
+    padding:0;
+    height:32px;
+    border-top: 1px #e3e3e3 solid;
+    border-bottom: 1px #e3e3e3 solid;
+  }
+
+  .functional_nav .breadcrumb {
+    padding:0;
+    margin-top:-20px;
+    margin-left: 0px;
+  }
+  
+  .functional_nav .breadcrumb ul li {
+    list-style:none;
+    float:left;
+    height:30px
+    display:inline;
+  }
+  .functional_nav .breadcrumb ul li a {
+    font:12px Arial, Helvetica, sans-serif;
+    color:rgb(0,0,0);
+    text-decoration:none;
+    line-height:30px;
+    display:block;
+    background:url('/images/openbib/breadcrumb.png') 100% no-repeat;
+    padding:5px 17px 0 0;
+  }
+  .functional_nav .breadcrumb ul li a:hover {
+    text-decoration:underline;
+    color:rbg(0,0,0);
+  }
+  .functional_nav .breadcrumb ul li a.lastitem {
+    background:none;
+    color:rgb(0,0,0);
+  }
+  .functional_nav .breadcrumb ul li a.lastitem:hover {
+    text-decoration:none;
+  }
+
+  .functional_nav .representation {
+    float: right;
+    margin-top: 8px;
+    margin-right: 20px;
+  }
+
+
+  .alphanav {
+    width:100%;
+    margin:0 0 0 0;
+    padding:0;
+    height:25px;
+    border-top: 1px #e3e3e3 solid;
+    border-bottom: 1px #e3e3e3 solid;
+  }
+
+  .alphanav .horizontal {
+    padding:0;
+    margin-top:-20px;
+    margin-left: 0px;
+  }
+  
+  .alphanav .horizontal ul li {
+    list-style:none;
+    float:left;
+    height:20px
+    display:inline;
+  }
+  .alphanav .horizontal ul li a {
+    font:12px Arial, Helvetica, sans-serif;
+    color:rgb(0,0,0);
+    text-decoration:none;
+    line-height:30px;
+    display:block;
+    /*    background:url('/images/openbib/horizontal.png') 100% no-repeat; */
+    padding:5px 3px 0 0;
+  }
+  .alphanav .horizontal ul li a:hover {
+    text-decoration:underline;
+    color:rbg(0,0,0);
+  }
+  .alphanav .horizontal ul li a.active {
+    background:none;
+    color:rgb(0,0,0);
+  }
+  .alphanav .horizontal ul li a.active:hover {
+    text-decoration:none;
+  }
+
+  .searchbar_container {
+    width:100%;
+    margin:0 0 0 0;
+    padding-top:0px;
+    padding-bottom:10px;
+    height:30px;
+    line-height: 30px;
+    background: #eee;
+    /*    border-top: 1px #e3e3e3 solid;
+       border-bottom: 1px #e3e3e3 solid; */
+    border-top: 1px slategrey solid;
+    border-bottom: 1px slategrey solid;
+  }
+
+  .searchbar_container .fs_field {
+    margin-left: 0;
+    height: 25px;
+    font:14px Arial, Helvetica, sans-serif;
+    display: inline;
+  }
+
+  .searchbar_container table {
+    margin-left: 10px;
+    border-collapse: none;
+    border: 0;
+    padding: 0;
+  }
+  
+  .searchbar_container .search_where {
+    display: none;
+  }
+
+  .searchbar_container .search_submit {
+    display: inline;
+    overflow: hidden;
+  }
+
+  .searchbar_container div.cssbutton {
+    float:none;
+    display: inline;
+  }
+
+  .searchbar_container button.cssbutton {
+    float:none;
+  }
+  
+  .searchbar_container .search_links {
+    margin-top: 0;
+    display: inline;
+  }
+
+  .active_item {
+    border-left: 5px green solid;    
+  }
+
+  .inactive_item {
+    border-left: 5px red solid;    
+  }
+
+  .searchform_bottom {
+    padding-bottom: 10em;
+  }
+  
+  .box-top .ym-g33.ym-gl,
+  .box-top .ym-g33.ym-gr {
+    background: url("/images/openbib/lframe.png") top left no-repeat;
+  }
+
+  .box-top .ym-gbox-left,
+  .box-top .ym-gbox-right,
+  .box-top .ym-gbox {
+    padding: 25px;
+    background: url("/images/openbib/rframe.png") top right no-repeat;
+    padding-bottom: 100em;
+    margin-bottom: -100em;
+  }
+
+  .box-bottom {
+    margin-bottom: 1em;
+    text-align:right;
+  }
+
+  .box-bottom .ym-g33.ym-gl,
+  .box-bottom .ym-g33.ym-gr {
+    background: url("/images/openbib/lframe.png") bottom left no-repeat;
+  }
+
+  .box-bottom .ym-gbox-left,
+  .box-bottom .ym-gbox-right,
+  .box-bottom .ym-gbox {
+    padding: 0 20px 15px 20px;
+    background: url("/images/openbib/rframe.png") bottom right no-repeat;
+  }
+
+  /* adjustment of content elements within the boxes */
+  .box-top h4 { display: block; margin: 10px 5px 5px 5px; border-bottom: 1px #c88 solid; font-style:normal; font-variant:small-caps; }
+  .box-top p { padding: 5px; margin-bottom: 0;}
+
+}

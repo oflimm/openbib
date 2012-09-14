@@ -1,65 +1,18 @@
-/* CSS fuer neuere Browser ohne IE */
+/* Google Font API */
+@import url("http://fonts.googleapis.com/css?family=Droid+Serif");
+@import url("http://fonts.googleapis.com/css?family=Droid+Sans:700");
 
-input[type="submit"] {
-  font: 100% Arial,helv,Helvetica,Verdana;
-  border: 1px solid #666;  
-  color: #000000;
-  background-color: #efefef;
-  vertical-align: middle;
-  margin-bottom: 1px;
-}
+/* import framework core */
+@import url("/yaml/core/base.min.css");
 
-input[type="reset"] {
-  font: 100% Arial,helv,Helvetica,Verdana;
-  border: 1px solid #666;  
-  color: #000000;
-  background-color: #efefef;
-  vertical-align: middle;
-  margin-bottom: 1px;
-}
+/* import screen layout */
+@import url("hlist.css");
+@import url("/yaml/navigation/vlist.css");
+@import url("/yaml/forms/gray-theme.css");
 
-input[type="submit"]:hover {
-  color:      HighlightText;
-  background: Highlight;
-  border:     1px groove Highlight;
-  outline:    1px solid #000;
-}
+@import url("layout.css");
+@import url("screen.css");
+@import url("typography.css");
 
-input[type="reset"]:hover {
-  color:      HighlightText;
-  background: Highlight;
-  border:     1px groove Highlight;
-  outline:    1px solid #000;
-}
-
-a.button {
-  font: 100% Arial,helv,Helvetica,Verdana;
-  text-decoration: none; 
-  display: block;
-  width: 200px; 
-  text-align: center; 
-  border-width: 1px;
-  color: #000000; 
-  border-color: #666; 
-  border-style: solid; 
-  background:	#efefef;
-}
-
-a.button:hover {
-  font: 100% Arial,helv,Helvetica,Verdana;
-  text-decoration: none; 
-  display: block;
-  width: 200px; 
-  text-align: center; 
-  border-width: 1px;
-  color: HighlightText; 
-  border-color: #666; 
-  border-style: solid; 
-  background: Highlight;
-  outline:    1px solid #000;
-
-}
-
-a.button:active {
-  border-style: inset;
-} 
+/* import print layout */
+@import url("print.css");

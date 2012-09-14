@@ -61,9 +61,9 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1" style="width: 32%;">
-        <div class="ym-cbox" class="ym-clearfix">
+    <div class="ym-box linearize-level-1">
+      <div class="ym-g33 ym-gr">
+        <div class="ym-gbox" class="ym-clearfix">
 <div class="representation">
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
@@ -510,10 +510,10 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
 
         </div>
       </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3"  style="width: 65%;">
-        <div class="ym-cbox" class="ym-clearfix">
+      <!-- end: grid right -->
+      <!-- begin: grid left -->
+      <div class="ym-g66 ym-gl">
+        <div class="ym-gbox" class="ym-clearfix">
 
 <div class="fulltitle"><!-- Begin Fulltitle -->
 <div class="details ym-grid"><!-- Begin Details -->

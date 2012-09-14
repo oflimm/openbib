@@ -148,7 +148,7 @@ my %cvs_links = (
     "$repositoryroot/portal/apache/openbib.conf"         => "$confd/openbib.conf",
     "$repositoryroot/portal/htdocs/gm"                   => "$documentroot/gm",
     "$repositoryroot/portal/htdocs/js"                   => "$documentroot/js",
-    "$repositoryroot/portal/htdocs/styles"               => "$documentroot/css",
+    "$repositoryroot/portal/htdocs/css"                  => "$documentroot/css",
     "$repositoryroot/portal/htdocs/images"               => "$documentroot/images",
     "$repositoryroot/portal/perl/conf/bk.yml"            => "/opt/openbib/conf/bk.yml",
 

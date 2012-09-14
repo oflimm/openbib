@@ -30,20 +30,21 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-<table cellpadding="10" class="ym-full">
+         <div class="ym-grid">
+          <div class="ym-g33 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
 
-<tr>
-
-<td style="vertical-align:top;padding:20px;">
-<center>
+<center style="padding-top:60px;">
 <img src="/images/openbib/views/rheinlandbib/logo_start.png" alt="Linz am
 Rhein" /><br><br>
 <i style="font-size:0.8em">Linz am Rhein - Druckgraphik von Christoph
 Boethius - datiert auf das Jahr 1690</i>
 </center>
-</td>
 
-<td valign="top" style="padding-top:25px;">
+          </div>
+         </div>
+          <div class="ym-g66 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
 
 <h2>Virtueller Katalog der Arbeitsstelle Historische Bestände im Rheinland</h2>
 
@@ -75,8 +76,9 @@ Titeln integriert. Darüber hinaus stellt die Rheinische Abteilung der
 USB Köln für jede der rheinischen Bibliotheken einen eigenständigen
 Online-Katalog bereit.  </p>
 
-</td></tr>
-</table>
+          </div>
+         </div>
+      </div>
 
     </div>
     <!-- end: #main -->

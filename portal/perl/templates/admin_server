@@ -50,8 +50,8 @@
 <tr><td><b>[% msg.maketext("Rechnername") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
 <tr><td><input type="text" name="host" /></td><td><select name="active"><option value="1">[%
 msg.maketext("Ja") %]</option><option value="0"
-selected>[% msg.maketext("Nein") %]</option></select></td><td><div class="cssbutton glass kug"><input
-type="submit" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+selected>[% msg.maketext("Nein") %]</option></select></td><td><input
+type="submit" value="[% msg.maketext("Neu") %]" /></td></tr>
 </table>
 </td></tr>
 </table>
@@ -75,8 +75,8 @@ type="submit" value="[% msg.maketext("Neu") %]" /></div></td></tr>
 [% END %]
 >
 <td>[% serverinfo.host %]</td>
-<td align="center">[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF serverinfo.active == 0 %]1[% ELSE %]0[% END %]"/><div class="cssbutton glass kug"><input type="submit" value="[% IF serverinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></div></form></td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></div></form></td></tr>
+<td align="center">[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF serverinfo.active == 0 %]1[% ELSE %]0[% END %]"/><input type="submit" value="[% IF serverinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
 [% END %]
 
 </table>

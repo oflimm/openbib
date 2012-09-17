@@ -170,7 +170,7 @@
 
       IF userlitlists.size > 0 ;
 %]
-<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="yform">
+<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="ym-form">
 <fieldset class="ym-full">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
 <input type="hidden" name="titid"           value="[% record.id %]" />
@@ -180,14 +180,14 @@
 <select name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
 </div>
 
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div>
+<input type="submit" value="[% msg.maketext("Los") %]" />
 
 </fieldset>
 </form>
 [% END %]
 
 <p>
-<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="yform">
+<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="ym-form">
 <fieldset class="ym-full">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
 <input type="hidden" name="titid"           value="[% record.id %]" />
@@ -203,7 +203,7 @@
 <select name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
 </div>
 
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div>
+<input type="submit" value="[% msg.maketext("Los") %]" />
 
 </fieldset>
 </form>
@@ -221,7 +221,7 @@
 
 [%  IF private_tags_of_tit.size <= 0  %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('tag_loc') %]" class="yform">
+<form method="post" action="[% path_prefix %]/[% config.get('tag_loc') %]" class="ym-form">
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
@@ -241,7 +241,7 @@
 </select>
 </div>
 
-<div class="cssbutton glass kug"><input type="submit" name="do_add" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div>
+<input type="submit" name="do_add" value="[% msg.maketext("Hinzuf&uuml;gen") %]" />
 </fieldset>
 </form>
 
@@ -295,7 +295,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 [% ELSIF username && private_tags_of_tit.size > 0 %]
 
-<form method="get" action="[% path_prefix %]/[% config.get('tag_loc') %]" class="yform">
+<form method="get" action="[% path_prefix %]/[% config.get('tag_loc') %]" class="ym-form">
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
@@ -303,7 +303,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
 <fieldset class="ym-full">
 
-<div class="cssbutton glass kug"><input type="submit" name="do_add" value="[% msg.maketext("&Auml;ndern") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_del" value="[% msg.maketext("L&ouml;schen") %]" /></div>
+<input type="submit" name="do_add" value="[% msg.maketext("&Auml;ndern") %]" />&nbsp;</td><td><input type="submit" name="do_del" value="[% msg.maketext("L&ouml;schen") %]" />
 </fieldset>
 
 </form>
@@ -753,7 +753,7 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 <p />
 <table>
 <tr>
-<td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Löschen") %]"/></div></td>
+<td><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/>&nbsp;&nbsp;</td><td><input type="reset" value="[% msg.maketext("Löschen") %]"/></td>
 </tr>
 </table>
 </div><!-- End newreview_do -->

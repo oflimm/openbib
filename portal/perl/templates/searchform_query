@@ -146,7 +146,7 @@ $(document).ready(function(){
 <!-- <tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr> -->
 <tr><td class="category"><span class="bigtext">[% msg.maketext("in:") %]</span></td><td colspan="2">[% PROCESS common/subtemplate name="searchform_profile" %]</td><td></td></tr>
 
-<tr><td colspan="3"><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></td></tr>
 <tr><td colspan="3"></td></tr>
 <tr><td ><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple.html" class="navlink">[% msg.maketext("Einfache Suche") %]</a></td><td colspan="2" align="right">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
 

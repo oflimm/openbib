@@ -214,7 +214,7 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 <p />
 <table>
 <tr>
-<td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Löschen") %]"/></div></td>
+<td><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/>&nbsp;&nbsp;</td><td><input type="reset" value="[% msg.maketext("Löschen") %]"/></td>
 </tr>
 </table>
 </td></tr>
@@ -390,7 +390,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 <table>
 <tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</td></tr>
 <tr><td><select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select></td><tr>
-<td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td></tr>
+<td><input type="submit" value="[% msg.maketext("Los") %]" /></td></tr>
 </table>
 </p>
 </form>
@@ -403,7 +403,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 <table>
 <tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</td></tr>
 <tr><td><input type="text" name="title" size="20" /> <select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> </td></tr>
-<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div></td></tr>
+<tr><td><input type="submit" value="[% msg.maketext("Los") %]" /></td></tr>
 </table>
 </form>
 </p>
@@ -431,7 +431,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 
 <table>
 <tr><td colspan="2"><input type="text"   name="tags"       value="" size="40" maxlength="200" id="inputfield"/></td></tr>
-<tr align="center"><td>[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_add" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div></td></tr>
+<tr align="center"><td>[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>&nbsp;</td><td><input type="submit" name="do_add" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></td></tr>
 </table>
 </form>
 
@@ -506,7 +506,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
 
 <table>
-<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_add" value="[% msg.maketext("&Auml;ndern") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_del" value="[% msg.maketext("L&ouml;schen") %]" /></div></td></tr>
+<tr><td><input type="submit" name="do_add" value="[% msg.maketext("&Auml;ndern") %]" />&nbsp;</td><td><input type="submit" name="do_del" value="[% msg.maketext("L&ouml;schen") %]" /></td></tr>
 </table>
 
 </form>

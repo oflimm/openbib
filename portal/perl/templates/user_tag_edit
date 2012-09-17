@@ -52,7 +52,7 @@
 
 <table>
 <tr><td>[% msg.maketext("Zu ersetzendes Tag") %]</td><td></td><td>[% msg.maketext("Neuer Tag-Name") %]</td><td></td></tr>
-<tr><td><input type="text" name="oldtag" size="30" id="inputfield"></td><td>&rarr;</td><td><input type="text" name="newtag" size="30">&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("&Auml;ndern") %]"></div></td></tr>
+<tr><td><input type="text" name="oldtag" size="30" id="inputfield"></td><td>&rarr;</td><td><input type="text" name="newtag" size="30">&nbsp;&nbsp;</td><td><input type="submit" name="do_change" value="[% msg.maketext("&Auml;ndern") %]"></td></tr>
 </table>
 
 </form>

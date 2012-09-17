@@ -87,13 +87,13 @@
 
 <p/>
 
-<div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div>
+<input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" />
 </form>
 
 <form method="post" action="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %]">
 <input type="hidden" name="_method" value="DELETE" />
 <input type="hidden" name="confirm" value="1" />
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Löschen") %]" /></div>
+<input type="submit" value="[% msg.maketext("Löschen") %]" />
 </form>
 
 </td></tr>
@@ -142,7 +142,7 @@ selected="selected"
 
 <p />
 
-<div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div>
+<input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" />
 </form>
 
 </td></tr>
@@ -188,7 +188,7 @@ selected="selected"
 
 <p />
 
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ändern") %]" /></div>
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
 
 </td></tr>
 </table>
@@ -233,7 +233,7 @@ selected="selected"
 
 <p />
 
-<div class="cssbutton glass kug"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></div>
+<input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" />
 
 </td></tr>
 </table>

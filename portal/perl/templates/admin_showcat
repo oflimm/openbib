@@ -41,8 +41,8 @@
 name="sigel" size="3" /></td><td><input type="text" name="url"
 size="20" /></td><td><select name="active"><option value="1">[%
 msg.maketext("Ja") %]</option><option value="0"
-selected>[% msg.maketext("Nein") %]</option></select></td><td><div class="cssbutton glass kug"><input
-type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+selected>[% msg.maketext("Nein") %]</option></select></td><td><input
+type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
 </table>
 </td></tr>
 </table>

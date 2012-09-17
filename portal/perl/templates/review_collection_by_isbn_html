@@ -108,7 +108,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <p />[%    IF item.review %][% item.review %][% END %]
 
 <p>
-<a class="cssbutton glass kug" href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="cssbutton glass kug" href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
+<a class="ob_button" href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="ob_button" href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
 </p>
 </td></tr>
 <tr><td></td></tr>

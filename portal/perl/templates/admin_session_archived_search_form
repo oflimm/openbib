@@ -64,7 +64,7 @@
 
 <table cellpadding="2">
 <tr><td><b>Zwischen Datum</b></td><td><input type="text" name="fromdate"> und <input type="text" name="todate"></td></tr>
-<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="Suchen" /></div></td></tr>
+<tr><td colspan="2"><input type="submit" value="Suchen" /></td></tr>
 </table>
 </td></tr>
 </table>

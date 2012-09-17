@@ -21,4 +21,4 @@
   <option value="title_asc"[%- IF query.param('srt') == 'title_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
   <option value="order_asc"[%- IF query.param('srt') == 'order_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
 </select>
-&nbsp;&nbsp;<div class="nojs_show cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]" /></div>
+&nbsp;&nbsp;<input class="nojs_show" type="submit" value="[% msg.maketext("Los") %]" />

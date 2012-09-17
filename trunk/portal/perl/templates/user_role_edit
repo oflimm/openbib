@@ -94,7 +94,7 @@
 
 </select>
 </td></tr>
-<tr><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]"></div></td></tr>
+<tr><td><input type="submit" value="[% msg.maketext("Los") %]"></td></tr>
 </table>
 </td></tr>
 </table>

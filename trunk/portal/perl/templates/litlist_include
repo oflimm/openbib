@@ -121,7 +121,7 @@
 </td></tr>
 
 <tr>
-<td colspan="2"><div class="cssbutton glass kug"><input type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></div></td></tr>
+<td colspan="2"><input type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
 </tr>
 
 </table>

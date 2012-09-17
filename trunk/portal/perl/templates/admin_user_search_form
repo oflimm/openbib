@@ -62,7 +62,7 @@
 <tr><td class="boxedclear">
 <table>
 <tr><td>[% msg.maketext("Kennung") %]</td><td><input type="text" name="username" size="20"/></td></tr>
-<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Los") %]"></div></td></tr>
+<tr><td colspan="2"><input type="submit" value="[% msg.maketext("Los") %]"></td></tr>
 </table>
 </td></tr>
 </table>

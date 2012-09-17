@@ -123,7 +123,7 @@ function update_fak(yourform, checked, fak) {
 </table>
 <p />
 
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Auswählen") %]" /></div>
+<input type="submit" value="[% msg.maketext("Auswählen") %]" />
 
 </form>
 <p />

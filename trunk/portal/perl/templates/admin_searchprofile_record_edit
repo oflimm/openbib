@@ -82,7 +82,7 @@
 
 <p />
 
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ändern") %]" /></div>
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
 
 </form>
 

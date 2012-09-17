@@ -67,7 +67,7 @@
 <tr><td><input type="text" name="viewname" /></td><td><input type="text" name="description" size="20" />
 </td>
 <td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview.all %]<option value="[% profile.profilename %]">[% profile.description %]</option>[% END %]</select></td>
-<td><select name=active><option value="true">[% msg.maketext("Ja") %]</option><option value="false" selected>[% msg.maketext("Nein") %]</option></select></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Neu") %]" /></div></td></tr>
+<td><select name=active><option value="true">[% msg.maketext("Ja") %]</option><option value="false" selected>[% msg.maketext("Nein") %]</option></select></td><td><input type="submit" value="[% msg.maketext("Neu") %]" /></td></tr>
 </table>
 </td></tr>
 </table>

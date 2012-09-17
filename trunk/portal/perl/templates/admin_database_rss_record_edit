@@ -91,7 +91,7 @@ yesno = {
 
 </table>
 
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Ändern") %]"></div>
+<input type="submit" value="[% msg.maketext("Ändern") %]">
 
 </form>
 
@@ -99,7 +99,7 @@ yesno = {
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="1" />
 
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Löschen") %]"></div></td></tr>
+<input type="submit" value="[% msg.maketext("Löschen") %]"></td></tr>
 
 </form>
 

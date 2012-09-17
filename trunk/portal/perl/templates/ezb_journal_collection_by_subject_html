@@ -63,7 +63,7 @@
 </table>
 <p/>
 <table>
-<tr><td><input id="to_focus" class="fs_field" type="text" name="fs" value="" size="13" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="fs" value="" size="13" maxlength="200" /></td><td><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></td></tr>
 </table>
 </form>
         </div>

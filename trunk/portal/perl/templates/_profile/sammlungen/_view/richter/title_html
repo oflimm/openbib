@@ -169,7 +169,7 @@
 
       IF userlitlists.size > 0 ;
 %]
-<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="yform">
+<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="ym-form">
 <fieldset class="ym-full">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
 <input type="hidden" name="titid"           value="[% record.id %]" />
@@ -186,7 +186,7 @@
 [% END %]
 
 <p>
-<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="yform">
+<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]" class="ym-form">
 <fieldset class="ym-full">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
 <input type="hidden" name="titid"           value="[% record.id %]" />
@@ -220,7 +220,7 @@
 
 [%  IF private_tags_of_tit.size <= 0  %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('tag_loc') %]" class="yform">
+<form method="post" action="[% path_prefix %]/[% config.get('tag_loc') %]" class="ym-form">
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
@@ -294,7 +294,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 [% ELSIF username && private_tags_of_tit.size > 0 %]
 
-<form method="get" action="[% path_prefix %]/[% config.get('tag_loc') %]" class="yform">
+<form method="get" action="[% path_prefix %]/[% config.get('tag_loc') %]" class="ym-form">
 <input type="hidden" name="titdb"      value="[% record.database %]" />
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />

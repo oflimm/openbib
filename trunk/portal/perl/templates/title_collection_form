@@ -83,7 +83,7 @@ END ;-%]
 </td></tr>
 </table>
 
-<div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Neu") %]"></div>
+<input type="submit" value="[% msg.maketext("Neu") %]">
 
 </form>
 

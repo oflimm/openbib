@@ -63,9 +63,6 @@
     [%- END -%]
   [%- END -%]
 
-  <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
-  <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
-
 <!-- jQuery & Plugins -->
     <link type="text/css" href="/css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />     
     <script type="text/javascript" src="/js/jquery-1.5.1.min.js"></script>
@@ -78,9 +75,6 @@
     <title>[% IF page_title %][% page_title %][% ELSE %][% msg.maketext("OpenBib - Demo-Portal") %][% END %]</title>
 
 <!--[if lt IE 7.]>
-<style type="text/css" media="all"> 
-   @import url("[% "${config.get('css_loc')}/cssbuttons/ieBrowserHacks.css" %]");
-</style>
 <script defer type="text/javascript" src="/js/pngfix.js"></script>
 <![endif]-->
 

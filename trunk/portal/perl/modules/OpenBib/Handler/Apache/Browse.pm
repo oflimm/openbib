@@ -53,8 +53,6 @@ use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::Catalog;
-use OpenBib::DBIS;
-use OpenBib::EZB;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -75,7 +73,6 @@ sub setup {
     $self->start_mode('show');
     $self->run_modes(
         'show_collection_by_field'       => 'show_collection_by_field',
-        'show_collection_by_topic'       => 'show_collection_by_topic',
     );
 
     # Use current path as template path,
@@ -448,65 +445,6 @@ sub show_collection_by_field {
         nav        => $nav,
     };
     $self->print_page($config->{"tt_browse_".$type."_tname"},$ttdata);
-    return Apache2::Const::OK;
-}
-
-sub show_collection_by_topic {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $topicid        = $self->strip_suffix($self->param('topicid'));
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-
-    # CGI Args
-    #####################################################################
-    ## Hitrange: Anzahl gleichzeitig ausgegebener Treffer (Blaettern)
-    ##          >0  - gibt die maximale Zahl an
-    ##          <=0 - gibt immer alle Treffer aus
-  
-    my $hitrange=($query->param('num'))?$query->param('num'):20;
-    ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
-
-    my $page=($query->param('page'))?$query->param('page'):1;
-    ($page)=$page=~/^(-?\d+)$/; # page muss numerisch sein (SQL-Injection)
-
-    #####################################################################
-    ## Offset: Maximale Anzahl ausgegebener Treffer bei Anfangs-Suche
-    ##          >0  - hitrange Treffer werden ab dieser Nr. ausgegeben 
-  
-    my $offset=$page*$hitrange-$hitrange;
-  
-    #####################################################################
-    # Verbindung zur SQL-Datenbank herstellen
-
-    return unless ($topicid);
-
-    my $ezb  = new OpenBib::EZB;
-    my $dbis = new OpenBib::DBIS;
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        ezb        => $ezb,
-        dbis       => $dbis,
-        topicid    => $topicid,
-        qopts      => $queryoptions->get_options,
-    };
-    $self->print_page($config->{"tt_browse_topic_tname"},$ttdata);
     return Apache2::Const::OK;
 }
 

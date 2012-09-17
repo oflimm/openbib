@@ -1,4 +1,4 @@
-.button, input[type="submit"] {
+.ob_button, input[type="submit"] {
 	display: inline-block;
 	outline: none;
 	cursor: pointer;
@@ -15,16 +15,16 @@
 	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
 	box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
-.button:hover, input[type="submit"] {
+.ob_button:hover, input[type="submit"] {
 	text-decoration: none;
 }
 
-.button:active, input[type="submit"]:active {
+.ob_button:active, input[type="submit"]:active {
 	position: relative;
 	top: 1px;
 }
 
-.button, input[type="submit"] {
+.ob_button, input[type="submit"] {
 	color: #d9eef7;
 	border: solid 1px #0076a3;
 	background: #0095cd;
@@ -33,13 +33,13 @@
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
 }
 
-.button:hover, input[type="submit"]:hover {
+.ob_button:hover, input[type="submit"]:hover {
 	background: #007ead;
 	background: -webkit-gradient(linear, left top, left bottom, from(#0095cc), to(#00678e));
 	background: -moz-linear-gradient(top,  #0095cc,  #00678e);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#0095cc', endColorstr='#00678e');
 }
-.button:active, input[type="submit"]:active {
+.ob_button:active, input[type="submit"]:active {
 	color: #80bed6;
 	background: -webkit-gradient(linear, left top, left bottom, from(#0078a5), to(#00adee));
 	background: -moz-linear-gradient(top,  #0078a5,  #00adee);

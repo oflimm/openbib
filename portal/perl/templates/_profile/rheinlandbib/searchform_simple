@@ -64,7 +64,7 @@
 <li><a href="#topics"><span>[% msg.maketext("Themengebiete") %]</span></a></li>
 </ul>
 
-<h2 class="nojs_show">[% msg.maketext("Alle Formate") %]</h2>
+<h2 class="ob-nojs_show">[% msg.maketext("Alle Formate") %]</h2>
 
 <div id="alltypes"><!-- Begin alle Typen -->
 
@@ -196,7 +196,7 @@ $(document).ready(function(){
 
 </div><!-- End alle Typen -->
 
-<h2 class="nojs_show">[% msg.maketext("Zeitschriften/Serien") %]</h2>
+<h2 class="ob-nojs_show">[% msg.maketext("Zeitschriften/Serien") %]</h2>
 
 <div id="only_serials"><!-- Begin Serials-->
 
@@ -288,7 +288,7 @@ $(document).ready(function(){
 
 </div><!-- End Serials -->
 
-<h2 class="nojs_show">[% msg.maketext("Aufs&auml;tze") %]</h2>
+<h2 class="ob-nojs_show">[% msg.maketext("Aufs&auml;tze") %]</h2>
 
 <div id="only_articles"><!-- Begin nur Aufsaetze -->
 
@@ -381,7 +381,7 @@ $(document).ready(function(){
 
 </div><!-- End nur Aufsaetze -->
 
-<h2 class="nojs_show">[% msg.maketext("Online") %]</h2>
+<h2 class="ob-nojs_show">[% msg.maketext("Online") %]</h2>
 
 <div id="only_online"><!-- Begin nur Online -->
 
@@ -474,7 +474,7 @@ $(document).ready(function(){
 
 </div><!-- End nur Online -->
 
-<h2 class="nojs_show">[% msg.maketext("Themengebiete") %]</h2>
+<h2 class="ob-nojs_show">[% msg.maketext("Themengebiete") %]</h2>
 
 <div id="topics"><!-- Begin Themengebiete -->
 

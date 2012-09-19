@@ -116,23 +116,23 @@ END ;
 > 0 || similar_records.get_size > 0 || config.get('reviews') || tictocs_feed %]
 <ul class="nojs_hidden">
 [% IF circulation.size > 0 %]
-<li><a href="#circinfo"><span>[% msg.maketext("Ausleihe/Exemplare") %]</span></a></li>
+<li><a href="#ob-circulation_info"><span>[% msg.maketext("Ausleihe/Exemplare") %]</span></a></li>
 [% ELSE %]
 [%   IF holding.size > 0 %]
-<li><a href="#mexinfo"><span>[% msg.maketext("Bestand") %]</span></a></li>
+<li><a href="#ob-holding_info"><span>[% msg.maketext("Bestand") %]</span></a></li>
 [%   END %]
 [% END %]
 [% IF tictocs_feed %]
 <li><a href="#tictocs"><span>[% msg.maketext("Letzte Artikel") %]</span></a></li>
 [% END %]
 [% IF same_records.get_size > 0 %]
-<li><a href="#same_records"><span>[% msg.maketext("In anderen Katalogen") %]</span></a></li>
+<li><a href="#ob-same_records"><span>[% msg.maketext("In anderen Katalogen") %]</span></a></li>
 [% END %]
 [% IF similar_records.get_size > 0 %]
 <li><a href="#similar_records"><span>[% msg.maketext("Andere Ausgaben") %]</span></a></li>
 [% END %]
 [% IF config.get('reviews') %]
-<li><a href="#reviews"><span>[% msg.maketext("Bewertungen/Rezensionen") %]</span></a></li>
+<li><a href="#ob-reviews"><span>[% msg.maketext("Bewertungen/Rezensionen") %]</span></a></li>
 [% END %]
 </ul>
 [% END %]
@@ -140,7 +140,7 @@ END ;
 [% IF circulation.size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
 
-<div id="circinfo"><!-- Begin Circulation -->
+<div id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
@@ -174,7 +174,7 @@ $(document).ready(function(){
 [% IF config.get('reviews') %]
 <h2 class="nojs_show">[% msg.maketext("Bewertungen/Rezensionen") %]</h2>
 
-<div id="reviews"><!-- Begin: Reviews -->
+<div id="ob-reviews"><!-- Begin: Reviews -->
 
 [% IF   username %]
 
@@ -234,11 +234,11 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 <tr><td id="allreviews" class="boxedclear">
 <!-- Beginn Reviews -->
 
-<dl class="reviews">
+<dl class="ob-reviews">
 [%- FOREACH item IN reviews -%]
-<dt class="review">[% IF item.votes.all > 0 %][% msg.maketext("[_1]
-von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,item.votes.all) %]<p />[% END %]<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
-<dd class="review">[%    IF item.review %][% item.review %][% END %]
+<dt class="ob-review">[% IF item.votes.all > 0 %][% msg.maketext("[_1]
+von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,item.votes.all) %]<p />[% END %]<span class="ob-reviewtitle">[% item.title %]</span> von <span class="ob-reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="ob-reviewrating">[% item.rating %]</span>)</dt>
+<dd class="ob-review">[%    IF item.review %][% item.review %][% END %]
 [% IF item.id == ownreviewid %]
 <p />
 <a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
@@ -265,7 +265,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 [% IF same_records.get_size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
 
-<div id="same_records"><!-- Begin: Same records -->
+<div id="ob-same_records"><!-- Begin: Same records -->
 [% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]:
 <p />
 <ol>
@@ -280,7 +280,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 [% IF similar_records.get_size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Andere Ausgaben") %]</h2>
 
-<div id="similar_records"><!-- Begin: Similar records -->
+<div id="ob-similar_records"><!-- Begin: Similar records -->
 [% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen") %]:
 <p />
 <ol>
@@ -365,8 +365,8 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 </table>
 <p />
 <div class="formats"><!-- Begin Formats -->
-<div class="ob-headline"><span id="formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="formats_do"><!-- Begin formats do -->
+<div class="ob-headline"><span id="ob-formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-formats_do"><!-- Begin formats do -->
 <p>
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?format=full" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
@@ -375,9 +375,9 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 </div>
 
 [% IF config.get('litlists') %]
-<div class="litlists"><!-- Begin Litlist -->
-<div class="ob-headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="litlists_do"><!-- Begin Litlist do -->
+<div class="ob-litlists"><!-- Begin Litlist -->
+<div class="ob-headline"><span id="ob-litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-litlists_do"><!-- Begin Litlist do -->
 [%
       userlitlists = user.get_litlists();
 

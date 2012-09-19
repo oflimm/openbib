@@ -69,7 +69,7 @@
 [% IF circulation.size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
 
-<div id="circinfo"><!-- Begin Circulation -->
+<div id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
@@ -103,7 +103,7 @@ $(document).ready(function(){
 [% IF same_records.get_size == -10 %]
 <h2 class="nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
 
-<div id="same_records"><!-- Begin: Same records -->
+<div id="ob-same_records"><!-- Begin: Same records -->
 [% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden") %]:
 <p />
 
@@ -129,7 +129,7 @@ $(document).ready(function(){
 [% IF similar_records.get_size > 0 %]
 <h4 class="nojs_show">[% msg.maketext("Andere Ausgaben") %]</h4>
 
-<div id="similar_records"><!-- Begin: Similar records -->
+<div id="ob-similar_records"><!-- Begin: Similar records -->
 [% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen") %]:
 <p />
 <ol>

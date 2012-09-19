@@ -548,4 +548,9 @@
   .box-top h4 { display: block; margin: 10px 5px 5px 5px; border-bottom: 1px #c88 solid; font-style:normal; font-variant:small-caps; }
   .box-top p { padding: 5px; margin-bottom: 0;}
 
+  .ym-searchform a {
+    color: #000;
+    padding-left: 2px;
+  }
+
 }

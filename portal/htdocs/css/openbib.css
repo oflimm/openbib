@@ -1,19 +1,22 @@
-/* Google Font API */
+/* Google Font API
 @import url("http://fonts.googleapis.com/css?family=Droid+Serif");
 @import url("http://fonts.googleapis.com/css?family=Droid+Sans:700");
+*/
 
 /* import framework core */
 @import url("/yaml/core/base.min.css");
 
-/* import screen layout */
-@import url("hlist.css");
+/* import default CSS *
+@import url("/yaml/navigation/hlist.css");
 @import url("/yaml/navigation/vlist.css");
+@import url("/yaml/print/print.css");
 @import url("/yaml/forms/gray-theme.css");
+@import url("/yaml/screen/typography.css");
 
-@import url("layout.css");
-@import url("screen.css");
+/* import customized CSS */
 @import url("typography.css");
+@import url("layout.css");
+@import url("hlist.css");
+@import url("screen.css");
 @import url("buttons.css"); 
-
-/* import print layout */
 @import url("print.css");

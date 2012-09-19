@@ -120,7 +120,7 @@ type="text" name="tags" value="" id="inputfield" size="20" maxlength="200" title
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="ob-brieftitle">
-<span class="ob-person">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="ob-title">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span>
+<span class="ob-person">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="ob-title">[% record.${'title'} %]</span></strong>, <span class="ob-publisher">[% record.${'publisher'} %]</span> <span class="ob-yearofpub">[% record.${'year'} %]</span>
 <br/>[% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Dieser Titel ist in den Katalogen des Portals verf&uuml;gbar") %]</span>[% ELSE %]<span
 style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen des Portals gefunden werden. Er kann dennoch in anderer Schreibweise existieren!") %]</span>[% END %]
       </div>

@@ -46,7 +46,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<div class="headline">[% msg.maketext("Suche nach Datenbanken") %]</div>
+<div class="ob-headline">[% msg.maketext("Suche nach Datenbanken") %]</div>
 <p/>
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 <input type="hidden" name="db"        value="dbis" />

@@ -16,7 +16,7 @@
 
 [%# USE dumper;dumper.dump(record) %]
 <table class="ym-full">
-<tr><td class="category">id</td><td>[% record.id %]</td></tr>
+<tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
 
 [%-
 request_base = config.get('search_defaultparams');
@@ -202,13 +202,13 @@ FOREACH category IN categories;
    END;
 
 -%]
-<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+<tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%
    END;
 END;
 -%]
 [%- IF bibkey -%]
-<tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
+<tr><td class="ob-field">bibkey</td><td>[% bibkey %]</td></tr>
 [%- END -%]
 <tr><td colspan="2">
 <table class="ym-full">

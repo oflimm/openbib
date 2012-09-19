@@ -98,11 +98,11 @@ FOREACH category IN categories;
           thiscategory = "${category}-${record.database}" ;
         END;
 -%]
-<tr><td class="category">[% msg.maketext("${thiscategory}")
+<tr><td class="ob-field">[% msg.maketext("${thiscategory}")
 %]</td><td>[% content %]</td></tr>
 [%-   END ;
 END ;-%]
-<tr><td class="category">QR-Code</td><td><a class="ob-qrcode" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
+<tr><td class="ob-field">QR-Code</td><td><a class="ob-qrcode" onclick="return false;" href="[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
 </table>
 
 

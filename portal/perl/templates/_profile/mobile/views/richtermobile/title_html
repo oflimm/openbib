@@ -53,7 +53,7 @@
 [% IF holding.size > 0 %]
 <p/>
 
-<div id="mexinfo"><!-- Begin Bestand -->
+<div id="ob-holding_info"><!-- Begin Bestand -->
 [%# USE dumper;dumper.dump(holding)%]
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->

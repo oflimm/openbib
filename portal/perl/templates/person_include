@@ -50,7 +50,7 @@ FOREACH category IN categories;
    END;
 
 -%]
-<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+<tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-
    END;
 END;

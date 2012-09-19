@@ -103,7 +103,7 @@ type="text" name="tags" value="" id="inputfield" size="20" maxlength="200" title
     <div class="ob-hits">
     </div>
   </div>
-  <div class="resultitems fullwidth liststyle">
+  <div class="ob-resultitems fullwidth liststyle">
 [% listrow = 'listrow1' %]
 [%- FOREACH thistitle IN posts.recordlist -%]
 [%- record = thistitle.record -%]

@@ -156,7 +156,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%# USE dumper;dumper.dump(have_filter)%]
 [%         IF searchquery.get_filter.size > 0 %]
 <dl>
-<dt class="headline" >[% msg.maketext("Aktive Filter") %]</dt>
+<dt class="ob-headline" >[% msg.maketext("Aktive Filter") %]</dt>
 [%
     filter_prefix_map = {
           ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
@@ -190,7 +190,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin database facet -->
 [%         IF category_map.8.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_database_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
+<dt class="ob-headline" id="dd_database_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
 [%             FOREACH termitem IN category_map.8 ;
                   LAST IF loop.count > 25 ;
 %]
@@ -214,7 +214,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && category_map.4.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Medienart") %]</dt>
+<dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Medienart") %]</dt>
 [%             FOREACH termitem IN category_map.4 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -238,7 +238,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && category_map.1.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_subject_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
+<dt class="ob-headline" id="dd_subject_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
 [%             FOREACH termitem IN category_map.1 ;
                   LAST IF loop.count > 25 ;
 %]
@@ -262,7 +262,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin year facet -->
 [%         IF config.get('facets').year && category_map.5.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</dt>
+<dt class="ob-headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</dt>
 [%             FOREACH termitem IN category_map.5 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -286,7 +286,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && category_map.2.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</dt>
+<dt class="ob-headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</dt>
 [%             FOREACH termitem IN category_map.2 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -310,7 +310,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin tag facet -->
 [%         IF config.get('facets').tag && category_map.9.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_tag_[% database %]_anchor">[% msg.maketext("nach Tags") %]</dt>
+<dt class="ob-headline" id="dd_tag_[% database %]_anchor">[% msg.maketext("nach Tags") %]</dt>
 [%             FOREACH termitem IN category_map.9 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -334,7 +334,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin litlist facet -->
 [%         IF config.get('facets').litlist && category_map.10.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_litlist_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</dt>
+<dt class="ob-headline" id="dd_litlist_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</dt>
 [%             FOREACH termitem IN category_map.10 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -358,7 +358,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin person facet -->
 [%         IF config.get('facets').person && category_map.3.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Personen") %]</dt>
+<dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Personen") %]</dt>
 [%             FOREACH termitem IN category_map.3 ;
                   LAST IF loop.count > 25 ;
 %]
@@ -382,7 +382,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && category_map.7.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
+<dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
 <tr><td>
 [%             FOREACH termitem IN category_map.7 ;
                   LAST IF loop.count > 25 ;
@@ -407,7 +407,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin language facet -->
 [%         IF config.get('facets').language && category_map.6.size > 0 %]
 <dl class="ob-items">
-<dt class="headline" id="dd_language_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</dt>
+<dt class="ob-headline" id="dd_language_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</dt>
 [%             FOREACH termitem IN category_map.6 ;
                   LAST IF loop.count > 25 ;
  %]

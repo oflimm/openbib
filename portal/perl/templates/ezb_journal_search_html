@@ -68,7 +68,7 @@ Suchbegriff(e): [% journals.current_page.term %]
   <div class="resultdrilldown">
     <div class="ob-facets">
 
-       <div class="headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
+       <div class="ob-headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
 <form method="get" action="[% path_prefix %]/[% config.get('ezb_loc') %]">
 
 

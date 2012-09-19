@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% IF format == 'short' %]
 [%- recordlist = recordlist.load_brief_records -%]
 [%- FOREACH record IN recordlist.get_records -%]

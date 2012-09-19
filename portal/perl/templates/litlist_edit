@@ -145,7 +145,7 @@
     </div>
   </div>
   
-  <div class="resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+  <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 
 [% IF format == 'Text' %]
 

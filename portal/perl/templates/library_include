@@ -56,7 +56,7 @@ FOREACH category IN categories;
           thiscategory = "${category}-${record.database}" ;
         END;
 -%]
-<tr><td class="category">[% msg.maketext("${thiscategory}")
+<tr><td class="ob-field">[% msg.maketext("${thiscategory}")
 %]</td><td>[% content %]</td></tr>
 [%-   END ;
 END ;-%]

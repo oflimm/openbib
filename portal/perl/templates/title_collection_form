@@ -66,7 +66,7 @@ FOREACH category IN categories;
           thiscategory = "${category}-${record.database}" ;
         END;
 -%]
-<tr><td class="category">[% msg.maketext("${thiscategory}")
+<tr><td class="ob-field">[% msg.maketext("${thiscategory}")
 %]</td><td><input type="text" name="[% category %]" value="[% content | replace('"','%22') %]" size="100"/></td></tr>
 [%-   END ;
      ELSE ;
@@ -75,7 +75,7 @@ FOREACH category IN categories;
           thiscategory = "${category}-${record.database}" ;
         END;
 %]
-<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td><input type="text" name="[% category %]" value="" size="60"/></td></tr>
+<tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td><input type="text" name="[% category %]" value="" size="60"/></td></tr>
 [%-  END ;
 END ;-%]
 </table>

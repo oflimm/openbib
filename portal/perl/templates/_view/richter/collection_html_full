@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.load_full_records.get_records -%]
 [% activefeed = config.get_activefeeds_of_db(record.database) %]
 [% database        = record.database %]
@@ -61,7 +61,7 @@
 <div class="categories"><!-- Begin Categories -->
 [%# USE dumper;dumper.dump(normdata)%]
 <table cellpadding="2">
-<tr><td class="category">id</td><td>[% record.id %]</td></tr>
+<tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
 
 [%-
 
@@ -217,20 +217,20 @@ FOREACH category IN categories;
    END;
 
 -%]
-<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+<tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%
    END;
 END;
 -%]
 [%- IF bibkey -%]
-<tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
+<tr><td class="ob-field">bibkey</td><td>[% bibkey %]</td></tr>
 [%- END -%]
 </table>
 
 </div><!-- End Categories -->
 </div><!-- End Details -->
 
-<div class="bottominfo"><!-- Begin Bottominfo -->
+<div class="ob-bottominfo"><!-- Begin Bottominfo -->
 
 [%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">
@@ -263,7 +263,7 @@ END;
 </div><!-- End Circulation -->
 [% ELSE %]
 [%   IF holding.size > 0 %]
-<div id="mexinfo"><!-- Begin Bestand -->
+<div id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding"%]
 </div><!-- End Bestand -->
 [%   END %]

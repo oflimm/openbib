@@ -41,7 +41,7 @@
 [% IF NOT hide_options %]
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 
-<div class="headline">[% msg.maketext("Andere Formate") %]</div>
+<div class="ob-headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
 <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]/edit?format=short" [%- IF format == 'short' -%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]/edit?format=full" [%- IF format == 'full' -%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]/edit?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]/edit?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]/edit?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
@@ -162,7 +162,7 @@
   </div>
 [% END %]
   
-  <div class="resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+  <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 
 [% IF format == 'Text' %]
 

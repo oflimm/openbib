@@ -8,7 +8,7 @@ function imagePreview (){
   // you might want to adjust to get the right result
   
   /* END CONFIG */
-  $("a.preview").hover(function(e){
+  $("a.ob-preview").hover(function(e){
 			 var t = this.title;
 			 var c = (t != "") ? "<br/>" + t : "";
 			 $("body").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' />"+ c +"</p>"); 
@@ -21,7 +21,7 @@ function imagePreview (){
 			 this.title = this.t;
 			 $("#preview").remove();
 		       });
-  $("a.preview").mousemove(function(e){
+  $("a.ob-preview").mousemove(function(e){
 			     $("#preview")
 			       .css("top",(e.pageY - yOffset) + "px")
 			       .css("left",(e.pageX + xOffset) + "px");
@@ -45,9 +45,9 @@ function qrcodeShow () {
   var yOffset = -25;
   /* END CONFIG */
     
-  $("a.qrcode").click(function(e) {
+  $("a.ob-qrcode").click(function(e) {
     $("body").append("<p id=\"qr\"><strong>QR-Code</strong> &nbsp; [ <a class=\"ext\" href=\"http://qrcode.wilkohartz.de/\" onclick=\"openMsgWin('','QR-Code Informationen','','','yes','yes');return true;\" target=\"QR-Code Informationen\">Reader-Software</a> ]<img src=\"/images/openbib/close.png\" alt=\"Schließen\" title=\"Schließen\" class=\"closebutton\" /><br/ ><img src=\""+ this.href +"\" alt=\"QR-Code\" style=\"margin:5px 0 5px 0;\" /><br/>" + this.title + "</p>"); 
-    $("#qr")
+    $("#ob-qr")
       .css("top",(e.pageY - yOffset) + "px")
       .css("left",(e.pageX + xOffset) + "px")
       .fadeIn("fast");
@@ -57,7 +57,7 @@ function qrcodeShow () {
 
 function qrcodeRemove () {
   $(".closebutton").click(function(e) {
-    $("#qr").remove();
+    $("#ob-qr").remove();
   });
 };
 
@@ -82,7 +82,7 @@ $(function(){
 //$('#additional_title_info > ul').tabs();
 
 // Tabs fuer Suchmaske nach Formaten 
-$('#searchform_types').tabs();
+$('#ob-searchform_types').tabs();
 
 // Accordion fuer Datenbankauswahl
 //$('.ui-accordion').accordion({ 
@@ -92,8 +92,8 @@ $('#searchform_types').tabs();
 
 // nojs_* modifizieren fuer JavaScript-Version der Seite
 
-$('.nojs_hidden').css('display','block');
-$('.nojs_show').css('display','none');
+$('.ob-nojs_hidden').css('display','block');
+$('.ob-nojs_show').css('display','none');
 
 $('select.autosubmit').change(function(){
                                        this.form.submit();
@@ -120,7 +120,7 @@ $('select.autosubmit').change(function(){
 
 //    }
  
-$(".rlcollect a").click(function(){
+$(".ob-collect a").click(function(){
 
    // Insert-Funktion aufrufen
    $.get(this.href);
@@ -128,12 +128,12 @@ $(".rlcollect a").click(function(){
    if (View){
    // Merklistenfuellstand aktualisieren
    $.get("/portal/"+View+"/collection/count",
-function (txt){ $("#collectioncount").html("["+txt+"]"); });
+function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
    }
    else {
    // Merklistenfuellstand aktualisieren
    $.get("/portal/collection/count",
-function (txt){ $("#collectioncount").html("["+txt+"]"); });
+function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
    }
    return false;
  });
@@ -239,10 +239,10 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 // --------------------------------------------------------------------------
 // Begin Togglen / Eigene Reviews
 // Zuerst verstecken
-$("#newreview_do").hide();
+$("#ob-newreview_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#newreview_toggle").click(function(){
- $("#newreview_do").toggle();
+$("#ob-newreview_toggle").click(function(){
+ $("#ob-newreview_do").toggle();
 });
 // Ende Togglen / Eigene Reviews
 
@@ -250,73 +250,73 @@ $("#newreview_toggle").click(function(){
 
 // Begin Togglen / Alle Reviews
 // Zuerst verstecken
-$("#allreviews_do").hide();
+$("#ob-allreviews_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#allreviews_toggle").click(function(){
- $("#allreviews_do").toggle();
+$("#ob-allreviews_toggle").click(function(){
+ $("#ob-allreviews_do").toggle();
 });
 // Ende Togglen / alle Reviews
 
 // Begin Togglen / Formate
 // Zuerst verstecken
-$("#formats_do").hide();
+$("#ob-formats_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#formats_toggle").click(function(){
- $("#formats_do").toggle();
+$("#ob-formats_toggle").click(function(){
+ $("#ob-formats_do").toggle();
 });
 // Ende Togglen / Formate
 
 // Begin Togglen / Verwandte Personen
 // Zuerst verstecken
-$("#similarpersons_do").hide();
+$("#ob-similarpersons_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#similarpersons_toggle").click(function(){
- $("#similarpersons_do").toggle();
+$("#ob-similarpersons_toggle").click(function(){
+ $("#ob-similarpersons_do").toggle();
 });
 // Ende Togglen / Verwandte Personen
 
 // Begin Togglen / Verwandte Themen
 // Zuerst verstecken
-$("#similarsubjects_do").hide();
+$("#ob-similarsubjects_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#similarsubjects_toggle").click(function(){
- $("#similarsubjects_do").toggle();
+$("#ob-similarsubjects_toggle").click(function(){
+ $("#ob-similarsubjects_do").toggle();
 });
 // Ende Togglen / Verwandte Personen
 
 // Begin Togglen / BibSonomy Tags
 // Zuerst verstecken
-$("#bibsonomy_tags_do").hide();
+$("#ob-bibsonomy_tags_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#bibsonomy_tags_toggle").click(function(){
- $("#bibsonomy_tags_do").toggle();
+$("#ob-bibsonomy_tags_toggle").click(function(){
+ $("#ob-bibsonomy_tags_do").toggle();
 });
 // Ende Togglen / BibSonomy_tags
 
 // Begin Togglen / Verschiedenes
 // Zuerst verstecken
-$("#misc_do").hide();
+$("#ob-misc_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#misc_toggle").click(function(){
- $("#misc_do").toggle();
+$("#ob-misc_toggle").click(function(){
+ $("#ob-misc_do").toggle();
 });
 // Ende Togglen / Verschiedenes
 
 // Begin Togglen / Literaturlisten
 // Zuerst verstecken
-$("#litlists_do").hide();
+$("#ob-litlists_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#litlists_toggle").click(function(){                              
-  $("#litlists_do").toggle();
+$("#ob-litlists_toggle").click(function(){                              
+  $("#ob-litlists_do").toggle();
 });
 // Ende Togglen / Literaturlisten
 
 // Begin Togglen / Tagging
 // Zuerst verstecken
-$("#tagging_do").hide();
+$("#ob-tagging_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#tagging_toggle").click(function(){
- $("#tagging_do").toggle();
+$("#ob-tagging_toggle").click(function(){
+ $("#ob-tagging_do").toggle();
 });
 // Ende Togglen / Tagging
 

@@ -26,16 +26,16 @@
 -%]
 
 <!-- Titlelist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
-    <div class="catalogue">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="ob-catalog">
 [% litlist.properties.title %]
     </div>
-    <div class="hits">
+    <div class="ob-hits">
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>
 [% IF offset >= 0 && num > 0 %]
-    <div class="navigation">
+    <div class="ob-navigation">
 [%- FOREACH navitem IN nav ;
       IF navitem.active ;
         previouspage = lastpage;
@@ -68,7 +68,7 @@
 [%-    END -%]
   </div>
 [%- IF format == 'short' -%]
-  <div class="listoptions">
+  <div class="ob-listoptions">
 <!-- Titlelist begins here -->
 <form method="get" action="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %]">
 
@@ -79,7 +79,7 @@
 [% END %]
   <div class="rightoptions">
 [% IF NOT hide_options %]
-<div class="reuse_data"><!-- Begin Reuse -->
+<div class="ob-reuse_data"><!-- Begin Reuse -->
 
 <div class="headline">[% msg.maketext("Andere Formate") %]</div>
 

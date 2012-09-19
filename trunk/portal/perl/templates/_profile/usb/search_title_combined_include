@@ -85,7 +85,7 @@
 
 <p/>
 [%# USE dumper;dumper.dump(searchquery)%]
-    <div class="navigation">
+    <div class="ob-navigation">
 [% msg.maketext("Seite:") %]&nbsp;
 [%- IF nav.pages_in_set.first > nav.first_page -%]
 &nbsp;&nbsp;<b>...</b>

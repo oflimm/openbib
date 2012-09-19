@@ -83,8 +83,8 @@ aufgef&uuml;hrt.") %]
 [% END %]
 </table>
 
-  <div class="footer">
-    <div class="navigation">
+  <div class="ob-footer">
+    <div class="ob-navigation">
 [% msg.maketext("Seite:") %]&nbsp;
 [%- IF nav.pages_in_set.first > nav.first_page -%]
 &nbsp;&nbsp;<a href="[% path %]?page=[% nav.first_page %];[% query_args_base %]">[% nav.first_page %]</a>&nbsp;&nbsp;<b>...</b>
@@ -101,7 +101,7 @@ aufgef&uuml;hrt.") %]
 &nbsp;&nbsp;<b>...</b>&nbsp;&nbsp;<a href="[% path %]?page=[% nav.last_page %];[% query_args_base %]">[% nav.last_page %]</a>
 [%- END -%]
     </div>
-    <div class="resulttime">
+    <div class="ob-resulttime">
     </div>
   </div>
 

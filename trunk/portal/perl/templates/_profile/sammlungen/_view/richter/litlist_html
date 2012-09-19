@@ -36,23 +36,23 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="functional_nav">
-     <div class="breadcrumb">
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
          <li><a href="#" class="lastitem">[% litlist.properties.title %]</a></li>
       </ul>
      </div>
-     <div class="representation">
+     <div class="ob-representation">
 <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
 <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
      </div>
    </div>
 <p/>
 
-<div class="page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
-<div class="page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
+<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
+<div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.topics.size -%]
 [%- FOREACH topic IN litlist.properties.topics-%]
 <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/topic/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
@@ -81,8 +81,8 @@
 -%]
 
 <!-- Titlelist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
     <div class="left">
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>

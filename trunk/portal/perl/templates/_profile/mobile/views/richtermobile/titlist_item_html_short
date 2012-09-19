@@ -147,14 +147,14 @@
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.lt == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% END %]
          <h3>[% title %]</h3>
          <p>
-[% IF person %]<span class="rlperson">[% person %]</span><br />[% END %][%- IF edition -%]<span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>   
+[% IF person %]<span class="ob-person">[% person %]</span><br />[% END %][%- IF edition -%]<span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>   
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [% dbdesc | truncate(config.get('maxlength_dbname')) %]</i>&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
 [% ELSE %]
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]
-      <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
+      <div class="ob-titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
 </p>
 </a>
 </li>

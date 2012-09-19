@@ -120,7 +120,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 
 </script>
 [%# USE dumper;dumper.dump(category_map)%]
-<div class="drilldown">
+<div class="ob-facets">
 <h4>[% msg.maketext("Treffermenge eingrenzen") %]</h4>
 <table>
 
@@ -473,7 +473,7 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 
 </div>
 [% ELSE %]
-<div class="drilldown">
+<div class="ob-facets">
 <h2><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h2>
 
 <p>

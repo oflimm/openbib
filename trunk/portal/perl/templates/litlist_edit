@@ -36,8 +36,8 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="functional_nav">
-     <div class="breadcrumb">
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
 [% IF user.ID %]
@@ -51,8 +51,8 @@
 
 <p/>
 
-<div class="page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
-<div class="page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
+<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
+<div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.topics.size -%]
 [%- FOREACH topic IN litlist.properties.topics-%]
 <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/topic/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
@@ -65,7 +65,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<div class="reuse_data"><!-- Begin Reuse -->
+<div class="ob-reuse_data"><!-- Begin Reuse -->
 
 <h3>[% msg.maketext("Andere Formate") %]</h3>
 
@@ -131,8 +131,8 @@
 -%]
 
 <!-- Titlelist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
     <div class="left">
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>

@@ -95,8 +95,8 @@
     searchquery = session.get_all_searchqueries.first ;
 -%]
 
-   <div class="functional_nav">
-      <div class="breadcrumb"> 
+   <div class="ob-functional_nav">
+      <div class="ob-breadcrumb"> 
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
 [% IF searchquery %]
@@ -115,7 +115,7 @@
         <li><a href="#" class="lastitem">[% msg.maketext("Titel") %]</a></li>
       </ul>
     </div>
-    <div class="representation">
+    <div class="ob-representation">
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
     </div>
@@ -254,7 +254,7 @@
 <!-- Beginn Tag-Cloud -->
 
 [%-   IF private_tags.size > 0 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-     FOREACH thisitem IN private_tags -%]
 [%        item      = thisitem.name;
           itemcount = thisitem.count;
@@ -278,7 +278,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <!-- Beginn generelle Tag-Uebernahme -->
 <h4>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</h4>
 
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-   FOREACH thisitem IN all_tags -%]
 [%      item      = thisitem.name;
         itemcount = thisitem.count;
@@ -542,7 +542,7 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[%
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="ob-title">[%
 title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
 [% END %]
 [% IF recent_titles.get_size > 5 %]
@@ -562,7 +562,7 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
       <div class="ym-g66 ym-gl">
         <div class="ym-gbox" class="ym-clearfix">
 
-<div class="fulltitle"><!-- Begin Fulltitle -->
+<div class="ob-fulltitle"><!-- Begin Fulltitle -->
 <div class="details ym-grid linearize-level-2"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="images ym-g25 ym-gr"><!-- Begin Images -->
@@ -731,7 +731,7 @@ OID[% ownreviewid %]
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
 <div class="headline"><span id="newreview_toggle">[% msg.maketext("Neue Bewertung/Rezension") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="newreview_do"><!-- Begin formats do -->
+<div id="ob-newreview_do"><!-- Begin formats do -->
 
 <h4>[% msg.maketext("Bewertung") %]</h4>
 <table>

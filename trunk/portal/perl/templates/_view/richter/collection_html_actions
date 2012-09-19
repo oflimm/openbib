@@ -1,5 +1,5 @@
 [% IF NOT hide_options %]
-<div class="reuse_data"><!-- Begin Reuse -->
+<div class="ob-reuse_data"><!-- Begin Reuse -->
 <h6>[% msg.maketext("Behalten Sie diese Liste") %]:</h6>
 
 <img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('collection_loc') %]/save?format=[% format %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
@@ -80,7 +80,7 @@ versehen: ") %]
 <!-- Beginn Tag-Cloud -->
 
 [%-   IF private_tags.size > 0 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-     FOREACH thisitem IN private_tags -%]
 [%        item      = thisitem.name;
           itemcount = thisitem.count;

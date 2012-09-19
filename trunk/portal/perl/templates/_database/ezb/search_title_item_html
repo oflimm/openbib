@@ -27,8 +27,8 @@
 <p/>
 
 <div class="ym-grid">
-  <div class="c25r">
-    <div class="ym-gbox-left">
+  <div class="ym-g25 ym-gr">
+    <div class="ym-gbox">
 <div class="headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
 <p/>
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
@@ -69,7 +69,7 @@
     </div>
   </div>
 
-  <div class="c75l">
+  <div class="ym-g75 ym-gl">
     <div class="ym-gbox-left">
 <h4>[%-   IF dbinfo.get('use_libinfo').${database} %]
 <a href="[% path_prefix %]/[% config.get('library_loc') %]/[% database %]">
@@ -80,21 +80,21 @@
 </h4>
 
 <!-- Titlelist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
     <div class="left">
 [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]
     </div>
     <div class="right">
     </div>
   </div>
-  <div class="resultitems">
+  <div class="ob-resultitems">
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
 [%- END -%]
   </div>
-  <div class="footer">
-    <div class="navigation">
+  <div class="ob-footer">
+    <div class="ob-navigation">
 [% msg.maketext("Seite:") %]&nbsp;
 [%- IF nav.pages_in_set.first > nav.first_page -%]
 &nbsp;&nbsp;<b>...</b>
@@ -111,11 +111,11 @@
 &nbsp;&nbsp;<b>...</b>
 [%- END -%]
     </div>
-    <div class="resulttime">
+    <div class="ob-resulttime">
     </div>
   </div>
 </div>
-<div class="resultfooter">
+<div class="ob-resultfooter">
 &nbsp;
 </div>
 <!-- Titlelist ends here -->

@@ -35,7 +35,7 @@
 [%- IF resultlist.size > 5 -%]
 [%- searchprefix  = config.get('searchfield').yearstring.prefix -%]
 
-<ol class="cloud">
+<ol class="ob-cloud">
 [%- FOREACH thisitem IN resultlist -%]
 [% item      = thisitem.item;
    itemcount = thisitem.count;

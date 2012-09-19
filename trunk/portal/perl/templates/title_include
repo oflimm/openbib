@@ -23,7 +23,7 @@
        isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
     END ;
 -%]
-<div class="fulltitle"><!-- Begin Fulltitle -->
+<div class="ob-fulltitle"><!-- Begin Fulltitle -->
 <div class="details"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="images"><!-- Begin Images -->
@@ -327,7 +327,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 
 <p />
 
-<div class="reuse_data"><!-- Begin Reuse -->
+<div class="ob-reuse_data"><!-- Begin Reuse -->
 [%
   private_tags_of_tit = [];
   IF username ;
@@ -449,7 +449,7 @@ href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% ite
 <!-- Beginn Tag-Cloud -->
 
 [%-   IF private_tags.size > 0 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-     FOREACH thisitem IN private_tags -%]
 [%        item      = thisitem.name;
           itemcount = thisitem.count;
@@ -477,7 +477,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <tr><th>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-   FOREACH thisitem IN all_tags -%]
 [%      item      = thisitem.name;
         itemcount = thisitem.count;
@@ -523,7 +523,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <!-- Beginn Tag-Cloud -->
 
 [%-   IF private_tags.size > 0 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-     FOREACH thisitem IN private_tags -%]
 [%        item      = thisitem.name;
           itemcount = thisitem.count;
@@ -551,7 +551,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <tr><th>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-   FOREACH thisitem IN all_tags -%]
 [%      item      = thisitem.name;
         itemcount = thisitem.count;
@@ -578,7 +578,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 <p />
 
-<div class="discover_sources"><!-- Begin Discover-Sources -->
+<div class="ob-discover_sources"><!-- Begin Discover-Sources -->
 <b>[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</b><p/>
 
 
@@ -765,7 +765,7 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[%
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="ob-title">[%
 title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
 [% END %]
 [% IF recent_titles.get_size > 5 %]

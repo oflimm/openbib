@@ -48,8 +48,8 @@ function update_fak(yourform, checked, fak) {
     <div id="main">
 
 
-   <div class="functional_nav">
-     <div class="breadcrumb">
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>

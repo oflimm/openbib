@@ -17,15 +17,15 @@
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
 <!-- Titlelist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
-    <div class="catalogue">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="ob-catalog">
 [% msg.maketext("Merkliste") %]
     </div>
-    <div class="hits">
+    <div class="ob-hits">
 [% recordlist.get_size %]  [% msg.maketext("Titel") %]
     </div>
-    <div class="navigation">
+    <div class="ob-navigation">
        <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
     </div>
   </div>
@@ -127,13 +127,13 @@
 -%]
 [%- dbdesc   = dbinfo.get('dbnames').${item.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${item.database} -%]
-    <div class="item">
-      <div class="numbering"><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" />&nbsp;[% loop.count+offset %]</div>
-      <div class="thumbnail">
+    <div class="ob-item">
+      <div class="ob-numbering"><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" />&nbsp;[% loop.count+offset %]</div>
+      <div class="ob-thumbnail">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
-      <div class="brieftitle">
-<span class="rlperson">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+      <div class="ob-brieftitle">
+<span class="ob-person">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="ob-title">[% title %]</span></strong></a>[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br />[% msg.maketext("aus:") %]&nbsp;<i>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
 <a href="[% path_prefix %]/[% config.get('library_loc') %]/[% record.database %]">
@@ -142,8 +142,8 @@
 [%-   END -%]
 [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>[%- IF titleinfo -%]&nbsp;[ [% titleinfo %] ][%- END -%]
       </div>
-      <div class="titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
-      <div class="titleactions">
+      <div class="ob-titlemark">[% signatur | truncate(config.get('maxlength_sign')) %]</div>
+      <div class="ob-titleactions">
 <a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
 &nbsp;<a href="[% path_prefix %]/[% config.get('collection_loc') %]/[% record.database %]/[% record.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
       </div>

@@ -31,15 +31,15 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="functional_nav">
-     <div class="breadcrumb">
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Themengebiete") %]</a></li>
       </ul>
      </div>
-     <div class="representation">
+     <div class="ob-representation">
 <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/topic.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
   </div>

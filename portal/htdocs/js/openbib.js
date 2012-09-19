@@ -79,7 +79,7 @@ $(function(){
  // $("input[@id='to_focus']").focus();
 
 // Tabs fuer weitere Informationen
-//$('#additional_title_info > ul').tabs();
+ //$('#ob-additional_title_info > ul').tabs();
 
 // Tabs fuer Suchmaske nach Formaten 
 $('#ob-searchform_types').tabs();

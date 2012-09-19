@@ -1,0 +1,8 @@
+<!-- Begin Template: corporate_banner -->
+	<div id="header">
+		<div id="header_logo"><a href="[% config.get('info_loc') %]?sessionID=[% sessionID %];stid=20" title="Startseite der Sammlung" id="header_logo_image"></a></div>
+
+                <div id="header_right"><a href="http://www.aleki.uni-koeln.de" title="Startseite der ALEKI" id="header_right_image" target="_blank"></a>
+                </div>
+       </div>
+<!-- End Template: corporate_banner -->

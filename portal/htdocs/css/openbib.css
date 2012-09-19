@@ -6,7 +6,7 @@
 /* import framework core */
 @import url("/yaml/core/base.min.css");
 
-/* import default CSS *
+/* import default CSS */
 @import url("/yaml/navigation/hlist.css");
 @import url("/yaml/navigation/vlist.css");
 @import url("/yaml/print/print.css");

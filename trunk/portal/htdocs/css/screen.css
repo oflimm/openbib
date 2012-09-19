@@ -82,12 +82,13 @@
   .ob-facets {
     margin-top: -5px;
   }
-  .resultlist {
+
+  .ob-resultlist {
     width: 100%;
     padding: 1em;
     overflow: hidden; 
   }
-
+  
   .ob-resultheader {
     position: relative;
     width: 99%;  
@@ -510,5 +511,10 @@
     color: #000;
     padding-left: 2px;
   }
+ 
+  .ob-info {
+       background:#f4f4f4;
+   }
+
 
 }

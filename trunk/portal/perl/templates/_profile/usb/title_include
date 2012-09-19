@@ -67,14 +67,14 @@
 <div>
 
 [% IF circulation.size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
+<h2 class="ob-nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
 
 <div id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
 [%   IF holding.size > 0 %]
-<h2 class="nojs_show">[% msg.maketext("Bestand") %]</h2>
+<h2 class="ob-nojs_show">[% msg.maketext("Bestand") %]</h2>
 
 <div id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
@@ -93,7 +93,7 @@ $(document).ready(function(){
 });
 </script>
 
-<h4 class="nojs_show">[% msg.maketext("Letzte Artikel") %]</h4>
+<h4 class="ob-nojs_show">[% msg.maketext("Letzte Artikel") %]</h4>
 
 <div id="tictocs"><!-- Begin TicTocs -->
 [% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/62?id=${tictocs_feed}\">","</a>") %]
@@ -101,7 +101,7 @@ $(document).ready(function(){
 [% END %]
 
 [% IF same_records.get_size == -10 %]
-<h2 class="nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
+<h2 class="ob-nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
 
 <div id="ob-same_records"><!-- Begin: Same records -->
 [% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden") %]:
@@ -127,7 +127,7 @@ $(document).ready(function(){
 [% END %]
 
 [% IF similar_records.get_size > 0 %]
-<h4 class="nojs_show">[% msg.maketext("Andere Ausgaben") %]</h4>
+<h4 class="ob-nojs_show">[% msg.maketext("Andere Ausgaben") %]</h4>
 
 <div id="ob-similar_records"><!-- Begin: Similar records -->
 [% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen") %]:

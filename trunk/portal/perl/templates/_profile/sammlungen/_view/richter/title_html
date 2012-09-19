@@ -42,7 +42,7 @@
                         $(function(){
 
                                 // Tabs
-                                $('#additional_title_info').tabs();
+                                $('#ob-additional_title_info').tabs();
                                         
                         });
                 </script>

@@ -28,7 +28,7 @@
 $(document).ready(function(){
 $.get("[% IF user.ID %][% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/collection/count[% ELSE %][% path_prefix %]/[% config.get('collection_loc') %]/count[% END %]",
  function (txt){
-  $("#collectioncount").html("["+txt+"]");
+  $("#ob-collectioncount").html("["+txt+"]");
 });
 
 });
@@ -59,12 +59,12 @@ $.get("[% IF user.ID %][% path_prefix %]/[% config.get('user_loc') %]/[% user.ID
          <li><a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a></li>
 [% END %]
 [%- IF active_menu == "collection" -%]
-         <li class="active"><strong>[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></strong></li>
+         <li class="active"><strong>[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></strong></li>
 [% ELSE %]
 [%-    IF user.ID -%]
-          <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/collection.html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></li>
+          <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/collection.html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
 [%    ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a></li>
+          <li><a href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
 [%    END %]
 [% END %]
 [% IF active_menu == "info" %]

@@ -150,7 +150,7 @@
 <img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/print.html?l=[% lang %];format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
 
 <p />
-<div class="formats"><!-- Begin Formats -->
+<div class="ob-formats"><!-- Begin Formats -->
 <div class="ob-headline"><span id="ob-formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-formats_do"><!-- Begin formats do -->
 <p>
@@ -214,9 +214,9 @@
 <p />
 [% END %]
 
-<div class="tagging"><!-- Begin: Tagging -->
-<div class="ob-headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
-<div id="tagging_do"><!-- Begin Tagging do -->
+<div class="ob-tagging"><!-- Begin: Tagging -->
+<div class="ob-headline"><span id="ob-tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
+<div id="ob-tagging_do"><!-- Begin Tagging do -->
 
 [%  IF private_tags_of_tit.size <= 0  %]
 
@@ -322,7 +322,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <!-- Anfang Empfehlungen -->
 [% IF normdata.exists('E4000') %]
-<div class="recommendation"><!-- Begin Empfehlungen -->
+<div class="ob-recommendation"><!-- Begin Empfehlungen -->
 <div class="ob-headline">[% msg.maketext("Empfehlungen") %]</div>
 
 <table>
@@ -344,7 +344,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <!-- Anfang Thematisch relevante Titel (Wikipedia) -->
 [% IF related_records.get_size > 0 %]
-<div class="related"><!-- Begin thematisch Relevant -->
+<div class="ob-related"><!-- Begin thematisch Relevant -->
 <div class="ob-headline">Literaturanalyse in der Wikipedia</div>
 
 <ul>
@@ -370,7 +370,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <!-- Anfang Literaturlisten -->
 [% IF litlists.size > 0 %]
-<div class="available_litlists"><!-- Begin Vorhandene Literaturlisten -->
+<div class="ob-available_litlists"><!-- Begin Vorhandene Literaturlisten -->
 <div class="ob-headline">[% msg.maketext("Literaturlisten") %]</div>
 <ul style="list-style-type: square">
 [% FOREACH litlist IN litlists %]
@@ -434,7 +434,7 @@ $(document).ready(function(){
 
     $.get("[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags.include?l=[% lang %];bibkey=[% record.to_bibkey %];tags=[% record.to_tags %]",
           function (txt){
-            $("#bibsonomy_tags").html(txt); 
+            $("#ob-bibsonomy_tags").html(txt); 
     });
 
 });
@@ -442,10 +442,10 @@ $(document).ready(function(){
     </script>
 
 <!-- Anfang BibSonomy-Tags -->
-<div class="bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
-<div class="ob-headline"><span id="bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags.html?l=[% lang %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
+<div class="ob-bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
+<div class="ob-headline"><span id="ob-bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
+<span id="ob-bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags.html?l=[% lang %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
 </div>
 <p/>
 </div>
@@ -457,15 +457,15 @@ $(document).ready(function(){
 // Begin Verwandte Personen
   $.get("[% path_prefix %]/[% config.get('connector_similarpersons_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
-           $("#similarpersons").html(txt); 
+           $("#ob-similar_persons").html(txt); 
   });
 });
 </script>
 
-<div class="similarpersons"><!-- Begin Verwandte Personen -->
-<div class="ob-headline"><span id="similarpersons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="similarpersons_do"><!-- Begin similarpersons do -->
-<span id="similarpersons"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<div class="ob-similar_persons"><!-- Begin Verwandte Personen -->
+<div class="ob-headline"><span id="ob-similar_persons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-similar_persons_do"><!-- Begin similarpersons do -->
+<span id="ob-similar_persons"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -477,23 +477,23 @@ $(document).ready(function(){
 // Begin Verwandte Themen
   $.get("[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=ajax",
          function (txt){
-           $("#similarsubjects").html(txt); 
+           $("#ob-similar_subjects").html(txt); 
   });
 });
 </script>
-<div class="similarsubjects"><!-- Begin Verwandte Themen -->
-<div class="ob-headline"><span id="similarsubjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="similarsubjects_do"><!-- Begin similarsubjects do -->
-<span id="similarsubjects"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<div class="ob-similar_subjects"><!-- Begin Verwandte Themen -->
+<div class="ob-headline"><span id="ob-similar_subjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-similar_subjects_do"><!-- Begin similarsubjects do -->
+<span id="ob-similar_subjects"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
 <!-- Ende Verwandte Themen -->
 
 <!-- Anfang Verschiedenes -->
-<div class="misc"><!-- Begin Verschiedenes -->
-<div class="ob-headline"><span id="misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="misc_do"><!-- Begin misc do -->
+<div class="ob-misc"><!-- Begin Verschiedenes -->
+<div class="ob-headline"><span id="ob-misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-misc_do"><!-- Begin misc do -->
 <ul style="list-style-type: square">
 <li><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/popular.html" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
@@ -521,7 +521,7 @@ $("#history_toggle").click(function(){
 
 [% recent_titles = session.get_recently_selected_titles.load_brief_records %]
 [% IF recent_titles.get_size > 0 %]
-<div class="session_history info"><!-- Begin Historie -->
+<div class="ob-session_history ob-info"><!-- Begin Historie -->
 
 <h4 id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h4><p/>
 
@@ -542,7 +542,7 @@ $("#history_toggle").click(function(){
 <div id="history">
 [% END %]
 <p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="ob-title">[%
-title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
+title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span></p>
 [% END %]
 [% IF recent_titles.get_size > 5 %]
 </div>

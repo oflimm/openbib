@@ -76,9 +76,9 @@
 
 [%# IF user.ID %]
 [% username = user.get_username %]
-<div class="tagging"><!-- Begin: Tagging -->
-<div class="ob-headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
-<div id="tagging_do"><!-- Begin Tagging do -->
+<div class="ob-tagging"><!-- Begin: Tagging -->
+<div class="ob-headline"><span id="ob-tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
+<div id="ob-tagging_do"><!-- Begin Tagging do -->
 <p/>
 [% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
 

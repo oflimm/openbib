@@ -103,7 +103,7 @@
 <tr><td class="boxedclear">
 <p>
 <span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('browse_loc') %]?search=Mehrfachauswahl;srt=[% srt %];database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="ob-title">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
+class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
 </p>
 
 <span class="ob-reviewtitle">[% item.title %]</span> von <span class="ob-reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Anonym[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="ob-reviewrating">[% item.rating %]</span>)</dt>

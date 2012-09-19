@@ -63,7 +63,7 @@ Suchbegriff(e): [% dbs.current_page.term %] / [%- IF group == "topdb" -%][% msg.
   <div class="resultdrilldown">
     <div class="ob-facets">
 
-       <div class="headline">[% msg.maketext("Suche nach Datenbanken") %]</div>
+       <div class="ob-headline">[% msg.maketext("Suche nach Datenbanken") %]</div>
 <form method="get" action="[% path_prefix %]/[% config.get('dbis_loc') %]">
 
 

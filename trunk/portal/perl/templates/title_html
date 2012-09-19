@@ -128,7 +128,7 @@
 
 <p />
 
-<div class="reuse_data info"><!-- Begin Reuse -->
+<div class="ob-reuse_data ob-info"><!-- Begin Reuse -->
 [%
   private_tags_of_tit = [];
   IF username ;
@@ -152,7 +152,7 @@
 
 <p />
 <div class="formats"><!-- Begin Formats -->
-<div class="headline"><span id="formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="ob-headline"><span id="formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="formats_do"><!-- Begin formats do -->
 <p>
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?l=[% lang %];format=full" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?l=[% lang %];format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?l=[% lang %];format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?l=[% lang %];format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
@@ -163,7 +163,7 @@
 
 [% IF config.get('litlists') %]
 <div class="litlists"><!-- Begin Litlist -->
-<div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="ob-headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
 [%
       userlitlists = user.get_litlists();
@@ -216,7 +216,7 @@
 [% END %]
 
 <div class="tagging"><!-- Begin: Tagging -->
-<div class="headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
+<div class="ob-headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
 <div id="tagging_do"><!-- Begin Tagging do -->
 
 [%  IF private_tags_of_tit.size <= 0  %]
@@ -317,14 +317,14 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <p />
 
-<div class="discover_sources info"><!-- Begin Discover-Sources -->
+<div class="ob-discover_sources ob-info"><!-- Begin Discover-Sources -->
 <h4>[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</h4><p/>
 
 
 <!-- Anfang Empfehlungen -->
 [% IF normdata.exists('E4000') %]
 <div class="recommendation"><!-- Begin Empfehlungen -->
-<div class="headline">[% msg.maketext("Empfehlungen") %]</div>
+<div class="ob-headline">[% msg.maketext("Empfehlungen") %]</div>
 
 <table>
 [%-   isbnitems = normdata.${"E4000"} -%]
@@ -346,7 +346,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <!-- Anfang Thematisch relevante Titel (Wikipedia) -->
 [% IF related_records.get_size > 0 %]
 <div class="related"><!-- Begin thematisch Relevant -->
-<div class="headline">Literaturanalyse in der Wikipedia</div>
+<div class="ob-headline">Literaturanalyse in der Wikipedia</div>
 
 <ul>
 [% FOREACH related_record IN related_records.get_records %]
@@ -372,7 +372,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <!-- Anfang Literaturlisten -->
 [% IF litlists.size > 0 %]
 <div class="available_litlists"><!-- Begin Vorhandene Literaturlisten -->
-<div class="headline">[% msg.maketext("Literaturlisten") %]</div>
+<div class="ob-headline">[% msg.maketext("Literaturlisten") %]</div>
 <ul style="list-style-type: square">
 [% FOREACH litlist IN litlists %]
 <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %].html">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
@@ -394,7 +394,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 %]
 [% IF more_subjects %]
 <div class="available_subjects"><!-- Begin Vorhandene Schlagworte -->
-<div class="headline">[% msg.maketext("Verschlagwortung anderer Kataloge") %]</div>
+<div class="ob-headline">[% msg.maketext("Verschlagwortung anderer Kataloge") %]</div>
 <p/>
 <ul>
 [% FOREACH item IN normdata.${"E4300"};
@@ -416,7 +416,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <!-- Anfang Tags -->
 [% IF all_tags.size > 0 %]
 <div class="available_tags"><!-- Begin Vorhandene tags -->
-<div class="headline">[% msg.maketext("Tags") %]</div>
+<div class="ob-headline">[% msg.maketext("Tags") %]</div>
 <p/>
 [% alltags_cloud %]
 [% IF username && private_tags_of_tit.size > 0 %]
@@ -444,7 +444,7 @@ $(document).ready(function(){
 
 <!-- Anfang BibSonomy-Tags -->
 <div class="bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
-<div class="headline"><span id="bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="ob-headline"><span id="bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
 <span id="bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags.html?l=[% lang %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
 </div>
@@ -464,7 +464,7 @@ $(document).ready(function(){
 </script>
 
 <div class="similarpersons"><!-- Begin Verwandte Personen -->
-<div class="headline"><span id="similarpersons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="ob-headline"><span id="similarpersons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarpersons_do"><!-- Begin similarpersons do -->
 <span id="similarpersons"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
@@ -483,7 +483,7 @@ $(document).ready(function(){
 });
 </script>
 <div class="similarsubjects"><!-- Begin Verwandte Themen -->
-<div class="headline"><span id="similarsubjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="ob-headline"><span id="similarsubjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="similarsubjects_do"><!-- Begin similarsubjects do -->
 <span id="similarsubjects"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </div>
@@ -493,7 +493,7 @@ $(document).ready(function(){
 
 <!-- Anfang Verschiedenes -->
 <div class="misc"><!-- Begin Verschiedenes -->
-<div class="headline"><span id="misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="ob-headline"><span id="misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="misc_do"><!-- Begin misc do -->
 <ul style="list-style-type: square">
 <li><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/popular.html" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
@@ -624,7 +624,7 @@ END ;
 </div><!-- End Categories -->
 </div><!-- End Details -->
 
-<div class="bottominfo"><!-- Begin Bottominfo -->
+<div class="ob-bottominfo"><!-- Begin Bottominfo -->
 
 [%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">
@@ -648,7 +648,7 @@ END ;
 [% END %]
 
 
-<div id="additional_title_info"><!-- Begin Additional Title Info -->
+<div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
 [%- issn              = normset.${"T0543"}.first.content ;
     IF issn ;
@@ -689,7 +689,7 @@ END ;
 [% ELSE %]
 [%   IF holding.size > 0 %]
 
-<div id="mexinfo"><!-- Begin Bestand -->
+<div id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
 [%   END %]
@@ -730,7 +730,7 @@ OID[% ownreviewid %]
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
-<div class="headline"><span id="newreview_toggle">[% msg.maketext("Neue Bewertung/Rezension") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="ob-headline"><span id="newreview_toggle">[% msg.maketext("Neue Bewertung/Rezension") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-newreview_do"><!-- Begin formats do -->
 
 <h4>[% msg.maketext("Bewertung") %]</h4>
@@ -767,7 +767,7 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 
 <p />
 
-<div class="headline"><span id="allreviews_toggle">[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="ob-headline"><span id="allreviews_toggle">[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="allreviews_do"><!-- Begin allreviews do -->
 
 <!-- Beginn Reviews -->

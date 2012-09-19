@@ -68,7 +68,7 @@
 [% userlist.size %]  [% msg.maketext("Nutzer") %]
     </div>
   </div>
-  <div class="resultitems fullwidth">
+  <div class="ob-resultitems fullwidth">
 [% FOREACH singleuser IN userlist %]
     <div class="ob-item">
       <div class="ob-numbering">[% loop.count %]</div>

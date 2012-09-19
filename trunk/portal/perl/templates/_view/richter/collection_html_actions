@@ -17,7 +17,7 @@
 [% IF extended_actions == 1 %]
 
 <div class="litlists"><!-- Begin Litlist -->
-<div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="ob-headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
 
 [% 
@@ -54,7 +54,7 @@
 [%# IF user.ID %]
 [% loginname = user.get_username %]
 <div class="tagging"><!-- Begin: Tagging -->
-<div class="headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
+<div class="ob-headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
 <div id="tagging_do"><!-- Begin Tagging do -->
 <p/>
 [% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags

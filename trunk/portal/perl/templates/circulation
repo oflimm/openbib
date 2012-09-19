@@ -25,7 +25,7 @@
 [%# USE dumper;dumper.dump(circulation)%]
 [% IF Aquisition == 0 %]
 <table width="100%">
-<tr align="center"><td class="headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="headline">QR-Code</td><td class="headline">[% msg.maketext("Standort") %]</td><td class="headline">[% msg.maketext("Signatur") %]</td><td class="headline">[% msg.maketext("Ausleihstatus") %]</td><td class="headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr align="center"><td class="ob-headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="ob-headline">QR-Code</td><td class="ob-headline">[% msg.maketext("Standort") %]</td><td class="ob-headline">[% msg.maketext("Signatur") %]</td><td class="ob-headline">[% msg.maketext("Ausleihstatus") %]</td><td class="ob-headline">[% msg.maketext("Ausleihsystem") %]</td></tr>
 [% FOREACH thiscirculation IN circulation %]
 [%-
   title    = normdata.${"T0331"}.first.content ;

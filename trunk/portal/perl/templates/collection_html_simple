@@ -40,7 +40,7 @@
 
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
-<tr><td class="category">id</td><td>[% normdata.id %]</td></tr>
+<tr><td class="ob-field">id</td><td>[% normdata.id %]</td></tr>
 
 [%-
 
@@ -48,7 +48,7 @@ FOREACH category IN categories;
     FOREACH item IN normdata.$category;
     content = item.content;
 -%]
-<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+<tr><td class="ob-field">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
 [%- END -%]
 [%- END -%]
 </table>

@@ -29,7 +29,7 @@
     <div class="ob-navigation">
     </div>
   </div>
-  <div class="resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+  <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% listrow = 'listrow1' %]
 [%- FOREACH thisitem IN resultlist -%]
 [% record    = thisitem.item;

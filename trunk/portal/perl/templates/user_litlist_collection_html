@@ -94,7 +94,7 @@
 <tr><th>[% msg.maketext("Bereits existierende Literaturlisten") %]</th></tr>
 <tr><td class="boxedclear">
 <table width="100%">
-<tr><td class="headline"><b>[% msg.maketext("Titel der Literaturliste") %]</b></td><td class="headline"><b>[% msg.maketext("Titelzahl") %]</b></td><td class="headline"><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td class="headline"><b>[% msg.maketext("Themengebiete") %]</b></td><td class="headline"><b>[% msg.maketext("Angelegt") %]</b></td><td></td></tr>
+<tr><td class="ob-headline"><b>[% msg.maketext("Titel der Literaturliste") %]</b></td><td class="ob-headline"><b>[% msg.maketext("Titelzahl") %]</b></td><td class="ob-headline"><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td class="ob-headline"><b>[% msg.maketext("Themengebiete") %]</b></td><td class="ob-headline"><b>[% msg.maketext("Angelegt") %]</b></td><td></td></tr>
 [% listrow = 'listrow1' %]
 [% FOREACH litlist IN litlists %]
 <tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]/edit"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]

@@ -76,7 +76,7 @@
 [%   IF holding.size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Bestand") %]</h2>
 
-<div id="mexinfo"><!-- Begin Bestand -->
+<div id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
 [%   END %]

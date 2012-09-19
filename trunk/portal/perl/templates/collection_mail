@@ -53,8 +53,8 @@
 <tr><th>[% msg.maketext("Ihre Eingabe") %]</th></tr>
 <tr><td class="boxed">
 <table>
-<tr><td class="category">[% msg.maketext("Ihre Mailadresse") %]</td><td><input type="text" name="email" value="[% username %]" size="30" maxlength="200" /></td></tr>
-<tr><td class="category">[% msg.maketext("Betreff") %]</td><td><input type="text" name="subject" value="" size="30" maxlength="200" /></td></tr>
+<tr><td class="ob-field">[% msg.maketext("Ihre Mailadresse") %]</td><td><input type="text" name="email" value="[% username %]" size="30" maxlength="200" /></td></tr>
+<tr><td class="ob-field">[% msg.maketext("Betreff") %]</td><td><input type="text" name="subject" value="" size="30" maxlength="200" /></td></tr>
 </table>
 <p />
 <input type="submit" name="mail" value="[% msg.maketext("Abschicken") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Felder leeren") %]" />

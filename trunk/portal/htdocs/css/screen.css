@@ -24,6 +24,7 @@
 	text-align:right; /* LTR */
   }
 
+  /* obsolet
   .tabbingmenu {
     color: #FFFDF3;
     border-bottom: 1px solid #919191;
@@ -63,63 +64,64 @@
     background: #FFFDF3; 
   }
 
-  
-  .fulltitle {
+ */
+    
+  .ob-fulltitle {
     width: 100%;
   }
   
-  .cloud {
+  .ob-cloud {
     margin:0;
     padding:0;
   }
-  .cloud li {
+  .ob-cloud li {
     margin:0;
     padding:0;
     display: inline;
   }
-  .cloud span {
+  .ob-cloud span {
     position: absolute;
     left: -1999px;
     width: 1990px;
   }
-  .cloud .fast-nicht-genutzt {
+  .ob-cloud .fast-nicht-genutzt {
     font-size: 0.7em;
   }
-  .cloud .nicht-sehr-genutzt {
+  .ob-cloud .nicht-sehr-genutzt {
     font-size: 1.0em;
   }
-  .cloud .etwas-genutzt {
+  .ob-cloud .etwas-genutzt {
     font-size: 1.3em;
   }
-  .cloud .genutzt {
+  .ob-cloud .genutzt {
     font-size: 1.5em;
   }
-  .cloud .sehr-viel-genutzt {
+  .ob-cloud .sehr-viel-genutzt {
     font-size: 1.9em;
   }
-  .cloud .ultra-genutzt {
+  .ob-cloud .ultra-genutzt {
     font-size: 2.2em;
   }
-  .cloud .am-meisten-genutzt {
+  .ob-cloud .am-meisten-genutzt {
     font-size: 2.4em;
   }
 
-  .representation {
+  .ob-representation {
     text-align: right;
   }
 
-  .page_title {
+  .ob-page_title {
     font-size: 1.2em;
     margin-left: 20px;
     font-weight: bold; 
   }
 
-  .page_subtitle {
+  .ob-page_subtitle {
     font-size: 1.0em;
     margin-left: 20px;
   }
 
-  .facets {
+  .ob-facets {
     margin-top: -5px;
   }
   .resultlist {
@@ -128,7 +130,7 @@
     overflow: hidden; 
   }
 
-  .resultheader {
+  .ob-resultheader {
     position: relative;
     width: 99%;  
     padding: 5px;
@@ -154,7 +156,7 @@
        webkit-border-radius-topleft: 12px;*/
   }
 
-  .resultheader .left {
+  .ob-resultheader .left {
     position: absolute;
     top: 0;
     left: 0px;
@@ -164,7 +166,7 @@
        padding: 5px; */
   }
 
-  .resultheader .right {
+  .ob-resultheader .right {
     position: absolute;
     top: 0;
     right: 0px;
@@ -173,12 +175,12 @@
     text-align: right;
   }
 
-  .resultitems {
+  .ob-resultitems {
     width: 99%;
     margin-top: 5px;
   }
 
-  .item {
+  .ob-item {
     width: 100%;
     position: relative;
     border-style: solid;
@@ -187,7 +189,7 @@
     margin-bottom: 5px;
   }
 
-  .item .numbering {
+  .ob-item .ob-numbering {
     position: absolute;
     background: #ffffff none repeat scroll 0 0;
     border-color:#E1E1E1;
@@ -200,7 +202,7 @@
     color: gray;
   }
 
-  .item .thumbnail {
+  .ob-item .ob-thumbnail {
     position: relative;
     top: 5px;
     left:40px;
@@ -211,7 +213,7 @@
 
   }
 
-  .item .dbis_availability {
+  .ob-item .ob-dbis_availability {
     position: relative;
     top: 22px;
     left:40px;
@@ -222,22 +224,23 @@
 
   }
 
-  .item .brieftitle {
+  .ob-item .ob-brieftitle {
     position: absolute;
     top: 20px;
     left:120px;
     width: auto; 
   }
 
-  .liststyle .thumbnail {
+  /* ob-liststyle not used
+  .ob-liststyle .ob-thumbnail {
     width: 1px;
   }
 
-  .liststyle .brieftitle {
+  .ob-liststyle .ob-brieftitle {
     left: 50px;
   }
-
-  .item .titlemark {
+*/
+  .ob-item .ob-titlemark {
     position: absolute;
     bottom:0;
     right:0;
@@ -247,7 +250,7 @@
        margin: -20px 5px 80px 120px;*/
   }
 
-  .item .titleactions {
+  .ob-item .ob-titleactions {
     position: absolute;
     text-align: right;
     top: 0;
@@ -255,7 +258,7 @@
     padding: 10px;
   }
 
-  .resultitems .footer {
+  .ob-resultitems .ob-footer {
     width: 99%;
     /*  float: left; */
     position: relative;
@@ -269,7 +272,8 @@
        webkit-border-radius-bottomleft: 12px; */
   }
 
-  .footer .navigation {
+/* ob-navigation not used
+   .ob-footer .ob-navigation {
     float: left;
     text-align: left;
     width: auto;
@@ -278,20 +282,21 @@
     font-size: 1.2em;
     font-weight: bold; 
   }
+  */
 
-  .resultitems .footer .resulttime {
+  .ob-resultitems .ob-footer .ob-resulttime {
     float: right;
     width: 30%;
     text-align: right;
     padding-right: 0px;
   }
 
-  .resultfooter {
+  .ob-resultfooter {
     float:left;
     width: 99%;
   }
 
-  .refine_query {
+  .ob-refine_query {
     float: left;
     width: auto;
     margin-top:10px;
@@ -299,7 +304,7 @@
     
   }
 
-  .listoptions {
+  .ob-listoptions {
     overflow: hidden;   
     background: #fef6e2;
     margin-top: 5px;
@@ -313,12 +318,12 @@
 
   }
 
-  .listoptions table {
+  .ob-listoptions table {
     width: 99%;
   }
 
   
-  .drilldown {
+  .ob-facets {
     width: 95%;
     padding: 5px;
     /*  font-size:0.9em; */
@@ -341,30 +346,30 @@
        webkit-border-radius-bottomleft: 12px; */
   }
 
-  .drilldown h4 {
+  .ob-facets h4 {
     border-bottom:2px solid #ddd;
   }
 
-  dl.items a:hover {
+  dl.ob-items a:hover {
     /*text-decoration: underline;*/
   }
-  dl.items a {
+  dl.ob-items a {
     text-decoration: none;
   }
 
-  dl.items {
+  dl.ob-items {
     padding: 0px;
     margin-left: 0px;
     
   }
-  .items dd {
+  .ob-items dd {
     padding: 0.1em 0 0.1em 0.4em;
     list-style-type: none;
     border-bottom: 1px solid #e3e3e3;
     margin: 0;
   }
 
-  .items dt {
+  .ob-items dt {
     margin-top:.75em;
     font-weight:bold;
     padding:0.2em 0.4em;
@@ -372,7 +377,7 @@
   }
 
   
-  .reuse_data h4, .discover_sources h4 {
+  .ob-reuse_data h4, .ob-discover_sources h4 {
     display: block;
     margin: 10px 5px 5px 5px;
     border-bottom: 1px #c88 solid;
@@ -380,11 +385,11 @@
     font-variant:small-caps;
   }
 
-  #newreview_do { 
+  #ob-newreview_do { 
     font-size: 0.8em;
   }
-
-  #qr {
+  
+  .ob-qrcode {
     margin-top:-416px;
     position:absolute;
     border:1px solid #ccc;
@@ -395,7 +400,7 @@
     text-align: center;
   }
 
-  #qr .closebutton {
+  .ob-qrcode .ob-closebutton {
     position: absolute;
     top: 3px;
     right: 3px;
@@ -403,7 +408,7 @@
   }
 
 
-  .functional_nav {
+  .ob-functional_nav {
     width:100%;
     margin:0 0 0 0;
     padding:0;
@@ -412,19 +417,19 @@
     border-bottom: 1px #e3e3e3 solid;
   }
 
-  .functional_nav .breadcrumb {
+  .ob-functional_nav .ob-breadcrumb {
     padding:0;
     margin-top:-20px;
     margin-left: 0px;
   }
   
-  .functional_nav .breadcrumb ul li {
+  .ob-functional_nav .ob-breadcrumb ul li {
     list-style:none;
     float:left;
     height:30px
     display:inline;
   }
-  .functional_nav .breadcrumb ul li a {
+  .ob-functional_nav .ob-breadcrumb ul li a {
     font:12px Arial, Helvetica, sans-serif;
     color:rgb(0,0,0);
     text-decoration:none;
@@ -433,26 +438,26 @@
     background:url('/images/openbib/breadcrumb.png') 100% no-repeat;
     padding:5px 17px 0 0;
   }
-  .functional_nav .breadcrumb ul li a:hover {
+  .ob-functional_nav .ob-breadcrumb ul li a:hover {
     text-decoration:underline;
     color:rbg(0,0,0);
   }
-  .functional_nav .breadcrumb ul li a.lastitem {
+  .ob-functional_nav .ob-breadcrumb ul li a.lastitem {
     background:none;
     color:rgb(0,0,0);
   }
-  .functional_nav .breadcrumb ul li a.lastitem:hover {
+  .ob-functional_nav .ob-breadcrumb ul li a.lastitem:hover {
     text-decoration:none;
   }
 
-  .functional_nav .representation {
+  .ob-functional_nav .ob-representation {
     float: right;
     margin-top: 8px;
     margin-right: 20px;
   }
 
 
-  .alphanav {
+  .ob-alphanav {
     width:100%;
     margin:0 0 0 0;
     padding:0;
@@ -461,19 +466,19 @@
     border-bottom: 1px #e3e3e3 solid;
   }
 
-  .alphanav .horizontal {
+  .ob-alphanav .horizontal {
     padding:0;
     margin-top:-20px;
     margin-left: 0px;
   }
   
-  .alphanav .horizontal ul li {
+  .ob-alphanav .horizontal ul li {
     list-style:none;
     float:left;
     height:20px
     display:inline;
   }
-  .alphanav .horizontal ul li a {
+  .ob-alphanav .horizontal ul li a {
     font:12px Arial, Helvetica, sans-serif;
     color:rgb(0,0,0);
     text-decoration:none;
@@ -482,80 +487,31 @@
     /*    background:url('/images/openbib/horizontal.png') 100% no-repeat; */
     padding:5px 3px 0 0;
   }
-  .alphanav .horizontal ul li a:hover {
+  .ob-alphanav .horizontal ul li a:hover {
     text-decoration:underline;
     color:rbg(0,0,0);
   }
-  .alphanav .horizontal ul li a.active {
+  .ob-alphanav .horizontal ul li a.active {
     background:none;
     color:rgb(0,0,0);
   }
-  .alphanav .horizontal ul li a.active:hover {
+  .ob-alphanav .horizontal ul li a.active:hover {
     text-decoration:none;
   }
 
-  .searchbar_container {
-    width:100%;
-    margin:0 0 0 0;
-    padding-top:0px;
-    padding-bottom:10px;
-    height:30px;
-    line-height: 30px;
-    background: #eee;
-    /*    border-top: 1px #e3e3e3 solid;
-       border-bottom: 1px #e3e3e3 solid; */
-    border-top: 1px slategrey solid;
-    border-bottom: 1px slategrey solid;
-  }
-
-  .searchbar_container .fs_field {
-    margin-left: 0;
-    height: 25px;
-    font:14px Arial, Helvetica, sans-serif;
-    display: inline;
-  }
-
-  .searchbar_container table {
-    margin-left: 10px;
-    border-collapse: none;
-    border: 0;
-    padding: 0;
-  }
-  
-  .searchbar_container .search_where {
-    display: none;
-  }
-
-  .searchbar_container .search_submit {
-    display: inline;
-    overflow: hidden;
-  }
-
-  .searchbar_container div.cssbutton {
-    float:none;
-    display: inline;
-  }
-
-  .searchbar_container button.cssbutton {
-    float:none;
-  }
-  
-  .searchbar_container .search_links {
-    margin-top: 0;
-    display: inline;
-  }
-
-  .active_item {
+  .ob-active_item {
     border-left: 5px green solid;    
   }
 
-  .inactive_item {
+  .ob-inactive_item {
     border-left: 5px red solid;    
   }
 
-  .searchform_bottom {
+  /* not used
+  .ob-searchform_bottom {
     padding-bottom: 10em;
   }
+  */
   
   .box-top .ym-g33.ym-gl,
   .box-top .ym-g33.ym-gr {

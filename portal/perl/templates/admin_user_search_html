@@ -31,8 +31,8 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="functional_nav">
-     <div class="breadcrumb">
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
@@ -41,7 +41,7 @@
          <li><a href="#" class="lastitem">[% msg.maketext("Ergebnis") %]</a></li>
        </ul>
      </div>
-    <div class="representation">
+    <div class="ob-representation">
 <a href="[% path_prefix %]/[% config.get('admin_user_loc') %]/search.json?[% cgiapp.to_cgi_querystring %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
@@ -59,26 +59,26 @@
 
 [%# USE dumper;dumper.dump(userlist)%]
 <!-- Userlist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
-    <div class="catalogue">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="ob-catalog">
 [% msg.maketext("Gefundene Nutzer") %]
     </div>
-    <div class="hits">
+    <div class="ob-hits">
 [% userlist.size %]  [% msg.maketext("Nutzer") %]
     </div>
   </div>
   <div class="resultitems fullwidth">
 [% FOREACH singleuser IN userlist %]
-    <div class="item">
-      <div class="numbering">[% loop.count %]</div>
-      <div class="thumbnail">
+    <div class="ob-item">
+      <div class="ob-numbering">[% loop.count %]</div>
+      <div class="ob-thumbnail">
       </div> 
-      <div class="brieftitle">
-<span class="rlperson">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% singleuser.id %]/role/edit"><strong><span class="rltitle">[% singleuser.username %]</span></strong></a></span>    
+      <div class="ob-brieftitle">
+<span class="ob-person">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% singleuser.id %]/role/edit"><strong><span class="ob-title">[% singleuser.username %]</span></strong></a></span>    
       </div>
-      <div class="titlemark"></div>
-      <div class="titleactions">
+      <div class="ob-titlemark"></div>
+      <div class="ob-titleactions">
       </div>
     </div>
 <!-- Ende einzelner Treffer -->

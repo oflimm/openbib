@@ -17,15 +17,15 @@
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
 <!-- Titlelist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
-    <div class="catalogue">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="ob-catalog">
 [% msg.maketext("Merkliste") %]
     </div>
-    <div class="hits">
+    <div class="ob-hits">
 [% recordlist.get_size %]  [% msg.maketext("Titel") %]
     </div>
-    <div class="navigation">
+    <div class="ob-navigation">
     </div>
   </div>
 

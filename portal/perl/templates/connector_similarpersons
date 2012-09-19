@@ -27,7 +27,7 @@
         'am-meisten-genutzt',
    ];
 %]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%- FOREACH thisitem IN similar_persons -%]
 [% item      = thisitem.item;
    autid     = thisitem.id;
@@ -77,7 +77,7 @@
         'am-meisten-genutzt',
    ];
 %]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%- FOREACH thisitem IN similar_persons -%]
 [% item      = thisitem.item;
    autid     = thisitem.id;

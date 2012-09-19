@@ -46,8 +46,8 @@
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
-<div class="resultlist">
-  <div class="resultheader">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
     <div class="left">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
@@ -69,8 +69,8 @@
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
 [%- END -%]
-  <div class="footer">
-    <div class="navigation">
+  <div class="ob-footer">
+    <div class="ob-navigation">
 [% msg.maketext("Seite:") %]&nbsp;
 [%- IF nav.pages_in_set.first > nav.first_page -%]
 &nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% nav.first_page %];[% query_args_base %]">[% nav.first_page %]</a>&nbsp;&nbsp;<b>...</b>
@@ -87,12 +87,12 @@
 &nbsp;&nbsp;<b>...</b>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% nav.last_page %];[% query_args_base %]">[% nav.last_page %]</a>
 [%- END -%]
     </div>
-    <div class="resulttime">
+    <div class="ob-resulttime">
 in: [% resulttime %] [% msg.maketext("Sekunden") %]
     </div>
   </div>
 </div>
-<div class="resultfooter">
+<div class="ob-resultfooter">
    &nbsp;
 </div>
 <p/>

@@ -95,12 +95,12 @@ type="text" name="tags" value="" id="inputfield" size="20" maxlength="200" title
 [% IF posts.recordlist.size > 0 %]
 
 <!-- Titlelist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
-    <div class="catalogue">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="ob-catalog">
 [% msg.maketext("Liste der Quellen") %]
     </div>
-    <div class="hits">
+    <div class="ob-hits">
     </div>
   </div>
   <div class="resultitems fullwidth liststyle">
@@ -108,37 +108,37 @@ type="text" name="tags" value="" id="inputfield" size="20" maxlength="200" title
 [%- FOREACH thistitle IN posts.recordlist -%]
 [%- record = thistitle.record -%]
 [% IF type == 'publication' %]
-    <div class="item">
-      <div class="numbering">[% loop.count+start %]</div>
-      <div class="thumbnail">
+    <div class="ob-item">
+      <div class="ob-numbering">[% loop.count+start %]</div>
+      <div class="ob-thumbnail">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
-      <div class="brieftitle">
-<span class="rlperson">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="rltitle">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span>
+      <div class="ob-brieftitle">
+<span class="ob-person">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="ob-title">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span>
 <br/>[% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Dieser Titel ist in den Katalogen des Portals verf&uuml;gbar") %]</span>[% ELSE %]<span
 style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen des Portals gefunden werden. Er kann dennoch in anderer Schreibweise existieren!") %]</span>[% END %]
       </div>
-      <div class="titlemark">
+      <div class="ob-titlemark">
 [% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Titel im Portal:") %]&nbsp;&nbsp;[% FOREACH dbname IN
 thistitle.local_dbs %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% dbname %];fs=bkey:|[% thistitle.bibkey %]|" title="[% dbinfo.get('dbnames').${dbname}.short %]">[% loop.count %]</a>&nbsp;&nbsp;[% END %][% END %]
       </div>
-      <div class="titleactions">
+      <div class="ob-titleactions">
 <b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/tag/[% thistag | uri %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/user/[% thistitle.user %].html?l=[% lang %]">[% thistitle.user %]</a>
       </div>
     </div>
 [% ELSIF type == 'bookmark' %]
-    <div class="item">
-      <div class="numbering">[% loop.count+start %]</div>
-      <div class="thumbnail">
+    <div class="ob-item">
+      <div class="ob-numbering">[% loop.count+start %]</div>
+      <div class="ob-thumbnail">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
-      <div class="brieftitle">
+      <div class="ob-brieftitle">
 <b><a href="[% record.${'url'} %]" target="_blank">[% record.${'title'} %]</a></b><br />
 [%- IF thistitle.${'desc'} -%][% thistitle.${'desc'} | truncate(400) %][%- END -%]
       </div>
-      <div class="titlemark">
+      <div class="ob-titlemark">
       </div>
-      <div class="titleactions">
+      <div class="ob-titleactions">
 <b>[% msg.maketext("Tags") %]</b>: [% FOREACH thistag IN thistitle.tags %]<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/tag/[% thistag %]?l=[% lang %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;<b>[% msg.maketext("Nutzer") %]</b>: <a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/[% type %]/user/[% thistitle.user %].html?l=[% lang %]">[% thistitle.user %]</a>
       </div>
     </div>

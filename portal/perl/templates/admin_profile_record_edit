@@ -31,8 +31,8 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="functional_nav">
-     <div class="breadcrumb">
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
@@ -40,7 +40,7 @@
          <li><a href="#" class="lastitem">[% profileinfo.profilename %]</a></li>
        </ul>
      </div>
-    <div class="representation">
+    <div class="ob-representation">
 <a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>

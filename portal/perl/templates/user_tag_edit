@@ -75,7 +75,7 @@
 %]
 
 [%- IF private_tags.size > 0 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%- FOREACH thisitem IN private_tags -%]
 [% item      = thisitem.name;
    itemcount = thisitem.count;

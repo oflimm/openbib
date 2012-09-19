@@ -34,7 +34,7 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="page_title">[% msg.maketext("Alle Titel zum Tag") %]&nbsp;'[% tag %]'</div>
+   <div class="ob-page_title">[% msg.maketext("Alle Titel zum Tag") %]&nbsp;'[% tag %]'</div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
@@ -58,8 +58,8 @@
 -%]
 
 <!-- Titlelist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
     <div class="left">
 [% recordlist.get_size %]  [% msg.maketext("Titel") %]
     </div>

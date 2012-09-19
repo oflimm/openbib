@@ -64,7 +64,7 @@
     <div class="ym-box linearize-level-1">
       <div class="ym-g33 ym-gr">
         <div class="ym-gbox" class="ym-clearfix">
-<div class="representation">
+<div class="ob-representation">
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
 <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
 </div>
@@ -179,7 +179,7 @@
 <!-- Beginn Tag-Cloud -->
 
 [%-   IF private_tags.size > 0 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-     FOREACH thisitem IN private_tags -%]
 [%        item      = thisitem.name;
           itemcount = thisitem.count;
@@ -207,7 +207,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <tr><th>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-   FOREACH thisitem IN all_tags -%]
 [%      item      = thisitem.name;
         itemcount = thisitem.count;
@@ -253,7 +253,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <!-- Beginn Tag-Cloud -->
 
 [%-   IF private_tags.size > 0 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-     FOREACH thisitem IN private_tags -%]
 [%        item      = thisitem.name;
           itemcount = thisitem.count;
@@ -281,7 +281,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <tr><th>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
-<ol class="cloud">
+<ol class="ob-cloud">
 [%-   FOREACH thisitem IN all_tags -%]
 [%      item      = thisitem.name;
         itemcount = thisitem.count;
@@ -495,7 +495,7 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="rltitle">[%
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="ob-title">[%
 title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></p>
 [% END %]
 [% IF recent_titles.get_size > 5 %]
@@ -515,7 +515,7 @@ title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <
       <div class="ym-g66 ym-gl">
         <div class="ym-gbox" class="ym-clearfix">
 
-<div class="fulltitle"><!-- Begin Fulltitle -->
+<div class="ob-fulltitle"><!-- Begin Fulltitle -->
 <div class="details ym-grid"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="images ym-g20 ym-gr"><!-- Begin Images -->

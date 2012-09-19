@@ -31,8 +31,8 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="functional_nav">
-     <div class="breadcrumb">
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% config.get('home_loc') %]">Start</a></li>
          <li><a href="#">[% username %]</a></li>

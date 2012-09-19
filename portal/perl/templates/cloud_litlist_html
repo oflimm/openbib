@@ -36,15 +36,15 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="functional_nav">
-     <div class="breadcrumb">
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]">[% msg.maketext("Wolken") %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Literaturlisten") %]</a></li>
       </ul>
      </div>
-     <div class="representation">
+     <div class="ob-representation">
 <a href="[% path_prefix %]/[% config.get('cloud_loc') %]/litlist.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
    </div>
@@ -78,7 +78,7 @@
 %]
 
 [%- IF resultlist.size > 4 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%- FOREACH thisitem IN resultlist -%]
 [% item       = thisitem.item;
    id         = thisitem.id;

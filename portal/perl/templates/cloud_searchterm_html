@@ -36,8 +36,8 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="functional_nav">
-     <div class="breadcrumb">
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %].html?l=[% lang %]">Wolken</a></li>
@@ -74,7 +74,7 @@
 %]
 
 [%- IF resultlist.all.size > 5 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%- FOREACH thisitem IN resultlist.all -%]
 [% item      = thisitem.item;
    id        = thisitem.id;
@@ -112,7 +112,7 @@ Nutzern verwendeten Suchbegriffe anbieten.
 %]
 
 [%- IF resultlist.fs.size > 5 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%- FOREACH thisitem IN resultlist.fs -%]
 [% item      = thisitem.item;
    id        = thisitem.id;
@@ -150,7 +150,7 @@ Nutzern verwendeten Suchbegriffe anbieten.
 %]
 
 [%- IF resultlist.hst.size > 5 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%- FOREACH thisitem IN resultlist.hst -%]
 [% item      = thisitem.item;
    id        = thisitem.id;
@@ -188,7 +188,7 @@ Nutzern verwendeten Suchbegriffe anbieten.
 %]
 
 [%- IF resultlist.swt.size > 5 -%]
-<ol class="cloud">
+<ol class="ob-cloud">
 [%- FOREACH thisitem IN resultlist.swt -%]
 [% item      = thisitem.item;
    id        = thisitem.id;

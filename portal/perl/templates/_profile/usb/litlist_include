@@ -37,8 +37,8 @@
     end_range       = litlist.get_size;
 -%]
 
-  <div class="resultheader">
-    <div class="catalogue">
+  <div class="ob-resultheader">
+    <div class="ob-catalog">
 <h2>[% litlist.properties.title %] ([% litlist.recordlist.get_size %] [% msg.maketext("Titel") %])</h2>
 
 <!-- Titlelist begins here -->

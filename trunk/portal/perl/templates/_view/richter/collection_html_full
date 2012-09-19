@@ -258,7 +258,7 @@ END;
 [% sysprofile %]
 [% IF circulation.size > 0 %]
 
-<div id="circinfo"><!-- Begin Circulation -->
+<div id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]

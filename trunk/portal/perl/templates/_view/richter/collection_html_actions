@@ -16,9 +16,9 @@
 
 [% IF extended_actions == 1 %]
 
-<div class="litlists"><!-- Begin Litlist -->
-<div class="ob-headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="litlists_do"><!-- Begin Litlist do -->
+<div class="ob-litlists"><!-- Begin Litlist -->
+<div class="ob-headline"><span id="ob-litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-litlists_do"><!-- Begin Litlist do -->
 
 [% 
    IF config.get('litlists') ;

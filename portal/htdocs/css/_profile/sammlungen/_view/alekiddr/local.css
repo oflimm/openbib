@@ -1,0 +1,75 @@
+@media all
+{
+
+  body {
+    background:#9eff84 url("/images/openbib/bg_green.png") repeat-x top left fixed;
+  }
+
+  footer {
+    margin: 0.5em 0 0 0;
+/*    background: #e8fca4;
+    color: #444; */
+    padding: 0.5em;
+    background: #e8fca4;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#e8fca4), to(#c9ff0f));
+    background: -moz-linear-gradient(top,  #e8fca4,  #c9ff0f);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8fca4', endColorstr='#c9ff0f');
+    
+    
+    border: 1px #e8fca4 solid;
+  }
+
+  .ym-hlist {
+    padding: 0px;
+    margin-left:0px;
+    width: auto;
+    background: #e8fca4;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#e8fca4), to(#c9ff0f));
+    background: -moz-linear-gradient(top,  #e8fca4,  #c9ff0f);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8fca4', endColorstr='#c9ff0f');
+    
+    
+    border: 1px #e8fca4 solid;
+  }
+  
+  header {
+    padding-bottom:70px;  
+  }
+
+  header #logo {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    with: 70%;
+  }
+
+  header #institution {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    with: 30%;
+  }
+
+
+  #header_logo_image {
+    background: url(/images/openbib/views/alekiddr/logo.png) center no-repeat;
+    width: 453px;
+    height: 100px;
+    position: absolute;
+    top: 30px;
+    left: 7px;
+  }
+
+  #header_institution_image {
+    background: url(/images/openbib/views/alekiddr/aleki_logo.png) center no-repeat;
+    width: 111px;
+    height: 90px;
+    position: absolute;
+    top: 30px;
+    right: 10px;
+  }
+}

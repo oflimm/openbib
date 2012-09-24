@@ -188,17 +188,17 @@ $(document).ready(function(){
 <td style="vertical-align:top">
 [%
    sammlungen = [
-                 'Sammlung Edelmann',
-                 'Sammlung Löffler',
-                 'Sammlung Mevissen',
-                 'Sammlung Oidtman',
-                 'Sammlung Wolff',
+                 'Sammlung Hans Engländer',
+                 'Sammlung Klemens Löffler',
+                 'Sammlung der Familie von  Mevissen',
+                 'Sammlung Ernst von Oidtman',
+                 'Sammlung Otto Wolff',
                  'Stadtbibliothek Köln',
                  'Evangelische Bibliothek Köln',
                 ];
 %]
 <table>
-<tr><th>Sammlungen</th></tr>
+<tr><th>Sammlungen Kölner Provenienz</th></tr>
 <tr><td vertical-align="top">
 <table>
 [% FOREACH sammlung IN sammlungen %]

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Collection
 #
-#  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -112,18 +112,9 @@ sub show_collection {
     my $method                  = $query->param('_method')                 || '';
     my $dbname                  = $query->param('dbname')                  || '';
     my $titleid                 = $query->param('titleid')                 || '';
-    my $litlistid               = $query->param('litlistid')               || '';
-    my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
-    my $do_litlist_addentry     = $query->param('do_litlist_addentry')     || '';
-    my $do_addlitlist           = $query->param('do_addlitlist')           || '';
-    my $do_addtags              = $query->param('do_addtags')              || '';
-    my $title                   = $query->param('title')                   || '';
     my $action                  = $query->param('action')                  || 'show';
     my $show                    = $query->param('show')                    || 'short';
     my $type                    = $query->param('type')                    || 'HTML';
-    my $tags                    = $query->param('tags')                    || '';
-    my $tags_type               = $query->param('tags_type')               || 1;
-    my $littype                 = $query->param('littype')                 || 1;
     my $format                  = $query->param('format')                  || 'short';
 
     if (!$self->authorization_successful){
@@ -143,88 +134,8 @@ sub show_collection {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
-
-    if (! $user->is_authenticated && $do_addlitlist) {
-        $logger->debug("Nicht authentifizierter Nutzer versucht Literaturlisten anzulegen");
-
-        $self->return_loginurl;
-        return;
-    }
-    elsif (! $user->is_authenticated && $do_addtags) {
-        $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
-
-        $self->return_loginurl;
-        return;
-    }
-
     $logger->info("SessionID: $session->{ID}");
-    
-    my $idnresult="";
-
-    if ($do_litlist_addentry) {
-        my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
         
-        foreach my $listid ($query->param('id')) {
-            my $record = $self->get_single_item_in_collection($listid);
-
-            if ($record && $litlist_properties_ref->{userid} eq $user->{ID}) {
-                $user->add_litlistentry({ titid => $record->{id}, titdb => $record->{database}, litlistid => $litlistid});
-            }
-        }
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{litlists_loc}?action=manage&litlistid=$litlistid&do_showlitlist=1");
-        return Apache2::Const::OK;
-        
-    }
-    elsif ($do_addlitlist) {
-        if (!$title) {
-            $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
-	    
-            return Apache2::Const::OK;
-        }
-        
-        $user->add_litlist({ title =>$title, type => $littype});
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{managecollection_loc}?action=show&type=HTML");
-        return Apache2::Const::OK;
-    }
-    elsif ($do_addtags) {
-        if (!$tags) {
-            $self->print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."));
-            return Apache2::Const::OK;
-        }
-        
-        if ($user->{ID}){
-            my $username = $user->get_username;
-            
-            if ($query->param('id')){
-                foreach my $listid ($query->param('id')) {
-                    my $record = $self->get_single_item_in_collection($listid);
-
-                    if ($record){
-                        $user->add_tags({
-                            tags      => $tags,
-                            titid     => $record->{id},
-                            titdb     => $record->{database},
-                            username  => $username,
-                            type      => $tags_type,
-                        });
-                    }
-                }
-            }
-            else {
-                $self->print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."));
-                return Apache2::Const::OK;
-            }
-        }
-        else {
-            $self->print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."));
-        }
-
-        $self->return_baseurl;
-    }
-    
     my $recordlist = $self->get_items_in_collection();
 
     if ($recordlist->get_size() != 0) {
@@ -301,8 +212,6 @@ sub show_collection_count {
 
     $logger->info("SessionID: $session->{ID}");
     
-    my $idnresult="";
-
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     # Dementsprechend einen LoginLink oder ein ProfilLink ausgeben
@@ -393,48 +302,141 @@ sub create_record {
     my $path_prefix    = $self->param('path_prefix');
     my $location       = $self->param('location');
 
+    # CGI Args
+    my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
+    my $do_litlist_addentry     = $query->param('do_litlist_addentry')     || '';
+    my $do_addlitlist           = $query->param('do_addlitlist')           || '';
+    my $do_addtags              = $query->param('do_addtags')              || '';
+
+    my $tags                    = $query->param('tags')                    || '';
+    my $tags_type               = $query->param('tags_type')               || 1;
+    my $litlistid               = $query->param('litlistid')               || '';
+    my $title                   = $query->param('title')                   || '';
+    my $littype                 = $query->param('littype')                 || 1;
+
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    # Shortcut: Delete multiple items via POST
-    if ($query->param('do_collection_delentry')) {
-        foreach my $listid ($query->param('id')) {
-            $self->delete_item_from_collection({
-                id       => $listid,
-            });
+    # Process WWW-UI-Shortcuts
+    if ($do_collection_delentry || $do_litlist_addentry || $do_addlitlist || $do_addtags ) {
+
+        # Shortcut: Delete multiple items via POST
+        if ($query->param('do_collection_delentry')) {
+            foreach my $listid ($query->param('id')) {
+                $self->delete_item_from_collection($listid);
+            }
+            
+            $self->return_baseurl;
+            
+            return;
         }
-
-        $self->return_baseurl;
-
-        return;
-    }
-
-    # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input();
-
-    if (defined $input_data_ref->{error} && $input_data_ref->{error} == 1){
-        $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
-        return Apache2::Const::OK;
-    }
-    
-    # Einfuegen eines Titels in die Merkliste
-    my $new_titleid = $self->add_item_to_collection($input_data_ref);
-
-    if ($self->param('representation') eq "html"){
-        $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
-        return Apache2::Const::OK;
+        
+        if (! $user->is_authenticated && $do_addlitlist) {
+            $logger->debug("Nicht authentifizierter Nutzer versucht Literaturlisten anzulegen");
+            
+            $self->return_loginurl;
+            return;
+        }
+        elsif (! $user->is_authenticated && $do_addtags) {
+            $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
+            
+            $self->return_loginurl;
+            return;
+        }
+        
+        
+        if ($do_litlist_addentry) {
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+            
+            foreach my $listid ($query->param('id')) {
+                my $record = $self->get_single_item_in_collection($listid);
+                
+                if ($record && $litlist_properties_ref->{userid} eq $user->{ID}) {
+                    $user->add_litlistentry({ titleid => $record->{id}, dbname => $record->{database}, litlistid => $litlistid});
+                }
+            }
+            
+            $self->return_baseurl;
+            
+            return;            
+        }
+        elsif ($do_addlitlist) {
+            if (!$title) {
+                $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
+                
+                return Apache2::Const::OK;
+            }
+            
+            $user->add_litlist({ title =>$title, type => $littype});
+            
+            $self->return_loginurl;
+            return;
+        }
+        elsif ($do_addtags) {
+            if (!$tags) {
+                $self->print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."));
+                return Apache2::Const::OK;
+            }
+            
+            if ($user->{ID}){
+                my $username = $user->get_username;
+                
+                if ($query->param('id')){
+                    foreach my $listid ($query->param('id')) {
+                        my $record = $self->get_single_item_in_collection($listid);
+                        
+                        if ($record){
+                            $user->add_tags({
+                                tags      => $tags,
+                                titid     => $record->{id},
+                                titdb     => $record->{database},
+                                username  => $username,
+                                type      => $tags_type,
+                            });
+                        }
+                    }
+                }
+                else {
+                    $self->print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."));
+                    return Apache2::Const::OK;
+                }
+            }
+            else {
+                $self->print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."));
+            }
+            
+            $self->return_baseurl;
+        }
     }
     else {
-        $logger->debug("Weiter zum Record");
-        if ($new_titleid){
-            $logger->debug("Weiter zur Titelid $new_titleid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('itemid',$new_titleid);
-            $self->param('location',"$location/item/$new_titleid");
-            $self->show_record;
-            return;
+   
+        # CGI / JSON input
+        my $input_data_ref = $self->parse_valid_input();
+        
+        if (defined $input_data_ref->{error} && $input_data_ref->{error} == 1){
+            $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
+            return Apache2::Const::OK;
+        }
+        
+        # Einfuegen eines Titels in die Merkliste
+        my $new_titleid = $self->add_item_to_collection($input_data_ref);
+        
+        if ($self->param('representation') eq "html"){
+            $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
+            return Apache2::Const::OK;
+        }
+        else {
+            $logger->debug("Weiter zum Record");
+            if ($new_titleid){
+                $logger->debug("Weiter zur Titelid $new_titleid");
+                $self->param('status',Apache2::Const::HTTP_CREATED);
+                $self->param('itemid',$new_titleid);
+                $self->param('location',"$location/item/$new_titleid");
+                $self->show_record;
+                return;
+            }
         }
     }
 }

@@ -692,7 +692,7 @@ sub get_items_in_collection {
         my $listid     = $item->get_column('thislistid');
 
         if ($database && $titleid){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid}));
+            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid})->load_brief_record);
         }
         elsif ($titlecache) {
             my $record = new OpenBib::Record::Title({listid => $listid});
@@ -761,6 +761,7 @@ sub add_item_to_collection {
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
         my $have_title = $self->{schema}->resultset('Sessioncollection')->search_rs(
             {
+                sid     => $self->{sid},
                 dbname  => $dbname,
                 titleid => $titleid,
             }
@@ -775,6 +776,7 @@ sub add_item_to_collection {
             # DBI "insert into treffer values (?,?,?,?)"
             $new_title = $self->{schema}->resultset('Sessioncollection')->create(
                 {
+                    sid     => $self->{sid},
                     dbname     => $dbname,
                     titleid    => $titleid,
                     titlecache => $record_json,
@@ -792,6 +794,7 @@ sub add_item_to_collection {
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
         my $have_title = $self->{schema}->resultset('Sessioncollection')->search_rs(
             {
+                sid     => $self->{sid},
                 titlecache => $record_json,
             }
         )->count;
@@ -802,6 +805,7 @@ sub add_item_to_collection {
             # DBI "insert into treffer values (?,?,?,?)"
             $new_title = $self->{schema}->resultset('Sessioncollection')->create(
                 {
+                    sid     => $self->{sid},
                     titleid    => 0,
                     dbname     => '',
                     titlecache => $record_json,

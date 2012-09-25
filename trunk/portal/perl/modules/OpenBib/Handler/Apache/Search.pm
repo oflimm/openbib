@@ -149,7 +149,6 @@ sub show_search {
     
 #    my $profile       = $query->param('profile')       || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
-    my $queryid       = $query->param('queryid')       || '';
 
 
     #     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
@@ -242,7 +241,7 @@ sub show_search {
     my $gesamttreffer = 0;
 
     my $atime=new Benchmark;
-    
+
     my $starttemplatename=$config->{tt_search_title_start_tname};
 
         # TT-Data erzeugen
@@ -250,7 +249,6 @@ sub show_search {
     my $startttdata={
         password       => $password,
         searchquery    => $searchquery,
-        queryid        => $queryid,
         query          => $query,
         
         qopts          => $queryoptions->get_options,
@@ -328,17 +326,19 @@ sub show_search {
         #
         # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
     }
-                                                  
+
+    # Jetzt update der Trefferinformationen, wenn keine ID
+    $searchquery->save({sessionID => $session->{ID}});
+
     # TT-Data erzeugen
     my $endttdata={
-        fullresultcount => $self->param('total_hits'),
+        total_hits    => $self->param('total_hits'),
         
         username      => $username,
         password      => $password,
         
         searchquery   => $searchquery,
         query         => $query,
-        queryid       => $queryid,
         qopts         => $queryoptions->get_options,
         queryoptions  => $queryoptions,        
     };
@@ -377,9 +377,6 @@ sub show_search {
         $logger->debug("Resultset wird geschrieben: ".YAML::Dump(\@resultset));
         $session->updatelastresultset(\@resultset);
     }
-
-    # Jetzt update der Trefferinformationen, wenn keine ID
-    $searchquery->save({sessionID => $session->{ID}});
     
     # Wurde in allen Katalogen recherchiert?
     
@@ -447,7 +444,6 @@ sub show_index {
     
     my $profile       = $query->param('profile')        || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
-    my $queryid       = $query->param('queryid')       || '';
     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
     my $drilldown     = $query->param('dd')            || 0;     # Drill-Down?
 

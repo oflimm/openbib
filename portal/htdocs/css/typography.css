@@ -3,7 +3,7 @@
   body {
     font-family:Arial, Helvetica, sans-serif;
     font-size:75.00%;
-    color:#444;
+    color:#444; 
     webkit-text-size-adjust:100%;
   }
   
@@ -24,7 +24,7 @@
   }
   
   h1 {
-    font-size:250%;
+    font-size:220%;
     line-height: 0.8571em;
     margin: 0.4286em 0 0;
   }
@@ -58,5 +58,12 @@
     font-size:100%;
     line-height: 1.5em;
     margin: 1.5em 0 0 0;
+  }
+
+  a:hover,
+  a:focus {
+    background-color: #fff;
+    color:#4D87C7;
+    text-decoration:underline;
   }
 }

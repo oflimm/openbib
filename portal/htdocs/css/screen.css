@@ -9,6 +9,22 @@
     left: 5px;
   }
 
+  footer {
+    margin: 0.2em 0 0 0;
+/*    background: #e8fca4;
+    color: #444; */
+    padding: 0.5em;
+
+    background: #c8c8c8;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#c8c8c8), to(#f3f3f3));
+    background: -moz-linear-gradient(top,  #c8c8c8,  #f3f3f3);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#c8c8c8', endColorstr='#f3f3f3');
+    
+    
+    border: 1px #c8c8c8 solid;
+  }
+
   #topnav a { color:#999; font-weight:normal; background:transparent; text-decoration:none; }
   #topnav a:focus,
   #topnav a:hover,

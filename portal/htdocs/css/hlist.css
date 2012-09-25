@@ -17,9 +17,12 @@
 @media all {
 
   .ym-hlist {
+    margin: 0px;
+    margin-left: 0px;
+    padding: 0px;
     /* (en) containing floats in IE */
     /* (de) Einfassen der Floats im IE */
-    width:100%;
+    width:auto;
     overflow:hidden;
     /* (en|de) Bugfix:IE - collapsing horizontal margins */
     position:relative;
@@ -32,7 +35,7 @@
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#c8c8c8', endColorstr='#f3f3f3');
     
     
-    border: 1px slategrey solid;
+    border: 1px #c8c8c8 solid;
     /* border-radius: 12px;
        border-radius: 12px;
        moz-border-radius: 12px;

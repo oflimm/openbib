@@ -338,6 +338,7 @@ convtab:
         ft: 1
         string: 0
         index:
+          't0335': 1
           'title': 1
           'titlestring': 1
           'freesearch': 1
@@ -374,6 +375,10 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0410':         # Auflage
+        string: 1
+        index:
+          't0410': 1
       '0412':         # Verlag
         string: 1
         index:

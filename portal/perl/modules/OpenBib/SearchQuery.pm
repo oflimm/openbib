@@ -456,7 +456,7 @@ sub save  {
     $logger->debug("Query Object: ".$query_obj_string);
 
     # DBI: "select queryid from queries where query = ? and sessionid = ?"
-    my $searchquery_exists = $self->{schema}->resultset('Query')->search_rs(
+    my $searchquery = $self->{schema}->resultset('Query')->search_rs(
         {
             'sid.sessionid' => $sessionID,
             'me.query'      => $query_obj_string,
@@ -466,20 +466,27 @@ sub save  {
             as     => 'thisqueryid',
             join => 'sid'
         }
-    )->count;
+    );
 
+    my $searchquery_exists = $searchquery->count;
     # Wenn noch nicht vorhanden, dann eintragen
+
     if (!$searchquery_exists){
         my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $sessionID })->single()->id;
 
         # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
-        $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile, tstamp => \'NOW()' });
+        my $new_query = $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile, tstamp => \'NOW()' });
 
-        # $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string");
+        $self->set_id($new_query->get_column('queryid'));
+        
+         $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string to id ".$self->get_queryid);
     }
     else {
+        $self->set_id($searchquery->get_column('queryid'));
         $logger->debug("Query already exists: $query_obj_string");
     }
+
+    $logger->debug("SearchQuery has id ".$self->get_queryid);
     
     return $self;
 }
@@ -490,10 +497,22 @@ sub is_indexsearch {
     return $self->{_is_indexsearch};
 }
 
+sub get_queryid {
+    my ($self)=@_;
+
+    return $self->{_queryid};
+}
+
 sub get_searchquery {
     my ($self)=@_;
 
     return $self->{_searchquery};
+}
+
+sub get_searchfield {
+    my ($self,$field)=@_;
+
+    return $self->{_searchquery}->{$field};
 }
 
 sub get_searchtype {

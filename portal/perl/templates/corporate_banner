@@ -10,7 +10,7 @@
 [%- END -%]
 [% END %]
       </div>
-      <div id="logo"><a href="[% path_prefix %]/[% config.get('startopac_loc') %]?l=[% lang %]" title="Startseite der Richter-Bibliothek" id="header_logo_image"></a></div>
+      <div id="logo"><a href="[% path_prefix %]/[% config.get('home_loc') %]?l=[% lang %]" title="Startseite der Richter-Bibliothek" id="header_logo_image"></a></div>
 
     </header>
 <!-- End Template: corporate_banner -->

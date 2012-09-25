@@ -565,13 +565,13 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 <div class="ob-fulltitle"><!-- Begin Fulltitle -->
 <div class="details ym-grid linearize-level-2"><!-- Begin Details -->
 <!-- Title begins here -->
-<div class="images ym-g25 ym-gr"><!-- Begin Images -->
+<div class="images ym-g33 ym-gr"><!-- Begin Images -->
   <div class="ym-gbox-right">
 [% PROCESS common/subtemplate name="title_html_images" %]
   </div>
 </div><!-- End Images -->
 
-<div class="categories ym-g75 ym-gl"><!-- Begin Categories -->
+<div class="categories ym-g66 ym-gl"><!-- Begin Categories -->
 
   <div class="ym-gbox-left">
 [% PROCESS common/subtemplate name="visible_categories_title" %]

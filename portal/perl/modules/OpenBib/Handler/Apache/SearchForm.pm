@@ -198,7 +198,7 @@ sub show {
         spelling_suggestion    => $spelling_suggestion_ref,
         livesearch             => $livesearch_ref,
         
-        searchquery   => $searchquery->get_searchquery,
+        searchquery   => $searchquery,
         qopts         => $queryoptions->get_options,
 
 #        anzahl        => $anzahl,

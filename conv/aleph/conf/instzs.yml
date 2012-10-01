@@ -420,6 +420,8 @@ holding:
                  - 'c'
             '0014':
                  - 'f'
+            '0016':
+                 - 'e'
     '071 ':
         'newcat': '3330' # Bestandsverlauf
         'mult': 0

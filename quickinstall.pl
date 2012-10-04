@@ -89,7 +89,6 @@ my @install_dirs = (
     '/var/log/openbib',
     '/usr/share/images',
     '/usr/share/images/openbib',
-    '/usr/local/lib/site_perl/',
 );
 
 my %cvs_links = (
@@ -144,7 +143,7 @@ my %cvs_links = (
     "$repositoryroot/conv/elasticsearch/file2elasticsearch.pl"         => "/opt/openbib/conv/file2elasticsearch.pl",
     "$repositoryroot/conv/zms/zmslibinfo2configdb.pl"    => "/opt/openbib/conv/zmslibinfo2configdb.pl",,
     "$repositoryroot/db"                                 => "/opt/openbib/db",
-    "$repositoryroot/portal/perl/modules/OpenBib"        => "/usr/local/lib/site_perl/OpenBib",
+    "$repositoryroot/portal/perl/modules/OpenBib"        => "/usr/lib/perl5/OpenBib",
     "$repositoryroot/portal/apache/openbib.conf"         => "$confd/openbib.conf",
     "$repositoryroot/portal/htdocs/gm"                   => "$documentroot/gm",
     "$repositoryroot/portal/htdocs/js"                   => "$documentroot/js",
@@ -158,8 +157,8 @@ my %copy_files = (
     "$repositoryroot/portal/perl/conf/portal.log4perl"                => "/opt/openbib/conf/portal.log4perl",
     "$repositoryroot/portal/perl/conf/portal.yml-dist"                => "/opt/openbib/conf/portal.yml",
     "$repositoryroot/portal/perl/conf/convert.yml-dist"               => "/opt/openbib/conf/convert.yml",
-    "$repositoryroot/portal/perl/modules/OpenBib/Search/Driver/Z3950/USBK/Config.pm-dist"
-                                                           => "$repositoryroot/portal/perl/modules/OpenBib/Search/Driver/Z3950/USBK/Config.pm",
+    "$repositoryroot/portal/perl/modules/OpenBib/Search/Backend/Z3950/USBK/Config.pm-dist"
+                                                           => "$repositoryroot/portal/perl/modules/OpenBib/Search/Backend/Z3950/USBK/Config.pm",
 );
 
 print "Erzeuge Verzeichnisse\n";

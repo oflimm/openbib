@@ -113,6 +113,10 @@ my $atime = new Benchmark;
 # Aktuelle Pool-Version von entfernter Quelle uebertragen
 
 {
+    if (! -d "$pooldir/$database"){
+        system("mkdir $pooldir/$database");
+    }
+
     if ($sync){
         my $atime = new Benchmark;
         
@@ -136,6 +140,7 @@ my $atime = new Benchmark;
             }
             
             
+
             system("cd $pooldir/$database ; rm meta.*");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->titlefile." > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$database/ $base_url".$dbinfo->personfile." > /dev/null 2>&1 ");

@@ -1,7 +1,7 @@
 @media all
 {
   header {
-    padding-bottom:30px;
+    padding-bottom:68px;
   }
 
   header #logo {
@@ -9,7 +9,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    with: 70%;
+    width: 100%;
   }
 
   header #institution {
@@ -23,11 +23,11 @@
 
   #header_logo_image {
     background: url(/images/openbib/views/rheinlandbib/logo.png) center no-repeat;
-    width: 432px;
+    width: 1000px;
     height: 100px;
     position: absolute;
-    top: 6px;
-    left: 7px;
+    top: 35px;
+    left: 0px;
   }
 
   #header_institution_image {

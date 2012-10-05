@@ -112,6 +112,8 @@ my $atime = new Benchmark;
 
 # Aktuelle Pool-Version von entfernter Quelle uebertragen
 
+my $postgresdbh = DBI->connect("DBI:Pg:dbname=postgres;host=localhost;port=5432", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect to local postgres database";
+
 {
     if (! -d "$pooldir/$database"){
         system("mkdir $pooldir/$database");
@@ -397,7 +399,7 @@ if ($loading_error){
     $logger->fatal("### $database: Problem beim Einladen. Exit.");
     $logger->fatal("### $database: Loesche temporaere Datenbank/Index.");
 
-    $config->{schema}->storage->dbh->do("drop database $databasetmp");
+    $postgresdbh->do("drop database $databasetmp");
 
     system("rm $config->{xapian_index_base_path}/${databasetmp}/* ; rmdir $config->{xapian_index_base_path}/${databasetmp}");
 
@@ -413,11 +415,23 @@ else {
 
     $logger->info("### $database: Tabellen aus temporaerer Datenbank in finale Datenbank verschieben");
 
-    $config->{schema}->storage->dbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
-    $config->{schema}->storage->dbh->do("ALTER database $database RENAME TO ${database}tmp2");
-    $config->{schema}->storage->dbh->do("ALTER database $databasetmp RENAME TO $database");
+    my $request = $postgresdbh->prepare("SELECT count(datname) AS dbcount FROM pg_database WHERE datname=?");
+    $request->execute($database);
+    
+    my $result = $request->fetchrow_hashref;
+    
+    my $old_database_exists = $result->{dbcount};
+
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
+
+    if ($old_database_exists){
+	$postgresdbh->do("ALTER database $database RENAME TO ${database}tmp2");
+    }
+
+    $postgresdbh->do("ALTER database $databasetmp RENAME TO $database");
 
     $logger->info("### $database: Temporaeren Suchindex aktivieren");
+
     if (-d "$config->{xapian_index_base_path}/$database"){
         system("mv $config->{xapian_index_base_path}/$database $config->{xapian_index_base_path}/${database}tmp2");
     }
@@ -428,7 +442,9 @@ else {
         system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
     }
 
-    $config->{schema}->storage->dbh->do("drop database ${database}tmp2");
+    if ($old_database_exists){
+	$postgresdbh->do("drop database ${database}tmp2");
+    }
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

@@ -43,4 +43,4 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Loesche Standort 'USB-Magazin'\n";
 
-system("$mysqlexe -e \"update holding set content='' where content='USB-Magazin' and category='0016'\" $pool");
+system("$mysqlexe -e \"update holding set content='' where content='USB-Magazin' and field='0016'\" $pool");

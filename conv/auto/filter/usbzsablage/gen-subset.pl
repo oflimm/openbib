@@ -65,7 +65,7 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbh
 
 print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content rlike '^P [0-9]' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.field=14 and mex.content rlike '^P [0-9]' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 
@@ -81,7 +81,7 @@ foreach my $key (keys %titidns){
 
 print "### $pool: Gefundene Titel-ID's $count\n";
 
-# $request=$dbh->prepare("select distinct id from mex where category='0016' and content='USB-Lehrbuchsammlung'") or $logger->error($DBI::errstr);
+# $request=$dbh->prepare("select distinct id from mex where field='0016' and content='USB-Lehrbuchsammlung'") or $logger->error($DBI::errstr);
 # $request->execute();
 
 # while (my $result=$request->fetchrow_hashref()){

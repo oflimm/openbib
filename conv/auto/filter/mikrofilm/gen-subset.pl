@@ -76,19 +76,19 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
-$subset->identify_by_category_content('title',[
-    { category => '2060', content => '^c' },
-    { category => '2061', content => '^o' },
-    { category => '2062', content => '^|' },
-    { category => '2063', content => '^[bc]' },
-    { category => '2064', content => '^g' },
-    { category => '2065', content => '^u' },
-    { category => '2066', content => '^---' },
-    { category => '2067', content => '^u' },
-    { category => '2068', content => '^a' },
-    { category => '2069', content => '^[ab]' },
-    { category => '2070', content => '^u' },
-    { category => '2071', content => '^a' },
+$subset->identify_by_field_content('title',[
+    { field => '2060', content => '^c' },
+    { field => '2061', content => '^o' },
+    { field => '2062', content => '^|' },
+    { field => '2063', content => '^[bc]' },
+    { field => '2064', content => '^g' },
+    { field => '2065', content => '^u' },
+    { field => '2066', content => '^---' },
+    { field => '2067', content => '^u' },
+    { field => '2068', content => '^a' },
+    { field => '2069', content => '^[ab]' },
+    { field => '2070', content => '^u' },
+    { field => '2071', content => '^a' },
 ],'all');
 $subset->write_set;
 

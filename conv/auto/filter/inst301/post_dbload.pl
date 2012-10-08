@@ -49,7 +49,7 @@ my $dbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$pool;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd});
 
 
-my $sql_stmnt1 = "select id,content from holding where category=14";
+my $sql_stmnt1 = "select id,content from holding where field=14";
 my $sql_stmnt2 = "insert into holding values (?,3330,1,?)";
 
 my $request1 = $dbh->prepare($sql_stmnt1);

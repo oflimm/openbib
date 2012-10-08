@@ -76,7 +76,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
-$subset->identify_by_category_content('holding',([ { category => '0016', content => '^Hauptabteilung / Lehrbuchsammlung' } ]));
+$subset->identify_by_field_content('holding',([ { field => '0016', content => '^Hauptabteilung / Lehrbuchsammlung' } ]));
 $subset->write_set;
 
 sub print_help {

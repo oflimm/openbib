@@ -39,7 +39,7 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
-use OpenBib::Schema::Catalog;
+use OpenBib::Catalog;
 
 # Definition der Programm-Optionen
 my ($database,$logfile);
@@ -86,91 +86,73 @@ else {
 my ($allcount,$journalcount,$articlecount,$digitalcount)=(0,0,0,0);
 
 foreach $database (@databases){
-    my $schema;
+    eval {
+	my $catalog = new OpenBib::Catalog($database);
+	
+	# Gesamt-Titelzahl bestimmen;
+	my $allcount = $catalog->{schema}->resultset('Title')->count;
+	
+	# Serien/Zeitschriften bestimmen
+	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'"
+	my $journalcount = $catalog->{schema}->resultset('TitleField')->search(
+	    {
+		'field'                   => '0800',
+		'content'                 => 'Zeitschrift/Serie',
+	    },
+	    {
+		select   => ['titleid'],
+		as       => ['thistitleid'], 
+		group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
+		
+	    }
+	    )->count;
+	
+	# Aufsaetze bestimmen
+	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'"
+	my $articlecount = $catalog->{schema}->resultset('TitleField')->search(
+	    {
+		'field'                   => '0800',
+		'content'                 => 'Aufsatz',
+	    },
+	    {
+		select   => ['titleid'],
+		as       => ['thistitleid'], 
+		group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
+		
+	    }
+	    )->count;
+	
+	# E-Median bestimmen
+	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Digital'"
+	my $digitalcount = $catalog->{schema}->resultset('TitleField')->search(
+	    {
+		'field'                   => '0800',
+		'content'                 => 'Digital',
+	    },
+	    {
+		select   => ['titleid'],
+		as       => ['thistitleid'], 
+		group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
+		
+	    }
+	    )->count;
+	
+	# DBI "update databaseinfo set allcount = ?, journalcount = ?, articlecount = ?, digitalcount = ? where dbname=?"
+	$config->update_databaseinfo(
+	    {
+		dbname       => $database,
+		
+		allcount     => $allcount,
+		journalcount => $journalcount,
+		articlecount => $articlecount,
+		digitalcount => $digitalcount,
+	    }
+	    );
+	
+	$logger->info("$database -> $allcount / $journalcount / $articlecount / $digitalcount");
+    };
 
-    if ($config->{dbimodule} eq "Pg"){
-        eval {
-            # UTF8: {'pg_enable_utf8'    => 1}
-            $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
-        }
+    if ($@){
+	$logger->error("Error processing $database: $@");
     }
-    elsif ($config->{dbimodule} eq "mysql"){
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $database: DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}");
-            next;
-        }
-    }
-    
-    # Gesamt-Titelzahl bestimmen;
-    my $allcount = $schema->resultset('Title')->count;
-
-    # Serien/Zeitschriften bestimmen
-    # DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'"
-    my $journalcount = $schema->resultset('TitleField')->search(
-        {
-            'field'                   => '0800',
-            'content'                 => 'Zeitschrift/Serie',
-        },
-        {
-            select   => ['titleid'],
-            as       => ['thistitleid'], 
-            group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
-            
-        }
-    )->count;
-
-    # Aufsaetze bestimmen
-    # DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'"
-    my $articlecount = $schema->resultset('TitleField')->search(
-        {
-            'field'                   => '0800',
-            'content'                 => 'Aufsatz',
-        },
-        {
-            select   => ['titleid'],
-            as       => ['thistitleid'], 
-            group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
-            
-        }
-    )->count;
-    
-    # E-Median bestimmen
-    # DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Digital'"
-    my $digitalcount = $schema->resultset('TitleField')->search(
-        {
-            'field'                   => '0800',
-            'content'                 => 'Digital',
-        },
-        {
-            select   => ['titleid'],
-            as       => ['thistitleid'], 
-            group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
-            
-        }
-    )->count;
-
-    # DBI "update databaseinfo set allcount = ?, journalcount = ?, articlecount = ?, digitalcount = ? where dbname=?"
-    $config->update_databaseinfo(
-        {
-            dbname       => $database,
-            
-            allcount     => $allcount,
-            journalcount => $journalcount,
-            articlecount => $articlecount,
-            digitalcount => $digitalcount,
-        }
-    );
-  
-    $logger->info("$database -> $allcount / $journalcount / $articlecount / $digitalcount");
-  
 }

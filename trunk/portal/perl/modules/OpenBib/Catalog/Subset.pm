@@ -35,6 +35,7 @@ use utf8;
 
 use DBI;
 use OpenBib::Config;
+use OpenBib::Catalog;
 use OpenBib::Schema::Catalog;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
@@ -77,36 +78,17 @@ sub new {
 
 sub set_source {
     my $self     = shift;
-    my $source = shift;
+    my $source   = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     $self->{source} = $source;
 
-    if ($self->{config}->{dbimodule} eq "Pg"){
-        eval {
-            # UTF8: {'pg_enable_utf8'    => 1}
-            $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $source: DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}");
-            exit;
-        }
-    }
-    elsif ($self->{config}->{dbimodule} eq "mysql"){
-        eval {
-            # UTF8: {'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}
-            $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $source: DBI:$self->{config}->{dbimodule}:dbname=$source;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}");
-            exit;
-        }
-    }
-    
+    my $catalog = new OpenBib::Catalog($source);
+
+    $self->{schema} = $catalog->{schema};
+
     return $self;
 }
 
@@ -140,9 +122,6 @@ sub identify_by_mark {
 
     my $config = new OpenBib::Config;
     
-    my $regexp_op = ($config->{dbimodule} eq "mysql")?"rlike":
-        ($config->{dbimodule} eq "Pg")?"~":"rlike";
-    
     foreach my $thismark (@marks){
         $logger->debug("Searching for Mark $thismark");
         
@@ -150,16 +129,18 @@ sub identify_by_mark {
         my $titles = $self->{schema}->resultset('TitleHolding')->search_rs(
             {
                 'holding_fields.field' => 14,
-                'holding_fields.content' => { $regexp_op => $mark },
+                'holding_fields.content' => { '~' => $thismark },
             },
             {
-                select   => ['me.titleid'],
+                select   => ['titleid.id'],
                 as       => ['thistitleid'],
-                join     => ['holdingid', {'holdingid' => 'holding_fields' }],
-                group_by => ['me.titleid'],
+                join     => ['titleid','holdingid', {'holdingid' => 'holding_fields' }],
+                group_by => ['titleid.id'],
             }
         );
-        
+
+	$logger->info("### $self->{source} -> $self->{destination}: ".$titles->count." Titel mit $thismark");
+	
         foreach my $item ($titles->all){
             my $titleid = $item->get_column('thistitleid');
             
@@ -185,7 +166,7 @@ sub identify_by_mark {
         my $holdings = $self->{schema}->resultset('Holding')->search_rs(
             {
                 'holding_fields.field' => 14,
-                'holding_fields.content' => { $regexp_op => $mark },
+                'holding_fields.content' => { '~' => $thismark },
             },
             {
                 select   => ['me.id'],
@@ -205,7 +186,7 @@ sub identify_by_mark {
     return $self;
 }
         
-sub identify_by_category_content {
+sub identify_by_field_content {
     my $self    = shift;
     my $table   = shift;
     my $arg_ref = shift;
@@ -253,7 +234,7 @@ sub identify_by_category_content {
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
         my $titles = $self->{schema}->resultset('TitleField')->search_rs(
             {
-                'field'   => $criteria_ref->{category},
+                'field'   => $criteria_ref->{field},
                 'content' => { '~' => $criteria_ref->{content} },
             },
             {
@@ -266,7 +247,7 @@ sub identify_by_category_content {
             # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
             $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
                 {
-                    $table_type{$table}{field} => $criteria_ref->{category},
+                    $table_type{$table}{field} => $criteria_ref->{field},
                     'content' => { '~' => $criteria_ref->{content} },
                 },
                 {

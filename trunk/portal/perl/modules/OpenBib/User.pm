@@ -972,7 +972,7 @@ sub add_tags {
     foreach my $tagname (@taglist){
 
         # Normierung
-        $tagname = OpenBib::Common::Util::grundform({
+        $tagname = OpenBib::Common::Util::normalize({
             content  => $tagname,
             tagging  => 1,
         });
@@ -1089,12 +1089,12 @@ sub rename_tag {
     my @newtaglist = split("\\s+",$newtag);
 
     # Normierung
-    $oldtag = OpenBib::Common::Util::grundform({
+    $oldtag = OpenBib::Common::Util::normalize({
         content  => $oldtaglist[0],
         tagging  => 1,
     });
 
-    $newtag = OpenBib::Common::Util::grundform({
+    $newtag = OpenBib::Common::Util::normalize({
         content  => $newtaglist[0],
         tagging  => 1,
     });

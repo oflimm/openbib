@@ -118,7 +118,7 @@ my $db = Search::Xapian::WritableDatabase->new( $thisdbpath, Search::Xapian::DB_
 #     open(SW,$stopwordfile);
 #     while (my $stopword=<SW>){
 #         chomp $stopword ;
-#         $stopword = OpenBib::Common::Util::grundform({
+#         $stopword = OpenBib::Common::Util::normalize({
 #                         content  => $stopword,
 #                     });
 #

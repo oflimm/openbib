@@ -234,7 +234,7 @@ sub set_from_apache_request {
                         my $last = $3;
                         
                         #                    $logger->debug("Fullstring IN: $string");
-                        my $string_norm = OpenBib::Common::Util::grundform({
+                        my $string_norm = OpenBib::Common::Util::normalize({
                             content   => $string,
                         });
                         
@@ -267,15 +267,15 @@ sub set_from_apache_request {
                 }
                 
                 if ($config->{'searchfield'}{$searchfield}{option}{strip_first_stopword}){
-                    $thissearchfield_norm_content = OpenBib::Common::Util::grundform({
-                        category  => "0331", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
+                    $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
+                        searchfield  => "hststring", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
                         content   => $thissearchfield_norm_content,
                         searchreq => 1,
                     });
                     $logger->debug("Filtering Stopword -> $thissearchfield_norm_content");
                 }
                 else {
-                    $thissearchfield_norm_content = OpenBib::Common::Util::grundform({
+                    $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
                         content   => $thissearchfield_norm_content,
                         searchreq => 1,
                     });
@@ -283,7 +283,7 @@ sub set_from_apache_request {
                 
                 if ($config->{'searchfield'}{$searchfield}{type} eq "string"){
                     # Stringsuche auch mit Trunkierung via * moeglich
-                    $thissearchfield_norm_content = OpenBib::Common::Util::grundform({
+                    $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
                         content   => $thissearchfield_norm_content,
                     });
 
@@ -326,7 +326,7 @@ sub set_from_apache_request {
             
             my $string  = $term;
             
-            $string = OpenBib::Common::Util::grundform({
+            $string = OpenBib::Common::Util::normalize({
                 content   => $string,
             });
             
@@ -360,7 +360,7 @@ sub set_from_apache_request {
     $self->{searchindex}         = $query->param('searchindex')               || '';
     
     if ($indexterm){
-        $indextermnorm  = OpenBib::Common::Util::grundform({
+        $indextermnorm  = OpenBib::Common::Util::normalize({
            content   => $indextermnorm,
            searchreq => 1,
         });
@@ -701,7 +701,7 @@ sub set_searchfield {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $contentnorm  = OpenBib::Common::Util::grundform({
+    my $contentnorm  = OpenBib::Common::Util::normalize({
         content   => $content,
         searchreq => 1,
     });
@@ -810,7 +810,7 @@ sub get_spelling_suggestion {
         my $sorted_suggestions_ref = [];
 
         if (defined $dbh){
-            my $this_term = OpenBib::Common::Util::grundform({
+            my $this_term = OpenBib::Common::Util::normalize({
                 content   => $term,
                 searchreq => 1,
             });
@@ -820,7 +820,7 @@ sub get_spelling_suggestion {
             # Verwende die 5 besten Vorschlaege
             foreach my $suggested_term (@aspell_suggestions[0..4]){
                 next unless ($suggested_term);
-                my $suggested_term = OpenBib::Common::Util::grundform({
+                my $suggested_term = OpenBib::Common::Util::normalize({
                     content   => $suggested_term,
                     searchreq => 1,
                 });

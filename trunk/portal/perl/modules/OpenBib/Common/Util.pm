@@ -47,14 +47,18 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Template::Provider;
+use OpenBib::Common::Stopwords;
 use OpenBib::Session;
 
-sub grundform {
+sub normalize {
     my ($arg_ref) = @_;
     
     # Set defaults
     my $content   = exists $arg_ref->{content}
         ? $arg_ref->{content}             : "";
+
+    my $searchfield  = exists $arg_ref->{searchfield}
+        ? $arg_ref->{searchfield}         : "";
 
     my $category  = exists $arg_ref->{category}
         ? $arg_ref->{category}            : "";
@@ -87,25 +91,24 @@ sub grundform {
     }
     
     # ISBN filtern
-    if ($category eq "0540" || $category eq "0553"){
+    if ($category eq "0540" || $category eq "0553" || $searchfield eq "isbn" || $searchfield eq "freesearch"){
         # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
         $content=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
-        return $content;
+        return $content if ($searchfield eq "isbn");
     }
 
     # ISSN filtern
-    if ($category eq "0543"){
+    if ($category eq "0543" || $searchfield eq "issn" || $searchfield eq "freesearch"){
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8/g;
-        return $content;
+        return $content if ($searchfield eq "issn");
     }
 
     $content=~s/¬//g;
 
     # Stopwoerter fuer versch. Kategorien ausfiltern (Titel-String)
 
-    if ($category eq "0304" || $category eq "0310" || $category eq "0331"
-            || $category eq "0341" || $category eq "0370"){
+    if ($searchfield eq "titlestring"){
 
         $content=~s/\s+$//;
         $content=~s/\s+<.*?>//g;
@@ -807,8 +810,8 @@ sub to_isbn13 {
         $thisisbn = $isbn->as_isbn13->as_string;
     }
     
-    $thisisbn = OpenBib::Common::Util::grundform({
-        category => '0540',
+    $thisisbn = OpenBib::Common::Util::normalize({
+        field => '0540',
         content  => $thisisbn,
     });
 
@@ -820,8 +823,8 @@ sub to_issn {
 
     return undef unless (defined $thisissn);
     
-    $thisissn = OpenBib::Common::Util::grundform({
-        category => '0543',
+    $thisissn = OpenBib::Common::Util::normalize({
+        field => '0543',
         content  => $thisissn,
     });
 
@@ -1021,7 +1024,7 @@ von mehr als einem mod_perl-Modul verwendet werden.
 
  my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
- my $nomalized_content = OpenBib::Common::Util::grundform({ content => $content, $category => $category, searchreq => $searchreq, tagging => $tagging});
+ my $normalized_content = OpenBib::Common::Util::normalize({ content => $content, field => field, searchfield => $searchfield, searchreq => $searchreq, tagging => $tagging});
 
  my $server_to_use = OpenBib::Common::Util::get_loadbalanced_servername;
 
@@ -1054,10 +1057,10 @@ Stylesheet openbib.css. Bei anderen Browser-Version wird im Falle von
 MSIE sonst openbib-simple-ie.css bzw. bei allen anderen Browsern
 openbib-simple.css verwendet.
 
-=item grundform({ content => $content, $category => $category, searchreq => $searchreq, tagging => $tagging})
+=item normalize({ content => $content, searchfield => $searchfield, $field => $field, searchreq => $searchreq, tagging => $tagging})
 
 Allgemeine Normierung des Inhaltes $content oder in Abhängigkeit von
-der Kategorie $category, bei einer Suchanfrage ($searchreq=1)
+der Kategorie $field oder des Suchfeldes $searchfield bei einer Suchanfrage ($searchreq=1)
 bzw. beim Tagging ($tagging=1). Neben einer Filterung nach erlaubten
 Zeichen erfolgt insbesondere die Rückführung von Zeichen auf ihre
 Grundbuchstaben, also ae für ä oder e für é.

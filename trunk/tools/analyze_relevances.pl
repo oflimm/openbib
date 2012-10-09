@@ -113,8 +113,8 @@ foreach my $item ($isbns->all){
         $processed_isbn13 = $isbnXX->as_isbn13->as_string;
     }
 
-    $processed_isbn13 = OpenBib::Common::Util::grundform({
-        category => '0540',
+    $processed_isbn13 = OpenBib::Common::Util::normalize({
+        field => '0540',
         content  => $processed_isbn13,
     });
 

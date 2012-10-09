@@ -113,8 +113,8 @@ else {
             next;
         }
         
-        $isbn = OpenBib::Common::Util::grundform({
-            category => '0540',
+        $isbn = OpenBib::Common::Util::normalize({
+            field => '0540',
             content  => $isbn,
         });
         

@@ -53,7 +53,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    with: 70%;
+    width: 100%;
   }
 
   header #institution {
@@ -67,13 +67,14 @@
 
   #header_logo_image {
     background: url(/images/openbib/views/alekiddr/logo.png) center no-repeat;
-    width: 453px;
+    width: 1000px;
     height: 100px;
     position: absolute;
-    top: 30px;
-    left: 7px;
+    top: 35px;
+    left: 0px;
   }
 
+/*
   #header_institution_image {
     background: url(/images/openbib/views/alekiddr/aleki_logo.png) center no-repeat;
     width: 111px;
@@ -82,7 +83,7 @@
     top: 30px;
     right: 10px;
   }
-
+*/
   .details {
     padding-top: 1em;
   }

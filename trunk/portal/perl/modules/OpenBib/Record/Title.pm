@@ -204,8 +204,8 @@ sub load_full_record {
                     $thisisbn = $isbn->as_isbn13->as_string;
                 }
 
-                push @isbn_refs_tmp, OpenBib::Common::Util::grundform({
-                    category => '0540',
+                push @isbn_refs_tmp, OpenBib::Common::Util::normalize({
+                    field => '0540',
                     content  => $thisisbn,
                 });
 
@@ -419,8 +419,8 @@ sub load_full_record {
             foreach my $issn_ref (@issn_refs){
                 my $thisissn = $issn_ref->{content};
 
-                push @issn_refs_tmp, OpenBib::Common::Util::grundform({
-                    category => '0543',
+                push @issn_refs_tmp, OpenBib::Common::Util::normalize({
+                    field => '0543',
                     content  => $thisissn,
                 });
 
@@ -695,8 +695,8 @@ sub to_normalized_isbn13 {
         $thisisbn = $isbn->as_isbn13->as_string;
     }
     
-    $thisisbn = OpenBib::Common::Util::grundform({
-        category => '0540',
+    $thisisbn = OpenBib::Common::Util::normalize({
+        field => '0540',
         content  => $thisisbn,
     });
     
@@ -1154,7 +1154,7 @@ sub to_tags {
         next if (!exists $self->{_fields}->{$category});
         foreach my $part_ref (@{$self->{_fields}->{$category}}){
             foreach my $content_part (split('\s+',$part_ref->{content})){
-                push @$keywords_ref, OpenBib::Common::Util::grundform({
+                push @$keywords_ref, OpenBib::Common::Util::normalize({
                     tagging => 1,
                     content => $content_part,
                 });
@@ -1266,7 +1266,7 @@ sub to_drilldown_term {
 
     my $config = OpenBib::Config->instance;
 
-    $term = OpenBib::Common::Util::grundform({
+    $term = OpenBib::Common::Util::normalize({
         content   => $term,
         searchreq => 1,
     });

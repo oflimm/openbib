@@ -144,7 +144,7 @@ my $atime = new Benchmark;
                     my $content = (exists $title_listitem_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{category}}[0]{content})?$title_listitem_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{category}}[0]{content}:"";
                     next unless ($content);
                     
-                    $content = OpenBib::Common::Util::grundform({
+                    $content = OpenBib::Common::Util::normalize({
                         content   => $content,
                     });
                     

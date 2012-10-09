@@ -49,7 +49,7 @@ sub normalize_drilldown {
     my ($self, $content) = @_;
 
     # Kategorie in Feld einfuegen            
-    $content = OpenBib::Common::Util::grundform({
+    $content = OpenBib::Common::Util::normalize({
         content   => $content,
         searchreq => 1,
     });

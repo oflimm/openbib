@@ -179,8 +179,8 @@ else {
                 next;
             }
         
-            $isbn = OpenBib::Common::Util::grundform({
-                category => '0540',
+            $isbn = OpenBib::Common::Util::normalize({
+                field => '0540',
                 content  => $isbn,
             });
 
@@ -270,7 +270,7 @@ sub process_ocr {
     # Nur noch eine Zeile
     $ocr=~s/\n/ /g;
 
-    $ocr=OpenBib::Common::Util::grundform({ content => $ocr });
+    $ocr=OpenBib::Common::Util::normalize({ content => $ocr });
 
     $ocr=~s/[^\p{Alphabetic}] / /g;
 

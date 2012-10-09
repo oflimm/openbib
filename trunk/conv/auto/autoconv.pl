@@ -112,7 +112,7 @@ my $atime = new Benchmark;
 
 # Aktuelle Pool-Version von entfernter Quelle uebertragen
 
-my $postgresdbh = DBI->connect("DBI:Pg:dbname=postgres;host=localhost;port=5432", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect to local postgres database";
+my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->{pgdbhost};port=$config->{pgdbport}", $config->{pgdbuser}, $config->{pgdbpasswd}) or die "could not connect to local postgres database";
 
 {
     if (! -d "$pooldir/$database"){

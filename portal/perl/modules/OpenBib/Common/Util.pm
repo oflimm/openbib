@@ -60,8 +60,8 @@ sub normalize {
     my $searchfield  = exists $arg_ref->{searchfield}
         ? $arg_ref->{searchfield}         : "";
 
-    my $category  = exists $arg_ref->{category}
-        ? $arg_ref->{category}            : "";
+    my $field  = exists $arg_ref->{field}
+        ? $arg_ref->{field}            : "";
 
     my $searchreq = exists $arg_ref->{searchreq}
         ? $arg_ref->{searchreq}           : undef;
@@ -83,7 +83,7 @@ sub normalize {
 
     # Datum normalisieren
 
-    if ($category eq '0002'){
+    if ($field eq '0002'){
         if ($content =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/){
             $content=$3.$2.$1;
             return $content;
@@ -91,7 +91,7 @@ sub normalize {
     }
     
     # ISBN filtern
-    if ($category eq "0540" || $category eq "0553" || $searchfield eq "isbn" || $searchfield eq "freesearch"){
+    if ($field eq "0540" || $field eq "0553" || $searchfield eq "isbn" || $searchfield eq "freesearch"){
         # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
         $content=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
@@ -99,7 +99,7 @@ sub normalize {
     }
 
     # ISSN filtern
-    if ($category eq "0543" || $searchfield eq "issn" || $searchfield eq "freesearch"){
+    if ($field eq "0543" || $searchfield eq "issn" || $searchfield eq "freesearch"){
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8/g;
         return $content if ($searchfield eq "issn");
     }
@@ -484,9 +484,9 @@ sub normset2bibtex {
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];
     my $editors_ref=[];
-    foreach my $category (qw/T0100 T0101/){
-        next if (!exists $normset_ref->{$category});
-        foreach my $part_ref (@{$normset_ref->{$category}}){
+    foreach my $field (qw/T0100 T0101/){
+        next if (!exists $normset_ref->{$field});
+        foreach my $part_ref (@{$normset_ref->{$field}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
                 push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
@@ -500,9 +500,9 @@ sub normset2bibtex {
 
     # Schlagworte
     my $keywords_ref=[];
-    foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
-        next if (!exists $normset_ref->{$category});
-        foreach my $part_ref (@{$normset_ref->{$category}}){
+    foreach my $field (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
+        next if (!exists $normset_ref->{$field});
+        foreach my $part_ref (@{$normset_ref->{$field}}){
             push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
         }
     }
@@ -723,9 +723,9 @@ sub gen_bibkey_base {
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];
     my $editors_ref=[];
-    foreach my $category (qw/0100 0101/){
-        next if (!exists $fields_ref->{$category});
-        foreach my $part_ref (@{$fields_ref->{$category}}){
+    foreach my $field (qw/0100 0101/){
+        next if (!exists $fields_ref->{$field});
+        foreach my $part_ref (@{$fields_ref->{$field}}){
             my $single_person = lc($part_ref->{content});
             $single_person    =~ s/[^0-9\p{L}\. ]+//g;
             my ($lastname,$firstname) = split(/\s+/,$single_person);

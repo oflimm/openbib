@@ -90,8 +90,8 @@ sub get_relevant_terms {
                         $cmpterm  = $thisterm_ref->{contentnorm};
                     }
                     else {
-                        $cmpterm  = OpenBib::Common::Util::grundform({
-                            category => $category,
+                        $cmpterm  = OpenBib::Common::Util::normalize({
+                            field => $category,
                             content  => $thisterm,
                         });
                     }
@@ -216,7 +216,7 @@ sub search {
         open(SW,$config->{stopword_filename});
         while (my $stopword=<SW>){
             chomp $stopword ;
-            $stopword = OpenBib::Common::Util::grundform({
+            $stopword = OpenBib::Common::Util::normalize({
                 content  => $stopword,
             });
             push @stopwords, $stopword;

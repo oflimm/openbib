@@ -203,7 +203,7 @@ sub set_field {
 #             my $contentnorm   = "";
 
 #             if (defined $field && exists $conv_config->{inverted_person}->{$field}){
-#                 $contentnorm = OpenBib::Common::Util::grundform({
+#                 $contentnorm = OpenBib::Common::Util::normalize({
 #                     field => $field,
 #                     content  => $content,
 #                 });

@@ -169,8 +169,8 @@ sub show_collection_by_isbn {
         return Apache2::Const::OK;
     }
     
-    my $isbn = OpenBib::Common::Util::grundform({
-        category => '0540',
+    my $isbn = OpenBib::Common::Util::normalize({
+        field => '0540',
         content  => $id,
     });
     

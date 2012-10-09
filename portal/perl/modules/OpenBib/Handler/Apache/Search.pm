@@ -463,7 +463,7 @@ sub show_index {
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
     ####################################################################
 
-    my $contentreq = OpenBib::Common::Util::grundform({
+    my $contentreq = OpenBib::Common::Util::normalize({
         content   => $self->param('dispatch_url_remainder'),
         searchreq => 1,
     });

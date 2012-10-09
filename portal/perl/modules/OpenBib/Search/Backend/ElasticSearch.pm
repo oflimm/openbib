@@ -91,8 +91,8 @@ sub get_relevant_terms {
                         $cmpterm  = $thisterm_ref->{contentnorm};
                     }
                     else {
-                        $cmpterm  = OpenBib::Common::Util::grundform({
-                            category => $category,
+                        $cmpterm  = OpenBib::Common::Util::normalize({
+                            field => $category,
                             content  => $thisterm,
                         });
                     }
@@ -320,7 +320,7 @@ sub get_facets {
     foreach my $type (keys %{$tmp_category_map_ref}) {
         my $contents_ref = [] ;
         foreach my $item_ref (@{$tmp_category_map_ref->{$type}->{terms}}) {
-            my $normcontent = OpenBib::Common::Util::grundform({
+            my $normcontent = OpenBib::Common::Util::normalize({
                 content   => decode_utf8($item_ref->{term}),
                 searchreq => 1,
             });

@@ -114,7 +114,7 @@ foreach my $database (@databases){
     my $aut_insertcount = 0;
     while (my $result=$request->fetchrow_hashref()){
         my $content     = $result->{content};
-        my $normcontent = OpenBib::Common::Util::grundform({
+        my $normcontent = OpenBib::Common::Util::normalize({
             content  => $content,
         });
 
@@ -134,7 +134,7 @@ foreach my $database (@databases){
     my $swt_insertcount = 0;
     while (my $result=$request->fetchrow_hashref()){
         my $content     = $result->{content};
-        my $normcontent = OpenBib::Common::Util::grundform({
+        my $normcontent = OpenBib::Common::Util::normalize({
             content  => $content,
         });
 

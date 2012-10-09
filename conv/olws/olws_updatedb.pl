@@ -420,8 +420,8 @@ sub process_raw_title {
                 my $contentnormft = "";
                 
                 if (exists $conv_config->{inverted_tit}{$category}){
-                    my $contentnormtmp = OpenBib::Common::Util::grundform({
-                        category => $category,
+                    my $contentnormtmp = OpenBib::Common::Util::normalize({
+                        field => $category,
                         content  => $content,
                     });
                     
@@ -436,50 +436,50 @@ sub process_raw_title {
 
 
                 if (   exists $conv_config->{search}{ejahr    }{$category}){
-                    push @ejahr, OpenBib::Common::Util::grundform({
-                        category => $category,
+                    push @ejahr, OpenBib::Common::Util::normalize({
+                        field => $category,
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{hst      }{$category}){
-                    push @hst, OpenBib::Common::Util::grundform({
-                        category => $category,
+                    push @hst, OpenBib::Common::Util::normalize({
+                        field => $category,
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{isbn     }{$category}){
-                    push @isbn,      OpenBib::Common::Util::grundform({
-                        category => $category,
+                    push @isbn,      OpenBib::Common::Util::normalize({
+                        field => $category,
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{issn     }{$category}){
-                    push @issn,      OpenBib::Common::Util::grundform({
-                        category => $category,
+                    push @issn,      OpenBib::Common::Util::normalize({
+                        field => $category,
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{artinh   }{$category}){
-                    push @artinh, OpenBib::Common::Util::grundform({
-                        category => $category,
+                    push @artinh, OpenBib::Common::Util::normalize({
+                        field => $category,
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{verf     }{$category}){
-                    push @titverf, OpenBib::Common::Util::grundform({
-                        category => $category,
+                    push @titverf, OpenBib::Common::Util::normalize({
+                        field => $category,
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{kor      }{$category}){
-                    push @titkor, OpenBib::Common::Util::grundform({
-                        category => $category,
+                    push @titkor, OpenBib::Common::Util::normalize({
+                        field => $category,
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{swt      }{$category}){
-                    push @titswt, OpenBib::Common::Util::grundform({
-                        category => $category,
+                    push @titswt, OpenBib::Common::Util::normalize({
+                        field => $category,
                         content  => $content,
                     });
                 }
@@ -760,8 +760,8 @@ sub process_raw_aut {
         my $contentnorm   = "";
         my $contentnormft = "";
         if (exists $conv_config->{inverted_aut}{$category}){
-            my $contentnormtmp = OpenBib::Common::Util::grundform({
-                category => $category,
+            my $contentnormtmp = OpenBib::Common::Util::normalize({
+                field => $category,
                 content  => $content,
             });
             
@@ -874,8 +874,8 @@ sub process_raw_kor {
         my $contentnorm   = "";
         my $contentnormft = "";
         if (exists $conv_config->{inverted_kor}{$category}){
-            my $contentnormtmp = OpenBib::Common::Util::grundform({
-                category => $category,
+            my $contentnormtmp = OpenBib::Common::Util::normalize({
+                field => $category,
                 content  => $content,
             });
             
@@ -982,8 +982,8 @@ sub process_raw_sys {
         my $contentnorm   = "";
         my $contentnormft = "";
         if (exists $conv_config->{inverted_not}{$category}){
-            my $contentnormtmp = OpenBib::Common::Util::grundform({
-                category => $category,
+            my $contentnormtmp = OpenBib::Common::Util::normalize({
+                field => $category,
                 content  => $content,
             });
             
@@ -1095,8 +1095,8 @@ sub process_raw_swt {
         my $contentnorm   = "";
         my $contentnormft = "";
         if (exists $conv_config->{inverted_swt}{$category}){
-            my $contentnormtmp = OpenBib::Common::Util::grundform({
-                category => $category,
+            my $contentnormtmp = OpenBib::Common::Util::normalize({
+                field => $category,
                 content  => $content,
             });
             
@@ -1190,8 +1190,8 @@ sub process_raw_mex {
             my $contentnormft = "";
             
             if (exists $conv_config->{inverted_mex}{$item_ref->{category}}){
-                my $contentnormtmp = OpenBib::Common::Util::grundform({
-                    category => $item_ref->{category},
+                my $contentnormtmp = OpenBib::Common::Util::normalize({
+                    field => $item_ref->{category},
                     content  => $item_ref->{content},
                 });
                 

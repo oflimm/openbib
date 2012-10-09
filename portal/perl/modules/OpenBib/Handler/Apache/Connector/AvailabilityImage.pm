@@ -576,13 +576,13 @@ sub id2isbnX {
         $isbn13 = $isbnXX->as_isbn13->as_string;
         $isbn10 = $isbnXX->as_isbn10->as_string;
         
-        $isbn13 = OpenBib::Common::Util::grundform({
-            category => '0540',
+        $isbn13 = OpenBib::Common::Util::normalize({
+            field => '0540',
             content  => $isbn13,
         });
         
-        $isbn10 = OpenBib::Common::Util::grundform({
-            category => '0540',
+        $isbn10 = OpenBib::Common::Util::normalize({
+            field => '0540',
             content  => $isbn10,
         });
     }

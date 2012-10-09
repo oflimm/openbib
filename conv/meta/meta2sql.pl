@@ -305,8 +305,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 
                 my $contentnorm   = "";
                 if (defined $field && exists $stammdateien_ref->{$type}{inverted_ref}->{$field}) {
-                    $contentnorm = OpenBib::Common::Util::grundform({
-                        category => $field,
+                    $contentnorm = OpenBib::Common::Util::normalize({
+                        field => $field,
                         content  => $item_ref->{content},
                     });
                 }
@@ -321,7 +321,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             if (exists $indexed_person{$id}){
                                 $hash_ref = $indexed_person{$id};
                             }
-                            push @{$hash_ref->{$searchfield}{$weight}}, $contentnorm;
+                            push @{$hash_ref->{$searchfield}{$weight}}, $item_ref->{content};
                             
                             $indexed_person{$id} = $hash_ref;
                         }
@@ -330,7 +330,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             if (exists $indexed_corporatebody{$id}){
                                 $hash_ref = $indexed_corporatebody{$id};
                             }
-                            push @{$hash_ref->{$searchfield}{$weight}}, $contentnorm;
+                            push @{$hash_ref->{$searchfield}{$weight}}, $item_ref->{content};
                             
                             $indexed_corporatebody{$id} = $hash_ref;
                         }
@@ -339,7 +339,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             if (exists $indexed_subject{$id}){
                                 $hash_ref = $indexed_subject{$id};
                             }
-                            push @{$hash_ref->{$searchfield}{$weight}}, $contentnorm;
+                            push @{$hash_ref->{$searchfield}{$weight}}, $item_ref->{content};
                             
                             $indexed_subject{$id} = $hash_ref;    
                         }
@@ -348,7 +348,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             if (exists $indexed_classification{$id}){
                                 $hash_ref = $indexed_classification{$id};
                             }                        
-                            push @{$hash_ref->{$searchfield}{$weight}}, $contentnorm;
+                            push @{$hash_ref->{$searchfield}{$weight}}, $item_ref->{content};
                             
                             $indexed_classification{$id} = $hash_ref;
                         }
@@ -463,8 +463,8 @@ while (my $jsonline=<IN>){
             
             my $contentnorm   = "";
             if (defined $field && exists $stammdateien_ref->{holding}{inverted_ref}->{$field}) {
-                $contentnorm = OpenBib::Common::Util::grundform({
-                    category => $field,
+                $contentnorm = OpenBib::Common::Util::normalize({
+                    field => $field,
                     content  => $item_ref->{content},
                 });
             }
@@ -478,7 +478,7 @@ while (my $jsonline=<IN>){
                         $hash_ref = $indexed_holding{$titleid};
                     }
                     
-                    push @{$hash_ref->{$searchfield}{$weight}}, $contentnorm;
+                    push @{$hash_ref->{$searchfield}{$weight}}, $content;
                     
                     $indexed_holding{$titleid} = $hash_ref;
                 }
@@ -616,7 +616,7 @@ $logger->info("Bearbeite meta.title");
 open(IN ,           "<:utf8","meta.title"         )     || die "IN konnte nicht geoeffnet werden";
 open(OUT,           ">:utf8","title.dump"        )      || die "OUT konnte nicht geoeffnet werden";
 open(OUTFIELDS,     ">:utf8","title_fields.dump"     )  || die "OUTFIELDS konnte nicht geoeffnet werden";
-open(SEARCHENGINE,  ">:utf8","searchengine.csv" )       || die "SEARCHENGINE konnte nicht goeffnet werden";
+open(SEARCHENGINE,  ">:utf8","searchengine.json" )       || die "SEARCHENGINE konnte nicht goeffnet werden";
 
 
 $count = 1;
@@ -635,9 +635,7 @@ while (my $jsonline=<IN>){
     # Basisinformationen setzen
     {
         push @{$searchengine_ref->{id}{1}}, $id;
-        push @{$searchengine_ref->{dbstring}{1}}, OpenBib::Common::Util::grundform({
-            content  => $database,
-        });
+        push @{$searchengine_ref->{dbstring}{1}}, $database;
         push @{$searchengine_ref->{facet_database}}, $database;
         
         $titlecache_ref->{id}       = $id;
@@ -937,9 +935,7 @@ while (my $jsonline=<IN>){
                         if (exists $listitemdata_tags{$id}) {
                             
                             foreach my $tag_ref (@{$listitemdata_tags{$id}}) {
-                                push @{$searchengine_ref->{$searchfield}{$weight}}, OpenBib::Common::Util::grundform({
-                                    content  => $tag_ref->{tag},
-                                });
+                                push @{$searchengine_ref->{$searchfield}{$weight}}, $tag_ref->{tag};
                             }
                             
                             
@@ -950,9 +946,7 @@ while (my $jsonline=<IN>){
                     elsif ($field eq "litlist"){
                         if (exists $listitemdata_litlists{$id}) {
                             foreach my $litlist_ref (@{$listitemdata_litlists{$id}}) {
-                                push @{$searchengine_ref->{$searchfield}{$weight}}, OpenBib::Common::Util::grundform({
-                                    content  => $litlist_ref->{title},
-                                });
+                                push @{$searchengine_ref->{$searchfield}{$weight}}, $litlist_ref->{title};
                             }
                             
                             $logger->info("Adding Litlists to ID $id");
@@ -964,12 +958,12 @@ while (my $jsonline=<IN>){
                         foreach my $item_ref (@{$record_ref->{$field}}){
                             next unless $item_ref->{content};
                             
-                            $item_ref->{norm} = OpenBib::Common::Util::grundform({
-                                category => $field,
+                            $item_ref->{norm} = OpenBib::Common::Util::normalize({
+                                field => $field,
                                 content  => $item_ref->{content},
                             }) if (!$item_ref->{norm});
 
-                            push @{$searchengine_ref->{$searchfield}{$weight}}, $item_ref->{norm};
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, $item_ref->{content};
 
                             # Wird diese Kategorie als isbn verwendet?
                             if ($flag_isbn) {
@@ -986,11 +980,7 @@ while (my $jsonline=<IN>){
                                     }
                                     
                                     if (defined $isbnXX) {
-                                        my $enriched_isbn = OpenBib::Common::Util::grundform({
-                                            category => $field,
-                                            content  => $isbnXX->as_string,
-                                        });
-                                        push @{$searchengine_ref->{$searchfield}{$weight}}, $enriched_isbn;
+                                        push @{$searchengine_ref->{$searchfield}{$weight}}, $isbnXX->as_string;
                                     }
                                 }
                             }
@@ -1066,8 +1056,8 @@ while (my $jsonline=<IN>){
                 foreach my $content (@{$enrichmnt_data_ref}) {
                     $content = decode_utf8($content);
 
-                    my $contentnormtmp = OpenBib::Common::Util::grundform({
-                        category => $field,
+                    my $contentnormtmp = OpenBib::Common::Util::normalize({
+                        field => $field,
                         content  => $content,
                     });
                     
@@ -1483,8 +1473,8 @@ while (my $jsonline=<IN>){
             next if ($item_ref->{ignore});
 
             if (! defined $item_ref->{norm} && defined $field && defined $stammdateien_ref->{title}{inverted_ref}->{$field}){
-                $item_ref->{norm} = OpenBib::Common::Util::grundform({
-                    category => $field,
+                $item_ref->{norm} = OpenBib::Common::Util::normalize({
+                    field => $field,
                     content  => $item_ref->{content},
                 });
             }
@@ -1498,8 +1488,9 @@ while (my $jsonline=<IN>){
     }                
         
     # Suchmaschinen-Daten schreiben
-    my $searchengine = encode_json $searchengine_ref;
-    print SEARCHENGINE "$id$searchengine\n";
+    my $searchengine = encode_json { record => $titlecache_ref, index => $searchengine_ref };
+
+    print SEARCHENGINE "$searchengine\n";
     
     if ($count % 1000 == 0) {
         my $btime      = new Benchmark;

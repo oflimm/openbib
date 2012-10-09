@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::ServerLoad
 #
-#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -35,6 +35,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache2::Const -compile => qw(:common);
+use Apache2::Connection;
 use Apache2::Reload;
 use Apache2::RequestIO  ();
 use Apache2::RequestRec ();
@@ -79,25 +80,24 @@ sub show {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+
+    my $c = $r->connection;
     
-    my $sessiondbstatus="offline";
+    my $active = $config->{schema}->resultset("Serverinfo")->search_rs(
+        {
+            host => $c->local_ip()
+        }
+    )->get_column('active');
 
-    # Test-Verbindung zur SQL-Datenbank herstellen
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            and $sessiondbstatus="online";
-
-    if ($sessiondbstatus eq "online") {
-        $sessiondbh->disconnect();
+    if (!$active){
+        return Apache2::Const::HTTP_GONE;
     }
-
-    $r->content_type("text/plain");
     
-    $r->print("SessionDB: $sessiondbstatus\n");
-
-    open(LOADAVG,"/proc/loadavg") or $logger->error_die($DBI::errstr);
-    $r->print("Load: ".<LOADAVG>);
-    close(LOADAVG);
+#    $r->content_type("text/plain");
+    
+#    open(LOADAVG,"/proc/loadavg") or $logger->error_die($DBI::errstr);
+#    $r->print("Load: ".<LOADAVG>);
+#    close(LOADAVG);
 
     return Apache2::Const::OK;
 }

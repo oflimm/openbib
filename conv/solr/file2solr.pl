@@ -118,7 +118,7 @@ if (exists $config->{stopword_filename}){
     open(SW,$config->{stopword_filename});
     while (my $stopword=<SW>){
         chomp $stopword ;
-        $stopword = OpenBib::Common::Util::grundform({
+        $stopword = OpenBib::Common::Util::normalize({
             content  => $stopword,
         });
         

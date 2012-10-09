@@ -131,8 +131,8 @@ sub parse_work {
             }
             
             # Normierung als String
-            $thisisbn = OpenBib::Common::Util::grundform({
-                category => '0540',
+            $thisisbn = OpenBib::Common::Util::normalize({
+                field => '0540',
                 content  => $thisisbn,
             });
 

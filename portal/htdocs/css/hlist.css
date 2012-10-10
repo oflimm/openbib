@@ -75,6 +75,7 @@
     padding: 0 0.5em;
     font-weight:bold;
     text-decoration:none;
+    text-shadow: none !important;
     /* text-shadow: 0 1px 1px rgba(0,0,0,.5); */
     width:auto;
   }
@@ -148,7 +149,8 @@
     line-height: 1.3571em;
     padding: 0.2em;
     border: solid 1px transparent;
-    text-shadow: 0 1px 1px rgba(0,0,0,.5);
+    text-shadow: none;
+    /* text-shadow: 0 1px 1px rgba(0,0,0,.5); */
     
     webkit-border-radius: .2em;
     moz-border-radius: .2em;

@@ -175,8 +175,10 @@ my $atime = new Benchmark;
 
                     foreach my $weight (keys %{$index_ref->{$searchfield}}){
                         # Naechstes, wenn keine ID
-                        foreach my $content (@{$index_ref->{$searchfield}{$weight}}){
-                            my $normcontent = OpenBib::Common::Util::normalize({ searchfield => $searchfield, content => $content });
+                        foreach my $fields_ref (@{$index_ref->{$searchfield}{$weight}}){
+			    my $field   = $fields_ref->[0];
+			    my $content = $fields_ref->[1];
+                            my $normcontent = OpenBib::Common::Util::normalize({ searchfield => $searchfield, field => $field, content => $content, option => $config->{searchfield}{$searchfield}{option} });
                             
                             next if (!$normcontent);
                             # IDs haben keine Position
@@ -191,8 +193,11 @@ my $atime = new Benchmark;
 
                     foreach my $weight (keys %{$index_ref->{$searchfield}}){
                         # Naechstes, wenn keine ID
-                        foreach my $content (@{$index_ref->{$searchfield}{$weight}}){
-                            my $normcontent = OpenBib::Common::Util::normalize({ searchfield => $searchfield, content => $content });
+                        foreach my $fields_ref (@{$index_ref->{$searchfield}{$weight}}){
+			    my $field   = $fields_ref->[0];
+			    my $content = $fields_ref->[1];
+
+                            my $normcontent = OpenBib::Common::Util::normalize({ searchfield => $searchfield, field => $field, content => $content, option => $config->{searchfield}{$searchfield}{option} });
 
                             next if (!$normcontent);
 
@@ -213,11 +218,14 @@ my $atime = new Benchmark;
                     
                     foreach my $weight (keys %{$index_ref->{$searchfield}}){
                         my %seen_terms = ();
-                        my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$index_ref->{$searchfield}{$weight}}; 
+                        my @unique_terms = grep { ! $seen_terms{$_->[1]} ++ } @{$index_ref->{$searchfield}{$weight}}; 
                         
                         
-                        foreach my $unique_term (@unique_terms){
-                            $unique_term = OpenBib::Common::Util::normalize({ searchfield => $searchfield, content => $unique_term });
+                        foreach my $unique_term_ref (@unique_terms){
+			    my $field       = $unique_term_ref->[0];
+			    my $unique_term = $unique_term_ref->[1];
+
+                            $unique_term = OpenBib::Common::Util::normalize({ searchfield => $searchfield, field => $field, content => $unique_term, option => $config->{searchfield}{$searchfield}{option} });
 
                             next unless ($unique_term);
                             
@@ -381,7 +389,6 @@ my $atime = new Benchmark;
     
 }
 
-close(TITLECACHE);
 close(SEARCHENGINE);
 
 untie(%xapian_idmapping);

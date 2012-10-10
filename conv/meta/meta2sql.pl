@@ -261,7 +261,6 @@ my $stammdateien_ref = {
     },
 };
 
-
 foreach my $type (keys %{$stammdateien_ref}) {
     $logger->info("Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
     
@@ -306,7 +305,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 my $contentnorm   = "";
                 if (defined $field && exists $stammdateien_ref->{$type}{inverted_ref}->{$field}) {
                     $contentnorm = OpenBib::Common::Util::normalize({
-                        field => $field,
+                        field    => "T$field",
                         content  => $item_ref->{content},
                     });
                 }
@@ -321,7 +320,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             if (exists $indexed_person{$id}){
                                 $hash_ref = $indexed_person{$id};
                             }
-                            push @{$hash_ref->{$searchfield}{$weight}}, $item_ref->{content};
+                            push @{$hash_ref->{$searchfield}{$weight}}, ["P$field",$item_ref->{content}];
                             
                             $indexed_person{$id} = $hash_ref;
                         }
@@ -330,7 +329,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             if (exists $indexed_corporatebody{$id}){
                                 $hash_ref = $indexed_corporatebody{$id};
                             }
-                            push @{$hash_ref->{$searchfield}{$weight}}, $item_ref->{content};
+                            push @{$hash_ref->{$searchfield}{$weight}}, ["C$field",$item_ref->{content}];
                             
                             $indexed_corporatebody{$id} = $hash_ref;
                         }
@@ -339,7 +338,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             if (exists $indexed_subject{$id}){
                                 $hash_ref = $indexed_subject{$id};
                             }
-                            push @{$hash_ref->{$searchfield}{$weight}}, $item_ref->{content};
+                            push @{$hash_ref->{$searchfield}{$weight}}, ["S$field",$item_ref->{content}];
                             
                             $indexed_subject{$id} = $hash_ref;    
                         }
@@ -348,7 +347,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             if (exists $indexed_classification{$id}){
                                 $hash_ref = $indexed_classification{$id};
                             }                        
-                            push @{$hash_ref->{$searchfield}{$weight}}, $item_ref->{content};
+                            push @{$hash_ref->{$searchfield}{$weight}}, ["N$field",$item_ref->{content}];
                             
                             $indexed_classification{$id} = $hash_ref;
                         }
@@ -464,7 +463,7 @@ while (my $jsonline=<IN>){
             my $contentnorm   = "";
             if (defined $field && exists $stammdateien_ref->{holding}{inverted_ref}->{$field}) {
                 $contentnorm = OpenBib::Common::Util::normalize({
-                    field => $field,
+                    field    => "X$field",
                     content  => $item_ref->{content},
                 });
             }
@@ -478,7 +477,7 @@ while (my $jsonline=<IN>){
                         $hash_ref = $indexed_holding{$titleid};
                     }
                     
-                    push @{$hash_ref->{$searchfield}{$weight}}, $content;
+                    push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$content];
                     
                     $indexed_holding{$titleid} = $hash_ref;
                 }
@@ -634,8 +633,8 @@ while (my $jsonline=<IN>){
     
     # Basisinformationen setzen
     {
-        push @{$searchengine_ref->{id}{1}}, $id;
-        push @{$searchengine_ref->{dbstring}{1}}, $database;
+        push @{$searchengine_ref->{id}{1}}, ['id',$id];
+        push @{$searchengine_ref->{dbstring}{1}}, ['database',$database];
         push @{$searchengine_ref->{facet_database}}, $database;
         
         $titlecache_ref->{id}       = $id;
@@ -688,7 +687,7 @@ while (my $jsonline=<IN>){
                 foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}) {
                     my $weight = $stammdateien_ref->{title}{inverted_ref}{$field}->{index}{$searchfield};
                     
-                    push @{$searchengine_ref->{$searchfield}{$weight}}, $target_titleid;
+                    push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$target_titleid];
                 }
             }
             
@@ -703,12 +702,12 @@ while (my $jsonline=<IN>){
     
     # Verfasser/Personen
     #        $logger->info(YAML::Dump($record_ref));
-    
+
     foreach my $field ('0100','0101','0102','0103','1800') {
         if (defined $record_ref->{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
-                $item_ref->{ignore} = 1;
+                # $item_ref->{ignore} = 1;
                 
                 my $personid   = $item_ref->{id};
                 my $titleid    = $id;
@@ -731,7 +730,7 @@ while (my $jsonline=<IN>){
                 if (exists $listitemdata_person{$personid}) {
                     my $mainentry = $listitemdata_person{$personid};
                     
-                    # Verweisung durch Ansetzungsform ersetzen
+                    # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
                     
                     push @{$titlecache_ref->{"P$field"}}, {
@@ -743,9 +742,9 @@ while (my $jsonline=<IN>){
                     
                     push @personcorporatebody, $mainentry;
                     
-                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {
+#                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {
                         push @person, $personid;
-                    }
+#                    }
                 }
                 else {
                     $logger->error("PER ID $personid doesn't exist in TITLE ID $id");
@@ -768,7 +767,7 @@ while (my $jsonline=<IN>){
         if (defined $record_ref->{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
-                $item_ref->{ignore} = 1;
+#                $item_ref->{ignore} = 1;
                 
                 my $corporatebodyid = $item_ref->{id};
                 my $titleid    = $id;
@@ -791,7 +790,8 @@ while (my $jsonline=<IN>){
                 if (exists $listitemdata_corporatebody{$corporatebodyid}) {                        
                     my $mainentry = $listitemdata_corporatebody{$corporatebodyid};
                     
-                    # Ansetzungsform ergaenzen
+
+                    # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
                     
                     push @{$titlecache_ref->{"C$field"}}, {
@@ -803,9 +803,9 @@ while (my $jsonline=<IN>){
                     
                     push @personcorporatebody, $mainentry;
                     
-                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {                    
+#                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {                    
                         push @corporatebody, $corporatebodyid;
-                    }
+#                    }
                 }
                 else {
                     $logger->error("CORPORATEBODY ID $corporatebodyid doesn't exist in TITLE ID $id");
@@ -818,7 +818,7 @@ while (my $jsonline=<IN>){
     if (defined $record_ref->{'1802'}) {
         foreach my $item_ref (@{$record_ref->{'1802'}}) {
             # Verknuepfungsfelder werden ignoriert
-            $item_ref->{ignore} = 1;
+#            $item_ref->{ignore} = 1;
             
             unless ($item_ref->{id}) {
                 my $field = '1802';
@@ -833,7 +833,7 @@ while (my $jsonline=<IN>){
         if (defined $record_ref->{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
-                $item_ref->{ignore} = 1;
+#                $item_ref->{ignore} = 1;
                 
                 my $classificationid = $item_ref->{id};
                 my $titleid          = $id;
@@ -850,7 +850,7 @@ while (my $jsonline=<IN>){
                 if (exists $listitemdata_classification{$classificationid}) {
                     my $mainentry = $listitemdata_classification{$classificationid};
                     
-                    # Verweisung durch Ansetzungsform ersetzen
+                    # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
                     
                     push @{$titlecache_ref->{"N$field"}}, {
@@ -860,9 +860,9 @@ while (my $jsonline=<IN>){
                         supplement => $supplement,
                     } if (exists $conv_config->{listitemcat}{$field});
                     
-                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {                    
+#                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {                    
                         push @classification, $classificationid;
-                    }        
+#                    }        
                 }
                 else {
                     $logger->error("SYS ID $classificationid doesn't exist in TITLE ID $id");
@@ -876,7 +876,7 @@ while (my $jsonline=<IN>){
         if (defined $record_ref->{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
-                $item_ref->{ignore} = 1;
+#                $item_ref->{ignore} = 1;
                 
                 my $subjectid = $item_ref->{id};
                 my $titleid    = $id;
@@ -894,7 +894,7 @@ while (my $jsonline=<IN>){
                 if (exists $listitemdata_subject{$subjectid}) {
                     my $mainentry = $listitemdata_subject{$subjectid};
                     
-                    # Verweisung durch Ansetzungsform ersetzen
+                    # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
                     
                     push @{$titlecache_ref->{"S$field"}}, {
@@ -904,9 +904,9 @@ while (my $jsonline=<IN>){
                         supplement => $supplement,
                     } if (exists $conv_config->{listitemcat}{$field});
                     
-                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {                    
+#                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {                    
                         push @subject, $subjectid;
-                    }
+#                    }
                 } 
                 else {
                     $logger->error("SUBJECT ID $subjectid doesn't exist in TITLE ID $id");
@@ -935,7 +935,7 @@ while (my $jsonline=<IN>){
                         if (exists $listitemdata_tags{$id}) {
                             
                             foreach my $tag_ref (@{$listitemdata_tags{$id}}) {
-                                push @{$searchengine_ref->{$searchfield}{$weight}}, $tag_ref->{tag};
+                                push @{$searchengine_ref->{$searchfield}{$weight}}, ['tag',$tag_ref->{tag}];
                             }
                             
                             
@@ -946,7 +946,7 @@ while (my $jsonline=<IN>){
                     elsif ($field eq "litlist"){
                         if (exists $listitemdata_litlists{$id}) {
                             foreach my $litlist_ref (@{$listitemdata_litlists{$id}}) {
-                                push @{$searchengine_ref->{$searchfield}{$weight}}, $litlist_ref->{title};
+                                push @{$searchengine_ref->{$searchfield}{$weight}}, ['litlist',$litlist_ref->{title}];
                             }
                             
                             $logger->info("Adding Litlists to ID $id");
@@ -959,11 +959,11 @@ while (my $jsonline=<IN>){
                             next unless $item_ref->{content};
                             
                             $item_ref->{norm} = OpenBib::Common::Util::normalize({
-                                field => $field,
+                                field    => "T$field",
                                 content  => $item_ref->{content},
                             }) if (!$item_ref->{norm});
 
-                            push @{$searchengine_ref->{$searchfield}{$weight}}, $item_ref->{content};
+                            push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$item_ref->{content}];
 
                             # Wird diese Kategorie als isbn verwendet?
                             if ($flag_isbn) {
@@ -980,7 +980,7 @@ while (my $jsonline=<IN>){
                                     }
                                     
                                     if (defined $isbnXX) {
-                                        push @{$searchengine_ref->{$searchfield}{$weight}}, $isbnXX->as_string;
+                                        push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$isbnXX->as_string];
                                     }
                                 }
                             }
@@ -1034,7 +1034,8 @@ while (my $jsonline=<IN>){
             my $enrichmnt_data_ref = [];
             if (defined $searchengine_ref->{isbn}) {
                 foreach my $weight (keys %{$searchengine_ref->{isbn}}) {
-                    foreach my $isbn13 (@{$searchengine_ref->{isbn}{$weight}}) {
+                    foreach my $fields_ref (@{$searchengine_ref->{isbn}{$weight}}) {
+			my $isbn13 = $fields_ref->[1];
                         if (defined $enrichmntdata{$isbn13}{$field}) {
                             push @$enrichmnt_data_ref, @{$enrichmntdata{$isbn13}{$field}};
                         }
@@ -1043,7 +1044,8 @@ while (my $jsonline=<IN>){
             }
             elsif (defined $searchengine_ref->{issn}) {
                 foreach my $weight (keys %{$searchengine_ref->{issn}}) {
-                    foreach my $issn (@{$searchengine_ref->{issn}{$weight}}) {
+                    foreach my $fields_ref (@{$searchengine_ref->{issn}{$weight}}) {
+			my $issn = $fields_ref->[1];
                         if (defined $enrichmntdata{$issn}{$field}) {
                             push @$enrichmnt_data_ref, @{$enrichmntdata{$issn}{$field}};
                         }
@@ -1057,7 +1059,7 @@ while (my $jsonline=<IN>){
                     $content = decode_utf8($content);
 
                     my $contentnormtmp = OpenBib::Common::Util::normalize({
-                        field => $field,
+                        field    => "T$field",
                         content  => $content,
                     });
                     
@@ -1105,7 +1107,7 @@ while (my $jsonline=<IN>){
                     $searchengine_ref->{mediatype}{1} = [];
                 }
                 
-                push @{$searchengine_ref->{mediatype}{1}}, "Zeitschrift/Serie";
+                push @{$searchengine_ref->{mediatype}{1}}, ['0800',"Zeitschrift/Serie"];
                 
                 push @{$record_ref->{'0800'}}, {
                     mult      => $type_mult,
@@ -1134,7 +1136,7 @@ while (my $jsonline=<IN>){
                     $searchengine_ref->{mediatype}{1} = [];
                 }
                 
-                push @{$searchengine_ref->{mediatype}{1}}, "Aufsatz";
+                push @{$searchengine_ref->{mediatype}{1}}, ['0800',"Aufsatz"];
                 
                 push @{$record_ref->{'0800'}}, {
                     mult      => $type_mult,
@@ -1172,7 +1174,7 @@ while (my $jsonline=<IN>){
                     $searchengine_ref->{mediatype}{1} = [];
                 }
                 
-                push @{$searchengine_ref->{mediatype}{1}}, "Digital";
+                push @{$searchengine_ref->{mediatype}{1}}, ['0800',"Digital"];
                 
                 push @{$record_ref->{'0800'}}, {
                     mult      => $type_mult,
@@ -1193,7 +1195,7 @@ while (my $jsonline=<IN>){
             }
             
             if (!$have_toc) {
-                push @{$searchengine_ref->{mediatype}{1}}, "mit Inhaltsverzeichnis";
+                push @{$searchengine_ref->{mediatype}{1}}, ['0800',"mit Inhaltsverzeichnis"];
                 
                 push @{$record_ref->{'0800'}}, {
                     mult      => $type_mult,
@@ -1204,7 +1206,7 @@ while (my $jsonline=<IN>){
         }   
         
     } 
-    
+
     # Indexierte Informationen aus anderen Normdateien fuer Suchmaschine
     {
         # Im Falle einer Personenanreicherung durch Ueberordnungen mit
@@ -1214,11 +1216,11 @@ while (my $jsonline=<IN>){
             next if (exists $seen_person{$item});
             
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'personid'}{1}}, $item;
+            push @{$searchengine_ref->{'personid'}{1}}, ['id',$item];
             
             if (exists $indexed_person{$item}) {
                 my $thisperson = $indexed_person{$item};
-                foreach my $searchfield (keys %{$thisperson}) {
+                foreach my $searchfield (keys %{$thisperson}) {		    
                     foreach my $weight (keys %{$thisperson->{$searchfield}}) {                        
                         push @{$searchengine_ref->{$searchfield}{$weight}}, @{$thisperson->{$searchfield}{$weight}};
                     }
@@ -1230,7 +1232,7 @@ while (my $jsonline=<IN>){
         
         foreach my $item (@corporatebody) {
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'corporatebodyid'}{1}}, $item;
+            push @{$searchengine_ref->{'corporatebodyid'}{1}}, ['id',$item];
             
             if (exists $indexed_corporatebody{$item}) {
                 my $thiscorporatebody = $indexed_corporatebody{$item};
@@ -1245,7 +1247,7 @@ while (my $jsonline=<IN>){
         
         foreach my $item (@subject) {
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'subjectid'}{1}}, $item;
+            push @{$searchengine_ref->{'subjectid'}{1}}, ['id',$item];
             
             if (exists $indexed_subject{$item}) {
                 my $thissubject = $indexed_subject{$item};
@@ -1260,7 +1262,7 @@ while (my $jsonline=<IN>){
         
         foreach my $item (@classification) {
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'classificationid'}{1}}, $item;
+            push @{$searchengine_ref->{'classificationid'}{1}}, ['id',$item];
             
             if (exists $indexed_classification{$item}) {
                 my $thisclassification = $indexed_classification{$item};
@@ -1284,7 +1286,7 @@ while (my $jsonline=<IN>){
             }
         }
     }
-    
+
     # Bibkey-Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel
     {
         my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ normdata => $record_ref});
@@ -1304,7 +1306,8 @@ while (my $jsonline=<IN>){
             };
             
             # Bibkey merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'bkey'}{1}}, $bibkey;
+            push @{$searchengine_ref->{'bkey'}{1}}, ['5050',$bibkey];
+            push @{$searchengine_ref->{'bkey'}{1}}, ['5051',$bibkey];
         }
     }
     
@@ -1315,8 +1318,8 @@ while (my $jsonline=<IN>){
             if (exists $listitemdata_enriched_years{$id}) {
                 foreach my $year (@{$listitemdata_enriched_years{$id}}) {
                     $logger->debug("Enriching year $year to Title-ID $id");
-                    push @{$searchengine_ref->{year}{1}}, $year;
-                    push @{$searchengine_ref->{freesearch}{1}}, $year;
+                    push @{$searchengine_ref->{year}{1}}, ['0425',$year];
+                    push @{$searchengine_ref->{freesearch}{1}}, ['0425',$year];
                 }
             }
         } 
@@ -1474,7 +1477,7 @@ while (my $jsonline=<IN>){
 
             if (! defined $item_ref->{norm} && defined $field && defined $stammdateien_ref->{title}{inverted_ref}->{$field}){
                 $item_ref->{norm} = OpenBib::Common::Util::normalize({
-                    field => $field,
+                    field    => "T$field",
                     content  => $item_ref->{content},
                 });
             }
@@ -1483,6 +1486,7 @@ while (my $jsonline=<IN>){
             if ($id && $field && $item_ref->{content}){
                 $item_ref->{content} = cleanup_content($item_ref->{content});
                 print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$item_ref->{norm}\n";
+		delete $item_ref->{norm};
             }
         }
     }                

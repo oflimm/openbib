@@ -475,7 +475,7 @@ $logger->info("### $database: Cleanup");
 # Temporaer Zugriffspassword setzen
 system("rm ~/.pgpass ");
 
-system("rm $rootdir/data/$database/*") unless ($database eq "openbib");
+#system("rm $rootdir/data/$database/*") unless ($database eq "openbib");
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

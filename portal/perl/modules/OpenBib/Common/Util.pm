@@ -63,6 +63,9 @@ sub normalize {
     my $field  = exists $arg_ref->{field}
         ? $arg_ref->{field}            : "";
 
+    my $option_ref = exists $arg_ref->{option}
+        ? $arg_ref->{option}           : {};
+
     my $searchreq = exists $arg_ref->{searchreq}
         ? $arg_ref->{searchreq}           : undef;
 
@@ -83,7 +86,7 @@ sub normalize {
 
     # Datum normalisieren
 
-    if ($field eq '0002'){
+    if ($field eq 'T0002'){
         if ($content =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/){
             $content=$3.$2.$1;
             return $content;
@@ -91,29 +94,30 @@ sub normalize {
     }
     
     # ISBN filtern
-    if ($field eq "0540" || $field eq "0553" || $searchfield eq "isbn" || $searchfield eq "freesearch"){
+    if ($field eq "T0540" || $field eq "T0541" || $field eq "T0547" || $field eq "T0553" || $field eq "T0634" || $field eq "T1586" || $field eq "T1587" || $field eq "T1589" || $field eq "T1590" || $field eq "T1591" || $field eq "T1592" || $field eq "T1593"){
         # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
         $content=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
-        return $content if ($searchfield eq "isbn");
+        return $content;
     }
 
     # ISSN filtern
-    if ($field eq "0543" || $searchfield eq "issn" || $searchfield eq "freesearch"){
+    if ($field eq "T0543" || $field eq "T0544" || $field eq "T0585" || $field eq "T1550" || $field eq "T1551" || $field eq "T1552" || $field eq "T1553" || $field eq "T1567" ){
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8/g;
-        return $content if ($searchfield eq "issn");
+        return $content;
     }
 
     $content=~s/¬//g;
 
     # Stopwoerter fuer versch. Kategorien ausfiltern (Titel-String)
 
-    if ($searchfield eq "titlestring"){
+    if (defined $option_ref->{strip_first_stopword}){
+        $content=OpenBib::Common::Stopwords::strip_first_stopword($content);
+    }
 
+    if (defined $option_ref->{strip_bracket_content}){
         $content=~s/\s+$//;
         $content=~s/\s+<.*?>//g;
-
-        $content=OpenBib::Common::Stopwords::strip_first_stopword($content);
     }
     
     # Ausfiltern spezieller HTML-Tags

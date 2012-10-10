@@ -193,7 +193,7 @@ foreach my $database (@databases){
         
         # Normierung als String
         $thisisbn = OpenBib::Common::Util::normalize({
-            field => '0540',
+            field => 'T0540',
             content  => $thisisbn,
         });
 
@@ -307,7 +307,7 @@ foreach my $database (@databases){
         if ($thisissn){
             # Normierung als String
             $thisissn = OpenBib::Common::Util::normalize({
-                field => '0543',
+                field => 'T0543',
                 content  => $thisissn,
             });
 

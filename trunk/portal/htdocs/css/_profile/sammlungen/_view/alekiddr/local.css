@@ -43,7 +43,11 @@
     
     border: 1px #e8fca4 solid;
   }
-  
+
+  .ym-hlist ul li a, .ym-hlist ul li strong {  
+    text-shadow: none !important;
+  }
+
   header {
     padding-bottom:70px;  
   }

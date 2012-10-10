@@ -268,7 +268,7 @@ sub set_from_apache_request {
                 
                 if ($config->{'searchfield'}{$searchfield}{option}{strip_first_stopword}){
                     $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
-                        searchfield  => "hststring", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
+                        option    => $config->{'searchfield'}{$searchfield}{option},
                         content   => $thissearchfield_norm_content,
                         searchreq => 1,
                     });

@@ -5,13 +5,13 @@
 uniqueidfield: 'cdmid'
 
 category_split_chars:
+  'kinder': '\s*\/\s*'
 
 # Personen
 pers:
-  'name': '0100:'      # Verfasser
   'vater': '0101:'     # Vater
   'mutter': '0102:'    # Mutter
-
+  'kinder': '0103:' # Trauernde mit / getrennt
 # Koerperschaften
 corp:
 
@@ -26,6 +26,10 @@ subj:
 title:
   'name': '0331:'
   'vorname': '0370:'
+  'ordensname': '0310:' # AST
+  'titel': '0335:'
+  'beruf': '0433:'
+  'trauernde': '0451:'
   'sterbeort': '0410:'
   'sterbedatum': '0424:'
   'geburtsort': '0411:'

@@ -28,6 +28,15 @@ FOREACH category IN categories;
 
     SWITCH category;
 
+    CASE [ "T0100" "T0102" "T0101" "T0103" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         localurl  = "${config.get('search_loc')}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 

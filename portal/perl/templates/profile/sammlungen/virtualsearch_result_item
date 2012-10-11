@@ -34,6 +34,8 @@
 <span class="paging_active">1</span>&nbsp;...&nbsp;&nbsp;<a href="[% config.get('resultlists_loc') %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]"><img src="[% config.get('next_img') %]" title="[Weitere Treffer...]" height="12"/></a>
 [%- ELSIF treffer < qopts.hitrange -%]
 <span class="paging_active">1</span>
+[%- ELSE -%]
+<span class="paging_active">1</span>
 [%- END -%]
     </div>
   </div>

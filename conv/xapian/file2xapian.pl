@@ -146,6 +146,8 @@ my $atime = new Benchmark;
         my $atime = new Benchmark;
         while (my $searchengine=<SEARCHENGINE>) {
             my $searchengine_ref = decode_json $searchengine;
+
+	    my %normalize_cache = ();
             
             my $index_ref  = $searchengine_ref->{index};
             my $record_ref = $searchengine_ref->{record};
@@ -166,6 +168,8 @@ my $atime = new Benchmark;
             
             foreach my $searchfield (keys %{$config->{searchfield}}) {
                 
+		my $option_ref = (defined $config->{searchfield}{$searchfield}{option})?$config->{searchfield}{$searchfield}{option}:{};
+
                 $logger->debug("Processing Searchfield $searchfield for id $id");
 
                 # IDs
@@ -178,7 +182,20 @@ my $atime = new Benchmark;
                         foreach my $fields_ref (@{$index_ref->{$searchfield}{$weight}}){
 			    my $field   = $fields_ref->[0];
 			    my $content = $fields_ref->[1];
-                            my $normcontent = OpenBib::Common::Util::normalize({ searchfield => $searchfield, field => $field, content => $content, option => $config->{searchfield}{$searchfield}{option} });
+
+                            next if (!$content);
+
+			    my $normalize_cache_id = "$field:".join(":",keys %$option_ref).":$content";
+
+			    my $normcontent = "";
+
+			    if (defined $normalize_cache{$normalize_cache_id}){
+				$normcontent = $normalize_cache{$normalize_cache_id};
+			    }
+			    else {
+				$normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref });
+				$normalize_cache{$normalize_cache_id} = $normcontent;
+			    }
                             
                             next if (!$normcontent);
                             # IDs haben keine Position
@@ -196,8 +213,20 @@ my $atime = new Benchmark;
                         foreach my $fields_ref (@{$index_ref->{$searchfield}{$weight}}){
 			    my $field   = $fields_ref->[0];
 			    my $content = $fields_ref->[1];
+			    
+                            next if (!$content);
 
-                            my $normcontent = OpenBib::Common::Util::normalize({ searchfield => $searchfield, field => $field, content => $content, option => $config->{searchfield}{$searchfield}{option} });
+			    my $normalize_cache_id = "$field:".join(":",keys %$option_ref).":$content";
+
+			    my $normcontent = "";
+
+			    if (defined $normalize_cache{$normalize_cache_id}){
+				$normcontent = $normalize_cache{$normalize_cache_id};
+			    }
+			    else {
+				$normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref });
+				$normalize_cache{$normalize_cache_id} = $normcontent;
+			    }
 
                             next if (!$normcontent);
 
@@ -218,14 +247,24 @@ my $atime = new Benchmark;
                     
                     foreach my $weight (keys %{$index_ref->{$searchfield}}){
                         my %seen_terms = ();
-                        my @unique_terms = grep { ! $seen_terms{$_->[1]} ++ } @{$index_ref->{$searchfield}{$weight}}; 
+                        my @unique_terms = @{$index_ref->{$searchfield}{$weight}}; #grep { ! defined $seen_terms{$_->[1]} || ! $seen_terms{$_->[1]} ++ } @{$index_ref->{$searchfield}{$weight}}; 
                         
                         
                         foreach my $unique_term_ref (@unique_terms){
 			    my $field       = $unique_term_ref->[0];
 			    my $unique_term = $unique_term_ref->[1];
 
-                            $unique_term = OpenBib::Common::Util::normalize({ searchfield => $searchfield, field => $field, content => $unique_term, option => $config->{searchfield}{$searchfield}{option} });
+                            next if (!$unique_term);
+
+			    my $normalize_cache_id = "$field:".join(":",keys %$option_ref).":$unique_term";
+
+			    if (defined $normalize_cache{$normalize_cache_id}){
+				$unique_term = $normalize_cache{$normalize_cache_id};
+			    }
+			    else {
+				$unique_term = OpenBib::Common::Util::normalize({ field => $field, content => $unique_term, option => $option_ref });
+				$normalize_cache{$normalize_cache_id} = $unique_term;
+			    }
 
                             next unless ($unique_term);
                             

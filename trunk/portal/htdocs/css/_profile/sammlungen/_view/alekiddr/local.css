@@ -103,4 +103,40 @@
   .ob-items dt {
     background: #e8fca4;
   }
+
+  .ob-reuse_data, .ob-discover_sources, .ob-session_history {
+      background: #e8fca4;
+      border: 1px solid #c9ff0f ;
+      padding: 15px;
+
+/*
+      border-top-left-radius: 60px 90px;
+      border-bottom-right-radius: 60px 90px;
+
+      box-shadow: 64px 64px 24px 40px #888
+      12px 12px 0px 18px #888 inset;
+*/
+/*
+      box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4)
+      12px 12px 0px 18px rgba(0,0,0,0.4) inset;
+
+      -moz-box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4)
+      12px 12px 0px 18px rgba(0,0,0,0.4) inset;
+
+      -webkit-box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4)
+      12px 12px 0px 18px rgba(0,0,0,0.4) inset;
+*/
+
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      -moz-box-shadow: 5px 5px 5px black;
+      -webkit-box-shadow: 5px 5px 5px black;
+      box-shadow: 5px 5px 5px black;
+
+/*
+      -moz-box-shadow: 10px 10px 5px #888;
+      -webkit-box-shadow: 10px 10px 5px #888;
+      box-shadow: 10px 10px 5px #888; */
+  }
+
 }

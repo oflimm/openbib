@@ -89,20 +89,22 @@ sub show {
         }
     )->single;
 
-    $logger->debug("Server is active? $request");
+    $logger->debug("Local IP is ".$c->local_ip());
 
     if ($request){
-	if ($request->get_column('active')){
-	    $self->query->status(Apache2::Const::OK);
+	my $is_active = $request->get_column('active');
+	$logger->debug("Server is active? $is_active");
+
+	if ($is_active){
 	    return;
 	}
 	else {
-	    $self->query->status(Apache2::Const::HTTP_GONE);
+	    $r->status(Apache2::Const::NOT_FOUND);
 	    return;
 	}
     }
 
-    $self->query->status(Apache2::Const::HTTP_GONE);
+    $r->status(Apache2::Const::NOT_FOUND);
     return;
 }
 

@@ -128,7 +128,7 @@
 
 <p />
 
-<div class="ob-reuse_data ob-info"><!-- Begin Reuse -->
+<div class="ob-reuse_data"><!-- Begin Reuse -->
 [%
   private_tags_of_tit = [];
   IF username ;
@@ -317,7 +317,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <p />
 
-<div class="ob-discover_sources ob-info"><!-- Begin Discover-Sources -->
+<div class="ob-discover_sources"><!-- Begin Discover-Sources -->
 <h4>[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</h4><p/>
 
 
@@ -522,7 +522,7 @@ $("#history_toggle").click(function(){
 
 [% recent_titles = session.get_recently_selected_titles.load_brief_records %]
 [% IF recent_titles.get_size > 0 %]
-<div class="ob-session_history ob-info"><!-- Begin Historie -->
+<div class="ob-session_history"><!-- Begin Historie -->
 
 <h4 id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h4><p/>
 

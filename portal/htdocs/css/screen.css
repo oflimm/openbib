@@ -358,16 +358,39 @@
       box-shadow: 10px 10px 5px #888;
   }
 
-  .ob-reuse_data, .ob-discover_sources {
-      padding: 5px;
-      moz-border-radius-topright: 12px;
-      moz-border-radius-topleft: 12px;
-      webkit-border-radius-topright: 12px;
-      webkit-border-radius-topleft: 12px;
+  .ob-reuse_data, .ob-discover_sources, .ob-session_history {
+      background-color: #f4f4f4;
+      border: 1px solid #999 ;
+      padding: 15px;
 
+/*
+      border-top-left-radius: 60px 90px;
+      border-bottom-right-radius: 60px 90px;
+
+      box-shadow: 64px 64px 24px 40px #888
+      12px 12px 0px 18px #888 inset;
+*/
+/*
+      box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4)
+      12px 12px 0px 18px rgba(0,0,0,0.4) inset;
+
+      -moz-box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4)
+      12px 12px 0px 18px rgba(0,0,0,0.4) inset;
+
+      -webkit-box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4)
+      12px 12px 0px 18px rgba(0,0,0,0.4) inset;
+*/
+
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      -moz-box-shadow: 5px 5px 5px black;
+      -webkit-box-shadow: 5px 5px 5px black;
+      box-shadow: 5px 5px 5px black;
+
+/*
       -moz-box-shadow: 10px 10px 5px #888;
       -webkit-box-shadow: 10px 10px 5px #888;
-      box-shadow: 10px 10px 5px #888;
+      box-shadow: 10px 10px 5px #888; */
   }
 
   .ob-reuse_data h4, .ob-discover_sources h4 {

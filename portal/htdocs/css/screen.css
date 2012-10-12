@@ -352,7 +352,24 @@
     background-color: #eee;
   }
 
-  
+  #cover_full {
+      -moz-box-shadow: 10px 10px 5px #888;
+      -webkit-box-shadow: 10px 10px 5px #888;
+      box-shadow: 10px 10px 5px #888;
+  }
+
+  .ob-reuse_data, .ob-discover_sources {
+      padding: 5px;
+      moz-border-radius-topright: 12px;
+      moz-border-radius-topleft: 12px;
+      webkit-border-radius-topright: 12px;
+      webkit-border-radius-topleft: 12px;
+
+      -moz-box-shadow: 10px 10px 5px #888;
+      -webkit-box-shadow: 10px 10px 5px #888;
+      box-shadow: 10px 10px 5px #888;
+  }
+
   .ob-reuse_data h4, .ob-discover_sources h4 {
     display: block;
     margin: 10px 5px 5px 5px;

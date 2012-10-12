@@ -14,12 +14,11 @@
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("Administration") %]</h6>
 <ul>
-<!--
 [% IF active_submenu == "server" %]
   <li class="active"><strong>[% msg.maketext("Server") %]</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_server_loc') %].html?l=[% lang %]">[% msg.maketext("Server") %]</a></li>
-[% END %] -->
+[% END %]
 [% IF active_submenu == "database" %]
   <li class="active"><strong>[% msg.maketext("Kataloge") %]</strong></li>
 [% ELSE %]

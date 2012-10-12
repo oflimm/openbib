@@ -1,0 +1,96 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_server
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der aktuellen Einstellungen des Betriebs
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Kataloge anzeigen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="server" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]" class="ym-form">
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Neuen Rechner zur Lastverteilung hinzuf&uuml;gen") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="host">[% msg.maketext("Rechnername") %]</label>
+<input type="text" name="host" id="host"/>
+</div>
+
+<div class="ym-fbox-select">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+  <select name="active" id="active">
+     <option value="true">[% msg.maketext("Ja") %]</option>
+     <option value="false" selected>[% msg.maketext("Nein") %]</option>
+  </select>
+</div>
+
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+
+</fieldset>
+
+</form>
+
+<p />
+
+[%# USE dumper;dumper.dump(serverinfos)%]
+[% IF serverinfos.count > 0 %]
+
+<h3>[% msg.maketext("Bereits existierende Rechner zur Lastverteilung") %]</h3>
+
+<table>
+<tr><th><b>[% msg.maketext("Name") %]</b></th><th><b>[% msg.maketext("Aktiv") %]</b></th><th></th><th></th><th></th></tr>
+[% FOREACH serverinfo IN serverinfos.all %]
+<tr [% IF serverinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
+<td>[% serverinfo.host %]</td>
+<td align="center">[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF serverinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF serverinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
+[% END %]
+
+</table>
+
+[% END %]
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

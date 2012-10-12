@@ -100,7 +100,7 @@ sub show_collection {
     my $dbinfo_ref = $config->get_dbinfo_overview();
     
     my $ttdata={                # 
-        kataloge   => $dbinfo_ref,
+        catalogs   => $dbinfo_ref,
     };
     
     $self->print_page($config->{tt_admin_database_tname},$ttdata);

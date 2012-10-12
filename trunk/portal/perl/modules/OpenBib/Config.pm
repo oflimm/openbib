@@ -1508,6 +1508,22 @@ sub get_geoposition {
     return $response;
 }
 
+sub get_serverinfo_overview {
+    my $self   = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->get_serverinfo->search(
+        undef,
+        {
+            order_by => 'host',
+        }
+    );
+    
+    return $object;
+}
+
 sub get_serverinfo {
     my ($self) = @_;
 

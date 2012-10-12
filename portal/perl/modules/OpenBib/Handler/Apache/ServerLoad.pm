@@ -83,23 +83,27 @@ sub show {
 
     my $c = $r->connection;
     
-    my $active = $config->{schema}->resultset("Serverinfo")->search_rs(
+    my $request = $config->{schema}->resultset("Serverinfo")->search_rs(
         {
             host => $c->local_ip()
         }
-    )->get_column('active');
+    )->single;
 
-    if (!$active){
-        return Apache2::Const::HTTP_GONE;
+    $logger->debug("Server is active? $request");
+
+    if ($request){
+	if ($request->get_column('active')){
+	    $self->query->status(Apache2::Const::OK);
+	    return;
+	}
+	else {
+	    $self->query->status(Apache2::Const::HTTP_GONE);
+	    return;
+	}
     }
-    
-#    $r->content_type("text/plain");
-    
-#    open(LOADAVG,"/proc/loadavg") or $logger->error_die($DBI::errstr);
-#    $r->print("Load: ".<LOADAVG>);
-#    close(LOADAVG);
 
-    return Apache2::Const::OK;
+    $self->query->status(Apache2::Const::HTTP_GONE);
+    return;
 }
 
 1;

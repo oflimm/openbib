@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Admin::Server
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -95,15 +95,10 @@ sub show_collection {
         return;
     }
 
-    my $serverinfos = $config->get_serverinfo->search(
-        undef,
-        {
-            order_by => 'host',
-        }
-    );
+    my $serverinfos_ref = $config->get_serverinfo_overview;
     
     my $ttdata = {
-        serverinfos => $serverinfos,
+        serverinfos => $serverinfos_ref,
     };
     
     $self->print_page($config->{tt_admin_server_tname},$ttdata);

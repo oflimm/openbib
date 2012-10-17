@@ -91,6 +91,10 @@
         END;
      END;
 
+     IF NOT title ;
+       title = "Bitte melden Sie uns die <b>ID ${record.id}</b> und die Datenbank <b>${record.database}</b> dieses Titels als fehlerhaft zur Korrektur!";
+     END;
+
      # Auflage konstruieren
      edition = item.${'T0403'}.first.content;
 

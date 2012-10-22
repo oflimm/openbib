@@ -26,7 +26,7 @@ __PACKAGE__->table("serverinfo");
   is_nullable: 0
   sequence: 'serverinfo_id_seq'
 
-=head2 host
+=head2 hostip
 
   data_type: 'text'
   is_nullable: 1
@@ -34,6 +34,22 @@ __PACKAGE__->table("serverinfo");
 =head2 active
 
   data_type: 'boolean'
+  is_nullable: 1
+
+=head2 status
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 clusterid
+
+  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 1
+
+=head2 description
+
+  data_type: 'text'
   is_nullable: 1
 
 =cut
@@ -46,16 +62,44 @@ __PACKAGE__->add_columns(
     is_nullable       => 0,
     sequence          => "serverinfo_id_seq",
   },
-  "host",
+  "hostip",
   { data_type => "text", is_nullable => 1 },
   "active",
   { data_type => "boolean", is_nullable => 1 },
+  "status",
+  { data_type => "text", is_nullable => 1 },
+  "clusterid",
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
+  "description",
+  { data_type => "text", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
+=head1 RELATIONS
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-20 09:56:54
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2uUSSHiFbt2Go1ZL4OnPOg
+=head2 clusterid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Clusterinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "clusterid",
+  "OpenBib::Schema::System::Result::Clusterinfo",
+  { id => "clusterid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-10-18 16:51:34
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DmCXIweZn0CFdJYEmZynkw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

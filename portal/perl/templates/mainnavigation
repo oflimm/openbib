@@ -76,7 +76,7 @@ $.get("[% IF user.ID %][% path_prefix %]/[% config.get('user_loc') %]/[% user.ID
 [%-   IF active_menu == "admin" -%]
          <li class="active"><strong>Admin</strong></li>
 [%    ELSE %]
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">Admin</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Admin</a></li>
 [%    END %]
 [%- END -%]
       </ul>

@@ -56,44 +56,67 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Katalog-Profil bearbeiten") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table class="ym-full">
-<tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
+<fieldset class="ym-columnar">
 
-<tr><td><span style="color:blue">[% profileinfo.profilename %]</span></td><td><input type="text" name="description" value="[% profileinfo.description %]" size="40" /></td>
-</td><td><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td></tr>
-</tr>
-</table>
+<legend>[% msg.maketext("Katalog-Profil bearbeiten") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="profilename">[% msg.maketext("Profil-Name") %]</label>
+[% profileinfo.profilename %]
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" value="[% profileinfo.description %]" size="20" />
+</div>
+
+<div class="ym-fbox-button">
+
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
+
+[% IF profileinfo.viewinfos.size <= 0%]
+&nbsp;&nbsp;&nbsp;
+
+<a class="ob_button" href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+[% END %]
+</div>
+
+</fieldset>
+
 </form>
 
-</td></tr>
-</table>
 <p />
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit" class="ym-form">
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Neue Organisationseinheit anlegen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table class="ym-full">
-<tr><td>Name der Organisationseinheit</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
-<tr><td><input type="text" name="orgunitname" /></td><td><input type="text" name="description" size="20" />
-</td><td><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
-</table>
-</td></tr>
-</table>
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Neue Organisationseinheit anlegen") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="orgunitname">[% msg.maketext("Name der Organisationseinheit") %]</label>[
+<input type="text" name="orgunitname" id="orgunitname" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" size="20" />
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Neu") %]" />
+</div>
+
+</fieldset>
 
 </form>
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Bereits existierende Organisationseinheiten") %]</th></tr>
-<tr><td class="boxedclear">
 [% IF orgunits.all %]
+<h3>[% msg.maketext("Bereits existierende Organisationseinheiten") %]</h3>
+
 <table class="ym-full">
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
 [% FOREACH thisorgunit IN orgunits.all %]
@@ -101,10 +124,9 @@
 [% END %]
 </table>
 [% ELSE %]
-[% msg.maketext("Sie haben in diesem Profil noch keine Organisationseinheiten angelegt.") %]
+<h3>[% msg.maketext("Sie haben in diesem Profil noch keine Organisationseinheiten angelegt.") %]</h3>
 [% END %]
-</td></tr>
-</table>
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

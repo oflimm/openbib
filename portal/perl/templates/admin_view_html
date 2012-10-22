@@ -56,33 +56,57 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]" class="ym-form">
 
+<fieldset class="ym-columnar">
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Neuen View anlegen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
-<tr><td><input type="text" name="viewname" /></td><td><input type="text" name="description" size="20" />
-</td>
-<td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview.all %]<option value="[% profile.profilename %]">[% profile.description %]</option>[% END %]</select></td>
-<td><select name=active><option value="true">[% msg.maketext("Ja") %]</option><option value="false" selected>[% msg.maketext("Nein") %]</option></select></td><td><input type="submit" value="[% msg.maketext("Neu") %]" /></td></tr>
-</table>
-</td></tr>
-</table>
+<legend>[% msg.maketext("Neuen View anlegen") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="viewname">[% msg.maketext("Viewname") %]</label>
+<input type="text" name="viewname" id="viewname"/>
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description"/>
+</div>
+
+<div class="ym-fbox-select">
+<label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
+
+<select id="profilename" name="profilename">
+[% FOREACH profile IN config.get_profileinfo_overview.all %]
+  <option value="[% profile.profilename %]">[% profile.description %]</option>
+[% END %]
+</select>
+</div>
+
+<div class="ym-fbox-select">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+
+<select id="active" name="active">
+<option value="true">[% msg.maketext("Ja") %]</option>
+<option value="false">[% msg.maketext("Nein") %]</option>
+</select>
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+</div>
+
+</fieldset>
 
 </form>
 
 <p />
 
 [% IF views.size > 0 %]
+<h3>[% msg.maketext("Bereits existierende Views") %]</h3>
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Bereits existierende Views") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<p>
 [% msg.maketext("Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen.") %]
-<p />
+</p>
 
 <table class="ym-full">
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Profil") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
@@ -94,9 +118,6 @@
 </table>
 
 [% END %]
-
-</td></tr>
-</table>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

@@ -119,11 +119,23 @@ CREATE TABLE view_rss (
  rssid     BIGINT NOT NULL
 );
 
+DROP TABLE IF EXISTS clusterinfo;
+CREATE TABLE clusterinfo (
+ id           BIGSERIAL,
+ clustername  TEXT,
+ description  TEXT,
+ status       TEXT,
+ active       BOOL
+);
+
 DROP TABLE IF EXISTS serverinfo;
 CREATE TABLE serverinfo (
- id         BIGSERIAL,
- host       TEXT,
- active     BOOL
+ id           BIGSERIAL,
+ hostip       TEXT,
+ description  TEXT,
+ status       TEXT,
+ clusterid    TEXT
+ active       BOOL
 );
 
 

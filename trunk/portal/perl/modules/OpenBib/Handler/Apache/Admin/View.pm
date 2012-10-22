@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Admin::View
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -75,6 +75,7 @@ sub setup {
         'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'update_record'             => 'update_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'delete_record'             => 'delete_record',
     );
 
@@ -309,33 +310,6 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $viewname");
-        
-        if ($confirm){
-            my $viewinfo_ref = $config->get_viewinfo->search({ viewname => $viewname})->single;
-            
-            my $ttdata={
-                viewinfo   => $viewinfo_ref,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_view_record_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
-        }
-        else {
-            $logger->debug("Redirecting to delete location");
-            $self->delete_record;
-            return;
-        }
-    }
-
-    # Ansonsten POST oder PUT => Aktualisieren
-
     # Profile muss vorhanden sein.
     if (!$config->profile_exists($input_data_ref->{profilename})) {
         $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
@@ -355,6 +329,30 @@ sub update_record {
     }
 
     return;
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $viewname       = $self->strip_suffix($self->param('viewid'));
+    my $config         = $self->param('config');
+
+    my $viewinfo_ref = $config->get_viewinfo->search({ viewname => $viewname})->single;
+    
+    my $ttdata={
+        viewinfo   => $viewinfo_ref,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_admin_view_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
 }
 
 sub delete_record {

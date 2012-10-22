@@ -74,6 +74,7 @@ sub setup {
         'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'update_record'             => 'update_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'delete_record'             => 'delete_record',
     );
 
@@ -276,10 +277,6 @@ sub update_record {
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method'))     || '';
-    my $confirm         = $query->param('confirm')                  || 0;
-
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
 
@@ -293,32 +290,6 @@ sub update_record {
     if (!$config->profile_exists($profilename)) {
         $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
         return Apache2::Const::OK;
-    }
-
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-    
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $profilename");
-        
-        if ($confirm){
-            my $profileinfo_ref = $config->get_profileinfo_search_rs({ profilename => $profilename })->single();
-
-            my $ttdata={
-                profileinfo => $profileinfo_ref,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_profile_record_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
-        }
-        else {
-            $logger->debug("Redirecting to delete location");
-            $self->delete_record;
-            return;
-        }
     }
 
     $config->update_profile({
@@ -337,6 +308,30 @@ sub update_record {
     }
 
     return;
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $profilename    = $self->strip_suffix($self->param('profileid'));
+    my $config         = $self->param('config');
+
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
+    
+    my $ttdata={
+        profileinfo => $profileinfo_ref,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_admin_profile_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
 }
 
 sub delete_record {

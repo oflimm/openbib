@@ -67,3 +67,19 @@ ALTER TABLE litlist_topic ADD CONSTRAINT fk_litlisttopic_topic FOREIGN KEY (topi
 ALTER TABLE litlist_topic DROP CONSTRAINT fk_litlistsubject_litlist;
 ALTER TABLE litlist_topic DROP CONSTRAINT fk_litlistsubject_subject;
 alter table litlist_subject_id_seq rename to litlist_topic_id_seq;
+
+alter table serverinfo rename column host to hostip;
+alter table serverinfo add column description text;
+alter table serverinfo add column status text;
+alter table serverinfo add column clusterid BIGINT;
+
+CREATE TABLE clusterinfo (
+ id           BIGSERIAL,
+ clustername  TEXT,
+ description  TEXT,
+ status       TEXT,
+ active       BOOL
+);
+
+ALTER TABLE serverinfo ADD CONSTRAINT fk_serverinfo_clusterinfo FOREIGN KEY (clusterid) REFERENCES clusterinfo (id);
+

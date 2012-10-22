@@ -56,59 +56,81 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]" class="ym-form">
 <input type="hidden" name="_method"     value="PUT" />
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("View bearbeiten") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><span style="color:blue">[% viewinfo.viewname %]</span></td></tr>
-<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% viewinfo.description %]" size="40" /></td></tr>
-<tr><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview.all %]<option value="[% profile.profilename %]" [% IF viewinfo.profileid.id == profile.id %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td></tr>
-<tr><td><b>[% msg.maketext("URI ohne View") %]</b></td>
-<td>
-<select name="stripuri">
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("View bearbeiten") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="viewname">[% msg.maketext("Viewname") %]</label>
+[% viewinfo.viewname %]
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" value="[% viewinfo.description %]" size="40" />
+</div>
+
+<div class="ym-fbox-select">
+<label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
+
+<select id="profilename" name="profilename">
+[% FOREACH profile IN config.get_profileinfo_overview.all %]
+  <option value="[% profile.profilename %]" [% IF viewinfo.profileid.id == profile.id %] selected="selected"[% END %]>[% profile.description %]</option>
+[% END %]
+</select>
+</div>
+
+<div class="ym-fbox-select">
+<label for="stripuri">[% msg.maketext("URI ohne View") %]</label>
+
+<select id="stripuri" name="stripuri">
 <option value="true" [% IF viewinfo.stripuri == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="false" [% IF viewinfo.stripuri == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
-</td>
-</tr>
-<tr><td><b>[% msg.maketext("Aktiv") %]</b></td>
-<td>
-<select name="active">
+</div>
+
+<div class="ym-fbox-select">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+
+<select id="active" name="active">
 <option value="true" [% IF viewinfo.active == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="false" [% IF viewinfo.active == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
-</td>
-</tr>
-<tr><td><b>Anderer Servername in URI</b></td><td><input type="text" name="servername" value="[% viewinfo.servername %]" size="40" /></td></tr>
-<tr><td><b>Andere Start-URI-Pfad</b></td><td><input type="text" name="start_loc" value="[% viewinfo.start_loc %]" size="40" /></td></tr>
-</table>
+</div>
 
-</td></tr>
-</table>
+<div class="ym-fbox-text">
+<label for="servername">[% msg.maketext("Eigener Servername in URI") %]</label>
+<input type="text" name="servername" id="servername" value="[% viewinfo.servername %]" size="40" />
+</div>
 
-<p />
-<b>[% msg.maketext("Katalogauswahl zu diesem View") %]</b><br /><br />
-[%# USE dumper;dumper.dump(dbnames)%]
-<select name="databases" multiple="multiple" size="20">
+<div class="ym-fbox-text">
+<label for="start_loc">[% msg.maketext("Eigener Start-URI-Pfad") %]</label>
+<input type="text" name="start_loc" id="start_loc" value="[% viewinfo.start_loc %]" size="40" />
+</div>
+
+<div class="ym-fbox-select">
+<label for="databases">[% msg.maketext("Katalogauswahl zu diesem View") %]</label>
+<select id="databases" name="databases" multiple="multiple" size="20">
 [% FOREACH singledb IN dbnames %]
 <option value="[% singledb %]" [% IF viewdbs.${singledb} %]selected="selected"[% END %]>[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</option>
 [% END %]
 </select>
+</div>
 
-<p />
+<div class="ym-fbox-button">
 
 <input type="submit" value="[% msg.maketext("Ändern") %]" />
 
-</form>
+&nbsp;&nbsp;&nbsp;
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]">
-<input type="hidden" name="_method"     value="DELETE" />
-<input type="hidden" name="confirm"     value="1" />
+<a class="ob_button" href="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
 
-<input type="submit" value="[% msg.maketext("Löschen") %]">
+</div>
+
+</fieldset>
 
 </form>
 

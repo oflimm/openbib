@@ -60,51 +60,53 @@
 
 <h1>[% orgunitinfo.description %]</h1>
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
-<table width="100%">
-<tr><th>Organisationseinheit bearbeiten</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td><b>Name</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td></td></tr>
+<fieldset class="ym-columnar">
 
-<tr><td><span style="color:blue">[% orgunitinfo.orgunitname %]</span></td><td><input type="text" name="description" value="[% orgunitinfo.description %]" size="40" /></td><td><input type="text" name="nr" value="[% orgunitinfo.nr %]" size="40" /></td></tr>
-</table>
+<legend>[% msg.maketext("Organisationseinheit bearbeiten") %]</legend>
 
-<p />
+<div class="ym-fbox-text">
+<label for="orgunitname">[% msg.maketext("Organisationseinheit") %]</label>
+[% orgunitinfo.orgunitname %]
+</div>
 
-<p />
-<h2>[% msg.maketext("Katalogauswahl der Organisationseinheit") %]</h2>
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" value="[% orgunitinfo.description %]" size="20" />
+</div>
 
-[%# USE dumper;dumper.dump(orgunitdb_map)%]
+<div class="ym-fbox-text">
+<label for="nr">[% msg.maketext("Nr") %]</label>
+<input type="text" name="nr" id="nr" value="[% orgunitinfo.nr %]" size="20" />
+</div>
 
-<select name="databases" multiple="multiple" size="20">
+</fieldset>
 
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Katalogauswahl der Organisationseinheit") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="databases">[% msg.maketext("Kataloge") %]</label>
+
+<select id="databases" name="databases" multiple="multiple" size="20">
 [% FOREACH singledb IN activedbs.all %]
-
 <option value="[% singledb.dbname %]"[% IF orgunitdb_map.${singledb.dbname} %] selected="selected"[% END %]>[% singledb.dbname %]: [% singledb.description | truncate(100) %]</option>
-
 [% END %]
-
-
 </select>
+</div>
 
+<div class="ym-fbox-button">
 
-<p />
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
 
-</td></tr>
-</table>
+&nbsp;&nbsp;&nbsp;
 
-<input type="submit" value="[% msg.maketext("Ändern") %]">
+<a class="ob_button" href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
 
-</form>
-
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
-<input type="hidden" name="_method"     value="DELETE" />
-<input type="hidden" name="confirm"     value="1" />
-
-<input type="submit" value="[% msg.maketext("Löschen") %]"></td></tr>
+</div>
 
 </form>
 

@@ -38,7 +38,7 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Kataloge") %]</a></li>
        </ul>
      </div>
@@ -101,7 +101,10 @@
   </select>
 </div>
 
-<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Neu") %]" />
+
+</div>
 
 </fieldset>
 </form>

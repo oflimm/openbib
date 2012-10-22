@@ -30,6 +30,20 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Server") %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_server_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -47,9 +61,35 @@
 <legend>[% msg.maketext("Neuen Rechner zur Lastverteilung hinzuf&uuml;gen") %]</legend>
 
 <div class="ym-fbox-text">
-<label for="host">[% msg.maketext("Rechnername") %]</label>
-<input type="text" name="host" id="host"/>
+<label for="hostip">[% msg.maketext("Rechner-IP") %]</label>
+<input type="text" name="hostip" id="hostip"/>
 </div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description"/>
+</div>
+
+<div class="ym-fbox-select">
+<label for="status">[% msg.maketext("Status") %]</label>
+  <select name="status" id="status">
+     <option value="">[% msg.maketext("Keiner") %]</option>
+     <option value="updating">[% msg.maketext("Aktualisieren") %]</option>
+     <option value="updating_done" selected>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
+     <option value="searchable" selected>[% msg.maketext("Recherchierbar") %]</option>
+  </select>
+</div>
+
+[% IF config.get_clusterinfo_overview.count > 0 %]
+<div class="ym-fbox-select">
+<label for="clusterid">[% msg.maketext("Cluster") %]</label>
+  <select name="clusterid" id="clusterid">
+[%  FOREACH clusterinfo IN config.get_clusterinfo_overview.all %]
+     <option value="[% clusterinfo.id %]">[% clusterinfo.description %]</option>
+[% END %]
+  </select>
+</div>
+[% END %]
 
 <div class="ym-fbox-select">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
@@ -59,7 +99,9 @@
   </select>
 </div>
 
+<div class="ym-fbox-button">
 <input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
+</div>
 
 </fieldset>
 
@@ -73,10 +115,14 @@
 <h3>[% msg.maketext("Bereits existierende Rechner zur Lastverteilung") %]</h3>
 
 <table>
-<tr><th><b>[% msg.maketext("Name") %]</b></th><th><b>[% msg.maketext("Aktiv") %]</b></th><th></th><th></th><th></th></tr>
+<tr><th><b>[% msg.maketext("Id") %]</b></th><th><b>[% msg.maketext("IP-Adresse") %]</b></th><th><b>[% msg.maketext("Beschreibung") %]</b></th><th><b>[% msg.maketext("Status") %]</b></th><th><b>[% msg.maketext("Cluster") %]</b></th><th><b>[% msg.maketext("Aktiv") %]</b></th><th></th><th></th><th></th></tr>
 [% FOREACH serverinfo IN serverinfos.all %]
 <tr [% IF serverinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
-<td>[% serverinfo.host %]</td>
+<td>[% serverinfo.id %]</td>
+<td><a href="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]/edit?l=[% lang %]">[% serverinfo.hostip %]</a></td>
+<td>[% serverinfo.description %]</td>
+<td>[% IF serverinfo.status %][% serverinfo.status %][% ELSE %][% msg.maketext("Nicht definiert") %][% END %]</td>
+<td>[% serverinfo.clusterid.description %]</td>
 <td align="center">[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF serverinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF serverinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_server_loc') %]/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
 [% END %]

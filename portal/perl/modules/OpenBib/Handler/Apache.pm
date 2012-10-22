@@ -126,19 +126,6 @@ sub cgiapp_init {
     return;
 }
 
-sub cgiapp_prerun {
-   my $self = shift;
-
-   # Log4perl logger erzeugen
-   my $logger = get_logger();
-
-   $logger->debug("Entering cgiapp_prerun");
-      
-   $logger->debug("Exit cgiapp_prerun");
-   #   $self->query->charset('UTF-8');  # cause CGI.pm to send a UTF-8 Content-Type header
-}
-
-
 sub negotiate_content {
     my $self = shift;
 

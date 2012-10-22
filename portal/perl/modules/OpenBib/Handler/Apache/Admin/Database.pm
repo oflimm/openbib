@@ -67,8 +67,8 @@ use base 'OpenBib::Handler::Apache::Admin';
 # Run at startup
 sub setup {
     my $self = shift;
-
-    $self->start_mode('show_collection');
+ 
+   $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'           => 'show_collection',
         'show_record'               => 'show_record',
@@ -76,6 +76,7 @@ sub setup {
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',
         'delete_record'             => 'delete_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
     );
 
     # Use current path as template path,
@@ -180,7 +181,7 @@ sub show_record {
         $self->print_authorization_error();
         return;
     }
-
+    
     $logger->debug("Show Record $dbname");
 
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
@@ -267,41 +268,6 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
-    # Variables
-
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-    
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $dbname");
-        
-        if ($confirm){
-            my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
-            
-            my $ttdata={
-                databaseinfo => $dbinfo_ref,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_database_record_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
-        }
-        else {
-            $self->delete_record;
-#             $logger->debug("Redirecting to delete location");
-#             $self->query->method('DELETE');    
-#             $self->query->headers_out->add(Location => "$config->{base_loc}/$config->{admin_database_loc}/$dbname");
-#             $self->query->status(Apache2::Const::REDIRECT);
-            return;
-        }
-    }
-    
-    # Ansonsten POST oder PUT => Aktualisieren
-    
     $config->update_databaseinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
@@ -317,6 +283,30 @@ sub update_record {
     
 
     return;
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $dbname         = $self->strip_suffix($self->param('databaseid'));
+    my $config         = $self->param('config');
+
+    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
+    
+    my $ttdata={
+        databaseinfo => $dbinfo_ref,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_admin_database_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
 }
 
 sub delete_record {

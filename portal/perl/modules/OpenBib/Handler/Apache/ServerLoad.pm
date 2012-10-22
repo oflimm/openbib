@@ -92,10 +92,13 @@ sub show {
     $logger->debug("Local IP is ".$c->local_ip());
 
     if ($request){
-	my $is_active = $request->get_column('active');
-	$logger->debug("Server is active? $is_active");
+	my $is_active     = $request->get_column('active');
+        my $is_searchable = ($request->get_column('status') eq "searchable")?1:0;
 
-	if ($is_active){
+	$logger->debug("Server is active? $is_active");
+        $logger->debug("Server is searchable? $is_searchable");
+
+	if ($is_active && $is_searchable){
 	    return;
 	}
 	else {

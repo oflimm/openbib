@@ -1517,7 +1517,7 @@ sub get_serverinfo_overview {
     my $object = $self->get_serverinfo->search(
         undef,
         {
-            order_by => 'host',
+            order_by => 'hostip',
         }
     );
     
@@ -1532,6 +1532,33 @@ sub get_serverinfo {
 
     # DBI: "select * from loadbalancertargets order by host"
     my $object = $self->{schema}->resultset('Serverinfo');
+
+    return $object;
+}
+
+sub get_clusterinfo_overview {
+    my $self   = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->get_clusterinfo->search(
+        undef,
+        {
+            order_by => 'id',
+        }
+    );
+    
+    return $object;
+}
+
+sub get_clusterinfo {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->{schema}->resultset('Clusterinfo');
 
     return $object;
 }
@@ -2152,14 +2179,36 @@ sub update_server {
     # Set defaults
     my $id                       = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
-    my $active                   = exists $arg_ref->{active}
-        ? $arg_ref->{active}              : 0;
+
+    my $update_args = {};
+    
+    if (exists $arg_ref->{hostip}){
+        $update_args->{hostip} = $arg_ref->{hostip};
+    }
+
+    if (exists $arg_ref->{description}){
+        $update_args->{description} = $arg_ref->{description};
+    }
+
+    if (exists $arg_ref->{status}){
+        $update_args->{status} = $arg_ref->{status};
+    }
+    
+    if (exists $arg_ref->{clusterid}){
+        $update_args->{clusterid} = $arg_ref->{clusterid};
+    }
+
+    if (exists $arg_ref->{active}){
+        $update_args->{active} = $arg_ref->{active};
+    }
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Updating ID $id".YAML::Dump($update_args));
+    
     # DBI: "update serverinfo set active = ? where id = ?"
-    $self->{schema}->resultset('Serverinfo')->search_rs({ id => $id })->update({ active => $active });
+    $self->{schema}->resultset('Serverinfo')->search_rs({ id => $id })->update($update_args);
 
     return;
 }
@@ -2168,23 +2217,101 @@ sub new_server {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $host                   = exists $arg_ref->{host}
-        ? $arg_ref->{host}                : undef;
+    my $hostip                   = exists $arg_ref->{hostip}
+        ? $arg_ref->{hostip}             : undef;
+    my $description                   = exists $arg_ref->{description}
+        ? $arg_ref->{description}        : undef;
+    my $status                   = exists $arg_ref->{status}
+        ? $arg_ref->{status}             : undef;
+    my $clusterid                = exists $arg_ref->{clusterid}
+        ? $arg_ref->{clusterid}          : undef;
     my $active                 = exists $arg_ref->{active}
-        ? $arg_ref->{active}              : 0;
+        ? $arg_ref->{active}             : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if (!$host){
+    if (!$hostip){
         return -1;
     }
 
     # DBI: "insert into serverinfo (id,host,active) values (NULL,?,?)"
-    my $new_server = $self->{schema}->resultset('Serverinfo')->create({ host => $host, active => $active });
+    my $new_server = $self->{schema}->resultset('Serverinfo')->create({ hostip => $hostip, description => $description, status => $status, clusterid => $clusterid, active => $active });
 
     if ($new_server){
         return $new_server->id;
+    }
+
+    return;
+}
+
+sub del_cluster {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("About to delete id $id");
+
+    # DBI: "delete from clusterinfo where id = ?"
+    $self->{schema}->resultset('Clusterinfo')->single({ id => $id })->delete;
+
+    return;
+}
+
+sub update_cluster {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+
+    my $update_args = {};
+    
+    if (exists $arg_ref->{description}){
+        $update_args->{description} = $arg_ref->{description};
+    }
+
+    if (exists $arg_ref->{status}){
+        $update_args->{status} = $arg_ref->{status};
+    }
+    
+    if (exists $arg_ref->{active}){
+        $update_args->{active} = $arg_ref->{active};
+    }
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "update clusterinfo set active = ? where id = ?"
+    $self->{schema}->resultset('Clusterinfo')->search_rs({ id => $id })->update($update_args);
+
+    return;
+}
+
+sub new_cluster {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $description                   = exists $arg_ref->{description}
+        ? $arg_ref->{description}        : undef;
+    my $status                        = exists $arg_ref->{status}
+        ? $arg_ref->{status}             : undef;
+    my $active                        = exists $arg_ref->{active}
+        ? $arg_ref->{active}             : 0;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "insert into clusterinfo (id,host,active) values (NULL,?,?)"
+    my $new_cluster = $self->{schema}->resultset('Clusterinfo')->create({ description => $description, status => $status, active => $active });
+
+    if ($new_cluster){
+        return $new_cluster->id;
     }
 
     return;

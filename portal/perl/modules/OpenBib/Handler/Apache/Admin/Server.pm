@@ -70,6 +70,7 @@ sub setup {
         'show_record_form'          => 'show_record_form',
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'delete_record'             => 'delete_record',
     );
 
@@ -122,14 +123,42 @@ sub show_record_form {
         return;
     }
 
-    my $loadbalancertargets_ref = $config->get_loadbalancertargets;
+    my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid })->single;
     
     my $ttdata = {
-        serverid            => $serverid,
-        loadbalancertargets => $loadbalancertargets_ref,
+        serverid     => $serverid,
+        serverinfo   => $serverinfo_ref,
     };
     
     $self->print_page($config->{tt_admin_server_record_edit_tname},$ttdata);
+}
+
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatches Args
+    my $view             = $self->param('view');
+    my $serverid         = $self->param('serverid');
+
+    # Shared Args
+    my $config           = $self->param('config');
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
+
+    my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid });
+    
+    my $ttdata = {
+        serverid     => $serverid,
+        serverinfo   => $serverinfo_ref,
+    };
+    
+    $self->print_page($config->{tt_admin_server_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -148,43 +177,37 @@ sub create_record {
     my $path_prefix    = $self->param('path_prefix');
     my $location       = $self->param('location');
 
-    # CGI Args
-    my $host           = $query->param('host')     || '';
-    my $active         = $query->param('active')   || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    if ($host eq "") {
+    if ($input_data_ref->{hostip} eq "") {
         $self->print_warning($msg->maketext("Sie müssen einen Servernamen eingeben."));
         return Apache2::Const::OK;
     }
     
-    $logger->debug("Host: $host Active: $active");
-    
-    my $new_serverid = $config->new_server({
-        host                 => $host,
-        active               => $active,
-    });
+    my $new_serverid = $config->new_server($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}/$new_serverid/edit");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($new_serverid){
-            $logger->debug("Weiter zum Record $new_serverid");
+        if ($new_serverid){ # Datensatz erzeugt, wenn neue id
+            $logger->debug("Weiter zur DB $new_serverid");
             $self->param('status',Apache2::Const::HTTP_CREATED);
             $self->param('serverid',$new_serverid);
             $self->param('location',"$location/$new_serverid");
             $self->show_record;
         }
     }
-
+    
     return;
 }
 
@@ -203,44 +226,17 @@ sub update_record {
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm')              || 0;
-    my $active          = $query->param('active')               || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
+    $input_data_ref->{id} = $serverid;
+    
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $serverid");
-        
-        if ($confirm){
-            my $ttdata={
-                serverid  => $serverid,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_server_record_delete_confirm_tname},$ttdata);
-            return Apache2::Const::OK;
-        }
-        else {
-            $logger->debug("Redirecting to delete location");
-            $self->delete_record;
-            return;
-        }
-    }
-
-    # Ansonsten POST oder PUT => Aktualisieren
-
-    $config->update_server({
-        id                   => $serverid,
-        active               => $active,
-    });
+    $config->update_server($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
@@ -253,6 +249,29 @@ sub update_record {
     }
 
     return;
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $serverid       = $self->strip_suffix($self->param('serverid'));
+    my $config         = $self->param('config');
+
+    my $serverinfo_ref = $config->get_serverinfo->search({ id => $serverid})->single;
+
+    my $ttdata={
+        serverinfo => $serverinfo_ref,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_admin_server_record_delete_confirm_tname},$ttdata);
+    return Apache2::Const::OK;
 }
 
 sub delete_record {
@@ -283,6 +302,38 @@ sub delete_record {
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        hostip => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        description => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        status => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        clusterid => {
+            default  => undef,
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        active => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
 }
 
 1;

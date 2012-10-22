@@ -1,5 +1,6 @@
 @media all
 {
+
   #header_logo_image {
     background: url(/images/openbib/openbib-logo_small.gif) center no-repeat;
     width: 200px;
@@ -573,5 +574,8 @@
        background:#f4f4f4;
    }
 
+  .ym-fbox-button {
+    padding: 10px;
+  }
 
 }

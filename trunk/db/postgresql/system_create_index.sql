@@ -40,8 +40,12 @@ ALTER TABLE view_db ADD CONSTRAINT fk_viewdb_view FOREIGN KEY (viewid) REFERENCE
 ALTER TABLE view_rss ADD CONSTRAINT fk_viewrss_rss FOREIGN KEY (rssid) REFERENCES rssinfo (id);
 ALTER TABLE view_rss ADD CONSTRAINT fk_viewrss_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
 
+ALTER TABLE clusterinfo ADD PRIMARY KEY (id);
+CREATE INDEX clusterinfo_active ON clusterinfo (active);
+
 ALTER TABLE serverinfo ADD PRIMARY KEY (id);
 CREATE INDEX serverinfo_active ON serverinfo (active);
+ALTER TABLE serverinfo ADD CONSTRAINT fk_serverinfo_clusterinfo FOREIGN KEY (clusterid) REFERENCES clusterinfo (id);
 
 ALTER TABLE sessioninfo ADD PRIMARY KEY (id);
 CREATE INDEX sessioninfo_sessionid ON sessioninfo (sessionid);

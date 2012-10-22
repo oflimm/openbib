@@ -203,6 +203,12 @@
 ../modules/OpenBib/Template/Provider.pm
 ../modules/OpenBib/Template/Utilities.pm
 ../modules/OpenBib/User.pm
+../templates/admin_cluster_html
+../templates/admin
+../templates/admin_cluster_record_delete_confirm
+../templates/admin_cluster_record_edit
+../templates/admin_server_record_edit
+../templates/admin_cluster
 ../templates/admin_authentication
 ../templates/admin_authentication_html
 ../templates/admin_authentication_json

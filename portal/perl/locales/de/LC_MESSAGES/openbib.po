@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2012-09-19 14:31+0200\n"
+"PO-Revision-Date: 2012-10-22 14:46+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -128,7 +128,7 @@ msgstr "%1 Titel in %2 Gruppen, %3 Literaturlisten"
 #: ../templates/_view/richter/title_html:218
 #: ../templates/_view/richter/title_html:264
 #: ../templates/_view/richter/title_html:292
-#: ../templates/collection_html_actions:129 ../templates/title_html:265
+#: ../templates/collection_html_actions:131 ../templates/title_html:265
 #: ../templates/title_html:289 ../templates/title_include:460
 #: ../templates/title_include:488 ../templates/title_include:534
 #: ../templates/title_include:562
@@ -272,8 +272,8 @@ msgstr "&ntilde; <i>suchen mit:</i> n"
 #: ../templates/_view/richter/title_html:135
 #: ../templates/_view/richter/title_html:164
 #: ../templates/_view/richter/title_html:236
-#: ../templates/collection_html_actions:62
-#: ../templates/collection_html_actions:95 ../templates/litlist_edit:88
+#: ../templates/collection_html_actions:64
+#: ../templates/collection_html_actions:97 ../templates/litlist_edit:88
 #: ../templates/litlist_include:104 ../templates/title_html:203
 #: ../templates/title_html:239 ../templates/title_html:303
 #: ../templates/title_include:405 ../templates/title_include:434
@@ -317,13 +317,12 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:145
 #: ../templates/_view/richter/collection_html_actions:109
-#: ../templates/collection_html_actions:145
 msgid "<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen"
 msgstr "<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen"
 
 #: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:35
 #: ../templates/_view/richter/collection_html_actions:36
-#: ../templates/collection_html_actions:35
+#: ../templates/collection_html_actions:37
 msgid ""
 "<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;"
 "bernehmen: "
@@ -340,7 +339,7 @@ msgstr ""
 "versehen: "
 
 #: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:83
-#: ../templates/collection_html_actions:83
+#: ../templates/collection_html_actions:85
 msgid "<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:"
 msgstr "<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:"
 
@@ -560,7 +559,7 @@ msgstr "Abspeicherung eines neuen oder bestehenden Profils"
 #: ../templates/_profile/sammlungen/_view/richter/searchform_query:120
 #: ../templates/_profile/usb/searchform_query:119
 #: ../templates/_view/richter/searchform_query:119
-#: ../templates/searchform_query:119 ../templates/user_preferences_html:233
+#: ../templates/searchform_query:140 ../templates/user_preferences_html:233
 msgid "Abstrakt/Inhalt"
 msgstr "Abstrakt/Inhalt"
 
@@ -568,22 +567,23 @@ msgstr "Abstrakt/Inhalt"
 msgid "Administration"
 msgstr "Administration"
 
+#: ../templates/admin_cluster_html:102 ../templates/admin_cluster_html:79
+#: ../templates/admin_cluster_record_edit:87
 #: ../templates/admin_database_html:97
 #: ../templates/admin_database_record_edit:109
-#: ../templates/admin_database_record_edit:204
 #: ../templates/admin_database_record_html:55
 #: ../templates/admin_database_rss_record_html:135
 #: ../templates/admin_database_rss_record_html:192
 #: ../templates/admin_database_rss_record_html:249
 #: ../templates/admin_database_rss_record_html:306
 #: ../templates/admin_database_rss_record_html:78
-#: ../templates/admin_navigation:104 ../templates/admin_navigation:106
-#: ../templates/admin_server:50 ../templates/admin_server:70
+#: ../templates/admin_navigation:108 ../templates/admin_navigation:110
+#: ../templates/admin_server_record_edit:102
 #: ../templates/admin_session_active_html:41
 #: ../templates/admin_session_active_record_html:41
 #: ../templates/admin_showcat:39 ../templates/admin_showcat:60
-#: ../templates/admin_view_html:66 ../templates/admin_view_html:88
-#: ../templates/admin_view_record_edit:77 ../templates/database_record_html:55
+#: ../templates/admin_view_html:112 ../templates/admin_view_html:86
+#: ../templates/admin_view_record_edit:96 ../templates/database_record_html:55
 #: ../templates/user_preferences_html:286
 #: ../templates/user_preferences_html:300
 #: ../templates/user_preferences_html:313
@@ -602,6 +602,12 @@ msgstr "Aktive Filter"
 #: ../templates/registration_confirmation:45
 msgid "Aktivieren Sie ihre Kennung"
 msgstr "Aktivieren Sie ihre Kennung"
+
+#: ../templates/admin_cluster_html:72
+#: ../templates/admin_cluster_record_edit:80
+#: ../templates/admin_server_record_edit:85
+msgid "Aktualisieren"
+msgstr "Aktualisieren"
 
 #: ../templates/_profile/sammlungen/_view/richter/resultlists_choice:54
 #: ../templates/_view/richter/resultlists_choice:54
@@ -675,12 +681,12 @@ msgstr "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgid "Alles"
 msgstr "Alles"
 
-#: ../templates/admin_navigation:122 ../templates/admin_navigation:124
-#: ../templates/admin_navigation:165 ../templates/admin_navigation:167
-#: ../templates/admin_navigation:32 ../templates/admin_navigation:34
-#: ../templates/admin_navigation:53 ../templates/admin_navigation:55
-#: ../templates/admin_navigation:72 ../templates/admin_navigation:74
-#: ../templates/admin_navigation:93 ../templates/admin_navigation:95
+#: ../templates/admin_navigation:126 ../templates/admin_navigation:128
+#: ../templates/admin_navigation:169 ../templates/admin_navigation:171
+#: ../templates/admin_navigation:36 ../templates/admin_navigation:38
+#: ../templates/admin_navigation:57 ../templates/admin_navigation:59
+#: ../templates/admin_navigation:76 ../templates/admin_navigation:78
+#: ../templates/admin_navigation:97 ../templates/admin_navigation:99
 msgid "Allgemein"
 msgstr "Allgemein"
 
@@ -697,6 +703,10 @@ msgstr "Allgemeine Informationen"
 #: ../templates/admin_statistic_html:47
 msgid "Allgemeine Statistikdaten zu OpenBib"
 msgstr "Allgemeine Statistikdaten zu OpenBib"
+
+#: ../templates/admin_database_record_edit:64
+msgid "Allgemeines Kataloginformationen"
+msgstr "Allgemeines Kataloginformationen"
 
 #: ../templates/info_help:122
 msgid ""
@@ -745,7 +755,7 @@ msgstr "Als Mail verschicken"
 msgid "Also:"
 msgstr "Also:"
 
-#: ../templates/admin_server:78
+#: ../templates/admin_cluster_html:108
 msgid "An"
 msgstr "An"
 
@@ -759,7 +769,7 @@ msgstr "An"
 #: ../templates/collection_html_short:143 ../templates/info_help:969
 #: ../templates/review_edit:199 ../templates/title_html:147
 #: ../templates/title_include:347 ../templates/title_include:348
-#: ../templates/titlist_item_html_short:228
+#: ../templates/titlist_item_html_short:233
 msgid "An BibSonomy senden"
 msgstr "An BibSonomy senden"
 
@@ -807,7 +817,7 @@ msgstr "Angelegt"
 
 #: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:52
 #: ../templates/_view/richter/collection_html_actions:45
-#: ../templates/collection_html_actions:52
+#: ../templates/collection_html_actions:54
 msgid "Anlegen einer neuen Literaturliste: "
 msgstr "Anlegen einer neuen Literaturliste: "
 
@@ -830,7 +840,7 @@ msgstr "Anmeldeziel bearbeiten"
 #: ../templates/admin_authentication_html:39
 #: ../templates/admin_authentication_record_edit:39
 #: ../templates/admin_authentication_record_html:39
-#: ../templates/admin_navigation:180 ../templates/admin_navigation:182
+#: ../templates/admin_navigation:184 ../templates/admin_navigation:186
 msgid "Anmeldung"
 msgstr "Anmeldung"
 
@@ -1113,7 +1123,7 @@ msgstr "Aufschl&uuml;sselung der Datenbanken nach Fachgebieten"
 msgid "Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten"
 msgstr "Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten"
 
-#: ../templates/admin_server:78
+#: ../templates/admin_cluster_html:108
 msgid "Aus"
 msgstr "Aus"
 
@@ -1139,11 +1149,15 @@ msgstr "Ausgew&auml;hlte Kataloge"
 msgid "Ausgew&auml;hlte Recherche"
 msgstr "Ausgew&auml;hlte Recherche"
 
+#: ../templates/collection_html_actions:17
+msgid "Ausgewählte Titel"
+msgstr "Ausgewählte Titel"
+
 #: ../templates/user_circulation_reminders_html:68
 msgid "Ausleih-/Buchungsdatum"
 msgstr "Ausleih-/Buchungsdatum"
 
-#: ../templates/admin_database_record_edit:218
+#: ../templates/admin_database_record_edit:198
 #: ../templates/admin_database_record_html:89
 #: ../templates/database_record_html:63
 msgid "Ausleih-Einstellungen"
@@ -1426,11 +1440,15 @@ msgstr "Benutzernummer"
 msgid "Bereits existierende Anmeldeziele"
 msgstr "Bereits existierende Anmeldeziele"
 
-#: ../templates/admin_profile_html:79 ../templates/admin_showprofiles:51
+#: ../templates/admin_cluster_html:99
+msgid "Bereits existierende Cluster"
+msgstr "Bereits existierende Cluster"
+
+#: ../templates/admin_profile_html:88 ../templates/admin_showprofiles:51
 msgid "Bereits existierende Katalog-Profile"
 msgstr "Bereits existierende Katalog-Profile"
 
-#: ../templates/admin_database_html:113 ../templates/admin_showcat:57
+#: ../templates/admin_database_html:116 ../templates/admin_showcat:57
 msgid "Bereits existierende Kataloge"
 msgstr "Bereits existierende Kataloge"
 
@@ -1438,7 +1456,7 @@ msgstr "Bereits existierende Kataloge"
 msgid "Bereits existierende Literaturlisten"
 msgstr "Bereits existierende Literaturlisten"
 
-#: ../templates/admin_profile_record_edit:94
+#: ../templates/admin_profile_record_edit:118
 msgid "Bereits existierende Organisationseinheiten"
 msgstr "Bereits existierende Organisationseinheiten"
 
@@ -1450,15 +1468,11 @@ msgstr "Bereits existierende Profile"
 msgid "Bereits existierende RSS-Feeds"
 msgstr "Bereits existierende RSS-Feeds"
 
-#: ../templates/admin_server:67
-msgid "Bereits existierende Rechner zur Lastverteilung"
-msgstr "Bereits existierende Rechner zur Lastverteilung"
-
 #: ../templates/admin_topic_html:80
 msgid "Bereits existierende Themengebiete"
 msgstr "Bereits existierende Themengebiete"
 
-#: ../templates/admin_view_html:82
+#: ../templates/admin_view_html:105
 msgid "Bereits existierende Views"
 msgstr "Bereits existierende Views"
 
@@ -1466,24 +1480,27 @@ msgstr "Bereits existierende Views"
 #: ../templates/admin_authentication_html:87
 #: ../templates/admin_authentication_record_edit:70
 #: ../templates/admin_authentication_record_html:67
-#: ../templates/admin_database_html:116 ../templates/admin_database_html:72
+#: ../templates/admin_cluster_html:102 ../templates/admin_cluster_html:64
+#: ../templates/admin_cluster_record_edit:72
+#: ../templates/admin_database_html:119 ../templates/admin_database_html:72
 #: ../templates/admin_database_record_edit:72
 #: ../templates/admin_database_record_html:49
 #: ../templates/admin_orgunit_html:66
-#: ../templates/admin_orgunit_record_edit:70
+#: ../templates/admin_orgunit_record_edit:76
 #: ../templates/admin_orgunit_record_html:67
-#: ../templates/admin_profile_html:65 ../templates/admin_profile_html:85
-#: ../templates/admin_profile_record_edit:66
-#: ../templates/admin_profile_record_edit:84
-#: ../templates/admin_profile_record_edit:98
+#: ../templates/admin_profile_html:71 ../templates/admin_profile_html:95
+#: ../templates/admin_profile_record_edit:105
+#: ../templates/admin_profile_record_edit:121
+#: ../templates/admin_profile_record_edit:72
 #: ../templates/admin_profile_record_html:63
-#: ../templates/admin_profile_record_html:79 ../templates/admin_showcat:39
+#: ../templates/admin_profile_record_html:79
+#: ../templates/admin_server_record_edit:77 ../templates/admin_showcat:39
 #: ../templates/admin_showcat:60 ../templates/admin_showprofiles:37
 #: ../templates/admin_showprofiles:57 ../templates/admin_topic_html:66
 #: ../templates/admin_topic_html:85 ../templates/admin_topic_record_edit:84
 #: ../templates/admin_topic_record_mapping_html:84
-#: ../templates/admin_view_html:66 ../templates/admin_view_html:88
-#: ../templates/admin_view_record_edit:67
+#: ../templates/admin_view_html:112 ../templates/admin_view_html:71
+#: ../templates/admin_view_record_edit:72
 #: ../templates/admin_view_rss_record_edit:52
 #: ../templates/admin_view_rss_record_html:52
 #: ../templates/database_collection_html:54
@@ -1610,7 +1627,7 @@ msgstr "BibSonomy-API-Key"
 msgid "BibSonomy-API-User"
 msgstr "BibSonomy-API-User"
 
-#: ../templates/admin_database_html:116 ../templates/admin_showcat:60
+#: ../templates/admin_database_html:119 ../templates/admin_showcat:60
 msgid "Bibinfo statt URL / vorhanden"
 msgstr "Bibinfo statt URL / vorhanden"
 
@@ -1649,13 +1666,13 @@ msgstr ""
 #: ../templates/_view/richter/collection_html_actions:96
 #: ../templates/_view/richter/title_html:195
 #: ../templates/_view/richter/title_html:269
-#: ../templates/collection_html_actions:134 ../templates/title_html:270
+#: ../templates/collection_html_actions:136 ../templates/title_html:270
 #: ../templates/title_include:465 ../templates/title_include:539
 #: ../templates/user_tag_collection_html:96 ../templates/user_tag_edit:91
 msgid "Bisher haben Sie noch keine Tags vergeben."
 msgstr "Bisher haben Sie noch keine Tags vergeben."
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:222
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:407
 msgid "Bitte authentifizieren Sie sich unter Mein KUG."
 msgstr "Bitte authentifizieren Sie sich unter Mein KUG."
 
@@ -1664,7 +1681,7 @@ msgid "Bitte bookmarken unter:"
 msgstr "Bitte bookmarken unter:"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:422
-#: ../modules/OpenBib/Handler/Apache/Search.pm:207
+#: ../modules/OpenBib/Handler/Apache/Search.pm:206
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 
@@ -1684,7 +1701,7 @@ msgstr ""
 "Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
 "Auskunft der Bibliothek."
 
-#: ../templates/admin_navigation:147 ../templates/admin_navigation:149
+#: ../templates/admin_navigation:151 ../templates/admin_navigation:153
 msgid "Browser"
 msgstr "Browser"
 
@@ -1719,11 +1736,21 @@ msgstr "Anzahl Titel"
 msgid "Chinesisch"
 msgstr "Chinesisch"
 
+#: ../templates/admin_cluster_html:39
+#: ../templates/admin_cluster_record_edit:39 ../templates/admin_navigation:18
+#: ../templates/admin_navigation:20 ../templates/admin_server_record_edit:92
+msgid "Cluster"
+msgstr "Cluster"
+
+#: ../templates/admin_cluster_record_edit:64
+msgid "Cluster bearbeiten"
+msgstr "Cluster bearbeiten"
+
 #: ../templates/admin_authentication_html:67
 #: ../templates/admin_authentication_html:86
 #: ../templates/admin_authentication_record_edit:69
 #: ../templates/admin_authentication_record_html:66
-#: ../templates/admin_database_html:116 ../templates/admin_database_html:67
+#: ../templates/admin_database_html:119 ../templates/admin_database_html:67
 #: ../templates/admin_database_record_edit:67
 #: ../templates/admin_database_record_html:48 ../templates/admin_showcat:39
 #: ../templates/admin_showcat:60 ../templates/database_record_html:49
@@ -1862,7 +1889,7 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:429
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:438
-#: ../modules/OpenBib/Handler/Apache/Search.pm:214
+#: ../modules/OpenBib/Handler/Apache/Search.pm:213
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -1890,14 +1917,18 @@ msgstr "Datenbank"
 msgid "Datenbank Informationssystem (DBIS)"
 msgstr "Datenbank Informationssystem (DBIS)"
 
-#: ../templates/admin_profile_html:85 ../templates/admin_showprofiles:57
-#: ../templates/admin_view_html:88 ../templates/database_collection_html:51
+#: ../templates/admin_profile_html:95 ../templates/admin_showprofiles:57
+#: ../templates/admin_view_html:112 ../templates/database_collection_html:51
 msgid "Datenbanken"
 msgstr "Datenbanken"
 
 #: ../templates/externaljump:142 ../templates/info_help:622
 msgid "Datenbankinformationssystem (DBIS)"
 msgstr "Datenbankinformationssystem (DBIS)"
+
+#: ../templates/admin_database_record_edit:122
+msgid "Datenquelle"
+msgstr "Datenquelle"
 
 #: ../templates/user_profile_html:87
 msgid ""
@@ -1939,8 +1970,8 @@ msgstr ""
 msgid "Der Basisklassifikation zugeordnete Themengebiete"
 msgstr "Der Basisklassifikation zugeordnete Themengebiete"
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1102
-#: ../modules/OpenBib/Handler/Apache/Search.pm:499
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1098
+#: ../modules/OpenBib/Handler/Apache/Search.pm:495
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
@@ -1982,8 +2013,8 @@ msgstr ""
 msgid "Der Titel ist hier abholbar"
 msgstr "Der Titel ist hier abholbar"
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:426
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:483
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:427
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:485
 msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 msgstr "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 
@@ -2550,6 +2581,14 @@ msgstr "Eigenen Review l&ouml;schen"
 msgid "Eigener Index"
 msgstr "Eigener Index"
 
+#: ../templates/admin_view_record_edit:105
+msgid "Eigener Servername in URI"
+msgstr "Eigener Servername in URI"
+
+#: ../templates/admin_view_record_edit:110
+msgid "Eigener Start-URI-Pfad"
+msgstr "Eigener Start-URI-Pfad"
+
 #. ("<a      href=\"http://kug5.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html\"      target=\"_blank\">","</a>")
 #: ../templates/info_help:866
 msgid "Ein Beispiel hierfür ist %1dieser Titel%2."
@@ -2577,7 +2616,7 @@ msgstr ""
 "Passwort vergessen? Dann gehen Sie bitte %2zurck%3 und lassen es sich "
 "zumailen."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:190
+#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:191
 msgid "Ein Profil dieses Namens existiert bereits."
 msgstr "Ein Profil dieses Namens existiert bereits."
 
@@ -2585,7 +2624,7 @@ msgstr "Ein Profil dieses Namens existiert bereits."
 msgid "Ein Themenbebiet diesen Namens existiert bereits."
 msgstr "Ein Themenbebiet diesen Namens existiert bereits."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:138
+#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:139
 msgid "Ein View dieses Namens existiert nicht."
 msgstr "Ein View dieses Namens existiert nicht."
 
@@ -2615,7 +2654,7 @@ msgid "Einfache Recherchemaske"
 msgstr "Einfache Recherchemaske"
 
 #: ../templates/_profile/usb/searchform_query:166
-#: ../templates/searchform_query:151
+#: ../templates/searchform_query:184
 msgid "Einfache Suche"
 msgstr "Einfache Suche"
 
@@ -2623,7 +2662,7 @@ msgstr "Einfache Suche"
 #: ../templates/_profile/sammlungen/_view/richter/title_html:229
 #: ../templates/_view/richter/collection_html_actions:64
 #: ../templates/_view/richter/title_html:154
-#: ../templates/collection_html_actions:86 ../templates/title_html:230
+#: ../templates/collection_html_actions:88 ../templates/title_html:230
 #: ../templates/title_include:424
 msgid "Eingabe neuer Tags"
 msgstr "Eingabe neuer Tags"
@@ -2632,7 +2671,7 @@ msgstr "Eingabe neuer Tags"
 #: ../templates/_profile/rheinlandbib/searchform_query:138
 #: ../templates/_profile/usb/searchform_query:138
 #: ../templates/_view/richter/searchform_query:138
-#: ../templates/searchform_query:146
+#: ../templates/searchform_query:179
 msgid "Eingrenzung auf Gesamttitel (Serien)"
 msgstr "Eingrenzung auf Gesamttitel (Serien)"
 
@@ -2809,11 +2848,10 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/_view/richter/drilldown_categorized:166
 #: ../templates/_view/richter/titlist_item_html_short:189
 #: ../templates/_view/richter/titlist_item_html_short:192
-#: ../templates/collection_html_actions:145
 #: ../templates/collection_html_short:144 ../templates/review_edit:201
 #: ../templates/review_edit:204 ../templates/search_facet:185
-#: ../templates/titlist_item_html_short:230
-#: ../templates/titlist_item_html_short:233
+#: ../templates/titlist_item_html_short:235
+#: ../templates/titlist_item_html_short:238
 #: ../templates/user_litlist_collection_html:105
 #: ../templates/user_profile_collection_html:94
 msgid "Entfernen"
@@ -2944,7 +2982,7 @@ msgstr "Es existieren keine entsprechenden Grafiken."
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:141
+#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:142
 #: ../modules/OpenBib/Handler/Apache/Admin/Library.pm:218
 msgid "Es existiert bereits ein Katalog unter diesem Namen"
 msgstr "Es existiert bereits ein Katalog unter diesem Namen"
@@ -2959,19 +2997,19 @@ msgstr "Es existiert bereits ein Profil unter diesem Namen!"
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
 msgstr "Es existiert bereits ein Themengebiet unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:200
-#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:201
-#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:208
+#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:201
+#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:202
+#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:209
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr "Es existiert bereits ein View unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:235
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:236
 msgid "Es existiert bereits eine Organisationseinheit unter diesem Namen"
 msgstr "Es existiert bereits eine Organisationseinheit unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:222
-#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:265
-#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:342
+#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:223
+#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:266
+#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:332
 #: ../modules/OpenBib/Handler/Apache/Admin/DatabaseRSS.pm:114
 #: ../modules/OpenBib/Handler/Apache/Admin/DatabaseRSS.pm:167
 #: ../modules/OpenBib/Handler/Apache/Admin/DatabaseRSS.pm:224
@@ -2994,18 +3032,18 @@ msgstr "Es existiert kein Passwort für die Kennung %1"
 msgid "Es existiert kein Profil mit der ID $profileid"
 msgstr "Es existiert kein Profil mit der ID $profileid"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:113
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:158
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:218
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:289
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:363
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:441
-#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:136
-#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:243
-#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:294
-#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:363
-#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:195
-#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:341
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:114
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:159
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:219
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:290
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:361
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:442
+#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:137
+#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:244
+#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:291
+#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:358
+#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:196
+#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:315
 msgid "Es existiert kein Profil unter diesem Namen"
 msgstr "Es existiert kein Profil unter diesem Namen"
 
@@ -3013,17 +3051,17 @@ msgstr "Es existiert kein Profil unter diesem Namen"
 msgid "Es existiert kein Suchprofil mit dieser ID"
 msgstr "Es existiert kein Suchprofil mit dieser ID"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:308
+#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:309
 #: ../modules/OpenBib/Handler/Apache/Admin/ViewRSS.pm:111
 #: ../modules/OpenBib/Handler/Apache/Admin/ViewRSS.pm:164
 #: ../modules/OpenBib/Handler/Apache/Admin/ViewRSS.pm:258
 msgid "Es existiert kein View unter diesem Namen"
 msgstr "Es existiert kein View unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:163
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:294
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:368
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:446
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:164
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:295
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:366
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:447
 msgid ""
 "Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"
 msgstr ""
@@ -3093,11 +3131,11 @@ msgstr ""
 "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:445
-#: ../modules/OpenBib/Handler/Apache/Search.pm:221
+#: ../modules/OpenBib/Handler/Apache/Search.pm:220
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
-#: ../modules/OpenBib/Handler/Apache.pm:777
+#: ../modules/OpenBib/Handler/Apache.pm:764
 #: ../modules/OpenBib/RecordList/Title.pm:332
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
@@ -3105,6 +3143,10 @@ msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 #: ../modules/OpenBib/Handler/Apache/User/Preferences.pm:315
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
+
+#: ../templates/admin_profile_html:105
+msgid "Es wurde noch kein Katalog-Profil angelegt"
+msgstr "Es wurde noch kein Katalog-Profil angelegt"
 
 #: ../templates/search_title_end:19
 msgid "Es wurden keine Treffer gefunden"
@@ -3115,7 +3157,7 @@ msgstr "Es wurden keine Treffer gefunden"
 msgid "Exemplar-Datei"
 msgstr "Exemplar-Datei"
 
-#: ../templates/admin_navigation:109 ../templates/admin_navigation:111
+#: ../templates/admin_navigation:113 ../templates/admin_navigation:115
 #: ../templates/admin_session_archived_search_form:42
 msgid "Explorer"
 msgstr "Explorer"
@@ -3171,8 +3213,8 @@ msgstr ""
 "      Zeichen <b>^</b> voran (z.B. ^frauenbildung*). Mit * k&ouml;nnen\n"
 "      Sie wie gewohnt den entsprechenden Begriff trunkieren."
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1095
-#: ../modules/OpenBib/Handler/Apache/Search.pm:494
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1091
+#: ../modules/OpenBib/Handler/Apache/Search.pm:490
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -3289,6 +3331,12 @@ msgstr "Fernleihbestellung"
 msgid "Fernleihe"
 msgstr "Fernleihe"
 
+#: ../templates/admin_cluster_html:73
+#: ../templates/admin_cluster_record_edit:81
+#: ../templates/admin_server_record_edit:86
+msgid "Fertig mit Aktualisierung"
+msgstr "Fertig mit Aktualisierung"
+
 #: ../templates/info_tutorials:49 ../templates/info_tutorials:57
 #: ../templates/info_tutorials:58 ../templates/info_tutorials:59
 #: ../templates/info_tutorials:60 ../templates/info_tutorials:61
@@ -3348,7 +3396,7 @@ msgstr "Französisch"
 #: ../templates/_profile/usb/searchform_query:69
 #: ../templates/_view/richter/searchform_query:69
 #: ../templates/admin_statistic_query_html:81 ../templates/search_history:61
-#: ../templates/search_title_start:36 ../templates/searchform_query:69
+#: ../templates/search_title_start:36 ../templates/searchform_query:70
 #: ../templates/title_html:67 ../templates/user_preferences_html:179
 msgid "Freie Suche"
 msgstr "Freie Suche"
@@ -3603,7 +3651,7 @@ msgstr ""
 #: ../templates/_view/richter/searchform_simple:228
 #: ../templates/_view/richter/searchform_simple:315
 #: ../templates/_view/richter/searchform_simple:404
-#: ../templates/mainnavigation:151 ../templates/searchform_query:149
+#: ../templates/mainnavigation:151 ../templates/searchform_query:182
 #: ../templates/searchform_simple:151 ../templates/searchform_simple:193
 #: ../templates/searchform_simple:236 ../templates/searchform_simple:280
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
@@ -3652,7 +3700,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/richter/title_html:243
 #: ../templates/_view/richter/collection_html_actions:69
 #: ../templates/_view/richter/title_html:164
-#: ../templates/collection_html_actions:100 ../templates/title_html:244
+#: ../templates/collection_html_actions:102 ../templates/title_html:244
 #: ../templates/title_include:434
 msgid "Hinzuf&uuml;gen"
 msgstr "Hinzuf&uuml;gen"
@@ -3792,13 +3840,17 @@ msgstr "Art der Vernetzung"
 msgid "I0280"
 msgstr "Geo-Koordinaten"
 
+#: ../templates/admin_server_record_edit:72
+msgid "IP-Adresse"
+msgstr "IP-Adresse"
+
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchform_query:99
 #: ../templates/_profile/rheinlandbib/searchform_query:99
 #: ../templates/_profile/sammlungen/_view/richter/searchform_query:100
 #: ../templates/_profile/usb/searchform_query:99
 #: ../templates/_view/richter/searchform_query:99
-#: ../templates/admin_statistic_query_html:87 ../templates/searchform_query:99
-#: ../templates/user_preferences_html:209
+#: ../templates/admin_statistic_query_html:87
+#: ../templates/searchform_query:112 ../templates/user_preferences_html:209
 msgid "ISBN"
 msgstr "ISBN"
 
@@ -3808,11 +3860,14 @@ msgstr "ISBN"
 #: ../templates/_profile/usb/searchform_query:104
 #: ../templates/_view/richter/searchform_query:104
 #: ../templates/admin_statistic_query_html:88
-#: ../templates/searchform_query:104 ../templates/user_preferences_html:218
+#: ../templates/searchform_query:119 ../templates/user_preferences_html:218
 msgid "ISSN"
 msgstr "ISSN"
 
+#: ../templates/admin_cluster_html:102
+#: ../templates/admin_cluster_record_edit:67
 #: ../templates/admin_searchprofile_record_edit:66
+#: ../templates/admin_server_record_edit:67
 msgid "Id"
 msgstr "Id"
 
@@ -4012,7 +4067,6 @@ msgstr ""
 "Im Register werden sie unter dem Namen der Zeitschrift\n"
 "aufgef&uuml;hrt."
 
-#: ../templates/admin_database_record_edit:122
 #: ../templates/admin_database_record_html:65
 msgid "Import-Einstellungen"
 msgstr "Import-Einstellungen"
@@ -4224,7 +4278,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/title_include:349 ../templates/title_include:350
 #: ../templates/title_popular_by_database_html:168
 #: ../templates/title_popular_html:174 ../templates/title_popular_include:168
-#: ../templates/titlist_item_html_short:228
+#: ../templates/titlist_item_html_short:233
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
@@ -4250,7 +4304,7 @@ msgstr ""
 "Erfassung und dem Projekt Richter-Bibliothek der USB Köln finden Sie\n"
 "unter %5http://richterbibliothek.ub.uni-koeln.de/%6."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:228
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:229
 msgid ""
 "In diesem Profil existiert bereits eine Organisationseinheit diesen Namens"
 msgstr ""
@@ -4287,7 +4341,7 @@ msgstr "Index-Suche"
 
 #: ../templates/_profile/mobile/views/richtermobile/mainnavigation:4
 #: ../templates/_profile/mobile/views/richtermobile/mainnavigation:6
-#: ../templates/admin_database_html:116 ../templates/admin_showcat:60
+#: ../templates/admin_database_html:119 ../templates/admin_showcat:60
 msgid "Info"
 msgstr "Info"
 
@@ -4376,7 +4430,7 @@ msgstr "Initiale Suchen"
 #: ../templates/_view/richter/searchform_query:84
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
-#: ../templates/searchform_query:84
+#: ../templates/searchform_query:91
 msgid "Institutionen"
 msgstr "Institutionen"
 
@@ -4404,7 +4458,7 @@ msgstr "Integration von BibSonomy"
 msgid "Interaktives Tutorium"
 msgstr "Interaktives Tutorium"
 
-#: ../templates/admin_navigation:127 ../templates/admin_navigation:129
+#: ../templates/admin_navigation:131 ../templates/admin_navigation:133
 msgid "Interne/Externe Aufrufe"
 msgstr "Interne/Externe Aufrufe"
 
@@ -4444,8 +4498,8 @@ msgstr "Isländisch"
 msgid "Italienisch"
 msgstr "Italienisch"
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:418
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:474
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:419
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:476
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:834
 #: ../modules/OpenBib/Handler/Apache/LitList/Item.pm:218
 #: ../modules/OpenBib/Handler/Apache/LitList/Item.pm:296
@@ -4457,14 +4511,16 @@ msgstr "JSON konnte nicht geparst werden"
 #: ../templates/_view/richter/litlist_edit:65
 #: ../templates/_view/richter/title_html:736
 #: ../templates/admin_authentication_record_delete_confirm:54
-#: ../templates/admin_database_html:123 ../templates/admin_database_html:124
+#: ../templates/admin_cluster_html:108 ../templates/admin_cluster_html:81
+#: ../templates/admin_cluster_record_delete_confirm:54
+#: ../templates/admin_cluster_record_edit:89
+#: ../templates/admin_database_html:126 ../templates/admin_database_html:127
 #: ../templates/admin_database_html:99
 #: ../templates/admin_database_record_delete_confirm:54
 #: ../templates/admin_database_record_edit:103
 #: ../templates/admin_database_record_edit:111
 #: ../templates/admin_database_record_edit:188
-#: ../templates/admin_database_record_edit:206
-#: ../templates/admin_database_record_edit:224
+#: ../templates/admin_database_record_edit:204
 #: ../templates/admin_database_record_html:54
 #: ../templates/admin_database_record_html:55
 #: ../templates/admin_database_record_html:81
@@ -4482,15 +4538,15 @@ msgstr "JSON konnte nicht geparst werden"
 #: ../templates/admin_orgunit_record_delete_confirm:54
 #: ../templates/admin_profile_record_delete_confirm:54
 #: ../templates/admin_searchprofile_record_edit:71
-#: ../templates/admin_server:52 ../templates/admin_server:78
 #: ../templates/admin_server_record_delete_confirm:54
-#: ../templates/admin_showcat:43 ../templates/admin_showcat:71
-#: ../templates/admin_showcat:72 ../templates/admin_showcat:73
+#: ../templates/admin_server_record_edit:104 ../templates/admin_showcat:43
+#: ../templates/admin_showcat:71 ../templates/admin_showcat:72
+#: ../templates/admin_showcat:73
 #: ../templates/admin_topic_record_delete_confirm:54
-#: ../templates/admin_view_html:70 ../templates/admin_view_html:91
+#: ../templates/admin_view_html:115 ../templates/admin_view_html:89
 #: ../templates/admin_view_record_delete_confirm:54
-#: ../templates/admin_view_record_edit:72
-#: ../templates/admin_view_record_edit:80 ../templates/database_record_html:55
+#: ../templates/admin_view_record_edit:90
+#: ../templates/admin_view_record_edit:99 ../templates/database_record_html:55
 #: ../templates/database_record_html:66 ../templates/litlist_edit:94
 #: ../templates/litlist_include:107 ../templates/searchform_options:4
 #: ../templates/title_html:785 ../templates/title_include:248
@@ -4524,7 +4580,7 @@ msgstr "Ja"
 #: ../templates/cloud_navigation:35 ../templates/search_facet:169
 #: ../templates/search_history:71 ../templates/search_history:83
 #: ../templates/search_title_start:46 ../templates/search_title_start:58
-#: ../templates/searchform_query:140 ../templates/subnavigation:55
+#: ../templates/searchform_query:169 ../templates/subnavigation:55
 #: ../templates/subnavigation:57 ../templates/title_html:77
 #: ../templates/title_html:89
 msgid "Jahr"
@@ -4619,11 +4675,10 @@ msgstr "Kartenkataloge der Philosophischen Fakultät"
 #: ../templates/search_title_start:51 ../templates/title_html:69
 #: ../templates/title_html:82 ../templates/title_popular_html:163
 #: ../templates/title_popular_include:157
-#: ../templates/titlist_item_html_short:215
+#: ../templates/titlist_item_html_short:220
 msgid "Katalog"
 msgstr "Katalog"
 
-#: ../templates/admin_database_record_edit:64
 #: ../templates/admin_database_record_html:45
 msgid "Katalog bearbeiten"
 msgstr "Katalog bearbeiten"
@@ -4632,18 +4687,18 @@ msgstr "Katalog bearbeiten"
 msgid "Katalog-Profil"
 msgstr "Katalog-Profil"
 
-#: ../templates/admin_profile_record_edit:63
+#: ../templates/admin_profile_record_edit:64
 msgid "Katalog-Profil bearbeiten"
 msgstr "Katalog-Profil bearbeiten"
 
-#: ../templates/admin_navigation:45 ../templates/admin_navigation:47
+#: ../templates/admin_navigation:49 ../templates/admin_navigation:51
 #: ../templates/admin_orgunit_html:39
 #: ../templates/admin_orgunit_record_edit:39
 #: ../templates/admin_orgunit_record_html:39
 #: ../templates/admin_profile_html:40
 #: ../templates/admin_profile_record_edit:39
-#: ../templates/admin_profile_record_html:39 ../templates/admin_view_html:66
-#: ../templates/admin_view_record_edit:68
+#: ../templates/admin_profile_record_html:39 ../templates/admin_view_html:76
+#: ../templates/admin_view_record_edit:77
 msgid "Katalog-Profile"
 msgstr "Katalog-Profile"
 
@@ -4655,19 +4710,20 @@ msgstr "Katalog-Profile"
 msgid "Katalogauswahl"
 msgstr "Katalogauswahl"
 
-#: ../templates/admin_orgunit_record_edit:78
+#: ../templates/admin_orgunit_record_edit:89
 msgid "Katalogauswahl der Organisationseinheit"
 msgstr "Katalogauswahl der Organisationseinheit"
 
-#: ../templates/admin_view_record_edit:93
+#: ../templates/admin_view_record_edit:115
 msgid "Katalogauswahl zu diesem View"
 msgstr "Katalogauswahl zu diesem View"
 
 #: ../templates/admin_database_html:42
 #: ../templates/admin_database_record_edit:39
-#: ../templates/admin_database_rss_html:40 ../templates/admin_navigation:24
-#: ../templates/admin_navigation:26 ../templates/admin_orgunit_html:66
-#: ../templates/admin_profile_record_edit:98
+#: ../templates/admin_database_rss_html:40 ../templates/admin_navigation:28
+#: ../templates/admin_navigation:30 ../templates/admin_orgunit_html:66
+#: ../templates/admin_orgunit_record_edit:92
+#: ../templates/admin_profile_record_edit:121
 #: ../templates/admin_searchprofile_record_edit:76
 msgid "Kataloge"
 msgstr "Kataloge"
@@ -4739,6 +4795,10 @@ msgstr "Keine Notation vorhanden"
 msgid "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 msgstr "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 
+#: ../templates/admin_server_record_edit:94
+msgid "Keine Zuordnung"
+msgstr "Keine Zuordnung"
+
 #: ../modules/OpenBib/Handler/Apache/DBIS.pm:294
 msgid "Keine gültige Aktion"
 msgstr "Keine gültige Aktion"
@@ -4746,6 +4806,12 @@ msgstr "Keine gültige Aktion"
 #: ../modules/OpenBib/Handler/Apache/ExternalJump.pm:142
 msgid "Keine gültige Anfrage-ID"
 msgstr "Keine gültige Anfrage-ID"
+
+#: ../templates/admin_cluster_html:71
+#: ../templates/admin_cluster_record_edit:79
+#: ../templates/admin_server_record_edit:84
+msgid "Keiner"
+msgstr "Keiner"
 
 #: ../templates/_profile/rheinlandbib/searchform_simple:552
 #: ../templates/_view/richter/searchform_simple:535
@@ -4771,7 +4837,7 @@ msgstr "Klassifizierung"
 msgid "Klicken Sie nun %1hier%2, um zu recherchieren."
 msgstr "Klicken Sie nun %1hier%2, um zu recherchieren."
 
-#: ../templates/admin_navigation:142 ../templates/admin_navigation:144
+#: ../templates/admin_navigation:146 ../templates/admin_navigation:148
 msgid "Klienten"
 msgstr "Klienten"
 
@@ -4781,7 +4847,7 @@ msgstr "Klienten"
 #: ../templates/_profile/usb/searchform_query:114
 #: ../templates/_view/richter/searchform_query:114
 #: ../templates/admin_statistic_query_html:90
-#: ../templates/searchform_query:114
+#: ../templates/searchform_query:133
 msgid "Kompletter Titel"
 msgstr "Kompletter Titel"
 
@@ -4838,8 +4904,9 @@ msgid "Körperschafts-Information: %1 in Katalog %2"
 msgstr "Körperschafts-Information: %1 in Katalog %2"
 
 #: ../templates/_profile/sammlungen/_view/richter/title_html:305
-#: ../templates/_view/richter/title_html:239 ../templates/admin_server:79
-#: ../templates/title_html:306 ../templates/title_include:509
+#: ../templates/_view/richter/title_html:239
+#: ../templates/admin_cluster_html:109 ../templates/title_html:306
+#: ../templates/title_include:509
 msgid "L&ouml;schen"
 msgstr "L&ouml;schen"
 
@@ -4961,7 +5028,7 @@ msgstr "Liste der Quellen"
 #: ../templates/_view/richter/collection_html_actions:20
 #: ../templates/_view/richter/drilldown_categorized:152
 #: ../templates/_view/richter/title_html:109
-#: ../templates/collection_html_actions:21 ../templates/search_facet:171
+#: ../templates/collection_html_actions:23 ../templates/search_facet:171
 #: ../templates/search_history:75 ../templates/search_history:85
 #: ../templates/search_title_start:50 ../templates/search_title_start:60
 #: ../templates/title_html:166 ../templates/title_html:81
@@ -5040,9 +5107,8 @@ msgstr "Lokale Signatur      "
 #: ../templates/_view/richter/title_html:123
 #: ../templates/_view/richter/title_html:136
 #: ../templates/admin_user_search_form:65
-#: ../templates/collection_html_actions:146
-#: ../templates/collection_html_actions:46
-#: ../templates/collection_html_actions:67 ../templates/title_html:183
+#: ../templates/collection_html_actions:48
+#: ../templates/collection_html_actions:69 ../templates/title_html:183
 #: ../templates/title_html:206 ../templates/title_include:393
 #: ../templates/title_include:406 ../templates/titlist_options:24
 #: ../templates/user_preferences_html:379 ../templates/user_role_edit:97
@@ -5052,14 +5118,18 @@ msgstr "Los"
 #: ../templates/_profile/sammlungen/_view/richter/title_html:754
 #: ../templates/_view/richter/title_html:705
 #: ../templates/admin_authentication_record_edit:85
-#: ../templates/admin_database_record_edit:252
+#: ../templates/admin_cluster_record_edit:100
+#: ../templates/admin_database_record_edit:230
 #: ../templates/admin_database_rss_record_edit:102
 #: ../templates/admin_database_rss_record_html:351
 #: ../templates/admin_library_record_edit:95
 #: ../templates/admin_orgunit_record_edit:107
+#: ../templates/admin_profile_record_edit:83
+#: ../templates/admin_server_record_edit:114
 #: ../templates/admin_topic_record_edit:96
 #: ../templates/admin_topic_record_mapping_html:96
-#: ../templates/admin_view_record_edit:111 ../templates/title_html:756
+#: ../templates/admin_view_record_edit:129
+#: ../templates/collection_html_actions:147 ../templates/title_html:756
 #: ../templates/title_include:217 ../templates/topic_record_mapping_html:96
 msgid "Löschen"
 msgstr "Löschen"
@@ -5093,7 +5163,7 @@ msgstr "MedPilot"
 #: ../templates/_profile/sammlungen/_view/richter/searchform_query:136
 #: ../templates/_profile/usb/searchform_query:130
 #: ../templates/_view/richter/searchform_query:130
-#: ../templates/searchform_query:135 ../templates/user_preferences_html:243
+#: ../templates/searchform_query:162 ../templates/user_preferences_html:243
 msgid "Medienart"
 msgstr "Medienart"
 
@@ -5268,13 +5338,17 @@ msgstr "Nachname"
 #: ../templates/_profile/sammlungen/_view/richter/title_html:178
 #: ../templates/_profile/sammlungen/_view/richter/title_html:196
 #: ../templates/admin_orgunit_html:66
-#: ../templates/admin_profile_record_edit:98 ../templates/admin_server:70
-#: ../templates/collection_html_actions:38
-#: ../templates/collection_html_actions:55
+#: ../templates/admin_profile_record_edit:121
+#: ../templates/collection_html_actions:40
+#: ../templates/collection_html_actions:57
 #: ../templates/database_collection_html:54 ../templates/title_html:179
 #: ../templates/title_html:197 ../templates/user_profile_collection_html:80
 msgid "Name"
 msgstr "Name"
+
+#: ../templates/admin_profile_record_edit:100
+msgid "Name der Organisationseinheit"
+msgstr "Name der Organisationseinheit"
 
 #: ../templates/user_profile_collection_html:62
 msgid "Names des Profils"
@@ -5333,14 +5407,16 @@ msgstr ""
 #: ../templates/_view/richter/litlist_edit:65
 #: ../templates/_view/richter/title_html:737
 #: ../templates/admin_authentication_record_delete_confirm:60
-#: ../templates/admin_database_html:100 ../templates/admin_database_html:123
-#: ../templates/admin_database_html:124
+#: ../templates/admin_cluster_html:108 ../templates/admin_cluster_html:82
+#: ../templates/admin_cluster_record_delete_confirm:60
+#: ../templates/admin_cluster_record_edit:90
+#: ../templates/admin_database_html:100 ../templates/admin_database_html:126
+#: ../templates/admin_database_html:127
 #: ../templates/admin_database_record_delete_confirm:60
 #: ../templates/admin_database_record_edit:104
 #: ../templates/admin_database_record_edit:112
 #: ../templates/admin_database_record_edit:187
-#: ../templates/admin_database_record_edit:207
-#: ../templates/admin_database_record_edit:223
+#: ../templates/admin_database_record_edit:203
 #: ../templates/admin_database_record_html:54
 #: ../templates/admin_database_record_html:55
 #: ../templates/admin_database_record_html:81
@@ -5358,15 +5434,15 @@ msgstr ""
 #: ../templates/admin_orgunit_record_delete_confirm:60
 #: ../templates/admin_profile_record_delete_confirm:60
 #: ../templates/admin_searchprofile_record_edit:72
-#: ../templates/admin_server:53 ../templates/admin_server:78
 #: ../templates/admin_server_record_delete_confirm:60
-#: ../templates/admin_showcat:44 ../templates/admin_showcat:71
-#: ../templates/admin_showcat:72 ../templates/admin_showcat:73
+#: ../templates/admin_server_record_edit:105 ../templates/admin_showcat:44
+#: ../templates/admin_showcat:71 ../templates/admin_showcat:72
+#: ../templates/admin_showcat:73
 #: ../templates/admin_topic_record_delete_confirm:60
-#: ../templates/admin_view_html:70 ../templates/admin_view_html:91
+#: ../templates/admin_view_html:115 ../templates/admin_view_html:90
 #: ../templates/admin_view_record_delete_confirm:60
-#: ../templates/admin_view_record_edit:73
-#: ../templates/admin_view_record_edit:81 ../templates/database_record_html:55
+#: ../templates/admin_view_record_edit:100
+#: ../templates/admin_view_record_edit:91 ../templates/database_record_html:55
 #: ../templates/database_record_html:66 ../templates/litlist_edit:94
 #: ../templates/litlist_include:107 ../templates/searchform_options:4
 #: ../templates/title_html:786 ../templates/title_include:249
@@ -5374,18 +5450,17 @@ msgid "Nein"
 msgstr "Nein"
 
 #: ../templates/admin_authentication_html:70
-#: ../templates/admin_database_html:104
+#: ../templates/admin_cluster_html:87 ../templates/admin_database_html:105
 #: ../templates/admin_database_rss_html:119
 #: ../templates/admin_database_rss_record_html:131
 #: ../templates/admin_database_rss_record_html:188
 #: ../templates/admin_database_rss_record_html:245
 #: ../templates/admin_database_rss_record_html:302
 #: ../templates/admin_database_rss_record_html:74
-#: ../templates/admin_profile_html:67
-#: ../templates/admin_profile_record_edit:86 ../templates/admin_server:54
-#: ../templates/admin_showcat:45 ../templates/admin_showprofiles:39
-#: ../templates/admin_topic_html:68 ../templates/admin_view_html:70
-#: ../templates/title_collection_form:86
+#: ../templates/admin_profile_html:76
+#: ../templates/admin_profile_record_edit:110 ../templates/admin_showcat:45
+#: ../templates/admin_showprofiles:39 ../templates/admin_topic_html:68
+#: ../templates/admin_view_html:95 ../templates/title_collection_form:86
 #: ../templates/user_litlist_collection_html:83
 #: ../templates/user_profile_collection_html:66
 msgid "Neu"
@@ -5443,7 +5518,7 @@ msgstr "Neue Bewertung/Rezension"
 msgid "Neue Literaturliste anlegen"
 msgstr "Neue Literaturliste anlegen"
 
-#: ../templates/admin_profile_record_edit:81
+#: ../templates/admin_profile_record_edit:97
 msgid "Neue Organisationseinheit anlegen"
 msgstr "Neue Organisationseinheit anlegen"
 
@@ -5464,6 +5539,10 @@ msgstr "Neue Sitzung beginnen?"
 msgid "Neue Suche"
 msgstr "Neue Suche"
 
+#: ../templates/admin_cluster_html:61
+msgid "Neuen Cluster einrichten"
+msgstr "Neuen Cluster einrichten"
+
 #: ../templates/admin_database_html:64 ../templates/admin_showcat:36
 msgid "Neuen Katalog anlegen"
 msgstr "Neuen Katalog anlegen"
@@ -5472,10 +5551,6 @@ msgstr "Neuen Katalog anlegen"
 #: ../templates/admin_database_rss_record_edit:66
 msgid "Neuen RSS-Feed einrichten"
 msgstr "Neuen RSS-Feed einrichten"
-
-#: ../templates/admin_server:47
-msgid "Neuen Rechner zur Lastverteilung hinzuf&uuml;gen"
-msgstr "Neuen Rechner zur Lastverteilung hinzuf&uuml;gen"
 
 #: ../templates/title_collection_form:50
 msgid "Neuen Titel anlegen"
@@ -5502,7 +5577,7 @@ msgstr "Neuerwerbungen"
 msgid "Neues Anmeldeziel anlegen"
 msgstr "Neues Anmeldeziel anlegen"
 
-#: ../templates/admin_profile_html:62 ../templates/admin_showprofiles:34
+#: ../templates/admin_profile_html:63 ../templates/admin_showprofiles:34
 msgid "Neues Katalog-Profil anlegen"
 msgstr "Neues Katalog-Profil anlegen"
 
@@ -5536,7 +5611,7 @@ msgstr "Niederländisch"
 #: ../templates/_view/richter/searchform_query:94
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
-#: ../templates/searchform_query:94 ../templates/user_preferences_html:204
+#: ../templates/searchform_query:105 ../templates/user_preferences_html:204
 msgid "Notation"
 msgstr "Notation"
 
@@ -5550,6 +5625,7 @@ msgid "Notations-Datei"
 msgstr "Notations-Datei"
 
 #: ../templates/admin_orgunit_html:66
+#: ../templates/admin_orgunit_record_edit:81
 msgid "Nr"
 msgstr "Nr"
 
@@ -5569,7 +5645,7 @@ msgstr "Nutzer mit Rollen"
 msgid "Nutzer suchen"
 msgstr "Nutzer suchen"
 
-#: ../templates/admin_navigation:170 ../templates/admin_navigation:172
+#: ../templates/admin_navigation:174 ../templates/admin_navigation:176
 msgid "Nutzer suchen/bearbeiten"
 msgstr "Nutzer suchen/bearbeiten"
 
@@ -5589,7 +5665,7 @@ msgstr "Nutzer-Tags"
 msgid "Nutzername"
 msgstr "Nutzername"
 
-#: ../templates/admin_navigation:162 ../templates/admin_navigation:177
+#: ../templates/admin_navigation:166 ../templates/admin_navigation:181
 #: ../templates/admin_user_html:39 ../templates/admin_user_search_form:39
 #: ../templates/admin_user_search_html:39
 msgid "Nutzerverwaltung"
@@ -5603,12 +5679,12 @@ msgstr "Nutzung"
 msgid "Nutzung der vorhandenen Views"
 msgstr "Nutzung der vorhandenen Views"
 
-#: ../templates/admin_database_record_edit:229
+#: ../templates/admin_database_record_edit:209
 #: ../templates/admin_database_record_html:93
 msgid "OLWS DB-Name im Lokalsystem"
 msgstr "OLWS DB-Name im Lokalsystem"
 
-#: ../templates/admin_database_record_edit:234
+#: ../templates/admin_database_record_edit:214
 #: ../templates/admin_database_record_html:94
 msgid "OLWS Zugriffs-URL"
 msgstr "OLWS Zugriffs-URL"
@@ -5679,6 +5755,14 @@ msgstr "OpenBib-Versionen"
 #: ../templates/user_litlist_collection_html:73
 msgid "Ordnen Sie Ihre Literaturliste thematisch ein"
 msgstr "Ordnen Sie Ihre Literaturliste thematisch ein"
+
+#: ../templates/admin_orgunit_record_edit:71
+msgid "Organisationseinheit"
+msgstr "Organisationseinheit"
+
+#: ../templates/admin_orgunit_record_edit:68
+msgid "Organisationseinheit bearbeiten"
+msgstr "Organisationseinheit bearbeiten"
 
 #: ../templates/admin_orgunit_html:41
 #: ../templates/admin_orgunit_record_edit:41
@@ -5865,7 +5949,7 @@ msgstr "Person/Körperschaft"
 #: ../templates/cloud_person_html:70 ../templates/clouds_navigation:19
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
-#: ../templates/searchform_query:79 ../templates/subnavigation:60
+#: ../templates/searchform_query:84 ../templates/subnavigation:60
 #: ../templates/subnavigation:62
 msgid "Personen"
 msgstr "Personen"
@@ -5953,7 +6037,7 @@ msgstr "Potentiell interessante andere Titel"
 msgid "Prim&auml;rer Feed f&uuml;r das Browser Auto-Discovery"
 msgstr "Prim&auml;rer Feed f&uuml;r das Browser Auto-Discovery"
 
-#: ../templates/admin_view_html:88
+#: ../templates/admin_view_html:112
 msgid "Profil"
 msgstr "Profil"
 
@@ -5969,8 +6053,8 @@ msgstr "Profil l&ouml;schen"
 msgid "Profil speichern"
 msgstr "Profil speichern"
 
-#: ../templates/admin_profile_html:65 ../templates/admin_profile_html:85
-#: ../templates/admin_profile_record_edit:66
+#: ../templates/admin_profile_html:66 ../templates/admin_profile_html:95
+#: ../templates/admin_profile_record_edit:67
 #: ../templates/admin_profile_record_html:63
 #: ../templates/admin_showprofiles:37 ../templates/admin_showprofiles:57
 msgid "Profil-Name"
@@ -6040,10 +6124,10 @@ msgstr "Quellen des Nutzers <i>%1</i> in BibSonomy"
 msgid "Quellen zum Tag <i>%1</i> in BibSonomy"
 msgstr "Quellen zum Tag <i>%1</i> in BibSonomy"
 
-#: ../templates/admin_database_html:116 ../templates/admin_navigation:37
-#: ../templates/admin_navigation:39 ../templates/admin_navigation:77
-#: ../templates/admin_navigation:79 ../templates/admin_showcat:60
-#: ../templates/admin_view_html:88 ../templates/info_tutorials:69
+#: ../templates/admin_database_html:119 ../templates/admin_navigation:41
+#: ../templates/admin_navigation:43 ../templates/admin_navigation:81
+#: ../templates/admin_navigation:83 ../templates/admin_showcat:60
+#: ../templates/admin_view_html:112 ../templates/info_tutorials:69
 msgid "RSS"
 msgstr "RSS"
 
@@ -6114,13 +6198,17 @@ msgstr "ReadMe"
 msgid "Recherche"
 msgstr "Recherche"
 
-#: ../templates/admin_navigation:137 ../templates/admin_navigation:139
+#: ../templates/admin_navigation:141 ../templates/admin_navigation:143
 msgid "Recherche-Arten"
 msgstr "Recherche-Arten"
 
 #: ../templates/info_help:138 ../templates/info_help:64
 msgid "Recherchearten"
 msgstr "Recherchearten"
+
+#: ../templates/admin_cluster_html:74 ../templates/admin_server_record_edit:87
+msgid "Rechercheierbar"
+msgstr "Rechercheierbar"
 
 #: ../templates/user_preferences_html:155
 msgid "Recherchemaske"
@@ -6129,6 +6217,10 @@ msgstr "Recherchemaske"
 #: ../templates/admin_session_active_record_html:83
 msgid "Recherchen"
 msgstr "Recherchen"
+
+#: ../templates/admin_cluster_record_edit:82
+msgid "Recherchierbar"
+msgstr "Recherchierbar"
 
 #. ("<a href=\"${path_prefix}/${config.get('classification_loc')
 #: ../templates/searchform_bottom_center:38
@@ -6174,10 +6266,6 @@ msgstr "Recherchieren Sie nach %1 E-Medien mit Online-Zugriff in %2 Katalogen"
 #: ../templates/searchform_simple:179
 msgid "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
 msgstr "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
-
-#: ../templates/admin_server:50
-msgid "Rechnername"
-msgstr "Rechnername"
 
 #: ../templates/user_preferences_html:268
 #: ../templates/user_preferences_html:330
@@ -6344,7 +6432,7 @@ msgstr "Schlagwort-Information: %1 in Katalog %2"
 #: ../templates/cloud_subject_html:51 ../templates/cloud_subject_html:70
 #: ../templates/clouds_navigation:16 ../templates/search_classification:75
 #: ../templates/search_corporatebody:75 ../templates/search_person:75
-#: ../templates/search_subject:75 ../templates/searchform_query:89
+#: ../templates/search_subject:75 ../templates/searchform_query:98
 msgid "Schlagworte"
 msgstr "Schlagworte"
 
@@ -6443,13 +6531,18 @@ msgstr "Selbstregistrierung"
 #: ../templates/_profile/usb/searchform_query:124
 #: ../templates/_view/richter/searchform_query:124
 #: ../templates/admin_statistic_query_html:91
-#: ../templates/searchform_query:129 ../templates/user_preferences_html:238
+#: ../templates/searchform_query:154 ../templates/user_preferences_html:238
 msgid "Serie/Band/Quelle"
 msgstr "Serie/Band/Quelle"
 
-#: ../templates/admin_navigation:19 ../templates/admin_navigation:21
+#: ../templates/admin_navigation:23 ../templates/admin_navigation:25
+#: ../templates/admin_server_record_edit:39
 msgid "Server"
 msgstr "Server"
+
+#: ../templates/admin_server_record_edit:64
+msgid "Server bearbeiten"
+msgstr "Server bearbeiten"
 
 #: ../templates/admin_session_active_record_html:70
 msgid "Session"
@@ -6461,7 +6554,7 @@ msgstr "Session"
 msgid "Session-ID"
 msgstr "Session-ID"
 
-#: ../templates/admin_navigation:101 ../templates/admin_navigation:116
+#: ../templates/admin_navigation:105 ../templates/admin_navigation:120
 #: ../templates/admin_session_active_html:40
 #: ../templates/admin_session_active_record_html:40
 #: ../templates/admin_session_archived_search_form:40
@@ -6475,8 +6568,8 @@ msgstr "Sessions"
 #: ../templates/_profile/sammlungen/_view/richter/title_html:201
 #: ../templates/_profile/sammlungen/_view/richter/title_html:236
 #: ../templates/_view/richter/litlist_edit:62
-#: ../templates/collection_html_actions:60
-#: ../templates/collection_html_actions:93 ../templates/litlist_edit:87
+#: ../templates/collection_html_actions:62
+#: ../templates/collection_html_actions:95 ../templates/litlist_edit:87
 #: ../templates/litlist_include:104 ../templates/title_html:202
 #: ../templates/title_html:237 ../templates/user_litlist_collection_html:65
 #: ../templates/user_litlist_collection_html:97
@@ -6507,7 +6600,7 @@ msgstr ""
 "aktuelle Version auf diesem System nicht eingefroren und in eine offiziell "
 "bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 
-#: ../modules/OpenBib/Handler/Apache.pm:499
+#: ../modules/OpenBib/Handler/Apache.pm:486
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "Sie greifen auf eine nicht autorisierte Session zu"
 
@@ -6528,7 +6621,7 @@ msgstr ""
 "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurück%2 und "
 "versuchen Sie es erneut."
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:758
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:760
 #: ../modules/OpenBib/Handler/Apache/MailCollection.pm:112
 msgid "Sie haben eine ungültige Mailadresse eingegeben."
 msgstr "Sie haben eine ungültige Mailadresse eingegeben."
@@ -6553,7 +6646,7 @@ msgstr ""
 "Sie haben entweder keine entsprechende Liste eingegeben, Titel und Datenbank "
 "existieren nicht oder Sie haben die Daten nicht via JSON geliefert."
 
-#: ../templates/admin_profile_record_edit:104
+#: ../templates/admin_profile_record_edit:127
 msgid "Sie haben in diesem Profil noch keine Organisationseinheiten angelegt."
 msgstr "Sie haben in diesem Profil noch keine Organisationseinheiten angelegt."
 
@@ -6569,12 +6662,12 @@ msgstr "Sie haben keine Bestellungen get&auml;tigt."
 msgid "Sie haben keine E-Mail Adresse eingegeben"
 msgstr "Sie haben keine E-Mail Adresse eingegeben"
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:753
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:755
 #: ../modules/OpenBib/Handler/Apache/MailCollection.pm:107
 msgid "Sie haben keine Mailadresse eingegeben."
 msgstr "Sie haben keine Mailadresse eingegeben."
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:217
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:402
 msgid "Sie haben keine Titel ausgew&auml;hlt."
 msgstr "Sie haben keine Titel ausgew&auml;hlt."
 
@@ -6738,7 +6831,7 @@ msgstr ""
 msgid "Sie muessen sich authentifizieren"
 msgstr "Sie muessen sich authentifizieren"
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:194
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:379
 msgid "Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."
 msgstr "Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."
 
@@ -6746,11 +6839,11 @@ msgstr "Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."
 msgid "Sie müssen einen RSS-Typ eingeben."
 msgstr "Sie müssen einen RSS-Typ eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Server.pm:166
+#: ../modules/OpenBib/Handler/Apache/Admin/Server.pm:189
 msgid "Sie müssen einen Servernamen eingeben."
 msgstr "Sie müssen einen Servernamen eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Collection.pm:182
+#: ../modules/OpenBib/Handler/Apache/Collection.pm:367
 #: ../modules/OpenBib/Handler/Apache/LitList.pm:777
 msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
@@ -6761,7 +6854,7 @@ msgid ""
 msgstr ""
 "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:223
+#: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnit.pm:224
 msgid ""
 "Sie müssen mindestens den Namen einer Organisationseinheit und deren "
 "Beschreibung eingeben."
@@ -6773,7 +6866,7 @@ msgstr ""
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:136
+#: ../modules/OpenBib/Handler/Apache/Admin/Database.pm:137
 #: ../modules/OpenBib/Handler/Apache/Admin/Library.pm:211
 msgid ""
 "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
@@ -6786,12 +6879,12 @@ msgstr ""
 msgid "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 msgstr "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:184
+#: ../modules/OpenBib/Handler/Apache/Admin/Profile.pm:185
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 msgstr ""
 "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:189
+#: ../modules/OpenBib/Handler/Apache/Admin/View.pm:190
 msgid ""
 "Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-"
 "Profil eingeben."
@@ -6805,7 +6898,7 @@ msgstr ""
 msgid "Sie sind erfolgreich registriert"
 msgstr "Sie sind erfolgreich registriert"
 
-#: ../modules/OpenBib/Handler/Apache.pm:1155
+#: ../modules/OpenBib/Handler/Apache.pm:1142
 msgid "Sie sind nicht authorisiert"
 msgstr "Sie sind nicht authorisiert"
 
@@ -6836,7 +6929,6 @@ msgstr ""
 "        interpretiert.. Daher geben Sie in das Titelfeld ein:"
 
 #: ../templates/admin_database_html:87
-#: ../templates/admin_database_record_edit:193
 #: ../templates/admin_database_record_edit:91
 #: ../templates/admin_database_record_html:52 ../templates/admin_showcat:39
 #: ../templates/admin_showcat:60 ../templates/database_record_html:53
@@ -6854,7 +6946,7 @@ msgstr "Sigel"
 #: ../templates/_profile/usb/searchform_query:109
 #: ../templates/_view/richter/searchform_query:109
 #: ../templates/admin_statistic_query_html:89 ../templates/circulation:28
-#: ../templates/holding:16 ../templates/searchform_query:109
+#: ../templates/holding:16 ../templates/searchform_query:126
 #: ../templates/user_circulation_borrows_html:53
 #: ../templates/user_circulation_orders_html:49
 #: ../templates/user_circulation_reminders_html:68
@@ -7037,10 +7129,13 @@ msgstr "Standort des Buches"
 msgid "Start"
 msgstr "Start"
 
-#: ../templates/admin_navigation:119 ../templates/admin_navigation:159
+#: ../templates/admin_navigation:123 ../templates/admin_navigation:163
 msgid "Statistik"
 msgstr "Statistik"
 
+#: ../templates/admin_cluster_html:69
+#: ../templates/admin_cluster_record_edit:77
+#: ../templates/admin_server_record_edit:82
 #: ../templates/user_circulation_orders_html:49
 msgid "Status"
 msgstr "Status"
@@ -7126,7 +7221,7 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/mainnavigation:47 ../templates/mainnavigation:49
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
-#: ../templates/searchform_query:149 ../templates/searchform_simple:151
+#: ../templates/searchform_query:182 ../templates/searchform_simple:151
 #: ../templates/searchform_simple:193 ../templates/searchform_simple:236
 #: ../templates/searchform_simple:280
 msgid "Suchen"
@@ -7158,7 +7253,7 @@ msgstr "Suchhilfe"
 #: ../templates/_view/richter/mainnavigation:53
 #: ../templates/_view/richter/searchform_query:140
 #: ../templates/mainnavigation:57 ../templates/mainnavigation:59
-#: ../templates/search_history:38 ../templates/searchform_query:151
+#: ../templates/search_history:38 ../templates/searchform_query:184
 #: ../templates/searchform_simple:154 ../templates/searchform_simple:196
 #: ../templates/searchform_simple:239 ../templates/searchform_simple:283
 msgid "Suchhistorie"
@@ -7169,7 +7264,7 @@ msgstr "Suchhhistorie"
 msgid "Suchlogik"
 msgstr "Suchlogik"
 
-#: ../templates/admin_navigation:87
+#: ../templates/admin_navigation:91
 #: ../templates/admin_searchprofile_record_edit:40
 #: ../templates/admin_session_active_record_html:88
 #: ../templates/search_history:101 ../templates/searchprofile_html:38
@@ -7180,7 +7275,7 @@ msgstr "Suchprofil"
 msgid "Suchprofil bearbeiten"
 msgstr "Suchprofil bearbeiten"
 
-#: ../templates/admin_navigation:85 ../templates/admin_searchprofile_html:41
+#: ../templates/admin_navigation:89 ../templates/admin_searchprofile_html:41
 msgid "Suchprofile"
 msgstr "Suchprofile"
 
@@ -8075,7 +8170,7 @@ msgstr "Taggen"
 #: ../templates/_profile/sammlungen/_view/richter/title_html:218
 #: ../templates/_view/richter/collection_html_actions:57
 #: ../templates/_view/richter/title_html:148
-#: ../templates/collection_html_actions:80 ../templates/title_html:219
+#: ../templates/collection_html_actions:82 ../templates/title_html:219
 #: ../templates/title_include:418
 msgid "Tagging"
 msgstr "Tagging"
@@ -8180,7 +8275,7 @@ msgstr "Themengebiet(e) von DBIS zuordnen"
 #: ../templates/_profile/sammlungen/_view/richter/searchform_simple:83
 #: ../templates/_view/richter/searchform_simple:460
 #: ../templates/_view/richter/searchform_simple:64
-#: ../templates/admin_navigation:185 ../templates/admin_navigation:187
+#: ../templates/admin_navigation:189 ../templates/admin_navigation:191
 #: ../templates/admin_topic_html:41 ../templates/admin_topic_record_edit:118
 #: ../templates/admin_topic_record_edit:168
 #: ../templates/admin_topic_record_edit:215
@@ -8332,7 +8427,7 @@ msgstr "Titelliste"
 #: ../templates/_profile/sammlungen/_view/richter/searchform_query:75
 #: ../templates/_profile/usb/searchform_query:74
 #: ../templates/_view/richter/searchform_query:74
-#: ../templates/admin_statistic_query_html:82 ../templates/searchform_query:74
+#: ../templates/admin_statistic_query_html:82 ../templates/searchform_query:77
 msgid "Titelworte"
 msgstr "Titelworte"
 
@@ -8480,19 +8575,26 @@ msgstr ""
 "           z.B: <b>+kernighan +ritchie</b> (alle von beiden Autoren "
 "verfasste Titel werden angezeigt)"
 
-#: ../templates/admin_view_record_edit:69
+#: ../templates/admin_view_record_edit:87
 msgid "URI ohne View"
 msgstr "URI ohne View"
 
 #: ../templates/admin_database_html:92
-#: ../templates/admin_database_record_edit:198
 #: ../templates/admin_database_record_edit:96
 #: ../templates/admin_database_record_html:53 ../templates/admin_showcat:39
 #: ../templates/admin_showcat:60 ../templates/database_record_html:54
 msgid "URL"
 msgstr "URL"
 
-#: ../templates/admin_view_html:84
+#: ../templates/admin_profile_html:91
+msgid ""
+"Um ein bereits existierendes Katalog-Profil zu bearbeiten klicken Sie bitte "
+"auf den Profil-Namen."
+msgstr ""
+"Um ein bereits existierendes Katalog-Profil zu bearbeiten klicken Sie bitte "
+"auf den Profil-Namen."
+
+#: ../templates/admin_view_html:108
 msgid ""
 "Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den "
 "Viewnamen."
@@ -8500,7 +8602,7 @@ msgstr ""
 "Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den "
 "Viewnamen."
 
-#: ../templates/admin_profile_html:81 ../templates/admin_showprofiles:53
+#: ../templates/admin_showprofiles:53
 msgid ""
 "Um einen bereits existierendes Katalog-Profil zu bearbeiten klicken Sie "
 "bitte auf den Profil-Namen."
@@ -8664,7 +8766,7 @@ msgstr "Verkn&uuml;pfungen mehrerer Suchfelder"
 
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchform_query:124
 #: ../templates/_profile/sammlungen/_view/richter/searchform_query:125
-#: ../templates/searchform_query:124
+#: ../templates/searchform_query:147
 msgid "Verlag"
 msgstr "Verlag"
 
@@ -8730,19 +8832,19 @@ msgstr "Verwendete Recherche-Art"
 msgid "Vielen Dank f&uuml;r Ihren Besuch."
 msgstr "Vielen Dank f&uuml;r Ihren Besuch."
 
-#: ../templates/admin_view_record_edit:63
+#: ../templates/admin_view_record_edit:64
 msgid "View bearbeiten"
 msgstr "View bearbeiten"
 
-#: ../templates/admin_view_html:66 ../templates/admin_view_html:88
-#: ../templates/admin_view_record_edit:66
+#: ../templates/admin_view_html:112 ../templates/admin_view_html:66
+#: ../templates/admin_view_record_edit:67
 #: ../templates/admin_view_rss_record_edit:51
 #: ../templates/admin_view_rss_record_html:51
 msgid "Viewname"
 msgstr "Viewname"
 
-#: ../templates/admin_navigation:132 ../templates/admin_navigation:134
-#: ../templates/admin_navigation:64 ../templates/admin_navigation:66
+#: ../templates/admin_navigation:136 ../templates/admin_navigation:138
+#: ../templates/admin_navigation:68 ../templates/admin_navigation:70
 #: ../templates/admin_view_html:40 ../templates/admin_view_record_edit:39
 msgid "Views"
 msgstr "Views"
@@ -8868,7 +8970,7 @@ msgstr "War diese Rezension hilfreich?"
 msgid "Web"
 msgstr "Web"
 
-#: ../templates/admin_database_record_edit:239
+#: ../templates/admin_database_record_edit:219
 #: ../templates/admin_database_record_html:95
 msgid "WebOPAC-URL"
 msgstr "WebOPAC-URL"
@@ -9187,13 +9289,13 @@ msgstr ""
 "      für den Fall einer nicht vorhandenen ISBN - um den Bibkey\n"
 "      erweitert."
 
-#: ../templates/admin_navigation:152 ../templates/admin_navigation:154
+#: ../templates/admin_navigation:156 ../templates/admin_navigation:158
 msgid "Zahl Recherchen/Sessions"
 msgstr "Zahl Recherchen/Sessions"
 
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchform_query:144
 #: ../templates/_profile/sammlungen/_view/richter/searchform_query:145
-#: ../templates/searchform_query:144
+#: ../templates/searchform_query:177
 msgid "Zeitraum"
 msgstr "Zeitraum"
 
@@ -9242,7 +9344,7 @@ msgstr "Zu ersetzendes Tag"
 msgid "Zugemailte Merkliste"
 msgstr "Zugemailte Merkliste"
 
-#: ../templates/admin_database_record_edit:221
+#: ../templates/admin_database_record_edit:201
 #: ../templates/admin_database_record_html:92
 #: ../templates/database_record_html:66
 msgid "Zugriff &uuml;ber OLWS"
@@ -9344,7 +9446,7 @@ msgstr "bestellt beim Lieferanten"
 
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchform_query:144
 #: ../templates/_profile/sammlungen/_view/richter/searchform_query:145
-#: ../templates/searchform_query:144
+#: ../templates/searchform_query:177
 msgid "bis"
 msgstr "bis"
 
@@ -9389,7 +9491,7 @@ msgstr "im Gesch&auml;ftsgang"
 #: ../templates/_view/richter/searchform_simple:229
 #: ../templates/_view/richter/searchform_simple:316
 #: ../templates/_view/richter/searchform_simple:405
-#: ../templates/searchform_query:147 ../templates/searchform_simple:152
+#: ../templates/searchform_query:180 ../templates/searchform_simple:152
 #: ../templates/searchform_simple:194 ../templates/searchform_simple:237
 #: ../templates/searchform_simple:281
 msgid "in:"
@@ -9589,8 +9691,8 @@ msgstr ""
 #: ../templates/_view/richter/title_html:135
 #: ../templates/_view/richter/title_html:164
 #: ../templates/_view/richter/title_html:236
-#: ../templates/collection_html_actions:63
-#: ../templates/collection_html_actions:96 ../templates/litlist_edit:88
+#: ../templates/collection_html_actions:65
+#: ../templates/collection_html_actions:98 ../templates/litlist_edit:88
 #: ../templates/litlist_include:104 ../templates/title_html:203
 #: ../templates/title_html:240 ../templates/title_html:303
 #: ../templates/title_include:405 ../templates/title_include:434
@@ -9642,7 +9744,8 @@ msgid "wiederholt"
 msgstr "wiederholt"
 
 #: ../templates/admin_authentication_record_edit:77
-#: ../templates/admin_database_record_edit:244
+#: ../templates/admin_cluster_record_edit:96
+#: ../templates/admin_database_record_edit:226
 #: ../templates/admin_database_rss_record_edit:94
 #: ../templates/admin_database_rss_record_html:152
 #: ../templates/admin_database_rss_record_html:209
@@ -9651,9 +9754,10 @@ msgstr "wiederholt"
 #: ../templates/admin_database_rss_record_html:351
 #: ../templates/admin_database_rss_record_html:95
 #: ../templates/admin_library_record_edit:87
-#: ../templates/admin_orgunit_record_edit:99
-#: ../templates/admin_profile_record_edit:69
+#: ../templates/admin_orgunit_record_edit:103
+#: ../templates/admin_profile_record_edit:78
 #: ../templates/admin_searchprofile_record_edit:85
+#: ../templates/admin_server_record_edit:110
 #: ../templates/admin_topic_record_edit:145
 #: ../templates/admin_topic_record_edit:191
 #: ../templates/admin_topic_record_edit:236
@@ -9662,7 +9766,7 @@ msgstr "wiederholt"
 #: ../templates/admin_topic_record_mapping_html:191
 #: ../templates/admin_topic_record_mapping_html:236
 #: ../templates/admin_topic_record_mapping_html:90
-#: ../templates/admin_view_record_edit:103
+#: ../templates/admin_view_record_edit:125
 #: ../templates/admin_view_rss_record_edit:94
 #: ../templates/topic_record_mapping_html:145
 #: ../templates/topic_record_mapping_html:191
@@ -9684,7 +9788,7 @@ msgstr "Übernahme bereits von Nutzern vergebener Tags"
 #: ../templates/_view/richter/collection_html_actions:77
 #: ../templates/_view/richter/title_html:176
 #: ../templates/_view/richter/title_html:250
-#: ../templates/collection_html_actions:105 ../templates/title_html:252
+#: ../templates/collection_html_actions:107 ../templates/title_html:252
 #: ../templates/title_include:446 ../templates/title_include:520
 msgid "Übernahme eigener Tags"
 msgstr "Übernahme eigener Tags"
@@ -9700,6 +9804,21 @@ msgstr "Übersicht"
 #: ../templates/user_navigation:72 ../templates/user_navigation:74
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgid "IP"
+#~ msgstr "IP"
+
+#~ msgid "Bereits existierende Rechner zur Lastverteilung"
+#~ msgstr "Bereits existierende Rechner zur Lastverteilung"
+
+#~ msgid "Neuen Rechner zur Lastverteilung hinzuf&uuml;gen"
+#~ msgstr "Neuen Rechner zur Lastverteilung hinzuf&uuml;gen"
+
+#~ msgid "Rechnername"
+#~ msgstr "Rechnername"
 
 #~ msgid "Alle Datenbanken"
 #~ msgstr "Alle Datenbanken"

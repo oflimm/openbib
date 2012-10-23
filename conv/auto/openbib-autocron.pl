@@ -36,12 +36,13 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 
-my ($logfile,$loglevel);
+my ($logfile,$loglevel,$cluster);
 
 &GetOptions(
-            "logfile=s"     => \$logfile,
-            "loglevel=s"    => \$loglevel,
-	    );
+    "cluster"       => \$cluster,
+    "logfile=s"     => \$logfile,
+    "loglevel=s"    => \$loglevel,
+    );
 
 my $config = OpenBib::Config->new;
 
@@ -102,25 +103,40 @@ my $blacklist_ref = {
     'openlibrary' => 1,    
 };
 
-$logger->info("###### Beginn der automatischen Konvertierung");
+$logger->info("###### Starting automatic update");
+
+if ($cluster && $config->local_server_belongs_to_updatable_cluster()){
+    $logger->info("### Updating in cluster mode");
+    $logger->info("### Changing cluster/server-status to updating");
+    $config->update_local_serverstatus("updating");
+    $config->update_local_clusterstatus("updating");
+}
+else {
+    $logger->info("### Local server is not updatable. Exiting.");
+    exit;
+}
+
+$logger->info("### OpenBib");
+
+autoconvert({ sync => 1, databases => ['openbib'] });
+
+goto ENDGAME;
 
 $logger->info("### VUBPDA");
 
 autoconvert({ sync => 1, databases => ['vubpda'] });
 
-goto ENDGAME;
-
 ##############################
 
 $logger->info("### Standard-Institutskataloge");
 
-autoconvert({ blacklist => $blacklist_ref, sync => 1, genmex => 1, autoconv => 1});
+autoconvert({ blacklist => $blacklist_ref, sync => 1, autoconv => 1});
 
 ##############################
 
 $logger->info("### Aufgesplittete Kataloge inst301");
 
-autoconvert({ sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst316','inst317','inst318','inst319','inst320','inst321','inst324','inst325'] });
+autoconvert({ sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst316','inst317','inst319','inst320','inst321','inst324','inst325'] });
 
 ##############################
 
@@ -149,11 +165,16 @@ autoconvert({ sync => 1, databases => ['afrikaans','alff','baeumker','becker','d
 ##############################
 
 ENDGAME:
-$logger->info("### Generierung der Suchprofil-Indizes");
+$logger->info("### Generating joined searchindexes");
 
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 
-$logger->info("###### Ende der automatischen Konvertierung");
+if ($cluster){
+    $logger->info("### Changing cluster/server-status to updated");
+    $config->update_local_serverstatus("updated");
+}
+
+$logger->info("###### Updating done");
 
 sub autoconvert {
     my ($arg_ref) = @_;

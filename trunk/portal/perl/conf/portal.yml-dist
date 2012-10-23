@@ -2461,6 +2461,7 @@ searchfield:
      'prefix': 'ftit'
      'type': 'string'
      'option':
+       'strip_bracket_content': 1
        'strip_first_stopword': 1
   'tagstring':
      'prefix': 'ftag'

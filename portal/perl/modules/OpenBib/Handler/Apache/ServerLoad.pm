@@ -81,15 +81,13 @@ sub show {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $c = $r->connection;
-    
     my $request = $config->{schema}->resultset("Serverinfo")->search_rs(
         {
-            host => $c->local_ip()
+            hostip => $config->get('local_ip'),
         }
     )->single;
 
-    $logger->debug("Local IP is ".$c->local_ip());
+    $logger->debug("Local IP is ".$config->get('local_ip'));
 
     if ($request){
 	my $is_active     = $request->get_column('active');

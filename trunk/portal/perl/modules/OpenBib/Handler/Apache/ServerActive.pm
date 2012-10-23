@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::ServerLoad
+#  OpenBib::Handler::Apache::ServerActive
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::ServerLoad;
+package OpenBib::Handler::Apache::ServerActive;
 
 use strict;
 use warnings;

@@ -1,16 +1,8 @@
 # Versionsnummer
 version: OpenBib v2.4alpha3
 
-# Unter diesem Namen wird der lokale Server angesprochen
-servername: localhost
-
-# Unter diesem Name wird der Servers, der die Lastverteilung
-# vornimmt, angesprochen
-frontendservername: localhost
-
-# Auf folgende Server werden die Benutzer verteilt
-loadbalancertargets:
-  - localhost
+# Unter dieser IP wird der lokale Server angesprochen
+local_ip: 127.0.0.1
 
 # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
 dbimodule: Pg
@@ -174,7 +166,7 @@ browse_loc: browse
 searchform_loc: searchform
 searchprofile_loc: searchprofile
 registration_loc: registration
-serverload_loc: getload
+serveractive_loc: server_is_active
 startopac_loc: home
 tags_loc: tags
 userprefs_loc: userprefs
@@ -184,9 +176,9 @@ search_loc: search
 search_history_loc: search/history
 
 dispatch_rules:
-  - # serverload_loc:
-     module: 'OpenBib::Handler::Apache::ServerLoad'
-     rule: '/portal/:view/getload'
+  - # serveractive_loc:
+     module: 'OpenBib::Handler::Apache::ServerActive'
+     rule: '/portal/:view/server_is_active'
      runmode: 'show'
      args:
         disable_content_negotiation: 1
@@ -3145,7 +3137,6 @@ tt_litlist_collection_by_single_topic_tname: litlist_collection_by_single_topic
 tt_litlist_collection_by_single_topic_recent_tname: litlist_collection_by_single_topic_recent
 tt_litlist_collection_by_user_tname: litlist_collection_by_user
 tt_litlist_collection_by_single_user_tname: litlist_collection_by_single_user
-tt_loadbalancer_tname: loadbalancer
 tt_login_circulation_tname: login_circulation
 tt_login_tname: login
 tt_mailpassword_mail_main_tname: mailpassword_mail_main

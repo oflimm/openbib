@@ -1563,6 +1563,50 @@ sub get_clusterinfo {
     return $object;
 }
 
+sub update_local_clusterstatus {
+    my ($self,$status) = @_;
+
+    $self->get_clusterinfo->search_rs(
+	{
+	    'serverinfos.hostip' => $self->{local_ip},
+	},
+	{
+	    join => ['serverinfos'],
+	}
+	)->update({ status => $status });
+
+    return;
+}
+
+sub update_local_serverstatus {
+    my ($self,$status) = @_;
+
+    $self->get_serverinfo->search_rs(
+	{
+	    hostip => $self->{local_ip},
+	},
+	)->update({ status => $status });
+
+    return;
+}
+
+sub local_server_belongs_to_updatable_cluster {
+    my ($self) = @_;
+
+    my $is_updatable = $self->get_clusterinfo->search_rs(
+	{
+	    'me.status'          => { '!=' => 'searchable'},
+	    'serverinfos.status' => { '!=' => 'searchable'},
+	    'serverinfos.hostip' => $self->{local_ip},
+	},
+	{
+	    join => ['serverinfos'],
+	}
+	)->count;
+
+    return $is_updatable;
+}
+
 sub get {
     my ($self,$key) = @_;
 

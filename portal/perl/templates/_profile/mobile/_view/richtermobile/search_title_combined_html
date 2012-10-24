@@ -13,11 +13,11 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%-
-    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
-    start_range     = nav.current_page*qopts.num-qopts.num + 1;
-    end_range       = nav.current_page*qopts.num;
-    IF end_range >= fullresultcount ;
-       end_range       = fullresultcount;
+    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
     END;
 
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
@@ -26,19 +26,19 @@
 <div data-role="page">
 
        <div  data-role="header">
-           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
 	   <h1>Suchergebnis:  
-           [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% fullresultcount %]</h1> 
+           [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]</h1> 
        </div> 
 
        <div data-role="content">
 
-[% IF fullresultcount > 0 %]
+[% IF hits > 0 %]
 <!-- Beginn Result Item -->
 
 <ul data-role="listview">
 [%- FOREACH record IN recordlist.get_records -%]
-[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database%] 
 [%- END -%]
 </ul>
 

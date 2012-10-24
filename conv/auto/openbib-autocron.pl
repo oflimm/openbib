@@ -170,7 +170,7 @@ $logger->info("### Generating joined searchindexes");
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 
 if ($cluster){
-    $logger->info("### Changing cluster/server-status to updated");
+    $logger->info("### Changing server-status to updated");
     $config->update_local_serverstatus("updated");
 }
 

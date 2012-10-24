@@ -37,11 +37,11 @@
 
 	header {
                 color:#000;
-                background:#fff repeat-x top left;
+                background:#fffdf3 repeat-x top left;
                 padding:120px 2em 1em 20px;
                 position:relative;
     
-/*		background: #444;
+		/* background: #444;
 		color: #ccc;
 		padding: 1.5em; */
 	}
@@ -52,7 +52,8 @@
 	}
 
 	#main {
-               background:#fff;
+               /* background:#fff; */
+                background:#fffdf3 repeat-x top left;
                padding:10px 0;
 	}
 

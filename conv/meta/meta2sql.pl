@@ -707,7 +707,7 @@ while (my $jsonline=<IN>){
         if (defined $record_ref->{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
-                # $item_ref->{ignore} = 1;
+	        $item_ref->{ignore} = 1;
                 
                 my $personid   = $item_ref->{id};
                 my $titleid    = $id;
@@ -767,7 +767,7 @@ while (my $jsonline=<IN>){
         if (defined $record_ref->{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
-#                $item_ref->{ignore} = 1;
+                $item_ref->{ignore} = 1;
                 
                 my $corporatebodyid = $item_ref->{id};
                 my $titleid    = $id;
@@ -818,7 +818,7 @@ while (my $jsonline=<IN>){
     if (defined $record_ref->{'1802'}) {
         foreach my $item_ref (@{$record_ref->{'1802'}}) {
             # Verknuepfungsfelder werden ignoriert
-#            $item_ref->{ignore} = 1;
+            $item_ref->{ignore} = 1;
             
             unless ($item_ref->{id}) {
                 my $field = '1802';
@@ -833,7 +833,7 @@ while (my $jsonline=<IN>){
         if (defined $record_ref->{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
-#                $item_ref->{ignore} = 1;
+                $item_ref->{ignore} = 1;
                 
                 my $classificationid = $item_ref->{id};
                 my $titleid          = $id;
@@ -876,7 +876,7 @@ while (my $jsonline=<IN>){
         if (defined $record_ref->{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
-#                $item_ref->{ignore} = 1;
+                $item_ref->{ignore} = 1;
                 
                 my $subjectid = $item_ref->{id};
                 my $titleid    = $id;

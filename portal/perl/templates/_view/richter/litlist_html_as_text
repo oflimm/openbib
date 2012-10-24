@@ -1,11 +1,11 @@
 <pre>
 [%- FOREACH record IN litlist.recordlist.load_full_records.get_records -%]
-[%- normdata    = record.get_fields -%]
-[%- holding    = record.get_holding -%]
+[%- normset    = record.get_fields -%]
+[%- holding = record.get_holding -%]
 [%-
 
 FOREACH category IN categories;
-    FOREACH item IN normdata.$category;
+    FOREACH item IN normset.$category;
     content = item.content;
 
     # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
@@ -14,7 +14,7 @@ FOREACH category IN categories;
     # kodiert.
     thiscategory = category ;
     IF config.get('categorymapping').$database.$category ;
-       thiscategory = "${category}-${normdata.database}" ;
+       thiscategory = "${category}-${normset.database}" ;
     END;
 
 -%]

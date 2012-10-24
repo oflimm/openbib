@@ -44,7 +44,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Aktivieren Sie ihre Kennung") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-Um Ihre Registrierung erfolgreich zu beenden klicken Sie bitte auf den URL, den wir Ihnen in einer Mail an [% loginname %] geschickt haben.
+Um Ihre Registrierung erfolgreich zu beenden klicken Sie bitte auf den URL, den wir Ihnen in einer Mail an [% username %] geschickt haben.
 </td></tr>
 </table>
 

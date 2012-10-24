@@ -46,13 +46,14 @@
 	
 <form method="post" action="[% path_prefix %]/[% config.get('collection_loc') %]/mail" enctype="application/x-www-form-urlencoded">
 
-<input type="hidden" name="type"      value="[% type %]" />
+<input type="hidden" name="l"      value="[% lang %]" />
+<input type="hidden" name="format" value="[% format %]" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Ihre Eingabe") %]</th></tr>
 <tr><td class="boxed">
 <table>
-<tr><td class="ob-field">[% msg.maketext("Ihre Mailadresse") %]</td><td><input type="text" name="email" value="[% loginname %]" size="30" maxlength="200" /></td></tr>
+<tr><td class="ob-field">[% msg.maketext("Ihre Mailadresse") %]</td><td><input type="text" name="email" value="[% username %]" size="30" maxlength="200" /></td></tr>
 <tr><td class="ob-field">[% msg.maketext("Betreff") %]</td><td><input type="text" name="subject" value="" size="30" maxlength="200" /></td></tr>
 </table>
 <p />

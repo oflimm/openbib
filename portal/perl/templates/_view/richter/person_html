@@ -40,13 +40,23 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+      <div class="ob-breadcrumb"> 
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+        <li><a href="#" class="lastitem">[% msg.maketext("Person") %]</a></li>
+      </ul>
+    </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('person_loc') %]/[% record.database %]/[% record.id %].rdf?l=[% lang %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('person_loc') %]/[% record.database %]/[% record.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<a href="[% path_prefix %]/[% config.get('person_loc') %]/[% record.database %]/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('person_loc') %]/[% record.database %]/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-
-
         </div>
       </div>
       <!-- end: #col1 -->
@@ -54,6 +64,17 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+<div class="details ym-grid"><!-- Begin Details -->
+<!-- Person begins here -->
+<div class="images ym-g50 ym-gr"><!-- Begin Images -->
+  <div class="ym-gbox-right">
+[% PROCESS common/subtemplate name="person_html_images" %]
+  </div>
+</div><!-- End Images -->
+
+<div class="categories ym-g50 ym-gl"><!-- Begin Categories -->
+
+  <div class="ym-gbox-left">
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 
@@ -92,10 +113,15 @@ FOREACH category IN categories;
 END;
 -%]
 </table>
+
+  </div> <!-- End subcl -->
+</div><!-- End Categories -->
+</div><!-- End Details -->
+
 [%# USE dumper;dumper.dump(normset)%]
 [%
 
-    request_base = "page=1;num=50;srt=author;srto=up;";
+    request_base = "page=1;num=20;srt=relevance_desc;";
 
     searchterm        = normset.${"P0800"}.first.content;
     searchprefix      = config.get('searchfield').personstring.prefix;

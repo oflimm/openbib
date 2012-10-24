@@ -30,6 +30,17 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Register") %]</a></li>
+         <li><a href="#" class="lastitem">Provenienzen</a></li>
+      </ul>
+     </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -42,10 +53,17 @@
         <div class="ym-cbox" class="ym-clearfix">
 
 [%-
+    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
-[%- IF category == 'T0720' -%]
+[%- IF field == '0720' -%]
 <h2>Provenienzen</h2>
 <p>
 [% msg.maketext("Das Register der Provenienzen listet die Namen von Privatpersonen und Rezensionszeitschriften auf.") %]
@@ -72,7 +90,7 @@ aufgef&uuml;hrt.") %]
 
 <table width="100%">
 [% FOREACH item IN browselist %]
-<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];db=richter;page=1;t0720=[% uri_escape(item.replace('/','').replace('\(','').replace('\)','').replace('\?','')) %]">[% item %]</a></td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];page=1;db=richter;t0720=[% uri_escape(item.replace('/','').replace('\(','').replace('\)','').replace('\?','')) %]">[% item %]</a></td></tr>
 [% END %]
 </table>
 

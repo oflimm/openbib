@@ -28,9 +28,9 @@
 [%- database = record.database -%]
 [%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${record.database} -%]
-[% normdata      = record.get_fields %]
-[% holding      = record.get_holding  %]
-[% circulation  = record.get_circulataion %]
+[% normdata     = record.get_fields %]
+[% holding     = record.get_holding  %]
+[% circulation = record.get_circulation %]
 
 
 <!-- Title begins here -->

@@ -40,11 +40,22 @@ title      = msg.maketext("Systematik-Information: [_1] in Katalog [_2]",recordn
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+      <div class="ob-breadcrumb"> 
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+        <li><a href="#" class="lastitem">[% msg.maketext("Klassifizierung") %]</a></li>
+      </ul>
+    </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('classification_loc') %]/[% record.database %]/[% record.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<a href="[% path_prefix %]/[% config.get('classification_loc') %]/[% record.database %]/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('classification_loc') %]/[% record.database %]/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
         </div>
       </div>
       <!-- end: #col1 -->

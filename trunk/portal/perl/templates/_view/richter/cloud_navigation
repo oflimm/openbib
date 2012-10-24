@@ -15,8 +15,6 @@
 # cloud
 # info
 #
-# Aenderung: Katalogauswahl entfernt
-#
 #######################################################################
 -%]
 <nav class="ym-vlist">
@@ -87,5 +85,5 @@
    <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 [% END %]
 
- </ul>
+</ul>
 </nav>

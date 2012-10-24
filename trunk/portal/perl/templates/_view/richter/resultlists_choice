@@ -107,7 +107,7 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];[% thisquery.to_cgi_params({ exclude = ['profile','db']}) %];page=1"><b>kombinierte</b></a> / <a href="[% path_prefix %]/[% config.get('search_loc') %]?[% queryoptions.to_cgi_params({exclude = ['profile','page','db','sm']}) %];sm=seq;[% thisquery.to_cgi_params({ exclude = ['profile','db','sm']}) %];page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% thisquery.get_hits %]</td></tr>
+<tr><td class="listrow2"><b>[% msg.maketext("Alle Treffer") %]</a> (<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) %];jn=1;[% thisquery.to_cgi_params({ exclude = ['profile','db']}) %];page=1"><b>kombinierte</b></a> / <a href="[% path_prefix %]/[% config.get('search_loc') %]?[% queryoptions.to_cgi_params({exclude = ['profile','page','db','jn']}) %];jn=0;[% thisquery.to_cgi_params({ exclude = ['profile','db']}) %];page=1"><b>separate</b></a> <b>Kataloge</a>)</td><td align="right">[% thisquery.get_hits %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 [% listrow = 'listrow2' %]

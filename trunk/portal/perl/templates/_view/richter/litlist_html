@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="std_header" title="${litlist.properties.title}" %]
 
 [%- ebook_i18n      = msg.maketext("E-Book") -%]
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
@@ -30,32 +30,50 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
+         <li><a href="#" class="lastitem">[% litlist.properties.title %]</a></li>
+      </ul>
+     </div>
+     <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+     </div>
+   </div>
+<p/>
+
+<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
+<div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
+[%- IF litlist.properties.topics.size -%]
+[%- FOREACH topic IN litlist.properties.topics-%]
+<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/topic/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
+[%- END-%]
+[%- ELSE -%]
+[% msg.maketext("Keine") %]
+[%- END-%]
+</div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %].rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
-
-[% PROCESS common/subtemplate name="subnavigation" active_menu='' %]
+[% PROCESS common/subtemplate name="litlist_navigation" %] 
         </div>
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
-<p />
-
 [% userrole = user.get_roles_of_user(litlist.properties.userid) %]
 
-
-<p />
-
-[%# USE dumper; dumper.dump(litlist)%]
 [% IF litlist.recordlist.get_size > 0 %]
 [%-
     start_range     = 1;
@@ -65,55 +83,17 @@
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
   <div class="ob-resultheader">
-    <div class="ob-catalog">
-[% litlist.properties.title %]
-    </div>
-    <div class="ob-hits">
+    <div class="left">
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>
-[% IF offset >= 0 && num > 0 %]
-    <div class="ob-navigation">
-[%- FOREACH navitem IN nav ;
-      IF navitem.active ;
-        previouspage = lastpage;
-        nextpage = loop.next;
-      END ;
-      lastpage = navitem; 
-    END ;
--%]
-[% msg.maketext("Seite:") %]&nbsp;&nbsp;&nbsp;
-[%- IF nav.first.active -%]<img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Anfang") %]]" height="12"/>&nbsp;&nbsp;[%- ELSE -%]<a href="[% previouspage.url %]"><img src="[% config.get('previous_img') %]" title="[[% msg.maketext("Vorherige Seite") %]]" height="12"/></a>&nbsp;&nbsp;[%- END -%]
-[%- FOREACH navitem IN nav -%]
-<a href="[% navitem.url %]">
-[%- IF navitem.active ;
-    previouspage = nav.prev;
-    nexpage      = nav.next;
--%]
-<span class="paging_active">[% loop.count %]</span>
-[%- ELSE -%]
-[% loop.count %]
-[%- END -%]
-</a>&nbsp;&nbsp;
-[%- END -%]
-
-[% IF nav.last.active %]<img src="[% config.get('next_img') %]" title="[[% msg.maketext("Ende") %]]" height="12"/>[% ELSE %]<a href="[% nextpage.url %]"><img src="[% config.get('next_img') %]" title="[[% msg.maketext("N&auml;chste Seite") %]]" height="12"/></a>[% END %]
-
-[%- IF hits <= 1000 -%]
-<a href="[% baseurl %];num=-1;offset=0">[ Alles ]</a>
-[%- END -%]
-    </div>
-[%-    END -%]
-  </div>
-[%- IF format == 'short' -%]
-  <div class="ob-listoptions">
-<!-- Titlelist begins here -->
+    <div class="right">
 <form method="get" action="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.properties.id %]">
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlist_loc')}/${litlist.properties.id}" %]
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlist_loc')}/${litlist.properties.id}" no_relevance=1%]
 
 </form>
+    </div>
   </div>
-[% END %]
 
   <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 
@@ -139,8 +119,9 @@
 
 [%- END # Ende Alles -%]
 
+  </div>
 </div>
-</div>
+
 <!-- Titlelist ends here -->
 
 [% ELSE %]

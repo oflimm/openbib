@@ -1,0 +1,62 @@
+@media all
+{
+
+  header {
+    color:#000;
+    background:#fffdf3 repeat-x top left;
+    padding:50px 2em 1em 20px;
+    position:relative;
+    
+    /* background: #444;
+       color: #ccc;
+       padding: 1.5em; */
+  }
+
+  #main {
+    /* background:#fff; */
+    background:#fffdf3 repeat-x top left;
+    padding:10px 0;
+  }
+
+  #header_logo_image {
+    background: url(/images/openbib/views/richter/logo.png) center no-repeat;
+    width: 400px;
+    height: 114px;
+    position: absolute;
+    top: 6px;
+    left: 7px;
+  }
+
+  header {
+    padding-bottom:70px;  
+  }
+
+  header #logo {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  }
+
+  header #institution {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    with: 30%;
+  }
+
+  .details {
+    padding-top: 1em;
+  }
+
+  .images {
+    padding-top: 1em;
+  }
+
+  .ym-form {
+    background: #fff;
+  }
+
+}

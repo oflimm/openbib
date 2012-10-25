@@ -99,7 +99,7 @@
 <h3>[% msg.maketext("Bereits existierende Cluster") %]</h3>
 
 <table>
-<tr><th><b>[% msg.maketext("Id") %]</b></th><th><b>[% msg.maketext("Beschreibung") %]</b></th><th><b>[% msg.maketext("Aktiv") %]</b></th><th></th><th></th><th></th></tr>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Status") %]</th><th>[% msg.maketext("Aktiv") %]</th><th></th><th></th><th></th></tr>
 [% FOREACH clusterinfo IN clusterinfos.all %]
 <tr [% IF clusterinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <td>[% clusterinfo.id %]</td>

@@ -597,10 +597,15 @@ sub get_profiledbs_of_usersearchprofileid {
     
     if ($usersearchprofile){
         my $dbs_as_json = $usersearchprofile->get_column('thisdatabases_as_json');
+
+        $logger->debug("Found Databases as JSON: $dbs_as_json");
         
         my $dbs_ref = decode_json $dbs_as_json;
         
         @profiledbs = @{$dbs_ref};
+    }
+    else {
+        $logger->debug("Couldn't find databases/searchprofile for userprofile $usersearchprofileid and user $self->{ID}");
     }
     
     return @profiledbs;
@@ -2010,6 +2015,7 @@ sub add_litlist {
     my $new_litlist = $self->{schema}->resultset('Litlist')->create(
         {
             userid => $self->{ID},
+            tstamp => \'NOW()',
             title  => $title,
             type   => $type,
         }

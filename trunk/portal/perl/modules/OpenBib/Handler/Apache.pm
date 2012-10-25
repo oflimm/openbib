@@ -94,6 +94,8 @@ sub cgiapp_init {
     $self->param('qopts',OpenBib::QueryOptions->instance($self->query()));
     $self->param('servername',$r->get_server_name);
 
+    $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
+    
     # Bestimmung diverser Parameter aus dem URI
     # Setzt: location,path,path_prefix,uri
     $self->process_uri;
@@ -120,7 +122,9 @@ sub cgiapp_init {
     my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     $self->param('msg',$msg);
-    
+
+    $logger->debug("This request after initialization: SessionID: $session->{ID} - User? $user->{ID}");
+
     $logger->debug("Main objects initialized");    
     
     return;

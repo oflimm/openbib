@@ -99,6 +99,7 @@ sub show_collection {
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
@@ -138,10 +139,12 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{user_loc}/$userid/litlist.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    return $self->redirect($new_location,'303 See Other');
+
+#    $self->query->method('GET');
+#    $self->query->content_type('text/html');
+#    $self->query->headers_out->add(Location => $new_location);
+#    $self->query->status(Apache2::Const::REDIRECT);
 
     return;
 }

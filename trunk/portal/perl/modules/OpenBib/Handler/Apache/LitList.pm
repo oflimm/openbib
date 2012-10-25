@@ -73,11 +73,11 @@ sub setup {
     $self->run_modes(
         'show_collection'                          => 'show_collection',
         'show_collection_recent'                   => 'show_collection_recent',
-        'show_collection_by_topic'               => 'show_collection_by_topic',
+        'show_collection_by_topic'                 => 'show_collection_by_topic',
         'show_collection_by_user'                  => 'show_collection_by_user',
-        'show_collection_by_single_topic'        => 'show_collection_by_single_topic',
+        'show_collection_by_single_topic'          => 'show_collection_by_single_topic',
         'show_collection_by_single_user'           => 'show_collection_by_single_user',
-        'show_collection_by_single_topic_recent' => 'show_collection_by_single_topic_recent',
+        'show_collection_by_single_topic_recent'   => 'show_collection_by_single_topic_recent',
         'show_record'                              => 'show_record',
         'show_record_form'                         => 'show_record_form',
         'create_record'                            => 'create_record',
@@ -545,9 +545,12 @@ sub show_record {
 
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
     my $topics_ref   = $user->get_topics;
-    
+
+    $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
+
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
+
     my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
 
     if (!$litlist_is_public){
@@ -560,13 +563,15 @@ sub show_record {
                 $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
             }
             else {
-                $self->print_warning($msg->maketext("Die sind nicht authentifiziert."));
+                $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
             }   
             return Apache2::Const::OK;
         }
 
         if (!$user_owns_litlist){
             $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
+
+            $logger->debug("UserID: $self->{ID} trying to delete litlistid $litlistid");
             
             # Aufruf der privaten Literaturlisten durch "Andere" loggen
             $session->log_event({
@@ -577,6 +582,8 @@ sub show_record {
             return;
         }
     }
+
+    $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
     
     if ($method eq "DELETE"){
         $self->delete_record;
@@ -895,12 +902,18 @@ sub delete_record {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
+
+    $self->param("userid",$user->{ID}) if ($user->{ID});
+    
+    $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
     
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
 
+    $logger->debug("UserID: $user->{ID} trying to delete litlistid $litlistid with result $user_owns_litlist");
+    
     if (!$user_owns_litlist) {
         $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-        
+
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
@@ -934,10 +947,14 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{user_loc}/$userid/litlist.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    $logger->debug("Returning to $new_location");
+
+    return $self->redirect($new_location,'303 See Other');
+
+#    $self->query->method('GET');
+#    $self->query->content_type('text/html');
+#    $self->query->headers_out->add(Location => $new_location);
+#    $self->query->status(Apache2::Const::REDIRECT);
 
     return;
 }

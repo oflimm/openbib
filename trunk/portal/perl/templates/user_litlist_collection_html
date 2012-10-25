@@ -90,11 +90,10 @@
 [%# USE dumper ; dumper.dump(litlists) %]
 [% IF litlists.size > 0 %]
 
-<table width="100%">
-<tr><th>[% msg.maketext("Bereits existierende Literaturlisten") %]</th></tr>
-<tr><td class="boxedclear">
-<table width="100%">
-<tr><td class="ob-headline"><b>[% msg.maketext("Titel der Literaturliste") %]</b></td><td class="ob-headline"><b>[% msg.maketext("Titelzahl") %]</b></td><td class="ob-headline"><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td class="ob-headline"><b>[% msg.maketext("Themengebiete") %]</b></td><td class="ob-headline"><b>[% msg.maketext("Angelegt") %]</b></td><td></td></tr>
+<h3>[% msg.maketext("Bereits existierende Literaturlisten") %]</h3>
+
+<table class="ym-full">
+<tr><th>[% msg.maketext("Titel der Literaturliste") %]</th><th>[% msg.maketext("Titelzahl") %]</th><th>[% msg.maketext("Sichtbarkeit") %]</th><th>[% msg.maketext("Themengebiete") %]</th><th>[% msg.maketext("Angelegt") %]</th><th></th></tr>
 [% listrow = 'listrow1' %]
 [% FOREACH litlist IN litlists %]
 <tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]/edit"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
@@ -102,22 +101,15 @@
 [% ELSE %] 
 [% msg.maketext("privat") %]
 [% END %]
-</td><td>[%- FOREACH topic IN litlist.topics -%][% topic.name %]<br/>[%- END -%]</td><td>[% litlist.tstamp %]</td><td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td></tr>
-
-[% IF listrow == 'listrow1' %]
-[% listrow = 'listrow2' %]
-[% ELSE %]
-[% listrow = 'listrow1' %]
-[% END %]
-
+</td>
+<td>[%- FOREACH topic IN litlist.topics -%][% topic.name %]<br/>[%- END -%]</td>
+<td>[% litlist.tstamp | truncate(19,'') %]</td>
+<td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td></tr>
 [% END %]
 
 </table>
 
 [% END %]
-
-</td></tr>
-</table>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

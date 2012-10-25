@@ -31,7 +31,7 @@ use utf8;
 
 BEGIN {
 #    $ENV{XAPIAN_PREFER_CHERT}    = '1';
-    $ENV{XAPIAN_FLUSH_THRESHOLD} = '200000';
+    $ENV{XAPIAN_FLUSH_THRESHOLD} = $ENV{XAPIAN_FLUSH_THRESHOLD} || '200000';
 }
 
 use Benchmark ':hireswallclock';

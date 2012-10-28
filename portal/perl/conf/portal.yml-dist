@@ -83,6 +83,7 @@ source_systems:
   - Lars
   - OAI
   - MAB
+  - 'Backend: BibSonomy'
   - 'Backend: Z3950'
   - 'Backend: EZB'
   - 'Backend: DBIS'

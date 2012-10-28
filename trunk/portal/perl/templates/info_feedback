@@ -52,9 +52,8 @@
 
       <div class="infotext">
     
-<table width="100%">
-<tr><th>Artikel und Vortr&auml;ge</th></tr>
-<tr><td class="boxed">
+<h3>Artikel und Vortr&auml;ge</h3>
+
 <dl>
 
 <dt>Oliver Flimm: Anreicherungen, Mashups und Vernetzungen von Titeln in einem heterogenen Katalogverbund am Beispiel des Kölner UniversitätsGesamtkatalogs KUG</dt>
@@ -114,15 +113,10 @@ target="_blank">PDF</a>)</dd>
 
 </dl>
 
-
-</td></tr>
-</table>
-
 <p />
 
-<table width="100%">
-<tr><th>Stimmen</th></tr>
-<tr><td class="boxed">
+<h3>Stimmen</h3>
+
 <dl>
 
 <dt>Interview mit Patrick Danowski und Lambert Heller zu Bibliothek 2.0</dt>
@@ -168,15 +162,10 @@ target="_blank">Edlef Stabenau im netbib-Weblog</a> am 21.9.2006</dd>
 
 </dl>
 
-
-</td></tr>
-</table>
-
 <p />
 
-<table width="100%">
-<tr><th>Verschiedenes</th></tr>
-<tr><td class="boxed">
+<h3>Verschiedenes</h3>
+
 <dl>
 
 <dt>Heidrun Wiesenm&uuml;ller: Neue Trends und alte Desiderate - Der
@@ -243,9 +232,6 @@ target="_blank">Vortrag CASLIN 2007</a>, 3.-7.6.2007</dd>
 
 
 </dl>
-</td></tr>
-</table>
-
 
  </div>
 

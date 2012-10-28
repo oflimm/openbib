@@ -83,7 +83,7 @@ sub new {
     return $self;
 }
 
-sub load_full_record {
+sub load_full_title_record {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -105,6 +105,20 @@ sub load_full_record {
     # ...
     
     return $record;
+}
+
+sub load_brief_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->load_full_title_record($arg_ref);
 }
 
 sub get_classifications {

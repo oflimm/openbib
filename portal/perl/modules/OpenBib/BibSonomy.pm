@@ -44,6 +44,7 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -94,7 +95,7 @@ sub get_posts {
         ? $arg_ref->{user}       : undef;
 
     my $type   = exists $arg_ref->{type}
-        ? $arg_ref->{type}       : 'publication';
+        ? $arg_ref->{type}       : undef;
 
     my $start  = exists $arg_ref->{start}
         ? $arg_ref->{start}      : undef;
@@ -115,34 +116,43 @@ sub get_posts {
         $user = $self->{api_user};
     }
     
-    my $url;
+    my $url='http://www.bibsonomy.org/api/posts?';
 
-    my $titles_ref = [];
+    # Type prefix?
+    if (defined $bibkey){
+        if ($bibkey =~/^bm_(.+)$/){
+            $bibkey=$1;
+            $type="bookmark";
+        }
+        elsif ($bibkey =~/^bt_(.+)$/){
+            $bibkey=$1;
+            $type="publication";
+        }
+    }
     
-    if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$ && !defined $user/){
-        substr($bibkey,0,1)=""; # Remove leading 1
-        $url='http://www.bibsonomy.org/api/posts?resourcetype=bibtex&resource="'.$bibkey.'"';
-    }
-    elsif (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/ && defined $user){
-        substr($bibkey,0,1)=""; # Remove leading 1
-        $url="http://www.bibsonomy.org/api/posts?resourcetype=bibtex&resource=$bibkey&user=$user";
-    }
-    elsif (defined $tag){
-        $url='http://www.bibsonomy.org/api/posts?tags='.$tag.'&resourcetype='.$valid_type{$type};
-        if ($start && $end){
-            $url.="&start=$start&end=$end";
-        }
-    }
-    elsif (!defined $bibkey && defined $user){
-        $url='http://www.bibsonomy.org/api/posts?user='.$user.'&resourcetype='.$valid_type{$type};
-        if (defined $start && defined $end){
-            $url.="&start=$start&end=$end";
-        }
-    }
-    else {
-        return $self;
+    if (defined $type){
+        $url.='resourcetype='.$valid_type{$type};
     }
 
+    if (defined $bibkey) { # && $bibkey=~/^1[0-9a-f]{32}$/){
+#        substr($bibkey,0,1)=""; # Remove leading 1
+        $url.="&resource=$bibkey";
+    }
+
+    if (defined $user){
+        $url.="&user=$user";
+    }
+
+    if (defined $tag){
+        $url.="&tags=$tag";
+    }
+
+    if ($start && $end){
+        $url.="&start=$start&end=$end";
+    }
+
+    my $search_count = 0;
+    
     $logger->debug("Request: $url");
 
     my $response = $self->{client}->get($url)->decoded_content(charset => 'utf-8');
@@ -154,63 +164,143 @@ sub get_posts {
     my $root   = $tree->getDocumentElement;
 
     unless ($root->findvalue('/bibsonomy/@stat') eq "ok"){
-        return ();
+        return {};
     }
 
-    my $next_start = "";
-    my $next_end   = "";
+    my $next = $root->findvalue('/bibsonomy/posts/@next');
+
+    $logger->debug("Next: $next");
+    
     if ($root->findvalue('/bibsonomy/posts/@next')){
-        my $next = $root->findvalue('/bibsonomy/posts/@next');     
-        ($next_start,$next_end) = $next =~/start=(\d+).*?end=(\d+)/; 
+        $next = $root->findvalue('/bibsonomy/posts/@next');
     }
+
+    if ($root->findvalue('/bibsonomy/posts/@end')){
+        $search_count = $root->findvalue('/bibsonomy/posts/@end')+1;     
+    }
+
+    my $recordlist = new OpenBib::RecordList::Title({
+        generic_attributes => {
+            hits   => $search_count,
+            next   => $next,
+        }
+    });
 
     foreach my $post_node ($root->findnodes('/bibsonomy/posts/post')) {
+        my $generic_attributes_ref = {} ;
 
-        my $singlepost_ref = {} ;
+        my $recordtype = ($post_node->findvalue('bibtex/@interhash'))?'publication':'bookmark';
 
-        $singlepost_ref->{user} = $post_node->findvalue('user/@name');
+        my $id;
+        
+        if ($recordtype eq "publication"){
+            $id = "bt_".$post_node->findvalue('bibtex/@interhash');
+            $generic_attributes_ref->{bibkey}    = "1".$post_node->findvalue('bibtex/@interhash');
+            $generic_attributes_ref->{interhash} = $post_node->findvalue('bibtex/@interhash');
+            $generic_attributes_ref->{intrahash} = $post_node->findvalue('bibtex/@intrahash');
+        }
+        else {
+            $id = "bm_".$post_node->findvalue('bookmark/@interhash');
+            $generic_attributes_ref->{bibkey}    = "1".$post_node->findvalue('bookmark/@interhash');
+            $generic_attributes_ref->{interhash} = $post_node->findvalue('bookmark/@interhash');
+            $generic_attributes_ref->{intrahash} = $post_node->findvalue('bookmark/@intrahash');
+        }
 
-        $singlepost_ref->{desc} = $post_node->findvalue('@description');
-
-        $singlepost_ref->{tags} = [];
+        $generic_attributes_ref->{xmldata}   = $post_node->toString();
+        $generic_attributes_ref->{user}      = $post_node->findvalue('user/@name');
+        $generic_attributes_ref->{desc}      = $post_node->findvalue('@description');
+        $generic_attributes_ref->{tags}      = [];
         
         foreach my $tag_node ($post_node->findnodes('tag')){
-            push @{$singlepost_ref->{tags}}, $tag_node->getAttribute('name');
+            push @{$generic_attributes_ref->{tags}}, $tag_node->getAttribute('name');
         }
 
-        if ($type eq "publication"){
-            $singlepost_ref->{bibkey}              = "1".$post_node->findvalue('bibtex/@interhash');
-            $singlepost_ref->{interhash}           = $post_node->findvalue('bibtex/@interhash');
-            $singlepost_ref->{intrahash}           = $post_node->findvalue('bibtex/@intrahash');
-            $singlepost_ref->{record}->{author}    = $post_node->findvalue('bibtex/@author');
-            $singlepost_ref->{record}->{editor}    = $post_node->findvalue('bibtex/@editor');
-            $singlepost_ref->{record}->{title}     = $post_node->findvalue('bibtex/@title');
-            $singlepost_ref->{record}->{edition}   = $post_node->findvalue('bibtex/@edition');
-            $singlepost_ref->{record}->{address}   = $post_node->findvalue('bibtex/@address');
-            $singlepost_ref->{record}->{publisher} = $post_node->findvalue('bibtex/@publisher');
-            $singlepost_ref->{record}->{year}      = $post_node->findvalue('bibtex/@year');
-            $singlepost_ref->{record}->{href}      = $post_node->findvalue('bibtex/@href');
-            $singlepost_ref->{record}->{entrytype} = $post_node->findvalue('bibtex/@entrytype');
-            $singlepost_ref->{xmldata}             = $post_node->toString();
+        my $record = new OpenBib::Record::Title({ database => 'bibsonomy', id => $id, generic_attributes => $generic_attributes_ref });
+        
+        if ($recordtype eq "publication"){
+            if ($post_node->findvalue('bibtex/@author')){
+                $record->set_field({field => 'T0100', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@author')});
+            }
+            
+            if ($post_node->findvalue('bibtex/@editor')){
+                $record->set_field({field => 'T0101', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@editor')});
+            }
+            
+            if ($post_node->findvalue('bibtex/@title')){
+                $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@title')});
+            }
+
+            $record->set_field({field => 'T0800', subfield => '', mult => 1, content => 'publication'});
+            
+            if ($post_node->findvalue('bibtex/@journal')){
+                my $journal = $post_node->findvalue('bibtex/@journal');
+
+                # Erweiterungen um volume, pages etc.
+
+                #             $singlepost_ref->{record}->{pages}     = $post_node->findvalue('bibtex/@pages');
+                #             $singlepost_ref->{record}->{volume}    = $post_node->findvalue('bibtex/@volume');
+                #             $singlepost_ref->{record}->{number}    = $post_node->findvalue('bibtex/@number');
+                
+                $record->set_field({field => 'T0590', subfield => '', mult => 1, content => $journal});
+            }
+            
+            if ($post_node->findvalue('bibtex/@address')){
+                $record->set_field({field => 'T0410', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@address')});
+            }
+            
+            if ($post_node->findvalue('bibtex/@publisher')){
+                $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@publisher')});
+            }
+            
+            if ($post_node->findvalue('bibtex/@bibtexAbstract')){
+                $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@bibtexAbstract')});
+            }
+            
+            if ($post_node->findvalue('bibtex/@year')){
+                $record->set_field({field => 'T0425', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@year')});
+            }
+            
+            if ($post_node->findvalue('bibtex/@edition')){
+                $record->set_field({field => 'T0403', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@edition')});
+            }
+            
+            if ($post_node->findvalue('bibtex/@url')){
+                $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@url')});
+            }
+            
+            if ($post_node->findvalue('bibtex/@misc')){
+                my $misc = $post_node->findvalue('bibtex/@misc');
+
+                if ($misc =~/isbn = \{([^}]+)\}/){
+                    $record->set_field({field => 'T0543', subfield => '', mult => 1, content => $1 });
+                }
+            }
+
+            if ($post_node->findvalue('bibtex/@series')){
+                $record->set_field({field => 'T0451', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@series')});
+            }
+
+#             $singlepost_ref->{record}->{entrytype} = $post_node->findvalue('bibtex/@entrytype');
+            
         }
-        elsif ($type eq "bookmark"){
-            $singlepost_ref->{record}->{url}       = $post_node->findvalue('bookmark/@url');
-            $singlepost_ref->{record}->{title}     = $post_node->findvalue('bookmark/@title');
+        else {
+            if ($post_node->findvalue('bookmark/@url')){
+                $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $post_node->findvalue('bookmark/@url')});
+            }
+
+            if ($post_node->findvalue('bookmark/@title')){
+                $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $post_node->findvalue('bookmark/@title')});
+            }
+
+            $record->set_field({field => 'T0800', subfield => '', mult => 1, content => 'bookmark'});
         }
 
-        push @{$titles_ref}, $singlepost_ref;
+        $logger->debug($post_node->toString());
+        
+        $recordlist->add($record);
     }
 
-    
-    $logger->debug("Response / Posts: ".YAML::Dump($titles_ref));
-    
-    return {
-        recordlist => $titles_ref,
-        next       => {
-            start => $next_start,
-            end   => $next_end,
-        },
-    };
+    return $recordlist;
 }
 
 sub get_tags {
@@ -237,8 +327,8 @@ sub get_tags {
     
     my @tags = ();
     
-    if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/){
-        substr($bibkey,0,1)=""; # Remove leading 1
+    if (defined $bibkey){ # && $bibkey=~/^1[0-9a-f]{32}$/){
+#        substr($bibkey,0,1)=""; # Remove leading 1
         $url="http://www.bibsonomy.org/api/tags?resourcetype=bibtex&resource=$bibkey";
         $logger->debug("Request: $url");
         

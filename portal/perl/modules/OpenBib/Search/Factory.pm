@@ -33,10 +33,11 @@ use utf8;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
-use OpenBib::Search::Backend::EZB;
+use OpenBib::Search::Backend::BibSonomy;
 use OpenBib::Search::Backend::DBIS;
-use OpenBib::Search::Backend::Xapian;
 use OpenBib::Search::Backend::ElasticSearch;
+use OpenBib::Search::Backend::EZB;
+use OpenBib::Search::Backend::Xapian;
 
 sub create_searcher {
     my ($self,$arg_ref) = @_;
@@ -53,6 +54,8 @@ sub create_searcher {
 
     my $config = OpenBib::Config->instance;
 
+    $logger->debug("Trying to dispatch database $database with optional sb $sb");
+    
     if (!defined $database && !defined $sb){
         $sb = $config->{local_search_backend};
     }
@@ -64,6 +67,9 @@ sub create_searcher {
         }
         elsif ($system eq "Backend: DBIS"){
             $sb = "dbis";
+        }
+        elsif ($system eq "Backend: BibSonomy"){
+            $sb = "bibsonomy";
         }
         else {
             $sb = $config->{local_search_backend};
@@ -77,6 +83,9 @@ sub create_searcher {
     }
     elsif ($sb eq "dbis"){        
         return new OpenBib::Search::Backend::DBIS($arg_ref);
+    }
+    elsif ($sb eq "bibsonomy"){        
+        return new OpenBib::Search::Backend::BibSonomy($arg_ref);
     }
     elsif ($sb eq "xapian"){        
         return new OpenBib::Search::Backend::Xapian($arg_ref);

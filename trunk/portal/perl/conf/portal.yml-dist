@@ -2443,6 +2443,9 @@ searchfield:
   'tag': # 
      'prefix': 'tag'
      'type': 'ft'
+  'user': # for BibSonomy 
+     'prefix': 'user'
+     'type': 'ft'
   'year': # fest inkl. prefix
      'prefix': 'year'
      'type': 'integer'

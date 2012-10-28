@@ -69,6 +69,7 @@ use OpenBib::Search::Backend::ElasticSearch;
 use OpenBib::Search::Backend::Z3950;
 use OpenBib::Search::Backend::EZB;
 use OpenBib::Search::Backend::DBIS;
+use OpenBib::Search::Backend::BibSonomy;
 use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::Template::Provider;

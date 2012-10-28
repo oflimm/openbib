@@ -158,3 +158,6 @@ ALTER TABLE litlist_topic ADD CONSTRAINT fk_litlisttopic_topic FOREIGN KEY (topi
 ALTER TABLE topicclassification ADD CONSTRAINT fk_topicclassification_topic FOREIGN KEY (topicid) REFERENCES topic (id);
 CREATE INDEX topicclassification_type ON topicclassification (type);
 CREATE INDEX topicclassification_classification ON topicclassification (classification);
+
+ALTER TABLE clusterinfo ADD PRIMARY KEY (id);
+ALTER TABLE serverinfo ADD CONSTRAINT fk_serverinfo_clusterinfo FOREIGN KEY (clusterid) REFERENCES clusterinfo (id);

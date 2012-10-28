@@ -969,7 +969,8 @@ Katalogen gibt es weitere Spezial-Sichten, bei denen z.B. bestimmte Kataloge
      <tr><td align="center"><img src="[% config.get('share_img') %]"  alt="An BibSonomy senden" border="0" /></td><td>[% msg.maketext("An BibSonomy senden") %]</td></tr>   
      <tr><td align="center"><img src="[% config.get('top20_img') %]"  alt="Top 20" border="0" /></td><td>[% msg.maketext("Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog") %]</td></tr>   
      <tr><td align="center"><img src="[% config.get('permalink_img') %]" alt="Permanenter Link" /></td><td>[% msg.maketext("Permanenter Link zu diesem Titel") %]</td></tr>
-     <tr><td align="center"><img src="[% config.get('info_img') %]" alt="Kontextsensitive Hilfe" /></td><td>[% msg.maketext("Kontextsensitive Hilfe") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.get('info_img') %]" alt="Normdatensatz" /></td><td>[% msg.maketext("Link zum Normdatensatz") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.get('help_img') %]" alt="Kontextsensitive Hilfe" /></td><td>[% msg.maketext("Kontextsensitive Hilfe") %]</td></tr>   
      <tr><td align="center"><img src="[% config.get('tutorial_img') %]" alt="Interaktives Tutorium" /></td><td>[% msg.maketext("Interaktives Tutorium") %]</td></tr>
      <tr><td align="center"><img src="[% config.get('wikipedia_img') %]" alt="Wikipedia" /></td><td>Wikipedia</td></tr>
      <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %]</td></tr>

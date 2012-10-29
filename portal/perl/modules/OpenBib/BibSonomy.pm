@@ -85,6 +85,9 @@ sub get_posts {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
+    my $search = exists $arg_ref->{search}
+        ? $arg_ref->{search}     : undef;
+
     my $bibkey = exists $arg_ref->{bibkey}
         ? $arg_ref->{bibkey}     : undef;
 
@@ -129,9 +132,16 @@ sub get_posts {
             $type="publication";
         }
     }
-    
-    if (defined $type){
+
+    if (defined $type && defined $valid_type{$type}){
         $url.='resourcetype='.$valid_type{$type};
+    }
+    else {
+        $url.='resourcetype=bibtex';
+    }
+
+    if (defined $search){
+        $url.='&search='.$search;
     }
 
     if (defined $bibkey) { # && $bibkey=~/^1[0-9a-f]{32}$/){

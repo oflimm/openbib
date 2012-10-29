@@ -166,7 +166,7 @@ sub search {
         }        
         else {
             foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
-                $logger->debug("Adding Xapian DB-Object for database $database");
+                $logger->debug("Adding Xapian DB-Object for searchindex $database");
                 
                 if (!defined $dbh){
                     # Erstes Objekt erzeugen,
@@ -178,18 +178,18 @@ sub search {
                     };
                     
                     if ($@){
-                        $logger->error("Initializing with Database: $database - :".$@." not available");
+                        $logger->error("Initializing with searchindex: $database - :".$@." not available");
                     }
                 }
                 else {
-                    $logger->debug("Adding database $database");
+                    $logger->debug("Adding searchindex $database");
                     
                     eval {
                         $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
                     };
                     
                     if ($@){
-                        $logger->error("Adding Database: $database - :".$@." not available");
+                        $logger->error("Adding searchindex: $database - :".$@." not available");
                     }                        
                 }
             }
@@ -210,6 +210,11 @@ sub search {
     }
 
     $self->{qp} = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+
+    unless ($dbh){
+        $logger->fatal("No searchindex for searchprofile $searchprofile");
+        return;
+    }
 
     my @stopwords = ();
     if (exists $config->{stopword_filename} && -e $config->{stopword_filename}){

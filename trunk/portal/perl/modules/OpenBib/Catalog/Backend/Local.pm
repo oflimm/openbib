@@ -68,7 +68,6 @@ sub new {
     return $self;
 }
 
-
 sub get_recent_titles {
     my ($self,$arg_ref) = @_;
 
@@ -79,22 +78,27 @@ sub get_recent_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-
-    my $titles = $self->{schema}->resultset('Title')->search_rs(
-        undef,
-        {
-            order_by => ['tstamp_create DESC'],
-            rows     => $limit,
-        }
-    );
-
     my $recordlist = new OpenBib::RecordList::Title();
 
-    foreach my $title ($titles->all){
-        $logger->debug("Adding Title ".$title->id);
-        $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
+    eval {
+        my $titles = $self->{schema}->resultset('Title')->search_rs(
+            undef,
+            {
+                order_by => ['tstamp_create DESC'],
+                rows     => $limit,
+            }
+        );
+        
+        foreach my $title ($titles->all){
+            $logger->debug("Adding Title ".$title->id);
+            $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
     }
-
+    
     return $recordlist;
 }
 
@@ -114,388 +118,391 @@ sub load_full_title_record {
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
-    
-    # Titelkategorien
-    {
-        
-        my ($atime,$btime,$timeall)=(0,0,0);
-        
-        if ($config->{benchmark}) {
-            $atime=new Benchmark;
-        }
 
-        # DBI: select * from title where id = ?
-        my $title_fields = $self->{schema}->resultset('Title')->search(
-            {
-                'me.id' => $id,
-            },
-            {
-                select => ['title_fields.field','title_fields.mult','title_fields.subfield','title_fields.content'],
-                as     => ['thisfield','thismult','thissubfield','thiscontent'],
-                join   => ['title_fields'],
+    eval {
+        # Titelkategorien
+        {
+            
+            my ($atime,$btime,$timeall)=(0,0,0);
+            
+            if ($config->{benchmark}) {
+                $atime=new Benchmark;
             }
-        );
-
-        foreach my $item ($title_fields->all){
-            my $field    = "T".sprintf "%04d",$item->get_column('thisfield');
-            my $subfield =                    $item->get_column('thissubfield');
-            my $mult     =                    $item->get_column('thismult');
-            my $content  =                    $item->get_column('thiscontent');
-
-            $title_record->set_field({
-                field     => $field,
-                mult      => $mult,
-                subfield  => $subfield,
-                content   => $content,
-            });
-        }
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer Bestimmung der Titeldaten ist ".timestr($timeall));
-        }
-    }
-    
-    # Verknuepfte Normdaten
-    {
-        my ($atime,$btime,$timeall)=(0,0,0);
-        
-        if ($config->{benchmark}) {
-            $atime=new Benchmark;
-        }
-
-        
-        # Personen
-        # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-        my $title_persons = $self->{schema}->resultset('Title')->search(
-            {
-                'me.id' => $id,
-            },
-            {
-                select => ['title_people.field','title_people.personid','title_people.supplement'],
-                as     => ['thisfield','thispersonid','thissupplement'],
-                join   => ['title_people'],
+            
+            # DBI: select * from title where id = ?
+            my $title_fields = $self->{schema}->resultset('Title')->search(
+                {
+                    'me.id' => $id,
+                },
+                {
+                    select => ['title_fields.field','title_fields.mult','title_fields.subfield','title_fields.content'],
+                    as     => ['thisfield','thismult','thissubfield','thiscontent'],
+                    join   => ['title_fields'],
+                }
+            );
+            
+            foreach my $item ($title_fields->all){
+                my $field    = "T".sprintf "%04d",$item->get_column('thisfield');
+                my $subfield =                    $item->get_column('thissubfield');
+                my $mult     =                    $item->get_column('thismult');
+                my $content  =                    $item->get_column('thiscontent');
+                
+                $title_record->set_field({
+                    field     => $field,
+                    mult      => $mult,
+                    subfield  => $subfield,
+                    content   => $content,
+                });
             }
-        );
-
-        my $mult = 1;
-        foreach my $item ($title_persons->all){
-            my $field      = "T".sprintf "%04d",$item->get_column('thisfield');
-            my $personid   =                    $item->get_column('thispersonid');
-            my $supplement =                    $item->get_column('thissupplement');
-
-            my $record = OpenBib::Record::Person->new({database=>$self->{database}});
-            $record->load_name({id=>$personid});
-            my $content = $record->name_as_string;
-
-            $title_record->set_field({                
-                field      => $field,
-                id         => $personid,
-                content    => $content,
-                supplement => $supplement,
-                mult       => $mult,
-            });
-
-            $mult++;
-        }
-
-        # Koerperschaften
-        # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-        my $title_corporatebodies = $self->{schema}->resultset('Title')->search(
-            {
-                'me.id' => $id,
-            },
-            {
-                select => ['title_corporatebodies.field','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
-                as     => ['thisfield','thiscorporatebodyid','thissupplement'],
-                join   => ['title_corporatebodies'],
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer Bestimmung der Titeldaten ist ".timestr($timeall));
             }
-        );
-
-        $mult = 1;        
-        foreach my $item ($title_corporatebodies->all){
-            my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
-            my $corporatebodyid   =                    $item->get_column('thiscorporatebodyid');
-            my $supplement        =                    $item->get_column('thissupplement');
-
-            my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}});
-            $record->load_name({id=>$corporatebodyid});
-            my $content = $record->name_as_string;
-
-            $title_record->set_field({                
-                field      => $field,
-                id         => $corporatebodyid,
-                content    => $content,
-                supplement => $supplement,
-                mult       => $mult,
-            });
-
-            $mult++;
         }
-
-        # Schlagworte
-        # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-        my $title_subjects = $self->{schema}->resultset('Title')->search(
-            {
-                'me.id' => $id,
-            },
-            {
-                select => ['title_subjects.field','title_subjects.subjectid','title_subjects.supplement'],
-                as     => ['thisfield','thissubjectid','thissupplement'],
-                join   => ['title_subjects'],
-            }
-        );
-
-        $mult = 1;
-        foreach my $item ($title_subjects->all){
-            my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
-            my $subjectid         =                    $item->get_column('thissubjectid');
-            my $supplement        =                    $item->get_column('thissupplement');
-
-            my $record = OpenBib::Record::Subject->new({database=>$self->{database}});
-            $record->load_name({id=>$subjectid});
-            my $content = $record->name_as_string;
-
-            $title_record->set_field({                
-                field      => $field,
-                id         => $subjectid,
-                content    => $content,
-                supplement => $supplement,
-                mult       => $mult,
-            });
-
-            $mult++;
-        }
-
-        # Klassifikationen
-        # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-        my $title_classifications = $self->{schema}->resultset('Title')->search(
-            {
-                'me.id' => $id,
-            },
-            {
-                select => ['title_classifications.field','title_classifications.classificationid','title_classifications.supplement'],
-                as     => ['thisfield','thisclassificationid','thissupplement'],
-                join   => ['title_classifications'],
-            }
-        );
-
-        $mult = 1;
-        foreach my $item ($title_classifications->all){
-            my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
-            my $classificationid  =                    $item->get_column('thisclassificationid');
-            my $supplement        =                    $item->get_column('thissupplement');
-
-            my $record = OpenBib::Record::Classification->new({database=>$self->{database}});
-            $record->load_name({id=>$classificationid});
-            my $content = $record->name_as_string;
-
-            $title_record->set_field({                
-                field      => $field,
-                id         => $classificationid,
-                content    => $content,
-                supplement => $supplement,
-                mult       => $mult,
-            });
-
-            $mult++;
-        }
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer Bestimmung der verknuepften Normdaten : ist ".timestr($timeall));
-        }
-    }
-    
-    # Verknuepfte Titel
-    {
-        my ($atime,$btime,$timeall)=(0,0,0);
         
-        my $request;
-        my $res;
-        
-        # Unterordnungen
-        if ($config->{benchmark}) {
-            $atime=new Benchmark;
-        }
-
-        my @sub = $self->get_connected_titles({ type => 'sub' });
-
-        if (@sub){
-
-            $title_record->set_field({                
-                field      => 'T5001',
-                content    => scalar(@sub),
-                subfield   => '',
-                mult       => 1,
-            });
-
+        # Verknuepfte Normdaten
+        {
+            my ($atime,$btime,$timeall)=(0,0,0);
+            
+            if ($config->{benchmark}) {
+                $atime=new Benchmark;
+            }
+            
+            
+            # Personen
+            # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+            my $title_persons = $self->{schema}->resultset('Title')->search(
+                {
+                    'me.id' => $id,
+                },
+                {
+                    select => ['title_people.field','title_people.personid','title_people.supplement'],
+                    as     => ['thisfield','thispersonid','thissupplement'],
+                    join   => ['title_people'],
+                }
+            );
+            
             my $mult = 1;
-            foreach my $id (@sub){
+            foreach my $item ($title_persons->all){
+                my $field      = "T".sprintf "%04d",$item->get_column('thisfield');
+                my $personid   =                    $item->get_column('thispersonid');
+                my $supplement =                    $item->get_column('thissupplement');
+                
+                my $record = OpenBib::Record::Person->new({database=>$self->{database}});
+                $record->load_name({id=>$personid});
+                my $content = $record->name_as_string;
+                
                 $title_record->set_field({                
-                    field      => 'T5003',
-                    content    => $id,
-                    subfield   => '',
+                    field      => $field,
+                    id         => $personid,
+                    content    => $content,
+                    supplement => $supplement,
                     mult       => $mult,
                 });
-
+                
                 $mult++;
             }
-        }
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer  ist ".timestr($timeall));
-        }
-
-        # Ueberordnungen
-        if ($config->{benchmark}) {
-            $atime=new Benchmark;
-        }
-
-        my @super = $self->get_connected_titles({ type => 'super' });
-
-        if (@super){
-            $title_record->set_field({                
-                field      => 'T5002',
-                content    => scalar(@super),
-                subfield   => '',
-                mult       => 1,
-            });
-
-            my $mult = 1;
-            foreach my $id (@super){
+            
+            # Koerperschaften
+            # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+            my $title_corporatebodies = $self->{schema}->resultset('Title')->search(
+                {
+                    'me.id' => $id,
+                },
+                {
+                    select => ['title_corporatebodies.field','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
+                    as     => ['thisfield','thiscorporatebodyid','thissupplement'],
+                    join   => ['title_corporatebodies'],
+                }
+            );
+            
+            $mult = 1;        
+            foreach my $item ($title_corporatebodies->all){
+                my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
+                my $corporatebodyid   =                    $item->get_column('thiscorporatebodyid');
+                my $supplement        =                    $item->get_column('thissupplement');
+                
+                my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}});
+                $record->load_name({id=>$corporatebodyid});
+                my $content = $record->name_as_string;
+                
                 $title_record->set_field({                
-                    field      => 'T5004',
-                    content    => $id,
-                    subfield   => '',
+                    field      => $field,
+                    id         => $corporatebodyid,
+                    content    => $content,
+                    supplement => $supplement,
                     mult       => $mult,
                 });
-
+                
                 $mult++;
             }
-        }
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit ist ".timestr($timeall));
-        }
-
-    }
-
-    # Exemplardaten
-    my $holding_ref=[];
-    {
-        
-        # DBI: "select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
-
-        my $title_holdings = $self->{schema}->resultset('Title')->search(
-            {
-                'me.id' => $id,
-            },
-            {
-                select   => ['title_holdings.holdingid'],
-                as       => ['thisholdingid'],
-                group_by => ['title_holdings.holdingid'], # = distinct holdingid
-                join     => ['title_holdings'],
+            
+            # Schlagworte
+            # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+            my $title_subjects = $self->{schema}->resultset('Title')->search(
+                {
+                    'me.id' => $id,
+                },
+                {
+                    select => ['title_subjects.field','title_subjects.subjectid','title_subjects.supplement'],
+                    as     => ['thisfield','thissubjectid','thissupplement'],
+                    join   => ['title_subjects'],
+                }
+            );
+            
+            $mult = 1;
+            foreach my $item ($title_subjects->all){
+                my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
+                my $subjectid         =                    $item->get_column('thissubjectid');
+                my $supplement        =                    $item->get_column('thissupplement');
+                
+                my $record = OpenBib::Record::Subject->new({database=>$self->{database}});
+                $record->load_name({id=>$subjectid});
+                my $content = $record->name_as_string;
+                
+                $title_record->set_field({                
+                    field      => $field,
+                    id         => $subjectid,
+                    content    => $content,
+                    supplement => $supplement,
+                    mult       => $mult,
+                });
+                
+                $mult++;
             }
-        );
-
-        foreach my $item ($title_holdings->all){
-            my $holdingid =                    $item->get_column('thisholdingid');
-
-            push @$holding_ref, $self->_get_holding({
-                id             => $holdingid,
-            });
-        }
-    }
-
-    # Ausleihinformationen der Exemplare
-    my $circulation_ref = [];
-    {
-        my $circexlist=undef;
-
-        if (exists $circinfotable->{$self->{database}}{circ}) {
-
-            my $circid=($title_record->has_field('T0001') && $title_record->get_field({ field => 'T0001', mult => 1}) && $title_record->get_field({ field => 'T0001', mult => 1}) > 0 && $title_record->get_field({ field => 'T0001', mult => 1}) != $id )?$title_record->get_field({ field => 'T0001', mult => 1}):$id;
-
-            $logger->debug("Katkey: $id - Circ-ID: $circid");
-
-            eval {
-                my $soap = SOAP::Lite
-                    -> uri("urn:/MediaStatus")
-                        -> proxy($circinfotable->{$self->{database}}{circcheckurl});
-                my $result = $soap->get_mediastatus(
-                SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                    SOAP::Data->name(katkey   => $circid)->type('string'),
-                    SOAP::Data->name(database => $circinfotable->{$self->{database}}{circdb})->type('string'))));
+            
+            # Klassifikationen
+            # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+            my $title_classifications = $self->{schema}->resultset('Title')->search(
+                {
+                    'me.id' => $id,
+                },
+                {
+                    select => ['title_classifications.field','title_classifications.classificationid','title_classifications.supplement'],
+                    as     => ['thisfield','thisclassificationid','thissupplement'],
+                    join   => ['title_classifications'],
+                }
+            );
+            
+            $mult = 1;
+            foreach my $item ($title_classifications->all){
+                my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
+                my $classificationid  =                    $item->get_column('thisclassificationid');
+                my $supplement        =                    $item->get_column('thissupplement');
                 
-                unless ($result->fault) {
-                    $circexlist=$result->result;
-                }
-                else {
-                    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-                }
-            };
-
-            if ($@){
-                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-	    }
-
+                my $record = OpenBib::Record::Classification->new({database=>$self->{database}});
+                $record->load_name({id=>$classificationid});
+                my $content = $record->name_as_string;
+                
+                $title_record->set_field({                
+                    field      => $field,
+                    id         => $classificationid,
+                    content    => $content,
+                    supplement => $supplement,
+                    mult       => $mult,
+                });
+                
+                $mult++;
+            }
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer Bestimmung der verknuepften Normdaten : ist ".timestr($timeall));
+            }
         }
         
-        # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
-        # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
-        # titelbasierten Exemplardaten
-        
-        if (defined($circexlist)) {
-            $circulation_ref = $circexlist;
+        # Verknuepfte Titel
+        {
+            my ($atime,$btime,$timeall)=(0,0,0);
+            
+            my $request;
+            my $res;
+            
+            # Unterordnungen
+            if ($config->{benchmark}) {
+                $atime=new Benchmark;
+            }
+            
+            my @sub = $self->get_connected_titles({ type => 'sub' });
+            
+            if (@sub){
+                
+                $title_record->set_field({                
+                    field      => 'T5001',
+                    content    => scalar(@sub),
+                    subfield   => '',
+                    mult       => 1,
+                });
+                
+                my $mult = 1;
+                foreach my $id (@sub){
+                    $title_record->set_field({                
+                        field      => 'T5003',
+                        content    => $id,
+                        subfield   => '',
+                        mult       => $mult,
+                    });
+                    
+                    $mult++;
+                }
+            }
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer  ist ".timestr($timeall));
+            }
+            
+            # Ueberordnungen
+            if ($config->{benchmark}) {
+                $atime=new Benchmark;
+            }
+            
+            my @super = $self->get_connected_titles({ type => 'super' });
+            
+            if (@super){
+                $title_record->set_field({                
+                    field      => 'T5002',
+                    content    => scalar(@super),
+                    subfield   => '',
+                    mult       => 1,
+                });
+                
+                my $mult = 1;
+                foreach my $id (@super){
+                    $title_record->set_field({                
+                        field      => 'T5004',
+                        content    => $id,
+                        subfield   => '',
+                        mult       => $mult,
+                    });
+                    
+                    $mult++;
+                }
+            }
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit ist ".timestr($timeall));
+            }
+            
         }
-
-        # Anreichern mit Bibliotheksinformationen
-        if (exists $circinfotable->{$self->{database}}{circ}
-                && @{$circulation_ref}) {
-            for (my $i=0; $i < scalar(@{$circulation_ref}); $i++) {
+        
+        # Exemplardaten
+        my $holding_ref=[];
+        {
+            
+            # DBI: "select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
+            
+            my $title_holdings = $self->{schema}->resultset('Title')->search(
+                {
+                    'me.id' => $id,
+                },
+                {
+                    select   => ['title_holdings.holdingid'],
+                    as       => ['thisholdingid'],
+                    group_by => ['title_holdings.holdingid'], # = distinct holdingid
+                    join     => ['title_holdings'],
+                }
+            );
+            
+            foreach my $item ($title_holdings->all){
+                my $holdingid =                    $item->get_column('thisholdingid');
                 
-                my $bibliothek="-";
-                my $sigel=$dbinfotable->{dbases}{$self->{database}};
+                push @$holding_ref, $self->_get_holding({
+                    id             => $holdingid,
+                });
+            }
+        }
+        
+        # Ausleihinformationen der Exemplare
+        my $circulation_ref = [];
+        {
+            my $circexlist=undef;
+            
+            if (exists $circinfotable->{$self->{database}}{circ}) {
                 
-                if (length($sigel)>0) {
-                    if (exists $dbinfotable->{sigel}{$sigel}) {
-                        $bibliothek=$dbinfotable->{sigel}{$sigel};
+                my $circid=($title_record->has_field('T0001') && $title_record->get_field({ field => 'T0001', mult => 1}) && $title_record->get_field({ field => 'T0001', mult => 1}) > 0 && $title_record->get_field({ field => 'T0001', mult => 1}) != $id )?$title_record->get_field({ field => 'T0001', mult => 1}):$id;
+                
+                $logger->debug("Katkey: $id - Circ-ID: $circid");
+                
+                eval {
+                    my $soap = SOAP::Lite
+                        -> uri("urn:/MediaStatus")
+                            -> proxy($circinfotable->{$self->{database}}{circcheckurl});
+                    my $result = $soap->get_mediastatus(
+                        SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                            SOAP::Data->name(katkey   => $circid)->type('string'),
+                            SOAP::Data->name(database => $circinfotable->{$self->{database}}{circdb})->type('string'))));
+                    
+                    unless ($result->fault) {
+                        $circexlist=$result->result;
                     }
                     else {
-                        $bibliothek="($sigel)";
+                        $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
                     }
-                }
-                else {
-                    if (exists $dbinfotable->{sigel}{$dbinfotable->{dbases}{$self->{database}}}) {
-                        $bibliothek=$dbinfotable->{sigel}{
-                            $dbinfotable->{dbases}{$self->{database}}};
-                    }
+                };
+                
+                if ($@){
+                    $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
                 }
                 
-                my $bibinfourl=$dbinfotable->{bibinfo}{
-                    $dbinfotable->{dbases}{$self->{database}}};
+            }
+            
+            # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
+            # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
+            # titelbasierten Exemplardaten
+            
+            if (defined($circexlist)) {
+                $circulation_ref = $circexlist;
+            }
+            
+            # Anreichern mit Bibliotheksinformationen
+            if (exists $circinfotable->{$self->{database}}{circ}
+                    && @{$circulation_ref}) {
+                for (my $i=0; $i < scalar(@{$circulation_ref}); $i++) {
+                    
+                    my $bibliothek="-";
+                    my $sigel=$dbinfotable->{dbases}{$self->{database}};
                 
-                $circulation_ref->[$i]{'Bibliothek'} = $bibliothek;
-                $circulation_ref->[$i]{'Bibinfourl'} = $bibinfourl;
-                $circulation_ref->[$i]{'Ausleihurl'} = $circinfotable->{$self->{database}}{circurl};
+                    if (length($sigel)>0) {
+                        if (exists $dbinfotable->{sigel}{$sigel}) {
+                            $bibliothek=$dbinfotable->{sigel}{$sigel};
+                        } else {
+                            $bibliothek="($sigel)";
+                        }
+                    } else {
+                        if (exists $dbinfotable->{sigel}{$dbinfotable->{dbases}{$self->{database}}}) {
+                            $bibliothek=$dbinfotable->{sigel}{
+                                $dbinfotable->{dbases}{$self->{database}}};
+                        }
+                    }
+                
+                    my $bibinfourl=$dbinfotable->{bibinfo}{
+                        $dbinfotable->{dbases}{$self->{database}}};
+                
+                    $circulation_ref->[$i]{'Bibliothek'} = $bibliothek;
+                    $circulation_ref->[$i]{'Bibinfourl'} = $bibinfourl;
+                    $circulation_ref->[$i]{'Ausleihurl'} = $circinfotable->{$self->{database}}{circurl};
+                }
+            } else {
+                $circulation_ref=[];
             }
         }
-        else {
-            $circulation_ref=[];
-        }
+
+        $logger->debug(YAML::Dump($title_record->get_fields));
+        $title_record->set_holding($holding_ref);
+        $title_record->set_circulation($circulation_ref);
+    };
+
+    if ($@){
+        $logger->fatal($@);
     }
-
-    $logger->debug(YAML::Dump($title_record->get_fields));
-    $title_record->set_holding($holding_ref);
-    $title_record->set_circulation($circulation_ref);
-
+    
     return $title_record;
 }
 
@@ -513,40 +520,46 @@ sub load_brief_title_record {
     my $config = OpenBib::Config->instance;
 
     my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
-
-    # Titel-ID und zugehoerige Datenbank setzen
-
-    $self->connectDB($self->{database});
     
-    my ($atime,$btime,$timeall)=(0,0,0);
-    
-    if ($config->{benchmark}) {
-        $atime  = new Benchmark;
+    eval {
+        # Titel-ID und zugehoerige Datenbank setzen
+        
+        $self->connectDB($self->{database});
+        
+        my ($atime,$btime,$timeall)=(0,0,0);
+        
+        if ($config->{benchmark}) {
+            $atime  = new Benchmark;
+        }
+        
+        $logger->debug("Getting cached brief title for id $id");
+        
+        # DBI: "select listitem from title_listitem where id = ?"
+        my $record = $self->{schema}->resultset('Title')->single(
+            {
+                'id' => $id,
+            },
+        );
+        
+        my $record_exists = 0;
+        
+        if ($record){
+            $title_record->set_fields_from_json($record->titlecache);
+            $record_exists = 1;
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            my $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
+        }
+    };
+
+    if ($@){
+        $logger->fatal($@);
     }
-
-    $logger->debug("Getting cached brief title for id $id");
     
-    # DBI: "select listitem from title_listitem where id = ?"
-    my $record = $self->{schema}->resultset('Title')->single(
-        {
-            'id' => $id,
-        },
-    );
-
-    my $record_exists = 0;
-    
-    if ($record){
-        $title_record->set_fields_from_json($record->titlecache);
-        $record_exists = 1;
-    }
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        my $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
-    }
-
     return $title_record;
 }
 
@@ -677,6 +690,9 @@ sub get_number_of_titles {
 
     # Ausgabe der Anzahl verk"upfter Titel
     my $titlecount;
+
+    return 0 unless ($self->{schema});
+
     if ($type eq "sub"){
         # DBI "select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
         $titlecount = $self->{schema}->resultset('TitleTitle')->search(
@@ -724,7 +740,9 @@ sub get_connected_titles {
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
-    
+
+    return () unless ($self->{schema});
+
     my ($atime,$btime,$timeall);
 
     if ($config->{benchmark}) {
@@ -734,6 +752,7 @@ sub get_connected_titles {
     # Ausgabe der Anzahl verk"upfter Titel
 
     my $titles;
+
     if ($type eq "sub"){
         # DBI "select distinct targetid as titleid from conn where sourceid=? and sourcetype=1 and targettype=1"
         $titles = $self->{schema}->resultset('TitleTitle')->search(
@@ -814,10 +833,10 @@ sub connectDB {
 
     if ($@){
         $logger->fatal("Unable to connect schema to database $config->{dbname}: DBI:Pg:dbname=$config->{dbname};host=$config->{dbhost};port=$config->{dbport}");
+        return 0;
     }
 
-    return;
-
+    return 1;
 }
 
 1;

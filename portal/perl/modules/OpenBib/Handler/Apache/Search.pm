@@ -784,7 +784,8 @@ sub joined_search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config      = OpenBib::Config->instance;
+    my $searchquery = OpenBib::SearchQuery->instance;
 
     my $query        = $self->query();
 
@@ -809,6 +810,20 @@ sub joined_search {
 
     $self->print_resultitem({templatename => $config->{tt_search_title_combined_tname}});
 
+    # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
+    foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
+        my $system = $config->get_system_of_db($database);
+
+        if ($system =~ /^Backend/){
+            $self->param('database',$database);
+            
+            $self->search({database => $database});
+            
+            $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+        }
+    }
+
+    
     return;
 }
 
@@ -829,9 +844,6 @@ sub sequential_search {
     $logger->debug("Starting sequential search");
     
     foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
-        # Trefferliste
-        my $recordlist;
-
         $self->param('database',$database);
 
         $self->search({database => $database});

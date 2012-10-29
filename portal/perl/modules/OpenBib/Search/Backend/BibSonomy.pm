@@ -124,8 +124,14 @@ sub parse_query {
     foreach my $field (keys %{$config->{searchfield}}){
         my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
         if ($searchtermstring) {
-            # Tags
-            if    ($field eq "tag" && $searchtermstring) {
+            # Freie Suche
+            if    ($field eq "freesearch" && $searchtermstring) {
+                push @searchterms, {
+                    field   => 'search',
+                    content => $searchtermstring
+                };
+            }
+            elsif    ($field eq "tag" && $searchtermstring) {
                 push @searchterms, {
                     field   => 'tag',
                     content => $searchtermstring
@@ -157,6 +163,12 @@ sub parse_query {
         $query_string_ref->{$search_ref->{field}} = $search_ref->{content};
     }
 
+    # Resource-type muss immer gesetzt sein
+    unless ($query_string_ref->{type}){
+        $query_string_ref->{type} = 'publication';
+        $searchquery->set_searchfield('mediatype','publication');
+    }
+    
     $logger->debug("Bibsonomy-Querystring: ".YAML::Dump($query_string_ref));
     $self->{_querystring} = $query_string_ref;
 

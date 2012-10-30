@@ -420,6 +420,17 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Title'
      rule: '/portal/:view/title/:database/:titleid/searchindex[get]'
      runmode: 'show_record_searchindex'
+
+
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid/to_bibsonomy.html[get]'
+     runmode: 'redirect_to_bibsonomy'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title'
+     rule: '/portal/:view/title/:database/:titleid/to_bibsonomy[get]'
+     runmode: 'redirect_to_bibsonomy'
+
   - # title_loc:
      module: 'OpenBib::Handler::Apache::Title'
      rule: '/portal/:view/title/:database/:titleid[get]'
@@ -486,6 +497,10 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::CorporateBody'
      rule: '/portal/:view/corporatebody/:database/:corporatebodyid[get]'
      runmode: 'show_record'
+  - # subject_loc:
+     module: 'OpenBib::Handler::Apache::Subject'
+     rule: '/portal/:view/subject/:database[get]'
+     runmode: 'show_collection'
   - # subject_loc:
      module: 'OpenBib::Handler::Apache::Subject'
      rule: '/portal/:view/subject/:database/:subjectid[get]'
@@ -1119,49 +1134,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Cloud'
      rule: '/portal/:view/cloud/:cloudid/:database?'
      runmode: 'show_record'
-
-# Ab hier noch umzustellen
-
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/tags.html[get]'
-     runmode: 'show_tags'
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/tags.include[get]'
-     runmode: 'show_tags'
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/tags[get]'
-     runmode: 'show_tags'
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy.html[get]'
-     runmode: 'show_collection'
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy[get]'
-     runmode: 'show_collection'
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy[post]'
-     runmode: 'create_record'
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/:type/tag/search.html[get]'
-     runmode: 'search_collection_by_tag'
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/:type/tag/search[get]'
-     runmode: 'search_collection_by_tag'
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/:type/tag/:tagid'
-     runmode: 'show_collection_by_tag'
-  - # bibsonomy_loc:
-     module: 'OpenBib::Handler::Apache::BibSonomy'
-     rule: '/portal/:view/bibsonomy/:type/user/:userid'
-     runmode: 'show_collection_by_user'
 
   - # user_loc:
      module: 'OpenBib::Handler::Apache::User::Circulation'

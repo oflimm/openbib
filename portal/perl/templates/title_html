@@ -433,7 +433,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
     <script>
 $(document).ready(function(){
 
-    $.get("[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags.include?l=[% lang %];bibkey=[% record.to_bibkey %];tags=[% record.to_tags %]",
+    $.get("[% path_prefix %]/[% config.get('subject_loc') %]/bibsonomy.include?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags %]",
           function (txt){
             $("#ob-bibsonomy_tags").html(txt); 
     });
@@ -446,7 +446,7 @@ $(document).ready(function(){
 <div class="ob-bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
 <div class="ob-headline"><span id="ob-bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="ob-bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/tags.html?l=[% lang %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
+<span id="ob-bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('subject_loc') %]/bibsonomy.html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
 </div>
 <p/>
 </div>
@@ -655,7 +655,7 @@ END ;
        journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
     END ;
 -%]
-
+[%# USE dumper;dumper.dump(same_records)%]
 [% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
 > 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
 <ul>

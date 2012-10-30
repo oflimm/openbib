@@ -721,15 +721,16 @@ sub gen_bibkey_base {
 
     return "" unless (defined $fields_ref);
 
-
+    $logger->debug("Trying to generate bibkey with fields: ".YAML::Dump($fields_ref));
+    
     # Nur Bibkeys mit allen relevanten Informationen sinnvoll!
     
-    return "" unless ( (exists $fields_ref->{0100} || exists $fields_ref->{0101}) && exists $fields_ref->{0331} && exists $fields_ref->{0425});
+    return "" unless ( (exists $fields_ref->{'T0100'} || exists $fields_ref->{'T0101'} || exists $fields_ref->{'0100'}  || exists $fields_ref->{'0101'}) && ( exists $fields_ref->{'T0331'} || exists $fields_ref->{'0331'} ) && ( exists $fields_ref->{'T0425'} || exists $fields_ref->{'0425'}));
     
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];
     my $editors_ref=[];
-    foreach my $field (qw/0100 0101/){
+    foreach my $field (qw/T0100 T0101 0100 0101/){
         next if (!exists $fields_ref->{$field});
         foreach my $part_ref (@{$fields_ref->{$field}}){
             my $single_person = lc($part_ref->{content});
@@ -764,13 +765,18 @@ sub gen_bibkey_base {
     $author    = "[".join(",", sort(@$persons_ref))."]" if (defined $persons_ref && @$persons_ref);
 
     # Titel
-    my $title  = (exists $fields_ref->{0331})?lc($fields_ref->{0331}[0]{content}):"";
+    my $title  = (exists $fields_ref->{T0331})?lc($fields_ref->{T0331}[0]{content}):
+        (exists $fields_ref->{'0331'})?lc($fields_ref->{'0331'}[0]{content}):"";
+    
     $title     =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
 
     # Jahr
-    my $year   = (exists $fields_ref->{0425})?$fields_ref->{0425}[0]{content}:undef;
+    my $year   = (exists $fields_ref->{T0425})?$fields_ref->{T0425}[0]{content}:
+        (exists $fields_ref->{'0425'})?$fields_ref->{'0425'}[0]{content}:undef;
     $year      =~ s/[^0-9]+//g if ($year);
 
+    $logger->debug("Got title: $title / author: $author / year: $year");
+    
     if ($author && $title && $year){
         return $title." ".$author." ".$year;
     }

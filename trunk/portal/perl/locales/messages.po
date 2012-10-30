@@ -1710,6 +1710,10 @@ msgstr ""
 msgid "Eingabe neuer Tags"
 msgstr ""
 
+#: ../templates/_database/bibsonomy/search_title_item_html:63
+msgid "Eingrenzen"
+msgstr ""
+
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchform_query:146 ../templates/_profile/rheinlandbib/searchform_query:138 ../templates/_profile/sammlungen/_view/alekiddr/searchform_query:172 ../templates/_profile/usb/searchform_query:138 ../templates/searchform_query:179
 msgid "Eingrenzung auf Gesamttitel (Serien)"
 msgstr ""
@@ -3773,10 +3777,6 @@ msgstr ""
 msgid "Recherchearten"
 msgstr ""
 
-#: ../templates/admin_cluster_html:74 ../templates/admin_server_record_edit:87
-msgid "Rechercheierbar"
-msgstr ""
-
 #: ../templates/user_preferences_html:155
 msgid "Recherchemaske"
 msgstr ""
@@ -3785,7 +3785,7 @@ msgstr ""
 msgid "Recherchen"
 msgstr ""
 
-#: ../templates/admin_cluster_record_edit:82 ../templates/admin_server_html:132 ../templates/admin_server_html:79
+#: ../templates/admin_cluster_html:74 ../templates/admin_cluster_record_edit:82 ../templates/admin_server_html:132 ../templates/admin_server_html:79 ../templates/admin_server_record_edit:87
 msgid "Recherchierbar"
 msgstr ""
 

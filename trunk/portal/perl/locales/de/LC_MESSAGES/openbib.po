@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2012-10-30 12:47+0100\n"
+"PO-Revision-Date: 2012-10-30 13:24+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2636,6 +2636,10 @@ msgstr "Einfache Suche"
 #: ../templates/title_include:424
 msgid "Eingabe neuer Tags"
 msgstr "Eingabe neuer Tags"
+
+#: ../templates/_database/bibsonomy/search_title_item_html:63
+msgid "Eingrenzen"
+msgstr "Eingrenzen"
 
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchform_query:146
 #: ../templates/_profile/rheinlandbib/searchform_query:138
@@ -6247,10 +6251,6 @@ msgstr "Recherche-Arten"
 msgid "Recherchearten"
 msgstr "Recherchearten"
 
-#: ../templates/admin_cluster_html:74 ../templates/admin_server_record_edit:87
-msgid "Rechercheierbar"
-msgstr "Rechercheierbar"
-
 #: ../templates/user_preferences_html:155
 msgid "Recherchemaske"
 msgstr "Recherchemaske"
@@ -6259,8 +6259,10 @@ msgstr "Recherchemaske"
 msgid "Recherchen"
 msgstr "Recherchen"
 
+#: ../templates/admin_cluster_html:74
 #: ../templates/admin_cluster_record_edit:82
 #: ../templates/admin_server_html:132 ../templates/admin_server_html:79
+#: ../templates/admin_server_record_edit:87
 msgid "Recherchierbar"
 msgstr "Recherchierbar"
 
@@ -9916,6 +9918,9 @@ msgstr "Übersicht"
 #: ../templates/user_navigation:72 ../templates/user_navigation:74
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "Rechercheierbar"
+#~ msgstr "Rechercheierbar"
 
 #~ msgid ""
 #~ "<b>Ausgew&auml;hlte Titel</b> mit diesen Tags\n"

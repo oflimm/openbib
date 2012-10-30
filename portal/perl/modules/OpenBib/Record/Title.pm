@@ -87,7 +87,7 @@ sub new {
         ? $arg_ref->{comment}        : undef;
 
     my $generic_attributes = exists $arg_ref->{generic_attributes}
-        ? $arg_ref->{generic_attributes}   : undef;
+        ? $arg_ref->{generic_attributes}   : {};
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -95,6 +95,10 @@ sub new {
     my $self = { };
 
     bless ($self, $class);
+
+    $self->{_same_records}    = new OpenBib::RecordList::Title();
+    $self->{_similar_records} = new OpenBib::RecordList::Title();
+    $self->{_related_records} = new OpenBib::RecordList::Title();
 
     if (defined $database){
         $self->{database} = $database;
@@ -160,6 +164,10 @@ sub load_full_record {
     
     my $record = $catalog->load_full_title_record({id => $id});
 
+    $self->set_same_records($record->get_same_records);
+    $self->set_similar_records($record->get_similar_records);
+    $self->set_related_records($record->get_related_records);
+    
     $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
     
     # Anreicherung mit zentralen Enrichmentdaten
@@ -255,8 +263,11 @@ sub load_full_record {
                 
             # Anreicherung mit 'gleichen' (=gleiche ISBN) Titeln aus anderen Katalogen
             {
-                my $same_recordlist = new OpenBib::RecordList::Title();
+                # Same Records via Backend sind Grundlage.               
+                my $same_recordlist = $self->get_same_records;
 
+                $logger->debug("Same records via backend ".YAML::Dump($same_recordlist));
+                
                 # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
                 my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
                     {
@@ -276,13 +287,14 @@ sub load_full_record {
                     $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
                 }
                     
-                $self->{_same_records} = $same_recordlist;
+                $self->set_same_records($same_recordlist);
             }
                 
             # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
             {
-                my $similar_recordlist = new OpenBib::RecordList::Title();
-                    
+                my $similar_recordlist = $self->get_similar_records;
+
+                $logger->debug("Similar records via backend ".YAML::Dump($similar_recordlist));
                 my $similar_titles = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
                     {
                         isbn    => \@isbn_refs,,
@@ -325,12 +337,12 @@ sub load_full_record {
                 }
                 $similar_recordlist->load_brief_records;
                     
-                $self->{_similar_records} = $similar_recordlist;
+                $self->set_similar_records($similar_recordlist);
             }
                 
             # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
             {
-                my $related_recordlist = new OpenBib::RecordList::Title();
+                my $related_recordlist = $self->get_related_records;
                     
                 my $related_titles = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
                     {
@@ -375,7 +387,7 @@ sub load_full_record {
                 $related_recordlist->load_brief_records;
                 $related_recordlist->sort({order => 'up', type => 'title'});
                 
-                $self->{_related_records} = $related_recordlist;
+                $self->set_related_records($related_recordlist);
             }
         }
         elsif ($bibkey){
@@ -602,6 +614,14 @@ sub set_circulation {
     return;
 }
 
+sub set_same_records {
+    my ($self,$recordlist)=@_;
+
+    $self->{_same_records} = $recordlist;
+
+    return $self;
+}
+
 sub get_same_records {
     my ($self)=@_;
 
@@ -614,10 +634,26 @@ sub get_similar_records {
     return $self->{_similar_records}
 }
 
+sub set_similar_records {
+    my ($self,$recordlist)=@_;
+
+    $self->{_similar_records} = $recordlist;
+
+    return $self;
+}
+
 sub get_related_records {
     my ($self)=@_;
 
     return $self->{_related_records}
+}
+
+sub set_related_records {
+    my ($self,$recordlist)=@_;
+
+    $self->{_related_records} = $recordlist;
+    
+    return $self;
 }
 
 sub set_fields_from_storable {

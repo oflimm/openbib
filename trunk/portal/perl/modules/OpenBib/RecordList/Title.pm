@@ -76,6 +76,10 @@ sub new {
 sub add {
     my ($self,$records)=@_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Adding 1 Record of type ".ref($records));
     # Einzelner Titel
     if    (ref($records) eq "OpenBib::Record::Title"){
         push @{$self->{recordlist}}, $records;
@@ -86,6 +90,8 @@ sub add {
        push @{$self->{recordlist}}, $records->get_records;
        $self->{_size}=$self->{_size}+$records->get_size();
     }
+
+    $logger->debug("Actual size ".$self->get_size());
 }
 
 sub sort {

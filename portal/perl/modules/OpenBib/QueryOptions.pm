@@ -75,7 +75,7 @@ sub _new_instance {
     # aber sehr wohl extrahieren, z.B. der Useragent.
 
     # Initializierung mit Defaults
-    $self->initialize_defaults;
+#    $self->initialize_defaults;
     
     # Queryoptions zur Session einladen, falls Session existiert
     $self->load_from_session;

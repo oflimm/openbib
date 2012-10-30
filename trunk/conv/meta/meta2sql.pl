@@ -1289,7 +1289,7 @@ while (my $jsonline=<IN>){
 
     # Bibkey-Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel
     {
-        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ normdata => $record_ref});
+        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ fields => $record_ref});
         my $bibkey      = ($bibkey_base)?OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base }):"";
         
         if ($bibkey) {

@@ -48,6 +48,7 @@ sub setup {
     $self->start_mode('show_record');
     $self->run_modes(
         'show_record'     => 'show_record',
+        'show_collection' => 'show_collection',
     );
 
     # Use current path as template path,
@@ -126,6 +127,65 @@ sub show_record {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
+    return Apache2::Const::OK;
+}
+
+sub show_collection {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view             = $self->param('view');
+    my $database         = $self->strip_suffix($self->param('database'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $callback      = $query->param('callback') || '';
+    my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
+    my $no_log        = $query->param('no_log')   || '';
+
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+
+    if ($database){ # Valide Informationen etc.
+        
+        my $catalog_args_ref = OpenBib::Common::Util::query2hashref($query);
+        $catalog_args_ref->{database} = $database if (defined $database);
+        $catalog_args_ref->{l}        = $lang if (defined $lang);
+
+        my $catalog = OpenBib::Catalog::Factory->create_catalog($catalog_args_ref);
+
+        $logger->debug("Passing Args: ".YAML::Dump($catalog_args_ref));
+        
+        my $subjects_ref = $catalog->get_subjects($catalog_args_ref);
+        
+        $logger->debug(YAML::Dump($subjects_ref));
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            dbinfo          => $dbinfotable,
+            database        => $database,
+            subjects        => $subjects_ref,
+        };
+        
+        $self->print_page($config->{'tt_subject_collection_tname'},$ttdata);
+    }
+    else {
+        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));
+    }
+    
     return Apache2::Const::OK;
 }
 

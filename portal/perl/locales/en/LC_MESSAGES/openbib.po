@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2012-10-30 13:08+0100\n"
+"PO-Revision-Date: 2012-10-30 13:24+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2534,6 +2534,10 @@ msgstr "Simple search"
 msgid "Eingabe neuer Tags"
 msgstr "Enter new tags"
 
+#: ../templates/_database/bibsonomy/search_title_item_html:63
+msgid "Eingrenzen"
+msgstr "Refine"
+
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchform_query:146
 #: ../templates/_profile/rheinlandbib/searchform_query:138
 #: ../templates/_profile/sammlungen/_view/alekiddr/searchform_query:172
@@ -2941,9 +2945,8 @@ msgstr ""
 #: ../templates/_database/bibsonomy/subject_collection_html:45
 msgid "Es konnten in BibSonomy folgende Schlagworte gefunden werden."
 msgstr ""
-"For this title and its subject headings the following subjects could be found "
-"in "
-"BibSonomy."
+"For this title and its subject headings the following subjects could be "
+"found in BibSonomy."
 
 #: ../templates/connector_similarpersons:48
 #: ../templates/connector_similarpersons:98
@@ -6026,10 +6029,6 @@ msgstr "Search types"
 msgid "Recherchearten"
 msgstr "Search Options"
 
-#: ../templates/admin_cluster_html:74 ../templates/admin_server_record_edit:87
-msgid "Rechercheierbar"
-msgstr "Searchable"
-
 #: ../templates/user_preferences_html:155
 msgid "Recherchemaske"
 msgstr "Search mask"
@@ -6038,8 +6037,10 @@ msgstr "Search mask"
 msgid "Recherchen"
 msgstr "Search requests"
 
+#: ../templates/admin_cluster_html:74
 #: ../templates/admin_cluster_record_edit:82
 #: ../templates/admin_server_html:132 ../templates/admin_server_html:79
+#: ../templates/admin_server_record_edit:87
 msgid "Recherchierbar"
 msgstr "Searchable"
 
@@ -6681,8 +6682,8 @@ msgid ""
 "Sie müssen mindestens den Namen einer Organisationseinheit und deren "
 "Beschreibung eingeben."
 msgstr ""
-"You have to enter at least the name of an organizational "
-"unit and its description."
+"You have to enter at least the name of an organizational unit and its "
+"description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Authentication.pm:220
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
@@ -9597,6 +9598,9 @@ msgstr "Overview"
 #: ../templates/user_navigation:72 ../templates/user_navigation:74
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#~ msgid "Rechercheierbar"
+#~ msgstr "Searchable"
 
 #~ msgid ""
 #~ "<b>Ausgew&auml;hlte Titel</b> mit diesen Tags\n"

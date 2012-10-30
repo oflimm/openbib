@@ -128,6 +128,88 @@ sub load_brief_title_record {
     return $self->load_full_title_record($arg_ref);
 }
 
+sub get_subjects {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+        # Set defaults
+    my $bibkey   = exists $arg_ref->{bibkey}
+        ? $arg_ref->{bibkey}     : undef;
+    
+    my $tags = exists $arg_ref->{subjects}
+        ? $arg_ref->{subjects}       : undef;
+
+    # Zuerst Dubletten entfernen, um unnoetige Anfragen auszuschliessen:
+
+    # Dubletten entfernen
+    my %seen_tags = ();
+
+    my $url;
+
+    $logger->debug("Args: subjects -> $tags / bibkey -> $bibkey");
+    
+    my @tags = split('\s+',$tags);
+
+    $logger->debug("Tags to lookup ".YAML::Dump(\@tags));
+    
+    if (defined $bibkey && $bibkey=~/^[1-3][0-9a-f]{32}$/){
+#        substr($bibkey,0,1)=""; # Remove leading 1
+
+        my $recordlist = OpenBib::BibSonomy->new()->get_posts({ start => 0, end => 20 , bibkey => $bibkey});
+        
+        # Record is fully qualified, so get first record in recordlist
+        
+        my @records = $recordlist->get_records;
+
+        if ($recordlist->get_size > 0){
+            my $record = $records[0];
+            
+            foreach my $tag_ref (@{$record->get_field({ field => 'T0710'})}){
+                $logger->debug("Found tag in corresponding BibSonomy publication: ".$tag_ref->{content});
+                push @tags, $tag_ref->{content};
+            }
+        }
+    }
+    
+    my @unique_tags = grep { ! $seen_tags{lc($_)} ++ } @tags;
+
+    @tags = ();
+    if (@unique_tags) {
+        foreach my $tag (@unique_tags){
+            substr($bibkey,0,1)=""; # Remove leading 1
+            $url="http://www.bibsonomy.org/api/tags/$tag";
+            $logger->debug("Request: $url");
+            
+            my $response = $self->{client}->get($url)->content;
+        
+            $logger->debug("Response: $response");
+            
+            my $parser = XML::LibXML->new();
+            my $tree   = $parser->parse_string($response);
+            my $root   = $tree->getDocumentElement;
+            
+            if ($root->findvalue('/bibsonomy/@stat') eq "ok"){
+                foreach my $tag_node ($root->findnodes('/bibsonomy/tag')) {
+                    my $singletag_ref = {} ;
+                    
+                    $singletag_ref->{name}        = $tag_node->findvalue('@name');
+                    $singletag_ref->{href}        = $tag_node->findvalue('@href');
+                    $singletag_ref->{usercount}   = $tag_node->findvalue('@usercount');
+                    $singletag_ref->{globalcount} = $tag_node->findvalue('@globalcount');
+                    
+                    push @tags, $singletag_ref;
+                }
+            }
+        }
+    }
+
+    return \@tags;
+}
+
 sub DESTROY {
     my $self = shift;
 
@@ -139,7 +221,7 @@ __END__
 
 =head1 NAME
 
-OpenBib::Catalog::Backend::Dummy - Objektorientiertes Interface zum Dummy API
+OpenBib::Catalog::Backend::BibSonomy - Objektorientiertes Interface zum BibSonomy API
 
 =head1 DESCRIPTION
 

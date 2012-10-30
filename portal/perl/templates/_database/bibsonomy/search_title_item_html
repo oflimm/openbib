@@ -32,20 +32,20 @@
 
     request_base = request_base.join(";");
 
-    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
-    end_range       = nav.current_page*queryoptions.get_option('num');
-    IF end_range >= hits ;
-       end_range       = hits;
-    END;
+    start_range     = queryoptions.get_option('page')*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = start_range - 1 + hits;
 
-    alltags = [];
+    allsubjects = {};
 
     FOREACH record IN recordlist.get_records;
-      FOREACH tag  IN record.generic_attributes.tags;
-        alltags.push(tag);
+      FOREACH subject  IN record.generic_attributes.subjects;
+        allsubjects.${subject} = 1;
       END ;
     END ;
 -%]
+
+[%# USE dumper;dumper.dump(nav)%]
+[%# nav.current_page()%]
 
 [%# USE dumper;dumper.dump(recordlist.generic_attributes)%]
 
@@ -66,7 +66,7 @@
 </dl>
 
 <dl class="ob-items">
-<dt class="ob-headline">[% msg.maketext("Tag suchen") %]</dt>
+<dt class="ob-headline">[% msg.maketext("Schlagwort suchen") %]</dt>
 <dd>
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 <input type="hidden" name="lang" value="[% lang %]"/>
@@ -74,7 +74,7 @@
 <input type="hidden" name="page" value="1"/>
 <input type="hidden" name="db"   value="bibsonomy"/>
 <input type="hidden" name="typ"  value="[% searchquery.get_searchfield('mediatype').norm %]"/>
-<input type="text" name="tag" value="" size="10" maxlength="200" title="[% msg.maketext("Geben Sie hier einen oder mehrere Tags ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />
+<input type="text" name="fsubj" value="" size="10" maxlength="200" title="[% msg.maketext("Geben Sie hier einen oder mehrere Tags ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />
 </form>
 </dd>
 </dl>
@@ -82,9 +82,9 @@
 <p/>
 
 <dl class="ob-items">
-<dt class="ob-headline">[% msg.maketext("Tags in den angezeigten Titeln") %]</dt>
-[% FOREACH thistag IN alltags.unique.sort %]
-<dd><a class="tag" style="display: inline; cursor: pointer;" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=bibsonomy;sm=seq;typ=[% searchquery.get_searchfield('mediatype').norm %];tag=[% thistag %]">[% thistag %]</a></dd>
+<dt class="ob-headline">[% msg.maketext("Schlagworte in den angezeigten Titeln") %]</dt>
+[% FOREACH thissubject IN allsubjects.keys.unique.sort %]
+<dd><a class="tag" style="display: inline; cursor: pointer;" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;db=bibsonomy;sm=seq;typ=[% searchquery.get_searchfield('mediatype').norm %];fsubj=[% thissubject %]">[% thissubject %]</a></dd>
 [% END %]
 </dl>
 
@@ -94,11 +94,13 @@
     </div>
   </div>
 
+[% IF recordlist.get_size > 0 %]
+
   <div class="ym-g75 ym-gl">
     <div class="ym-gbox-left">
 
-
 <div class="ob-resultlist">
+  <h3>[% dbinfo.dbnames.${database}.short %]</h3>
   <div class="ob-resultheader">
     <div class="left">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>
@@ -112,9 +114,25 @@
   <div class="ob-footer">
     <div class="ob-navigation">
 
-[% IF recordlist.generic_attributes.hits == '20' %]
+[% nav.total_entries = end_range ;
+   nav.pages_per_set = queryoptions.get_option('num'); # triggers calculation
+%]
+
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% cgiapp.to_cgi_querystring({ exclude = [ 'page'] }) %];page=[% page %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[% IF recordlist.get_size == '20' %]
 [% newpage = queryoptions.get_option('page') + 1 %]
-<img style="vertical-align:bottom" src="[% config.get('follow_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgiapp.to_cgi_querystring( { change = { 'page' = newpage } }) %]">[% msg.maketext("Weiter") %]</a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgiapp.to_cgi_querystring( { change = { 'page' = newpage } }) %]">[% newpage %]</a>
 [% END %]
 
     </div>
@@ -127,10 +145,12 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 &nbsp;
 </div>
 
-
    </div>
   </div>
 
+
+
 </div>
+[% END %]
 
 <p/>

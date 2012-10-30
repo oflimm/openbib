@@ -37,7 +37,6 @@
 ../modules/OpenBib/Handler/Apache/Admin/View.pm
 ../modules/OpenBib/Handler/Apache/Admin/ViewRSS.pm
 ../modules/OpenBib/Handler/Apache/Authentication.pm
-../modules/OpenBib/Handler/Apache/BibSonomy.pm
 ../modules/OpenBib/Handler/Apache/Browse.pm
 ../modules/OpenBib/Handler/Apache/Classification.pm
 ../modules/OpenBib/Handler/Apache/Cloud.pm
@@ -339,12 +338,6 @@
 ../templates/admin_view_rss_record_json
 ../templates/bib
 ../templates/bibfuehrer_tex
-../templates/bibsonomy_collection_by_tag
-../templates/bibsonomy_collection_by_tag_html
-../templates/bibsonomy_collection_by_user
-../templates/bibsonomy_collection_by_user_html
-../templates/bibsonomy_showtags
-../templates/bibsonomy_tags
 ../templates/browse_classification
 ../templates/browse_corporatebody
 ../templates/browse_person

@@ -111,6 +111,30 @@ sub connectEnrichmentDB {
     return;
 }
 
+sub set_generic_attributes {
+    my ($self,$arg_ref) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    foreach my $attribute (keys %$arg_ref){
+        $self->{generic_attributes}{$attribute} = $arg_ref->{$attribute};     
+    }    
+    
+    return $self;
+}
+
+sub get_generic_attributes {
+    my ($self) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Got: ".YAML::Dump($self->{generic_attributes}));
+    
+    return $self->{generic_attributes};
+}
+
 sub set_field {
     my ($self,$arg_ref) = @_;
 

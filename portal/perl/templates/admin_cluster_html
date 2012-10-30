@@ -71,7 +71,7 @@
      <option value="">[% msg.maketext("Keiner") %]</option>
      <option value="updating">[% msg.maketext("Aktualisieren") %]</option>
      <option value="updating_done" selected>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
-     <option value="searchable" selected>[% msg.maketext("Rechercheierbar") %]</option>
+     <option value="searchable" selected>[% msg.maketext("Recherchierbar") %]</option>
   </select>
 </div>
 

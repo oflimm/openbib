@@ -84,7 +84,7 @@
      <option value="" [% IF serverinfo.status == '' %]selected="selected"[% END %]>[% msg.maketext("Keiner") %]</option>
      <option value="updating" [% IF serverinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
      <option value="updated" [% IF serverinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
-     <option value="searchable" [% IF serverinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Rechercheierbar") %]</option>
+     <option value="searchable" [% IF serverinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Recherchierbar") %]</option>
   </select>
 </div>
 

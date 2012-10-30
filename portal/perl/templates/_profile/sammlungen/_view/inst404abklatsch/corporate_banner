@@ -10,7 +10,7 @@
 [%- END -%]
 [% END %]
       </div>
-      <div id="logo"><a href="[% path_prefix %]/[% config.get('home_loc') %]?l=[% lang %]" title="Startseite der Richter-Bibliothek" id="header_logo_image"></a></div>
+      <div id="logo"><a href="[% path_prefix %]/[% config.get('home_loc') %]?l=[% lang %]" title="Startseite der Abklatsch-Sammlung" id="header_logo_image"></a></div>
 
       <div id="header_right"><span id="header_uni_schriftzug">Abklatsch-Sammlung des Instituts für
 Altertumskunde der Universität zu Köln</span>

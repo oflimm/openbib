@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2012-10-30 13:24+0100\n"
+"PO-Revision-Date: 2012-10-30 15:18+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -749,7 +749,7 @@ msgstr "Also:"
 msgid "An"
 msgstr "An"
 
-#: ../templates/_database/bibsonomy/titlist_item_html_short:233
+#: ../templates/_database/bibsonomy/titlist_item_html_short:226
 #: ../templates/_database/openlibrary/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:239
 #: ../templates/_profile/sammlungen/_view/richter/collection_html_short:144
@@ -2132,7 +2132,7 @@ msgstr "Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."
 #: ../modules/OpenBib/Handler/Apache/CorporateBody.pm:125
 #: ../modules/OpenBib/Handler/Apache/Person.pm:125
 #: ../modules/OpenBib/Handler/Apache/Subject.pm:127
-#: ../modules/OpenBib/Handler/Apache/Title.pm:380
+#: ../modules/OpenBib/Handler/Apache/Title.pm:386
 msgid "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 msgstr "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 
@@ -2351,20 +2351,6 @@ msgstr ""
 "          f&uuml;r automatische Browsererkennung (dynamische\n"
 "          Lesezeichen in Firefox ab Version 1.5) sowie &uuml;ber den\n"
 "          Hauptmenu-Eintrag <b>RSS</b> angeboten"
-
-#: ../templates/bibsonomy_collection_by_tag_html:118
-#: ../templates/bibsonomy_collection_by_user_html:124
-msgid "Dieser Titel ist in den Katalogen des Portals verf&uuml;gbar"
-msgstr "Dieser Titel ist in den Katalogen des Portals verf&uuml;gbar"
-
-#: ../templates/bibsonomy_collection_by_tag_html:119
-#: ../templates/bibsonomy_collection_by_user_html:125
-msgid ""
-"Dieser Titel konnte nicht in den Katalogen des Portals gefunden werden. Er "
-"kann dennoch in anderer Schreibweise existieren!"
-msgstr ""
-"Dieser Titel konnte nicht in den Katalogen des Portals gefunden werden. Er "
-"kann dennoch in anderer Schreibweise existieren!"
 
 #: ../templates/_profile/sammlungen/_view/richter/collection_html_full:237
 #: ../templates/_profile/sammlungen/_view/richter/litlist_html_full:238
@@ -2801,8 +2787,8 @@ msgstr "Englische Wikipedia"
 msgid "Entdecken Sie weitere Titel &uuml;ber:"
 msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 
-#: ../templates/_database/bibsonomy/titlist_item_html_short:235
-#: ../templates/_database/bibsonomy/titlist_item_html_short:238
+#: ../templates/_database/bibsonomy/titlist_item_html_short:228
+#: ../templates/_database/bibsonomy/titlist_item_html_short:231
 #: ../templates/_database/openlibrary/titlist_item_html_short:230
 #: ../templates/_database/openlibrary/titlist_item_html_short:233
 #: ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:241
@@ -3089,11 +3075,6 @@ msgstr "Es konnten keine verwandten Themen bestimmt werden."
 #: ../templates/user_circulation_reminders_html:45
 msgid "Es sind keine Gebühren angefallen."
 msgstr "Es sind keine Gebühren angefallen."
-
-#: ../templates/bibsonomy_collection_by_tag_html:151
-#: ../templates/bibsonomy_collection_by_user_html:157
-msgid "Es sind keine Quellen verf&uuml;gbar."
-msgstr "Es sind keine Quellen verf&uuml;gbar."
 
 #: ../templates/admin_database_rss_html:154
 msgid "Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet."
@@ -3439,8 +3420,6 @@ msgstr ""
 "bitte mit <b>Registrieren</b>."
 
 #: ../templates/_database/bibsonomy/search_title_item_html:77
-#: ../templates/bibsonomy_collection_by_tag_html:81
-#: ../templates/bibsonomy_collection_by_user_html:87
 msgid "Geben Sie hier einen oder mehrere Tags ein"
 msgstr "Geben Sie hier einen oder mehrere Tags ein"
 
@@ -4243,7 +4222,7 @@ msgstr "In der Trefferliste"
 msgid "In der einfachen Recherche bzw. dem freien Suchfeld"
 msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 
-#: ../templates/_database/bibsonomy/titlist_item_html_short:233
+#: ../templates/_database/bibsonomy/titlist_item_html_short:226
 #: ../templates/_database/openlibrary/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:239
 #: ../templates/_profile/sammlungen/_view/richter/title_html:147
@@ -4307,6 +4286,11 @@ msgstr ""
 "anzeigen zu lassen. Sie sind erkennbar durch das bildliche\n"
 "Funktionselement %3, das mit dem\n"
 "entsprechenden RSS-Feed verlinkt ist."
+
+#: ../templates/_database/bibsonomy/titlist_item_html_short:220
+#: ../templates/_database/bibsonomy/titlist_item_html_short:221
+msgid "In lokalen Katalogen verf&uuml;gbar"
+msgstr "In lokalen Katalogen verf&uuml;gbar"
 
 #: ../templates/info_tutorials:64 ../templates/search_classification:66
 #: ../templates/search_corporatebody:66 ../templates/search_person:66
@@ -4668,7 +4652,6 @@ msgstr "Kartenkatalog Philosoph. Fakultät"
 msgid "Kartenkataloge der Philosophischen Fakultät"
 msgstr "Kartenkataloge der Philosophischen Fakultät"
 
-#: ../templates/_database/bibsonomy/titlist_item_html_short:220
 #: ../templates/_database/openlibrary/titlist_item_html_short:215
 #: ../templates/_profile/mobile/_view/richtermobile/titlist_item_html_short:217
 #: ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:226
@@ -5024,11 +5007,6 @@ msgstr "Link zum Normdatensatz"
 #: ../templates/user_tag_collection_html:45
 msgid "Liste"
 msgstr "Liste"
-
-#: ../templates/bibsonomy_collection_by_tag_html:101
-#: ../templates/bibsonomy_collection_by_user_html:107
-msgid "Liste der Quellen"
-msgstr "Liste der Quellen"
 
 #: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:21
 #: ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:152
@@ -5652,10 +5630,6 @@ msgid "Nr"
 msgstr "Nr"
 
 #: ../templates/admin_user_search_html:68
-#: ../templates/bibsonomy_collection_by_tag_html:126
-#: ../templates/bibsonomy_collection_by_tag_html:142
-#: ../templates/bibsonomy_collection_by_user_html:132
-#: ../templates/bibsonomy_collection_by_user_html:148
 msgid "Nutzer"
 msgstr "Nutzer"
 
@@ -6141,10 +6115,6 @@ msgid "Pseudonym"
 msgstr "Pseudonym"
 
 #: ../templates/_database/bibsonomy/search_title_item_html:64
-#: ../templates/bibsonomy_collection_by_tag_html:50
-#: ../templates/bibsonomy_collection_by_tag_html:52
-#: ../templates/bibsonomy_collection_by_user_html:56
-#: ../templates/bibsonomy_collection_by_user_html:58
 msgid "Publikationen"
 msgstr "Publikationen"
 
@@ -6156,18 +6126,6 @@ msgstr "Publikationen"
 #: ../templates/_view/richter/info_portal:78
 msgid "Quelle:"
 msgstr "Quelle:"
-
-#. (bsuser)
-#: ../templates/bibsonomy_collection_by_tag_html:93
-#: ../templates/bibsonomy_collection_by_user_html:99
-msgid "Quellen des Nutzers <i>%1</i> in BibSonomy"
-msgstr "Quellen des Nutzers <i>%1</i> in BibSonomy"
-
-#. (tag)
-#: ../templates/bibsonomy_collection_by_tag_html:93
-#: ../templates/bibsonomy_collection_by_user_html:99
-msgid "Quellen zum Tag <i>%1</i> in BibSonomy"
-msgstr "Quellen zum Tag <i>%1</i> in BibSonomy"
 
 #: ../templates/admin_database_html:119 ../templates/admin_navigation:41
 #: ../templates/admin_navigation:43 ../templates/admin_navigation:81
@@ -7325,8 +7283,6 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_view/richter/searchform_simple:199
 #: ../templates/_view/richter/searchform_simple:242
 #: ../templates/_view/richter/searchform_simple:286
-#: ../templates/bibsonomy_collection_by_tag_html:81
-#: ../templates/bibsonomy_collection_by_user_html:87
 #: ../templates/mainnavigation:145 ../templates/mainnavigation:146
 #: ../templates/mainnavigation:47 ../templates/mainnavigation:49
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
@@ -8289,11 +8245,6 @@ msgstr "Zählung"
 msgid "Tag"
 msgstr "Tag"
 
-#: ../templates/bibsonomy_collection_by_tag_html:76
-#: ../templates/bibsonomy_collection_by_user_html:82
-msgid "Tag suchen"
-msgstr "Tag suchen"
-
 #: ../templates/info_tutorials:71
 msgid "Taggen"
 msgstr "Taggen"
@@ -8307,12 +8258,6 @@ msgid "Tagging"
 msgstr "Tagging"
 
 #: ../templates/_profile/sammlungen/_view/richter/title_html:418
-#: ../templates/bibsonomy_collection_by_tag_html:126
-#: ../templates/bibsonomy_collection_by_tag_html:142
-#: ../templates/bibsonomy_collection_by_tag_html:80
-#: ../templates/bibsonomy_collection_by_user_html:132
-#: ../templates/bibsonomy_collection_by_user_html:148
-#: ../templates/bibsonomy_collection_by_user_html:86
 #: ../templates/cloud_tag_html:50 ../templates/title_html:419
 #: ../templates/title_include:654 ../templates/user_navigation:31
 #: ../templates/user_navigation:36
@@ -8320,14 +8265,8 @@ msgid "Tags"
 msgstr "Tags"
 
 #: ../templates/_database/bibsonomy/subject_collection_html:43
-#: ../templates/bibsonomy_showtags:52
 msgid "Tags in BibSonomy"
 msgstr "Tags in BibSonomy"
-
-#: ../templates/bibsonomy_collection_by_tag_html:65
-#: ../templates/bibsonomy_collection_by_user_html:71
-msgid "Tags in den angezeigten Titeln"
-msgstr "Tags in den angezeigten Titeln"
 
 #: ../templates/info_tutorials:72
 msgid "Tags nach BibSonomy hochladen"
@@ -8468,11 +8407,6 @@ msgstr "Titel der Liste"
 msgid "Titel der Literaturliste"
 msgstr "Titel der Literaturliste"
 
-#: ../templates/bibsonomy_collection_by_tag_html:122
-#: ../templates/bibsonomy_collection_by_user_html:128
-msgid "Titel im Portal:"
-msgstr "Titel im Portal:"
-
 #: ../templates/info_help:963
 msgid "Titel in die Merkliste eintragen"
 msgstr "Titel in die Merkliste eintragen"
@@ -8527,7 +8461,6 @@ msgid "Titel-String"
 msgstr "Titel-String"
 
 #: ../templates/_database/bibsonomy/subject_collection_include:20
-#: ../templates/bibsonomy_showtags:21
 msgid "Titel/Schlagworte nicht in BibSonomy enthalten"
 msgstr "Titel/Schlagworte nicht in BibSonomy enthalten"
 
@@ -9083,10 +9016,6 @@ msgid "War diese Rezension hilfreich?"
 msgstr "War diese Rezension hilfreich?"
 
 #: ../templates/_database/bibsonomy/search_title_item_html:65
-#: ../templates/bibsonomy_collection_by_tag_html:55
-#: ../templates/bibsonomy_collection_by_tag_html:57
-#: ../templates/bibsonomy_collection_by_user_html:61
-#: ../templates/bibsonomy_collection_by_user_html:63
 msgid "Web"
 msgstr "Web"
 
@@ -9098,10 +9027,7 @@ msgstr "WebOPAC-URL"
 #: ../templates/_database/inst001/circset:119
 #: ../templates/_database/inst001/circset:83
 #: ../templates/_profile/usb/circulation:126
-#: ../templates/_profile/usb/circulation:90
-#: ../templates/bibsonomy_collection_by_tag_html:156
-#: ../templates/bibsonomy_collection_by_user_html:162
-#: ../templates/circulation:51
+#: ../templates/_profile/usb/circulation:90 ../templates/circulation:51
 msgid "Weiter"
 msgstr "Weiter"
 
@@ -9432,14 +9358,6 @@ msgstr "Zeitraum"
 #: ../templates/searchform_simple:74
 msgid "Zeitschriften/Serien"
 msgstr "Zeitschriften/Serien"
-
-#: ../templates/bibsonomy_showtags:54
-msgid ""
-"Zu diesem Titel bzw. seinen Schlagworten konnten in BibSonomy folgende Tags "
-"gefunden werden."
-msgstr ""
-"Zu diesem Titel bzw. seinen Schlagworten konnten in BibSonomy folgende Tags "
-"gefunden werden."
 
 #: ../templates/_profile/usb/title_include:133
 msgid ""
@@ -9918,6 +9836,41 @@ msgstr "Übersicht"
 #: ../templates/user_navigation:72 ../templates/user_navigation:74
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "Dieser Titel ist in den Katalogen des Portals verf&uuml;gbar"
+#~ msgstr "Dieser Titel ist in den Katalogen des Portals verf&uuml;gbar"
+
+#~ msgid ""
+#~ "Dieser Titel konnte nicht in den Katalogen des Portals gefunden werden. "
+#~ "Er kann dennoch in anderer Schreibweise existieren!"
+#~ msgstr ""
+#~ "Dieser Titel konnte nicht in den Katalogen des Portals gefunden werden. "
+#~ "Er kann dennoch in anderer Schreibweise existieren!"
+
+#~ msgid "Liste der Quellen"
+#~ msgstr "Liste der Quellen"
+
+#~ msgid "Quellen des Nutzers <i>%1</i> in BibSonomy"
+#~ msgstr "Quellen des Nutzers <i>%1</i> in BibSonomy"
+
+#~ msgid "Quellen zum Tag <i>%1</i> in BibSonomy"
+#~ msgstr "Quellen zum Tag <i>%1</i> in BibSonomy"
+
+#~ msgid "Tag suchen"
+#~ msgstr "Tag suchen"
+
+#~ msgid "Tags in den angezeigten Titeln"
+#~ msgstr "Tags in den angezeigten Titeln"
+
+#~ msgid "Titel im Portal:"
+#~ msgstr "Titel im Portal:"
+
+#~ msgid ""
+#~ "Zu diesem Titel bzw. seinen Schlagworten konnten in BibSonomy folgende "
+#~ "Tags gefunden werden."
+#~ msgstr ""
+#~ "Zu diesem Titel bzw. seinen Schlagworten konnten in BibSonomy folgende "
+#~ "Tags gefunden werden."
 
 #~ msgid "Rechercheierbar"
 #~ msgstr "Rechercheierbar"

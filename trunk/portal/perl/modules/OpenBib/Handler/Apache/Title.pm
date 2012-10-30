@@ -34,9 +34,14 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Reload;
+use Apache2::RequestRec ();
+use Apache2::Request ();
 use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
 use Date::Manip;
+use URI::Escape qw(uri_escape uri_escape_utf8);
 
 use OpenBib::Catalog;
 use OpenBib::Search::Backend::Xapian;
@@ -60,6 +65,7 @@ sub setup {
         'show_record_searchindex' => 'show_record_searchindex',
         'show_popular'            => 'show_popular',
         'show_recent'             => 'show_recent',
+        'redirect_to_bibsonomy'   => 'redirect_to_bibsonomy',
     );
 
     # Use current path as template path,
@@ -410,6 +416,43 @@ sub show_record_searchindex {
     $self->print_page($config->{'tt_title_searchindex_tname'},$ttdata);
 
     return Apache2::Const::OK;
+}
+
+sub redirect_to_bibsonomy {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $titleid        = $self->param('titleid');
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    
+    if ($titleid && $database){
+        my $title_as_bibtex = OpenBib::Record::Title->new({id =>$titleid, database => $database})->load_full_record->to_bibtex({utf8 => 1});
+        #        $title=~s/\n/ /g;
+        
+        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape_utf8("http://$servername$path_prefix/$config->{home_loc}")."&description=".uri_escape_utf8($config->get_viewdesc_from_viewname($view))."&encoding=UTF-8&selection=".uri_escape_utf8($title_as_bibtex);
+        #        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&encoding=UTF-8&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=OpenBib Recherche-Portal&selection=".uri_escape_utf8($title);
+        
+        $logger->debug($bibsonomy_uri);
+        
+        $self->query->method('GET');
+        $self->query->content_type('text/html; charset=UTF-8');
+        $self->query->headers_out->add(Location => $bibsonomy_uri);
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+
+    return;
 }
 
 sub highlightquery {

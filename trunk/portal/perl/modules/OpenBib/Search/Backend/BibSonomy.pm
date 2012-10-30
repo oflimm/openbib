@@ -92,7 +92,7 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    $self->{_querystring}{start} = $offset-1;
+    $self->{_querystring}{start} = $offset;
     $self->{_querystring}{end}   = $offset+$num;
     
     my $recordlist = OpenBib::BibSonomy->new()->get_posts($self->{_querystring});
@@ -131,7 +131,7 @@ sub parse_query {
                     content => $searchtermstring
                 };
             }
-            elsif    ($field eq "tag" && $searchtermstring) {
+            elsif    ($field eq "subjectstring" && $searchtermstring) {
                 push @searchterms, {
                     field   => 'tag',
                     content => $searchtermstring

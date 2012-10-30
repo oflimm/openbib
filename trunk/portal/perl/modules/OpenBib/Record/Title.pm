@@ -883,6 +883,9 @@ sub to_bibsonomy_post {
     # Abstract
     my $abstract  = (exists $self->{_fields}->{T0750})?utf2bibtex($self->{_fields}->{T0750}[0]{content},$utf8):'';
 
+    # URL
+    my $url       = (exists $self->{_fields}->{T0662})?utf2bibtex($self->{_fields}->{T0662}[0]{content},$utf8):'';
+
     # Origin
     my $origin    = (exists $self->{_fields}->{T0590})?utf2bibtex($self->{_fields}->{T0590}[0]{content},$utf8):'';
 
@@ -915,6 +918,9 @@ sub to_bibsonomy_post {
     }
     if ($keyword){
         $bibtex->setAttribute("keywords",$keyword);
+    }
+    if ($url){
+        $bibtex->setAttribute("url",$url);
     }
     if ($language){
         $bibtex->setAttribute("language",$language);
@@ -1062,6 +1068,9 @@ sub to_bibtex {
     # Sprache
     my $language  = (exists $self->{_fields}->{T0516})?utf2bibtex($self->{_fields}->{T0516}[0]{content},$utf8):'';
 
+    # URL
+    my $url       = (exists $self->{_fields}->{T0662})?utf2bibtex($self->{_fields}->{T0662}[0]{content},$utf8):'';
+
     # Abstract
     my $abstract  = (exists $self->{_fields}->{T0750})?utf2bibtex($self->{_fields}->{T0750}[0]{content},$utf8):'';
 
@@ -1097,6 +1106,9 @@ sub to_bibtex {
     }
     if ($keyword){
         push @$bibtex_ref, "keywords  = \"$keyword\"";
+    }
+    if ($url){
+        push @$bibtex_ref, "url       = \"$url\"";
     }
     if ($language){
         push @$bibtex_ref, "language  = \"$language\"";

@@ -113,7 +113,6 @@ admin_cluster_loc: admin/cluster
 admin_topic_loc: admin/topic
 admin_login_loc: admin/login
 admin_logout_loc: admin/logout
-bibsonomy_loc: bibsonomy
 circulation_loc: benutzerkonto
 connector_availabilityimage_loc: connector/availabilityimage
 connector_availability_loc: connector/availability
@@ -3008,10 +3007,6 @@ tt_admin_showstat_tname: admin_showstat
 tt_admin_showuser_tname: admin_showuser
 tt_admin_showuser_1_tname: admin_showuser_1
 tt_admin_showviews_tname: admin_showviews
-tt_bibsonomy_tags_tname: bibsonomy_tags
-tt_bibsonomy_collection_tname: bibsonomy_collection
-tt_bibsonomy_collection_by_tag_tname: bibsonomy_collection_by_tag
-tt_bibsonomy_collection_by_user_tname: bibsonomy_collection_by_user
 tt_catalogue_loggedin_tname: catalogue_loggedin
 tt_catalogue_login_tname: catalogue_login
 tt_catalogue_logout_tname: catalogue_logout

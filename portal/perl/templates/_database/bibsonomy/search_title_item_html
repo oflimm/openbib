@@ -60,7 +60,7 @@
 [% cgi_querystring = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = ['typ'] })%]
 
 <dl class="ob-items">
-<dt class="ob-headline">Eingrenzen</dt>
+<dt class="ob-headline">[% msg.maketext("Eingrenzen") %]</dt>
 <dd [% IF searchquery.get_searchfield('mediatype').norm == "publication" %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgi_querystring %];typ=publication">[% msg.maketext("Publikationen") %]</a></dd>
 <dd [% IF searchquery.get_searchfield('mediatype').norm == "bookmark" %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgi_querystring %];typ=bookmark">[% msg.maketext("Web") %]</a></dd>
 </dl>

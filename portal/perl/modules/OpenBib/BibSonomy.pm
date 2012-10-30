@@ -175,7 +175,7 @@ sub get_posts {
     my $root   = $tree->getDocumentElement;
 
     unless ($root->findvalue('/bibsonomy/@stat') eq "ok"){
-        return {};
+        return new OpenBib::RecordList::Title;
     }
 
     my $next = $root->findvalue('/bibsonomy/posts/@next');

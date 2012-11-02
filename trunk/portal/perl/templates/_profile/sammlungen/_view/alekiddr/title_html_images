@@ -30,5 +30,5 @@
 [% END %]
 
 [% IF cgiapp.is_authenticated('admin') %]
-<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
+<a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
 [% END %]

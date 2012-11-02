@@ -59,7 +59,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('person_loc')}/${record.database}/${thisid}/html";
+         resourceurl = "${path_prefix}/${config.get('person_loc')}/database/${record.database}/id/${thisid}/html";
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
          content   = "${rssfeed}<a href=\"${resourceurl}\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${path_prefix}/${config.get('redirect_loc')}/520/[% uri_escape("http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel") %]\" target=\"_blank\"><img src=\"${config.get('base_loc')}/common/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}/?lang=${qopts.l}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
@@ -78,7 +78,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('corporatebody_loc')}/${record.database}/${thisid}/html";
+         resourceurl = "${path_prefix}/${config.get('corporatebody_loc')}/database/${record.database}/id/${thisid}/html";
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
          content   = "${rssfeed}&nbsp;<a href=\"${resourceurl}\" Title=\"K&ouml;rperschafts-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
@@ -119,7 +119,7 @@ FOREACH category IN categories;
          END ;
 
     CASE "E4100";
-         localurl    = "${path_prefix}/${config.get('browse_loc')}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
+         localurl    = "${path_prefix}/${config.get('browse_loc')}/database/${record.database}/type/enrichment/field/${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -156,7 +156,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('subject_loc')}/${record.database}/${thisid}/html";
+         resourceurl = "${path_prefix}/${config.get('subject_loc')}/database/${record.database}/id/${thisid}/html";
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
          content   = " ${rssfeed}<a href=\"${resourceurl}\" Title=\"Schlagwort-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
@@ -176,7 +176,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('classification_loc')}/${record.database}/${thisid}/html";
+         resourceurl = "${path_prefix}/${config.get('classification_loc')}/database/${record.database}/id/${thisid}/html";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
          content   = " ${rssfeed}<a href=\"${resourceurl}\" title=\"Systematik-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 

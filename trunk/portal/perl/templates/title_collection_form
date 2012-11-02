@@ -44,7 +44,7 @@
 [%# USE dumper;dumper.dump(libinfo)%]
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('title_loc') %]/[% database %]">
+<form method="post" action="[% path_prefix %]/[% config.get('title_loc') %]/database/[% database %]">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuen Titel anlegen") %]</th></tr>

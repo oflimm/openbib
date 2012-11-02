@@ -29,7 +29,7 @@ dummy = rss.channel( "title", channel_title, "link", channel_link, "description"
 FOREACH thisitem IN public_litlists ;
 
 item_title       = thisitem.title;
-item_link        = "http://${config.get('frontendservername')}${path_prefix}/${config.get('litlist_loc')}/${thisitem.id}";
+item_link        = "http://${config.get('frontendservername')}${path_prefix}/${config.get('litlist_loc')}/id/${thisitem.id}";
 item_tstamp      = thisitem.tstamp.split(' ').first;
 
 topics = [];

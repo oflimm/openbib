@@ -49,7 +49,7 @@ title      = msg.maketext("Systematik-Information: [_1] in Katalog [_2]",recordn
       </ul>
     </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('classification_loc') %]/[% record.database %]/[% record.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('classification_loc') %]/database/[% record.database %]/id/[% record.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
     </div>
    </div>
 

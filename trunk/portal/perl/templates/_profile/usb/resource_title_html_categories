@@ -40,7 +40,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('resource_person_loc')}/${record.database}/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('resource_person_loc')}/database/${record.database}/id/${thisid}.html";
 
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
          localurl  = "${request_base};fs=${searchprefix}:|${searchterm}|";
@@ -61,7 +61,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('resource_corporatebody_loc')}/${record.database}/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('resource_corporatebody_loc')}/database/${record.database}/id/${thisid}.html";
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
          localurl  = "${request_base};db=${database};fs=${searchprefix}:|${searchterm}|";
 #         localurl  = "${request_base};fs=${searchterm}";
@@ -169,7 +169,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('resource_subject_loc')}/${record.database}/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('resource_subject_loc')}/database/${record.database}/id/${thisid}.html";
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
          localurl  = "${request_base};db=${database};fs=${searchprefix}:|${searchterm}|";
 #         localurl  = "${request_base};fs=${searchterm}";
@@ -190,7 +190,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('resource_classification_loc')}/${record.database}/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('resource_classification_loc')}/database/${record.database}/id/${thisid}.html";
          localurl  = "${request_base};db=${database};fs=${searchprefix}:|${searchterm}|";
          content   = "${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 

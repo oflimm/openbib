@@ -32,35 +32,35 @@
 [%   IF active_submenu == "cloud_year" %]
   <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
 [%   ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/year/[% database %].html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/type/year/database/[% database %].html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
 [%   END %]
 [% END %]
 [% IF statistics.result_exists({ id => database, type => 6 }) %]
 [%   IF active_submenu == "cloud_person" %]
   <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
 [%   ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/person/[% database %].html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/type/person/database/[% database %].html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
 [%   END %]
 [% END %]
 [% IF statistics.result_exists({ id => database, type => 5 }) %]
 [%   IF active_submenu == "cloud_corporatebody" %]
   <li class="active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
 [%   ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/corporatebody/[% database %].html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/type/corporatebody/database/[% database %].html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
 [%   END %]
 [% END %]
 [% IF statistics.result_exists({ id => database, type => 3 }) %]
 [%   IF active_submenu == "cloud_subject" %]
   <li class="active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
 [%   ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/subject/[% database %].html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/type/subject/database/[% database %].html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
 [%   END %]
 [% END %]
 [% IF statistics.result_exists({ id => database, type => 4 }) %]
 [%   IF active_submenu == "cloud_classification" %]
   <li class="active"><strong>[% msg.maketext("Systematik") %]</strong></li>
 [%   ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/classification/[% database %].html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/type/classification/database/[% database %].html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
 [%   END %]
 [% END %]
 [% IF statistics.result_exists({ id => database, type => 7 })%]
@@ -68,7 +68,7 @@
 [%     IF active_submenu == "cloud_tag" %]
   <li class="active"><strong>[% msg.maketext("Nutzer-Tags") %]</strong></li>
 [%     ELSE %]
-<li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/tag/[% database %].html" title="[% msg.maketext("Nutzer-Tags") %]">[% msg.maketext("Nutzer-Tags") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/type/tag/database/[% database %].html?l=[% lang %]" title="[% msg.maketext("Nutzer-Tags") %]">[% msg.maketext("Nutzer-Tags") %]</a></li>
 [%     END %]
 [%   END %]
 [% END %]
@@ -80,14 +80,14 @@
 [%     IF active_submenu == "cloud_litlist" %]
   <li class="active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>
 [%     ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/litlist.html" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/type/litlist.html" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>
 [%     END %]
 [%   END %]
 [% END %]
 [% IF active_submenu == "cloud_searchterm" %]
   <li class="active"><strong>[% msg.maketext("Suchbegriffe") %]</strong></li>
 [% ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('cloud_loc') %]/type/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 [% END %]
 
  </ul>

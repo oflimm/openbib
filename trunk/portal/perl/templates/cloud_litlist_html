@@ -45,7 +45,7 @@
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('cloud_loc') %]/litlist.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('cloud_loc') %]/type/litlist.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
    </div>
 

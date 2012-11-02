@@ -1,6 +1,6 @@
 [%-
 
-channel_link        = "${path_prefix}/${config.get('litlist_loc')}/${litlist.id}.rss";
+channel_link        = "${path_prefix}/${config.get('litlist_loc')}/id/${litlist.id}.rss";
 channel_title       = "Literaturliste: ${litlist.properties.title}";
 channel_description = "RSS Feed der Literaturliste '${litlist.properties.title}' sortiert nach dem Datum der Übernahme in die Literaturliste";
 

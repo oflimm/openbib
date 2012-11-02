@@ -108,7 +108,7 @@ class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearof
 <p />[%    IF item.review %][% item.review %][% END %]
 
 <p>
-<a class="ob-button" href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="ob-button" href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/review/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
+<a class="ob-button" href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/review/id/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="ob-button" href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/review/id/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
 </p>
 </td></tr>
 <tr><td></td></tr>

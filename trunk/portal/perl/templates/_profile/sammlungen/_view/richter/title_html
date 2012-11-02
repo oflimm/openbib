@@ -116,8 +116,8 @@
       </ul>
     </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
     </div>
    </div>
 
@@ -143,18 +143,18 @@
 %]
 <h4>[% msg.maketext("Behalten Sie diesen Titel") %]:</h4><p/>
 
-<img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
-<img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% config.get('collection_loc') %].html?l=[% lang %];_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
-<img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/mail.html?l=[% lang %];format=full" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
-<img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/save.html?l=[% lang %];format=full" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
-<img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %]/print.html?l=[% lang %];format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
+<img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
+<img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('user_loc') %]/id/[% user.ID %]/[% END %][% config.get('collection_loc') %].html?l=[% lang %];_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
+<img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %]/mail.html?l=[% lang %];format=full" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
+<img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %]/save.html?l=[% lang %];format=full" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
+<img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %]/print.html?l=[% lang %];format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
 
 <p />
 <div class="ob-formats"><!-- Begin Formats -->
 <div class="ob-headline"><span id="ob-formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-formats_do"><!-- Begin formats do -->
 <p>
-<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?l=[% lang %];format=full" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?l=[% lang %];format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?l=[% lang %];format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html?l=[% lang %];format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %].html?l=[% lang %];format=full" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %].html?l=[% lang %];format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %].html?l=[% lang %];format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %].html?l=[% lang %];format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 <p/>
@@ -350,7 +350,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <ul>
 [% FOREACH related_record IN related_records.get_records %]
 [% item = related_record.get_fields %]
-[% related_url = "${path_prefix}/${config.get('title_loc')}/${related_record.database}/${related_record.id}.html?l=${lang}" %]
+[% related_url = "${path_prefix}/${config.get('title_loc')}/database/${related_record.database}/id/${related_record.id}.html?l=${lang}" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
@@ -374,7 +374,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <div class="ob-headline">[% msg.maketext("Literaturlisten") %]</div>
 <ul style="list-style-type: square">
 [% FOREACH litlist IN litlists %]
-<li><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %].html">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
+<li><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.id %].html">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
 [% END %]
 </ul>
 </div>
@@ -421,7 +421,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% IF username && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:
 [%- FOREACH tag IN private_tags_of_tit -%]
-<a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/tag/[% tag.id %].html">[% tag.name %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/tag/id/[% tag.id %].html">[% tag.name %]</a>&nbsp;
 [%- END -%]
 [% END %]
 </div>
@@ -495,7 +495,7 @@ $(document).ready(function(){
 <div class="ob-headline"><span id="ob-misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-misc_do"><!-- Begin misc do -->
 <ul style="list-style-type: square">
-<li><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/popular.html" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/popular.html" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 </div>
 </div>
@@ -541,7 +541,7 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('title_loc') %]/[% item.database %]/[% item.id %].html"><strong><span class="ob-title">[%
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% item.database %]/id/[% item.id %].html"><strong><span class="ob-title">[%
 title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span></p>
 [% END %]
 [% IF recent_titles.get_size > 5 %]
@@ -803,7 +803,7 @@ href="[% path_prefix %]/[% config.get('review_loc') %]/[% item.id %]?_method=DEL
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${path_prefix}/${config.get('title_loc')}/${same_record.database}/${same_record.id}.html" %]
+[% same_url = "${path_prefix}/${config.get('title_loc')}/database/${same_record.database}/id/${same_record.id}.html" %]
 <li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
 [% END %]
 </ol>

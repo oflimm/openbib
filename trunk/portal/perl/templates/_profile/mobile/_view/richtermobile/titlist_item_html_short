@@ -208,7 +208,7 @@
 
     titleinfo = titleinfos.join(" | ");
 -%]
-<li><a href="[% path_prefix %]/[% config.get('title_loc') %]/[% record.database %]/[% record.id %].html">
+<li><a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% record.database %]/id/[% record.id %].html">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.lt == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% END %]
          <h3>[% title %]</h3>
          <p style="padding-left:1.5em;">

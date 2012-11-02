@@ -55,7 +55,7 @@ function update_collection(yourform, checked, item) {
      </div>
    </div>
 
-    <form method="post" action="[% path_prefix %]/[% config.get('collection_loc') %]">
+    <form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('user_loc') %]/id/[% user.ID %]/[% END %][% config.get('collection_loc') %]">
       
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">

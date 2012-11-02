@@ -58,13 +58,13 @@
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% username %]</td>
 
 [% IF targettype == 'self' && username != 'admin' %]
-<td><form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="confirm" value="1" /><input type="hidden" name="_method" value="DELETE" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
+<td><form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="confirm" value="1" /><input type="hidden" name="_method" value="DELETE" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
 [% END %]
 
 </tr>
 
 [% IF targettype == 'self' %]
-<tr><form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded"><input type="hidden" name="_method"    value="PUT" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="" /></td><td><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></form></tr>
+<tr><form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded"><input type="hidden" name="_method"    value="PUT" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="" /></td><td><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></form></tr>
 [% END %]
 
 </table>
@@ -150,7 +150,7 @@
 
 <h2>[% msg.maketext("Einstellungen") %]</h2>
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/searchform" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences/searchform" enctype="application/x-www-form-urlencoded" class="ym-form">
 <fieldset class="ym-full">
 <legend>[% msg.maketext("Recherchemaske") %]</legend>
 <input type="hidden" name="_method"    value="PUT" />
@@ -166,7 +166,7 @@
 </fieldset>
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/searchfields" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences/searchfields" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method" value="PUT" />
 <fieldset>
 <legend>[% msg.maketext("Suchfelder") %]</legend>
@@ -256,7 +256,7 @@
 </fieldset>
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 <fieldset class="ym-full">
 <legend>[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</legend>
@@ -273,7 +273,7 @@
 </fieldset>
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/livesearch" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences/livesearch" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 <fieldset>
 <legend>[% msg.maketext("LiveSearch") %]</legend>
@@ -323,7 +323,7 @@
 </fieldset>
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/spelling" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences/spelling" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
 <fieldset>
@@ -344,7 +344,7 @@
 </fieldset>
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/bibsonomy" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences/bibsonomy" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 <fieldset>
 <legend>[% msg.maketext("BibSonomy") %]</legend>
@@ -371,7 +371,7 @@
 
 [%- IF bibsonomy.sync == "on" -%]
 <p/>
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences/bibsonomysync" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences/bibsonomysync" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 <fieldset>
 <legend>[% msg.maketext("Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen") %]</legend>

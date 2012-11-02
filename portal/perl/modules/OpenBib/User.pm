@@ -941,14 +941,14 @@ sub add_tags {
     # Set defaults
     my $tags                = exists $arg_ref->{tags}
         ? $arg_ref->{tags    }            : undef;
-    my $titid               = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}               : undef;
-    my $titisbn             = exists $arg_ref->{titisbn}
-        ? $arg_ref->{titisbn}             : '';
-    my $titdb               = exists $arg_ref->{titdb}
-        ? $arg_ref->{titdb}               : undef;
-    my $username           = exists $arg_ref->{username}
-        ? $arg_ref->{username}           : undef;
+    my $titleid             = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}             : undef;
+    my $titleisbn           = exists $arg_ref->{titleisbn}
+        ? $arg_ref->{titleisbn}           : '';
+    my $dbname              = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}              : undef;
+    my $userid              = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}              : undef;
     my $type                = exists $arg_ref->{type}
         ? $arg_ref->{type}                : undef;
 
@@ -957,21 +957,21 @@ sub add_tags {
     my $logger = get_logger();
 
     # Splitten der Tags
-    my @taglist = split("\\s+",$tags);
+    my @taglist = split('\s+',$tags);
 
     # Zuerst alle Verknuepfungen loeschen
 
     # DBI: "delete from tittag where username = ? and titid=? and titdb=?"
     $self->{schema}->resultset('TitTag')->search_rs(
         {
-            'userid.username' => $username,
-            'me.titleid'       => $titid,
-            'me.dbname'        => $titdb,
+            'userid.id'        => $userid,
+            'me.titleid'       => $titleid,
+            'me.dbname'        => $dbname,
         },
         {
             join => ['userid'],
         }
-    )->delete_all;
+    )->delete;
     
     my $tags_ref = [];
     foreach my $tagname (@taglist){
@@ -1001,15 +1001,15 @@ sub add_tags {
 
             # DBI: "select id from tags where tag = ?"
             #      "insert into tittag (tagid,titid,titisbn,titdb,username,type) values (?,?,?,?,?,?)"
+
             $new_tag->create_related(
                 'tit_tags',
                 {
-                    titleid   => $titid,
-                    titleisbn => $titisbn,
-                    dbname    => $titdb,
-                    userid    => $self->get_userid_for_username($username),
-                    type      => $type,
-                    
+                    titleid   => $titleid,
+                    titleisbn => $titleisbn,
+                    dbname    => $dbname,
+                    userid    => $userid,
+                    type      => $type,                    
                 }
             );
         }
@@ -1025,10 +1025,10 @@ sub add_tags {
             $tag->create_related(
                 'tit_tags',
                 {
-                    titleid   => $titid,
-                    titleisbn => $titisbn,
-                    dbname    => $titdb,
-                    userid    => $self->get_userid_for_username($username),
+                    titleid   => $titleid,
+                    titleisbn => $titleisbn,
+                    dbname    => $dbname,
+                    userid    => $userid,
                     type      => $type,                    
                 }
             );
@@ -1051,21 +1051,21 @@ sub add_tags {
     
     # 1) Ueberpruefen, ob Titel bereits existiert
     
-    my $record    = new OpenBib::Record::Title({ database => $titdb , id => $titid})->load_full_record;
+    my $record    = new OpenBib::Record::Title({ database => $dbname , id => $titleid})->load_full_record;
     my $bibkey    = $record->to_bibkey;
     
-    my $posts_ref = $bibsonomy->get_posts({ user => 'self', bibkey => $bibkey});
+    my $recordlist = $bibsonomy->get_posts({ user => 'self', bibkey => $bibkey});
     
     $logger->debug("Bibkey: $bibkey");
     # 2) ja, dann Tags und Sichtbarkeit anpassen
-    if (exists $posts_ref->{recordlist} && @{$posts_ref->{recordlist}}){
-        $logger->debug("Syncing Tags and Visibility $titdb:$titid");
+    if ($recordlist->get_size > 0){
+        $logger->debug("Syncing Tags and Visibility $dbname:$titleid");
         $bibsonomy->change_post({ tags => $tags_ref, bibkey => $bibkey, visibility => $visibility });
     }
     # 3) nein, dann mit Tags neu anlegen
     else {
         if (@$tags_ref){
-            $logger->debug("Syncing Record $titdb:$titid");
+            $logger->debug("Syncing Record $dbname:$titleid");
             $logger->debug("Tags".YAML::Dump($tags_ref));
             $bibsonomy->new_post({ tags => $tags_ref, record => $record, visibility => $visibility });
         }

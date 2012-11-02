@@ -66,7 +66,7 @@
 [% listrow = 'listrow1' %]
 [% FOREACH topic IN topics %]
 
-<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('topic_loc') %]/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
+<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('topic_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]

@@ -226,7 +226,7 @@ sub create_record {
     $record->set_from_apache_request($r);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{title_loc}/$database/new.html");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{title_loc}/database/$database/new.html");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -268,7 +268,7 @@ sub show_record {
     if ($user->{ID} && !$userid){
         my $args = "?l=".$self->param('lang');
 
-        return $self->redirect("$path_prefix/$config->{user_loc}/$user->{ID}/title/$database/$titleid.$representation$args",'303 See Other');
+        return $self->redirect("$path_prefix/$config->{user_loc}/id/$user->{ID}/title/database/$database/id/$titleid.$representation$args",'303 See Other');
     }
     
     if ($userid && !$self->is_authenticated('user',$userid)){

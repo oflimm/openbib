@@ -35,7 +35,7 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Literaturlisten") %]</a></li>
        </ul>
      </div>
@@ -96,7 +96,7 @@
 <tr><th>[% msg.maketext("Titel der Literaturliste") %]</th><th>[% msg.maketext("Titelzahl") %]</th><th>[% msg.maketext("Sichtbarkeit") %]</th><th>[% msg.maketext("Themengebiete") %]</th><th>[% msg.maketext("Angelegt") %]</th><th></th></tr>
 [% listrow = 'listrow1' %]
 [% FOREACH litlist IN litlists %]
-<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]/edit"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
+<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.id %]/edit"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
 [% msg.maketext("&ouml;ffentlich") %]
 [% ELSE %] 
 [% msg.maketext("privat") %]
@@ -104,7 +104,7 @@
 </td>
 <td>[%- FOREACH topic IN litlist.topics -%][% topic.name %]<br/>[%- END -%]</td>
 <td>[% litlist.tstamp | truncate(19,'') %]</td>
-<td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/[% litlist.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td></tr>
+<td><a href="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td></tr>
 [% END %]
 
 </table>

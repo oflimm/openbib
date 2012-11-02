@@ -481,10 +481,13 @@ sub change_post {
         'bookmark'    => 'bookmark',
     );
 
-    my $posts_ref = $self->get_posts({ user => 'self', bibkey => $bibkey});
+    my $recordlist = $self->get_posts({ user => 'self', bibkey => $bibkey});
 
-    if (@{$posts_ref->{recordlist}}){
-        my $postxml = $posts_ref->{recordlist}[0]{xmldata};
+    if ($recordlist->get_size > 0){
+        my @records = $recordlist->get_records;
+        my $record = $records[0];
+        
+        my $postxml = $record->get_generic_attributes->{xmldata};
 
         # Existierende XML-Daten einlesen
         my $xmldata = XML::LibXML->new();
@@ -516,7 +519,7 @@ sub change_post {
         }
 
         # Aendern in BibSonomy
-        my $url = "http://www.bibsonomy.org/api/users/".$self->{api_user}."/posts/".$posts_ref->{recordlist}[0]{intrahash};
+        my $url = "http://www.bibsonomy.org/api/users/".$self->{api_user}."/posts/".$record->get_generic_attributes->{intrahash};
 ;
 
         $logger->debug($url);
@@ -584,7 +587,7 @@ sub new_post {
     $root->appendChild($post);
 
     # Beschreibung
-    $post->setAttribute('description',"KUG Recherche-Portal");
+    $post->setAttribute('description',"OpenBib Recherche-Portal");
 
     # User
     my $user = $doc->createElement('user');

@@ -7,7 +7,7 @@
 #  Konvertierung des RePEc-amf-Formates in das OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,6 +38,7 @@ use Encode 'decode';
 use File::Find;
 use File::Slurp;
 use Getopt::Long;
+use JSON::XS;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 use YAML::Syck;
@@ -72,21 +73,19 @@ our $mediatype_ref = {
     'book'     => 'Buch',
 };
 
-open (TIT,     ,"|buffer | gzip > unload.TIT.gz");
-open (AUT,     ,"|buffer | gzip > unload.PER.gz");
-open (KOR,     ,"|buffer | gzip > unload.KOE.gz");
-open (NOTATION ,"|buffer | gzip > unload.SYS.gz");
-open (SWT,     ,"|buffer | gzip > unload.SWD.gz");
-open (MEX,     ,"|buffer | gzip > unload.MEX.gz");
+open (TITLE,     ,"|buffer | gzip > meta.title.gz");
+open (PERSON,     ,"|buffer | gzip > meta.person.gz");
+open (CORPORATEBODY,     ,"|buffer | gzip > meta.corporatebody.gz");
+open (CLASSIFICATION ,"|buffer | gzip > meta.classification.gz");
+open (SUBJECT,     ,"|buffer | gzip > meta.subject.gz");
+open (HOLDING,     ,"|buffer | gzip > meta.holding.gz");
 
-binmode(TIT,     ":utf8");
-binmode(AUT,     ":utf8");
-binmode(KOR,     ":utf8");
-binmode(NOTATION,":utf8");
-binmode(SWT,     ":utf8");
-binmode(MEX,     ":utf8");
-
-binmode(TIT, ":utf8");
+binmode(TITLE,     ":utf8");
+binmode(PERSON,     ":utf8");
+binmode(CORPORATEBODY,     ":utf8");
+binmode(CLASSIFICATION,":utf8");
+binmode(SUBJECT,     ":utf8");
+binmode(HOLDING,     ":utf8");
 
 our $parser = XML::LibXML->new();
 #    $parser->keep_blanks(0);
@@ -96,6 +95,9 @@ our $parser = XML::LibXML->new();
 sub process_file {
     return unless ($File::Find::name=~/.amf.xml$/);
 
+    my $title_ref = {};
+    my $multcount_ref = {};
+    
 #    print "Processing ".$File::Find::name."\n";
 
     # Workaround: XPATH-Problem mit Default-Namespace. Daher alle
@@ -122,64 +124,120 @@ sub process_file {
     # Collection
     foreach my $node ($root->findnodes('/amf/collection')) {
         my $id    = $node->getAttribute ('id');
-        
-        print TIT "0000:$id\n";
 
+        $title_ref->{id} = $id;
+            
         # Herausgeber
         foreach my $item ($node->findnodes ('haseditor/person/name//text()')) {
             my $content = $item->textContent;
-            my $autidn  = OpenBib::Conv::Common::Util::get_autidn($content);
+            my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                     
-            if ($autidn > 0) {
-                print AUT "0000:$autidn\n";
-                print AUT "0001:$content\n";
-                print AUT "9999:\n";
-            } else {
-                $autidn=(-1)*$autidn;
+            if ($new) {
+                my $item_ref = {};
+                $item_ref->{id} = $person_id;
+
+                push @{$item_ref->{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $content,
+                };
+                
+                print PERSON encode_json $item_ref, "\n";
             }
-                    
-            print TIT "0101:IDN: $autidn ; [Hrsg.]\n";
+
+            
+            my $mult = ++$multcount_ref->{'0101'};
+
+            push @{$title_ref->{'0101'}}, {
+                mult       => $mult,
+                subfield   => '',
+                id         => $person_id,
+                supplement => '[Hrsg.]',
+            };
+
         }
         
         # Titel
         foreach my $item ($node->findnodes ('title//text()')) {
             my $content = $item->textContent;
-            print TIT "0331:$content\n";
+
+            my $mult = ++$multcount_ref->{'0331'};
+
+            push @{$title_ref->{'0331'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
         # Beschreibung
         foreach my $item ($node->findnodes ('description//text()')) {
             my $content = $item->textContent;
-            print TIT "0750:$content\n";
+
+            my $mult = ++$multcount_ref->{'0750'};
+
+            push @{$title_ref->{'0750'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
         # Ueberordnung
         foreach my $item ($node->findnodes ('ispartof/collection')) {
             my $id = $item->getAttribute ('ref');
             last if ($id=~/^RePEc$/); # Root-Node wird nicht verlinkt
-            print TIT "0004:$id\n";
+
+            my $mult = ++$multcount_ref->{'0004'};
+
+            push @{$title_ref->{'0004'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $id,
+            };
         }
 
         # Verlag
         foreach my $item ($node->findnodes ('haspublisher/organization/name//text()')) {
             my $content = $item->textContent;
-            print TIT "0412:$content\n";
+
+            my $mult = ++$multcount_ref->{'0412'};
+
+            push @{$title_ref->{'0412'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
         # Medientyp
         foreach my $item ($node->findnodes ('type//text()')) {
             my $content = $item->textContent;
             $content = (exists $mediatype_ref->{$content})?$mediatype_ref->{$content}:$content;
-            print TIT "0800:$content\n";
+
+            my $mult = ++$multcount_ref->{'0800'};
+
+            push @{$title_ref->{'0800'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
         # Homepage
         foreach my $item ($node->findnodes ('homepage//text()')) {
             my $content = $item->textContent;
-            print TIT "0662:$content\n";
+
+            my $mult = ++$multcount_ref->{'0662'};
+
+            push @{$title_ref->{'0662'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
-        print TIT "9999:\n";
+        print TITLE encode_json $title_ref, "\n";
     }
 
     #######################################################################
@@ -187,92 +245,166 @@ sub process_file {
     foreach my $node ($root->findnodes('/amf/text')) {
         my $id    = $node->getAttribute ('id');
 
-        print TIT "0000:$id\n";
+        $title_ref->{id} = $id;
 
         # Verfasser
         foreach my $item ($node->findnodes ('hasauthor/person/name//text()')) {
             my $content = $item->textContent;
-            my $autidn  = OpenBib::Conv::Common::Util::get_autidn($content);
+            my ($person_id,$new)  = OpenBib::Conv::Common::Util::get_person_id($content);
                     
-            if ($autidn > 0) {
-                print AUT "0000:$autidn\n";
-                print AUT "0001:$content\n";
-                print AUT "9999:\n";
-            } else {
-                $autidn=(-1)*$autidn;
+            if ($new) {
+                my $item_ref = {};
+                $item_ref->{id} = $person_id;
+
+                push @{$item_ref->{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $content,
+                };
+                
+                print PERSON encode_json $item_ref, "\n";
             }
-                    
-            print TIT "0100:IDN: $autidn\n";
+
+            my $mult = ++$multcount_ref->{'0100'};
+
+            push @{$title_ref->{'0100'}}, {
+                mult       => $mult,
+                subfield   => '',
+                id         => $person_id,
+                supplement => '',
+            };
         }
 
         # Herausgeber
         foreach my $item ($node->findnodes ('haseditor/person/name//text()')) {
             my $content = $item->textContent;
-            my $autidn  = OpenBib::Conv::Common::Util::get_autidn($content);
+            my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                     
-            if ($autidn > 0) {
-                print AUT "0000:$autidn\n";
-                print AUT "0001:$content\n";
-                print AUT "9999:\n";
-            } else {
-                $autidn=(-1)*$autidn;
+            if ($new) {
+                my $item_ref = {};
+                $item_ref->{id} = $person_id;
+
+                push @{$item_ref->{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $content,
+                };
+                
+                print PERSON encode_json $item_ref, "\n";
             }
-                    
-            print TIT "0101:IDN: $autidn ; [Hrsg.]\n";
+
+            my $mult = ++$multcount_ref->{'0101'};
+
+            push @{$title_ref->{'0101'}}, {
+                mult       => $mult,
+                subfield   => '',
+                id         => $person_id,
+                supplement => '[Hrsg.]',
+            };
         }
-        
+
         # Titel
         foreach my $item ($node->findnodes ('title//text()')) {
             my $content = $item->textContent;
-            print TIT "0331:$content\n";
+
+            my $mult = ++$multcount_ref->{'0331'};
+
+            push @{$title_ref->{'0331'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
         # Beschreibung
         foreach my $item ($node->findnodes ('abstract//text()')) {
             my $content = $item->textContent;
-            print TIT "0750:$content\n";
+
+            my $mult = ++$multcount_ref->{'0750'};
+
+            push @{$title_ref->{'0750'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
         # Ueberordnung
         foreach my $item ($node->findnodes ('ispartof/collection')) {
             my $id = $item->getAttribute ('ref');
             last if ($id=~/^RePEc$/); # Root-Node wird nicht verlinkt
-            print TIT "0004:$id\n";
+
+            my $mult = ++$multcount_ref->{'0004'};
+
+            push @{$title_ref->{'0004'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $id,
+            };
         }
 
         # Verlag
         foreach my $item ($node->findnodes ('haspublisher/organization/name//text()')) {
             my $content = $item->textContent;
-            print TIT "0412:$content\n";
+
+            my $mult = ++$multcount_ref->{'0412'};
+
+            push @{$title_ref->{'0412'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
         # Medientyp
         foreach my $item ($node->findnodes ('type//text()')) {
             my $content = $item->textContent;
             $content = (exists $mediatype_ref->{$content})?$mediatype_ref->{$content}:$content;
-            print TIT "0800:$content\n";
+
+            my $mult = ++$multcount_ref->{'0800'};
+
+            push @{$title_ref->{'0800'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
-        my $urlidx=1;
         # Link zum Volltext
         foreach my $item ($node->findnodes ('file/url//text()')) {
             my $content = $item->textContent;
-            printf TIT "0662.%03d:%s\n",$urlidx,$content;
-            $urlidx++;
+
+            my $mult = ++$multcount_ref->{'0662'};
+            
+            push @{$title_ref->{'0662'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
-        $urlidx=1;
         # Beschreibung des Links zum Volltext
         foreach my $item ($node->findnodes ('file/repec_function//text()')) {
             my $content = $item->textContent;
-            printf TIT "0663.%03d:%s\n",$urlidx,$content;
-            $urlidx++;
+            my $mult = ++$multcount_ref->{'0663'};
+            
+            push @{$title_ref->{'0663'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };
         }
 
         foreach my $item ($node->findnodes ('date//text()')) {
             my ($date) = $item->textContent =~/^(\d\d\d\d)-\d\d-\d\d/;
+
+            my $mult = ++$multcount_ref->{'0425'};
             
-            print TIT "0425:$date\n" if ($date);
+            push @{$title_ref->{'0425'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $date,
+            } if ($date);
         }
 
         my $issue        = "";
@@ -288,8 +420,16 @@ sub process_file {
         }
         foreach my $item ($node->findnodes ('serial/issuedate//text()')) {
             $issuedate = $item->textContent;
-            print TIT "0425:$issuedate\n";
+
+            my $mult = ++$multcount_ref->{'0425'};
+            
+            push @{$title_ref->{'0425'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $issuedate,
+            };            
         }
+    
         foreach my $item ($node->findnodes ('serial/volume//text()')) {
             $volume = $item->textContent;
         }
@@ -304,7 +444,15 @@ sub process_file {
         }
 
         if ($journaltitle){
-            print TIT "0590:$journaltitle".(($volume)?" Volume $volume ":"").(($issue)?" Issue $issue ":"").(($issuedate)?" ($issuedate) ":"").(($startpage && $endpage)?" Pages $startpage - $endpage":"")."\n";
+            my $mult = ++$multcount_ref->{'0590'};
+
+            my $content = $journaltitle.(($volume)?" Volume $volume ":"").(($issue)?" Issue $issue ":"").(($issuedate)?" ($issuedate) ":"").(($startpage && $endpage)?" Pages $startpage - $endpage":"");
+
+            push @{$title_ref->{'0590'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $content,
+            };            
         }
 
         # Schlagworte
@@ -323,17 +471,29 @@ sub process_file {
 
                 foreach my $part (@parts){
                     $part=~s/^(\w)/\u$1/;
-                    my $swtidn  = OpenBib::Conv::Common::Util::get_swtidn($part);
+                    my ($subject_id,$new)  = OpenBib::Conv::Common::Util::get_subject_id($part);
                     
-                    if ($swtidn > 0) {
-                        print SWT "0000:$swtidn\n";
-                        print SWT "0001:$part\n";
-                        print SWT "9999:\n";
-                    } else {
-                        $swtidn=(-1)*$swtidn;
+                    if ($new) {
+                        my $item_ref = {};
+                        $item_ref->{id} = $subject_id;
+                        
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print SUBJECT encode_json $item_ref, "\n";
                     }
-                    
-                    print TIT "0710:IDN: $swtidn\n";
+
+                    my $mult = ++$multcount_ref->{'0710'};
+
+                    push @{$title_ref->{'0710'}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $subject_id,
+                        supplement => '',
+                    };
                 }
             }
         }
@@ -352,22 +512,35 @@ sub process_file {
                 }
 
                 foreach my $part (@parts){
-                    my $notidn  = OpenBib::Conv::Common::Util::get_notidn($part);
+                    my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($part);
                     
-                    if ($notidn > 0) {
-                        print NOTATION "0000:$notidn\n";
-                        print NOTATION "0001:$part\n";
-                        print NOTATION "9999:\n";
-                    } else {
-                        $notidn=(-1)*$notidn;
+                    if ($new) {
+                        my $item_ref = {};
+                        $item_ref->{id} = $classification_id;
+                        
+                        push @{$item_ref->{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => $part,
+                        };
+                        
+                        print CLASSIFICATION encode_json $item_ref, "\n";
                     }
                     
-                    print TIT "0700:IDN: $notidn\n";
+                    my $mult = ++$multcount_ref->{'0700'};
+                    
+                    push @{$title_ref->{'0700'}}, {
+                        mult       => $mult,
+                        subfield   => '',
+                        id         => $classification_id,
+                        supplement => '',
+                    };
                 }
             }
         }
+    
+    print TITLE encode_json $title_ref, "\n";
 
-        print TIT "9999:\n";
     }
 #
 #    print "Processing done\n";
@@ -375,12 +548,12 @@ sub process_file {
 
 find(\&process_file, $inputdir);
 
-close(TIT);
-close(AUT);
-close(KOR);
-close(NOTATION);
-close(SWT);
-close(MEX);
+close(TITLE);
+close(PERSON);
+close(CORPORATEBODY);
+close(CLASSIFICATION);
+close(SUBJECT);
+close(HOLDING);
 
 sub konv {
     my ($content)=@_;

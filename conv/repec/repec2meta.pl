@@ -49,7 +49,8 @@ use OpenBib::Conv::Common::Util;
 use OpenBib::Config;
 
 our $mexidn  =  1;
-
+our %have_id = ();
+ 
 my ($inputdir,$idmappingfile);
 
 &GetOptions(
@@ -124,9 +125,17 @@ sub process_file {
     # Collection
     foreach my $node ($root->findnodes('/amf/collection')) {
         my $id    = $node->getAttribute ('id');
+        $id=~s/\//slash/g;
+
+	if (exists $have_id{$id}){
+	    print STDERR "Double ID $id in ".$File::Find::name."\n";;
+	    return ;
+	}
 
         $title_ref->{id} = $id;
-            
+	
+	$have_id{$id} = 1;
+	
         # Herausgeber
         foreach my $item ($node->findnodes ('haseditor/person/name//text()')) {
             my $content = $item->textContent;
@@ -186,6 +195,7 @@ sub process_file {
         # Ueberordnung
         foreach my $item ($node->findnodes ('ispartof/collection')) {
             my $id = $item->getAttribute ('ref');
+            $id=~s/\//slash/g;
             last if ($id=~/^RePEc$/); # Root-Node wird nicht verlinkt
 
             my $mult = ++$multcount_ref->{'0004'};
@@ -244,8 +254,16 @@ sub process_file {
     # Text
     foreach my $node ($root->findnodes('/amf/text')) {
         my $id    = $node->getAttribute ('id');
+        $id=~s/\//slash/g;
+
+	if (exists $have_id{$id}){
+	    print STDERR "Double ID $id in ".$File::Find::name."\n";
+	    return ;
+	}
 
         $title_ref->{id} = $id;
+	
+	$have_id{$id} = 1;
 
         # Verfasser
         foreach my $item ($node->findnodes ('hasauthor/person/name//text()')) {
@@ -332,6 +350,7 @@ sub process_file {
         # Ueberordnung
         foreach my $item ($node->findnodes ('ispartof/collection')) {
             my $id = $item->getAttribute ('ref');
+            $id=~s/\//slash/g;
             last if ($id=~/^RePEc$/); # Root-Node wird nicht verlinkt
 
             my $mult = ++$multcount_ref->{'0004'};

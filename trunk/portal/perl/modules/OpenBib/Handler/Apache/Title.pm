@@ -42,6 +42,7 @@ use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
 use Date::Manip;
 use URI::Escape qw(uri_escape uri_escape_utf8);
+use Encode 'decode_utf8';
 
 use OpenBib::Catalog;
 use OpenBib::Search::Backend::Xapian;
@@ -272,6 +273,7 @@ sub show_record {
     }
     
     if ($userid && !$self->is_authenticated('user',$userid)){
+        $logger->debug("Testing authorization for given userid $userid");
         return;
     }
     

@@ -421,6 +421,101 @@ dispatch_rules:
      rule: '/portal/:view/title/database/:database/id/:titleid/searchindex[get]'
      runmode: 'show_record_searchindex'
 
+# Tags im Titelbereich
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag.html[GET]'
+     runmode: 'show_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag[GET]'
+     runmode: 'show_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag.html[POST]'
+     runmode: 'create_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag.json[POST]'
+     runmode: 'create_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag[POST]'
+     runmode: 'create_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag.html[PUT]'
+     runmode: 'update_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag.json[PUT]'
+     runmode: 'update_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag[PUT]'
+     runmode: 'update_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag.html[DELETE]'
+     runmode: 'delete_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag.json[DELETE]'
+     runmode: 'delete_record'
+  - # title_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/title/database/:database/id/:titleid/tag[DELETE]'
+     runmode: 'delete_record'
+
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag.html[GET]'
+     runmode: 'show_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag[GET]'
+     runmode: 'show_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag[GET]'
+     runmode: 'show_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag.html[POST]'
+     runmode: 'create_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag.json[POST]'
+     runmode: 'create_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag[POST]'
+     runmode: 'create_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag.html[PUT]'
+     runmode: 'update_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag.json[PUT]'
+     runmode: 'update_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag[PUT]'
+     runmode: 'update_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag.html[DELETE]'
+     runmode: 'delete_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag.json[DELETE]'
+     runmode: 'delete_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Title::Tag'
+     rule: '/portal/:view/user/id/:userid/title/database/:database/id/:titleid/tag[DELETE]'
+     runmode: 'delete_record'
+
 
   - # title_loc:
      module: 'OpenBib::Handler::Apache::Title'
@@ -519,12 +614,35 @@ dispatch_rules:
      rule: '/portal/:view/searchprofile/id/:profileid[get]'
      runmode: 'show_record'
 
-# Tags im Titelbereich
-
 # Tags im Nutzerbereich
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/user/id/:userid/tag/id/:tagid/titles'
+     runmode: 'show_collection_of_titles'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/user/id/:userid/tag.html'
+     runmode: 'show_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/user/id/:userid/tag.json'
+     runmode: 'show_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/user/id/:userid/tag[get]'
+     runmode: 'show_collection'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/user/id/:userid/tag/id/:tagid[post]'
+     runmode: 'update_record'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/user/id/:userid/tag/id/:tagid[put]'
+     runmode: 'update_record'
+
 
 # Tags im oeffentlichen Bereich
-  - # user_loc:
+  - # tag_loc:
      module: 'OpenBib::Handler::Apache::Tag'
      rule: '/portal/:view/tag/recent.html[get]'
      runmode: 'show_collection_recent'
@@ -550,12 +668,32 @@ dispatch_rules:
      runmode: 'show_collection_recent'
   - # tag_loc:
      module: 'OpenBib::Handler::Apache::Tag'
-     rule: '/portal/:view/tag/recent/:database[get]'
+     rule: '/portal/:view/tag/database/:database/recent.html[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/database/:database/recent.json[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/database/:database/recent.rdf[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/database/:database/recent.rss[get]'
+     runmode: 'show_collection_recent'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/database/:database/recent[get]'
      runmode: 'show_collection_recent'
   - # tag_loc:
      module: 'OpenBib::Handler::Apache::Tag'
      rule: '/portal/:view/tag/id/:tagid'
      runmode: 'show_record'
+  - # tag_loc:
+     module: 'OpenBib::Handler::Apache::Tag'
+     rule: '/portal/:view/tag/id/:tagid/titles'
+     runmode: 'show_collection_of_titles'
 
 # Anzeige und Bearbeitung von Literaturlisten
   - # litlist_loc: 

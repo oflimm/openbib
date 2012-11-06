@@ -1177,14 +1177,16 @@ sub del_tags {
     # Set defaults
     my $tags                = exists $arg_ref->{tags}
         ? $arg_ref->{tags}                : undef;
-    my $titid               = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}               : undef;
+    my $tagid                = exists $arg_ref->{tagid}
+        ? $arg_ref->{tagid}               : undef;
+    my $titleid             = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}             : undef;
     my $titisbn             = exists $arg_ref->{titisbn}
         ? $arg_ref->{titisbn}             : '';
-    my $titdb               = exists $arg_ref->{titdb}
-        ? $arg_ref->{titdb}               : undef;
-    my $username           = exists $arg_ref->{username}
-        ? $arg_ref->{username}           : undef;
+    my $dbname              = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}              : undef;
+    my $userid              = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}              : undef;
 
     # Log4perl logger erzeugen
   
@@ -1195,9 +1197,9 @@ sub del_tags {
             # DBI: "delete from tit_tag where titleid=? and dbname=? and userid=? and tagid=?"
             $self->{schema}->resultset('TitTag')->search_rs(
                 {
-                    'me.titleid'      => $titid,
-                    'me.dbname'       => $titdb,
-                    'userid.username' => $username,
+                    'me.titleid'      => $titleid,
+                    'me.dbname'       => $dbname,
+                    'userid.id'       => $userid,
                     'tagid.name'      => $tag,
                         
                 },
@@ -1207,13 +1209,28 @@ sub del_tags {
             )->delete;
         }
     }
+    elsif ($tagid){
+        # DBI: "delete from tit_tag where titleid=? and dbname=? and userid=? and tagid=?"
+        $self->{schema}->resultset('TitTag')->search_rs(
+            {
+                'me.titleid'      => $titleid,
+                'me.dbname'       => $dbname,
+                'userid.id'       => $userid,
+                'tagid.name'      => $tagid,
+                
+            },
+            {
+                join => ['tagid','userid'],
+            }
+        )->delete;
+    }
     else {
         # DBI: "delete from tittag where titleid=? and dbname=? and userid=?"
         $self->{schema}->resultset('TitTag')->search_rs(
             {
-                'me.titleid'      => $titid,
-                'me.dbname'       => $titdb,
-                'userid.username' => $username,
+                'me.titleid'      => $titleid,
+                'me.dbname'       => $dbname,
+                'userid.id'       => $userid,
                 },
                 {
                     join => ['userid'],

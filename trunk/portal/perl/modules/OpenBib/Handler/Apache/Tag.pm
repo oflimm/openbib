@@ -166,6 +166,9 @@ sub show_record {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
+    my $database       = $self->param('database');
+    my $titleid        = $self->param('titleid');
+    my $userid         = $self->param('userid');
     my $tagid          = $self->strip_suffix($self->param('tagid'));
 
     # Shared Args
@@ -177,13 +180,15 @@ sub show_record {
     my $msg            = $self->param('msg');
     my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
+    my $path_prefix    = $self->param('path_prefix');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
     # CGI Args
+    my $method         = $query->param('_method')     || '';
+    
     my $offset         = $query->param('offset')            || 0;
     my $num            = $query->param('num')               || 50;
-    my $database       = $query->param('db')                || '';
     my $titid          = $query->param('titid')             || '';
     my $titdb          = $query->param('titdb')             || '';
     my $titisbn        = $query->param('titisbn')           || '';
@@ -215,6 +220,44 @@ sub show_record {
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
 
+    if ($method){
+
+        if (! $user->{ID} || ($userid &&  $user->{ID} ne $userid)){
+            if ($self->param('representation') eq "html"){
+                # Aufruf-URL
+                my $return_uri = uri_escape($r->parsed_uri->unparse);
+                
+                $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            }
+            else  {
+                $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+                return Apache2::Const::OK;
+            }
+        }
+                
+        if ($method eq "POST"){
+            $self->create_record;
+        }
+
+        if ($method eq "PUT"){
+            $self->update_record;
+        }
+        
+        if ($method eq "DELETE"){
+            $self->delete_record;
+
+        }
+
+        my $new_location = "$path_prefix/$config->{user_loc}/id/$user->{ID}/$config->{title_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
+        
+        $self->query->method('GET');
+        $self->query->content_type('text/html');
+        $self->query->headers_out->add(Location => $new_location);
+        $self->query->status(Apache2::Const::REDIRECT);        
+
+        return;
+    }
+    
     my $recordlist = new OpenBib::RecordList::Title;
     my $hits       = 0;
 
@@ -381,7 +424,8 @@ sub create_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-
+    my $titleid        = $self->param('titleid');
+    my $userid         = $self->param('userid');
 
     # Shared Args
     my $query          = $self->query();
@@ -393,8 +437,11 @@ sub create_record {
     my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $method         = $query->param('_method')     || '';
     
-    if (! $user->{ID}){
+    if (! $user->{ID} | $user->{ID} ne $userid){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
             my $return_uri = uri_escape($r->parsed_uri->unparse);
@@ -407,9 +454,16 @@ sub create_record {
         }
     }
 
+    if ($method eq "DELETE"){
+        $self->delete_record;
+        return;
+    }
+
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
-    $input_data_ref->{userid} = $user->{ID};
+    $input_data_ref->{userid}  = $user->{ID};
+    $input_data_ref->{titleid} = $titleid;
+    $input_data_ref->{dbname}  = $database;
 
     $self->param('userid',$user->{ID});
     
@@ -417,7 +471,7 @@ sub create_record {
         
     $user->add_tags($input_data_ref);
 
-    my $new_location = "$path_prefix/$config->{title_loc}/database/$input_data_ref->{dbname}/id/$input_data_ref->{titleid}.html?l=$lang;no_log=1";
+    my $new_location = "$path_prefix/$config->{user_loc}/id/$user->{ID}/$config->{title_loc}/database/$input_data_ref->{dbname}/id/$input_data_ref->{titleid}.html?l=$lang;no_log=1";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -432,102 +486,52 @@ sub delete_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $titleid        = $self->param('titleid');
+    my $userid         = $self->param('userid');
+    my $tagid          = $self->param('tagid');
+
+    # Shared Args
+    my $query          = $self->query();
     my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
     my $path_prefix    = $self->param('path_prefix');
-
-    my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-
-    my $offset         = $query->param('offset')      || 0;
-    my $hitrange       = $query->param('num')    || 50;
-    my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "person";
-    my $sortorder      = $query->param('srto')   || "asc";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
-    my $titisbn        = $query->param('titisbn')     || '';
-    my $tags           = decode_utf8($query->param('tags'))        || '';
-    my $type           = $query->param('type')        || 1;
-
-    my $oldtag         = $query->param('oldtag')      || '';
-    my $newtag         = $query->param('newtag')      || '';
-    
-    # Actions
-    my $format         = $query->param('format')      || 'cloud';
-    my $private_tags   = $query->param('private_tags')   || 0;
-    my $searchtitoftag = $query->param('searchtitoftag') || '';
-    my $edit_usertags  = $query->param('edit_usertags')  || '';
-    my $show_usertags  = $query->param('show_usertags')  || '';
-
-    my $queryid        = $query->param('queryid')     || '';
-
-    my $do_add         = $query->param('do_add')      || '';
-    my $do_edit        = $query->param('do_edit')     || '';
-    my $do_change      = $query->param('do_change')   || '';
-    my $do_del         = $query->param('do_del')      || '';
-    
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+    if (! $user->{ID} || $user->{ID} ne $userid){
+        if ($self->param('representation') eq "html"){
+            # Aufruf-URL
+            my $return_uri = uri_escape($r->parsed_uri->unparse);
+            
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+        }
+        else  {
+            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+            return Apache2::Const::OK;
+        }
     }
 
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
+    my $del_args_ref = {
+        titleid   => $titleid,
+        dbname    => $database,
+        userid    => $userid,
+    };
 
-    unless($user->{ID}){
-        # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
-
-        return Apache2::Const::OK;
-    }
-
-    my $username = $user->get_username();
-
-
-    $logger->debug("Loeschen der Tags $tags von $titdb:$titid");
-    
-    $user->del_tags({
-        tags      => $tags,
-        titid     => $titid,
-        titdb     => $titdb,
-        username  => $username,
-    });
-
-    my $new_location = "$r->get_server_name$path_prefix/$config->{title_loc}/database/$titdb/id/$titid.html?queryid=$queryid;no_log=1";
-    
-    if ($tags =~/^\w+$/){
-        my $tagid = $user->get_id_of_tag({tag => $tags});
-        $new_location = "$path_prefix/$config->{user_loc}/id/$user->{ID}/tag/id/$tagid.html";
+    if ($tagid){
+        $del_args_ref->{tagid} = $tagid;
     }
     
+    $user->del_tags($del_args_ref);
+
+    my $new_location = "$path_prefix/$config->{user_loc}/id/$userid/$config->{title_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
+
     $self->query->method('GET');
     $self->query->content_type('text/html');
     $self->query->headers_out->add(Location => $new_location);
@@ -1202,21 +1206,6 @@ sub get_input_definition {
     
     return {
         tags => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        titleid => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        dbname => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        titleisbn => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

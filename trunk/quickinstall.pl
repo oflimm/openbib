@@ -100,6 +100,7 @@ my %cvs_links = (
     "$repositoryroot/conv/allegro/ald2simple.pl"         => "/opt/openbib/conv/ald2simple.pl",
     "$repositoryroot/conv/amarok/amarok_mysql2meta.pl"   => "/opt/openbib/conv/amarok_mysql2meta.pl",
     "$repositoryroot/conv/auto/autoconv.pl"              => "/opt/openbib/autoconv/bin/autoconv.pl",
+    "$repositoryroot/conv/auto/openbib-clustermgmt.pl"   => "/opt/openbib/autoconv/bin/openbib-clustermgmt.pl",
     "$repositoryroot/conv/auto/filter"                   => "/opt/openbib/autoconv/filter",
     "$repositoryroot/conv/cdm/cdm2meta.pl"               => "/opt/openbib/conv/cdm2meta.pl",
     "$repositoryroot/conv/cdm/conf/alff.yml"             => "/opt/openbib/conf/alff.yml",

@@ -46,13 +46,14 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 use OpenBib::Catalog;
 
-my ($database,$sync,$genmex,$help,$logfile,$loglevel);
+my ($database,$sync,$genmex,$help,$keepfiles,$logfile,$loglevel);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
             "loglevel=s"      => \$loglevel,
 	    "sync"            => \$sync,
             "gen-mex"         => \$genmex,
+            "keep-files"      => \$keepfiles,
 	    "help"            => \$help
 	    );
 
@@ -475,7 +476,7 @@ $logger->info("### $database: Cleanup");
 # Temporaer Zugriffspassword setzen
 system("rm ~/.pgpass ");
 
-system("rm $rootdir/data/$database/*") unless ($database eq "openbib");
+system("rm $rootdir/data/$database/*") unless ($keepfiles);
 
 if ($database && -e "$config->{autoconv_dir}/filter/$database/post_cleanup.pl"){
     $logger->info("### $database: Verwende Plugin post_cleanup.pl");

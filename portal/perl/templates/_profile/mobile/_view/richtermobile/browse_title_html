@@ -18,7 +18,7 @@
 <div data-role="page">
 
        <div  data-role="header">
-           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
 	   <h1>Mobil-Portal der Richter-Bibliothek</h1> 
        </div>
 

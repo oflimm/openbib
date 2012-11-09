@@ -17,7 +17,7 @@
 <div data-role="page">
 
        <div  data-role="header">
-           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% config.get('startopac_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% config.get('home_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
 	   <h1>Impressum</h1> 
        </div> 
 

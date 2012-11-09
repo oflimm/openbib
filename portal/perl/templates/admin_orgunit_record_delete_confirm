@@ -48,7 +48,7 @@
 <table>
 <tr>
 <td>
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profilename %]/orgunit/[% orgunitinfo.orgunitname %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="0" />
 <input type="submit" value="[% msg.maketext("Ja") %]">

@@ -53,7 +53,7 @@
     END ;
 
     WHILE i <= ret.max ; -%]
-<a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/access.html?year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access.html?year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
 [%- i = i+1 -%]
 [%- END -%]
 </div>
@@ -64,9 +64,9 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
-<tr><td>[% msg.maketext("Anzahl Recherchen mit Benutzereingabe") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 1, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/access/query/graph.html">Grafik</a></td></tr>
-<tr><td>[% msg.maketext("Anzahl Einzeltrefferaufrufe") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 10, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/access/title/graph.html">Grafik</a></td></tr>
-<tr><td>[% msg.maketext("Anzahl Sessions") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 102, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/access/session/graph.html">Grafik</a></td></tr>
+<tr><td>[% msg.maketext("Anzahl Recherchen mit Benutzereingabe") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 1, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access/query/graph.html">Grafik</a></td></tr>
+<tr><td>[% msg.maketext("Anzahl Einzeltrefferaufrufe") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 10, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access/title/graph.html">Grafik</a></td></tr>
+<tr><td>[% msg.maketext("Anzahl Sessions") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 102, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access/session/graph.html">Grafik</a></td></tr>
 </table>
 </td></td>
 </table>

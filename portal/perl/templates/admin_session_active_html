@@ -37,12 +37,12 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Aktiv") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -68,7 +68,7 @@
 <b>[% msg.maketext("Initiale Suchen") %]</b></td></tr>
 [% FOREACH session IN sessions %]
 
-<tr><td><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active/[% session.id %]">[% session.id %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.username %]</td><td align="middle">[% session.numqueries %]</td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active/[% session.id %]">[% session.id %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.username %]</td><td align="middle">[% session.numqueries %]</td></tr>
 
 [% END %]
 

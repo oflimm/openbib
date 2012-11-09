@@ -233,7 +233,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authenticators_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -328,7 +328,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authenticators_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -366,7 +366,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authentication_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authenticators_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

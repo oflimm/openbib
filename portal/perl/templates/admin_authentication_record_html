@@ -36,12 +36,12 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_authentication_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
          <li><a href="#" class="lastitem">[% authenticationtarget.description %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_authentication_loc') %]/[% authenticationtarget.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticationtarget.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 

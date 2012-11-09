@@ -510,7 +510,7 @@ sub return_baseurl {
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $new_location = "$path_prefix/$config->{user_loc}/$userid/preferences.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

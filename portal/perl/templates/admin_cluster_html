@@ -40,7 +40,7 @@
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_cluster_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_clusters_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -55,7 +55,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_cluster_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_clusters_loc') %]" class="ym-form">
 <fieldset class="ym-columnar">
 
 <legend>[% msg.maketext("Neuen Cluster einrichten") %]</legend>
@@ -103,10 +103,10 @@
 [% FOREACH clusterinfo IN clusterinfos.all %]
 <tr [% IF clusterinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <td>[% clusterinfo.id %]</td>
-<td><a href="[% path_prefix %]/[% config.get('admin_cluster_loc') %]/[% clusterinfo.id %]/edit?l=[% lang %]">[% clusterinfo.description %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('admin_clusters_loc') %]/id/[% clusterinfo.id %]/edit?l=[% lang %]">[% clusterinfo.description %]</a></td>
 <td>[% clusterinfo.status %]</td>
-<td align="center">[%- IF clusterinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_cluster_loc') %]/[% clusterinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF clusterinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF clusterinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_cluster_loc') %]/[% clusterinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
+<td align="center">[%- IF clusterinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF clusterinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF clusterinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
 [% END %]
 
 </table>

@@ -41,7 +41,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_view_loc') %]/[% viewinfo.viewname %]/rss">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_views_loc') %]/[% viewinfo.viewname %]/rss">
 <input type="hidden" name="_method"     value="PUT" />
 
 <table class="ym-full">

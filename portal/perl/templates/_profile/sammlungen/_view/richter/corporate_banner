@@ -3,7 +3,7 @@
       <div id="topnav" role="contentinfo">
         <span><a href="[% path_prefix %]/[% config.get('connector_rssfeeds_loc') %].html?l=[% lang %]"><img style="vertical-align: bottom;" src="[% config.get('rssfeed_img') %]" alt="RSS-Feed"/></a> | [% IF config.get('login_active') == 1 %]
 [% IF username %]
-          <a href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">Meine Sammlung</a>
+          <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">Meine Sammlung</a>
 | <a href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]" target="_parent"><b>[% msg.maketext("Abmelden") %] [[% username %]]</b></a></span>
 [% ELSE %]
           <a href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a>

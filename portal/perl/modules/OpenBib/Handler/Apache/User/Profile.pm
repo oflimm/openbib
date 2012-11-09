@@ -353,7 +353,7 @@ sub create_record {
 
     $logger->debug("Created Profile $profilename with ID $profileid");
     
-    my $new_location = "$path_prefix/$config->{user_loc}/$userid/profile/$profileid.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/profiles/id/$profileid.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -412,7 +412,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{user_loc}/$userid/profile.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/profiles.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

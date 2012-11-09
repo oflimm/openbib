@@ -155,7 +155,7 @@ sub update_record {
     $user->update_userrole($thisuserinfo_ref);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_user_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_users_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 }
 

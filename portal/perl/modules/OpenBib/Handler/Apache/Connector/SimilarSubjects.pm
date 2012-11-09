@@ -172,7 +172,7 @@ sub show {
             # Nur 'praezisere' Schlagworte werden analysiert
             if ($titcount < 100){
                 #$request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype=4 and targetid != ? and sourceid in (select sourceid from conn where sourcetype=1 and targettype=4 and targetid = ?)");
-                $request = $dbh->prepare("select distinct c2.subjectid as id, count(c2.titleid) as titcount from title_subject as c1 left join title_subject as c2 on c1.titleid=c2.titleid where c1.subjectid=? and c2.subjectid != ? group by c2.titleid");
+                $request = $dbh->prepare("select distinct c2.subjectid as id, count(c2.titleid) as titcount from title_subject as c1 left join title_subject as c2 on c1.titleid=c2.titleid where c1.subjectid=? and c2.subjectid != ? group by c2.titleid,c2.subjectid");
                 $request->execute($swtid,$swtid);
                 
                 while (my $result=$request->fetchrow_hashref){

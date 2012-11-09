@@ -24,7 +24,7 @@
 [% IF active_submenu == "portal" %]
   <li class="active"><strong>Die Bibliothek</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('startopac_loc') %].html?l=[% lang %]">Die Bibliothek</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Die Bibliothek</a></li>
 [% END %]
 [% IF active_submenu == "elise"  %]
   <li class="active"><strong>Elise Richter</strong></li>

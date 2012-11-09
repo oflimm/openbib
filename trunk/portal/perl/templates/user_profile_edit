@@ -52,8 +52,8 @@ function update_fak(yourform, checked, fak) {
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/profile.html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/profiles.html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
          <li><a href="#" class="lastitem">[% profilename %]</a></li>
        </ul>
      </div>
@@ -70,7 +70,7 @@ function update_fak(yourform, checked, fak) {
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/profile/id/[% profileid %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/profiles/id/[% profileid %]" enctype="application/x-www-form-urlencoded">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Derzeit angezeigtes Profil") %]: <b><input type="text" name="profilename" value="[% profilename %]" />

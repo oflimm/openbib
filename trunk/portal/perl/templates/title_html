@@ -145,7 +145,7 @@
 <h4>[% msg.maketext("Behalten Sie diesen Titel") %]:</h4><p/>
 
 <img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('titles_loc') %]/database/[% record.database %]/id/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
-<img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('user_loc') %]/id/[% user.ID %]/[% END %][% config.get('collection_loc') %].html?l=[% lang %];_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
+<img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('collection_loc') %].html?l=[% lang %];_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
 <img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('titles_loc') %]/database/[% record.database %]/id/[% record.id %]/mail.html?l=[% lang %];format=full" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
 <img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('titles_loc') %]/database/[% record.database %]/id/[% record.id %]/save.html?l=[% lang %];format=full" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
 <img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('titles_loc') %]/database/[% record.database %]/id/[% record.id %]/print.html?l=[% lang %];format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
@@ -295,12 +295,12 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 [% ELSIF username && private_tags_of_tit.size > 0 %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/[% config.get('titles_loc') %]/database/[% record.database %]/id/[% record.id %]/tag" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('titles_loc') %]/database/[% record.database %]/id/[% record.id %]/tag" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 <input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
 <fieldset class="ym-full">
 
-<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />&nbsp;</td><a class="ob_button" href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/[% config.get('titles_loc') %]/database/[% record.database %]/id/[% record.id %]/tag.html?l=[% lang %];_method=DELETE">[% msg.maketext("L&ouml;schen") %]</a>
+<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />&nbsp;</td><a class="ob_button" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('titles_loc') %]/database/[% record.database %]/id/[% record.id %]/tag.html?l=[% lang %];_method=DELETE">[% msg.maketext("L&ouml;schen") %]</a>
 </fieldset>
 
 </form>
@@ -419,7 +419,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% IF username && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:
 [%- FOREACH tag IN private_tags_of_tit -%]
-<a href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/tag/id/[% tag.id %].html">[% tag.name %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/id/[% tag.id %].html">[% tag.name %]</a>&nbsp;
 [%- END -%]
 [% END %]
 </div>
@@ -775,12 +775,12 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 <dd class="ob-review">[%    IF item.review %][% item.review %][% END %]
 [% IF item.id == ownreviewid %]
 <p />
-<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('reviews_loc') %]/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF username %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/[% item.id %]?_method=PUT;titid=[% record.id %];titdb=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/[% item.id %]?titid=[% record.id %];titdb=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titid=[% record.id %];titdb=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titid=[% record.id %];titdb=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]

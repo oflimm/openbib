@@ -189,7 +189,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_cluster_loc}/$new_clusterid/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}/id/$new_clusterid/edit");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -256,7 +256,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_cluster_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -315,7 +315,7 @@ sub delete_record {
     $config->del_cluster({id => $clusterid});
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_cluster_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

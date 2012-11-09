@@ -78,7 +78,7 @@
 </td></tr>
 </table>
 
-<form method="post" action="[% path_prefix %]/[% config.get('user_loc') %]/[% userinfo.id %]/role">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/role">
 <input type="hidden" name="_method"    value="PUT" />
 
 <table class="ym-full">

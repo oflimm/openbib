@@ -41,8 +41,8 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
 [% IF user.ID %]
-         <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('user_loc') %]/id/[% user.ID %]/litlist.html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/litlists.html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
 [% END %]
          <li><a href="#" class="lastitem">[% litlist.properties.title %]</a></li>
        </ul>

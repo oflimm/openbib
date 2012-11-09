@@ -60,8 +60,8 @@ Kataloge werden in Portalen in folgender Reihenfolge definiert
 
 <ol>
 <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Anlegen eines Katalogs</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %].html?l=[% lang %]">Zuordnung des Katalogs zu einer Organisationseinheit in einem Katalog-Profil</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_view_loc') %].html?l=[% lang %]">Anlegen einer Portalsicht f&uuml;r die Katalog-Sicht und den Katalog</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %].html?l=[% lang %]">Zuordnung des Katalogs zu einer Organisationseinheit in einem Katalog-Profil</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_views_loc') %].html?l=[% lang %]">Anlegen einer Portalsicht f&uuml;r die Katalog-Sicht und den Katalog</a></li>
 </ol>
 
 <h3>Themengebiete und deren Mapping</h3>
@@ -74,23 +74,23 @@ Kataloge werden in Portalen in folgender Reihenfolge definiert
 <h3>Cluster- und Servermanagement</h3>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('admin_server_loc') %].html?l=[% lang %]">Server f&uuml;r die OpenBib-Infrastruktur</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_cluster_loc') %].html?l=[% lang %]">Cluster, zu denen die Server zugeordnet werden k&ouml;nnen</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_servers_loc') %].html?l=[% lang %]">Server f&uuml;r die OpenBib-Infrastruktur</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_clusters_loc') %].html?l=[% lang %]">Cluster, zu denen die Server zugeordnet werden k&ouml;nnen</a></li>
 </ul>
 
 <h3>Nutzer und Anmeldung</h3>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('admin_user_loc') %].html?l=[% lang %]">Nutzerverwaltung und -recherche</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_authentication_loc') %].html?l=[% lang %]">Anmeldeverfahren (Selbstregistierung, Bibliothekssysteme)</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_users_loc') %].html?l=[% lang %]">Nutzerverwaltung und -recherche</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %].html?l=[% lang %]">Anmeldeverfahren (Selbstregistierung, Bibliothekssysteme)</a></li>
 </ul>
 
 <h3>Betrieb</h3>
 
 <ul>
 <li><a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %].html?l=[% lang %]">Statisik</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %].html?l=[% lang %]">Sessions</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_searchprofile_loc') %].html?l=[% lang %]">Suchprofile</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %].html?l=[% lang %]">Sessions</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_searchprofiles_loc') %].html?l=[% lang %]">Suchprofile</a></li>
 </ul>
 
         </div>

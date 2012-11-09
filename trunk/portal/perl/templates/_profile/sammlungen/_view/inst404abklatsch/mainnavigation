@@ -50,7 +50,7 @@
 [%- IF active_menu == "collection" -%]
          <li class="active"><strong>[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% IF user.ID %][% config.get('user_loc') %]/id/[% user.ID %]/[% END %][% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
+          <li><a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('collection_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
 [% END %]
 [%- IF user.is_admin || session.is_authenticated_as(config.get('adminuser')) -%]<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/database.html?l=[% lang %]">[% msg.maketext("admin") %]</a></li>[%- END -%]
      </ul>

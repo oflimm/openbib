@@ -194,7 +194,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}/$new_serverid/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_servers_loc}/id/$new_serverid/edit");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -240,7 +240,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_servers_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -298,7 +298,7 @@ sub delete_record {
     $config->del_server({id => $serverid});
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_server_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_servers_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

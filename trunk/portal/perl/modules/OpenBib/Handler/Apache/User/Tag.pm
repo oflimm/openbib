@@ -206,7 +206,7 @@ sub show_record {
         hitrange         => $hitrange,
         query            => $query,
         template         => 'tt_user_tag_tname',
-        location         => 'user_loc',
+        location         => 'users_loc',
         parameter        => {
             username     => $username,
             tag          => $tag,
@@ -270,7 +270,7 @@ sub return_baseurl {
     my $path_prefix    = $self->param('path_prefix');
     my $config         = $self->param('config');
 
-    my $new_location = "$path_prefix/$config->{user_loc}/$userid/tag.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/tags.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

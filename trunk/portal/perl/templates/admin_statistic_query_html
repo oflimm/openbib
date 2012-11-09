@@ -53,7 +53,7 @@
     END ;
 
     WHILE i <= ret.max ; -%]
-<a href="[% path_prefix %]/[% config.get('admin_statistic_loc') %]/query.html?year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/query.html?year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
 [%- i = i+1 -%]
 [%- END -%]
 </div>

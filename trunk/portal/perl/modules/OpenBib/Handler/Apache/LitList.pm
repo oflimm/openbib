@@ -945,7 +945,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{user_loc}/$userid/litlist.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/litlists.html";
 
     $logger->debug("Returning to $new_location");
 

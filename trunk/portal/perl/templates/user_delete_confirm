@@ -44,7 +44,7 @@
 
 <h1>[% msg.maketext("Kennung l&ouml;schen") %]</h1>
 
-<form method="POST" action="[% path_prefix %]/[% config.get('user_loc') %]/[% userid %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]" enctype="application/x-www-form-urlencoded" target="_parent">
 
 <input type="hidden" name="_method" value="DELETE" />
 

@@ -217,7 +217,7 @@ sub update_record {
     $config->update_searchprofile($searchprofileid,$ownindex);
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_searchprofile_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_searchprofiles_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

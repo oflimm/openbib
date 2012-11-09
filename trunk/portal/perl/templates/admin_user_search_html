@@ -35,14 +35,14 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_user_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_user_loc') %].html?l=[% lang %]">[% msg.maketext("Suche") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_users_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_users_loc') %].html?l=[% lang %]">[% msg.maketext("Suche") %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Ergebnis") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_user_loc') %]/search.json?[% cgiapp.to_cgi_querystring %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_users_loc') %]/search.json?[% cgiapp.to_cgi_querystring %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -75,7 +75,7 @@
       <div class="ob-thumbnail">
       </div> 
       <div class="ob-brieftitle">
-<span class="ob-person">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% path_prefix %]/[% config.get('user_loc') %]/[% singleuser.id %]/role/edit"><strong><span class="ob-title">[% singleuser.username %]</span></strong></a></span>    
+<span class="ob-person">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% singleuser.id %]/roles/edit"><strong><span class="ob-title">[% singleuser.username %]</span></strong></a></span>    
       </div>
       <div class="ob-titlemark"></div>
       <div class="ob-titleactions">

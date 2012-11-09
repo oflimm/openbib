@@ -783,7 +783,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{user_loc}/$userid/review.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/reviews.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

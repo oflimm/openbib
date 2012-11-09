@@ -36,12 +36,12 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %].html?l=[% lang %]">[% msg.maketext("Katalog-Profile") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalog-Profile") %]</a></li>
          <li><a href="#" class="lastitem">[% profileinfo.profilename %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -56,7 +56,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
 <fieldset class="ym-columnar">
@@ -80,7 +80,7 @@
 [% IF profileinfo.viewinfos.size <= 0%]
 &nbsp;&nbsp;&nbsp;
 
-<a class="ob_button" href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="ob_button" href="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
 [% END %]
 </div>
 
@@ -90,7 +90,7 @@
 
 <p />
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]/orgunit" class="ym-form">
 
 <fieldset class="ym-columnar">
 
@@ -120,7 +120,7 @@
 <table class="ym-full">
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
 [% FOREACH thisorgunit IN orgunits.all %]
-<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %]/[% profileinfo.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profileinfo.profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]/orgunit/[% thisorgunit.orgunitname %]/edit?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profileinfo.profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
 [% END %]
 </table>
 [% ELSE %]

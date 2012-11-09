@@ -165,7 +165,7 @@ sub show_record {
         }
 
         
-        my $new_location = "$path_prefix/$config->{user_loc}/id/$user->{ID}/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
+        my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
 
         $logger->debug("Redirecting to $new_location");
 
@@ -285,7 +285,7 @@ sub create_record {
         
     $user->add_tags($input_data_ref);
 
-    my $new_location = "$path_prefix/$config->{user_loc}/id/$user->{ID}/$config->{titles_loc}/database/$input_data_ref->{dbname}/id/$input_data_ref->{titleid}.html?l=$lang;no_log=1";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$input_data_ref->{dbname}/id/$input_data_ref->{titleid}.html?l=$lang;no_log=1";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -344,7 +344,7 @@ sub delete_record {
     
     $user->del_tags($del_args_ref);
 
-    my $new_location = "$path_prefix/$config->{user_loc}/id/$user->{ID}/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

@@ -59,7 +59,7 @@ Kataloge werden in Portalen in folgender Reihenfolge definiert
 </p>
 
 <ol>
-<li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Anlegen eines Katalogs</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Anlegen eines Katalogs</a></li>
 <li><a href="[% path_prefix %]/[% config.get('admin_profile_loc') %].html?l=[% lang %]">Zuordnung des Katalogs zu einer Organisationseinheit in einem Katalog-Profil</a></li>
 <li><a href="[% path_prefix %]/[% config.get('admin_view_loc') %].html?l=[% lang %]">Anlegen einer Portalsicht f&uuml;r die Katalog-Sicht und den Katalog</a></li>
 </ol>
@@ -67,7 +67,7 @@ Kataloge werden in Portalen in folgender Reihenfolge definiert
 <h3>Themengebiete und deren Mapping</h3>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('admin_topic_loc') %].html?l=[% lang %]">Anlegen von Themengebieten f&uuml;r Literaturlisten und Mapping zu BK sowie DBIS/EZB-Notationen</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_topics_loc') %].html?l=[% lang %]">Anlegen von Themengebieten f&uuml;r Literaturlisten und Mapping zu BK sowie DBIS/EZB-Notationen</a></li>
 </ul>
 
 

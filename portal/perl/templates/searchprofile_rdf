@@ -24,7 +24,7 @@
     json_info.push({ database => database, description => dbinfo.dbnames.${database}.full});
 -%]
 
-  <rdf:Description rdf:about="http://[% servername %][% path_prefix %]/[% config.get('database_loc') %]/[%- database -%]">
+  <rdf:Description rdf:about="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/[%- database -%]">
 [%- IF dbinfo.dbnames.${database}.full %]
      <dc:title>[% dbinfo.dbnames.${database}.full %]</dc:title>
 [%- END -%]

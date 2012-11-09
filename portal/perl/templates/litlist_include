@@ -70,9 +70,9 @@
 [%- IF format == 'short' -%]
   <div class="ob-listoptions">
 <!-- Titlelist begins here -->
-<form method="get" action="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.properties.id %]">
+<form method="get" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]">
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlist_loc')}/id/${litlist.properties.id}" %]
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlists_loc')}/id/${litlist.properties.id}" %]
 
 </form>
   </div>
@@ -84,12 +84,12 @@
 <div class="ob-headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
-<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.id %].html?format=short" [%- IF format == 'short'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.id %].html?format=full" [%- IF format == 'full' -%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.id %].html?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.id %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.id %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].html?format=short" [%- IF format == 'short'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].html?format=full" [%- IF format == 'full' -%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].html?format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 
 [% IF user_owns_litlist %]
-<form method="post" action="[% path_prefix %]/[% config.get('litlist_loc') %]/id/[% litlist.properties.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]">
 <input type="hidden" name="action"     value="manage" />
 
 [%# USE dumper;dumper.dump(litlist)%]

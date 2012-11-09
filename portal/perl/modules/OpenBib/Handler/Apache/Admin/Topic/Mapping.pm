@@ -199,7 +199,7 @@ sub create_record {
     
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subject_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subjects_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -280,7 +280,7 @@ sub update_record {
     });
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subject_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subjects_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -310,7 +310,7 @@ sub delete_record {
     $user->del_subject({ id => $subjectid });
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subject_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subjects_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

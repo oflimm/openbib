@@ -45,7 +45,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         resourceurl  = "${path_prefix}/${config.get('person_loc')}/database/${record.database}/id/${thisid}";
+         resourceurl  = "${path_prefix}/${config.get('persons_loc')}/database/${record.database}/id/${thisid}";
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${searchterm}";
@@ -62,7 +62,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('corporatebody_loc')}/database/${record.database}/id/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('corporatebodies_loc')}/database/${record.database}/id/${thisid}.html";
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;${searchprefix}=${searchterm}";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${searchterm}";
          content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
@@ -166,7 +166,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('subject_loc')}/database/${record.database}/id/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('subjects_loc')}/database/${record.database}/id/${thisid}.html";
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;${searchprefix}=${searchterm}";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${searchterm}";
          content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
@@ -183,7 +183,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('classification_loc')}/database/${record.database}/id/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('classifications_loc')}/database/${record.database}/id/${thisid}.html";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${searchterm}";
          content   = " ${rssfeed}<a href=\"${resourceurl}\" title=\"Systematik-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 

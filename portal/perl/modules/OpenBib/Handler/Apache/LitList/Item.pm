@@ -244,7 +244,7 @@ sub create_record {
     my $new_itemid = $user->add_litlistentry($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        my $new_location = "$path_prefix/$config->{litlist_loc}/id/$litlistid/edit";
+        my $new_location = "$path_prefix/$config->{litlists_loc}/id/$litlistid/edit";
         
         $self->query->method('GET');
         $self->query->content_type('text/html');
@@ -323,7 +323,7 @@ sub update_record {
 
     # Anpassen eines Kommentars
     
-    my $new_location = "$path_prefix/$config->{litlist_loc}/id/$litlistid/edit";
+    my $new_location = "$path_prefix/$config->{litlists_loc}/id/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -382,7 +382,7 @@ sub delete_record {
 
     return unless ($self->param('representation') eq "html");
 
-    my $new_location = "$path_prefix/$config->{litlist_loc}/id/$litlistid/edit";
+    my $new_location = "$path_prefix/$config->{litlists_loc}/id/$litlistid/edit";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');

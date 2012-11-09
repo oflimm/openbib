@@ -224,7 +224,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_databases_loc}/$dbname/edit");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -370,7 +370,7 @@ sub update_record {
         else {
             $logger->debug("Redirecting to delete location");
             $self->query->method('DELETE');    
-            $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}/$dbname/library");
+            $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_databases_loc}/$dbname/library");
             $self->query->status(Apache2::Const::REDIRECT);
             return;
         }
@@ -414,7 +414,7 @@ sub update_record {
     $config->update_libinfo($dbname,$thislibinfo_ref);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_databases_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -455,7 +455,7 @@ sub delete_record {
     $config->del_libinfo($dbname);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_database_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_databases_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

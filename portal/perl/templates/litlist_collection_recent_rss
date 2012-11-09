@@ -13,7 +13,7 @@
 -%]
 [%-
 
-channel_link        = "http://${config.get('frontendservername')}${path_prefix}/${config.get('litlist_loc')}/recent.rss";
+channel_link        = "http://${config.get('frontendservername')}${path_prefix}/${config.get('litlists_loc')}/recent.rss";
 channel_title       = "Öffentliche Literaturlisten";
 channel_description = "RSS Feed aller öffentlichen Literaturlisten sortiert nach dem Anlegedatum der Literaturlisten";
 
@@ -22,7 +22,7 @@ dummy = rss.channel( "title", channel_title, "link", channel_link, "description"
 FOREACH thisitem IN public_litlists ;
 
 item_title       = thisitem.title;
-item_link        = "http://${servername}${path_prefix}/${config.get('litlist_loc')}/id/${thisitem.id}";
+item_link        = "http://${servername}${path_prefix}/${config.get('litlists_loc')}/id/${thisitem.id}";
 item_tstamp      = thisitem.tstamp.split(' ').first;
 
 topics = [];

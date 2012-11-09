@@ -36,7 +36,7 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_session_loc') %]/archived/search/form.html?l=[% lang %]">[% msg.maketext("Archiviert") %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Suchergebnis") %]</a></li>

@@ -4,7 +4,7 @@
 [% IF active_submenu == "titles" %]
   <li class="active"><strong>[% msg.maketext("Titel pro Katalog") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('title_loc') %]/popular.html?l=[% lang %]">[% msg.maketext("Titel pro Katalog") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('titles_loc') %]/popular.html?l=[% lang %]">[% msg.maketext("Titel pro Katalog") %]</a></li>
 [% END %]
 [% IF active_submenu == "databases" %]
   <li class="active"><strong>[% msg.maketext("Meistgenutzte Kataloge") %]</strong></li>

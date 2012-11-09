@@ -49,8 +49,8 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
       </ul>
     </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('person_loc') %]/database/[% record.database %]/id/[% record.id %].rdf?l=[% lang %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('person_loc') %]/database/[% record.database %]/id/[% record.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('persons_loc') %]/database/[% record.database %]/id/[% record.id %].rdf?l=[% lang %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('persons_loc') %]/database/[% record.database %]/id/[% record.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
     </div>
    </div>
 

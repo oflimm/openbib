@@ -227,7 +227,7 @@ sub create_record {
     $record->set_from_apache_request($r);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{title_loc}/database/$database/new.html");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{titles_loc}/database/$database/new.html");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

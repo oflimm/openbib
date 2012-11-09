@@ -3321,7 +3321,7 @@ msgstr "Google-Book-Search"
 msgid "Grafik"
 msgstr "Graphics"
 
-#. ("<a href=\"${path_prefix}/${config.get('classification_loc')
+#. ("<a href=\"${path_prefix}/${config.get('classifications_loc')
 #: ../templates/searchform_bottom_center:35
 msgid ""
 "Greifen Sie fachspezifisch auf alle %1freien und lizenzierten Zeitschriften"
@@ -6002,7 +6002,7 @@ msgstr "Search requests"
 msgid "Recherchierbar"
 msgstr "Searchable"
 
-#. ("<a href=\"${path_prefix}/${config.get('classification_loc')
+#. ("<a href=\"${path_prefix}/${config.get('classifications_loc')
 #: ../templates/searchform_bottom_center:38
 msgid ""
 "Recherchieren Sie fachspezifisch in einer Vielzahl von %1freien und\n"

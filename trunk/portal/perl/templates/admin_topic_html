@@ -37,12 +37,12 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Themengebiete") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_topic_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_topics_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -57,7 +57,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_topic_loc') %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_topics_loc') %]">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neues Themengebiet anlegen") %]</th></tr>
@@ -86,7 +86,7 @@
 [% listrow = 'listrow1' %]
 [% FOREACH topic IN topics %]
 
-<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('admin_topic_loc') %]/[% topic.id %]/edit">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
+<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('admin_topics_loc') %]/[% topic.id %]/edit">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]

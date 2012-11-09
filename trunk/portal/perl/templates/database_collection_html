@@ -36,8 +36,8 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<a href="[% path_prefix %]/[% config.get('database_loc') %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('database_loc') %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('databases_loc') %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
         </div>
       </div>
       <!-- end: #col1 -->
@@ -57,7 +57,7 @@
 
 <tr>
 <td>[% database.dbname %]</td>
-<td><a href="[% path_prefix %]/[% config.get('database_loc') %]/[% database.dbname %].html?l=[% lang %]">[% database.description %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/[% database.dbname %].html?l=[% lang %]">[% database.description %]</a></td>
 <td align="right">[% database.allcount %]</td></tr>
 [% END %]
 

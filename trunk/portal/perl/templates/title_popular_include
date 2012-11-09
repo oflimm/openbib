@@ -28,14 +28,14 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('title_loc') %]/popular.html" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('titles_loc') %]/popular.html" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% database %]/popular.html" title="Katalogname"><span class="dbdescshort">Alle Kataloge</span></a></li>
+   <li><a class="active" href="[% path_prefix %]/[% config.get('titles_loc') %]/database/[% database %]/popular.html" title="Katalogname"><span class="dbdescshort">Alle Kataloge</span></a></li>
 </ul>
 
 <div class="content">
@@ -153,10 +153,10 @@ Die 20 meist aufgerufenen Titel
     [% IF (config.get('coverscans').all || config.get('coverscans').${item.database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="ob-brieftitle">
-<span class="ob-person">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('title_loc') %]/database/[% item.database %]/id/[% item.id %].html"><strong><span class="ob-title">[% title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>    
+<span class="ob-person">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('titles_loc') %]/database/[% item.database %]/id/[% item.id %].html"><strong><span class="ob-title">[% title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>    
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-   IF dbinfo.get('use_libinfo').${record.database} %]
-         <a href="[% path_prefix %]/[% config.get('library_loc') %]/[% record.database %].html">
+         <a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% record.database %].html">
 [%-   ELSE -%]
          <a href="[% dburl %]" target="_blank">
 [%-   END -%]

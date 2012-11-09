@@ -37,13 +37,13 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss.html?l=[% lang %]">[% katalog.dbname%]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %]/[% katalog.dbname %]/rss.html?l=[% lang %]">[% katalog.dbname%]</a></li>
          <li><a href="#" class="lastitem">RSS</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_databases_loc') %]/[% katalog.dbname %]/rss.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -85,7 +85,7 @@ END ;
 %]
 
 [% IF available_types.size > 0 %]
-<form method="post" action="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_databases_loc') %]/[% katalog.dbname %]/rss">
 
 <table class="ym-full">
 <tr><th>[% msg.maketext("Neuen RSS-Feed einrichten") %]</th></tr>
@@ -141,7 +141,7 @@ END ;
 [% FOREACH feed IN katalog.rssfeeds %]
 <tr>
 <td>
-<a href="[% path_prefix %]/[% config.get('admin_database_loc') %]/[% katalog.dbname %]/rss/[% feed.id %]/edit">[% typedescription.${feed.type} %]</a>
+<a href="[% path_prefix %]/[% config.get('admin_databases_loc') %]/[% katalog.dbname %]/rss/[% feed.id %]/edit">[% typedescription.${feed.type} %]</a>
 </td>
 <!-- <td>[% feed.subtype %]</td>
 <td>[% feed.subtypedesc %]</td>

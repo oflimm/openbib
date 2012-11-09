@@ -282,7 +282,7 @@ sub show {
 
             $rss->add_item(
                 title       => $title,
-                link        => "http://".$self->param('servername').$self->param('path_prefix')."/".$config->{title_loc}."/database/$database/id/".$record->{id}.".html",
+                link        => "http://".$self->param('servername').$self->param('path_prefix')."/".$config->{titles_loc}."/database/$database/id/".$record->{id}.".html",
                 description => $desc
             );
         }

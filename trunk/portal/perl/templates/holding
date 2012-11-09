@@ -20,7 +20,7 @@
 [%- IF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
 [%-   thisdbname = thisholding.${"X4000"}.content.dbname -%]
 [%-   IF dbinfo.get('use_libinfo').${thisdbname} %]
-<a href="[% path_prefix %]/[% config.get('library_loc') %]/[% thisdbname %]">[% thisholding.${"X4000"}.content.full %]</a>
+<a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% thisdbname %]">[% thisholding.${"X4000"}.content.full %]</a>
 [%-   ELSE -%]
 <a href="[% thisholding.${"X4001"}.content %]" target="_blank">[% thisholding.${"X4000"}.content.full %]</a>
 [%-   END -%]

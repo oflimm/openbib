@@ -35,12 +35,12 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('litlist_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Themengebiete") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('litlist_loc') %]/topic.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topic.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
   </div>
 
@@ -59,7 +59,7 @@
 [%# USE dumper;dumper.dump(topics)%]
 <ul class="topiclist">
 [%- FOREACH topic IN topics -%]
-<li><a <a href="[% path_prefix %]/[% config.get('litlist_public_topic_loc') %]/[% topic.id %].html">[% topic.name %]</a> ([% msg.maketext("[_1] Listen",topic.litlistcount.public) %])</li>
+<li><a <a href="[% path_prefix %]/[% config.get('litlists_public_topics_loc') %]/[% topic.id %].html">[% topic.name %]</a> ([% msg.maketext("[_1] Listen",topic.litlistcount.public) %])</li>
 [% END %]
 </ul>
         </div>

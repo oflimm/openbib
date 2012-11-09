@@ -33,8 +33,8 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<!-- <a href="[% path_prefix %]/[% config.get('database_loc') %]/[% databaseinfo.dbname %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
-<a href="[% path_prefix %]/[% config.get('database_loc') %]/[% databaseinfo.dbname %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<!-- <a href="[% path_prefix %]/[% config.get('databases_loc') %]/[% databaseinfo.dbname %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp; -->
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/[% databaseinfo.dbname %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
         </div>
       </div>
       <!-- end: #col1 -->

@@ -64,7 +64,7 @@
 [% recordlist.get_size %]  [% msg.maketext("Titel") %]
     </div>
     <div class="right">
-<form method="get" action="[% path_prefix %]/[% config.get('tag_loc') %]/[% tagid %]">
+<form method="get" action="[% path_prefix %]/[% config.get('tags_loc') %]/[% tagid %]">
 [% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('tags_loc')}" %]
 
 </form>

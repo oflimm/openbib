@@ -162,22 +162,22 @@ davon oeffentlich/privat
 
 - Weiteres
 
-Browsing komplett ueberarbeiten:
+* Anpassung der Internen URL-Modul-Template Logik von Singular auf Plural
+
+* Browsing komplett ueberarbeiten:
 
 Via aufgefaechertem URI oder via CGI-Parameter ala search_loc?
 
-Browsen nach Titeln mit konkretem Inhalt - Angereichertes BK-Browsing?
+* Browsen nach Titeln mit konkretem Inhalt - Angereichertes BK-Browsing?
 E4100
 
-itemids mit id im Pfad? Nein!
+* itemids mit id im Pfad? Nein!
 
-Konnektoren:
+* Konnektoren:
 
 permalink Weiterleitung anstelle Frame
 
-Frage:
-
-Wie Postrequest ueber Loginseite schleusen und Returnurl samt
+* Wie Postrequest ueber Loginseite schleusen und Returnurl samt
 CGI-Parameter nachher aufrufen?
 
 Mit GET/POST-Tunnel!

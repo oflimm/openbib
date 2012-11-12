@@ -1,0 +1,183 @@
+TODO-Liste:
+
+- Dies und das
+
+rel=bookmark fuer Bookmarkurl?
+
+- URI Design
+
+* Allgemein
+
+Schema: Plurals + 'id' + id
+
+Hackability: automatische Weiterleitung zu naechst hoeherer Ebene,
+also
+
+/users/id -> /users
+
+* Benutzerspezifische Resourcen
+
+Um ein vernuenftiges HTTP-standardkonformes Caching von Seiten zu
+erreichen, muessen Seiten mit benutzerspezifischen Inhalt verschiedene
+URI's haben.
+
+Beispiel eines generischen Einzeltitels
+
+/title/database/lesesaal/id/2345 ohne vorherige Anmeldung
+
+/user/id/22/title/database/lesesaal/id/2345 fuer angemeldeten Nutzer 22
+
+Problematik:
+
+1) laengere URLs: laesst sich nicht aendern
+2) Resource oder nur Repraesentation: Ist der URI im /user-Bereich
+eine eigene offizielle Resource oder nur die Nutzerabhaengige
+Repraesentation
+3) Koennen fuer 2) sinnvolle Resource-Finder-URIs definiert werden,
+bei deren Referenzierung automatisch in den /user-Bereich redirected
+wird
+4) Sollen alle Resourcen so behandelt werden, also z.B. auch /search ?
+Oder kann durch 3) geschickt abstrahiert werden.
+
+Zusammenfassung der konkreten Vorgehensweise:
+
+0) Es gibt genau einen kanonischen URI fuer jede Resource direkt unter
+/portal/<view>
+
+Dieser URI ist und bleibt der zentrale URI fuer POST, PUT, DELETE?
+Kann es hier Ausnahmen geben? Bei systemweit einzigartigen
+Resourcen (z.B. Views etc. aus der Admin) funktioniert das, wie sieht
+es bei Nutyerspezifischen Resourcen aus? Unter /portal/:view/tags sind
+allgemeine alle oeffentlichen Tags aufgefuehrt, unter
+/portal/:view/users/:userid/tags sollen jedoch nur die Tags des
+Nutzers erscheinen. Eine Weiterleitung macht keinen Sinn, da der
+Nutzer beides nutzen koennen moechte.  
+
+Ergebnisse dieser Aktionen werden kontextsensitiv zur jeweiligen
+Repraesentation Weitergeleitet, siehe folgend.
+
+Dieser URI leiter per 303er redirekt Kontextsensitiv weiter
+entsprechend
+ - Ausgehandeltem Content-Type
+ - Ausgehandelter Sprache
+ - Authentifiziertem Nutzer
+
+auf eine konkrete Repraesentation der Resource. Die Repraesenation
+ergibt sich aus dem kanonischen URI aus:
+
+a) Content-Type -> Filetype extension (.html fuer HTML, .json fuer JSON)
+b) Sprache      -> Query-Parameter l (?l=de, ?l=en
+c) Nutzer       -> Path-Einschub /user/id/<userid> direkt nach
+/portal/<view>, ggf. bei Formularhaltigen Nutzer-seiten mit
+Pfad-Suffix /edit
+
+In den Webseiten wird (immer?) der kanonische URL verwendet, so dass
+dann entsprechend Nutzerspezifisch weitergeleitet werden kann. Damit
+koennen allgemeine Resourcen definiert werden, die nicht zwingend eine
+Repraesentation im Nutzer-Bereich haben, wie z.B. search oder index
+
+1) Admin-URL in User-URLs eingliedern und jede Admin-Resource als
+allgemeine Resource implementieren
+
+Beispiel:
+
+Aus /portal/openbib/admin/views
+
+wird
+
+Kanonische Resource: /portal/openbib/views
+
+Admin-Nutzer Resource: /portal/openbib/users/id/:userid/views
+
+2) Browse_loc wird zu indexes_loc
+
+mit dem Schema
+
+ /portal/:view/indexes/database/:db/type/:type/field/:field
+ /portal/:view/indexes/topic/:topicid
+
+
+- Tagging:
+
+Aktionen:
+
+Titelbereich:
+
+1) Tag fuer einen Titel erzeugen:
+
+Voraussetzung: userid, dbname, titleid, tags
+
+/portal/user/id/:userid/title/database/:dbname/id/:titleid/tag [POST] mit tags als Parameter
+
+2) Tag fuer einen Titel aendern:
+
+Voraussetzung: userid, dbname, titleid, tag
+
+/portal/user/id/:userid/title/database/:dbname/id/:titleid/tag [PUT] mit tags als Parameter
+
+3) Tags fuer einen Titel loeschen:
+
+Voraussetzung: userid, dbname, titleid
+
+/portal/user/id/:userid/title/database/:dbname/id/:titleid/tag [DELETE]
+
+Nutzerbereich:
+
+1) Anzeige aller eigenen Tags
+
+/portal/user/id/:userid/tag
+
+2) Anzeige aller Titel zu einem Tag
+
+/portal/user/id/:userid/tag/id/:tagname/titles
+
+3) Userspezifisches Umbenennen eines Tags tagname durch neuertagname
+
+/portal/user/id/:userid/tag/id/:tagname [PUT] mit neuertagname als Parameter
+
+Dann Weiterleitung zu 1)
+
+Oeffentlicher Bereich:
+
+1) Informationen zu einem konkreten Tag aufrufen
+
+Voraussetzung tagname
+
+/portal/tag/id/:tagname
+
+Gelieferte Informationen: wieviele Nutzer, wieviele Titel, wieviele
+davon oeffentlich/privat
+
+2) (Oeffentliche) Titel zu einem Tag anzeigen
+
+/portal/tag/id/:tagname/title
+
+3) Zuletzt vergebene Tags (mit oeffentlichen Titeln)
+
+/portal/tag/recent
+
+4) Zuletzt vergebene Tags (mit oeffentlichen Titeln) in Katalog database
+
+/portal/tag/database/:database/recent
+
+- Weiteres
+
+Browsing komplett ueberarbeiten:
+
+Via aufgefaechertem URI oder via CGI-Parameter ala search_loc?
+
+Browsen nach Titeln mit konkretem Inhalt - Angereichertes BK-Browsing?
+E4100
+
+itemids mit id im Pfad? Nein!
+
+Konnektoren:
+
+permalink Weiterleitung anstelle Frame
+
+Frage:
+
+Wie Postrequest ueber Loginseite schleusen und Returnurl samt
+CGI-Parameter nachher aufrufen?
+
+Mit GET/POST-Tunnel!

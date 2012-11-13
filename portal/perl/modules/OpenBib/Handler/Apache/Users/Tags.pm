@@ -120,7 +120,7 @@ sub show_collection {
         username   => $username,
     };
 
-    $self->print_page($config->{tt_user_tag_collection_tname},$ttdata,$r);
+    $self->print_page($config->{tt_users_tags_collection_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -205,7 +205,7 @@ sub show_record {
         offset           => $offset,
         hitrange         => $hitrange,
         query            => $query,
-        template         => 'tt_user_tag_tname',
+        template         => 'tt_users_tags_tname',
         location         => 'users_loc',
         parameter        => {
             username     => $username,
@@ -255,7 +255,7 @@ sub show_collection_form {
         targettype => $targettype,
     };
     
-    $self->print_page($config->{tt_user_tag_edit_tname},$ttdata);
+    $self->print_page($config->{tt_users_tags_edit_tname},$ttdata);
     return Apache2::Const::OK;
 }
 

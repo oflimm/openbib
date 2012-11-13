@@ -133,7 +133,7 @@ sub show_collection {
         userinfo            => $userinfo_ref,
     };
     
-    $self->print_page($config->{tt_user_preferences_tname},$ttdata);
+    $self->print_page($config->{tt_users_preferences_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

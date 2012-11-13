@@ -112,7 +112,7 @@ sub show_record_form {
         userinfo   => $userinfo,
     };
     
-    $self->print_page($config->{tt_user_role_edit_tname},$ttdata);
+    $self->print_page($config->{tt_users_roles_edit_tname},$ttdata);
 
 }
 

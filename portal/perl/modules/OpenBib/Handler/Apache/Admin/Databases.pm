@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Database
+#  OpenBib::Handler::Apache::Admin::Databases
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Database;
+package OpenBib::Handler::Apache::Admin::Databases;
 
 use strict;
 use warnings;

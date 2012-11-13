@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Cluster
+#  OpenBib::Handler::Apache::Admin::Servers
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Cluster;
+package OpenBib::Handler::Apache::Admin::Servers;
 
 use strict;
 use warnings;
@@ -96,13 +96,13 @@ sub show_collection {
         return;
     }
 
-    my $clusterinfos_ref = $config->get_clusterinfo_overview;
+    my $serverinfos_ref = $config->get_serverinfo_overview;
     
     my $ttdata = {
-        clusterinfos => $clusterinfos_ref,
+        serverinfos => $serverinfos_ref,
     };
     
-    $self->print_page($config->{tt_admin_cluster_tname},$ttdata);
+    $self->print_page($config->{tt_admin_server_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -113,7 +113,7 @@ sub show_record_form {
 
     # Dispatches Args
     my $view             = $self->param('view');
-    my $clusterid        = $self->param('clusterid');
+    my $serverid         = $self->param('serverid');
 
     # Shared Args
     my $config           = $self->param('config');
@@ -123,14 +123,14 @@ sub show_record_form {
         return;
     }
 
-    my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid })->single();
+    my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid })->single;
     
     my $ttdata = {
-        clusterid     => $clusterid,
-        clusterinfo   => $clusterinfo_ref,
+        serverid     => $serverid,
+        serverinfo   => $serverinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_cluster_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_server_record_edit_tname},$ttdata);
 }
 
 sub show_record {
@@ -141,7 +141,7 @@ sub show_record {
 
     # Dispatches Args
     my $view             = $self->param('view');
-    my $clusterid         = $self->param('clusterid');
+    my $serverid         = $self->param('serverid');
 
     # Shared Args
     my $config           = $self->param('config');
@@ -151,14 +151,14 @@ sub show_record {
         return;
     }
 
-    my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid });
+    my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid });
     
     my $ttdata = {
-        clusterid     => $clusterid,
-        clusterinfo   => $clusterinfo_ref,
+        serverid     => $serverid,
+        serverinfo   => $serverinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_cluster_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_server_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -185,20 +185,25 @@ sub create_record {
         return;
     }
 
-    my $new_clusterid = $config->new_cluster($input_data_ref);
+    if ($input_data_ref->{hostip} eq "") {
+        $self->print_warning($msg->maketext("Sie müssen einen Servernamen eingeben."));
+        return Apache2::Const::OK;
+    }
+    
+    my $new_serverid = $config->new_server($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}/id/$new_clusterid/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_servers_loc}/id/$new_serverid/edit");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($new_clusterid){ # Datensatz erzeugt, wenn neue id
-            $logger->debug("Weiter zur DB $new_clusterid");
+        if ($new_serverid){ # Datensatz erzeugt, wenn neue id
+            $logger->debug("Weiter zur DB $new_serverid");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('clusterid',$new_clusterid);
-            $self->param('location',"$location/$new_clusterid");
+            $self->param('serverid',$new_serverid);
+            $self->param('location',"$location/$new_serverid");
             $self->show_record;
         }
     }
@@ -214,53 +219,32 @@ sub update_record {
 
     # Dispatched Args
     my $view             = $self->param('view');
-    my $clusterid        = $self->param('clusterid');
+    my $serverid         = $self->param('serverid');
 
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm')              || 0;
-
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
-    $input_data_ref->{id} = $clusterid;
+    $input_data_ref->{id} = $serverid;
     
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $clusterid");
-        
-        if ($confirm){
-        }
-        else {
-            $logger->debug("Redirecting to delete location");
-            $self->delete_record;
-            return;
-        }
-    }
-
-    # Ansonsten POST oder PUT => Aktualisieren
-
-    $config->update_cluster($input_data_ref);
+    $config->update_server($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_servers_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
-        $logger->debug("Weiter zum Record $clusterid");
+        $logger->debug("Weiter zum Record $serverid");
         $self->show_record;
     }
 
@@ -276,18 +260,17 @@ sub confirm_delete_record {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view');
-    my $clusterid      = $self->strip_suffix($self->param('clusterid'));
+    my $serverid       = $self->strip_suffix($self->param('serverid'));
     my $config         = $self->param('config');
 
-    my $clusterinfo_ref = $config->get_clusterinfo->search({ id => $clusterid})->single;
+    my $serverinfo_ref = $config->get_serverinfo->search({ id => $serverid})->single;
 
     my $ttdata={
-        clusterid  => $clusterid,
-        clusterinfo => $clusterinfo_ref,
+        serverinfo => $serverinfo_ref,
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_cluster_record_delete_confirm_tname},$ttdata);
+    $self->print_page($config->{tt_admin_server_record_delete_confirm_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -300,8 +283,8 @@ sub delete_record {
     my $r                = $self->param('r');
 
     # Dispatched Args
-    my $view            = $self->param('view')                  || '';
-    my $clusterid       = $self->param('clusterid')             || '';
+    my $view           = $self->param('view')                 || '';
+    my $serverid       = $self->param('serverid')             || '';
 
     # Shared Args
     my $config         = $self->param('config');
@@ -312,10 +295,10 @@ sub delete_record {
         return;
     }
 
-    $config->del_cluster({id => $clusterid});
+    $config->del_server({id => $serverid});
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_servers_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -325,6 +308,11 @@ sub get_input_definition {
     my $self=shift;
     
     return {
+        hostip => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
         description => {
             default  => '',
             encoding => 'utf8',
@@ -333,6 +321,11 @@ sub get_input_definition {
         status => {
             default  => '',
             encoding => 'utf8',
+            type     => 'scalar',
+        },
+        clusterid => {
+            default  => undef,
+            encoding => 'none',
             type     => 'scalar',
         },
         active => {

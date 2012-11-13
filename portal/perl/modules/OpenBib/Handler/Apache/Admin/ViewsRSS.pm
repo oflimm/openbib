@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::ViewRSS
+#  OpenBib::Handler::Apache::Admin::ViewsRSS
 #
 #  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::ViewRSS;
+package OpenBib::Handler::Apache::Admin::ViewsRSS;
 
 use strict;
 use warnings;

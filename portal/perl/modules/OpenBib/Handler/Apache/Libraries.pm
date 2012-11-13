@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Cloud
+#  OpenBib::Handler::Apache::Libraries.pm
 #
-#  Dieses File ist (C) 2006-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,32 +27,39 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Cloud;
+package OpenBib::Handler::Apache::Libraries;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
+use Apache2::Const -compile => qw(:common :http);
 use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
+use Apache2::Request;
+use Benchmark ':hireswallclock';
+use Encode qw(decode_utf8);
 use DBI;
-use Encode 'decode_utf8';
 use JSON::XS;
+use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
+use POSIX;
 use Template;
 
+use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
+use OpenBib::Record::Title;
+use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Subject;
+use OpenBib::Record::Classification;
 use OpenBib::Session;
-use OpenBib::Statistics;
 use OpenBib::User;
-use OpenBib::Template::Utilities;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -60,10 +67,14 @@ use base 'OpenBib::Handler::Apache';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show_collection');
+    $self->start_mode('show');
     $self->run_modes(
         'show_collection'                      => 'show_collection',
         'show_record'                          => 'show_record',
+        'show_record_form'                     => 'show_record_form',
+        'create_record'                        => 'create_record',
+        'update_record'                        => 'update_record',
+        'delete_record'                        => 'delete_record',
     );
 
     # Use current path as template path,
@@ -78,45 +89,33 @@ sub show_collection {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
-    
+    my $view           = $self->param('view');
+
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
-    my $config         = $self->param('config');    
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $format         = $query->param('format')         || '';
-    
-    my $statistics  = new OpenBib::Statistics();
+
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    my $utils       = new OpenBib::Template::Utilities;
 
-    my $profile       = $config->get_profilename_of_view($view);
-
-    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
-
+    my $librarylist_ref = $config->get_libraries();
+    
     # TT-Data erzeugen
     my $ttdata={
-        format        => $format,
-        profile       => $profile,
-        queryoptions  => $queryoptions,
-        query         => $query,
-        viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
-        statistics    => $statistics,
-        utils         => $utils,
+        queryoptions_ref => $queryoptions->get_options,
+        dbinfo           => $dbinfotable,
+        libraries        => $librarylist_ref,
     };
-
-    $self->print_page($config->{tt_cloud_collection_tname},$ttdata);
-
+    
+    $self->print_page($config->{tt_library_collection_tname},$ttdata);
+    
     return Apache2::Const::OK;
 }
 
@@ -127,13 +126,12 @@ sub show_record {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
     my $view           = $self->param('view');
-    my $cloudid        = $self->param('cloudid');
-    my $database       = $self->param('database');
-    
+    my $libraryid      = $self->strip_suffix($self->param('libraryid'));
+
     # Shared Args
     my $query          = $self->query();
+    my $r              = $self->param('r');
     my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
@@ -142,38 +140,26 @@ sub show_record {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $format         = $query->param('format')         || '';
-    
-    my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    my $utils       = new OpenBib::Template::Utilities;
 
-    if ($database){
-        $database=$self->strip_suffix($database);
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+
+    if ( $libraryid ){ # Valide Informationen etc.
+        $logger->debug("Key: $libraryid");
+
+        my $libinfo_ref = $config->get_libinfo($libraryid);
+
+        my $ttdata = {
+            libinfo        => $libinfo_ref,
+            dbinfo         => $dbinfotable,
+        };
+
+        $self->print_page($config->{tt_library_tname},$ttdata);
+
     }
     else {
-        $cloudid=$self->strip_suffix($cloudid);
+        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit einer Id spezifiziert."));
     }
-    
-    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
-    # TT-Data erzeugen
-    my $ttdata={
-        format        => $format,
-        stid          => $cloudid,
-        database      => $database,
-        query         => $query,
-        viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
-        statistics    => $statistics,
-        utils         => $utils,
-    };
-
-    my $templatename = "tt_cloud_".$cloudid."_tname";
-
-    $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
 }

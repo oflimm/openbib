@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Person.pm
+#  OpenBib::Handler::Apache::Searchprofiles.pm
 #
-#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2011-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Person;
+package OpenBib::Handler::Apache::Searchprofiles;
 
 use strict;
 use warnings;
@@ -36,7 +36,8 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::Record::Person;
+use OpenBib::Record::Title;
+use OpenBib::Template::Utilities;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -46,7 +47,7 @@ sub setup {
 
     $self->start_mode('show_record');
     $self->run_modes(
-        'show_record' => 'show_record',
+        'show_record'             => 'show_record',
     );
 
     # Use current path as template path,
@@ -62,8 +63,7 @@ sub show_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
-    my $personid       = $self->strip_suffix($self->param('personid'));
+    my $profileid      = $self->strip_suffix($self->param('profileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -72,59 +72,27 @@ sub show_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang            = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $stid          = $query->param('stid')     || '';
-    my $callback      = $query->param('callback') || '';
-    my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
-    my $format        = $query->param('format')   || 'full';
-    my $no_log         = $query->param('no_log')  || '';
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
 
-    if ($database && $personid ){ # Valide Informationen etc.
-        $logger->debug("ID: $personid - DB: $database");
-        
-        my $record = OpenBib::Record::Person->new({database => $database, id => $personid})->load_full_record;
-        
-        my $authenticationtargetdb = $user->get_targetdb_of_session($session->{ID});
+    my @databases     = $config->get_databases_of_searchprofile($profileid);
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        profileid   => $profileid,
+        databases   => \@databases,
+        dbinfo      => $dbinfotable,
+    };
 
-        # TT-Data erzeugen
-        my $ttdata={
-            database      => $database, # Zwingend wegen common/subtemplate
-            dbinfo        => $dbinfotable,
-            qopts         => $queryoptions->get_options,
-            record        => $record,
-            id            => $personid,
-            format        => $format,
-            activefeed    => $config->get_activefeeds_of_db($database),
-            authenticationtargetdb => $authenticationtargetdb,
-        };
+    $self->print_page($config->{tt_searchprofile_tname},$ttdata);
 
-        $self->print_page($config->{'tt_person_tname'},$ttdata);
-
-        # Log Event
-        
-        if (!$no_log){
-            $session->log_event({
-                type      => 11,
-                content   => {
-                    id       => $personid,
-                    database => $database,
-                },
-                serialize => 1,
-            });
-        }
-    }
-    else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
-    }
-
+    $logger->debug("Done showing record");
     return Apache2::Const::OK;
 }
 

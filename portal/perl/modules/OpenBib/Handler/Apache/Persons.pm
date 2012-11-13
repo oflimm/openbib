@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Subject.pm
+#  OpenBib::Handler::Apache::Persons.pm
 #
-#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Subject;
+package OpenBib::Handler::Apache::Persons;
 
 use strict;
 use warnings;
@@ -35,9 +35,8 @@ no warnings 'redefine';
 use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
-use Encode qw/decode_utf8 encode_utf8/;
 
-use OpenBib::Record::Subject;
+use OpenBib::Record::Person;
 
 use base 'OpenBib::Handler::Apache';
 
@@ -47,8 +46,7 @@ sub setup {
 
     $self->start_mode('show_record');
     $self->run_modes(
-        'show_record'     => 'show_record',
-        'show_collection' => 'show_collection',
+        'show_record' => 'show_record',
     );
 
     # Use current path as template path,
@@ -65,7 +63,7 @@ sub show_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $subjectid      = $self->strip_suffix($self->param('subjectid'));
+    my $personid       = $self->strip_suffix($self->param('personid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -84,15 +82,15 @@ sub show_record {
     my $callback      = $query->param('callback') || '';
     my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
     my $format        = $query->param('format')   || 'full';
-    my $no_log        = $query->param('no_log')   || '';
+    my $no_log         = $query->param('no_log')  || '';
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
 
-    if ($database && $subjectid ){ # Valide Informationen etc.
-        $logger->debug("ID: $subjectid - DB: $database");
+    if ($database && $personid ){ # Valide Informationen etc.
+        $logger->debug("ID: $personid - DB: $database");
         
-        my $record = OpenBib::Record::Subject->new({database => $database, id => $subjectid})->load_full_record;
+        my $record = OpenBib::Record::Person->new({database => $database, id => $personid})->load_full_record;
         
         my $authenticationtargetdb = $user->get_targetdb_of_session($session->{ID});
 
@@ -102,21 +100,21 @@ sub show_record {
             dbinfo        => $dbinfotable,
             qopts         => $queryoptions->get_options,
             record        => $record,
-            id            => $subjectid,
+            id            => $personid,
             format        => $format,
             activefeed    => $config->get_activefeeds_of_db($database),
             authenticationtargetdb => $authenticationtargetdb,
         };
 
-        $self->print_page($config->{'tt_subject_tname'},$ttdata);
+        $self->print_page($config->{'tt_person_tname'},$ttdata);
 
         # Log Event
         
         if (!$no_log){
             $session->log_event({
-                type      => 14,
+                type      => 11,
                 content   => {
-                    id       => $subjectid,
+                    id       => $personid,
                     database => $database,
                 },
                 serialize => 1,
@@ -127,65 +125,6 @@ sub show_record {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
-    return Apache2::Const::OK;
-}
-
-sub show_collection {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view             = $self->param('view');
-    my $database         = $self->strip_suffix($self->param('database'));
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-
-    # CGI Args
-    my $callback      = $query->param('callback') || '';
-    my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
-    my $no_log        = $query->param('no_log')   || '';
-
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-
-    if ($database){ # Valide Informationen etc.
-        
-        my $catalog_args_ref = OpenBib::Common::Util::query2hashref($query);
-        $catalog_args_ref->{database} = $database if (defined $database);
-        $catalog_args_ref->{l}        = $lang if (defined $lang);
-
-        my $catalog = OpenBib::Catalog::Factory->create_catalog($catalog_args_ref);
-
-        $logger->debug("Passing Args: ".YAML::Dump($catalog_args_ref));
-        
-        my $subjects_ref = $catalog->get_subjects($catalog_args_ref);
-        
-        $logger->debug(YAML::Dump($subjects_ref));
-        
-        # TT-Data erzeugen
-        my $ttdata={
-            dbinfo          => $dbinfotable,
-            database        => $database,
-            subjects        => $subjects_ref,
-        };
-        
-        $self->print_page($config->{'tt_subject_collection_tname'},$ttdata);
-    }
-    else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));
-    }
-    
     return Apache2::Const::OK;
 }
 

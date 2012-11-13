@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::User::Preferences
+#  OpenBib::Handler::Apache::Users::Preferences
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::User::Preferences;
+package OpenBib::Handler::Apache::Users::Preferences;
 
 use strict;
 use warnings;

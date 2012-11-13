@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Circulations
+#  OpenBib::Handler::Apache::Users::Circulations
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::User::Circulations;
+package OpenBib::Handler::Apache::Users::Circulations;
 
 use strict;
 use warnings;

@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::User::Collection
+#  OpenBib::Handler::Apache::User::Collections
 #
-#  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::User::Collection;
+package OpenBib::Handler::Apache::User::Collections;
 
 use strict;
 use warnings;

@@ -106,7 +106,7 @@ sub show_record {
             authenticationtargetdb => $authenticationtargetdb,
         };
 
-        $self->print_page($config->{'tt_corporatebody_tname'},$ttdata);
+        $self->print_page($config->{'tt_corporatebodies_tname'},$ttdata);
 
         # Log Event
         

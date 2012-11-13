@@ -111,13 +111,13 @@ $("#dd_language_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Katalog
 // Bild setzen
-$("#dd_database_[% database %]_toggle").html("<b>[<a href=\"#dd_database_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_databases_[% database %]_toggle").html("<b>[<a href=\"#dd_databases_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
-$("#dd_database_[% database %]").hide();
+$("#dd_databases_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#dd_database_[% database %]_toggle").click(function(){
- $("#dd_database_[% database %]").toggle();
- $("#dd_database_[% database %]_toggle").html("");
+$("#dd_databases_[% database %]_toggle").click(function(){
+ $("#dd_databases_[% database %]").toggle();
+ $("#dd_databases_[% database %]_toggle").html("");
 });
 // Ende Togglen / Facets Katalog
 
@@ -190,13 +190,13 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 <!-- Begin database facet -->
 [%         IF category_map.8.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_database_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
+<dt class="ob-headline" id="dd_databases_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
 [%             FOREACH termitem IN category_map.8 ;
                   LAST IF loop.count > 25 ;
 %]
 [% IF category_map.8.size > 5 && loop.count == 5 %]
-<span id="dd_database_[% database %]_toggle"></span>
-<div id="dd_database_[% database %]">
+<span id="dd_databases_[% database %]_toggle"></span>
+<div id="dd_databases_[% database %]">
 [% END %]
 [%-
     searchterm    = termitem.0;

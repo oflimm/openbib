@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::View
+#  OpenBib::Handler::Apache::Admin::Profiles
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,14 +27,14 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::View;
+package OpenBib::Handler::Apache::Admin::Profiles;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
+use Apache2::Const -compile => qw(:common);
 use Apache2::Log;
 use Apache2::Reload;
 use Apache2::RequestRec ();
@@ -48,6 +48,7 @@ use JSON::XS;
 use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
+use SOAP::Lite;
 use Template;
 
 use OpenBib::Common::Util;
@@ -58,8 +59,6 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
-
-use CGI::Application::Plugin::Redirect;
 
 use base 'OpenBib::Handler::Apache::Admin';
 
@@ -91,7 +90,7 @@ sub show_collection {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view');
+    my $view           = $self->param('view')                   || '';
 
     # Shared Args
     my $config         = $self->param('config');
@@ -102,16 +101,16 @@ sub show_collection {
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    
-    my $viewinfo_ref = $config->get_viewinfo_overview();
-    
-    my $ttdata={
+
+    my $profileinfo_ref = $config->get_profileinfo_overview();
+
+    my $ttdata = {
         dbinfo     => $dbinfotable,
-        views      => $viewinfo_ref,
+        profiles   => $profileinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_view_tname},$ttdata);
-    
+    $self->print_page($config->{tt_admin_profile_tname},$ttdata);
+
     return Apache2::Const::OK;
 }
 
@@ -123,7 +122,7 @@ sub show_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $viewname       = $self->strip_suffix($self->param('viewid'));
+    my $profilename    = $self->strip_suffix($self->param('profileid'));
 
     # Shared Args
     my $config         = $self->param('config');
@@ -134,32 +133,28 @@ sub show_record {
         return;
     }
 
-    # View muss existieren
-    unless ($config->view_exists($viewname)) {
-        $self->print_warning($msg->maketext("Ein View dieses Namens existiert nicht."));
+    if (!$config->profile_exists($profilename)) {
+        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
-
-    my $profilename = $viewinfo->profileid->profilename;
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
+    my $orgunits_ref    = $config->get_orgunitinfo_overview($profilename);
     
-    my @profiledbs       = $config->get_profiledbs($profilename);
-    my @viewdbs          = $config->get_viewdbs($viewname);
-    my $all_rssfeeds_ref = $config->get_rssfeed_overview();
-    my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
+    my $activedbs_ref = $config->get_active_database_names();
 
-    my $ttdata={
-        dbnames     => \@profiledbs,
-        viewdbs     => \@viewdbs,
-        viewinfo    => $viewinfo,
+    my @profiledbs    = $config->get_profiledbs($profilename);
+    
+    my $ttdata = {
+        profileinfo => $profileinfo_ref,
+        profiledbs  => \@profiledbs,
+        orgunits    => $orgunits_ref,
         dbinfo      => $dbinfotable,
-        allrssfeeds => $all_rssfeeds_ref,
+        activedbs   => $activedbs_ref,
     };
-    
-    $self->print_page($config->{tt_admin_view_record_tname},$ttdata);
+
+    $self->print_page($config->{tt_admin_profile_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -169,7 +164,7 @@ sub create_record {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view');
+    my $view           = $self->param('view')                   || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -186,42 +181,39 @@ sub create_record {
         return;
     }
 
-    if ($input_data_ref->{viewname} eq "" || $input_data_ref->{description} eq "" || $input_data_ref->{profilename} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-Profil eingeben."));
+    if ($input_data_ref->{profilename} eq "" || $input_data_ref->{description} eq "") {
+        $self->print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."));
         return Apache2::Const::OK;
     }
 
-    # Profile muss vorhanden sein.
-    if (!$config->profile_exists($input_data_ref->{profilename})) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
+    # Profile darf noch nicht existieren
+    if ($config->profile_exists($input_data_ref->{profilename})) {
+        $self->print_warning($msg->maketext("Ein Profil dieses Namens existiert bereits."));
         return Apache2::Const::OK;
     }
 
-    # View darf noch nicht existieren
-    if ($config->view_exists($input_data_ref->{viewname})) {
-        $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
-        return Apache2::Const::OK;
-    }
+    my $new_profileid = $config->new_profile({
+        profilename => $input_data_ref->{profilename},
+        description => $input_data_ref->{description},
+    });
     
-    my $new_viewid = $config->new_view($input_data_ref);
-    
-    if (!$new_viewid){
+    if (!$new_profileid){
         $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_views_loc}/$input_data_ref->{viewname}/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profiles_loc}/$input_data_ref->{profilename}/edit");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($new_viewid){ # Datensatz erzeugt, wenn neue id
-            $logger->debug("Weiter zum Record $input_data_ref->{viewname}");
+        if ($new_profileid){ # Datensatz erzeugt, wenn neue id
+            $logger->debug("Weiter zum Record $input_data_ref->{profilename}");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('viewid',$input_data_ref->{viewname});
-            $self->param('location',"$location/$input_data_ref->{viewname}");
+            $self->param('profileid',$input_data_ref->{profilename});
+            $self->param('location',"$location/$input_data_ref->{profilename}");
             $self->show_record;
         }
     }
@@ -237,43 +229,35 @@ sub show_record_form {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $viewname       = $self->param('viewid');
+    my $profilename    = $self->param('profileid');
 
     # Shared Args
     my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
-
-    my $viewdbs_ref      = {};
-    foreach my $dbname ($config->get_viewdbs($viewname)){
-        $viewdbs_ref->{$dbname} = 1;
+    if (!$config->profile_exists($profilename)) {
+        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
+        return Apache2::Const::OK;
     }
 
-    my @profiledbs       = $config->get_profiledbs($config->get_profilename_of_view($viewname));
-    my $all_rssfeeds_ref = $config->get_rssfeed_overview();
-    my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $ttdata={
-        viewinfo   => $viewinfo,
-        viewdbs    => $viewdbs_ref,
-
-        allrssfeeds  => $all_rssfeeds_ref,
-        viewrssfeed  => $viewrssfeed_ref,
-
-        dbnames    => \@profiledbs,
-        viewinfo   => $viewinfo,
-        dbinfo     => $dbinfotable,
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
+    my $orgunits_ref    = $config->get_orgunitinfo_overview($profilename);
+    
+    my $ttdata = {
+        profileinfo => $profileinfo_ref,
+        orgunits    => $orgunits_ref,
+        dbinfo      => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_view_record_edit_tname},$ttdata);
-
+    $self->print_page($config->{tt_admin_profile_record_edit_tname},$ttdata);
+        
     return Apache2::Const::OK;
 }
 
@@ -283,8 +267,9 @@ sub update_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Dispatched Args
     my $view           = $self->param('view');
-    my $viewname       = $self->param('viewid');
+    my $profilename    = $self->param('profileid');
 
     # Shared Args
     my $query          = $self->query();
@@ -292,39 +277,33 @@ sub update_record {
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
-
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
-    $input_data_ref->{viewname} = $viewname;
-        
+
+    $input_data_ref->{profilename} = $profilename;
+    
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    if (!$config->view_exists($viewname)) {
-        $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
-        return Apache2::Const::OK;
-    }
-
-    # Profile muss vorhanden sein.
-    if (!$config->profile_exists($input_data_ref->{profilename})) {
+    if (!$config->profile_exists($profilename)) {
         $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
         return Apache2::Const::OK;
     }
 
-    $config->update_view($input_data_ref);
+    $config->update_profile({
+        profilename => $input_data_ref->{profilename},
+        description => $input_data_ref->{description},
+    });
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_views_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profiles_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
-        $logger->debug("Weiter zum Record $viewname");
+        $logger->debug("Weiter zum Record $profilename");
         $self->show_record;
     }
 
@@ -340,17 +319,17 @@ sub confirm_delete_record {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view');
-    my $viewname       = $self->strip_suffix($self->param('viewid'));
+    my $profilename    = $self->strip_suffix($self->param('profileid'));
     my $config         = $self->param('config');
 
-    my $viewinfo_ref = $config->get_viewinfo->search({ viewname => $viewname})->single;
+    my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
     
     my $ttdata={
-        viewinfo   => $viewinfo_ref,
+        profileinfo => $profileinfo_ref,
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_view_record_delete_confirm_tname},$ttdata);
+    $self->print_page($config->{tt_admin_profile_record_delete_confirm_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -363,10 +342,11 @@ sub delete_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $viewname       = $self->param('viewid');
+    my $profilename    = $self->param('profileid');
 
     # Shared Args
     my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
@@ -374,12 +354,17 @@ sub delete_record {
         return;
     }
 
-    $config->del_view($viewname);
+    if (!$config->profile_exists($profilename)) {
+        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
+        return Apache2::Const::OK;
+    }
+
+    $config->del_profile($profilename);
 
     return unless ($self->param('representation') eq "html");
-    
+
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_views_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profiles_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -389,47 +374,16 @@ sub get_input_definition {
     my $self=shift;
     
     return {
-        viewname => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        description => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
         profilename => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',
         },
-        stripuri => {
+        description => {
             default  => 'false',
-            encoding => 'none',
+            encoding => 'utf8',
             type     => 'scalar',
         },
-        active => {
-            default  => 'false',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        start_loc => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        servername => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        databases => {
-            default  => [],
-            encoding => 'none',
-            type     => 'array',
-        },
-        
     };
 }
 

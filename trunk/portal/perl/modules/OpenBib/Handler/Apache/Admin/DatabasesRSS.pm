@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::DatabaseRSS
+#  OpenBib::Handler::Apache::Admin::DatabasesRSS
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::DatabaseRSS;
+package OpenBib::Handler::Apache::Admin::DatabasesRSS;
 
 use strict;
 use warnings;

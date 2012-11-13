@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Library
+#  OpenBib::Handler::Apache::Admin::Libraries
 #
 #  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Library;
+package OpenBib::Handler::Apache::Admin::Libraries;
 
 use strict;
 use warnings;

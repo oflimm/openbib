@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Searchprofile
+#  OpenBib::Handler::Apache::Admin::Users
 #
-#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Searchprofile;
+package OpenBib::Handler::Apache::Admin::Users;
 
 use strict;
 use warnings;
@@ -70,10 +70,8 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'           => 'show_collection',
-        'show_collection_form'      => 'show_collection_form',
-        'show_record'               => 'show_record',
-        'show_record_form'          => 'show_record_form',
-        'update_record'             => 'update_record',
+        'show_search'               => 'show_search',
+        'show_search_form'          => 'show_search_form',
     );
 
     # Use current path as template path,
@@ -91,40 +89,30 @@ sub show_collection {
     my $view           = $self->param('view');
 
     # Shared Args
-    my $query          = $self->query();
     my $config         = $self->param('config');
-
-    # CGI Args
-    my $year           = $query->param('year');
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    my $statistics  = new OpenBib::Statistics();
-
+    # TT-Data erzeugen
     my $ttdata={
-        dbinfo     => $dbinfotable,
-        statistics => $statistics,
-        year       => $year,
     };
     
-    $self->print_page($config->{tt_admin_searchprofile_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    $self->print_page($config->{tt_admin_user_tname},$ttdata);
+
 }
 
-sub show_record {
+
+sub show_search_form {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view            = $self->param('view');
-    my $searchprofileid = $self->strip_suffix($self->param('searchprofileid'));
+    my $view           = $self->param('view')                   || '';
 
     # Shared Args
     my $config         = $self->param('config');
@@ -133,94 +121,58 @@ sub show_record {
         $self->print_authorization_error();
         return;
     }
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    my $searchprofile_obj = $config->get_searchprofile->single({ id => $searchprofileid });
-
+    
+    # TT-Data erzeugen
     my $ttdata={
-        searchprofileid => $searchprofileid,
-        searchprofile   => $searchprofile_obj,
-        dbinfo          => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_searchprofile_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_user_search_form_tname},$ttdata);
+
 }
 
-sub show_record_form {
+sub show_search {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r              = $self->param('r');
 
     # Dispatched Args
-    my $view            = $self->param('view');
-    my $searchprofileid = $self->strip_suffix($self->param('searchprofileid'));
+    my $view           = $self->param('view')                   || '';
 
-    # Shared Args
-    my $config         = $self->param('config');
-
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
-    my $statistics  = new OpenBib::Statistics();
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    my $searchprofile_obj = $config->get_searchprofile->single({ id => $searchprofileid });
-
-    my $ttdata={
-        searchprofileid => $searchprofileid,
-        searchprofile   => $searchprofile_obj,
-        statistics      => $statistics,
-        dbinfo          => $dbinfotable,
-    };
-    
-    $self->print_page($config->{tt_admin_searchprofile_record_edit_tname},$ttdata);
-
-    return Apache2::Const::OK;
-}
-
-sub update_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $view            = $self->param('view');
-    my $searchprofileid = $self->param('searchprofileid');
 
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
-    my $path_prefix    = $self->param('path_prefix');
+    my $user           = $self->param('user');
 
     # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $ownindex        = $query->param('own_index')       || 'false';
+    my $args_ref = {};
+    $args_ref->{roleid}     = $query->param('roleid') if ($query->param('roleid'));
+    $args_ref->{username}   = $query->param('username') if ($query->param('username'));
+    $args_ref->{surname}    = $query->param('surname') if ($query->param('surname'));
+    $args_ref->{commonname} = $query->param('commonname') if ($query->param('commonname'));
     
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    if (!$config->searchprofile_exists($searchprofileid)) {
-        $self->print_warning($msg->maketext("Es existiert kein Suchprofil mit dieser ID"));
+    if (!$args_ref->{roleid} && !$args_ref->{username} && !$args_ref->{surname} && !$args_ref->{commonname}){
+        $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
         return Apache2::Const::OK;
     }
 
-    # POST oder PUT => Aktualisieren
+    my $userlist_ref = $user->search($args_ref);;
 
-    $config->update_searchprofile($searchprofileid,$ownindex);
-
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_searchprofiles_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
+    # TT-Data erzeugen
+    my $ttdata={
+        userlist   => $userlist_ref,
+    };
+    
+    $self->print_page($config->{tt_admin_user_search_tname},$ttdata);
 }
-
+    
 1;

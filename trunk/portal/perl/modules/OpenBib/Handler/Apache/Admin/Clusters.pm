@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Topic
+#  OpenBib::Handler::Apache::Admin::Clusters
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Topic;
+package OpenBib::Handler::Apache::Admin::Clusters;
 
 use strict;
 use warnings;
@@ -52,8 +52,6 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
-use OpenBib::EZB;
-use OpenBib::DBIS;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -69,11 +67,10 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'           => 'show_collection',
-        'show_collection_form'      => 'show_collection_form',
         'show_record_form'          => 'show_record_form',
-        'show_record'               => 'show_record',
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'delete_record'             => 'delete_record',
     );
 
@@ -89,55 +86,51 @@ sub show_collection {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view');
+    my $view           = $self->param('view')                   || '';
 
     # Shared Args
     my $config         = $self->param('config');
-    my $user           = $self->param('user');
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $topics_ref = $user->get_topics;
+    my $clusterinfos_ref = $config->get_clusterinfo_overview;
     
-    my $ttdata={
-        topics   => $topics_ref,
+    my $ttdata = {
+        clusterinfos => $clusterinfos_ref,
     };
     
-    $self->print_page($config->{tt_admin_topic_tname},$ttdata);
-
-    return;
+    $self->print_page($config->{tt_admin_cluster_tname},$ttdata);
 }
 
-sub show_collection_form {
+sub show_record_form {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Dispatched Args
+    # Dispatches Args
     my $view             = $self->param('view');
+    my $clusterid        = $self->param('clusterid');
 
     # Shared Args
-    my $config         = $self->param('config');
-    my $user           = $self->param('user');
+    my $config           = $self->param('config');
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $topics_ref = $user->get_topics;
+    my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid })->single();
     
-    my $ttdata={
-        topics   => $topics_ref,
+    my $ttdata = {
+        clusterid     => $clusterid,
+        clusterinfo   => $clusterinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_topic_edit_tname},$ttdata);
-
-    return;
+    $self->print_page($config->{tt_admin_cluster_record_edit_tname},$ttdata);
 }
 
 sub show_record {
@@ -146,67 +139,26 @@ sub show_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Dispatched Args
+    # Dispatches Args
     my $view             = $self->param('view');
-    my $topicid        = $self->strip_suffix($self->param('topicid'));
+    my $clusterid         = $self->param('clusterid');
 
     # Shared Args
-    my $config         = $self->param('config');
-    my $user           = $self->param('user');
+    my $config           = $self->param('config');
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $topic_ref = $user->get_topic({ id => $topicid});
-    my $ezb         = OpenBib::EZB->new;
-    my $dbis        = OpenBib::DBIS->new;
+    my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid });
     
-    my $ttdata={
-        topic    => $topic_ref,
-        ezb        => $ezb,
-        dbis       => $dbis,
+    my $ttdata = {
+        clusterid     => $clusterid,
+        clusterinfo   => $clusterinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_topic_record_tname},$ttdata);
-
-    return;
-}
-
-
-sub show_record_form {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view             = $self->param('view');
-    my $topicid        = $self->param('topicid');
-
-    # Shared Args
-    my $config         = $self->param('config');
-    my $user           = $self->param('user');
-
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
-    my $topic_ref = $user->get_topic({ id => $topicid});
-    my $ezb         = OpenBib::EZB->new;
-    my $dbis        = OpenBib::DBIS->new;
-    
-    my $ttdata={
-        topic    => $topic_ref,
-        ezb        => $ezb,
-        dbis       => $dbis,
-    };
-    
-    $self->print_page($config->{tt_admin_topic_record_edit_tname},$ttdata);
-
-    return;
+    $self->print_page($config->{tt_admin_cluster_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -216,57 +168,41 @@ sub create_record {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view');
+    my $view           = $self->param('view')                   || '';
 
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
-    my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
     my $location       = $self->param('location');
 
     # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input();
+    my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    if ($input_data_ref->{name} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."));
-        return Apache2::Const::OK;
-    }
+    my $new_clusterid = $config->new_cluster($input_data_ref);
 
-    if ($user->topic_exists($input_data_ref->{name})){
-        $self->print_warning($msg->maketext("Ein Themenbebiet diesen Namens existiert bereits."));
-        return Apache2::Const::OK;
-    }
-    
-    my $new_topicid = $user->new_topic($input_data_ref);
-    
-    if (!$new_topicid ){
-        $self->print_warning($msg->maketext("Es existiert bereits ein Themengebiet unter diesem Namen"));
-        return Apache2::Const::OK;
-    }
-    
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_topics_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}/id/$new_clusterid/edit");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($new_topicid){
-            $logger->debug("Weiter zum Record $new_topicid");
+        if ($new_clusterid){ # Datensatz erzeugt, wenn neue id
+            $logger->debug("Weiter zur DB $new_clusterid");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('topicid',$new_topicid);
-            $self->param('location',"$location/$new_topicid");
+            $self->param('clusterid',$new_clusterid);
+            $self->param('location',"$location/$new_clusterid");
             $self->show_record;
         }
     }
-
+    
     return;
 }
 
@@ -277,22 +213,23 @@ sub update_record {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view');
-    my $topicid      = $self->param('topicid');
+    my $view             = $self->param('view');
+    my $clusterid        = $self->param('clusterid');
 
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
-    my $user           = $self->param('user');
     my $path_prefix    = $self->param('path_prefix');
-
-    # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
     my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
+    my $confirm         = $query->param('confirm')              || 0;
 
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
+
+    $input_data_ref->{id} = $clusterid;
+    
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
@@ -302,17 +239,9 @@ sub update_record {
     # zu verwenden
 
     if ($method eq "DELETE"){
-        $logger->debug("About to delete $topicid");
+        $logger->debug("About to delete $clusterid");
         
         if ($confirm){
-            my $ttdata={
-                topicid  => $topicid,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_topic_record_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
         }
         else {
             $logger->debug("Redirecting to delete location");
@@ -323,25 +252,43 @@ sub update_record {
 
     # Ansonsten POST oder PUT => Aktualisieren
 
-    $user->update_topic({
-        name                 => $input_data_ref->{name},
-        description          => $input_data_ref->{description},
-        id                   => $topicid,
-    });
+    $config->update_cluster($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_topics_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
-        $logger->debug("Weiter zum Record");
-        $logger->debug("Weiter zum Record $topicid");
+        $logger->debug("Weiter zum Record $clusterid");
         $self->show_record;
     }
-    
 
     return;
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $clusterid      = $self->strip_suffix($self->param('clusterid'));
+    my $config         = $self->param('config');
+
+    my $clusterinfo_ref = $config->get_clusterinfo->search({ id => $clusterid})->single;
+
+    my $ttdata={
+        clusterid  => $clusterid,
+        clusterinfo => $clusterinfo_ref,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_admin_cluster_record_delete_confirm_tname},$ttdata);
+    return Apache2::Const::OK;
 }
 
 sub delete_record {
@@ -349,14 +296,15 @@ sub delete_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $r                = $self->param('r');
 
     # Dispatched Args
-    my $view           = $self->param('view');
-    my $topicid      = $self->param('topicid');
+    my $view            = $self->param('view')                  || '';
+    my $clusterid       = $self->param('clusterid')             || '';
 
     # Shared Args
     my $config         = $self->param('config');
-    my $user           = $self->param('user');
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
@@ -364,10 +312,10 @@ sub delete_record {
         return;
     }
 
-    $user->del_topic({ id => $topicid });
+    $config->del_cluster({id => $clusterid});
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_topics_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -382,12 +330,17 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        name => {
+        status => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
         },
+        active => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },
     };
 }
-    
+
 1;

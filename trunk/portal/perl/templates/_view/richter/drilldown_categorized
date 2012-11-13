@@ -106,13 +106,13 @@ $("#dd_tag_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Literaturliste
 // Bild setzen
-$("#dd_litlist_[% database %]_toggle").html("<b>[<a href=\"#dd_litlist_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_litlists_[% database %]_toggle").html("<b>[<a href=\"#dd_litlists_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
-$("#dd_litlist_[% database %]").hide();
+$("#dd_litlists_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#dd_litlist_[% database %]_toggle").click(function(){
- $("#dd_litlist_[% database %]").toggle();
- $("#dd_litlist_[% database %]_toggle").html("");
+$("#dd_litlists_[% database %]_toggle").click(function(){
+ $("#dd_litlists_[% database %]").toggle();
+ $("#dd_litlists_[% database %]_toggle").html("");
 });
 // Ende Togglen / Drilldown Literaturliste
 
@@ -370,14 +370,14 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%         IF config.get('facets').litlist && category_map.10.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th class="ob-headline" id="dd_litlist_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</th></tr>
+<tr><th class="ob-headline" id="dd_litlists_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</th></tr>
 <tr><td>
 [%             FOREACH termitem IN category_map.10 ;
                   LAST IF loop.count > 25 ;
  %]
 [% IF category_map.10.size > 5 && loop.count == 5 %]
-<span id="dd_litlist_[% database %]_toggle"></span>
-<div id="dd_litlist_[% database %]">
+<span id="dd_litlists_[% database %]_toggle"></span>
+<div id="dd_litlists_[% database %]">
 [% END %]
 [%-
     searchterm    = termitem.0;

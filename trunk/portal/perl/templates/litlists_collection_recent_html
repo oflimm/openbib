@@ -35,19 +35,20 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-        <li><a href="#" class="lastitem">[% msg.maketext("Literaturlisten") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Zuletzt angelegte") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('litlists_loc') %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/recent.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
 <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/recent.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
      </div>
-  </div>
+   </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="litlist_navigation" active_submenu="litlist_all" %] 
+[% PROCESS common/subtemplate name="litlists_navigation" active_submenu="litlists_recent" %] 
         </div>
       </div>
       <!-- end: #col1 -->
@@ -55,14 +56,15 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-   <h1>[% msg.maketext("Alle &ouml;ffentlichen Literaturlisten") %]</h1>
+<h1>[% msg.maketext("Zuletzt angelegte &ouml;ffentliche Literaturlisten") %]</h1>
 
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul class="topiclist">
 [%- FOREACH thisitem IN public_litlists -%]
-<li><a <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><b>[% thisitem.tstamp.split(' ').first %]</b>:&nbsp;<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% END %]
 </ul>
+
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

@@ -115,7 +115,7 @@ sub show_collection {
         items       => $items,
     };
     
-    $self->print_page($config->{tt_litlist_item_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_item_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -182,7 +182,7 @@ sub show_record {
         dbinfo         => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_litlist_item_record_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_item_record_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

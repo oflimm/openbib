@@ -15,7 +15,7 @@
 [% show_foot_banner = 1%]
 <body>
 [%
-      funcargs = { id => 'litlist_usage', type => 12 } ;
+      funcargs = { id => 'litlists_usage', type => 12 } ;
       resultlist = statistics.get_result(funcargs);
 
 %]

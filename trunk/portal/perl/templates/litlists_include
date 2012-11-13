@@ -136,23 +136,23 @@
 
 [% IF format == 'Text' %]
 
-[% PROCESS common/subtemplate name="litlist_html_as_text" %]
+[% PROCESS common/subtemplate name="litlists_html_as_text" %]
 
 [% ELSIF format == 'BibTeX' %]
 
-[% PROCESS common/subtemplate name="litlist_html_as_bibtex" %]
+[% PROCESS common/subtemplate name="litlists_html_as_bibtex" %]
 
 [% ELSIF format == 'EndNote' %]
 
-[% PROCESS common/subtemplate name="litlist_html_as_endnote" %]
+[% PROCESS common/subtemplate name="litlists_html_as_endnote" %]
 
 [% ELSIF format == 'short' %]
 
-[% PROCESS common/subtemplate name="litlist_html_short" %] 
+[% PROCESS common/subtemplate name="litlists_html_short" %] 
 
 [% ELSIF format == 'full' %]
 
-[% PROCESS common/subtemplate name="litlist_html_full" %]
+[% PROCESS common/subtemplate name="litlists_html_full" %]
 
 [%- END # Ende Alles -%]
 

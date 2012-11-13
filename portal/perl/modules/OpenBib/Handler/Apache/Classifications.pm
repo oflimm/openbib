@@ -112,7 +112,7 @@ sub show_record {
             authenticationtargetdb => $authenticationtargetdb,
         };
 
-        $self->print_page($config->{'tt_classification_tname'},$ttdata);
+        $self->print_page($config->{'tt_classifications_tname'},$ttdata);
 
         # Log Event
         
@@ -182,7 +182,7 @@ sub show_collection {
             classifications => $classifications_ref,
         };
         
-        $self->print_page($config->{'tt_classification_collection_tname'},$ttdata);
+        $self->print_page($config->{'tt_classifications_collection_tname'},$ttdata);
     }
     else {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));
@@ -266,7 +266,7 @@ sub show_collection_ezb {
         subjects      => $subjects_ref,
     };
     
-    $self->print_page($config->{'tt_classification_collection_tname'},$ttdata);
+    $self->print_page($config->{'tt_classifications_collection_tname'},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -346,7 +346,7 @@ sub show_collectionxxx {
         subjects      => $subjects_ref,
     };
     
-    $self->print_page($config->{'tt_classification_collection_tname'},$ttdata);
+    $self->print_page($config->{'tt_classifications_collection_tname'},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -436,7 +436,7 @@ sub show_collection_dbis {
         subjects      => $subjects_ref,
     };
     
-    $self->print_page($config->{'tt_classification_collection_tname'},$ttdata);
+    $self->print_page($config->{'tt_classifications_collection_tname'},$ttdata);
     
     return Apache2::Const::OK;
 }

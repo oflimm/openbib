@@ -15,9 +15,15 @@
 [% show_foot_banner = 1%]
 <body>
 [%
-      funcargs = { id => 'litlist_usage', type => 12 } ;
+      funcargs = { id => database, type => 7 } ;
       resultlist = statistics.get_result(funcargs);
+%]
 
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
 %]
 
 <!-- skip link navigation -->
@@ -41,18 +47,18 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% msg.maketext("Wolken") %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Literaturlisten") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Tags") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/litlist.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/tag.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
    </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="cloud_navigation" active_submenu='cloud_litlist' %]
+[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_tag' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -60,9 +66,8 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[%# USE dumper;dumper.dump(resultlist)%]
 <table width="100%">
-<tr><th>[% msg.maketext("Wolke der meist genutzten Literaturlisten") %]</th></tr>
+<tr><th>[% msg.maketext("Wolke der von Nutzern vergebenen Tags") %]</th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->
 [%
@@ -77,26 +82,24 @@
    ];
 %]
 
-[%- IF resultlist.size > 4 -%]
+[%- IF resultlist.size > 5 -%]
 <ol class="ob-cloud">
 [%- FOREACH thisitem IN resultlist -%]
-[% item       = thisitem.item;
-   id         = thisitem.id;
-   itemcount  = thisitem.count;
-   classnr    = thisitem.class;
-   properties = thisitem.properties;
-   itemclass  = css_classes.$classnr;
+[% item      = thisitem.item;
+   id        = thisitem.id;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten die Literaturliste</span><a href="[% path_prefix %]/[% config.get('litlists_loc') %]?&action=show;litlistid=[% id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
-die Literaturliste [% item %]">[% item %] ([% properties.itemcount %])</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind 
+verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('tags_loc') %]?searchtitoftag=[% id %];database=[% database %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]
-[% msg.maketext("Leider k&ouml;nnen wir Ihnen keine Wolke der meist genutzten Literaturlisten anbieten.") %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von Nutzern vergebene Tags anbieten.") %]
 [% END %]
 </td></tr>
 </table>
-<p />
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

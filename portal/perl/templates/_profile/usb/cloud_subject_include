@@ -18,7 +18,7 @@
 
 %]
 
-[%- PROCESS common/subtemplate name="cloud_css" -%] 
+[%- PROCESS common/subtemplate name="clouds_css" -%] 
 
 <!-- Beginn Tag-Cloud -->
 [%

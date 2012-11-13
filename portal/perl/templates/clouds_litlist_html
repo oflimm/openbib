@@ -12,18 +12,12 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
-
+[% show_foot_banner = 1%]
 <body>
 [%
-      funcargs = { id => database, type => 3 } ;
+      funcargs = { id => 'litlist_usage', type => 12 } ;
       resultlist = statistics.get_result(funcargs);
-%]
 
-[%
-  viewdbs = [];
-  IF view ;
-    viewdbs = config.get_dbs_of_view(view);
-  END ;
 %]
 
 <!-- skip link navigation -->
@@ -47,19 +41,18 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% msg.maketext("Wolken") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/subject/database/[% database %].html?l=[% lang %]">[% dbinfo.dbnames.${database}.short %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Schlagworte") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Literaturlisten") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/subject/database/[% database %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/litlist.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
    </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="cloud_navigation" active_submenu='cloud_subject' %]
+[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_litlist' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -67,10 +60,9 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>[% msg.maketext("Schlagworte") %]</h1>
-
+[%# USE dumper;dumper.dump(resultlist)%]
 <table width="100%">
-<tr><th>[% msg.maketext("Wolke der häufigsten Begriffe") %]</th></tr>
+<tr><th>[% msg.maketext("Wolke der meist genutzten Literaturlisten") %]</th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->
 [%
@@ -85,25 +77,26 @@
    ];
 %]
 
-[%- IF resultlist.size > 5 -%]
-[%- searchprefix  = config.get('searchfield').subjectstring.prefix -%]
-[%- default_query_options = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%]
-
+[%- IF resultlist.size > 4 -%]
 <ol class="ob-cloud">
 [%- FOREACH thisitem IN resultlist -%]
-[% item      = thisitem.item;
-   itemcount = thisitem.count;
-   classnr   = thisitem.class;
-   itemclass = css_classes.$classnr;
+[% item       = thisitem.item;
+   id         = thisitem.id;
+   itemcount  = thisitem.count;
+   classnr    = thisitem.class;
+   properties = thisitem.properties;
+   itemclass  = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% IF default_query_options %][% default_query_options %];[% END %]profile=[% config.get_searchprofile_of_database(database) %];[% searchprefix %]=[% item %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten die Literaturliste</span><a href="[% path_prefix %]/[% config.get('litlists_loc') %]?&action=show;litlistid=[% id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
+die Literaturliste [% item %]">[% item %] ([% properties.itemcount %])</a></li>
 [% END %]
 </ol>
 [% ELSE %]
-[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe diese Kategorie anbieten.") %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen keine Wolke der meist genutzten Literaturlisten anbieten.") %]
 [% END %]
 </td></tr>
 </table>
+<p />
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

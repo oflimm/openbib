@@ -115,7 +115,7 @@ sub show_collection {
         utils         => $utils,
     };
 
-    $self->print_page($config->{tt_cloud_collection_tname},$ttdata);
+    $self->print_page($config->{tt_clouds_collection_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -171,7 +171,7 @@ sub show_record {
         utils         => $utils,
     };
 
-    my $templatename = "tt_cloud_".$cloudid."_tname";
+    my $templatename = "tt_clouds_".$cloudid."_tname";
 
     $self->print_page($config->{$templatename},$ttdata);
 

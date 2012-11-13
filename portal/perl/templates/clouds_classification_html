@@ -15,7 +15,7 @@
 
 <body>
 [%
-      funcargs = { id => database, type => 6 } ;
+      funcargs = { id => database, type => 4 } ;
       resultlist = statistics.get_result(funcargs);
 %]
 
@@ -47,19 +47,19 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %].html?l=[% lang %]">Wolken</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/person/database/[% database %].html?l=[% lang %]">[% dbinfo.dbnames.${database}.short %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Personen") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/classification/database/[% database %].html?l=[% lang %]">[% dbinfo.dbnames.${database}.short %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Systematik") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/person/database/[% database %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/classification/database/[% database %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
    </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="cloud_navigation" active_submenu='cloud_person' %]
+[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_classification' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -67,10 +67,10 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>[% msg.maketext("Personen") %]</h1>
+<h1>[% msg.maketext("Systematik") %]</h1>
 
 <table width="100%">
-<tr><th>[% msg.maketext("Wolke der h&auml;ufigsten Begriffe") %]</th></tr>
+<tr><th>Wolke der h&auml;ufigsten Begriffe</th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->
 [%
@@ -86,7 +86,7 @@
 %]
 
 [%- IF resultlist.size > 5 -%]
-[%- searchprefix  = config.get('searchfield').personstring.prefix -%]
+[%- searchprefix  = config.get('searchfield').classificationstring.prefix -%]
 [%- default_query_options = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%]
 
 <ol class="ob-cloud">
@@ -100,7 +100,7 @@
 [% END %]
 </ol>
 [% ELSE %]
-[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe diese Kategorie anbieten.") %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe dieser Kategorie anbieten.") %]
 [% END %]
 </td></tr>
 </table>

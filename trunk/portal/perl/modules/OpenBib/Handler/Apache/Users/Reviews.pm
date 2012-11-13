@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::User::LitList.pm
+#  OpenBib::Handler::Apache::User::Reviews.pm
 #
-#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,21 +27,20 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::User::LitList;
+package OpenBib::Handler::Apache::User::Reviews;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
+use Apache2::Const -compile => qw(:common);
 use Apache2::Reload;
-use Apache2::Request;
+use Apache2::Request ();
+use Apache2::SubRequest (); # internal_redirect
 use Benchmark ':hireswallclock';
-use Encode qw(decode_utf8);
+use Encode 'decode_utf8';
 use DBI;
-use JSON::XS;
-use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
@@ -49,15 +48,11 @@ use Template;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
-use OpenBib::Record::Person;
-use OpenBib::Record::CorporateBody;
-use OpenBib::Record::Subject;
-use OpenBib::Record::Classification;
+use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -70,8 +65,6 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'                      => 'show_collection',
-#        'show_collection_by_topic'           => 'show_collection_by_topic',
-#        'show_record_by_topic'               => 'show_record_by_topic',
     );
 
     # Use current path as template path,
@@ -79,7 +72,6 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-# Alle oeffentlichen Literaturlisten
 sub show_collection {
     my $self = shift;
 
@@ -99,7 +91,6 @@ sub show_collection {
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
-    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
@@ -108,20 +99,29 @@ sub show_collection {
         return;
     }
 
-    my $topics_ref = $user->get_topics;
-    my $userrole_ref = $user->get_roles_of_user($user->{ID});
-    my $litlists     = $user->get_litlists();
-    my $targettype   = $user->get_targettype_of_session($session->{ID});
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+
+    my $username       = $user->get_username();
+    my $targettype     = $user->get_targettype_of_session($session->{ID});
+    my $reviewlist_ref = $user->get_reviews({username => $username});
+    
+    foreach my $review_ref (@$reviewlist_ref){
+        my $titelidn = $review_ref->{titid};
+        my $database = $review_ref->{titdb};
+        
+        $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
+    }
     
     # TT-Data erzeugen
     my $ttdata={
-        topics   => $topics_ref,
-        litlists   => $litlists,
-        qopts      => $queryoptions->get_options,
-        targettype => $targettype,
+        queryoptions_ref => $queryoptions->get_options,
+        targettype       => $targettype,
+        dbinfo           => $dbinfotable,
+        reviews          => $reviewlist_ref,
     };
     
-    $self->print_page($config->{tt_user_litlist_collection_tname},$ttdata);
+    $self->print_page($config->{tt_user_review_collection_tname},$ttdata);
+    
     return Apache2::Const::OK;
 }
 
@@ -130,21 +130,21 @@ sub return_baseurl {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/reviews.html";
 
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/litlists.html";
-
-    return $self->redirect($new_location,'303 See Other');
-
-#    $self->query->method('GET');
-#    $self->query->content_type('text/html');
-#    $self->query->headers_out->add(Location => $new_location);
-#    $self->query->status(Apache2::Const::REDIRECT);
+    $self->query->method('GET');
+    $self->query->content_type('text/html');
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
 
     return;
 }

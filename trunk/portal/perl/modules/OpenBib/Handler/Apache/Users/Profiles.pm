@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::User::Profile
+#  OpenBib::Handler::Apache::User::Profiles
 #
 #  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::User::Profile;
+package OpenBib::Handler::Apache::User::Profiles;
 
 use strict;
 use warnings;

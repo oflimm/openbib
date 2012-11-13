@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::User::Role
+#  OpenBib::Handler::Apache::User::LitLists.pm
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::User::Role;
+package OpenBib::Handler::Apache::User::LitLists;
 
 use strict;
 use warnings;
@@ -35,34 +35,33 @@ no warnings 'redefine';
 use utf8;
 
 use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
 use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
-use Date::Manip qw/ParseDate UnixDate/;
+use Apache2::Request;
+use Benchmark ':hireswallclock';
+use Encode qw(decode_utf8);
 use DBI;
-use Digest::MD5;
-use Encode qw/decode_utf8 encode_utf8/;
 use JSON::XS;
 use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
 
+use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
-use OpenBib::Schema::System;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
+use OpenBib::Record::Title;
+use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Subject;
+use OpenBib::Record::Classification;
 use OpenBib::Session;
-use OpenBib::Statistics;
 use OpenBib::User;
 
-use CGI::Application::Plugin::Redirect;
-
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::User';
 
 # Run at startup
 sub setup {
@@ -70,8 +69,9 @@ sub setup {
 
     $self->start_mode('show_collection');
     $self->run_modes(
-        'show_record_form'          => 'show_record_form',
-        'update_record'             => 'update_record',
+        'show_collection'                      => 'show_collection',
+#        'show_collection_by_topic'           => 'show_collection_by_topic',
+#        'show_record_by_topic'               => 'show_record_by_topic',
     );
 
     # Use current path as template path,
@@ -79,45 +79,8 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show_record_form {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view')                   || '';
-    my $userid         = $self->param('userid')                 || '';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
-    my $userinfo = new OpenBib::User({ID => $userid })->get_info;
-        
-    my $ttdata={
-        userinfo   => $userinfo,
-    };
-    
-    $self->print_page($config->{tt_user_role_edit_tname},$ttdata);
-
-}
-
-
-sub update_record {
+# Alle oeffentlichen Literaturlisten
+sub show_collection {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -136,45 +99,54 @@ sub update_record {
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
+    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    # CGI Args
-    my @roles           = ($query->param('roles'))?$query->param('roles'):();
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $thisuserinfo_ref = {
-        id    => $userid,
-        roles => \@roles,
+    my $topics_ref = $user->get_topics;
+    my $userrole_ref = $user->get_roles_of_user($user->{ID});
+    my $litlists     = $user->get_litlists();
+    my $targettype   = $user->get_targettype_of_session($session->{ID});
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        topics   => $topics_ref,
+        litlists   => $litlists,
+        qopts      => $queryoptions->get_options,
+        targettype => $targettype,
     };
-
-    $user->update_userrole($thisuserinfo_ref);
-
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_users_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    
+    $self->print_page($config->{tt_user_litlist_collection_tname},$ttdata);
+    return Apache2::Const::OK;
 }
 
-sub authorization_successful {
-    my $self   = shift;
+sub return_baseurl {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
-    my $user               = $self->param('user')             || '';
+    my $view           = $self->param('view')           || '';
+    my $userid         = $self->param('userid')         || '';
+    my $path_prefix    = $self->param('path_prefix');
 
-    $logger->debug("Basic http auth failure: $basic_auth_failure");
+    my $config = OpenBib::Config->instance;
 
-    if (($basic_auth_failure && !$user->is_admin) || !$self->is_authenticated('admin'))){
-        return 0;
-    }
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/litlists.html";
 
-    return 1;
+    return $self->redirect($new_location,'303 See Other');
+
+#    $self->query->method('GET');
+#    $self->query->content_type('text/html');
+#    $self->query->headers_out->add(Location => $new_location);
+#    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
 }
 
 1;

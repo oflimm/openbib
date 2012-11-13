@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::User::Review.pm
+#  OpenBib::Handler::Apache::User::Roles
 #
-#  Copyright 2007-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,36 +27,42 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::User::Review;
+package OpenBib::Handler::Apache::User::Roles;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
+use Apache2::Const -compile => qw(:common :http);
+use Apache2::Log;
 use Apache2::Reload;
+use Apache2::RequestRec ();
 use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
-use Benchmark ':hireswallclock';
-use Encode 'decode_utf8';
+use Apache2::SubRequest ();
+use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
+use Digest::MD5;
+use Encode qw/decode_utf8 encode_utf8/;
+use JSON::XS;
+use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
 
-use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::Schema::System;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
-use OpenBib::Record::Title;
-use OpenBib::Search::Util;
 use OpenBib::Session;
+use OpenBib::Statistics;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::User';
+use CGI::Application::Plugin::Redirect;
+
+use base 'OpenBib::Handler::Apache';
 
 # Run at startup
 sub setup {
@@ -64,7 +70,8 @@ sub setup {
 
     $self->start_mode('show_collection');
     $self->run_modes(
-        'show_collection'                      => 'show_collection',
+        'show_record_form'          => 'show_record_form',
+        'update_record'             => 'update_record',
     );
 
     # Use current path as template path,
@@ -72,7 +79,45 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show_collection {
+sub show_record_form {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view')                   || '';
+    my $userid         = $self->param('userid')                 || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
+
+    my $userinfo = new OpenBib::User({ID => $userid })->get_info;
+        
+    my $ttdata={
+        userinfo   => $userinfo,
+    };
+    
+    $self->print_page($config->{tt_user_role_edit_tname},$ttdata);
+
+}
+
+
+sub update_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -94,59 +139,42 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    # CGI Args
+    my @roles           = ($query->param('roles'))?$query->param('roles'):();
+
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-    my $username       = $user->get_username();
-    my $targettype     = $user->get_targettype_of_session($session->{ID});
-    my $reviewlist_ref = $user->get_reviews({username => $username});
-    
-    foreach my $review_ref (@$reviewlist_ref){
-        my $titelidn = $review_ref->{titid};
-        my $database = $review_ref->{titdb};
-        
-        $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
-    }
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        queryoptions_ref => $queryoptions->get_options,
-        targettype       => $targettype,
-        dbinfo           => $dbinfotable,
-        reviews          => $reviewlist_ref,
+    my $thisuserinfo_ref = {
+        id    => $userid,
+        roles => \@roles,
     };
-    
-    $self->print_page($config->{tt_user_review_collection_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    $user->update_userrole($thisuserinfo_ref);
+
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_users_loc}");
+    $self->query->status(Apache2::Const::REDIRECT);
 }
 
-sub return_baseurl {
-    my $self = shift;
+sub authorization_successful {
+    my $self   = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
+    my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
+    my $user               = $self->param('user')             || '';
 
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
+    $logger->debug("Basic http auth failure: $basic_auth_failure");
 
-    # Shared Args
-    my $config         = $self->param('config');
-    my $path_prefix    = $self->param('path_prefix');
+    if (($basic_auth_failure && !$user->is_admin) || !$self->is_authenticated('admin'))){
+        return 0;
+    }
 
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/reviews.html";
-
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
+    return 1;
 }
 
 1;

@@ -229,7 +229,7 @@ sub show_record {
         tagid            => $tagid,
     };
 
-    $self->print_page($config->{'tt_tag_tname'},$ttdata);
+    $self->print_page($config->{'tt_tags_tname'},$ttdata);
     
     return Apache2::Const::OK;
 }

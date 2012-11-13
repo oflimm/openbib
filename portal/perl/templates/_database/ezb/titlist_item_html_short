@@ -35,8 +35,8 @@
          searchterm    = tag.tag;
          searchprefix  = config.get('searchfield').tag.prefix;
 
-         tag_url = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}" ;
-         tags.push("<a href=\"${tag_url}\">${tag.tag}</a>");
+         tags_url = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}" ;
+         tags.push("<a href=\"${tags_url}\">${tag.tag}</a>");
       END ;
       titleinfos.push("Tags: ${tags.join(' ')}") ;
     END ;

@@ -23,7 +23,7 @@
 [%#    <owl:sameAs rdf:resource="http://dbpedia.org/page/xxx"/> %]
     <rdfs:isDefinedBy rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('persons_loc') %]/database/[% database %]/id/[% id %].rdf"/>
   </rdf:Description>
-[% FOREACH title_record IN title_records.to_ids %]
+[% FOREACH title_record IN titles_records.to_ids %]
   <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('titles_loc') %]/database/[% title_record.database %]/id/[% title_record.id %]">
     <dc:creator rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('persons_loc') %]/database/[% database %]/id/[% id %]"/>
   </rdf:Description>

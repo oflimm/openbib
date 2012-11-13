@@ -149,7 +149,7 @@
         END;
      END;
 
-     # Kein verwertbarer Titel oder Titel in title_exclude, z.B. bei Ueberordnungen?
+     # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
      IF NOT title ;
        title = "Bitte melden Sie uns die <b>ID ${record.id}</b> und die Datenbank <b>${record.database}</b> dieses Titels als fehlerhaft zur Korrektur!";
      END;
@@ -186,8 +186,8 @@
          searchterm    = tag.tag;
          searchprefix  = config.get('searchfield').tag.prefix;
 
-         tag_url = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}" ;
-         tags.push("<a href=\"${tag_url}\">${tag.tag}</a>");
+         tags_url = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}" ;
+         tags.push("<a href=\"${tags_url}\">${tag.tag}</a>");
       END ;
       titleinfos.push("Tags: ${tags.join(' ')}") ;
     END ;

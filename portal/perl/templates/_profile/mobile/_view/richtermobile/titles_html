@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: title_html
+# Templatename: titles_html
 #
 # Typ         : Mastertemplate
 #
@@ -48,7 +48,7 @@
 
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
-[% PROCESS common/subtemplate name="title_html_categories" %]
+[% PROCESS common/subtemplate name="titles_html_categories" %]
 
 [% IF holding.size > 0 %]
 <p/>

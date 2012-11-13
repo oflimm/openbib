@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: title_include
+# Templatename: titles_include
 #
 # Typ         : Mastertemplate
 #
@@ -28,7 +28,7 @@
 <!-- Title begins here -->
 <div class="images"><!-- Begin Images -->
 
-[% PROCESS common/subtemplate name="title_html_images" %]
+[% PROCESS common/subtemplate name="titles_html_images" %]
 
 </div><!-- End Images -->
 
@@ -75,7 +75,7 @@
 END ;
 %]
 
-[% PROCESS common/subtemplate name="title_html_categories" %]
+[% PROCESS common/subtemplate name="titles_html_categories" %]
 
 [% IF config.get('unAPI') %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
@@ -108,7 +108,7 @@ END ;
 [% END %]
 
 
-<div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
+<div id="ob-additional_titles_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
 [%- tictocs_feed = normdata.${"E4115"}.first.content -%]
 

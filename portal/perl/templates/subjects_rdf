@@ -21,7 +21,7 @@
     <rdfs:isDefinedBy rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('subjects_loc') %]/database/[% database %]/id/[% id %].rdf"/>
     <skos:inScheme rdf:resource="http://libris.kb.se/sao"/>
   </rdf:Description>
-[% FOREACH title_record IN title_records.to_ids %]
+[% FOREACH title_record IN titles_records.to_ids %]
   <rdf:Description rdf:about="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('titles_loc') %]/database/[% title_record.database %]/id/[% title_record.id %]">
     <dc:subject rdf:resource="http://[% config.get('loadbalancerservername') %][% path_prefix %]/[% config.get('subjects_loc') %]/database/[% database %]/id/[% id %]"/>
   </rdf:Description>

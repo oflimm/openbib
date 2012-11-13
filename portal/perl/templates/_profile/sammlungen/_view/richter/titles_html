@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: title_html
+# Templatename: titles_html
 #
 # Typ         : Mastertemplate
 #
@@ -565,7 +565,7 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 <!-- Title begins here -->
 <div class="images ym-g25 ym-gr"><!-- Begin Images -->
   <div class="ym-gbox-right">
-[% PROCESS common/subtemplate name="title_html_images" %]
+[% PROCESS common/subtemplate name="titles_html_images" %]
   </div>
 </div><!-- End Images -->
 
@@ -613,7 +613,7 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 END ;
 %]
 
-[% PROCESS common/subtemplate name="title_html_categories" %]
+[% PROCESS common/subtemplate name="titles_html_categories" %]
 
 [% IF config.get('unAPI') %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>

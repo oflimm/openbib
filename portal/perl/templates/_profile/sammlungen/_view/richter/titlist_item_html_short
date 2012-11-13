@@ -142,8 +142,8 @@
     IF item.tags ;
       tags = [];
       FOREACH tag IN item.tags ;
-         tag_url = "${path_prefix}/${config.get('search_loc')}.html?fs=${tag.tag}" ;
-         tags.push("<a href=\"${tag_url}\">${tag.tag}</a>");
+         tags_url = "${path_prefix}/${config.get('search_loc')}.html?fs=${tag.tag}" ;
+         tags.push("<a href=\"${tags_url}\">${tag.tag}</a>");
       END ;
       titleinfos.push("Tags: ${tags.join(' ')}") ;
     END ;

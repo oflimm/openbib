@@ -90,7 +90,7 @@ sub show_record {
         dbinfo      => $dbinfotable,
     };
 
-    $self->print_page($config->{tt_searchprofile_tname},$ttdata);
+    $self->print_page($config->{tt_searchprofiles_tname},$ttdata);
 
     $logger->debug("Done showing record");
     return Apache2::Const::OK;

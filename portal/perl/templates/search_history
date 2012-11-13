@@ -126,7 +126,7 @@
 [% used_filters.join(' ; ') %] 
 </td>
 <td>
-<a href="[% path_prefix %]/[% config.get('searchprofile_loc') %]/[% query.get_searchprofile %].html?l=[% lang %]">[% query.get_searchprofile %]</a>
+<a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/[% query.get_searchprofile %].html?l=[% lang %]">[% query.get_searchprofile %]</a>
 </td>
 <td>
 [% query.get_hits %]

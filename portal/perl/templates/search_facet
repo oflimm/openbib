@@ -55,13 +55,13 @@ $("#dd_corporatebody_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Schlagworte
 // Bild setzen
-$("#dd_subject_[% database %]_toggle").html("<b>[<a href=\"#dd_subject_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_subjects_[% database %]_toggle").html("<b>[<a href=\"#dd_subjects_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
-$("#dd_subject_[% database %]").hide();
+$("#dd_subjects_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#dd_subject_[% database %]_toggle").click(function(){
- $("#dd_subject_[% database %]").toggle();
- $("#dd_subject_[% database %]_toggle").html("");
+$("#dd_subjects_[% database %]_toggle").click(function(){
+ $("#dd_subjects_[% database %]").toggle();
+ $("#dd_subjects_[% database %]_toggle").html("");
 });
 
 // Begin Togglen / Facets Systematik
@@ -238,13 +238,13 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && category_map.1.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_subject_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
+<dt class="ob-headline" id="dd_subjects_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
 [%             FOREACH termitem IN category_map.1 ;
                   LAST IF loop.count > 25 ;
 %]
 [% IF category_map.1.size > 5 && loop.count == 5 %]
-<span id="dd_subject_[% database %]_toggle"></span>
-<div id="dd_subject_[% database %]">
+<span id="dd_subjects_[% database %]_toggle"></span>
+<div id="dd_subjects_[% database %]">
 [% END %]
 [%-
     searchterm    = termitem.0;

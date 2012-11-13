@@ -1667,7 +1667,7 @@ sub del_databaseinfo {
         if ($databaseinfo){
             $databaseinfo->libraryinfos->delete;
             $databaseinfo->orgunit_dbs->delete;
-            $databaseinfo->searchprofile_dbs->delete;
+            $databaseinfo->searchprofiles_dbs->delete;
             $databaseinfo->view_dbs->delete;
             $databaseinfo->delete
         }
@@ -2632,7 +2632,7 @@ sub get_searchprofile_or_create {
 
             if ($dbinfo){            
                 $new_searchprofile->create_related(
-                    'searchprofile_dbs',
+                    'searchprofiles_dbs',
                     {
                         searchprofileid => $searchprofileid,
                         dbid            => $dbinfo->id,
@@ -2648,7 +2648,7 @@ sub get_searchprofile_or_create {
     return $searchprofileid 
 }
 
-sub get_searchprofile {
+sub get_searchprofiles {
     my ($self,$searchprofileid)=@_;
 
     # Log4perl logger erzeugen
@@ -2727,7 +2727,7 @@ sub get_searchprofile_of_orgunit {
     return $self->get_searchprofile_or_create(\@databases);
 }
 
-sub searchprofile_exists {
+sub searchprofiles_exists {
     my $self            = shift;
     my $searchprofileid = shift;
     
@@ -2777,7 +2777,7 @@ sub update_searchprofile {
     return;
 }
 
-sub get_searchprofiles {
+sub get_searchprofile {
     my ($self) = @_;
 
     # Log4perl logger erzeugen

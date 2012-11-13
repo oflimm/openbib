@@ -314,8 +314,8 @@
 </div>
 
 <div class="ym-fbox-check">
-<input type="checkbox" name="livesearch_subject_exact" id="livesearch_subject_exact" value="1" [% IF livesearch.subject.exact %]checked="checked"[% END %]/>
-<label for="livesearch_subject_exact">Keine Wortbestandteile bei Schlagwortangaben suchen</label>
+<input type="checkbox" name="livesearch_subjects_exact" id="livesearch_subjects_exact" value="1" [% IF livesearch.subject.exact %]checked="checked"[% END %]/>
+<label for="livesearch_subjects_exact">Keine Wortbestandteile bei Schlagwortangaben suchen</label>
 </div>
 </fieldset>
 

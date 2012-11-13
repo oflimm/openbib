@@ -90,10 +90,10 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Suchprofil") %]</a></li>
 [% END %]
-[% IF active_submenu == "searchprofile_record" %]
+[% IF active_submenu == "searchprofiles_record" %]
 <li><span style="padding-left:35px">[% searchprofileid %]</span>
     <ul>
-[% IF active_subsubmenu == "searchprofile_record" %]
+[% IF active_subsubmenu == "searchprofiles_record" %]
       <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
 [% ELSE %]
       <li><a href="[% path_prefix %]/[% config.get('admin_searchprofiles_loc') %]/id/[% searchprofileid %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>

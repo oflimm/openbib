@@ -112,7 +112,7 @@ sub show_popular {
         utils         => $utils,
     };
 
-    my $templatename = "tt_title_popular".(($database)?'_by_database':'')."_tname";
+    my $templatename = "tt_titles_popular".(($database)?'_by_database':'')."_tname";
     $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
@@ -163,7 +163,7 @@ sub show_recent {
         utils         => $utils,
     };
 
-    my $templatename = "tt_title_recent".(($database)?'_by_database':'')."_tname";
+    my $templatename = "tt_titles_recent".(($database)?'_by_database':'')."_tname";
 
     $self->print_page($config->{$templatename},$ttdata);
 
@@ -192,7 +192,7 @@ sub show_collection_form {
         database => $database,
     };
     
-    $self->print_page($config->{tt_title_collection_form_tname},$ttdata);
+    $self->print_page($config->{tt_titles_collection_form_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -359,7 +359,7 @@ sub show_record {
             highlightquery    => \&highlightquery,
         };
 
-        $self->print_page($config->{tt_title_tname},$ttdata);
+        $self->print_page($config->{tt_titles_tname},$ttdata);
 
         # Log Event
 
@@ -415,7 +415,7 @@ sub show_record_searchindex {
         values => $values_ref,
     };
     
-    $self->print_page($config->{'tt_title_searchindex_tname'},$ttdata);
+    $self->print_page($config->{'tt_titles_searchindex_tname'},$ttdata);
 
     return Apache2::Const::OK;
 }

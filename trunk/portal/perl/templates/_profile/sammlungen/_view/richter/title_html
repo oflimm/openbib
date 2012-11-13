@@ -605,10 +605,10 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
        alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('tags_loc')}/${itemid}.html\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
      END ;
      alltags_cloud = "${alltags_cloud}\n</ol>" ;
-     cloud_item = {
+     clouds_item = {
                     content => alltags_cloud,
                   } ;
-     normdata.${"T4500"} = [ cloud_item ];
+     normdata.${"T4500"} = [ clouds_item ];
    END ;
 END ;
 %]

@@ -76,27 +76,27 @@
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("&Uuml;bersichten") %]</h6>
  <ul>
-[% IF active_submenu == "cloud_year" %]
+[% IF active_submenu == "clouds_year" %]
   <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
 [% ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/richter.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
 [% END %]
-[% IF active_submenu == "cloud_person" %]
+[% IF active_submenu == "clouds_person" %]
   <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
 [% ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/person/database/richter.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
 [% END %]
-[% IF active_submenu == "cloud_corporatebody" %]
+[% IF active_submenu == "clouds_corporatebody" %]
   <li class="active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
 [% ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/corporatebody/database/richter.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
 [% END %]
-[% IF active_submenu == "cloud_subject" %]
+[% IF active_submenu == "clouds_subject" %]
   <li class="active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
 [% ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/subject/database/richter.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
 [% END %]
-[% IF active_submenu == "cloud_classification" %]
+[% IF active_submenu == "clouds_classification" %]
   <li class="active"><strong>[% msg.maketext("Systematik") %]</strong></li>
 [% ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/classification/database/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>

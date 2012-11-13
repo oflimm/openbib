@@ -49,7 +49,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="cloud_navigation" active_submenu='cloud_searchterm' database='richter' %]
+[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_searchterm' database='richter' %]
         </div>
       </div>
       <!-- end: #col1 -->

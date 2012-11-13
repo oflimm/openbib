@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
-
+[% show_foot_banner = 1%]
 <body>
 
 <!-- skip link navigation -->
@@ -28,14 +28,6 @@
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
 
-[%
-   thistopic = "";
-   FOREACH topic IN topics;
-     IF topic.id == topicid;
-       thistopic = topic.name ;
-     END;
-   END;
-%]
     <!-- begin: main content area #main -->
     <div id="main">
 
@@ -43,21 +35,19 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %].html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topic.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
-         <li><a href="#" class="lastitem">[% thistopic %]</a></li>
+        <li><a href="#" class="lastitem">[% msg.maketext("Literaturlisten") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topic/[% topicid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topic/[% topicid %]/recent.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/recent.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
      </div>
-   </div>
+  </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="litlist_navigation" active_submenu="litlist_topic_all" %] 
+[% PROCESS common/subtemplate name="litlists_navigation" active_submenu="litlists_all" %] 
         </div>
       </div>
       <!-- end: #col1 -->
@@ -65,9 +55,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-   <h1>[% msg.maketext("Literaturlisten") %]</h1>
-
-<h2>[% thistopic %]</h2>
+   <h1>[% msg.maketext("Alle &ouml;ffentlichen Literaturlisten") %]</h1>
 
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul class="topiclist">
@@ -75,7 +63,6 @@
 <li><a <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% END %]
 </ul>
-
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

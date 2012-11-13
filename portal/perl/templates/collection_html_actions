@@ -45,7 +45,7 @@
 </select>
 </div>
 
-<input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" />
+<input type="submit" name="do_litlists_addentry" value="[% msg.maketext("Los") %]" />
 </fieldset>
 [%    END %]
 <p/>

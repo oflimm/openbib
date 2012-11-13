@@ -120,7 +120,7 @@ sub show_collection {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlist_collection_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_collection_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -157,7 +157,7 @@ sub show_collection_recent {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlist_collection_recent_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_collection_recent_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -191,7 +191,7 @@ sub show_collection_by_topic {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlist_collection_by_topic_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_collection_by_topic_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -229,7 +229,7 @@ sub show_collection_by_single_topic_recent {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlist_collection_by_single_topic_recent_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_collection_by_single_topic_recent_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -265,7 +265,7 @@ sub show_collection_by_single_topic {
         public_litlists => $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlist_collection_by_single_topic_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_collection_by_single_topic_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -383,7 +383,7 @@ sub show_collection_by_single_userxxx {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlist_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -503,7 +503,7 @@ sub show_collection_by_single_user {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlist_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -621,7 +621,7 @@ sub show_record {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlist_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -716,7 +716,7 @@ sub show_record_form {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlist_edit_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_edit_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

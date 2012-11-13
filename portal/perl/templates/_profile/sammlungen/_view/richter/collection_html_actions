@@ -43,7 +43,7 @@
 </select>
 </div>
 
-<div class="cssbutton glass kug"><input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" /></div>
+<div class="cssbutton glass kug"><input type="submit" name="do_litlists_addentry" value="[% msg.maketext("Los") %]" /></div>
 </fieldset>
 [%    END %]
 <p/>

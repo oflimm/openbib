@@ -45,7 +45,7 @@
 <div id="searchresult">
 
 <ol start="[% start_range %]" class="hitlist">
-[% PROCESS common/subtemplate name="litlist_html_short" %] 
+[% PROCESS common/subtemplate name="litlists_html_short" %] 
 </ol>
 
 </div>

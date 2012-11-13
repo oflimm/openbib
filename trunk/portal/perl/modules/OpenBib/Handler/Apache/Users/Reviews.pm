@@ -120,7 +120,7 @@ sub show_collection {
         reviews          => $reviewlist_ref,
     };
     
-    $self->print_page($config->{tt_user_review_collection_tname},$ttdata);
+    $self->print_page($config->{tt_users_reviews_collection_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

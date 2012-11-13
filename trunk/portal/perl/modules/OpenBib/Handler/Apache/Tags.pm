@@ -411,7 +411,7 @@ sub show_collection_form {
         user       => $user,
         msg        => $msg,
     };
-    $self->print_page($config->{tt_user_tag_edit_tname},$ttdata);
+    $self->print_page($config->{tt_users_tags_edit_tname},$ttdata);
     return Apache2::Const::OK;
 }
 

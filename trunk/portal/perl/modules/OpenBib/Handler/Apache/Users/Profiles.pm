@@ -121,7 +121,7 @@ sub show_collection {
         dbinfo         => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_user_profile_collection_tname},$ttdata);
+    $self->print_page($config->{tt_users_profiles_collection_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -194,7 +194,7 @@ sub show_record {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_user_profile_tname},$ttdata,$r);
+    $self->print_page($config->{tt_users_profiles_tname},$ttdata,$r);
     return Apache2::Const::OK;
 }
 
@@ -252,7 +252,7 @@ sub show_record_form {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_user_profile_edit_tname},$ttdata);
+    $self->print_page($config->{tt_users_profiles_edit_tname},$ttdata);
     return Apache2::Const::OK;
 }
 

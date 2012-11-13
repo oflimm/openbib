@@ -121,7 +121,7 @@ sub show_collection {
         targettype => $targettype,
     };
     
-    $self->print_page($config->{tt_user_litlist_collection_tname},$ttdata);
+    $self->print_page($config->{tt_users_litlists_collection_tname},$ttdata);
     return Apache2::Const::OK;
 }
 

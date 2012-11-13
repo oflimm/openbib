@@ -220,7 +220,7 @@ sub show_reservations {
         show_foot_banner      => 1,
     };
     
-    $self->print_page($config->{tt_user_circulation_reservations_tname},$ttdata);
+    $self->print_page($config->{tt_users_circulations_reservations_tname},$ttdata);
 
     return Apache2::Const::OK;    
 }
@@ -303,7 +303,7 @@ sub show_reminders {
         show_foot_banner      => 1,
     };
       
-    $self->print_page($config->{tt_user_circulation_reminders_tname},$ttdata);
+    $self->print_page($config->{tt_users_circulations_reminders_tname},$ttdata);
 
     return Apache2::Const::OK;    
 }
@@ -385,7 +385,7 @@ sub show_orders {
         show_foot_banner      => 1,
     };
     
-    $self->print_page($config->{tt_user_circulation_orders_tname},$ttdata);
+    $self->print_page($config->{tt_users_circulations_orders_tname},$ttdata);
 
     return Apache2::Const::OK;    
 }
@@ -466,7 +466,7 @@ sub show_borrows {
         database   => $database,
             };
     
-    $self->print_page($config->{tt_user_circulation_borrows_tname},$ttdata);
+    $self->print_page($config->{tt_users_circulations_borrows_tname},$ttdata);
 
     return Apache2::Const::OK;    
 }
@@ -556,7 +556,7 @@ sub make_reservation {
         result     => $circexlist,
     };
     
-    $self->print_page($config->{tt_user_circulation_make_reservation_tname},$ttdata);
+    $self->print_page($config->{tt_users_circulations_make_reservation_tname},$ttdata);
 
     return Apache2::Const::OK;        
 }
@@ -731,7 +731,7 @@ sub make_order {
         result     => $circexlist,
     };
     
-    $self->print_page($config->{tt_user_circulation_make_order_tname},$ttdata);
+    $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -816,7 +816,7 @@ sub renew_loans {
         result     => $circexlist,
     };
     
-    $self->print_page($config->{tt_user_circulation_renew_loans_tname},$ttdata);
+    $self->print_page($config->{tt_users_circulations_renew_loans_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

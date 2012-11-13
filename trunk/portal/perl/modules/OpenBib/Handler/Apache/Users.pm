@@ -112,7 +112,7 @@ sub update_account {
             };
 
             $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_user_delete_confirm_tname},$ttdata);
+            $self->print_page($config->{tt_users_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }

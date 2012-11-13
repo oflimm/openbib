@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Collections
+#  OpenBib::Handler::Apache::Collection
 #
 #  Dieses File ist (C) 2001-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Collections;
+package OpenBib::Handler::Apache::Collection;
 
 use strict;
 use warnings;

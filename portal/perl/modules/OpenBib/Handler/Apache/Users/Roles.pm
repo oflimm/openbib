@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::User::Roles
+#  OpenBib::Handler::Apache::Users::Roles
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::User::Roles;
+package OpenBib::Handler::Apache::Users::Roles;
 
 use strict;
 use warnings;

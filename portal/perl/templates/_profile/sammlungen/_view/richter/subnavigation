@@ -67,7 +67,7 @@
 [% IF active_submenu == "register_T0720" %]
   <li class="active"><strong>Provenienzen</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('browse_loc') %]/database/richter/title/0720.html?l=[% lang %];page=1">Provenienzen</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/richter/title/0720.html?l=[% lang %];page=1">Provenienzen</a></li>
 [% END %]
  </ul>
 </nav>

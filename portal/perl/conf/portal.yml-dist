@@ -155,7 +155,7 @@ users_loc: users
 #tags_loc: tags
 
 ## Funktionelle URIs 
-browse_loc: browse
+indexes_loc: browse
 circulation_loc: circulations
 collection_loc: collection
 databasechoice_loc: selectdatabase
@@ -1517,11 +1517,11 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::RSSFeeds'
      rule: '/portal/:view/rssfeeds'
      runmode: 'show_collection'
-  - # browse_loc:
+  - # indexes_loc:
      module: 'OpenBib::Handler::Apache::Browse'
      rule: '/portal/:view/browse/topic/id/:topicid'
      runmode: 'show_collection_by_topic'
-  - # browse_loc:
+  - # indexes_loc:
      module: 'OpenBib::Handler::Apache::Browse'
      rule: '/portal/:view/browse/database/:database/type/:type/field/:field'
      runmode: 'show_collection_by_field'
@@ -3212,13 +3212,13 @@ tt_cloud_searchterm_tname: cloud_searchterm
 tt_cloud_litlist_tname: cloud_litlist
 tt_cloud_tag_tname: cloud_tag
 tt_rssfeeds_tname: rssfeeds
-tt_browse_person_tname: browse_person
-tt_browse_corporatebody_tname: browse_corporatebody
-tt_browse_classification_tname: browse_classification
-tt_browse_subject_tname: browse_subject
-tt_browse_title_tname: browse_title
-tt_browse_topic_tname: browse_topic 
-tt_browse_olws_tname: browse_olws
+tt_indexes_person_tname: browse_person
+tt_indexes_corporatebody_tname: browse_corporatebody
+tt_indexes_classification_tname: browse_classification
+tt_indexes_subject_tname: browse_subject
+tt_indexes_title_tname: browse_title
+tt_indexes_topic_tname: browse_topic 
+tt_indexes_olws_tname: browse_olws
 tt_searchform_advanced_tname: searchform_advanced
 tt_searchform_simple_tname: searchform_simple
 tt_searchprofile_tname: searchprofile

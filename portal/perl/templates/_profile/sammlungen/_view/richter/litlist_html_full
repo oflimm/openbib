@@ -119,7 +119,7 @@ FOREACH category IN categories;
          END ;
 
     CASE "E4100";
-         localurl    = "${path_prefix}/${config.get('browse_loc')}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
+         localurl    = "${path_prefix}/${config.get('indexes_loc')}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";

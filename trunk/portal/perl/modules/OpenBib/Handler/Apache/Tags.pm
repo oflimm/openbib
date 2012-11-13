@@ -153,7 +153,7 @@ sub show_collection {
         user       => $user,
         msg        => $msg,
     };
-    $self->print_page($config->{tt_tag_collection_tname},$ttdata);
+    $self->print_page($config->{tt_tags_collection_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -310,7 +310,7 @@ sub show_record {
         tagid            => $tagid,
     };
 
-    $self->print_page($config->{'tt_tag_tname'},$ttdata);
+    $self->print_page($config->{'tt_tags_tname'},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -685,7 +685,7 @@ sub show_collection_recent {
         recent_tags    => $recent_tags_ref,
     };
     
-    $self->print_page($config->{tt_tag_collection_recent_tname},$ttdata);
+    $self->print_page($config->{tt_tags_collection_recent_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -845,7 +845,7 @@ sub showyyy {
             user       => $user,
             msg        => $msg,
         };
-        $self->print_page($config->{tt_tags_editusertags_tname},$ttdata);
+        $self->print_page($config->{tt_tagss_editusertags_tname},$ttdata);
     }
 
     if ($show_usertags && $user->{ID}){
@@ -865,7 +865,7 @@ sub showyyy {
             user       => $user,
             msg        => $msg,
         };
-        $self->print_page($config->{tt_tags_showusertags_tname},$ttdata);
+        $self->print_page($config->{tt_tagss_showusertags_tname},$ttdata);
     }
     
     if ($searchtitoftag) {
@@ -923,7 +923,7 @@ sub showyyy {
             hitrange         => $hitrange,
 
             query            => $query,
-            template         => 'tt_tags_showtitlist_tname',
+            template         => 'tt_tagss_showtitlist_tname',
             location         => 'tags_loc',
             parameter        => {
                 username     => $username,
@@ -1094,7 +1094,7 @@ sub showzzz {
             user       => $user,
             msg        => $msg,
         };
-        $self->print_page($config->{tt_tags_editusertags_tname},$ttdata);
+        $self->print_page($config->{tt_tagss_editusertags_tname},$ttdata);
     }
 
     if ($show_usertags && $user->{ID}){
@@ -1106,7 +1106,7 @@ sub showzzz {
             format     => $format,
             targettype => $targettype,
         };
-        $self->print_page($config->{tt_tags_showusertags_tname},$ttdata);
+        $self->print_page($config->{tt_tagss_showusertags_tname},$ttdata);
     }
     
     if ($searchtitoftag) {
@@ -1164,7 +1164,7 @@ sub showzzz {
             hitrange         => $hitrange,
 
             query            => $query,
-            template         => 'tt_tags_showtitlist_tname',
+            template         => 'tt_tagss_showtitlist_tname',
             location         => 'tags_loc',
             parameter        => {
                 username    => $username,

@@ -3190,8 +3190,8 @@ tt_corporatebodies_tname: corporatebody
 tt_subjects_tname: subject
 tt_classifications_tname: classification
 tt_library_tname: library
-tt_tag_tname: tag
-tt_tag_collection_recent_tname: tag_collection_recent
+tt_tags_tname: tag
+tt_tags_collection_recent_tname: tag_collection_recent
 tt_litlists_tname: litlist
 tt_litlists_edit_tname: litlist_edit
 tt_user_litlist_collection_tname: user_litlist_collection

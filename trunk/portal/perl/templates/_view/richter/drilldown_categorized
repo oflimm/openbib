@@ -94,13 +94,13 @@ $("#dd_databases_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Tags
 // Bild setzen
-$("#dd_tag_[% database %]_toggle").html("<b>[<a href=\"#dd_tag_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_tags_[% database %]_toggle").html("<b>[<a href=\"#dd_tags_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
-$("#dd_tag_[% database %]").hide();
+$("#dd_tags_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#dd_tag_[% database %]_toggle").click(function(){
- $("#dd_tag_[% database %]").toggle();
- $("#dd_tag_[% database %]_toggle").html("");
+$("#dd_tags_[% database %]_toggle").click(function(){
+ $("#dd_tags_[% database %]").toggle();
+ $("#dd_tags_[% database %]_toggle").html("");
 });
 // Ende Togglen / Drilldown Tag
 
@@ -345,14 +345,14 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 [%         IF config.get('facets').tag && category_map.9.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th class="ob-headline" id="dd_tag_[% database %]_anchor">[% msg.maketext("nach Tags") %]</th></tr>
+<tr><th class="ob-headline" id="dd_tags_[% database %]_anchor">[% msg.maketext("nach Tags") %]</th></tr>
 <tr><td>
 [%             FOREACH termitem IN category_map.9 ;
                   LAST IF loop.count > 25 ;
  %]
 [% IF category_map.9.size > 5 && loop.count == 5 %]
-<span id="dd_tag_[% database %]_toggle"></span>
-<div id="dd_tag_[% database %]">
+<span id="dd_tags_[% database %]_toggle"></span>
+<div id="dd_tags_[% database %]">
 [% END %]
 [%-
     searchterm    = termitem.0;

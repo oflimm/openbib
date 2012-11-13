@@ -24,7 +24,7 @@ __PACKAGE__->table("searchprofile");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'searchprofiles_id_seq'
+  sequence: 'searchprofile_id_seq'
 
 =head2 databases_as_json
 
@@ -44,7 +44,7 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "searchprofiles_id_seq",
+    sequence          => "searchprofile_id_seq",
   },
   "databases_as_json",
   { data_type => "text", is_nullable => 1 },
@@ -55,7 +55,7 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 searchprofiles_dbs
+=head2 searchprofile_dbs
 
 Type: has_many
 
@@ -64,7 +64,7 @@ Related object: L<OpenBib::Schema::System::Result::SearchprofileDb>
 =cut
 
 __PACKAGE__->has_many(
-  "searchprofiles_dbs",
+  "searchprofile_dbs",
   "OpenBib::Schema::System::Result::SearchprofileDb",
   { "foreign.searchprofileid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },

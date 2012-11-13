@@ -114,7 +114,7 @@ sub show_collection {
         libraries        => $librarylist_ref,
     };
     
-    $self->print_page($config->{tt_library_collection_tname},$ttdata);
+    $self->print_page($config->{tt_libraries_collection_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -153,7 +153,7 @@ sub show_record {
             dbinfo         => $dbinfotable,
         };
 
-        $self->print_page($config->{tt_library_tname},$ttdata);
+        $self->print_page($config->{tt_libraries_tname},$ttdata);
 
     }
     else {

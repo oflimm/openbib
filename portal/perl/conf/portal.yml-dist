@@ -3189,7 +3189,7 @@ tt_person_tname: person
 tt_corporatebodies_tname: corporatebody
 tt_subjects_tname: subject
 tt_classifications_tname: classification
-tt_library_tname: library
+tt_libraries_tname: library
 tt_tags_tname: tag
 tt_tags_collection_recent_tname: tag_collection_recent
 tt_litlists_tname: litlist

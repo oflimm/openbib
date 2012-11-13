@@ -38,7 +38,7 @@
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("Register") %]</h6>
  <ul>
-  <li><a [% IF active_submenu == "register_T0720" %]class="active" [% END %] href="[% path_prefix %]/[% config.get('browse_loc') %]/database/richter/type/title/field/720.html?l=[% lang %]">Provenienzen</a></li>
+  <li><a [% IF active_submenu == "register_T0720" %]class="active" [% END %] href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/richter/type/title/field/720.html?l=[% lang %]">Provenienzen</a></li>
  </ul>
 </nav>
 [% END %]

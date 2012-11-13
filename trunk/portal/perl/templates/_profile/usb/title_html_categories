@@ -75,7 +75,7 @@ FOREACH category IN categories;
          IF content.match("---&gt;: ") ;
             previssues = content.split("---&gt;: ");
             globalurl  = "${path_prefix}/${config.get('search_loc')}?searchall=1;hststring=${previssues.1}";
-            localurl   = "${path_prefix}/${config.get('browse_loc')}?db=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
+            localurl   = "${path_prefix}/${config.get('indexes_loc')}?db=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
             content    = "{previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
          END ;
           

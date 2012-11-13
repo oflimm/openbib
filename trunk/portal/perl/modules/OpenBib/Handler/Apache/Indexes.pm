@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Browse.pm
+#  OpenBib::Handler::Apache::Indexes.pm
 #
 #  ehemals Search.pm
 #
@@ -29,7 +29,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Browse;
+package OpenBib::Handler::Apache::Indexes;
 
 use strict;
 use warnings;
@@ -208,7 +208,7 @@ sub show_collection_by_field {
                 };
 
                 $stid=~s/[^0-9]//g;
-                my $templatename = ($stid)?"tt_browse_olws_".$stid."_tname":"tt_browse_olws_tname";
+                my $templatename = ($stid)?"tt_indexes_olws_".$stid."_tname":"tt_indexes_olws_tname";
 
                 $self->print_page($config->{$templatename},$ttdata);
                 return Apache2::Const::OK;
@@ -444,7 +444,7 @@ sub show_collection_by_field {
         hits       => $hits,
         nav        => $nav,
     };
-    $self->print_page($config->{"tt_browse_".$type."_tname"},$ttdata);
+    $self->print_page($config->{"tt_indexes_".$type."_tname"},$ttdata);
     return Apache2::Const::OK;
 }
 

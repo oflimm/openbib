@@ -24,7 +24,7 @@ __PACKAGE__->table("user_searchprofile");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'user_searchprofile_id_seq'
+  sequence: 'user_searchprofiles_id_seq'
 
 =head2 searchprofileid
 
@@ -51,7 +51,7 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "user_searchprofile_id_seq",
+    sequence          => "user_searchprofiles_id_seq",
   },
   "searchprofileid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },

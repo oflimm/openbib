@@ -126,7 +126,7 @@
 [%- IF query.get_searchquery.titlestring.val -%]
 &nbsp;[% query.get_searchquery.titlestring.bool %]&nbsp;TITSTR: [% query.get_searchquery.titlestring.val %] 
 [%- END -%]
-</td><td align="center">[% query.get_hits %]</td><td><a href="[% path_prefix %]/[% config.get('searchprofile_loc') %]/[% query.get_searchprofile %].html?l=[% lang %]">[% query.get_searchprofile %]</a>[% FOREACH dbname IN query.get_databases %][% dbinfo.get('dbnames').${dbname}.full %]<br/>[% END %]</td></tr>
+</td><td align="center">[% query.get_hits %]</td><td><a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/[% query.get_searchprofile %].html?l=[% lang %]">[% query.get_searchprofile %]</a>[% FOREACH dbname IN query.get_databases %][% dbinfo.get('dbnames').${dbname}.full %]<br/>[% END %]</td></tr>
 
 [% END %]
 

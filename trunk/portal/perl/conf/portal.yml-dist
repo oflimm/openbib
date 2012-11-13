@@ -174,7 +174,7 @@ rssfeeds_loc: rssfeeds
 search_history_loc: search/history
 search_loc: search
 searchform_loc: searchform
-searchprofile_loc: searchprofile
+searchprofiles_loc: searchprofile
 serveractive_loc: server_is_active
 #userreviews_loc: review
 
@@ -620,7 +620,7 @@ dispatch_rules:
      rule: '/portal/:view/classifications/database/:database/id/:classificationid[get]'
      runmode: 'show_record'
 
-  - # searchprofile_loc:
+  - # searchprofiles_loc:
      module: 'OpenBib::Handler::Apache::Searchprofiles'
      rule: '/portal/:view/searchprofiles/id/:profileid[get]'
      runmode: 'show_record'
@@ -1879,51 +1879,51 @@ dispatch_rules:
      rule: '/portal/:view/admin/views/id/:viewid/rss[put]'
      runmode: 'update_record'
 
-  - # admin_searchprofile_loc: Collection Overview
+  - # admin_searchprofiles_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles.html[get]'
      runmode: 'show_collection'
-  - # admin_searchprofile_loc: Collection Overview
+  - # admin_searchprofiles_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles.json[get]'
      runmode: 'show_collection'
-  - # admin_searchprofile_loc: Collection Overview
+  - # admin_searchprofiles_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles.rdf[get]'
      runmode: 'show_collection'
-  - # admin_searchprofile_loc: Collection Overview
+  - # admin_searchprofiles_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles[get]'
      runmode: 'show_collection'
-#  - # admin_searchprofile_loc: Collection show from
+#  - # admin_searchprofiles_loc: Collection show from
 #     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
 #     rule: '/portal/:view/admin/searchprofiles/new[get]'
 #     runmode: 'show_collection_form'
-  - # admin_searchprofile_loc: Creat Record in Collection
+  - # admin_searchprofiles_loc: Creat Record in Collection
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles[post]'
      runmode: 'create_record'
-  - # admin_searchprofile_loc: Show Record
+  - # admin_searchprofiles_loc: Show Record
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid[get]'
      runmode: 'show_record'
-  - # admin_searchprofile_loc: Record show form
+  - # admin_searchprofiles_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid/edit[get]'
      runmode: 'show_record_form'
-  - # admin_searchprofile_loc: Record show form
+  - # admin_searchprofiles_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid/edit.html[get]'
      runmode: 'show_record_form'
-  - # admin_searchprofile_loc: Update Record
+  - # admin_searchprofiles_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid[post]'
      runmode: 'update_record'
-  - # admin_searchprofile_loc: Update Record
+  - # admin_searchprofiles_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid[put]'
      runmode: 'update_record'
-  - # admin_searchprofile_loc: Delete Record
+  - # admin_searchprofiles_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid[delete]'
      runmode: 'delete_record'
@@ -2990,9 +2990,9 @@ tt_admin_orgunit_tname: admin_orgunit
 tt_admin_orgunit_record_tname: admin_orgunit_record
 tt_admin_orgunit_record_edit_tname: admin_orgunit_record_edit
 tt_admin_orgunit_record_delete_confirm_tname: admin_orgunit_record_delete_confirm
-tt_admin_searchprofile_tname: admin_searchprofile
-tt_admin_searchprofile_record_tname: admin_searchprofile_record
-tt_admin_searchprofile_record_edit_tname: admin_searchprofile_record_edit
+tt_admin_searchprofiles_tname: admin_searchprofile
+tt_admin_searchprofiles_record_tname: admin_searchprofiles_record
+tt_admin_searchprofiles_record_edit_tname: admin_searchprofiles_record_edit
 tt_admin_view_tname: admin_view
 tt_admin_view_record_tname: admin_view_record
 tt_admin_view_record_edit_tname: admin_view_record_edit
@@ -3043,7 +3043,7 @@ tt_admin_topic_tname: admin_topic
 tt_admin_topic_record_tname: admin_topic_record
 tt_admin_topic_record_edit_tname: admin_topic_record_edit
 
-tt_subject_collection_tname: subject_collection
+tt_subjects_collection_tname: subject_collection
 tt_classifications_collection_tname: classification_collection
 
 tt_dbis_database_collection_by_subject_tname: dbis_database_collection_by_subject
@@ -3187,7 +3187,7 @@ tt_title_recent_by_database_tname: title_recent_by_database
 tt_title_popular_tname: title_popular
 tt_person_tname: person
 tt_corporatebodies_tname: corporatebody
-tt_subject_tname: subject
+tt_subjects_tname: subject
 tt_classifications_tname: classification
 tt_library_tname: library
 tt_tag_tname: tag
@@ -3221,7 +3221,7 @@ tt_indexes_topic_tname: browse_topic
 tt_indexes_olws_tname: browse_olws
 tt_searchform_advanced_tname: searchform_advanced
 tt_searchform_simple_tname: searchform_simple
-tt_searchprofile_tname: searchprofile
+tt_searchprofiles_tname: searchprofile
 tt_registrations_success_tname: registration_success
 tt_registrations_mail_message_tname: registration_mail_message
 tt_registrations_confirmation_tname: registration_confirmation

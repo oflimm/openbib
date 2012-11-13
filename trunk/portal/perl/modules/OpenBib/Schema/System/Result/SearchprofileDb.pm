@@ -15,7 +15,7 @@ OpenBib::Schema::System::Result::SearchprofileDb
 
 =cut
 
-__PACKAGE__->table("searchprofile_db");
+__PACKAGE__->table("searchprofiles_db");
 
 =head1 ACCESSORS
 

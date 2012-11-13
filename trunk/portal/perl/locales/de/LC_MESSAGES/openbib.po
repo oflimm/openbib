@@ -2533,7 +2533,7 @@ msgstr "Eigenen Review bearbeiten"
 msgid "Eigenen Review l&ouml;schen"
 msgstr "Eigenen Review l&ouml;schen"
 
-#: ../templates/admin_searchprofile_record_edit:68
+#: ../templates/admin_searchprofiles_record_edit:68
 msgid "Eigener Index"
 msgstr "Eigener Index"
 
@@ -3820,7 +3820,7 @@ msgstr "ISSN"
 
 #: ../templates/admin_cluster_html:102
 #: ../templates/admin_cluster_record_edit:67
-#: ../templates/admin_searchprofile_record_edit:66
+#: ../templates/admin_searchprofiles_record_edit:66
 #: ../templates/admin_server_html:118 ../templates/admin_server_record_edit:67
 msgid "Id"
 msgstr "Id"
@@ -4507,7 +4507,7 @@ msgstr "JSON konnte nicht geparst werden"
 #: ../templates/admin_library_record_delete_confirm:54
 #: ../templates/admin_orgunit_record_delete_confirm:54
 #: ../templates/admin_profile_record_delete_confirm:54
-#: ../templates/admin_searchprofile_record_edit:71
+#: ../templates/admin_searchprofiles_record_edit:71
 #: ../templates/admin_server_html:136 ../templates/admin_server_html:97
 #: ../templates/admin_server_record_delete_confirm:54
 #: ../templates/admin_server_record_edit:104 ../templates/admin_showcat:43
@@ -4720,7 +4720,7 @@ msgstr "Katalogauswahl zu diesem View"
 #: ../templates/admin_navigation:30 ../templates/admin_orgunit_html:66
 #: ../templates/admin_orgunit_record_edit:92
 #: ../templates/admin_profile_record_edit:121
-#: ../templates/admin_searchprofile_record_edit:76
+#: ../templates/admin_searchprofiles_record_edit:76
 msgid "Kataloge"
 msgstr "Kataloge"
 
@@ -5431,7 +5431,7 @@ msgstr ""
 #: ../templates/admin_library_record_delete_confirm:60
 #: ../templates/admin_orgunit_record_delete_confirm:60
 #: ../templates/admin_profile_record_delete_confirm:60
-#: ../templates/admin_searchprofile_record_edit:72
+#: ../templates/admin_searchprofiles_record_edit:72
 #: ../templates/admin_server_html:136 ../templates/admin_server_html:98
 #: ../templates/admin_server_record_delete_confirm:60
 #: ../templates/admin_server_record_edit:105 ../templates/admin_showcat:44
@@ -7179,7 +7179,7 @@ msgstr "Standort des Buches"
 #: ../templates/litlist_collection_recent_html:37 ../templates/litlist_html:42
 #: ../templates/login:38 ../templates/person_html:47
 #: ../templates/registration:37 ../templates/search_history:37
-#: ../templates/searchform_advanced:37 ../templates/searchprofile_html:37
+#: ../templates/searchform_advanced:37 ../templates/searchprofiles_html:37
 #: ../templates/subject_html:47 ../templates/title_html:101
 msgid "Start"
 msgstr "Start"
@@ -7339,17 +7339,17 @@ msgid "Suchlogik"
 msgstr "Suchlogik"
 
 #: ../templates/admin_navigation:91
-#: ../templates/admin_searchprofile_record_edit:40
+#: ../templates/admin_searchprofiles_record_edit:40
 #: ../templates/admin_session_active_record_html:88
-#: ../templates/search_history:101 ../templates/searchprofile_html:38
+#: ../templates/search_history:101 ../templates/searchprofiles_html:38
 msgid "Suchprofil"
 msgstr "Suchprofil"
 
-#: ../templates/admin_searchprofile_record_edit:63
+#: ../templates/admin_searchprofiles_record_edit:63
 msgid "Suchprofil bearbeiten"
 msgstr "Suchprofil bearbeiten"
 
-#: ../templates/admin_navigation:89 ../templates/admin_searchprofile_html:41
+#: ../templates/admin_navigation:89 ../templates/admin_searchprofiles_html:41
 msgid "Suchprofile"
 msgstr "Suchprofile"
 
@@ -8936,7 +8936,7 @@ msgstr "Volltitel"
 msgid "Vorgemerkt"
 msgstr "Vorgemerkt"
 
-#: ../templates/admin_searchprofile_html:63
+#: ../templates/admin_searchprofiles_html:63
 msgid "Vorhandene Suchprofile"
 msgstr "Vorhandene Suchprofile"
 
@@ -9791,7 +9791,7 @@ msgstr "wiederholt"
 #: ../templates/admin_library_record_edit:87
 #: ../templates/admin_orgunit_record_edit:103
 #: ../templates/admin_profile_record_edit:78
-#: ../templates/admin_searchprofile_record_edit:85
+#: ../templates/admin_searchprofiles_record_edit:85
 #: ../templates/admin_server_record_edit:110
 #: ../templates/admin_topic_record_edit:145
 #: ../templates/admin_topic_record_edit:191

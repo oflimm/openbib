@@ -111,7 +111,7 @@ sub show_collection {
         year       => $year,
     };
     
-    $self->print_page($config->{tt_admin_searchprofile_tname},$ttdata);
+    $self->print_page($config->{tt_admin_searchprofiles_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -144,7 +144,7 @@ sub show_record {
         dbinfo          => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_searchprofile_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_searchprofiles_record_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -178,7 +178,7 @@ sub show_record_form {
         dbinfo          => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_searchprofile_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_searchprofiles_record_edit_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -207,7 +207,7 @@ sub update_record {
         return;
     }
 
-    if (!$config->searchprofile_exists($searchprofileid)) {
+    if (!$config->searchprofiles_exists($searchprofileid)) {
         $self->print_warning($msg->maketext("Es existiert kein Suchprofil mit dieser ID"));
         return Apache2::Const::OK;
     }

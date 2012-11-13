@@ -191,7 +191,7 @@ $(document).ready(function(){
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Neue Bewertung/Rezension") %]<span id="newreview_toggle"></span></th></tr>
+<tr><th>[% msg.maketext("Neue Bewertung/Rezension") %]<span id="newreviews_toggle"></span></th></tr>
 <tr><td id="newreview" class="boxedclear">
 
 <h3>[% msg.maketext("Bewertung") %]</h3>
@@ -789,7 +789,7 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
        if (thisbook.thumbnail_url != undefined){         
           document.getElementById('cover_full').src      = thisbook.thumbnail_url.replace("zoom=5","zoom=1");
           document.getElementById('cover_full').title    = "Cover von Google Books";
-          document.getElementById('cover_full_url').href = thisbook.preview_url;
+          document.getElementById('cover_full_url').href = thisbook.previews_url;
        }
      }
    }

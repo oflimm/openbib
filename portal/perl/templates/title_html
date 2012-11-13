@@ -727,8 +727,8 @@ OID[% ownreviewid %]
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
-<div class="ob-headline"><span id="newreview_toggle">[% msg.maketext("Neue Bewertung/Rezension") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="ob-newreview_do"><!-- Begin formats do -->
+<div class="ob-headline"><span id="newreviews_toggle">[% msg.maketext("Neue Bewertung/Rezension") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-newreviews_do"><!-- Begin formats do -->
 
 <h4>[% msg.maketext("Bewertung") %]</h4>
 <table>
@@ -753,7 +753,7 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 <td><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/>&nbsp;&nbsp;</td><td><input type="reset" value="[% msg.maketext("Löschen") %]"/></td>
 </tr>
 </table>
-</div><!-- End newreview_do -->
+</div><!-- End newreviews_do -->
 
 </form>
 [% END %]
@@ -849,7 +849,7 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
        if (thisbook.thumbnail_url != undefined){         
           document.getElementById('cover_full').src      = thisbook.thumbnail_url.replace("zoom=5","zoom=1");
           document.getElementById('cover_full').title    = "Cover von Google Books";
-          document.getElementById('cover_full_url').href = thisbook.preview_url;
+          document.getElementById('cover_full_url').href = thisbook.previews_url;
        }
      }
    }

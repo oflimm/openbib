@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Review.pm
+#  OpenBib::Handler::Apache::Reviews.pm
 #
 #  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Review;
+package OpenBib::Handler::Apache::Reviews;
 
 use strict;
 use warnings;

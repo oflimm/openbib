@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Registration
+#  OpenBib::Handler::Apache::Registrations
 #
 #  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Registration;
+package OpenBib::Handler::Apache::Registrations;
 
 use strict;
 use warnings;
@@ -162,7 +162,7 @@ sub register {
 
       # Wurde dieser Nutzername inzwischen bereits registriert?
       if ($user->user_exists($username)) {
-        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zur�ck[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}.html\">","</a>"));
+        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}.html\">","</a>"));
         return Apache2::Const::OK;
       }
 
@@ -238,18 +238,18 @@ sub mail_confirmation {
     }
 
     if ($password1 ne $password2) {
-        $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."));
+        $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht Ã¼berein."));
         return Apache2::Const::OK;
     }
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($username)){
-        $self->print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
+        $self->print_warning($msg->maketext("Sie haben keine gÃ¼tige Mailadresse eingegeben. Gehen Sie bitte [_1]zurÃ¼ck[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
         return Apache2::Const::OK;
     }
     
     if ($user->user_exists($username)) {
-        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
+        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurÃ¼ck[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
         return Apache2::Const::OK;
     }
     
@@ -262,7 +262,7 @@ sub mail_confirmation {
         );
         
         unless ( $recaptcha_result->{is_valid} ) {
-            $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
+            $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurÃ¼ck[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
             return Apache2::Const::OK;
         }
     }

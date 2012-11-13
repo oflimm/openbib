@@ -181,7 +181,7 @@ sub show_collection_by_isbn_negotiate {
         msg              => $msg,
     };
     
-    $self->print_page($config->{tt_review_collection_by_isbn_tname},$ttdata);
+    $self->print_page($config->{tt_reviews_collection_by_isbn_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -523,7 +523,7 @@ sub show_record_form {
         msg              => $msg,
     };
     
-    $self->print_page($config->{tt_review_edit_tname},$ttdata);
+    $self->print_page($config->{tt_reviews_edit_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -644,7 +644,7 @@ sub show_record_negotiate {
         msg              => $msg,
     };
     
-    $self->print_page($config->{tt_review_tname},$ttdata);
+    $self->print_page($config->{tt_reviews_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -765,7 +765,7 @@ sub show_record_negotiatex {
         msg              => $msg,
     };
     
-    $self->print_page($config->{tt_review_tname},$ttdata);
+    $self->print_page($config->{tt_reviews_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

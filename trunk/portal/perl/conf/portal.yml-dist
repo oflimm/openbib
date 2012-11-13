@@ -3199,9 +3199,9 @@ tt_user_role_edit_tname: user_role_edit
 tt_user_preferences_tname: user_preferences
 tt_user_delete_confirm_tname: user_delete_confirm
 tt_user_review_collection_tname: user_review_collection
-tt_review_tname: review
-tt_review_edit_tname: review_edit
-tt_review_collection_by_isbn_tname: review_collection_by_isbn
+tt_reviews_tname: review
+tt_reviews_edit_tname: review_edit
+tt_reviews_collection_by_isbn_tname: review_collection_by_isbn
 tt_clouds_collection_tname: cloud_collection
 tt_clouds_person_tname: cloud_person
 tt_clouds_corporatebody_tname: cloud_corporatebody

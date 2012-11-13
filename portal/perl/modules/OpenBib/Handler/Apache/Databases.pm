@@ -72,7 +72,7 @@ sub show_collection {
         databases   => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_database_collection_tname},$ttdata);
+    $self->print_page($config->{tt_databases_collection_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -107,7 +107,7 @@ sub show_record {
         databaseinfo => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_database_record_tname},$ttdata);
+    $self->print_page($config->{tt_databases_record_tname},$ttdata);
 
     $logger->debug("Done showing record");
     return Apache2::Const::OK;

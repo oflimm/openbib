@@ -82,13 +82,13 @@ $("#dd_language_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Katalog
 // Bild setzen
-$("#dd_database_[% database %]_toggle").html("<b>[<a href=\"#dd_database_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_databases_[% database %]_toggle").html("<b>[<a href=\"#dd_databases_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
 // Zuerst verstecken
-$("#dd_database_[% database %]").hide();
+$("#dd_databases_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#dd_database_[% database %]_toggle").click(function(){
- $("#dd_database_[% database %]").toggle();
- $("#dd_database_[% database %]_toggle").html("");
+$("#dd_databases_[% database %]_toggle").click(function(){
+ $("#dd_databases_[% database %]").toggle();
+ $("#dd_databases_[% database %]_toggle").html("");
 });
 // Ende Togglen / Drilldown Katalog
 
@@ -173,14 +173,14 @@ $("#dd_litlist_[% database %]_toggle").click(function(){
 [%         IF category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
-<tr><th class="ob-headline" id="dd_database_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>
+<tr><th class="ob-headline" id="dd_databases_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>
 <tr><td>
 [%             FOREACH termitem IN category_map.8 ;
                   LAST IF loop.count > 25 ;
 %]
 [% IF category_map.8.size > 5 && loop.count == 5 %]
-<span id="dd_database_[% database %]_toggle"></span>
-<div id="dd_database_[% database %]">
+<span id="dd_databases_[% database %]_toggle"></span>
+<div id="dd_databases_[% database %]">
 [% END %]
 <a href="[% path_prefix %]/[% config.get('search_loc') %]?[% drilldown_query_args_base %][% IF termitem.0 != query.param('db') %];db=[% termitem.0 %][% END %];fs=[% lastquery %][% allfilterstring %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]

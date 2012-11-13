@@ -3080,9 +3080,9 @@ tt_connector_unapi_formats_tname: connector_unapi_formats
 tt_connector_unapi_mods_tname: connector_unapi_mods
 tt_connector_unapi_mets_tname: connector_unapi_mets
 tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
-tt_databasechoice_tname: databasechoice
-tt_database_collection_tname: database_collection
-tt_database_record_tname: database_record
+tt_databaseschoice_tname: databasechoice
+tt_databases_collection_tname: database_collection
+tt_databases_record_tname: database_record
 tt_error_tname: error
 tt_externaljump_tname: externaljump
 
@@ -3186,7 +3186,7 @@ tt_title_popular_by_database_tname: title_popular_by_database
 tt_title_recent_by_database_tname: title_recent_by_database
 tt_title_popular_tname: title_popular
 tt_person_tname: person
-tt_corporatebody_tname: corporatebody
+tt_corporatebodies_tname: corporatebody
 tt_subject_tname: subject
 tt_classifications_tname: classification
 tt_library_tname: library

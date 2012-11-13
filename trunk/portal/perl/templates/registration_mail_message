@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: registration_mail_confirmation
+# Templatename: registrations_mail_confirmation
 #
 # Typ         : Mastertemplate
 #
@@ -19,7 +19,7 @@ sie haben sich heute im OpenBib Recherche-Portal selbst registriert.
 
 Ihre Registrierung wird wirksam, wenn Sie den folgenden URL aufrufen:
 
-http://[% servername %][% path_prefix %]/[% config.get('registration_loc') %]/[% registrationid %]
+http://[% servername %][% path_prefix %]/[% config.get('registrations_loc') %]/[% registrationid %]
 
 Mit freundlichen Gruessen
 

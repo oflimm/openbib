@@ -116,7 +116,7 @@ sub show {
         
         lang       => $queryoptions->get_option('l'),
     };
-    $self->print_page($config->{tt_registration_tname},$ttdata);
+    $self->print_page($config->{tt_registrations_tname},$ttdata);
  
     return Apache2::Const::OK;
 }
@@ -189,7 +189,7 @@ sub register {
         username   => $username,
     };
 
-    $self->print_page($config->{tt_registration_success_tname},$ttdata);
+    $self->print_page($config->{tt_registrations_success_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -298,7 +298,7 @@ sub mail_confirmation {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_registration_mail_message_tname}, $mainttdata ) || do { 
+    $maintemplate->process($config->{tt_registrations_mail_message_tname}, $mainttdata ) || do { 
         $r->log_error($maintemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
     };
@@ -325,7 +325,7 @@ sub mail_confirmation {
         username      => $username,
     };
 
-    $self->print_page($config->{tt_registration_confirmation_tname},$ttdata);
+    $self->print_page($config->{tt_registrations_confirmation_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

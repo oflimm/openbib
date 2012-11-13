@@ -160,6 +160,92 @@ davon oeffentlich/privat
 
 /portal/tag/database/:database/recent
 
+- Resourcen
+
+* /databases
+
+Resource:
+
+/databases
+/databases/id/:id
+
+Typ der Id: Nutzeruebergreifend mit Admin-Sichtbarkeit
+
+Aktionen:
+
+= oeffentliche Anzeige mit reduziertem Informationsgehalt
+
+Repraesentation:
+
+/databases.html
+/databases/id/:id.html
+
+
+= private Anzeige fuer Adminnutzer
+
+/user/:id/databases.html
+/user/:id/databases/id/:id.html
+
+oder fest
+
+/user/admin/databases.html
+/user/admin/databases/id/:id.html
+
+= Anlegen/Aendern/Loeschen fuer Adminnutzer mit der Resource
+
+/database
+/database/id/:id
+
+User-Negotiation? Zugriff auf oeffentliche Resource leitet fuer
+angemeldete Nutzer weiter auf Nutzer-Repraesenation.
+
+Hier: Ja.
+
+Aber generelles Problem, wenn gleichzeitiger Zugriff auf oeffentliche
+Repraesenation (z.B. alle oeffentligen Literaturlisten) und
+Nutzer-Repraesentation (z.B. die eigenen Literaturlisten)
+
+-------------------------------------------
+
+* /litlists
+
+Resource:
+
+/litlists
+/litlists/id/:id
+
+Typ der Id: Nutzerspezifisch mit individueller Sichtbarkeit
+
+Aktionen:
+
+= oeffentliche Anzeige aller Literaturlisten mit oeffentlicher Sichtbarkeit
+
+Repraesentation:
+
+/litlists.html
+/litlists/id/:id.html
+
+= Nutzer-Anzeige aller eigenen Literaturlisten (oeffentlich oder privat)
+
+/user/:id/litlists.html
+/user/:id/litlists/id/:id.html
+
+= Anlegen/Aendern/Loeschen fuer Adminnutzer mit der Resource
+
+/litlists
+/litlists/id/:id
+
+User-Negotiation? Zugriff auf oeffentliche Resource leitet fuer
+angemeldete Nutzer weiter auf Nutzer-Repraesenation.
+
+Hier: Nein.
+
+Aber generelles Problem, wenn gleichzeitiger Zugriff auf oeffentliche
+Repraesenation (z.B. alle oeffentligen Literaturlisten) und
+Nutzer-Repraesentation (z.B. die eigenen Literaturlisten)
+
+Loesung:?
+
 - Weiteres
 
 * Anpassung der Internen URL-Modul-Template Logik von Singular auf Plural

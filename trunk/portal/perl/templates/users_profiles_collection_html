@@ -46,7 +46,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="user_navigation" active_submenu="databaseprofile" %] 
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="databaseprofile" %] 
         </div>
       </div>
       <!-- end: #col1 -->

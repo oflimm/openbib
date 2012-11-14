@@ -33,7 +33,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="user_navigation" active_submenu="tags_edit" %] 
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="tags_edit" %] 
         </div>
       </div>
       <!-- end: #col1 -->

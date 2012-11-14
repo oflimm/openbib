@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: user_reviews_collection_html
+# Templatename: users_reviews_collection_html
 #
 # Typ         : Mastertemplate
 #
@@ -33,7 +33,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="user_navigation" active_submenu="userreviews" %] 
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="userreviews" %] 
         </div>
       </div>
       <!-- end: #col1 -->

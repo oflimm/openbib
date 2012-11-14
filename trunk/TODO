@@ -71,10 +71,11 @@ c) Nutzer       -> Path-Einschub /user/id/<userid> direkt nach
 /portal/<view>, ggf. bei Formularhaltigen Nutzer-seiten mit
 Pfad-Suffix /edit
 
-In den Webseiten wird (immer?) der kanonische URL verwendet, so dass
-dann entsprechend Nutzerspezifisch weitergeleitet werden kann. Damit
-koennen allgemeine Resourcen definiert werden, die nicht zwingend eine
-Repraesentation im Nutzer-Bereich haben, wie z.B. search oder index
+In den Webseiten wird wenn immer sinnvoll der kanonische URL
+verwendet, so dass dann entsprechend Nutzerspezifisch weitergeleitet
+werden kann. Damit koennen allgemeine Resourcen definiert werden, die
+nicht zwingend eine Repraesentation im Nutzer-Bereich haben, wie
+z.B. search oder index
 
 1) Admin-URL in User-URLs eingliedern und jede Admin-Resource als
 allgemeine Resource implementieren
@@ -87,7 +88,104 @@ wird
 
 Kanonische Resource: /portal/openbib/views
 
-Admin-Nutzer Resource: /portal/openbib/users/id/:userid/views
+Admin-Nutzer Resource: /portal/openbib/users/id/:userid/views oder
+
+/portal/openbib/users/id/admin/views
+
+* Folgende systemweite Resourcen kommen aus der Administration:
+
+Sie sind mit reduziertem Informationsgehalt oeffentlich und vollem
+Informationsgehalt privat fuer den
+Admin-Nutzer. Aendern/Loeschen/Erzeugen fuer Admin-Nutzer unter
+oeffentlichem URI
+
+authenticators
+clusters
+databases
+profiles/orgunits
+searchprofiles (eindeutig, nur create)
+servers
+sessions
+statistics
+topics
+users
+views
+
+* Folgende Resourcen sind oeffentlich aber auch nutzerabhaengig:
+
+d.h. es existiert eine korrespondierene Repraesentation mit
+nutzerspezifischen Inhalt (z.B. eingeblendete eigene
+Literaturlisten/Tags) unter
+
+/user/id/:id
+
+Resource-URI ist oeffentlich, aber es gibt einen redirect zu einer
+eigenen user-Repraesentation
+
+classifications
+corporatebodies
+persons
+subjects
+titles
+
+Es gibt einen oeffentlichen und private Resource-URI fuer die Items
+und einen redirect zur privaten Resource-URI, die die oeffentliche ersetzt.
+
+collection
+
+Es gibt einen oeffentlichen und private Resource-URI fuer die
+Collection, jedoch nur den oeffentlichen Resource-URI fuer die Items
+jedoch keine automatischen Redirect.
+
+litlists
+reviews
+tags
+roles
+
+* Folgende Resourcen sind ausschliesslich privat
+
+users/preferences
+users/circulation
+users/profiles - Eigene Suchprofile, Namensclash mit profiles aus
+Admin! und vereinheitlichung mit databasechoice fuer anonyme Nutzer
+
+Folgende Resourcen sind immer oeffentlich bzw. (noch) funktional
+
+o indexes
+f clouds
+f connector
+f dispatchquery
+f home
+f info
+f jumpto
+f login
+f logout
+f mailpassword (vereinheitlichen mit registration/usermanagement)
+f redirect
+o rssfeeds
+f search
+f selectdatabase (vereinheitlichen mit vom Nutzer benamten und
+erstellen Suchprofil)
+f server_is_active (Recherche-Heartbeat)
+
+Vereinheitlichung:
+
+a) Anonyme Datenbankauswahl und abgespeicherte Datenbanksuchprofile
+eines Nutzers parallel
+
+Zugrundeliegende allgemeine Resource ist /searchprofiles
+
+Zwei neue abgeleitete Resourcen
+
+URI Anonym: /searchprofiles/current (sessionbasiert)
+URI Nutzer: /user/id/:id/searchprofiles/:id (persistent)
+
+b) Registrationsmanagement
+
+- Integration von Mailpassword: Anfordern eines zufaelligen neuen
+Passworts an angegebene Adresse, das man dann aendern kann
+- Umstellung auf verschluesselte Passworte
+
 
 2) Browse_loc wird zu indexes_loc
 
@@ -95,70 +193,6 @@ mit dem Schema
 
  /portal/:view/indexes/database/:db/type/:type/field/:field
  /portal/:view/indexes/topic/:topicid
-
-
-- Tagging:
-
-Aktionen:
-
-Titelbereich:
-
-1) Tag fuer einen Titel erzeugen:
-
-Voraussetzung: userid, dbname, titleid, tags
-
-/portal/user/id/:userid/title/database/:dbname/id/:titleid/tag [POST] mit tags als Parameter
-
-2) Tag fuer einen Titel aendern:
-
-Voraussetzung: userid, dbname, titleid, tag
-
-/portal/user/id/:userid/title/database/:dbname/id/:titleid/tag [PUT] mit tags als Parameter
-
-3) Tags fuer einen Titel loeschen:
-
-Voraussetzung: userid, dbname, titleid
-
-/portal/user/id/:userid/title/database/:dbname/id/:titleid/tag [DELETE]
-
-Nutzerbereich:
-
-1) Anzeige aller eigenen Tags
-
-/portal/user/id/:userid/tag
-
-2) Anzeige aller Titel zu einem Tag
-
-/portal/user/id/:userid/tag/id/:tagname/titles
-
-3) Userspezifisches Umbenennen eines Tags tagname durch neuertagname
-
-/portal/user/id/:userid/tag/id/:tagname [PUT] mit neuertagname als Parameter
-
-Dann Weiterleitung zu 1)
-
-Oeffentlicher Bereich:
-
-1) Informationen zu einem konkreten Tag aufrufen
-
-Voraussetzung tagname
-
-/portal/tag/id/:tagname
-
-Gelieferte Informationen: wieviele Nutzer, wieviele Titel, wieviele
-davon oeffentlich/privat
-
-2) (Oeffentliche) Titel zu einem Tag anzeigen
-
-/portal/tag/id/:tagname/title
-
-3) Zuletzt vergebene Tags (mit oeffentlichen Titeln)
-
-/portal/tag/recent
-
-4) Zuletzt vergebene Tags (mit oeffentlichen Titeln) in Katalog database
-
-/portal/tag/database/:database/recent
 
 - Resourcen
 
@@ -181,7 +215,9 @@ Repraesentation:
 /databases/id/:id.html
 
 
-= private Anzeige fuer Adminnutzer
+= private Anzeige fuer Adminnutzer mit allen Informationen
+
+Repraesentation
 
 /user/:id/databases.html
 /user/:id/databases/id/:id.html
@@ -197,15 +233,22 @@ oder fest
 /database/id/:id
 
 User-Negotiation? Zugriff auf oeffentliche Resource leitet fuer
-angemeldete Nutzer weiter auf Nutzer-Repraesenation.
+angemeldete Nutzer weiter auf Nutzer-Repraesenation, da diese
+informationstechnische eine Obermenge der oeffentlichen
 
 Hier: Ja.
 
-Aber generelles Problem, wenn gleichzeitiger Zugriff auf oeffentliche
-Repraesenation (z.B. alle oeffentligen Literaturlisten) und
-Nutzer-Repraesentation (z.B. die eigenen Literaturlisten)
-
 -------------------------------------------
+
+* /searchprofile
+
+Resource:
+
+/searchprofiles
+/searchprofiles/id/:id
+
+Persistente Suchprofile = Zusammenstellung von Katalognamen
+
 
 * /litlists
 
@@ -227,24 +270,179 @@ Repraesentation:
 
 = Nutzer-Anzeige aller eigenen Literaturlisten (oeffentlich oder privat)
 
-/user/:id/litlists.html
-/user/:id/litlists/id/:id.html
+Eigene Resource
 
-= Anlegen/Aendern/Loeschen fuer Adminnutzer mit der Resource
+/user/:id/litlists
+
+mit Repraesenation
+
+/user/:id/litlists.html
+
+= Anlegen/Aendern/Loeschen fuer besitzenden Nutzer mit der Resource
 
 /litlists
 /litlists/id/:id
 
-User-Negotiation? Zugriff auf oeffentliche Resource leitet fuer
-angemeldete Nutzer weiter auf Nutzer-Repraesenation.
+User-Negotiation?
 
-Hier: ?
-
-Aber generelles Problem, wenn gleichzeitiger Zugriff auf oeffentliche
+Generelles Problem, wenn gleichzeitiger Zugriff auf oeffentliche
 Repraesenation (z.B. alle oeffentligen Literaturlisten) und
 Nutzer-Repraesentation (z.B. die eigenen Literaturlisten)
 
-Loesung:?
+Hier: Nein.
+
+Loesung: Trennung in zwei Resourcen fuer Listen von Literaturlisten
+
+Oeffentlich: /litlists
+
+Privat: /users/id:id/litlists
+
+Mit eigenen zugeordneten Repraesentationen
+
+* /tags
+
+Resource:
+
+/tags
+/tags/id/:id
+
+id: Tagname oder title_tag-ID?
+
+Typ der Id: Nutzerspezifisch mit individueller Sichtbarkeit
+
+Aktionen:
+
+= oeffentliche Anzeige aller Tags mit oeffentlicher Sichtbarkeit
+
+Repraesentation:
+
+/tags.html
+/tags/id/:id.html
+
+= Nutzer-Anzeige aller eigenen Tags (oeffentlich oder privat)
+
+Eigene Resource
+
+/user/:id/tags
+
+mit Repraesenation
+
+/user/id/:id/tags.html
+
+= Anlegen/Aendern/Loeschen fuer besitzenden Nutzer mit der Resource
+
+/tags
+/tags/id/:id
+
+User-Negotiation?
+
+Generelles Problem, wenn gleichzeitiger Zugriff auf oeffentliche
+Repraesenation (z.B. alle oeffentligen Literaturlisten) und
+Nutzer-Repraesentation (z.B. die eigenen Literaturlisten)
+
+Hier: Nein.
+
+Loesung: Trennung in zwei Resourcen fuer Listen von Tags
+
+Oeffentlich: /tags
+Privat: /user/id:id/tags
+
+
+Aktionen:
+
+Titelbereich:
+
+Moeglichkeit von Titelspezifischen URI's:
+
+1) Tag fuer einen Titel erzeugen:
+
+Voraussetzung: userid, dbname, titleid, tags
+
+/users/id/:userid/titles/database/:dbname/id/:titleid/tag [POST] mit tags als Parameter
+
+2) Tag fuer einen Titel aendern:
+
+Voraussetzung: userid, dbname, titleid, tag
+
+/users/id/:userid/titles/database/:dbname/id/:titleid/tag [PUT] mit tags als Parameter
+
+3) Tags fuer einen Titel loeschen:
+
+Voraussetzung: userid, dbname, titleid
+
+/users/id/:userid/titles/database/:dbname/id/:titleid/tag [DELETE]
+
+Oder alternativ ueber einen allgemeinen URI
+
+/tags/id/:tagname?
+
+Vorteil: Allgemeiner, kurzer URI fuer alle Nutzer, ob angemeldet oder nicht!
+Aber: Wie Kontext des Tags transportieren? Dazu muesste die Tagid
+diesen wiederspiegeln und damit muesste statt des Tagnamens die
+titel_tag-ID zwingend verwendet werden, also
+
+/tags/id/:tittagid
+
+Dann parallel
+
+/tags/name/:tagname/titles ?
+
+und
+
+/tags/name/:tagname/titles ?
+
+Nutzerbereich:
+
+1) Anzeige aller eigenen Tags
+
+Eigene Resource
+
+/users/id/:userid/tags
+
+mit Repraesenation
+
+/users/id/:userid/tags.html
+
+2) Anzeige aller Titel die man selbst zu einem eigenen Tag vergeben hat
+
+Resource:
+
+/users/id/:userid/tags/id/:tagname/titles
+
+mit Repraesenation:
+
+/users/id/:userid/tags/id/:tagname/titles.html
+
+3) Userspezifisches Umbenennen eines Tags tagname durch neuertagname
+
+Resource
+
+/portal/user/id/:userid/tag/id/:tagname [PUT] mit neuertagname als Parameter
+
+Dann Weiterleitung zu 1)
+
+Oeffentlicher Bereich:
+
+1) Informationen zu einem konkreten Tag aufrufen
+
+Voraussetzung tagname
+
+/tags/id/:tagname
+
+Gelieferte Informationen: wieviele Nutzer, wieviele Titel, wieviele
+davon oeffentlich/privat
+
+2) (Oeffentliche) Titel zu einem Tag anzeigen
+
+/tags/id/:tagname/titles
+
+3) Zuletzt vergebene Tags (mit oeffentlichen Titeln)
+
+/tags/recent
+
+4) Zuletzt vergebene Tags (mit oeffentlichen Titeln) in Katalog database
+
+/tags/database/:database/recent
 
 - Weiteres
 

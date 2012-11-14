@@ -56,7 +56,7 @@ use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::User';
+use base 'OpenBib::Handler::Apache::Users';
 
 # Run at startup
 sub setup {

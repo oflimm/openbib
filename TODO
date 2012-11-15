@@ -1,10 +1,6 @@
-TODO-Liste:
+==Noch unpriorisiert==
 
-- Dies und das
-
-rel=bookmark fuer Bookmarkurl?
-
-- URI Design
+===URI Design===
 
 * Allgemein
 
@@ -13,33 +9,40 @@ Schema: Plurals + 'id' + id
 Hackability: automatische Weiterleitung zu naechst hoeherer Ebene,
 also
 
-/users/id -> /users
+ /users/id -> /users
 
 * Benutzerspezifische Resourcen
 
 Um ein vernuenftiges HTTP-standardkonformes Caching von Seiten zu
-erreichen, muessen Seiten mit benutzerspezifischen Inhalt verschiedene
-URI's haben.
+erreichen, muessen Seiten mit benutzerspezifischen Inhalt mindestens
+verschiedene Repraesentations-URI's haben.
 
 Beispiel eines generischen Einzeltitels
 
-/title/database/lesesaal/id/2345 ohne vorherige Anmeldung
+ /title/database/lesesaal/id/2345.html ohne vorherige Anmeldung
 
-/user/id/22/title/database/lesesaal/id/2345 fuer angemeldeten Nutzer 22
+ /user/id/22/title/database/lesesaal/id/2345.html fuer angemeldeten Nutzer 22
 
 Problematik:
 
 1) laengere URLs: laesst sich nicht aendern
+
 2) Resource oder nur Repraesentation: Ist der URI im /user-Bereich
 eine eigene offizielle Resource oder nur die Nutzerabhaengige
-Repraesentation
+Repraesentation = das kommt auf die Resource an...
+
 3) Koennen fuer 2) sinnvolle Resource-Finder-URIs definiert werden,
 bei deren Referenzierung automatisch in den /user-Bereich redirected
-wird
-4) Sollen alle Resourcen so behandelt werden, also z.B. auch /search ?
-Oder kann durch 3) geschickt abstrahiert werden.
+wird = Ja, das sind in den entsprechenden Faellen die oeffentlichen
+Resource-URI's 
 
-Zusammenfassung der konkreten Vorgehensweise:
+4) Sollen alle Resourcen so behandelt werden, also z.B. auch /search ?
+Oder kann durch 3) geschickt abstrahiert werden. = Fuer fundamentale
+(funktionale ) Resourcen wie /search muess eine Verlinkung zur
+entsprechenden oeffentlich erreichbaren Resource verwendet werden, die
+dann entsprechend weiterleitet.
+
+====Zusammenfassung der konkreten Vorgehensweise====
 
 0) Es gibt genau einen kanonischen URI fuer jede Resource direkt unter
 /portal/<view>
@@ -47,50 +50,74 @@ Zusammenfassung der konkreten Vorgehensweise:
 Dieser URI ist und bleibt der zentrale URI fuer POST, PUT, DELETE?
 Kann es hier Ausnahmen geben? Bei systemweit einzigartigen
 Resourcen (z.B. Views etc. aus der Admin) funktioniert das, wie sieht
-es bei Nutyerspezifischen Resourcen aus? Unter /portal/:view/tags sind
-allgemeine alle oeffentlichen Tags aufgefuehrt, unter
-/portal/:view/users/:userid/tags sollen jedoch nur die Tags des
+es bei Nutyerspezifischen Resourcen aus? Unter /portal/:view/litlists sind
+allgemeine alle oeffentlichen Literaturlisten aufgefuehrt, unter
+/portal/:view/users/:userid/litlists sollen jedoch nur die Literaturlisten des
 Nutzers erscheinen. Eine Weiterleitung macht keinen Sinn, da der
-Nutzer beides nutzen koennen moechte.  
+Nutzer beides nutzen koennen moechte/soll.  
 
 Ergebnisse dieser Aktionen werden kontextsensitiv zur jeweiligen
 Repraesentation Weitergeleitet, siehe folgend.
 
 Dieser URI leiter per 303er redirekt Kontextsensitiv weiter
 entsprechend
- - Ausgehandeltem Content-Type
- - Ausgehandelter Sprache
- - Authentifiziertem Nutzer
+
+*Ausgehandeltem Content-Type
+*Ausgehandelter Sprache
+*Authentifiziertem Nutzer (pro dispatch_rule definierbar)
 
 auf eine konkrete Repraesentation der Resource. Die Repraesenation
 ergibt sich aus dem kanonischen URI aus:
 
-a) Content-Type -> Filetype extension (.html fuer HTML, .json fuer JSON)
+a) Content-Type bzw. Useragent -> Filetype extension (.html fuer HTML, .json fuer JSON, .mobile fuer Mobile Seiten)
 b) Sprache      -> Query-Parameter l (?l=de, ?l=en
 c) Nutzer       -> Path-Einschub /user/id/<userid> direkt nach
 /portal/<view>, ggf. bei Formularhaltigen Nutzer-seiten mit
 Pfad-Suffix /edit
 
-In den Webseiten wird wenn immer sinnvoll der kanonische URL
-verwendet, so dass dann entsprechend Nutzerspezifisch weitergeleitet
+In den Webseiten wird - wenn immer sinnvoll - der kanonische URL
+verwendet (s.o.), so dass dann entsprechend Nutzerspezifisch weitergeleitet
 werden kann. Damit koennen allgemeine Resourcen definiert werden, die
 nicht zwingend eine Repraesentation im Nutzer-Bereich haben, wie
-z.B. search oder index
+z.B. search oder indexes
 
 1) Admin-URL in User-URLs eingliedern und jede Admin-Resource als
 allgemeine Resource implementieren
 
 Beispiel:
 
-Aus /portal/openbib/admin/views
+Aus
 
-wird
+/portal/openbib/admin/views
 
-Kanonische Resource: /portal/openbib/views
+wird Kanonische Resource:
 
-Admin-Nutzer Resource: /portal/openbib/users/id/:userid/views oder
+ /portal/openbib/views
 
-/portal/openbib/users/id/admin/views
+Admin-Nutzer Resource:
+
+ /portal/openbib/users/id/:userid/views
+
+oder
+
+ /portal/openbib/users/id/admin/views
+
+Admin ist Attribut eines Users insofern muessen sich die
+Resourcen/Repraesentationen auch dort einordnen!
+
+Also Admin-Nutzer Resource:
+
+ /portal/openbib/users/id/:userid/views usw.
+
+Zusaetzlich Uebersichtsseite?
+
+Vorteilt: zur hierarchischen Navigation.
+
+Einfach /portal/openbib/users/id/:id/admin!
+
+Alternativ: Einbettung in User-Navigation
+
+Prototyp: erst einmal ohne eigene Admin-Uebersichtsseite
 
 * Folgende systemweite Resourcen kommen aus der Administration:
 
@@ -99,17 +126,19 @@ Informationsgehalt privat fuer den
 Admin-Nutzer. Aendern/Loeschen/Erzeugen fuer Admin-Nutzer unter
 oeffentlichem URI
 
-authenticators
-clusters
-databases
-profiles/orgunits
-searchprofiles (eindeutig, nur create)
-servers
-sessions
-statistics
-topics
-users
-views
+*authenticators
+*clusters
+*databases
+*profiles/orgunits
+*searchprofiles (eindeutig, nur create)
+*servers
+*sessions
+*statistics
+*topics
+*users
+*views
+*rssfeeds (neu)
+*locations (eigentstaendige Resource als Verallgemeinerung und anstelle von libraries)
 
 * Folgende Resourcen sind oeffentlich aber auch nutzerabhaengig:
 
@@ -117,58 +146,59 @@ d.h. es existiert eine korrespondierene Repraesentation mit
 nutzerspezifischen Inhalt (z.B. eingeblendete eigene
 Literaturlisten/Tags) unter
 
-/user/id/:id
+ /user/id/:id
 
 Resource-URI ist oeffentlich, aber es gibt einen redirect zu einer
 eigenen user-Repraesentation
 
-classifications
-corporatebodies
-persons
-subjects
-titles
+*classifications
+*corporatebodies
+*persons
+*subjects
+*titles
 
 Es gibt einen oeffentlichen und private Resource-URI fuer die Items
 und einen redirect zur privaten Resource-URI, die die oeffentliche ersetzt.
 
-collection
+*collection
 
 Es gibt einen oeffentlichen und private Resource-URI fuer die
-Collection, jedoch nur den oeffentlichen Resource-URI fuer die Items
-jedoch keine automatischen Redirect.
+Listen-URLs, jedoch nur den oeffentlichen Resource-URI fuer die Items
 
-litlists
-reviews
-tags
-roles
+keine automatischen Redirect!
+
+*litlists
+*reviews
+*tags
+*roles
+*searchprofiles - Alle Suchprofile bzw. eigene benamte Suchprofile, Namensclash mit profiles aus
+Admin! und vereinheitlichung mit databasechoice fuer anonyme Nutzer
 
 * Folgende Resourcen sind ausschliesslich privat
 
-users/preferences
-users/circulation
-users/userprofiles - Eigene Suchprofile, Namensclash mit profiles aus
-Admin! und vereinheitlichung mit databasechoice fuer anonyme Nutzer
+ users/id/id:/preferences
+ users/id/id:/circulations
 
-Folgende Resourcen sind immer oeffentlich bzw. (noch) funktional
+Folgende Resourcen sind immer oeffentlich bzw. (noch) funktional? GGf private Repraesentation?
 
-o indexes
-f clouds
-f connector
-f dispatchquery
-f home
-f info
-f jumpto
-f login
-f logout
-f mailpassword (vereinheitlichen mit registration/usermanagement)
-f redirect
-o rssfeeds
-f search
-f selectdatabase -> searchprofile/session (vereinheitlichen mit vom Nutzer benamten und
+*o indexes
+*f clouds
+*f connector
+*f dispatchquery (kann wegfallen?)
+*f home (nutzerabhaengig)
+*f info
+*f jumpto (kann wegfallen)?
+*f login
+*f logout
+*f mailpassword (vereinheitlichen mit registration/user-Management)
+*f redirect
+*o rssfeeds -> rssviews/view
+*f search
+*f selectdatabase -> searchprofiles/session/:sessionid (vereinheitlichen mit vom Nutzer benamten und
 erstellen Suchprofil)
-f server_is_active (Recherche-Heartbeat)
+*f server_is_active (Recherche-Heartbeat)
 
-Vereinheitlichung:
+===Vereinheitlichung===
 
 a) Anonyme Datenbankauswahl und abgespeicherte Datenbanksuchprofile
 eines Nutzers parallel
@@ -177,15 +207,22 @@ Zugrundeliegende allgemeine Resource ist /searchprofiles
 
 Zwei neue abgeleitete aber separate Resourcen
 
-URI Anonym: /ssearchprofile/session (sessionbasiert)
+URI Anonym:
+
+ /searchprofile/session (sessionbasiert)
+ /searchprofile/session/edit (sessionbasiert)
 
 URI Nutzer: /users/id/:id/userprofiles/:userspecificid (persistent)
+
 Vorteil: Mapping in Nutzerraum
+
 Nachteil: Kann nicht geshared werden
 
 oder
 
-URI Nutzer: /searchprofiles/user/id/:userspecificid (persistent)
+URI Nutzer:
+
+ /searchprofiles/user/id/:userspecificid (persistent)
 
 Vorteil: Allgemeine Resource, die geshared werden kann
 Nachteil: Irrefuehrende Struktur: hinter User kommt Userid und nicht
@@ -193,7 +230,10 @@ id des userspezifischen Suchprofiles!
 
 Aber: Es macht keinen Sinn benamte User-Suchprofile zu sharen, daher
 
-URI Nutzer: /users/id/:id/userprofiles/id/:userspecificid (persistent)
+URI Nutzer:
+
+ /users/id/:id/searchprofiles/id/:userspecificid (persistent)
+ /users/id/:id/searchprofiles/edit (persistent)
 
 eindeutiger!!!
 
@@ -203,6 +243,9 @@ b) Registrationsmanagement
 Passworts an angegebene Adresse, das man dann aendern kann
 - Umstellung auf verschluesselte Passworte
 
+c) Alle URI's mit denen Resourcen bearbeitet werden bekommen Suffix
+/edit? Sinnvoll und einheitlich.
+
 2) Browse_loc wird zu indexes_loc
 
 mit dem Schema
@@ -210,257 +253,118 @@ mit dem Schema
  /portal/:view/indexes/database/:db/type/:type/field/:field
  /portal/:view/indexes/topic/:topicid
 
-- Resourcen
+3) Aus Libraryinfo / Libraries wird Locationinfo / Locations. Damit
+Verallgemeinerung, um neben Bibliotheken auch andere 'Medienstandorte'
+wie Fachbibliotheken, 'Ebook Internetquellen' usw. zu verwalten und
+ggf zu Indexieren/Facettieren
 
-* /databases
+4) RSS-Feeds haben eigene Ids und werden eigene Resource
 
-Resource:
+ /rssfeeds/id/:id
 
-/databases
-/databases/id/:id
+Die viewspezifische Aufstellung alle vorhandenen RSS-Feeds wandert
+vorher von /rssfeeds nach
 
-Typ der Id: Nutzeruebergreifend mit Admin-Sichtbarkeit
+ /rssfeeds/view
 
-Aktionen:
 
-= oeffentliche Anzeige mit reduziertem Informationsgehalt
+5) Tags
 
-Repraesentation:
-
-/databases.html
-/databases/id/:id.html
-
-
-= private Anzeige fuer Adminnutzer mit allen Informationen
-
-Repraesentation
-
-/user/:id/databases.html
-/user/:id/databases/id/:id.html
-
-oder fest
-
-/user/admin/databases.html
-/user/admin/databases/id/:id.html
-
-= Anlegen/Aendern/Loeschen fuer Adminnutzer mit der Resource
-
-/database
-/database/id/:id
-
-User-Negotiation? Zugriff auf oeffentliche Resource leitet fuer
-angemeldete Nutzer weiter auf Nutzer-Repraesenation, da diese
-informationstechnische eine Obermenge der oeffentlichen
-
-Hier: Ja.
-
--------------------------------------------
-
-* /searchprofile
-
-Resource:
-
-/searchprofiles
-/searchprofiles/id/:id
-
-Persistente Suchprofile = Zusammenstellung von Katalognamen
-
-
-* /litlists
-
-Resource:
-
-/litlists
-/litlists/id/:id
-
-Typ der Id: Nutzerspezifisch mit individueller Sichtbarkeit
-
-Aktionen:
-
-= oeffentliche Anzeige aller Literaturlisten mit oeffentlicher Sichtbarkeit
-
-Repraesentation:
-
-/litlists.html
-/litlists/id/:id.html
-
-= Nutzer-Anzeige aller eigenen Literaturlisten (oeffentlich oder privat)
-
-Eigene Resource
-
-/user/:id/litlists
-
-mit Repraesenation
-
-/user/:id/litlists.html
-
-= Anlegen/Aendern/Loeschen fuer besitzenden Nutzer mit der Resource
-
-/litlists
-/litlists/id/:id
-
-User-Negotiation?
-
-Generelles Problem, wenn gleichzeitiger Zugriff auf oeffentliche
-Repraesenation (z.B. alle oeffentligen Literaturlisten) und
-Nutzer-Repraesentation (z.B. die eigenen Literaturlisten)
-
-Hier: Nein.
-
-Loesung: Trennung in zwei Resourcen fuer Listen von Literaturlisten
-
-Oeffentlich: /litlists
-
-Privat: /users/id:id/litlists
-
-Mit eigenen zugeordneten Repraesentationen
-
-* /tags
-
-Resource:
-
-/tags
-/tags/id/:id
-
-id: Tagname oder title_tag-ID?
-
-Typ der Id: Nutzerspezifisch mit individueller Sichtbarkeit
-
-Aktionen:
-
-= oeffentliche Anzeige aller Tags mit oeffentlicher Sichtbarkeit
-
-Repraesentation:
-
-/tags.html
-/tags/id/:id.html
-
-= Nutzer-Anzeige aller eigenen Tags (oeffentlich oder privat)
-
-Eigene Resource
-
-/user/:id/tags
-
-mit Repraesenation
-
-/user/id/:id/tags.html
-
-= Anlegen/Aendern/Loeschen fuer besitzenden Nutzer mit der Resource
-
-/tags
-/tags/id/:id
-
-User-Negotiation?
-
-Generelles Problem, wenn gleichzeitiger Zugriff auf oeffentliche
-Repraesenation (z.B. alle oeffentligen Literaturlisten) und
-Nutzer-Repraesentation (z.B. die eigenen Literaturlisten)
-
-Hier: Nein.
-
-Loesung: Trennung in zwei Resourcen fuer Listen von Tags
-
-Oeffentlich: /tags
-Privat: /user/id:id/tags
-
-
-Aktionen:
-
-Titelbereich:
+* Titelbereich:
 
 Moeglichkeit von Titelspezifischen URI's:
 
-1) Tag fuer einen Titel erzeugen:
+ 1) Tag fuer einen Titel erzeugen:
 
 Voraussetzung: userid, dbname, titleid, tags
 
-/users/id/:userid/titles/database/:dbname/id/:titleid/tag [POST] mit tags als Parameter
+ /users/id/:userid/titles/database/:dbname/id/:titleid/tag [POST] mit tags als Parameter
 
-2) Tag fuer einen Titel aendern:
+ 2) Tag fuer einen Titel aendern:
 
 Voraussetzung: userid, dbname, titleid, tag
 
-/users/id/:userid/titles/database/:dbname/id/:titleid/tag [PUT] mit tags als Parameter
+ /users/id/:userid/titles/database/:dbname/id/:titleid/tag [PUT] mit tags als Parameter
 
-3) Tags fuer einen Titel loeschen:
+ 3) Tags fuer einen Titel loeschen:
 
 Voraussetzung: userid, dbname, titleid
 
-/users/id/:userid/titles/database/:dbname/id/:titleid/tag [DELETE]
+ /users/id/:userid/titles/database/:dbname/id/:titleid/tag [DELETE]
 
 Oder alternativ ueber einen allgemeinen URI
 
-/tags/id/:tagname?
+ /tags/id/:tittagid?
 
 Vorteil: Allgemeiner, kurzer URI fuer alle Nutzer, ob angemeldet oder nicht!
 Aber: Wie Kontext des Tags transportieren? Dazu muesste die Tagid
 diesen wiederspiegeln und damit muesste statt des Tagnamens die
 titel_tag-ID zwingend verwendet werden, also
 
-/tags/id/:tittagid
+ /tags/id/:tittagid
 
 Dann parallel
 
-/tags/name/:tagname/titles ?
+ /tags/name/:tagname/titles ?
 
 und
 
-/tags/name/:tagname/titles ?
+ /tags/name/:tagname/titles ?
 
-Nutzerbereich:
+* Nutzerbereich:
 
 1) Anzeige aller eigenen Tags
 
 Eigene Resource
 
-/users/id/:userid/tags
+ /users/id/:userid/tags
 
 mit Repraesenation
 
-/users/id/:userid/tags.html
+ /users/id/:userid/tags.html
 
 2) Anzeige aller Titel die man selbst zu einem eigenen Tag vergeben hat
 
 Resource:
 
-/users/id/:userid/tags/id/:tagname/titles
+ /users/id/:userid/tags/name/:tagname/titles
 
 mit Repraesenation:
 
-/users/id/:userid/tags/id/:tagname/titles.html
+ /users/id/:userid/tags/name/:tagname/titles.html
 
 3) Userspezifisches Umbenennen eines Tags tagname durch neuertagname
 
 Resource
 
-/portal/user/id/:userid/tag/id/:tagname [PUT] mit neuertagname als Parameter
+ /portal/user/id/:userid/tags/name/:tagname [PUT] mit neuertagname als Parameter
 
 Dann Weiterleitung zu 1)
 
-Oeffentlicher Bereich:
+* Oeffentlicher Bereich:
 
 1) Informationen zu einem konkreten Tag aufrufen
 
 Voraussetzung tagname
 
-/tags/id/:tagname
+ /tags/id/:tagname
 
 Gelieferte Informationen: wieviele Nutzer, wieviele Titel, wieviele
 davon oeffentlich/privat
 
 2) (Oeffentliche) Titel zu einem Tag anzeigen
 
-/tags/id/:tagname/titles
+ /tags/id/:tagname/titles
 
 3) Zuletzt vergebene Tags (mit oeffentlichen Titeln)
 
-/tags/recent
+ /tags/recent
 
 4) Zuletzt vergebene Tags (mit oeffentlichen Titeln) in Katalog database
 
-/tags/database/:database/recent
+ /tags/database/:database/recent
 
-- Weiteres
+===Weiteres===
 
 * Anpassung der Internen URL-Modul-Template Logik von Singular auf Plural
 
@@ -480,4 +384,13 @@ permalink Weiterleitung anstelle Frame
 * Wie Postrequest ueber Loginseite schleusen und Returnurl samt
 CGI-Parameter nachher aufrufen?
 
-Mit GET/POST-Tunnel!
+Mit Umwandlung POST->GET.
+
+* Illustration der Verlinkbarkeit durch offenes/geschlossenes
+Kettensymbol?
+
+Sinnvoll ist generell ein POST-Tunnel! Die Umwandlung muss ausnahme bleiben
+
+- Dies und das
+
+rel=bookmark fuer Bookmarkurl?

@@ -146,7 +146,7 @@ roles
 
 users/preferences
 users/circulation
-users/profiles - Eigene Suchprofile, Namensclash mit profiles aus
+users/userprofiles - Eigene Suchprofile, Namensclash mit profiles aus
 Admin! und vereinheitlichung mit databasechoice fuer anonyme Nutzer
 
 Folgende Resourcen sind immer oeffentlich bzw. (noch) funktional
@@ -164,7 +164,7 @@ f mailpassword (vereinheitlichen mit registration/usermanagement)
 f redirect
 o rssfeeds
 f search
-f selectdatabase (vereinheitlichen mit vom Nutzer benamten und
+f selectdatabase -> searchprofile/session (vereinheitlichen mit vom Nutzer benamten und
 erstellen Suchprofil)
 f server_is_active (Recherche-Heartbeat)
 
@@ -175,17 +175,33 @@ eines Nutzers parallel
 
 Zugrundeliegende allgemeine Resource ist /searchprofiles
 
-Zwei neue abgeleitete Resourcen
+Zwei neue abgeleitete aber separate Resourcen
 
-URI Anonym: /searchprofiles/current (sessionbasiert)
-URI Nutzer: /user/id/:id/searchprofiles/:id (persistent)
+URI Anonym: /ssearchprofile/session (sessionbasiert)
+
+URI Nutzer: /users/id/:id/userprofiles/:userspecificid (persistent)
+Vorteil: Mapping in Nutzerraum
+Nachteil: Kann nicht geshared werden
+
+oder
+
+URI Nutzer: /searchprofiles/user/id/:userspecificid (persistent)
+
+Vorteil: Allgemeine Resource, die geshared werden kann
+Nachteil: Irrefuehrende Struktur: hinter User kommt Userid und nicht
+id des userspezifischen Suchprofiles!
+
+Aber: Es macht keinen Sinn benamte User-Suchprofile zu sharen, daher
+
+URI Nutzer: /users/id/:id/userprofiles/id/:userspecificid (persistent)
+
+eindeutiger!!!
 
 b) Registrationsmanagement
 
 - Integration von Mailpassword: Anfordern eines zufaelligen neuen
 Passworts an angegebene Adresse, das man dann aendern kann
 - Umstellung auf verschluesselte Passworte
-
 
 2) Browse_loc wird zu indexes_loc
 

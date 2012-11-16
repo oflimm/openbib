@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Dispatch
 #
-#  Dieses File ist (C) 2010-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -55,6 +55,14 @@ sub handler : method {
     # set the PATH_INFO
     $ENV{PATH_INFO} = $r->uri(); # was $r->path_info();
 
+    my $query = Apache2::Request->new($r);
+    
+    # set method for http-tunnel based on _method-CGI-Parameter
+    if ($query->param('_method')){
+        $r->method($query->param('_method'));
+        $logger->debug("Changed method to tunneled ".$query->param('_method'));
+    }
+    
     # setup our args to dispatch()
     my %args;
     my $config_args = $r->dir_config();
@@ -104,27 +112,58 @@ sub dispatch_args {
     my $table_ref = [];
 
     foreach my $item (@{$config->{dispatch_rules}}){
-        my $rule    = $item->{rule};
-        my $module  = $item->{module};
-        my $runmode = $item->{runmode};
+        my $rule       = $item->{rule};
+        my $module     = $item->{module};
+        my $runmode    = $item->{runmode};
 
-#       $logger->debug("CGI Dispatching");
+        if (defined $item->{extensions}){
+            my @extensions = @{$item->{extensions}};
 
-        push @{$table_ref}, $rule;
-
-        my $rule_specs = {
-            'app' => "$module",
-            'rm'  => "$runmode",
-        };
-        
-        if ($item->{args}){
-            # Request-Object dazu, da sonst ueberschrieben
-            $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
-            $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
+            foreach my $extension (@extensions){
+                my $new_rule = "";
+                
+                if ($extension eq "none"){
+                    $new_rule=$rule;
+                }
+                elsif ($rule=~/^(.+)(\[.+?\])$/){
+                    $new_rule="$1.$extension$2";
+                }
+                else {
+                    $new_rule="$rule.$extension";
+                }
+                
+                push @{$table_ref}, $new_rule;
+                
+                my $rule_specs = {
+                    'app' => "$module",
+                    'rm'  => "$runmode",
+                };
+                
+                if ($item->{args}){
+                    # Request-Object dazu, da sonst ueberschrieben
+                    $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
+                    $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
+                }
+                
+                push @{$table_ref}, $rule_specs;                
+            }
         }
-                       
-        
-        push @{$table_ref}, $rule_specs;
+        else {
+            push @{$table_ref}, $rule;
+            
+            my $rule_specs = {
+                'app' => "$module",
+                'rm'  => "$runmode",
+            };
+            
+            if ($item->{args}){
+                # Request-Object dazu, da sonst ueberschrieben
+                $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
+                $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
+            }
+                        
+            push @{$table_ref}, $rule_specs;
+        }
     }
     
     return {

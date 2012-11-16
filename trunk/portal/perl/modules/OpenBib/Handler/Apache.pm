@@ -40,10 +40,12 @@ use Log::Log4perl qw(get_logger :levels);
 use List::MoreUtils qw(none any);
 use Apache2::Access ();
 use Apache2::RequestUtil ();
+use Apache2::RequestRec ();
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_UNAUTHORIZED MODE_READBYTES);
 use Apache2::URI ();
 use APR::URI ();
 use Encode qw(decode_utf8 encode_utf8);
+use HTTP::Negotiate;
 use JSON::XS;
 use Template;
 use URI::Escape;
@@ -95,7 +97,7 @@ sub cgiapp_init {
     $self->param('servername',$r->get_server_name);
 
     $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
-    
+
     # Bestimmung diverser Parameter aus dem URI
     # Setzt: location,path,path_prefix,uri
     $self->process_uri;
@@ -103,14 +105,14 @@ sub cgiapp_init {
     # Setzen von content_type/representation, wenn konkrete Repraesentation ausgewaehlt wurde
     $self->set_content_type_from_uri;
 
-    # Ggf Redirect zu Personalisiertem URI
-    $self->dispatch_to_personalized_uri;
-    
     # content_type, representation und lang durch content-Negotiation bestimmen
     # und ggf. zum konkreten Repraesenations-URI redirecten
     # Setzt: content_type,represenation,lang
     $self->negotiate_content;
 
+    # Ggf Personalisiere URI
+    $self->personalize_uri;
+        
     # Bearbeitung HTTP Basic Authentication als Shortcut
     # Setzt ggf: basic_auth_failure (auf 1)
     $self->check_http_basic_authentication;
@@ -149,7 +151,10 @@ sub negotiate_content {
         # - Sprache verhandeln
         if ($r->method eq "GET"){
             if (!$self->param('representation') && !$self->param('content_type')){
+
                 $logger->debug("No specific representation given - negotiating content and language");
+
+                $logger->debug("Path: ".$self->param('path'));
                 
                 $self->negotiate_type;
                 
@@ -176,12 +181,18 @@ sub negotiate_content {
                 else {
                     $args="?".$self->query->args();
                 }
-            
-                my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').".".$self->param('representation').$args;
 
-                $logger->debug("Dispatching to $dispatch_url");
+                my $path = "";
+
+                $self->param('path',$self->param('path').".".$self->param('representation'));
+
+                my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').$args;
+
+                $self->param('dispatch_url',$dispatch_url);
                 
-                return $self->redirect($dispatch_url,'303 See Other');
+                $logger->debug("Negotiating type -> Dispatching to $dispatch_url");
+
+                return;
             }
 
             # Wenn eine konkrete Repraesentation angesprochen wird, jedoch ohne Sprach-Parameter,
@@ -207,9 +218,11 @@ sub negotiate_content {
 
                 my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').$args;
             
-                $logger->debug("Dispatching to $dispatch_url");
-                
-                return $self->redirect($dispatch_url,'303 See Other');
+                $logger->debug("Negotiated language -> Dispatching to $dispatch_url");
+
+                $self->param('dispatch_url',$dispatch_url);
+
+                return ;
             }
         }
         # CUD-operations always use the resource-URI, so no redirect neccessary
@@ -285,7 +298,7 @@ sub process_uri {
         $path =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
     }
 
-    my ($id) = $last_uri_element =~m/^(.+?)\.(html|include|json|rdf|rss)$/;
+    my ($id) = $last_uri_element =~m/^(.+?)\.(html|include|json|rdf|rss|mobile)$/;
     
     if ($id){
         $location_uri.="/$id";
@@ -309,7 +322,7 @@ sub process_uri {
     $self->param('url',$url);
 }
 
-sub dispatch_to_personalized_uri {
+sub personalize_uri {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -317,24 +330,29 @@ sub dispatch_to_personalized_uri {
     
     # Personalisierte URIs
     if ($self->param('personalized_loc')){
-        my $dispatch_url = $self->param('scheme')."://".$self->param('servername');   
+        my $dispatch_url = ""; #$self->param('scheme')."://".$self->param('servername');   
         
-        my $user        = $self->param('user');
-        my $config      = $self->param('config');
-        my $path_prefix = $self->param('path_prefix');
-        my $path        = $self->param('path');
+        my $user           = $self->param('user');
+        my $config         = $self->param('config');
+        my $path_prefix    = $self->param('path_prefix');
+        my $path           = $self->param('path');
+        my $representation = $self->param('representation');
         
 #        # Interne Pfade sind immer mit base_loc und view
 #        my $baseloc    = $config->get('base_loc');
 #        $path =~s{^$baseloc/[^/]+}{$path_prefix};
-        
-        if ($user->{ID}){
-            my $loc = $self->param('personalized_loc');
-            $logger->debug("Replacing $path_prefix/$loc with $path_prefix/user/$user->{ID}/$loc");
-            my $old_loc = "$path_prefix/$loc";
-            my $new_loc = "$path_prefix/user/$user->{ID}/$loc";
-            $path=~s{^$old_loc}{^$new_loc};
 
+        # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
+        # und gilt immer nur fuer Repraesentationen.
+        if ($user->{ID} && $representation){
+            my $loc = $self->param('personalized_loc');
+            $logger->debug("Replacing $path_prefix/$loc with $path_prefix/users/$user->{ID}/$loc");
+            my $old_loc = "$path_prefix/$loc";
+            my $new_loc = "$path_prefix/users/id/$user->{ID}/$loc";
+            $path=~s{^$old_loc}{$new_loc};
+
+            $self->param('path',$path);
+            
             $dispatch_url .=$path;
             
             if ($self->query->args()){
@@ -342,10 +360,13 @@ sub dispatch_to_personalized_uri {
             }
 
             $logger->debug("Dispatching to $dispatch_url");
-            
-            return $self->redirect($dispatch_url,'303 See Other');
-            
+            $self->param('dispatch_url',$dispatch_url);
+
+            return;            
         }
+        else {
+            $logger->debug("No Dispatch: User: $user->{ID} / Representation:$representation:");
+        }   
     }
     
     return;
@@ -360,7 +381,7 @@ sub set_content_type_from_uri {
 
     my $config = $self->param('config');
     
-    my ($representation) = $uri =~m/^.*?\/[^\/]*?\.(json|html|include|rdf|rss)$/;
+    my ($representation) = $uri =~m/^.*?\/[^\/]*?\.(json|html|include|rdf|rss|mobile)$/;
 
     $logger->debug("Setting type from URI $uri. Got Represenation $representation");
 
@@ -380,11 +401,17 @@ sub negotiate_type {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
-    my $config         = OpenBib::Config->instance;
+    my $config         = OpenBib::Config->instance;    
+
     
     my $content_type = $r->headers_in->{'Content-Type'} || '';
     my $accept       = $r->headers_in->{'Accept'} || '';
-    my @accepted_types      = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
+    my @accepted_types = ();
+
+    foreach my $item (split '\s*,\s*', $accept){
+        $item=~s/;.+$//;
+        push @accepted_types, $item;
+    }
 
     if ($content_type){
         $logger->debug("Content-Type: |$content_type|");
@@ -398,8 +425,8 @@ sub negotiate_type {
     elsif (@accepted_types){
         $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
     
-        foreach my $information_type (keys %{$config->{content_type_map}}){
-            if (any { $_ eq $information_type } @accepted_types) {
+        foreach my $information_type (@accepted_types){
+            if ($config->{content_type_map}{$information_type}){
                 $logger->debug("Negotiated Type: $information_type - Suffix: ".$config->{content_type_map}->{$information_type});
                 $self->param('content_type',$information_type);
                 $self->param('representation',$config->{content_type_map}->{$information_type});
@@ -1204,9 +1231,6 @@ sub check_http_basic_authentication {
         }
         else {
             $self->param('basic_auth_failure',1);
-#            $r->note_basic_auth_failure;
-#            $logger->debug("Unauthorized");
-#            return Apache2::Const::HTTP_UNAUTHORIZED;
         }
 
         # User zurueckchreiben

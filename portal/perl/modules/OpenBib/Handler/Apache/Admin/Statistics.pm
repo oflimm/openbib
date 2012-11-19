@@ -69,6 +69,7 @@ sub setup {
         'show_collection'           => 'show_collection',
         'show_statistic'            => 'show_statistic',
         'show_graph'                => 'show_graph',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

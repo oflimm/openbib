@@ -74,6 +74,7 @@ sub setup {
         'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'update_record'             => 'update_record',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

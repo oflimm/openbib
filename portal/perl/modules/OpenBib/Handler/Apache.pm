@@ -132,6 +132,47 @@ sub cgiapp_init {
     return;
 }
 
+sub cgiapp_prerun {
+   my $self    = shift;
+   my $runmode = shift;
+
+   # Log4perl logger erzeugen
+   my $logger = get_logger();
+
+   $logger->debug("Entering cgiapp_prerun");
+
+   my $r            = $self->param('r');
+   
+   {
+       # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
+       # zu verwenden
+       
+       my $method          = $self->query->param('_method') || '';
+       my $confirm         = $self->query->param('confirm') || 0;
+       
+       if ($method eq "DELETE" || $r->method eq "DELETE"){
+           $logger->debug("Deletion shortcut");
+           
+           if ($confirm){
+               $self->prerun_mode('confirm_delete_record');
+           }
+           else {
+               $self->prerun_mode('delete_record');
+           }
+       }
+   }
+
+   {
+       # Wenn dispatch_url, dann Runmode dispatch_to_representation mit externem Redirect
+       if ($self->param('dispatch_url')){
+           $self->prerun_mode('dispatch_to_representation');
+       }
+       
+   }
+   
+   $logger->debug("Exit cgiapp_prerun");
+}
+
 sub negotiate_content {
     my $self = shift;
 
@@ -1155,6 +1196,16 @@ sub parse_valid_input {
     }
     
     return $input_params_ref;
+}
+
+sub dispatch_to_representation {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Dispatching to representation ".$self->param('dispatch_url'));
+    return $self->redirect($self->param('dispatch_url'),'303 See Other');
 }
 
 sub print_authorization_error {

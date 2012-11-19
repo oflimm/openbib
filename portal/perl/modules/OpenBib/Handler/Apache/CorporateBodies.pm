@@ -47,6 +47,7 @@ sub setup {
     $self->start_mode('show_record');
     $self->run_modes(
         'show_record' => 'show_record',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

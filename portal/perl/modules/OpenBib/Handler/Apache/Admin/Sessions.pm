@@ -74,6 +74,7 @@ sub setup {
         'show_archived_search_form'  => 'show_archived_search_form',
         'show_archived_search'       => 'show_archived_search',
         'show_archived_record'       => 'show_archived_record',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

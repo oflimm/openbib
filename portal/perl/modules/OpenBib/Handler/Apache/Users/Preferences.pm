@@ -71,6 +71,7 @@ sub setup {
         'update_livesearch'                    => 'update_livesearch',
         'update_autocompletion'                => 'update_autocompletion',
         'delete_account'                       => 'delete_account',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

@@ -59,6 +59,7 @@ sub setup {
     $self->start_mode('show');
     $self->run_modes(
         'show'       => 'show',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

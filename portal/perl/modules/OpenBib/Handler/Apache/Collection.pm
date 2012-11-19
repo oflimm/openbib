@@ -79,6 +79,7 @@ sub setup {
         'update_record'                        => 'update_record',
         'delete_record'                        => 'delete_record',
         'print_authorization_error'           => 'print_authentication_error',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
         
     # Use current path as template path,

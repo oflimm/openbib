@@ -66,12 +66,13 @@ sub setup {
 
     $self->start_mode('show_collection');
     $self->run_modes(
-        'show_collection'           => 'show_collection',
-        'show_record_form'          => 'show_record_form',
-        'create_record'             => 'create_record',
-        'update_record'             => 'update_record',
-        'confirm_delete_record'     => 'confirm_delete_record',
-        'delete_record'             => 'delete_record',
+        'show_collection'            => 'show_collection',
+        'show_record_form'           => 'show_record_form',
+        'create_record'              => 'create_record',
+        'update_record'              => 'update_record',
+        'confirm_delete_record'      => 'confirm_delete_record',
+        'delete_record'              => 'delete_record',
+        'dispatch_to_representation' => 'dispatch_to_representation',
     );
 
     # Use current path as template path,
@@ -90,7 +91,7 @@ sub show_collection {
 
     # Shared Args
     my $config         = $self->param('config');
-
+    
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
@@ -141,7 +142,7 @@ sub show_record {
 
     # Dispatches Args
     my $view             = $self->param('view');
-    my $clusterid         = $self->param('clusterid');
+    my $clusterid        = $self->param('clusterid');
 
     # Shared Args
     my $config           = $self->param('config');
@@ -166,7 +167,7 @@ sub create_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     # Dispatched Args
     my $view           = $self->param('view')                   || '';
 
@@ -176,6 +177,8 @@ sub create_record {
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
     my $location       = $self->param('location');
+    my $user           = $self->param('user');
+    my $lang           = $self->param('lang');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
@@ -189,7 +192,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}/id/$new_clusterid/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{clusters_loc}/id/$new_clusterid/edit.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -220,10 +223,7 @@ sub update_record {
     my $query          = $self->query();
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
-
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm')              || 0;
+    my $lang           = $self->param('lang');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
@@ -235,28 +235,13 @@ sub update_record {
         return;
     }
 
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $clusterid");
-        
-        if ($confirm){
-        }
-        else {
-            $logger->debug("Redirecting to delete location");
-            $self->delete_record;
-            return;
-        }
-    }
-
-    # Ansonsten POST oder PUT => Aktualisieren
+    # POST oder PUT => Aktualisieren
 
     $config->update_cluster($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{clusters_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -315,7 +300,7 @@ sub delete_record {
     $config->del_cluster({id => $clusterid});
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_clusters_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{clusters_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

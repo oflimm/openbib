@@ -129,7 +129,7 @@ sub show_collection {
         katalog      => $katalog,
     };
     
-    $self->print_page($config->{tt_admin_database_rss_tname},$ttdata);
+    $self->print_page($config->{tt_admin_databases_rss_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -179,7 +179,7 @@ sub show_record {
         dbname       => $dbname,
     };
     
-    $self->print_page($config->{tt_admin_database_rss_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_databases_rss_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -296,7 +296,7 @@ sub show_record_form {
         dbname       => $dbname,
     };
     
-    $self->print_page($config->{tt_admin_database_rss_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_databases_rss_record_edit_tname},$ttdata);
         
     return Apache2::Const::OK;
 }
@@ -359,7 +359,7 @@ sub update_record {
             };
 
             $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_database_rss_record_delete_confirm_tname},$ttdata);
+            $self->print_page($config->{tt_admin_databases_rss_record_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }

@@ -34,7 +34,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="databases_record"  active_subsubmenu="databases_record_rss" %]
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_databases_record"  active_subsubmenu="databases_record_rss" %]
         </div>
       </div>
       <!-- end: #col1 -->

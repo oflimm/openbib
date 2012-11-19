@@ -47,7 +47,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="cluster" %]
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_clusters" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -55,7 +55,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_clusters_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]" class="ym-form">
 <fieldset class="ym-columnar">
 
 <legend>[% msg.maketext("Neuen Cluster einrichten") %]</legend>
@@ -103,10 +103,10 @@
 [% FOREACH clusterinfo IN clusterinfos.all %]
 <tr [% IF clusterinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <td>[% clusterinfo.id %]</td>
-<td><a href="[% path_prefix %]/[% config.get('admin_clusters_loc') %]/id/[% clusterinfo.id %]/edit?l=[% lang %]">[% clusterinfo.description %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]/edit.html?l=[% lang %]">[% clusterinfo.description %]</a></td>
 <td>[% clusterinfo.status %]</td>
-<td align="center">[%- IF clusterinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF clusterinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF clusterinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
+<td align="center">[%- IF clusterinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF clusterinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF clusterinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
 [% END %]
 
 </table>

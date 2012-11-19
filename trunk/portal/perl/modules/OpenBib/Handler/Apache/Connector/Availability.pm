@@ -67,6 +67,7 @@ sub setup {
         'show_collection'  => 'show_collection', # Obsolete, to be removed
         'isbn'             => 'show_collection_by_isbn',
         'bibkey'           => 'show_collection_by_bibkey',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

@@ -66,6 +66,7 @@ sub setup {
         'show_form'    => 'show_form',
         'authenticate' => 'authenticate',
         'failure'      => 'failure',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

@@ -61,42 +61,12 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'           => 'show_collection',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,
     # i.e. the template is in the same directory as this script
 #    $self->tmpl_path('./');
-}
-
-sub cgiapp_prerun {
-   my $self    = shift;
-   my $runmode = shift;
-
-   # Log4perl logger erzeugen
-   my $logger = get_logger();
-
-   $logger->debug("Entering cgiapp_prerun");
-
-   {
-       # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-       # zu verwenden
-       
-       my $method          = $self->query->param('_method') || '';
-       my $confirm         = $self->query->param('confirm') || 0;
-       
-       if ($method eq "DELETE"){
-           $logger->debug("Deletion shortcut");
-           
-           if ($confirm){
-               $self->prerun_mode('confirm_delete_record');
-           }
-           else {
-               $self->prerun_mode('delete_record');
-           }
-       }
-   }
-   
-   $logger->debug("Exit cgiapp_prerun");
 }
 
 sub show_collection {

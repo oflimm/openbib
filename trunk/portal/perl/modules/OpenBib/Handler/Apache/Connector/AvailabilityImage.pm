@@ -70,6 +70,7 @@ sub setup {
         'wikipedia'  => 'process_wikipedia',
         'paperc'     => 'process_paperc',
         'unifloh'    => 'process_unifloh',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

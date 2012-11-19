@@ -64,6 +64,7 @@ sub setup {
         'show'              => 'show',
         'register'          => 'register',
         'mail_confirmation' => 'mail_confirmation',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

@@ -70,6 +70,7 @@ sub setup {
     $self->run_modes(
         'show_collection'           => 'show_collection',
         'show_record'               => 'show_record',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

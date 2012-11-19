@@ -72,6 +72,7 @@ sub setup {
         'show_collection'           => 'show_collection',
         'show_search'               => 'show_search',
         'show_search_form'          => 'show_search_form',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

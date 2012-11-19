@@ -62,6 +62,7 @@ sub setup {
     $self->run_modes(
         'update_account'       => 'update_account',
         'delete_account'       => 'delete_account',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

@@ -72,6 +72,7 @@ sub setup {
         'update_record'                        => 'update_record',
         'delete_record'                        => 'delete_record',
         'update_vote'                          => 'update_vote',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

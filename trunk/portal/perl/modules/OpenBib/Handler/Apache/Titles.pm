@@ -67,6 +67,7 @@ sub setup {
         'show_popular'            => 'show_popular',
         'show_recent'             => 'show_recent',
         'redirect_to_bibsonomy'   => 'redirect_to_bibsonomy',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

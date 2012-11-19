@@ -59,10 +59,10 @@ msgstr "${category}"
 #: ../templates/_view/richter/litlist_html_full:221
 #: ../templates/_view/richter/person_html:110
 #: ../templates/_view/richter/subject_html:98
-#: ../templates/admin_library_record_edit:70
-#: ../templates/admin_library_record_edit:79
-#: ../templates/admin_library_record_html:86
-#: ../templates/admin_library_record_html:95 ../templates/bibfuehrer_tex:480
+#: ../templates/admin_libraries_record_edit:70
+#: ../templates/admin_libraries_record_edit:79
+#: ../templates/admin_libraries_record_html:86
+#: ../templates/admin_libraries_record_html:95 ../templates/bibfuehrer_tex:480
 #: ../templates/bibfuehrer_tex:481 ../templates/bibfuehrer_tex:632
 #: ../templates/bibfuehrer_tex:633 ../templates/classification_html:97
 #: ../templates/collection_html_as_text:38
@@ -554,8 +554,8 @@ msgstr "Administration"
 #: ../templates/admin_databases_rss_record_html:306
 #: ../templates/admin_databases_rss_record_html:78
 #: ../templates/admin_navigation:108 ../templates/admin_navigation:110
-#: ../templates/admin_server_html:118 ../templates/admin_server_html:95
-#: ../templates/admin_server_record_edit:102
+#: ../templates/admin_servers_html:118 ../templates/admin_servers_html:95
+#: ../templates/admin_servers_record_edit:102
 #: ../templates/admin_session_active_html:41
 #: ../templates/admin_session_active_record_html:41
 #: ../templates/admin_showcat:39 ../templates/admin_showcat:60
@@ -582,8 +582,8 @@ msgstr "Activate your account"
 
 #: ../templates/admin_clusters_html:72
 #: ../templates/admin_clusters_record_edit:80
-#: ../templates/admin_server_html:128 ../templates/admin_server_html:77
-#: ../templates/admin_server_record_edit:85
+#: ../templates/admin_servers_html:128 ../templates/admin_servers_html:77
+#: ../templates/admin_servers_record_edit:85
 msgid "Aktualisieren"
 msgstr "Update"
 
@@ -721,7 +721,7 @@ msgstr "Send as e-mail"
 msgid "Also:"
 msgstr "So:"
 
-#: ../templates/admin_clusters_html:108 ../templates/admin_server_html:136
+#: ../templates/admin_clusters_html:108 ../templates/admin_servers_html:136
 msgid "An"
 msgstr "On"
 
@@ -1079,7 +1079,7 @@ msgstr "Databases by subject"
 msgid "Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten"
 msgstr "Journals by subject"
 
-#: ../templates/admin_clusters_html:108 ../templates/admin_server_html:136
+#: ../templates/admin_clusters_html:108 ../templates/admin_servers_html:136
 msgid "Aus"
 msgstr "Off"
 
@@ -1406,7 +1406,7 @@ msgstr "Already existing catalogue profiles"
 msgid "Bereits existierende RSS-Feeds"
 msgstr "Already existing RSS feeds"
 
-#: ../templates/admin_server_html:115
+#: ../templates/admin_servers_html:115
 msgid "Bereits existierende Rechner zur Lastverteilung"
 msgstr "Already existing server for loadbalancing"
 
@@ -1436,8 +1436,8 @@ msgstr "Already existing views"
 #: ../templates/admin_profile_record_edit:72
 #: ../templates/admin_profile_record_html:63
 #: ../templates/admin_profile_record_html:79
-#: ../templates/admin_server_html:118 ../templates/admin_server_html:69
-#: ../templates/admin_server_record_edit:77 ../templates/admin_showcat:39
+#: ../templates/admin_servers_html:118 ../templates/admin_servers_html:69
+#: ../templates/admin_servers_record_edit:77 ../templates/admin_showcat:39
 #: ../templates/admin_showcat:60 ../templates/admin_showprofiles:37
 #: ../templates/admin_showprofiles:57 ../templates/admin_topic_html:66
 #: ../templates/admin_topic_html:85 ../templates/admin_topic_record_edit:84
@@ -1572,11 +1572,11 @@ msgstr "BibSonomy API-User"
 msgid "Bibinfo statt URL / vorhanden"
 msgstr "Libraryinfo instead of URL / available"
 
-#: ../templates/admin_library_record_html:64
+#: ../templates/admin_libraries_record_html:64
 msgid "Bibliotheksinformationen"
 msgstr "Library information"
 
-#: ../templates/admin_library_record_edit:51
+#: ../templates/admin_libraries_record_edit:51
 msgid "Bibliotheksinformationen bearbeiten"
 msgstr "Edit information about library"
 
@@ -1675,8 +1675,8 @@ msgstr "Chinese"
 
 #: ../templates/admin_clusters_html:39
 #: ../templates/admin_clusters_record_edit:39 ../templates/admin_navigation:18
-#: ../templates/admin_navigation:20 ../templates/admin_server_html:118
-#: ../templates/admin_server_html:85 ../templates/admin_server_record_edit:92
+#: ../templates/admin_navigation:20 ../templates/admin_servers_html:118
+#: ../templates/admin_servers_html:85 ../templates/admin_servers_record_edit:92
 msgid "Cluster"
 msgstr "Cluster"
 
@@ -3145,8 +3145,8 @@ msgstr "Interlibrary loan request"
 
 #: ../templates/admin_clusters_html:73
 #: ../templates/admin_clusters_record_edit:81
-#: ../templates/admin_server_html:130 ../templates/admin_server_html:78
-#: ../templates/admin_server_record_edit:86
+#: ../templates/admin_servers_html:130 ../templates/admin_servers_html:78
+#: ../templates/admin_servers_record_edit:86
 msgid "Fertig mit Aktualisierung"
 msgstr "Updating done"
 
@@ -3636,8 +3636,8 @@ msgstr "Type of network"
 msgid "I0280"
 msgstr "Geographic coordinates"
 
-#: ../templates/admin_server_html:118 ../templates/admin_server_html:64
-#: ../templates/admin_server_record_edit:72
+#: ../templates/admin_servers_html:118 ../templates/admin_servers_html:64
+#: ../templates/admin_servers_record_edit:72
 msgid "IP-Adresse"
 msgstr "IP address"
 
@@ -3666,7 +3666,7 @@ msgstr "ISSN"
 #: ../templates/admin_clusters_html:102
 #: ../templates/admin_clusters_record_edit:67
 #: ../templates/admin_searchprofiles_record_edit:66
-#: ../templates/admin_server_html:118 ../templates/admin_server_record_edit:67
+#: ../templates/admin_servers_html:118 ../templates/admin_servers_record_edit:67
 msgid "Id"
 msgstr "Id"
 
@@ -4303,13 +4303,13 @@ msgstr "JSON cannot be parsed"
 #: ../templates/admin_databases_rss_record_html:261
 #: ../templates/admin_databases_rss_record_html:318
 #: ../templates/admin_databases_rss_record_html:90
-#: ../templates/admin_library_record_delete_confirm:54
+#: ../templates/admin_libraries_record_delete_confirm:54
 #: ../templates/admin_orgunit_record_delete_confirm:54
 #: ../templates/admin_profile_record_delete_confirm:54
 #: ../templates/admin_searchprofiles_record_edit:71
-#: ../templates/admin_server_html:136 ../templates/admin_server_html:97
-#: ../templates/admin_server_record_delete_confirm:54
-#: ../templates/admin_server_record_edit:104 ../templates/admin_showcat:43
+#: ../templates/admin_servers_html:136 ../templates/admin_servers_html:97
+#: ../templates/admin_servers_record_delete_confirm:54
+#: ../templates/admin_servers_record_edit:104 ../templates/admin_showcat:43
 #: ../templates/admin_showcat:71 ../templates/admin_showcat:72
 #: ../templates/admin_showcat:73
 #: ../templates/admin_topic_record_delete_confirm:54
@@ -4601,9 +4601,9 @@ msgstr "Invalid request id"
 
 #: ../templates/admin_clusters_html:71
 #: ../templates/admin_clusters_record_edit:79
-#: ../templates/admin_server_html:126 ../templates/admin_server_html:76
-#: ../templates/admin_server_record_edit:84
-#: ../templates/admin_server_record_edit:94
+#: ../templates/admin_servers_html:126 ../templates/admin_servers_html:76
+#: ../templates/admin_servers_record_edit:84
+#: ../templates/admin_servers_record_edit:94
 msgid "Keiner"
 msgstr "None"
 
@@ -4694,7 +4694,7 @@ msgid "Körperschafts-Information: %1 in Katalog %2"
 msgstr "Information about corporate body: %1 in catalogue %2"
 
 #: ../templates/_profile/sammlungen/_view/richter/title_html:305
-#: ../templates/admin_clusters_html:109 ../templates/admin_server_html:137
+#: ../templates/admin_clusters_html:109 ../templates/admin_servers_html:137
 #: ../templates/title_html:306 ../templates/title_include:509
 msgid "L&ouml;schen"
 msgstr "Remove"
@@ -4909,10 +4909,10 @@ msgstr "Go"
 #: ../templates/admin_databases_record_edit:230
 #: ../templates/admin_databases_rss_record_edit:102
 #: ../templates/admin_databases_rss_record_html:351
-#: ../templates/admin_library_record_edit:95
+#: ../templates/admin_libraries_record_edit:95
 #: ../templates/admin_orgunit_record_edit:107
 #: ../templates/admin_profile_record_edit:83
-#: ../templates/admin_server_record_edit:114
+#: ../templates/admin_servers_record_edit:114
 #: ../templates/admin_topic_record_edit:96
 #: ../templates/admin_topic_record_mapping_html:96
 #: ../templates/admin_view_record_edit:129
@@ -5212,13 +5212,13 @@ msgstr ""
 #: ../templates/admin_databases_rss_record_html:255
 #: ../templates/admin_databases_rss_record_html:312
 #: ../templates/admin_databases_rss_record_html:84
-#: ../templates/admin_library_record_delete_confirm:60
+#: ../templates/admin_libraries_record_delete_confirm:60
 #: ../templates/admin_orgunit_record_delete_confirm:60
 #: ../templates/admin_profile_record_delete_confirm:60
 #: ../templates/admin_searchprofiles_record_edit:72
-#: ../templates/admin_server_html:136 ../templates/admin_server_html:98
-#: ../templates/admin_server_record_delete_confirm:60
-#: ../templates/admin_server_record_edit:105 ../templates/admin_showcat:44
+#: ../templates/admin_servers_html:136 ../templates/admin_servers_html:98
+#: ../templates/admin_servers_record_delete_confirm:60
+#: ../templates/admin_servers_record_edit:105 ../templates/admin_showcat:44
 #: ../templates/admin_showcat:71 ../templates/admin_showcat:72
 #: ../templates/admin_showcat:73
 #: ../templates/admin_topic_record_delete_confirm:60
@@ -5242,7 +5242,7 @@ msgstr "No"
 #: ../templates/admin_databases_rss_record_html:74
 #: ../templates/admin_profile_html:76
 #: ../templates/admin_profile_record_edit:110
-#: ../templates/admin_server_html:103 ../templates/admin_showcat:45
+#: ../templates/admin_servers_html:103 ../templates/admin_showcat:45
 #: ../templates/admin_showprofiles:39 ../templates/admin_topic_html:68
 #: ../templates/admin_view_html:95 ../templates/title_collection_form:86
 #: ../templates/user_litlist_collection_html:83
@@ -5331,7 +5331,7 @@ msgstr "Create new catalogue"
 msgid "Neuen RSS-Feed einrichten"
 msgstr "Create new RSS feed"
 
-#: ../templates/admin_server_html:61
+#: ../templates/admin_servers_html:61
 msgid "Neuen Rechner zur Lastverteilung hinzuf&uuml;gen"
 msgstr "Add new server for loadbalancing"
 
@@ -5997,8 +5997,8 @@ msgstr "Search requests"
 
 #: ../templates/admin_clusters_html:74
 #: ../templates/admin_clusters_record_edit:82
-#: ../templates/admin_server_html:132 ../templates/admin_server_html:79
-#: ../templates/admin_server_record_edit:87
+#: ../templates/admin_servers_html:132 ../templates/admin_servers_html:79
+#: ../templates/admin_servers_record_edit:87
 msgid "Recherchierbar"
 msgstr "Searchable"
 
@@ -6335,11 +6335,11 @@ msgid "Serie/Band/Quelle"
 msgstr "Series/Volume/Sources"
 
 #: ../templates/admin_navigation:23 ../templates/admin_navigation:25
-#: ../templates/admin_server_html:39 ../templates/admin_server_record_edit:39
+#: ../templates/admin_servers_html:39 ../templates/admin_servers_record_edit:39
 msgid "Server"
 msgstr "Server"
 
-#: ../templates/admin_server_record_edit:64
+#: ../templates/admin_servers_record_edit:64
 msgid "Server bearbeiten"
 msgstr "Edit server"
 
@@ -6934,8 +6934,8 @@ msgstr "Statistics"
 
 #: ../templates/admin_clusters_html:102 ../templates/admin_clusters_html:69
 #: ../templates/admin_clusters_record_edit:77
-#: ../templates/admin_server_html:118 ../templates/admin_server_html:74
-#: ../templates/admin_server_record_edit:82
+#: ../templates/admin_servers_html:118 ../templates/admin_servers_html:74
+#: ../templates/admin_servers_record_edit:82
 #: ../templates/user_circulation_orders_html:49
 msgid "Status"
 msgstr "Status"
@@ -9468,11 +9468,11 @@ msgstr "repeated"
 #: ../templates/admin_databases_rss_record_html:323
 #: ../templates/admin_databases_rss_record_html:351
 #: ../templates/admin_databases_rss_record_html:95
-#: ../templates/admin_library_record_edit:87
+#: ../templates/admin_libraries_record_edit:87
 #: ../templates/admin_orgunit_record_edit:103
 #: ../templates/admin_profile_record_edit:78
 #: ../templates/admin_searchprofiles_record_edit:85
-#: ../templates/admin_server_record_edit:110
+#: ../templates/admin_servers_record_edit:110
 #: ../templates/admin_topic_record_edit:145
 #: ../templates/admin_topic_record_edit:191
 #: ../templates/admin_topic_record_edit:236

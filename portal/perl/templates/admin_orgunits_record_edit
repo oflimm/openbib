@@ -35,7 +35,7 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalog-Profile") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]/edit?l=[% lang %]">[% profileinfo.profilename %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]/orgunit.html?l=[% lang %]">[% msg.maketext("Organisationseinheiten") %]</a></li>

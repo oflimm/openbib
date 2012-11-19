@@ -48,7 +48,7 @@
 <table>
 <tr>
 <td>
-<form method="post" action="[% path_prefix %]/[% config.get('admin_databases_loc') %]/[% dbname %]/library">
+<form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/[% dbname %]/library">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="0" />
 <input type="submit" value="[% msg.maketext("Ja") %]">
@@ -56,7 +56,7 @@
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>
-<form method="get" action="[% path_prefix %]/[% config.get('admin_databases_loc') %]/[% dbname %]/library/edit">
+<form method="get" action="[% path_prefix %]/[% config.get('databases_loc') %]/[% dbname %]/library/edit">
 <input type="submit" value="[% msg.maketext("Nein") %]">
 </form>
 </td>

@@ -44,7 +44,7 @@
 [%# USE dumper;dumper.dump(libinfo)%]
 [% PROCESS common/subtemplate name="visible_categories_library" %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_databases_loc') %]/[% dbname %]/library">
+<form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/[% dbname %]/library">
 <input type="hidden" name="_method"    value="PUT" />
 
 <table width="100%">
@@ -88,7 +88,7 @@ END ;-%]
 
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_databases_loc') %]/[% dbname %]/library">
+<form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/[% dbname %]/library">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="1" />
 

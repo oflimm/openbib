@@ -103,7 +103,7 @@ sub show_collection {
         serverinfos => $serverinfos_ref,
     };
     
-    $self->print_page($config->{tt_admin_server_tname},$ttdata);
+    $self->print_page($config->{tt_admin_servers_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -131,7 +131,7 @@ sub show_record_form {
         serverinfo   => $serverinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_server_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_servers_record_edit_tname},$ttdata);
 }
 
 sub show_record {
@@ -159,7 +159,7 @@ sub show_record {
         serverinfo   => $serverinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_server_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_servers_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -195,7 +195,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_servers_loc}/id/$new_serverid/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{servers_loc}/id/$new_serverid/edit");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -241,7 +241,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_servers_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{servers_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -271,7 +271,7 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_server_record_delete_confirm_tname},$ttdata);
+    $self->print_page($config->{tt_admin_servers_record_delete_confirm_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -299,7 +299,7 @@ sub delete_record {
     $config->del_server({id => $serverid});
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_servers_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{servers_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

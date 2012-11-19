@@ -215,10 +215,10 @@
 ../templates/admin_authenticators_record_edit
 ../templates/admin_authenticators_record_html
 ../templates/admin_authenticators_record_json
-../templates/admin_cluster
-../templates/admin_cluster_html
-../templates/admin_cluster_record_delete_confirm
-../templates/admin_cluster_record_edit
+../templates/admin_clusters
+../templates/admin_clusters_html
+../templates/admin_clusters_record_delete_confirm
+../templates/admin_clusters_record_edit
 ../templates/admin_database
 ../templates/admin_database_html
 ../templates/admin_database_json

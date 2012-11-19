@@ -561,8 +561,8 @@ msgstr "Abstrakt/Inhalt"
 msgid "Administration"
 msgstr "Administration"
 
-#: ../templates/admin_cluster_html:102 ../templates/admin_cluster_html:79
-#: ../templates/admin_cluster_record_edit:87
+#: ../templates/admin_clusters_html:102 ../templates/admin_clusters_html:79
+#: ../templates/admin_clusters_record_edit:87
 #: ../templates/admin_database_html:97
 #: ../templates/admin_database_record_edit:109
 #: ../templates/admin_database_record_html:55
@@ -598,8 +598,8 @@ msgstr "Aktive Filter"
 msgid "Aktivieren Sie ihre Kennung"
 msgstr "Aktivieren Sie ihre Kennung"
 
-#: ../templates/admin_cluster_html:72
-#: ../templates/admin_cluster_record_edit:80
+#: ../templates/admin_clusters_html:72
+#: ../templates/admin_clusters_record_edit:80
 #: ../templates/admin_server_html:128 ../templates/admin_server_html:77
 #: ../templates/admin_server_record_edit:85
 msgid "Aktualisieren"
@@ -745,7 +745,7 @@ msgstr "Als Mail verschicken"
 msgid "Also:"
 msgstr "Also:"
 
-#: ../templates/admin_cluster_html:108 ../templates/admin_server_html:136
+#: ../templates/admin_clusters_html:108 ../templates/admin_server_html:136
 msgid "An"
 msgstr "An"
 
@@ -1111,7 +1111,7 @@ msgstr "Aufschl&uuml;sselung der Datenbanken nach Fachgebieten"
 msgid "Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten"
 msgstr "Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten"
 
-#: ../templates/admin_cluster_html:108 ../templates/admin_server_html:136
+#: ../templates/admin_clusters_html:108 ../templates/admin_server_html:136
 msgid "Aus"
 msgstr "Aus"
 
@@ -1418,7 +1418,7 @@ msgstr "Benutzernummer"
 msgid "Bereits existierende Anmeldeziele"
 msgstr "Bereits existierende Anmeldeziele"
 
-#: ../templates/admin_cluster_html:99
+#: ../templates/admin_clusters_html:99
 msgid "Bereits existierende Cluster"
 msgstr "Bereits existierende Cluster"
 
@@ -1462,8 +1462,8 @@ msgstr "Bereits existierende Views"
 #: ../templates/admin_authenticators_html:87
 #: ../templates/admin_authenticators_record_edit:70
 #: ../templates/admin_authenticators_record_html:67
-#: ../templates/admin_cluster_html:102 ../templates/admin_cluster_html:64
-#: ../templates/admin_cluster_record_edit:72
+#: ../templates/admin_clusters_html:102 ../templates/admin_clusters_html:64
+#: ../templates/admin_clusters_record_edit:72
 #: ../templates/admin_database_html:119 ../templates/admin_database_html:72
 #: ../templates/admin_database_record_edit:72
 #: ../templates/admin_database_record_html:49
@@ -1715,14 +1715,14 @@ msgstr "Anzahl Titel"
 msgid "Chinesisch"
 msgstr "Chinesisch"
 
-#: ../templates/admin_cluster_html:39
-#: ../templates/admin_cluster_record_edit:39 ../templates/admin_navigation:18
+#: ../templates/admin_clusters_html:39
+#: ../templates/admin_clusters_record_edit:39 ../templates/admin_navigation:18
 #: ../templates/admin_navigation:20 ../templates/admin_server_html:118
 #: ../templates/admin_server_html:85 ../templates/admin_server_record_edit:92
 msgid "Cluster"
 msgstr "Cluster"
 
-#: ../templates/admin_cluster_record_edit:64
+#: ../templates/admin_clusters_record_edit:64
 msgid "Cluster bearbeiten"
 msgstr "Cluster bearbeiten"
 
@@ -3283,8 +3283,8 @@ msgstr "Fernleihbestellung"
 msgid "Fernleihe"
 msgstr "Fernleihe"
 
-#: ../templates/admin_cluster_html:73
-#: ../templates/admin_cluster_record_edit:81
+#: ../templates/admin_clusters_html:73
+#: ../templates/admin_clusters_record_edit:81
 #: ../templates/admin_server_html:130 ../templates/admin_server_html:78
 #: ../templates/admin_server_record_edit:86
 msgid "Fertig mit Aktualisierung"
@@ -3818,8 +3818,8 @@ msgstr "ISBN"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../templates/admin_cluster_html:102
-#: ../templates/admin_cluster_record_edit:67
+#: ../templates/admin_clusters_html:102
+#: ../templates/admin_clusters_record_edit:67
 #: ../templates/admin_searchprofiles_record_edit:66
 #: ../templates/admin_server_html:118 ../templates/admin_server_record_edit:67
 msgid "Id"
@@ -4481,9 +4481,9 @@ msgstr "JSON konnte nicht geparst werden"
 #: ../templates/_profile/sammlungen/_view/richter/title_html:783
 #: ../templates/_view/richter/litlist_edit:79
 #: ../templates/admin_authenticators_record_delete_confirm:54
-#: ../templates/admin_cluster_html:108 ../templates/admin_cluster_html:81
-#: ../templates/admin_cluster_record_delete_confirm:54
-#: ../templates/admin_cluster_record_edit:89
+#: ../templates/admin_clusters_html:108 ../templates/admin_clusters_html:81
+#: ../templates/admin_clusters_record_delete_confirm:54
+#: ../templates/admin_clusters_record_edit:89
 #: ../templates/admin_database_html:126 ../templates/admin_database_html:127
 #: ../templates/admin_database_html:99
 #: ../templates/admin_database_record_delete_confirm:54
@@ -4800,8 +4800,8 @@ msgstr "Keine gültige Aktion"
 msgid "Keine gültige Anfrage-ID"
 msgstr "Keine gültige Anfrage-ID"
 
-#: ../templates/admin_cluster_html:71
-#: ../templates/admin_cluster_record_edit:79
+#: ../templates/admin_clusters_html:71
+#: ../templates/admin_clusters_record_edit:79
 #: ../templates/admin_server_html:126 ../templates/admin_server_html:76
 #: ../templates/admin_server_record_edit:84
 #: ../templates/admin_server_record_edit:94
@@ -4896,7 +4896,7 @@ msgid "Körperschafts-Information: %1 in Katalog %2"
 msgstr "Körperschafts-Information: %1 in Katalog %2"
 
 #: ../templates/_profile/sammlungen/_view/richter/title_html:305
-#: ../templates/admin_cluster_html:109 ../templates/admin_server_html:137
+#: ../templates/admin_clusters_html:109 ../templates/admin_server_html:137
 #: ../templates/title_html:306 ../templates/title_include:509
 msgid "L&ouml;schen"
 msgstr "L&ouml;schen"
@@ -5110,7 +5110,7 @@ msgstr "Los"
 
 #: ../templates/_profile/sammlungen/_view/richter/title_html:754
 #: ../templates/admin_authenticators_record_edit:85
-#: ../templates/admin_cluster_record_edit:100
+#: ../templates/admin_clusters_record_edit:100
 #: ../templates/admin_database_record_edit:230
 #: ../templates/admin_database_rss_record_edit:102
 #: ../templates/admin_database_rss_record_html:351
@@ -5405,9 +5405,9 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/richter/title_html:784
 #: ../templates/_view/richter/litlist_edit:79
 #: ../templates/admin_authenticators_record_delete_confirm:60
-#: ../templates/admin_cluster_html:108 ../templates/admin_cluster_html:82
-#: ../templates/admin_cluster_record_delete_confirm:60
-#: ../templates/admin_cluster_record_edit:90
+#: ../templates/admin_clusters_html:108 ../templates/admin_clusters_html:82
+#: ../templates/admin_clusters_record_delete_confirm:60
+#: ../templates/admin_clusters_record_edit:90
 #: ../templates/admin_database_html:100 ../templates/admin_database_html:126
 #: ../templates/admin_database_html:127
 #: ../templates/admin_database_record_delete_confirm:60
@@ -5449,7 +5449,7 @@ msgid "Nein"
 msgstr "Nein"
 
 #: ../templates/admin_authenticators_html:70
-#: ../templates/admin_cluster_html:87 ../templates/admin_database_html:105
+#: ../templates/admin_clusters_html:87 ../templates/admin_database_html:105
 #: ../templates/admin_database_rss_html:119
 #: ../templates/admin_database_rss_record_html:131
 #: ../templates/admin_database_rss_record_html:188
@@ -5534,7 +5534,7 @@ msgstr "Neue Sitzung beginnen?"
 msgid "Neue Suche"
 msgstr "Neue Suche"
 
-#: ../templates/admin_cluster_html:61
+#: ../templates/admin_clusters_html:61
 msgid "Neuen Cluster einrichten"
 msgstr "Neuen Cluster einrichten"
 
@@ -6217,8 +6217,8 @@ msgstr "Recherchemaske"
 msgid "Recherchen"
 msgstr "Recherchen"
 
-#: ../templates/admin_cluster_html:74
-#: ../templates/admin_cluster_record_edit:82
+#: ../templates/admin_clusters_html:74
+#: ../templates/admin_clusters_record_edit:82
 #: ../templates/admin_server_html:132 ../templates/admin_server_html:79
 #: ../templates/admin_server_record_edit:87
 msgid "Recherchierbar"
@@ -7188,8 +7188,8 @@ msgstr "Start"
 msgid "Statistik"
 msgstr "Statistik"
 
-#: ../templates/admin_cluster_html:102 ../templates/admin_cluster_html:69
-#: ../templates/admin_cluster_record_edit:77
+#: ../templates/admin_clusters_html:102 ../templates/admin_clusters_html:69
+#: ../templates/admin_clusters_record_edit:77
 #: ../templates/admin_server_html:118 ../templates/admin_server_html:74
 #: ../templates/admin_server_record_edit:82
 #: ../templates/user_circulation_orders_html:49
@@ -9779,7 +9779,7 @@ msgid "wiederholt"
 msgstr "wiederholt"
 
 #: ../templates/admin_authenticators_record_edit:77
-#: ../templates/admin_cluster_record_edit:96
+#: ../templates/admin_clusters_record_edit:96
 #: ../templates/admin_database_record_edit:226
 #: ../templates/admin_database_rss_record_edit:94
 #: ../templates/admin_database_rss_record_html:152

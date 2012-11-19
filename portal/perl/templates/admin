@@ -75,7 +75,7 @@ Kataloge werden in Portalen in folgender Reihenfolge definiert
 
 <ul>
 <li><a href="[% path_prefix %]/[% config.get('admin_servers_loc') %].html?l=[% lang %]">Server f&uuml;r die OpenBib-Infrastruktur</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_clusterss_loc') %].html?l=[% lang %]">Cluster, zu denen die Server zugeordnet werden k&ouml;nnen</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_clusters_loc') %].html?l=[% lang %]">Cluster, zu denen die Server zugeordnet werden k&ouml;nnen</a></li>
 </ul>
 
 <h3>Nutzer und Anmeldung</h3>

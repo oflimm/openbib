@@ -103,7 +103,7 @@ sub show_collection {
         clusterinfos => $clusterinfos_ref,
     };
     
-    $self->print_page($config->{tt_admin_cluster_tname},$ttdata);
+    $self->print_page($config->{tt_admin_clusters_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -131,7 +131,7 @@ sub show_record_form {
         clusterinfo   => $clusterinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_cluster_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_clusters_record_edit_tname},$ttdata);
 }
 
 sub show_record {
@@ -159,7 +159,7 @@ sub show_record {
         clusterinfo   => $clusterinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_cluster_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_clusters_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -272,7 +272,7 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_cluster_record_delete_confirm_tname},$ttdata);
+    $self->print_page($config->{tt_admin_clusters_record_delete_confirm_tname},$ttdata);
     return Apache2::Const::OK;
 }
 

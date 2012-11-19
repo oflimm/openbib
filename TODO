@@ -381,15 +381,20 @@ E4100
 
 permalink Weiterleitung anstelle Frame
 
+* Illustration der Verlinkbarkeit durch offenes/geschlossenes
+Kettensymbol?
+
 * Wie Postrequest ueber Loginseite schleusen und Returnurl samt
 CGI-Parameter nachher aufrufen?
 
 Mit Umwandlung POST->GET.
 
-* Illustration der Verlinkbarkeit durch offenes/geschlossenes
-Kettensymbol?
-
 Sinnvoll ist generell ein POST-Tunnel! Die Umwandlung muss ausnahme bleiben
+
+* Anpassung der Anreicherungs|Statistik-Daten und -Skripte und
+Migration in PostgreSQL-Statistikdatenbank. Ausloten, ob
+Tabellenpartitionierung in PostgreSQL sinnvoll genutzt werden kann -
+idealerweise mit je einer Partition pro Jahr.
 
 - Dies und das
 

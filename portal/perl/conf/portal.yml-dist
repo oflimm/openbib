@@ -2074,47 +2074,47 @@ dispatch_rules:
      rule: '/portal/:view/admin/users/search.rdf'
      runmode: 'show_search'
 
-  - # admin_authentication_loc:
+  - # admin_authenticators_loc:
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators.html[get]'
      runmode: 'show_collection'
-  - # admin_authentication_loc:
+  - # admin_authenticators_loc:
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators.json[get]'
      runmode: 'show_collection'
-  - # admin_authentication_loc:
+  - # admin_authenticators_loc:
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators.rdf[get]'
      runmode: 'show_collection'
-  - # admin_authentication_loc:
+  - # admin_authenticators_loc:
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators[get]'
      runmode: 'show_collection'
-  - # admin_authentication_loc: Record show form
+  - # admin_authenticators_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid/edit[get]'
      runmode: 'show_record_form'
-  - # admin_authentication_loc: Record show form
+  - # admin_authenticators_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid/edit.html[get]'
      runmode: 'show_record_form'
-  - # admin_authentication_loc: Record show
+  - # admin_authenticators_loc: Record show
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid[get]'
      runmode: 'show_record'
-  - # admin_authentication_loc: Create Record
+  - # admin_authenticators_loc: Create Record
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators[post]'
      runmode: 'create_record'
-  - # admin_authentication_loc: Update Record
+  - # admin_authenticators_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid[post]'
      runmode: 'update_record'
-  - # admin_authentication_loc: Update Record
+  - # admin_authenticators_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid[put]'
      runmode: 'update_record'
-  - # admin_authentication_loc: Delete Record
+  - # admin_authenticators_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid[delete]'
      runmode: 'delete_record'
@@ -2961,10 +2961,10 @@ wikipedia_img:  /images/openbib/wikipedia.png
 university_img:  /images/openbib/university.png
 
 # Mapping der einzelnen Kompontenten zu ihren Templates
-tt_admin_authentication_record_delete_confirm_tname: admin_authentication_record_delete_confirm
-tt_admin_authentication_record_edit_tname: admin_authentication_record_edit
-tt_admin_authentication_record_tname: admin_authentication_record
-tt_admin_authentication_tname: admin_authentication
+tt_admin_authenticators_record_delete_confirm_tname: admin_authenticators_record_delete_confirm
+tt_admin_authenticators_record_edit_tname: admin_authenticators_record_edit
+tt_admin_authenticators_record_tname: admin_authenticators_record
+tt_admin_authenticators_tname: admin_authenticators
 tt_admin_cluster_record_delete_confirm_tname: admin_cluster_record_delete_confirm
 tt_admin_cluster_record_edit_tname: admin_cluster_record_edit
 tt_admin_cluster_record_tname: admin_cluster_record

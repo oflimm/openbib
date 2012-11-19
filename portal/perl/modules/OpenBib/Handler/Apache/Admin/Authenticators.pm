@@ -105,7 +105,7 @@ sub show_collection {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_authentication_tname},$ttdata);
+    $self->print_page($config->{tt_admin_authenticators_tname},$ttdata);
 }
 
 sub show_record {
@@ -143,7 +143,7 @@ sub show_record {
         authenticationtarget => $authenticationtarget_ref,
     };
     
-    $self->print_page($config->{tt_admin_authentication_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_authenticators_record_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -181,7 +181,7 @@ sub show_record_form {
         authenticationtarget => $authenticationtarget_ref,
     };
     
-    $self->print_page($config->{tt_admin_authentication_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_authenticators_record_edit_tname},$ttdata);
 }
 
 sub create_record {
@@ -310,7 +310,7 @@ sub update_record {
             };
 
             $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_authentication_record_delete_confirm_tname},$ttdata);
+            $self->print_page($config->{tt_admin_authenticators_record_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }

@@ -1,23 +1,36 @@
 [%-
 
-all_databaseinfo = [] ;
+all_databases = [] ;
 FOREACH database IN databases.all ;
   this_databaseinfo = {
+    link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('databases_loc')}/id/${database.id}.json?l=${lang}"
+    }
+    id          = database.id
     description = database.description
     active      = database.active
     dbname      = database.dbname
     system      = database.system
     sigel       = database.sigel
     url         = database.url
-    autoconvert = database.autoconvert
-    count_all      = database.allcount
-    count_digital  = database.digitalcount
-    count_journals = database.journalscount
-    count_articles = database.articlecount
+#    autoconvert = database.autoconvert
+#    count_all      = database.allcount
+#    count_digital  = database.digitalcount
+#    count_journals = database.journalscount
+#    count_articles = database.articlecount
   };
-  all_databaseinfo.push(this_databaseinfo);
+  all_databases.push(this_databaseinfo);
 END;
 
-to_json(all_databaseinfo) ;
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}/${path_prefix}/${config.get('databases_loc')}.json?l=${lang}"
+     }
+     databases = all_databases
+ };
+
+to_json(this_json_output) ;
 
 -%]

@@ -13,23 +13,20 @@
 -%]
 [%
 
-this_databaseinfo = {
-    database    = databaseinfo.dbname
+  this_json_output = {
+    link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('databases_loc')}/id/${databaseinfo.id}.json?l=${lang}"
+    }
+    id          = databaseinfo.id
     description = databaseinfo.description
-    shortdesc   = databaseinfo.shortdesc
     active      = databaseinfo.active
+    dbname      = databaseinfo.dbname
     system      = databaseinfo.system
     sigel       = databaseinfo.sigel
     url         = databaseinfo.url
-    count_all  = databaseinfo.allcount
-    count_journals  = databaseinfo.journalcount
-    count_articles  = databaseinfo.articlecount
-    count_digital   = databaseinfo.digitalcount
-    all_all_titles  = databaseinfo.allcount
+  };
 
-    circ               = databaseinfo.circ
-};
-
-to_json(this_databaseinfo)
+to_json(this_json_output) ;
 
 %]

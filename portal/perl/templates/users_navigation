@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 <nav class="ym-vlist">
-<h6 class="ym-vtitle">[% username %]</h6>
+<h6 class="ym-vtitle">ID: [% username %]</h6>
 
  <ul>
 [% IF active_submenu == "userprefs" %]
@@ -83,3 +83,7 @@
 [% END %]
  </ul>
 </nav>
+
+[% IF cgiapp.is_authenticated('admin') %]
+[% PROCESS common/subtemplate name="admin_navigation" %]
+[% END %]

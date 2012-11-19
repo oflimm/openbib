@@ -33,7 +33,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="server" %]
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="cluster" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -48,7 +48,7 @@
 <table>
 <tr>
 <td>
-<form method="post" action="[% path_prefix %]/[% config.get('admin_clusters_loc') %]/id/[% clusterid %]">
+<form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterid %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="0" />
 <input type="submit" value="[% msg.maketext("Ja") %]">
@@ -56,9 +56,8 @@
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>
-<form method="get" action="[% path_prefix %]/[% config.get('admin_clusters_loc') %]/id/[% clusterid %]/edit">
-<input type="submit" value="[% msg.maketext("Nein") %]">
-</form>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('clusters_loc') %]/id/[% clusterid %]/edit.html?l=[% lang %]" class="ob_buttons">
+[% msg.maketext("Nein") %]</a>
 </td>
 </tr>
 </table>

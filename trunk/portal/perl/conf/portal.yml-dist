@@ -137,7 +137,7 @@ classifications_loc: classifications
 clouds_loc: clouds
 corporatebodies_loc: corporatebodies
 databases_loc: databases
-libraries_loc: libraries
+locations_loc: locations
 litlists_loc: litlists
 litlists_public_loc: litlists
 litlists_public_topics_loc: litlists/topics
@@ -2213,27 +2213,16 @@ dispatch_rules:
      rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/:mappingid[delete]'
      runmode: 'delete_record'
 
-# Clusters-Charakteristik
+# Charakteristik
 # - reduzierte oeffentliche und volle user Repraesentation [get]
 # - ein kanonischer Resource-URI [get,post,put,delete]
 # - Automatische Weiterleitung von [get] auf ggf. nutzerspezifische Repreaesentation
 
-# Oeffentliche Clusters-Resource/Repraesentation
-
-# Private Clusters-Resource/Repraesentation fuer Admin-User
-  - # Repraesentation: users_loc/clusters_loc
-     module: 'OpenBib::Handler::Apache::Admin::Clusters'
-     rule: '/portal/:view/users/id/:userid/clusters[get]'
-     runmode: 'show_collection'
-     extensions:
-       - none
-       - html
-       - json
-       - rdf
+# Clusters-Resource/Repraesentation
   - # Resource: clusters_loc
      module: 'OpenBib::Handler::Apache::Clusters'
      rule: '/portal/:view/clusters[get]'
-     extensions:
+     representations:
        - none
        - html
        - json
@@ -2247,10 +2236,28 @@ dispatch_rules:
      runmode: 'show_record'
      args:
         personalized_loc: 'clusters'        
+  - # Repraesentation: users_loc/clusters_loc
+     module: 'OpenBib::Handler::Apache::Admin::Clusters'
+     rule: '/portal/:view/users/id/:userid/clusters[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # Repraesentation: users_loc/clusters_loc
+     module: 'OpenBib::Handler::Apache::Admin::Clusters'
+     rule: '/portal/:view/users/id/:userid/clusters/id/:clusterid[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
   - # Repraesentation: users_loc/clusters_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Clusters'
      rule: '/portal/:view/users/id/:userid/clusters/id/:clusterid/edit[get]'
-     extensions:
+     representations:
        - none
        - html
      runmode: 'show_record_form'
@@ -2271,49 +2278,69 @@ dispatch_rules:
      rule: '/portal/:view/clusters/id/:clusterid[delete]'
      runmode: 'delete_record'
 
-  - # servers_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers.html[get]'
+# Servers-Resource/Repraesentation
+  - # users/servers_loc:
+     module: 'OpenBib::Handler::Apache::Servers'
+     rule: '/portal/:view/servers[get]'
      runmode: 'show_collection'
-  - # servers_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers.json[get]'
-     runmode: 'show_collection'
-  - # servers_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers.rdf[get]'
-     runmode: 'show_collection'
-  - # servers_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers[get]'
-     runmode: 'show_collection'
-  - # servers_loc: Record show
-     module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers/id/:serverid[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'servers'
+  - # users_loc/servers_loc: Record show
+     module: 'OpenBib::Handler::Apache::Servers'
+     rule: '/portal/:view/servers/id/:serverid[get]'
      runmode: 'show_record'
-  - # servers_loc: Record show form
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'servers'
+  - # users/servers_loc:
      module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers/id/:serverid/edit[get]'
+     rule: '/portal/:view/users/id/:id/servers[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/servers_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Servers'
+     rule: '/portal/:view/users/id/:id/servers/id/:serverid[get]'
+     runmode: 'show_record'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/servers_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Servers'
+     rule: '/portal/:view/users/id/:id/servers/id/:serverid/edit[get]'
      runmode: 'show_record_form'
-  - # servers_loc: Record show form
+     representations:
+       - none
+       - html
+  - # users_loc/servers_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers/id/:serverid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # servers_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers[post]'
+     rule: '/portal/:view/servers[post]'
      runmode: 'create_record'
-  - # servers_loc: Update Record
+  - # users_loc/servers_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers/id/:serverid[post]'
+     rule: '/portal/:view/servers/id/:serverid[post]'
      runmode: 'update_record'
-  - # servers_loc: Update Record
+  - # users_loc/servers_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers/id/:serverid[put]'
+     rule: '/portal/:view/servers/id/:serverid[put]'
      runmode: 'update_record'
-  - # servers_loc: Delete Record
+  - # users_loc/servers_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/admin/servers/id/:serverid[delete]'
+     rule: '/portal/:view/servers/id/:serverid[delete]'
      runmode: 'delete_record'
 
 css_loc: /css
@@ -2977,59 +3004,84 @@ tt_admin_databases_rss_record_edit_tname: admin_databases_rss_record_edit
 tt_admin_databases_rss_record_tname: admin_databases_rss_record
 tt_admin_databases_rss_tname: admin_databases_rss
 tt_admin_databases_tname: admin_databases
-tt_admin_libraries_record_delete_confirm_tname: admin_libraries_record_delete_confirm
-tt_admin_libraries_record_edit_tname: admin_libraries_record_edit
-tt_admin_libraries_record_tname: admin_libraries_record
-tt_admin_orgunit_record_delete_confirm_tname: admin_orgunit_record_delete_confirm
-tt_admin_orgunit_record_edit_tname: admin_orgunit_record_edit
-tt_admin_orgunit_record_tname: admin_orgunit_record
-tt_admin_orgunit_tname: admin_orgunit
-tt_admin_profile_record_delete_confirm_tname: admin_profile_record_delete_confirm
-tt_admin_profile_record_edit_tname: admin_profile_record_edit
-tt_admin_profile_record_tname: admin_profile_record
-tt_admin_profile_tname: admin_profile
-tt_admin_searchprofile_record_edit_tname: admin_searchprofile_record_edit
-tt_admin_searchprofile_record_tname: admin_searchprofile_record
-tt_admin_searchprofile_tname: admin_searchprofile
+tt_admin_locations_record_delete_confirm_tname: admin_locations_record_delete_confirm
+tt_admin_locations_record_edit_tname: admin_locations_record_edit
+tt_admin_locations_record_tname: admin_locations_record
+tt_admin_orgunits_record_delete_confirm_tname: admin_orgunits_record_delete_confirm
+tt_admin_orgunits_record_edit_tname: admin_orgunits_record_edit
+tt_admin_orgunits_record_tname: admin_orgunits_record
+tt_admin_orgunits_tname: admin_orgunits
+tt_admin_profiles_record_delete_confirm_tname: admin_profiles_record_delete_confirm
+tt_admin_profiles_record_edit_tname: admin_profiles_record_edit
+tt_admin_profiles_record_tname: admin_profiles_record
+tt_admin_profiles_tname: admin_profiles
+tt_admin_searchprofiles_record_edit_tname: admin_searchprofiles_record_edit
+tt_admin_searchprofiles_record_tname: admin_searchprofiles_record
+tt_admin_searchprofiles_tname: admin_searchprofiles
 tt_admin_searchuser_tname: admin_searchuser
 tt_admin_servers_record_delete_confirm_tname: admin_servers_record_delete_confirm
 tt_admin_servers_record_edit_tname: admin_servers_record_edit
 tt_admin_servers_record_tname: admin_servers_record
 tt_admin_servers_tname: admin_servers
-tt_admin_session_active_record_tname: admin_session_active_record
-tt_admin_session_active_tname: admin_session_active
-tt_admin_session_archived_record_tname: admin_session_archived_record
-tt_admin_session_archived_search_form_tname: admin_session_archived_search_form
-tt_admin_session_archived_search_tname: admin_session_archived_search
-tt_admin_statistic_access_query_graph_tname: admin_statistic_access_query_graph
-tt_admin_statistic_access_session_graph_tname: admin_statistic_access_session_graph
-tt_admin_statistic_access_title_graph_tname: admin_statistic_access_title_graph
-tt_admin_statistic_access_tname: admin_statistic_access
-tt_admin_statistic_browser_tname: admin_statistic_browser
-tt_admin_statistic_client_tname: admin_statistic_client
-tt_admin_statistic_query_tname: admin_statistic_query
-tt_admin_statistic_request_tname: admin_statistic_request
-tt_admin_statistic_tname: admin_statistic
-tt_admin_statistic_view_session_graph_tname: admin_statistic_view_session_graph
-tt_admin_statistic_view_tname: admin_statistic_view
+tt_admin_sessions_active_record_tname: admin_sessions_active_record
+tt_admin_sessions_active_tname: admin_sessions_active
+tt_admin_sessions_archived_record_tname: admin_sessions_archived_record
+tt_admin_sessions_archived_search_form_tname: admin_sessions_archived_search_form
+tt_admin_sessions_archived_search_tname: admin_sessions_archived_search
+tt_admin_statistics_access_query_graph_tname: admin_statistics_access_query_graph
+tt_admin_statistics_access_session_graph_tname: admin_statistics_access_session_graph
+tt_admin_statistics_access_title_graph_tname: admin_statistics_access_title_graph
+tt_admin_statistics_access_tname: admin_statistics_access
+tt_admin_statistics_browser_tname: admin_statistics_browser
+tt_admin_statistics_client_tname: admin_statistics_client
+tt_admin_statistics_query_tname: admin_statistics_query
+tt_admin_statistics_request_tname: admin_statistics_request
+tt_admin_statistics_tname: admin_statistics
+tt_admin_statistics_view_session_graph_tname: admin_statistics_view_session_graph
+tt_admin_statistics_view_tname: admin_statistics_view
 tt_admin_tname: admin
-tt_admin_topic_record_edit_tname: admin_topic_record_edit
-tt_admin_topic_record_mapping_tname: admin_topic_record_mapping
-tt_admin_topic_record_tname: admin_topic_record
-tt_admin_topic_tname: admin_topic
-tt_admin_user_search_form_tname: admin_user_search_form
-tt_admin_user_search_tname: admin_user_search
-tt_admin_user_tname: admin_user
-tt_admin_view_record_delete_confirm_tname: admin_view_record_delete_confirm
-tt_admin_view_record_edit_tname: admin_view_record_edit
-tt_admin_view_record_edit_tname: admin_view_record_edit
-tt_admin_view_record_tname: admin_view_record
-tt_admin_view_rss_record_edit_tname: admin_view_rss_record_edit
-tt_admin_view_rss_record_tname: admin_view_rss_record
-tt_admin_view_tname: admin_view
+tt_admin_topics_record_edit_tname: admin_topics_record_edit
+tt_admin_topics_record_mapping_tname: admin_topics_record_mapping
+tt_admin_topics_record_tname: admin_topics_record
+tt_admin_topics_tname: admin_topics
+tt_admin_users_search_form_tname: admin_users_search_form
+tt_admin_users_search_tname: admin_users_search
+tt_admin_users_tname: admin_users
+tt_admin_views_record_delete_confirm_tname: admin_views_record_delete_confirm
+tt_admin_views_record_edit_tname: admin_views_record_edit
+tt_admin_views_record_edit_tname: admin_views_record_edit
+tt_admin_views_record_tname: admin_views_record
+tt_admin_views_rss_record_edit_tname: admin_views_rss_record_edit
+tt_admin_views_rss_record_tname: admin_views_rss_record
+tt_admin_views_tname: admin_views
 
-tt_cluster_record_tname: cluster_record
-tt_cluster_tname: cluster
+
+tt_authenticators_tname: authenticators
+tt_authenticators_record_tname: authenticators_record
+tt_clusters_tname: clusters
+tt_clusters_record_tname: clusters_record
+tt_databases_tname: databases
+tt_databases_record_tname: databases_record
+tt_locations_tname: locations 
+tt_locations_record_tname: locations_record
+tt_orgunits_tname: orgunits 
+tt_orgunits_record_tname: orgunits_record
+tt_profiles_tname: profiles 
+tt_profiles_record_tname: profiles_record
+tt_searchprofiles_tname: searchprofiles 
+tt_searchprofiles_record_tname: searchprofiles_record
+tt_servers_tname: servers
+tt_servers_record_tname: servers_record
+tt_sessions_tname: sessions 
+tt_sessions_record_tname: sessions_record
+tt_statistics_tname: statistics 
+tt_statistics_record_tname: statistics_record
+tt_topics_tname: topics 
+tt_topics_record_tname: topics_record
+tt_users_tname: users 
+tt_users_record_tname: users_record
+tt_views_tname: views 
+tt_views_record_tname: views_record
 
 tt_indexes_classification_tname: indexes_classification
 tt_indexes_corporatebody_tname: indexes_corporatebody

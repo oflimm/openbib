@@ -50,7 +50,7 @@
    <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews.html">[% msg.maketext("Rezensionen") %]</a></li>
 [%   END %]
 [% END %]
-[% IF targettype != 'self' %]
+[% IF user.get_targettype_of_session(session.ID) != 'self' %]
 <li><span>[% msg.maketext("Benutzerkonto") %]</span>
     <ul>
 [%   IF active_submenu == "borows" %]

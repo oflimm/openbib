@@ -14,7 +14,7 @@
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("Administration") %]</h6>
 <ul>
-[% IF active_submenu == "admin_clusters" %]
+[% IF active_submenu == "admin_clusterss" %]
   <li class="active"><strong>[% msg.maketext("Cluster") %]</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('clusters_loc') %].html?l=[% lang %]">[% msg.maketext("Cluster") %]</a></li>

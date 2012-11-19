@@ -59,7 +59,7 @@ Kataloge werden in Portalen in folgender Reihenfolge definiert
 </p>
 
 <ol>
-<li><a href="[% path_prefix %]/[% config.get('admin_databases_loc') %].html?l=[% lang %]">Anlegen eines Katalogs</a></li>
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Anlegen eines Katalogs</a></li>
 <li><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %].html?l=[% lang %]">Zuordnung des Katalogs zu einer Organisationseinheit in einem Katalog-Profil</a></li>
 <li><a href="[% path_prefix %]/[% config.get('admin_views_loc') %].html?l=[% lang %]">Anlegen einer Portalsicht f&uuml;r die Katalog-Sicht und den Katalog</a></li>
 </ol>
@@ -74,8 +74,8 @@ Kataloge werden in Portalen in folgender Reihenfolge definiert
 <h3>Cluster- und Servermanagement</h3>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('admin_servers_loc') %].html?l=[% lang %]">Server f&uuml;r die OpenBib-Infrastruktur</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_clusters_loc') %].html?l=[% lang %]">Cluster, zu denen die Server zugeordnet werden k&ouml;nnen</a></li>
+<li><a href="[% path_prefix %]/[% config.get('servers_loc') %].html?l=[% lang %]">Server f&uuml;r die OpenBib-Infrastruktur</a></li>
+<li><a href="[% path_prefix %]/[% config.get('clusters_loc') %].html?l=[% lang %]">Cluster, zu denen die Server zugeordnet werden k&ouml;nnen</a></li>
 </ul>
 
 <h3>Nutzer und Anmeldung</h3>

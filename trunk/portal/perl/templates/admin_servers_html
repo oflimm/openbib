@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_server
+# Templatename: admin_servers
 #
 # Typ         : Mastertemplate       
 #
@@ -40,7 +40,7 @@
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_servers_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('servers_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -55,7 +55,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_servers_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]" class="ym-form">
 <fieldset class="ym-columnar">
 
 <legend>[% msg.maketext("Neuen Rechner zur Lastverteilung hinzuf&uuml;gen") %]</legend>
@@ -119,7 +119,7 @@
 [% FOREACH serverinfo IN serverinfos.all %]
 <tr [% IF serverinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <td>[% serverinfo.id %]</td>
-<td><a href="[% path_prefix %]/[% config.get('admin_servers_loc') %]/id/[% serverinfo.id %]/edit?l=[% lang %]">[% serverinfo.hostip %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit?l=[% lang %]">[% serverinfo.hostip %]</a></td>
 <td>[% serverinfo.description %]</td>
 <td>
 [% IF serverinfo.status == ''%]
@@ -133,8 +133,8 @@
 [% END %]
 </td>
 <td>[% serverinfo.clusterid.description %]</td>
-<td align="center">[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF serverinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF serverinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('admin_servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
+<td align="center">[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td><td><form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF serverinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF serverinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
 [% END %]
 
 </table>

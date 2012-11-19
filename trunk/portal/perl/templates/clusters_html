@@ -26,7 +26,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
@@ -46,7 +46,6 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="cluster" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -66,7 +65,7 @@
 <td>[% clusterinfo.id %]</td>
 <td><a href="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %].html?l=[% lang %]">[% clusterinfo.description %]</a></td>
 <td>[% clusterinfo.status %]</td>
-<td align="center">[%- IF clusterinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td></tr>
+<td align="center">[%- IF clusterinfo.active -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td></tr>
 [% END %]
 
 </table>

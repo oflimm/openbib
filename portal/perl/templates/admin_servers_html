@@ -119,7 +119,7 @@
 [% FOREACH serverinfo IN serverinfos.all %]
 <tr [% IF serverinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <td>[% serverinfo.id %]</td>
-<td><a href="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit?l=[% lang %]">[% serverinfo.hostip %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %]">[% serverinfo.hostip %]</a></td>
 <td>[% serverinfo.description %]</td>
 <td>
 [% IF serverinfo.status == ''%]

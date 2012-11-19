@@ -54,6 +54,8 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+<h3>[% msg.maketext("Cluster") %]</h3>
+
 <table>
 <tr><th>[% msg.maketext("Id") %]</th><td>[% clusterinfo.id %]</td></tr>
 <tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% clusterinfo.description %]</td></tr>
@@ -64,8 +66,8 @@
 [% IF clusterinfo.status == 'searchable' %][% msg.maketext("Recherchierbar") %][% END %]
 </td></tr>
 <tr><th>[% msg.maketext("Aktiv") %]</th><td>
-[%- IF databaseinfo.active == 1 -%][% msg.maketext("Ja") %][%- END -%]
-[%- IF databaseinfo.active == 0 -%][% msg.maketext("Nein") %][%- END -%]
+[%- IF databaseinfo.active -%][% msg.maketext("Ja") %][%- END -%]
+[%- IF NOT databaseinfo.active -%][% msg.maketext("Nein") %][%- END -%]
 </td></tr>
 </table>
 

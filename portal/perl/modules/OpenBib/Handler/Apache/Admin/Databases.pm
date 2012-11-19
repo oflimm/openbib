@@ -105,7 +105,7 @@ sub show_collection {
         catalogs   => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_database_tname},$ttdata);
+    $self->print_page($config->{tt_admin_databases_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -195,7 +195,7 @@ sub show_record {
         databaseinfo => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_database_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_databases_record_tname},$ttdata);
 
     return;
 }
@@ -231,7 +231,7 @@ sub show_record_form {
         databaseinfo => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_database_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_databases_record_edit_tname},$ttdata);
         
     return Apache2::Const::OK;
 }
@@ -305,7 +305,7 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_database_record_delete_confirm_tname},$ttdata);
+    $self->print_page($config->{tt_admin_databases_record_delete_confirm_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

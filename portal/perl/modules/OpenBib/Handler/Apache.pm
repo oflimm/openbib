@@ -688,6 +688,7 @@ sub add_default_ttdata {
     my $path           = $self->param('path');
     my $url            = $self->param('url');
     my $location       = $self->param('location');
+    my $scheme         = $self->param('scheme');
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $query          = $self->query();
@@ -725,6 +726,7 @@ sub add_default_ttdata {
 
     # TT-Data anreichern
     $ttdata->{'query'}          = $query;
+    $ttdata->{'scheme'}         = $scheme;
     $ttdata->{'view'}           = $view;
     $ttdata->{'sessionID'}      = $sessionID;
     $ttdata->{'representation'} = $representation;

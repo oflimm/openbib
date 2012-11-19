@@ -2226,23 +2226,23 @@ sub update_server {
 
     my $update_args = {};
     
-    if (exists $arg_ref->{hostip}){
+    if ($arg_ref->{hostip}){
         $update_args->{hostip} = $arg_ref->{hostip};
     }
 
-    if (exists $arg_ref->{description}){
+    if ($arg_ref->{description}){
         $update_args->{description} = $arg_ref->{description};
     }
 
-    if (exists $arg_ref->{status}){
+    if ($arg_ref->{status}){
         $update_args->{status} = $arg_ref->{status};
     }
     
-    if (exists $arg_ref->{clusterid}){
+    if ($arg_ref->{clusterid}){
         $update_args->{clusterid} = $arg_ref->{clusterid};
     }
 
-    if (exists $arg_ref->{active}){
+    if ($arg_ref->{active}){
         $update_args->{active} = $arg_ref->{active};
     }
 

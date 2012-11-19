@@ -116,20 +116,20 @@ sub dispatch_args {
         my $module     = $item->{module};
         my $runmode    = $item->{runmode};
 
-        if (defined $item->{extensions}){
-            my @extensions = @{$item->{extensions}};
+        if (defined $item->{representations}){
+            my @representations = @{$item->{representations}};
 
-            foreach my $extension (@extensions){
+            foreach my $representation (@representations){
                 my $new_rule = "";
                 
-                if ($extension eq "none"){
+                if ($representation eq "none"){
                     $new_rule=$rule;
                 }
                 elsif ($rule=~/^(.+)(\[.+?\])$/){
-                    $new_rule="$1.$extension$2";
+                    $new_rule="$1.$representation$2";
                 }
                 else {
-                    $new_rule="$rule.$extension";
+                    $new_rule="$rule.$representation";
                 }
                 
                 push @{$table_ref}, $new_rule;

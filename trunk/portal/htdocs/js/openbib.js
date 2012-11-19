@@ -268,19 +268,19 @@ $("#ob-formats_toggle").click(function(){
 
 // Begin Togglen / Verwandte Personen
 // Zuerst verstecken
-$("#ob-similarpersons_do").hide();
+$("#ob-similar_persons_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#ob-similarpersons_toggle").click(function(){
- $("#ob-similarpersons_do").toggle();
+$("#ob-similar_persons_toggle").click(function(){
+ $("#ob-similar_persons_do").toggle();
 });
 // Ende Togglen / Verwandte Personen
 
 // Begin Togglen / Verwandte Themen
 // Zuerst verstecken
-$("#ob-similarsubjects_do").hide();
+$("#ob-similar_subjects_do").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#ob-similarsubjects_toggle").click(function(){
- $("#ob-similarsubjects_do").toggle();
+$("#ob-similar_subjects_toggle").click(function(){
+ $("#ob-similar_subjects_do").toggle();
 });
 // Ende Togglen / Verwandte Personen
 

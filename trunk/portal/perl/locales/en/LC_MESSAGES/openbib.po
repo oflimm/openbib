@@ -794,18 +794,18 @@ msgstr "Create a new literature list: "
 msgid "Anmelden"
 msgstr "Login"
 
-#: ../templates/admin_authentication_record_html:60
+#: ../templates/admin_authenticators_record_html:60
 #: ../templates/login_circulation:69
 msgid "Anmeldeziel"
 msgstr "Authentication target"
 
-#: ../templates/admin_authentication_record_edit:63
+#: ../templates/admin_authenticators_record_edit:63
 msgid "Anmeldeziel bearbeiten"
 msgstr "Change authentication target"
 
-#: ../templates/admin_authentication_html:39
-#: ../templates/admin_authentication_record_edit:39
-#: ../templates/admin_authentication_record_html:39
+#: ../templates/admin_authenticators_html:39
+#: ../templates/admin_authenticators_record_edit:39
+#: ../templates/admin_authenticators_record_html:39
 #: ../templates/admin_navigation:184 ../templates/admin_navigation:186
 msgid "Anmeldung"
 msgstr "Authentication"
@@ -1374,7 +1374,7 @@ msgstr "User name"
 msgid "Benutzernummer"
 msgstr "User number"
 
-#: ../templates/admin_authentication_html:83
+#: ../templates/admin_authenticators_html:83
 msgid "Bereits existierende Anmeldeziele"
 msgstr "Already existing authentication targets"
 
@@ -1418,10 +1418,10 @@ msgstr "Already existing subjects"
 msgid "Bereits existierende Views"
 msgstr "Already existing views"
 
-#: ../templates/admin_authentication_html:69
-#: ../templates/admin_authentication_html:87
-#: ../templates/admin_authentication_record_edit:70
-#: ../templates/admin_authentication_record_html:67
+#: ../templates/admin_authenticators_html:69
+#: ../templates/admin_authenticators_html:87
+#: ../templates/admin_authenticators_record_edit:70
+#: ../templates/admin_authenticators_record_html:67
 #: ../templates/admin_cluster_html:102 ../templates/admin_cluster_html:64
 #: ../templates/admin_cluster_record_edit:72
 #: ../templates/admin_database_html:119 ../templates/admin_database_html:72
@@ -1684,10 +1684,10 @@ msgstr "Cluster"
 msgid "Cluster bearbeiten"
 msgstr "Edit cluster"
 
-#: ../templates/admin_authentication_html:67
-#: ../templates/admin_authentication_html:86
-#: ../templates/admin_authentication_record_edit:69
-#: ../templates/admin_authentication_record_html:66
+#: ../templates/admin_authenticators_html:67
+#: ../templates/admin_authenticators_html:86
+#: ../templates/admin_authenticators_record_edit:69
+#: ../templates/admin_authenticators_record_html:66
 #: ../templates/admin_database_html:119 ../templates/admin_database_html:67
 #: ../templates/admin_database_record_edit:67
 #: ../templates/admin_database_record_html:48 ../templates/admin_showcat:39
@@ -3511,10 +3511,10 @@ msgstr "Add"
 msgid "Home"
 msgstr "Home"
 
-#: ../templates/admin_authentication_html:64
-#: ../templates/admin_authentication_html:86
-#: ../templates/admin_authentication_record_edit:66
-#: ../templates/admin_authentication_record_html:63
+#: ../templates/admin_authenticators_html:64
+#: ../templates/admin_authenticators_html:86
+#: ../templates/admin_authenticators_record_edit:66
+#: ../templates/admin_authenticators_record_html:63
 msgid "Hostname"
 msgstr "Hostname"
 
@@ -4279,7 +4279,7 @@ msgstr "JSON cannot be parsed"
 #: ../templates/_profile/sammlungen/_view/richter/litlist_edit:79
 #: ../templates/_profile/sammlungen/_view/richter/title_html:783
 #: ../templates/_view/richter/litlist_edit:79
-#: ../templates/admin_authentication_record_delete_confirm:54
+#: ../templates/admin_authenticators_record_delete_confirm:54
 #: ../templates/admin_cluster_html:108 ../templates/admin_cluster_html:81
 #: ../templates/admin_cluster_record_delete_confirm:54
 #: ../templates/admin_cluster_record_edit:89
@@ -4904,7 +4904,7 @@ msgid "Los"
 msgstr "Go"
 
 #: ../templates/_profile/sammlungen/_view/richter/title_html:754
-#: ../templates/admin_authentication_record_edit:85
+#: ../templates/admin_authenticators_record_edit:85
 #: ../templates/admin_cluster_record_edit:100
 #: ../templates/admin_database_record_edit:230
 #: ../templates/admin_database_rss_record_edit:102
@@ -5188,7 +5188,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/richter/litlist_edit:79
 #: ../templates/_profile/sammlungen/_view/richter/title_html:784
 #: ../templates/_view/richter/litlist_edit:79
-#: ../templates/admin_authentication_record_delete_confirm:60
+#: ../templates/admin_authenticators_record_delete_confirm:60
 #: ../templates/admin_cluster_html:108 ../templates/admin_cluster_html:82
 #: ../templates/admin_cluster_record_delete_confirm:60
 #: ../templates/admin_cluster_record_edit:90
@@ -5232,7 +5232,7 @@ msgstr ""
 msgid "Nein"
 msgstr "No"
 
-#: ../templates/admin_authentication_html:70
+#: ../templates/admin_authenticators_html:70
 #: ../templates/admin_cluster_html:87 ../templates/admin_database_html:105
 #: ../templates/admin_database_rss_html:119
 #: ../templates/admin_database_rss_record_html:131
@@ -5356,7 +5356,7 @@ msgstr "New aquisition"
 msgid "Neuerwerbungen"
 msgstr "New aquisitions"
 
-#: ../templates/admin_authentication_html:61
+#: ../templates/admin_authenticators_html:61
 msgid "Neues Anmeldeziel anlegen"
 msgstr "Create new authentication target"
 
@@ -5444,10 +5444,10 @@ msgstr "Search/edit user"
 msgid "Nutzer-Tags"
 msgstr "Tags"
 
-#: ../templates/admin_authentication_html:66
-#: ../templates/admin_authentication_html:86
-#: ../templates/admin_authentication_record_edit:68
-#: ../templates/admin_authentication_record_html:65
+#: ../templates/admin_authenticators_html:66
+#: ../templates/admin_authenticators_html:86
+#: ../templates/admin_authenticators_record_edit:68
+#: ../templates/admin_authenticators_record_html:65
 msgid "Nutzername"
 msgstr "User name"
 
@@ -5820,10 +5820,10 @@ msgstr "Popularity-Functions"
 msgid "Popularität"
 msgstr "Popularity"
 
-#: ../templates/admin_authentication_html:65
-#: ../templates/admin_authentication_html:86
-#: ../templates/admin_authentication_record_edit:67
-#: ../templates/admin_authentication_record_html:64
+#: ../templates/admin_authenticators_html:65
+#: ../templates/admin_authenticators_html:86
+#: ../templates/admin_authenticators_record_edit:67
+#: ../templates/admin_authenticators_record_html:64
 msgid "Port"
 msgstr "Port"
 
@@ -6319,7 +6319,7 @@ msgstr "Page:"
 msgid "Sekunden"
 msgstr "Seconds"
 
-#: ../templates/admin_authentication_html:70
+#: ../templates/admin_authenticators_html:70
 msgid "Selbstregistrierung"
 msgstr "Self registration"
 
@@ -8322,10 +8322,10 @@ msgstr "Tutorials"
 msgid "Tutorien zu einzelnen Themen:"
 msgstr "Tutorials to specific subjects:"
 
-#: ../templates/admin_authentication_html:69
-#: ../templates/admin_authentication_html:87
-#: ../templates/admin_authentication_record_edit:71
-#: ../templates/admin_authentication_record_html:68
+#: ../templates/admin_authenticators_html:69
+#: ../templates/admin_authenticators_html:87
+#: ../templates/admin_authenticators_record_edit:71
+#: ../templates/admin_authenticators_record_html:68
 msgid "Typ"
 msgstr "Type"
 
@@ -9458,7 +9458,7 @@ msgstr "other OpenBib-Portals"
 msgid "wiederholt"
 msgstr "repeated"
 
-#: ../templates/admin_authentication_record_edit:77
+#: ../templates/admin_authenticators_record_edit:77
 #: ../templates/admin_cluster_record_edit:96
 #: ../templates/admin_database_record_edit:226
 #: ../templates/admin_database_rss_record_edit:94

@@ -73,7 +73,7 @@ sub show_collection {
         databases   => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_databases_collection_tname},$ttdata);
+    $self->print_page($config->{tt_databases_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

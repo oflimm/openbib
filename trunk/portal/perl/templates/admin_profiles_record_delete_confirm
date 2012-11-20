@@ -26,14 +26,14 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="profile" %]
+[% PROCESS common/subtemplate name="admin_navigation" active_submenu="admin_profiles" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -48,7 +48,7 @@
 <table>
 <tr>
 <td>
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]">
+<form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="0" />
 <input type="submit" value="[% msg.maketext("Ja") %]">
@@ -56,7 +56,7 @@
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>
-<form method="get" action="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]/edit">
+<form method="get" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/edit">
 <input type="submit" value="[% msg.maketext("Nein") %]">
 </form>
 </td>

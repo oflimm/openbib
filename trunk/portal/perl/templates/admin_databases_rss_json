@@ -41,7 +41,7 @@ FOREACH feed IN katalog.rssfeeds;
    thisfeed = {
      link = {
           rel = 'self'
-          href = "${location}/${feed.id}"
+          href = "${path_prefix}/${config.get('databases_loc')}/id/${katalog.dbname}/rss/${feed.id}.json?l=${lang}"
      }
      id                  = feed.id
      type                = feed.type

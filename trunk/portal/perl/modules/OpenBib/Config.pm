@@ -1667,7 +1667,7 @@ sub del_databaseinfo {
         if ($databaseinfo){
             $databaseinfo->libraryinfos->delete;
             $databaseinfo->orgunit_dbs->delete;
-            $databaseinfo->searchprofiles_dbs->delete;
+            $databaseinfo->searchprofile_dbs->delete;
             $databaseinfo->view_dbs->delete;
             $databaseinfo->delete
         }
@@ -1676,11 +1676,9 @@ sub del_databaseinfo {
     if ($@){
         $logger->fatal("Error deleting Record $@");
     }
-    
-    if ($self->get_system_of_db($dbname) ne "Z39.50"){
-        # Und nun auch die Datenbank komplett loeschen
-        system("$self->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
-    }
+
+    # SQL-Datenbank, Suchmaschinenindex etc. werden per Cron auf allen
+    # Servern geloescht
 
     $logger->debug("Database $dbname deleted");
     
@@ -2632,7 +2630,7 @@ sub get_searchprofile_or_create {
 
             if ($dbinfo){            
                 $new_searchprofile->create_related(
-                    'searchprofiles_dbs',
+                    'searchprofile_dbs',
                     {
                         searchprofileid => $searchprofileid,
                         dbid            => $dbinfo->id,

@@ -36,12 +36,12 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Katalog-Profile") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('profiles_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -56,7 +56,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_profiles_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]" class="ym-form">
 
 <fieldset class="ym-columnar">
 
@@ -96,7 +96,7 @@
 
 [% FOREACH profile IN profiles.all %]
 
-<tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profile.profilename %]/edit?l=[% lang %]">[% profile.description %]</a></td><td><ul>[% FOREACH item IN config.get_profiledbs(profile.profilename).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
+<tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('profiles_loc') %]/id/[% profile.profilename %]/edit.html?l=[% lang %]">[% profile.description %]</a></td><td><ul>[% FOREACH item IN config.get_profiledbs(profile.profilename).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
 [% END %]
 
 </table>

@@ -20,11 +20,12 @@ FOREACH profile IN profiles.all ;
   this_profile = {
      link = {
           rel = 'self'
-          href = "${location}/${profile.profilename}"
+          href = "${path_prefix}/${config.get('profiles_loc')}/id/${user.ID}/${config.get('profiles_loc')}/id/${profile.profilename}.json?l=${lang}"
      }
 
      profilename = profile.profilename
      description = profile.description
+
   };
 
   profileinfos.push(this_profile);

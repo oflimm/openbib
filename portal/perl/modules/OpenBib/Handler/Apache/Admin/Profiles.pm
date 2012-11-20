@@ -110,7 +110,7 @@ sub show_collection {
         profiles   => $profileinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_profile_tname},$ttdata);
+    $self->print_page($config->{tt_admin_profiles_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -155,7 +155,7 @@ sub show_record {
         activedbs   => $activedbs_ref,
     };
 
-    $self->print_page($config->{tt_admin_profile_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_profiles_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -170,6 +170,7 @@ sub create_record {
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
+    my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $lang           = $self->param('lang');
     my $path_prefix    = $self->param('path_prefix');
@@ -206,7 +207,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{profiles_loc}/$input_data_ref->{profilename}/edit.html?l=$lang");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{profiles_loc}/id/$input_data_ref->{profilename}/edit.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -258,7 +259,7 @@ sub show_record_form {
         dbinfo      => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_profile_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_profiles_record_edit_tname},$ttdata);
         
     return Apache2::Const::OK;
 }
@@ -331,7 +332,7 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_profile_record_delete_confirm_tname},$ttdata);
+    $self->print_page($config->{tt_admin_profiles_record_delete_confirm_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

@@ -13,6 +13,18 @@
 -%]
 [%-
 
+databases = [];
+
+FOREACH db IN orgunitdbs ;
+  thisdatabase = {
+    link = {
+        rel = 'self'
+        href = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('databases_loc')}/id/${db}.json?l=${lang}"
+    }
+  };
+  databases.push(thisdatabase);
+END;
+
 this_json_output = {
   link = {
           rel = 'self'
@@ -22,7 +34,7 @@ this_json_output = {
   description = orgunitinfo.description
   orgunitname = orgunitinfo.orgunitname
   nr          = orgunitinfo.nr
-  databases   = orgunitdbs
+  databases   = databases
 };
 
 to_json(this_json_output);

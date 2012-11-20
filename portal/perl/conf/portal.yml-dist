@@ -2113,6 +2113,17 @@ dispatch_rules:
      args:
         personalized_loc: 'clusters'        
      runmode: 'show_collection'
+  - # Resource: clusters_loc 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Clusters'
+     rule: '/portal/:view/clusters/id[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'clusters'        
+     runmode: 'show_collection'
   - # Resource: clusters_loc Record show
      module: 'OpenBib::Handler::Apache::Clusters'
      rule: '/portal/:view/clusters/id/:clusterid[get]'
@@ -2122,6 +2133,15 @@ dispatch_rules:
   - # Repraesentation: users_loc/clusters_loc
      module: 'OpenBib::Handler::Apache::Admin::Clusters'
      rule: '/portal/:view/users/id/:userid/clusters[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # Repraesentation: users_loc/clusters_loc 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Admin::Clusters'
+     rule: '/portal/:view/users/id/:userid/clusters/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2169,6 +2189,17 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'servers'
+  - # users/servers_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Servers'
+     rule: '/portal/:view/servers/id[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'servers'
   - # users_loc/servers_loc: Record show
      module: 'OpenBib::Handler::Apache::Servers'
      rule: '/portal/:view/servers/id/:serverid[get]'
@@ -2178,6 +2209,15 @@ dispatch_rules:
   - # users/servers_loc:
      module: 'OpenBib::Handler::Apache::Admin::Servers'
      rule: '/portal/:view/users/id/:id/servers[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users/servers_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Admin::Servers'
+     rule: '/portal/:view/users/id/:id/servers/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2225,6 +2265,17 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'databases'
+  - # users/databases_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Databases'
+     rule: '/portal/:view/databases/id[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'databases'
   - # users_loc/databases_loc: Record show
      module: 'OpenBib::Handler::Apache::Databases'
      rule: '/portal/:view/databases/id/:databaseid[get]'
@@ -2234,6 +2285,15 @@ dispatch_rules:
   - # users/databases_loc:
      module: 'OpenBib::Handler::Apache::Admin::Databases'
      rule: '/portal/:view/users/id/:id/databases[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users/databases_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Admin::Databases'
+     rule: '/portal/:view/users/id/:id/databases/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2281,6 +2341,17 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'databases'
+  - # databases_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Databases::RSS'
+     rule: '/portal/:view/databases/id/:databaseid/rss/id[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'databases'
   - # databases_loc: Record show
      module: 'OpenBib::Handler::Apache::Databases::RSS'
      rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid[get]'
@@ -2290,6 +2361,15 @@ dispatch_rules:
   - # users/databases_loc:
      module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/users/id/:id/databases/id/:databaseid/rss[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users/databases_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
+     rule: '/portal/:view/users/id/:id/databases/id/:databaseid/rss/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2337,6 +2417,17 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'profiles'
+  - # users/profiles_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Profiles'
+     rule: '/portal/:view/profiles/id[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'profiles'
   - # users_loc/profiles_loc: Record show
      module: 'OpenBib::Handler::Apache::Profiles'
      rule: '/portal/:view/profiles/id/:profileid[get]'
@@ -2346,6 +2437,15 @@ dispatch_rules:
   - # users/profiles_loc:
      module: 'OpenBib::Handler::Apache::Admin::Profiles'
      rule: '/portal/:view/users/id/:id/profiles[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users/profiles_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Admin::Profiles'
+     rule: '/portal/:view/users/id/:id/profiles/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2378,6 +2478,82 @@ dispatch_rules:
   - # users_loc/profiles_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Profiles'
      rule: '/portal/:view/profiles/id/:profileid[delete]'
+     runmode: 'delete_record'
+
+#####################################################################
+# Organisationseinheiten-Resource/Repraesentation
+  - # users/profiles_loc:
+     module: 'OpenBib::Handler::Apache::OrganizationalUnits'
+     rule: '/portal/:view/profiles/id/:profileid/orgunits[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'profiles'
+  - # users/profiles_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::OrganizationalUnits'
+     rule: '/portal/:view/profiles/id/:profileid/orgunits/id[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'profiles'
+  - # users_loc/profiles_loc: Record show
+     module: 'OpenBib::Handler::Apache::OrganizationalUnits'
+     rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid[get]'
+     runmode: 'show_record'
+     args:
+        personalized_loc: 'profiles'
+  - # users/profiles_loc:
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
+     rule: '/portal/:view/users/id/:id/profiles/:profileid/orgunits[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users/profiles_loc: 'Hackability' Fallback
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
+     rule: '/portal/:view/users/id/:id/profiles/:profileid/orgunits/id[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/profiles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
+     rule: '/portal/:view/users/id/:id/profiles/id/:profileid/orgunits/id/:orgunitid[get]'
+     runmode: 'show_record'
+  - # users_loc/profiles_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
+     rule: '/portal/:view/users/id/:id/profiles/id/:profileid/orgunits/id/:orgunitid/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users_loc/profiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
+     rule: '/portal/:view/profiles/id/:profileid/orgunits[post]'
+     runmode: 'create_record'
+  - # users_loc/profiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
+     rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid[post]'
+     runmode: 'update_record'
+  - # users_loc/profiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
+     rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid[put]'
+     runmode: 'update_record'
+  - # users_loc/profiles_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
+     rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid[delete]'
      runmode: 'delete_record'
 
 css_loc: /css

@@ -2067,29 +2067,26 @@ sub del_orgunit {
 
     # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
     eval {
-        $self->{schema}->resultset('OrgunitDb')->search_rs(
+        my $orgunitinfo = $self->{schema}->resultset('Orgunitinfo')->search_rs(
             {
-                'orgunitid.orgunitname' => $orgunitname,
-                'profileid.profilename' => $profilename,
-            },
-            {
-                join => [ 'orgunitid', { 'orgunitid' => 'profileid' } ],
-            }
-        )->all->delete;
-    };
-    
-    # DBI: "delete from orgunitinfo where profilename = ? and orgunitname = ?"
-    eval {
-        $self->{schema}->resultset('Orgunitinfo')->search_rs(
-            {
-                'me.orgunitname'        => $orgunitname,
+                'me.orgunitname' => $orgunitname,
                 'profileid.profilename' => $profilename,
             },
             {
                 join => 'profileid',
             }
-        )->single->delete;
+        )->single;
+
+        if ($orgunitinfo){
+            $orgunitinfo->orgunit_dbs->delete;
+            $orgunitinfo->delete
+        }
     };
+
+    if ($@){
+        $logger->error("Can't delete $profilename -> $orgunitname: ".$@);
+    }
+
     return;
 }
 

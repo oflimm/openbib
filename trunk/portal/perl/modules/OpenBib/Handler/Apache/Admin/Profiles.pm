@@ -171,6 +171,7 @@ sub create_record {
     my $query          = $self->query();
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $path_prefix    = $self->param('path_prefix');
     my $location       = $self->param('location');
 
@@ -205,7 +206,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profiles_loc}/$input_data_ref->{profilename}/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{profiles_loc}/$input_data_ref->{profilename}/edit.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -300,7 +301,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profiles_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{profiles_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -365,7 +366,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_profiles_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{profiles_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

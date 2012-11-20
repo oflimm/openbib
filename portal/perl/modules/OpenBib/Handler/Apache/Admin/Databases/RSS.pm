@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::DatabasesRSS
+#  OpenBib::Handler::Apache::Admin::Databases::RSS
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::DatabasesRSS;
+package OpenBib::Handler::Apache::Admin::Databases::RSS;
 
 use strict;
 use warnings;
@@ -199,6 +199,7 @@ sub create_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
@@ -234,7 +235,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}/$dbname/rss");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$dbname/rss.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -344,42 +345,24 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $dbname");
-        
-        if ($confirm){
-            my $rssinfo_ref = $config->get_rssfeed_by_id($rssid);
-
-            my $ttdata={
-                rssinfo      => $rssinfo_ref,
-                dbname       => $dbname,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_databases_rss_record_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
-        }
-        else {
-            $self->delete_record;
-            return;
-        }
-    }
-
     my $dbid = $config->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
 
-    $input_data_ref->{dbid} = $dbid;
-    $input_data_ref->{id}   = $rssid;
+    my $update_args = {
+        dbid => $dbid,
+        id   => $rssid,
+    };
+
+    if ($input_data_ref->{active}){
+        $update_args->{active} = $input_data_ref->{active};
+    }
+    
     
     # Ansonsten POST oder PUT => Aktualisieren
-    $config->update_databaseinfo_rss($input_data_ref);
+    $config->update_databaseinfo_rss($update_args);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}/$dbname/rss");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}/id/$dbname/rss");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {

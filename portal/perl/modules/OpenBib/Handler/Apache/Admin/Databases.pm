@@ -150,7 +150,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/$input_data_ref->{dbname}/edit.html?l=$lang");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$input_data_ref->{dbname}/edit.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -336,7 +336,9 @@ sub delete_record {
         
         return Apache2::Const::OK;
     }
-            
+
+    $logger->debug("Deleting database record $dbname");
+    
     $config->del_databaseinfo($dbname);
 
     return unless ($self->param('representation') eq "html");

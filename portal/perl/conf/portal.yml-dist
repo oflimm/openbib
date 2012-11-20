@@ -974,52 +974,52 @@ dispatch_rules:
      runmode: 'show_user'
 
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles.html[get]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles.html[get]'
      runmode: 'show_collection'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles.json[get]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles.json[get]'
      runmode: 'show_collection'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles.rdf[get]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles.rdf[get]'
      runmode: 'show_collection'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles[get]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles[get]'
      runmode: 'show_collection'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles[post]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles[post]'
      runmode: 'create_record'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles/id/:profileid[get]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[get]'
      runmode: 'show_record'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles/id/:profileid[post]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[post]'
      runmode: 'update_record'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles/id/:profileid/edit[get]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid/edit[get]'
      runmode: 'show_record_form'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles/id/:profileid/edit.html[get]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid/edit.html[get]'
      runmode: 'show_record_form'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles/id/:profileid[post]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[post]'
      runmode: 'update_record'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles/id/:profileid[put]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[put]'
      runmode: 'update_record'
   - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Profiles'
-     rule: '/portal/:view/users/id/:userid/profiles/id/:profileid[delete]'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[delete]'
      runmode: 'delete_record'
 
 
@@ -1310,26 +1310,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::DatabaseChoice'
      rule: '/portal/:view/selectdatabase[post]'
      runmode: 'update_collection'
-  - # database_loc:
-     module: 'OpenBib::Handler::Apache::Databases'
-     rule: '/portal/:view/databases.html[get]'
-     runmode: 'show_collection'
-  - # database_loc:
-     module: 'OpenBib::Handler::Apache::Databases'
-     rule: '/portal/:view/databases.json[get]'
-     runmode: 'show_collection'
-  - # database_loc:
-     module: 'OpenBib::Handler::Apache::Databases'
-     rule: '/portal/:view/databases.rdf[get]'
-     runmode: 'show_collection'
-  - # database_loc:
-     module: 'OpenBib::Handler::Apache::Databases'
-     rule: '/portal/:view/databases[get]'
-     runmode: 'show_collection'
-  - # database_loc:
-     module: 'OpenBib::Handler::Apache::Databases'
-     rule: '/portal/:view/databases/:databaseid[get]'
-     runmode: 'show_record'
   - # dispatchquery_loc:
      module: 'OpenBib::Handler::Apache::DispatchQuery'
      rule: '/portal/:view/dispatchquery'
@@ -1545,141 +1525,93 @@ dispatch_rules:
      rule: '/portal/:view/registrations/id/:registrationid[get]'
      runmode: 'register'
 ##### Web-Administration #####################################
-  - # databases_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
+  - # admin_database_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss.html[get]'
      runmode: 'show_collection'
-  - # databases_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
+  - # admin_database_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss.json[get]'
      runmode: 'show_collection'
-  - # databases_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
+  - # admin_database_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss.rdf[get]'
      runmode: 'show_collection'
-  - # databases_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
+  - # admin_database_loc: Collection Overview
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss[get]'
      runmode: 'show_collection'
-#  - # databases_loc: Collection show from
-#     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
+#  - # admin_database_loc: Collection show from
+#     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
 #     rule: '/portal/:view/admin/databases/id/:databaseid/rss/new[get]'
 #     runmode: 'show_collection_form'
-  - # databases_loc: Creat Record in Collection
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
+  - # admin_database_loc: Creat Record in Collection
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss[post]'
      runmode: 'create_record'
-  - # databases_loc: Show Record
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
+  - # admin_database_loc: Show Record
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid[get]'
      runmode: 'show_record'
-  - # databases_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
+  - # admin_database_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid/edit[get]'
      runmode: 'show_record_form'
-  - # databases_loc: Record show form
+  - # admin_database_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid/edit.html[get]'
      runmode: 'show_record_form'
-  - # databases_loc: Update Record
+  - # admin_database_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid[post]'
      runmode: 'update_record'
-  - # databases_loc: Update Record
+  - # admin_database_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid[put]'
      runmode: 'update_record'
-  - # databases_loc: Delete Record
+  - # admin_database_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
      rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid[delete]'
      runmode: 'delete_record'
 
 
-  - # databases_loc: Show Record
+  - # admin_database_loc: Show Record
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries.html[get]'
      runmode: 'show_record'
-  - # databases_loc: Show Record
+  - # admin_database_loc: Show Record
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries.json[get]'
      runmode: 'show_record'
-  - # databases_loc: Show Record
+  - # admin_database_loc: Show Record
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries[get]'
      runmode: 'show_record'
-  - # databases_loc: Record show form
+  - # admin_database_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries/new[post]'
      runmode: 'create_record'
-  - # databases_loc: Record show form
+  - # admin_database_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries/edit.html[get]'
      runmode: 'show_record_form'
-  - # databases_loc: Record show form
+  - # admin_database_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries/edit[get]'
      runmode: 'show_record_form'
-  - # databases_loc: Update Record
+  - # admin_database_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries[post]'
      runmode: 'update_record'
-  - # databases_loc: Update Record
+  - # admin_database_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries[put]'
      runmode: 'update_record'
-  - # databases_loc: Delete Record
+  - # admin_database_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries[delete]'
      runmode: 'delete_record'
 
-  - # databases_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases.html[get]'
-     runmode: 'show_collection'
-  - # databases_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases.json[get]'
-     runmode: 'show_collection'
-  - # databases_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases.rdf[get]'
-     runmode: 'show_collection'
-  - # databases_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases[get]'
-     runmode: 'show_collection'
-#  - # databases_loc: Collection show from
-#     module: 'OpenBib::Handler::Apache::Admin::Databases'
-#     rule: '/portal/:view/admin/databases/new[get]'
-#     runmode: 'show_collection_form'
-  - # databases_loc: Creat Record in Collection
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases[post]'
-     runmode: 'create_record'
-  - # databases_loc: Show Record
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases/id/:databaseid[get]'
-     runmode: 'show_record'
-  - # databases_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases/id/:databaseid/edit[get]'
-     runmode: 'show_record_form'
-  - # databases_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases/id/:databaseid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # databases_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases/id/:databaseid[post]'
-     runmode: 'update_record'
-  - # databases_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases/id/:databaseid[put]'
-     runmode: 'update_record'
-  - # databases_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/admin/databases/id/:databaseid[delete]'
-     runmode: 'delete_record'
 
   - # admin_profile_loc: Collection Overview
      module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
@@ -1728,56 +1660,6 @@ dispatch_rules:
   - # admin_profile_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
      rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid[delete]'
-     runmode: 'delete_record'
-
-
-  - # admin_profile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles.html[get]'
-     runmode: 'show_collection'
-  - # admin_profile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles.json[get]'
-     runmode: 'show_collection'
-  - # admin_profile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles.rdf[get]'
-     runmode: 'show_collection'
-  - # admin_profile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles[get]'
-     runmode: 'show_collection'
-#  - # admin_profile_loc: Collection show from
-#     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-#     rule: '/portal/:view/admin/profiles/new[get]'
-#     runmode: 'show_collection_form'
-  - # admin_profile_loc: Creat Record in Collection
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles[post]'
-     runmode: 'create_record'
-  - # admin_profile_loc: Show Record
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles/id/:profileid[get]'
-     runmode: 'show_record'
-  - # admin_profile_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles/id/:profileid/edit[get]'
-     runmode: 'show_record_form'
-  - # admin_profile_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles/id/:profileid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # admin_profile_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles/id/:profileid[post]'
-     runmode: 'update_record'
-  - # admin_profile_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles/id/:profileid[put]'
-     runmode: 'update_record'
-  - # admin_profile_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/admin/profiles/id/:profileid[delete]'
      runmode: 'delete_record'
 
 
@@ -2074,47 +1956,47 @@ dispatch_rules:
      rule: '/portal/:view/admin/users/search.rdf'
      runmode: 'show_search'
 
-  - # admin_authenticators_loc:
+  - # admin_authentication_loc:
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators.html[get]'
      runmode: 'show_collection'
-  - # admin_authenticators_loc:
+  - # admin_authentication_loc:
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators.json[get]'
      runmode: 'show_collection'
-  - # admin_authenticators_loc:
+  - # admin_authentication_loc:
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators.rdf[get]'
      runmode: 'show_collection'
-  - # admin_authenticators_loc:
+  - # admin_authentication_loc:
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators[get]'
      runmode: 'show_collection'
-  - # admin_authenticators_loc: Record show form
+  - # admin_authentication_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid/edit[get]'
      runmode: 'show_record_form'
-  - # admin_authenticators_loc: Record show form
+  - # admin_authentication_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid/edit.html[get]'
      runmode: 'show_record_form'
-  - # admin_authenticators_loc: Record show
+  - # admin_authentication_loc: Record show
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid[get]'
      runmode: 'show_record'
-  - # admin_authenticators_loc: Create Record
+  - # admin_authentication_loc: Create Record
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators[post]'
      runmode: 'create_record'
-  - # admin_authenticators_loc: Update Record
+  - # admin_authentication_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid[post]'
      runmode: 'update_record'
-  - # admin_authenticators_loc: Update Record
+  - # admin_authentication_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid[put]'
      runmode: 'update_record'
-  - # admin_authenticators_loc: Delete Record
+  - # admin_authentication_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Authenticators'
      rule: '/portal/:view/admin/authenticators/id/:authenticatorid[delete]'
      runmode: 'delete_record'
@@ -2218,6 +2100,7 @@ dispatch_rules:
 # - ein kanonischer Resource-URI [get,post,put,delete]
 # - Automatische Weiterleitung von [get] auf ggf. nutzerspezifische Repreaesentation
 
+#####################################################################
 # Clusters-Resource/Repraesentation
   - # Resource: clusters_loc
      module: 'OpenBib::Handler::Apache::Clusters'
@@ -2249,11 +2132,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Admin::Clusters'
      rule: '/portal/:view/users/id/:userid/clusters/id/:clusterid[get]'
      runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
   - # Repraesentation: users_loc/clusters_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Clusters'
      rule: '/portal/:view/users/id/:userid/clusters/id/:clusterid/edit[get]'
@@ -2278,6 +2156,7 @@ dispatch_rules:
      rule: '/portal/:view/clusters/id/:clusterid[delete]'
      runmode: 'delete_record'
 
+#####################################################################
 # Servers-Resource/Repraesentation
   - # users/servers_loc:
      module: 'OpenBib::Handler::Apache::Servers'
@@ -2294,11 +2173,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Servers'
      rule: '/portal/:view/servers/id/:serverid[get]'
      runmode: 'show_record'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
      args:
         personalized_loc: 'servers'
   - # users/servers_loc:
@@ -2314,11 +2188,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Admin::Servers'
      rule: '/portal/:view/users/id/:id/servers/id/:serverid[get]'
      runmode: 'show_record'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
   - # users_loc/servers_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Servers'
      rule: '/portal/:view/users/id/:id/servers/id/:serverid/edit[get]'
@@ -2341,6 +2210,174 @@ dispatch_rules:
   - # users_loc/servers_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Servers'
      rule: '/portal/:view/servers/id/:serverid[delete]'
+     runmode: 'delete_record'
+
+#####################################################################
+# Databases-Resource/Repraesentation
+  - # users/databases_loc:
+     module: 'OpenBib::Handler::Apache::Databases'
+     rule: '/portal/:view/databases[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'databases'
+  - # users_loc/databases_loc: Record show
+     module: 'OpenBib::Handler::Apache::Databases'
+     rule: '/portal/:view/databases/id/:databaseid[get]'
+     runmode: 'show_record'
+     args:
+        personalized_loc: 'databases'
+  - # users/databases_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Databases'
+     rule: '/portal/:view/users/id/:id/databases[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/databases_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Databases'
+     rule: '/portal/:view/users/id/:id/databases/id/:databaseid[get]'
+     runmode: 'show_record'
+  - # users_loc/databases_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Databases'
+     rule: '/portal/:view/users/id/:id/databases/id/:databaseid/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users_loc/databases_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Databases'
+     rule: '/portal/:view/databases[post]'
+     runmode: 'create_record'
+  - # users_loc/databases_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Databases'
+     rule: '/portal/:view/databases/id/:databaseid[post]'
+     runmode: 'update_record'
+  - # users_loc/databases_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Databases'
+     rule: '/portal/:view/databases/id/:databaseid[put]'
+     runmode: 'update_record'
+  - # users_loc/databases_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Databases'
+     rule: '/portal/:view/databases/id/:databaseid[delete]'
+     runmode: 'delete_record'
+
+#####################################################################
+# Databases RSS-Resource/Repraesentation
+  - # databases_loc:
+     module: 'OpenBib::Handler::Apache::Databases::RSS'
+     rule: '/portal/:view/databases/id/:databaseid/rss[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'databases'
+  - # databases_loc: Record show
+     module: 'OpenBib::Handler::Apache::Databases::RSS'
+     rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid[get]'
+     runmode: 'show_record'
+     args:
+        personalized_loc: 'databases'
+  - # users/databases_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
+     rule: '/portal/:view/users/id/:id/databases/id/:databaseid/rss[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/databases_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
+     rule: '/portal/:view/users/id/:id/databases/id/:databaseid/rss/id/:rssid[get]'
+     runmode: 'show_record'
+  - # users_loc/databases_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
+     rule: '/portal/:view/users/id/:id/databases/id/:databaseid/rss/id/:rssid/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users_loc/databases_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
+     rule: '/portal/:view/databases/id/:databaseid/rss[post]'
+     runmode: 'create_record'
+  - # users_loc/databases_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
+     rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid[post]'
+     runmode: 'update_record'
+  - # users_loc/databases_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
+     rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid[put]'
+     runmode: 'update_record'
+  - # users_loc/databases_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
+     rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid[delete]'
+     runmode: 'delete_record'
+
+#####################################################################
+# Katalogprofile-Resource/Repraesentation
+  - # users/profiles_loc:
+     module: 'OpenBib::Handler::Apache::Profiles'
+     rule: '/portal/:view/profiles[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'profiles'
+  - # users_loc/profiles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Profiles'
+     rule: '/portal/:view/profiles/id/:profileid[get]'
+     runmode: 'show_record'
+     args:
+        personalized_loc: 'profiles'
+  - # users/profiles_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Profiles'
+     rule: '/portal/:view/users/id/:id/profiles[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/profiles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Profiles'
+     rule: '/portal/:view/users/id/:id/profiles/id/:profileid[get]'
+     runmode: 'show_record'
+  - # users_loc/profiles_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Profiles'
+     rule: '/portal/:view/users/id/:id/profiles/id/:profileid/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users_loc/profiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Profiles'
+     rule: '/portal/:view/profiles[post]'
+     runmode: 'create_record'
+  - # users_loc/profiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Profiles'
+     rule: '/portal/:view/profiles/id/:profileid[post]'
+     runmode: 'update_record'
+  - # users_loc/profiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Profiles'
+     rule: '/portal/:view/profiles/id/:profileid[put]'
+     runmode: 'update_record'
+  - # users_loc/profiles_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Profiles'
+     rule: '/portal/:view/profiles/id/:profileid[delete]'
      runmode: 'delete_record'
 
 css_loc: /css
@@ -3055,13 +3092,14 @@ tt_admin_views_rss_record_edit_tname: admin_views_rss_record_edit
 tt_admin_views_rss_record_tname: admin_views_rss_record
 tt_admin_views_tname: admin_views
 
-
 tt_authenticators_tname: authenticators
 tt_authenticators_record_tname: authenticators_record
 tt_clusters_tname: clusters
 tt_clusters_record_tname: clusters_record
 tt_databases_tname: databases
 tt_databases_record_tname: databases_record
+tt_databases_rss_tname: databases_rss
+tt_databases_rss_record_tname: databases_rss_record
 tt_locations_tname: locations 
 tt_locations_record_tname: locations_record
 tt_orgunits_tname: orgunits 
@@ -3136,9 +3174,6 @@ tt_connector_unapi_mods_tname: connector_unapi_mods
 tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
 
 tt_corporatebodies_tname: corporatebodies
-
-tt_databases_collection_tname: databases_collection
-tt_databases_record_tname: databases_record
 
 tt_databasechoice_tname: databasechoice
 tt_error_tname: error

@@ -2649,10 +2649,15 @@ sub get_searchprofiles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Simplified lookup via JSON-Representation
-    my $searchprofile = $self->{schema}->resultset('Searchprofile');
+    my @searchprofiles;
+    
+    my $searchprofiles = $self->{schema}->resultset('Searchprofile')->search_rs(undef,{ sort_by => ['id'] });
 
-    return $searchprofile; 
+    foreach my $thissearchprofile ($searchprofiles->all){
+        push @searchprofiles, $thissearchprofile;
+    }
+        
+    return @searchprofiles;
 }
 
 sub get_databases_of_searchprofile {
@@ -2741,30 +2746,7 @@ sub update_searchprofile {
     my $logger = get_logger();
 
     my $searchprofile = $self->{schema}->resultset('Searchprofile')->single({ id => $searchprofileid});
-    
-    my $profileindex_path = $self->{xapian_index_base_path}."/profile/".$searchprofileid;        
-
-    $logger->debug("Updating searchprofile $searchprofileid with own_index=$own_index and path $profileindex_path");
-    
-    # Delete joind profile index
-    if ($own_index eq "false" && -d $profileindex_path){
-        eval {
-            opendir (DIR, $profileindex_path);
-            my @files = readdir(DIR);
-            closedir DIR;
-            
-            foreach my $file (@files) {
-                unlink ("$profileindex_path/$file");
-            }
-            
-            rmdir $profileindex_path;
-        };
-
-        if ($@){
-            $logger->error("Couldn't delete profileindex $profileindex_path");
-        }
-    }
-    
+        
     if ($searchprofile){
         $searchprofile->update({own_index => $own_index});
     }
@@ -2778,15 +2760,8 @@ sub get_searchprofile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my @searchprofiles;
-    
-    my $searchprofiles = $self->{schema}->resultset('Searchprofile')->search_rs(undef,{ sort_by => ['id'] });
+    return $self->{schema}->resultset('Searchprofile');
 
-    foreach my $thissearchprofile ($searchprofiles->all){
-        push @searchprofiles, $thissearchprofile;
-    }
-        
-    return @searchprofiles;
 }
 
 sub get_searchprofiles_with_own_index {
@@ -2804,6 +2779,42 @@ sub get_searchprofiles_with_own_index {
     }
         
     return @searchprofiles;
+}
+
+sub delete_stale_searchprofile_indexes {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $searchprofiles = $self->{schema}->resultset('Searchprofile');
+
+    foreach my $searchprofile ($searchprofiles->all){
+        my $profileindex_path = $self->{xapian_index_base_path}."/_searchprofile/".$searchprofile->id;        
+
+        $logger->debug("Deleting stale Index for searchprofile $searchprofile->id with path $profileindex_path");
+    
+        # Delete joind profile index
+        if ($searchprofile->own_index eq "false" && -d $profileindex_path){
+            eval {
+                opendir (DIR, $profileindex_path);
+                my @files = readdir(DIR);
+                closedir DIR;
+                
+                foreach my $file (@files) {
+                    unlink ("$profileindex_path/$file");
+                }
+                
+                rmdir $profileindex_path;
+            };
+            
+            if ($@){
+                $logger->error("Couldn't delete profileindex $profileindex_path");
+            }
+        }        
+    }
+
+    return;
 }
 
 1;

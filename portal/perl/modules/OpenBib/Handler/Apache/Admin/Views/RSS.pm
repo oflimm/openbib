@@ -72,6 +72,7 @@ sub setup {
         'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'create_record'             => 'create_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'update_record'             => 'update_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -129,7 +130,7 @@ sub show_record {
         dbinfo     => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_view_rss_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_views_rss_record_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -182,7 +183,7 @@ sub show_record_form {
         dbinfo     => $dbinfotable,
     };
 
-    $self->print_page($config->{tt_admin_view_rss_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_views_rss_record_edit_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -199,13 +200,14 @@ sub create_record {
     # Shared
     my $config      = $self->param('config');
     my $location    = $self->param('location');
+    my $user        = $self->param('user');
     my $path_prefix = $self->param('path_prefix');
     
     $self->update_record;
  
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_views_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{views_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -265,7 +267,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_views_loc}/$viewname/rss/edit.html");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{views_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {

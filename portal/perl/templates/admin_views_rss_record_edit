@@ -30,10 +30,26 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('views_loc') %].html?l=[% lang %]">[% msg.maketext("Views") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/edit.html?l=[% lang %]">[% viewinfo.viewname %]</a></li>
+         <li><a href="#" class="lastitem">RSS</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="view_record" active_subsubmenu="view_record_rss" %]
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_views_record" active_subsubmenu="admin_views_record_rss" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -41,59 +57,48 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_views_loc') %]/[% viewinfo.viewname %]/rss">
+<form method="post" action="[% path_prefix %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss" class="ym-form">
 <input type="hidden" name="_method"     value="PUT" />
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("RSS bearbeiten") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><span style="color:blue">[% viewinfo.viewname %]</span></td></tr>
-<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% viewinfo.description %]"</td></tr>
-</table>
+<fieldset class="ym-columnar">
 
-</td></tr>
-</table>
+<legend>[% msg.maketext("RSS-Einstellungen &auml;ndern") %]</legend>
 
-<b>[% msg.maketext("RSS-Feed zu diesem View") %]</b><br /><br />
-
-<select name="rssfeeds" multiple="multiple" size="10">
-
+<div class="ym-fbox-select">
+<label for="rssfeeds">[% msg.maketext("RSS-Feed zu diesem View") %]</label>
+<select name="rssfeeds" id="rssfeeds" multiple="multiple" size="10">
 [% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
 [% NEXT IF singlefeed.type != 1 %]
 <option value="[% feedid %]" [% IF viewrssfeed.${feedid} %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
 [% END %]
-
-
 </select>
+</div>
 
-
-<p />
-
-<p />
-
-<b>[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</b><br /><br />
-
-<select name="primrssfeed">
-
+<div class="ym-fbox-select">
+<label for="primrssfeed">[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</label>
+<select name="primrssfeed" id="primrssfeed">
 [% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
 [% NEXT IF singlefeed.type != 1 %]
-
 <option value="[% feedid %]" [% IF viewinfo.rssid.id == feedid %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
-
 [% END %]
-
-
 </select>
 
+</fieldset>
 
-<p />
+<div class="ym-fbox-button">
 
 <input type="submit" value="[% msg.maketext("Ändern") %]" />
 
+&nbsp;&nbsp;&nbsp;
+
+<a class="ob_button" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+</div>
+
 </form>
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

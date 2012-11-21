@@ -156,7 +156,7 @@ sub show_record_form {
 
     # Dispatched Args
     my $view            = $self->param('view');
-    my $searchprofileid = $self->strip_suffix($self->param('searchprofileid'));
+    my $searchprofileid = $self->param('searchprofileid');
 
     # Shared Args
     my $config         = $self->param('config');
@@ -199,9 +199,8 @@ sub update_record {
     my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $ownindex        = $query->param('own_index')       || 'false';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
     
     if (!$self->authorization_successful){
         $self->print_authorization_error();
@@ -215,13 +214,31 @@ sub update_record {
 
     # POST oder PUT => Aktualisieren
 
-    $config->update_searchprofile($searchprofileid,$ownindex);
+    $config->update_searchprofile($searchprofileid,$input_data_ref->{own_index});
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_searchprofiles_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{searchprofiles_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record $searchprofileid");
+        $self->show_record;
+    }
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        own_index => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },        
+    };
 }
 
 1;

@@ -35,20 +35,20 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_searchprofiles_loc') %].html?l=[% lang %]">Suchprofile</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Suchprofil") %] [% searchprofileid %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Suchprofile") %]</a></li>
+         <li><a href="#" class="lastitem">[% searchprofileid %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_searchprofiles_loc') %]/id/[% searchprofileid %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofileid %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="searchprofiles_record" active_subsubmenu="searchprofiles_record" %]
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_searchprofiles_record" active_subsubmenu="admin_searchprofiles_record" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -56,35 +56,40 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_searchprofiles_loc') %]/id/[% searchprofileid %]">
+<form method="post" action="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofileid %]" class="ym-form">
 <input type="hidden" name="_method"     value="PUT" />
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Suchprofil bearbeiten") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td><b>[% msg.maketext("Id") %]</b></td><td><span style="color:blue">[% searchprofileid %]</span></td></tr>
-<tr>
-<td>[% msg.maketext("Eigener Index") %]</td>
-<td>
-<select name="own_index">
-<option value="true" [% IF searchprofile.own_index == '1' %]selected[% END %]>[% msg.maketext("Ja") %]</option>
-<option value="false" [% IF searchprofile.own_index != '1' %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Suchprofil bearbeiten") %]</legend>
+
+<div class="ym-fbox-text">
+<label>[% msg.maketext("Id") %]</label>
+[% searchprofileid %]
+</div>
+
+
+<div class="ym-fbox-select">
+<label for="profilename">[% msg.maketext("Eigener Index") %]</label>
+<select id="own_index" name="own_index">
+<option value="1" [% IF searchprofile.own_index %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="0" [% IF NOT searchprofile.own_index %]selected="selected"[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
-</td>
-</tr>
-<tr><td><b>[% msg.maketext("Kataloge") %]</b></td><td><ul>[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]<li>[% dbinfo.dbnames.${dbname}.short %]</li>[% END %]</ul></td></tr>
-</table>
+</div>
 
-</td></tr>
-</table>
+<div class="ym-fbox-text">
+<label>[% msg.maketext("Kataloge") %]</label>
+<ul>[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]<li>[% dbinfo.dbnames.${dbname}.short %]</li>[% END %]</ul>
+</div>
 
-
-<p />
-
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Ändern") %]" />
+</div>
+
+</fieldset>
 
 </form>
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

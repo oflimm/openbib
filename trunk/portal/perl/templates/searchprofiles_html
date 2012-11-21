@@ -1,19 +1,19 @@
 [%#-
 #######################################################################
 #
-# Templatename: person_html
+# Templatename: admin_searchprofiles_html
 #
-# Typ         : Subtemplate
+# Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Ausgabe eines Verfasser-Normdatensatzes als HTML-Seite im Portal
+# Ausgabe aller automatisch erzeugten searchprofiles
 #
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
-<body>
+  <body>
 
 <!-- skip link navigation -->
 <ul class="ym-skiplinks">
@@ -24,9 +24,9 @@
 <div class="ym-wrapper">
   <div class="ym-wbox">
 
-[% PROCESS common/subtemplate name="corporate_banner" %] 
+[% PROCESS common/subtemplate name="corporate_banner" %]
 
-[% PROCESS common/subtemplate name="mainnavigation" %]
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
@@ -34,15 +34,13 @@
    <div class="ob-functional_nav">
      <div class="ob-breadcrumb">
        <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="#">[% msg.maketext("Suchprofil") %]</a></li>
-         <li><a href="#" class="lastitem">[% profileid %]</a></li>
-      </ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Suchprofile") %]</a></li>
+       </ul>
      </div>
-     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/[% profileid %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/[% profileid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
    </div>
 
     <div class="ym-column linearize-level-1">
@@ -55,17 +53,18 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>Kataloge im Suchprofil [% profileid %]</h1>
-[%# USE dumper; dumper.dump(dbinfo) %]
-[% IF databases.size > 0 %]
-<ul>
-[% FOREACH database IN databases %]
-<li><b>[% dbinfo.dbnames.${database}.full %]</b> / [% database %]</li>
+[% searchprofiles = config.get_searchprofiles %]
+
+<h3>[% msg.maketext("Vorhandene Suchprofile") %]</h3>
+
+<table class="ym-full">
+<tr><th>ID</th><th># Datenbanken</th><th>Eigener Index</th></tr>
+[% FOREACH searchprofile IN searchprofiles %]
+<tr><td><a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofile.id %].html?l=[% lang %]">[% searchprofile.id %]</a></td><td align="center">[% config.get_databases_of_searchprofile(searchprofile.id).size %]</td><td>[% IF searchprofile.own_index %]Index[% END %]</td></tr>
 [% END %]
-</ul>
-[% ELSE %]
-Mit diesem Recherche-Profil sind keine Kataloge assiziiert.
-[% END %]
+</table>
+</td></td>
+</table>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

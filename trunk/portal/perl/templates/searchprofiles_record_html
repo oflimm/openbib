@@ -1,17 +1,17 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_searchprofiles_html
+# Templatename: admin_editview
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Ausgabe aller automatisch erzeugten searchprofiles
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Grundlegende Statistikinformationen' %]
+[% PROCESS common/subtemplate name="std_header" %]
 
   <body>
 
@@ -35,19 +35,18 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Suchprofile") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Suchprofile") %]</a></li>
+         <li><a href="#" class="lastitem">[% searchprofileid %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofileid %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_searchprofiles" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -55,17 +54,24 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% searchprofiles = config.get_searchprofiles %]
-
-<h3>[% msg.maketext("Vorhandene Suchprofile") %]</h3>
-
 <table class="ym-full">
-<tr><th>ID</th><th># Datenbanken</th><th>Eigener Index</th></tr>
-[% FOREACH searchprofile IN searchprofiles %]
-<tr><td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofile.id %]/edit.html?l=[% lang %]">[% searchprofile.id %]</a></td><td align="center">[% config.get_databases_of_searchprofile(searchprofile.id).size %]</td><td>[% IF searchprofile.own_index %]Index[% END %]</td></tr>
-[% END %]
-</table>
-</td></td>
+<tr>
+<th>[% msg.maketext("Id") %]</th>
+<td>[% searchprofileid %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Eigener Index") %]</th>
+<td>
+[% IF searchprofile.own_index %][% msg.maketext("Ja") %][% END %]
+[% IF NOT searchprofile.own_index %][% msg.maketext("Nein") %][% END %]
+</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Kataloge") %]</th>
+<td>
+<ul>[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]<li>[% dbinfo.dbnames.${dbname}.short %]</li>[% END %]</ul>
+</td>
+</tr>
 </table>
 
         </div>

@@ -47,6 +47,7 @@ sub setup {
 
     $self->start_mode('show_record');
     $self->run_modes(
+        'show_collection'         => 'show_collection',
         'show_record'             => 'show_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -56,7 +57,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show_record {
+sub show_collection {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -64,7 +65,37 @@ sub show_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $profileid      = $self->strip_suffix($self->param('profileid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+
+    # CGI Args
+    my $year           = $query->param('year');
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $statistics  = new OpenBib::Statistics();
+
+    my $ttdata={
+        dbinfo     => $dbinfotable,
+        statistics => $statistics,
+        year       => $year,
+    };
+    
+    $self->print_page($config->{tt_searchprofiles_tname},$ttdata);
+    
+    return Apache2::Const::OK;
+}
+
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view            = $self->param('view');
+    my $searchprofileid = $self->strip_suffix($self->param('searchprofileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -82,16 +113,19 @@ sub show_record {
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my @databases     = $config->get_databases_of_searchprofile($profileid);
+    my @databases     = $config->get_databases_of_searchprofile($searchprofileid);
+
+    my $searchprofile = $config->get_searchprofile->single({ id => $searchprofileid});
     
     # TT-Data erzeugen
     my $ttdata={
-        profileid   => $profileid,
-        databases   => \@databases,
-        dbinfo      => $dbinfotable,
+        searchprofileid   => $searchprofileid,
+        searchprofile     => $searchprofile,
+        databases         => \@databases,
+        dbinfo            => $dbinfotable,
     };
 
-    $self->print_page($config->{tt_searchprofiles_tname},$ttdata);
+    $self->print_page($config->{tt_searchprofiles_record_tname},$ttdata);
 
     $logger->debug("Done showing record");
     return Apache2::Const::OK;

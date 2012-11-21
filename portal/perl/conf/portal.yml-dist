@@ -619,11 +619,6 @@ dispatch_rules:
      rule: '/portal/:view/classifications/database/:database/id/:classificationid[get]'
      runmode: 'show_record'
 
-  - # searchprofile_loc:
-     module: 'OpenBib::Handler::Apache::Searchprofiles'
-     rule: '/portal/:view/searchprofiles/id/:profileid[get]'
-     runmode: 'show_record'
-
 # Tags im Nutzerbereich
   - # user_loc:
      module: 'OpenBib::Handler::Apache::Tags'
@@ -972,56 +967,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Users'
      rule: '/portal/:view/users/id/:userid[get]'
      runmode: 'show_user'
-
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles.html[get]'
-     runmode: 'show_collection'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles.json[get]'
-     runmode: 'show_collection'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles.rdf[get]'
-     runmode: 'show_collection'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles[get]'
-     runmode: 'show_collection'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles[post]'
-     runmode: 'create_record'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[get]'
-     runmode: 'show_record'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[post]'
-     runmode: 'update_record'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid/edit[get]'
-     runmode: 'show_record_form'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[post]'
-     runmode: 'update_record'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[put]'
-     runmode: 'update_record'
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:profileid[delete]'
-     runmode: 'delete_record'
-
 
   - # user_loc:
      module: 'OpenBib::Handler::Apache::Users::Tags'
@@ -1749,54 +1694,6 @@ dispatch_rules:
      rule: '/portal/:view/admin/views/id/:viewid/rss[put]'
      runmode: 'update_record'
 
-  - # admin_searchprofile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles.html[get]'
-     runmode: 'show_collection'
-  - # admin_searchprofile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles.json[get]'
-     runmode: 'show_collection'
-  - # admin_searchprofile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles.rdf[get]'
-     runmode: 'show_collection'
-  - # admin_searchprofile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles[get]'
-     runmode: 'show_collection'
-#  - # admin_searchprofile_loc: Collection show from
-#     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-#     rule: '/portal/:view/admin/searchprofiles/new[get]'
-#     runmode: 'show_collection_form'
-  - # admin_searchprofile_loc: Creat Record in Collection
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles[post]'
-     runmode: 'create_record'
-  - # admin_searchprofile_loc: Show Record
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid[get]'
-     runmode: 'show_record'
-  - # admin_searchprofile_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid/edit[get]'
-     runmode: 'show_record_form'
-  - # admin_searchprofile_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # admin_searchprofile_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid[post]'
-     runmode: 'update_record'
-  - # admin_searchprofile_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid[put]'
-     runmode: 'update_record'
-  - # admin_searchprofile_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
-     rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid[delete]'
-     runmode: 'delete_record'
   - # admin_session_loc: Search form for archived sessions
      module: 'OpenBib::Handler::Apache::Admin::Sessions'
      rule: '/portal/:view/admin/sessions/archived/search/form[get]'
@@ -2113,17 +2010,6 @@ dispatch_rules:
      args:
         personalized_loc: 'clusters'        
      runmode: 'show_collection'
-  - # Resource: clusters_loc 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Clusters'
-     rule: '/portal/:view/clusters/id[get]'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-     args:
-        personalized_loc: 'clusters'        
-     runmode: 'show_collection'
   - # Resource: clusters_loc Record show
      module: 'OpenBib::Handler::Apache::Clusters'
      rule: '/portal/:view/clusters/id/:clusterid[get]'
@@ -2133,15 +2019,6 @@ dispatch_rules:
   - # Repraesentation: users_loc/clusters_loc
      module: 'OpenBib::Handler::Apache::Admin::Clusters'
      rule: '/portal/:view/users/id/:userid/clusters[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-  - # Repraesentation: users_loc/clusters_loc 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Admin::Clusters'
-     rule: '/portal/:view/users/id/:userid/clusters/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2189,17 +2066,6 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'servers'
-  - # users/servers_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Servers'
-     rule: '/portal/:view/servers/id[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-     args:
-        personalized_loc: 'servers'
   - # users_loc/servers_loc: Record show
      module: 'OpenBib::Handler::Apache::Servers'
      rule: '/portal/:view/servers/id/:serverid[get]'
@@ -2209,15 +2075,6 @@ dispatch_rules:
   - # users/servers_loc:
      module: 'OpenBib::Handler::Apache::Admin::Servers'
      rule: '/portal/:view/users/id/:id/servers[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-  - # users/servers_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Admin::Servers'
-     rule: '/portal/:view/users/id/:id/servers/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2265,17 +2122,6 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'databases'
-  - # users/databases_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Databases'
-     rule: '/portal/:view/databases/id[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-     args:
-        personalized_loc: 'databases'
   - # users_loc/databases_loc: Record show
      module: 'OpenBib::Handler::Apache::Databases'
      rule: '/portal/:view/databases/id/:databaseid[get]'
@@ -2285,15 +2131,6 @@ dispatch_rules:
   - # users/databases_loc:
      module: 'OpenBib::Handler::Apache::Admin::Databases'
      rule: '/portal/:view/users/id/:id/databases[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-  - # users/databases_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Admin::Databases'
-     rule: '/portal/:view/users/id/:id/databases/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2341,17 +2178,6 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'databases'
-  - # databases_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Databases::RSS'
-     rule: '/portal/:view/databases/id/:databaseid/rss/id[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-     args:
-        personalized_loc: 'databases'
   - # databases_loc: Record show
      module: 'OpenBib::Handler::Apache::Databases::RSS'
      rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid[get]'
@@ -2361,15 +2187,6 @@ dispatch_rules:
   - # users/databases_loc:
      module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/users/id/:id/databases/id/:databaseid/rss[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-  - # users/databases_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
-     rule: '/portal/:view/users/id/:id/databases/id/:databaseid/rss/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2417,17 +2234,6 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'profiles'
-  - # users/profiles_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Profiles'
-     rule: '/portal/:view/profiles/id[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-     args:
-        personalized_loc: 'profiles'
   - # users_loc/profiles_loc: Record show
      module: 'OpenBib::Handler::Apache::Profiles'
      rule: '/portal/:view/profiles/id/:profileid[get]'
@@ -2437,15 +2243,6 @@ dispatch_rules:
   - # users/profiles_loc:
      module: 'OpenBib::Handler::Apache::Admin::Profiles'
      rule: '/portal/:view/users/id/:id/profiles[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-  - # users/profiles_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Admin::Profiles'
-     rule: '/portal/:view/users/id/:id/profiles/id[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2493,17 +2290,6 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'profiles'
-  - # users/profiles_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::OrganizationalUnits'
-     rule: '/portal/:view/profiles/id/:profileid/orgunits/id[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-     args:
-        personalized_loc: 'profiles'
   - # users_loc/profiles_loc: Record show
      module: 'OpenBib::Handler::Apache::OrganizationalUnits'
      rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid[get]'
@@ -2512,16 +2298,7 @@ dispatch_rules:
         personalized_loc: 'profiles'
   - # users/profiles_loc:
      module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/users/id/:id/profiles/:profileid/orgunits[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-  - # users/profiles_loc: 'Hackability' Fallback
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/users/id/:id/profiles/:profileid/orgunits/id[get]'
+     rule: '/portal/:view/users/id/:id/profiles/id/:profileid/orgunits[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2554,6 +2331,156 @@ dispatch_rules:
   - # users_loc/profiles_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
      rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid[delete]'
+     runmode: 'delete_record'
+
+#####################################################################
+# Katalogsichten/Views-Resource/Repraesentation
+  - # users/views_loc:
+     module: 'OpenBib::Handler::Apache::Views'
+     rule: '/portal/:view/views[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'views'
+  - # users_loc/views_loc: Record show
+     module: 'OpenBib::Handler::Apache::Views'
+     rule: '/portal/:view/views/id/:viewid[get]'
+     runmode: 'show_record'
+     args:
+        personalized_loc: 'views'
+  - # users/views_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Views'
+     rule: '/portal/:view/users/id/:id/views[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/views_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Views'
+     rule: '/portal/:view/users/id/:id/views/id/:viewid[get]'
+     runmode: 'show_record'
+  - # users_loc/views_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Views'
+     rule: '/portal/:view/users/id/:id/views/id/:viewid/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users_loc/views_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Views'
+     rule: '/portal/:view/views[post]'
+     runmode: 'create_record'
+  - # users_loc/views_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Views'
+     rule: '/portal/:view/views/id/:viewid[post]'
+     runmode: 'update_record'
+  - # users_loc/views_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Views'
+     rule: '/portal/:view/views/id/:viewid[put]'
+     runmode: 'update_record'
+  - # users_loc/views_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Views'
+     rule: '/portal/:view/views/id/:viewid[delete]'
+     runmode: 'delete_record'
+
+#####################################################################
+# Katalogsichten/Views RSS-Resource/Repraesentation
+  - # views_loc:
+     module: 'OpenBib::Handler::Apache::Views::RSS'
+     rule: '/portal/:view/views/id/:viewid/rss[get]'
+     runmode: 'show_record'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'views'
+  - # users/views_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Views::RSS'
+     rule: '/portal/:view/users/id/:id/views/id/:viewid/rss[get]'
+     runmode: 'show_record'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/views_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Views::RSS'
+     rule: '/portal/:view/users/id/:id/views/id/:viewid/rss/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users_loc/views_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Views::RSS'
+     rule: '/portal/:view/views/id/:viewid/rss[post]'
+     runmode: 'create_record'
+  - # users_loc/views_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Views::RSS'
+     rule: '/portal/:view/views/id/:viewid/rss[post]'
+     runmode: 'update_record'
+  - # users_loc/views_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Views::RSS'
+     rule: '/portal/:view/views/id/:viewid/rss[put]'
+     runmode: 'update_record'
+
+#####################################################################
+# Searchprofiles-Resource/Repraesentation
+  - # users/searchprofiles_loc:
+     module: 'OpenBib::Handler::Apache::Searchprofiles'
+     rule: '/portal/:view/searchprofiles[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'searchprofiles'
+  - # users_loc/searchprofiles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Searchprofiles'
+     rule: '/portal/:view/searchprofiles/id/:searchprofileid[get]'
+     runmode: 'show_record'
+     args:
+        personalized_loc: 'searchprofiles'
+  - # users/searchprofiles_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
+     rule: '/portal/:view/users/id/:id/searchprofiles[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/searchprofiles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
+     rule: '/portal/:view/users/id/:id/searchprofiles/id/:searchprofileid[get]'
+     runmode: 'show_record'
+  - # users_loc/searchprofiles_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
+     rule: '/portal/:view/users/id/:id/searchprofiles/id/:searchprofileid/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users_loc/searchprofiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
+     rule: '/portal/:view/searchprofiles/id/:searchprofileid[post]'
+     runmode: 'update_record'
+  - # users_loc/searchprofiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
+     rule: '/portal/:view/searchprofiles/id/:searchprofileid[put]'
+     runmode: 'update_record'
+  - # users_loc/searchprofiles_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
+     rule: '/portal/:view/searchprofiles/id/:searchprofileid[delete]'
      runmode: 'delete_record'
 
 css_loc: /css

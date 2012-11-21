@@ -111,7 +111,7 @@ sub show_collection {
         views      => $viewinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_view_tname},$ttdata);
+    $self->print_page($config->{tt_admin_views_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -160,7 +160,7 @@ sub show_record {
         allrssfeeds => $all_rssfeeds_ref,
     };
     
-    $self->print_page($config->{tt_admin_view_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_views_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -175,7 +175,9 @@ sub create_record {
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
+    my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $path_prefix    = $self->param('path_prefix');
     my $location       = $self->param('location');
 
@@ -213,7 +215,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_views_loc}/$input_data_ref->{viewname}/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{views_loc}/$input_data_ref->{viewname}/edit.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -273,7 +275,7 @@ sub show_record_form {
         dbinfo     => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_view_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_views_record_edit_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -321,7 +323,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_views_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{views_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -351,7 +353,7 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_view_record_delete_confirm_tname},$ttdata);
+    $self->print_page($config->{tt_admin_views_record_delete_confirm_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -380,7 +382,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_views_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{views_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

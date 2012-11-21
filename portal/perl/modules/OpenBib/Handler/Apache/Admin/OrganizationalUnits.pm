@@ -344,10 +344,6 @@ sub update_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
-
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
 
@@ -374,7 +370,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{profiles_loc}/id/$profilename/edit?l=$lang");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{profiles_loc}/id/$profilename/edit?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {

@@ -20,7 +20,7 @@
      thisorgunit = {
         link = {
           rel = 'self'
-          href = "${location}/${orgunit.orgunitname}"
+          href = "${path_prefix}/${config.get('profiles_loc')}/id/${profilename}/${config.get('orgunits_loc')}/id/${orgunit.orgunitname}.json?l=${lang}"
         }
         orgunitname = orgunit.orgunitname
         description = orgunit.description

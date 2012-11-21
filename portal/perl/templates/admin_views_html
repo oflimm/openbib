@@ -36,12 +36,12 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Views") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_views_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('views_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -56,7 +56,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_views_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('views_loc') %]" class="ym-form">
 
 <fieldset class="ym-columnar">
 
@@ -112,7 +112,7 @@
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Profil") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
 
 [% FOREACH viewinfo IN views.all %]
-<tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% path_prefix %]/[% config.get('admin_views_loc') %]/id/[% viewinfo.viewname %]/rss/edit"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% path_prefix %]/[% config.get('admin_views_loc') %]/id/[% viewinfo.viewname %]/edit">[% viewinfo.description %]</a></td><td>[% viewinfo.profileid.description %]</td><td><ul>[% FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul><p>[% thissearchprofileid = config.get_searchprofile_of_view(viewinfo.viewname) %]<a href="[% path_prefix %]/[% config.get('admin_searchprofiles_loc') %]/id/[% thissearchprofileid %]/edit">Suchprofil bearbeiten ([% thissearchprofileid %])</a></p></td><td>[% IF viewinfo.active %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td></tr>
+<tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss/edit.html?l=[% lang %]"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/edit.html?l=[% lang %]">[% viewinfo.description %]</a></td><td>[% viewinfo.profileid.description %]</td><td><ul>[% FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul><p>[% thissearchprofileid = config.get_searchprofile_of_view(viewinfo.viewname) %]<a href="[% path_prefix %]/[% config.get('admin_searchprofiles_loc') %]/id/[% thissearchprofileid %]/edit">Suchprofil bearbeiten ([% thissearchprofileid %])</a></p></td><td>[% IF viewinfo.active %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td></tr>
 [% END %]
 
 </table>

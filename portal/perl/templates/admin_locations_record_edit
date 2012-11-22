@@ -33,7 +33,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="database" %]
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_locations_record" active_subsubmenu="admin_locations_record_main" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -41,22 +41,48 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[%# USE dumper;dumper.dump(libinfo)%]
-[% PROCESS common/subtemplate name="visible_categories_library" %]
+[% PROCESS common/subtemplate name="visible_categories_location" %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/[% dbname %]/library">
+<form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.id %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
-<table width="100%">
-<tr><th>[% msg.maketext("Bibliotheksinformationen bearbeiten") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Standortinformationen bearbeiten") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="identifier">[% msg.maketext("Identifier") %]</label>
+<input type="text" name="identifier" id="identifier" value="[% locationinfo.identifier %]" size="8" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" value="[% locationinfo.description %]" size="20" />
+</div>
+
+<div class="ym-fbox-select">
+<label for="type">[% msg.maketext("Typ") %]</label>
+  <select name="type" id="type">
+[% FOREACH location_type IN config.get('location_types') %]
+       <option value="[% location_type %]" [% IF locationinfo.type == location_type %]selected="selected"[% END %]>[% location_type %]</option>
+[% END %]
+   </select>
+</div>
+
+</fieldset>
+
+<fieldset class="ym-columnar">
+[% USE dumper;dumper.dump(locationinfo)%]
+<legend>[% msg.maketext("Felder") %]</legend>
+
 [%-
 FOREACH category IN categories;
 
-    IF libinfo.${category}.size > 0 ;
-      FOREACH item IN libinfo.$category;
-        content = item.content;
+    IF locationinfo.fields.${category}.size > 0 ;
+      FOREACH item IN locationinfo.fields.$category;
+        content  = item.content;
+        mult     = item.mult;
+        subfield = item.subfield;
 
         # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
         # in Config.pm fuer die entsprechende Datenbank definiert
@@ -67,8 +93,10 @@ FOREACH category IN categories;
           thiscategory = "${category}-${record.database}" ;
         END;
 -%]
-<tr><td class="ob-field">[% msg.maketext("${thiscategory}")
-%]</td><td><input type="text" name="[% category %]" value="[% content | replace('"','%22') %]" size="100"/></td></tr>
+<div class="ym-fbox-text">
+<label for="[% category %]">[% msg.maketext("${thiscategory}") %]</label>
+<input type="text" name="fields_[% category %]_[% subfield %]_[% mult %]" id="[% category %]" value="[% content | replace('"','%22') %]" size="100"/>
+</div>
 [%-   END ;
      ELSE ;
         thiscategory = category ;
@@ -76,23 +104,23 @@ FOREACH category IN categories;
           thiscategory = "${category}-${record.database}" ;
         END;
 %]
-<tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td><input type="text" name="[% category %]" value="" size="100"/></td></tr>
+<div class="ym-fbox-text">
+<label for="[% category %]">[% msg.maketext("${thiscategory}") %]</label>
+<input type="text" name="fields_[% category %]_a_1" id="[% category %]" value="" size="100"/>
+</div>
 [%-  END ;
 END ;-%]
-</table>
 
-</td></tr>
-</table>
-
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Ändern") %]">
 
-</form>
+&nbsp;&nbsp;
 
-<form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/[% dbname %]/library">
-<input type="hidden" name="_method"     value="DELETE" />
-<input type="hidden" name="confirm"     value="1" />
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.id %]?_method=DELETE;confirm=1" class="ob_buttons">[% msg.maketext("Löschen") %]</a>
 
-<input type="submit" value="[% msg.maketext("Löschen") %]"></td></tr>
+</div>
+
+</fieldset>
 
 </form>
 

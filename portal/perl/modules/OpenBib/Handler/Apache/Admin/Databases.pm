@@ -384,8 +384,8 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
-        use_libinfo => {
-            default  => 'false',
+        locationid => {
+            default  => '',
             encoding => 'none',
             type     => 'scalar',
         },

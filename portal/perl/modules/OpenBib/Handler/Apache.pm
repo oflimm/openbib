@@ -1172,6 +1172,8 @@ sub parse_valid_input {
     }
     # CGI Processing
     else {
+        $logger->debug("CGI Input");
+
         foreach my $param (keys %$valid_input_params_ref){
             my $type     = $valid_input_params_ref->{$param}{type};
             my $encoding = $valid_input_params_ref->{$param}{encoding};
@@ -1193,6 +1195,31 @@ sub parse_valid_input {
                 else {
                     $input_params_ref->{$param} = $default;
                 }
+            }
+            elsif ($type eq "fields") {
+                my $fields_ref = $default;
+                foreach my $qparam ($query->param){
+                    if ($qparam=~/^fields_([TXPCSNL])(\d+)_([a-z0-0])_(\d+)$/){
+                        my $prefix   = $1;
+                        my $field    = $2;
+                        my $subfield = $3;
+                        my $mult     = $4;
+
+                        my $content  = $query->param($qparam);
+                        
+                        $logger->debug("Got $field - $prefix - $subfield - $mult - $content");
+
+                        push @{$fields_ref->{$field}}, {
+                            subfield => $subfield,
+                            mult     => $mult,
+                            content  => $content,
+                        };
+                    }
+                    else {
+                        $logger->debug("Can't parse $qparam");
+                    }
+                }
+                $input_params_ref->{$param} = $fields_ref;
             }
         }
     }

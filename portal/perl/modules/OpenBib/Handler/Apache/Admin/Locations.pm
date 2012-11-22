@@ -174,102 +174,51 @@ sub create_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
     my $location       = $self->param('location');
 
-    # CGI Args
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my $shortdesc       = $query->param('shortdesc')       || '';
-    my $system          = $query->param('system')          || '';
-    my $dbname          = $query->param('dbname')          || '';
-    my $sigel           = $query->param('sigel')           || '';
-    my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('locationid')     || 0;
-    my $active          = $query->param('active')          || 0;
-
-    my $host            = $query->param('host')            || '';
-    my $protocol        = $query->param('protocol')        || '';
-    my $remotepath      = $query->param('remotepath')      || '';
-    my $remoteuser      = $query->param('remoteuser')      || '';
-    my $remotepasswd    = $query->param('remotepasswd')    || '';
-    my $titfilename     = $query->param('titfilename')     || '';
-    my $autfilename     = $query->param('autfilename')     || '';
-    my $korfilename     = $query->param('korfilename')     || '';
-    my $swtfilename     = $query->param('swtfilename')     || '';
-    my $notfilename     = $query->param('notfilename')     || '';
-    my $mexfilename     = $query->param('mexfilename')     || '';
-    my $autoconvert     = $query->param('autoconvert')     || '';
-    my $circ            = $query->param('circ')            || '';
-    my $circurl         = $query->param('circurl')         || '';
-    my $circcheckurl    = $query->param('circcheckurl')    || '';
-    my $circdb          = $query->param('circdb')          || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $thisdbinfo_ref = {
-        description        => $description,
-        shortdesc          => $shortdesc,
-        system             => $system,
-        dbname             => $dbname,
-        sigel              => $sigel,
-        url                => $url,
-        use_libinfo        => $use_libinfo,
-        active             => $active,
-        host               => $host,
-        protocol           => $protocol,
-        remotepath         => $remotepath,
-        remoteuser         => $remoteuser,
-        remotepassword     => $remotepasswd,
-        titlefile          => $titfilename,
-        personfile         => $autfilename,
-        corporatebodyfile  => $korfilename,
-        subjectfile        => $swtfilename,
-        classificationfile => $notfilename,
-        holdingsfile       => $mexfilename,
-        autoconvert        => $autoconvert,
-        circ               => $circ,
-        circurl            => $circurl,
-        circwsurl          => $circcheckurl,
-        circdb             => $circdb,
-    };
-    
-    if ($dbname eq "" || $description eq "") {
+    if ($input_data_ref->{identifier} eq "" && $input_data_ref->{description} eq "" && $input_data_ref->{type}) {
         
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."));
+        $self->print_warning($msg->maketext("Sie müssen mindestens einen Identifier, dessen Typ und eine Beschreibung eingeben."));
         
         return Apache2::Const::OK;
     }
     
-    if ($config->db_exists($dbname)) {
+    if ($config->location_exists($input_data_ref->{identifier})) {
         
-        $self->print_warning($msg->maketext("Es existiert bereits ein Katalog unter diesem Namen"));
+        $self->print_warning($msg->maketext("Es existiert bereits ein Standort mit diesem Identifier"));
         
         return Apache2::Const::OK;
     }
     
-    $config->new_databaseinfo($thisdbinfo_ref);
+    my $new_locationid = $config->new_locationinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}/$dbname/edit");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{locations_loc}/id/$new_locationid/edit.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         $logger->debug("Weiter zum Record");
-        if ($dbname){
-            $logger->debug("Weiter zum Record $dbname");
+        if ($new_locationid){
+            $logger->debug("Weiter zum Record $new_locationid");
             $self->param('status',Apache2::Const::HTTP_CREATED);
             $self->show_record;
         }
     }
     
-
     return;
 }
 
@@ -300,12 +249,19 @@ sub show_record_form {
         return;
     }
 
-    if (!$config->location_exists($locationid)) {
-        $self->print_warning($msg->maketext("Es existiert keine Standortinformation mit dieser Id"));
-        return Apache2::Const::OK;
-    }
+    my $locationinfo = $config->get_locationinfo($locationid)->single({id => $locationid});
 
-    my $locationinfo_ref = $config->get_locationinfo($locationid);
+    my $locationinfo_ref = {};
+        
+    if ($locationinfo){
+        $locationinfo_ref = {
+            id          => $locationid,
+            identifier  => $locationinfo->identifier,
+            description => $locationinfo->description,
+            type        => $locationinfo->type,
+            fields      => $config->get_locationinfo_fields($locationid),            
+        };
+    }
     
     my $ttdata={
         locationid   => $locationid,
@@ -325,7 +281,7 @@ sub update_record {
     
     # Dispatched Args
     my $view           = $self->param('view')                   || '';
-    my $dbname         = $self->param('databaseid')             || '';
+    my $locationid     = $self->param('locationid')             || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -339,117 +295,27 @@ sub update_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
-    # Kategorien der Bibliotheksinfos
-    my $li_0010         = $query->param('I0010')          || '';
-    my $li_0020         = $query->param('I0020')          || '';
-    my $li_0030         = $query->param('I0030')          || '';
-    my $li_0040         = $query->param('I0040')          || '';
-    my $li_0050         = $query->param('I0050')          || '';
-    my $li_0060         = $query->param('I0060')          || '';
-    my $li_0070         = $query->param('I0070')          || '';
-    my $li_0080         = $query->param('I0080')          || '';
-    my $li_0090         = $query->param('I0090')          || '';
-    my $li_0100         = $query->param('I0100')          || '';
-    my $li_0110         = $query->param('I0110')          || '';
-    my $li_0120         = $query->param('I0120')          || '';
-    my $li_0130         = $query->param('I0130')          || '';
-    my $li_0140         = $query->param('I0140')          || '';
-    my $li_0150         = $query->param('I0150')          || '';
-    my $li_0160         = $query->param('I0160')          || '';
-    my $li_0170         = $query->param('I0170')          || '';
-    my $li_0180         = $query->param('I0180')          || '';
-    my $li_0190         = $query->param('I0190')          || '';
-    my $li_0200         = $query->param('I0200')          || '';
-    my $li_0210         = $query->param('I0210')          || '';
-    my $li_0220         = $query->param('I0220')          || '';
-    my $li_0230         = $query->param('I0230')          || '';
-    my $li_0240         = $query->param('I0240')          || '';
-    my $li_0250         = $query->param('I0250')          || '';
-    my $li_0260         = $query->param('I0260')          || '';
-    my $li_1000         = $query->param('I1000')          || '';
-
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    $input_data_ref->{id} = $locationid;
+    
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    if (!$config->db_exists($dbname)) {
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        return Apache2::Const::OK;
+    $config->update_locationinfo($input_data_ref);
+
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{locations_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
     }
-
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $dbname");
-        
-        if ($confirm){
-            my $libinfo_ref = $config->get_locationinfo($dbname);
-            
-            my $ttdata={
-                libinfo      => $libinfo_ref,
-                dbname     => $dbname,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_libraries_record_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
-        }
-        else {
-            $logger->debug("Redirecting to delete location");
-            $self->query->method('DELETE');    
-            $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}/$dbname/library");
-            $self->query->status(Apache2::Const::REDIRECT);
-            return;
-        }
+    else {
+        $logger->debug("Weiter zum Record $locationid");
+        $self->show_record;
     }
-
-    # Ansonsten POST oder PUT => Aktualisieren
-
-    my $thislibinfo_ref = {
-        I0010      => $li_0010,
-        I0020      => $li_0020,
-        I0030      => $li_0030,
-        I0040      => $li_0040,
-        I0050      => $li_0050,
-        I0060      => $li_0060,
-        I0070      => $li_0070,
-        I0080      => $li_0080,
-        I0090      => $li_0090,
-        I0100      => $li_0100,
-        I0110      => $li_0110,
-        I0120      => $li_0120,
-        I0130      => $li_0130,
-        I0140      => $li_0140,
-        I0150      => $li_0150,
-        I0160      => $li_0160,
-        I0170      => $li_0170,
-        I0180      => $li_0180,
-        I0190      => $li_0190,
-        I0200      => $li_0200,
-        I0210      => $li_0210,
-        I0220      => $li_0220,
-        I0230      => $li_0230,
-        I0240      => $li_0240,
-        I0250      => $li_0250,
-        I0260      => $li_0260,
-        I1000      => $li_1000,
-    };
-
     
-    $logger->debug("Info: ".YAML::Dump($thislibinfo_ref));
-    
-    $config->update_libinfo($dbname,$thislibinfo_ref);
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
-
     return;
 }
 
@@ -503,16 +369,21 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
+        description => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
         type => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
         },
         # Muster: field_FIELD_SUBFIELD_MULT
-        field => {
-            default  => [],
+        fields => {
+            default  => {},
             encoding => 'none',
-            type     => 'hasharray',
+            type     => 'fields',
         },
         
     };

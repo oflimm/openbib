@@ -98,10 +98,12 @@
 </div>
 
 <div class="ym-fbox-select">
-<label for="use_libinfo">[% msg.maketext("Bibliotheksinformationen statt URL") %]</label>
-  <select name="use_libinfo" id ="use_libinfo">
-    <option value="true" [%- IF databaseinfo.use_libinfo == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
-    <option value="false" [%- IF databaseinfo.use_libinfo == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option>
+<label for="locationid">[% msg.maketext("Bibinformationen statt URL") %]</label>
+  <select name="locationid" id ="locationid">
+       <option value="" [% IF NOT databaseinfo.locationid.id %]selected="selected"[% END %]>[% msg.maketext("Keine") %]</option>
+[% FOREACH locationinfo IN config.get_locationinfo_overview %]
+       <option value="[% locationinfo.id %]" [% IF databaseinfo.locationid.id == locationinfo.id %]selected="selected"[% END %]>[% locationinfo.identifier %]: [% locationinfo.description %]</option>
+[% END %]
   </select>
 </div>
 

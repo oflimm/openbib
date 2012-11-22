@@ -340,13 +340,13 @@ sub get_servername_of_view {
 
 sub location_exists {
     my $self       = shift;
-    my $locationid = shift;
+    my $identifier = shift;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # DBI: "select count(dbname) as rowcount from databaseinfo where dbname = ?"
-    my $count = $self->{schema}->resultset('Locationinfo')->search({ id => $locationid})->count;
+    my $count = $self->{schema}->resultset('Locationinfo')->search({ identifier => $identifier})->count;
     
     return $count;
 }
@@ -947,7 +947,9 @@ sub get_locationinfo_overview {
 
     foreach my $location ($locations->all){
         my $thislocation_ref = {
+            id          => $location->id,
             identifier  => $location->identifier,
+            description => $location->description,
             type        => $location->type,
             fields      => $self->get_locationinfo_fields($location->id),            
             
@@ -972,7 +974,7 @@ sub have_locationinfo {
     my $haveinfos = $self->{schema}->resultset('Databaseinfo')->search(
         {
             'dbname'     => $dbname,
-            'locationid' => { '!=' => '' },
+            'locationid' => { '>' => 0 },
         },
     )->count;
 
@@ -1829,31 +1831,106 @@ sub del_view {
     return;
 }
 
-sub update_locationinfo {
-    my ($self,$id,$locationinfo_ref)=@_;
+sub new_locationinfo {
+    my ($self,$locationinfo_ref)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    eval {
-        $self->{schema}->resultset('Locationinfo')->single({ id => $id })->location_fields->delete;
-    };
-   
-    my $category_contents_ref = [];
-    foreach my $field (keys %$locationinfo_ref){
-        my ($field_num)=$field=~/^L(\d+)$/;
+    my $create_args = {};
 
-        push @$field_contents_ref, {
-            profileid  => $id,
-            field      => $field_num,
-            subfield   => $locationinfo_ref->{$field}{subfield},
-            content    => $locationinfo_ref->{$field}{content},
-        };
+    if ($locationinfo_ref->{identifier}){
+        $create_args->{identifier} = $locationinfo_ref->{identifier};
+    }
+    if ($locationinfo_ref->{type}){
+        $create_args->{type} = $locationinfo_ref->{type};
+    }
+    if ($locationinfo_ref->{description}){
+        $create_args->{description} = $locationinfo_ref->{description};
+    }
+
+    my $new_location = $self->{schema}->resultset('Locationinfo')->create($create_args);
+
+    if (defined $locationinfo_ref->{field}){
+        my $create_fields_ref = [];
         
-        $logger->debug("Changing Category $field_num to $locationinfo_ref->{$field}{content}");
+        foreach my $field_ref (@$locationinfo_ref->{field}){
+            my $thisfield = {
+                locationid => $new_location->id,
+                field      => $field_ref->{field},
+                subfield   => $field_ref->{subfield},
+                content    => $field_ref->{content},
+            };
+
+            push @$create_fields_ref, $thisfield;
+        }
+
+        if (@$create_fields_ref){
+            $self->{schema}->resultset('LocationinfoField')->populare($create_fields_ref);
+        }
+
     }
     
-    $self->{schema}->resultset('LocationinfoFields')->populate($field_contents_ref);
+    if ($new_location){
+        return $new_location->id;
+    }
+    
+    return;
+}
+
+sub update_locationinfo {
+    my ($self,$locationinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug(YAML::Dump($locationinfo_ref));
+
+    my $update_args = {};
+
+    if ($locationinfo_ref->{identifier}){
+        $update_args->{identifier} = $locationinfo_ref->{identifier};
+    }
+    if ($locationinfo_ref->{type}){
+        $update_args->{type} = $locationinfo_ref->{type};
+    }
+    if ($locationinfo_ref->{description}){
+        $update_args->{description} = $locationinfo_ref->{description};
+    }
+
+    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single({ id => $locationinfo_ref->{id} });
+
+    $locationinfo->update($update_args);
+    
+    eval {
+        $locationinfo->locationinfo_fields->delete;
+    };
+
+    if ($@){
+        $logger->error("Can't delete Fields: ".$@);
+    }
+    
+    if (defined $locationinfo_ref->{fields}){
+        my $update_fields_ref = [];
+        
+        foreach my $field (keys %{$locationinfo_ref->{fields}}){
+            foreach my $field_ref (@{$locationinfo_ref->{fields}{$field}}){
+                my $thisfield = {
+                    locationid => $locationinfo_ref->{id},
+                    field      => $field,
+                    subfield   => $field_ref->{subfield},
+                    mult       => $field_ref->{mult},
+                    content    => $field_ref->{content},
+                };
+                
+                push @$update_fields_ref, $thisfield;
+            }
+        }
+        
+        if (@$update_fields_ref){
+            $self->{schema}->resultset('LocationinfoField')->populate($update_fields_ref);
+        }
+    }
     
     return;
 }

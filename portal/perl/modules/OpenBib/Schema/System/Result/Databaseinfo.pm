@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::Databaseinfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Databaseinfo
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Databaseinfo
+=head1 TABLE: C<databaseinfo>
 
 =cut
 
@@ -54,11 +58,6 @@ __PACKAGE__->table("databaseinfo");
 =head2 url
 
   data_type: 'text'
-  is_nullable: 1
-
-=head2 use_libinfo
-
-  data_type: 'boolean'
   is_nullable: 1
 
 =head2 active
@@ -170,6 +169,12 @@ __PACKAGE__->table("databaseinfo");
   default_value: 0
   is_nullable: 1
 
+=head2 locationid
+
+  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -192,8 +197,6 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "url",
   { data_type => "text", is_nullable => 1 },
-  "use_libinfo",
-  { data_type => "boolean", is_nullable => 1 },
   "active",
   { data_type => "boolean", is_nullable => 1 },
   "protocol",
@@ -236,25 +239,56 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", default_value => 0, is_nullable => 1 },
   "digitalcount",
   { data_type => "bigint", default_value => 0, is_nullable => 1 },
+  "locationid",
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<uq_databaseinfo_dbname>
+
+=over 4
+
+=item * L</dbname>
+
+=back
+
+=cut
+
 __PACKAGE__->add_unique_constraint("uq_databaseinfo_dbname", ["dbname"]);
 
 =head1 RELATIONS
 
-=head2 libraryinfos
+=head2 locationid
 
-Type: has_many
+Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Libraryinfo>
+Related object: L<OpenBib::Schema::System::Result::Locationinfo>
 
 =cut
 
-__PACKAGE__->has_many(
-  "libraryinfos",
-  "OpenBib::Schema::System::Result::Libraryinfo",
-  { "foreign.dbid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+__PACKAGE__->belongs_to(
+  "locationid",
+  "OpenBib::Schema::System::Result::Locationinfo",
+  { id => "locationid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
 );
 
 =head2 orgunit_dbs
@@ -318,8 +352,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-10-18 16:51:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ia/3naDg/pSL1XCbtlJ5Hg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-22 10:46:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pekx42zL+71v1tHdKRHIDA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

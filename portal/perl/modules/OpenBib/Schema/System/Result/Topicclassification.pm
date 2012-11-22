@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::Topicclassification;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Topicclassification
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Topicclassification
+=head1 TABLE: C<topicclassification>
 
 =cut
 
@@ -64,8 +68,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-10-18 16:51:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GuiSxhNWmi0DGVNEVpYEOQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-22 10:46:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:66I4K6nl0RWrgu59u8ffQw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

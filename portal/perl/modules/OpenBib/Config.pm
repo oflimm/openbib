@@ -853,48 +853,43 @@ sub get_dbinfo_overview {
     return $object;
 }
 
-sub get_libinfo {
+sub get_locationinfo {
     my $self   = shift;
-    my $dbname = shift;
+    my $id     = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return {} if (!$dbname);
+    return {} if (!$id);
 
     # DBI: "select category,content,indicator from libraryinfo where dbname = ?"
-    my $libraryinfos = $self->{schema}->resultset('Libraryinfo')->search(
+    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single(
         {
-            'dbid.dbname' => $dbname,
+            'id' => $id,
         },
-        {
-            join => 'dbid',
-        }
     );
 
-    my $libinfo_ref= {};
+    my $locationinfo_ref= {};
 
-    $libinfo_ref->{database} = $dbname;
-
-    foreach my $item ($libraryinfos->all){
-        my $field    = "I".sprintf "%04d",$item->field;
+    foreach my $item ($locationinfo->locationinfo_fields->all){
+        my $field    = "L".sprintf "%04d",$item->field;
         my $subfield =                    $item->subfield || '';
         my $mult     =                    $item->mult     || 1;
         my $content  =                    $item->content;
 
         next if ($content=~/^\s*$/);
 
-        push @{$libinfo_ref->{$field}}, {
+        push @{$locationinfo_ref->{$field}}, {
             mult     => $mult,
             subfield => $subfield,
             content  => $content,
         };
     }
 
-    return $libinfo_ref;
+    return $locationinfo_ref;
 }
 
-sub have_libinfo {
+sub have_locationinfo {
     my $self   = shift;
     my $dbname = shift;
 
@@ -904,14 +899,11 @@ sub have_libinfo {
     return 0 if (!$dbname);
     
     # DBI: "select count(dbid) as infocount from libraryinfo,databaseinfo where libraryinfo.dbid=databaseinfo.id and databaseinfo.dbname = ? and content != ''"
-    my $haveinfos = $self->{schema}->resultset('Libraryinfo')->search(
+    my $haveinfos = $self->{schema}->resultset('Databaseinfo')->search(
         {
-            'dbid.dbname' => $dbname,
-            'me.content' => { '!=' => '' },
+            'dbname'     => $dbname,
+            'locationid' => { '!=' => '' },
         },
-        {
-            join => 'dbid',
-        }
     )->count;
 
     return $haveinfos;
@@ -2901,14 +2893,14 @@ von url lokale Bibliotheksinformationen angezeigt werden sollen
 die Informatione autoconvert zurückgegeben, ob der Katalog automatisch
 aktualisiert werden soll.
 
-=item get_libinfo($dbname)
+=item get_locationinfo($dbname)
 
 Liefert eine Hashreferenz auf die allgemeinen Nutzungs-Informationen
 (Öffnungszeigen, Adresse, usw.)  der zur Datenbank $dbname zugehörigen
 Bibliothek. Zu jeder Kategorie category sind dies ein möglicher
 Indikator indicator und der eigentliche Kategorieinhalt content.
 
-=item have_libinfo($dbname)
+=item have_locationinfo($dbname)
 
 Gibt zurück, ob zu der Datenbank $dbname lokale Nutzungs-Informationen
 (Öffnungszeiten, Adresse, usw.) vorhanden sind.

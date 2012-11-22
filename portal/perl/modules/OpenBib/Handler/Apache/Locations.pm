@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Libraries.pm
+#  OpenBib::Handler::Apache::Locations.pm
 #
 #  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Libraries;
+package OpenBib::Handler::Apache::Locations;
 
 use strict;
 use warnings;
@@ -106,16 +106,16 @@ sub show_collection {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $librarylist_ref = $config->get_libraries();
+    my $locationlist_ref = $config->get_locations();
     
     # TT-Data erzeugen
     my $ttdata={
         queryoptions_ref => $queryoptions->get_options,
         dbinfo           => $dbinfotable,
-        libraries        => $librarylist_ref,
+        locations        => $locationlist_ref,
     };
     
-    $self->print_page($config->{tt_libraries_collection_tname},$ttdata);
+    $self->print_page($config->{tt_locations_collection_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -128,7 +128,7 @@ sub show_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $libraryid      = $self->strip_suffix($self->param('libraryid'));
+    my $locationid      = $self->strip_suffix($self->param('locationid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -144,17 +144,17 @@ sub show_record {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    if ( $libraryid ){ # Valide Informationen etc.
-        $logger->debug("Key: $libraryid");
+    if ( $locationid ){ # Valide Informationen etc.
+        $logger->debug("Key: $locationid");
 
-        my $libinfo_ref = $config->get_libinfo($libraryid);
+        my $libinfo_ref = $config->get_locationinfo($locationid);
 
         my $ttdata = {
             libinfo        => $libinfo_ref,
             dbinfo         => $dbinfotable,
         };
 
-        $self->print_page($config->{tt_libraries_tname},$ttdata);
+        $self->print_page($config->{tt_locations_tname},$ttdata);
 
     }
     else {

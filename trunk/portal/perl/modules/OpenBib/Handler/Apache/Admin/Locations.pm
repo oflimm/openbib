@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Libraries
+#  OpenBib::Handler::Apache::Admin::Locations
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Libraries;
+package OpenBib::Handler::Apache::Admin::Locations;
 
 use strict;
 use warnings;
@@ -69,6 +69,7 @@ sub setup {
 
     $self->start_mode('show_record');
     $self->run_modes(
+        'show_collection'           => 'show_collection',
         'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'create_record'             => 'create_record',
@@ -82,6 +83,37 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
+sub show_collection {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $config         = $self->param('config');
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
+
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    
+    my $locationinfo_ref = $config->get_locationinfo_overview();
+    
+    my $ttdata={
+        dbinfo     => $dbinfotable,
+        locations  => $locationinfo_ref,
+    };
+    
+    $self->print_page($config->{tt_admin_locations_tname},$ttdata);
+    
+    return Apache2::Const::OK;
+}
+
 sub show_record {
     my $self = shift;
 
@@ -90,7 +122,7 @@ sub show_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $dbname         = $self->param('databaseid');
+    my $locationid     = $self->param('locationid');
 
     # Shared Args
     my $query          = $self->query();
@@ -109,19 +141,19 @@ sub show_record {
         return;
     }
 
-    if (!$config->db_exists($dbname)) {
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
+    if (!$config->location_exists($locationid)) {
+        $self->print_warning($msg->maketext("Es existiert keine Standortinformation mit dieser Id"));
         return Apache2::Const::OK;
     }
     
-    my $libinfo_ref = $config->get_locationinfo($dbname);
+    my $locationinfo_ref = $config->get_locationinfo($locationid);
     
     my $ttdata={
-        dbname     => $dbname,
-        libinfo    => $libinfo_ref,
+        locationid   => $locationid,
+        locationinfo => $locationinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_libraries_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_locations_record_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -155,7 +187,7 @@ sub create_record {
     my $dbname          = $query->param('dbname')          || '';
     my $sigel           = $query->param('sigel')           || '';
     my $url             = $query->param('url')             || '';
-    my $use_libinfo     = $query->param('use_libinfo')     || 0;
+    my $use_libinfo     = $query->param('locationid')     || 0;
     my $active          = $query->param('active')          || 0;
 
     my $host            = $query->param('host')            || '';
@@ -249,7 +281,7 @@ sub show_record_form {
     
     # Dispatched Args
     my $view           = $self->param('view');
-    my $dbname         = $self->param('databaseid');
+    my $locationid     = $self->param('locationid');
 
     # Shared Args
     my $query          = $self->query();
@@ -268,19 +300,19 @@ sub show_record_form {
         return;
     }
 
-    if (!$config->db_exists($dbname)) {
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
+    if (!$config->location_exists($locationid)) {
+        $self->print_warning($msg->maketext("Es existiert keine Standortinformation mit dieser Id"));
         return Apache2::Const::OK;
     }
 
-    my $libinfo_ref = $config->get_locationinfo($dbname);
+    my $locationinfo_ref = $config->get_locationinfo($locationid);
     
     my $ttdata={
-        dbname     => $dbname,
-        libinfo    => $libinfo_ref,
+        locationid   => $locationid,
+        locationinfo => $locationinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_libraries_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_locations_record_edit_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -460,6 +492,30 @@ sub delete_record {
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        identifier => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        type => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        # Muster: field_FIELD_SUBFIELD_MULT
+        field => {
+            default  => [],
+            encoding => 'none',
+            type     => 'hasharray',
+        },
+        
+    };
 }
 
 1;

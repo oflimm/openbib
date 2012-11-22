@@ -1,25 +1,29 @@
-package OpenBib::Schema::System::Result::Libraryinfo;
+use utf8;
+package OpenBib::Schema::System::Result::LocationinfoField;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::LocationinfoField
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Libraryinfo
+=head1 TABLE: C<locationinfo_fields>
 
 =cut
 
-__PACKAGE__->table("libraryinfo");
+__PACKAGE__->table("locationinfo_fields");
 
 =head1 ACCESSORS
 
-=head2 dbid
+=head2 locationid
 
   data_type: 'bigint'
   is_foreign_key: 1
@@ -35,52 +39,59 @@ __PACKAGE__->table("libraryinfo");
   data_type: 'smallint'
   is_nullable: 1
 
-=head2 content
-
-  data_type: 'text'
-  is_nullable: 0
-
 =head2 subfield
 
   data_type: 'varchar'
   is_nullable: 1
   size: 2
 
+=head2 content
+
+  data_type: 'text'
+  is_nullable: 0
+
+=head2 content_norm
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
-  "dbid",
+  "locationid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "field",
   { data_type => "smallint", is_nullable => 0 },
   "mult",
   { data_type => "smallint", is_nullable => 1 },
-  "content",
-  { data_type => "text", is_nullable => 0 },
   "subfield",
   { data_type => "varchar", is_nullable => 1, size => 2 },
+  "content",
+  { data_type => "text", is_nullable => 0 },
+  "content_norm",
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 RELATIONS
 
-=head2 dbid
+=head2 locationid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Databaseinfo>
+Related object: L<OpenBib::Schema::System::Result::Locationinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "dbid",
-  "OpenBib::Schema::System::Result::Databaseinfo",
-  { id => "dbid" },
+  "locationid",
+  "OpenBib::Schema::System::Result::Locationinfo",
+  { id => "locationid" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-10-18 16:51:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Lj65xsJaWDgn6AgHiYdKMg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-22 10:46:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:i8oAXX2KZj4Ew5xwgMfTUw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

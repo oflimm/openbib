@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::Searchhistory;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Searchhistory
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Searchhistory
+=head1 TABLE: C<searchhistory>
 
 =cut
 
@@ -99,8 +103,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-10-18 16:51:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:n56Ttt3UO4PLtOid3YvUvw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-22 10:46:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VfX2SdRZU4R3Qoxguxf4Cw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -1,14 +1,22 @@
 ALTER TABLE databaseinfo ADD PRIMARY KEY (id);
 ALTER TABLE databaseinfo ADD CONSTRAINT uq_databaseinfo_dbname UNIQUE (dbname);
+ALTER TABLE databaseinfo ADD CONSTRAINT fk_locationinfo FOREIGN KEY (locationid) REFERENCES locationinfo (id);
 CREATE INDEX databaseinfo_dbname ON databaseinfo (dbname);
 CREATE INDEX databaseinfo_active ON databaseinfo (active);
 CREATE INDEX databaseinfo_description ON databaseinfo (description);
 
-ALTER TABLE libraryinfo ADD CONSTRAINT fk_libraryinfo_db FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
-CREATE INDEX libraryinfo_field ON libraryinfo (field);
-CREATE INDEX libraryinfo_subfield ON libraryinfo (subfield);
-CREATE INDEX libraryinfo_mult ON libraryinfo (mult);
-CREATE INDEX libraryinfo_content ON libraryinfo (content);
+ALTER TABLE locationinfo ADD PRIMARY KEY (id);
+CREATE INDEX locationinfo_tstamp_create on locationinfo (tstamp_create);
+CREATE INDEX locationinfo_tstamp_update on locationinfo (tstamp_update);
+CREATE INDEX locationinfo_identifier ON locationinfo (identifier);
+CREATE INDEX locationinfo_type ON locationinfo (type);
+
+ALTER TABLE locationinfo_fields ADD CONSTRAINT fk_locationinfo_fields FOREIGN KEY (locationid) REFERENCES locationinfo (id);
+CREATE INDEX locationinfo_fields_locationid ON locationinfo_fields (locationid);
+CREATE INDEX locationinfo_fields_field ON locationinfo_fields (field);
+CREATE INDEX locationinfo_fields_subfield ON locationinfo_fields (subfield);
+CREATE INDEX locationinfo_fields_mult ON locationinfo_fields (mult);
+CREATE INDEX locationinfo_fields_content ON locationinfo_fields (content);
 
 ALTER TABLE rssinfo ADD PRIMARY KEY (id);
 ALTER TABLE rssinfo ADD CONSTRAINT fk_rssinfo_db FOREIGN KEY (dbid) REFERENCES databaseinfo (id);

@@ -411,7 +411,7 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 
   FOREACH database IN zentrale_pools ;
      onlinetitcount = config.get_number_of_titles(database => database);
-     libinfo        = config.get_libinfo(database);
+     libinfo        = config.get_locationinfo(database);
 
      monoanz          = monoanz + libinfo.${"I0120"}.first.content.replace('\D','');
      zeitanz          = zeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
@@ -451,10 +451,10 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 
 [%   FOREACH database IN zentrale_pools %]
 
-[%   NEXT IF NOT config.have_libinfo(database) %]
+[%   NEXT IF NOT config.have_locationinfo(database) %]
 
 [% dbinfo  = config.get_dbinfo(database) %]
-[% libinfo = config.get_libinfo(database) %]
+[% libinfo = config.get_locationinfo(database) %]
 [% truncdesc = libinfo.${"I0010"}.first.content | truncate(65) %]
 
 %\subsection{[% filterchars(libinfo.${"I0010"}.first.content) %]}
@@ -519,7 +519,7 @@ FOREACH orgunit IN dez_orgunits ;
 
   FOREACH database IN dez_orgunit_pools.${orgunit.id} ;
      onlinetitcount = config.get_number_of_titles(database => database);
-     libinfo        = config.get_libinfo(database);
+     libinfo        = config.get_locationinfo(database);
 
      monoanz          = monoanz + libinfo.${"I0120"}.first.content.replace('\D','');
      zeitanz          = zeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
@@ -599,10 +599,10 @@ END;
 [%   FOREACH database IN dez_orgunit_pools.${orgunit.id} %]
 
 [% dbinfo  = config.get_dbinfo(database) %]
-[% libinfo = config.get_libinfo(database) %]
+[% libinfo = config.get_locationinfo(database) %]
 [% truncdesc = libinfo.${"I0010"}.first.content | truncate(65) %]
 
-[%   NEXT IF NOT config.have_libinfo(database) %]
+[%   NEXT IF NOT config.have_locationinfo(database) %]
 
 
 [%# USE dumper;dumper.dump(dbinfo) %]

@@ -16,7 +16,7 @@ CREATE TABLE databaseinfo (
  dbname      TEXT,
  sigel       TEXT,
  url         TEXT,
- use_libinfo BOOL,
+ profileid   BIGINT,
  active      BOOL,
 
 /* Import Configuration */
@@ -46,14 +46,25 @@ CREATE TABLE databaseinfo (
  digitalcount  BIGINT DEFAULT 0
 );
 
-drop table IF EXISTS libraryinfo;
-create table libraryinfo (
- dbid          BIGINT NOT NULL,
+drop table IF EXISTS locationinfo;
+create table locationinfo (
+ id              BIGSERIAL,
 
- field         SMALLINT  NOT NULL,
+ identifier      TEXT,
+ type            TEXT,
+
+ tstamp_create   TIMESTAMP,
+ tstamp_update   TIMESTAMP
+);
+
+drop table IF EXISTS locationinfo_fields;
+create table locationinfo_fields (
+ locationid    BIGINT      NOT NULL,
+ field         SMALLINT    NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
- content       TEXT NOT NULL
+ content       TEXT        NOT NULL,
+ content_norm  TEXT
 );
 
 drop table IF EXISTS rssinfo;

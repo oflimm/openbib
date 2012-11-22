@@ -114,7 +114,7 @@ sub show_record {
         return Apache2::Const::OK;
     }
     
-    my $libinfo_ref = $config->get_libinfo($dbname);
+    my $libinfo_ref = $config->get_locationinfo($dbname);
     
     my $ttdata={
         dbname     => $dbname,
@@ -273,7 +273,7 @@ sub show_record_form {
         return Apache2::Const::OK;
     }
 
-    my $libinfo_ref = $config->get_libinfo($dbname);
+    my $libinfo_ref = $config->get_locationinfo($dbname);
     
     my $ttdata={
         dbname     => $dbname,
@@ -356,7 +356,7 @@ sub update_record {
         $logger->debug("About to delete $dbname");
         
         if ($confirm){
-            my $libinfo_ref = $config->get_libinfo($dbname);
+            my $libinfo_ref = $config->get_locationinfo($dbname);
             
             my $ttdata={
                 libinfo      => $libinfo_ref,

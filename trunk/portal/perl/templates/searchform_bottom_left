@@ -13,10 +13,10 @@
 -%]
 [% PROCESS common/subtemplate name="newsflash" %]
 
-[% IF viewdbs.size == 1 && config.have_libinfo(viewdbs.first) %]
+[% IF viewdbs.size == 1 && config.have_locationinfo(viewdbs.first) %]
 <h4><img style="vertical-align:bottom" src="[% config.get('info_img') %]" alt="[% msg.maketext("Steckbrief der Bibliothek") %]" />&nbsp;[% msg.maketext("Steckbrief der Bibliothek") %]</h4>
 
-[%- libinfo = config.get_libinfo(viewdbs.first); -%]
+[%- libinfo = config.get_locationinfo(viewdbs.first); -%]
 
 [% categories = [
                 'I0010', # msg.maketext("I0010") # Institutsname

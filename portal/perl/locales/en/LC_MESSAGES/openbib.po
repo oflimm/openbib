@@ -3520,120 +3520,120 @@ msgstr "Hostname"
 
 #: ../templates/bibfuehrer_tex:285 ../templates/searchform_bottom_left:22
 #: ../templates/visible_categories_library:17
-msgid "I0010"
+msgid "L0010"
 msgstr "Name of institute"
 
 #: ../templates/bibfuehrer_tex:286 ../templates/searchform_bottom_left:23
 #: ../templates/visible_categories_library:18
-msgid "I0020"
+msgid "L0020"
 msgstr "Street"
 
 #: ../templates/bibfuehrer_tex:287 ../templates/searchform_bottom_left:24
 #: ../templates/visible_categories_library:19
-msgid "I0030"
+msgid "L0030"
 msgstr "Building"
 
 #: ../templates/bibfuehrer_tex:288 ../templates/visible_categories_library:20
-msgid "I0040"
+msgid "L0040"
 msgstr "Interactive university map"
 
 #: ../templates/bibfuehrer_tex:289 ../templates/visible_categories_library:21
-msgid "I0050"
+msgid "L0050"
 msgstr "Joint library"
 
 #: ../templates/bibfuehrer_tex:290 ../templates/visible_categories_library:22
-msgid "I0060"
+msgid "L0060"
 msgstr "Phone"
 
 #: ../templates/bibfuehrer_tex:291 ../templates/visible_categories_library:23
-msgid "I0070"
+msgid "L0070"
 msgstr "Fax"
 
 #: ../templates/bibfuehrer_tex:292 ../templates/visible_categories_library:24
-msgid "I0080"
+msgid "L0080"
 msgstr "E-Mail"
 
 #: ../templates/bibfuehrer_tex:293 ../templates/visible_categories_library:25
-msgid "I0090"
+msgid "L0090"
 msgstr "Internet"
 
 #: ../templates/bibfuehrer_tex:294 ../templates/visible_categories_library:26
-msgid "I0100"
+msgid "L0100"
 msgstr "Help desk / librarian"
 
 #: ../templates/bibfuehrer_tex:295 ../templates/searchform_bottom_left:25
 #: ../templates/visible_categories_library:27
-msgid "I0110"
+msgid "L0110"
 msgstr "Business hours"
 
 #: ../templates/bibfuehrer_tex:296 ../templates/visible_categories_library:28
-msgid "I0120"
+msgid "L0120"
 msgstr "Holdings of books"
 
 #: ../templates/bibfuehrer_tex:297 ../templates/visible_categories_library:29
-msgid "I0130"
+msgid "L0130"
 msgstr "Holdings of journals"
 
 #: ../templates/bibfuehrer_tex:298 ../templates/visible_categories_library:30
-msgid "I0140"
+msgid "L0140"
 msgstr "Number of ongoing journals"
 
 #: ../templates/bibfuehrer_tex:299 ../templates/visible_categories_library:31
-msgid "I0150"
+msgid "L0150"
 msgstr "Holdings of CDs / digital media"
 
 #: ../templates/bibfuehrer_tex:300 ../templates/visible_categories_library:32
-msgid "I0160"
+msgid "L0160"
 msgstr "Other holding information"
 
 #: ../templates/bibfuehrer_tex:301 ../templates/visible_categories_library:33
-msgid "I0170"
+msgid "L0170"
 msgstr "Special collecting fields"
 
 #: ../templates/bibfuehrer_tex:302 ../templates/visible_categories_library:34
-msgid "I0180"
+msgid "L0180"
 msgstr "Type of library"
 
 #: ../templates/bibfuehrer_tex:303 ../templates/visible_categories_library:35
-msgid "I0190"
+msgid "L0190"
 msgstr "Lists of new acquisitions"
 
 #: ../templates/bibfuehrer_tex:304 ../templates/visible_categories_library:36
-msgid "I0200"
+msgid "L0200"
 msgstr "Copier / technical equipment"
 
 #: ../templates/bibfuehrer_tex:306 ../templates/visible_categories_library:38
-msgid "I0210"
+msgid "L0210"
 msgstr "IT equipment"
 
 #: ../templates/bibfuehrer_tex:307 ../templates/visible_categories_library:39
-msgid "I0220"
+msgid "L0220"
 msgstr "Type of library system"
 
 #: ../templates/bibfuehrer_tex:308 ../templates/searchform_bottom_left:26
 #: ../templates/visible_categories_library:40
-msgid "I0230"
+msgid "L0230"
 msgstr "Online cataloguing"
 
 #: ../templates/bibfuehrer_tex:309 ../templates/searchform_bottom_left:27
 #: ../templates/visible_categories_library:41
-msgid "I0235"
+msgid "L0235"
 msgstr "Online cataloguing since year of acquisition"
 
 #: ../templates/bibfuehrer_tex:310 ../templates/visible_categories_library:42
-msgid "I0240"
+msgid "L0240"
 msgstr "KUG cooperation"
 
 #: ../templates/bibfuehrer_tex:311 ../templates/visible_categories_library:43
-msgid "I0250"
+msgid "L0250"
 msgstr "Sign in ZDB"
 
 #: ../templates/bibfuehrer_tex:305 ../templates/visible_categories_library:37
-msgid "I0260"
+msgid "L0260"
 msgstr "Type of network"
 
 #: ../templates/bibfuehrer_tex:312 ../templates/visible_categories_library:44
-msgid "I0280"
+msgid "L0280"
 msgstr "Geographic coordinates"
 
 #: ../templates/admin_servers_html:118 ../templates/admin_servers_html:64

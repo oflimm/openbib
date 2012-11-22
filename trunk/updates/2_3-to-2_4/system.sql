@@ -83,3 +83,8 @@ CREATE TABLE clusterinfo (
 
 ALTER TABLE serverinfo ADD CONSTRAINT fk_serverinfo_clusterinfo FOREIGN KEY (clusterid) REFERENCES clusterinfo (id);
 
+alter table databaseinfo drop column use_libinfo; 
+
+alter table databaseinfo add column locationid bigint;
+ALTER TABLE databaseinfo ADD CONSTRAINT fk_databaseinfo_locationinfo FOREIGN KEY (locationid) REFERENCES locationinfo (id);
+

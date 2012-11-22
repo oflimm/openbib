@@ -282,34 +282,34 @@ Universit"ats- und Stadtbibliothek K"oln\\
                     };
 
             categories = [
-                'I0010', # msg.maketext("I0010") # Institutsname
-                'I0020', # msg.maketext("I0020") # Straße
-                'I0030', # msg.maketext("I0030") # Gebäude
-#                'I0040', # msg.maketext("I0040") # Interaktiver Lageplan der Universität
-                'I0050', # msg.maketext("I0050") # Gemeinsame Bibliothek
-                'I0060', # msg.maketext("I0060") # Telefon
-                'I0070', # msg.maketext("I0070") # Fax
-                'I0080', # msg.maketext("I0080") # E-Mail
-                'I0090', # msg.maketext("I0090") # Internet
-                'I0100', # msg.maketext("I0100") # Auskunft / Bibliothekar(in)
-                'I0110', # msg.maketext("I0110") # Öffnungszeiten
-                'I0120', # msg.maketext("I0120") # Bestand Monos
-                'I0130', # msg.maketext("I0130") # Bestand Zeitschriften
-                'I0140', # msg.maketext("I0140") # Anzahl laufender Zeitschriften
-                'I0150', # msg.maketext("I0150") # Bestand CD's / Digitale Medien
-                'I0160', # msg.maketext("I0160") # Sonstige Bestandsangaben
-                'I0170', # msg.maketext("I0170") # Besondere Sammelgebiete
-                'I0180', # msg.maketext("I0180") # Art der Bibliothek
-                'I0190', # msg.maketext("I0190") # Neuerwerbungslisten
-                'I0200', # msg.maketext("I0200") # Kopierer / Technische Ausstattung
-                'I0260', # msg.maketext("I0260") # Art der Vernetzung
-                'I0210', # msg.maketext("I0210") # DV-Ausstattung  
-                'I0220', # msg.maketext("I0220") # Art des Systems
-                'I0230', # msg.maketext("I0230") # Online-Katalogisierung seit Erscheinungsjahr
-                'I0235', # msg.maketext("I0235") # Online-Katalogisierung seit Erwerbungsjahr
-                'I0240', # msg.maketext("I0240") # Mitarbeit am KUG
-                'I0250', # msg.maketext("I0250") # Sigel in ZDB
-                'I0280', # msg.maketext("I0280") # Geo-Koordinaten
+                'L0010', # msg.maketext("L0010") # Institutsname
+                'L0020', # msg.maketext("L0020") # Straße
+                'L0030', # msg.maketext("L0030") # Gebäude
+#                'L0040', # msg.maketext("L0040") # Interaktiver Lageplan der Universität
+                'L0050', # msg.maketext("L0050") # Gemeinsame Bibliothek
+                'L0060', # msg.maketext("L0060") # Telefon
+                'L0070', # msg.maketext("L0070") # Fax
+                'L0080', # msg.maketext("L0080") # E-Mail
+                'L0090', # msg.maketext("L0090") # Internet
+                'L0100', # msg.maketext("L0100") # Auskunft / Bibliothekar(in)
+                'L0110', # msg.maketext("L0110") # Öffnungszeiten
+                'L0120', # msg.maketext("L0120") # Bestand Monos
+                'L0130', # msg.maketext("L0130") # Bestand Zeitschriften
+                'L0140', # msg.maketext("L0140") # Anzahl laufender Zeitschriften
+                'L0150', # msg.maketext("L0150") # Bestand CD's / Digitale Medien
+                'L0160', # msg.maketext("L0160") # Sonstige Bestandsangaben
+                'L0170', # msg.maketext("L0170") # Besondere Sammelgebiete
+                'L0180', # msg.maketext("L0180") # Art der Bibliothek
+                'L0190', # msg.maketext("L0190") # Neuerwerbungslisten
+                'L0200', # msg.maketext("L0200") # Kopierer / Technische Ausstattung
+                'L0260', # msg.maketext("L0260") # Art der Vernetzung
+                'L0210', # msg.maketext("L0210") # DV-Ausstattung  
+                'L0220', # msg.maketext("L0220") # Art des Systems
+                'L0230', # msg.maketext("L0230") # Online-Katalogisierung seit Erscheinungsjahr
+                'L0235', # msg.maketext("L0235") # Online-Katalogisierung seit Erwerbungsjahr
+                'L0240', # msg.maketext("L0240") # Mitarbeit am KUG
+                'L0250', # msg.maketext("L0250") # Sigel in ZDB
+                'L0280', # msg.maketext("L0280") # Geo-Koordinaten
                ];
 -%]
 
@@ -411,15 +411,15 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 
   FOREACH database IN zentrale_pools ;
      onlinetitcount = config.get_number_of_titles(database => database);
-     libinfo        = config.get_locationinfo(database);
+     locationinfo        = config.get_locationinfo_by_database(database);
 
-     monoanz          = monoanz + libinfo.${"I0120"}.first.content.replace('\D','');
-     zeitanz          = zeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
-     lfdzeitanz       = lfdzeitanz + libinfo.${"I0140"}.first.content.replace('\D','');
+     monoanz          = monoanz + locationinfo.${"L0120"}.first.content.replace('\D','');
+     zeitanz          = zeitanz + locationinfo.${"L0130"}.first.content.replace('\D','');
+     lfdzeitanz       = lfdzeitanz + locationinfo.${"L0140"}.first.content.replace('\D','');
      onlineanz        = onlineanz + onlinetitcount.all;
      biblanz          = biblanz + 1;
 -%]
-% [% database %] - Monos [% libinfo.${"I0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.all %]
+% [% database %] - Monos [% locationinfo.${"L0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.all %]
 [%
 
   END;
@@ -454,17 +454,17 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 [%   NEXT IF NOT config.have_locationinfo(database) %]
 
 [% dbinfo  = config.get_dbinfo(database) %]
-[% libinfo = config.get_locationinfo(database) %]
-[% truncdesc = libinfo.${"I0010"}.first.content | truncate(65) %]
+[% locationinfo = config.get_locationinfo_by_database(database) %]
+[% truncdesc = locationinfo.${"L0010"}.first.content | truncate(65) %]
 
-%\subsection{[% filterchars(libinfo.${"I0010"}.first.content) %]}
-\section[[% IF dbinfo.sigel.match("^[0-9][0-9]") %]ISIL DE-[% dbinfo.sigel.replace(" ","") %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(truncdesc,1) %]]{[% IF dbinfo.sigel.match("^[0-9][0-9]") %]ISIL DE-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(libinfo.${"I0010"}.first.content,1) %]}
+%\subsection{[% filterchars(locationinfo.${"L0010"}.first.content) %]}
+\section[[% IF dbinfo.sigel.match("^[0-9][0-9]") %]ISIL DE-[% dbinfo.sigel.replace(" ","") %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(truncdesc,1) %]]{[% IF dbinfo.sigel.match("^[0-9][0-9]") %]ISIL DE-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(locationinfo.${"L0010"}.first.content,1) %]}
 
 \subsubsection*{Informationen zur Bibliothek}
 \begin{tabular}{p{5.5cm}|p{11cm}}
 %\begin{description}
 [% FOREACH category IN categories;
-      FOREACH item IN libinfo.$category;
+      FOREACH item IN locationinfo.$category;
         content = item.content.replace("^ ","");
         NEXT IF content == "0" ;
 
@@ -473,7 +473,7 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
         # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
         # kodiert.
         thiscategory = category ;
-        IF config.get('categorymapping').${libinfo.database}.$category ;
+        IF config.get('categorymapping').${locationinfo.database}.$category ;
           thiscategory = "${category}-${database}" ;
         END;
 %]
@@ -485,12 +485,12 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 %\end{description}
 
 \newpage
-[% IF libinfo.${"I0280"}.first.content %]
+[% IF locationinfo.${"L0280"}.first.content %]
 \subsubsection*{Lageplan der Bibliothek}
 
 \begin{shadowenv}
 \begin{center}
-\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
+\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% locationinfo.${"L0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
 \end{shadowenv}
 
@@ -519,20 +519,20 @@ FOREACH orgunit IN dez_orgunits ;
 
   FOREACH database IN dez_orgunit_pools.${orgunit.id} ;
      onlinetitcount = config.get_number_of_titles(database => database);
-     libinfo        = config.get_locationinfo(database);
+     locationinfo        = config.get_locationinfo_by_database(database);
 
-     monoanz          = monoanz + libinfo.${"I0120"}.first.content.replace('\D','');
-     zeitanz          = zeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
-     lfdzeitanz       = lfdzeitanz + libinfo.${"I0140"}.first.content.replace('\D','');
+     monoanz          = monoanz + locationinfo.${"L0120"}.first.content.replace('\D','');
+     zeitanz          = zeitanz + locationinfo.${"L0130"}.first.content.replace('\D','');
+     lfdzeitanz       = lfdzeitanz + locationinfo.${"L0140"}.first.content.replace('\D','');
      onlineanz        = onlineanz + onlinetitcount.all;
      biblanz          = biblanz + 1;
 
-     all_dezmonoanz    = all_dezmonoanz + libinfo.${"I0120"}.first.content.replace('\D','');
-     all_dezzeitanz    = all_dezzeitanz + libinfo.${"I0130"}.first.content.replace('\D','');
-     all_dezlfdzeitanz = all_dezlfdzeitanz + libinfo.${"I0140"}.first.content.replace('\D','');
+     all_dezmonoanz    = all_dezmonoanz + locationinfo.${"L0120"}.first.content.replace('\D','');
+     all_dezzeitanz    = all_dezzeitanz + locationinfo.${"L0130"}.first.content.replace('\D','');
+     all_dezlfdzeitanz = all_dezlfdzeitanz + locationinfo.${"L0140"}.first.content.replace('\D','');
      all_dezonlineanz  = all_dezonlineanz + onlinetitcount.all;
 -%]
-% [% database %] - Monos [% libinfo.${"I0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.all %]
+% [% database %] - Monos [% locationinfo.${"L0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.all %]
 [%
 
   END;
@@ -599,24 +599,24 @@ END;
 [%   FOREACH database IN dez_orgunit_pools.${orgunit.id} %]
 
 [% dbinfo  = config.get_dbinfo(database) %]
-[% libinfo = config.get_locationinfo(database) %]
-[% truncdesc = libinfo.${"I0010"}.first.content | truncate(65) %]
+[% locationinfo = config.get_locationinfo_by_database(database) %]
+[% truncdesc = locationinfo.${"L0010"}.first.content | truncate(65) %]
 
 [%   NEXT IF NOT config.have_locationinfo(database) %]
 
 
 [%# USE dumper;dumper.dump(dbinfo) %]
 
-[%# USE dumper;dumper.dump(libinfo) %]
+[%# USE dumper;dumper.dump(locationinfo) %]
 
-%\subsection{[% filterchars(libinfo.${"I0010"}.first.content) %]}
-\subsection[[% IF dbinfo.sigel.match("^[0-9][0-9][0-9]") %]ISIL DE-38-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(truncdesc) %]]{[% IF dbinfo.sigel.match("^[0-9][0-9][0-9]") %]ISIL DE-38-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(libinfo.${"I0010"}.first.content) %]}
+%\subsection{[% filterchars(locationinfo.${"L0010"}.first.content) %]}
+\subsection[[% IF dbinfo.sigel.match("^[0-9][0-9][0-9]") %]ISIL DE-38-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(truncdesc) %]]{[% IF dbinfo.sigel.match("^[0-9][0-9][0-9]") %]ISIL DE-38-[% dbinfo.sigel %][% ELSE %][% dbinfo.sigel %][% END %] : [% filterchars(locationinfo.${"L0010"}.first.content) %]}
 
 \subsubsection*{Informationen zur Bibliothek}
 \begin{tabular}{p{5.5cm}|p{11cm}}
 %\begin{description}
 [% FOREACH category IN categories;
-      FOREACH item IN libinfo.$category;
+      FOREACH item IN locationinfo.$category;
         content = item.content.replace("^ ","");
         NEXT IF content == "0" ;
 
@@ -625,7 +625,7 @@ END;
         # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
         # kodiert.
         thiscategory = category ;
-        IF config.get('categorymapping').${libinfo.database}.$category ;
+        IF config.get('categorymapping').${locationinfo.database}.$category ;
           thiscategory = "${category}-${database}" ;
         END;
 %]
@@ -637,12 +637,12 @@ END;
 %\end{description}
 
 \newpage
-[% IF libinfo.${"I0280"}.first.content %]
+[% IF locationinfo.${"L0280"}.first.content %]
 \subsubsection*{Lageplan der Bibliothek}
 
 \begin{shadowenv}
 \begin{center}
-\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% libinfo.${"I0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
+\includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% locationinfo.${"L0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
 \end{shadowenv}
 

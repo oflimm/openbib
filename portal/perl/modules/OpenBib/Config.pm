@@ -853,7 +853,35 @@ sub get_dbinfo_overview {
     return $object;
 }
 
+sub get_locationinfo_of_database {
+    my $self   = shift;
+    my $dbname = shift;
+
+    my $databaseinfo = $self->{schema}->resultset('Databaseinfo')->single(
+        {
+            'dbname' => $dbname,
+        },
+    );
+
+    if ($databaseinfo && $databaseinfo->locationid){
+        return $self->get_locationinfo_fields($databaseinfo->locationid);
+    }
+
+    return {};
+}
+
 sub get_locationinfo {
+    my ($self) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->{schema}->resultset('Locationinfo');
+    
+    return $object;
+}
+
+sub get_locationinfo_fields {
     my $self   = shift;
     my $id     = shift;
 
@@ -863,7 +891,7 @@ sub get_locationinfo {
     return {} if (!$id);
 
     # DBI: "select category,content,indicator from libraryinfo where dbname = ?"
-    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single(
+    my $locationinfo = $self->get_locationinfo->single(
         {
             'id' => $id,
         },
@@ -887,6 +915,62 @@ sub get_locationinfo {
     }
 
     return $locationinfo_ref;
+}
+
+sub get_locationinfo_overview {
+    my $self   = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->get_viewinfo->search_rs(
+        undef,
+        {
+            order_by => 'viewname',
+        }
+    );
+    
+    return $object;
+
+#     my $idnresult=$self->{dbh}->prepare("select * from viewinfo order by viewname") or $logger->error($DBI::errstr);
+#     $idnresult->execute() or $logger->error($DBI::errstr);
+#     while (my $result=$idnresult->fetchrow_hashref()) {
+#         my $viewname    = decode_utf8($result->{'viewname'});
+#         my $description = decode_utf8($result->{'description'});
+#         my $active      = decode_utf8($result->{'active'});
+#         my $profile     = decode_utf8($result->{'profilename'});
+        
+#         $description = (defined $description)?$description:'Keine Beschreibung';
+        
+#         $active="Ja"   if ($active eq "1");
+#         $active="Nein" if ($active eq "0");
+        
+#         my $idnresult2=$self->{dbh}->prepare("select * from view_db where viewname = ? order by dbname") or $logger->error($DBI::errstr);
+#         $idnresult2->execute($viewname);
+        
+#         my @viewdbs=();
+#         while (my $result2=$idnresult2->fetchrow_hashref()) {
+#             my $dbname = decode_utf8($result2->{'dbname'});
+#             push @viewdbs, $dbname;
+#         }
+        
+#         $idnresult2->finish();
+        
+#         my $viewdb=join " ; ", @viewdbs;
+        
+#         $view={
+#             viewname    => $viewname,
+#             description => $description,
+#             profile     => $profile,
+#             active      => $active,
+#             viewdb      => $viewdb,
+#         };
+        
+#         push @{$viewinfo_ref}, $view;
+        
+#     }
+    
+#     return $viewinfo_ref;
 }
 
 sub have_locationinfo {

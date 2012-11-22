@@ -338,6 +338,19 @@ sub get_servername_of_view {
     return $servername;
 }
 
+sub location_exists {
+    my $self       = shift;
+    my $locationid = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select count(dbname) as rowcount from databaseinfo where dbname = ?"
+    my $count = $self->{schema}->resultset('Locationinfo')->search({ id => $locationid})->count;
+    
+    return $count;
+}
+
 sub db_exists {
     my $self   = shift;
     my $dbname = shift;
@@ -923,54 +936,27 @@ sub get_locationinfo_overview {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $object = $self->get_viewinfo->search_rs(
+    my $locations = $self->get_locationinfo->search_rs(
         undef,
         {
-            order_by => 'viewname',
+            order_by => 'identifier',
         }
     );
-    
-    return $object;
 
-#     my $idnresult=$self->{dbh}->prepare("select * from viewinfo order by viewname") or $logger->error($DBI::errstr);
-#     $idnresult->execute() or $logger->error($DBI::errstr);
-#     while (my $result=$idnresult->fetchrow_hashref()) {
-#         my $viewname    = decode_utf8($result->{'viewname'});
-#         my $description = decode_utf8($result->{'description'});
-#         my $active      = decode_utf8($result->{'active'});
-#         my $profile     = decode_utf8($result->{'profilename'});
+    my $locations_ref = [];
+
+    foreach my $location ($locations->all){
+        my $thislocation_ref = {
+            identifier  => $location->identifier,
+            type        => $location->type,
+            fields      => $self->get_locationinfo_fields($location->id),            
+            
+        };
         
-#         $description = (defined $description)?$description:'Keine Beschreibung';
-        
-#         $active="Ja"   if ($active eq "1");
-#         $active="Nein" if ($active eq "0");
-        
-#         my $idnresult2=$self->{dbh}->prepare("select * from view_db where viewname = ? order by dbname") or $logger->error($DBI::errstr);
-#         $idnresult2->execute($viewname);
-        
-#         my @viewdbs=();
-#         while (my $result2=$idnresult2->fetchrow_hashref()) {
-#             my $dbname = decode_utf8($result2->{'dbname'});
-#             push @viewdbs, $dbname;
-#         }
-        
-#         $idnresult2->finish();
-        
-#         my $viewdb=join " ; ", @viewdbs;
-        
-#         $view={
-#             viewname    => $viewname,
-#             description => $description,
-#             profile     => $profile,
-#             active      => $active,
-#             viewdb      => $viewdb,
-#         };
-        
-#         push @{$viewinfo_ref}, $view;
-        
-#     }
+        push @$locations_ref, $thislocation_ref;
+    }
     
-#     return $viewinfo_ref;
+    return $locations_ref;
 }
 
 sub have_locationinfo {
@@ -1456,8 +1442,8 @@ sub get_infomatrix_of_active_databases {
             },
             {
                 join   => [ 'profileid', { 'profileid' => { 'orgunitinfos' => { 'orgunit_dbs' => 'dbid' }}} ],
-                select => [ 'orgunitinfos.description', 'dbid.description', 'dbid.system', 'dbid.dbname', 'dbid.url', 'dbid.sigel', 'dbid.use_libinfo' ],
-                as     => [ 'thisorgunitdescription', 'thisdescription', 'thissystem', 'thisdbname', 'thisurl', 'thissigel', 'thisuse_libinfo' ],
+                select => [ 'orgunitinfos.description', 'dbid.description', 'dbid.system', 'dbid.dbname', 'dbid.url', 'dbid.sigel', 'dbid.locationid' ],
+                as     => [ 'thisorgunitdescription', 'thisdescription', 'thissystem', 'thisdbname', 'thisurl', 'thissigel', 'thislocationid' ],
                 order_by => [ 'orgunitid ASC', 'dbid.description ASC' ],
             }
         );
@@ -1469,8 +1455,8 @@ sub get_infomatrix_of_active_databases {
                 active => 1,
             },
             {
-                select => [ 'description', 'system', 'dbname', 'url', 'sigel', 'use_libinfo' ],
-                as     => [ 'thisdescription', 'thissystem', 'thisdbname', 'thisurl', 'thissigel', 'thisuse_libinfo' ],
+                select => [ 'description', 'system', 'dbname', 'url', 'sigel', 'locationid' ],
+                as     => [ 'thisdescription', 'thissystem', 'thisdbname', 'thisurl', 'thissigel', 'thislocationid' ],
                 order_by => [ 'description ASC' ],
             }
         );
@@ -1486,7 +1472,7 @@ sub get_infomatrix_of_active_databases {
         my $pool       = decode_utf8($item->get_column('thisdbname'));
         my $url        = decode_utf8($item->get_column('thisurl'));
         my $sigel      = decode_utf8($item->get_column('thissigel'));
-        my $use_libinfo= decode_utf8($item->get_column('thisuse_libinfo'));
+        my $locationid = decode_utf8($item->get_column('thislocationid'));
 	
         my $rcolumn;
         
@@ -1503,7 +1489,7 @@ sub get_infomatrix_of_active_databases {
                     systemtype => '',
                     sigel      => '',
                     url        => '',
-                    use_libinfo=> '',
+                    locationid => '',
                 };
                 $count++;
             }
@@ -1527,7 +1513,7 @@ sub get_infomatrix_of_active_databases {
             systemtype => $systemtype,
             sigel      => $sigel,
             url        => $url,
-            use_libinfo=> $use_libinfo,
+            locationid => $locationid,
             checked    => $checked,
         };
         
@@ -1547,7 +1533,7 @@ sub get_infomatrix_of_active_databases {
             systemtype => '',
             sigel      => '',
             url        => '',
-            use_libinfo=> '',
+            locationid => '',
         };
         $count++;
     }
@@ -1843,32 +1829,31 @@ sub del_view {
     return;
 }
 
-sub update_libinfo {
-    my ($self,$dbname,$libinfo_ref)=@_;
+sub update_locationinfo {
+    my ($self,$id,$locationinfo_ref)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbid = $self->get_databaseinfo->single({ dbname => $dbname })->id;
-
     eval {
-        $self->{schema}->resultset('Libraryinfo')->search({ dbid => $dbid })->delete;
+        $self->{schema}->resultset('Locationinfo')->single({ id => $id })->location_fields->delete;
     };
    
     my $category_contents_ref = [];
-    foreach my $category (keys %$libinfo_ref){
-        my ($category_num)=$category=~/^I(\d+)$/;
+    foreach my $field (keys %$locationinfo_ref){
+        my ($field_num)=$field=~/^L(\d+)$/;
 
-        push @$category_contents_ref, {
-            dbid     => $dbid,
-            category => $category_num,
-            content  => $libinfo_ref->{$category},
+        push @$field_contents_ref, {
+            profileid  => $id,
+            field      => $field_num,
+            subfield   => $locationinfo_ref->{$field}{subfield},
+            content    => $locationinfo_ref->{$field}{content},
         };
         
-        $logger->debug("Changing Category $category_num to $libinfo_ref->{$category}");
+        $logger->debug("Changing Category $field_num to $locationinfo_ref->{$field}{content}");
     }
     
-    $self->{schema}->resultset('Libraryinfo')->populate($category_contents_ref);
+    $self->{schema}->resultset('LocationinfoFields')->populate($field_contents_ref);
     
     return;
 }

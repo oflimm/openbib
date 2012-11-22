@@ -42,7 +42,7 @@
 <div class="ob-resultlist">
   <div class="ob-resultheader">
     <div class="ob-catalog">
-[%-   IF dbinfo.get('use_libinfo').${database} %]
+[%-   IF dbinfo.get('locationid').${database} %]
 <a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">

@@ -72,7 +72,7 @@
 
   <div class="ym-g75 ym-gl">
     <div class="ym-gbox-left">
-<h4>[%-   IF dbinfo.get('use_libinfo').${database} %]
+<h4>[%-   IF dbinfo.get('locationid').${database} %]
 <a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% database %]">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">

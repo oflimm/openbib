@@ -19,7 +19,7 @@
 <tr align="center"><td><strong>
 [%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
 [%-   thisdbname = mex.${"X4000"}.content.dbname -%]
-[%-   IF dbinfo.get('use_libinfo').${thisdbname} %]
+[%-   IF dbinfo.get('locationid').${thisdbname} %]
 <a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% thisdbname %]">[% mex.${"X4000"}.content.full %]</a>
 [%-   ELSE -%]
 <a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>

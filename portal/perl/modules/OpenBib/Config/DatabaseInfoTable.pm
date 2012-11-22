@@ -89,7 +89,7 @@ sub _new_instance {
         };
 
         $self->{urls}->{$dbinfo->dbname}        = $dbinfo->url;
-        $self->{use_libinfo}->{$dbinfo->dbname} = $dbinfo->use_libinfo;
+        $self->{locationid}->{$dbinfo->dbname}  = $dbinfo->locationid;
 
     }
   

@@ -24,6 +24,22 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('servers_loc') %].html?l=[% lang %]">[% msg.maketext("Server") %]</a></li>
 [% END %]
+[% IF active_submenu == "admin_locations" %]
+  <li class="active"><strong>[% msg.maketext("Standorte") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('locations_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
+[% END %]
+[% IF active_submenu == "admin_locations_record" %]
+<li><span style="padding-left:35px">[% locationinfo.identifier %]</span>
+    <ul>
+[% IF active_subsubmenu == "admin_locations_record_main" %]
+      <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('locations_loc') %]/id/[% locationinfo.id %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[% END %]
+    </ul>
+</li>
+[% END %]
 [% IF active_submenu == "admin_databases" %]
   <li class="active"><strong>[% msg.maketext("Kataloge") %]</strong></li>
 [% ELSE %]

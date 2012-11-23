@@ -52,6 +52,7 @@ create table locationinfo (
 
  identifier      TEXT,
  type            TEXT,
+ description     TEXT,
 
  tstamp_create   TIMESTAMP,
  tstamp_update   TIMESTAMP

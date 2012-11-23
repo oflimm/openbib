@@ -247,7 +247,7 @@ sub show_record {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlists_tname},$ttdata);
+    $self->print_page($config->{tt_litlists_record_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

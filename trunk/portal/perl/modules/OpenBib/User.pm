@@ -36,6 +36,7 @@ use base qw(Apache::Singleton);
 use Digest::MD5;
 use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
+use Data::Pageset;
 use Log::Log4perl qw(get_logger :levels);
 use YAML;
 
@@ -2430,7 +2431,7 @@ sub get_recent_litlists {
     return $litlists_ref;
 }
 
-sub get_public_litlists {
+sub get_number_of_public_litlists {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
@@ -2441,6 +2442,54 @@ sub get_public_litlists {
   
     my $logger = get_logger();
 
+    my $count;
+    
+    if ($topicid){
+        $count = $self->{schema}->resultset('Litlist')->search(
+            {
+                'topicid.id'  => $topicid,
+                'me.type'     => 1,
+            },
+            {
+                select   => [ 'me.id' ],
+                as       => ['thislitlistid'],
+#                prefetch => [{ 'litlist_topics' => 'topicid' }],
+                join     => [ 'litlist_topics', { 'litlist_topics' => 'topicid' } ],
+            }
+        )->count;
+
+#        $sql_stmnt = "select distinct(ls.litlistid) as id from litlist_topic as ls, litlist as l where ls.topicid = ? and ls.litlistid = l.id and l.type = 1";
+#        push @sql_args, $topicid;
+    }
+    else {
+        $count = $self->{schema}->resultset('Litlist')->search(
+            {
+                'type' => 1,
+            },
+        )->count;
+    }
+
+    $logger->debug("Got $count public litlists for topic $topicid");
+    
+    return $count;
+}
+
+sub get_public_litlists {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $topicid      = exists $arg_ref->{topicid}
+        ? $arg_ref->{topicid}        : undef;
+    my $offset       = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}        : undef;
+    my $num          = exists $arg_ref->{num}
+        ? $arg_ref->{num}        : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $logger->debug("Getting public litlists with offset $offset, num $num for topic $topicid");
     my $litlists;
     
     if ($topicid){
@@ -2451,10 +2500,14 @@ sub get_public_litlists {
             },
             {
 #                select   => [ {distinct => 'me.id'} ],
+                order_by => ['title ASC'],
+                group_by => ['me.id'],
+                rows     => $num,
+                offset   => $offset,
                 select   => [ 'me.id' ],
                 as       => ['thislitlistid'],
-                prefetch => [{ 'litlist_topics' => 'topicid' }],
-                join     => [ 'litlist_topics' ],
+#                prefetch => [{ 'litlist_topics' => 'topicid' }],
+                join     => [ 'litlist_topics', { 'litlist_topics' => 'topicid' } ],
             }
         );
 
@@ -2467,6 +2520,9 @@ sub get_public_litlists {
                 'type' => 1,
             },
             {
+                order_by => ['title ASC'],
+                rows     => $num,
+                offset   => $offset,
                 select   => ['id'],
                 as       => ['thislitlistid'],
             }
@@ -2481,19 +2537,10 @@ sub get_public_litlists {
       my $litlistid        = $litlist->get_column('thislitlistid');
 
       my $properties_ref = $self->get_litlist_properties({litlistid => $litlistid});
-      push @$litlists_ref, $properties_ref if ($properties_ref->{itemcount});
+      push @$litlists_ref, $properties_ref;
     }
 
-    # Sortieren nach Titeln via Schwartz'ian Transform
-    
-    my $sorted_litlists_ref = [];
-    
-    @{$sorted_litlists_ref} = map { $_->[0] }
-        sort { $a->[1] cmp $b->[1] }
-            map { [$_, lc($_->{title})] }
-                @{$litlists_ref};
-    
-    return $sorted_litlists_ref;
+    return $litlists_ref;
 }
 
 sub get_other_litlists {
@@ -2923,13 +2970,16 @@ sub get_number_of_litlists_by_topic {
     my $topicid           = exists $arg_ref->{topicid}
         ? $arg_ref->{topicid}           : undef;
 
+    my $type               = exists $arg_ref->{type}
+        ? $arg_ref->{type}              : undef;
+
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
     my $count_ref={};
 
-    $self->{schema}->storage->debug(1);
+    #    $self->{schema}->storage->debug(1);
     # DBI: "select count(distinct l2s.litlistid) as llcount from litlist_topic as l2s, litlist as l where l2s.litlistid=l.id and l2s.topicid=? and l.type=1 and (select count(li.litlistid) > 0 from litlistitem as li where l2s.litlistid=li.litlistid)"
     $count_ref->{public} = $self->{schema}->resultset('Litlist')->search(
         {
@@ -2942,19 +2992,23 @@ sub get_number_of_litlists_by_topic {
         }
     )->count;
 
-    # "select count(distinct litlistid) as llcount from litlist2topic as l2s where topicid=? and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)"
-    $count_ref->{all}=$self->{schema}->resultset('Litlist')->search(
-        {
-            'topicid.id'  => $topicid,
-        },
-        {
-            prefetch => [{ 'litlist_topics' => 'topicid' }],
-            join     => [ 'litlist_topics', 'litlistitems' ],
-        }
-    )->count;
+    if ($type eq "all"){
+        # "select count(distinct litlistid) as llcount from litlist2topic as l2s where topicid=? and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)"
+        $count_ref->{all}=$self->{schema}->resultset('Litlist')->search(
+            {
+                'topicid.id'  => $topicid,
+            },
+            {
+                prefetch => [{ 'litlist_topics' => 'topicid' }],
+                join     => [ 'litlist_topics', 'litlistitems' ],
+            }
+        )->count;
+        
+        $count_ref->{private} = $count_ref->{all} - $count_ref->{public};
+    }
 
-    $count_ref->{private} = $count_ref->{all} - $count_ref->{public};
-    
+ 
+
     return $count_ref;
 }
 

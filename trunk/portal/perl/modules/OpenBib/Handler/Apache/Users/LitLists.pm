@@ -77,7 +77,7 @@ sub setup {
         'create_record'                            => 'create_record',
         'update_record'                            => 'update_record',
         'delete_record'                            => 'delete_record',
-
+        'confirm_delete_record'     => 'confirm_delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
 #        'show_collection_by_topic'           => 'show_collection_by_topic',
 #        'show_record_by_topic'               => 'show_record_by_topic',
@@ -508,6 +508,28 @@ sub update_record {
     return;
 }
 
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $litlistid      = $self->strip_suffix($self->param('litlistid'));
+    my $config         = $self->param('config');
+
+    my $ttdata={
+        litlistid => $litlistid,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_users_litlists_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
+}
+
 sub delete_record {
     my $self = shift;
 
@@ -580,6 +602,34 @@ sub return_baseurl {
 #    $self->query->status(Apache2::Const::REDIRECT);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        title => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        type => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        lecture => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        topics => {
+            default  => [],
+            encoding => 'none',
+            type     => 'array',
+        },
+        
+    };
 }
 
 1;

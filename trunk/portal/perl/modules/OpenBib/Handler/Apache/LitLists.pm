@@ -41,6 +41,7 @@ use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
 use JSON::XS;
+use Data::Pageset;
 use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
@@ -105,13 +106,26 @@ sub show_collection {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
-    
-    my $topics_ref         = $user->get_topics;
-    my $public_litlists_ref  = $user->get_public_litlists();
 
+    # CGI-Parameter
+
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+    my $num    = $queryoptions->get_option('num');
+    
+    my $topics_ref           = $user->get_topics;
+    my $public_litlists_ref  = $user->get_public_litlists({ offset => $offset, num => $num });
+
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $user->get_number_of_public_litlists(),
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
+    
     # TT-Data erzeugen
     my $ttdata={
-        topics       => $topics_ref,
+        nav            => $nav,
+        topics         => $topics_ref,
         public_litlists=> $public_litlists_ref,
     };
     
@@ -176,7 +190,7 @@ sub show_collection_by_topic {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
-    my $topics_ref         = $user->get_topics;
+    my $topics_ref           = $user->get_topics;
     my $public_litlists_ref  = $user->get_public_litlists();
 
     # TT-Data erzeugen
@@ -214,7 +228,7 @@ sub show_collection_by_single_topic_recent {
     # CGI Args
     my $hitrange       = $query->param('num')    || 50;
 
-    my $topics_ref         = $user->get_topics;
+    my $topics_ref           = $user->get_topics;
     my $public_litlists_ref  = $user->get_recent_litlists({ topicid => $topicid, count => $hitrange });
 
     # TT-Data erzeugen
@@ -250,11 +264,22 @@ sub show_collection_by_single_topic {
     my $useragent      = $self->param('useragent');
 #    my $location       = $self->param('location');
 
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+    my $num    = $queryoptions->get_option('num');
+        
     my $topics_ref           = $user->get_topics;
-    my $public_litlists_ref  = $user->get_public_litlists({ topicid => $topicid });
+    my $public_litlists_ref  = $user->get_public_litlists({ topicid => $topicid, offset => $offset, num => $num });
 
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $user->get_number_of_public_litlists({ topicid => $topicid }),
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
+    
     # TT-Data erzeugen
     my $ttdata={
+        nav             => $nav,
         topics          => $topics_ref,
         topicid         => $topicid,
         public_litlists => $public_litlists_ref,

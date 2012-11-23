@@ -69,13 +69,13 @@ sub setup {
 
     $self->start_mode('show_record');
     $self->run_modes(
-        'show_collection'           => 'show_collection',
-        'show_record'               => 'show_record',
-        'show_record_form'          => 'show_record_form',
-        'create_record'             => 'create_record',
-        'update_record'             => 'update_record',
-        'delete_record'             => 'delete_record',
-        'dispatch_to_representation'           => 'dispatch_to_representation',
+        'show_collection'            => 'show_collection',
+        'show_record'                => 'show_record',
+        'show_record_form'           => 'show_record_form',
+        'create_record'              => 'create_record',
+        'update_record'              => 'update_record',
+        'delete_record'              => 'delete_record',
+        'dispatch_to_representation' => 'dispatch_to_representation',
     );
 
     # Use current path as template path,

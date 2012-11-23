@@ -71,10 +71,6 @@ sub setup {
     $self->run_modes(
         'show_collection'                      => 'show_collection',
         'show_record'                          => 'show_record',
-        'show_record_form'                     => 'show_record_form',
-        'create_record'                        => 'create_record',
-        'update_record'                        => 'update_record',
-        'delete_record'                        => 'delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -106,7 +102,7 @@ sub show_collection {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $locationlist_ref = $config->get_locations();
+    my $locationlist_ref = $config->get_locationinfo_overview;
     
     # TT-Data erzeugen
     my $ttdata={
@@ -115,7 +111,7 @@ sub show_collection {
         locations        => $locationlist_ref,
     };
     
-    $self->print_page($config->{tt_locations_collection_tname},$ttdata);
+    $self->print_page($config->{tt_locations_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -128,7 +124,8 @@ sub show_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $locationid      = $self->strip_suffix($self->param('locationid'));
+    my $locationid     = $self->strip_suffix($self->param('locationid'));
+    my $isil           = $self->strip_suffix($self->param('isil'));
 
     # Shared Args
     my $query          = $self->query();
@@ -144,17 +141,50 @@ sub show_record {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    if ( $locationid ){ # Valide Informationen etc.
-        $logger->debug("Key: $locationid");
+    if ( $locationid || $isil ){ # Valide Informationen etc.
+        my $search_args_ref = {};
+        
+        if ($locationid){
+            $logger->debug("Id: $locationid");
+                    
+            $search_args_ref->{id} = $locationid;
+        }
+        elsif ($isil){
+            $logger->debug("Isil: $isil");
 
-        my $libinfo_ref = $config->get_locationinfo($locationid);
+            $search_args_ref->{identifier} = $isil;
+            $search_args_ref->{type}       = 'ISIL';
+        }
+        
+        my $locationinfo = ($locationid)?$config->get_locationinfo->single({id => $locationid}):
+            ($isil)?$config->get_locationinfo->single({identifier => $isil}):undef;
+        
+        my $locationinfo_ref = {};
+        
+        if ($locationinfo){
+            $locationinfo_ref = {
+                id          => $locationinfo->id,
+                identifier  => $locationinfo->identifier,
+                description => $locationinfo->description,
+                type        => $locationinfo->type,
+                fields      => $config->get_locationinfo_fields($locationinfo->id),            
+            };
 
+            $logger->debug("Found record:".YAML::Dump($locationinfo_ref));
+
+        }
+        else {
+            $logger->info("Can't find location with id $locationid / isil $isil")
+        }
+                
         my $ttdata = {
-            libinfo        => $libinfo_ref,
+            locationid     => $locationinfo->id,
+            isil           => $isil,
+            locationinfo   => $locationinfo_ref,
             dbinfo         => $dbinfotable,
         };
 
-        $self->print_page($config->{tt_locations_tname},$ttdata);
+        $self->print_page($config->{tt_locations_record_tname},$ttdata);
 
     }
     else {

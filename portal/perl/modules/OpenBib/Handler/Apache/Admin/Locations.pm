@@ -145,9 +145,21 @@ sub show_record {
         $self->print_warning($msg->maketext("Es existiert keine Standortinformation mit dieser Id"));
         return Apache2::Const::OK;
     }
-    
-    my $locationinfo_ref = $config->get_locationinfo($locationid);
-    
+
+    my $locationinfo = $config->get_locationinfo->single({id => $locationid});
+
+    my $locationinfo_ref = {};
+        
+    if ($locationinfo){
+        $locationinfo_ref = {
+            id          => $locationid,
+            identifier  => $locationinfo->identifier,
+            description => $locationinfo->description,
+            type        => $locationinfo->type,
+            fields      => $config->get_locationinfo_fields($locationinfo->id),            
+        };
+    }
+
     my $ttdata={
         locationid   => $locationid,
         locationinfo => $locationinfo_ref,

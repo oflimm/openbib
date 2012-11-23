@@ -100,6 +100,7 @@
 ../modules/OpenBib/Handler/Apache/Users/Reviews.pm
 ../modules/OpenBib/Handler/Apache/Users/Roles.pm
 ../modules/OpenBib/Handler/Apache/Users/Tags.pm
+../modules/OpenBib/Handler/Apache/Users/Titles.pm
 ../modules/OpenBib/Handler/Apache/Views.pm
 ../modules/OpenBib/Handler/Apache/Views/RSS.pm
 ../modules/OpenBib/L10N.pm
@@ -247,6 +248,9 @@
 ../templates/admin_databases_rss_record_json
 ../templates/admin_exploresessions_list
 ../templates/admin_exploresessions_show
+../templates/admin_locations
+../templates/admin_locations_html
+../templates/admin_locations_json
 ../templates/admin_locations_record
 ../templates/admin_locations_record_delete_confirm
 ../templates/admin_locations_record_edit

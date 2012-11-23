@@ -1,25 +1,14 @@
-[%-
-
-  records = [];
-
-  FOREACH record IN litlist.recordlist.get_records ;
-      thisrecord = {
-         record  = record.get_fields
-         comment = record.comment
-         tstamp  = record.date
-         itemid  = record.listid
-      };
-      IF record.id && record.database ;
-         thisrecord.titleid = record.id;
-         thisrecord.dbname  = record.database;
- 
-      END;
-      records.push(thisrecord);
-  END ;
-
- thislitlist = {
-   meta = litlist.properties
-   records = records
- };
-
-to_json(thislitlist) -%]
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[% to_json(public_litlists) %]

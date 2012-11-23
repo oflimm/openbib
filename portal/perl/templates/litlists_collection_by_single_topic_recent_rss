@@ -20,7 +20,7 @@ FOREACH topic IN topics ;
    END;
 END;
 
-channel_link        = "${path_prefix}/${config.get('litlists_loc')}/${config.get('topics_loc'})/id/${topicid}/recent.rss";
+channel_link        = "${path_prefix}/${config.get('litlists_loc')}/${config.get('topics_loc')}/id/${topicid}/recent.rss";
 channel_title       = "Literaturlisten zum Themengebiet '${topic_name}'";
 channel_description = "RSS Feed der Literaturliste '${litlist.properties.title}' zum Themenbereich ${topic_name} sortiert nach dem Anlegedatum der Literaturlisten";
 

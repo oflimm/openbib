@@ -136,16 +136,6 @@ sub show_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
-    if (!$config->location_exists($locationid)) {
-        $self->print_warning($msg->maketext("Es existiert keine Standortinformation mit dieser Id"));
-        return Apache2::Const::OK;
-    }
-
     my $locationinfo = $config->get_locationinfo->single({id => $locationid});
 
     my $locationinfo_ref = {};

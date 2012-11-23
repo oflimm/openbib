@@ -19,14 +19,14 @@
 [% IF showtopics.defined %]
 <ul class="topiclist">
 [%- FOREACH topic IN topics -%]
-<li><a <a href="[% path_prefix %]/[% config.get('litlists_public_topics_loc') %]/[% topic.id %].html">[% topic.name %]</a> ([% msg.maketext("[_1] Listen",topic.litlistcount.public) %])</li>
+<li><a <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html">[% topic.name %]</a> ([% msg.maketext("[_1] Listen",topic.litlistcount.public) %])</li>
 [% END %]
 </ul>
 [% ELSE %]
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul class="topiclist">
 [%- FOREACH thisitem IN public_litlists -%]
-<li><a <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><a <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% END %]
 </ul>
 [% END %]

@@ -29,7 +29,7 @@
 [%   END %]
 </ul>
 <p>
-[<a href="[% path_prefix %]/[% config.get('litlists_loc') %][%- IF view_config.${view}.topicid %]/topic/[% view_config.${view}.topicid %][% ELSE %]/recent.html?num=50[% END %]">[% msg.maketext("Mehr") %]</a>]
+[<a href="[% path_prefix %]/[% config.get('litlists_loc') %][%- IF view_config.${view}.topicid %]/[% config.get('topics_loc')/id/[% view_config.${view}.topicid %][% ELSE %]/recent.html?num=50[% END %]">[% msg.maketext("Mehr") %]</a>]
 </p>
 [% ELSE %]
 Es wurden diesem Katalog noch keine Literaturlisten 
@@ -49,7 +49,7 @@ thematisch zugeordnet.
 [% IF lasttags.size > 0 %]
 <ul class="recent_tags">
 [%   FOREACH thistag IN lasttags %]
-<li><a href="[% path_prefix %]/[% config.get('tags_loc') %]/[% thistag.id %].html">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
+<li><a href="[% path_prefix %]/[% config.get('tags_loc') %]/id/[% thistag.id %].html">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
 [%   END %]
 </ul>
 [% ELSE %]

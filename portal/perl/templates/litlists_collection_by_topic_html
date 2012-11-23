@@ -40,7 +40,7 @@
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topic.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topics.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
   </div>
 
@@ -59,7 +59,7 @@
 [%# USE dumper;dumper.dump(topics)%]
 <ul class="topiclist">
 [%- FOREACH topic IN topics -%]
-<li><a <a href="[% path_prefix %]/[% config.get('litlists_public_topics_loc') %]/[% topic.id %].html">[% topic.name %]</a> ([% msg.maketext("[_1] Listen",topic.litlistcount.public) %])</li>
+<li><a <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a> ([% msg.maketext("[_1] Listen",topic.litlistcount.public) %])</li>
 [% END %]
 </ul>
         </div>

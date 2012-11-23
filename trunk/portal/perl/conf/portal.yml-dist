@@ -178,170 +178,12 @@ serveractive_loc: server_is_active
 #userreviews_loc: review
 
 dispatch_rules:
-  - # serveractive_loc:
-     module: 'OpenBib::Handler::Apache::ServerActive'
-     rule: '/portal/:view/server_is_active'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  - # home_loc:
-     module: 'OpenBib::Handler::Apache::Home'
-     rule: '/portal/:view/home.html'
-     runmode: 'show'
-  - # home_loc:
-     module: 'OpenBib::Handler::Apache::Home'
-     rule: '/portal/:view/home'
-     runmode: 'show'
-  - # info_loc:
-     module: 'OpenBib::Handler::Apache::Info'
-     rule: '/portal/:view/info/:stid'
-     runmode: 'show_record'
-#### Recherche ###########################################
-  - # search_loc:
-     module: 'OpenBib::Handler::Apache::Search'
-     rule: '/portal/:view/search.html'
-     runmode: 'show_search'
-  - # search_loc:
-     module: 'OpenBib::Handler::Apache::Search'
-     rule: '/portal/:view/search.json'
-     runmode: 'show_search'
-  - # search_loc:
-     module: 'OpenBib::Handler::Apache::Search'
-     rule: '/portal/:view/search.rdf'
-     runmode: 'show_search'
-  - # search_loc:
-     module: 'OpenBib::Handler::Apache::Search'
-     rule: '/portal/:view/search.rss'
-     runmode: 'show_search'
-  - # search_loc:
-     module: 'OpenBib::Handler::Apache::Search'
-     rule: '/portal/:view/search.include'
-     runmode: 'show_search'
-  - # search_loc:
-     module: 'OpenBib::Handler::Apache::Search'
-     rule: '/portal/:view/search'
-     runmode: 'show_search'
   - # index_loc:
      module: 'OpenBib::Handler::Apache::Search'
      rule: '/portal/:view/index/:type/*'
      runmode: 'index'
 
 ##### Konnektoren #######################################################
-  - # connector_availabilityimage_loc: 
-     module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
-     rule: '/portal/:view/connector/availabilityimage/:rm/:key'
-     runmode: 'gbs'
-     args:
-        disable_content_negotiation: 1
-  - # connector_availability_loc:
-     module: 'OpenBib::Handler::Apache::Connector::Availability'
-     rule: '/portal/:view/connector/availability/:key'
-     runmode: 'show_collection'
-     args:
-        disable_content_negotiation: 1
-  - # connector_availability_loc:
-     module: 'OpenBib::Handler::Apache::Connector::Availability'
-     rule: '/portal/:view/connector/availability/:rm/:key'
-     runmode: 'isbn'
-     args:
-        disable_content_negotiation: 1
-  - # connector_bibmanager_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/literaturverwaltung'
-     runmode: 'show'
-     args:
-        disable_disable_content_negotiation: 1
-  - # connector_digibib_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/digibib'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  - # connector_livesearch_loc:
-     module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
-     rule: '/portal/:view/connector/livesearch'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  - # connector_locationmark_loc:
-     module: 'OpenBib::Handler::Apache::Connector:LocationMark'
-     rule: '/portal/:view/connector/locationmark'
-     runmode: 'show'
-  - # connector_locationmark_loc:
-     module: 'OpenBib::Handler::Apache::Connector:LocationMark'
-     rule: '/portal/:view/connector/locationmark.html'
-     runmode: 'show'
-  - # connector_olws_loc:
-     module: 'OpenBib::Handler::Apache::Connector::OLWS'
-     rule: '/portal/:view/connector/olws'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
-  - # connector_permalink_loc:
-     module: 'OpenBib::Handler::Apache::Connector::PermaLink'
-     rule: '/portal/connector/permalink/:id1/:id2/:type/:view/index.html'
-     runmode: 'show'
-  - # connector_qrcode_loc:
-     module: 'OpenBib::Handler::Apache::Connector::QRCode'
-     rule: '/portal/:view/connector/qrcode'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  - # connector_rss_loc:
-     module: 'OpenBib::Handler::Apache::Connector::RSS'
-     rule: '/portal/:view/connector/rss/:type/:subtype?/*'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  - # connector_seealso_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SeeAlso'
-     rule: '/portal/:view/connector/seealso/:serviceid'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  - # connector_similarpersons_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
-     rule: '/portal/:view/connector/similarpersons'
-     runmode: 'show'
-  - # connector_similarpersons_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
-     rule: '/portal/:view/connector/similarpersons.html'
-     runmode: 'show'
-  - # connector_similarpersons_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
-     rule: '/portal/:view/connector/similarpersons.include'
-     runmode: 'show'
-  - # connector_similarsubjects_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
-     rule: '/portal/:view/connector/similarsubjects'
-     runmode: 'show'
-  - # connector_similarsubjects_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
-     rule: '/portal/:view/connector/similarsubjects.html'
-     runmode: 'show'
-  - # connector_similarsubjects_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
-     rule: '/portal/:view/connector/similarsubjects.include'
-     runmode: 'show'
-  - # connector_spellcheck_loc:
-     module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
-     rule: '/portal/:view/connector/spellcheck'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  - # connector_ukonline_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/uk-online'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  - # connector_unapi_loc:
-     module: 'OpenBib::Handler::Apache::Connector::UnAPI'
-     rule: '/portal/:view/connector/unapi'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
 
 # Titelnormdaten
 
@@ -548,178 +390,15 @@ dispatch_rules:
      rule: '/portal/:view/tags/id/:tagid/titles'
      runmode: 'show_collection_of_titles'
 
-# Anzeige und Bearbeitung von Literaturlisten
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists.html[get]'
-     runmode: 'show_collection'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists.json[get]'
-     runmode: 'show_collection'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists.rdf[get]'
-     runmode: 'show_collection'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists[get]'
-     runmode: 'show_collection'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/recent.html[get]'
-     runmode: 'show_collection_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/recent.json[get]'
-     runmode: 'show_collection_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/recent.rdf[get]'
-     runmode: 'show_collection_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/recent.rss[get]'
-     runmode: 'show_collection_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/recent.include[get]'
-     runmode: 'show_collection_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/recent[get]'
-     runmode: 'show_collection_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic.html[get]'
-     runmode: 'show_collection_by_topic'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic.json[get]'
-     runmode: 'show_collection_by_topic'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic.rdf[get]'
-     runmode: 'show_collection_by_topic'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic[get]'
-     runmode: 'show_collection_by_topic'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic/:topicid/recent.html[get]'
-     runmode: 'show_collection_by_single_topic_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic/:topicid/recent.json[get]'
-     runmode: 'show_collection_by_single_topic_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic/:topicid/recent.rdf[get]'
-     runmode: 'show_collection_by_single_topic_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic/:topicid/recent.rss[get]'
-     runmode: 'show_collection_by_single_topic_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic/:topicid/recent.include[get]'
-     runmode: 'show_collection_by_single_topic_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic/:topicid/recent[get]'
-     runmode: 'show_collection_by_single_topic_recent'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/topic/:topicid[get]'
-     runmode: 'show_collection_by_single_topic'
-  - # litlist_loc: 
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/user/:userid[get]'
-     runmode: 'show_collection_by_single_user'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/id/:litlistid/edit[get]'
-     runmode: 'show_record_form'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/id/:litlistid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/id/:litlistid[get]'
-     runmode: 'show_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/id/:litlistid[post]'
-     runmode: 'update_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/id/:litlistid[put]'
-     runmode: 'update_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists/id/:litlistid[delete]'
-     runmode: 'delete_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists'
-     rule: '/portal/:view/litlists[post]'
-     runmode: 'create_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item[get]'
-     runmode: 'show_collection'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item.html[get]'
-     runmode: 'show_collection'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item.json[get]'
-     runmode: 'show_collection'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item[post]'
-     runmode: 'create_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[get]'
-     runmode: 'show_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid/edit[get]'
-     runmode: 'edit_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid/edit.html[get]'
-     runmode: 'edit_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[put]'
-     runmode: 'update_record'
-  - # litlist_loc:
-     module: 'OpenBib::Handler::Apache::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[delete]'
-     runmode: 'delete_record'
-
-# Anzeige privater Listen ueber separaten user_loc
-
-  - # user_loc: 
-     module: 'OpenBib::Handler::Apache::Users::LitLists'
-     rule: '/portal/:view/users/id/:userid/litlists.html[get]'
-     runmode: 'show_collection'
-  - # user_loc: 
-     module: 'OpenBib::Handler::Apache::Users::LitLists'
-     rule: '/portal/:view/users/id/:userid/litlists.json[get]'
-     runmode: 'show_collection'
-  - # user_loc: 
-     module: 'OpenBib::Handler::Apache::Users::LitLists'
-     rule: '/portal/:view/users/id/:userid/litlists.rdf[get]'
-     runmode: 'show_collection'
-  - # user_loc: 
-     module: 'OpenBib::Handler::Apache::User::LitLists'
-     rule: '/portal/:view/users/id/:userid/litlists[get]'
-     runmode: 'show_collection'
+# Kann entfallen?
+#  - # litlist_loc:
+#     module: 'OpenBib::Handler::Apache::LitLists::Item'
+#     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid/edit[get]'
+#     runmode: 'edit_record'
+#  - # litlist_loc:
+#     module: 'OpenBib::Handler::Apache::LitLists::Item'
+#     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid/edit.html[get]'
+#     runmode: 'edit_record'
 
 # Anzeige/Bearbeiten von Reviews und Voting
 
@@ -789,27 +468,6 @@ dispatch_rules:
 
 
 ###
-
-  - # library_loc: 
-     module: 'OpenBib::Handler::Apache::Libraries'
-     rule: '/portal/:view/libraries.html[get]'
-     runmode: 'show_collection'
-  - # library_loc: 
-     module: 'OpenBib::Handler::Apache::Libraries'
-     rule: '/portal/:view/libraries.json[get]'
-     runmode: 'show_collection'
-  - # library_loc: 
-     module: 'OpenBib::Handler::Apache::Libraries'
-     rule: '/portal/:view/libraries.rdf[get]'
-     runmode: 'show_collection'
-  - # library_loc:
-     module: 'OpenBib::Handler::Apache::Libraries'
-     rule: '/portal/:view/libraries'
-     runmode: 'show_collection'
-  - # library_loc:
-     module: 'OpenBib::Handler::Apache::Libraries'
-     rule: '/portal/:view/libraries/id/:libraryid'
-     runmode: 'show_record'
 
   - # user_loc:
      module: 'OpenBib::Handler::Apache::Users'
@@ -1318,56 +976,6 @@ dispatch_rules:
      rule: '/portal/:view/registrations/id/:registrationid[get]'
      runmode: 'register'
 ##### Web-Administration #####################################
-  - # admin_database_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss.html[get]'
-     runmode: 'show_collection'
-  - # admin_database_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss.json[get]'
-     runmode: 'show_collection'
-  - # admin_database_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss.rdf[get]'
-     runmode: 'show_collection'
-  - # admin_database_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss[get]'
-     runmode: 'show_collection'
-#  - # admin_database_loc: Collection show from
-#     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
-#     rule: '/portal/:view/admin/databases/id/:databaseid/rss/new[get]'
-#     runmode: 'show_collection_form'
-  - # admin_database_loc: Creat Record in Collection
-     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss[post]'
-     runmode: 'create_record'
-  - # admin_database_loc: Show Record
-     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid[get]'
-     runmode: 'show_record'
-  - # admin_database_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid/edit[get]'
-     runmode: 'show_record_form'
-  - # admin_database_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # admin_database_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid[post]'
-     runmode: 'update_record'
-  - # admin_database_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid[put]'
-     runmode: 'update_record'
-  - # admin_database_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Admin::DatabasesRSS'
-     rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid[delete]'
-     runmode: 'delete_record'
-
-
   - # admin_database_loc: Show Record
      module: 'OpenBib::Handler::Apache::Admin::Libraries'
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries.html[get]'
@@ -1405,142 +1013,6 @@ dispatch_rules:
      rule: '/portal/:view/admin/databases/id/:databaseid/libraries[delete]'
      runmode: 'delete_record'
 
-
-  - # admin_profile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits.html[get]'
-     runmode: 'show_collection'
-  - # admin_profile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits.json[get]'
-     runmode: 'show_collection'
-  - # admin_profile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits.rdf[get]'
-     runmode: 'show_collection'
-  - # admin_profile_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits[get]'
-     runmode: 'show_collection'
-#  - # admin_profile_loc: Collection show from
-#     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-#     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/new[get]'
-#     runmode: 'show_collection_form'
-  - # admin_profile_loc: Creat Record in Collection
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits[post]'
-     runmode: 'create_record'
-  - # admin_profile_loc: Show Record
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid[get]'
-     runmode: 'show_record'
-  - # admin_profile_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid/edit[get]'
-     runmode: 'show_record_form'
-  - # admin_profile_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # admin_profile_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid[post]'
-     runmode: 'update_record'
-  - # admin_profile_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid[put]'
-     runmode: 'update_record'
-  - # admin_profile_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Admin::OrganizationalUnits'
-     rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid[delete]'
-     runmode: 'delete_record'
-
-
-  - # admin_view_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views.html[get]'
-     runmode: 'show_collection'
-  - # admin_view_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views.json[get]'
-     runmode: 'show_collection'
-  - # admin_view_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views.rdf[get]'
-     runmode: 'show_collection'
-  - # admin_view_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views[get]'
-     runmode: 'show_collection'
-  - # admin_view_loc: Creat Record in Collection
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views[post]'
-     runmode: 'create_record'
-  - # admin_view_loc: Show Record
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views/id/:viewid[get]'
-     runmode: 'show_record'
-  - # admin_view_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views/id/:viewid/edit[get]'
-     runmode: 'show_record_form'
-  - # admin_view_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views/id/:viewid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # admin_view_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views/id/:viewid[post]'
-     runmode: 'update_record'
-  - # admin_view_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views/id/:viewid[put]'
-     runmode: 'update_record'
-  - # admin_view_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Admin::Views'
-     rule: '/portal/:view/admin/views/id/:viewid[delete]'
-     runmode: 'delete_record'
-
-  - # admin_view_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-     rule: '/portal/:view/admin/views/id/:viewid/rss.html[get]'
-     runmode: 'show_record'
-  - # admin_view_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-     rule: '/portal/:view/admin/views/id/:viewid/rss.json[get]'
-     runmode: 'show_record'
-  - # admin_view_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-     rule: '/portal/:view/admin/views/id/:viewid/rss.rdf[get]'
-     runmode: 'show_record'
-  - # admin_view_loc: Collection Overview
-     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-     rule: '/portal/:view/admin/views/id/:viewid/rss[get]'
-     runmode: 'show_record'
-#  - # admin_view_loc: Collection show from
-#     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-#     rule: '/portal/:view/admin/views/id/:viewid/rss/new[get]'
-#     runmode: 'show_collection_form'
-  - # admin_view_loc: Creat Record in Collection
-     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-     rule: '/portal/:view/admin/views/id/:viewid/rss[post]'
-     runmode: 'update_record'
-  - # admin_view_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-     rule: '/portal/:view/admin/views/id/:viewid/rss/edit[get]'
-     runmode: 'show_record_form'
-  - # admin_view_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-     rule: '/portal/:view/admin/views/id/:viewid/rss/edit.html[get]'
-     runmode: 'show_record_form'
-  - # admin_view_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-     rule: '/portal/:view/admin/views/id/:viewid/rss[post]'
-     runmode: 'update_record'
-  - # admin_view_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::ViewsRSS'
-     rule: '/portal/:view/admin/views/id/:viewid/rss[put]'
-     runmode: 'update_record'
 
   - # admin_session_loc: Search form for archived sessions
      module: 'OpenBib::Handler::Apache::Admin::Sessions'
@@ -1841,9 +1313,326 @@ dispatch_rules:
      runmode: 'delete_record'
 
 # Charakteristik
-# - reduzierte oeffentliche und volle user Repraesentation [get]
-# - ein kanonischer Resource-URI [get,post,put,delete]
+# - ausschliesslich oeffentliche Repraesentation [get]
+# - ein kanonischer Resource-URI [get]
+# - Verlinkung auf nutzerspezifische Repreaesentation anderer
+#   Resourcen ueber deren Resource-URL, der entsprechend weiterleitet
+
+#####################################################################
+# Recherche-Resource/Repraesentation
+
+  - # Resource: search_loc
+     module: 'OpenBib::Handler::Apache::Search'
+     rule: '/portal/:view/search[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+       - rss
+     runmode: 'show_search'
+
+#####################################################################
+# Informations-Resource/Repraesentation
+
+  - # info_loc:
+     module: 'OpenBib::Handler::Apache::Info'
+     rule: '/portal/:view/info/:stid'
+     runmode: 'show_record'
+
+# Charakteristik
+# - ausschliesslich oeffentliche Resource ohne zugehoerige Repraesentation [get]
+
+#####################################################################
+# Suchaktivitaet
+
+  - # serveractive_loc:
+     module: 'OpenBib::Handler::Apache::ServerActive'
+     rule: '/portal/:view/server_is_active'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+
+#####################################################################
+# Konnektoren
+
+  - # connector_availabilityimage_loc: 
+     module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
+     rule: '/portal/:view/connector/availabilityimage/:rm/:key'
+     runmode: 'gbs'
+     args:
+        disable_content_negotiation: 1
+  - # connector_availability_loc:
+     module: 'OpenBib::Handler::Apache::Connector::Availability'
+     rule: '/portal/:view/connector/availability/:key'
+     runmode: 'show_collection'
+     args:
+        disable_content_negotiation: 1
+  - # connector_availability_loc:
+     module: 'OpenBib::Handler::Apache::Connector::Availability'
+     rule: '/portal/:view/connector/availability/:rm/:key'
+     runmode: 'isbn'
+     args:
+        disable_content_negotiation: 1
+  - # connector_bibmanager_loc:
+     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+     rule: '/portal/:view/connector/literaturverwaltung'
+     runmode: 'show'
+     args:
+        disable_disable_content_negotiation: 1
+  - # connector_digibib_loc:
+     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+     rule: '/portal/:view/connector/digibib'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+  - # connector_livesearch_loc:
+     module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
+     rule: '/portal/:view/connector/livesearch'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+  - # connector_locationmark_loc:
+     module: 'OpenBib::Handler::Apache::Connector:LocationMark'
+     rule: '/portal/:view/connector/locationmark'
+     runmode: 'show'
+  - # connector_locationmark_loc:
+     module: 'OpenBib::Handler::Apache::Connector:LocationMark'
+     rule: '/portal/:view/connector/locationmark.html'
+     runmode: 'show'
+  - # connector_olws_loc:
+     module: 'OpenBib::Handler::Apache::Connector::OLWS'
+     rule: '/portal/:view/connector/olws'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+  # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
+  - # connector_permalink_loc:
+     module: 'OpenBib::Handler::Apache::Connector::PermaLink'
+     rule: '/portal/connector/permalink/:id1/:id2/:type/:view/index.html'
+     runmode: 'show'
+  - # connector_qrcode_loc:
+     module: 'OpenBib::Handler::Apache::Connector::QRCode'
+     rule: '/portal/:view/connector/qrcode'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+  - # connector_rss_loc:
+     module: 'OpenBib::Handler::Apache::Connector::RSS'
+     rule: '/portal/:view/connector/rss/:type/:subtype?/*'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+  - # connector_seealso_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SeeAlso'
+     rule: '/portal/:view/connector/seealso/:serviceid'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+  - # connector_similarpersons_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
+     rule: '/portal/:view/connector/similarpersons'
+     runmode: 'show'
+  - # connector_similarpersons_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
+     rule: '/portal/:view/connector/similarpersons.html'
+     runmode: 'show'
+  - # connector_similarpersons_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SimilarPersons'
+     rule: '/portal/:view/connector/similarpersons.include'
+     runmode: 'show'
+  - # connector_similarsubjects_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
+     rule: '/portal/:view/connector/similarsubjects'
+     runmode: 'show'
+  - # connector_similarsubjects_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
+     rule: '/portal/:view/connector/similarsubjects.html'
+     runmode: 'show'
+  - # connector_similarsubjects_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SimilarSubjects'
+     rule: '/portal/:view/connector/similarsubjects.include'
+     runmode: 'show'
+  - # connector_spellcheck_loc:
+     module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
+     rule: '/portal/:view/connector/spellcheck'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+  - # connector_ukonline_loc:
+     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
+     rule: '/portal/:view/connector/uk-online'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+  - # connector_unapi_loc:
+     module: 'OpenBib::Handler::Apache::Connector::UnAPI'
+     rule: '/portal/:view/connector/unapi'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+
+# Charakteristik
+# - oeffentliche und user Repraesentation [get]
+# - ein kanonischer Resource-URI [get]
 # - Automatische Weiterleitung von [get] auf ggf. nutzerspezifische Repreaesentation
+
+#####################################################################
+# Startseiten-Resource/Repraesentation
+  - # Resource: home_loc
+     module: 'OpenBib::Handler::Apache::Home'
+     rule: '/portal/:view/home[get]'
+     representations:
+       - none
+       - html
+     args:
+        personalized_loc: 'home'        
+     runmode: 'show'
+
+
+# Charakteristik
+# - verschiedene oeffentliche und user Repraesentation [get]
+# - ein kanonischer Resource-URI [post,put,delete]
+# - *keine* automatische Weiterleitung
+
+#####################################################################
+# Literaturlisten-Resource/Repraesentation
+
+  - # Resource: litlists_loc: Alle oeffentliche Literaturlisten
+     module: 'OpenBib::Handler::Apache::LitLists'
+     rule: '/portal/:view/litlists[get]'
+     representations:
+       - none
+       - html
+       - json
+       - include
+       - rdf
+     runmode: 'show_collection'
+
+  - # Resource: litlists_loc: Alle zuletzt angelegten oeffentliche Literaturlisten
+     module: 'OpenBib::Handler::Apache::LitLists'
+     rule: '/portal/:view/litlists/recent[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rss
+       - include
+       - rdf
+     runmode: 'show_collection_recent'
+
+  - # Resource: litlists_loc: Themengebiete, nach denen alle oeffentlichen Literaturlisten
+    # kategorisiert sind
+     module: 'OpenBib::Handler::Apache::LitLists'
+     rule: '/portal/:view/litlists/topics[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     runmode: 'show_collection_by_topic'
+
+  - # Resource: litlists_loc: oeffentlichen Literaturlisten zu einem Topic
+    # kategorisiert sind
+     module: 'OpenBib::Handler::Apache::LitLists'
+     rule: '/portal/:view/litlists/topics/id/:topicid[get]'
+     runmode: 'show_collection_by_single_topic'
+
+  - # Resource: litlists_loc: zu letzt angelegte oeffentliche Literaturlisten zu einem Topic
+     module: 'OpenBib::Handler::Apache::LitLists'
+     rule: '/portal/:view/litlists/topics/id/:topicid/recent[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rss
+       - include
+       - rdf
+     runmode: 'show_collection_by_single_topic_recent'
+
+  - # Resource: litlists_loc: oeffentlichen Literaturlisten von einem User
+     module: 'OpenBib::Handler::Apache::LitLists'
+     rule: '/portal/:view/litlists/users/id/:userid[get]'
+     runmode: 'show_collection_by_single_user'
+
+  - # Resource: users_loc/litlists_loc: Anzeige einer Literaturliste (oeffentlich/privat)
+     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     rule: '/portal/:view/litlists/id/:litlistid[get]'
+     runmode: 'show_record'
+
+  - # Resource: users_loc/litlists_loc: Create Record
+     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     rule: '/portal/:view/litlists[post]'
+     runmode: 'create_record'
+  - # Resource: litlists_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     rule: '/portal/:view/litlists/id/:litlistid[post]'
+     runmode: 'update_record'
+  - # Resource: litlists_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     rule: '/portal/:view/litlists/id/:litlistid[put]'
+     runmode: 'update_record'
+  - # Resource: litlists_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     rule: '/portal/:view/litlists/id/:litlistid[delete]'
+     runmode: 'delete_record'
+
+  - # Resource: users_loc/litlists_loc: Show Items ?entfernen?
+     module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
+     rule: '/portal/:view/litlists/id/:litlistid/item[get]'
+     representations:
+       - none
+       - html
+       - json
+     runmode: 'show_collection'
+
+  - # Resource: users_loc/litlists_loc: Show Single Item ?entfernen?
+     module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
+     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[get]'
+     runmode: 'show_record'
+
+  - # Resource: users_loc/litlists_loc: Create Item
+     module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
+     rule: '/portal/:view/litlists/id/:litlistid/item[post]'
+     runmode: 'create_record'
+  - # Resource: litlists_loc: Update Item
+     module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
+     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[post]'
+     runmode: 'update_record'
+  - # Resource: litlists_loc: Update Item
+     module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
+     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[put]'
+     runmode: 'update_record'
+  - # Resource: litlists_loc: Delete Item
+     module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
+     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[delete]'
+     runmode: 'delete_record'
+
+# Anzeige privater Listen ueber separaten user_loc
+
+  - # Resource: users_loc/litlists_loc: Anzeige aller eigenen Literaturlisten
+     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     rule: '/portal/:view/users/id/:userid/litlists[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     runmode: 'show_collection'
+
+  - # Resource: users_loc/litlists_loc: Edit einer eigenen Literaturliste
+     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid/edit[get]'
+     representations:
+       - none
+       - html
+     runmode: 'edit_record'
+
+
+# Charakteristik
+# - reduzierte oeffentliche und volle admin Repraesentation [get]
+# - ein kanonischer Resource-URI [get,post,put,delete]
+# - ??Automatische Weiterleitung von [get] auf ggf. nutzerspezifische Repreaesentation
 
 #####################################################################
 # Clusters-Resource/Repraesentation
@@ -2067,6 +1856,66 @@ dispatch_rules:
   - # users_loc/databases_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Databases::RSS'
      rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid[delete]'
+     runmode: 'delete_record'
+
+#####################################################################
+# Standortgruppierung/Locations-Resource/Repraesentation
+  - # users/locations_loc:
+     module: 'OpenBib::Handler::Apache::Locations'
+     rule: '/portal/:view/locations[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     args:
+        personalized_loc: 'locations'
+  - # users_loc/locations_loc: Record show
+     module: 'OpenBib::Handler::Apache::Locations'
+     rule: '/portal/:view/locations/id/:locationid[get]'
+     runmode: 'show_record'
+     args:
+        personalized_loc: 'locations'
+  - # users_loc/locations_loc: Record show
+     module: 'OpenBib::Handler::Apache::Locations'
+     rule: '/portal/:view/locations/isil/:isil[get]'
+     runmode: 'show_record'
+  - # users/locations_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Locations'
+     rule: '/portal/:view/users/id/:id/locations[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/locations_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Locations'
+     rule: '/portal/:view/users/id/:id/locations/id/:locationid[get]'
+     runmode: 'show_record'
+  - # users_loc/locations_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Admin::Locations'
+     rule: '/portal/:view/users/id/:id/locations/id/:locationid/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users_loc/locations_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Locations'
+     rule: '/portal/:view/locations[post]'
+     runmode: 'create_record'
+  - # users_loc/locations_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Locations'
+     rule: '/portal/:view/locations/id/:locationid[post]'
+     runmode: 'update_record'
+  - # users_loc/locations_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Admin::Locations'
+     rule: '/portal/:view/locations/id/:locationid[put]'
+     runmode: 'update_record'
+  - # users_loc/locations_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Admin::Locations'
+     rule: '/portal/:view/locations/id/:locationid[delete]'
      runmode: 'delete_record'
 
 #####################################################################
@@ -3269,6 +3118,7 @@ tt_admin_databases_rss_record_edit_tname: admin_databases_rss_record_edit
 tt_admin_databases_rss_record_tname: admin_databases_rss_record
 tt_admin_databases_rss_tname: admin_databases_rss
 tt_admin_databases_tname: admin_databases
+tt_admin_locations_tname: admin_locations
 tt_admin_locations_record_delete_confirm_tname: admin_locations_record_delete_confirm
 tt_admin_locations_record_edit_tname: admin_locations_record_edit
 tt_admin_locations_record_tname: admin_locations_record
@@ -3449,17 +3299,18 @@ tt_info_versions_tname: info_versions
 
 tt_library_tname: library
 
-tt_litlists_collection_by_single_topic_recent_tname: litlists_collection_by_single_topic_recent
-tt_litlists_collection_by_single_topic_tname: litlists_collection_by_single_topic
-tt_litlists_collection_by_single_user_tname: litlists_collection_by_single_user
-tt_litlists_collection_by_topic_tname: litlists_collection_by_topic
-tt_litlists_collection_by_user_tname: litlists_collection_by_user
-tt_litlists_collection_recent_tname: litlists_collection_recent
-tt_litlists_collection_tname: litlists_collection
+tt_users_litlists_record_delete_confirm_tname: users_litlists_record_delete_confirm
+tt_litlists_by_single_topic_recent_tname: litlists_by_single_topic_recent
+tt_litlists_by_single_topic_tname: litlists_by_single_topic
+tt_litlists_by_single_user_tname: litlists_by_single_user
+tt_litlists_by_topic_tname: litlists_by_topic
+tt_litlists_by_user_tname: litlists_by_user
+tt_litlists_recent_tname: litlists_recent
+tt_litlists_tname: litlists
 tt_litlists_edit_tname: litlists_edit
 tt_litlists_item_record_tname: litlists_item_record
 tt_litlists_item_tname: litlists_item
-tt_litlists_tname: litlists
+tt_litlists_record_tname: litlists_record
 
 tt_login_circulation_tname: login_circulation
 tt_login_tname: login
@@ -3524,7 +3375,7 @@ tt_users_circulations_reminders_tname: users_circulations_reminders
 tt_users_circulations_renew_loans_tname: users_circulations_renew_loans
 tt_users_circulations_reservations_tname: users_circulations_reservations
 tt_users_delete_confirm_tname: users_delete_confirm
-tt_users_litlists_collection_tname: users_litlists_collection
+tt_users_litlists_tname: users_litlists
 tt_users_preferences_tname: users_preferences
 tt_users_profiles_collection_tname: users_profiles_collection
 tt_users_profiles_edit_tname: users_profiles_edit

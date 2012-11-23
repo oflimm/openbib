@@ -72,7 +72,7 @@
 </fieldset>
 
 <fieldset class="ym-columnar">
-[% USE dumper;dumper.dump(locationinfo)%]
+[%# USE dumper;dumper.dump(locationinfo)%]
 <legend>[% msg.maketext("Felder") %]</legend>
 
 [%-
@@ -116,7 +116,7 @@ END ;-%]
 
 &nbsp;&nbsp;
 
-<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.id %]?_method=DELETE;confirm=1" class="ob_buttons">[% msg.maketext("Löschen") %]</a>
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.id %]?_method=DELETE;confirm=1" class="ob_button">[% msg.maketext("Löschen") %]</a>
 
 </div>
 

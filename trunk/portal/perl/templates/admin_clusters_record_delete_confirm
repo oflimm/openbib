@@ -56,7 +56,7 @@
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('clusters_loc') %]/id/[% clusterid %]/edit.html?l=[% lang %]" class="ob_buttons">
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('clusters_loc') %]/id/[% clusterid %]/edit.html?l=[% lang %]" class="ob_button">
 [% msg.maketext("Nein") %]</a>
 </td>
 </tr>

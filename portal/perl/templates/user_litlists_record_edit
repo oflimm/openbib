@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: litlists_manage_lists
+# Templatename: litlists_record_edit
 #
 # Typ         : Mastertemplate
 #
@@ -36,11 +36,26 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+[% IF user.ID %]
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/litlists.html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
+[% END %]
+         <li><a href="#" class="lastitem">[% litlist.properties.title %]</a></li>
+       </ul>
+     </div>
+   </div>
+
+<p/>
+
 <div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
 <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.topics.size -%]
 [%- FOREACH topic IN litlist.properties.topics-%]
-<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topic/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
 [%- END-%]
 [%- ELSE -%]
 [% msg.maketext("Keine") %]
@@ -80,8 +95,8 @@
 [%- END -%]
 
 <div class="ym-fbox-select">
-<label for="topicids">Ordnen Sie Ihre Literaturliste thematisch ein</label>
-<select name="topicids" id="topicids" multiple="multiple" size="5">
+<label for="topics">Ordnen Sie Ihre Literaturliste thematisch ein</label>
+<select name="topics" id="topics" multiple="multiple" size="5">
 
 [% FOREACH topic IN topics %]
 <option value="[% topic.id %]" [% IF litlist.properties.topic_selected.${topic.id} %] selected="selected"[% END %]>[% topic.name | truncate(40) %]</option>
@@ -90,7 +105,7 @@
 </select>
 </div>
 
-<div class="cssbutton glass kug"><input type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></div>
+<input type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" />
 
 </fieldset>
 </form>
@@ -134,23 +149,23 @@
 
 [% IF format == 'Text' %]
 
-[% PROCESS common/subtemplate name="litlists_html_as_text" %]
+[% PROCESS common/subtemplate name="litlists_record_html_as_text" %]
 
 [% ELSIF format == 'BibTeX' %]
 
-[% PROCESS common/subtemplate name="litlists_html_as_bibtex" %]
+[% PROCESS common/subtemplate name="litlists_record_html_as_bibtex" %]
 
 [% ELSIF format == 'EndNote' %]
 
-[% PROCESS common/subtemplate name="litlists_html_as_endnote" %]
+[% PROCESS common/subtemplate name="litlists_record_html_as_endnote" %]
 
 [% ELSIF format == 'short' %]
 
-[% PROCESS common/subtemplate name="litlists_html_short" %] 
+[% PROCESS common/subtemplate name="litlists_record_html_short" %] 
 
 [% ELSIF format == 'full' %]
 
-[% PROCESS common/subtemplate name="litlists_html_full" %]
+[% PROCESS common/subtemplate name="litlists_record_html_full" %]
 
 [%- END # Ende Alles -%]
 

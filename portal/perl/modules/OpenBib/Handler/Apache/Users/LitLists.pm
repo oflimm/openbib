@@ -342,7 +342,7 @@ sub show_record_form {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlists_edit_tname},$ttdata);
+    $self->print_page($config->{tt_users_litlists_record_edit_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

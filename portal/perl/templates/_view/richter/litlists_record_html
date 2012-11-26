@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: litlists_manage_lists
+# Templatename: litlists_record_html
 #
 # Typ         : Mastertemplate
 #
@@ -55,7 +55,7 @@
 <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.topics.size -%]
 [%- FOREACH topic IN litlist.properties.topics-%]
-<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topic/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
 [%- END-%]
 [%- ELSE -%]
 [% msg.maketext("Keine") %]
@@ -99,23 +99,23 @@
 
 [% IF format == 'Text' %]
 
-[% PROCESS common/subtemplate name="litlists_html_as_text" %]
+[% PROCESS common/subtemplate name="litlists_record_html_as_text" %]
 
 [% ELSIF format == 'BibTeX' %]
 
-[% PROCESS common/subtemplate name="litlists_html_as_bibtex" %]
+[% PROCESS common/subtemplate name="litlists_record_html_as_bibtex" %]
 
 [% ELSIF format == 'EndNote' %]
 
-[% PROCESS common/subtemplate name="litlists_html_as_endnote" %]
+[% PROCESS common/subtemplate name="litlists_record_html_as_endnote" %]
 
 [% ELSIF format == 'short' %]
 
-[% PROCESS common/subtemplate name="litlists_html_short" %] 
+[% PROCESS common/subtemplate name="litlists_record_html_short" %] 
 
 [% ELSIF format == 'full' %]
 
-[% PROCESS common/subtemplate name="litlists_html_full" %]
+[% PROCESS common/subtemplate name="litlists_record_html_full" %]
 
 [%- END # Ende Alles -%]
 

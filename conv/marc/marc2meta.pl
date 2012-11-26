@@ -81,7 +81,7 @@ open (NOTATION,">:utf8","unload.SYS");
 open (SWT,     ">:utf8","unload.SWD");
 open (MEX,     ">:utf8","unload.MEX");
 
-my $titid = 1;
+my $titleid = 1;
 
 my $batch = MARC::Batch->new('USMARC', $inputfile);
 
@@ -254,7 +254,7 @@ while (my $record = $batch->next()){
             
             foreach my $part (@parts){
                 print MEX "0000:$mexidn\n";
-                print MEX "0004:$titid\n";
+                print MEX "0004:$titleid\n";
                 print MEX $convconfig->{exempl}{$kateg}.$part."\n";
                 print MEX "9999:\n";
                 $mexidn++;
@@ -262,7 +262,7 @@ while (my $record = $batch->next()){
         }
     }
     print TIT "9999:\n";
-    $titid++;
+    $titleid++;
 }
 
 close(TIT);

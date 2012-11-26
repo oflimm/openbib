@@ -391,8 +391,8 @@ sub create_record {
                         if ($record){
                             $user->add_tags({
                                 tags      => $tags,
-                                titid     => $record->{id},
-                                titdb     => $record->{database},
+                                titleid     => $record->{id},
+                                dbname     => $record->{database},
                                 username  => $username,
                                 type      => $tags_type,
                             });

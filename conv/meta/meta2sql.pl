@@ -193,10 +193,10 @@ $request=$userdbh->prepare("select t.name, tt.titleid, t.id from tag as t, tit_t
 $request->execute($database);
 
 while (my $res    = $request->fetchrow_hashref) {
-    my $titid   = $res->{titleid};
+    my $titleid   = $res->{titleid};
     my $tag     = $res->{name};
     my $id      = $res->{id};
-    push @{$listitemdata_tags{$titid}}, { tag => $tag, id => $id };
+    push @{$listitemdata_tags{$titleid}}, { tag => $tag, id => $id };
 }
 $request->finish();
 
@@ -207,10 +207,10 @@ $request=$userdbh->prepare("select l.title, i.titleid, l.id from litlist as l, l
 $request->execute($database);
 
 while (my $res    = $request->fetchrow_hashref) {
-    my $titid   = $res->{titleid};
+    my $titleid   = $res->{titleid};
     my $title   = $res->{title};
     my $id      = $res->{id};
-    push @{$listitemdata_litlists{$titid}}, { title => $title, id => $id };
+    push @{$listitemdata_litlists{$titleid}}, { title => $title, id => $id };
 }
 $request->finish();
 

@@ -448,7 +448,7 @@ sub show {
             }
             
             foreach my $database (@databases){
-                my ($recordlist,$fullresultcount) = OpenBib::Search::Util::initial_search_for_titidns({
+                my ($recordlist,$fullresultcount) = OpenBib::Search::Util::initial_search_for_titleids({
                     serien          => $serien,
                     
                     database        => $database,

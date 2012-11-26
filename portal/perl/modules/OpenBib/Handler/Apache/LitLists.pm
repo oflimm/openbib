@@ -312,8 +312,8 @@ sub show_collection_by_single_userxxx {
     my $useragent      = $self->param('useragent');
     
     # CGI Args
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
     my $lecture        = $query->param('lecture')     || 0;
@@ -431,8 +431,8 @@ sub show_collection_by_single_user {
     my $useragent      = $self->param('useragent');
     
     # CGI Args
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
     my $lecture        = $query->param('lecture')     || 0;

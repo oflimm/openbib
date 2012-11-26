@@ -333,7 +333,7 @@ $logger->info("#### Processing Titles");
 
 open(OL,"<:utf8",$inputfile_titles.".filtered");
 
-my $have_titid_ref = {};
+my $have_titleid_ref = {};
 
 $count = 1;
 
@@ -382,14 +382,14 @@ while (<OL>){
         next;
     }
 
-    if (!$key || $have_titid_ref->{$key}){
+    if (!$key || $have_titleid_ref->{$key}){
         $logger->error("Doppelte ID: ".$key);
         next;
     }
 
     $title_ref->{id} = $key;
 
-    $have_titid_ref->{$key} = 1;
+    $have_titleid_ref->{$key} = 1;
 
     if (exists $recordset->{languages}){
         my $mult=1;

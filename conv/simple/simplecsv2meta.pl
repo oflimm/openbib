@@ -112,8 +112,8 @@ open (CLASSIFICATION,">:encoding($outputencoding)","meta.classification");
 open (SUBJECT,       ">:encoding($outputencoding)","meta.subject");
 open (HOLDING,       ">:encoding($outputencoding)","meta.holding");
 
-my $titid = 1;
-my $have_titid_ref = {};
+my $titleid = 1;
+my $have_titleid_ref = {};
 
 my $excluded_titles = 0;
 
@@ -159,16 +159,16 @@ while ($csv->getline ($in)){
             next;
         }
         
-        if ($have_titid_ref->{$id}){
+        if ($have_titleid_ref->{$id}){
             $logger->error("Doppelte ID: $id");
 	    next;
         }
 
         $title_ref->{id} = $id;
-        $have_titid_ref->{$id} = 1;
+        $have_titleid_ref->{$id} = 1;
     }
     else {
-        $title_ref->{id} = $titid++;
+        $title_ref->{id} = $titleid++;
     }
 
     foreach my $kateg (keys %{$convconfig->{title}}){
@@ -541,7 +541,7 @@ while ($csv->getline ($in)){
         push @{$item_ref->{'0004'}}, {
             mult     => 1,
             subfield => '',
-            content  => $titid,
+            content  => $titleid,
         };
 
         foreach my $category (keys %{$mex{$part}}){

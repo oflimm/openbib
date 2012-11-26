@@ -230,13 +230,13 @@ sub show_record {
         my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
             session    => $session,
             database   => $database,
-            titidn     => $titleid,
+            titleid     => $titleid,
             view       => $view,
         });
 
         # Literaturlisten finden
 
-        my $litlists_ref = $user->get_litlists_of_tit({titid => $titleid, titdb => $database});
+        my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database});
 
         # Anreicherung mit OLWS-Daten
         if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){
@@ -280,7 +280,7 @@ sub show_record {
             qopts       => $queryoptions->get_options,
             queryid     => $searchquery->get_id,
             record      => $record,
-            titidn      => $titleid,
+            titleid      => $titleid,
 
             format      => $format,
 

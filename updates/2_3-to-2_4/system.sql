@@ -88,3 +88,4 @@ alter table databaseinfo drop column use_libinfo;
 alter table databaseinfo add column locationid bigint;
 ALTER TABLE databaseinfo ADD CONSTRAINT fk_databaseinfo_locationinfo FOREIGN KEY (locationid) REFERENCES locationinfo (id);
 
+alter table locationinfo add column description text;

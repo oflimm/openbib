@@ -158,8 +158,8 @@ sub show_record {
     
     # CGI Args
     my $method         = $query->param('_method')     || '';
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
     my $lecture        = $query->param('lecture')     || 0;
@@ -274,8 +274,8 @@ sub show_record_form {
     my $useragent      = $self->param('useragent');
     
     # CGI Args
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
     my $lecture        = $query->param('lecture')     || 0;
@@ -370,9 +370,9 @@ sub create_record {
     my $location       = $self->param('location');
     
     # CGI Args
-    my $titid          = $query->param('titid')       || '';
+    my $titleid        = $query->param('titleid')       || '';
     my $litlistid      = $query->param('litlistid')   || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $dbname         = $query->param('dbname')       || '';
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
@@ -398,8 +398,8 @@ sub create_record {
 
     # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
     # der soeben erzeugten Literaturliste hinzugefuegt.
-    if ($titid && $titdb && $litlistid){
-        $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
+    if ($titleid && $dbname && $litlistid){
+        $user->add_litlistentry({ litlistid =>$litlistid, titleid => $titleid, dbname => $dbname});
         $self->return_baseurl;
         return;
     }
@@ -588,11 +588,12 @@ sub return_baseurl {
     
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
+    my $lang           = $self->param('lang')           || '';
     my $path_prefix    = $self->param('path_prefix');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/litlists.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{litlists_loc}.html?l=$lang";
 
     return $self->redirect($new_location,'303 See Other');
 

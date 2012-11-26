@@ -65,7 +65,7 @@ HELP
 exit;
 }
 
-our $have_titid_ref = {};
+our $have_titleid_ref = {};
 
 our $mediatype_ref = {
     'article'  => 'Aufsatz',
@@ -143,12 +143,12 @@ sub process_file {
             
 #            $id    =~s/\//|/g;
 
-            if ($have_titid_ref->{$id}){
+            if ($have_titleid_ref->{$id}){
                 print STDERR  "Doppelte ID: $id\n";
                 return;
             }
             
-            $have_titid_ref->{$id} = 1;
+            $have_titleid_ref->{$id} = 1;
             
             last;
         }

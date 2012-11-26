@@ -206,7 +206,7 @@ sub show {
 
         # Letzte 50 Neuaufnahmen
         if ($type == 1){
-            $recordlist=OpenBib::Search::Util::get_recent_titids({
+            $recordlist=OpenBib::Search::Util::get_recent_titleids({
                 id       => $subtype,
                 database => $database,
                 limit    => 50,
@@ -214,7 +214,7 @@ sub show {
         }
         # Letzte 50 Neuaufnahmen zu Verfasser/Person mit Id subtypeid
         elsif ($type == 2 && $subtype){
-            $recordlist=OpenBib::Search::Util::get_recent_titids_by_aut({
+            $recordlist=OpenBib::Search::Util::get_recent_titleids_by_aut({
                 id       => $subtype,
                 database => $database,
                 limit    => 50,
@@ -222,7 +222,7 @@ sub show {
         }
         # Letzte 50 Neuaufnahmen zu Koerperschaft/Urheber mit Id subtypeid
         elsif ($type == 3 && $subtype){
-            $recordlist=OpenBib::Search::Util::get_recent_titids_by_kor({
+            $recordlist=OpenBib::Search::Util::get_recent_titleids_by_kor({
                 id       => $subtype,
                 database => $database,
                 limit    => 50,
@@ -230,7 +230,7 @@ sub show {
         }
         # Letzte 50 Neuaufnahmen zu Schlagwort mit Id subtypeid
         elsif ($type == 4 && $subtype){
-            $recordlist=OpenBib::Search::Util::get_recent_titids_by_swt({
+            $recordlist=OpenBib::Search::Util::get_recent_titleids_by_swt({
                 id       => $subtype,
                 database => $database,
                 limit    => 50,
@@ -238,7 +238,7 @@ sub show {
         }
         # Letzte 50 Neuaufnahmen zu Systematik mit Id subtypeid
         elsif ($type == 5 && $subtype){
-            $recordlist=OpenBib::Search::Util::get_recent_titids_by_not({
+            $recordlist=OpenBib::Search::Util::get_recent_titleids_by_not({
                 id       => $subtype,
                 database => $database,
                 limit    => 50,

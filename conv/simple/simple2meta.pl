@@ -77,7 +77,7 @@ open (CLASSIFICATION,">:utf8","meta.classification");
 open (SUBJECT,       ">:utf8","meta.subject");
 open (HOLDING,       ">:utf8","meta.holding");
 
-my $titid = 1;
+my $titleid = 1;
 
 my $multcount_ref = {};
 
@@ -91,10 +91,10 @@ while (my $line=<DAT>){
         $multcount_ref = {};
         
         if ($convconfig->{uniqueidfield}){
-            $titid=pop @{$buffer_ref->{$convconfig->{uniqueidfield}}};
+            $titleid=pop @{$buffer_ref->{$convconfig->{uniqueidfield}}};
         }
         
-        $title_ref->{id} = $titid;
+        $title_ref->{id} = $titleid;
         
         if (defined $convconfig->{filter}{join}){
             foreach my $rule_ref (@{$convconfig->{filter}{join}}){
@@ -327,7 +327,7 @@ while (my $line=<DAT>){
                     push @{$item_ref->{'0004'}}, {
                         mult     => 1,
                         subfield => '',
-                        content  => $titid,
+                        content  => $titleid,
                     };
 
                     push @{$item_ref->{$new_field}}, {
@@ -344,7 +344,7 @@ while (my $line=<DAT>){
         }
         
         print TITLE encode_json $title_ref, "\n";
-        $titid++;
+        $titleid++;
         $buffer_ref={};
     }
     else {

@@ -633,7 +633,7 @@ sub get_number_of_tagged_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select count(distinct(titid)) as rowcount from tittag"
+    # DBI: "select count(distinct(titleid)) as rowcount from tittag"
     my $numoftitles = $self->{schema}->resultset('TitTag')->search(
         undef,
         {
@@ -767,7 +767,7 @@ sub get_titles_of_tag {
         $where_ref->{'me.dbname'} = $database;
     }
 
-    # DBI: "select count(distinct titid,titdb) as conncount from tittag where tagid=?"
+    # DBI: "select count(distinct titleid,dbname) as conncount from tittag where tagid=?"
     my $hits = $self->{schema}->resultset('TitTag')->search_rs(
         $where_ref,
         $attribute_ref
@@ -802,7 +802,7 @@ sub get_titles_of_tag {
         $attribute_ref->{offset} = $offset;
     }
     
-    # DBI: "select distinct titid,titdb from tittag where tagid=?";
+    # DBI: "select distinct titleid,dbname from tittag where tagid=?";
     my $tagged_titles = $self->{schema}->resultset('TitTag')->search_rs(
         $where_ref,
         $attribute_ref
@@ -962,7 +962,7 @@ sub add_tags {
 
     # Zuerst alle Verknuepfungen loeschen
 
-    # DBI: "delete from tittag where username = ? and titid=? and titdb=?"
+    # DBI: "delete from tittag where username = ? and titleid=? and dbname=?"
     $self->{schema}->resultset('TitTag')->search_rs(
         {
             'userid.id'        => $userid,
@@ -1001,7 +1001,7 @@ sub add_tags {
             my $new_tag = $self->{schema}->resultset('Tag')->create({ name => encode_utf8($tagname) });
 
             # DBI: "select id from tags where tag = ?"
-            #      "insert into tittag (tagid,titid,titisbn,titdb,username,type) values (?,?,?,?,?,?)"
+            #      "insert into tittag (tagid,titleid,titisbn,dbname,username,type) values (?,?,?,?,?,?)"
 
             $new_tag->create_related(
                 'tit_tags',
@@ -1022,7 +1022,7 @@ sub add_tags {
             # Neue Verknuepfungen eintragen
             $logger->debug("Verknuepfung zu Titel noch nicht vorhanden");
 
-            # DBI: "insert into tittag (tagid,titid,titisbn,titdb,username,type) values (?,?,?,?,?,?)"
+            # DBI: "insert into tittag (tagid,titleid,titisbn,dbname,username,type) values (?,?,?,?,?,?)"
             $tag->create_related(
                 'tit_tags',
                 {
@@ -1298,12 +1298,12 @@ sub get_all_tags_of_tit {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $titid               = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}               : undef;
+    my $titleid               = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}               : undef;
     my $titisbn             = exists $arg_ref->{titisbn}
         ? $arg_ref->{titisbn}             : '';
-    my $titdb               = exists $arg_ref->{titdb}
-        ? $arg_ref->{titdb}               : undef;
+    my $dbname               = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}               : undef;
 
     # Log4perl logger erzeugen
   
@@ -1312,8 +1312,8 @@ sub get_all_tags_of_tit {
     # DBI: "select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where tt.titleid=? and tt.dbname=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.name") or $logger->error($DBI::errstr);
     my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
         {
-            'me.titleid' => $titid,
-            'me.dbname'  => $titdb,
+            'me.titleid' => $titleid,
+            'me.dbname'  => $dbname,
             'me.type'    => 1,
         },
         {
@@ -1355,12 +1355,12 @@ sub get_private_tags_of_tit {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $titid               = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}               : undef;
+    my $titleid               = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}               : undef;
     my $titisbn             = exists $arg_ref->{titisbn}
         ? $arg_ref->{titisbn}             : '';
-    my $titdb               = exists $arg_ref->{titdb}
-        ? $arg_ref->{titdb}               : undef;
+    my $dbname               = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}               : undef;
     my $username           = exists $arg_ref->{username}
         ? $arg_ref->{username}           : undef;
 
@@ -1371,8 +1371,8 @@ sub get_private_tags_of_tit {
     # DBI: "select t.id,t.name,tt.type from tag as t,tit_tag as tt where tt.userid=? and tt.titleid=? and tt.dbname=? and tt.tagid = t.id"
     my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
         {
-            'me.titleid'  => $titid,
-            'me.dbname'   => $titdb,
+            'me.titleid'  => $titleid,
+            'me.dbname'   => $dbname,
             'userid.username' => $username,
         },
         {
@@ -1520,7 +1520,7 @@ sub get_recent_tags {
     my $tags_ref = [];
     
     if ($database){
-        # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.titdb= ? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count"
+        # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.dbname= ? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count"
         my $tags = $self->{schema}->resultset('TitTag')->search(
             {
                 'me.type'   => 1,
@@ -1643,8 +1643,8 @@ sub get_review_properties {
 
     if ($review){
         my $title     = $review->title;
-        my $titid     = $review->titleid;
-        my $titdb     = $review->dbname;
+        my $titleid     = $review->titleid;
+        my $dbname     = $review->dbname;
         my $titisbn   = $review->titleisbn;
         my $tstamp    = $review->tstamp;
         my $nickname  = $review->nickname;
@@ -1659,8 +1659,8 @@ sub get_review_properties {
             userid           => $userid,
             username         => $username,
             title            => $title,
-            titdb            => $titdb,
-            titid            => $titid,
+            dbname            => $dbname,
+            titleid            => $titleid,
             tstamp           => $tstamp,
             review           => $review,
             rating           => $rating,
@@ -1694,12 +1694,12 @@ sub add_review {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $titid               = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}               : undef;
+    my $titleid               = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}               : undef;
     my $titisbn             = exists $arg_ref->{titisbn}
         ? $arg_ref->{titisbn}             : '';
-    my $titdb               = exists $arg_ref->{titdb}
-        ? $arg_ref->{titdb}               : undef;
+    my $dbname               = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}               : undef;
     my $username           = exists $arg_ref->{username}
         ? $arg_ref->{username}           : undef;
     my $nickname            = exists $arg_ref->{nickname}
@@ -1725,8 +1725,8 @@ sub add_review {
     my $review = $self->{schema}->resultset('Review')->search_rs(
         {
             userid => $self->get_userid_for_username($username),
-            titleid => $titid,
-            dbname => $titdb,
+            titleid => $titleid,
+            dbname => $dbname,
         }
     )->single;
 
@@ -1747,8 +1747,8 @@ sub add_review {
         # DBI: "insert into review (titleid,titleisbn,dbname,userid,nickname,title,review,rating) values (?,?,?,?,?,?,?,?)"
         $self->{schema}->create(
             {
-                titleid    => $titid,
-                dbname     => $titdb,
+                titleid    => $titleid,
+                dbname     => $dbname,
                 userid     => $self->get_userid_for_username($username),
                 titleisbn  => $titisbn,
                 nickname   => encode_utf8($nickname),
@@ -1766,12 +1766,12 @@ sub get_reviews_of_tit {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $titid               = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}               : undef;
+    my $titleid               = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}               : undef;
     my $titisbn             = exists $arg_ref->{titisbn}
         ? $arg_ref->{titisbn}             : '';
-    my $titdb               = exists $arg_ref->{titdb}
-        ? $arg_ref->{titdb}               : undef;
+    my $dbname               = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}               : undef;
     
     # Log4perl logger erzeugen
   
@@ -1780,8 +1780,8 @@ sub get_reviews_of_tit {
     # DBI: "select id,nickname,userid,title,review,rating from review where titleid=? and dbname=?"
     my $reviews = $self->{schema}->resultset('Review')->search_rs(
         {
-            titleid => $titid,
-            dbname  => $titdb,
+            titleid => $titleid,
+            dbname  => $dbname,
         }
     );
 
@@ -1842,12 +1842,12 @@ sub tit_reviewed_by_user {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $titid               = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}               : undef;
+    my $titleid               = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}               : undef;
     my $titisbn             = exists $arg_ref->{titisbn}
         ? $arg_ref->{titisbn}             : '';
-    my $titdb               = exists $arg_ref->{titdb}
-        ? $arg_ref->{titdb}               : undef;
+    my $dbname               = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}               : undef;
     my $username           = exists $arg_ref->{username}
         ? $arg_ref->{username}           : undef;
     
@@ -1858,8 +1858,8 @@ sub tit_reviewed_by_user {
     # DBI: "select id from review where titleid=? and dbname=? and userid=?"
     my $review = $self->{schema}->resultset('Review')->search_rs(
         {
-            titleid => $titid,
-            dbname  => $titdb,
+            titleid => $titleid,
+            dbname  => $dbname,
             userid  => $self->get_userid_for_username($username),
         }
     )->first;
@@ -1905,14 +1905,14 @@ sub get_review_of_user {
         my $title      = $review->title;
         my $reviewtext = $review->reviewtext;
         my $id         = $review->id;
-        my $titid      = $review->titleid;
-        my $titdb      = $review->dbname;
+        my $titleid      = $review->titleid;
+        my $dbname      = $review->dbname;
         my $rating     = $review->rating;
 
         $review_ref = {
             id        => $id,
-            titid     => $titid,
-            titdb     => $titdb,
+            titleid     => $titleid,
+            dbname     => $dbname,
             username  => $username,
             nickname  => $nickname,
             title     => $title,
@@ -1977,14 +1977,14 @@ sub get_reviews {
         my $title      = $review->title;
         my $reviewtext = $review->reviewtext;
         my $id         = $review->id;
-        my $titid      = $review->titleid;
-        my $titdb      = $review->dbname;
+        my $titleid      = $review->titleid;
+        my $dbname      = $review->dbname;
         my $rating     = $review->rating;
 
         push @$reviewlist_ref, {
             id        => $id,
-            titid     => $titid,
-            titdb     => $titdb,
+            titleid     => $titleid,
+            dbname     => $dbname,
             username  => $username,
             nickname  => $nickname,
             title     => $title,
@@ -2177,7 +2177,7 @@ sub add_litlistentry {
     my $new_litlistitem;
     
     if ($titleid && $dbname){
-        # DBI: "delete from litlistitem where litlistid=? and titid=? and titdb=?"
+        # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
         my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
             {        
                 litlistid => $litlistid,
@@ -2205,7 +2205,7 @@ sub add_litlistentry {
         );
     }
     elsif ($record){
-        # DBI: "delete from litlistitem where litlistid=? and titid=? and titdb=?"
+        # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
 
         my $record_json = encode_json $record;
         
@@ -2261,7 +2261,7 @@ sub update_litlistentry {
   
     my $logger = get_logger();
 
-    # DBI: "delete from litlistitem where litlistid=? and titid=? and titdb=?"
+    # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
     my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
         {        
             litlistid => $litlistid,
@@ -2580,7 +2580,7 @@ sub get_other_litlists {
     }
 
     # Gleicher Titel
-    # DBI: "select distinct b.litlistid from litlistitems as a left join litlistitems as b on a.titdb=b.titdb where a.titid=b.titid and a.litlistid=? and b.litlistid!=?";
+    # DBI: "select distinct b.litlistid from litlistitems as a left join litlistitems as b on a.dbname=b.dbname where a.titleid=b.titleid and a.litlistid=? and b.litlistid!=?";
 
     my $inside_same_title = $self->{schema}->resultset('Litlistitem')->search_rs({ litlistid => $litlistid});
     my $same_title = $self->{schema}->resultset('Litlistitem')->search_rs(
@@ -3121,23 +3121,23 @@ sub get_litlist_owner {
 sub get_litlists_of_tit {
     my ($self,$arg_ref)=@_;
 
-    my $titid               = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}               : undef;
-    my $titdb               = exists $arg_ref->{titdb}
-        ? $arg_ref->{titdb}               : undef;
+    my $titleid               = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}               : undef;
+    my $dbname               = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}               : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    return [] if (!$titid || !$titdb);
+    return [] if (!$titleid || !$dbname);
 
     # DBI: "select ll.* from litlistitem as lli, litlist as ll where ll.id=lli.litlistid and lli.titleid=? and lli.dbname=?") or $logger->error($DBI::errstr);
 
     my $litlists = $self->{schema}->resultset('Litlistitem')->search_rs(
         {
-            'me.titleid'       => $titid,
-            'me.dbname'        => $titdb,
+            'me.titleid'       => $titleid,
+            'me.dbname'        => $dbname,
         },
         {
             select => ['me.litlistid','litlistid.userid','litlistid.type'],

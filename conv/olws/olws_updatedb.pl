@@ -98,22 +98,22 @@ my $targetcircinfo_ref
     = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
 
 
-my $relevant_titids_ref= get_relevant_titids({
+my $relevant_titleids_ref= get_relevant_titleids({
     sessiondbh         => $sessiondbh,
     database           => $database,
     targetcircinfo_ref => $targetcircinfo_ref,
 });
 
 my $count=1;
-foreach my $titid (@{$relevant_titids_ref}){
-    printf "%05d - Updating Title-Id %010d\n",$count,$titid;
+foreach my $titleid (@{$relevant_titleids_ref}){
+    printf "%05d - Updating Title-Id %010d\n",$count,$titleid;
 
     process_raw_title({
         dbh                => $dbh,
         sessiondbh         => $sessiondbh,
         database           => $database,
         targetcircinfo_ref => $targetcircinfo_ref,
-        titid              => $titid,
+        titleid              => $titleid,
     });
     $count++;
 }
@@ -121,7 +121,7 @@ foreach my $titid (@{$relevant_titids_ref}){
 
 ########################################################################
 
-sub get_relevant_titids {
+sub get_relevant_titleids {
     my ($arg_ref) = @_;
     
     # Set defaults
@@ -168,8 +168,8 @@ sub process_raw_title {
         ? $arg_ref->{database}           : undef;
     my $sessiondbh         = exists $arg_ref->{sessiondbh}
         ? $arg_ref->{sessiondbh}         : undef;
-    my $titid              = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}              : undef;
+    my $titleid              = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}              : undef;
     my $dbh                = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
     
@@ -207,7 +207,7 @@ sub process_raw_title {
                 -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
 
         my $result = $soap->get_raw_tit_by_katkey(
-            $targetcircinfo_ref->{$database}{circdb},$titid);
+            $targetcircinfo_ref->{$database}{circdb},$titleid);
         
         unless ($result->fault) {
             $raw_title_ref=$result->result;
@@ -260,23 +260,23 @@ sub process_raw_title {
     my $request;
 
     $dbh->do("delete from mex        where id in (select targetid from conn where sourceid=? and targettype=6)",undef,
-             $titid);
+             $titleid);
     $dbh->do("delete from mex_string where id in (select targetid from conn where sourceid=? and targettype=6)",undef,
-             $titid);
+             $titleid);
     $dbh->do("delete from mex_ft     where id in (select targetid from conn where sourceid=? and targettype=6)",undef,
-             $titid);
+             $titleid);
 
     # Jetzt alle Normdatenverknuepfungen zu diesem Titel loeschen
     $dbh->do("delete from conn where sourceid=?",undef,
-             $titid);
+             $titleid);
 
     # Diese werden im Folgenden wieder aufgebaut
     $dbh->do("delete from tit        where id=?",undef,
-             $titid);
+             $titleid);
     $dbh->do("delete from tit_string where id=?",undef,
-             $titid);
+             $titleid);
     $dbh->do("delete from tit_ft     where id=?",undef,
-             $titid);
+             $titleid);
 
   CATLINE:
     foreach my $multcategory (keys %{$raw_title_ref}){
@@ -325,7 +325,7 @@ sub process_raw_title {
             %listitemdata_aut=%{$listitemdata_aut_ref};
             
             $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,2,?)",undef,
-                     $category,$titid,$id,$supplement);
+                     $category,$titleid,$id,$supplement);
 
             push @verf, $id;
             push @autkor, $listitemdata_aut{$id}{content};
@@ -353,7 +353,7 @@ sub process_raw_title {
             %listitemdata_kor=%{$listitemdata_kor_ref};
 
             $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,3,?)",undef,
-                     $category,$titid,$id,$supplement);
+                     $category,$titleid,$id,$supplement);
             
             push @kor, $id;
             push @autkor, $listitemdata_kor{$id}{content};
@@ -373,7 +373,7 @@ sub process_raw_title {
             %listitemdata_not=%{$listitemdata_not_ref};
             
             $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,5,'')",undef,
-                     $category,$titid,$content);
+                     $category,$titleid,$content);
 
             push @notation, $content;
         }       
@@ -392,7 +392,7 @@ sub process_raw_title {
             %listitemdata_swt=%{$listitemdata_swt_ref};
             
             $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,4,'')",undef,
-                     $category,$titid,$content);
+                     $category,$titleid,$content);
 
             push @notation, $content;
         }       
@@ -402,7 +402,7 @@ sub process_raw_title {
 
             $logger->debug("Mex: $category - $content");
             # Einsammeln der Exemplardaten (Kategorieweise pro Indikator/Exemplar)
-            push @{$listitemdata_mex{$titid}{set}{$indicator}}, {
+            push @{$listitemdata_mex{$titleid}{set}{$indicator}}, {
                 category  => $category,
                 indicator => $indicator,
                 content   => $content,
@@ -413,7 +413,7 @@ sub process_raw_title {
         else {
             if ($category eq "0004"){
                 $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,1,'')",undef,
-                         $category,$titid,$content);
+                         $category,$titleid,$content);
             }   
             else {
                 my $contentnorm   = "";
@@ -485,16 +485,16 @@ sub process_raw_title {
                 }
                 
                 $dbh->do("insert into tit (id,category,indicator,content) values (?,?,?,?)",undef,
-                         $titid,$category,$indicator,encode_utf8($content));
+                         $titleid,$category,$indicator,encode_utf8($content));
                 
                 if ($contentnorm){
                     $dbh->do("insert into tit_string (id,category,content) values (?,?,?)",undef,
-                             $titid,$category,encode_utf8($contentnorm));
+                             $titleid,$category,encode_utf8($contentnorm));
                 }
                 
                 if ($contentnormft){
                     $dbh->do("insert into tit_ft (id,category,content) values (?,?,?)",undef,
-                             $titid,$category,encode_utf8($contentnormft));
+                             $titleid,$category,encode_utf8($contentnormft));
                 }
             }
         }
@@ -503,20 +503,20 @@ sub process_raw_title {
 
     $logger->debug("Mexall",YAML::Dump(\%listitemdata_mex));
 
-    if (exists $listitemdata_mex{$titid} && exists $listitemdata_mex{$titid}{set}){
+    if (exists $listitemdata_mex{$titleid} && exists $listitemdata_mex{$titleid}{set}){
         my $listitemdata_mex_ref= process_raw_mex({
             dbh                => $dbh,
             sessiondbh         => $sessiondbh,
             database           => $database,
             targetcircinfo_ref => $targetcircinfo_ref,
             listitemdata_mex   => \%listitemdata_mex,
-            titid              => $titid,
+            titleid              => $titleid,
         });
 
         %listitemdata_mex=%{$listitemdata_mex_ref};
     }
     else {
-        $logger->debug("Kein Mex-Satz vorhanden zu TitelID $titid");
+        $logger->debug("Kein Mex-Satz vorhanden zu TitelID $titleid");
     }
     
     my @temp=();
@@ -548,7 +548,7 @@ sub process_raw_title {
 
     @temp=();
 
-    my $mex       = join(" ",@{$listitemdata_mex{$titid}{data}}) if (exists $listitemdata_mex{$titid}{data});
+    my $mex       = join(" ",@{$listitemdata_mex{$titleid}{data}}) if (exists $listitemdata_mex{$titleid}{data});
     
     my $hst       = join(" ",@hst);
     my $isbn      = join(" ",@isbn);
@@ -558,10 +558,10 @@ sub process_raw_title {
 
     # Loeschen und Zurueckschreiben der Search-Tabelle
     $dbh->do("delete from search where verwidn=?",undef,
-             $titid);
+             $titleid);
     
     $dbh->do("insert into search values (?,?,?,?,?,?,?,?,?,?,?)",undef,
-             $titid,encode_utf8($verf),encode_utf8($hst),encode_utf8($kor),encode_utf8($swt),encode_utf8($notation),encode_utf8($mex),encode_utf8($ejahr),encode_utf8($isbn),encode_utf8($issn),encode_utf8($artinh));
+             $titleid,encode_utf8($verf),encode_utf8($hst),encode_utf8($kor),encode_utf8($swt),encode_utf8($notation),encode_utf8($mex),encode_utf8($ejahr),encode_utf8($isbn),encode_utf8($issn),encode_utf8($artinh));
     
     # Listitem zusammensetzen
     
@@ -638,8 +638,8 @@ sub process_raw_title {
     
     # Exemplardaten-Hash zu listitem-Hash hinzufuegen
     
-    foreach my $mexsetkey (sort keys %{$listitemdata_mex{$titid}{set}}){
-        my $mexset_ref=$listitemdata_mex{$titid}{set}{$mexsetkey};
+    foreach my $mexsetkey (sort keys %{$listitemdata_mex{$titleid}{set}}){
+        my $mexset_ref=$listitemdata_mex{$titleid}{set}{$mexsetkey};
 
         foreach my $item_ref (@{$mexset_ref}){
             if ($item_ref->{category} eq "0014"){
@@ -681,9 +681,9 @@ sub process_raw_title {
     # Listitem loeschen und schreiben
 
     $dbh->do("delete from titlistitem where id=?",undef,
-             $titid);
+             $titleid);
     $dbh->do("insert into titlistitem values (?,?)",undef,
-             $titid,$listitem);
+             $titleid,$listitem);
     
     return;
 }
@@ -1034,7 +1034,7 @@ sub process_raw_swt {
     my $sessiondbh         = exists $arg_ref->{sessiondbh}
         ? $arg_ref->{sessiondbh}         : undef;
     my $id                 = exists $arg_ref->{id}
-        ? $arg_ref->{titid}              : undef;
+        ? $arg_ref->{titleid}              : undef;
     my $dbh                = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
     my $listitemdata_swt_ref = exists $arg_ref->{listitemdata_swt}
@@ -1146,8 +1146,8 @@ sub process_raw_mex {
         ? $arg_ref->{database}           : undef;
     my $sessiondbh           = exists $arg_ref->{sessiondbh}
         ? $arg_ref->{sessiondbh}         : undef;
-    my $titid                = exists $arg_ref->{titid}
-        ? $arg_ref->{titid}              : undef;
+    my $titleid                = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}              : undef;
     my $dbh                  = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
     my $listitemdata_mex_ref = exists $arg_ref->{listitemdata_mex}
@@ -1159,11 +1159,11 @@ sub process_raw_mex {
     $logger->debug("Entering process_mex");
 
     $logger->debug("Mex: ".YAML::Dump($listitemdata_mex_ref));
-    $logger->debug("Titid: $titid ".YAML::Dump($listitemdata_mex_ref->{$titid}));
+    $logger->debug("Titid: $titleid ".YAML::Dump($listitemdata_mex_ref->{$titleid}));
 
     # Loop ueber Exemplare (entsprechend Indicator)
-    foreach my $mexsetkey (sort keys %{$listitemdata_mex_ref->{$titid}{set}}){
-        my $mexset_ref=$listitemdata_mex_ref->{$titid}{set}{$mexsetkey};
+    foreach my $mexsetkey (sort keys %{$listitemdata_mex_ref->{$titleid}{set}}){
+        my $mexset_ref=$listitemdata_mex_ref->{$titleid}{set}{$mexsetkey};
 
         $logger->debug("Mex: Key: $mexsetkey - ".YAML::Dump($mexset_ref));
         
@@ -1179,7 +1179,7 @@ sub process_raw_mex {
         # Eintragen der Verknuepfung in conn
         
         $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (0,?,1,?,6,'')",undef,
-                 $titid,$maxid);
+                 $titleid,$maxid);
 
         # Loop ueber Kategorien
         foreach my $item_ref (@{$mexset_ref}){
@@ -1204,7 +1204,7 @@ sub process_raw_mex {
                 }
 
                 if ($conv_config->{inverted_mex}{$item_ref->{category}}{init}){
-                    push @{$listitemdata_mex_ref->{$titid}{data}}, $contentnormtmp;
+                    push @{$listitemdata_mex_ref->{$titleid}{data}}, $contentnormtmp;
                 }
 
             }                

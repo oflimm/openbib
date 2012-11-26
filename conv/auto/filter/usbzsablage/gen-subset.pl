@@ -65,17 +65,17 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbh
 
 print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.field=14 and mex.content rlike '^P [0-9]' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titleid from conn,mex where mex.field=14 and mex.content rlike '^P [0-9]' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 
 while (my $result=$request->fetchrow_hashref()){
-  $titidns{$result->{'titid'}}=1;
+  $titleids{$result->{'titleid'}}=1;
 }
 
 my $count=0;
 
-foreach my $key (keys %titidns){
+foreach my $key (keys %titleids){
     $count++;
 }
 
@@ -92,22 +92,22 @@ print "### $pool: Gefundene Titel-ID's $count\n";
 
 # print "### $pool: Bestimme uebergeordnete/untergeordnete Titel\n";
 
-# foreach $titidn (keys %titidns){
+# foreach $titleid (keys %titleids){
 
 #   # Ueberordnungen
 #   $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-#   $request->execute($titidn) or $logger->error($DBI::errstr);;
+#   $request->execute($titleid) or $logger->error($DBI::errstr);;
   
 #   while (my $result=$request->fetchrow_hashref()){
-#     $titidns{$result->{'sourceid'}}=1;
+#     $titleids{$result->{'sourceid'}}=1;
 #   }
 
 #   # Unterordnungen
 #   $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-#   $request->execute($titidn) or $logger->error($DBI::errstr);;
+#   $request->execute($titleid) or $logger->error($DBI::errstr);;
   
 #   while (my $result=$request->fetchrow_hashref()){
-#     $titidns{$result->{'targetid'}}=1;
+#     $titleids{$result->{'targetid'}}=1;
 #   }
 
 # }
@@ -116,11 +116,11 @@ print "### $pool: Gefundene Titel-ID's $count\n";
 
 print "### $pool: Bestimme Normdaten\n";
 
-foreach $titidn (keys %titidns){
+foreach $titleid (keys %titleids){
 
     # Verfasser/Personen
     $request=$dbh->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
+    $request->execute($titleid);
     
     while (my $result=$request->fetchrow_hashref()){
         $autidns{$result->{'targetid'}}=1;
@@ -128,7 +128,7 @@ foreach $titidn (keys %titidns){
 
     # Urheber/Koerperschaften
     $request=$dbh->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
+    $request->execute($titleid);
     
     while (my $result=$request->fetchrow_hashref()){
         $koridns{$result->{'targetid'}}=1;
@@ -136,7 +136,7 @@ foreach $titidn (keys %titidns){
 
     # Notationen
     $request=$dbh->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
+    $request->execute($titleid);
     
     while (my $result=$request->fetchrow_hashref()){
         $notidns{$result->{'targetid'}}=1;
@@ -144,7 +144,7 @@ foreach $titidn (keys %titidns){
 
     # Schlagworte
     $request=$dbh->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
+    $request->execute($titleid);
     
     while (my $result=$request->fetchrow_hashref()){
         $swtidns{$result->{'targetid'}}=1;
@@ -152,7 +152,7 @@ foreach $titidn (keys %titidns){
 
     # Exemplardaten
     $request=$dbh->prepare("select targetid from conn where sourceid=? and sourcetype=1 and targettype=6") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
+    $request->execute($titleid);
     
     while (my $result=$request->fetchrow_hashref()){
         $mexidns{$result->{'targetid'}}=1;
@@ -243,10 +243,10 @@ open(TITOUT,"| gzip > $pooldir/$pool/unload.TIT.gz");
 while (<TIT>){
 
     if (/^0000:(\d+)/){
-        $titidn=$1;
+        $titleid=$1;
     }
     
-    if ($titidns{$titidn} == 1){
+    if ($titleids{$titleid} == 1){
         print TITOUT $_;
     }
 }

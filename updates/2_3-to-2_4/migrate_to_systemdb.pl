@@ -901,9 +901,9 @@ my %searchprofileid = ();
     while (my $result=$request->fetchrow_hashref){        
         my $id        = $result->{ttid};
         my $tagid     = $result->{tagid};
-        my $titleid   = $result->{titid};
+        my $titleid   = $result->{titleid};
         my $titleisbn = $result->{titisbn};
-        my $dbname    = $result->{titdb};
+        my $dbname    = $result->{dbname};
         my $loginname = $result->{loginname};
         my $type      = $result->{type};
 
@@ -936,9 +936,9 @@ my %searchprofileid = ();
     while (my $result=$request->fetchrow_hashref){        
         my $id         = $result->{id};
         my $tstamp     = $result->{tstamp};
-        my $titleid    = $result->{titid};
+        my $titleid    = $result->{titleid};
         my $titleisbn  = $result->{titisbn};
-        my $dbname     = $result->{titdb};
+        my $dbname     = $result->{dbname};
         my $loginname  = $result->{loginname};
         my $nickname   = $result->{nickname};
         my $title      = $result->{title};
@@ -1049,9 +1049,9 @@ my %litlistid_exists = ();
     while (my $result=$request->fetchrow_hashref){
         my $litlistid  = $result->{litlistid};
         my $tstamp     = $result->{tstamp};
-        my $titleid    = $result->{titid};
+        my $titleid    = $result->{titleid};
         my $titleisbn  = $result->{titisbn};
-        my $dbname     = $result->{titdb};
+        my $dbname     = $result->{dbname};
 
         next unless ($litlistid_exists{$litlistid});
 

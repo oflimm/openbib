@@ -572,7 +572,7 @@ binmode(TITOUT,":utf8");
 @buffer=();
 $is_newer=0;
 
-my %titid_to_add = ();
+my %titleid_to_add = ();
 
 while (<TIT>){
     push @buffer, $_;
@@ -601,7 +601,7 @@ while (<TIT>){
     if (/^9999:/){
         if ($is_newer){      
             $logger->info("Neuer Titel mit id $id gefunden");
-            $titid_to_add{$id} = 1;
+            $titleid_to_add{$id} = 1;
             foreach my $category (@buffer){
                 print TITOUT $category;
             }
@@ -617,13 +617,13 @@ close(TIT);
 
 $logger->info("Loeschsaetze erzeugen");
 
-my %titid_to_remove = ();
+my %titleid_to_remove = ();
 
 foreach my $db_id (keys %normdata_db_tit){
     if (!exists $normdata_file_tit{$db_id}){
        $logger->info("Titel mit ID $db_id wurde geloescht");
        # Fuer Exemplardaten markieren
-       $titid_to_remove{$db_id} =1 ;
+       $titleid_to_remove{$db_id} =1 ;
 
        print TITOUT "0000:$db_id\n";
        print TITOUT "9999:\n";
@@ -680,7 +680,7 @@ while (my $result=$request->fetchrow_hashref){
     my $id       = $result->{id};
     my $content  = $result->{content};
 
-    if ($titid_to_remove{$content} || $titid_to_add{$content}){
+    if ($titleid_to_remove{$content} || $titleid_to_add{$content}){
        print MEXOUT "0000:$id\n";
        print MEXOUT "9999:\n";
     }
@@ -691,14 +691,14 @@ $logger->info("Einlesen der aktuellen Datenlieferung aus Datei");
 
 @buffer=();
 $is_newer=0;
-my $titid;
+my $titleid;
 
 while (<MEX>){
     push @buffer, $_;
 
     if (/^0004:(\d+)/){        
-        $titid=$1;
-        if ($titid_to_add{$titid}){
+        $titleid=$1;
+        if ($titleid_to_add{$titleid}){
             $is_newer=1;
         }
     }
@@ -709,7 +709,7 @@ while (<MEX>){
             # am Ende angehaengt werden.
             $maxid++;
             $buffer[0]="0000:$maxid\n";
-            $logger->info("Neues Exemplar mit titid $titid als ID $maxid angehaengt");
+            $logger->info("Neues Exemplar mit titleid $titleid als ID $maxid angehaengt");
             foreach my $category (@buffer){
                 print MEXOUT $category;
             }

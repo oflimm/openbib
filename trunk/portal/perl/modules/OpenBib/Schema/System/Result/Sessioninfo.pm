@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::Sessioninfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Sessioninfo
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<sessioninfo>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Sessioninfo
 
 =cut
 
@@ -118,35 +114,9 @@ __PACKAGE__->add_columns(
   "bibsonomy_sync",
   { data_type => "text", is_nullable => 1 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</id>
-
-=back
-
-=cut
-
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
-
-=head2 eventlogjsons
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::System::Result::Eventlogjson>
-
-=cut
-
-__PACKAGE__->has_many(
-  "eventlogjsons",
-  "OpenBib::Schema::System::Result::Eventlogjson",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
 
 =head2 eventlogs
 
@@ -159,6 +129,21 @@ Related object: L<OpenBib::Schema::System::Result::Eventlog>
 __PACKAGE__->has_many(
   "eventlogs",
   "OpenBib::Schema::System::Result::Eventlog",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 eventlogjsons
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Eventlogjson>
+
+=cut
+
+__PACKAGE__->has_many(
+  "eventlogjsons",
+  "OpenBib::Schema::System::Result::Eventlogjson",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -208,21 +193,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 session_searchprofiles
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::System::Result::SessionSearchprofile>
-
-=cut
-
-__PACKAGE__->has_many(
-  "session_searchprofiles",
-  "OpenBib::Schema::System::Result::SessionSearchprofile",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 sessioncollections
 
 Type: has_many
@@ -234,6 +204,21 @@ Related object: L<OpenBib::Schema::System::Result::Sessioncollection>
 __PACKAGE__->has_many(
   "sessioncollections",
   "OpenBib::Schema::System::Result::Sessioncollection",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 session_searchprofiles
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::SessionSearchprofile>
+
+=cut
+
+__PACKAGE__->has_many(
+  "session_searchprofiles",
+  "OpenBib::Schema::System::Result::SessionSearchprofile",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -254,8 +239,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-22 10:46:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3t3CRs/NQR0QMzbHBy+yHQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-11-26 11:21:01
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YEUB2aBM++GnENPuwZ4Xuw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

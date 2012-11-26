@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::Query;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Query
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<queries>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Query
 
 =cut
 
@@ -77,17 +73,6 @@ __PACKAGE__->add_columns(
   "searchprofileid",
   { data_type => "bigint", is_nullable => 1 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</queryid>
-
-=back
-
-=cut
-
 __PACKAGE__->set_primary_key("queryid");
 
 =head1 RELATIONS
@@ -108,8 +93,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-22 10:46:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:72qkVLkQk3FK52cyWCshxQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-11-26 11:21:01
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GOgj69WxvVxsOMlqs4rfrw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

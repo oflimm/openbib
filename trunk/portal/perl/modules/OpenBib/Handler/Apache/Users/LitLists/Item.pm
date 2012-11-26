@@ -206,6 +206,7 @@ sub create_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
@@ -245,7 +246,7 @@ sub create_record {
     my $new_itemid = $user->add_litlistentry($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        my $new_location = "$path_prefix/$config->{litlists_loc}/id/$litlistid/edit";
+        my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{litlists_loc}/id/$litlistid/edit.html?l=$lang";
         
         $self->query->method('GET');
         $self->query->content_type('text/html');
@@ -285,6 +286,7 @@ sub update_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
@@ -320,16 +322,20 @@ sub update_record {
         return Apache2::Const::OK;
     }   
     
-    return unless ($self->param('representation') eq "html");
-
-    # Anpassen eines Kommentars
-    
-    my $new_location = "$path_prefix/$config->{litlists_loc}/id/$litlistid/edit";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    if ($self->param('representation') eq "html"){
+        # Anpassen eines Kommentars
+        
+        my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{litlists_loc}/id/$litlistid/edit.html?l=$lang";
+        
+        $self->query->method('GET');
+        $self->query->content_type('text/html');
+        $self->query->headers_out->add(Location => $new_location);
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record $itemid");
+        $self->show_record;
+    }
 
     return;
 
@@ -354,6 +360,7 @@ sub delete_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
@@ -383,7 +390,7 @@ sub delete_record {
 
     return unless ($self->param('representation') eq "html");
 
-    my $new_location = "$path_prefix/$config->{litlists_loc}/id/$litlistid/edit";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{litlists_loc}/id/$litlistid/edit.html?l=$lang";
     
     $self->query->method('GET');
     $self->query->content_type('text/html');

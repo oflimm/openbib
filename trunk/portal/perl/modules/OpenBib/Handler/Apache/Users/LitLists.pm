@@ -248,7 +248,7 @@ sub show_record {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlists_record_tname},$ttdata);
+    $self->print_page($config->{tt_users_litlists_record_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -371,8 +371,8 @@ sub create_record {
     my $location       = $self->param('location');
     
     # CGI Args
-    my $titleid        = $query->param('titleid')       || '';
-    my $litlistid      = $query->param('litlistid')   || '';
+    my $titleid        = $query->param('titleid')      || '';
+    my $litlistid      = $query->param('litlistid')    || '';
     my $dbname         = $query->param('dbname')       || '';
 
     # CGI / JSON input
@@ -380,10 +380,7 @@ sub create_record {
 
     if (! $user->{ID}){
         if ($self->param('representation') eq "html"){
-            # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
-            
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            return $self->tunnel_through_authenticator('POST');            
         }
         else  {
             $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));

@@ -2083,12 +2083,20 @@ sub del_litlist {
             id     => $litlistid,
             userid => $self->{ID},
         }
-    );
+    )->single;
 
     return unless ($litlist);
 
-    $litlist->delete;
+    eval {
+        $litlist->litlist_topics->delete;
+        $litlist->litlistitems->delete;
+        $litlist->delete;
+    };
 
+    if ($@){
+        $logger->error($@);
+    }
+        
     return;
 }
 

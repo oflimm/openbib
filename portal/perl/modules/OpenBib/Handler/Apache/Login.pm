@@ -117,11 +117,11 @@ sub show_form {
         return;
     }
 
-    my $authenticationtargets_ref = $config->get_authenticationtargets();
+    my $authenticators_ref = $config->get_authenticators();
     
     # TT-Data erzeugen
     my $ttdata={
-        authenticationtargets => $authenticationtargets_ref,
+        authenticators => $authenticators_ref,
         validtarget  => $validtarget,
         username     => $username,
         redirect_to  => $redirect_to,
@@ -181,21 +181,21 @@ sub authenticate {
         $loginfailed=1;
     }
     
-    my $authenticationtarget_ref = $config->get_authenticationtarget_by_id($targetid);
+    my $authenticator_ref = $config->get_authenticator_by_id($targetid);
 
-    $logger->debug(YAML::Dump($authenticationtarget_ref));
+    $logger->debug(YAML::Dump($authenticator_ref));
     
     ## Ausleihkonfiguration fuer den Katalog einlesen
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     
-    if ($authenticationtarget_ref->{type} eq "olws") {
+    if ($authenticator_ref->{type} eq "olws") {
         $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($circinfotable));
         
         my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
             username      => $username,
             password      => $password,
-            circcheckurl  => $circinfotable->{$authenticationtarget_ref->{db}}{circcheckurl},
-            circdb        => $circinfotable->{$authenticationtarget_ref->{db}}{circdb},
+            circcheckurl  => $circinfotable->{$authenticator_ref->{db}}{circcheckurl},
+            circdb        => $circinfotable->{$authenticator_ref->{db}}{circdb},
         });
         
         my %userinfo=%$userinfo_ref;
@@ -238,7 +238,7 @@ sub authenticate {
             $logger->debug("Updated private user info");
         }
     }
-    elsif ($authenticationtarget_ref->{type} eq "self") {
+    elsif ($authenticator_ref->{type} eq "self") {
         my $result = $user->authenticate_self_user({
             username  => $username,
             password  => $password,

@@ -155,7 +155,7 @@
 ../modules/OpenBib/Schema/Statistics/Result/Sessioninfo.pm
 ../modules/OpenBib/Schema/Statistics/Result/Titleusage.pm
 ../modules/OpenBib/Schema/System.pm
-../modules/OpenBib/Schema/System/Result/Authenticationtarget.pm
+../modules/OpenBib/Schema/System/Result/Authenticator.pm
 ../modules/OpenBib/Schema/System/Result/Clusterinfo.pm
 ../modules/OpenBib/Schema/System/Result/Databaseinfo.pm
 ../modules/OpenBib/Schema/System/Result/Eventlogjson.pm

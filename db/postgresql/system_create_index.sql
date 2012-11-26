@@ -90,12 +90,12 @@ ALTER TABLE user_role ADD CONSTRAINT fk_userrole_role FOREIGN KEY (roleid) REFER
 
 ALTER TABLE registration ADD PRIMARY KEY (id);
 
-ALTER TABLE authenticationtarget ADD PRIMARY KEY (id);
+ALTER TABLE authenticator ADD PRIMARY KEY (id);
 
 ALTER TABLE user_session ADD PRIMARY KEY (id);
 ALTER TABLE user_session ADD CONSTRAINT fk_usersession_user FOREIGN KEY (userid) REFERENCES userinfo (id);
 ALTER TABLE user_session ADD CONSTRAINT fk_usersession_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
-ALTER TABLE user_session ADD CONSTRAINT fk_usersession_authenticationtarget FOREIGN KEY (targetid) REFERENCES authenticationtarget (id);
+ALTER TABLE user_session ADD CONSTRAINT fk_usersession_authenticator FOREIGN KEY (targetid) REFERENCES authenticator (id);
 
 ALTER TABLE searchprofile ADD PRIMARY KEY (id);
 CREATE INDEX searchprofile_dbases_as_json ON searchprofile (databases_as_json);

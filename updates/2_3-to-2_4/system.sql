@@ -56,10 +56,10 @@ alter table litlist_subject rename to litlist_topic;
 alter table subjectclassification rename to topicclassification;
 alter table litlist_topic rename column subjectid  to topicid;
 alter table topicclassification rename column subjectid  to topicid;
-alter table logintarget rename to authenticationtarget;
-ALTER TABLE user_session ADD CONSTRAINT fk_usersession_authenticationtarget FOREIGN KEY (targetid) REFERENCES authenticationtarget (id);
+alter table logintarget rename to authenticator;
+ALTER TABLE user_session ADD CONSTRAINT fk_usersession_authenticator FOREIGN KEY (targetid) REFERENCES authenticator (id);
 alter table user_session drop constraint fk_usersession_logintarget;
-alter table logintarget_id_seq rename to authenticationtarget_id_seq;
+alter table logintarget_id_seq rename to authenticator_id_seq;
 ALTER TABLE topicclassification ADD CONSTRAINT fk_topicclassification_topic FOREIGN KEY (topicid) REFERENCES topic (id);
 ALTER TABLE topicclassification DROP CONSTRAINT fk_subjectclassification_subject;
 ALTER TABLE litlist_topic ADD CONSTRAINT fk_litlisttopic_litlist FOREIGN KEY (litlistid) REFERENCES litlist (id);
@@ -89,3 +89,5 @@ alter table databaseinfo add column locationid bigint;
 ALTER TABLE databaseinfo ADD CONSTRAINT fk_databaseinfo_locationinfo FOREIGN KEY (locationid) REFERENCES locationinfo (id);
 
 alter table locationinfo add column description text;
+
+alter table authenticator rename to authenticator;

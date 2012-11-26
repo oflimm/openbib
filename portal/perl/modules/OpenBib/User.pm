@@ -464,8 +464,8 @@ sub get_targetdb_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: select db from user_session,authenticationtarget where user_session.sessionid = ? and user_session.targetid = authenticationtarget.targetid"
-    my $authenticationtarget = $self->{schema}->resultset('UserSession')->search_rs(
+    # DBI: select db from user_session,authenticator where user_session.sessionid = ? and user_session.targetid = authenticator.targetid"
+    my $authenticator = $self->{schema}->resultset('UserSession')->search_rs(
         {
             'sid.sessionid' => $sessionID,
         },
@@ -479,8 +479,8 @@ sub get_targetdb_of_session {
     
     my $targetdb;
 
-    if ($authenticationtarget){
-        $targetdb = $authenticationtarget->get_column('thisdbname');
+    if ($authenticator){
+        $targetdb = $authenticator->get_column('thisdbname');
     }
     
     return $targetdb;
@@ -492,8 +492,8 @@ sub get_targettype_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: select type from user_session,authenticationtarget where user_session.sessionid = ? and user_session.targetid = authenticationtarget.targetid"
-    my $authenticationtarget = $self->{schema}->resultset('UserSession')->search_rs(
+    # DBI: select type from user_session,authenticator where user_session.sessionid = ? and user_session.targetid = authenticator.targetid"
+    my $authenticator = $self->{schema}->resultset('UserSession')->search_rs(
         {
             'sid.sessionid' => $sessionID,
         },
@@ -507,8 +507,8 @@ sub get_targettype_of_session {
     
     my $targettype;
 
-    if ($authenticationtarget){
-        $targettype = $authenticationtarget->get_column('thistype');
+    if ($authenticator){
+        $targettype = $authenticator->get_column('thistype');
     }
 
     return $targettype;

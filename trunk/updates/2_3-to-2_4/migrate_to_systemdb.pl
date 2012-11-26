@@ -588,7 +588,7 @@ my %userid_exists = ();
     $request->execute();
     
     while (my $result=$request->fetchrow_hashref){
-        my $new_logintarget = $newschema->resultset('Authenticationtarget')->create(
+        my $new_logintarget = $newschema->resultset('Authenticator')->create(
             {
                 id => $result->{targetid},
                 hostname => $result->{hostname},

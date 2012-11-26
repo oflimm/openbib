@@ -305,8 +305,8 @@ CREATE TABLE registration (
   password            TEXT
 );
 
-DROP TABLE IF EXISTS authenticationtarget;
-CREATE TABLE authenticationtarget (
+DROP TABLE IF EXISTS authenticator;
+CREATE TABLE authenticator (
  id          BIGSERIAL,
 
  hostname    TEXT,

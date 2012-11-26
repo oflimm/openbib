@@ -515,33 +515,33 @@ Literaturlisten usw.<p/>") %]
 <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][%- END -%][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
 
 <p />
-[% authenticationtargets = user.get_authenticationtargets %]
+[% authenticators = user.get_authenticators %]
 <table>
 <tr><td align="right"><b>[% msg.maketext("mit")
 %]</b></td><td>
-[% IF view_config.${view}.validauthenticationtargets && view_config.${view}.defaultauthenticationtarget %]
+[% IF view_config.${view}.validauthenticators && view_config.${view}.defaultauthenticator %]
 <select name="targetid">
-[%- FOREACH target IN authenticationtargets -%]
-[%-   NEXT IF view_config.${view}.validauthenticationtargets.${target.id} != 1 -%]
-[%-   IF target.id == view_config.${view}.defaultauthenticationtarget -%]
+[%- FOREACH target IN authenticators -%]
+[%-   NEXT IF view_config.${view}.validauthenticators.${target.id} != 1 -%]
+[%-   IF target.id == view_config.${view}.defaultauthenticator -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
-[%- FOREACH target IN authenticationtargets -%]
-[%-   NEXT IF view_config.${view}.validauthenticationtargets.${target.id} != 1 -%]
-[%-   IF target.id != view_config.${view}.defaultauthenticationtarget -%]
+[%- FOREACH target IN authenticators -%]
+[%-   NEXT IF view_config.${view}.validauthenticators.${target.id} != 1 -%]
+[%-   IF target.id != view_config.${view}.defaultauthenticator -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
 </select>
 [% ELSE %]
 <select name="targetid">
-[%- FOREACH target IN authenticationtargets -%]
+[%- FOREACH target IN authenticators -%]
 [%-   IF target.id == 4 -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
-[%- FOREACH target IN authenticationtargets -%]
+[%- FOREACH target IN authenticators -%]
 [%-   IF target.id != 4 -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]

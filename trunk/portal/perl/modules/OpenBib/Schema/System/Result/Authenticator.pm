@@ -24,7 +24,7 @@ __PACKAGE__->table("authenticator");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'authenticationtarget_id_seq'
+  sequence: 'authenticator_id_seq'
 
 =head2 hostname
 
@@ -64,7 +64,7 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "authenticationtarget_id_seq",
+    sequence          => "authenticator_id_seq",
   },
   "hostname",
   { data_type => "text", is_nullable => 1 },

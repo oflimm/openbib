@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_editauthenticationtarget
+# Templatename: admin_editauthenticator
 #
 # Typ         : Mastertemplate       
 #
@@ -37,11 +37,11 @@
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
-         <li><a href="#" class="lastitem">[% authenticationtarget.description %]</a></li>
+         <li><a href="#" class="lastitem">[% authenticator.description %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticationtarget.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticator.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -56,19 +56,19 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticationtarget.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticator.id %]">
 <input type="hidden" name="_method"     value="PUT" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Anmeldeziel bearbeiten") %]</th></tr>
 <tr><td class="boxedclear">
 <table>
-<tr><td><b>[% msg.maketext("Hostname") %]</b></td><td><input type="text" name="hostname" value="[% authenticationtarget.hostname %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Port") %]</b></td><td><input type="text" name="port" value="[% authenticationtarget.port %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td><input type="text" name="username" value="[% authenticationtarget.remoteuser %]" /></td></tr>
-<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><input type="text" name="dbname" value="[% authenticationtarget.remotedb %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% authenticationtarget.description %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Typ") %]</b></td><td><input type="text" name="type" value="[% authenticationtarget.type %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Hostname") %]</b></td><td><input type="text" name="hostname" value="[% authenticator.hostname %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Port") %]</b></td><td><input type="text" name="port" value="[% authenticator.port %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td><input type="text" name="username" value="[% authenticator.remoteuser %]" /></td></tr>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><input type="text" name="dbname" value="[% authenticator.remotedb %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% authenticator.description %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Typ") %]</b></td><td><input type="text" name="type" value="[% authenticator.type %]" /></td></tr>
 </table>
 </td></tr>
 </table>
@@ -78,7 +78,7 @@
 </table>
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticationtarget.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticator.id %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="1" />
 

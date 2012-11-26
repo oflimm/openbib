@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_editauthenticationtarget
+# Templatename: admin_editauthenticator
 #
 # Typ         : Mastertemplate       
 #
@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%-
-     this_json_output = authenticationtarget;
+     this_json_output = authenticator;
 
      this_json_output.link = {
           rel = 'self'

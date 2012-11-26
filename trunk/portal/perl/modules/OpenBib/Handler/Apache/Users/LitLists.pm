@@ -45,6 +45,7 @@ use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
+use URI::Escape;
 
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
@@ -392,30 +393,45 @@ sub create_record {
 
     $self->param('userid',$user->{ID});
     
-    # Wenn Litlistid mitgegeben wurde, dann Shortcut zu create_entry
-    # Hintergrund: So kann der Nutzer im Web-UI auch eine bestehende Literaturliste
+    # Wenn Litlistid mitgegeben wurde, dann Shortcut
+    # Hintergrund: So kann der Nutzer im Web-UI per CGI-Parameter auch eine bestehende Literaturliste
     #              auswaehlen
 
+    if (!$litlistid){
+        if ($input_data_ref->{title} eq ""){
+            $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
+            
+            return Apache2::Const::OK;
+        }
+        
+        # Sonst muss Litlist neu erzeugt werden
+        
+        $litlistid = $user->add_litlist({ title =>$input_data_ref->{title}, type => $input_data_ref->{type}, topics => $input_data_ref->{topics} });
+    }
+
     # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
-    # der soeben erzeugten Literaturliste hinzugefuegt.
+    # der gerade erzeugten neuen Literaturliste bzw. der mitgegebenen Literaturlisten-ID hinzugefuegt.
     if ($titleid && $dbname && $litlistid){
+        my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
+        
+        if (!$user_owns_litlist) {
+            $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
+            
+            # Aufruf der Literaturlisten durch "Andere" loggen
+            $session->log_event({
+                type      => 800,
+                content   => $litlistid,
+            });
+            
+            return;
+        }
+        
         $user->add_litlistentry({ litlistid =>$litlistid, titleid => $titleid, dbname => $dbname});
         $self->return_baseurl;
         return;
     }
 
-    my $userrole_ref = $user->get_roles_of_user($user->{ID});
     
-    if ($input_data_ref->{title} eq ""){
-        $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
-        
-        return Apache2::Const::OK;
-    }
-
-    # Sonst muss Litlist neu erzeugt werden
-    
-    $litlistid = $user->add_litlist({ title =>$input_data_ref->{title}, type => $input_data_ref->{type}, topics => $input_data_ref->{topics} });
-
     if ($self->param('representation') eq "html"){
         $self->return_baseurl;
     }

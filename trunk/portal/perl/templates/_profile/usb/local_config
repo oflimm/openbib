@@ -15,44 +15,44 @@
 [%-
   view_config = {
        "inst001" = {
-                    defaultauthenticationtarget = 4,
-                    validauthenticationtargets  = { "1" => 1, "4" => 1, }
+                    defaultauthenticator = 4,
+                    validauthenticators  = { "1" => 1, "4" => 1, }
                   },
        "inst006" = {
                     subjectid          = 15,
-                    defaultauthenticationtarget = 4,
-                    validauthenticationtargets  = { "6" => 1, "4" => 1, }
+                    defaultauthenticator = 4,
+                    validauthenticators  = { "6" => 1, "4" => 1, }
                   },
        "inst302" = {
                     subjectid          = 15,
-                    defaultauthenticationtarget = 4,
-                    validauthenticationtargets  = { "2" => 1, "4" => 1, }
+                    defaultauthenticator = 4,
+                    validauthenticators  = { "2" => 1, "4" => 1, }
                   },
        "inst404" = {
                     subjectid          = 2,
                   },
        "inst420" = {
                     subjectid          = 2,
-                    defaultauthenticationtarget = 4,
-                    validauthenticationtargets  = { "5" => 1, "4" => 1, }
+                    defaultauthenticator = 4,
+                    validauthenticators  = { "5" => 1, "4" => 1, }
                   },
        "inst422" = {
                     subjectid          = 2,
-                    defaultauthenticationtarget = 4,
-                    validauthenticationtargets  = { "5" => 1, "4" => 1, }
+                    defaultauthenticator = 4,
+                    validauthenticators  = { "5" => 1, "4" => 1, }
                   },
        "inst423" = {
                     subjectid          = 2,
                   },
        "inst431" = {
                     subjectid          = 20,
-                    defaultauthenticationtarget = 4,
-                    validauthenticationtargets  = { "3" => 1, "4" => 1, }
+                    defaultauthenticator = 4,
+                    validauthenticators  = { "3" => 1, "4" => 1, }
                   },
        "inst526" = {
                     subjectid          = 15,
-                    defaultauthenticationtarget = 4,
-                    validauthenticationtargets  = { "7" => 1, "4" => 1, }
+                    defaultauthenticator = 4,
+                    validauthenticators  = { "7" => 1, "4" => 1, }
                     zms_search_url     = 'http://www.ub.uni-koeln.de/bibliotheken/526/search/index_ger.html',
                     zms_title_url      = 'http://www.ub.uni-koeln.de/bibliotheken/526/titel/index_ger.html',
                   },

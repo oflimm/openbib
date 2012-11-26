@@ -93,7 +93,7 @@ sub show_record {
         
         my $record = OpenBib::Record::CorporateBody->new({database => $database, id => $corporatebodyid})->load_full_record;
         
-        my $authenticationtargetdb = $user->get_targetdb_of_session($session->{ID});
+        my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
 
         # TT-Data erzeugen
         my $ttdata={
@@ -104,7 +104,7 @@ sub show_record {
             id            => $corporatebodyid,
             format        => $format,
             activefeed    => $config->get_activefeeds_of_db($database),
-            authenticationtargetdb => $authenticationtargetdb,
+            authenticatordb => $authenticatordb,
         };
 
         $self->print_page($config->{'tt_corporatebodies_tname'},$ttdata);

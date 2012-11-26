@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::TitTag;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::TitTag
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::TitTag
+=head1 TABLE: C<tit_tag>
 
 =cut
 
@@ -62,7 +66,7 @@ __PACKAGE__->table("tit_tag");
 =head2 type
 
   data_type: 'smallint'
-  default_value: '1::smallint'
+  default_value: 1
   is_nullable: 0
 
 =cut
@@ -88,12 +92,19 @@ __PACKAGE__->add_columns(
   "titlecache",
   { data_type => "text", is_nullable => 1 },
   "type",
-  {
-    data_type     => "smallint",
-    default_value => "1::smallint",
-    is_nullable   => 0,
-  },
+  { data_type => "smallint", default_value => 1, is_nullable => 0 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -129,8 +140,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-11-26 11:21:01
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hv965o2rpsHd2FvT1aNfzw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-26 11:48:09
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CKZsmw1VKZBzmo3eY5Iu6w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

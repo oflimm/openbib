@@ -36,12 +36,12 @@ msgid "%1 Datenbanken"
 msgstr ""
 
 #. (topic.litlistcount.public)
-#: ../templates/litlists_collection_by_single_topic_include:22 ../templates/litlists_collection_by_topic_html:62
+#: ../templates/litlists_by_single_topic_include:22 ../templates/litlists_by_topic_html:62
 msgid "%1 Listen"
 msgstr ""
 
 #. (thisitem.itemcount)
-#: ../templates/_profile/usb/litlists_collection_by_single_subject_recent_include:17 ../templates/_profile/usb/litlists_collection_by_single_topic_include:16 ../templates/indexes_topic_html:120 ../templates/litlists_collection_by_single_topic_html:75 ../templates/litlists_collection_by_single_topic_include:29 ../templates/litlists_collection_by_single_topic_recent_html:77 ../templates/litlists_collection_by_single_topic_recent_include:21 ../templates/litlists_collection_html:63 ../templates/litlists_collection_recent_html:64 ../templates/litlists_collection_recent_include:17
+#: ../templates/_profile/usb/litlists_by_single_subject_recent_include:17 ../templates/_profile/usb/litlists_by_single_topic_include:16 ../templates/indexes_topic_html:120 ../templates/litlists_by_single_topic_html:75 ../templates/litlists_by_single_topic_include:29 ../templates/litlists_by_single_topic_recent_html:77 ../templates/litlists_by_single_topic_recent_include:21 ../templates/litlists_html:63 ../templates/litlists_recent_html:64 ../templates/litlists_recent_include:17
 msgid "%1 Titel"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "&ntilde; <i>suchen mit:</i> n"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:62 ../templates/_profile/sammlungen/_view/richter/collection_html_actions:95 ../templates/_profile/sammlungen/_view/richter/litlists_edit:73 ../templates/_profile/sammlungen/_view/richter/titles_html:202 ../templates/_profile/sammlungen/_view/richter/titles_html:238 ../templates/_profile/sammlungen/_view/richter/titles_html:302 ../templates/_view/richter/collection_html_actions:62 ../templates/_view/richter/collection_html_actions:95 ../templates/_view/richter/litlists_edit:73 ../templates/collection_html_actions:64 ../templates/collection_html_actions:97 ../templates/litlists_edit:88 ../templates/litlists_include:104 ../templates/titles_html:203 ../templates/titles_html:239 ../templates/titles_html:300 ../templates/titles_include:405 ../templates/titles_include:434 ../templates/titles_include:506 ../templates/users_litlists_collection_html:100 ../templates/users_litlists_collection_html:67
+#: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:62 ../templates/_profile/sammlungen/_view/richter/collection_html_actions:95 ../templates/_profile/sammlungen/_view/richter/litlists_edit:73 ../templates/_profile/sammlungen/_view/richter/titles_html:202 ../templates/_profile/sammlungen/_view/richter/titles_html:238 ../templates/_profile/sammlungen/_view/richter/titles_html:302 ../templates/_view/richter/collection_html_actions:62 ../templates/_view/richter/collection_html_actions:95 ../templates/_view/richter/litlists_edit:73 ../templates/collection_html_actions:64 ../templates/collection_html_actions:97 ../templates/litlists_edit:88 ../templates/litlists_include:104 ../templates/titles_html:203 ../templates/titles_html:239 ../templates/titles_html:300 ../templates/titles_include:405 ../templates/titles_include:434 ../templates/titles_include:506 ../templates/users_litlists_html:100 ../templates/users_litlists_html:67
 msgid "&ouml;ffentlich"
 msgstr ""
 
@@ -351,7 +351,7 @@ msgstr ""
 msgid "Aktuelles"
 msgstr ""
 
-#: ../templates/litlists_collection_html:58
+#: ../templates/litlists_html:58
 msgid "Alle &ouml;ffentlichen Literaturlisten"
 msgstr ""
 
@@ -371,7 +371,7 @@ msgstr ""
 msgid "Alle Kataloge"
 msgstr ""
 
-#: ../templates/litlists_collection_by_single_topic_include:16 ../templates/litlists_navigation:24 ../templates/litlists_navigation:26 ../templates/litlists_navigation:42 ../templates/litlists_navigation:44
+#: ../templates/litlists_by_single_topic_include:16 ../templates/litlists_navigation:24 ../templates/litlists_navigation:26 ../templates/litlists_navigation:42 ../templates/litlists_navigation:44
 msgid "Alle Listen"
 msgstr ""
 
@@ -465,7 +465,7 @@ msgstr ""
 msgid "Angebotene Arten an RSS-Feeds"
 msgstr ""
 
-#: ../templates/users_litlists_collection_html:96
+#: ../templates/users_litlists_html:96
 msgid "Angelegt"
 msgstr ""
 
@@ -516,7 +516,7 @@ msgid ""
 "     war."
 msgstr ""
 
-#: ../templates/litlists_collection_by_single_topic_include:16
+#: ../templates/litlists_by_single_topic_include:16
 msgid "Anzahl"
 msgstr ""
 
@@ -676,7 +676,7 @@ msgstr ""
 msgid "Anzeige des ausgew&auml;hlten Profils"
 msgstr ""
 
-#: ../templates/_database/dbis/classification_collection_html:86 ../templates/_database/ezb/classification_collection_html:85 ../templates/litlists_collection_by_single_topic_include:16 ../templates/users_tags_collection_html:45
+#: ../templates/_database/dbis/classification_collection_html:86 ../templates/_database/ezb/classification_collection_html:85 ../templates/litlists_by_single_topic_include:16 ../templates/users_tags_collection_html:45
 msgid "Anzeige:"
 msgstr ""
 
@@ -948,7 +948,7 @@ msgstr ""
 msgid "Bereits existierende Kataloge"
 msgstr ""
 
-#: ../templates/users_litlists_collection_html:93
+#: ../templates/users_litlists_html:93
 msgid "Bereits existierende Literaturlisten"
 msgstr ""
 
@@ -1809,7 +1809,7 @@ msgstr ""
 msgid "Entdecken Sie weitere Titel &uuml;ber:"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titlist_item_html_short:228 ../templates/_database/bibsonomy/titlist_item_html_short:231 ../templates/_database/openlibrary/titlist_item_html_short:230 ../templates/_database/openlibrary/titlist_item_html_short:233 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:241 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:244 ../templates/_profile/sammlungen/_view/richter/collection_html_actions:145 ../templates/_profile/sammlungen/_view/richter/collection_html_short:145 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:166 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:181 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:184 ../templates/_profile/usb/drilldown_categorized:166 ../templates/_view/richter/collection_html_actions:145 ../templates/_view/richter/collection_html_short:145 ../templates/_view/richter/drilldown_categorized:166 ../templates/_view/richter/titlist_item_html_short:235 ../templates/_view/richter/titlist_item_html_short:238 ../templates/collection_html_short:144 ../templates/reviews_edit:201 ../templates/reviews_edit:204 ../templates/search_facet:185 ../templates/titlist_item_html_short:235 ../templates/titlist_item_html_short:238 ../templates/users_litlists_collection_html:107 ../templates/users_profiles_collection_html:87
+#: ../templates/_database/bibsonomy/titlist_item_html_short:228 ../templates/_database/bibsonomy/titlist_item_html_short:231 ../templates/_database/openlibrary/titlist_item_html_short:230 ../templates/_database/openlibrary/titlist_item_html_short:233 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:241 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:244 ../templates/_profile/sammlungen/_view/richter/collection_html_actions:145 ../templates/_profile/sammlungen/_view/richter/collection_html_short:145 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:166 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:181 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:184 ../templates/_profile/usb/drilldown_categorized:166 ../templates/_view/richter/collection_html_actions:145 ../templates/_view/richter/collection_html_short:145 ../templates/_view/richter/drilldown_categorized:166 ../templates/_view/richter/titlist_item_html_short:235 ../templates/_view/richter/titlist_item_html_short:238 ../templates/collection_html_short:144 ../templates/reviews_edit:201 ../templates/reviews_edit:204 ../templates/search_facet:185 ../templates/titlist_item_html_short:235 ../templates/titlist_item_html_short:238 ../templates/users_litlists_html:107 ../templates/users_profiles_collection_html:87
 msgid "Entfernen"
 msgstr ""
 
@@ -3107,7 +3107,7 @@ msgstr ""
 msgid "Literaturliste"
 msgstr ""
 
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:81 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:83 ../templates/_profile/rheinlandbib/clouds_navigation:76 ../templates/_profile/rheinlandbib/clouds_navigation:78 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:76 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:78 ../templates/_profile/sammlungen/_view/richter/litlists_html:43 ../templates/_profile/sammlungen/_view/richter/titles_html:374 ../templates/_profile/sammlungen/clouds_navigation:76 ../templates/_profile/sammlungen/clouds_navigation:78 ../templates/_view/richter/clouds_navigation:76 ../templates/_view/richter/clouds_navigation:78 ../templates/_view/richter/litlists_html:43 ../templates/clouds_litlist_html:44 ../templates/clouds_navigation:81 ../templates/clouds_navigation:83 ../templates/indexes_topic_html:116 ../templates/info_tutorials:66 ../templates/litlists_collection_by_single_topic_html:46 ../templates/litlists_collection_by_single_topic_html:68 ../templates/litlists_collection_by_single_topic_recent_html:47 ../templates/litlists_collection_by_topic_html:38 ../templates/litlists_collection_by_topic_html:58 ../templates/litlists_collection_html:38 ../templates/litlists_collection_recent_html:38 ../templates/litlists_edit:45 ../templates/litlists_html:43 ../templates/litlists_navigation:21 ../templates/searchform_bottom_center:17 ../templates/titles_html:372 ../templates/titles_include:610 ../templates/users_litlists_collection_html:39 ../templates/users_navigation:25 ../templates/users_navigation:27
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:81 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:83 ../templates/_profile/rheinlandbib/clouds_navigation:76 ../templates/_profile/rheinlandbib/clouds_navigation:78 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:76 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:78 ../templates/_profile/sammlungen/_view/richter/litlists_html:43 ../templates/_profile/sammlungen/_view/richter/titles_html:374 ../templates/_profile/sammlungen/clouds_navigation:76 ../templates/_profile/sammlungen/clouds_navigation:78 ../templates/_view/richter/clouds_navigation:76 ../templates/_view/richter/clouds_navigation:78 ../templates/_view/richter/litlists_html:43 ../templates/clouds_litlist_html:44 ../templates/clouds_navigation:81 ../templates/clouds_navigation:83 ../templates/indexes_topic_html:116 ../templates/info_tutorials:66 ../templates/litlists_by_single_topic_html:46 ../templates/litlists_by_single_topic_html:68 ../templates/litlists_by_single_topic_recent_html:47 ../templates/litlists_by_topic_html:38 ../templates/litlists_by_topic_html:58 ../templates/litlists_html:38 ../templates/litlists_recent_html:38 ../templates/litlists_edit:45 ../templates/litlists_html:43 ../templates/litlists_navigation:21 ../templates/searchform_bottom_center:17 ../templates/titles_html:372 ../templates/titles_include:610 ../templates/users_litlists_html:39 ../templates/users_navigation:25 ../templates/users_navigation:27
 msgid "Literaturlisten"
 msgstr ""
 
@@ -3286,7 +3286,7 @@ msgstr ""
 msgid "Nein"
 msgstr ""
 
-#: ../templates/admin_authenticators_html:70 ../templates/admin_clusters_html:87 ../templates/admin_databases_html:105 ../templates/admin_databases_rss_html:114 ../templates/admin_databases_rss_record_html:131 ../templates/admin_databases_rss_record_html:188 ../templates/admin_databases_rss_record_html:245 ../templates/admin_databases_rss_record_html:302 ../templates/admin_databases_rss_record_html:74 ../templates/admin_locations_html:86 ../templates/admin_profiles_html:76 ../templates/admin_profiles_record_edit:110 ../templates/admin_servers_html:103 ../templates/admin_showcat:45 ../templates/admin_showprofiles:39 ../templates/admin_topics_html:68 ../templates/admin_views_html:95 ../templates/titles_collection_form:86 ../templates/users_litlists_collection_html:83 ../templates/users_profiles_collection_html:66
+#: ../templates/admin_authenticators_html:70 ../templates/admin_clusters_html:87 ../templates/admin_databases_html:105 ../templates/admin_databases_rss_html:114 ../templates/admin_databases_rss_record_html:131 ../templates/admin_databases_rss_record_html:188 ../templates/admin_databases_rss_record_html:245 ../templates/admin_databases_rss_record_html:302 ../templates/admin_databases_rss_record_html:74 ../templates/admin_locations_html:86 ../templates/admin_profiles_html:76 ../templates/admin_profiles_record_edit:110 ../templates/admin_servers_html:103 ../templates/admin_showcat:45 ../templates/admin_showprofiles:39 ../templates/admin_topics_html:68 ../templates/admin_views_html:95 ../templates/titles_collection_form:86 ../templates/users_litlists_html:83 ../templates/users_profiles_collection_html:66
 msgid "Neu"
 msgstr ""
 
@@ -3318,7 +3318,7 @@ msgstr ""
 msgid "Neue Bewertung/Rezension"
 msgstr ""
 
-#: ../templates/users_litlists_collection_html:57
+#: ../templates/users_litlists_html:57
 msgid "Neue Literaturliste anlegen"
 msgstr ""
 
@@ -3466,7 +3466,7 @@ msgstr ""
 msgid "Offiziell"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/litlists_edit:39 ../templates/_profile/sammlungen/_view/richter/litlists_html:54 ../templates/_profile/usb/litlists_collection_by_single_subject_recent_include:17 ../templates/_profile/usb/litlists_collection_by_single_topic_include:16 ../templates/_view/richter/litlists_edit:39 ../templates/_view/richter/litlists_html:54 ../templates/indexes_topic_html:120 ../templates/litlists_collection_by_single_topic_html:75 ../templates/litlists_collection_by_single_topic_include:29 ../templates/litlists_collection_by_single_topic_recent_html:77 ../templates/litlists_collection_by_single_topic_recent_include:21 ../templates/litlists_collection_html:63 ../templates/litlists_collection_recent_html:64 ../templates/litlists_collection_recent_include:17 ../templates/litlists_edit:54 ../templates/litlists_html:54 ../templates/searchform_bottom_right:28 ../templates/users_litlists_collection_html:99
+#: ../templates/_profile/sammlungen/_view/richter/litlists_edit:39 ../templates/_profile/sammlungen/_view/richter/litlists_html:54 ../templates/_profile/usb/litlists_by_single_subject_recent_include:17 ../templates/_profile/usb/litlists_by_single_topic_include:16 ../templates/_view/richter/litlists_edit:39 ../templates/_view/richter/litlists_html:54 ../templates/indexes_topic_html:120 ../templates/litlists_by_single_topic_html:75 ../templates/litlists_by_single_topic_include:29 ../templates/litlists_by_single_topic_recent_html:77 ../templates/litlists_by_single_topic_recent_include:21 ../templates/litlists_html:63 ../templates/litlists_recent_html:64 ../templates/litlists_recent_include:17 ../templates/litlists_edit:54 ../templates/litlists_html:54 ../templates/searchform_bottom_right:28 ../templates/users_litlists_html:99
 msgid "Offizielle Literaturliste des Instituts/Seminars"
 msgstr ""
 
@@ -3494,7 +3494,7 @@ msgstr ""
 msgid "OpenBib-Versionen"
 msgstr ""
 
-#: ../templates/users_litlists_collection_html:73
+#: ../templates/users_litlists_html:73
 msgid "Ordnen Sie Ihre Literaturliste thematisch ein"
 msgstr ""
 
@@ -4028,7 +4028,7 @@ msgstr ""
 msgid "Sessions"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:60 ../templates/_profile/sammlungen/_view/richter/collection_html_actions:93 ../templates/_profile/sammlungen/_view/richter/litlists_edit:72 ../templates/_profile/sammlungen/_view/richter/titles_html:201 ../templates/_profile/sammlungen/_view/richter/titles_html:236 ../templates/_view/richter/collection_html_actions:60 ../templates/_view/richter/collection_html_actions:93 ../templates/_view/richter/litlists_edit:72 ../templates/collection_html_actions:62 ../templates/collection_html_actions:95 ../templates/litlists_edit:87 ../templates/litlists_include:104 ../templates/titles_html:202 ../templates/titles_html:237 ../templates/users_litlists_collection_html:65 ../templates/users_litlists_collection_html:96
+#: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:60 ../templates/_profile/sammlungen/_view/richter/collection_html_actions:93 ../templates/_profile/sammlungen/_view/richter/litlists_edit:72 ../templates/_profile/sammlungen/_view/richter/titles_html:201 ../templates/_profile/sammlungen/_view/richter/titles_html:236 ../templates/_view/richter/collection_html_actions:60 ../templates/_view/richter/collection_html_actions:93 ../templates/_view/richter/litlists_edit:72 ../templates/collection_html_actions:62 ../templates/collection_html_actions:95 ../templates/litlists_edit:87 ../templates/litlists_include:104 ../templates/titles_html:202 ../templates/titles_html:237 ../templates/users_litlists_html:65 ../templates/users_litlists_html:96
 msgid "Sichtbarkeit"
 msgstr ""
 
@@ -4369,7 +4369,7 @@ msgstr ""
 msgid "Standortinformationen bearbeiten"
 msgstr ""
 
-#: ../templates/_database/dbis/classification_collection_html:36 ../templates/_database/ezb/classification_collection_html:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gaesdonck:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_koenigswinter:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_rheinischeabteilung:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchform_advanced:37 ../templates/_profile/sammlungen/_view/alekiddr/info_project:36 ../templates/_profile/sammlungen/_view/alekiddr/info_sammlung:36 ../templates/_profile/sammlungen/_view/inst404abklatsch/browse_title_html:37 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_abklatsch:36 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:36 ../templates/_profile/sammlungen/_view/richter/browse_title_html:37 ../templates/_profile/sammlungen/_view/richter/classification_html:47 ../templates/_profile/sammlungen/_view/richter/clouds_searchterm_html:42 ../templates/_profile/sammlungen/_view/richter/collection_empty:37 ../templates/_profile/sammlungen/_view/richter/collection_html:52 ../templates/_profile/sammlungen/_view/richter/corporatebody_html:46 ../templates/_profile/sammlungen/_view/richter/info_ansprechpartner:36 ../templates/_profile/sammlungen/_view/richter/info_arbeitsablauf:36 ../templates/_profile/sammlungen/_view/richter/info_buecherlisten:36 ../templates/_profile/sammlungen/_view/richter/info_elise_richter:36 ../templates/_profile/sammlungen/_view/richter/info_externe_nachweise:36 ../templates/_profile/sammlungen/_view/richter/info_helene_richter:36 ../templates/_profile/sammlungen/_view/richter/info_publikationen:36 ../templates/_profile/sammlungen/_view/richter/info_richterbibliothek_heute:36 ../templates/_profile/sammlungen/_view/richter/litlists_html:42 ../templates/_profile/sammlungen/_view/richter/login:38 ../templates/_profile/sammlungen/_view/richter/person_html:47 ../templates/_profile/sammlungen/_view/richter/registrations:37 ../templates/_profile/sammlungen/_view/richter/searchform_advanced:37 ../templates/_profile/sammlungen/_view/richter/subjects_html:47 ../templates/_profile/sammlungen/_view/richter/titles_html:101 ../templates/_view/richter/browse_title_html:37 ../templates/_view/richter/classification_html:47 ../templates/_view/richter/clouds_searchterm_html:42 ../templates/_view/richter/collection_empty:37 ../templates/_view/richter/collection_html:52 ../templates/_view/richter/corporatebody_html:46 ../templates/_view/richter/litlists_html:42 ../templates/_view/richter/login:38 ../templates/_view/richter/person_html:47 ../templates/_view/richter/registrations:37 ../templates/_view/richter/searchform_advanced:37 ../templates/_view/richter/subjects_html:47 ../templates/classifications_html:47 ../templates/clouds_collection_html:37 ../templates/clouds_corporatebody_html:48 ../templates/clouds_litlist_html:42 ../templates/clouds_searchterm_html:42 ../templates/clouds_subject_html:48 ../templates/clouds_tag_html:48 ../templates/clouds_year_html:48 ../templates/collection_html:52 ../templates/corporatebodies_html:46 ../templates/databasechoice:51 ../templates/error_html:24 ../templates/info_feedback:36 ../templates/info_help:37 ../templates/info_project:36 ../templates/info_versions:36 ../templates/litlists_collection_by_single_topic_html:45 ../templates/litlists_collection_by_single_topic_recent_html:46 ../templates/litlists_collection_by_topic_html:37 ../templates/litlists_collection_html:37 ../templates/litlists_collection_recent_html:37 ../templates/litlists_html:42 ../templates/login:38 ../templates/person_html:47 ../templates/registrations:37 ../templates/search_history:37 ../templates/searchform_advanced:37 ../templates/subjects_html:47 ../templates/titles_html:101
+#: ../templates/_database/dbis/classification_collection_html:36 ../templates/_database/ezb/classification_collection_html:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gaesdonck:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_koenigswinter:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_rheinischeabteilung:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchform_advanced:37 ../templates/_profile/sammlungen/_view/alekiddr/info_project:36 ../templates/_profile/sammlungen/_view/alekiddr/info_sammlung:36 ../templates/_profile/sammlungen/_view/inst404abklatsch/browse_title_html:37 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_abklatsch:36 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:36 ../templates/_profile/sammlungen/_view/richter/browse_title_html:37 ../templates/_profile/sammlungen/_view/richter/classification_html:47 ../templates/_profile/sammlungen/_view/richter/clouds_searchterm_html:42 ../templates/_profile/sammlungen/_view/richter/collection_empty:37 ../templates/_profile/sammlungen/_view/richter/collection_html:52 ../templates/_profile/sammlungen/_view/richter/corporatebody_html:46 ../templates/_profile/sammlungen/_view/richter/info_ansprechpartner:36 ../templates/_profile/sammlungen/_view/richter/info_arbeitsablauf:36 ../templates/_profile/sammlungen/_view/richter/info_buecherlisten:36 ../templates/_profile/sammlungen/_view/richter/info_elise_richter:36 ../templates/_profile/sammlungen/_view/richter/info_externe_nachweise:36 ../templates/_profile/sammlungen/_view/richter/info_helene_richter:36 ../templates/_profile/sammlungen/_view/richter/info_publikationen:36 ../templates/_profile/sammlungen/_view/richter/info_richterbibliothek_heute:36 ../templates/_profile/sammlungen/_view/richter/litlists_html:42 ../templates/_profile/sammlungen/_view/richter/login:38 ../templates/_profile/sammlungen/_view/richter/person_html:47 ../templates/_profile/sammlungen/_view/richter/registrations:37 ../templates/_profile/sammlungen/_view/richter/searchform_advanced:37 ../templates/_profile/sammlungen/_view/richter/subjects_html:47 ../templates/_profile/sammlungen/_view/richter/titles_html:101 ../templates/_view/richter/browse_title_html:37 ../templates/_view/richter/classification_html:47 ../templates/_view/richter/clouds_searchterm_html:42 ../templates/_view/richter/collection_empty:37 ../templates/_view/richter/collection_html:52 ../templates/_view/richter/corporatebody_html:46 ../templates/_view/richter/litlists_html:42 ../templates/_view/richter/login:38 ../templates/_view/richter/person_html:47 ../templates/_view/richter/registrations:37 ../templates/_view/richter/searchform_advanced:37 ../templates/_view/richter/subjects_html:47 ../templates/classifications_html:47 ../templates/clouds_collection_html:37 ../templates/clouds_corporatebody_html:48 ../templates/clouds_litlist_html:42 ../templates/clouds_searchterm_html:42 ../templates/clouds_subject_html:48 ../templates/clouds_tag_html:48 ../templates/clouds_year_html:48 ../templates/collection_html:52 ../templates/corporatebodies_html:46 ../templates/databasechoice:51 ../templates/error_html:24 ../templates/info_feedback:36 ../templates/info_help:37 ../templates/info_project:36 ../templates/info_versions:36 ../templates/litlists_by_single_topic_html:45 ../templates/litlists_by_single_topic_recent_html:46 ../templates/litlists_by_topic_html:37 ../templates/litlists_html:37 ../templates/litlists_recent_html:37 ../templates/litlists_html:42 ../templates/login:38 ../templates/person_html:47 ../templates/registrations:37 ../templates/search_history:37 ../templates/searchform_advanced:37 ../templates/subjects_html:47 ../templates/titles_html:101
 msgid "Start"
 msgstr ""
 
@@ -4976,7 +4976,7 @@ msgstr ""
 msgid "Themengebiet(e) von DBIS zuordnen"
 msgstr ""
 
-#: ../templates/_profile/rheinlandbib/searchform_simple:477 ../templates/_profile/rheinlandbib/searchform_simple:64 ../templates/_profile/sammlungen/_view/richter/litlists_edit:40 ../templates/_profile/sammlungen/_view/richter/litlists_html:55 ../templates/_profile/sammlungen/_view/richter/searchform_simple:83 ../templates/_view/richter/litlists_edit:40 ../templates/_view/richter/litlists_html:55 ../templates/_view/richter/searchform_simple:83 ../templates/admin_navigation:205 ../templates/admin_navigation:207 ../templates/admin_topics_html:41 ../templates/admin_topics_record_edit:118 ../templates/admin_topics_record_edit:168 ../templates/admin_topics_record_edit:215 ../templates/admin_topics_record_edit:54 ../templates/admin_topics_record_html:113 ../templates/admin_topics_record_html:149 ../templates/admin_topics_record_html:54 ../templates/admin_topics_record_html:80 ../templates/admin_topics_record_mapping_html:118 ../templates/admin_topics_record_mapping_html:168 ../templates/admin_topics_record_mapping_html:215 ../templates/admin_topics_record_mapping_html:54 ../templates/info_53:42 ../templates/litlists_collection_by_single_topic_html:47 ../templates/litlists_collection_by_single_topic_include:16 ../templates/litlists_collection_by_single_topic_recent_html:48 ../templates/litlists_collection_by_topic_html:39 ../templates/litlists_edit:55 ../templates/litlists_html:55 ../templates/litlists_navigation:34 ../templates/litlists_navigation:36 ../templates/searchform_simple:77 ../templates/topics_html:40 ../templates/topics_html:60 ../templates/topics_record_html:113 ../templates/topics_record_html:149 ../templates/topics_record_html:54 ../templates/topics_record_html:80 ../templates/topics_record_mapping_html:118 ../templates/topics_record_mapping_html:168 ../templates/topics_record_mapping_html:215 ../templates/topics_record_mapping_html:54 ../templates/users_litlists_collection_html:96
+#: ../templates/_profile/rheinlandbib/searchform_simple:477 ../templates/_profile/rheinlandbib/searchform_simple:64 ../templates/_profile/sammlungen/_view/richter/litlists_edit:40 ../templates/_profile/sammlungen/_view/richter/litlists_html:55 ../templates/_profile/sammlungen/_view/richter/searchform_simple:83 ../templates/_view/richter/litlists_edit:40 ../templates/_view/richter/litlists_html:55 ../templates/_view/richter/searchform_simple:83 ../templates/admin_navigation:205 ../templates/admin_navigation:207 ../templates/admin_topics_html:41 ../templates/admin_topics_record_edit:118 ../templates/admin_topics_record_edit:168 ../templates/admin_topics_record_edit:215 ../templates/admin_topics_record_edit:54 ../templates/admin_topics_record_html:113 ../templates/admin_topics_record_html:149 ../templates/admin_topics_record_html:54 ../templates/admin_topics_record_html:80 ../templates/admin_topics_record_mapping_html:118 ../templates/admin_topics_record_mapping_html:168 ../templates/admin_topics_record_mapping_html:215 ../templates/admin_topics_record_mapping_html:54 ../templates/info_53:42 ../templates/litlists_by_single_topic_html:47 ../templates/litlists_by_single_topic_include:16 ../templates/litlists_by_single_topic_recent_html:48 ../templates/litlists_by_topic_html:39 ../templates/litlists_edit:55 ../templates/litlists_html:55 ../templates/litlists_navigation:34 ../templates/litlists_navigation:36 ../templates/searchform_simple:77 ../templates/topics_html:40 ../templates/topics_html:60 ../templates/topics_record_html:113 ../templates/topics_record_html:149 ../templates/topics_record_html:54 ../templates/topics_record_html:80 ../templates/topics_record_mapping_html:118 ../templates/topics_record_mapping_html:168 ../templates/topics_record_mapping_html:215 ../templates/topics_record_mapping_html:54 ../templates/users_litlists_html:96
 msgid "Themengebiete"
 msgstr ""
 
@@ -4984,11 +4984,11 @@ msgstr ""
 msgid "Titel"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/litlists_edit:67 ../templates/_view/richter/litlists_edit:67 ../templates/litlists_edit:82 ../templates/litlists_include:101 ../templates/users_litlists_collection_html:60
+#: ../templates/_profile/sammlungen/_view/richter/litlists_edit:67 ../templates/_view/richter/litlists_edit:67 ../templates/litlists_edit:82 ../templates/litlists_include:101 ../templates/users_litlists_html:60
 msgid "Titel der Liste"
 msgstr ""
 
-#: ../templates/users_litlists_collection_html:96
+#: ../templates/users_litlists_html:96
 msgid "Titel der Literaturliste"
 msgstr ""
 
@@ -5053,7 +5053,7 @@ msgstr ""
 msgid "Titelworte"
 msgstr ""
 
-#: ../templates/users_litlists_collection_html:96
+#: ../templates/users_litlists_html:96
 msgid "Titelzahl"
 msgstr ""
 
@@ -5651,11 +5651,11 @@ msgstr ""
 msgid "Zuletzt angelegt"
 msgstr ""
 
-#: ../templates/litlists_collection_recent_html:39
+#: ../templates/litlists_recent_html:39
 msgid "Zuletzt angelegte"
 msgstr ""
 
-#: ../templates/litlists_collection_recent_html:59
+#: ../templates/litlists_recent_html:59
 msgid "Zuletzt angelegte &ouml;ffentliche Literaturlisten"
 msgstr ""
 
@@ -5863,7 +5863,7 @@ msgstr ""
 msgid "ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:63 ../templates/_profile/sammlungen/_view/richter/collection_html_actions:96 ../templates/_profile/sammlungen/_view/richter/litlists_edit:73 ../templates/_profile/sammlungen/_view/richter/titles_html:202 ../templates/_profile/sammlungen/_view/richter/titles_html:239 ../templates/_profile/sammlungen/_view/richter/titles_html:302 ../templates/_view/richter/collection_html_actions:63 ../templates/_view/richter/collection_html_actions:96 ../templates/_view/richter/litlists_edit:73 ../templates/collection_html_actions:65 ../templates/collection_html_actions:98 ../templates/litlists_edit:88 ../templates/litlists_include:104 ../templates/titles_html:203 ../templates/titles_html:240 ../templates/titles_html:300 ../templates/titles_include:405 ../templates/titles_include:434 ../templates/titles_include:506 ../templates/users_litlists_collection_html:102 ../templates/users_litlists_collection_html:68
+#: ../templates/_profile/sammlungen/_view/richter/collection_html_actions:63 ../templates/_profile/sammlungen/_view/richter/collection_html_actions:96 ../templates/_profile/sammlungen/_view/richter/litlists_edit:73 ../templates/_profile/sammlungen/_view/richter/titles_html:202 ../templates/_profile/sammlungen/_view/richter/titles_html:239 ../templates/_profile/sammlungen/_view/richter/titles_html:302 ../templates/_view/richter/collection_html_actions:63 ../templates/_view/richter/collection_html_actions:96 ../templates/_view/richter/litlists_edit:73 ../templates/collection_html_actions:65 ../templates/collection_html_actions:98 ../templates/litlists_edit:88 ../templates/litlists_include:104 ../templates/titles_html:203 ../templates/titles_html:240 ../templates/titles_html:300 ../templates/titles_include:405 ../templates/titles_include:434 ../templates/titles_include:506 ../templates/users_litlists_html:102 ../templates/users_litlists_html:68
 msgid "privat"
 msgstr ""
 

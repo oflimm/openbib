@@ -94,22 +94,22 @@ msgid "%1 Datenbanken"
 msgstr "%1 databases"
 
 #. (topic.litlistcount.public)
-#: ../templates/litlists_collection_by_single_topic_include:22
-#: ../templates/litlists_collection_by_topic_html:62
+#: ../templates/litlists_by_single_topic_include:22
+#: ../templates/litlists_by_topic_html:62
 msgid "%1 Listen"
 msgstr "%1 lists"
 
 #. (thisitem.itemcount)
-#: ../templates/_profile/usb/litlists_collection_by_single_subject_recent_include:17
-#: ../templates/_profile/usb/litlists_collection_by_single_topic_include:16
+#: ../templates/_profile/usb/litlists_by_single_subject_recent_include:17
+#: ../templates/_profile/usb/litlists_by_single_topic_include:16
 #: ../templates/indexes_topic_html:120
-#: ../templates/litlists_collection_by_single_topic_html:75
-#: ../templates/litlists_collection_by_single_topic_include:29
-#: ../templates/litlists_collection_by_single_topic_recent_html:77
-#: ../templates/litlists_collection_by_single_topic_recent_include:21
-#: ../templates/litlists_collection_html:63
-#: ../templates/litlists_collection_recent_html:64
-#: ../templates/litlists_collection_recent_include:17
+#: ../templates/litlists_by_single_topic_html:75
+#: ../templates/litlists_by_single_topic_include:29
+#: ../templates/litlists_by_single_topic_recent_html:77
+#: ../templates/litlists_by_single_topic_recent_include:21
+#: ../templates/litlists_html:63
+#: ../templates/litlists_recent_html:64
+#: ../templates/litlists_recent_include:17
 msgid "%1 Titel"
 msgstr "%1 titles"
 
@@ -276,8 +276,8 @@ msgstr "Substitute n for &ntilde;"
 #: ../templates/titles_html:239 ../templates/titles_html:300
 #: ../templates/titles_include:405 ../templates/titles_include:434
 #: ../templates/titles_include:506
-#: ../templates/users_litlists_collection_html:100
-#: ../templates/users_litlists_collection_html:67
+#: ../templates/users_litlists_html:100
+#: ../templates/users_litlists_html:67
 msgid "&ouml;ffentlich"
 msgstr "public"
 
@@ -606,7 +606,7 @@ msgstr "This search"
 msgid "Aktuelles"
 msgstr "News"
 
-#: ../templates/litlists_collection_html:58
+#: ../templates/litlists_html:58
 msgid "Alle &ouml;ffentlichen Literaturlisten"
 msgstr "All public literature lists"
 
@@ -638,7 +638,7 @@ msgstr "All types"
 msgid "Alle Kataloge"
 msgstr "All Catalogues"
 
-#: ../templates/litlists_collection_by_single_topic_include:16
+#: ../templates/litlists_by_single_topic_include:16
 #: ../templates/litlists_navigation:24 ../templates/litlists_navigation:26
 #: ../templates/litlists_navigation:42 ../templates/litlists_navigation:44
 msgid "Alle Listen"
@@ -785,7 +785,7 @@ msgstr "Start"
 msgid "Angebotene Arten an RSS-Feeds"
 msgstr "Types of RSS-Feeds"
 
-#: ../templates/users_litlists_collection_html:96
+#: ../templates/users_litlists_html:96
 msgid "Angelegt"
 msgstr "Created"
 
@@ -857,7 +857,7 @@ msgstr ""
 "titles with ISBN13, eg. used in catalogues of publishers since 1.1.2007, "
 "that were catalogued at a time when only a ISBN10 was known."
 
-#: ../templates/litlists_collection_by_single_topic_include:16
+#: ../templates/litlists_by_single_topic_include:16
 msgid "Anzahl"
 msgstr "Items"
 
@@ -1019,7 +1019,7 @@ msgstr "Presentation of selected profile"
 
 #: ../templates/_database/dbis/classification_collection_html:86
 #: ../templates/_database/ezb/classification_collection_html:85
-#: ../templates/litlists_collection_by_single_topic_include:16
+#: ../templates/litlists_by_single_topic_include:16
 #: ../templates/users_tags_collection_html:45
 msgid "Anzeige:"
 msgstr "View:"
@@ -1409,7 +1409,7 @@ msgstr "Already existing catalogue profiles"
 msgid "Bereits existierende Kataloge"
 msgstr "Already existing catalogues"
 
-#: ../templates/users_litlists_collection_html:93
+#: ../templates/users_litlists_html:93
 msgid "Bereits existierende Literaturlisten"
 msgstr "Already existing literature lists"
 
@@ -2726,7 +2726,7 @@ msgstr "Discover other titles using:"
 #: ../templates/reviews_edit:204 ../templates/search_facet:185
 #: ../templates/titlist_item_html_short:235
 #: ../templates/titlist_item_html_short:238
-#: ../templates/users_litlists_collection_html:107
+#: ../templates/users_litlists_html:107
 #: ../templates/users_profiles_collection_html:87
 msgid "Entfernen"
 msgstr "Remove"
@@ -4926,18 +4926,18 @@ msgstr "Literature list"
 #: ../templates/clouds_litlist_html:44 ../templates/clouds_navigation:81
 #: ../templates/clouds_navigation:83 ../templates/indexes_topic_html:116
 #: ../templates/info_tutorials:66
-#: ../templates/litlists_collection_by_single_topic_html:46
-#: ../templates/litlists_collection_by_single_topic_html:68
-#: ../templates/litlists_collection_by_single_topic_recent_html:47
-#: ../templates/litlists_collection_by_topic_html:38
-#: ../templates/litlists_collection_by_topic_html:58
-#: ../templates/litlists_collection_html:38
-#: ../templates/litlists_collection_recent_html:38
+#: ../templates/litlists_by_single_topic_html:46
+#: ../templates/litlists_by_single_topic_html:68
+#: ../templates/litlists_by_single_topic_recent_html:47
+#: ../templates/litlists_by_topic_html:38
+#: ../templates/litlists_by_topic_html:58
+#: ../templates/litlists_html:38
+#: ../templates/litlists_recent_html:38
 #: ../templates/litlists_edit:45 ../templates/litlists_html:43
 #: ../templates/litlists_navigation:21
 #: ../templates/searchform_bottom_center:17 ../templates/titles_html:372
 #: ../templates/titles_include:610
-#: ../templates/users_litlists_collection_html:39
+#: ../templates/users_litlists_html:39
 #: ../templates/users_navigation:25 ../templates/users_navigation:27
 msgid "Literaturlisten"
 msgstr "Literature lists"
@@ -5350,7 +5350,7 @@ msgstr "No"
 #: ../templates/admin_servers_html:103 ../templates/admin_showcat:45
 #: ../templates/admin_showprofiles:39 ../templates/admin_topics_html:68
 #: ../templates/admin_views_html:95 ../templates/titles_collection_form:86
-#: ../templates/users_litlists_collection_html:83
+#: ../templates/users_litlists_html:83
 #: ../templates/users_profiles_collection_html:66
 msgid "Neu"
 msgstr "New"
@@ -5412,7 +5412,7 @@ msgstr "New titles per author"
 msgid "Neue Bewertung/Rezension"
 msgstr "New rating/review"
 
-#: ../templates/users_litlists_collection_html:57
+#: ../templates/users_litlists_html:57
 msgid "Neue Literaturliste anlegen"
 msgstr "Create new literature list"
 
@@ -5605,21 +5605,21 @@ msgstr "Official"
 
 #: ../templates/_profile/sammlungen/_view/richter/litlists_edit:39
 #: ../templates/_profile/sammlungen/_view/richter/litlists_html:54
-#: ../templates/_profile/usb/litlists_collection_by_single_subject_recent_include:17
-#: ../templates/_profile/usb/litlists_collection_by_single_topic_include:16
+#: ../templates/_profile/usb/litlists_by_single_subject_recent_include:17
+#: ../templates/_profile/usb/litlists_by_single_topic_include:16
 #: ../templates/_view/richter/litlists_edit:39
 #: ../templates/_view/richter/litlists_html:54
 #: ../templates/indexes_topic_html:120
-#: ../templates/litlists_collection_by_single_topic_html:75
-#: ../templates/litlists_collection_by_single_topic_include:29
-#: ../templates/litlists_collection_by_single_topic_recent_html:77
-#: ../templates/litlists_collection_by_single_topic_recent_include:21
-#: ../templates/litlists_collection_html:63
-#: ../templates/litlists_collection_recent_html:64
-#: ../templates/litlists_collection_recent_include:17
+#: ../templates/litlists_by_single_topic_html:75
+#: ../templates/litlists_by_single_topic_include:29
+#: ../templates/litlists_by_single_topic_recent_html:77
+#: ../templates/litlists_by_single_topic_recent_include:21
+#: ../templates/litlists_html:63
+#: ../templates/litlists_recent_html:64
+#: ../templates/litlists_recent_include:17
 #: ../templates/litlists_edit:54 ../templates/litlists_html:54
 #: ../templates/searchform_bottom_right:28
-#: ../templates/users_litlists_collection_html:99
+#: ../templates/users_litlists_html:99
 msgid "Offizielle Literaturliste des Instituts/Seminars"
 msgstr "Official literature list of the institute/seminar"
 
@@ -5655,7 +5655,7 @@ msgstr ""
 msgid "OpenBib-Versionen"
 msgstr "OpenBib versions"
 
-#: ../templates/users_litlists_collection_html:73
+#: ../templates/users_litlists_html:73
 msgid "Ordnen Sie Ihre Literaturliste thematisch ein"
 msgstr "Classify you literature list thematically"
 
@@ -6498,8 +6498,8 @@ msgstr "Sessions"
 #: ../templates/collection_html_actions:62
 #: ../templates/collection_html_actions:95 ../templates/litlists_edit:87
 #: ../templates/litlists_include:104 ../templates/titles_html:202
-#: ../templates/titles_html:237 ../templates/users_litlists_collection_html:65
-#: ../templates/users_litlists_collection_html:96
+#: ../templates/titles_html:237 ../templates/users_litlists_html:65
+#: ../templates/users_litlists_html:96
 msgid "Sichtbarkeit"
 msgstr "Visibility"
 
@@ -7065,11 +7065,11 @@ msgstr "Edit information about location"
 #: ../templates/error_html:24 ../templates/info_feedback:36
 #: ../templates/info_help:37 ../templates/info_project:36
 #: ../templates/info_versions:36
-#: ../templates/litlists_collection_by_single_topic_html:45
-#: ../templates/litlists_collection_by_single_topic_recent_html:46
-#: ../templates/litlists_collection_by_topic_html:37
-#: ../templates/litlists_collection_html:37
-#: ../templates/litlists_collection_recent_html:37
+#: ../templates/litlists_by_single_topic_html:45
+#: ../templates/litlists_by_single_topic_recent_html:46
+#: ../templates/litlists_by_topic_html:37
+#: ../templates/litlists_html:37
+#: ../templates/litlists_recent_html:37
 #: ../templates/litlists_html:42 ../templates/login:38
 #: ../templates/person_html:47 ../templates/registrations:37
 #: ../templates/search_history:37 ../templates/searchform_advanced:37
@@ -8253,10 +8253,10 @@ msgstr "Assign DBIS subjects"
 #: ../templates/admin_topics_record_mapping_html:168
 #: ../templates/admin_topics_record_mapping_html:215
 #: ../templates/admin_topics_record_mapping_html:54 ../templates/info_53:42
-#: ../templates/litlists_collection_by_single_topic_html:47
-#: ../templates/litlists_collection_by_single_topic_include:16
-#: ../templates/litlists_collection_by_single_topic_recent_html:48
-#: ../templates/litlists_collection_by_topic_html:39
+#: ../templates/litlists_by_single_topic_html:47
+#: ../templates/litlists_by_single_topic_include:16
+#: ../templates/litlists_by_single_topic_recent_html:48
+#: ../templates/litlists_by_topic_html:39
 #: ../templates/litlists_edit:55 ../templates/litlists_html:55
 #: ../templates/litlists_navigation:34 ../templates/litlists_navigation:36
 #: ../templates/searchform_simple:77 ../templates/topics_html:40
@@ -8267,7 +8267,7 @@ msgstr "Assign DBIS subjects"
 #: ../templates/topics_record_mapping_html:168
 #: ../templates/topics_record_mapping_html:215
 #: ../templates/topics_record_mapping_html:54
-#: ../templates/users_litlists_collection_html:96
+#: ../templates/users_litlists_html:96
 msgid "Themengebiete"
 msgstr "Subjects"
 
@@ -8296,11 +8296,11 @@ msgstr "Title"
 #: ../templates/_profile/sammlungen/_view/richter/litlists_edit:67
 #: ../templates/_view/richter/litlists_edit:67 ../templates/litlists_edit:82
 #: ../templates/litlists_include:101
-#: ../templates/users_litlists_collection_html:60
+#: ../templates/users_litlists_html:60
 msgid "Titel der Liste"
 msgstr "List title"
 
-#: ../templates/users_litlists_collection_html:96
+#: ../templates/users_litlists_html:96
 msgid "Titel der Literaturliste"
 msgstr "Title of literature list"
 
@@ -8387,7 +8387,7 @@ msgstr "Title list"
 msgid "Titelworte"
 msgstr "Words in title"
 
-#: ../templates/users_litlists_collection_html:96
+#: ../templates/users_litlists_html:96
 msgid "Titelzahl"
 msgstr "Number of titles"
 
@@ -9246,11 +9246,11 @@ msgstr "Number of a requests for OpenBib"
 msgid "Zuletzt angelegt"
 msgstr "Most recently created"
 
-#: ../templates/litlists_collection_recent_html:39
+#: ../templates/litlists_recent_html:39
 msgid "Zuletzt angelegte"
 msgstr "Most recently created"
 
-#: ../templates/litlists_collection_recent_html:59
+#: ../templates/litlists_recent_html:59
 msgid "Zuletzt angelegte &ouml;ffentliche Literaturlisten"
 msgstr "Most recently created public literature lists"
 
@@ -9574,8 +9574,8 @@ msgstr ""
 #: ../templates/titles_html:240 ../templates/titles_html:300
 #: ../templates/titles_include:405 ../templates/titles_include:434
 #: ../templates/titles_include:506
-#: ../templates/users_litlists_collection_html:102
-#: ../templates/users_litlists_collection_html:68
+#: ../templates/users_litlists_html:102
+#: ../templates/users_litlists_html:68
 msgid "privat"
 msgstr "private"
 

@@ -120,12 +120,12 @@ sub show {
         my $request=$dbh->prepare($sql); # "select distinct conn.sourceid from mex, conn where mex.category=14 and mex.content like ? and mex.content != 'bestellt' and mex.content != 'vergriffen' and mex.content != 'storniert' and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex.id and mex.id in (select distinct id from mex where category = 16 and content = ? )");
         $request->execute("$base%",$location);
 
-        my @filtered_titids = ();
+        my @filtered_titleids = ();
         while (my $result=$request->fetchrow_hashref){
-            my $titid   = $result->{sourceid};
+            my $titleid   = $result->{sourceid};
             my $locmark = $result->{content};
 
-            $logger->debug("Found titid $titid with location mark $locmark");
+            $logger->debug("Found titleid $titleid with location mark $locmark");
             
             if ($locmark=~m/^$base/){
                 $logger->debug("Location mark $locmark matches base $base");
@@ -136,8 +136,8 @@ sub show {
 
                      if ($number >= $range_start && $number <= $range_end) {
                         $logger->debug("Location mark $locmark in Range $range_start - $range_end");
-                        push @filtered_titids, {
-                            id       => $titid,
+                        push @filtered_titleids, {
+                            id       => $titleid,
                             locmark  => $locmark,
                             base     => $base,
                         }
@@ -148,8 +148,8 @@ sub show {
                  }
                  else {
                         $logger->debug("No range specified for location mark $locmark ");
-                     push @filtered_titids, {
-                         id       => $titid,
+                     push @filtered_titleids, {
+                         id       => $titleid,
                          locmark  => $locmark,
                          base     => $base,
                      };
@@ -157,14 +157,14 @@ sub show {
              }
         }
 
-        my @sortedtitids = sort by_signature @filtered_titids;
+        my @sortedtitleids = sort by_signature @filtered_titleids;
 
-        $logger->debug("Gefundene Titelids: ".YAML::Dump(\@sortedtitids));
+        $logger->debug("Gefundene Titelids: ".YAML::Dump(\@sortedtitleids));
         
         my @outputbuffer = ();
 
-        foreach my $titid_ref (@sortedtitids) {
-            my $id = $titid_ref->{id};
+        foreach my $titleid_ref (@sortedtitleids) {
+            my $id = $titleid_ref->{id};
 
             my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database})->load_brief_record({ dbh => $dbh })->get_fields;
             

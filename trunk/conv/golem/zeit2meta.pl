@@ -144,8 +144,8 @@ $buffer[$bufferidx++]="ENDE\n";
 #######################################################################
 # Umwandeln
 
-$titidn=1;
-$titidx=0;
+$titleid=1;
+$titleidx=0;
 
 $autidn=1;
 $autidx=0;
@@ -174,13 +174,13 @@ $swtdublastidx=1;
 while ($i < $#buffer){
   if ($buffer[$i]=~/^ENDE/){
     
-    $titbuffer[$titidx++]="0000:".$titidn;
+    $titbuffer[$titleidx++]="0000:".$titleid;
     
     while ($ti < $tempidx){
       ($kateg,$content)=$tempbuffer[$ti]=~/^(.+?): (.*)/;
       
       if ($titelkonv{$kateg}){
-	$titbuffer[$titidx++]=$titelkonv{$kateg}.$content;
+	$titbuffer[$titleidx++]=$titelkonv{$kateg}.$content;
 	
       }
       
@@ -205,7 +205,7 @@ while ($i < $#buffer){
 	  $autidn=(-1)*$autidn;
 	}
 	
-	$titbuffer[$titidx++]="0100:IDN: ".$autidn;
+	$titbuffer[$titleidx++]="0100:IDN: ".$autidn;
       }
       # Autoren abarbeiten Ende
       
@@ -265,7 +265,7 @@ while ($i < $#buffer){
 	  $swtidn=(-1)*$swtidn;
 	}
 	
-	$titbuffer[$titidx++]="0710:IDN: ".$swtidn;
+	$titbuffer[$titleidx++]="0710:IDN: ".$swtidn;
 	$swtidn++;
 	# Schlagworte abarbeiten Ende      
 	
@@ -275,26 +275,26 @@ while ($i < $#buffer){
 
     if ($#zusatzbuffer >= 0){
       $zusatz=join(" ; ",@zusatzbuffer);
-      $titbuffer[$titidx++]="0335:".$zusatz;
+      $titbuffer[$titleidx++]="0335:".$zusatz;
     }
 
     if ($#hstquellebuffer >= 0){
       $hstquelle=join(", ",@hstquellebuffer);
       
-      $titbuffer[$titidx++]="0508:".$hstquelle;;
+      $titbuffer[$titleidx++]="0508:".$hstquelle;;
     }
     
     if ($#medienartbuffer >= 0){
       $medienart=join(" / ",@medienartbuffer);
       
-      $titbuffer[$titidx++]="0800:".$medienart;
+      $titbuffer[$titleidx++]="0800:".$medienart;
     }
     
-    $titbuffer[$titidx++]="9999:";
+    $titbuffer[$titleidx++]="9999:";
     
     # Serien einordnen
     
-    $titidn++;
+    $titleid++;
     $tempidx=0;
     $ti=0;
 
@@ -314,7 +314,7 @@ while ($i < $#buffer){
   $i++;
 }
   
-$lasttitidx=$titidx;
+$lasttitleidx=$titleidx;
 $lastautidx=$autidx;
 $lastmexidx=$mexidx;
 $lastkoridx=$koridx;
@@ -331,7 +331,7 @@ close(DAT);
 sub ausgabetitfile {
   open (TIT,">:utf8","meta.title");
   $i=0;
-  while ($i < $lasttitidx){
+  while ($i < $lasttitleidx){
     print TIT $titbuffer[$i],"\n";
     $i++;
   }

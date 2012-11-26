@@ -82,7 +82,7 @@ my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
 my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=instzs;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
-my %titidns = ();
+my %titleids = ();
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
@@ -101,7 +101,7 @@ while (my $result=$request->fetchrow_hashref()){
         $request->execute($mexid) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
         while (my $result=$request->fetchrow_hashref()){
-            $titidns{$result->{'sourceid'}}=1;
+            $titleids{$result->{'sourceid'}}=1;
         }
         $request->finish();
     }
@@ -111,8 +111,8 @@ my $externzahl=0;
 
 my @recordlist = ();
 
-foreach $titidn (keys %titidns){
-    my $record = new OpenBib::Record::Title({database => 'instzs', id => $titidn})->load_full_record();
+foreach $titleid (keys %titleids){
+    my $record = new OpenBib::Record::Title({database => 'instzs', id => $titleid})->load_full_record();
 
     my $mexnormdata_ref = $record->get_mexdata;
 

@@ -113,7 +113,7 @@ sub store {
 
     return if (!defined $dbh);
 
-    #return if (!$titid || !$titdb || !$loginname || !$tags);
+    #return if (!$titleid || !$dbname || !$loginname || !$tags);
 
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
     $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
@@ -176,10 +176,10 @@ sub add_record {
 
     return if (!$record->{id} || !$record->{database} || !$self->{id} );
 
-    my $request=$dbh->prepare("delete from litlistitems where litlistid=? and titid=? and titdb=?") or $logger->error($DBI::errstr);
-    $request->execute($self->{id},$titid,$titdb) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("delete from litlistitems where litlistid=? and titleid=? and dbname=?") or $logger->error($DBI::errstr);
+    $request->execute($self->{id},$titleid,$dbname) or $logger->error($DBI::errstr);
 
-    $request=$dbh->prepare("insert into litlistitems (litlistid,titid,titdb) values (?,?,?)") or $logger->error($DBI::errstr);
+    $request=$dbh->prepare("insert into litlistitems (litlistid,titleid,dbname) values (?,?,?)") or $logger->error($DBI::errstr);
     $request->execute($self->{id},$record->{id},$record->{database}) or $logger->error($DBI::errstr);
 
     return;
@@ -204,7 +204,7 @@ sub del_record {
 
     return if (!$self->{id} || !$record->{id} || !$record->{database});
 
-    my $request=$dbh->prepare("delete from litlistitems where litlistid=? and titid=? and titdb=?") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("delete from litlistitems where litlistid=? and titleid=? and dbname=?") or $logger->error($DBI::errstr);
     $request->execute($self->{id},$record->{id},$record->{database}) or $logger->error($DBI::errstr);
 
     return;
@@ -229,12 +229,12 @@ sub _get_records {
 
     return if (!$self->{id});
 
-    my $request=$dbh->prepare("select titid,titdb,tstamp from litlistitems where litlistid=?") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select titleid,dbname,tstamp from litlistitems where litlistid=?") or $logger->error($DBI::errstr);
     $request->execute($litlistid) or $logger->error($DBI::errstr);
 
     while (my $result=$request->fetchrow_hashref){
-      my $titelidn  = decode_utf8($result->{titid});
-      my $database  = decode_utf8($result->{titdb});
+      my $titelidn  = decode_utf8($result->{titleid});
+      my $database  = decode_utf8($result->{dbname});
       my $tstamp    = decode_utf8($result->{tstamp});
       
       my $dbh
@@ -248,7 +248,7 @@ sub _get_records {
 
 #				  id        => $titelidn,
 #				  title     => OpenBib::Search::Util::get_tit_listitem_by_idn({
-#                    titidn            => $titelidn,
+#                    titleid            => $titelidn,
 #                    dbh               => $dbh,
 #                    database          => $database,
 #											    }),

@@ -51,7 +51,7 @@ $swtdublastidx=1;
 $swtidx=0;
 
 $titdublastidx=1;
-$titidx=0;
+$titleidx=0;
 
 @autbuffer=();
 @autdubbuf=();
@@ -93,7 +93,7 @@ sub parse_titset {
 
     my $id = int($titset->{'att'}->{'id'});
         
-    $titbuffer[$titidx++]="0000:".$id;
+    $titbuffer[$titleidx++]="0000:".$id;
                
     # Verfasser/Personen
     foreach my $desk ($titset->children('artists')){
@@ -109,7 +109,7 @@ sub parse_titset {
                 $idn=(-1)*$idn;
             }
 
-            $titbuffer[$titidx++]="0100:IDN: ".$idn;
+            $titbuffer[$titleidx++]="0100:IDN: ".$idn;
         }
     }
 
@@ -117,31 +117,31 @@ sub parse_titset {
 
     # Titel
     if(defined $titset->first_child('title')){
-        $titbuffer[$titidx++]="0331:".$titset->first_child('title')->text();
+        $titbuffer[$titleidx++]="0331:".$titset->first_child('title')->text();
     }
 
 
     # Anzahl Titel
     if(defined $titset->first_child('anzahl-titel')){
-        $titbuffer[$titidx++]="0433:".$titset->first_child('anzahl-titel')->text();
+        $titbuffer[$titleidx++]="0433:".$titset->first_child('anzahl-titel')->text();
     }
 
     # Anzahl Medien
     if(defined $titset->first_child('anzahl-medien')){
-        $titbuffer[$titidx++]="0512:".$titset->first_child('anzahl-medien')->text()." Medien";
+        $titbuffer[$titleidx++]="0512:".$titset->first_child('anzahl-medien')->text()." Medien";
     }
 
     # Medienart
     if(defined $titset->first_child('medium')){
-        $titbuffer[$titidx++]="0800:".$titset->first_child('medium')->text();
+        $titbuffer[$titleidx++]="0800:".$titset->first_child('medium')->text();
     }
     
     # Jahr
     if(defined $titset->first_child('year')){
-        $titbuffer[$titidx++]="0425:".$titset->first_child('year')->text();
+        $titbuffer[$titleidx++]="0425:".$titset->first_child('year')->text();
     }
 
-    $titbuffer[$titidx++]="9999:";
+    $titbuffer[$titleidx++]="9999:";
     
     # Release memory of processed tree
     # up to here
@@ -234,7 +234,7 @@ sub ausgabetitfile
 {
     open (TIT,">:utf8","unload.TIT");
     $i=0;
-    while ($i < $titidx){
+    while ($i < $titleidx){
 	print TIT $titbuffer[$i],"\n";
 	$i++;
     }

@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Titles.pm
+#  OpenBib::Handler::Apache::Users::Titles.pm
 #
 #  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Titles;
+package OpenBib::Handler::Apache::Users::Titles;
 
 use strict;
 use warnings;
@@ -267,11 +267,11 @@ sub show_record {
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
 
-    if ($user->{ID} && !$userid){
-        my $args = "?l=".$self->param('lang');
+#     if ($user->{ID} && !$userid){
+#         my $args = "?l=".$self->param('lang');
 
-        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/title/database/$database/id/$titleid.$representation$args",'303 See Other');
-    }
+#         return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/title/database/$database/id/$titleid.$representation$args",'303 See Other');
+#     }
     
     if ($userid && !$self->is_authenticated('user',$userid)){
         $logger->debug("Testing authorization for given userid $userid");
@@ -297,13 +297,13 @@ sub show_record {
         my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
             session    => $session,
             database   => $database,
-            titidn     => $titleid,
+            titleid     => $titleid,
             view       => $view,
         });
 
         # Literaturlisten finden
 
-        my $litlists_ref = $user->get_litlists_of_tit({titid => $titleid, titdb => $database});
+        my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database});
 
         # Anreicherung mit OLWS-Daten
         if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){
@@ -347,7 +347,7 @@ sub show_record {
             qopts       => $queryoptions->get_options,
             queryid     => $searchquery->get_id,
             record      => $record,
-            titidn      => $titleid,
+            titleid      => $titleid,
 
             format      => $format,
 

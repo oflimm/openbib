@@ -58,8 +58,8 @@ sub get_result_navigation {
     # Set defaults
     my $database              = exists $arg_ref->{database}
         ? $arg_ref->{database}              : undef;
-    my $titidn                = exists $arg_ref->{titidn}
-        ? $arg_ref->{titidn}                : undef;
+    my $titleid                = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}                : undef;
     my $hitrange              = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}              : undef;
     my $sortorder             = exists $arg_ref->{sortorder}
@@ -88,11 +88,11 @@ sub get_result_navigation {
         my @lastresult = @{$lastresult_ref};
         
         
-        my @previous = before { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
+        my @previous = before { $_->{database} eq $database && $_->{id} eq $titleid} @lastresult;
         
         my @last=(exists $previous[-1])?$previous[-1]:();
         
-        my @after = after { $_->{database} eq $database && $_->{id} eq $titidn} @lastresult;
+        my @after = after { $_->{database} eq $database && $_->{id} eq $titleid} @lastresult;
         my @next=(exists $after[0])?$after[0]:();
         
         if (@last) {
@@ -316,7 +316,7 @@ sub print_index_by_swt {
     return;
 }
 
-sub get_recent_titids {
+sub get_recent_titleids {
     my ($arg_ref) = @_;
 
     # Set defaults
@@ -354,7 +354,7 @@ sub get_recent_titids {
     return $recordlist;
 }
 
-sub get_recent_titids_by_aut {
+sub get_recent_titleids_by_aut {
     my ($arg_ref) = @_;
 
     # Set defaults
@@ -392,7 +392,7 @@ sub get_recent_titids_by_aut {
     return $recordlist;
 }
 
-sub get_recent_titids_by_kor {
+sub get_recent_titleids_by_kor {
     my ($arg_ref) = @_;
 
     # Set defaults
@@ -430,7 +430,7 @@ sub get_recent_titids_by_kor {
     return $recordlist;
 }
 
-sub get_recent_titids_by_swt {
+sub get_recent_titleids_by_swt {
     my ($arg_ref) = @_;
 
     # Set defaults
@@ -468,7 +468,7 @@ sub get_recent_titids_by_swt {
     return $recordlist;
 }
 
-sub get_recent_titids_by_not {
+sub get_recent_titleids_by_not {
     my ($arg_ref) = @_;
 
     # Set defaults

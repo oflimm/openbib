@@ -132,7 +132,7 @@
   private_tags_of_tit = [];
   IF username ;
     private_tags        = user.get_private_tags({ username => username  });
-    private_tags_of_tit = user.get_private_tags_of_tit({ titid => record.id, titdb => record.database, username => username  });
+    private_tags_of_tit = user.get_private_tags_of_tit({ titleid => record.id, dbname => record.database, username => username  });
     IF private_tags_of_tit.size > 0 ;
       my_tags = [] ;
       FOREACH tag IN private_tags_of_tit;
@@ -172,8 +172,8 @@
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
 <fieldset class="ym-full">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
-<input type="hidden" name="titid"           value="[% record.id %]" />
-<input type="hidden" name="titdb"           value="[% record.database %]" />
+<input type="hidden" name="titleid"           value="[% record.id %]" />
+<input type="hidden" name="dbname"           value="[% record.database %]" />
 <div class="ym-fbox-select">
 <label for="litlistid">[% msg.maketext("Name") %]</label>
 <select name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
@@ -189,8 +189,8 @@
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
 <fieldset class="ym-full">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
-<input type="hidden" name="titid"           value="[% record.id %]" />
-<input type="hidden" name="titdb"           value="[% record.database %]" />
+<input type="hidden" name="titleid"           value="[% record.id %]" />
+<input type="hidden" name="dbname"           value="[% record.database %]" />
 
 <div class="ym-fbox-text">
 <label for="title">[% msg.maketext("Name") %]</label>
@@ -221,8 +221,8 @@
 [%  IF private_tags_of_tit.size <= 0  %]
 
 <form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
-<input type="hidden" name="titdb"      value="[% record.database %]" />
-<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="dbname"      value="[% record.database %]" />
+<input type="hidden" name="titleid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 <fieldset class="ym-full">
@@ -295,8 +295,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% ELSIF username && private_tags_of_tit.size > 0 %]
 
 <form method="get" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
-<input type="hidden" name="titdb"      value="[% record.database %]" />
-<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="dbname"      value="[% record.database %]" />
+<input type="hidden" name="titleid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 <input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
@@ -587,7 +587,7 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 %]
 
 [%
-   all_tags = user.get_all_tags_of_tit({ titid => record.id, titdb => record.database });
+   all_tags = user.get_all_tags_of_tit({ titleid => record.id, dbname => record.database });
 
    IF config.get('social_tagging') ;
 
@@ -647,7 +647,7 @@ END ;
 
 
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
-[%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
+[%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
 [%- issn              = normset.${"T0543"}.first.content ;
     IF issn ;
        journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
@@ -715,7 +715,7 @@ $(document).ready(function(){
 
 [% IF   username %]
 
-[% ownreviewid = user.tit_reviewed_by_user({ titid => record.id, titdb => record.database, username => username }); %]
+[% ownreviewid = user.tit_reviewed_by_user({ titleid => record.id, dbname => record.database, username => username }); %]
 
 <p />
 
@@ -723,8 +723,8 @@ OID[% ownreviewid %]
 [% IF NOT ownreviewid %]
 <form method="post" action="[% path_prefix %]/[% config.get('reviews_loc') %]">
 
-<input type="hidden" name="titdb"      value="[% record.database %]" />
-<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="dbname"      value="[% record.database %]" />
+<input type="hidden" name="titleid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
@@ -780,8 +780,8 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF username %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titid=[% record.id %];titdb=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titid=[% record.id %];titdb=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titleid=[% record.id %];dbname=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.id %];dbname=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]

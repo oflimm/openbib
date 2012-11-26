@@ -101,8 +101,8 @@ sub show_record {
     
     my $offset         = $query->param('offset')            || 0;
     my $num            = $query->param('num')               || 50;
-    my $titid          = $query->param('titid')             || '';
-    my $titdb          = $query->param('titdb')             || '';
+    my $titleid          = $query->param('titleid')             || '';
+    my $dbname          = $query->param('dbname')             || '';
     my $titisbn        = $query->param('titisbn')           || '';
     my $tags           = decode_utf8($query->param('tags')) || '';
     my $type           = $query->param('type')              || 1;

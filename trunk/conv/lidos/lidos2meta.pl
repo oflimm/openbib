@@ -51,7 +51,7 @@ $swtdublastidx=1;
 $swtidx=0;
 
 $titdublastidx=1;
-$titidx=0;
+$titleidx=0;
 
 @autbuffer=();
 @autdubbuf=();
@@ -85,7 +85,7 @@ sub parse_titset {
         $id=~s/^0+//g;
     }
 
-    $titbuffer[$titidx++]="0000:".$id;
+    $titbuffer[$titleidx++]="0000:".$id;
     
 
     # Verfasser/Personen
@@ -102,7 +102,7 @@ sub parse_titset {
                 $autidn=(-1)*$autidn;
             }
 
-            $titbuffer[$titidx++]="0100:IDN: ".$autidn;
+            $titbuffer[$titleidx++]="0100:IDN: ".$autidn;
         }
     }
     
@@ -119,7 +119,7 @@ sub parse_titset {
                 $autidn=(-1)*$autidn;
             }
 
-            $titbuffer[$titidx++]="0101:IDN: ".$autidn;
+            $titbuffer[$titleidx++]="0101:IDN: ".$autidn;
         }
     }
 
@@ -137,7 +137,7 @@ sub parse_titset {
                 $koridn=(-1)*$koridn;
             }
 
-            $titbuffer[$titidx++]="0201:IDN: ".$koridn;
+            $titbuffer[$titleidx++]="0201:IDN: ".$koridn;
         }
     }
 
@@ -156,7 +156,7 @@ sub parse_titset {
                 $koridn=(-1)*$koridn;
             }
 
-            $titbuffer[$titidx++]="0201:IDN: ".$koridn;
+            $titbuffer[$titleidx++]="0201:IDN: ".$koridn;
         }
     }
     
@@ -175,7 +175,7 @@ sub parse_titset {
                 $swtidn=(-1)*$swtidn;
             }
 
-            $titbuffer[$titidx++]="0710:IDN: ".$swtidn;
+            $titbuffer[$titleidx++]="0710:IDN: ".$swtidn;
         }
     }
     
@@ -183,40 +183,40 @@ sub parse_titset {
 
     # Titel
     if($titset->first_child('Titel')->text()){
-        $titbuffer[$titidx++]="0331:".$titset->first_child('Titel')->text();
+        $titbuffer[$titleidx++]="0331:".$titset->first_child('Titel')->text();
     }
 
     # Titelzusatz
     if($titset->first_child('Zusatz_zum_Titel')->text()){
-        $titbuffer[$titidx++]="0335:".$titset->first_child('Zusatz_zum_Titel')->text();
+        $titbuffer[$titleidx++]="0335:".$titset->first_child('Zusatz_zum_Titel')->text();
     }
 
     # Ausgabe
     if($titset->first_child('Ausgabe')->text()){
-        $titbuffer[$titidx++]="0403:".$titset->first_child('Ausgabe')->text();
+        $titbuffer[$titleidx++]="0403:".$titset->first_child('Ausgabe')->text();
     }
 
     # Verlag
     if($titset->first_child('Verlag')->text()){
-        $titbuffer[$titidx++]="0412:".$titset->first_child('Verlag')->text();
+        $titbuffer[$titleidx++]="0412:".$titset->first_child('Verlag')->text();
     }
 
     # Verlagsort
     if($titset->first_child('Ort')->text()){
-        $titbuffer[$titidx++]="0410:".$titset->first_child('Ort')->text();
+        $titbuffer[$titleidx++]="0410:".$titset->first_child('Ort')->text();
     }
 
     # Umfang/Format
     if($titset->first_child('Umfang_-_Format')->text()){
-        $titbuffer[$titidx++]="0433:".$titset->first_child('Umfang_-_Format')->text();
+        $titbuffer[$titleidx++]="0433:".$titset->first_child('Umfang_-_Format')->text();
     }
 
     # Jahr
     if($titset->first_child('Jahr')->text()){
-        $titbuffer[$titidx++]="0425:".$titset->first_child('Jahr')->text();
+        $titbuffer[$titleidx++]="0425:".$titset->first_child('Jahr')->text();
     }
 
-    $titbuffer[$titidx++]="9999:";
+    $titbuffer[$titleidx++]="9999:";
     
     # Release memory of processed tree
     # up to here
@@ -300,7 +300,7 @@ sub ausgabetitfile
 {
     open (TIT,">:utf8","unload.TIT");
     $i=0;
-    while ($i < $titidx){
+    while ($i < $titleidx){
         print TIT $titbuffer[$i],"\n";
         $i++;
     }

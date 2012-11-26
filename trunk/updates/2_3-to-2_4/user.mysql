@@ -1,10 +1,10 @@
 alter table treffer modify singleidn varchar(255) not null;
-alter table tittag modify titid varchar(255) not null;
-alter table reviews modify titid varchar(255) not null;
-alter table litlistitems modify titid varchar(255) not null;
+alter table tittag modify titleid varchar(255) not null;
+alter table reviews modify titleid varchar(255) not null;
+alter table litlistitems modify titleid varchar(255) not null;
 alter table treffer add titcache blob after singleidn;
-alter table tittag add titcache blob after titdb;
-alter table litlistitems add titcache blob after titdb;
+alter table tittag add titcache blob after dbname;
+alter table litlistitems add titcache blob after dbname;
 
 DROP TABLE IF EXISTS userregistration;
 CREATE TABLE userregistration (

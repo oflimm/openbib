@@ -517,7 +517,7 @@ if ($type == 7){
 
         my $bestof_ref=[];
         
-        # DBI: "select t.id,t.tag,count(tt.tagid) as scount from tags as t, tittag as tt where tt.titdb=? and tt.tagid=t.id group by tt.tagid"
+        # DBI: "select t.id,t.tag,count(tt.tagid) as scount from tags as t, tittag as tt where tt.dbname=? and tt.tagid=t.id group by tt.tagid"
         my $usage = $user->{schema}->resultset('Tag')->search_rs(
             {
                 'tit_tags.dbname' => $database,

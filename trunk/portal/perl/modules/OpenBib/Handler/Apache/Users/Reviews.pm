@@ -107,8 +107,8 @@ sub show_collection {
     my $reviewlist_ref = $user->get_reviews({username => $username});
     
     foreach my $review_ref (@$reviewlist_ref){
-        my $titelidn = $review_ref->{titid};
-        my $database = $review_ref->{titdb};
+        my $titelidn = $review_ref->{titleid};
+        my $database = $review_ref->{dbname};
         
         $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
     }

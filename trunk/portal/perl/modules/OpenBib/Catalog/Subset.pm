@@ -125,7 +125,7 @@ sub identify_by_mark {
     foreach my $thismark (@marks){
         $logger->debug("Searching for Mark $thismark");
         
-        # DBI: "select distinct conn.sourceid as titid from conn,holding where holding.category=14 and holding.content COLLATE utf8_bin rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6"
+        # DBI: "select distinct conn.sourceid as titleid from conn,holding where holding.category=14 and holding.content COLLATE utf8_bin rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6"
         my $titles = $self->{schema}->resultset('TitleHolding')->search_rs(
             {
                 'holding_fields.field' => 14,
@@ -412,13 +412,13 @@ sub get_title_hierarchy {
         
         my %found = ();
         
-        foreach my $titidn (keys %tmp_titleid_super){
+        foreach my $titleid (keys %tmp_titleid_super){
             
             # Ueberordnungen
             # DBI: "select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1"
             my $supertitles = $self->{schema}->resultset('TitleTitle')->search_rs(
                 {
-                    'source_titleid' => $titidn,
+                    'source_titleid' => $titleid,
                 },
                 {
                     select   => ['target_titleid'],
@@ -431,7 +431,7 @@ sub get_title_hierarchy {
                 my $supertitleid = $item->get_column('supertitleid');
 
                 $self->{titleid}{$supertitleid} = 1;
-                if ($titidn != $supertitleid){ # keine Ringschluesse - ja, das gibt es
+                if ($titleid != $supertitleid){ # keine Ringschluesse - ja, das gibt es
                     $found{$supertitleid}   = 1;
                 }                
             }            

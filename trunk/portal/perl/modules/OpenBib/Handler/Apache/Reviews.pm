@@ -111,8 +111,8 @@ sub show_collection_by_isbn_negotiate {
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
     my $reviewid       = $query->param('reviewid')    || '';
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $title          = decode_utf8($query->param('title'))    || '';
     my $review         = decode_utf8($query->param('review'))   || '';
@@ -161,8 +161,8 @@ sub show_collection_by_isbn_negotiate {
     my $reviewlist_ref = $user->get_reviews({username => $username});
     
     foreach my $review_ref (@$reviewlist_ref){
-        my $titelidn = $review_ref->{titid};
-        my $database = $review_ref->{titdb};
+        my $titelidn = $review_ref->{titleid};
+        my $database = $review_ref->{dbname};
         
         $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
     }
@@ -297,8 +297,8 @@ sub update_record {
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
     my $reviewid       = $query->param('reviewid')    || '';
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $title          = decode_utf8($query->param('title'))    || '';
     my $review         = decode_utf8($query->param('review'))   || '';
@@ -348,8 +348,8 @@ sub update_record {
     $logger->debug("Aufnehmen/Aendern des Reviews");
     
     $user->add_review({
-        titid     => $titid,
-        titdb     => $titdb,
+        titleid     => $titleid,
+        dbname     => $dbname,
         username  => $username,
         nickname  => $nickname,
         title     => $title,
@@ -442,8 +442,8 @@ sub show_record_form {
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $title          = decode_utf8($query->param('title'))    || '';
     my $review         = decode_utf8($query->param('review'))   || '';
@@ -503,8 +503,8 @@ sub show_record_form {
     my $review_ref = $user->get_review_of_user({id => $reviewid, username => $username});
     
     {
-        my $titelidn = $review_ref->{titid};
-        my $database = $review_ref->{titdb};
+        my $titelidn = $review_ref->{titleid};
+        my $database = $review_ref->{dbname};
         
         $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
     }
@@ -560,8 +560,8 @@ sub show_record_negotiate {
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $title          = decode_utf8($query->param('title'))    || '';
     my $review         = decode_utf8($query->param('review'))   || '';
@@ -624,8 +624,8 @@ sub show_record_negotiate {
     my $review_ref = $user->get_review_of_user({id => $reviewid, username => $username});
     
     {
-        my $titelidn = $review_ref->{titid};
-        my $database = $review_ref->{titdb};
+        my $titelidn = $review_ref->{titleid};
+        my $database = $review_ref->{dbname};
         
         $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
     }
@@ -681,8 +681,8 @@ sub show_record_negotiatex {
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $title          = decode_utf8($query->param('title'))    || '';
     my $review         = decode_utf8($query->param('review'))   || '';
@@ -745,8 +745,8 @@ sub show_record_negotiatex {
     my $review_ref = $user->get_review_of_user({id => $reviewid, username => $username});
     
     {
-        my $titelidn = $review_ref->{titid};
-        my $database = $review_ref->{titdb};
+        my $titelidn = $review_ref->{titleid};
+        my $database = $review_ref->{dbname};
         
         $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
     }

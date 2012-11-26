@@ -153,8 +153,8 @@
      END;
      signatur = signaturen.sort.unique.join(' ; ');
      isbn     = item.${"T0540"}.first.content.replace('-','');
-     dbdesc   = dbinfo.get('dbnames').${review.titdb}.full;
-     dburl    = dbinfo.get('urls').${review.titdb};
+     dbdesc   = dbinfo.get('dbnames').${review.dbname}.full;
+     dburl    = dbinfo.get('urls').${review.dbname};
 
 
     titleinfos = [] ;
@@ -201,7 +201,7 @@
 &nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/litlist/id/[% litlist.properties.id %]/item/[% item.database %]/[% item.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]
 [% IF parameter.private_tags %]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]?&do_del=1;tags=[% parameter.tag %];titid=[% item.id %];titdb=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]?&do_del=1;tags=[% parameter.tag %];titleid=[% item.id %];dbname=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]
       </div>
 
@@ -209,8 +209,8 @@
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/id/[% review.id %]">
 
 <input type="hidden" name="_method"    value="PUT" />
-<input type="hidden" name="titdb"      value="[% review.titdb %]" />
-<input type="hidden" name="titid"      value="[% review.titid %]" />
+<input type="hidden" name="dbname"      value="[% review.dbname %]" />
+<input type="hidden" name="titleid"      value="[% review.titleid %]" />
 
 
 <h3>[% msg.maketext("Bewertung") %]</h3>

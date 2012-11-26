@@ -49,7 +49,7 @@
 %]
 
 [%
-   all_tags = user.get_all_tags_of_tit({ titid => record.id, titdb => record.database });
+   all_tags = user.get_all_tags_of_tit({ titleid => record.id, dbname => record.database });
 
    IF config.get('social_tagging') ;
 
@@ -109,7 +109,7 @@ END ;
 
 
 <div id="ob-additional_titles_info"><!-- Begin Additional Title Info -->
-[%- reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
+[%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
 [%- tictocs_feed = normdata.${"E4115"}.first.content -%]
 
 [% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
@@ -178,15 +178,15 @@ $(document).ready(function(){
 
 [% IF   username %]
 
-[% ownreviewid = user.tit_reviewed_by_user({ titid => record.id, titdb => record.database, username => username }); %]
+[% ownreviewid = user.tit_reviewed_by_user({ titleid => record.id, dbname => record.database, username => username }); %]
 
 <p />
 
 [% IF NOT ownreviewid %]
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews">
 
-<input type="hidden" name="titdb"      value="[% record.database %]" />
-<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="dbname"      value="[% record.database %]" />
+<input type="hidden" name="titleid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
@@ -245,8 +245,8 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/id/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF username %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titid=[% record.id %];titdb=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titid=[% record.id %];titdb=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titleid=[% record.id %];dbname=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.id %];dbname=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]
@@ -332,7 +332,7 @@ href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/i
   private_tags_of_tit = [];
   IF username ;
     private_tags        = user.get_private_tags({ username => username  });
-    private_tags_of_tit = user.get_private_tags_of_tit({ titid => record.id, titdb => record.database, username => username  });
+    private_tags_of_tit = user.get_private_tags_of_tit({ titleid => record.id, dbname => record.database, username => username  });
     IF private_tags_of_tit.size > 0 ;
       my_tags = [] ;
       FOREACH tag IN private_tags_of_tit;
@@ -384,8 +384,8 @@ href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/i
       IF userlitlists.size > 0 ;
 %]
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
-<input type="hidden" name="titid"           value="[% record.id %]" />
-<input type="hidden" name="titdb"           value="[% record.database %]" />
+<input type="hidden" name="titleid"           value="[% record.id %]" />
+<input type="hidden" name="dbname"           value="[% record.database %]" />
 <p>
 <table>
 <tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</td></tr>
@@ -398,8 +398,8 @@ href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/i
 
 <p>
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
-<input type="hidden" name="titid"           value="[% record.id %]" />
-<input type="hidden" name="titdb"           value="[% record.database %]" />
+<input type="hidden" name="titleid"           value="[% record.id %]" />
+<input type="hidden" name="dbname"           value="[% record.database %]" />
 <table>
 <tr><td>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</td></tr>
 <tr><td><input type="text" name="title" size="20" /> <select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> </td></tr>
@@ -424,8 +424,8 @@ href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/i
 <tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
 <tr><td class="boxedclear">
 <form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]">
-<input type="hidden" name="titdb"      value="[% record.database %]" />
-<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="dbname"      value="[% record.database %]" />
+<input type="hidden" name="titleid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
@@ -499,8 +499,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <p />
 <form method="get" action="[% path_prefix %]/[% config.get('tags_loc') %]">
 
-<input type="hidden" name="titdb"      value="[% record.database %]" />
-<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="dbname"      value="[% record.database %]" />
+<input type="hidden" name="titleid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 <input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>

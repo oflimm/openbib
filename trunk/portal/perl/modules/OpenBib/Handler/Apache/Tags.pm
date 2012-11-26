@@ -111,8 +111,8 @@ sub show_collection {
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $tags           = decode_utf8($query->param('tags'))        || '';
     my $type           = $query->param('type')        || 1;
@@ -190,8 +190,8 @@ sub show_record {
     
     my $offset         = $query->param('offset')            || 0;
     my $num            = $query->param('num')               || 50;
-    my $titid          = $query->param('titid')             || '';
-    my $titdb          = $query->param('titdb')             || '';
+    my $titleid          = $query->param('titleid')             || '';
+    my $dbname          = $query->param('dbname')             || '';
     my $titisbn        = $query->param('titisbn')           || '';
     my $tags           = decode_utf8($query->param('tags')) || '';
     my $type           = $query->param('type')              || 1;
@@ -344,8 +344,8 @@ sub show_collection_form {
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $tags           = decode_utf8($query->param('tags'))        || '';
     my $type           = $query->param('type')        || 1;
@@ -569,8 +569,8 @@ sub update_record {
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $tags           = decode_utf8($query->param('tags'))        || '';
     my $type           = $query->param('type')        || 1;
@@ -718,8 +718,8 @@ sub showyyy {
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $tags           = decode_utf8($query->param('tags'))        || '';
     my $type           = $query->param('type')        || 1;
@@ -780,23 +780,23 @@ sub showyyy {
         
         $user->add_tags({
             tags      => $tags,
-            titid     => $titid,
-            titdb     => $titdb,
+            titleid     => $titleid,
+            dbname     => $dbname,
             username  => $username,
             type      => $type,
         });
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
 
-        $logger->debug("Loeschen der Tags $tags von $titdb:$titid");
+        $logger->debug("Loeschen der Tags $tags von $dbname:$titleid");
         
         $user->del_tags({
             tags      => $tags,
-            titid     => $titid,
-            titdb     => $titdb,
+            titleid     => $titleid,
+            dbname     => $dbname,
             username  => $username,
         });
 
@@ -805,7 +805,7 @@ sub showyyy {
             $r->internal_redirect("$config->{base_loc}/$view/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
         }
         return Apache2::Const::OK;
 
@@ -967,8 +967,8 @@ sub showzzz {
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my $titid          = $query->param('titid')       || '';
-    my $titdb          = $query->param('titdb')       || '';
+    my $titleid          = $query->param('titleid')       || '';
+    my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $tags           = decode_utf8($query->param('tags'))        || '';
     my $type           = $query->param('type')        || 1;
@@ -1029,23 +1029,23 @@ sub showzzz {
         
         $user->add_tags({
             tags      => $tags,
-            titid     => $titid,
-            titdb     => $titdb,
+            titleid     => $titleid,
+            dbname     => $dbname,
             username  => $username,
             type      => $type,
         });
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
         return Apache2::Const::OK;
     }
     elsif ($do_del && $user->{ID}){
 
-        $logger->debug("Loeschen der Tags $tags von $titdb:$titid");
+        $logger->debug("Loeschen der Tags $tags von $dbname:$titleid");
         
         $user->del_tags({
             tags      => $tags,
-            titid     => $titid,
-            titdb     => $titdb,
+            titleid     => $titleid,
+            dbname     => $dbname,
             username  => $username,
         });
 
@@ -1054,7 +1054,7 @@ sub showzzz {
             $r->internal_redirect("$config->{base_loc}/$view/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+            $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
         }
         return Apache2::Const::OK;
 

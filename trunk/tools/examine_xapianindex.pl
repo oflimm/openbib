@@ -42,10 +42,10 @@ use YAML;
 use OpenBib::Config;
 use OpenBib::Search::Local::Xapian;
 
-my ($database,$help,$titid);
+my ($database,$help,$titleid);
 
 &GetOptions("database=s"      => \$database,
-            "titid=s"         => \$titid,
+            "titleid=s"         => \$titleid,
 	    "help"            => \$help
 	    );
 
@@ -67,20 +67,20 @@ my $logger = get_logger();
 
 my $config = OpenBib::Config->instance;
 
-if (!$database || !$titid){
-  $logger->fatal("Kein Katalog mit --database= oder kein Titel mit --titid= ausgewaehlt");
+if (!$database || !$titleid){
+  $logger->fatal("Kein Katalog mit --database= oder kein Titel mit --titleid= ausgewaehlt");
   exit;
 }
 
 $logger->info("### POOL $database");
 
-my $terms_ref = OpenBib::Search::Local::Xapian->get_indexterms({ database => $database, id => $titid });
+my $terms_ref = OpenBib::Search::Local::Xapian->get_indexterms({ database => $database, id => $titleid });
 
 $logger->info("### Termlist");
 
 $logger->info(join(' ',@$terms_ref));
 
-my $values_ref = OpenBib::Search::Local::Xapian->get_values({ database => $database, id => $titid });
+my $values_ref = OpenBib::Search::Local::Xapian->get_values({ database => $database, id => $titleid });
 
 $logger->info("### Values");
 $logger->info(YAML::Dump($values_ref));
@@ -93,7 +93,7 @@ examine_xapianindex.pl - Ausgabe des Term-Index von Xapian zu einem
    Optionen:
    -help                 : Diese Informationsseite
        
-   --titid=              : Titelid
+   --titleid=              : Titelid
    --database=...        : Angegebenen Datenpool verwenden
 
 ENDHELP

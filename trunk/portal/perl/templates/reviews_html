@@ -104,8 +104,8 @@ class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearof
 
 <form method="get" action="[% path_prefix %]/[% config.get('userreviews_loc') %]">
 
-<input type="hidden" name="titdb"      value="[% review.titdb %]" />
-<input type="hidden" name="titid"      value="[% review.titid %]" />
+<input type="hidden" name="dbname"      value="[% review.dbname %]" />
+<input type="hidden" name="titleid"      value="[% review.titleid %]" />
 
 
 <h3>Bewertung</h3>

@@ -54,7 +54,7 @@ $swtdublastidx=1;
 $swtidx=0;
 
 $titdublastidx=1;
-$titidx=0;
+$titleidx=0;
 
 $mexidn=1;
 $mexidx=0;
@@ -143,7 +143,7 @@ sub parse_titset {
 
     my $id=$titset->{'att'}->{'RECORDID'};
 
-    $titbuffer[$titidx++]="0000:".$id;
+    $titbuffer[$titleidx++]="0000:".$id;
 
     my @cols=$titset->children('COL');
     
@@ -199,7 +199,7 @@ sub parse_titset {
             $autidn=(-1)*$autidn;
         }
         
-        $titbuffer[$titidx++]="0100:IDN: ".$autidn;
+        $titbuffer[$titleidx++]="0100:IDN: ".$autidn;
     }
 
     # Schlagworte
@@ -220,7 +220,7 @@ sub parse_titset {
                     $swtidn=(-1)*$swtidn;
                 }
                 
-                $titbuffer[$titidx++]="0710:IDN: ".$swtidn;
+                $titbuffer[$titleidx++]="0710:IDN: ".$swtidn;
             }
         }
     }
@@ -237,12 +237,12 @@ sub parse_titset {
         push @titel, $cols[$metadata{'TitelJap'}]->first_child('DATA')->text();
     }
     if (@titel){
-        $titbuffer[$titidx++]="0331:".join(' / ',@titel);
+        $titbuffer[$titleidx++]="0331:".join(' / ',@titel);
     }
     
     # Ausgabe
     if(exists $metadata{'Ausgabe'} && $cols[$metadata{'Ausgabe'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0403:".$cols[$metadata{'Ausgabe'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0403:".$cols[$metadata{'Ausgabe'}]->first_child('DATA')->text();
     }
 
     # Verlag
@@ -254,7 +254,7 @@ sub parse_titset {
         push @verlag, $cols[$metadata{'VerlJap'}]->first_child('DATA')->text();
     }
     if (@verlag){
-        $titbuffer[$titidx++]="0412:".join(' / ',@verlag);
+        $titbuffer[$titleidx++]="0412:".join(' / ',@verlag);
     }
     
     # Verlagsort
@@ -266,17 +266,17 @@ sub parse_titset {
         push @verlagsorte, $cols[$metadata{'OrtJap'}]->first_child('DATA')->text();
     }
     if (@verlagsorte){
-        $titbuffer[$titidx++]="0410:".join(' / ',@verlagsorte);
+        $titbuffer[$titleidx++]="0410:".join(' / ',@verlagsorte);
     }
 
     # Umfang/Format
     if(exists $metadata{'Kollation'} && $cols[$metadata{'Kollation'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0433:".$cols[$metadata{'Kollation'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0433:".$cols[$metadata{'Kollation'}]->first_child('DATA')->text();
     }
 
     # Jahr
     if(exists $metadata{'Jahr'} && $cols[$metadata{'Jahr'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0425:".$cols[$metadata{'Jahr'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0425:".$cols[$metadata{'Jahr'}]->first_child('DATA')->text();
     }
 
     # Gesamttitel / Reihe
@@ -294,49 +294,49 @@ sub parse_titset {
         push @gesamttitel, $cols[$metadata{'ReiheJap'}]->first_child('DATA')->text();
     }
     if (@gesamttitel){
-        $titbuffer[$titidx++]="0451:".join(' / ',@gesamttitel);
+        $titbuffer[$titleidx++]="0451:".join(' / ',@gesamttitel);
     }
     
     if(exists $metadata{'Sprache'} && $cols[$metadata{'Sprache'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0015:".$cols[$metadata{'Sprache'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0015:".$cols[$metadata{'Sprache'}]->first_child('DATA')->text();
     }
 
     if(exists $metadata{'Nummer'} && $cols[$metadata{'Nummer'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0089:".$cols[$metadata{'Nummer'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0089:".$cols[$metadata{'Nummer'}]->first_child('DATA')->text();
     }
 
     if(exists $metadata{'Fußnote'} && $cols[$metadata{'Fußnote'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0501:".$cols[$metadata{'Fußnote'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0501:".$cols[$metadata{'Fußnote'}]->first_child('DATA')->text();
     }
 
     if(exists $metadata{'Inventar'} && $cols[$metadata{'Inventar'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0005.001:".$cols[$metadata{'Inventar'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0005.001:".$cols[$metadata{'Inventar'}]->first_child('DATA')->text();
     }
 
     # Quelle
     if(exists $metadata{'Jg,Heft,Bd'} && $cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0590:".$cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0590:".$cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text();
     }
 
     # ISBN
     if(exists $metadata{'ISBN'} && $cols[$metadata{'ISBN'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0540:".$cols[$metadata{'ISBN'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0540:".$cols[$metadata{'ISBN'}]->first_child('DATA')->text();
     }
 
     # Datum
     if(exists $metadata{'Datum'} && $cols[$metadata{'Datum'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0002:".$cols[$metadata{'Datum'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0002:".$cols[$metadata{'Datum'}]->first_child('DATA')->text();
     }
 
     if(exists $metadata{'Standort'} && $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0016.001:".$cols[$metadata{'Standort'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0016.001:".$cols[$metadata{'Standort'}]->first_child('DATA')->text();
     }
     
     if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0014.001:".$cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text();
+        $titbuffer[$titleidx++]="0014.001:".$cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text();
     }
 
-    $titbuffer[$titidx++]="9999:";
+    $titbuffer[$titleidx++]="9999:";
 
     # Exemplardaten
     if (exists $metadata{'Signatur'} && $cols[$metadata{'Signatur'}]->first_child('DATA')->text() || $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
@@ -441,7 +441,7 @@ sub ausgabetitfile
 {
     open (TIT,">:utf8","unload.TIT");
     $i=0;
-    while ($i < $titidx){
+    while ($i < $titleidx){
         print TIT $titbuffer[$i],"\n";
         $i++;
     }

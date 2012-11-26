@@ -127,7 +127,7 @@ sub convert_buffer {
     my $have_id  = 0;
     my $have_lok = 0;
 
-    my $titid;
+    my $titleid;
     
     #######################################################################
     # Umwandeln
@@ -136,15 +136,15 @@ sub convert_buffer {
     
     # Titel ID und Existenz Lokaldaten bestimmen
     foreach my $line (@buffer){
-        ($titid,$kateg,$indikator,$type,$content)=$line=~/$convconfig->{'parse-line'}/; # Parsen
+        ($titleid,$kateg,$indikator,$type,$content)=$line=~/$convconfig->{'parse-line'}/; # Parsen
         if ($type eq "9"){
             $have_lok=1;
         }
     }
 
-    if ($titid){
-        $title_ref->{id} = sprintf "%d", $titid; # remove leading zeros
-        $have_id=$titid;
+    if ($titleid){
+        $title_ref->{id} = sprintf "%d", $titleid; # remove leading zeros
+        $have_id=$titleid;
     }
 
     return if (!$have_id);
@@ -152,9 +152,9 @@ sub convert_buffer {
     my $multcount_ref = {};
 
     foreach my $line (@buffer){
-        my ($titid,$kateg,$indikator,$type,$content)=$line=~/$convconfig->{'parse-line'}/;
+        my ($titleid,$kateg,$indikator,$type,$content)=$line=~/$convconfig->{'parse-line'}/;
 
-        $titid = sprintf "%d", $titid;
+        $titleid = sprintf "%d", $titleid;
         
 #        print "-------------------------------------\n";
 #        print "$kateg,$indikator,$type,$content\n";
@@ -359,7 +359,7 @@ sub convert_buffer {
             push @{$item_ref->{'0004'}}, {
                 mult     => 1,
                 subfield => '',
-                content  => $titid,
+                content  => $titleid,
             };
             
             foreach my $kategind (keys %$content_ref){

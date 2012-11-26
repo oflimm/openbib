@@ -1319,4 +1319,30 @@ sub check_http_basic_authentication {
     }
 }
 
+sub tunnel_through_authenticator {
+    my ($self,$method) = @_;
+
+    my $config   = $self->param('config');
+    my $view     = $self->param('view');    
+    my $location = $self->param('location');    
+    my $args     = $self->to_cgi_querystring;
+
+    if ($args){
+        $location.="?$args";
+        if ($method){
+            $location.=";_method=$method";
+        }
+    }
+    elsif ($method) {
+        $location.="?_method=$method";
+    }
+    
+    my $return_uri = uri_escape($location);
+    
+    my $new_location = "$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri";
+    
+    return $self->redirect($new_location,'303 See Other');
+}
+
+
 1;

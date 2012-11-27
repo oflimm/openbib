@@ -49,6 +49,7 @@ sub setup {
     $self->start_mode('show_record');
     $self->run_modes(
         'show_collection'         => 'show_collection',
+        'show_popular'            => 'show_popular',
         'show_record'             => 'show_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -74,6 +75,26 @@ sub show_collection {
     };
     
     $self->print_page($config->{tt_databases_tname},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
+sub show_popular {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Shared Args
+    my $config         = $self->param('config');
+
+    my $dbinfo_ref = $config->get_dbinfo_overview();
+    
+    my $ttdata={
+        databases   => $dbinfo_ref,
+    };
+    
+    $self->print_page($config->{tt_databases_popular_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

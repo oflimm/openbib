@@ -1556,8 +1556,15 @@ dispatch_rules:
      runmode: 'show_collection_by_single_user'
 
   - # Resource: users_loc/litlists_loc: Anzeige einer Literaturliste (oeffentlich/privat)
-     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     module: 'OpenBib::Handler::Apache::LitLists'
      rule: '/portal/:view/litlists/id/:litlistid[get]'
+     runmode: 'show_record'
+     args:
+        personalized_loc: 'litlists'        
+
+  - # Resource: users_loc/litlists_loc: Anzeige einer Literaturliste (oeffentlich/privat)
+     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid[get]'
      runmode: 'show_record'
 
   - # Resource: users_loc/litlists_loc: Create Record
@@ -1579,7 +1586,7 @@ dispatch_rules:
 
   - # Resource: users_loc/litlists_loc: Show Items ?entfernen?
      module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item[get]'
+     rule: '/portal/:view/litlists/id/:litlistid/items[get]'
      representations:
        - none
        - html
@@ -1588,24 +1595,24 @@ dispatch_rules:
 
   - # Resource: users_loc/litlists_loc: Show Single Item ?entfernen?
      module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[get]'
+     rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid[get]'
      runmode: 'show_record'
 
   - # Resource: users_loc/litlists_loc: Create Item
      module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item[post]'
+     rule: '/portal/:view/litlists/id/:litlistid/items[post]'
      runmode: 'create_record'
   - # Resource: litlists_loc: Update Item
      module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[post]'
+     rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid[post]'
      runmode: 'update_record'
   - # Resource: litlists_loc: Update Item
      module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[put]'
+     rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid[put]'
      runmode: 'update_record'
   - # Resource: litlists_loc: Delete Item
      module: 'OpenBib::Handler::Apache::Users::LitLists::Item'
-     rule: '/portal/:view/litlists/id/:litlistid/item/:itemid[delete]'
+     rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid[delete]'
      runmode: 'delete_record'
 
 # Anzeige privater Listen ueber separaten user_loc
@@ -1626,7 +1633,7 @@ dispatch_rules:
      representations:
        - none
        - html
-     runmode: 'edit_record'
+     runmode: 'show_record_form'
 
 
 # Charakteristik
@@ -1759,6 +1766,15 @@ dispatch_rules:
        - rdf
      args:
         personalized_loc: 'databases'
+  - # users/databases_loc:
+     module: 'OpenBib::Handler::Apache::Databases'
+     rule: '/portal/:view/databases/popular[get]'
+     runmode: 'show_popular'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
   - # users_loc/databases_loc: Record show
      module: 'OpenBib::Handler::Apache::Databases'
      rule: '/portal/:view/databases/id/:databaseid[get]'
@@ -2184,7 +2200,7 @@ dispatch_rules:
 # Titel-Resource/Repraesentation
   - # users/titles_loc: only public
      module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/titles/popular[get]'
+     rule: '/portal/:view/databases/titles/popular[get]'
      runmode: 'show_popular'
      representations:
        - none
@@ -2196,7 +2212,7 @@ dispatch_rules:
         personalized_loc: 'titles'
   - # users/titles_loc: only public
      module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/titles/database/:database/popular[get]'
+     rule: '/portal/:view/databases/id/:database/titles/popular[get]'
      runmode: 'show_popular'
      representations:
        - none
@@ -2206,7 +2222,7 @@ dispatch_rules:
        - rdf
   - # users/titles_loc: only public
      module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/titles/database/:database/recent[get]'
+     rule: '/portal/:view/database/id/:database/titles/recent[get]'
      runmode: 'show_recent'
      representations:
        - none
@@ -2217,24 +2233,24 @@ dispatch_rules:
        - rdf
   - # users_loc/titles_loc: Record show
      module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/titles/database/:database/id/:titleid[get]'
+     rule: '/portal/:view/database/id/:database/titles/id/:titleid[get]'
      runmode: 'show_record'
      args:
         personalized_loc: 'titles'
   - # users_loc/titles_loc: Record redirect to bibsonomy
      module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/titles/database/:database/id/:titleid/to_bibsonomy[get]'
+     rule: '/portal/:view/database/id/:database/titles/id/:titleid/to_bibsonomy[get]'
      runmode: 'redirect_to_bibsonomy'
      representations:
        - none
        - html
   - # users/titles_loc:
      module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/users/id/:id/titles/database/:database/id/:titleid[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid[get]'
      runmode: 'show_record'
   - # users/titles_loc:
      module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/users/id/:id/titles/database/:database/id/:titleid/searchindex[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/searchindex[get]'
      runmode: 'show_record_searchindex'
      representations:
        - none
@@ -2243,33 +2259,33 @@ dispatch_rules:
        - rdf
   - # users/titles_loc:
      module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/users/id/:id/titles/database/:database/id/:titleid/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/edit[get]'
      runmode: 'show_record_form'
      representations:
        - none
        - html
   - # users/titles_loc:
      module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/users/id/:id/titles/database/:database/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/edit[get]'
      runmode: 'show_collection_form'
      representations:
        - none
        - html
   - # users_loc/titles_loc: Update Record
      module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/titles/database/:database[post]'
+     rule: '/portal/:view/databases/id/:database/titles[post]'
      runmode: 'create_record'
   - # users_loc/titles_loc: Update Record
      module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/titles/database/:database/id/:titleid[post]'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[post]'
      runmode: 'update_record'
   - # users_loc/titles_loc: Update Record
      module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/titles/database/:database/id/:titleid[put]'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[put]'
      runmode: 'update_record'
   - # users_loc/titles_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/titles/database/:database/id/:titleid[delete]'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[delete]'
      runmode: 'delete_record'
 
 #####################################################################
@@ -2281,180 +2297,192 @@ dispatch_rules:
 # Persons-Resource/Repraesentation
   - # users_loc/persons_loc: Record show
      module: 'OpenBib::Handler::Apache::Persons'
-     rule: '/portal/:view/persons/database/:database/id/:personid[get]'
+     rule: '/portal/:view/databases/id/:database/persons/id/:personid[get]'
      runmode: 'show_record'
      args:
         personalized_loc: 'persons'
   - # users/persons_loc:
      module: 'OpenBib::Handler::Apache::Persons'
-     rule: '/portal/:view/users/id/:id/persons/database/:database/id/:personid[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/persons/id/:personid[get]'
      runmode: 'show_record'
   - # users/persons_loc: TODO
      module: 'OpenBib::Handler::Apache::Persons'
-     rule: '/portal/:view/users/id/:id/persons/database/:database/id/:personid/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/persons/id/:personid/edit[get]'
      runmode: 'show_record_form'
      representations:
        - none
        - html
   - # users/persons_loc: TODO
      module: 'OpenBib::Handler::Apache::Persons'
-     rule: '/portal/:view/users/id/:id/persons/database/:database/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/persons/edit[get]'
      runmode: 'show_collection_form'
      representations:
        - none
        - html
   - # users_loc/persons_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::Persons'
-     rule: '/portal/:view/persons/database/:database[post]'
+     rule: '/portal/:view/databases/id/:database/persons[post]'
      runmode: 'create_record'
   - # users_loc/persons_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::Persons'
-     rule: '/portal/:view/persons/database/:database/id/:personid[post]'
+     rule: '/portal/:view/databases/id/:database/persons/id/:personid[post]'
      runmode: 'update_record'
   - # users_loc/persons_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::Persons'
-     rule: '/portal/:view/persons/database/:database/id/:personid[put]'
+     rule: '/portal/:view/databases/id/:database/persons/id/:personid[put]'
      runmode: 'update_record'
   - # users_loc/persons_loc: Delete Record TODO
      module: 'OpenBib::Handler::Apache::Persons'
-     rule: '/portal/:view/persons/database/:database/id/:personid[delete]'
+     rule: '/portal/:view/databases/id/:database/persons/id/:personid[delete]'
      runmode: 'delete_record'
 
 #####################################################################
 # Corporatebodies-Resource/Repraesentation
   - # users_loc/corporatebodies_loc: Record show
      module: 'OpenBib::Handler::Apache::CorporateBodies'
-     rule: '/portal/:view/corporatebodies/database/:database/id/:corporatebodyid[get]'
+     rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid[get]'
      runmode: 'show_record'
      args:
         personalized_loc: 'corporatebodies'
   - # users/corporatebodies_loc:
      module: 'OpenBib::Handler::Apache::CorporateBodies'
-     rule: '/portal/:view/users/id/:id/corporatebodies/database/:database/id/:corporatebodyid[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/id/:corporatebodyid[get]'
      runmode: 'show_record'
   - # users/corporatebodies_loc: TODO
      module: 'OpenBib::Handler::Apache::CorporateBodies'
-     rule: '/portal/:view/users/id/:id/corporatebodies/database/:database/id/:corporatebodyid/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/id/:corporatebodyid/edit[get]'
      runmode: 'show_record_form'
      representations:
        - none
        - html
   - # users/corporatebodies_loc: TODO
      module: 'OpenBib::Handler::Apache::CorporateBodies'
-     rule: '/portal/:view/users/id/:id/corporatebodies/database/:database/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/edit[get]'
      runmode: 'show_collection_form'
      representations:
        - none
        - html
   - # users_loc/corporatebodies_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::CorporateBodies'
-     rule: '/portal/:view/corporatebodies/database/:database[post]'
+     rule: '/portal/:view/databases/id/:database/corporatebodies[post]'
      runmode: 'create_record'
   - # users_loc/corporatebodies_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::CorporateBodies'
-     rule: '/portal/:view/corporatebodies/database/:database/id/:corporatebodyid[post]'
+     rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid[post]'
      runmode: 'update_record'
   - # users_loc/corporatebodies_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::CorporateBodies'
-     rule: '/portal/:view/corporatebodies/database/:database/id/:corporatebodyid[put]'
+     rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid[put]'
      runmode: 'update_record'
   - # users_loc/corporatebodies_loc: Delete Record TODO
      module: 'OpenBib::Handler::Apache::CorporateBodies'
-     rule: '/portal/:view/corporatebodies/database/:database/id/:corporatebodyid[delete]'
+     rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid[delete]'
      runmode: 'delete_record'
 
 #####################################################################
 # Subjects-Resource/Repraesentation
   - # users_loc/subjects_loc: Collection show
      module: 'OpenBib::Handler::Apache::Subjects'
-     rule: '/portal/:view/subjects/database/:database[get]'
+     rule: '/portal/:view/databases/id/:database/subjects[get]'
      runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - include
+       - rdf
   - # users_loc/subjects_loc: Record show
      module: 'OpenBib::Handler::Apache::Subjects'
-     rule: '/portal/:view/subjects/database/:database/id/:subjectid[get]'
+     rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid[get]'
      runmode: 'show_record'
      args:
         personalized_loc: 'subjects'
   - # users/subjects_loc:
      module: 'OpenBib::Handler::Apache::Subjects'
-     rule: '/portal/:view/users/id/:id/subjects/database/:database/id/:subjectid[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/id/:subjectid[get]'
      runmode: 'show_record'
   - # users/subjects_loc: TODO
      module: 'OpenBib::Handler::Apache::Subjects'
-     rule: '/portal/:view/users/id/:id/subjects/database/:database/id/:subjectid/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/id/:subjectid/edit[get]'
      runmode: 'show_record_form'
      representations:
        - none
        - html
   - # users/subjects_loc: TODO
      module: 'OpenBib::Handler::Apache::Subjects'
-     rule: '/portal/:view/users/id/:id/subjects/database/:database/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/edit[get]'
      runmode: 'show_collection_form'
      representations:
        - none
        - html
   - # users_loc/subjects_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::Subjects'
-     rule: '/portal/:view/subjects/database/:database[post]'
+     rule: '/portal/:view/databases/id/:database/subjects[post]'
      runmode: 'create_record'
   - # users_loc/subjects_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::Subjects'
-     rule: '/portal/:view/subjects/database/:database/id/:subjectid[post]'
+     rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid[post]'
      runmode: 'update_record'
   - # users_loc/subjects_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::Subjects'
-     rule: '/portal/:view/subjects/database/:database/id/:subjectid[put]'
+     rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid[put]'
      runmode: 'update_record'
   - # users_loc/subjects_loc: Delete Record TODO
      module: 'OpenBib::Handler::Apache::Subjects'
-     rule: '/portal/:view/subjects/database/:database/id/:subjectid[delete]'
+     rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid[delete]'
      runmode: 'delete_record'
 
 #####################################################################
 # Classifications-Resource/Repraesentation
   - # users_loc/classifications_loc: Collection show
      module: 'OpenBib::Handler::Apache::Classifications'
-     rule: '/portal/:view/classifications/database/:database[get]'
+     rule: '/portal/:view/databases/id/:database/classifications[get]'
      runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - include
+       - rdf
   - # users_loc/classifications_loc: Record show
      module: 'OpenBib::Handler::Apache::Classifications'
-     rule: '/portal/:view/classifications/database/:database/id/:classificationid[get]'
+     rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid[get]'
      runmode: 'show_record'
      args:
         personalized_loc: 'classifications'
   - # users/classifications_loc:
      module: 'OpenBib::Handler::Apache::Classifications'
-     rule: '/portal/:view/users/id/:id/classifications/database/:database/id/:classificationid[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/id/:classificationid[get]'
      runmode: 'show_record'
   - # users/classifications_loc: TODO
      module: 'OpenBib::Handler::Apache::Classifications'
-     rule: '/portal/:view/users/id/:id/classifications/database/:database/id/:classificationid/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/id/:classificationid/edit[get]'
      runmode: 'show_record_form'
      representations:
        - none
        - html
   - # users/classifications_loc: TODO
      module: 'OpenBib::Handler::Apache::Classifications'
-     rule: '/portal/:view/users/id/:id/classifications/database/:database/edit[get]'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/edit[get]'
      runmode: 'show_collection_form'
      representations:
        - none
        - html
   - # users_loc/classifications_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::Classifications'
-     rule: '/portal/:view/classifications/database/:database[post]'
+     rule: '/portal/:view/databases/id/:database/classifications[post]'
      runmode: 'create_record'
   - # users_loc/classifications_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::Classifications'
-     rule: '/portal/:view/classifications/database/:database/id/:classificationid[post]'
+     rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid[post]'
      runmode: 'update_record'
   - # users_loc/classifications_loc: Update Record TODO
      module: 'OpenBib::Handler::Apache::Classifications'
-     rule: '/portal/:view/classifications/database/:database/id/:classificationid[put]'
+     rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid[put]'
      runmode: 'update_record'
   - # users_loc/classifications_loc: Delete Record TODO
      module: 'OpenBib::Handler::Apache::Classifications'
-     rule: '/portal/:view/classifications/database/:database/id/:classificationid[delete]'
+     rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid[delete]'
      runmode: 'delete_record'
 
 css_loc: /css
@@ -3175,6 +3203,7 @@ tt_authenticators_record_tname: authenticators_record
 tt_clusters_tname: clusters
 tt_clusters_record_tname: clusters_record
 tt_databases_tname: databases
+tt_databases_popular_tname: databases_popular
 tt_databases_record_tname: databases_record
 tt_databases_rss_tname: databases_rss
 tt_databases_rss_record_tname: databases_rss_record
@@ -3307,10 +3336,13 @@ tt_litlists_by_topic_tname: litlists_by_topic
 tt_litlists_by_user_tname: litlists_by_user
 tt_litlists_recent_tname: litlists_recent
 tt_litlists_tname: litlists
-tt_litlists_edit_tname: litlists_edit
 tt_litlists_item_record_tname: litlists_item_record
+tt_users_litlists_item_record_tname: users_litlists_item_record
+tt_users_litlists_record_edit_tname: users_litlists_record_edit
 tt_litlists_item_tname: litlists_item
+tt_users_litlists_item_tname: users_litlists_item
 tt_litlists_record_tname: litlists_record
+tt_users_litlists_record_tname: users_litlists_record
 
 tt_login_circulation_tname: login_circulation
 tt_login_tname: login

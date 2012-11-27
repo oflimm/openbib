@@ -128,7 +128,7 @@
     [% IF (config.get('coverscans').all || config.get('coverscans').${item.database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div> 
       <div class="ob-brieftitle">
-<span class="ob-person">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('titles_loc') %]/database/[% item.database %]/id/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="ob-title">[% title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>    
+<span class="ob-person">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.database %]/[% config.get('titles_loc') %]/id/[% item.id %]/html?queryid=[% queryid %]"><strong><span class="ob-title">[% title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>    
 <br />[ [% itemcount %] Nutzer [%- IF titleinfo -%] | [% titleinfo %] [%- END -%]]
       </div>
       <div class="ob-titlemark">[% signatur %]</div>

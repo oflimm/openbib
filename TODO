@@ -399,3 +399,52 @@ idealerweise mit je einer Partition pro Jahr.
 - Dies und das
 
 rel=bookmark fuer Bookmarkurl?
+
+
+- Titel:
+
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag.html[GET]'
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag[GET]'
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag.html[POST]'
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag.json[POST]'
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag[POST]'
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag.html[PUT]'                                                                            
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag.json[PUT]'                                                                            
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag[PUT]'                                                                                 
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag.html[DELETE]'                                                                         
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag.json[DELETE]'                                                                         
+     rule: '/portal/:view/titles/database/:database/id/:titleid/tag[DELETE]'                                                                              
+     rule: '/portal/:view/titles/database/:database/id/:id/save[get]'                                                                                     
+     rule: '/portal/:view/titles/database/:database/id/:id/save.html[get]'                                                                                
+     rule: '/portal/:view/titles/database/:database/id/:id/mail[get]'                                                                                     
+     rule: '/portal/:view/titles/database/:database/id/:id/mail.html[get]'                                                                                
+     rule: '/portal/:view/titles/database/:database/id/:id/print[get]'                                                                                    
+     rule: '/portal/:view/titles/database/:database/id/:id/print.html[get]'                                                                               
+     rule: '/portal/:view/users/id/:userid/tags/id/:tagid/titles'                                                                                         
+     runmode: 'show_collection_of_titles'
+     rule: '/portal/:view/tags/id/:tagid/titles'
+     runmode: 'show_collection_of_titles'
+
+
+  - # users/titles_loc: only public
+     rule: '/portal/:view/titles/popular[get]'
+     rule: '/portal/:view/databases/titles/popular[get]'
+        personalized_loc: 'titles'
+  - # users/titles_loc: only public
+     rule: '/portal/:view/databases/id/:database/titles/popular[get]'
+  - # users/titles_loc: only public
+     rule: '/portal/:view/titles/database/:database/recent[get]'
+  - # users_loc/titles_loc: Record show
+    # rule: '/portal/:view/titles/database/:database/id/:titleid[get]'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[get]'
+
+  - # users_loc/titles_loc: Record redirect to bibsonomy
+     # rule: '/portal/:view/titles/database/:database/id/:titleid/to_bibsonomy[get]'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/to_bibsonomy[get]'
+  - # users_loc/titles_loc: Update Record
+     rule: '/portal/:view/database/id/:database/titles[post]'
+  - # users_loc/titles_loc: Update Record
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[post]'
+  - # users_loc/titles_loc: Update Record
+
+

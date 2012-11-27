@@ -156,7 +156,7 @@ users_loc: users
 ## Funktionelle URIs 
 browse_loc: browse
 circulation_loc: circulations
-collection_loc: collection
+collectionitems_loc: collection
 databasechoice_loc: selectdatabase
 dispatchquery_loc: dispatchquery
 externaljump_loc: jumpto
@@ -165,7 +165,7 @@ index_loc: index
 info_loc: info
 login_loc: login
 logout_loc: logout
-mailcollection_loc: mailcollection
+mailcollectionitems_loc: mailcollection
 mailpassword_loc: mailpassword
 redirect_loc: redirect
 registration_loc: registration
@@ -283,27 +283,27 @@ dispatch_rules:
      runmode: 'delete_record'
 
 
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/titles/database/:database/id/:id/save[get]'
      runmode: 'save_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/titles/database/:database/id/:id/save.html[get]'
      runmode: 'save_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/titles/database/:database/id/:id/mail[get]'
      runmode: 'mail_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/titles/database/:database/id/:id/mail.html[get]'
      runmode: 'mail_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/titles/database/:database/id/:id/print[get]'
      runmode: 'print_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/titles/database/:database/id/:id/print.html[get]'
      runmode: 'print_record'
@@ -813,11 +813,11 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::MailPassword'
      rule: '/portal/:view/mailpassword.html'
      runmode: 'show'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/count[get]'
      runmode: 'show_collection_count'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/count.html[get]'
      runmode: 'show_collection_count'
@@ -829,91 +829,91 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::User::Collection'
      rule: '/portal/:view/users/id/:userid/collection/count.html[get]'
      runmode: 'show_collection_count'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection.html[get]'
      runmode: 'show_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection.json[get]'
      runmode: 'show_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection.rdf[get]'
      runmode: 'show_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection[get]'
      runmode: 'show_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection.html[get]'
      runmode: 'show_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/save.html[get]'
      runmode: 'save_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/save[get]'
      runmode: 'save_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/save.html[get]'
      runmode: 'save_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/mail[get]'
      runmode: 'mail_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/mail.html[get]'
      runmode: 'mail_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/mail[post]'
      runmode: 'mail_collection_send'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/print[get]'
      runmode: 'print_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/print.html[get]'
      runmode: 'print_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection[post]'
      runmode: 'create_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/item[get]'
      runmode: 'show_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/item.html[get]'
      runmode: 'show_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/item.json[get]'
      runmode: 'show_collection'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/item/:itemid[get]'
      runmode: 'show_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/item/:itemid/edit[get]'
      runmode: 'edit_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/item/:itemid/edit.html[get]'
      runmode: 'edit_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/item/:itemid[put]'
      runmode: 'update_record'
-  - # collection_loc:
+  - # collectionitems_loc:
      module: 'OpenBib::Handler::Apache::Collection'
      rule: '/portal/:view/collection/item/:itemid[delete]'
      runmode: 'delete_record'

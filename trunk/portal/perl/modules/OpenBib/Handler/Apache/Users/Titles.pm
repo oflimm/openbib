@@ -412,6 +412,8 @@ sub show_record_searchindex {
     my $values_ref = OpenBib::Search::Backend::Xapian->get_values({ database => $database, id => $titleid });
 
     my $ttdata = {
+        database => $database,
+        titleid  => $titleid,
         terms  => $terms_ref,
         values => $values_ref,
     };

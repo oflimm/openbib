@@ -62,9 +62,9 @@ $.get("[% IF user.ID %][% path_prefix %]/[% config.get('users_loc') %]/id/[% use
          <li class="active"><strong>[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></strong></li>
 [% ELSE %]
 [%-    IF user.ID -%]
-          <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/collection.html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
+          <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('collectionitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
 [%    ELSE %]
-          <li><a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('collectionitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
+          <li><a href="[% path_prefix %]/[% config.get('collectionitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
 [%    END %]
 [% END %]
       </ul>

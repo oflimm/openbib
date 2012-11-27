@@ -78,7 +78,7 @@ sub setup {
         'create_record'                        => 'create_record',
         'update_record'                        => 'update_record',
         'delete_record'                        => 'delete_record',
-        'print_authorization_error'           => 'print_authentication_error',
+        'print_authorization_error'            => 'print_authentication_error',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
         
@@ -538,7 +538,7 @@ sub print_collection {
     # Dispatches Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('itemid'));
+    my $id             = $self->strip_suffix($self->param('titleid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -566,7 +566,7 @@ sub print_collection {
     
     my $recordlist = new OpenBib::RecordList::Title();
 
-    # Obsolet?
+    # Druck eines Titels
     if ($id && $database) {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
     }
@@ -601,7 +601,7 @@ sub save_collection {
     # Dispatched_args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('itemid'));
+    my $id             = $self->strip_suffix($self->param('titleid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -668,7 +668,7 @@ sub mail_collection {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('itemid'));
+    my $id             = $self->strip_suffix($self->param('titleid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -711,7 +711,7 @@ sub mail_collection {
         format      => $format,
 
         username    => $username,
-        id          => $id,
+        titleid     => $id,
         database    => $database,
         recordlist  => $recordlist,
         dbinfo      => $dbinfotable,
@@ -729,6 +729,8 @@ sub mail_collection_send {
 
     # Dispatched Args
     my $view           = $self->param('view')           || '';
+    my $database       = $self->param('database');
+    my $id             = $self->strip_suffix($self->param('titleid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -741,7 +743,7 @@ sub mail_collection_send {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-    
+   
     # CGI Args
     my $email     = ($query->param('email'))?$query->param('email'):'';
     my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';

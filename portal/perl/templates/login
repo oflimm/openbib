@@ -67,7 +67,7 @@
 [%- END -%]
 
 <fieldset class="ym-full">
-<legend>Anmelden</legend>
+<legend>[% msg.maketext("Anmelden") %]</legend>
 <div class="ym-fbox-text">
 <label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 <input type="text" name="username" id="email_username" value="[% username %]" />
@@ -82,7 +82,10 @@
 
 <p/>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Einloggen") %]" />
+</div>
+
 </fieldset>
 
 </div><!-- End right_side -->

@@ -32,15 +32,12 @@
 [% holding     = record.get_holding  %]
 [% circulation = record.get_circulation %]
 
-
+<h3>[% msg.maketext("Titelaufnahme") %]</h3>
 <!-- Title begins here -->
-<table width="100%">
-<tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
-<tr><td class="boxedclear">
 
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
-<tr><td class="ob-field">id</td><td>[% normdata.id %]</td></tr>
+<tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
 
 [%-
 

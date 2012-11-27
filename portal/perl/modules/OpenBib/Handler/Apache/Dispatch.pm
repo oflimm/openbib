@@ -165,6 +165,8 @@ sub dispatch_args {
             push @{$table_ref}, $rule_specs;
         }
     }
+
+    # $logger->debug("Dispatch-table: ".YAML::Dump($table_ref));
     
     return {
         debug => 1,

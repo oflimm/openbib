@@ -48,8 +48,8 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $http_user = $r->user;
-    my $http_auth = $r->auth_type;
+    my $http_user = $r->user || '';
+    my $http_auth = $r->auth_type || '';
     
     $logger->debug("Authentication with $http_user and type $http_auth");
 

@@ -33,7 +33,7 @@
     </body>
    </noframes>
 [% IF type == 1%]
-   <frame name="Weiter zur Lastverteilung" src="[% path_prefix %]/[% config.get('titles_loc') %]/[% id1 %]/[% id2 %]/" noresize="noresize" frameborder="0"/>
+   <frame name="Weiter zur Lastverteilung" src="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% id1 %]/[% config.get('titles_loc') %]/id/[% id2 %]/" noresize="noresize" frameborder="0"/>
 [% ELSIF type == 6 %]
    <frame name="Weiter zur Lastverteilung" src="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% id2 %]/" noresize="noresize" frameborder="0"/>
 [% END %]

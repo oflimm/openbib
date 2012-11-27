@@ -16,7 +16,7 @@
 <a style="font-size: 1.5em;" href="[% path_prefix %]/[% config.get('clouds_loc') %][%- IF viewdbs.size == 1 -%]/type/year/[% viewdbs.first %][% END %].html" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
 <a style="font-size: 1.3em;" href="[% path_prefix %]/[% config.get('litlists_loc') %][% IF view_config.${view}.topicid %]/[% config.get('topics_loc') %]/id/[% view_config.${view}.topicid %].html[% ELSE %].html[%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
 <a style="font-size: 1.1em;" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
-<a                           href="[% path_prefix %]/[% config.get('titles_loc') %][%- IF viewdbs.size == 1 -%]/[% viewdbs.first %][%- END -%]/popular.html" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
+<a                           href="[% path_prefix %]/[% config.get('databases_loc') %][%- IF viewdbs.size == 1 -%]/id/[% viewdbs.first %][%- END -%]/[% config.get('titles_loc') %]/popular.html" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
 <a style="font-size: 1.2em;" href="[% path_prefix %]/[% config.get('info_loc') %]/other_portals.html" title="[% msg.maketext("weitere OpenBib-Portale") %]">[% msg.maketext("weitere OpenBib-Portale") %]</a>.<p/>
 
 [%- IF viewdbs.size == 1 && viewdbs.first.match("^inst[0-6]") -%]
@@ -32,9 +32,9 @@ f&uuml;r Sie als <a href="http://kug.ub.uni-koeln.de/zsstlisten/zsstlist-[% view
 <h4><img style="vertical-align:bottom" src="[% config.get('global_img') %]" alt="Externe Angebote" />&nbsp;Allgemeine Informationsquellen</h4>
 
 <h5>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h5>
-[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('classifications_loc')}/ezb.html?l=${lang};type=cloud;access_green=1;access_yellow=1\">","</a>") %]
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/ezb/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1\">","</a>") %]
 
 <h5>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h5>
 [% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
-lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('classifications_loc')}/dbis.html?l=${lang};type=cloud;access_green=1;access_yellow=1;access_national=1\">","</a>") %]
+lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1;access_national=1\">","</a>") %]
 

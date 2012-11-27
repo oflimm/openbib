@@ -116,7 +116,7 @@ sub show_collection {
         items       => $items,
     };
     
-    $self->print_page($config->{tt_litlists_item_tname},$ttdata);
+    $self->print_page($config->{tt_users_litlists_item_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -146,7 +146,6 @@ sub show_record {
     my $method         = $query->param('_method')     || '';
 
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $subjects_ref   = $user->get_subjects;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;

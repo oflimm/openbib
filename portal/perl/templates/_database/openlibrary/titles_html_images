@@ -38,5 +38,5 @@ tle="OpenLibrary Cover" />
 </p>
 [% END %]
 [% IF cgiapp.is_authenticated('admin') %]
-<a href="[% path_prefix %]/[% config.get('databaes_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databaes_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
 [% END %]

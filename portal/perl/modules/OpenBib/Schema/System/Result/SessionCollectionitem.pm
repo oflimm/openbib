@@ -26,6 +26,7 @@ __PACKAGE__->table("session_collectionitem");
 =head2 sid
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 0
 
 =head2 collectionitemid
@@ -37,14 +38,31 @@ __PACKAGE__->table("session_collectionitem");
 
 __PACKAGE__->add_columns(
   "sid",
-  { data_type => "bigint", is_nullable => 0 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "collectionitemid",
   { data_type => "bigint", is_nullable => 0 },
 );
 
+=head1 RELATIONS
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-28 15:24:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JwyDIGUSbJSeGnxChtmKGw
+=head2 sid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Sessioninfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "sid",
+  "OpenBib::Schema::System::Result::Sessioninfo",
+  { id => "sid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-28 16:00:38
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:eqgnPuPtxnZMF5oqCViP4A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -208,6 +208,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 session_collectionitems
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::SessionCollectionitem>
+
+=cut
+
+__PACKAGE__->has_many(
+  "session_collectionitems",
+  "OpenBib::Schema::System::Result::SessionCollectionitem",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 session_searchprofiles
 
 Type: has_many
@@ -239,8 +254,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-28 15:24:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:UP/oaJZis3db6cI3xsN5tw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-28 16:00:38
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vV27bqS8UPEJfBJ0874+vg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -84,7 +84,7 @@ config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Information
 </p>
 
 <p>[<a
-href="http://www.ub.uni-koeln.de/digital/digitsam/schmalenbach">Informationen
+href="http://www.ub.uni-koeln.de/sammlungen/schmalenbach/digital/index_ger.html">Informationen
 zur Digitalisierung der Bibliothek Eugen Schmalenbach</a>]</p>
 
 <p>

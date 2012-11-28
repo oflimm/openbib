@@ -123,12 +123,12 @@ sub show_collection {
         return;
     }
     
-    # Shortcuts via Method
+#     # Shortcuts via Method
 
-    if ($method eq "POST"){
-        $self->create_record;
-        return;
-    }
+#     if ($method eq "POST"){
+#         $self->create_record;
+#         return;
+#     }
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -304,8 +304,8 @@ sub create_record {
     my $location       = $self->param('location');
 
     # CGI Args
-    my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
-    my $do_litlist_addentry     = $query->param('do_litlist_addentry')     || '';
+    my $do_collectionitems_delentry  = $query->param('do_collectionitems_delentry')  || '';
+    my $do_litlists_addentry     = $query->param('do_litlists_addentry')     || '';
     my $do_addlitlist           = $query->param('do_addlitlist')           || '';
     my $do_addtags              = $query->param('do_addtags')              || '';
 
@@ -321,10 +321,10 @@ sub create_record {
     }
 
     # Process WWW-UI-Shortcuts
-    if ($do_collection_delentry || $do_litlist_addentry || $do_addlitlist || $do_addtags ) {
+    if ($do_collectionitems_delentry || $do_litlists_addentry || $do_addlitlist || $do_addtags ) {
 
         # Shortcut: Delete multiple items via POST
-        if ($query->param('do_collection_delentry')) {
+        if ($query->param('do_collectionitems_delentry')) {
             foreach my $listid ($query->param('id')) {
                 $self->delete_item_from_collection($listid);
             }
@@ -336,19 +336,19 @@ sub create_record {
         
         if (! $user->is_authenticated && $do_addlitlist) {
             $logger->debug("Nicht authentifizierter Nutzer versucht Literaturlisten anzulegen");
-            
-            $self->return_loginurl;
+
+            $self->tunnel_through_authenticator('POST');
             return;
         }
         elsif (! $user->is_authenticated && $do_addtags) {
             $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
-            
-            $self->return_loginurl;
+
+            $self->tunnel_through_authenticator('POST');
             return;
         }
         
         
-        if ($do_litlist_addentry) {
+        if ($do_litlists_addentry) {
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
             
             foreach my $listid ($query->param('id')) {
@@ -370,9 +370,26 @@ sub create_record {
                 return Apache2::Const::OK;
             }
             
-            $user->add_litlist({ title =>$title, type => $littype});
+            my $new_litlistid = $user->add_litlist({ title =>$title, type => $littype});
+
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $new_litlistid});
             
-            $self->return_loginurl;
+            foreach my $listid ($query->param('id')) {
+                my $record = $self->get_single_item_in_collection($listid);
+
+                $logger->debug("Record properties Id: $record->{id} database: $record->{database}");
+                
+                if ($record->{database} && $record->{id} && $litlist_properties_ref->{userid} eq $user->{ID}) {
+                    $logger->debug("Adding entry $listid for userid $user->{ID} for litlist $new_litlistid with ownerid $litlist_properties_ref->{userid}");
+
+                    $user->add_litlistentry({ titleid => $record->{id}, dbname => $record->{database}, litlistid => $new_litlistid});
+                }
+                else {
+                    $logger->debug("Can't add entry $listid for userid $user->{ID} for litlist $new_litlistid with ownerid $litlist_properties_ref->{userid}");
+                }
+            }
+
+            $self->return_baseurl;
             return;
         }
         elsif ($do_addtags) {
@@ -900,10 +917,11 @@ sub return_baseurl {
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
     my $path_prefix    = $self->param('path_prefix');
+    my $lang           = $self->param('lang');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = ($userid)?"$path_prefix/$config->{users_loc}/id/$userid/collection.html":"$path_prefix/$config->{collectionitems_loc}.html";
+    my $new_location = ($userid)?"$path_prefix/$config->{users_loc}/id/$userid/$config->{collectionitems_loc}.html?l=$lang":"$path_prefix/$config->{collectionitems_loc}.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

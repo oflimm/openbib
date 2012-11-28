@@ -59,10 +59,15 @@ ALTER TABLE sessioninfo ADD PRIMARY KEY (id);
 CREATE INDEX sessioninfo_sessionid ON sessioninfo (sessionid);
 CREATE INDEX sessioninfo_username ON sessioninfo (username);
 
-ALTER TABLE sessioncollection ADD PRIMARY KEY (id);
-ALTER TABLE sessioncollection ADD CONSTRAINT fk_sessioncollection_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
-CREATE INDEX sessioncollection_dbname ON sessioncollection (dbname);
-CREATE INDEX sessioncollection_titleid ON sessioncollection (titleid);
+ALTER TABLE collectionitem ADD PRIMARY KEY (id);
+CREATE INDEX collectionitem_dbname ON collectionitem (dbname);
+CREATE INDEX collectionitem_titleid ON collectionitem (titleid);
+
+ALTER TABLE session_collectionitem ADD CONSTRAINT fk_sessioncollectionitem_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
+ALTER TABLE session_collectionitem ADD CONSTRAINT fk_sessioncollectionitem_collectionitem FOREIGN KEY (collectionitemid) REFERENCES collectionitem (id);
+
+CREATE INDEX sessioncollectionitem_sid ON session_collectionitem (sid);
+CREATE INDEX sessioncollectionitem_collectionitemid ON session_collectionitem (collectionitemid);
 
 ALTER TABLE recordhistory ADD CONSTRAINT fk_recordhistory_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 
@@ -121,10 +126,11 @@ CREATE INDEX searchfield_searchfield ON searchfield (searchfield);
 
 ALTER TABLE livesearch ADD CONSTRAINT fk_livesearch_user FOREIGN KEY (userid) REFERENCES userinfo (id);
 
-ALTER TABLE usercollection ADD PRIMARY KEY (id);
-ALTER TABLE usercollection ADD CONSTRAINT fk_usercollection_user FOREIGN KEY (userid) REFERENCES userinfo (id);
-CREATE INDEX usercollection_dbname ON usercollection (dbname);
-CREATE INDEX usercollection_titleid ON usercollection (titleid);
+ALTER TABLE user_collectionitem ADD CONSTRAINT fk_usercollectionitem_user FOREIGN KEY (userid) REFERENCES userinfo (id);
+ALTER TABLE user_collectionitem ADD CONSTRAINT fk_usercollectionitem_collectionitem FOREIGN KEY (collectionitemid) REFERENCES collectionitem (id);
+
+CREATE INDEX usercollectionitem_userid ON user_collectionitem (userid);
+CREATE INDEX usercollectionitem_collectionitemid ON user_collectionitem (collectionitemid);
 
 ALTER TABLE tag ADD PRIMARY KEY (id);
 CREATE INDEX tag_name ON tag (name);

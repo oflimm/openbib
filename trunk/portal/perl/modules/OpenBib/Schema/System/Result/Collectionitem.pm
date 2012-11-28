@@ -78,9 +78,53 @@ __PACKAGE__->add_columns(
   { data_type => "text", default_value => "", is_nullable => 1 },
 );
 
+=head1 PRIMARY KEY
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-28 16:00:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5Hk1OsPZgfhBYpLIKCXNQg
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
+
+=head2 session_collectionitems
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::SessionCollectionitem>
+
+=cut
+
+__PACKAGE__->has_many(
+  "session_collectionitems",
+  "OpenBib::Schema::System::Result::SessionCollectionitem",
+  { "foreign.collectionitemid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 user_collectionitems
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::UserCollectionitem>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_collectionitems",
+  "OpenBib::Schema::System::Result::UserCollectionitem",
+  { "foreign.collectionitemid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-28 16:13:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Y70S+oyuEeFvytEEFi5NCQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

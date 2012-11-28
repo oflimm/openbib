@@ -92,7 +92,7 @@ unserer Vorfahren.
 
 [<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]
 
-<p>[<a href="http://www.ub.uni-koeln.de/digital/digitsam/totenzettel">Informationen zur Digitalisierung der Totenzettel-Sammlung</a>]</p>
+<p>[<a href="http://www.ub.uni-koeln.de/sammlungen/totenzettel/digital/index_ger.html">Informationen zur Digitalisierung der Totenzettel-Sammlung</a>]</p>
 
 
 </td></tr>

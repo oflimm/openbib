@@ -150,6 +150,19 @@ CREATE TABLE serverinfo (
  active       BOOL
 );
 
+drop table IF EXISTS collectionitem;
+CREATE TABLE collectionitem (
+ id         BIGSERIAL,
+
+ tstamp     TIMESTAMP,
+
+ dbname     TEXT,
+ titleid    TEXT,
+ titlecache TEXT,
+
+ comment    TEXT default ''
+);
+
 
 /* Session-Handling                                */
 /* ----------------------------------------------- */
@@ -173,18 +186,10 @@ CREATE TABLE sessioninfo (
  bibsonomy_sync TEXT
 );
 
-drop table IF EXISTS sessioncollection;
-CREATE TABLE sessioncollection (
- id         BIGSERIAL,
- sid        BIGINT NOT NULL,
-
- tstamp     TIMESTAMP,
-
- dbname     TEXT,
- titleid    TEXT,
- titlecache TEXT,
-
- comment    TEXT default ''
+drop table IF EXISTS session_collectionitem;
+CREATE TABLE session_collectionitem (
+ sid              BIGINT NOT NULL,
+ collectionitemid BIGINT NOT NULL
 );
 
 drop table IF EXISTS recordhistory;
@@ -369,19 +374,10 @@ CREATE TABLE livesearch (
  active      BOOL
 );
 
-DROP TABLE IF EXISTS usercollection;
-CREATE TABLE usercollection (
- id         BIGSERIAL,
- userid     BIGINT  NOT NULL,
-
- tstamp     TIMESTAMP,
-
- dbname     TEXT,
- titleid    TEXT,
- titlecache TEXT,
-
- comment   TEXT default ''
-
+DROP TABLE IF EXISTS user_collectionitem;
+CREATE TABLE user_collectionitem (
+ userid           BIGINT NOT NULL,
+ collectionitemid BIGINT NOT NULL
 );
 
 DROP TABLE IF EXISTS tag;

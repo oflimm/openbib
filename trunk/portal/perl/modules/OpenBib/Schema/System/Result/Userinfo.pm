@@ -349,6 +349,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 user_collectionitems
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::UserCollectionitem>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_collectionitems",
+  "OpenBib::Schema::System::Result::UserCollectionitem",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 user_roles
 
 Type: has_many
@@ -394,24 +409,9 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 usercollections
 
-Type: has_many
-
-Related object: L<OpenBib::Schema::System::Result::Usercollection>
-
-=cut
-
-__PACKAGE__->has_many(
-  "usercollections",
-  "OpenBib::Schema::System::Result::Usercollection",
-  { "foreign.userid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-26 11:48:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wrIMFCIXGcxGn9P7jXSeUg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-28 15:24:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YB09pmjOhEKC5mvmCP+fEw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

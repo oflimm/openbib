@@ -658,7 +658,7 @@ sub get_number_of_items_in_collection {
     my $logger = get_logger();
 
     # DBI: "select count(*) as rowcount from treffer where sessionid = ?"
-    my $count = $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
+    my $count = $self->{schema}->resultset('SessionCollectionitem')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
 
     return $count;
 }
@@ -674,14 +674,14 @@ sub get_items_in_collection {
     return $recordlist if (!defined $self->{schema});
 
     # DBI: "select dbname,singleidn from treffer where sessionid = ? order by dbname"
-    my $items = $self->{schema}->resultset('Sessioncollection')->search_rs(
+    my $items = $self->{schema}->resultset('SessionCollectionitem')->search_rs(
         {
             'sid.sessionid' => $self->{ID},
         },
         {
-            select => [ 'me.dbname', 'me.titleid', 'me.titlecache', 'me.id' ],
-            as     => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid' ],
-            join   => 'sid'
+            select => [ 'collectionitemid.dbname', 'collectionitemid.titleid', 'collectionitemid.titlecache', 'collectionitemid.id', 'collectionitemid.tstamp', 'collectionitemid.comment' ],
+            as     => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid','thiststamp','thiscomment' ],
+            join   => ['sid','collectionitemid'],
         }
     );
 
@@ -690,12 +690,14 @@ sub get_items_in_collection {
         my $titleid    = $item->get_column('thistitleid');
         my $titlecache = $item->get_column('thistitlecache');
         my $listid     = $item->get_column('thislistid');
+        my $tstamp     = $item->get_column('thiststamp');
+        my $comment    = $item->get_column('thiscomment');
 
         if ($database && $titleid){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid})->load_brief_record);
+            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, , date => $tstamp, comment => $comment})->load_brief_record);
         }
         elsif ($titlecache) {
-            my $record = new OpenBib::Record::Title({listid => $listid});
+            my $record = new OpenBib::Record::Title({listid => $listid, date => $tstamp, comment => $comment});
             $record->set_fields_from_json($titlecache);
             $recordlist->add($record);
         }
@@ -710,15 +712,15 @@ sub get_single_item_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $collectionitem = $self->{schema}->resultset('Sessioncollection')->search_rs(
+    my $collectionitem = $self->{schema}->resultset('SessionCollectionitem')->search_rs(
         {
-            'me.id'         => $listid,
-            'sid.sessionid' => $self->{ID},
+            'collectionitemid.id' => $listid,
+            'sid.sessionid'       => $self->{ID},
         },
         {
-            select => [ 'me.dbname', 'me.titleid', 'me.titlecache'],
+            select => [ 'collectionitemid.dbname', 'collectionitemid.titleid', 'collectionitemid.titlecache'],
             as     => [ 'thisdbname', 'thistitleid', 'thistitlecache' ],
-            join   => 'sid'
+            join   => ['sid','collectionitemid'],
         }
     )->single;
 
@@ -759,11 +761,14 @@ sub add_item_to_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('Sessioncollection')->search_rs(
+        my $have_title = $self->{schema}->resultset('SessionCollectionitem')->search_rs(
             {
-                sid     => $self->{sid},
-                dbname  => $dbname,
-                titleid => $titleid,
+                'sid.id'                   => $self->{sid},
+                'collectionitemid.dbname'  => $dbname,
+                'collectionitemid.titleid' => $titleid,
+            },
+            {
+                join => ['sid','collectionitemid'],
             }
         )->count;
         
@@ -774,9 +779,8 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Collection: $cached_title");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Sessioncollection')->create(
+            $new_title = $self->{schema}->resultset('Collectionitem')->create(
                 {
-                    sid     => $self->{sid},
                     dbname     => $dbname,
                     titleid    => $titleid,
                     titlecache => $record_json,
@@ -784,6 +788,16 @@ sub add_item_to_collection {
                     tstamp     => \'NOW()',
                 }
             );
+
+            $self->{schema}->resultset('SessionCollectionitem')->create(
+                {
+                    sid              => $self->{sid},
+                    collectionitemid => $new_title->id,
+                }
+            );
+        }
+        else {
+            $logger->debug("Collection item exists");
         }
     }
     elsif ($record){
@@ -792,10 +806,13 @@ sub add_item_to_collection {
         my $record_json = encode_json $record;
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('Sessioncollection')->search_rs(
+        my $have_title = $self->{schema}->resultset('SessionCollectionitem')->search_rs(
             {
-                sid     => $self->{sid},
-                titlecache => $record_json,
+                'sid.id'                      => $self->{sid},
+                'collectionitemid.titlecache' => $record_json,
+            },
+            {
+                join => ['sid','collectionitemid'],
             }
         )->count;
         
@@ -803,9 +820,8 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Collection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Sessioncollection')->create(
+            $new_title = $self->{schema}->resultset('Collectionitem')->create(
                 {
-                    sid     => $self->{sid},
                     titleid    => 0,
                     dbname     => '',
                     titlecache => $record_json,
@@ -813,7 +829,14 @@ sub add_item_to_collection {
                     tstamp     => \'NOW()',
                 }
             );
-        }
+
+            $self->{schema}->resultset('SessionCollectionitem')->create(
+                {
+                    sid              => $self->{sid},
+                    collectionitemid => $new_title->id,
+                }
+            );
+         }
     }
 
     if ($new_title){
@@ -823,80 +846,36 @@ sub add_item_to_collection {
     return;
 }
 
+# Aktualisiert werden kann nur der Kommentar!
 sub update_item_in_collection {
     my ($self,$arg_ref)=@_;
 
-    my $userid       = exists $arg_ref->{userid}
-        ? $arg_ref->{userid}               : undef;
+    my $itemid         = exists $arg_ref->{id}
+        ? $arg_ref->{id}                    : undef;
 
-    my $dbname       = exists $arg_ref->{dbname}
-        ? $arg_ref->{dbname}               : undef;
-    
-    my $titleid      = exists $arg_ref->{titleid}
-        ? $arg_ref->{titleid}              : undef;
-    
     my $comment      = exists $arg_ref->{comment}
         ? $arg_ref->{comment}              : '';
-    
-    my $record       = exists $arg_ref->{record}
-        ? $arg_ref->{record}               : undef;
-    
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $thisuserid = (defined $userid)?$userid:$self->{ID};
-    
-    if ($dbname && $titleid){
+    if ($itemid){
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $title = $self->{schema}->resultset('Sessioncollection')->search_rs(
+        my $title = $self->{schema}->resultset('Collectionitem')->search_rs(
             {
-                userid  => $thisuserid,
-                dbname  => $dbname,
-                titleid => $titleid,
-            }
-        );
-        
-        if (!$title) {
-            my $cached_title = new OpenBib::Record::Title({ database => $dbname , id => $titleid});
-            my $record_json = $cached_title->load_brief_record->to_json;
-            
-            $logger->debug("Updating Title in Collection: $cached_title");
-            
-            $title->update(
-                {
-                    dbname     => $dbname,
-                    titleid    => $titleid,
-                    titlecache => $record_json,
-                    comment    => $comment,
-                    tstamp     => \'NOW()',
-                }
-            );
-        }
-    }
-    elsif ($record){
-        # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-        
-        my $record_json = encode_json $record;
-        
-        # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $title = $self->{schema}->resultset('Sessioncollection')->search_rs(
+                'session_collectionitemids.sessionid'  => $self->{ID},
+                'me.id'                                => $itemid,
+            },
             {
-                userid     => $thisuserid,
-                titlecache => $record_json,
+                join => ['session_collectionitemids'],
             }
         );
         
         if ($title) {
-            $logger->debug("Adding Title to Collection: $record_json");
-            
             $title->update(
                 {
-                    titleid    => 0,
-                    dbname     => '',
-                    titlecache => $record_json,
                     comment    => $comment,
                     tstamp     => \'NOW()',
                 }
@@ -911,23 +890,43 @@ sub delete_item_from_collection {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $id        = exists $arg_ref->{id}
+    my $itemid        = exists $arg_ref->{id}
         ? $arg_ref->{id}                 : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if (!$id){
+    if (!$itemid){
         return;
     }
 
-    $logger->debug("Deleting item $id");
+    $logger->debug("Deleting item $itemid");
 
     eval {
         # DBI: "delete from treffer where sessionid = ? and dbname = ? and singleidn = ?"
-        $self->{schema}->resultset('Sessioncollection')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.id' => $id },{ join => 'sid' })->single->delete;
+        my $item = $self->{schema}->resultset('Collectionitem')->search_rs(
+            {
+                'session_collectionitems.sid' => $self->{sid},
+                'me.id'                       => $itemid
+            },
+            {
+                join => ['session_collectionitems']
+            }
+        )->single;
+
+        if ($item){
+            $item->session_collectionitems->delete;
+            $item->delete;
+        }
+        else {
+            $logger->debug("Can't delete Item $itemid: ".$@);
+        }
     };
 
+    if ($@){
+        $logger->error($@);
+    }
+    
     return;
 }
 

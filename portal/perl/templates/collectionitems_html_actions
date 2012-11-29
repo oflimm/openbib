@@ -144,7 +144,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <p>
 
-<input type="submit" name="do_collection_delentry" value="[% msg.maketext("Löschen") %]" />
+<input type="submit" name="do_collectionitems_delentry" value="[% msg.maketext("Löschen") %]" />
 
 </p>
 

@@ -184,7 +184,6 @@ sub _new_instance {
             $self->{lang} = $lang;
             $logger->debug("Got language-Cookie: $lang");
 	}
-
     }
        
     if (!defined $sessionID || !$sessionID){
@@ -1125,6 +1124,8 @@ sub clear_data {
             $sessioninfo->sessioncollections->delete;
             $sessioninfo->recordhistories->delete;
             $sessioninfo->searchhistories->delete;
+            $sessioninfo->session_collectionitems->collectionitemid->delete;
+            $sessioninfo->session_collectionitems->delete;
             $sessioninfo->session_searchprofiles->delete;
             $sessioninfo->user_sessions->delete;
             $sessioninfo->delete;

@@ -900,8 +900,9 @@ sub get_all_profiles {
         
     foreach my $userprofile ($userprofiles->all){
         push @userdbprofiles, {
-            profilid    => $userprofile->id,
-            profilename => $userprofile->profilename,
+            profileid        => $userprofile->id,
+            searchprofileid  => $userprofile->searchprofileid->id,
+            profilename      => $userprofile->profilename,
         };
     }
     
@@ -3251,9 +3252,6 @@ sub get_items_in_collection {
 sub add_item_to_collection {
     my ($self,$arg_ref)=@_;
 
-    my $itemid       = exists $arg_ref->{itemid}
-        ? $arg_ref->{itemid}               : undef;
-
     my $userid       = exists $arg_ref->{userid}
         ? $arg_ref->{userid}               : undef;
 
@@ -3277,15 +3275,7 @@ sub add_item_to_collection {
 
     my $new_title ;
 
-    if ($itemid){
-        $self->{schema}->resultset('UserCollectionitem')->create(
-            {
-                userid           => $thisuserid,
-                collectionitemid => $itemid,
-            }
-        );        
-    }       
-    elsif ($dbname && $titleid){
+    if ($dbname && $titleid){
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
@@ -3364,15 +3354,52 @@ sub add_item_to_collection {
         }
     }
 
-    if ($itemid){
-        $logger->debug("Connected existing collection entry $itemid with userid $thisuserid");
-        return $itemid;
-    }   
-    elsif ($new_title){
+    if ($new_title){
         my $new_titleid = $new_title->id;
         $logger->debug("Created new collection entry with id $new_titleid");
         return $new_titleid;
     }
+    
+    return ;
+}
+
+sub move_collectionitem_to_user {
+    my ($self,$arg_ref)=@_;
+
+    my $itemid       = exists $arg_ref->{itemid}
+        ? $arg_ref->{itemid}               : undef;
+
+    my $userid       = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}               : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $thisuserid = (defined $userid)?$userid:$self->{ID};
+
+    my $new_title ;
+
+    if ($itemid){
+        eval {
+            $self->{schema}->resultset('UserCollectionitem')->create(
+                {
+                    userid           => $thisuserid,
+                    collectionitemid => $itemid,
+                }
+            );
+            $self->{schema}->resultset('SessionCollectionitem')->single(
+                {
+                    collectionitemid => $itemid,
+                }
+            )->delete;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+
+    }       
+    $logger->debug("Connected existing collection entry $itemid with userid $thisuserid");
     
     return ;
 }

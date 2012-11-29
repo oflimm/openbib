@@ -109,7 +109,6 @@ sub show_collection {
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
-    my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 

@@ -191,15 +191,16 @@ sub load_name {
     }
 
     # DBI: "select content from subject where id = ? and category=0001";
-    my $subject_fields = $self->{schema}->resultset('Subject')->search(
+    my $subject_fields = $self->{schema}->resultset('SubjectField')->search(
         {
-            'me.id'                 => $id,
-            'subject_fields.field'   => '0800',
+            'subjectid.id' => $id,
+            'me.field'     => '0800',
         },
         {
-            select => ['subject_fields.content'],
+            order_by => ['me.mult ASC'],
+            select => ['me.content'],
             as     => ['thiscontent'],
-            join   => ['subject_fields'],
+            join   => ['subjectid'],
         }
     );
 
@@ -207,7 +208,7 @@ sub load_name {
     
     my @mainentries = ();
     foreach my $item ($subject_fields->all){
-        push @mainentries, $subject_fields->get_column('thiscontent')->single;
+        push @mainentries, $item->get_column('thiscontent');
     }
 
     if (@mainentries){

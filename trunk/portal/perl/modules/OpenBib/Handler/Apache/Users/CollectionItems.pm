@@ -151,4 +151,27 @@ sub get_items_in_collection {
     return $user->get_items_in_collection();
 }
 
+sub return_baseurl {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $view           = $self->param('view')           || '';
+    my $user           = $self->param('user')           || '';
+    my $path_prefix    = $self->param('path_prefix');
+    my $lang           = $self->param('lang');
+
+    my $config = OpenBib::Config->instance;
+
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{collectionitems_loc}.html?l=$lang";
+
+    $self->query->method('GET');
+    $self->query->content_type('text/html');
+    $self->query->headers_out->add(Location => $new_location);
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
+}
+
 1;

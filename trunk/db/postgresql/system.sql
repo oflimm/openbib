@@ -188,6 +188,7 @@ CREATE TABLE sessioninfo (
 
 drop table IF EXISTS session_collectionitem;
 CREATE TABLE session_collectionitem (
+ id               BIGSERIAL,
  sid              BIGINT NOT NULL,
  collectionitemid BIGINT NOT NULL
 );
@@ -376,6 +377,7 @@ CREATE TABLE livesearch (
 
 DROP TABLE IF EXISTS user_collectionitem;
 CREATE TABLE user_collectionitem (
+ id               BIGSERIAL,
  userid           BIGINT NOT NULL,
  collectionitemid BIGINT NOT NULL
 );

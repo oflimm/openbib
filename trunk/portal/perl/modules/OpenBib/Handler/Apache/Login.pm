@@ -290,10 +290,7 @@ sub authenticate {
             
             $user->add_item_to_collection({
                 userid => $userid,
-                item   => {
-                    dbname     => $record->{database},
-                    singleidn  => $record->{id},
-                },
+                itemid => $record->{listid},
             });
         }
 

@@ -259,11 +259,6 @@ sub show_record {
     
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
 
-    if ($method eq "DELETE"){
-        $self->delete_record;
-        return;
-    }
-
     my $record = $self->get_single_item_in_collection($id);
     
     # TT-Data erzeugen
@@ -373,6 +368,8 @@ sub create_record {
             my $new_litlistid = $user->add_litlist({ title =>$title, type => $littype});
 
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $new_litlistid});
+
+            $logger->debug("Created new Litlist with id $new_litlistid");
             
             foreach my $listid ($query->param('id')) {
                 my $record = $self->get_single_item_in_collection($listid);
@@ -534,8 +531,6 @@ sub delete_record {
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     $self->delete_item_from_collection($id);
 
@@ -915,13 +910,13 @@ sub return_baseurl {
     my $logger = get_logger();
     
     my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
+    my $user           = $self->param('user')           || '';
     my $path_prefix    = $self->param('path_prefix');
     my $lang           = $self->param('lang');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = ($userid)?"$path_prefix/$config->{users_loc}/id/$userid/$config->{collectionitems_loc}.html?l=$lang":"$path_prefix/$config->{collectionitems_loc}.html";
+    my $new_location = "$path_prefix/$config->{collectionitems_loc}.html?l=$lang";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

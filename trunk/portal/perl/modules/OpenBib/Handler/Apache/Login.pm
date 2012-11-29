@@ -288,7 +288,7 @@ sub authenticate {
         foreach my $record (@{$recordlist_existing_collection->to_list}){
             $logger->debug("Adding item to personal collection of user $userid: ".YAML::Dump($record));
             
-            $user->add_item_to_collection({
+            $user->move_collectionitem_to_user({
                 userid => $userid,
                 itemid => $record->{listid},
             });

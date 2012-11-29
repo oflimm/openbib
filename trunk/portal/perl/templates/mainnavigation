@@ -41,7 +41,7 @@ $.get("[% IF user.ID %][% path_prefix %]/[% config.get('users_loc') %]/id/[% use
 [% IF active_menu == "databasechoice" %]
          <li class="active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
 [% ELSE %]
-          <li><a [%- IF active_menu == "databasechoice" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('databasechoice_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+          <li><a [%- IF active_menu == "databasechoice" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('userprofiles_loc') %]/session.html?l=[% lang %]">[% msg.maketext("Katalogauswahl") %]</a></li>
 [% END %]
 [%- IF active_menu == "searchform" -%]
          <li class="active"><strong>[% msg.maketext("Suchen") %]</strong></li>

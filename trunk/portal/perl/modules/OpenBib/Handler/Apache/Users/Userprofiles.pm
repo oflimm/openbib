@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Profiles
+#  OpenBib::Handler::Apache::Users::Userprofiles
 #
 #  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Profiles;
+package OpenBib::Handler::Apache::Users::Userprofiles;
 
 use strict;
 use warnings;
@@ -65,6 +65,7 @@ sub setup {
         'create_record'                 => 'create_record',
         'update_record'                 => 'update_record',
         'delete_record'                 => 'delete_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -122,7 +123,7 @@ sub show_collection {
         dbinfo         => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_users_profiles_collection_tname},$ttdata);
+    $self->print_page($config->{tt_users_userprofiles_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -135,7 +136,7 @@ sub show_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $profileid      = $self->strip_suffix($self->param('profileid'));
+    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -149,16 +150,8 @@ sub show_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method         = $query->param('_method')     || '';
-
     if (!$self->authorization_successful){
         $self->print_authorization_error();
-        return;
-    }
-
-    if ($method eq "DELETE"){
-        $self->delete_record;
         return;
     }
 
@@ -195,7 +188,7 @@ sub show_record {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_users_profiles_tname},$ttdata,$r);
+    $self->print_page($config->{tt_users_userprofiles_record_tname},$ttdata,$r);
     return Apache2::Const::OK;
 }
 
@@ -208,7 +201,7 @@ sub show_record_form {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $profileid      = $self->strip_suffix($self->param('profileid'));
+    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -253,7 +246,7 @@ sub show_record_form {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_users_profiles_edit_tname},$ttdata);
+    $self->print_page($config->{tt_users_userprofiles_record_edit_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -266,7 +259,7 @@ sub update_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $profileid      = $self->strip_suffix($self->param('profileid'));
+    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -324,6 +317,7 @@ sub create_record {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $location       = $self->param('location');
 
     # CGI Args
     my @databases   = ($query->param('db'))?$query->param('db'):();
@@ -354,14 +348,24 @@ sub create_record {
 
     $logger->debug("Created Profile $profilename with ID $profileid");
     
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/profiles/id/$profileid.html";
-
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    $self->return_baseurl;
+    if ($self->param('representation') eq "html"){
+        my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{userprofiles_loc}/id/$profileid.html";
+        
+        $self->query->method('GET');
+        $self->query->content_type('text/html');
+        $self->query->headers_out->add(Location => $new_location);
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        if ($profileid){
+            $logger->debug("Weiter zum Record $profileid");
+            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('userprofileid',$profileid);
+            $self->param('location',"$location/$profileid");
+            $self->show_record;
+        }
+    }
 
     return;
 }
@@ -375,7 +379,7 @@ sub delete_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $profileid      = $self->strip_suffix($self->param('profileid'));
+    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -401,6 +405,28 @@ sub delete_record {
     return;
 }
 
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
+    my $config         = $self->param('config');
+
+    my $ttdata={
+        profileid => $profileid,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_users_userprofiles_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
+}
+
 sub return_baseurl {
     my $self = shift;
 
@@ -410,10 +436,12 @@ sub return_baseurl {
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
     my $path_prefix    = $self->param('path_prefix');
+    my $lang           = $self->param('lang');
+    my $user           = $self->param('user');
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/profiles.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{userprofiles_loc}.html?l=$lang";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

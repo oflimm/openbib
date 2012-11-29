@@ -159,7 +159,7 @@ browse_loc: browse
 circulation_loc: circulations
 collection_loc: collection
 collectionitems_loc: collectionitems
-databasechoice_loc: selectdatabase
+userprofiles_loc: userprofiles
 dispatchquery_loc: dispatchquery
 externaljump_loc: jumpto
 home_loc: home
@@ -2461,6 +2461,59 @@ dispatch_rules:
      rule: '/portal/:view/users/id/:userid/collectionitems/id/:itemid[delete]'
      runmode: 'delete_record'
 
+#####################################################################
+# Userprofiles-Resource/Repraesentation
+  - # users/userprofiles_loc:
+     module: 'OpenBib::Handler::Apache::Userprofiles'
+     rule: '/portal/:view/userprofiles/session[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/userprofiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Userprofiles'
+     rule: '/portal/:view/userprofiles/session[post]'
+     runmode: 'update_collection'
+
+  - # users/userprofiles_loc:
+     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     rule: '/portal/:view/users/id/:id/userprofiles[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/userprofiles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     rule: '/portal/:view/users/id/:id/userprofiles/id/:userprofileid[get]'
+     runmode: 'show_record'
+  - # users_loc/userprofiles_loc: Record show form
+     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     rule: '/portal/:view/users/id/:id/userprofiles/id/:userprofileid/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users_loc/userprofiles_loc: Create Record
+     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     rule: '/portal/:view/userprofiles[post]'
+     runmode: 'create_record'
+  - # users_loc/userprofiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     rule: '/portal/:view/userprofiles/id/:userprofileid[post]'
+     runmode: 'update_record'
+  - # users_loc/userprofiles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     rule: '/portal/:view/userprofiles/id/:userprofileid[put]'
+     runmode: 'update_record'
+  - # users_loc/userprofiles_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     rule: '/portal/:view/userprofiles/id/:userprofileid[delete]'
+     runmode: 'delete_record'
+
 css_loc: /css
 
 # Programm zum Versenden von Mails
@@ -3258,7 +3311,7 @@ tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
 
 tt_corporatebodies_tname: corporatebodies
 
-tt_databasechoice_tname: databasechoice
+tt_userprofiles_tname: userprofiles
 tt_error_tname: error
 tt_externaljump_tname: externaljump
 tt_home_tname: home
@@ -3385,9 +3438,10 @@ tt_users_circulations_reservations_tname: users_circulations_reservations
 tt_users_delete_confirm_tname: users_delete_confirm
 tt_users_litlists_tname: users_litlists
 tt_users_preferences_tname: users_preferences
-tt_users_profiles_collection_tname: users_profiles_collection
-tt_users_profiles_edit_tname: users_profiles_edit
-tt_users_profiles_tname: users_profiles
+tt_users_userprofiles_tname: users_userprofiles
+tt_users_userprofiles_record_edit_tname: users_userprofiles_record_edit
+tt_users_userprofiles_record_delete_confirm_tname: users_userprofiles_record_delete_confirm
+tt_users_userprofiles_record_tname: users_userprofiles_record
 tt_users_reviews_collection_tname: users_reviews_collection
 tt_users_roles_edit_tname: users_roles_edit
 tt_users_tags_collection_tname: users_tags_collection

@@ -91,6 +91,7 @@ sub show {
     my $cookie = Apache2::Cookie->new($r,
                                       -name    => "sessionID",
                                       -value   => "",
+                                      -path    => '/',
                                       -expires => 'now',
                                   );
     

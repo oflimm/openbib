@@ -84,7 +84,7 @@
 [% dbinfo.dbnames.${db}.short %]<br/>
 [% END %]
 </td>
-<td><a href="[% path_prefix %]/[% config.get('userprofiles_loc') %]/id/[% userdbprofile.profileid %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a></td>
+<td><a href="[% path_prefix %]/[% config.get('userprofiles_loc') %]/id/[% userdbprofile.profileid %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="ob_button">[% msg.maketext("Löschen") %]</a></td>
 </tr>
 
 [%-   END -%]

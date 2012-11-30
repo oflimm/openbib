@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Tags.pm
+#  OpenBib::Handler::Apache::Users::Tags::Names.pm
 #
 #  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Tags;
+package OpenBib::Handler::Apache::Users::Tags::Names;
 
 use strict;
 use warnings;
@@ -70,9 +70,6 @@ sub setup {
         'show_collection'                      => 'show_collection',
         'show_collection_form'                 => 'show_collection_form',
         'show_record'                          => 'show_record',
-        'create_record'                        => 'create_record',
-        'update_record'                        => 'update_record',
-        'delete_record'                        => 'delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 

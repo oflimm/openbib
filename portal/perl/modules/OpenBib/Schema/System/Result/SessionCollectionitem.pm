@@ -35,6 +35,13 @@ __PACKAGE__->table("session_collectionitem");
   is_foreign_key: 1
   is_nullable: 0
 
+=head2 id
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'session_collectionitem_id_seq'
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -42,6 +49,13 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "collectionitemid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
+  "id",
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "session_collectionitem_id_seq",
+  },
 );
 
 =head1 RELATIONS
@@ -77,8 +91,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-28 16:13:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DOIKc6o+WolFrvqyp9pKPg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-30 14:59:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BCE/ClAcDBoNXDF+q+O6XQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

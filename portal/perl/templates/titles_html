@@ -241,11 +241,15 @@ $(document).ready(function(){
 
 [%  IF private_tags_of_tit.size <= 0  %]
 [% username %]
-<form method="[% IF username %]post[% ELSE %]get[% END %]" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/tag.html" class="ym-form">
+<form method="[% IF username %]post[% ELSE %]get[% END %]" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
 
 [% IF NOT username %]
 <input type="hidden" name="_method" value="POST"/>
 [% END %]
+
+<input type="hidden" name="dbname" value="[% record.database %]"/>
+<input type="hidden" name="titleid" value="[% record.titleid %]"/>
+
 <fieldset class="ym-full">
 <legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
 
@@ -315,8 +319,12 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 [% ELSIF username && private_tags_of_tit.size > 0 %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/tag" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
+
+<input type="hidden" name="dbname" value="[% record.database %]"/>
+<input type="hidden" name="titleid" value="[% record.titleid %]"/>
+
 <input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
 <fieldset class="ym-full">
 

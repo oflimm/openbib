@@ -42,6 +42,8 @@
 [%    END %]
      </ul>
 </li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %]">[% msg.maketext("Tags") %]</a></li>
 [% END %]
 [% IF config.get('reviews') %]
 [%   IF active_submenu == "userreviews" %]

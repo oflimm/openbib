@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Userprofiles
+#  OpenBib::Handler::Apache::Searchprofiles::Session
 #
 #  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Userprofiles;
+package OpenBib::Handler::Apache::Searchprofiles::Session;
 
 use strict;
 use warnings;
@@ -131,7 +131,7 @@ sub show_collection {
         catdb      => \@catdb,
     };
     
-    $self->print_page($config->{tt_userprofiles_tname},$ttdata);
+    $self->print_page($config->{tt_searchprofiles_session_tname},$ttdata);
     return Apache2::Const::OK;
 }
 

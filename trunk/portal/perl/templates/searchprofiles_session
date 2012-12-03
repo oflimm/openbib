@@ -1,15 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: databaseprofile
+# Templatename: databasechoice
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Ausgabe einer Katalogauswahlliste/-tabelle und weiterer
-# Eingabeelemte fuer die Erstellung und Bearbeitung eigener
-# Katalogsuchprofile
+# Ausgabe einer Katalogauswahlliste/-tabelle
 #
 #######################################################################
 -%]
@@ -42,52 +40,43 @@ function update_fak(yourform, checked, fak) {
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "databasechoice" %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
 
-
    <div class="ob-functional_nav">
      <div class="ob-breadcrumb">
        <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/profiles.html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
-         <li><a href="#" class="lastitem">[% profilename %]</a></li>
-       </ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Katalogauswahl") %]</a></li>
+      </ul>
      </div>
    </div>
 
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
+      <div id="col1" style="display:none" role="complementary">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="databaseprofile" %] 
+
         </div>
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
+      <div id="col3" class="width:99%" role="main" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('userprofiles_loc') %]/id/[% profileid %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/session" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="num" value="-1" />
+<input type="hidden" name="l" value="[% lang %]" />
 
-<table width="100%">
-<tr><th>[% msg.maketext("Derzeit angezeigtes Profil") %]: <b><input type="text" name="profilename" value="[% profilename %]" />
-</b></th></tr>
-<tr><td class="boxedclear">
-
-<table>
-<tr><td><input type="submit" value="[% msg.maketext("Ändern") %]" />&nbsp;</td><td><input type="reset" value="[% msg.maketext("Ursprung") %]" /></td></tr>
-</table>
 
 [%# USE dumper;dumper.dump(catdb)%]
 [%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
 <p />
 <table>
-<tr><td class="thickheadline" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /></td><td colspan="[% colspan - 1 %]" ><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
+<tr><td class="thickheadline" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /></td><td colspan="[% colspan - 1 %]"><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
 
-[%- FOREACH category = config.get_orgunitinfo_overview(sysprofile).all -%]
+[%- FOREACH category = config.get_orgunitinfo_overview(profile).all -%]
 [%- is_empty = 1 ;
     FOREACH db = catdb ;
       IF db.category == category.description && db.db != '' ; 
@@ -100,7 +89,7 @@ function update_fak(yourform, checked, fak) {
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
 [%- END -%]
 
-<tr><td class="thickheadline" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /></td><td colspan="[% colspan - 1 %]" ><b>[% category.description %]</b></td></tr>
+<tr><td class="thickheadline" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /></td><td colspan="[% colspan - 1 %]"><b>[% category.description %]</b></td></tr>
 
 [%- FOREACH db = catdb -%]
 [%- IF db.category == category.description -%]
@@ -133,15 +122,11 @@ function update_fak(yourform, checked, fak) {
 [%- END -%]
 </table>
 <p />
-<table>
-<tr><td><input type="submit" value="[% msg.maketext("Ändern") %]" />&nbsp;</td><td><input type="reset" value="[% msg.maketext("Ursprung") %]" /></td></tr>
-</table>
 
-</td></tr>
-</table>
-<p />
+<input type="submit" value="[% msg.maketext("Auswählen") %]" />
 
 </form>
+<p />
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

@@ -197,7 +197,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{servers_loc}/id/$new_serverid/edit.html?l=$lang");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{servers_loc}/id/$new_serverid/edit.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {

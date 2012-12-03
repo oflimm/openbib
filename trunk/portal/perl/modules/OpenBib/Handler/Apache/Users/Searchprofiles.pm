@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Userprofiles
+#  OpenBib::Handler::Apache::Users::Searchprofiles
 #
 #  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Userprofiles;
+package OpenBib::Handler::Apache::Users::Searchprofiles;
 
 use strict;
 use warnings;
@@ -123,7 +123,7 @@ sub show_collection {
         dbinfo         => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_users_userprofiles_tname},$ttdata);
+    $self->print_page($config->{tt_users_searchprofiles_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -136,7 +136,7 @@ sub show_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
+    my $profileid      = $self->strip_suffix($self->param('searchprofileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -188,7 +188,7 @@ sub show_record {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_users_userprofiles_record_tname},$ttdata,$r);
+    $self->print_page($config->{tt_users_searchprofiles_record_tname},$ttdata,$r);
     return Apache2::Const::OK;
 }
 
@@ -201,7 +201,7 @@ sub show_record_form {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
+    my $profileid      = $self->strip_suffix($self->param('searchprofileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -246,7 +246,7 @@ sub show_record_form {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_users_userprofiles_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_users_searchprofiles_record_edit_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -259,7 +259,7 @@ sub update_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
+    my $profileid      = $self->strip_suffix($self->param('searchprofileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -349,7 +349,7 @@ sub create_record {
     $logger->debug("Created Profile $profilename with ID $profileid");
     
     if ($self->param('representation') eq "html"){
-        my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{userprofiles_loc}/id/$profileid.html";
+        my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{searchprofiles_loc}/id/$profileid.html";
         
         $self->query->method('GET');
         $self->query->content_type('text/html');
@@ -361,7 +361,7 @@ sub create_record {
         if ($profileid){
             $logger->debug("Weiter zum Record $profileid");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('userprofileid',$profileid);
+            $self->param('searchprofileid',$profileid);
             $self->param('location',"$location/$profileid");
             $self->show_record;
         }
@@ -379,7 +379,7 @@ sub delete_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
+    my $profileid      = $self->strip_suffix($self->param('searchprofileid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -414,7 +414,7 @@ sub confirm_delete_record {
     my $r              = $self->param('r');
 
     my $view           = $self->param('view');
-    my $profileid      = $self->strip_suffix($self->param('userprofileid'));
+    my $profileid      = $self->strip_suffix($self->param('searchprofileid'));
     my $config         = $self->param('config');
 
     my $ttdata={
@@ -422,7 +422,7 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_users_userprofiles_record_delete_confirm_tname},$ttdata);
+    $self->print_page($config->{tt_users_searchprofiles_record_delete_confirm_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -441,7 +441,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{userprofiles_loc}.html?l=$lang";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{searchprofiles_loc}.html?l=$lang";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

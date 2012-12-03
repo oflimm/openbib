@@ -5,7 +5,7 @@ FOREACH thislocation IN locations ;
   this_locationinfo = {
     link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('locations_loc')}/id/${thislocation.id}.json?l=${lang}"
+          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('locations_loc')}/id/${thislocation.id}.json?l=${lang}"
     }
 
     description = thislocation.description

@@ -8,7 +8,7 @@ FOREACH viewinfo IN views.all ;
     databases.push({
             link = {
                 rel = 'self'
-                href = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('databases_loc')}/id/${item}.json?l=${lang}"
+                href = "${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${item}.json?l=${lang}"
             }
 
             dbname = item
@@ -19,7 +19,7 @@ FOREACH viewinfo IN views.all ;
   this_viewinfo = {
     link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
+          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
     }
 
     description = viewinfo.description

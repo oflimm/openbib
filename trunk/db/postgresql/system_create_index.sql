@@ -141,6 +141,7 @@ ALTER TABLE tit_tag ADD CONSTRAINT fk_tittag_tag FOREIGN KEY (tagid) REFERENCES 
 CREATE INDEX tittag_titleid ON tit_tag (titleid);
 CREATE INDEX tittag_dbname ON tit_tag (dbname);
 CREATE INDEX tittag_type ON tit_tag (type);
+CREATE INDEX tittag_tstamp ON tit_tag (tstamp);
 
 ALTER TABLE review ADD PRIMARY KEY (id);
 ALTER TABLE review ADD CONSTRAINT fk_review_user FOREIGN KEY (userid) REFERENCES userinfo (id);

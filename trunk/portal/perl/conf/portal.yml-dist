@@ -1217,6 +1217,18 @@ dispatch_rules:
 # - ??Automatische Weiterleitung von [get] auf ggf. nutzerspezifische Repreaesentation
 
 #####################################################################
+# Admin-Resource/Repraesentation
+  - # Resource: admin_loc
+     module: 'OpenBib::Handler::Apache::Admin'
+     rule: '/portal/:view/admin[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     runmode: 'show_collection'
+
+#####################################################################
 # Clusters-Resource/Repraesentation
   - # Resource: clusters_loc
      module: 'OpenBib::Handler::Apache::Clusters'

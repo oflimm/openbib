@@ -394,6 +394,8 @@ CREATE TABLE tit_tag (
  tagid      BIGINT      NOT NULL,
  userid     BIGINT      NOT NULL,
 
+ tstamp     TIMESTAMP,
+
  dbname     TEXT        NOT NULL,
  titleid    TEXT        NOT NULL,
  titleisbn  TEXT        NOT NULL default '',

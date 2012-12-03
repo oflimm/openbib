@@ -1585,6 +1585,80 @@ sub get_recent_tags {
     return $tags_ref;
 }
 
+sub get_public_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $offset       = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}        : undef;
+    my $num          = exists $arg_ref->{num}
+        ? $arg_ref->{num}        : undef;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $tags_ref = [];
+    
+    # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
+    my $tags = $self->{schema}->resultset('TitTag')->search(
+        {
+            'type'   => 1,
+        },
+        {
+            group_by => ['id','titleid','dbname'],
+            order_by => ['id ASC'],
+            rows     => $num,
+            offset   => $offset,
+            select   => ['id','tagid','titleid','dbname'],
+            as       => ['thisid','thistagid','thistitleid','thisdbname'],
+        }
+    );
+    
+    foreach my $singletag ($tags->all){
+        my $id        = $singletag->get_column('thisid');
+        my $tagid     = $singletag->get_column('thistagid');
+        my $titleid   = $singletag->get_column('thistitleid');
+        my $dbname    = $singletag->get_column('thisdbname');
+
+        my $tagname   = $self->get_name_of_tag({ tagid => $tagid});
+        
+        $logger->debug("Got tagname $tagname, tagid $tagid, titleid $titleid and dbname $dbname");
+        
+        my $record = new OpenBib::Record::Title({ id => $titleid, database => $dbname })->load_brief_record;
+        
+        push @$tags_ref, {
+            id        => $id,
+            tagid     => $tagid,
+            tagname   => $tagname,
+            titleid   => $titleid,
+            dbname    => $dbname,
+            record    => $record,
+        };
+    }        
+    
+    return $tags_ref;
+}
+
+sub get_number_of_public_tags {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select count(distinct(titleid)) as rowcount from tittag"
+    my $numoftitles = $self->{schema}->resultset('TitTag')->search(
+        {
+            type => 1,
+        },
+        {
+            group_by => ['titleid'],
+        }
+    )->count;
+
+    return $numoftitles;
+}
+
 sub vote_for_review {
     my ($self,$arg_ref)=@_;
 

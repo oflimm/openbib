@@ -34,7 +34,17 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-   <div class="ob-page_title">[% msg.maketext("Alle Titel zum Tag") %]&nbsp;'[% tag %]'</div>
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+        <li><a href="#" class="lastitem">[% msg.maketext("Tags") %]</a></li>
+      </ul>
+     </div>
+     <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('tags_loc') %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+     </div>
+  </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
@@ -46,38 +56,59 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% IF recordlist.get_size == 0 %]
+[% IF public_tags.size == 0 %]
 
-   <h1>Bisher wurde der Tag '[% tag %]' f&uuml;r keinen Titel vergeben</h1>
+   <h1>Bisher wurden keine Tags vergeben</h1>
 
 [% ELSE %]
 
 [%-
     start_range     = 1;
-    end_range       = recordlist.get_size;
+    end_range       = public_tags.size;
 -%]
 
+[%# USE dumper;dumper.dump(public_tags)%]
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
   <div class="ob-resultheader">
     <div class="left">
-[% recordlist.get_size %]  [% msg.maketext("Titel") %]
+[% total_count %]  [% msg.maketext("Tags") %]
     </div>
     <div class="right">
-<form method="get" action="[% path_prefix %]/[% config.get('tags_loc') %]/[% tagid %]">
-[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('tags_loc')}" %]
-
-</form>
     </div>    
   </div>
   <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
-[%- FOREACH record IN recordlist.get_records -%]
+[%- FOREACH tag IN public_tags ;
+      record  = tag.record ;
+      tagname = tag.tagname ;
+-%]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
 [%- END -%]
   </div>
 </div>
 <!-- Titlelist ends here -->
-</form>
+
+<p/>
+
+  <div class="ob-footer">
+    <div class="ob-navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]?page=[% nav.first_page %];[% query_args_base %]">[% nav.first_page %]</a>&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]?page=[% page %];[% query_args_base %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]?page=[% nav.last_page %];[% query_args_base %]">[% nav.last_page %]</a>
+[%- END -%]
+    </div>
+</div>
 
 [% END %]
         </div>

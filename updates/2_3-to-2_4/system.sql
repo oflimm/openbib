@@ -91,3 +91,5 @@ ALTER TABLE databaseinfo ADD CONSTRAINT fk_databaseinfo_locationinfo FOREIGN KEY
 alter table locationinfo add column description text;
 
 alter table authenticator rename to authenticator;
+
+alter table tit_tag add column tstamp timestamp;

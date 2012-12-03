@@ -3,7 +3,7 @@
 thisviewinfo = {
   link = {
         rel = 'self'
-        href = "${path_prefix}/[% config.get('users_loc')}/id/${user.ID}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
+        href = "${path_prefix}/[% config.get('admin_loc')}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
   }
   
   viewname    = viewinfo.viewname

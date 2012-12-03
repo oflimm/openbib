@@ -35,12 +35,12 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Suchprofile") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -62,7 +62,7 @@
 <table class="ym-full">
 <tr><th>ID</th><th># Datenbanken</th><th>Eigener Index</th></tr>
 [% FOREACH searchprofile IN searchprofiles %]
-<tr><td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofile.id %]/edit.html?l=[% lang %]">[% searchprofile.id %]</a></td><td align="center">[% config.get_databases_of_searchprofile(searchprofile.id).size %]</td><td>[% IF searchprofile.own_index %]Index[% END %]</td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofile.id %]/edit.html?l=[% lang %]">[% searchprofile.id %]</a></td><td align="center">[% config.get_databases_of_searchprofile(searchprofile.id).size %]</td><td>[% IF searchprofile.own_index %]Index[% END %]</td></tr>
 [% END %]
 </table>
 </td></td>

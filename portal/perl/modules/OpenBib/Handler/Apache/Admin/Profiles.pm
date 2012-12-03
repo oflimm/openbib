@@ -207,7 +207,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{profiles_loc}/id/$input_data_ref->{profilename}/edit.html?l=$lang");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$input_data_ref->{profilename}/edit.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {

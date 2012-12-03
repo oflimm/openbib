@@ -35,8 +35,8 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('servers_loc') %].html?l=[% lang %]">[% msg.maketext("Server") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %].html?l=[% lang %]">[% msg.maketext("Server") %]</a></li>
          <li><a href="#" class="lastitem">[% serverinfo.description %]</a></li>
        </ul>
      </div>

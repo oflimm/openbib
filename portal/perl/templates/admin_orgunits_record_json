@@ -19,7 +19,7 @@ FOREACH db IN orgunitdbs ;
   thisdatabase = {
     link = {
         rel = 'self'
-        href = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('databases_loc')}/id/${db}.json?l=${lang}"
+        href = "${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${db}.json?l=${lang}"
     }
   };
   databases.push(thisdatabase);

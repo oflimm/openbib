@@ -5,7 +5,7 @@
     this_searchprofile = {
         link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('searchprofiles_loc')}/id/${searchprofile.id}.json?l=${lang}"
+          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('searchprofiles_loc')}/id/${searchprofile.id}.json?l=${lang}"
         }
         
         id                  = searchprofile.id

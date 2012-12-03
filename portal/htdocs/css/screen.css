@@ -40,7 +40,7 @@
     right:10px; /* LTR */
 	text-align:right; /* LTR */
   }
-    
+  
   .ob-fulltitle {
     width: 100%;
   }
@@ -221,6 +221,15 @@
     bottom:0;
     right:0;
     padding: 10px; 
+    font-weight:bold;
+    /*  float: right;
+       margin: -20px 5px 80px 120px;*/
+  }
+
+  .ob-item .ob-tags {
+    vertical-align: top;
+    padding-right: 2px;
+    font-size:16px;
     font-weight:bold;
     /*  float: right;
        margin: -20px 5px 80px 120px;*/

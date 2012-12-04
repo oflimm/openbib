@@ -108,7 +108,7 @@ sub show_collection {
     my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
     my $num    = $queryoptions->get_option('num');
 
-    my $public_tags_ref = $user->get_public_tags({offset => $offset, num => $num});
+    my $public_tags_ref = $user->get_public_tags({count => $num});
 
     my $total_count = $user->get_number_of_public_tags();
     

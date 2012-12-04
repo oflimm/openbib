@@ -1585,6 +1585,68 @@ sub get_recent_tags {
     return $tags_ref;
 }
 
+sub get_recent_tags_by_name {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $count        = exists $arg_ref->{count}
+        ? $arg_ref->{count}           : 5;
+
+    my $database     = exists $arg_ref->{database}
+        ? $arg_ref->{database}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $tags_ref = [];
+
+    my $tittag = $self->{schema}->resultset('TitTag');
+
+    my $tags_rs = $tittag->search_rs(
+        {
+            'type'   => 1,
+        },
+        {
+            group_by => ['id','tagid'],
+            order_by => ['id desc'],
+            select   => ['tagid'],
+            as       => ['thistagid'],
+        }
+    );
+
+    my $tags = $tittag->search_rs(
+        {
+            'tagid' => { '-in' => $tags_rs->get_column('thistagid')->as_query },
+        },
+        {
+            select => [{ distinct => 'tagid'}],
+            order_by => ['tagid'],
+            rows     => $count,
+            as       => ['thistagid'],
+            order_by => ['tagid'],
+        }
+    );
+
+    
+    foreach my $singletag ($tags->all){
+        my $tagid     = $singletag->get_column('thistagid');
+
+        my $tagname   = $self->get_name_of_tag({ tagid => $tagid});
+        my $itemcount = $self->get_number_of_public_tags_by_name($tagname);        
+
+        $logger->debug("Got tagname $tagname");
+        
+        push @$tags_ref, {
+            itemcount => $itemcount,
+            tagname   => $tagname,
+        };
+    }        
+
+    
+    return $tags_ref;
+}
+
 sub get_public_tags {
     my ($self,$arg_ref)=@_;
 
@@ -1640,6 +1702,68 @@ sub get_public_tags {
     return $tags_ref;
 }
 
+sub get_public_tags_by_name {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $offset       = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}        : undef;
+    my $num          = exists $arg_ref->{num}
+        ? $arg_ref->{num}        : undef;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $tags_ref = [];
+    
+    # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
+    my $tags = $self->{schema}->resultset('Tag')->search(
+        {
+            'tit_tags.type'   => 1,
+        },
+        {
+            group_by => ['me.name'],
+            order_by => ['me.name ASC'],
+            join     => ['tit_tags'],
+            rows     => $num,
+            offset   => $offset,
+            select   => ['me.name'],
+            as       => ['thisname'],
+        }
+    );
+
+    my $numoftags = $self->{schema}->resultset('Tag')->search(
+        {
+            'tit_tags.type'   => 1,
+        },
+        {
+            group_by => ['me.name'],
+            order_by => ['me.name ASC'],
+            join     => ['tit_tags'],
+            select   => ['me.name'],
+            as       => ['thisname'],
+        }
+    )->count;
+    
+    foreach my $singletag ($tags->all){
+        my $tagname    = $singletag->get_column('thisname');
+        my $itemcount  = $self->get_number_of_public_tags_by_name($tagname);        
+        
+        $logger->debug("Got tagname $tagname");
+        
+        push @$tags_ref, {
+            itemcount => $itemcount,
+            tagname   => $tagname,
+        };
+    }        
+    
+    return {
+        count => $numoftags,
+        tags  => $tags_ref
+    };
+}
+
 sub get_number_of_public_tags {
     my ($self)=@_;
 
@@ -1653,6 +1777,28 @@ sub get_number_of_public_tags {
         },
         {
             group_by => ['titleid'],
+        }
+    )->count;
+
+    return $numoftitles;
+}
+
+sub get_number_of_public_tags_by_name {
+    my ($self,$tagname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select count(distinct(titleid)) as rowcount from tittag"
+    my $numoftitles = $self->{schema}->resultset('TitTag')->search(
+        {
+            'me.type' => 1,
+            'tagid.name' => $tagname,
+            
+        },
+        {
+            group_by => ['titleid'],
+            join => ['tagid'],
         }
     )->count;
 

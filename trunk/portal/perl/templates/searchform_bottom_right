@@ -40,16 +40,16 @@ thematisch zugeordnet.
 
 [%-
    IF viewdbs.size == 1 ;
-      lasttags = user.get_recent_tags({count => 5, database => viewdbs.first }) ;
+      lasttags = user.get_recent_tags_by_name({count => 5, database => viewdbs.first }) ;
    ELSE ;
-      lasttags = user.get_recent_tags({count => 5 }) ;
+      lasttags = user.get_recent_tags_by_name({count => 5 }) ;
    END ;
 -%]
 
 [% IF lasttags.size > 0 %]
 <ul class="recent_tags">
 [%   FOREACH thistag IN lasttags %]
-<li><a href="[% path_prefix %]/[% config.get('tags_loc') %]/id/[% thistag.id %].html">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
+<li><a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% thistag.tagname %].html?l=[% lang %]">[% thistag.tagname %]</a> ([% thistag.itemcount %])</li>
 [%   END %]
 </ul>
 [% ELSE %]

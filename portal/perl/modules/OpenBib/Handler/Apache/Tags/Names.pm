@@ -70,6 +70,7 @@ sub setup {
     $self->start_mode('show');
     $self->run_modes(
         'show_collection'                      => 'show_collection',
+        'show_collection_recent'               => 'show_collection_recent',
         'show_record'                          => 'show_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -100,56 +101,64 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $offset         = $query->param('offset')      || 0;
-    my $hitrange       = $query->param('num')    || 50;
-    my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "person";
-    my $sortorder      = $query->param('srto')   || "asc";
-    my $titleid          = $query->param('titleid')       || '';
-    my $dbname          = $query->param('dbname')       || '';
-    my $titisbn        = $query->param('titisbn')     || '';
-    my $tags           = decode_utf8($query->param('tags'))        || '';
-    my $type           = $query->param('type')        || 1;
-    my $oldtag         = $query->param('oldtag')      || '';
-    my $newtag         = $query->param('newtag')      || '';
-    # Actions
-    my $format         = $query->param('format')      || 'cloud';
-    my $private_tags   = $query->param('private_tags')   || 0;
-    my $searchtitoftag = $query->param('searchtitoftag') || '';
-    my $edit_usertags  = $query->param('edit_usertags')  || '';
-    my $show_usertags  = $query->param('show_usertags')  || '';
-    my $queryid        = $query->param('queryid')     || '';
-    my $do_add         = $query->param('do_add')      || '';
-    my $do_edit        = $query->param('do_edit')     || '';
-    my $do_change      = $query->param('do_change')   || '';
-    my $do_del         = $query->param('do_del')      || '';
+    # CGI-Parameter
 
-    unless($user->{ID}){
-        # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+    my $num    = $queryoptions->get_option('num');
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
+    my $tags_ref = $user->get_public_tags_by_name({offset => $offset, num => $num});
 
-        return Apache2::Const::OK;
-    }
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $tags_ref->{count},
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
 
-    my $targettype = $user->get_targettype_of_session($session->{ID});
-    
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-        
-        format     => $format,
-        targettype => $targettype,
-        user       => $user,
-        config     => $config,
-        user       => $user,
-        msg        => $msg,
+        total_count   => $tags_ref->{count},
+        nav           => $nav,
+        public_tags   => $tags_ref->{tags},
     };
-    $self->print_page($config->{tt_tags_collection_tname},$ttdata);
+    
+    $self->print_page($config->{tt_tags_names_tname},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
+sub show_collection_recent {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI-Parameter
+    my $count  = $query->param('count') || 20;
+
+    my $recent_tags_ref = $user->get_recent_tags_by_name({count => $count});
+
+    # TT-Data erzeugen
+    my $ttdata={
+        recent_tags   => $recent_tags_ref,
+    };
+    
+    $self->print_page($config->{tt_tags_names_recent_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -165,7 +174,7 @@ sub show_record {
     my $database       = $self->param('database');
     my $titleid        = $self->param('titleid');
     my $userid         = $self->param('userid');
-    my $tagid          = $self->strip_suffix($self->param('tagid'));
+    my $tagname        = $self->strip_suffix($self->param('tagname'));
 
     # Shared Args
     my $query          = $self->query();
@@ -257,21 +266,7 @@ sub show_record {
     my $recordlist = new OpenBib::RecordList::Title;
     my $hits       = 0;
 
-    # Mit Suffix, dann keine Aushandlung des Typs
-
-    my $tag        = undef;
-
-    # Tags per id
-    if ($tagid =~ /^\d+$/){
-        # Zuerst Gesamtzahl bestimmen
-        $tag = $user->get_name_of_tag({tagid => $tagid});
-    }
-    # Tags per name
-    else {
-        $tag = $tagid;
-
-        $tagid = $user->get_id_of_tag({tag => $tag});
-    }
+    my $tagid = $user->get_id_of_tag({tag => $tagname});
     
     my $titles_ref;
     
@@ -284,7 +279,7 @@ sub show_record {
     # Zugriff loggen
     $session->log_event({
         type      => 804,
-        content   => $tag,
+        content   => $tagname,
     });
 
     $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
@@ -302,11 +297,11 @@ sub show_record {
 
         recordlist       => $recordlist,
         query            => $query,
-        tag              => $tag,
+        tagname          => $tagname,
         tagid            => $tagid,
     };
 
-    $self->print_page($config->{'tt_tags_tname'},$ttdata);
+    $self->print_page($config->{'tt_tags_names_record_tname'},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -643,47 +638,47 @@ sub update_record {
     return;
 }
 
-# Alle oeffentlichen Literaturlisten
-sub show_collection_recent {
-    my $self = shift;
+# # Alle oeffentlichen Literaturlisten
+# sub show_collection_recent {
+#     my $self = shift;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
+#     # Log4perl logger erzeugen
+#     my $logger = get_logger();
 
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $database       = $self->param('database');
+#     # Dispatched Args
+#     my $view           = $self->param('view');
+#     my $database       = $self->param('database');
 
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $representation = $self->param('representation');
+#     # Shared Args
+#     my $query          = $self->query();
+#     my $r              = $self->param('r');
+#     my $config         = $self->param('config');
+#     my $session        = $self->param('session');
+#     my $user           = $self->param('user');
+#     my $msg            = $self->param('msg');
+#     my $queryoptions   = $self->param('qopts');
+#     my $stylesheet     = $self->param('stylesheet');
+#     my $useragent      = $self->param('useragent');
+#     my $representation = $self->param('representation');
 
-    # CGI Args
-    my $hitrange       = $query->param('num')    || 50;
+#     # CGI Args
+#     my $hitrange       = $query->param('num')    || 50;
 
-    my @viewdbs         = $config->get_viewdbs($view);
+#     my @viewdbs         = $config->get_viewdbs($view);
 
-    # Tag-Cloud ist View-abhaengig. Wenn View nur aus einer Datenbank besteht, dann werden alle Tags fuer Titel aus der Datenbank herausgegeben, sonst alle.
-    # ToDo: fuer alle Datenbanken eines Views, d.h. auch bei mehr als einer...
-    my $recent_tags_ref = ($database)?$user->get_recent_tags({ count => $hitrange, database => $database }):
-        ($#viewdbs == 0)?$user->get_recent_tags({ count => $hitrange, database => $viewdbs[0] }): $user->get_recent_tags({ count => $hitrange });
+#     # Tag-Cloud ist View-abhaengig. Wenn View nur aus einer Datenbank besteht, dann werden alle Tags fuer Titel aus der Datenbank herausgegeben, sonst alle.
+#     # ToDo: fuer alle Datenbanken eines Views, d.h. auch bei mehr als einer...
+#     my $recent_tags_ref = ($database)?$user->get_recent_tags({ count => $hitrange, database => $database }):
+#         ($#viewdbs == 0)?$user->get_recent_tags({ count => $hitrange, database => $viewdbs[0] }): $user->get_recent_tags({ count => $hitrange });
 
-    # TT-Data erzeugen
-    my $ttdata={
-        recent_tags    => $recent_tags_ref,
-    };
+#     # TT-Data erzeugen
+#     my $ttdata={
+#         recent_tags    => $recent_tags_ref,
+#     };
     
-    $self->print_page($config->{tt_tags_collection_recent_tname},$ttdata);
-    return Apache2::Const::OK;
-}
+#     $self->print_page($config->{tt_tags_collection_recent_tname},$ttdata);
+#     return Apache2::Const::OK;
+# }
 
 sub showyyy {
     my $self = shift;

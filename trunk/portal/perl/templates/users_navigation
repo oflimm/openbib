@@ -30,15 +30,20 @@
 [% IF active_submenu == "tags" %]
 <li><span>[% msg.maketext("Tags") %]</span>
     <ul>
-[%    IF active_submenu == "tags" %]
-       <li class="active"><strong>[% msg.maketext("&Uuml;bersicht") %]</strong></li>
+[%    IF active_submenu == "tags_titles" %]
+       <li class="active"><strong>[% msg.maketext("nach Titeln") %]</strong></li>
 [%    ELSE %]
-       <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %];show_cloud=1">[% msg.maketext("Tags") %]</a></li>
+       <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %];show_cloud=1">[% msg.maketext("nach Titeln") %]</a></li>
+[%    END %]
+[%    IF active_submenu == "tags_names" %]
+       <li class="active"><strong>[% msg.maketext("nach Tagnamen") %]</strong></li>
+[%    ELSE %]
+       <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];show_cloud=1">[% msg.maketext("nach Tagnamen") %]</a></li>
 [%    END %]
 [%    IF active_submenu == "tags_edit" %]
        <li class="active"><strong>[% msg.maketext("&Auml;ndern") %]</strong></li>
 [%    ELSE %]
-       <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/edit">[% msg.maketext("&Auml;ndern") %]</a></li>
+       <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names/edit">[% msg.maketext("&Auml;ndern") %]</a></li>
 [%    END %]
      </ul>
 </li>
@@ -81,7 +86,7 @@
 [% IF active_submenu == "databaseprofile" %]
   <li class="active"><strong>[% msg.maketext("Katalogprofile") %]</strong></li>
 [% ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('userprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
 [% END %]
  </ul>
 </nav>

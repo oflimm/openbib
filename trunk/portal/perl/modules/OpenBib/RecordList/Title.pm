@@ -217,6 +217,10 @@ sub to_rss {
         ? $arg_ref->{channel_title}        : '';
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}                 : 'openbib';
+    my $servername        = exists $arg_ref->{servername}
+        ? $arg_ref->{servername}           : '127.0.0.1';
+    my $path_prefix       = exists $arg_ref->{path_prefix}
+        ? $arg_ref->{path_prefix}          : '';
     my $channel_description       = exists $arg_ref->{channel_description}
         ? $arg_ref->{channel_description}  : '';
     my $channel_link              = exists $arg_ref->{channel_link}
@@ -243,8 +247,17 @@ sub to_rss {
         
     foreach my $record ($self->get_records){
         my $desc  = "";
-        my $title = $record->get_field({field => 'T0331', mult => 1});
-        my $ast   = $record->get_field({field => 'T0310', mult => 1});
+        my $title = $record->get_field({field => 'T0331'});
+
+        if (ref $title eq "ARRAY"){
+            $title=$title->[0];
+        }
+        
+        my $ast   = $record->get_field({field => 'T0310'});
+
+        if (ref $ast eq "ARRAY"){
+            $ast=$ast->[0];
+        }
         
         $title = $ast if ($ast);
         
@@ -273,7 +286,7 @@ sub to_rss {
         
         $rss->add_item(
             title       => $title,
-            link        => "http://".$config->{frontendservername}.$config->{base_loc}."/$view/".$config->{titles_loc}."/database/".$record->{database}."/id/".$record->{id}.".html",
+            link        => "http://".$servername.$path_prefix."/".$config->{databases_loc}."/id/".$record->{database}."/".$config->{titles_loc}."/id/".$record->{id}.".html",
             description => $desc
         );
     }

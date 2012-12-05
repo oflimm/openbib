@@ -97,6 +97,8 @@ lang:
 # Basis-Pfad
 base_loc: /portal
 
+# Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
+
 ## Systmweite Resourcen, Aenderbar fuer Web-Administration
 admin_loc: admin
 authenticators_loc: authenticators
@@ -1124,6 +1126,18 @@ dispatch_rules:
   - # Resource: tags_loc: Alle zuletzt angelegten oeffentliche Tags
      module: 'OpenBib::Handler::Apache::Tags'
      rule: '/portal/:view/tags/recent[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rss
+       - include
+       - rdf
+     runmode: 'show_collection_recent'
+
+  - # Resource: tags_loc: Alle zuletzt angelegten oeffentliche Tags nach Namen
+     module: 'OpenBib::Handler::Apache::Tags::Names'
+     rule: '/portal/:view/tags/names/recent[get]'
      representations:
        - none
        - html
@@ -3343,6 +3357,9 @@ tt_subjects_tname: subjects
 
 tt_tags_recent_tname: tags_recent
 tt_tags_tname: tags
+tt_tags_names_recent_tname: tags_names_recent
+tt_tags_names_tname: tags_names
+tt_tags_names_record_tname: tags_names_record
 
 tt_titles_collection_form_tname: titles_collection_form
 tt_titles_popular_by_database_tname: titles_popular_by_database
@@ -3375,6 +3392,7 @@ tt_users_roles_edit_tname: users_roles_edit
 tt_users_tags_tname: users_tags
 tt_users_tags_record_edit_tname: users_tags_record_edit
 tt_users_tags_record_tname: users_tags_record
+tt_users_tags_names_record_tname: users_tags_names_record
 
 # Aleki DDR
 tt_info_sammlung_tname: info_sammlung

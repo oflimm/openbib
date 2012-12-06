@@ -965,21 +965,6 @@ sub add_tags {
     # Splitten der Tags
     my @taglist = split('\s+',$tags);
 
-    # Zuerst alle Verknuepfungen loeschen
-
-    # DBI: "delete from tittag where username = ? and titleid=? and dbname=?"
-    $self->{schema}->resultset('TitTag')->search_rs(
-        {
-            'userid.id'        => $userid,
-            'me.titleid'       => $titleid,
-            'me.dbname'        => $dbname,
-        },
-        {
-            join => ['userid'],
-        }
-    )->delete;
-    
-    my $tags_ref = [];
     foreach my $tagname (@taglist){
 
         # Normierung
@@ -987,8 +972,6 @@ sub add_tags {
             content  => $tagname,
             tagging  => 1,
         });
-
-        push @$tags_ref, $tagname;
 
         # DBI: "select id from tags where tag = ?"
         my $tag = $self->{schema}->resultset('Tag')->search_rs(
@@ -1023,21 +1006,33 @@ sub add_tags {
         # Jetzt Verknuepfung mit Titel herstellen
         else {
             $logger->debug("Tag $tagname verhanden");
-            
-            # Neue Verknuepfungen eintragen
-            $logger->debug("Verknuepfung zu Titel noch nicht vorhanden");
 
-            # DBI: "insert into tittag (tagid,titleid,titisbn,dbname,username,type) values (?,?,?,?,?,?)"
-            $tag->create_related(
-                'tit_tags',
+            my $tittag_exists = $tag->tit_tags->search_rs(
                 {
                     titleid   => $titleid,
-                    titleisbn => $titleisbn,
                     dbname    => $dbname,
                     userid    => $userid,
-                    type      => $type,                    
                 }
-            );
+            )->count;
+
+            $logger->debug("Tit-Tag exists? $tittag_exists");
+
+            if (! $tittag_exists){
+                # Neue Verknuepfungen eintragen
+                $logger->debug("Verknuepfung zu Titel noch nicht vorhanden");
+ 
+                # DBI: "insert into tittag (tagid,titleid,titisbn,dbname,username,type) values (?,?,?,?,?,?)"
+                $tag->create_related(
+                    'tit_tags',
+                    {
+                        titleid   => $titleid,
+                        titleisbn => $titleisbn,
+                        dbname    => $dbname,
+                        userid    => $userid,
+                        type      => $type,                    
+                    }
+                );
+            }
         }
         
     }
@@ -1061,6 +1056,18 @@ sub add_tags {
     my $bibkey    = $record->to_bibkey;
     
     my $recordlist = $bibsonomy->get_posts({ user => 'self', bibkey => $bibkey});
+
+    my $tags_ref = [];
+
+    foreach my $tag_ref (@{$self->get_private_tags_of_tit(
+        {
+            titleid   => $titleid,
+            dbname    => $dbname,
+            username  => $self->get_username_for_userid($userid),            
+        }
+    )}){
+        push @$tags_ref, $tag_ref->{tagname};
+    }
     
     $logger->debug("Bibkey: $bibkey");
     # 2) ja, dann Tags und Sichtbarkeit anpassen
@@ -1084,89 +1091,85 @@ sub rename_tag {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $oldtag              = exists $arg_ref->{oldtag}
-        ? $arg_ref->{oldtag  }            : undef;
-    my $newtag              = exists $arg_ref->{newtag}
-        ? $arg_ref->{newtag  }            : undef;
-    my $username           = exists $arg_ref->{username}
-        ? $arg_ref->{username}           : undef;
+    my $from              = exists $arg_ref->{from}
+        ? $arg_ref->{from  }            : undef;
+    my $to              = exists $arg_ref->{to}
+        ? $arg_ref->{to  }            : undef;
+    my $userid           = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}           : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # Splitten der Tags
-    my @oldtaglist = split("\\s+",$oldtag);
-    my @newtaglist = split("\\s+",$newtag);
-
     # Normierung
-    $oldtag = OpenBib::Common::Util::normalize({
-        content  => $oldtaglist[0],
+    $from = OpenBib::Common::Util::normalize({
+        content  => $from,
         tagging  => 1,
     });
 
-    $newtag = OpenBib::Common::Util::normalize({
-        content  => $newtaglist[0],
+    $to = OpenBib::Common::Util::normalize({
+        content  => $to,
         tagging  => 1,
     });
 
     # Vorgehensweise
-    # 1.) oldid von oldtag bestimmen
-    # 2.) Uebepruefen, ob newtag schon existiert. Wenn nicht, dann anlegen
+    # 1.) oldid von from bestimmen
+    # 2.) Uebepruefen, ob to schon existiert. Wenn nicht, dann anlegen
     #     und newid merken
-    # 3.) In tittag alle Vorkommen von oldid durch newid fuer username
+    # 3.) In tittag alle Vorkommen von oldid durch newid fuer userid
     #     ersetzen
 
     # DBI: "select id from tag where name = ?"
     my $tag_old = $self->{schema}->resultset('Tag')->single(
         {
-            name => $oldtag,
+            name => $from,
         }
     );
 
-    my $oldtagid;
-    my $newtagid;
+    my $fromid;
+    my $toid;
         
     if ($tag_old){
-        $oldtagid = $tag_old->id;
+        $fromid = $tag_old->id;
     }
     else {
-        $logger->error("Old Tag $oldtag does not exist to be renamed!");
+        $logger->error("Old Tag $from does not exist to be renamed!");
         return 1;
     }
 
     # DBI: "select id from tag where name = ?"
     my $tag_new = $self->{schema}->resultset('Tag')->single(
         {
-            name => $newtag,
+            name => $to,
         }
     );
 
     if ($tag_new){
-        $newtagid = $tag_new->id;
+        $toid = $tag_new->id;
     }
     else {
-        $logger->debug("Tag $newtag noch nicht verhanden");
+        $logger->debug("Tag $to noch nicht verhanden");
         # DBI: "insert into tag (name) values (?)"
         #      "select id from tag where name = ?"
         my $created_tag = $self->{schema}->resultset('Tag')->create(
             {
-                name => $newtag,
+                name => $to,
             }
         );
 
-        $newtagid = $created_tag->id;
+        $toid = $created_tag->id;
     }
-    # Wenn NewTag nicht existiert
+    # Wenn To nicht existiert
         
-    if ($oldtagid && $newtagid){
+    if ($fromid && $toid){
         # DBI: "update tit_tag set tagid = ? where tagid = ? and userid = ?"
         $self->{schema}->resultset('TitTag')->search_rs(
-            tagid  => $oldtagid,
-            userid => $self->get_userid_for_username($username),
+            tagid  => $fromid,
+            userid => $userid,
         )->update(
             {
-                tagid => $newtagid,
+                tagid => $toid,
             }
         );
     }
@@ -1244,6 +1247,38 @@ sub del_tags {
             )->delete;
     }
     
+    return;
+}
+
+sub del_tag {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $tagid                = exists $arg_ref->{tagid}
+        ? $arg_ref->{tagid}               : undef;
+
+    my $userid               = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    if ($tagid && $userid){
+        # DBI: "delete from tit_tag where titleid=? and dbname=? and userid=? and tagid=?"
+        eval {
+            $self->{schema}->resultset('TitTag')->single(
+                {
+                    id     => $tagid,
+                    userid => $userid,
+                },
+            )->delete;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
     return;
 }
 
@@ -1381,25 +1416,27 @@ sub get_private_tags_of_tit {
             'userid.username' => $username,
         },
         {
-            group_by => ['tagid.id','tagid.name','me.type'],
+            group_by => ['me.id','tagid.id','tagid.name','me.type'],
             order_by => ['tagid.name'],
             join => ['tagid','userid'],
-            select => ['tagid.name','tagid.id','me.type'],
-            as     => ['thistagname','thistagid','thistagtype'],
+            select => ['me.id','tagid.name','tagid.id','me.type'],
+            as     => ['thisid','thistagname','thistagid','thistagtype'],
         }
     );
 
     my $taglist_ref = [];
 
     foreach my $tittag ($tittags->all){
-        my $tag       = $tittag->get_column('thistagname');
-        my $id        = $tittag->get_column('thistagid');
+        my $id        = $tittag->get_column('thisid');
+        my $tagname   = $tittag->get_column('thistagname');
+        my $tagid     = $tittag->get_column('thistagid');
         my $type      = $tittag->get_column('thistagtype');
 
         push @$taglist_ref, {
-            id   => $id,
-            name => $tag,
-            type => $type,
+            id      => $id,
+            tagid   => $tagid,
+            tagname => $tagname,
+            type    => $type,
         };
     }
     
@@ -1407,6 +1444,63 @@ sub get_private_tags_of_tit {
 }
 
 sub get_private_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $offset       = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}        : undef;
+    my $num          = exists $arg_ref->{num}
+        ? $arg_ref->{num}        : undef;
+    my $userid       = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}        : undef;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $tags_ref = [];
+    
+    # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
+    my $tags = $self->{schema}->resultset('TitTag')->search(
+        {
+            'userid'   => $userid,
+        },
+        {
+            group_by => ['id','titleid','dbname'],
+            order_by => ['id ASC'],
+            rows     => $num,
+            offset   => $offset,
+            select   => ['id','tagid','titleid','dbname'],
+            as       => ['thisid','thistagid','thistitleid','thisdbname'],
+        }
+    );
+    
+    foreach my $singletag ($tags->all){
+        my $id        = $singletag->get_column('thisid');
+        my $tagid     = $singletag->get_column('thistagid');
+        my $titleid   = $singletag->get_column('thistitleid');
+        my $dbname    = $singletag->get_column('thisdbname');
+
+        my $tagname   = $self->get_name_of_tag({ tagid => $tagid});
+        
+        $logger->debug("Got tagname $tagname, tagid $tagid, titleid $titleid and dbname $dbname");
+        
+        my $record = new OpenBib::Record::Title({ id => $titleid, database => $dbname })->load_brief_record;
+        
+        push @$tags_ref, {
+            id        => $id,
+            tagid     => $tagid,
+            tagname   => $tagname,
+            titleid   => $titleid,
+            dbname    => $dbname,
+            record    => $record,
+        };
+    }        
+    
+    return $tags_ref;
+}
+
+sub get_private_tags_by_name {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
@@ -1783,6 +1877,26 @@ sub get_number_of_public_tags {
     return $numoftitles;
 }
 
+sub get_number_of_private_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $userid            = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}            : undef;
+        
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select count(distinct(titleid)) as rowcount from tittag"
+    my $numoftitles = $self->{schema}->resultset('TitTag')->search(
+        {
+            userid => $userid,
+        },
+    )->count;
+
+    return $numoftitles;
+}
+
 sub get_number_of_public_tags_by_name {
     my ($self,$tagname)=@_;
 
@@ -1884,8 +1998,8 @@ sub get_review_properties {
             userid           => $userid,
             username         => $username,
             title            => $title,
-            dbname            => $dbname,
-            titleid            => $titleid,
+            dbname           => $dbname,
+            titleid          => $titleid,
             tstamp           => $tstamp,
             review           => $review,
             rating           => $rating,

@@ -45,6 +45,7 @@ use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Socket;
 use Template;
+use URI::Escape;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -104,7 +105,7 @@ sub show_form {
     my $type        = ($query->param('type'))?$query->param('type'):'';
     my $username    = ($query->param('username'))?$query->param('username'):'';
     my $password    = decode_utf8($query->param('password')) || $query->param('password') || '';
-    my $redirect_to = decode_utf8($query->param('redirect_to')); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
+    my $redirect_to = uri_unescape($query->param('redirect_to')); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
 
     # Wenn die Session schon authentifiziert ist, dann wird
     # wird in die Benutzereinstellungen gesprungen
@@ -157,12 +158,12 @@ sub authenticate {
     
     # CGI Args
     my $code        = ($query->param('code'))?$query->param('code'):'1';
-    my $targetid    = ($query->param('targetid'))?$query->param('targetid'):'none';
+    my $targetid    = ($query->param('targetid'))?$query->param('targetid'):undef;
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type        = ($query->param('type'))?$query->param('type'):'';
     my $username    = ($query->param('username'))?$query->param('username'):'';
     my $password    = decode_utf8($query->param('password')) || $query->param('password') || '';
-    my $redirect_to = decode_utf8($query->param('redirect_to'));
+    my $redirect_to = uri_unescape($query->param('redirect_to'));
 
     # Wenn die Session schon authentifiziert ist, dann wird
     # wird in die Benutzereinstellungen gesprungen

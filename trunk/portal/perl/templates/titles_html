@@ -154,12 +154,6 @@ $(document).ready(function(){
   IF username ;
     private_tags        = user.get_private_tags({ username => username  });
     private_tags_of_tit = user.get_private_tags_of_tit({ titleid => record.id, dbname => record.database, username => username  });
-    IF private_tags_of_tit.size > 0 ;
-      my_tags = [] ;
-      FOREACH tag IN private_tags_of_tit;
-        my_tags.push("${tag.name}");
-      END;
-    END;      
   END ;
 %]
 <h4>[% msg.maketext("Behalten Sie diesen Titel") %]:</h4><p/>
@@ -191,7 +185,7 @@ $(document).ready(function(){
       IF userlitlists.size > 0 ;
 %]
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
-<fieldset class="ym-full">
+<fieldset class="ym-columnar">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
 <input type="hidden" name="titleid"           value="[% record.id %]" />
 <input type="hidden" name="dbname"           value="[% record.database %]" />
@@ -208,7 +202,7 @@ $(document).ready(function(){
 
 <p>
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
-<fieldset class="ym-full">
+<fieldset class="ym-columnar">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
 <input type="hidden" name="titleid"           value="[% record.id %]" />
 <input type="hidden" name="dbname"           value="[% record.database %]" />
@@ -248,7 +242,7 @@ $(document).ready(function(){
 [% END %]
 
 <input type="hidden" name="dbname" value="[% record.database %]"/>
-<input type="hidden" name="titleid" value="[% record.titleid %]"/>
+<input type="hidden" name="titleid" value="[% record.id %]"/>
 
 <fieldset class="ym-full">
 <legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
@@ -320,18 +314,43 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% ELSIF username && private_tags_of_tit.size > 0 %]
 
 <form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
-<input type="hidden" name="_method"    value="PUT" />
-
 <input type="hidden" name="dbname" value="[% record.database %]"/>
-<input type="hidden" name="titleid" value="[% record.titleid %]"/>
+<input type="hidden" name="titleid" value="[% record.id %]"/>
+<input type="hidden" name="redirect_to" value="[% uri_escape(location) %]" />
 
-<input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
-<fieldset class="ym-full">
+<fieldset class="ym-columnar">
 
-<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />&nbsp;</td><a class="ob_button" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/tag?_method=DELETE">[% msg.maketext("L&ouml;schen") %]</a>
+<div class="ym-fbox-text">
+<label for="tags">[% msg.maketext("Tags") %]</label>
+<input type="text" name="tags" id="tags" value="" size="30" maxlength="200"/>
+</div>
+
+<div class="ym-fbox-select">
+<label for="type">[% msg.maketext("Typ:") %]</label>
+<select name="type">
+  <option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option>
+  <option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option>
+</select>
+</div>
+
+<div class="ym-fbox-button">
+
+<input type="submit" value="[% msg.maketext("Hinzuf&uuml;gen") %]" />
+
+</div>
+
 </fieldset>
 
 </form>
+
+<h5>[% msg.maketext("Tags entfernen")%]</h5>
+
+<p>
+[% FOREACH thistag IN private_tags_of_tit %]
+<a href="[% path_prefix %]/[% config.get('tags_loc') %]/id/[% thistag.id %]?_method=DELETE;redirect_to=[% uri_escape(location) %]" class="ob_button">[% thistag.tagname %]</a>&nbsp;
+[% END %]
+</p>
+
 <p/>
 [%END %]
 </div><!-- End: Tagging do -->

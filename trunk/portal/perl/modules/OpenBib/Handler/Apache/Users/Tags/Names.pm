@@ -47,6 +47,7 @@ use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
+use URI::Escape;
 
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
@@ -70,6 +71,7 @@ sub setup {
         'show_collection'                      => 'show_collection',
         'show_collection_form'                 => 'show_collection_form',
         'show_record'                          => 'show_record',
+        'update_record'                        => 'update_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -118,7 +120,7 @@ sub show_collection {
         username   => $username,
     };
 
-    $self->print_page($config->{tt_users_tags_tname},$ttdata,$r);
+    $self->print_page($config->{tt_users_tags_names_tname},$ttdata,$r);
 
     return Apache2::Const::OK;
 }
@@ -132,7 +134,7 @@ sub show_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $tagid          = $self->strip_suffix($self->param('tagid'));
+    my $tagname        = $self->strip_suffix($self->param('tagname'));
 
     # Shared Args
     my $query          = $self->query();
@@ -150,7 +152,8 @@ sub show_record {
 
     # CGI Args
     my $offset         = $query->param('offset') || 0;
-    my $hitrange       = $query->param('num')    || 50;
+    my $num            = $query->param('num')               || 50;
+    my $method         = $query->param('_method') || '';
     my $database       = $query->param('db')     || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
@@ -166,55 +169,94 @@ sub show_record {
     my $recordlist = new OpenBib::RecordList::Title;
     my $hits       = 0;
 
-    my $tag        = undef;
-    
-    if ($tagid =~ /^\d+$/){
-        # Zuerst Gesamtzahl bestimmen
-        $tag = $user->get_name_of_tag({tagid => $tagid});
-    }
+    $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+
+    my $tagid = $user->get_id_of_tag({tag => $tagname});
     
     my $titles_ref;
     
     ($recordlist,$hits)= $user->get_titles_of_tag({
-        username  => $username,
         tagid     => $tagid,
         offset    => $offset,
-        hitrange  => $hitrange,
+        hitrange  => $num,
+        username  => $user->get_username,
     });
         
     # Zugriff loggen
     $session->log_event({
         type      => 804,
-        content   => $tag,
-    });
-    
-    $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
-    
-    $recordlist->print_to_handler({
-        representation   => $representation,
-        content_type     => $content_type,
-        database         => $database,
-        sortorder        => $sortorder,
-        sorttype         => $sorttype,
-        apachereq        => $r,
-        stylesheet       => $stylesheet,
-        view             => $view,
-        hits             => $hits,
-        offset           => $offset,
-        hitrange         => $hitrange,
-        query            => $query,
-        template         => 'tt_users_tags_record_tname',
-        location         => 'users_loc',
-        parameter        => {
-            username     => $username,
-            tag          => $tag,
-            private_tags => 1,
-        },
-        
-        msg              => $msg,
+        content   => $tagname,
     });
 
+    $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+
+    $recordlist->load_brief_records;
+
+    $recordlist->sort({order => $queryoptions->get_option('srto'), type => $queryoptions->get_option('srt')});
+    
+    my $ttdata = {
+        sortorder        => $queryoptions->get_option('srto'),
+        sorttype         => $queryoptions->get_option('srt'),
+        hits             => $hits,
+        offset           => $offset,
+        num              => $num,
+
+        recordlist       => $recordlist,
+        query            => $query,
+        tagname          => $tagname,
+        tagid            => $tagid,
+    };
+
+    $self->print_page($config->{'tt_users_tags_names_record_tname'},$ttdata);
+
     return Apache2::Const::OK;
+}
+
+sub update_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $query          = $self->query();
+    my $view           = $self->param('view');
+    my $path_prefix    = $self->param('path_prefix');
+    my $lang           = $self->param('lang');
+    my $msg            = $self->param('msg');
+    my $user           = $self->param('user');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $queryoptions   = $self->param('queryoptions');
+    
+    if (! $user->{ID}){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator;            
+        }
+        else {
+            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+        }   
+
+        return Apache2::Const::OK;
+    }
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    $input_data_ref->{userid}  = $user->{ID};
+    
+    my $status = $user->rename_tag($input_data_ref);
+    
+    if ($status){
+        $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
+        return Apache2::Const::OK;
+    }
+
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
+    }
+
+    return;
 }
 
 sub show_collection_form {
@@ -279,7 +321,9 @@ sub create_record {
     my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $path_prefix    = $self->param('path_prefix');
-    
+
+    my $method         = $query->param('_method') || '';
+
     if (! $user->{ID} | $user->{ID} ne $userid){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
@@ -379,113 +423,6 @@ sub delete_record {
     return;
 }
 
-sub update_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
-    my $path_prefix    = $self->param('path_prefix');
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-
-    my $offset         = $query->param('offset')      || 0;
-    my $hitrange       = $query->param('num')    || 50;
-    my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "person";
-    my $sortorder      = $query->param('srto')   || "asc";
-    my $titleid          = $query->param('titleid')       || '';
-    my $dbname          = $query->param('dbname')       || '';
-    my $titisbn        = $query->param('titisbn')     || '';
-    my $tags           = decode_utf8($query->param('tags'))        || '';
-    my $type           = $query->param('type')        || 1;
-
-    my $oldtag         = $query->param('oldtag')      || '';
-    my $newtag         = $query->param('newtag')      || '';
-    
-    # Actions
-    my $format         = $query->param('format')      || 'cloud';
-    my $private_tags   = $query->param('private_tags')   || 0;
-    my $searchtitoftag = $query->param('searchtitoftag') || '';
-    my $edit_usertags  = $query->param('edit_usertags')  || '';
-    my $show_usertags  = $query->param('show_usertags')  || '';
-
-    my $queryid        = $query->param('queryid')     || '';
-
-    my $do_add         = $query->param('do_add')      || '';
-    my $do_edit        = $query->param('do_edit')     || '';
-    my $do_change      = $query->param('do_change')   || '';
-    my $do_del         = $query->param('do_del')      || '';
-    
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
-    }
-
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    unless($user->{ID}){
-        # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
-
-        return Apache2::Const::OK;
-    }
-
-    my $username = $user->get_username();
-
-    $logger->debug("Aendern des Tags $oldtag in $newtag");
-    
-    my $status = $user->rename_tag({
-        oldtag    => $oldtag,
-        newtag    => $newtag,
-        username  => $username,
-    });
-    
-    if ($status){
-        $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
-        return Apache2::Const::OK;
-    }
-
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/tag.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
-}
-
 sub return_baseurl {
     my $self = shift;
 
@@ -493,11 +430,11 @@ sub return_baseurl {
     my $logger = get_logger();
     
     my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
+    my $user           = $self->param('user');
     my $path_prefix    = $self->param('path_prefix');
     my $config         = $self->param('config');
     
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/tags.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{tags_loc}/names.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -511,27 +448,12 @@ sub get_input_definition {
     my $self=shift;
     
     return {
-        tags => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        dbname => {
+        from => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',
         },
-        titleid => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        type => {
-            default  => '1',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        circdb => {
+        to => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

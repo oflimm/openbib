@@ -40,13 +40,14 @@ use Apache2::Request ();
 use Apache2::SubRequest (); # internal_redirect
 use Apache2::URI ();
 use APR::URI ();
-
+use CGI::Application::Plugin::Redirect;
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
+use URI::Escape;
 
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
@@ -71,7 +72,6 @@ sub setup {
         'show_collection_form'                 => 'show_collection_form',
         'show_record'                          => 'show_record',
         'create_record'                        => 'create_record',
-        'update_record'                        => 'update_record',
         'delete_record'                        => 'delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -103,25 +103,36 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $format         = $query->param('format')      || 'cloud';
+    # CGI-Parameter
+
+    $self->set_paging;
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
+    my $private_tags_ref = $user->get_private_tags({ userid => $user->{ID}, offset => $self->param('offset'), num => $self->param('num')});
+
+    my $total_count = $user->get_number_of_private_tags({ userid => $user->{ID} });
+    
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $total_count,
+        'entries_per_page' => $self->param('num'),
+        'current_page'     => $self->param('page'),
+        'mode'             => 'slide',
+    });
+
     my $username   = $user->get_username();
-    my $targettype = $user->get_targettype_of_session($session->{ID});
     
     # TT-Data erzeugen
     my $ttdata={
-        format     => $format,
-        targettype => $targettype,
-        username   => $username,
+        username      => $username,
+        total_count   => $total_count,
+        nav           => $nav,
+        private_tags  => $private_tags_ref,
     };
-
-    $self->print_page($config->{tt_users_tags_tname},$ttdata,$r);
+    $self->print_page($config->{tt_users_tags_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -244,9 +255,15 @@ sub show_collection_form {
     my $content_type   = $self->param('content_type');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+    if (! $user->{ID}){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator;            
+        }
+        else {
+            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+        }   
+
+        return Apache2::Const::OK;
     }
 
     my $targettype=$user->get_targettype_of_session($session->{ID});
@@ -282,23 +299,16 @@ sub create_record {
     my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $path_prefix    = $self->param('path_prefix');
-    
-    if (! $user->{ID} | $user->{ID} ne $userid){
-        if ($self->param('representation') eq "html"){
-            # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
-            
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
-        }
-        else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
-        }
-    }
 
-    if ($method eq "DELETE"){
-        $self->delete_record;
-        return;
+    if (! $user->{ID}){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator;            
+        }
+        else {
+            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+        }   
+
+        return Apache2::Const::OK;
     }
 
     # CGI / JSON input
@@ -312,12 +322,18 @@ sub create_record {
     $user->add_tags($input_data_ref);
     
     if ($self->param('representation') eq "html"){
-        my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$input_data_ref->{dbname}/id/$input_data_ref->{titleid}.html?l=$lang;no_log=1";
-        
-        $self->query->method('GET');
-        $self->query->content_type('text/html');
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
+        if ($query->param('redirect_to')){
+            my $new_location = uri_unescape($query->param('redirect_to'));
+            return $self->redirect($new_location,'303 See Other');
+
+#             $self->query->method('GET');
+#             $self->query->content_type('text/html');
+#             $self->query->headers_out->add(Location => $new_location);
+#             $self->query->status(Apache2::Const::REDIRECT);            
+        }
+        else {
+            $self->return_baseurl;
+        }
     }
     
     return;
@@ -331,9 +347,6 @@ sub delete_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
-    my $userid         = $self->param('userid');
     my $tagid          = $self->param('tagid');
 
     # Shared Args
@@ -346,145 +359,35 @@ sub delete_record {
     my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $path_prefix    = $self->param('path_prefix');
-    
-    if (! $user->{ID} || $user->{ID} ne $userid){
+
+    if (! $user->{ID}){
         if ($self->param('representation') eq "html"){
-            # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
-            
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            return $self->tunnel_through_authenticator;            
         }
-        else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+        else {
+            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+        }   
+
+        return Apache2::Const::OK;
+    }
+
+    if ($tagid && $user->{ID}){
+        $user->del_tag({ tagid => $tagid, userid => $user->{ID}});
+    }
+
+    if ($self->param('representation') eq "html"){
+        if ($query->param('redirect_to')){
+            my $new_location = $query->param('redirect_to');
+
+            $self->query->method('GET');
+            $self->query->content_type('text/html');
+            $self->query->headers_out->add(Location => $new_location);
+            $self->query->status(Apache2::Const::REDIRECT);            
+        }
+        else {
+            $self->return_baseurl;
         }
     }
-
-    my $del_args_ref = {
-        titleid   => $titleid,
-        dbname    => $database,
-        userid    => $userid,
-    };
-
-    if ($tagid){
-        $del_args_ref->{tagid} = $tagid;
-    }
-    
-    $user->del_tags($del_args_ref);
-
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
-
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
-}
-
-sub update_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-
-    my $view           = $self->param('view')           || '';
-    my $path_prefix    = $self->param('path_prefix');
-
-    my $config = OpenBib::Config->instance;
-    
-    my $query  = Apache2::Request->new($r);
-
-    my $session = OpenBib::Session->instance({ apreq => $r });    
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-
-    my $offset         = $query->param('offset')      || 0;
-    my $hitrange       = $query->param('num')    || 50;
-    my $database       = $query->param('db')    || '';
-    my $sorttype       = $query->param('srt')    || "person";
-    my $sortorder      = $query->param('srto')   || "asc";
-    my $titleid          = $query->param('titleid')       || '';
-    my $dbname          = $query->param('dbname')       || '';
-    my $titisbn        = $query->param('titisbn')     || '';
-    my $tags           = decode_utf8($query->param('tags'))        || '';
-    my $type           = $query->param('type')        || 1;
-
-    my $oldtag         = $query->param('oldtag')      || '';
-    my $newtag         = $query->param('newtag')      || '';
-    
-    # Actions
-    my $format         = $query->param('format')      || 'cloud';
-    my $private_tags   = $query->param('private_tags')   || 0;
-    my $searchtitoftag = $query->param('searchtitoftag') || '';
-    my $edit_usertags  = $query->param('edit_usertags')  || '';
-    my $show_usertags  = $query->param('show_usertags')  || '';
-
-    my $queryid        = $query->param('queryid')     || '';
-
-    my $do_add         = $query->param('do_add')      || '';
-    my $do_edit        = $query->param('do_edit')     || '';
-    my $do_change      = $query->param('do_change')   || '';
-    my $do_del         = $query->param('do_del')      || '';
-    
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
-    if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
-    }
-
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    unless($user->{ID}){
-        # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
-
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
-
-        return Apache2::Const::OK;
-    }
-
-    my $username = $user->get_username();
-
-    $logger->debug("Aendern des Tags $oldtag in $newtag");
-    
-    my $status = $user->rename_tag({
-        oldtag    => $oldtag,
-        newtag    => $newtag,
-        username  => $username,
-    });
-    
-    if ($status){
-        $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
-        return Apache2::Const::OK;
-    }
-
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/tag.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
 
     return;
 }
@@ -499,8 +402,9 @@ sub return_baseurl {
     my $userid         = $self->param('userid')         || '';
     my $path_prefix    = $self->param('path_prefix');
     my $config         = $self->param('config');
+    my $user           = $self->param('user');
     
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/tags.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{tags_loc}.html";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');
@@ -531,11 +435,6 @@ sub get_input_definition {
         },
         type => {
             default  => '1',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        circdb => {
-            default  => '',
             encoding => 'none',
             type     => 'scalar',
         },

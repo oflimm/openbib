@@ -293,6 +293,7 @@ sub update_record {
     my $query          = $self->query();
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
@@ -323,7 +324,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{views_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{views_loc}.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -371,6 +372,7 @@ sub delete_record {
     # Shared Args
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
+    my $lang           = $self->param('lang');
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
@@ -382,7 +384,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{views_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{views_loc}.html?l=$lang");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

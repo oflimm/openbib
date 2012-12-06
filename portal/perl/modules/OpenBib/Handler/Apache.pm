@@ -173,6 +173,25 @@ sub cgiapp_prerun {
    $logger->debug("Exit cgiapp_prerun");
 }
 
+sub set_paging {
+    my $self = shift;
+
+    my $query        = $self->query();
+    my $queryoptions = $self->param('qopts');
+    my $config       = $self->param('config');
+    
+    my $page = $query->param('page') || 1;
+
+    my $num    = $queryoptions->get_option('num') || $config->{queryoptions}{num}{value};
+    my $offset = $page*$num-$num;
+
+    $self->param('num',$num);
+    $self->param('offset',$offset);
+    $self->param('page',$page);
+
+    return;
+}
+
 sub negotiate_content {
     my $self = shift;
 
@@ -747,7 +766,7 @@ sub add_default_ttdata {
     $ttdata->{'location'}       = $location;
     $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'container'}      = $container;
-
+    
     # Helper functions
     $ttdata->{'to_json'}        = sub {
         my $ref = shift;

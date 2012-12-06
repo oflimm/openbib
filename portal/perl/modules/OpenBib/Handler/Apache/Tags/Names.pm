@@ -770,9 +770,9 @@ sub showyyy {
         
         $user->add_tags({
             tags      => $tags,
-            titleid     => $titleid,
-            dbname     => $dbname,
-            username  => $username,
+            titleid   => $titleid,
+            dbname    => $dbname,
+            userid    => $user->{ID},
             type      => $type,
         });
 
@@ -1018,11 +1018,11 @@ sub showzzz {
         $logger->debug("Aufnehmen/Aendern der Tags: $tags");
         
         $user->add_tags({
-            tags      => $tags,
-            titleid     => $titleid,
-            dbname     => $dbname,
-            username  => $username,
-            type      => $type,
+            tags     => $tags,
+            titleid  => $titleid,
+            dbname   => $dbname,
+            userid   => $user->{ID},
+            type     => $type,
         });
 
         $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");

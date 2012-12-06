@@ -405,9 +405,9 @@ sub create_record {
                         if ($record){
                             $user->add_tags({
                                 tags      => $tags,
-                                titleid     => $record->{id},
-                                dbname     => $record->{database},
-                                username  => $username,
+                                titleid   => $record->{id},
+                                dbname    => $record->{database},
+                                userid    => $user->{ID},
                                 type      => $tags_type,
                             });
                         }

@@ -1148,7 +1148,7 @@ dispatch_rules:
      runmode: 'show_collection_recent'
 
   - # Resource: users_loc/tags_loc: Anzeige eines Tags (oeffentlich)
-     module: 'OpenBib::Handler::Apache::Tags'
+     module: 'OpenBib::Handler::Apache::Users::Tags'
      rule: '/portal/:view/tags/id/:tagid[get]'
      runmode: 'show_record'
   - # Resource: users_loc/tags_loc: Anzeige aller Tags nach Tagnamen (oeffentlich)
@@ -1169,18 +1169,18 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Users::Tags'
      rule: '/portal/:view/tags[post]'
      runmode: 'create_record'
-  - # Resource: tags_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Users::Tags'
-     rule: '/portal/:view/tags/id/:tagid[post]'
-     runmode: 'update_record'
-  - # Resource: tags_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Users::Tags'
-     rule: '/portal/:view/tags/id/:tagid[put]'
-     runmode: 'update_record'
   - # Resource: tags_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Users::Tags'
      rule: '/portal/:view/tags/id/:tagid[delete]'
      runmode: 'delete_record'
+  - # Resource: tags_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Users::Tags::Names'
+     rule: '/portal/:view/tags/names/id/:tagname[post]'
+     runmode: 'update_record'
+  - # Resource: tags_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Users::Tags::Names'
+     rule: '/portal/:view/tags/names/id/:tagname[put]'
+     runmode: 'update_record'
 
 # Anzeige privater Listen ueber separaten user_loc
 
@@ -3198,6 +3198,7 @@ tt_users_tname: users
 tt_users_record_tname: users_record
 tt_views_tname: views 
 tt_views_record_tname: views_record
+tt_views_rss_record_tname: views_rss_record
 
 tt_indexes_classification_tname: indexes_classification
 tt_indexes_corporatebody_tname: indexes_corporatebody
@@ -3390,6 +3391,7 @@ tt_users_searchprofiles_record_tname: users_searchprofiles_record
 tt_users_reviews_collection_tname: users_reviews_collection
 tt_users_roles_edit_tname: users_roles_edit
 tt_users_tags_tname: users_tags
+tt_users_tags_names_tname: users_tags_names
 tt_users_tags_record_edit_tname: users_tags_record_edit
 tt_users_tags_record_tname: users_tags_record
 tt_users_tags_names_record_tname: users_tags_names_record

@@ -46,7 +46,7 @@ $.get("[% IF user.ID %][% path_prefix %]/[% config.get('users_loc') %]/id/[% use
 [%- IF active_menu == "searchform" -%]
          <li class="active"><strong>[% msg.maketext("Suchen") %]</strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/recent.html?l=[% lang %]">[% msg.maketext("Suchen") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?l=[% lang %]">[% msg.maketext("Suchen") %]</a></li>
 [% END %]
 [% IF active_menu == "cloud" %]
          <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>
@@ -138,7 +138,7 @@ $(document).ready(function(){
      <input id="to_focus" class="ym-searchfield" type="search" placeholder="[% msg.maketext("Suchen") %]" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" s />
      <input class="ym-searchbutton" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" />
 
-      <a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>
+      <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>
     </form>
 [% END %]
     </nav>

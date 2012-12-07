@@ -26,7 +26,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" without_navigation_search=1 %] 
+[% PROCESS common/subtemplate name="mainnavigation" without_navigation_search="1" %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
@@ -114,7 +114,7 @@ $(document).ready(function(){
 <input type="hidden" name="st"         value="2" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 
-[% PROCESS common/subtemplate name="searchform_query" %]
+[% PROCESS common/subtemplate name="searchforms_record_query" %]
 
 </form>
 

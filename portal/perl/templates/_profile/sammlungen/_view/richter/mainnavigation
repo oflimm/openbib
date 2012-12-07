@@ -128,7 +128,7 @@ $(document).ready(function(){
      <input id="to_focus" class="ym-searchfield" type="search" placeholder="[% msg.maketext("Suchen") %]" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" s />
      <input class="ym-searchbutton" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" />
 
-      <a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>
+      <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>
     </form>
 [% END %]
     </nav>

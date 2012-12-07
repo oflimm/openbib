@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::SearchForm
+#  OpenBib::Handler::Apache::SearchForms
 #
 #  Dieses File ist (C) 2001-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::SearchForm;
+package OpenBib::Handler::Apache::SearchForms;
 
 use strict;
 use warnings;
@@ -65,7 +65,8 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show'       => 'show',
+        'show'          => 'show',
+        'show_session'  => 'show_session',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -104,14 +105,10 @@ sub show {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $statistics  = new OpenBib::Statistics();
 
-    if ($type eq "recent"){
-        $type = $session->get_mask();
-    }    
-    else {
-        $session->set_mask($type);
-    }
+    # Save Type in Session
+    $session->set_mask($type);
 
-    $logger->debug("Got Type: $type");
+    $logger->debug("Set type to session: $type");
     
     my $searchfields_ref = $config->{default_searchfields};
   
@@ -213,9 +210,29 @@ sub show {
     };
 
     $logger->debug("TT-Data: ".YAML::Dump($ttdata));
-    my $templatename = "tt_searchform_".$type."_tname";
+    my $templatename = "tt_searchforms_record_".$type."_tname";
 
     $self->print_page($config->{$templatename},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
+sub show_session {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Shared Args
+    my $session        = $self->param('session');
+
+    my $type = $session->get_mask();
+
+    $logger->debug("Got Type: $type");
+    
+    $self->param('type',$type);
+
+    $self->show;
 
     return Apache2::Const::OK;
 }

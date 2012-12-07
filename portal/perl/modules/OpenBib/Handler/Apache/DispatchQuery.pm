@@ -97,7 +97,7 @@ sub show {
     my $do_externalquery = $query->param('do_externalquery') || '';
 
     if    ($do_newquery) {
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{searchform_loc}?queryid=$queryid");
+        $r->internal_redirect("$config->{base_loc}/$view/$config->{searchforms_loc}/id/advanced.html?queryid=$queryid");
         return Apache2::Const::OK;
     }
     elsif ($do_resultlist) {

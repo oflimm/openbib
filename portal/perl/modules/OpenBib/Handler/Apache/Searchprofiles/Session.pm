@@ -166,7 +166,7 @@ sub update_collection {
     # Neue Datenbankauswahl ist voreingestellt
     $session->set_profile($profileid);
 
-    my $new_location = "$path_prefix/$config->{searchform_loc}/recent.html?l=$lang";
+    my $new_location = "$path_prefix/$config->{searchforms_loc}/session.html?l=$lang";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

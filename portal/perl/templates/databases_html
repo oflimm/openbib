@@ -45,7 +45,7 @@
         <div class="ym-cbox" class="ym-clearfix">
 
 [% IF databases.size > 0 %]
-[%# USE dumper;dumper.dump(kataloge) %]
+[% USE dumper;dumper.dump(kataloge) %]
 
 <h3>[% msg.maketext("Datenbanken") %]</h3>
 

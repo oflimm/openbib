@@ -107,7 +107,7 @@ sub show_record {
             authenticatordb => $authenticatordb,
         };
 
-        $self->print_page($config->{'tt_corporatebodies_tname'},$ttdata);
+        $self->print_page($config->{'tt_corporatebodies_record_tname'},$ttdata);
 
         # Log Event
         

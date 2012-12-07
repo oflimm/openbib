@@ -182,7 +182,7 @@ sub show_collection_by_isbn_negotiate {
         msg              => $msg,
     };
     
-    $self->print_page($config->{tt_reviews_collection_by_isbn_tname},$ttdata);
+    $self->print_page($config->{tt_reviews_by_isbn_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

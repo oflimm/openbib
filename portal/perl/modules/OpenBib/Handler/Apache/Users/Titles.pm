@@ -193,7 +193,7 @@ sub show_collection_form {
         database => $database,
     };
     
-    $self->print_page($config->{tt_titles_collection_form_tname},$ttdata);
+    $self->print_page($config->{tt_titles_form_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -360,7 +360,7 @@ sub show_record {
             highlightquery    => \&highlightquery,
         };
 
-        $self->print_page($config->{tt_titles_tname},$ttdata);
+        $self->print_page($config->{tt_titles_record_tname},$ttdata);
 
         # Log Event
 

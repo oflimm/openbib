@@ -40,23 +40,13 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
 
     <!-- begin: main content area #main -->
     <div id="main">
-
-   <div class="ob-functional_nav">
-      <div class="ob-breadcrumb"> 
-       <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-        <li><a href="#" class="lastitem">[% msg.maketext("Person") %]</a></li>
-      </ul>
-    </div>
-    <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('persons_loc') %]/id/[% record.id %].rdf?l=[% lang %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('persons_loc') %]/id/[% record.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-    </div>
-   </div>
-
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('persons_loc') %]/id/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('persons_loc') %]/id/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+
+
         </div>
       </div>
       <!-- end: #col1 -->
@@ -68,7 +58,7 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
 <!-- Person begins here -->
 <div class="images ym-g50 ym-gr"><!-- Begin Images -->
   <div class="ym-gbox-right">
-[% PROCESS common/subtemplate name="person_html_images" %]
+[% PROCESS common/subtemplate name="persons_record_html_images" %]
   </div>
 </div><!-- End Images -->
 
@@ -87,6 +77,18 @@ FOREACH category IN categories;
     content = item.content;
 
     SWITCH category;
+
+    CASE "P0308";
+        content    = "<a href=\"http://de.wikisource.org/wiki/Bild:${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P0309";
+        content    = "<a href=\"http://de.wikipedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P0310";
+        content    = "<a href=\"http://de.wikiquote.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
+
+    CASE "P0311";
+        content    = "<a href=\"http://commons.wikimedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
 
     CASE "P5000";
          searchterm    = record.id;
@@ -114,7 +116,7 @@ END;
 -%]
 </table>
 
-  </div> <!-- End subcl -->
+  </div> <!-- End grid -->
 </div><!-- End Categories -->
 </div><!-- End Details -->
 

@@ -28,7 +28,7 @@
 <!-- Title begins here -->
 <div class="images"><!-- Begin Images -->
 
-[% PROCESS common/subtemplate name="titles_html_images" %]
+[% PROCESS common/subtemplate name="titles_record_html_images" %]
 
 </div><!-- End Images -->
 
@@ -75,7 +75,7 @@
 END ;
 %]
 
-[% PROCESS common/subtemplate name="titles_html_categories" %]
+[% PROCESS common/subtemplate name="titles_record_html_categories" %]
 
 [% IF config.get('unAPI') %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>

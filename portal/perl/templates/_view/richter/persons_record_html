@@ -68,7 +68,7 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
 <!-- Person begins here -->
 <div class="images ym-g50 ym-gr"><!-- Begin Images -->
   <div class="ym-gbox-right">
-[% PROCESS common/subtemplate name="person_html_images" %]
+[% PROCESS common/subtemplate name="persons_record_html_images" %]
   </div>
 </div><!-- End Images -->
 

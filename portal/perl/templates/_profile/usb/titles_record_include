@@ -34,12 +34,12 @@
 -%]
 
 <div style="float:right;">
-[%- PROCESS common/subtemplate name="titles_html_images" -%]
+[%- PROCESS common/subtemplate name="titles_record_html_images" -%]
 </div><!-- End Images -->
 
 <div class="result" style="width:500px;">
 [%- PROCESS common/subtemplate name="visible_categories_title" -%]
-[%- PROCESS common/subtemplate name="titles_html_categories" -%]
+[%- PROCESS common/subtemplate name="titles_record_html_categories" -%]
 [%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">
 <img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;

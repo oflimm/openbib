@@ -1,0 +1,27 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editauthenticator
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines Anmeldeziels
+#
+#######################################################################
+-%]
+[%-
+     this_json_output = {
+           link = {
+              rel = 'self'
+              href = location
+           }
+           id = authenticator.id
+           description = authenticator.description
+           type = authenticator.type
+     };
+
+     to_json(this_json_output);
+
+-%]

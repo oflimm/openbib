@@ -101,7 +101,7 @@ sub show_collection {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_user_tname},$ttdata);
+    $self->print_page($config->{tt_admin_users_tname},$ttdata);
 
 }
 
@@ -127,7 +127,7 @@ sub show_search_form {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_user_search_form_tname},$ttdata);
+    $self->print_page($config->{tt_admin_users_search_form_tname},$ttdata);
 
 }
 
@@ -173,7 +173,7 @@ sub show_search {
         userlist   => $userlist_ref,
     };
     
-    $self->print_page($config->{tt_admin_user_search_tname},$ttdata);
+    $self->print_page($config->{tt_admin_users_search_tname},$ttdata);
 }
     
 1;

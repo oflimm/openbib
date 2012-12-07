@@ -171,7 +171,7 @@ sub authorization_successful {
 
     $logger->debug("Basic http auth failure: $basic_auth_failure");
 
-    if (($basic_auth_failure && !$user->is_admin) || !$self->is_authenticated('admin'))){
+    if ( ($basic_auth_failure && !$user->is_admin) || !$self->is_authenticated('admin') ){
         return 0;
     }
 

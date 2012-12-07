@@ -186,11 +186,6 @@
 [%   ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
 [%   END %]
-[%   IF active_subsubmenu == "search" %]
-      <li class="active"><strong>[% msg.maketext("Nutzer suchen/bearbeiten") %]</strong></li>
-[%   ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search/form">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
-[%   END %]
     </ul>
 </li>
 [% ELSE %]

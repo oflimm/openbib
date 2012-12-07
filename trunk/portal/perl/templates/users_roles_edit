@@ -30,10 +30,25 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Rolle") %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<!-- <a href="[% path_prefix %]/[% config.get('users_loc') %]/[% userinfo.id %]/[% config.get('roles_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp; -->
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="borrows" %] 
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_users" %] 
         </div>
       </div>
       <!-- end: #col1 -->
@@ -43,9 +58,8 @@
 
    <h1>[% msg.maketext("Rolle bearbeiten") %]</h1>
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Personendaten") %]</th><td></tr>
-<tr><td class="boxedclear">
+<h3>[% msg.maketext("Personendaten") %]</h3>
+
 <table class="ym-full">
 [% IF userinfo.nachname %]
 <tr><td><b>[% msg.maketext("Nachname") %]:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
@@ -75,30 +89,28 @@
 [%- END -%]
 </td></tr>
 </table>
-</td></tr>
-</table>
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/role">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/role" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Rolle zuordnen") %]</th><td></tr>
-<tr><td class="boxedclear">
-<table class="ym-full">
+<fieldset class="ym-columnar">
 
-<tr><td><select name="roles" multiple="multiple" size="5">
+<legend>[% msg.maketext("Rolle zuordnen") %]</legend>
 
+<div class="ym-fbox-select">
+<label for="roles">[% msg.maketext("Rollen") %]</label>
+<select name="roles" multiple="multiple" size="5">
 [% FOREACH role IN user.get_all_roles %]
-<option value="[% role.id %]"[% IF userinfo.role.${role.role} %] selected="selected"[% END %]>[% msg.maketext(role.role) %]</option>
+  <option value="[% role.id %]"[% IF userinfo.role.${role.role} %] selected="selected"[% END %]>[% msg.maketext(role.role) %]</option>
 [% END %]
-
 </select>
-</td></tr>
-<tr><td><input type="submit" value="[% msg.maketext("Los") %]"></td></tr>
-</table>
-</td></tr>
-</table>
+</div>
 
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Los") %]">
+
+</div>
+</fieldset>
 </form>
 
         </div>

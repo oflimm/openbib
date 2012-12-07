@@ -46,7 +46,7 @@
 [% IF active_submenu == "search_advanced" %]
   <li class="active"><strong>Erweiterte Recherche</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/advanced.html?l=[% lang %]">Erweiterte Recherche</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">Erweiterte Recherche</a></li>
 [% END %]
  </ul>
 </nav>

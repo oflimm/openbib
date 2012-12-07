@@ -194,7 +194,9 @@ $(document).ready(function(){
 <select name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
 </div>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Los") %]" />
+</div>
 
 </fieldset>
 </form>
@@ -217,7 +219,9 @@ $(document).ready(function(){
 <select name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
 </div>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Los") %]" />
+</div>
 
 </fieldset>
 </form>
@@ -234,7 +238,6 @@ $(document).ready(function(){
 <div id="ob-tagging_do"><!-- Begin Tagging do -->
 
 [%  IF private_tags_of_tit.size <= 0  %]
-[% username %]
 <form method="[% IF username %]post[% ELSE %]get[% END %]" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
 
 [% IF NOT username %]
@@ -244,10 +247,11 @@ $(document).ready(function(){
 <input type="hidden" name="dbname" value="[% record.database %]"/>
 <input type="hidden" name="titleid" value="[% record.id %]"/>
 
-<fieldset class="ym-full">
+<fieldset class="ym-columnar">
 <legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
 
 <div class="ym-fbox-text">
+<label for="tags">[% msg.maketext("Tags") %]</label>
 <input type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
 </div>
 
@@ -259,7 +263,10 @@ $(document).ready(function(){
 </select>
 </div>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Hinzuf&uuml;gen") %]" />
+</div>
+
 </fieldset>
 </form>
 

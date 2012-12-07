@@ -428,6 +428,45 @@ sub personalize_uri {
             $logger->debug("No Dispatch: User: $user->{ID} / Representation:$representation:");
         }   
     }
+    elsif ($self->param('admin_loc')){
+        my $dispatch_url = ""; #$self->param('scheme')."://".$self->param('servername');   
+        
+        my $user           = $self->param('user');
+        my $config         = $self->param('config');
+        my $path_prefix    = $self->param('path_prefix');
+        my $path           = $self->param('path');
+        my $representation = $self->param('representation');
+        
+#        # Interne Pfade sind immer mit base_loc und view
+#        my $baseloc    = $config->get('base_loc');
+#        $path =~s{^$baseloc/[^/]+}{$path_prefix};
+
+        # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
+        # und gilt immer nur fuer Repraesentationen.
+        if ($user->is_admin && $representation){
+            my $loc = $self->param('personalized_loc');
+            $logger->debug("Replacing $path_prefix/$loc with $path_prefix/$config->{admin_loc}/$loc");
+            my $old_loc = "$path_prefix/$loc";
+            my $new_loc = "$path_prefix/$config->{admin_loc}/$loc";
+            $path=~s{^$old_loc}{$new_loc};
+
+            $self->param('path',$path);
+            
+            $dispatch_url .=$path;
+            
+            if ($self->query->args()){
+                $dispatch_url.="?".$self->query->args();
+            }
+
+            $logger->debug("Dispatching to $dispatch_url");
+            $self->param('dispatch_url',$dispatch_url);
+
+            return;            
+        }
+        else {
+            $logger->debug("No Dispatch: User: $user->{ID} / Representation:$representation:");
+        }   
+    }
     
     return;
 }

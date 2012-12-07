@@ -84,13 +84,6 @@ $(document).ready(function(){
 <tr><td class="ob-field">[% msg.maketext("Personen") %]</td><td><input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF available_searchfields.corporatebody.active %]
-[%- cgiparam = searchfield.corporatebody.prefix;
-    this_searchfield = 'corporatebody';
- -%]
-<tr><td class="ob-field">[% msg.maketext("Institutionen") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
 [% IF available_searchfields.subject.active %]
 [%- cgiparam = searchfield.subject.prefix;
     this_searchfield = 'subject';
@@ -177,10 +170,10 @@ $(document).ready(function(){
 <tr><td class="ob-field">[% msg.maketext("Zeitraum") %]</td><td><input type="text" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />&nbsp[% msg.maketext("bis") %]&nbsp;<input type="text" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" /></td><td></td></tr>
 [% END %]
 <!-- <tr><td class="ob-field">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="ob-field">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr> -->
-<tr><td class="ob-field"><span class="bigtext">[% msg.maketext("in:") %]</span></td><td colspan="2">[% PROCESS common/subtemplate name="searchform_profile" %]</td><td></td></tr>
+<tr><td class="ob-field"><span class="bigtext">[% msg.maketext("in:") %]</span></td><td colspan="2">[% PROCESS common/subtemplate name="searchforms_record_profile" %]</td><td></td></tr>
 
 <tr><td colspan="3"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></td></tr>
 <tr><td colspan="3"></td></tr>
-<tr><td ><a href="[% path_prefix %]/[% config.get('searchform_loc') %]/simple.html" class="navlink">[% msg.maketext("Einfache Suche") %]</a></td><td colspan="2" align="right">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
+<tr><td ><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/simple.html" class="navlink">[% msg.maketext("Einfache Suche") %]</a></td><td colspan="2" align="right">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
 
 </table>

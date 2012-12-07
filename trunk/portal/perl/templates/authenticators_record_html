@@ -1,17 +1,17 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_editcat
+# Templatename: admin_editauthenticator
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+# Eingabemaske fuer die Meta-Informationen eines Anmeldeziels
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Anmeldeziel wirklich l&ouml;schen?' %]
+[% PROCESS common/subtemplate name="std_header" title='' %]
 
   <body>
 
@@ -30,10 +30,23 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
+         <li><a href="#" class="lastitem">[% authenticator.description %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticator.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_authenticators" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -41,28 +54,12 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<table width="100%">
-<tr><th>Sind sie sicher?</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>[% msg.maketext("Anmeldeziel") %]</h3>
 
-<table>
-<tr>
-<td>
-<form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticator.id %]">
-<input type="hidden" name="_method"     value="DELETE" />
-<input type="hidden" name="confirm"     value="0" />
-<input type="submit" value="[% msg.maketext("Ja") %]">
-</form>
-</td>
-<td>&nbsp;&nbsp;</td>
-<td>
-<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% authenticator.id %]/edit">
-<input type="submit" value="[% msg.maketext("Nein") %]">
-</form>
-</td>
-</tr>
-</table>
-</td></tr>
+<table class="ym-full">
+<tr><th>[% msg.maketext("Id") %]</th><td>[% authenticator.id %]</td></tr>
+<tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% authenticator.description %]</td></tr>
+<tr><th>[% msg.maketext("Typ") %]</th><td>[% authenticator.type %]</td></tr>
 </table>
 
         </div>

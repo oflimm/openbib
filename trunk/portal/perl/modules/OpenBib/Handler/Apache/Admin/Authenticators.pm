@@ -74,6 +74,7 @@ sub setup {
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',
         'delete_record'             => 'delete_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -116,7 +117,7 @@ sub show_record {
 
     # Dispatched Args
     my $view             = $self->param('view')                   || '';
-    my $authenticationid = $self->strip_suffix($self->param('authenticationid'))       || '';
+    my $authenticatorid = $self->strip_suffix($self->param('authenticatorid'))       || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -137,7 +138,7 @@ sub show_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    my $authenticator_ref = $config->get_authenticator_by_id($authenticationid);
+    my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
     
     my $ttdata={
         authenticator => $authenticator_ref,
@@ -154,7 +155,7 @@ sub show_record_form {
 
     # Dispatched Args
     my $view             = $self->param('view')                   || '';
-    my $authenticationid = $self->param('authenticationid')       || '';
+    my $authenticatorid = $self->param('authenticatorid')       || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -175,7 +176,7 @@ sub show_record_form {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    my $authenticator_ref = $config->get_authenticator_by_id($authenticationid);
+    my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
     
     my $ttdata={
         authenticator => $authenticator_ref,
@@ -200,6 +201,7 @@ sub create_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
@@ -234,7 +236,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authenticators_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}/id/$new_authenticatorid.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -242,7 +244,7 @@ sub create_record {
         if ($new_authenticatorid){
             $logger->debug("Weiter zum Record $new_authenticatorid");
             $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('authenticationid',$new_authenticatorid);
+            $self->param('authenticatorid',$new_authenticatorid);
             $self->param('location',"$location/$new_authenticatorid");
             $self->show_record;
         }
@@ -259,7 +261,7 @@ sub update_record {
     
     # Dispatched Args
     my $view             = $self->param('view')                   || '';
-    my $authenticationid = $self->param('authenticationid')       || '';
+    my $authenticatorid = $self->param('authenticatorid')       || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -268,6 +270,7 @@ sub update_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
@@ -279,7 +282,7 @@ sub update_record {
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
-    $input_data_ref->{id} = $authenticationid;
+    $input_data_ref->{id} = $authenticatorid;
     
     if (!$self->authorization_successful){
         $self->print_authorization_error();
@@ -292,10 +295,10 @@ sub update_record {
     # zu verwenden
 
     if ($method eq "DELETE"){
-        $logger->debug("About to delete $authenticationid");
+        $logger->debug("About to delete $authenticatorid");
         
         if ($confirm){
-            my $authenticator_ref = $config->get_authenticator_by_id($authenticationid);
+            my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
             
             my $ttdata={
                 stylesheet => $stylesheet,
@@ -329,15 +332,39 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authenticators_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
-        $logger->debug("Weiter zum Record $authenticationid");
+        $logger->debug("Weiter zum Record $authenticatorid");
         $self->show_record;
     }
 
     return;
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view            = $self->param('view');
+    my $authenticatorid = $self->strip_suffix($self->param('authenticatorid'));
+    my $config          = $self->param('config');
+
+    my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
+
+    my $ttdata={
+       authenticator  => $authenticator_ref,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_admin_authenticators_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
 }
 
 sub delete_record {
@@ -348,11 +375,12 @@ sub delete_record {
     
     # Dispatched Args
     my $view             = $self->param('view')                   || '';
-    my $authenticationid = $self->param('authenticationid')             || '';
+    my $authenticatorid = $self->param('authenticatorid')             || '';
 
     # Shared Args
     my $r              = $self->param('r');
     my $config         = $self->param('config');
+    my $lang           = $self->param('lang');
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
@@ -362,12 +390,12 @@ sub delete_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    $config->delete_authenticator($authenticationid);
+    $config->delete_authenticator($authenticatorid);
 
     return unless ($self->param('representation') eq "html");
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_authenticators_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;
@@ -388,11 +416,6 @@ sub get_input_definition {
             type     => 'scalar',
         },
         port => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        remoteuser => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

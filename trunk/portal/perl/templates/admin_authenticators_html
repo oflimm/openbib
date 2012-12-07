@@ -40,7 +40,7 @@
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('authenticators_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -55,22 +55,51 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]">
+<form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]" class="ym-form">
 
-<table width="100%">
-<tr><th>[% msg.maketext("Neues Anmeldeziel anlegen") %]</th></tr>
-<tr><td class="boxedclear">
-<table>
-<!-- <tr><td><b>[% msg.maketext("Hostname") %]</b></td><td><input type="text" name="hostname" /></td></tr>
-<tr><td><b>[% msg.maketext("Port") %]</b></td><td><input type="text" name="port" /></td></tr>
-<tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td><input type="text" name="username" /></td></tr>
-<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><input type="text" name="dbname" /></td></tr>
--->
-<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Typ") %]</b></td></tr>
-<tr><td><input type="text" name="description" /></td><td><select name="type"><option value="self">[% msg.maketext("Selbstregistrierung") %]</option><option value="olws">OLWS</option></td><td><input type="submit" value="[% msg.maketext("Neu") %]" /></td></tr>
-</table>
-</td></tr>
-</table>
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Neues Anmeldeziel anlegen") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="hostname">[% msg.maketext("Hostname") %]</label>
+<input type="text" name="hostname" id="hostname" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="port">[% msg.maketext("Port") %]</label>
+<input type="text" name="port" id="port" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="remoteuser">[% msg.maketext("Nutzername") %]</label>
+<input type="text" name="remoteuser" id="remoteuser"  value="[% authenticator.remoteuser %]"/>
+</div>
+
+<div class="ym-fbox-text">
+<label for="remotedb">[% msg.maketext("DB-Name") %]</label>
+<input type="text" name="remotedb" id="remotedb" value="[% authenticator.remotedb %]"/>
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" />
+</div>
+
+<div class="ym-fbox-select">
+<label for="type">[% msg.maketext("Typ") %]</label>
+  <select name="type" id="type">
+    <option value="self">[% msg.maketext("Selbstregistrierung") %]</option>
+    <option value="olws">OLWS</option>
+  </select>
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Neu") %]" />
+
+</div>
+
+</fieldset>
 
 </form>
 
@@ -86,7 +115,7 @@
 <tr><td><b>Id</b></td><td><b>[% msg.maketext("Hostname") %]</b></td><td><b>[% msg.maketext("Port") %]</b></td><td><b>[% msg.maketext("Nutzername") %]</b></td><td><b>[% msg.maketext("DB-Name")
 %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Typ") %]</b></td></tr>
 [% FOREACH target IN authenticators %]
-<tr><td>[% target.id %]</td><td>[% target.hostname %]</td><td>[% target.port %]</td><td>[% target.remoteuser %]</td><td>[% target.remotedb %]</td><td><a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% target.id %]/edit">[% target.description %]</a></td><td>[% target.type %]</td></tr>
+<tr><td>[% target.id %]</td><td>[% target.hostname %]</td><td>[% target.port %]</td><td>[% target.remoteuser %]</td><td>[% target.remotedb %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %]/edit">[% target.description %]</a></td><td>[% target.type %]</td></tr>
 [% END %]
 </table>
 </td></tr>

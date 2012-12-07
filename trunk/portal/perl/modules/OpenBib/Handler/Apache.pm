@@ -389,7 +389,7 @@ sub personalize_uri {
     my $logger = get_logger();
     
     # Personalisierte URIs
-    if ($self->param('personalized_loc')){
+    if ($self->param('users_loc')){
         my $dispatch_url = ""; #$self->param('scheme')."://".$self->param('servername');   
         
         my $user           = $self->param('user');
@@ -405,7 +405,7 @@ sub personalize_uri {
         # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
         # und gilt immer nur fuer Repraesentationen.
         if ($user->{ID} && $representation){
-            my $loc = $self->param('personalized_loc');
+            my $loc = $self->param('users_loc');
             $logger->debug("Replacing $path_prefix/$loc with $path_prefix/users/$user->{ID}/$loc");
             my $old_loc = "$path_prefix/$loc";
             my $new_loc = "$path_prefix/users/id/$user->{ID}/$loc";
@@ -444,7 +444,7 @@ sub personalize_uri {
         # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
         # und gilt immer nur fuer Repraesentationen.
         if ($user->is_admin && $representation){
-            my $loc = $self->param('personalized_loc');
+            my $loc = $self->param('admin_loc');
             $logger->debug("Replacing $path_prefix/$loc with $path_prefix/$config->{admin_loc}/$loc");
             my $old_loc = "$path_prefix/$loc";
             my $new_loc = "$path_prefix/$config->{admin_loc}/$loc";

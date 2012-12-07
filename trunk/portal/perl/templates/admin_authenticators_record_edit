@@ -36,19 +36,19 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
          <li><a href="#" class="lastitem">[% authenticator.description %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticator.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% authenticator.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="authentication" %]
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_authenticators" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -56,35 +56,59 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticator.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticator.id %]" class="ym-form">
 <input type="hidden" name="_method"     value="PUT" />
 
-<table width="100%">
-<tr><th>[% msg.maketext("Anmeldeziel bearbeiten") %]</th></tr>
-<tr><td class="boxedclear">
-<table>
-<tr><td><b>[% msg.maketext("Hostname") %]</b></td><td><input type="text" name="hostname" value="[% authenticator.hostname %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Port") %]</b></td><td><input type="text" name="port" value="[% authenticator.port %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td><input type="text" name="username" value="[% authenticator.remoteuser %]" /></td></tr>
-<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><input type="text" name="dbname" value="[% authenticator.remotedb %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% authenticator.description %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Typ") %]</b></td><td><input type="text" name="type" value="[% authenticator.type %]" /></td></tr>
-</table>
-</td></tr>
-</table>
+<fieldset class="ym-columnar">
 
-<p />
+<legend>[% msg.maketext("Anmeldeziel bearbeiten") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="hostname">[% msg.maketext("Hostname") %]</label>
+<input type="text" name="hostname" id="hostname"  value="[% authenticator.hostname %]"/>
+</div>
+
+<div class="ym-fbox-text">
+<label for="port">[% msg.maketext("Port") %]</label>
+<input type="text" name="port" id="port"  value="[% authenticator.port %]"/>
+</div>
+
+<div class="ym-fbox-text">
+<label for="remoteuser">[% msg.maketext("Nutzername") %]</label>
+<input type="text" name="remoteuser" id="remoteuser"  value="[% authenticator.remoteuser %]"/>
+</div>
+
+<div class="ym-fbox-text">
+<label for="remotedb">[% msg.maketext("DB-Name") %]</label>
+<input type="text" name="remotedb" id="remotedb" value="[% authenticator.remotedb %]"/>
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" value="[% authenticator.description %]"/>
+</div>
+
+<div class="ym-fbox-select">
+<label for="type">[% msg.maketext("Typ") %]</label>
+  <select name="type" id="type">
+    <option value="self" [% IF authenticator.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
+    <option value="olws" [% IF authenticator.type == 'olws' %]selected="selected"[% END %]>OLWS</option>
+  </select>
+</div>
+
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Ändern") %]">
-</table>
+
+&nbsp;&nbsp;&nbsp;
+
+<a class="ob_button" href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticator.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+</div>
+
+</fieldset>
+
 </form>
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticator.id %]">
-<input type="hidden" name="_method"     value="DELETE" />
-<input type="hidden" name="confirm"     value="1" />
-
-<input type="submit" value="[% msg.maketext("Löschen") %]"></td></tr>
-
-</form>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

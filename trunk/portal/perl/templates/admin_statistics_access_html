@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_statistic_access_html
+# Templatename: admin_statistics_access_html
 #
 # Typ         : Mastertemplate       
 #
@@ -32,6 +32,21 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statistiken") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Zahl Recherchen/Sessions") %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/access.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -59,16 +74,12 @@
 </div>
 </p>
 
-<table width="100%">
-<tr><th>[% msg.maketext("Zugriffe auf OpenBib") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>[% msg.maketext("Zugriffe auf OpenBib") %]</h3>
 
 <table>
-<tr><td>[% msg.maketext("Anzahl Recherchen mit Benutzereingabe") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 1, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access/query/graph.html">Grafik</a></td></tr>
-<tr><td>[% msg.maketext("Anzahl Einzeltrefferaufrufe") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 10, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access/title/graph.html">Grafik</a></td></tr>
-<tr><td>[% msg.maketext("Anzahl Sessions") %]</td><td><b>[% ret = statistics.get_number_of_event({ type => 102, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access/session/graph.html">Grafik</a></td></tr>
-</table>
-</td></td>
+<tr><th>[% msg.maketext("Anzahl Recherchen mit Benutzereingabe") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 1, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access/query/graph.html">Grafik</a></td></tr>
+<tr><th>[% msg.maketext("Anzahl Einzeltrefferaufrufe") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 10, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access/title/graph.html">Grafik</a></td></tr>
+<tr><th>[% msg.maketext("Anzahl Sessions") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 102, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/access/session/graph.html">Grafik</a></td></tr>
 </table>
 
         </div>

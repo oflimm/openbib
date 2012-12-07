@@ -67,7 +67,7 @@ sub setup {
     $self->start_mode('show');
     $self->run_modes(
         'show_collection'           => 'show_collection',
-        'show_statistic'            => 'show_statistic',
+        'show_statistics'           => 'show_statistics',
         'show_graph'                => 'show_graph',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -110,7 +110,7 @@ sub show_collection {
         statistics     => $statistics,
     };
     
-    my $templatename = "tt_admin_statistic_tname";
+    my $templatename = "tt_admin_statistics_tname";
     
     $self->print_page($config->{$templatename},$ttdata);
 
@@ -167,7 +167,7 @@ sub show_graph {
 
 }
 
-sub show_statistic {
+sub show_statistics {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -175,8 +175,8 @@ sub show_statistic {
 
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $statisticid    = $self->param('statisticid')    || '';
-    my $statisticid2   = $self->param('statisticid2')   || '';
+    my $statisticsid   = $self->param('statisticsid')    || '';
+    my $statisticsid2  = $self->param('statisticsid2')   || '';
     my $graph          = $self->param('graph')          || '';
 
     # Shared Args
@@ -199,8 +199,8 @@ sub show_statistic {
         return;
     }
 
-    my $id        = ($statisticid && $statisticid2)?$statisticid2:$statisticid;
-    my $statistic = $self->strip_suffix($id);
+    my $id  = ($statisticsid && $statisticsid2)?$statisticsid2:$statisticsid;
+    my $laststatisticsid = $self->strip_suffix($id);
     
     my $statistics = new OpenBib::Statistics();
     
@@ -211,14 +211,16 @@ sub show_statistic {
     };
 
     
-    my $templatename = "tt_admin_statistic_tname";
+    my $templatename = "tt_admin_statistics_tname";
 
-    if ($statisticid && $statisticid2 && $statistic){
-        $templatename = "tt_admin_statistic_".$statisticid."_".$statistic."_tname";
+    if ($statisticsid && $statisticsid2 && $laststatisticsid){
+        $templatename = "tt_admin_statistics_".$statisticsid."_".$laststatisticsid."_tname";
     }
-    elsif ($statisticid && !$statisticid2 && $statistic){
-        $templatename = "tt_admin_statistic_".$statistic."_tname";
+    elsif ($statisticsid && !$statisticsid2 && $laststatisticsid){
+        $templatename = "tt_admin_statistics_".$laststatisticsid."_tname";
     }
+
+    $logger->debug("Template: $templatename");
     
     $self->print_page($config->{$templatename},$ttdata);
 

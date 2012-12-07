@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_statistic_view_html
+# Templatename: admin_statistics_view_html
 #
 # Typ         : Mastertemplate       
 #
@@ -32,6 +32,21 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statistiken") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Views") %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/view.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -59,17 +74,13 @@
 </div>
 </p>
 
-<table width="100%">
-<tr><th>[% msg.maketext("Nutzung der vorhandenen Views") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>[% msg.maketext("Nutzung der vorhandenen Views") %]</h3>
 
 <table>
 [% views = statistics.get_ranking_of_event({ type => 100, from => "${year}0101", to => "${year}1231"}) %]
 [% FOREACH view IN views %]
 <tr><td>[% view.content %]</td><td><b>[% view.number %]</b> </td></tr>
 [% END %]
-</table>
-</td></td>
 </table>
 
         </div>

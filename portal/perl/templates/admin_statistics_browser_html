@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_statistic_browser_html
+# Templatename: admin_statistics_browser_html
 #
 # Typ         : Mastertemplate       
 #
@@ -32,6 +32,21 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statistiken") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Browser") %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/browser.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -59,9 +74,7 @@
 </div>
 </p>
 
-<table width="100%">
-<tr><th>Genutzte Browser</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>[% msg.maketext("Genutzte Browser") %]</h3>
 
 <table>
 [% browsers = statistics.get_ranking_of_event({ type => 101, limit => 20, from => "${year}0101", to => "${year}1231"}) %]
@@ -74,7 +87,7 @@
    count_all     = 0;
 %]
 [% FOREACH browser IN browsers %]
-<tr><td>[% browser.content %]</td><td><b>[% browser.number %]</b></td></tr>
+<tr><th>[% browser.content %]</th><td><b>[% browser.number %]</b></td></tr>
 [%
    IF browser.content.match('MSIE 6') ;
       count_msie   =  count_msie + browser.number;
@@ -93,25 +106,21 @@
 %]
 [% END %]
 </table>
-</td></td>
-</table>
 
 <p />
-<table width="100%">
-<tr><th>Browserverteilung</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+
+<h3>[% msg.maketext("Browserverteilung") %]</h3>
+
 [% IF countall %]
-<table>
-<tr><td>Firefox</td><td>[% count_ff * 100.0 / count_all %]</td></tr>
-<tr><td>MSIE</td><td>[% count_msie * 100.0 / count_all %] (6: [% count_msie6 * 100.0 / count_all %] / 7: [% count_msie7 * 100.0 / count_all %])</td></tr>
-<tr><td>Safari</td><td>[% count_safari * 100.0 / count_all %]</td></tr>
-<tr><td>Opera</td><td>[% count_opera * 100.0 / count_all %]</td></tr>
+<table class="ym-full">
+<tr><th>Firefox</th><td>[% count_ff * 100.0 / count_all %]</td></tr>
+<tr><th>MSIE</th><td>[% count_msie * 100.0 / count_all %] (6: [% count_msie6 * 100.0 / count_all %] / 7: [% count_msie7 * 100.0 / count_all %])</td></tr>
+<tr><th>Safari</th><td>[% count_safari * 100.0 / count_all %]</td></tr>
+<tr><th>Opera</th><td>[% count_opera * 100.0 / count_all %]</td></tr>
 </table>
 [% ELSE %]
-Es liegen keine Daten vor
+[% msg.maketext("Es liegen keine Daten vor") %]
 [% END %]
-</tr></tr>
-</table>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

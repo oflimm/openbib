@@ -146,32 +146,32 @@
 [% IF active_subsubmenu == "request" %]
       <li class="active"><strong>[% msg.maketext("Interne/Externe Aufrufe") %]</strong></li>
 [% ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/request.html">[% msg.maketext("Interne/Externe Aufrufe") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/request.html">[% msg.maketext("Interne/Externe Aufrufe") %]</a></li>
 [% END %]
 [% IF active_subsubmenu == "view" %]
       <li class="active"><strong>[% msg.maketext("Views") %]</strong></li>
 [% ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/view.html">[% msg.maketext("Views") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/view.html">[% msg.maketext("Views") %]</a></li>
 [% END %]
 [% IF active_subsubmenu == "query" %]
       <li class="active"><strong>[% msg.maketext("Recherche-Arten") %]</strong></li>
 [% ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/query.html">[% msg.maketext("Recherche-Arten") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/query.html">[% msg.maketext("Recherche-Arten") %]</a></li>
 [% END %]
 [% IF active_subsubmenu == "client" %]
       <li class="active"><strong>[% msg.maketext("Klienten") %]</strong></li>
 [% ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/client.html">[% msg.maketext("Klienten") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/client.html">[% msg.maketext("Klienten") %]</a></li>
 [% END %]
 [% IF active_subsubmenu == "browser" %]
       <li class="active"><strong>[% msg.maketext("Browser") %]</strong></li>
 [% ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/browser.html">[% msg.maketext("Browser") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/browser.html">[% msg.maketext("Browser") %]</a></li>
 [% END %]
 [% IF active_subsubmenu == "access" %]
       <li class="active"><strong>[% msg.maketext("Zahl Recherchen/Sessions") %]</strong></li>
 [% ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/access.html">[% msg.maketext("Zahl Recherchen/Sessions") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/access.html">[% msg.maketext("Zahl Recherchen/Sessions") %]</a></li>
 [% END %]
     </ul>
 </li>

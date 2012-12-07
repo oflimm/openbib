@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_statistic_client_html
+# Templatename: admin_statistics_client_html
 #
 # Typ         : Mastertemplate       
 #
@@ -32,6 +32,21 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statistiken") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Klienten") %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/client.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -59,9 +74,8 @@
 </div>
 </p>
 
-<table width="100%">
-<tr><th>Zugreifende IP's nach Region</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>[% msg.maketext("Zugreifende IP's nach Region") %]</h3>
+
 [% 
    allcount = statistics.get_number_of_event({ type => 102, from => "${year}0101", to => "${year}1231" }) ;
 
@@ -77,30 +91,25 @@
 %]
 [% IF allcount.number %]
 <table>
-<tr><td>Bibliothek</td><td><b>[% ubcount %]</b> </td><td>([% ubcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
-<tr><td>Universit&auml;t</td><td><b>[% unicount %]</b> </td><td>([% unicount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
-<tr><td>Extern</td><td><b>[% externcount %]</b> </td><td>([% externcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><th>Bibliothek</th><td><b>[% ubcount %]</b> </td><td>([% ubcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><th>Universit&auml;t</th><td><b>[% unicount %]</b> </td><td>([% unicount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><th>Extern</th><td><b>[% externcount %]</b> </td><td>([% externcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
 </table>
 [% ELSE %]
 Es liegen keine Daten vor
 [% END %]
-</td></tr>
-</table>
 
 <p />
 
-<table width="100%">
-<tr><th>Zugreifende IP's nach H&auml;ufigkeit</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>[% msg.maketext("Zugreifende IP's nach H&auml;ufigkeit") %]</h3>
 
 <table>
 [% clients = statistics.get_ranking_of_event({ type => 102, limit => 50, from => "${year}0101", to => "${year}1231"}) %]
 [% FOREACH client IN clients %]
-<tr><td>[% client.content %]</td><td><b>[% client.number %]</b> </td><td>([% client.number * 100 / allcount.number | format ("%.3f") %]) Prozent</td></tr>
+<tr><th>[% client.content %]</th><td><b>[% client.number %]</b> </td><td>([% client.number * 100 / allcount.number | format ("%.3f") %]) Prozent</td></tr>
 [% END %]
 </table>
-</td></td>
-</table>
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

@@ -293,7 +293,7 @@ sub show_record {
             highlightquery    => \&highlightquery,
         };
 
-        $self->print_page($config->{tt_titles_tname},$ttdata);
+        $self->print_page($config->{tt_titles_record_tname},$ttdata);
 
         # Log Event
 

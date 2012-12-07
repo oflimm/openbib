@@ -3212,8 +3212,8 @@ tt_catalogue_loggedin_tname: catalogue_loggedin
 tt_catalogue_login_tname: catalogue_login
 tt_catalogue_logout_tname: catalogue_logout
 
-tt_classifications_collection_tname: classifications_collection
-tt_classifications_tname: classifications
+tt_classifications_tname: classifications_collection
+tt_classifications_record_tname: classifications
 
 tt_clouds_classification_tname: clouds_classification
 tt_clouds_collection_tname: clouds_collection
@@ -3252,7 +3252,7 @@ tt_connector_unapi_mets_tname: connector_unapi_mets
 tt_connector_unapi_mods_tname: connector_unapi_mods
 tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
 
-tt_corporatebodies_tname: corporatebodies
+tt_corporatebodies_record_tname: corporatebodies
 
 tt_searchprofiles_session_tname: searchprofiles_session
 tt_error_tname: error
@@ -3325,14 +3325,14 @@ tt_mailpassword_mail_main_tname: mailpassword_mail_main
 tt_mailpassword_success_tname: mailpassword_success
 tt_mailpassword_tname: mailpassword
 
-tt_person_tname: person
+tt_persons_record_tname: person
 
 tt_registrations_confirmation_tname: registrations_confirmation
 tt_registrations_mail_message_tname: registrations_mail_message
 tt_registrations_success_tname: registrations_success
 tt_registrations_tname: registrations
 
-tt_reviews_collection_by_isbn_tname: reviews_collection_by_isbn
+tt_reviews_by_isbn_tname: reviews_collection_by_isbn
 tt_reviews_edit_tname: reviews_edit
 tt_reviews_tname: reviews
 
@@ -3353,8 +3353,8 @@ tt_searchform_simple_tname: searchform_simple
 
 tt_searchprofiles_tname: searchprofiles
 
-tt_subject_collection_tname: subject_collection
-tt_subjects_tname: subjects
+tt_subjects_tname: subject_collection
+tt_subjects_record_tname: subjects
 
 tt_tags_recent_tname: tags_recent
 tt_tags_tname: tags
@@ -3362,13 +3362,13 @@ tt_tags_names_recent_tname: tags_names_recent
 tt_tags_names_tname: tags_names
 tt_tags_names_record_tname: tags_names_record
 
-tt_titles_collection_form_tname: titles_collection_form
+tt_titles_form_tname: titles_collection_form
 tt_titles_popular_by_database_tname: titles_popular_by_database
 tt_titles_popular_tname: titles_popular
 tt_titles_recent_by_database_tname: titles_recent_by_database
 tt_titles_record_form_tname: titles_record_form
 tt_users_titles_searchindex_tname: users_titles_searchindex
-tt_titles_tname: titles
+tt_titles_record_tname: titles
 
 tt_topics_record_mapping_tname: topics_record_mapping
 tt_topics_record_tname: topics_record
@@ -3388,7 +3388,7 @@ tt_users_searchprofiles_tname: users_searchprofiles
 tt_users_searchprofiles_record_edit_tname: users_searchprofiles_record_edit
 tt_users_searchprofiles_record_delete_confirm_tname: users_searchprofiles_record_delete_confirm
 tt_users_searchprofiles_record_tname: users_searchprofiles_record
-tt_users_reviews_collection_tname: users_reviews_collection
+tt_users_reviews_tname: users_reviews_collection
 tt_users_roles_edit_tname: users_roles_edit
 tt_users_tags_tname: users_tags
 tt_users_tags_names_tname: users_tags_names

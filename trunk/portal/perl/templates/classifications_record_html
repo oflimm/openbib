@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: person_html
+# Templatename: classifications_record_html
 #
-# Typ         : Subtemplate
+# Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe eines Verfasser-Normdatensatzes als HTML-Seite im Portal
+# Ausgabe eines Notations/Systematik-Normdatensatzes
 #
 #######################################################################
 -%]
@@ -17,8 +17,8 @@ dbdesc   = dbinfo.get('dbnames').${database}.short ;
 normset  = record.to_rawdata;   
 request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db']});
 
-recordname = normset.${'P0800'}.first.content;
-title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+recordname = normset.${'N0800'}.first.content;
+title      = msg.maketext("Systematik-Information: [_1] in Katalog [_2]",recordname,dbdesc)
 
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
@@ -36,17 +36,26 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %]
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+      <div class="ob-breadcrumb"> 
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+        <li><a href="#" class="lastitem">[% msg.maketext("Klassifizierung") %]</a></li>
+      </ul>
+    </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('classifications_loc') %]/id/[% record.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('persons_loc') %]/id/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('persons_loc') %]/id/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-
-
         </div>
       </div>
       <!-- end: #col1 -->
@@ -54,23 +63,12 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<div class="details ym-grid"><!-- Begin Details -->
-<!-- Person begins here -->
-<div class="images ym-g50 ym-gr"><!-- Begin Images -->
-  <div class="ym-gbox-right">
-[% PROCESS common/subtemplate name="person_html_images" %]
-  </div>
-</div><!-- End Images -->
-
-<div class="categories ym-g50 ym-gl"><!-- Begin Categories -->
-
-  <div class="ym-gbox-left">
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 
-[% PROCESS common/subtemplate name="visible_categories_person" %]
+[% PROCESS common/subtemplate name="visible_categories_classification" %]
 
-[%-
+[%- 
 
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
@@ -78,12 +76,11 @@ FOREACH category IN categories;
 
     SWITCH category;
 
-    CASE "P5000";
+    CASE "N5000";
          searchterm    = record.id;
-         searchprefix  = config.get('searchfield').personid.prefix;
+         searchprefix  = config.get('searchfield').classificationid.prefix;
 
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
-
          content   = "<a href=\"${localurl}\">${content}</a>";
     END;
 
@@ -103,43 +100,6 @@ FOREACH category IN categories;
 END;
 -%]
 </table>
-
-  </div> <!-- End grid -->
-</div><!-- End Categories -->
-
-<p/>
-
-[% IF normset.${"P0302"} %]
-<h2>Zur Person</h2>
-
-<p>
-[% normset.${"P0302"}.first.content %]
-</p>
-
-[% END %]
-
-</div><!-- End Details -->
-
-[%# USE dumper;dumper.dump(normset)%]
-[%
-
-    request_base = "page=1;num=50;srt=person;srto=asc;dd=1;";
-
-    searchterm        = normset.${"P0800"}.first.content;
-    searchprefix      = config.get('searchfield').personstring.prefix;
-
-    globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-    globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-
-%]
-
-<p/>
-
-<p> <img style="vertical-align:bottom" src="[% config.get('hint_img')
-%]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Dehnen Sie Ihre Recherche nach <i>[_1]</i> über die
-[_2]G[_3] lobale Suche auf alle
-vorhandenen Kataloge aus.","${searchterm}","<a href=\"${globalurl}\"><span
-class=\"globalsearch\">","</span></a>") %]</p>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

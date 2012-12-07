@@ -109,7 +109,7 @@ sub show_record {
             authenticatordb => $authenticatordb,
         };
 
-        $self->print_page($config->{'tt_subjects_tname'},$ttdata);
+        $self->print_page($config->{'tt_subjects_record_tname'},$ttdata);
 
         # Log Event
         
@@ -181,7 +181,7 @@ sub show_collection {
             subjects        => $subjects_ref,
         };
         
-        $self->print_page($config->{'tt_subjects_collection_tname'},$ttdata);
+        $self->print_page($config->{'tt_subjects_tname'},$ttdata);
     }
     else {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));

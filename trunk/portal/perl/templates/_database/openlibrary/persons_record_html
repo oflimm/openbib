@@ -58,7 +58,7 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
 <!-- Person begins here -->
 <div class="images ym-g50 ym-gr"><!-- Begin Images -->
   <div class="ym-gbox-right">
-[% PROCESS common/subtemplate name="person_html_images" %]
+[% PROCESS common/subtemplate name="persons_record_html_images" %]
   </div>
 </div><!-- End Images -->
 
@@ -77,18 +77,6 @@ FOREACH category IN categories;
     content = item.content;
 
     SWITCH category;
-
-    CASE "P0308";
-        content    = "<a href=\"http://de.wikisource.org/wiki/Bild:${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
-
-    CASE "P0309";
-        content    = "<a href=\"http://de.wikipedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
-
-    CASE "P0310";
-        content    = "<a href=\"http://de.wikiquote.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
-
-    CASE "P0311";
-        content    = "<a href=\"http://commons.wikimedia.org/wiki/${content}\" class=\"ext\" target=\"_blank\">${content}</a>";
 
     CASE "P5000";
          searchterm    = record.id;
@@ -118,12 +106,24 @@ END;
 
   </div> <!-- End grid -->
 </div><!-- End Categories -->
+
+<p/>
+
+[% IF normset.${"P0302"} %]
+<h2>Zur Person</h2>
+
+<p>
+[% normset.${"P0302"}.first.content %]
+</p>
+
+[% END %]
+
 </div><!-- End Details -->
 
 [%# USE dumper;dumper.dump(normset)%]
 [%
 
-    request_base = "page=1;num=20;srt=relevance_desc;";
+    request_base = "page=1;num=50;srt=person;srto=asc;dd=1;";
 
     searchterm        = normset.${"P0800"}.first.content;
     searchprefix      = config.get('searchfield').personstring.prefix;
@@ -132,6 +132,8 @@ END;
     globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
 
 %]
+
+<p/>
 
 <p> <img style="vertical-align:bottom" src="[% config.get('hint_img')
 %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Dehnen Sie Ihre Recherche nach <i>[_1]</i> über die

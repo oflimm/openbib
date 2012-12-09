@@ -433,135 +433,7 @@ dispatch_rules:
 #     runmode: 'delete_record'
 
 
-  - # admin_statistic_loc: Overview
-     module: 'OpenBib::Handler::Apache::Admin::Statistics'
-     rule: '/portal/:view/admin/statistics.html[get]'
-     runmode: 'show_collection'
-  - # admin_statistic_loc: Overview
-     module: 'OpenBib::Handler::Apache::Admin::Statistics'
-     rule: '/portal/:view/admin/statistics.json[get]'
-     runmode: 'show_collection'
-  - # admin_statistic_loc: Overview
-     module: 'OpenBib::Handler::Apache::Admin::Statistics'
-     rule: '/portal/:view/admin/statistics.rdf[get]'
-     runmode: 'show_collection'
-  - # admin_statistic_loc: Overview
-     module: 'OpenBib::Handler::Apache::Admin::Statistics'
-     rule: '/portal/:view/admin/statistics[get]'
-     runmode: 'show_collection'
 
-  - # admin_statistic_loc: Particular Statistic
-     module: 'OpenBib::Handler::Apache::Admin::Statistics'
-     rule: '/portal/:view/admin/statistics/id/:statisticid[get]'
-     runmode: 'show_statistic'
-
-  - # admin_statistic_loc: Particular Statistic
-     module: 'OpenBib::Handler::Apache::Admin::Statistics'
-     rule: '/portal/:view/admin/statistics/id/:statisticid/:statisticid2[get]'
-     runmode: 'show_statistic'
-
-
-  - # admin_statistic_loc: Particular Statistic
-     module: 'OpenBib::Handler::Apache::Admin::Statistics'
-     rule: '/portal/:view/admin/statistics/id/:statisticid/:statisticid2/graph[get]'
-     runmode: 'show_graph'
-
-  - # admin_statistic_loc: Particular Statistic
-     module: 'OpenBib::Handler::Apache::Admin::Statistics'
-     rule: '/portal/:view/admin/statistics/id/:statisticid/:statisticid2/graph.html[get]'
-     runmode: 'show_graph'
-
-  - # admin_statistic_loc: Particular Statistic
-     module: 'OpenBib::Handler::Apache::Admin::Statistics'
-     rule: '/portal/:view/admin/statistics/id/:statisticid/:statisticid2/graph.include[get]'
-     runmode: 'show_graph'
-
-
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users.html'
-     runmode: 'show_collection'
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users.json'
-     runmode: 'show_collection'
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users.rdf'
-     runmode: 'show_collection'
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users'
-     runmode: 'show_collection'
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users/search/form[get]'
-     runmode: 'show_search_form'
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users/search/form.html[get]'
-     runmode: 'show_search_form'
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users/search'
-     runmode: 'show_search'
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users/search.html'
-     runmode: 'show_search'
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users/search.json'
-     runmode: 'show_search'
-  - # admin_user_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Users'
-     rule: '/portal/:view/admin/users/search.rdf'
-     runmode: 'show_search'
-
-  - # admin_authentication_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators.html[get]'
-     runmode: 'show_collection'
-  - # admin_authentication_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators.json[get]'
-     runmode: 'show_collection'
-  - # admin_authentication_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators.rdf[get]'
-     runmode: 'show_collection'
-  - # admin_authentication_loc:
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators[get]'
-     runmode: 'show_collection'
-  - # admin_authentication_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators/id/:authenticatorid/edit[get]'
-     runmode: 'show_record_form'
-  - # admin_authentication_loc: Record show form
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators/id/:authenticatorid/edit.html[get]'
-     runmode: 'show_record_form'
-  - # admin_authentication_loc: Record show
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators/id/:authenticatorid[get]'
-     runmode: 'show_record'
-  - # admin_authentication_loc: Create Record
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators[post]'
-     runmode: 'create_record'
-  - # admin_authentication_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators/id/:authenticatorid[post]'
-     runmode: 'update_record'
-  - # admin_authentication_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators/id/:authenticatorid[put]'
-     runmode: 'update_record'
-  - # admin_authentication_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Admin::Authenticators'
-     rule: '/portal/:view/admin/authenticators/id/:authenticatorid[delete]'
-     runmode: 'delete_record'
 
   - # topic_loc:
      module: 'OpenBib::Handler::Apache::Topics'
@@ -1728,6 +1600,62 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Admin::Searchprofiles'
      rule: '/portal/:view/searchprofiles/id/:searchprofileid[delete]'
      runmode: 'delete_record'
+
+#####################################################################
+# Statistik-Resource/Repraesentation
+  - # users/statistics_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Statistics'
+     rule: '/portal/:view/admin/statistics[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/statistics_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Statistics'
+     rule: '/portal/:view/admin/statistics/id/:statisticsid[get]'
+     runmode: 'show_statistics'
+  - # users_loc/statistics_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Statistics'
+     rule: '/portal/:view/admin/statistics/id/:statisticsid/subid/:statisticsid2[get]'
+     runmode: 'show_statistics'
+  - # users_loc/statistics_loc: Record show
+     module: 'OpenBib::Handler::Apache::Admin::Statistics'
+     rule: '/portal/:view/admin/statistics/id/:statisticsid/subid/:statisticsid2/graph[get]'
+     representations:
+       - none
+       - html
+       - include
+     runmode: 'show_graph'
+
+#####################################################################
+# Users-Resource/Repraesentation
+  - # Resource: admin_loc/users_loc
+     module: 'OpenBib::Handler::Apache::Admin::Users'
+     rule: '/portal/:view/admin/users[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     runmode: 'show_collection'
+  - # Resource: admin_loc/users_loc
+     module: 'OpenBib::Handler::Apache::Admin::Users'
+     rule: '/portal/:view/admin/users/search/form[get]'
+     representations:
+       - none
+       - html
+     runmode: 'show_search_form'
+  - # Resource: admin_loc/users_loc
+     module: 'OpenBib::Handler::Apache::Admin::Users'
+     rule: '/portal/:view/admin/users/search[get]'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+     runmode: 'show_search'
 
 #####################################################################
 # Authenticators-Resource/Repraesentation

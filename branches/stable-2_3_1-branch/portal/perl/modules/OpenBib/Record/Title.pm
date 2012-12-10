@@ -42,6 +42,7 @@ use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use SOAP::Lite;
 use Storable;
+use URI::Escape;
 use XML::LibXML;
 use YAML ();
 
@@ -1189,6 +1190,10 @@ sub print_to_handler {
         litlists          => $litlists_ref,
         highlightquery    => \&highlightquery,
 
+        uri_unescape => sub {
+            URI::Escape::uri_unescape(@_);
+        },
+        
         record      => $self,
         config      => $config,
         user        => $user,

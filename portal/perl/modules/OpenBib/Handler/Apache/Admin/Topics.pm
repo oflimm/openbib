@@ -52,8 +52,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
-use OpenBib::EZB;
-use OpenBib::DBIS;
+use OpenBib::Catalog::Factory;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -107,7 +106,7 @@ sub show_collection {
         topics   => $topics_ref,
     };
     
-    $self->print_page($config->{tt_admin_topic_tname},$ttdata);
+    $self->print_page($config->{tt_admin_topics_tname},$ttdata);
 
     return;
 }
@@ -136,7 +135,7 @@ sub show_collection_form {
         topics   => $topics_ref,
     };
     
-    $self->print_page($config->{tt_admin_topic_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_topics_edit_tname},$ttdata);
 
     return;
 }
@@ -161,8 +160,8 @@ sub show_record {
     }
 
     my $topic_ref = $user->get_topic({ id => $topicid});
-    my $ezb         = OpenBib::EZB->new;
-    my $dbis        = OpenBib::DBIS->new;
+    my $ezb         = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });;
+    my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
     
     my $ttdata={
         topic    => $topic_ref,
@@ -170,7 +169,7 @@ sub show_record {
         dbis       => $dbis,
     };
     
-    $self->print_page($config->{tt_admin_topic_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_topics_record_tname},$ttdata);
 
     return;
 }
@@ -196,8 +195,8 @@ sub show_record_form {
     }
 
     my $topic_ref = $user->get_topic({ id => $topicid});
-    my $ezb         = OpenBib::EZB->new;
-    my $dbis        = OpenBib::DBIS->new;
+    my $ezb         = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });;
+    my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
     
     my $ttdata={
         topic    => $topic_ref,
@@ -205,7 +204,7 @@ sub show_record_form {
         dbis       => $dbis,
     };
     
-    $self->print_page($config->{tt_admin_topic_record_edit_tname},$ttdata);
+    $self->print_page($config->{tt_admin_topics_record_edit_tname},$ttdata);
 
     return;
 }
@@ -311,7 +310,7 @@ sub update_record {
             };
 
             $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_topic_record_delete_confirm_tname},$ttdata);
+            $self->print_page($config->{tt_admin_topics_record_delete_confirm_tname},$ttdata);
 
             return Apache2::Const::OK;
         }

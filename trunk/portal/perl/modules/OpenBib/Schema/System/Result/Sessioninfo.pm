@@ -208,17 +208,17 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 session_collectionitems
+=head2 session_cartitems
 
 Type: has_many
 
-Related object: L<OpenBib::Schema::System::Result::SessionCollectionitem>
+Related object: L<OpenBib::Schema::System::Result::SessionCartitem>
 
 =cut
 
 __PACKAGE__->has_many(
-  "session_collectionitems",
-  "OpenBib::Schema::System::Result::SessionCollectionitem",
+  "session_cartitems",
+  "OpenBib::Schema::System::Result::SessionCartitem",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -254,8 +254,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-30 14:59:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:e+LP1ZoaapsrWw7kxU5NUQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-10 08:35:41
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tOCPxnRa4y6snN5vYKg6qw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

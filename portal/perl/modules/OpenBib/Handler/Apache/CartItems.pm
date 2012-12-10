@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::CollectionItems
+#  OpenBib::Handler::Apache::CartItems
 #
 #  Dieses File ist (C) 2001-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::CollectionItems;
+package OpenBib::Handler::Apache::CartItems;
 
 use strict;
 use warnings;
@@ -53,7 +53,6 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
-use OpenBib::ManageCollection::Util;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
@@ -157,7 +156,7 @@ sub show_collection {
         dbinfo            => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_collectionitems_tname},$ttdata);
+    $self->print_page($config->{tt_cartitems_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -270,7 +269,7 @@ sub show_record {
         dbinfo         => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_collectionitems_record_tname},$ttdata);
+    $self->print_page($config->{tt_cartitems_record_tname},$ttdata);
 
     return;
 }
@@ -299,7 +298,7 @@ sub create_record {
     my $location       = $self->param('location');
 
     # CGI Args
-    my $do_collectionitems_delentry  = $query->param('do_collectionitems_delentry')  || '';
+    my $do_cartitems_delentry  = $query->param('do_cartitems_delentry')  || '';
     my $do_litlists_addentry     = $query->param('do_litlists_addentry')     || '';
     my $do_addlitlist           = $query->param('do_addlitlist')           || '';
     my $do_addtags              = $query->param('do_addtags')              || '';
@@ -316,10 +315,10 @@ sub create_record {
     }
 
     # Process WWW-UI-Shortcuts
-    if ($do_collectionitems_delentry || $do_litlists_addentry || $do_addlitlist || $do_addtags ) {
+    if ($do_cartitems_delentry || $do_litlists_addentry || $do_addlitlist || $do_addtags ) {
 
         # Shortcut: Delete multiple items via POST
-        if ($query->param('do_collectionitems_delentry')) {
+        if ($query->param('do_cartitems_delentry')) {
             foreach my $listid ($query->param('id')) {
                 $self->delete_item_from_collection($listid);
             }
@@ -600,7 +599,7 @@ sub print_collection {
         dbinfo     => $dbinfotable,
     };
         
-    $self->print_page($config->{tt_collectionitems_print_tname},$ttdata);
+    $self->print_page($config->{tt_cartitems_print_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -661,12 +660,12 @@ sub save_collection {
     if ($format eq "short" || $format eq "full") {
         $self->param('content_type','text/html');
         $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
-        $self->print_page($config->{tt_collectionitems_save_html_tname},$ttdata);
+        $self->print_page($config->{tt_cartitems_save_html_tname},$ttdata);
     }
     else {
         $self->param('content_type','text/plain');
         $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
-        $self->print_page($config->{tt_collectionitems_save_plain_tname},$ttdata);
+        $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
     }
     return Apache2::Const::OK;
 }
@@ -729,7 +728,7 @@ sub mail_collection {
         dbinfo      => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_collectionitems_mail_tname},$ttdata);
+    $self->print_page($config->{tt_cartitems_mail_tname},$ttdata);
     return Apache2::Const::OK;
 }
 
@@ -825,7 +824,7 @@ sub mail_collection_send {
 
     my $mimetype="text/html";
     my $filename="kug-merkliste";
-    my $datatemplatename=$config->{tt_collectionitems_mail_html_tname};
+    my $datatemplatename=$config->{tt_cartitems_mail_html_tname};
 
     if ($format eq "short" || $format eq "full") {
         $filename.=".html";
@@ -833,7 +832,7 @@ sub mail_collection_send {
     else {
         $mimetype="text/plain";
         $filename.=".txt";
-        $datatemplatename=$config->{tt_collectionitems_mail_plain_tname};
+        $datatemplatename=$config->{tt_cartitems_mail_plain_tname};
     }
 
     $datatemplate->process($datatemplatename, $ttdata) || do {
@@ -862,7 +861,7 @@ sub mail_collection_send {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_collectionitems_mail_message_tname}, $mainttdata ) || do { 
+    $maintemplate->process($config->{tt_cartitems_mail_message_tname}, $mainttdata ) || do { 
         $r->log_error($maintemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
     };
@@ -895,7 +894,7 @@ sub mail_collection_send {
   
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     
-    $self->print_page($config->{tt_collectionitems_mail_success_tname},$ttdata);
+    $self->print_page($config->{tt_cartitems_mail_success_tname},$ttdata);
     
     unlink $anschfile;
     unlink $mailfile;
@@ -916,7 +915,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{collectionitems_loc}.html?l=$lang";
+    my $new_location = "$path_prefix/$config->{cartitems_loc}.html?l=$lang";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

@@ -618,7 +618,7 @@ sub get_number_of_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $numofitems = $self->{schema}->resultset('UserCollectionitem')->search_rs(
+    my $numofitems = $self->{schema}->resultset('UserCartitem')->search_rs(
         {
             'userid.id' => $self->{ID},
         },
@@ -856,7 +856,7 @@ sub get_number_of_collections {
     my $logger = get_logger();
 
     # DBI: "select count(distinct(userid)) as rowcount from collection"
-    my $numofcollections = $self->{schema}->resultset('UserCollectionitem')->search_rs(
+    my $numofcollections = $self->{schema}->resultset('UserCartitem')->search_rs(
         undef,
         {
             group_by => ['userid'], # distinct
@@ -873,7 +873,7 @@ sub get_number_of_collection_entries {
     my $logger = get_logger();
 
     # DBI: "select count(userid) as rowcount from collection"
-    my $numofentries = $self->{schema}->resultset('UserCollectionitem')->search_rs(
+    my $numofentries = $self->{schema}->resultset('UserCartitem')->search_rs(
         undef,
     )->count;
 
@@ -3512,25 +3512,25 @@ sub get_single_item_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $collectionitem = $self->{schema}->resultset('UserCollectionitem')->search_rs(
+    my $cartitem = $self->{schema}->resultset('UserCartitem')->search_rs(
         {
-            'collectionitemid.id'  => $listid,
+            'cartitemid.id'  => $listid,
             'userid.id'             => $self->{ID},
         },
         {
-            select => ['collectionitemid.dbname','collectionitemid.titleid','collectionitemid.id','collectionitemid.titlecache','collectionitemid.tstamp','collectionitemid.comment'],
+            select => ['cartitemid.dbname','cartitemid.titleid','cartitemid.id','cartitemid.titlecache','cartitemid.tstamp','cartitemid.comment'],
             as     => ['thisdbname','thistitleid','thisid','thistitlecache','thiststamp','thiscomment'],
-            join   => ['userid','collectionitemid'],
+            join   => ['userid','cartitemid'],
         }
     )->single;
 
-    if ($collectionitem){
-        my $database   = $collectionitem->get_column('thisdbname');
-        my $titleid    = $collectionitem->get_column('thistitleid');
-        my $listid     = $collectionitem->get_column('thisid');
-        my $titlecache = $collectionitem->get_column('thistitlecache');
-        my $tstamp     = $collectionitem->get_column('thiststamp');
-        my $comment    = $collectionitem->get_column('thiscomment');
+    if ($cartitem){
+        my $database   = $cartitem->get_column('thisdbname');
+        my $titleid    = $cartitem->get_column('thistitleid');
+        my $listid     = $cartitem->get_column('thisid');
+        my $titlecache = $cartitem->get_column('thistitlecache');
+        my $tstamp     = $cartitem->get_column('thiststamp');
+        my $comment    = $cartitem->get_column('thiscomment');
         
         my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, listid => $listid, tstamp => $tstamp, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ listid => $listid })->set_fields_from_json($titlecache);
 
@@ -3549,18 +3549,18 @@ sub get_items_in_collection {
     my $recordlist = new OpenBib::RecordList::Title();
 
     # DBI: "select * from collection where userid = ? order by dbname"
-    my $collectionitems = $self->{schema}->resultset('UserCollectionitem')->search_rs(
+    my $cartitems = $self->{schema}->resultset('UserCartitem')->search_rs(
         {
             'userid.id' => $self->{ID},
         },
         {
-            select  => [ 'collectionitemid.dbname', 'collectionitemid.titleid', 'collectionitemid.titlecache', 'collectionitemid.id', 'collectionitemid.tstamp', 'collectionitemid.comment' ],
+            select  => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache', 'cartitemid.id', 'cartitemid.tstamp', 'cartitemid.comment' ],
             as      => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid', 'thiststamp', 'thiscomment' ],
-            join    => ['userid','collectionitemid'],
+            join    => ['userid','cartitemid'],
         }
     );
 
-    foreach my $item ($collectionitems->all){
+    foreach my $item ($cartitems->all){
         my $database   = $item->get_column('thisdbname');
         my $titleid    = $item->get_column('thistitleid');
         my $titlecache = $item->get_column('thistitlecache');
@@ -3613,14 +3613,14 @@ sub add_item_to_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('UserCollectionitem')->search_rs(
+        my $have_title = $self->{schema}->resultset('UserCartitem')->search_rs(
             {
                 'userid.id'                => $thisuserid,
-                'collectionitemid.dbname'  => $dbname,
-                'collectionitemid.titleid' => $titleid,
+                'cartitemid.dbname'  => $dbname,
+                'cartitemid.titleid' => $titleid,
             },
             {
-                join => ['userid','collectionitemid'],
+                join => ['userid','cartitemid'],
             }
         )->count;
         
@@ -3631,7 +3631,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Usercollection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Collectionitem')->create(
+            $new_title = $self->{schema}->resultset('Cartitem')->create(
                 {
                     dbname     => $dbname,
                     titleid    => $titleid,
@@ -3641,10 +3641,10 @@ sub add_item_to_collection {
                 }
             );
 
-            $self->{schema}->resultset('UserCollectionitem')->create(
+            $self->{schema}->resultset('UserCartitem')->create(
                 {
                     userid           => $thisuserid,
-                    collectionitemid => $new_title->id,
+                    cartitemid => $new_title->id,
                 }
             );
         }
@@ -3655,13 +3655,13 @@ sub add_item_to_collection {
         my $record_json = encode_json $record;
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('UserCollectionitem')->search_rs(
+        my $have_title = $self->{schema}->resultset('UserCartitem')->search_rs(
             {
                 'userid.id'                   => $thisuserid,
-                'collectionitemid.titlecache' => $record_json,
+                'cartitemid.titlecache' => $record_json,
             },
             {
-                join => ['userid','collectionitemid'],
+                join => ['userid','cartitemid'],
             }
         )->count;
         
@@ -3669,7 +3669,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Usercollection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Collectionitem')->create(
+            $new_title = $self->{schema}->resultset('Cartitem')->create(
                 {
                     titleid    => '',
                     dbname     => '',
@@ -3679,10 +3679,10 @@ sub add_item_to_collection {
                 }
             );
 
-            $self->{schema}->resultset('UserCollectionitem')->create(
+            $self->{schema}->resultset('UserCartitem')->create(
                 {
                     userid           => $thisuserid,
-                    collectionitemid => $new_title->id,
+                    cartitemid => $new_title->id,
                 }
             );
         }
@@ -3697,7 +3697,7 @@ sub add_item_to_collection {
     return ;
 }
 
-sub move_collectionitem_to_user {
+sub move_cartitem_to_user {
     my ($self,$arg_ref)=@_;
 
     my $itemid       = exists $arg_ref->{itemid}
@@ -3715,15 +3715,15 @@ sub move_collectionitem_to_user {
 
     if ($itemid){
         eval {
-            $self->{schema}->resultset('UserCollectionitem')->create(
+            $self->{schema}->resultset('UserCartitem')->create(
                 {
                     userid           => $thisuserid,
-                    collectionitemid => $itemid,
+                    cartitemid => $itemid,
                 }
             );
-            $self->{schema}->resultset('SessionCollectionitem')->single(
+            $self->{schema}->resultset('SessionCartitem')->single(
                 {
-                    collectionitemid => $itemid,
+                    cartitemid => $itemid,
                 }
             )->delete;
         };
@@ -3760,13 +3760,13 @@ sub update_item_in_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $title = $self->{schema}->resultset('Collectionitem')->search_rs(
+        my $title = $self->{schema}->resultset('Cartitem')->search_rs(
             {
-                'user_collectionitemids.userid'  => $thisuserid,
+                'user_cartitemids.userid'  => $thisuserid,
                 'me.id'                          => $itemid,
             },
             {
-                join => ['user_collectionitemids'],
+                join => ['user_cartitemids'],
             }
         );
 
@@ -3802,18 +3802,18 @@ sub delete_item_from_collection {
     
     eval {
         # DBI: "delete from treffer where sessionid = ? and dbname = ? and singleidn = ?"
-        my $item = $self->{schema}->resultset('Collectionitem')->search_rs(
+        my $item = $self->{schema}->resultset('Cartitem')->search_rs(
             {
-                'user_collectionitems.userid' => $thisuserid,
+                'user_cartitems.userid' => $thisuserid,
                 'me.id'                       => $itemid
             },
             {
-                join => ['user_collectionitems']
+                join => ['user_cartitems']
             }
         )->single;
 
         if ($item){
-            $item->user_collectionitems->delete;
+            $item->user_cartitems->delete;
             $item->delete;
         }
         else {

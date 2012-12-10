@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::CollectionItems
+#  OpenBib::Handler::Apache::Users::CartItems
 #
 #  Dieses File ist (C) 2001-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::CollectionItems;
+package OpenBib::Handler::Apache::Users::CartItems;
 
 use strict;
 use warnings;
@@ -51,7 +51,6 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
-use OpenBib::ManageCollection::Util;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
@@ -164,7 +163,7 @@ sub return_baseurl {
 
     my $config = OpenBib::Config->instance;
 
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{collectionitems_loc}.html?l=$lang";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{cartitems_loc}.html?l=$lang";
 
     $self->query->method('GET');
     $self->query->content_type('text/html');

@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::ManageCollection::Util
+#  OpenBib::ManageCart::Util
 #
 #  Dieses File ist (C) 2005 Oliver Flimm <flimm@openbib.org>
 #
@@ -23,7 +23,7 @@
 #
 #####################################################################
 
-package OpenBib::ManageCollection::Util;
+package OpenBib::ManageCart::Util;
 
 use strict;
 use warnings;

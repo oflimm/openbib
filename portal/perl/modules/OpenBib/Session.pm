@@ -657,7 +657,7 @@ sub get_number_of_items_in_collection {
     my $logger = get_logger();
 
     # DBI: "select count(*) as rowcount from treffer where sessionid = ?"
-    my $count = $self->{schema}->resultset('SessionCollectionitem')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
+    my $count = $self->{schema}->resultset('SessionCartitem')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
 
     return $count;
 }
@@ -673,14 +673,14 @@ sub get_items_in_collection {
     return $recordlist if (!defined $self->{schema});
 
     # DBI: "select dbname,singleidn from treffer where sessionid = ? order by dbname"
-    my $items = $self->{schema}->resultset('SessionCollectionitem')->search_rs(
+    my $items = $self->{schema}->resultset('SessionCartitem')->search_rs(
         {
             'sid.sessionid' => $self->{ID},
         },
         {
-            select => [ 'collectionitemid.dbname', 'collectionitemid.titleid', 'collectionitemid.titlecache', 'collectionitemid.id', 'collectionitemid.tstamp', 'collectionitemid.comment' ],
+            select => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache', 'cartitemid.id', 'cartitemid.tstamp', 'cartitemid.comment' ],
             as     => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid','thiststamp','thiscomment' ],
-            join   => ['sid','collectionitemid'],
+            join   => ['sid','cartitemid'],
         }
     );
 
@@ -711,22 +711,22 @@ sub get_single_item_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $collectionitem = $self->{schema}->resultset('SessionCollectionitem')->search_rs(
+    my $cartitem = $self->{schema}->resultset('SessionCartitem')->search_rs(
         {
-            'collectionitemid.id' => $listid,
+            'cartitemid.id' => $listid,
             'sid.sessionid'       => $self->{ID},
         },
         {
-            select => [ 'collectionitemid.dbname', 'collectionitemid.titleid', 'collectionitemid.titlecache'],
+            select => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache'],
             as     => [ 'thisdbname', 'thistitleid', 'thistitlecache' ],
-            join   => ['sid','collectionitemid'],
+            join   => ['sid','cartitemid'],
         }
     )->single;
 
-    if ($collectionitem){
-        my $database   = $collectionitem->get_column('thisdbname');
-        my $titleid    = $collectionitem->get_column('thistitleid');
-        my $titlecache = $collectionitem->get_column('thistitlecache');
+    if ($cartitem){
+        my $database   = $cartitem->get_column('thisdbname');
+        my $titleid    = $cartitem->get_column('thistitleid');
+        my $titlecache = $cartitem->get_column('thistitlecache');
         
         my $record = new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid});
         
@@ -760,14 +760,14 @@ sub add_item_to_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('SessionCollectionitem')->search_rs(
+        my $have_title = $self->{schema}->resultset('SessionCartitem')->search_rs(
             {
                 'sid.id'                   => $self->{sid},
-                'collectionitemid.dbname'  => $dbname,
-                'collectionitemid.titleid' => $titleid,
+                'cartitemid.dbname'  => $dbname,
+                'cartitemid.titleid' => $titleid,
             },
             {
-                join => ['sid','collectionitemid'],
+                join => ['sid','cartitemid'],
             }
         )->count;
         
@@ -778,7 +778,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Collection: $cached_title");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Collectionitem')->create(
+            $new_title = $self->{schema}->resultset('Cartitem')->create(
                 {
                     dbname     => $dbname,
                     titleid    => $titleid,
@@ -788,10 +788,10 @@ sub add_item_to_collection {
                 }
             );
 
-            $self->{schema}->resultset('SessionCollectionitem')->create(
+            $self->{schema}->resultset('SessionCartitem')->create(
                 {
                     sid              => $self->{sid},
-                    collectionitemid => $new_title->id,
+                    cartitemid => $new_title->id,
                 }
             );
         }
@@ -805,13 +805,13 @@ sub add_item_to_collection {
         my $record_json = encode_json $record;
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('SessionCollectionitem')->search_rs(
+        my $have_title = $self->{schema}->resultset('SessionCartitem')->search_rs(
             {
                 'sid.id'                      => $self->{sid},
-                'collectionitemid.titlecache' => $record_json,
+                'cartitemid.titlecache' => $record_json,
             },
             {
-                join => ['sid','collectionitemid'],
+                join => ['sid','cartitemid'],
             }
         )->count;
         
@@ -819,7 +819,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Collection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Collectionitem')->create(
+            $new_title = $self->{schema}->resultset('Cartitem')->create(
                 {
                     titleid    => 0,
                     dbname     => '',
@@ -829,10 +829,10 @@ sub add_item_to_collection {
                 }
             );
 
-            $self->{schema}->resultset('SessionCollectionitem')->create(
+            $self->{schema}->resultset('SessionCartitem')->create(
                 {
                     sid              => $self->{sid},
-                    collectionitemid => $new_title->id,
+                    cartitemid => $new_title->id,
                 }
             );
          }
@@ -862,13 +862,13 @@ sub update_item_in_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $title = $self->{schema}->resultset('Collectionitem')->search_rs(
+        my $title = $self->{schema}->resultset('Cartitem')->search_rs(
             {
-                'session_collectionitemids.sessionid'  => $self->{ID},
+                'session_cartitemids.sessionid'  => $self->{ID},
                 'me.id'                                => $itemid,
             },
             {
-                join => ['session_collectionitemids'],
+                join => ['session_cartitemids'],
             }
         );
         
@@ -903,18 +903,18 @@ sub delete_item_from_collection {
 
     eval {
         # DBI: "delete from treffer where sessionid = ? and dbname = ? and singleidn = ?"
-        my $item = $self->{schema}->resultset('Collectionitem')->search_rs(
+        my $item = $self->{schema}->resultset('Cartitem')->search_rs(
             {
-                'session_collectionitems.sid' => $self->{sid},
+                'session_cartitems.sid' => $self->{sid},
                 'me.id'                       => $itemid
             },
             {
-                join => ['session_collectionitems']
+                join => ['session_cartitems']
             }
         )->single;
 
         if ($item){
-            $item->session_collectionitems->delete;
+            $item->session_cartitems->delete;
             $item->delete;
         }
         else {
@@ -1124,8 +1124,8 @@ sub clear_data {
             $sessioninfo->sessioncollections->delete;
             $sessioninfo->recordhistories->delete;
             $sessioninfo->searchhistories->delete;
-            $sessioninfo->session_collectionitems->collectionitemid->delete;
-            $sessioninfo->session_collectionitems->delete;
+            $sessioninfo->session_cartitems->cartitemid->delete;
+            $sessioninfo->session_cartitems->delete;
             $sessioninfo->session_searchprofiles->delete;
             $sessioninfo->user_sessions->delete;
             $sessioninfo->delete;

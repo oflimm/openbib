@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Topic::Mapping
+#  OpenBib::Handler::Apache::Topic::Mappings
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Topic::Mapping;
+package OpenBib::Handler::Apache::Topic::Mappings;
 
 use strict;
 use warnings;
@@ -321,15 +321,8 @@ sub get_mapping_by_id {
     my $self=shift;
     my $mappingid = shift;
 
-    my $mapping;
-    
-    if ($mappingid eq "ezb"){
-        $mapping = OpenBib::EZB->new:
-    }
-    elsif ($mappingid eq "dbis"){
-        $mapping = OpenBib::DBIS->new;
-    }
-    
+    my $mapping = OpenBib::Catalog::Factory->create_catalog({database => $mappingid });
+
     return $mapping;
 }
 

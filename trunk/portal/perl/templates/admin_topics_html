@@ -37,12 +37,12 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Themengebiete") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_topics_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -57,42 +57,44 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_topics_loc') %]">
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]" class="ym-form">
 
-<table width="100%">
-<tr><th>[% msg.maketext("Neues Themengebiet anlegen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td><b>[% msg.maketext("Themengebiet") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
-<tr><td><input type="text" name="name" /></td><td><input type="text" name="description" size="20" />
-</td><td><input type="submit" value="[% msg.maketext("Neu") %]" /></td></tr>
-</table>
-</td></tr>
-</table>
+<fieldset class="ym-columnar">
 
+<legend>[% msg.maketext("Neues Themengebiet anlegen") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="name">[% msg.maketext("Themengebiet") %]</label>
+<input type="text" name="name" id="name" size="8" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" size="20" />
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Neu") %]" />
+
+</div>
+
+</fieldset>
 </form>
 
 <p />
 
 [% IF topics.size > 0 %]
 
-<table width="100%">
-<tr><th>[% msg.maketext("Bereits existierende Themengebiete") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">[% msg.maketext("Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte auf den Namen.") %]
-<p />
+<h3>[% msg.maketext("Bereits existierende Themengebiete") %]</h3>
 
-<table>
-<tr><td><b>[% msg.maketext("Themengebiet") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Systematik-Gruppen") %]</b></td></tr>
-[% listrow = 'listrow1' %]
+<p>
+[% msg.maketext("Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte auf den Namen.") %]
+</p>
+
+<table class="ym-full">
+<tr><th>[% msg.maketext("Themengebiet") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Systematik-Gruppen") %]</th></tr>
 [% FOREACH topic IN topics %]
-
-<tr class="[% listrow %]"><td><a href="[% path_prefix %]/[% config.get('admin_topics_loc') %]/[% topic.id %]/edit">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
-[% IF listrow == 'listrow1' %]
-[% listrow = 'listrow2' %]
-[% ELSE %]
-[% listrow = 'listrow1' %]
-[% END %]
-
+<tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %]/edit">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
 [% END %]
 
 </table>

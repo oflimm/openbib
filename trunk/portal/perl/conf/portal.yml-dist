@@ -460,71 +460,71 @@ dispatch_rules:
      rule: '/portal/:view/topics/id/:topicid/mappings/id/:mappingid[get]'
      runmode: 'show_record'
 
-  - # admin_topic_loc:
+  - # admin_topics_loc:
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics.html[get]'
      runmode: 'show_collection'
-  - # admin_topic_loc:
+  - # admin_topics_loc:
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics.json[get]'
      runmode: 'show_collection'
-  - # admin_topic_loc:
+  - # admin_topics_loc:
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics.rdf[get]'
      runmode: 'show_collection'
-  - # admin_topic_loc:
+  - # admin_topics_loc:
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics[get]'
      runmode: 'show_collection'
-  - # admin_topic_loc: Record show
+  - # admin_topics_loc: Record show
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics/id/:topicid[get]'
      runmode: 'show_record'
-  - # admin_topic_loc: Record show form
+  - # admin_topics_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics/id/:topicid/edit[get]'
      runmode: 'show_record_form'
-  - # admin_topic_loc: Record show form
+  - # admin_topics_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics/id/:topicid/edit.html[get]'
      runmode: 'show_record_form'
-  - # admin_topic_loc: Update Record
+  - # admin_topics_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics[post]'
      runmode: 'create_record'
-  - # admin_topic_loc: Update Record
+  - # admin_topics_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics/id/:topicid[post]'
      runmode: 'update_record'
-  - # admin_topic_loc: Update Record
+  - # admin_topics_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics/id/:topicid[put]'
      runmode: 'update_record'
-  - # admin_topic_loc: Delete Record
+  - # admin_topics_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Topics'
      rule: '/portal/:view/admin/topics/id/:topicid[delete]'
      runmode: 'delete_record'
-  - # admin_topic_loc: Record show
+  - # admin_topics_loc: Record show
      module: 'OpenBib::Handler::Apache::Admin::Topics::Mappings'
      rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/:mappingid[get]'
      runmode: 'show_record'
-  - # admin_topic_loc: Record show form
+  - # admin_topics_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Topics::Mappings'
      rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/:mappingid/edit[get]'
      runmode: 'show_record_form'
-  - # admin_topic_loc: Record show form
+  - # admin_topics_loc: Record show form
      module: 'OpenBib::Handler::Apache::Admin::Topics::Mappings'
      rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/:mappingid/edit.html[get]'
      runmode: 'show_record_form'
-  - # admin_topic_loc: Update Record
+  - # admin_topics_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Topics::Mappings'
      rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/:mappingid[post]'
      runmode: 'update_record'
-  - # admin_topic_loc: Update Record
+  - # admin_topics_loc: Update Record
      module: 'OpenBib::Handler::Apache::Admin::Topics::Mappings'
      rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/:mappingid[put]'
      runmode: 'update_record'
-  - # admin_topic_loc: Delete Record
+  - # admin_topics_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Admin::Topics::Mappings'
      rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/:mappingid[delete]'
      runmode: 'delete_record'

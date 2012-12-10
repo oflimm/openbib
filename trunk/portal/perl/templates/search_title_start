@@ -104,7 +104,7 @@ $(document).ready(function(){
    $(this).children("img").attr("src","/images/openbib/success.png");
 
    // Merklistenfuellstand aktualisieren
-   //  $.get("[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('collectionitems_loc') %]/count",
+   //  $.get("[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/count",
    //function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
 
    return false;

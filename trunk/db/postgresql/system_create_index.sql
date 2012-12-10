@@ -59,15 +59,15 @@ ALTER TABLE sessioninfo ADD PRIMARY KEY (id);
 CREATE INDEX sessioninfo_sessionid ON sessioninfo (sessionid);
 CREATE INDEX sessioninfo_username ON sessioninfo (username);
 
-ALTER TABLE collectionitem ADD PRIMARY KEY (id);
-CREATE INDEX collectionitem_dbname ON collectionitem (dbname);
-CREATE INDEX collectionitem_titleid ON collectionitem (titleid);
+ALTER TABLE cartitem ADD PRIMARY KEY (id);
+CREATE INDEX cartitem_dbname ON cartitem (dbname);
+CREATE INDEX cartitem_titleid ON cartitem (titleid);
 
-ALTER TABLE session_collectionitem ADD CONSTRAINT fk_sessioncollectionitem_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
-ALTER TABLE session_collectionitem ADD CONSTRAINT fk_sessioncollectionitem_collectionitem FOREIGN KEY (collectionitemid) REFERENCES collectionitem (id);
+ALTER TABLE session_cartitem ADD CONSTRAINT fk_sessioncartitem_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
+ALTER TABLE session_cartitem ADD CONSTRAINT fk_sessioncartitem_cartitem FOREIGN KEY (cartitemid) REFERENCES cartitem (id);
 
-CREATE INDEX sessioncollectionitem_sid ON session_collectionitem (sid);
-CREATE INDEX sessioncollectionitem_collectionitemid ON session_collectionitem (collectionitemid);
+CREATE INDEX sessioncartitem_sid ON session_cartitem (sid);
+CREATE INDEX sessioncartitem_cartitemid ON session_cartitem (cartitemid);
 
 ALTER TABLE recordhistory ADD CONSTRAINT fk_recordhistory_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 
@@ -126,11 +126,11 @@ CREATE INDEX searchfield_searchfield ON searchfield (searchfield);
 
 ALTER TABLE livesearch ADD CONSTRAINT fk_livesearch_user FOREIGN KEY (userid) REFERENCES userinfo (id);
 
-ALTER TABLE user_collectionitem ADD CONSTRAINT fk_usercollectionitem_user FOREIGN KEY (userid) REFERENCES userinfo (id);
-ALTER TABLE user_collectionitem ADD CONSTRAINT fk_usercollectionitem_collectionitem FOREIGN KEY (collectionitemid) REFERENCES collectionitem (id);
+ALTER TABLE user_cartitem ADD CONSTRAINT fk_usercartitem_user FOREIGN KEY (userid) REFERENCES userinfo (id);
+ALTER TABLE user_cartitem ADD CONSTRAINT fk_usercartitem_cartitem FOREIGN KEY (cartitemid) REFERENCES cartitem (id);
 
-CREATE INDEX usercollectionitem_userid ON user_collectionitem (userid);
-CREATE INDEX usercollectionitem_collectionitemid ON user_collectionitem (collectionitemid);
+CREATE INDEX usercartitem_userid ON user_cartitem (userid);
+CREATE INDEX usercartitem_cartitemid ON user_cartitem (cartitemid);
 
 ALTER TABLE tag ADD PRIMARY KEY (id);
 CREATE INDEX tag_name ON tag (name);

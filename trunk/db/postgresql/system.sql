@@ -150,8 +150,8 @@ CREATE TABLE serverinfo (
  active       BOOL
 );
 
-drop table IF EXISTS collectionitem;
-CREATE TABLE collectionitem (
+drop table IF EXISTS cartitem;
+CREATE TABLE cartitem (
  id         BIGSERIAL,
 
  tstamp     TIMESTAMP,
@@ -186,11 +186,11 @@ CREATE TABLE sessioninfo (
  bibsonomy_sync TEXT
 );
 
-drop table IF EXISTS session_collectionitem;
-CREATE TABLE session_collectionitem (
+drop table IF EXISTS session_cartitem;
+CREATE TABLE session_cartitem (
  id               BIGSERIAL,
  sid              BIGINT NOT NULL,
- collectionitemid BIGINT NOT NULL
+ cartitemid       BIGINT NOT NULL
 );
 
 drop table IF EXISTS recordhistory;
@@ -375,11 +375,11 @@ CREATE TABLE livesearch (
  active      BOOL
 );
 
-DROP TABLE IF EXISTS user_collectionitem;
-CREATE TABLE user_collectionitem (
- id               BIGSERIAL,
- userid           BIGINT NOT NULL,
- collectionitemid BIGINT NOT NULL
+DROP TABLE IF EXISTS user_cartitem;
+CREATE TABLE user_cartitem (
+ id         BIGSERIAL,
+ userid     BIGINT NOT NULL,
+ cartitemid BIGINT NOT NULL
 );
 
 DROP TABLE IF EXISTS tag;

@@ -160,7 +160,7 @@ browse_loc: browse
 circulations_loc: circulations
 preferences_loc: preferences
 collection_loc: collection
-collectionitems_loc: collectionitems
+cartitems_loc: cartitems
 dispatchquery_loc: dispatchquery
 externaljump_loc: jumpto
 home_loc: home
@@ -2058,10 +2058,10 @@ dispatch_rules:
      runmode: 'delete_record'
 
 #####################################################################
-# Collectionitems-Resource/Repraesentation
-  - # users/collectionitems_loc:
+# Cartitems-Resource/Repraesentation
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems[get]'
+     rule: '/portal/:view/cartitems[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2069,138 +2069,138 @@ dispatch_rules:
        - json
        - rdf
      args:
-        users_loc: 'collectionitems'
-  - # users/collectionitems_loc:
+        users_loc: 'cartitems'
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems/count[get]'
+     rule: '/portal/:view/cartitems/count[get]'
      runmode: 'show_collection_count'
      representations:
        - none
        - html
      args:
-        users_loc: 'collectionitems'
-  - # users/collectionitems_loc:
+        users_loc: 'cartitems'
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems/save[get]'
+     rule: '/portal/:view/cartitems/save[get]'
      runmode: 'save_collection'
      representations:
        - none
        - html
      args:
-        users_loc: 'collectionitems'
-  - # users/collectionitems_loc:
+        users_loc: 'cartitems'
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems/mail[get]'
+     rule: '/portal/:view/cartitems/mail[get]'
      runmode: 'mail_collection'
      representations:
        - none
        - html
      args:
-        users_loc: 'collectionitems'
-  - # users/collectionitems_loc:
+        users_loc: 'cartitems'
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems/print[get]'
+     rule: '/portal/:view/cartitems/print[get]'
      runmode: 'print_collection'
      representations:
        - none
        - html
      args:
-        users_loc: 'collectionitems'
-  - # users_loc/collectionitems_loc: Record show
+        users_loc: 'cartitems'
+  - # users_loc/cartitems_loc: Record show
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems/id/:itemid[get]'
+     rule: '/portal/:view/cartitems/id/:itemid[get]'
      runmode: 'show_record'
      args:
-        users_loc: 'collectionitems'
-  - # users/collectionitems_loc:
+        users_loc: 'cartitems'
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:id/collectionitems[get]'
+     rule: '/portal/:view/users/id/:id/cartitems[get]'
      runmode: 'show_collection'
      representations:
        - none
        - html
        - json
        - rdf
-  - # users/collectionitems_loc:
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:id/collectionitems/count[get]'
+     rule: '/portal/:view/users/id/:id/cartitems/count[get]'
      runmode: 'show_collection_count'
      representations:
        - none
        - html
-  - # users/collectionitems_loc:
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:id/collectionitems/save[get]'
+     rule: '/portal/:view/users/id/:id/cartitems/save[get]'
      runmode: 'save_collection'
      representations:
        - none
        - html
-  - # users/collectionitems_loc:
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:id/collectionitems/mail[get]'
+     rule: '/portal/:view/users/id/:id/cartitems/mail[get]'
      runmode: 'mail_collection'
      representations:
        - none
        - html
-  - # users/collectionitems_loc:
+  - # users/cartitems_loc:
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:id/collectionitems/print[get]'
+     rule: '/portal/:view/users/id/:id/cartitems/print[get]'
      runmode: 'print_collection'
      representations:
        - none
        - html
-  - # users_loc/collectionitems_loc: Record show
+  - # users_loc/cartitems_loc: Record show
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:id/collectionitems/id/:itemid[get]'
+     rule: '/portal/:view/users/id/:id/cartitems/id/:itemid[get]'
      runmode: 'show_record'
-  - # users_loc/collectionitems_loc: Record show form
+  - # users_loc/cartitems_loc: Record show form
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:id/collectionitems/id/:itemid/edit[get]'
+     rule: '/portal/:view/users/id/:id/cartitems/id/:itemid/edit[get]'
      runmode: 'show_record_form'
      representations:
        - none
        - html
-  - # users_loc/collectionitems_loc: Update Record
+  - # users_loc/cartitems_loc: Update Record
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems[post]'
+     rule: '/portal/:view/cartitems[post]'
      runmode: 'create_record'
      args:
-        users_loc: 'collectionitems'
-  - # users_loc/collectionitems_loc: Update Record
+        users_loc: 'cartitems'
+  - # users_loc/cartitems_loc: Update Record
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:userid/collectionitems[post]'
+     rule: '/portal/:view/users/id/:userid/cartitems[post]'
      runmode: 'create_record'
-  - # users_loc/collectionitems_loc: Update Record
+  - # users_loc/cartitems_loc: Update Record
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems/mail[post]'
+     rule: '/portal/:view/cartitems/mail[post]'
      runmode: 'mail_collection_send'
-  - # users_loc/collectionitems_loc: Update Record
+  - # users_loc/cartitems_loc: Update Record
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:userid/collectionitems/mail[post]'
+     rule: '/portal/:view/users/id/:userid/cartitems/mail[post]'
      runmode: 'mail_collection_send'
-  - # users_loc/collectionitems_loc: Update Record
+  - # users_loc/cartitems_loc: Update Record
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems/id/:itemid[post]'
+     rule: '/portal/:view/cartitems/id/:itemid[post]'
      runmode: 'update_record'
-  - # users_loc/collectionitems_loc: Update Record
+  - # users_loc/cartitems_loc: Update Record
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems/id/:itemid[put]'
+     rule: '/portal/:view/cartitems/id/:itemid[put]'
      runmode: 'update_record'
-  - # users_loc/collectionitems_loc: Update Record
+  - # users_loc/cartitems_loc: Update Record
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:userid/collectionitems/id/:itemid[post]'
+     rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid[post]'
      runmode: 'update_record'
-  - # users_loc/collectionitems_loc: Update Record
+  - # users_loc/cartitems_loc: Update Record
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:userid/collectionitems/id/:itemid[put]'
+     rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid[put]'
      runmode: 'update_record'
-  - # users_loc/collectionitems_loc: Delete Record
+  - # users_loc/cartitems_loc: Delete Record
      module: 'OpenBib::Handler::Apache::CollectionItems'
-     rule: '/portal/:view/collectionitems/id/:itemid[delete]'
+     rule: '/portal/:view/cartitems/id/:itemid[delete]'
      runmode: 'delete_record'
-  - # users_loc/collectionitems_loc: Delete Record
+  - # users_loc/cartitems_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Users::CollectionItems'
-     rule: '/portal/:view/users/id/:userid/collectionitems/id/:itemid[delete]'
+     rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid[delete]'
      runmode: 'delete_record'
 
 #####################################################################
@@ -3167,16 +3167,16 @@ tt_clouds_subject_tname: clouds_subject
 tt_clouds_tag_tname: clouds_tag
 tt_clouds_year_tname: clouds_year
 
-tt_collectionitems_mail_html_tname: collectionitems_mail_html
-tt_collectionitems_mail_message_tname: collectionitems_mail_message
-tt_collectionitems_mail_plain_tname: collectionitems_mail_plain
-tt_collectionitems_mail_success_tname: collectionitems_mail_success
-tt_collectionitems_mail_tname: collectionitems_mail
-tt_collectionitems_print_tname: collectionitems_print
-tt_collectionitems_record_tname: collectionitems_record
-tt_collectionitems_save_html_tname: collectionitems_save_html
-tt_collectionitems_save_plain_tname: collectionitems_save_plain
-tt_collectionitems_tname: collectionitems
+tt_cartitems_mail_html_tname: cartitems_mail_html
+tt_cartitems_mail_message_tname: cartitems_mail_message
+tt_cartitems_mail_plain_tname: cartitems_mail_plain
+tt_cartitems_mail_success_tname: cartitems_mail_success
+tt_cartitems_mail_tname: cartitems_mail
+tt_cartitems_print_tname: cartitems_print
+tt_cartitems_record_tname: cartitems_record
+tt_cartitems_save_html_tname: cartitems_save_html
+tt_cartitems_save_plain_tname: cartitems_save_plain
+tt_cartitems_tname: cartitems
 
 tt_connector_availability_tname: connector_availability
 tt_connector_digibib_result_end_tname: connector_digibib_result_end

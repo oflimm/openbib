@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::Collectionitem;
+package OpenBib::Schema::System::Result::Cartitem;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::Collectionitem
+OpenBib::Schema::System::Result::Cartitem
 
 =cut
 
@@ -15,11 +15,11 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<collectionitem>
+=head1 TABLE: C<cartitem>
 
 =cut
 
-__PACKAGE__->table("collectionitem");
+__PACKAGE__->table("cartitem");
 
 =head1 ACCESSORS
 
@@ -28,7 +28,7 @@ __PACKAGE__->table("collectionitem");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'collectionitem_id_seq'
+  sequence: 'cartitem_id_seq'
 
 =head2 tstamp
 
@@ -64,7 +64,7 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "collectionitem_id_seq",
+    sequence          => "cartitem_id_seq",
   },
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
@@ -92,39 +92,39 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 session_collectionitems
+=head2 session_cartitems
 
 Type: has_many
 
-Related object: L<OpenBib::Schema::System::Result::SessionCollectionitem>
+Related object: L<OpenBib::Schema::System::Result::SessionCartitem>
 
 =cut
 
 __PACKAGE__->has_many(
-  "session_collectionitems",
-  "OpenBib::Schema::System::Result::SessionCollectionitem",
-  { "foreign.collectionitemid" => "self.id" },
+  "session_cartitems",
+  "OpenBib::Schema::System::Result::SessionCartitem",
+  { "foreign.cartitemid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 user_collectionitems
+=head2 user_cartitems
 
 Type: has_many
 
-Related object: L<OpenBib::Schema::System::Result::UserCollectionitem>
+Related object: L<OpenBib::Schema::System::Result::UserCartitem>
 
 =cut
 
 __PACKAGE__->has_many(
-  "user_collectionitems",
-  "OpenBib::Schema::System::Result::UserCollectionitem",
-  { "foreign.collectionitemid" => "self.id" },
+  "user_cartitems",
+  "OpenBib::Schema::System::Result::UserCartitem",
+  { "foreign.cartitemid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-30 14:59:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:z2XdPmYuUOQi2RpO9nMC7Q
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-10 08:35:41
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xbSpNwr6WWdsrvZtBpIwaQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

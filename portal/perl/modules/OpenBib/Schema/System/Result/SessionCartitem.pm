@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::SessionCollectionitem;
+package OpenBib::Schema::System::Result::SessionCartitem;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::SessionCollectionitem
+OpenBib::Schema::System::Result::SessionCartitem
 
 =cut
 
@@ -15,13 +15,20 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<session_collectionitem>
+=head1 TABLE: C<session_cartitem>
 
 =cut
 
-__PACKAGE__->table("session_collectionitem");
+__PACKAGE__->table("session_cartitem");
 
 =head1 ACCESSORS
+
+=head2 id
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'session_cartitem_id_seq'
 
 =head2 sid
 
@@ -29,49 +36,42 @@ __PACKAGE__->table("session_collectionitem");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 collectionitemid
+=head2 cartitemid
 
   data_type: 'bigint'
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 id
-
-  data_type: 'bigint'
-  is_auto_increment: 1
-  is_nullable: 0
-  sequence: 'session_collectionitem_id_seq'
-
 =cut
 
 __PACKAGE__->add_columns(
-  "sid",
-  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
-  "collectionitemid",
-  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "id",
   {
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "session_collectionitem_id_seq",
+    sequence          => "session_cartitem_id_seq",
   },
+  "sid",
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
+  "cartitemid",
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
 
 =head1 RELATIONS
 
-=head2 collectionitemid
+=head2 cartitemid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Collectionitem>
+Related object: L<OpenBib::Schema::System::Result::Cartitem>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "collectionitemid",
-  "OpenBib::Schema::System::Result::Collectionitem",
-  { id => "collectionitemid" },
+  "cartitemid",
+  "OpenBib::Schema::System::Result::Cartitem",
+  { id => "cartitemid" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
@@ -91,8 +91,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-11-30 14:59:53
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BCE/ClAcDBoNXDF+q+O6XQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-10 08:35:41
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6RwGFvFl5xs1/RIgHu5HhA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

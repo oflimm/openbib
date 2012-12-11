@@ -94,7 +94,7 @@
 <p/>
 
 <h3>[% msg.maketext("Allgemeine Angaben") %]</h3>
-<table>
+<table class="ym-full">
 <tr><td>[% msg.maketext("Anzahl der Nutzer") %]</td><td><b>[% user.get_number_of_users %]</b></td><td></td></tr>
 <tr><td>[% msg.maketext("Anzahl der Suchprofile von Nutzern") %]</td><td><b>[% user.get_number_of_dbprofiles %]</b></td><td></td></tr>
 <tr><td>[% msg.maketext("Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)") %]</td><td><b>[% user.get_number_of_collection_entries %] / [% user.get_number_of_collections %]</b></td><td></td></tr> 

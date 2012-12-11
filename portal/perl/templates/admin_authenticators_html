@@ -108,17 +108,17 @@
 [% authenticators = config.get_authenticators %]
 [% IF authenticators.size > 0 %]
 
-<table width="100%">
-<tr><th>[% msg.maketext("Bereits existierende Anmeldeziele") %]</th></tr>
-<tr><td class="boxedclear">
-<table>
-<tr><td><b>Id</b></td><td><b>[% msg.maketext("Hostname") %]</b></td><td><b>[% msg.maketext("Port") %]</b></td><td><b>[% msg.maketext("Nutzername") %]</b></td><td><b>[% msg.maketext("DB-Name")
-%]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Typ") %]</b></td></tr>
+<h3>[% msg.maketext("Bereits existierende Anmeldeziele") %]</h3>
+
+<table class="ym-full">
+<thead>
+<tr><th>Id</th><th>[% msg.maketext("Hostname") %]</th><th>[% msg.maketext("Port") %]</th><th>[% msg.maketext("Nutzername") %]</th><th>[% msg.maketext("DB-Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Typ") %]</th></tr>
+</thead>
+<tbody>
 [% FOREACH target IN authenticators %]
 <tr><td>[% target.id %]</td><td>[% target.hostname %]</td><td>[% target.port %]</td><td>[% target.remoteuser %]</td><td>[% target.remotedb %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %]/edit">[% target.description %]</a></td><td>[% target.type %]</td></tr>
 [% END %]
-</table>
-</td></tr>
+</tbody>
 </table>
 [% END %]
 

@@ -330,7 +330,7 @@ sub show_search {
     }
 
     # Jetzt update der Trefferinformationen, wenn keine ID
-    $searchquery->save({sessionID => $session->{ID}});
+    $searchquery->save({sid => $session->{sid}});
 
     # TT-Data erzeugen
     my $endttdata={

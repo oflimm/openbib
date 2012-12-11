@@ -51,7 +51,7 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('topics_loc') %]/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a></li>
          <li><a href="#" class="lastitem">Mapping: [% type %]</a></li>
        </ul>
      </div>

@@ -109,12 +109,14 @@
 </p>
 
 <table class="ym-full">
-<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Profil") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
-
+<thead>
+<tr><th>[% msg.maketext("Viewname") %]</th><th>[% msg.maketext("RSS") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Profil") %]</th><th>[% msg.maketext("Datenbanken") %]</th><th>[% msg.maketext("Aktiv") %]</th></tr>
+</thead>
+<tbody>
 [% FOREACH viewinfo IN views.all %]
 <tr><td>[% viewinfo.viewname %]</td><td align="center"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss/edit.html?l=[% lang %]"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/edit.html?l=[% lang %]">[% viewinfo.description %]</a></td><td>[% viewinfo.profileid.description %]</td><td><ul>[% FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul><p>[% thissearchprofileid = config.get_searchprofile_of_view(viewinfo.viewname) %]<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %]/id/[% thissearchprofileid %]/edit.html?l=[% lang %]">Suchprofil bearbeiten ([% thissearchprofileid %])</a></p></td><td>[% IF viewinfo.active %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td></tr>
 [% END %]
-
+</tbody>
 </table>
 
 [% END %]

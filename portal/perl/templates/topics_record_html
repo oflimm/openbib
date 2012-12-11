@@ -85,7 +85,10 @@
 <h3>[% msg.maketext("Basisklassifikation") %]</h3>
 
 <table class="ym-full">
+<thead>
 <tr><th width="30em">[% msg.maketext("Klassifikation") %]</th><th>[% msg.maketext("Beschreibung")%]</th></tr>
+</thead>
+<tbody>
 [%
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
@@ -95,12 +98,16 @@
 [% FOREACH bk IN bklist %]
 [% IF classification_selected.${bk.classification}  %]<tr><td>[% bk.classification %]</td><td>[% bk.desc %]</td></tr>[% END %]
 [% END %]
+</tbody>
 </table>
 
 <h3>[% msg.maketext("EZB") %]</h3>
 
 <table class="ym-full">
+<thead>
 <tr><th width="30em">[% msg.maketext("Klassifikation") %]</th><th>[% msg.maketext("Beschreibung")%]</th></tr>
+</thead>
+<tbody>
 [%-
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'ezb', topicid => topic.id});
@@ -110,6 +117,7 @@
 [% FOREACH ezb_topic IN ezb.get_classifications %]
 [%   IF classification_selected.${ezb_topic.name}  %]<tr><td>[% ezb_topic.name %]</td><td>[% ezb_topic.desc | truncate(100)%]</td></tr>[% END %]
 [% END %]
+</tbody>
 </table>
 
 <p/>
@@ -117,7 +125,10 @@
 <h3>[% msg.maketext("DBIS") %]</h3>
 
 <table class="ym-full">
+<thead>
 <tr><th width="30em">[% msg.maketext("Klassifikation") %]</th><th>[% msg.maketext("Beschreibung")%]</th></tr>
+</thead>
+<tbody>
 [%-
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'dbis', topicid => topic.id});
@@ -127,6 +138,7 @@
 [% FOREACH dbis_topic IN dbis.get_classifications %]
 [% IF classification_selected.${dbis_topic.name}  %]<tr><td>[% dbis_topic.name %]</td><td>[% dbis_topic.desc %]</td></tr>[% END %]
 [% END %]
+</tbody>
 </table>
 
         </div>

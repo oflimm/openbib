@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Statistics::Result::Eventlog;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Statistics::Result::Eventlog
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Statistics::Result::Eventlog
+=head1 TABLE: C<eventlog>
 
 =cut
 
@@ -22,6 +26,7 @@ __PACKAGE__->table("eventlog");
 =head2 sid
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 1
 
 =head2 tstamp
@@ -58,7 +63,7 @@ __PACKAGE__->table("eventlog");
 
 __PACKAGE__->add_columns(
   "sid",
-  { data_type => "bigint", is_nullable => 1 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
   "tstamp_year",
@@ -73,9 +78,31 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
 );
 
+=head1 RELATIONS
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 09:19:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:k5FGveD72l89gJO1Yg70Zg
+=head2 sid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::Statistics::Result::Sessioninfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "sid",
+  "OpenBib::Schema::Statistics::Result::Sessioninfo",
+  { id => "sid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-11 15:02:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:okU+WMWeORVOs8EsloMx6w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

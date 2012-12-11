@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Statistics::Result::Titleusage;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Statistics::Result::Titleusage
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Statistics::Result::Titleusage
+=head1 TABLE: C<titleusage>
 
 =cut
 
@@ -53,7 +57,7 @@ __PACKAGE__->table("titleusage");
 =head2 dbname
 
   data_type: 'text'
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 id
 
@@ -81,7 +85,7 @@ __PACKAGE__->add_columns(
   "isbn",
   { data_type => "text", is_nullable => 1 },
   "dbname",
-  { data_type => "text", is_nullable => 1 },
+  { data_type => "text", is_nullable => 0 },
   "id",
   { data_type => "text", is_nullable => 0 },
   "origin",
@@ -111,8 +115,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 09:19:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dQ0EWFMBVHC1MkD1NmI7kA
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-11 15:02:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5AcBLEcr1EhGGC/Pb5N53w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

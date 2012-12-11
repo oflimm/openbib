@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Statistics::Result::Sessioninfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Statistics::Result::Sessioninfo
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Statistics::Result::Sessioninfo
+=head1 TABLE: C<sessioninfo>
 
 =cut
 
@@ -73,9 +77,50 @@ __PACKAGE__->add_columns(
   "createtime_day",
   { data_type => "smallint", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
+
+=head2 eventlogjsons
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::Statistics::Result::Eventlogjson>
+
+=cut
+
+__PACKAGE__->has_many(
+  "eventlogjsons",
+  "OpenBib::Schema::Statistics::Result::Eventlogjson",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 eventlogs
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::Statistics::Result::Eventlog>
+
+=cut
+
+__PACKAGE__->has_many(
+  "eventlogs",
+  "OpenBib::Schema::Statistics::Result::Eventlog",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
 
 =head2 searchfields
 
@@ -123,8 +168,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 09:19:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/etjLJrVdlGDaG/DqAldmQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-11 15:02:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oc2bev1GGj5InyAhWEPA0g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

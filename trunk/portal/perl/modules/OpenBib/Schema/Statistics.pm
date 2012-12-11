@@ -1,3 +1,4 @@
+use utf8;
 package OpenBib::Schema::Statistics;
 
 # Created by DBIx::Class::Schema::Loader
@@ -11,8 +12,8 @@ use base 'DBIx::Class::Schema';
 __PACKAGE__->load_namespaces;
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 09:19:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2ejk7D9ZipzEC2HOHLoNbw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-11 15:02:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Jco3IsbH9qu79DQvBENQ9Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

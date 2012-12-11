@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Statistics::Result::Searchfield;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Statistics::Result::Searchfield
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Statistics::Result::Searchfield
+=head1 TABLE: C<searchfields>
 
 =cut
 
@@ -188,8 +192,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 09:19:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oTA+vHWrLqezl7yQqIqnjw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-11 15:02:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WT/VOZW7GFjf5pipvjKwLw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

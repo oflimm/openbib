@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Statistics::Result::Datacache;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Statistics::Result::Datacache
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Statistics::Result::Datacache
+=head1 TABLE: C<datacache>
 
 =cut
 
@@ -22,7 +26,7 @@ __PACKAGE__->table("datacache");
 =head2 id
 
   data_type: 'text'
-  is_nullable: 0
+  is_nullable: 1
 
 =head2 tstamp
 
@@ -48,7 +52,7 @@ __PACKAGE__->table("datacache");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "text", is_nullable => 0 },
+  { data_type => "text", is_nullable => 1 },
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
   "type",
@@ -60,8 +64,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-15 09:19:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:s291pmoCpcNp8z3ApYxq/Q
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-11 15:02:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2zjxfKvD2ZcN2Qst6lRTEA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

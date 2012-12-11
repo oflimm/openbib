@@ -59,17 +59,19 @@
 
 [% IF orgunits.size > 0 %]
 
+<h3>[% msg.maketext("Organisationseinheiten dieses Profils") %]</h3>
+
 <table class="ym-full">
-<tr><th>[% msg.maketext("Organisationseinheiten dieses Profils") %]</th></tr>
-<tr><td class="boxedclear">
-<table class="ym-full">
-<tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Nr") %]</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
+<thead>
+<tr><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Nr") %]</th><th>[% msg.maketext("Kataloge") %]</th><th></th></tr>
+</thead>
+<tbody>
 [% FOREACH thisorgunit IN orgunits.all %]
 <tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profilename %]/[% config.get('orgunits_loc')%]/id/[% thisorgunit.orgunitname %]/edit.html?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
 [% END %]
+</tbody>
 </table>
-</td></tr>
-</table>
+
 [% ELSE %]
 [% msg.maketext("Dieses Profil besitzt keine Organisationseinheiten") %]
 [% END %]

@@ -42,6 +42,7 @@ use Apache2::Request ();
 use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
+use Data::Pageset;
 use Digest::MD5;
 use Encode qw/decode_utf8 encode_utf8/;
 use JSON::XS;
@@ -103,18 +104,34 @@ sub show_active_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    # CGI-Parameter
+
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+    my $num    = $queryoptions->get_option('num');
+
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my @sessions = $session->get_info_of_all_active_sessions();
+    my @sessions = $session->get_info_of_all_active_sessions({offset => $offset, num => $num});
+
+    my $total_count = $session->get_number_of_all_active_sessions;
     
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $total_count,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
+
     my $ttdata={
-        sessions   => \@sessions,
+        total_count => $total_count,
+        nav         => $nav,
+        sessions    => \@sessions,
     };
     
-    $self->print_page($config->{tt_admin_session_active_tname},$ttdata);
+    $self->print_page($config->{tt_admin_sessions_active_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -127,7 +144,7 @@ sub show_active_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $sessionid      = $self->strip_suffix($self->param('sessionid'));
+    my $sid            = $self->strip_suffix($self->param('sessionid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -150,12 +167,12 @@ sub show_active_record {
 
     my $thissession = $session->{schema}->resultset('Sessioninfo')->search_rs(
         {
-            sessionid => $sessionid,
+            id => $sid,
         }
     )->single;
 
     if (!$thissession){
-        $logger->debug("No such session with id $sessionid");
+        $logger->debug("No such session with id $sid");
         $self->print_warning($msg->maketext("Diese Session existiert nicht."));
         return;
     }
@@ -163,7 +180,7 @@ sub show_active_record {
     my ($username,$createtime) = ($thissession->username,$thissession->createtime);
     
     my @queries                = $session->get_all_searchqueries({
-        sessionid => $sessionid,
+        sid => $sid,
     });
     
     my @events = ();
@@ -173,12 +190,16 @@ sub show_active_record {
         my $tstamp      = $event->tstamp;
         my $content     = $event->content;
 
+        my $sort = substr($tstamp,0,22);
+        $sort=~s/\D//g;
+        
         next unless ($content);
         
         push @events, {
+            sort       => $sort,
             type       => $type,
             content    => $content,
-            createtime => $tstamp,
+            tstamp     => $tstamp,
         };
     }
 
@@ -186,6 +207,9 @@ sub show_active_record {
         my $type        = $event->type;
         my $tstamp      = $event->tstamp;
         my $content     = $event->content;
+        
+        my $sort = substr($tstamp,0,22);
+        $sort=~s/\D//g;
 
         next if (!$content || $type == 1);
 
@@ -201,19 +225,20 @@ sub show_active_record {
         }
             
         push @events, {
+            sort       => $sort,
             type       => $type,
             content    => $json_ref,
-            createtime => $tstamp,
+            tstamp     => $tstamp,
         };
     }
 
     @events = map { $_->[0] }
         sort { $b->[1] <=> $a->[1] }
-            map { [$_, $_->{createtime}] }
+            map { [$_, $_->{sort}] }
                 @events;
     
     my $singlesession={
-        sessionid       => $sessionid,
+        id              => $sid,
         createtime      => $createtime,
         username        => $username,
         numqueries      => $#queries+1,
@@ -227,7 +252,7 @@ sub show_active_record {
         events      => \@events,
     };
     
-    $self->print_page($config->{tt_admin_session_active_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_sessions_active_record_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -261,7 +286,7 @@ sub show_archived_search_form {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_session_archived_search_form_tname},$ttdata);
+    $self->print_page($config->{tt_admin_sessions_archived_search_form_tname},$ttdata);
     
     return Apache2::Const::OK;
 }
@@ -321,11 +346,13 @@ sub show_archived_search {
     my @archived_sessions=();
     
     foreach my $thissession ($sessions->all) {
+        my $id              = $thissession->id;
         my $sessionid       = $thissession->sessionid;
         my $createtime      = $thissession->createtime;
         
         push @archived_sessions, {
-            id         => $sessionid,
+            id         => $id,
+            sessionid  => $sessionid,
             createtime => $createtime,
         };
     }
@@ -338,7 +365,7 @@ sub show_archived_search {
         todate     => $todate,
     };
     
-    $self->print_page($config->{tt_admin_session_archived_search_tname},$ttdata);
+    $self->print_page($config->{tt_admin_sessions_archived_search_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -351,7 +378,7 @@ sub show_archived_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $sessionid      = $self->strip_suffix($self->param('sessionid'));
+    my $sid            = $self->strip_suffix($self->param('sessionid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -374,12 +401,12 @@ sub show_archived_record {
 
     my $thissession = $statistics->{schema}->resultset('Sessioninfo')->search_rs(
         {
-            sessionid => $sessionid,
+            id => $sid,
         }
     )->single;
 
     if (!$thissession){
-        $logger->debug("No such session with id $sessionid");
+        $logger->debug("No such session with id $sid");
         $self->print_warning($msg->maketext("Diese Session existiert nicht."));
         return;
     }
@@ -396,10 +423,14 @@ sub show_archived_record {
         my $tstamp      = $event->tstamp;
         my $content     = $event->content;
 
+        my $sort = substr($tstamp,0,22);
+        $sort=~s/\D//g;
+
         push @events, {
             type       => $type,
             content    => $content,
-            createtime => $tstamp,
+            tstamp     => $tstamp,
+            sort       => $sort,
         };
     }
 
@@ -408,24 +439,39 @@ sub show_archived_record {
         my $tstamp      = $event->tstamp;
         my $content     = $event->content;
 
+        my $sort = substr($tstamp,0,22);
+        $sort=~s/\D//g;
+
+        my $json_ref;
+
+        eval {
+            $json_ref = decode_json $content;
+        };
+
+        if ($@){
+            $logger->error("Error decoding JSON ".$@);
+            next;
+        }
+
         push @events, {
             type       => $type,
-            content    => $content,
-            createtime => $tstamp,
+            content    => $json_ref,
+            tstamp     => $tstamp,
+            sort       => $sort,
         };
     }
 
     @events = map { $_->[0] }
         sort { $b->[1] <=> $a->[1] }
-            map { [$_, $_->{createtime}] }
+            map { [$_, $_->{sort}] }
                 @events;
     
     my $ttdata = {
-        singlesessionid => $sessionid,
+        sid             => $sid,
         events          => \@events,
     };
 
-    $self->print_page($config->{tt_admin_session_archived_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_sessions_archived_record_tname},$ttdata);
     
     return Apache2::Const::OK;
 }

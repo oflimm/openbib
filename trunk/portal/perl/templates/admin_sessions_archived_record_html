@@ -31,6 +31,22 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/search.html?l=[% lang %]">[% msg.maketext("Archiviert") %]</a></li>
+         <li><a href="#" class="lastitem">[% sid %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/id/[% sid %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -43,39 +59,41 @@
         <div class="ym-cbox" class="ym-clearfix">
 
 
-<table width="100%">
-<tr><th>Einzelne Session [% singlesessionid %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>Einzelne Session [% sid %]</h3>
 
+[%# USE dumper;dumper.dump(events)%]
 <table>
-<tr><td>Event</td><td>Inhalt</td></td><td></td></tr>
+<thead>
+<tr><th>[% msg.maketext("Timestamp") %]</th><th>[% msg.maketext("Event") %]</th><th>[% msg.maketext("Inhalt") %]</th></th><th></th></tr>
+</thead>
+<tbody>
 [% FOREACH event IN events %]
 [%  SWITCH event.type %]
 [%    CASE 1 %]
 [%       searchquery = event.content %]
-<tr><td>Recherche</td><td>
-[%- IF searchquery.fs.val -%]&nbsp;FS: [% searchquery.fs.val %] 
+<tr><td>[% event.tstamp %]</td><td>Recherche</td><td>
+[%- IF searchquery.freesearch.val -%]&nbsp;FS: [% searchquery.freesearch.val %] 
 [%- END -%]
-[%- IF searchquery.verf.val -%]
-&nbsp;[% searchquery.verf.bool %]&nbsp;AUT: [% searchquery.verf.val %]
+[%- IF searchquery.person.val -%]
+&nbsp;[% searchquery.person.bool %]&nbsp;PER: [% searchquery.person.val %]
 [%- END -%]
-[%- IF searchquery.hst.val -%]
-&nbsp;[% searchquery.hst.bool %]&nbsp;HST: [% searchquery.hst.val %]
+[%- IF searchquery.title.val -%]
+&nbsp;[% searchquery.title.bool %]&nbsp;TIT: [% searchquery.title.val %]
 [%- END -%]
-[%- IF searchquery.swt.val -%]
-&nbsp;[% searchquery.swt.bool %]&nbsp;SWT: [% searchquery.swt.val %]
+[%- IF searchquery.subject.val -%]
+&nbsp;[% searchquery.subject.bool %]&nbsp;SUBJ: [% searchquery.subject.val %]
 [%- END -%]
-[%- IF searchquery.kor.val -%]
-&nbsp;[% searchquery.kor.bool %]&nbsp;KOR: [% searchquery.kor.val %]
+[%- IF searchquery.corporatebody.val -%]
+&nbsp;[% searchquery.corporatebody.bool %]&nbsp;CORP: [% searchquery.corporatebody.val %]
 [%- END -%]
-[%- IF searchquery.notation.val -%]
-&nbsp;[% searchquery.notation.bool %]&nbsp;NOT: [% searchquery.notation.val %] 
+[%- IF searchquery.classification.val -%]
+&nbsp;[% searchquery.classification.bool %]&nbsp;NOT: [% searchquery.classification.val %] 
 [%- END -%]
-[%- IF searchquery.sign.val -%]
-&nbsp;[% searchquery.sign.bool %]&nbsp;SIG: [% searchquery.sign.val %]
+[%- IF searchquery.mark.val -%]
+&nbsp;[% searchquery.mark.bool %]&nbsp;SIG: [% searchquery.mark.val %]
 [%- END -%]
-[%- IF searchquery.ejahr.val -%]
-&nbsp;[% searchquery.ejahr.bool %]&nbsp;EJAHR: [% searchquery.ejahr.val %]
+[%- IF searchquery.year.val -%]
+&nbsp;[% searchquery.year.bool %]&nbsp;EJAHR: [% searchquery.year.val %]
 [%- END -%]
 [%- IF searchquery.isbn.val -%]
 &nbsp;[% searchquery.isbn.bool %]&nbsp;ISBN: [% searchquery.isbn.val %]
@@ -83,29 +101,28 @@
 [%- IF searchquery.issn.val -%]
 &nbsp;[% searchquery.issn.bool %]&nbsp;ISSN: [% searchquery.issn.val %]
 [%- END -%]
-[%- IF searchquery.mart.val -%]
-&nbsp;[% searchquery.mart.bool %]&nbsp;MART: [% searchquery.mart.val %]
+[%- IF searchquery.mediatype.val -%]
+&nbsp;[% searchquery.mediatype.bool %]&nbsp;MART: [% searchquery.mediatype.val %]
 [%- END -%]
-[%- IF searchquery.hststring.val -%]
-&nbsp;[% searchquery.hststring.bool %]&nbsp;HSTR: [% searchquery.hststring.val %] 
+[%- IF searchquery.titlestring.val -%]
+&nbsp;[% searchquery.titlestring.bool %]&nbsp;HSTR: [% searchquery.titlestring.val %] 
 [%- END -%]
-</td><td align="center">Treffer: [% searchquery.hits %]</td><td>DB's: [% searchquery.dbases.join(';') %]</td></tr>
+</td><td align="center">(Treffer: [% searchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchquery.searchprofile %]">[% searchquery.searchprofile %]</a>)</td></tr>
 [%    CASE 10 %]
-<tr><td>Einzeltreffer</td><td>[% event.content.id %] in [% event.content.database %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
 [%    CASE 100 %]
-<tr><td>View</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>View</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 101 %]
-<tr><td>Browser</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>Browser</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 102 %]
-<tr><td>IP</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>IP</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE ; %]
-<tr><td>[% event.type %]</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% event.type %]</td><td>[% event.content %]</td><td></td></tr>
 [%    END %]
 [% END %]
+</tbody>
+</table>
 
-</table>
-</td></tr>
-</table>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

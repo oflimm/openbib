@@ -36,13 +36,13 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Aktiv") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -57,24 +57,41 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% sessions.size %] Sessions aktiv.
+[% total_count %] Sessions aktiv.
 
-<table width="100%">
-<tr><th>[% msg.maketext("Bestehende Sessions") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>[% msg.maketext("Bestehende Sessions") %]</h3>
 
-<table cellpadding="2">
-<tr><td><b>[% msg.maketext("Session-ID") %]</b></td><td><b>[% msg.maketext("Beginn") %]</b></td><td align="middle"><b>[% msg.maketext("Benutzer") %]</b></td><td align="middle">
-<b>[% msg.maketext("Initiale Suchen") %]</b></td></tr>
+<table class="ym-full">
+<thead>
+<tr><th>[% msg.maketext('Id') %]</th><th>[% msg.maketext("Session-ID") %]</th><th>[% msg.maketext("Beginn") %]</th><th align="middle">[% msg.maketext("Benutzer") %]</th><th align="middle">[% msg.maketext("Initiale Suchen") %]</th></tr>
+</thead>
+<tbody>
 [% FOREACH session IN sessions %]
-
-<tr><td><a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active/[% session.id %]">[% session.id %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.username %]</td><td align="middle">[% session.numqueries %]</td></tr>
-
+<tr><td>[% session.id %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active/id/[% session.id %]">[% session.sessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.username %]</td><td align="middle">[% session.numqueries %]</td></tr>
 [% END %]
+</tbody>
+</table>
 
-</table>
-</td></tr>
-</table>
+  <div class="ob-footer">
+    <div class="ob-navigation">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?page=[% nav.first_page %];[% query_args_base %]">[% nav.first_page %]</a>&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?page=[% page %];[% query_args_base %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?page=[% nav.last_page %];[% query_args_base %]">[% nav.last_page %]</a>
+[%- END -%]
+    </div>
+</div>
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

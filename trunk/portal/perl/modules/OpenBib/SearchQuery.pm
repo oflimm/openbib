@@ -387,8 +387,8 @@ sub load  {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $sessionID              = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}           : undef;
+    my $sid                    = exists $arg_ref->{sid}
+        ? $arg_ref->{sid}                 : undef;
     my $queryid                = exists $arg_ref->{queryid}
         ? $arg_ref->{queryid}             : undef;
 
@@ -398,7 +398,7 @@ sub load  {
     # DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
     my $query = $self->{schema}->resultset('Query')->search_rs(
         {
-            'sid.sessionid' => $sessionID,
+            'sid.id'        => $sid,
             'me.queryid'    => $queryid,
         },
         {
@@ -415,7 +415,7 @@ sub load  {
         $thiststamp = $query->get_column('thiststamp');
     }
     
-    $logger->debug("$sessionID/$queryid -> $thisquery");
+    $logger->debug("$sid/$queryid -> $thisquery");
     $self->from_json("$thisquery");
     $self->set_id($queryid);
     $self->set_tstamp($thiststamp);
@@ -427,19 +427,19 @@ sub save  {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $sessionID              = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}           : undef;
+    my $sid               = exists $arg_ref->{sid}
+        ? $arg_ref->{sid}            : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    unless ($sessionID){
+    unless ($sid){
         return $self;
     }
 
     my $config = OpenBib::Config->instance;
     
-    $logger->debug("SessionID: $sessionID");
+    $logger->debug("sid: $sid");
     
     my $query_obj_string = "";
     
@@ -458,7 +458,7 @@ sub save  {
     # DBI: "select queryid from queries where query = ? and sessionid = ?"
     my $searchquery = $self->{schema}->resultset('Query')->search_rs(
         {
-            'sid.sessionid' => $sessionID,
+            'sid.id'        => $sid,
             'me.query'      => $query_obj_string,
         },
         {
@@ -472,14 +472,12 @@ sub save  {
     # Wenn noch nicht vorhanden, dann eintragen
 
     if (!$searchquery_exists){
-        my $sid = $self->{schema}->resultset('Sessioninfo')->search_rs({ 'sessionid' => $sessionID })->single()->id;
-
         # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
         my $new_query = $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile, tstamp => \'NOW()' });
 
         $self->set_id($new_query->get_column('queryid'));
         
-         $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sessionID,$query_obj_string to id ".$self->get_queryid);
+         $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sid,$query_obj_string to id ".$self->get_queryid);
     }
     else {
         $self->set_id($searchquery->get_column('queryid'));
@@ -1042,9 +1040,9 @@ Datenbanken speichern.
 Setzen der Suchbegriffe direkt aus dem Apache-Request samt übergebener
 Suchoptionen und zusätzlicher Normierung der Suchbegriffe.
 
-=item load({ sessionID => $sessionID, queryid => $queryid })
+=item load({ sid => $sid, queryid => $queryid })
 
-Laden der Suchanfrage zu $queryid in der Session $sessionID
+Laden der Suchanfrage zu $queryid in der Session $sid
 
 =item get_searchquery
 

@@ -116,7 +116,10 @@
 <h3>[% msg.maketext("Bereits existierende Kataloge") %]</h3>
 
 <table>
-<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Info") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Bibinfo statt URL / vorhanden") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
+<thead>
+<tr><th>[% msg.maketext("DB-Name") %]</th><th>[% msg.maketext("Info") %]</th><th>[% msg.maketext("RSS") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Bibinfo statt URL / vorhanden") %]</th><th>[% msg.maketext("Auto-Konv") %]</th><th>[% msg.maketext("Titel-Anzahl") %]</th></tr>
+</thead>
+<tbody>
 [% FOREACH catalog IN catalogs.all %]
 <tr [% IF catalog.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <td>[% catalog.dbname %]</td>
@@ -127,7 +130,7 @@
 <td align="center">[%- IF catalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
 <td align="right">[% catalog.allcount %]</td></tr>
 [% END %]
-
+</tbody>
 </table>
 
 [% END %]

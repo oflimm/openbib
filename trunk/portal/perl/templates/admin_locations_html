@@ -97,7 +97,10 @@
 <h3>[% msg.maketext("Bereits existierende Standorte") %]</h3>
 [%# USE dumper;dumper.dump(locations)%]
 <table>
+<thead>
 <tr><th>[% msg.maketext("Identifier") %]</th><th>[% msg.maketext("Typ") %]</th><th>[% msg.maketext("Beschreibung") %]</th></tr>
+</thead>
+<tbody>
 [% FOREACH location IN locations %]
 <tr>
 <td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% location.id %]/edit.html?l=[% lang %]">[% location.identifier %]</a></td>
@@ -105,7 +108,7 @@
 <td>[% location.description %]</td>
 </tr>
 [% END %]
-
+</tbody>
 </table>
 
 [% END %]

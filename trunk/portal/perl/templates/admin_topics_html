@@ -92,17 +92,17 @@
 </p>
 
 <table class="ym-full">
+<thead>
 <tr><th>[% msg.maketext("Themengebiet") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Systematik-Gruppen") %]</th></tr>
+</thead>
+<tbody>
 [% FOREACH topic IN topics %]
 <tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %]/edit">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
 [% END %]
-
+</tbody>
 </table>
-
 [% END %]
 
-</td></tr>
-</table>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

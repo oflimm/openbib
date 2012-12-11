@@ -57,6 +57,7 @@ ALTER TABLE serverinfo ADD CONSTRAINT fk_serverinfo_clusterinfo FOREIGN KEY (clu
 
 ALTER TABLE sessioninfo ADD PRIMARY KEY (id);
 CREATE INDEX sessioninfo_sessionid ON sessioninfo (sessionid);
+CREATE INDEX sessioninfo_createtime ON sessioninfo (createtime);
 CREATE INDEX sessioninfo_username ON sessioninfo (username);
 
 ALTER TABLE cartitem ADD PRIMARY KEY (id);

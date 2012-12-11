@@ -92,13 +92,14 @@
 </p>
 
 <table class="ym-full">
-<tr><td><b>[% msg.maketext("Profil-Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td></tr>
-
+<thead>
+<tr><th>[% msg.maketext("Profil-Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Datenbanken") %]</th></tr>
+</thead>
+<tbody>
 [% FOREACH profile IN profiles.all %]
-
 <tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profile.profilename %]/edit.html?l=[% lang %]">[% profile.description %]</a></td><td><ul>[% FOREACH item IN config.get_profiledbs(profile.profilename).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
 [% END %]
-
+</tbody>
 </table>
 
 [% ELSE %]

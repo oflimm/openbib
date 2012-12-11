@@ -618,18 +618,18 @@ sub get_all_searchqueries {
 
     # Set defaults
 
-    my $sessionid = exists $arg_ref->{sessionid}
-        ? $arg_ref->{sessionid}         : undef;
+    my $sid =   exists $arg_ref->{sid}
+        ? $arg_ref->{sid}         : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $thissessionid = (defined $sessionid)?$sessionid:$self->{ID};
+    my $thissid = (defined $sid)?$sid:$self->{sid};
 
     # DBI: "select queryid from queries where sessionid = ? order by queryid DESC "
     my $searchqueries = $self->{schema}->resultset('Query')->search_rs(
         {
-            'sid.sessionid' => $thissessionid,
+            'sid.id' => $thissid,
         },
         {
             select => 'me.queryid',
@@ -643,7 +643,7 @@ sub get_all_searchqueries {
 
     foreach my $item ($searchqueries->all){
         $logger->debug("Found Searchquery with id ".$item->get_column('thisqueryid'));
-        my $searchquery = OpenBib::SearchQuery->new->load({sessionID => $thissessionid, queryid => $item->get_column('thisqueryid') });
+        my $searchquery = OpenBib::SearchQuery->new->load({sid => $thissid, queryid => $item->get_column('thisqueryid') });
         push @queries, $searchquery;
     }
 
@@ -1536,18 +1536,42 @@ sub is_authenticated_as {
     return ($count <= 0)?0:1;
 }
 
-sub get_info_of_all_active_sessions {
+sub get_number_of_all_active_sessions {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # DBI: "select * from session order by createtime"
-    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->search(undef, { order_by => 'createtime ASC'});
+    return $self->{schema}->resultset('Sessioninfo')->count;
+}
+
+sub get_info_of_all_active_sessions {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $offset   = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}            : 0;
+    my $num      = exists $arg_ref->{num}
+        ? $arg_ref->{num}               : 20;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select * from session order by createtime"
+    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->search(
+        undef,
+        {
+            order_by => 'createtime DESC',
+            offset   => $offset,
+            rows     => $num,
+        }
+    );
     
     my @sessions=();
 
     foreach my $item ($sessioninfos->all){
+        my $id              = $item->id;
         my $singlesessionid = $item->sessionid;
         my $createtime      = $item->createtime;
         my $username        = $item->username;
@@ -1558,7 +1582,8 @@ sub get_info_of_all_active_sessions {
         }
 
         push @sessions, {
-            id              => $singlesessionid,
+            id              => $id,
+            sessionid       => $singlesessionid,
             createtime      => $createtime,
             username        => $username,
             numqueries      => $numqueries,

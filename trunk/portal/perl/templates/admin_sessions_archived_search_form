@@ -36,9 +36,9 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/archived/search/form.html?l=[% lang %]">[% msg.maketext("Archiviert") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/search/form.html?l=[% lang %]">[% msg.maketext("Archiviert") %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Explorer") %]</a></li>
        </ul>
      </div>
@@ -55,19 +55,31 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="get" action="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/archived/search.html">
-<input type="hidden" name="l" value="[% lang %]"/>
+<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/search" class="ym-form">
 
-<table class="ym-full">
-<tr><th>Session-Explorer</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<fieldset class="ym-columnar">
 
-<table cellpadding="2">
-<tr><td><b>Zwischen Datum</b></td><td><input type="text" name="fromdate"> und <input type="text" name="todate"></td></tr>
-<tr><td colspan="2"><input type="submit" value="Suchen" /></td></tr>
-</table>
-</td></tr>
-</table>
+<legend>[% msg.maketext("Session-Explorer") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="fromdate">[% msg.maketext("Von") %]</label>
+<input type="text" name="fromdate" value="1999-01-08 04:05:06" id="fromdate" size="8" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="todate">[% msg.maketext("Bis") %]</label>
+<input type="text" name="todate" value="1999-01-08 04:10:06" id="todate" size="20" />
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Suchen") %]" />
+
+</div>
+
+</fieldset>
+</form>
+
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

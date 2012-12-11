@@ -37,13 +37,13 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Aktiv") %]</a></li>
-         <li><a href="#" class="lastitem">[% thissession.sessionid %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Aktiv") %]</a></li>
+         <li><a href="#" class="lastitem">[% thissession.id %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_sessions_loc') %]/active/[% thissession.sessionid %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active/id/[% thissession.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -67,75 +67,76 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table cellpadding="3">
-<tr><td><b>[% msg.maketext("Session") %]</b></td><td>[% thissession.sessionid %]</td></tr>
+<tr><td><b>[% msg.maketext("Session") %]</b></td><td>[% thissession.id %]</td></tr>
 <tr><td><b>[% msg.maketext("Seit") %]</b></td><td>[% thissession.createtime %]</td></tr>
-<tr><td><b>[% msg.maketext("Anzahl Recherchen") %]</b></td><td>[% thissession.numqueries %]</td></tr>
+<tr><td><b>[% msg.maketext("Anzahl Recherchen") %]</b></td><td>[% queries.size %]</td></tr>
 </table>
 
 </td></tr>
 </table>
 
-<p />
+<h3>Einzelne Session [% sid %]</h3>
 
-[%# USE dumper;dumper.dump(thissession) %]
-[%# USE dumper;dumper.dump(queries) %]
-<table width="100%">
-<tr><th>[% msg.maketext("Recherchen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-
-[% IF queries.size > 0 %]
-<table cellpadding="3">
-<tr><td><b>[% msg.maketext("Recherche") %]</b></td><td><b>[% msg.maketext("Treffer") %]</b></td><td><b>[% msg.maketext("Suchprofil") %]</b></td></tr>
-
-[% FOREACH query IN queries %]
-
-<tr><td>
-[%- IF query.get_searchquery.freesearch.val -%]
-&nbsp;FS: [% query.get_searchquery.freesearch.val %] 
+[%# USE dumper;dumper.dump(events)%]
+<table>
+<thead>
+<tr><th>[% msg.maketext("Timestamp") %]</th><th>[% msg.maketext("Event") %]</th><th>[% msg.maketext("Inhalt") %]</th></th><th></th></tr>
+</thead>
+<tbody>
+[% FOREACH event IN events %]
+[%  SWITCH event.type %]
+[%    CASE 1 %]
+[%       searchquery = event.content %]
+<tr><td>[% event.tstamp %]</td><td>Recherche</td><td>
+[%- IF searchquery.freesearch.val -%]&nbsp;FS: [% searchquery.freesearch.val %] 
 [%- END -%]
-[%- IF query.get_searchquery.person.val -%]
-&nbsp;[% query.get_searchquery.person.bool %]&nbsp;PER: [% query.get_searchquery.person.val %]
+[%- IF searchquery.person.val -%]
+&nbsp;[% searchquery.person.bool %]&nbsp;PER: [% searchquery.person.val %]
 [%- END -%]
-[%- IF query.get_searchquery.title.val -%]
-&nbsp;[% query.get_searchquery.title.bool %]&nbsp;TIT: [% query.get_searchquery.title.val %]
+[%- IF searchquery.title.val -%]
+&nbsp;[% searchquery.title.bool %]&nbsp;TIT: [% searchquery.title.val %]
 [%- END -%]
-[%- IF query.get_searchquery.subject.val -%]
-&nbsp;[% query.get_searchquery.subject.bool %]&nbsp;SWT: [% query.get_searchquery.subject.val %]
+[%- IF searchquery.subject.val -%]
+&nbsp;[% searchquery.subject.bool %]&nbsp;SUBJ: [% searchquery.subject.val %]
 [%- END -%]
-[%- IF query.get_searchquery.corporatebody.val -%]
-&nbsp;[% query.get_searchquery.corporatebody.bool %]&nbsp;KOR: [% query.get_searchquery.corporatebody.val %]
+[%- IF searchquery.corporatebody.val -%]
+&nbsp;[% searchquery.corporatebody.bool %]&nbsp;CORP: [% searchquery.corporatebody.val %]
 [%- END -%]
-[%- IF query.get_searchquery.classification.val -%]
-&nbsp;[% query.get_searchquery.classificiation.bool %]&nbsp;NOT: [% query.get_searchquery.classification.val %] 
+[%- IF searchquery.classification.val -%]
+&nbsp;[% searchquery.classification.bool %]&nbsp;NOT: [% searchquery.classification.val %] 
 [%- END -%]
-[%- IF query.get_searchquery.mark.val -%]
-&nbsp;[% query.get_searchquery.mark.bool %]&nbsp;SIG: [% query.get_searchquery.mark.val %]
+[%- IF searchquery.mark.val -%]
+&nbsp;[% searchquery.mark.bool %]&nbsp;SIG: [% searchquery.mark.val %]
 [%- END -%]
-[%- IF query.get_searchquery.year.val -%]
-&nbsp;[% query.get_searchquery.year.bool %]&nbsp;EJAHR: [% query.get_searchquery.year.val %]
+[%- IF searchquery.year.val -%]
+&nbsp;[% searchquery.year.bool %]&nbsp;EJAHR: [% searchquery.year.val %]
 [%- END -%]
-[%- IF query.get_searchquery.isbn.val -%]
-&nbsp;[% query.get_searchquery.isbn.bool %]&nbsp;ISBN: [% query.get_searchquery.isbn.val %]
+[%- IF searchquery.isbn.val -%]
+&nbsp;[% searchquery.isbn.bool %]&nbsp;ISBN: [% searchquery.isbn.val %]
 [%- END -%]
-[%- IF query.get_searchquery.issn.val -%]
-&nbsp;[% query.get_searchquery.issn.bool %]&nbsp;ISSN: [% query.get_searchquery.issn.val %]
+[%- IF searchquery.issn.val -%]
+&nbsp;[% searchquery.issn.bool %]&nbsp;ISSN: [% searchquery.issn.val %]
 [%- END -%]
-[%- IF query.get_searchquery.mediatype.val -%]
-&nbsp;[% query.get_searchquery.mediatype.bool %]&nbsp;MART: [% query.get_searchquery.mediatype.val %]
+[%- IF searchquery.mediatype.val -%]
+&nbsp;[% searchquery.mediatype.bool %]&nbsp;MART: [% searchquery.mediatype.val %]
 [%- END -%]
-[%- IF query.get_searchquery.titlestring.val -%]
-&nbsp;[% query.get_searchquery.titlestring.bool %]&nbsp;TITSTR: [% query.get_searchquery.titlestring.val %] 
+[%- IF searchquery.titlestring.val -%]
+&nbsp;[% searchquery.titlestring.bool %]&nbsp;HSTR: [% searchquery.titlestring.val %] 
 [%- END -%]
-</td><td align="center">[% query.get_hits %]</td><td><a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/[% query.get_searchprofile %].html?l=[% lang %]">[% query.get_searchprofile %]</a>[% FOREACH dbname IN query.get_databases %][% dbinfo.get('dbnames').${dbname}.full %]<br/>[% END %]</td></tr>
-
+</td><td align="center">(Treffer: [% searchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchquery.searchprofile %]">[% searchquery.searchprofile %]</a>)</td></tr>
+[%    CASE 10 %]
+<tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
+[%    CASE 100 %]
+<tr><td>[% event.tstamp %]</td><td>View</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE 101 %]
+<tr><td>[% event.tstamp %]</td><td>Browser</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE 102 %]
+<tr><td>[% event.tstamp %]</td><td>IP</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE ; %]
+<tr><td>[% event.tstamp %]</td><td>[% event.type %]</td><td>[% event.content %]</td><td></td></tr>
+[%    END %]
 [% END %]
-
-
-</table>
-[% ELSE %]
-[% msg.maketext("In dieser Session wurden bisher keine Rechercheanfragen gestellt") %]
-[% END %]
-</td></tr>
+</tbody>
 </table>
 
         </div>

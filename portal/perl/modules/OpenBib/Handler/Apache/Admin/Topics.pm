@@ -73,6 +73,7 @@ sub setup {
         'show_record'               => 'show_record',
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'delete_record'             => 'delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -148,7 +149,7 @@ sub show_record {
 
     # Dispatched Args
     my $view             = $self->param('view');
-    my $topicid        = $self->strip_suffix($self->param('topicid'));
+    my $topicid          = $self->strip_suffix($self->param('topicid'));
 
     # Shared Args
     my $config         = $self->param('config');
@@ -253,7 +254,7 @@ sub create_record {
     
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_topics_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{topics_loc}");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -278,47 +279,21 @@ sub update_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $topicid      = $self->param('topicid');
+    my $topicid        = $self->param('topicid');
 
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
     my $user           = $self->param('user');
+    my $lang           = $self->param('lang');
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
 
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
-
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
-    }
-
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $topicid");
-        
-        if ($confirm){
-            my $ttdata={
-                topicid  => $topicid,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_topics_record_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
-        }
-        else {
-            $logger->debug("Redirecting to delete location");
-            $self->delete_record;
-            return;
-        }
     }
 
     # Ansonsten POST oder PUT => Aktualisieren
@@ -331,7 +306,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_topics_loc}");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
@@ -342,6 +317,32 @@ sub update_record {
     
 
     return;
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $topicid        = $self->strip_suffix($self->param('topicid'));
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
+
+    my $topic_ref = $user->get_topic({ id => $topicid});
+    
+    my $ttdata={
+        topicid => $topicid,
+        topic   => $topic_ref,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_admin_topics_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
 }
 
 sub delete_record {
@@ -365,6 +366,8 @@ sub delete_record {
     }
 
     $user->del_topic({ id => $topicid });
+
+    return unless ($self->param('representation') eq "html");
 
     $self->query->method('GET');
     $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_topics_loc}");

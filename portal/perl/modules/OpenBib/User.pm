@@ -3276,7 +3276,7 @@ sub set_classifications_of_topic {
         ? $arg_ref->{classifications}     : undef;
 
     my $type                = exists $arg_ref->{type}
-        ? $arg_ref->{type}                : 'BK';
+        ? $arg_ref->{type}                : 'bk';
     
     # Log4perl logger erzeugen
   
@@ -3291,7 +3291,7 @@ sub set_classifications_of_topic {
     # DBI: "delete from topicclassification where topicid=? and type = ?"
     my $topicclassifications = $self->{schema}->resultset('Topicclassification')->search_rs(
         {
-            topicid => $topicid,
+            topicid   => $topicid,
             type      => $type,
         }
     )->delete;
@@ -3303,7 +3303,7 @@ sub set_classifications_of_topic {
         $self->{schema}->resultset('Topicclassification')->create(
             {
                 classification => $classification,
-                topicid      => $topicid,
+                topicid        => $topicid,
                 type           => $type,
             }
         );
@@ -4976,10 +4976,6 @@ sub update_topic {
         ? $arg_ref->{description}         : undef;
     my $id                       = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
-    my $classifications_ref      = exists $arg_ref->{classifications}
-        ? $arg_ref->{classifications}     : [];
-    my $type                      = exists $arg_ref->{type}
-        ? $arg_ref->{type}                : 'BK';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -4992,12 +4988,29 @@ sub update_topic {
         }
     );
 
+    return;
+}
+
+sub update_topic_mapping {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                            = exists $arg_ref->{id}
+        ? $arg_ref->{id}                       : undef;
+    my $classifications_ref           = exists $arg_ref->{classifications}
+        ? $arg_ref->{classifications}          : [];
+    my $type                          = exists $arg_ref->{type}
+        ? $arg_ref->{type}                     : 'bk';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     # Angabe von type bedingt update der entsprechenden Klassifikationen
     if ($type){       
         $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
 
         $self->set_classifications_of_topic({
-            topicid       => $id,
+            topicid         => $id,
             classifications => $classifications_ref,
             type            => $type,
         });

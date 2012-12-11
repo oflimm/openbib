@@ -94,7 +94,7 @@
 <table class="ym-full">
 <tr><th>[% msg.maketext("Themengebiet") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Systematik-Gruppen") %]</th></tr>
 [% FOREACH topic IN topics %]
-<tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %]/edit">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %]/edit">[% topic.name %]</a></td><td>[% topic.description %]</td><td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td></tr>
 [% END %]
 
 </table>

@@ -67,6 +67,7 @@ sub setup {
 
     $self->start_mode('show_collection');
     $self->run_modes(
+        'show_collection'           => 'show_collection',
         'show_record_form'          => 'show_record_form',
         'show_record'               => 'show_record',
         'create_record'             => 'create_record',
@@ -80,6 +81,37 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
+sub show_collection {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view             = $self->param('view');
+    my $topicid          = $self->param('topicid');
+
+    # Shared Args
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
+
+    my $topic_ref = $user->get_topic({ id => $topicid});
+
+    my $ttdata={
+        topic    => $topic_ref,
+    };
+    
+    $self->print_page($config->{tt_admin_topics_mappings_tname},$ttdata);
+
+    return;
+}
+
 sub show_record {
     my $self = shift;
 
@@ -88,19 +120,20 @@ sub show_record {
 
     # Dispatched Args
     my $view             = $self->param('view');
-    my $subjectid        = $self->param('subjectid');
+    my $topicid          = $self->param('topicid');
     my $mappingid        = $self->strip_suffix($self->param('mappingid'));
 
     # Shared Args
     my $config         = $self->param('config');
     my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $subject_ref = $user->get_subject({ id => $subjectid});
+    my $topic_ref = $user->get_topic({ id => $topicid});
 
     my $mapping = $self->get_mapping_by_id($mappingid);
 
@@ -110,11 +143,12 @@ sub show_record {
     }
     
     my $ttdata={
-        subject    => $subject_ref,
+        topic      => $topic_ref,
+        type       => $mappingid,
         mapping    => $mapping,
     };
     
-    $self->print_page($config->{tt_admin_subject_mapping_record_tname},$ttdata);
+    $self->print_page($config->{tt_admin_topics_mappings_record_tname},$ttdata);
 
     return;
 }
@@ -127,19 +161,20 @@ sub show_record_form {
 
     # Dispatched Args
     my $view             = $self->param('view');
-    my $subjectid        = $self->param('subjectid');
+    my $topicid        = $self->param('topicid');
     my $mappingid        = $self->param('mappingid');
 
     # Shared Args
     my $config         = $self->param('config');
     my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    my $subject_ref = $user->get_subject({ id => $subjectid});
+    my $topic_ref = $user->get_topic({ id => $topicid});
 
     my $mapping = $self->get_mapping_by_id($mappingid);
 
@@ -149,69 +184,11 @@ sub show_record_form {
     }
 
     my $ttdata={
-        subject    => $subject_ref,
+        topic    => $topic_ref,
         mapping    => $mapping,
     };
     
-    $self->print_page($config->{tt_admin_subject_mapping_record_edit_tname},$ttdata);
-
-    return;
-}
-
-sub create_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $subjectid        = $self->param('subjectid');
-    my $mappingid        = $self->strip_suffix($self->param('mappingid'));
-
-    # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $path_prefix    = $self->param('path_prefix');
-    my $location       = $self->param('location');
-
-    # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input();
-
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
-    if ($input_data_ref->{subject} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."));
-        return Apache2::Const::OK;
-    }
-    
-    my $new_subjectid = $user->new_subject($input_data_ref);
-    
-    if (!$new_subjectid ){
-        $self->print_warning($msg->maketext("Es existiert bereits ein Themengebiet unter diesem Namen"));
-        return Apache2::Const::OK;
-    }
-    
-    if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subjects_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
-    }
-    else {
-        $logger->debug("Weiter zum Record");
-        if ($new_subjectid){
-            $logger->debug("Weiter zum Record $new_subjectid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('subjectid',$new_subjectid);
-            $self->param('location',"$location/$new_subjectid");
-            $self->show_record;
-        }
-    }
+    $self->print_page($config->{tt_admin_topic_mapping_record_edit_tname},$ttdata);
 
     return;
 }
@@ -224,94 +201,39 @@ sub update_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $subjectid      = $self->param('subjectid');
+    my $topicid      = $self->param('topicid');
     my $mappingid      = $self->strip_suffix($self->param('mappingid'));
 
     # Shared Args
     my $query          = $self->query();
     my $config         = $self->param('config');
+    my $lang           = $self->param('lang');
     my $user           = $self->param('user');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = decode_utf8($query->param('_method')) || '';
-    my $confirm         = $query->param('confirm') || 0;
-    my $subject         = decode_utf8($query->param('subject'))         || '';
-    my $description     = decode_utf8($query->param('description'))     || '';
-    my @classifications = ($query->param('classifications'))?$query->param('classifications'):();
-    my $type            = $query->param('type')            || '';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    $input_data_ref->{id} = $topicid; # type wird durch Resourcenbestandteil ueberschrieben
+    $input_data_ref->{type} = $mappingid; # type wird durch Resourcenbestandteil ueberschrieben
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
+
+    $user->update_topic_mapping($input_data_ref);
+
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $logger->debug("Weiter zum Record $topicid mit mapping %type");
+        $self->show_record;
+    }
+
     
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete $subjectid");
-        
-        if ($confirm){
-            my $ttdata={
-                subjectid  => $subjectid,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_subject_record_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
-        }
-        else {
-            $logger->debug("Redirecting to delete location");
-            $self->delete_record;
-            return;
-        }
-    }
-
-    # Ansonsten POST oder PUT => Aktualisieren
-
-    $user->update_subject({
-        name                 => $subject,
-        description          => $description,
-        id                   => $subjectid,
-        classifications      => \@classifications,
-        type                 => $type,
-    });
-
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subjects_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
-}
-
-sub delete_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $subjectid      = $self->param('subjectid');
-    my $mappingid      = $self->strip_suffix($self->param('mappingid'));
-
-    # Shared Args
-    my $config         = $self->param('config');
-    my $user           = $self->param('user');
-    my $path_prefix    = $self->param('path_prefix');
-
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
-    $user->del_subject({ id => $subjectid });
-
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_subjects_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
 
     return;
 }
@@ -320,7 +242,7 @@ sub get_mapping_by_id {
     my $self=shift;
     my $mappingid = shift;
 
-    my $mapping = OpenBib::Catalog::Factory->create_catalog({database => $mapping });
+    my $mapping = OpenBib::Catalog::Factory->create_catalog({database => $mappingid });
     
     return $mapping;
 }
@@ -329,15 +251,10 @@ sub get_input_definition {
     my $self=shift;
     
     return {
-        description => {
+        classifications => {
             default  => '',
             encoding => 'utf8',
-            type     => 'scalar',
-        },
-        name => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
+            type     => 'array',
         },
     };
 }

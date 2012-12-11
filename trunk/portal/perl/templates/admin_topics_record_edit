@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: topic_record_edit
+# Templatename: topics_record_edit
 #
 # Typ         : Mastertemplate       
 #
@@ -102,143 +102,100 @@
 
 <p/>
 
-<div class="boxedclear">
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/bk" class="ym-form">
 
-<form method="post" action="[% path_prefix %]/[% config.get('admin_topics_loc') %]/[% topic.id %]">
-<input type="hidden" name="_method"     value="PUT" />
-<input type="hidden" name="topic"     value="[% topic.name %]" />
-<input type="hidden" name="description" value="[% topic.description %]" />
-<input type="hidden" name="type"        value="BK" />
+<fieldset class="ym-columnar">
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Themengebiet(e) der Basisklassifikation zuordnen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
-<tr><td colspan="3">
-<select name="classifications" multiple="multiple" size="10">
+<legend>[% msg.maketext("Themengebiet(e) der Basisklassifikation zuordnen") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select name="classifications" id="classifications" multiple="multiple" size="10">
 [%
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 %]
-
 [% FOREACH bk IN bklist %]
-<option value="[% bk.classification %]"
-
-[% IF classification_selected.${bk.classification}  %]
-selected="selected"
-[% END %]
-
->[% bk.classification %] [% bk.desc %]</option>
-
+<option value="[% bk.classification %]" [% IF classification_selected.${bk.classification}  %]selected="selected"[% END %]>[% bk.classification %] [% bk.desc %]</option>
 [% END %]
 </select>
-</td>
-</tr>
-</table>
-
-<p />
-
-<input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" />
-</form>
-
-</td></tr>
-</table>
 
 </div>
 
-<p/>
-
-<div class="boxedclear">
-<form method="post" action="[% path_prefix %]/[% config.get('admin_topics_loc') %]/[% topic.id %]">
-
-<input type="hidden" name="topicid" value="[% topic.id %]" />
-<input type="hidden" name="do_edittopic" value="1" />
-<input type="hidden" name="type"           value="EZB" />
-<input type="hidden" name="topic"        value="[% topic.name %]" />
-<input type="hidden" name="description"    value="[% topic.description %]" />
-
-<table class="ym-full">
-<tr><th>[% msg.maketext("Themengebiet(e) der EZB zuordnen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
-<tr><td colspan="3">
-<select name="classifications" multiple="multiple" size="10">
-[%-
-   classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'EZB', topicid => topic.id});
-      classification_selected.${classification} = 1;
-   END;
--%]
-[% FOREACH ezb_topic IN ezb.get_topics %]
-<option value="[% ezb_topic.notation %]"[% IF classification_selected.${ezb_topic.notation}  %] selected="selected"[% END %]>[% ezb_topic.notation %] [% ezb_topic.desc | truncate(100)%]</option>
-[% END %]
-
-
-</select>
-</td>
-
-
-</tr>
-</table>
-
-<p />
-
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Ändern") %]" />
 
-</td></tr>
-</table>
-
-</form>
-
 </div>
 
+</fieldset>
+</form>
 
 <p/>
-<div class="boxedclear">
-<form method="post" action="[% path_prefix %]/[% config.get('admin_topics_loc') %]/[% topic.id %]">
 
-<input type="hidden" name="topicid" value="[% topic.id %]" />
-<input type="hidden" name="do_edittopic" value="1" />
-<input type="hidden" name="type"           value="DBIS" />
-<input type="hidden" name="topic"        value="[% topic.name %]" />
-<input type="hidden" name="description"    value="[% topic.description %]" />
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/ezb" class="ym-form">
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Themengebiet(e) von DBIS zuordnen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
-<tr><td colspan="3">
-<select name="classifications" multiple="multiple" size="10">
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Themengebiet(e) der EZB zuordnen") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select name="classifications" id="classifications" multiple="multiple" size="10">
 [%-
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'DBIS', topicid => topic.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'ezb', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 -%]
-[% FOREACH dbis_topic IN dbis.get_topics %]
-<option value="[% dbis_topic.notation %]"[% IF classification_selected.${dbis_topic.notation}  %] selected="selected"[% END %]>[% dbis_topic.notation %] [% dbis_topic.desc %]</option>
+[% FOREACH ezb_topic IN ezb.get_classifications %]
+<option value="[% ezb_topic.name %]" [% IF classification_selected.${ezb_topic.name}  %]selected="selected"[% END %]>[% ezb_topic.name %] [% ezb_topic.desc | truncate(100)%]</option>
 [% END %]
-
-
 </select>
-</td>
-</tr>
-</table>
 
-<p />
-
-<input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" />
-
-</td></tr>
-</table>
-
-</form>
 </div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
+
+</div>
+
+</fieldset>
+</form>
+
+<p/>
+
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/dbis" class="ym-form">
+
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Themengebiet(e) von DBIS zuordnen") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select name="classifications" id="classifications" multiple="multiple" size="10">
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'dbis', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% FOREACH dbis_topic IN dbis.get_classifications %]
+<option value="[% dbis_topic.name %]"[% IF classification_selected.${dbis_topic.name}  %] selected="selected"[% END %]>[% dbis_topic.name %] [% dbis_topic.desc %]</option>
+[% END %]
+</select>
+
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
+
+</div>
+
+</fieldset>
+</form>
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

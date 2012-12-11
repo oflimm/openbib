@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: topics_record_edit
+# Templatename: topic_record_edit
 #
 # Typ         : Mastertemplate       
 #
@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='Themengebiet' %]
+[% PROCESS common/subtemplate name="std_header" title='Themengebiet / Mappings' %]
 
   <body>
 [%
@@ -51,11 +51,12 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
-         <li><a href="#" class="lastitem">[% topic.name %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('topics_loc') %]/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a></li>
+         <li><a href="#" class="lastitem">Mappings</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %][% config.get('topics_loc') %]/id/[% topic.id %]/mappings.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -70,64 +71,64 @@
         <div class="ym-cbox" class="ym-clearfix">
 
 <table class="ym-full">
-<tr><th>[% msg.maketext("Id") %]</th>
-<td>[% topic.id %]</td></tr>
-
-<tr><th>[% msg.maketext("Themengebiet") %]</th>
-<td>[% topic.name %]</td></tr>
-
+<tr><th>[% msg.maketext("Id") %]</th><td>[% topic.id %]</td></tr>
+<tr><th>[% msg.maketext("Themengebiet") %]</th><td>[% topic.name %]</td></tr>
 [% IF topic.description %]
-<tr><th>[% msg.maketext("Beschreibung") %]</th>
-<td>[% topic.description %]</td></tr>
-[% END %]
-</table>
-
-<h3>[% msg.maketext("Basisklassifikation") %]</h3>
-
-<table class="ym-full">
-<tr><th width="30em">[% msg.maketext("Klassifikation") %]</th><th>[% msg.maketext("Beschreibung")%]</th></tr>
-[%
-   classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
-      classification_selected.${classification} = 1;
-   END;
-%]
-[% FOREACH bk IN bklist %]
-[% IF classification_selected.${bk.classification}  %]<tr><td>[% bk.classification %]</td><td>[% bk.desc %]</td></tr>[% END %]
-[% END %]
-</table>
-
-<h3>[% msg.maketext("EZB") %]</h3>
-
-<table class="ym-full">
-<tr><th width="30em">[% msg.maketext("Klassifikation") %]</th><th>[% msg.maketext("Beschreibung")%]</th></tr>
-[%-
-   classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'ezb', topicid => topic.id});
-      classification_selected.${classification} = 1;
-   END;
--%]
-[% FOREACH ezb_topic IN ezb.get_classifications %]
-[%   IF classification_selected.${ezb_topic.name}  %]<tr><td>[% ezb_topic.name %]</td><td>[% ezb_topic.desc | truncate(100)%]</td></tr>[% END %]
+<tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% topic.description %]</td></tr>
 [% END %]
 </table>
 
 <p/>
 
-<h3>[% msg.maketext("DBIS") %]</h3>
+<h3>[% msg.maketext("Zuordnung") %]: [% msg.maketext("Basisklassification") %]</h3>
 
-<table class="ym-full">
-<tr><th width="30em">[% msg.maketext("Klassifikation") %]</th><th>[% msg.maketext("Beschreibung")%]</th></tr>
-[%-
+<ul>
+[%
+   type == "bk";
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'dbis', topicid => topic.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
--%]
-[% FOREACH dbis_topic IN dbis.get_classifications %]
-[% IF classification_selected.${dbis_topic.name}  %]<tr><td>[% dbis_topic.name %]</td><td>[% dbis_topic.desc %]</td></tr>[% END %]
-[% END %]
-</table>
+%]
+[%  FOREACH bk IN bklist %]
+[%   IF classification_selected.${bk.classification}  %]<li>[% bk.classification %] [% bk.desc %]</li>[% END %]
+[%  END %]
+</ul>
+
+<p/>
+
+<h3>[% msg.maketext("Zuordnung") %]: [% msg.maketext("Elektronische Zeitschriftenbibliothek") %]</h3>
+
+<ul>
+[%
+   mapping = cgiapp.get_mapping_by_id("ezb");
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => "ezb", topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH thisclassification IN mapping.get_classifications %]
+[%   IF classification_selected.${thisclassification.name}  %]<li>[% thisclassification.name %] [% thisclassification.desc %]</li>[% END %]
+[%  END %]
+</ul>
+
+<p/>
+
+<h3>[% msg.maketext("Zuordnung") %]: [% msg.maketext("Datenbankinformationssystem") %]</h3>
+
+<ul>
+[%
+   mapping = cgiapp.get_mapping_by_id("dbis");
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => "dbis", topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH thisclassification IN mapping.get_classifications %]
+[%   IF classification_selected.${thisclassification.name}  %]<li>[% thisclassification.name %] [% thisclassification.desc %]</li>[% END %]
+[%  END %]
+</ul>
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

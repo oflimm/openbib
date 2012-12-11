@@ -52,8 +52,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
-use OpenBib::EZB;
-use OpenBib::DBIS;
+use OpenBib::Catalog::Factory;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -91,18 +90,13 @@ sub show_collection {
     my $config         = $self->param('config');
     my $user           = $self->param('user');
 
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
     my $topics_ref = $user->get_topics;
     
     my $ttdata={
         topics   => $topics_ref,
     };
     
-    $self->print_page($config->{tt_topic_tname},$ttdata);
+    $self->print_page($config->{tt_topics_tname},$ttdata);
 
     return;
 }
@@ -115,20 +109,15 @@ sub show_record {
 
     # Dispatched Args
     my $view             = $self->param('view');
-    my $topicid        = $self->strip_suffix($self->param('topicid'));
+    my $topicid          = $self->strip_suffix($self->param('topicid'));
 
     # Shared Args
     my $config         = $self->param('config');
     my $user           = $self->param('user');
 
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
     my $topic_ref = $user->get_topic({ id => $topicid});
-    my $ezb         = OpenBib::EZB->new;
-    my $dbis        = OpenBib::DBIS->new;
+    my $ezb         = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });;
+    my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
     
     my $ttdata={
         topic    => $topic_ref,
@@ -136,9 +125,11 @@ sub show_record {
         dbis       => $dbis,
     };
     
-    $self->print_page($config->{tt_topic_record_tname},$ttdata);
+    $self->print_page($config->{tt_topics_record_tname},$ttdata);
 
     return;
 }
 
+
+    
 1;

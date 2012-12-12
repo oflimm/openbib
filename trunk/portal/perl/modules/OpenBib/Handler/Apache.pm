@@ -46,6 +46,7 @@ use Apache2::URI ();
 use APR::URI ();
 use Encode qw(decode_utf8 encode_utf8);
 use HTTP::Negotiate;
+use HTTP::BrowserDetect;
 use JSON::XS;
 use Template;
 use URI::Escape;
@@ -88,11 +89,15 @@ sub cgiapp_init {
     my $view         = $self->param('view');
     my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-    
+
+    my $useragent    = $r->headers_in->get('User-Agent');
+    my $browser      = HTTP::BrowserDetect->new($useragent);
+
     $self->param('config',OpenBib::Config->instance);
     $self->param('session',$session);
     $self->param('user',$user);
-    $self->param('useragent',$r->headers_in->{'User-Agent'});
+    $self->param('useragent',$useragent);
+    $self->param('browser',$browser);
     $self->param('qopts',OpenBib::QueryOptions->instance($self->query()));
     $self->param('servername',$r->get_server_name);
 
@@ -536,6 +541,12 @@ sub negotiate_type {
         $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation'));
     }
 
+    # Korrektur bei mobilen Endgeraeten
+    if ($self->param('representation') eq "html" && $self->param('browser')->mobile() ){
+        $self->param('content_type','text/html');
+        $self->param('representation','mobile');
+    }
+    
     if (!$self->param('content_type') && !$self->param('representation') ){
         $logger->debug("Default Type: text/html - Suffix: html");
         $self->param('content_type','text/html');
@@ -1038,7 +1049,7 @@ sub strip_suffix {
     my $self    = shift;
     my $element = shift;
 
-    if ($element=~/^(.+?)(\.html|\.json|\.rdf|\.rss|\.include)$/){
+    if ($element=~/^(.+?)(\.html|\.json|\.rdf|\.rss|\.include|\.mobile)$/){
         return $1;
     }
     

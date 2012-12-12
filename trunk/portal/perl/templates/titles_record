@@ -7,6 +7,8 @@
 [%- PROCESS common/subtemplate name="titles_record_json" -%]
 [%- ELSIF representation == 'include' -%]
 [%- PROCESS common/subtemplate name="titles_record_include" -%]
+[%- ELSIF representation == 'mobile' -%]
+[%- PROCESS common/subtemplate name="titles_record_mobile" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

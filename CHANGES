@@ -1,24 +1,50 @@
-Version 2.4 (in Entwicklung):
+Version 3 (in Entwicklung):
 
 - Interner Umbau
   * Vereinheitlichung der Recherche-Backends fuer die Lokale Suche auf
-    die Xapian Suchmaschine (speziell Erweiterte Suche). Die
-    SQL-Recherche entfaellt.
-    -  Parametrisierung der Felder von Indexierung und Recherche in
-    -  Xapian in portal.yml
-  * Erweiterung der Xapian-Recherche um Sortierung
-  * Auslagerung der Verarbeitung einzelner Resourcen
-    (Normdatenanzeigen) von Search nach Resource
-  * Verschmelzung von VirtualSearch mit Search
-  * Ueberarbeitung der URI-Struktur und CGI-Parameter in Richtung
-    REST. Damit koennen insbesondere alle Seiten sofort gebookmarkt
-    werden.
-    - Erweiterung der Zustandslosigkeit verschiedener Handler
-    - Verwendung von Cookies fuer SessionID anstelle CGI-Parameter
-    - Kein zentraler Einsprungpunkt mehr fuer Session-Handling
-      notwendig (frueher StartOpac)
-    - Veroeffentlichung einer OpenBib-Serverfarm unter einer
-      offiziellen Adresse (mit Apache-Proxy-Modul und REST-Syntax)
+    - die Xapian Suchmaschine (default)
+    - die ElasticSearch Suchmaschine (experimentell)
+    sowie die Suche in entfernten Katalogen via API fuer
+    - die Elektronische Zeitschriftenbibliothek EZB
+    - das Datenbank-Informationssystem DBIS
+
+    Das bisherige SQL-Backend wird zugunsten der Suchmaschinen fuer die 
+    Recherche aufgegeben.
+    
+    Zusammen mit korrespondierenden Katalog-Backends koennen nun
+    strukturell auch beliebige andere Suchmaschinen bzw. Zugriffs-APIs
+    integriert werden. Dazu muessen nun lediglich entsprechende Methoden in
+    den neuen Klassen geeignet spezialisiert werden.
+  * Umstellung auf das Web-Applikationsframework CGI::Application mit
+    konfiguriertem URI-Dispatching via CGI::Application::Dispatch
+  * Umstellung auf das CSS-Framework YAML sowie jQuery.mobile fuer mobile Seiten
+  * Umstellung auf ein eine resourcenorientiere Infrastruktur und REST
+    - Dedizierte URI's fuer Resourcen
+    - Zu den Resourcen korrespondierende Repraesentationen unter einem anderen URL
+      a) HTML fuer die Zugriff durch den Endanwender
+      b) JSON fuer den Zugriff und die Einbindung in andere technische Infrastrukturen
+      c) RDF fuer die Bereitstellung der Daten im Semantic Web
+      d) RSS fuer die Bereitstellung von Aenderungen als Feed
+      e) INCLUDE fuer die Bereitstellung von Informations-Schnipseln zur Integration in andere
+         Anwendungen, speziell Webseiten in einem Content Management System.
+      f) MOBILE fuer den Zugriff durch den Endanwender ueber ein Mobiles Geraet (Smartphone, Tablet)
+    - Content-Negotiation, Language- und Browser-Detection fuer die intelligente Weiterleitung via Redirect
+      von den Resourcen-URIs zu den entsprechenden "vollqualifizierten" Repraesentations-URLs
+    - Zugriff und Aenderung aller Systemresourcen ueber JSON-REST (Administration)
+  * Umstellung von MySQL auf PostgreSQL als zugrundeliegendes RDBMS sowie Einsatz von Connection-Pooling via pgbouncer
+  * Durch die Umstellung auf eine resourcenorientierte Infrastruktur und REST und den Einsatz von Cookies konnte
+    ein via Webadministration konfigurierbarer Cluster-Betrieb eingefuehrt werden. Dazu wurde OpenBib fuer die Integration
+    mit der Webproxy-Software haproxy erweitert
+  * Grundlegende Ueberarbeitung der OpenBib Datenbankstruktur
+    - Vereinheitlichung von Config-, User- und Session-Datenbank in eine einzige System-Datenbank
+    - In den Datenbanken (System, Enrichment, Statistics, Kataloge) konsequente Verwendung von Fremdschluessel-Beziehungen
+  * Umstellung des Zugriffs auf das RDBMS von expliziten SQL-Anfragen auf SQL::Abstract in dem Objekt Relationalen Mapper DBIx::Class
+  * Ueberarbeitung der Indexierung
+    - Beliebige Kategorien koennen unter einem Suchfeldnamen gruppiert und darunter recherchierbar gemacht werden
+    - Insbesondere ist die Gruppierung von Kategorien fuer die Freie Suche vollstaendig unabhaengig von den anderen Gruppen
+    - Fuer besondere Verarbeitungsschritte/Vorbehandlungen von Kategorien bei der Indexierung in speziellen Katalogen koennen entsprechende
+      Bearbeitungsfilter definiert werden
+  * Trennung der eigentlichen Recherche von den durch Facetten eingrenzenden Filtern
 
 Version 2.3:
 

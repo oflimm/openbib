@@ -1,5 +1,5 @@
 # Versionsnummer
-version: OpenBib v2.4alpha4
+version: OpenBib 3 / alpha5
 
 # Unter dieser IP wird der lokale Server angesprochen
 local_ip: 127.0.0.1

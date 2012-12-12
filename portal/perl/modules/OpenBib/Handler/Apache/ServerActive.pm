@@ -61,26 +61,31 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
+# Reihenfolgen der Abarbeitung
+#
+# 1) cgiapp_init   : Content-Negotiation
+# 2) cgiapp_prerun : Benoetigte Informationen fuer die Handler sammeln und anbieten
+
+sub cgiapp_init {
+
+    # Explicitly do *nothing*
+    return;
+}
+
+sub cgiapp_prerun {
+
+    # Explicitly do *nothing*
+    return;
+}
+
 sub show {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    # Dispatched Args
-    my $view           = $self->param('view')           || '';
 
-    # Shared Args
-    my $query          = $self->query();
     my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
+    my $config         = OpenBib::Config->instance;    
 
     my $request = $config->{schema}->resultset("Serverinfo")->search_rs(
         {

@@ -113,6 +113,8 @@ sub show_record {
 
     my $templatename = ($stid && $stid ne "default")?"tt_info_".$stid."_tname":"tt_info_tname";
 
+    $logger->debug("Template name: $templatename");
+    
     $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;

@@ -283,12 +283,10 @@ sub _init_new_session {
     $logger->debug("Request Object: ".YAML::Dump($r));
 
     if ($r){
-        my $useragent=$r->pnotes('useragent') || '';
-        
         # Loggen des Brower-Types
         $self->log_event({
             type      => 101,
-            content   => $useragent,
+            content   => $r->headers_in->get('User-Agent'),
         });
         
         # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
@@ -302,6 +300,13 @@ sub _init_new_session {
             type      => 102,
             content   => $r->connection->remote_ip,
         });
+
+        # Loggen der Client-IP
+        $self->log_event({
+            type      => 102,
+            content   => $r->connection->remote_ip,
+        });
+
     }
     
     if ($self->{view}) {

@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: titles_html
+# Templatename: titles_record_mobile
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe eines Titel-Normdatensatzes
+# Ausgabe eines Titel-Normdatensatzes auf mobilen Geraeten
 #
 #######################################################################
 -%]
@@ -40,7 +40,7 @@
 <div data-role="page">
 
        <div  data-role="header">
-           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].mobile?l=de" >[% msg.maketext("Home") %]</a>
 	   <h1>Einzeltitel</h1> 
        </div> 
 
@@ -48,7 +48,7 @@
 
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
-[% PROCESS common/subtemplate name="titles_record_html_categories" %]
+[% PROCESS common/subtemplate name="titles_record_mobile_categories" %]
 
 [% IF holding.size > 0 %]
 <p/>

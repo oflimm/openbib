@@ -26,7 +26,7 @@
 <div data-role="page">
 
        <div  data-role="header">
-           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].mobile?l=de" >[% msg.maketext("Home") %]</a>
 	   <h1>Suchergebnis:  
            [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]</h1> 
        </div> 
@@ -38,7 +38,7 @@
 
 <ul data-role="listview">
 [%- FOREACH record IN recordlist.get_records -%]
-[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database%] 
+[%    PROCESS common/subtemplate name="titlist_item_mobile_short" multiple_dbs=1 database=record.database%] 
 [%- END -%]
 </ul>
 

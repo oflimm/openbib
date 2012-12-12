@@ -38,7 +38,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}.mobile?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -65,7 +65,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}.mobile?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -88,7 +88,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}.mobile?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -111,7 +111,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}.mobile?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -186,7 +186,7 @@
          searchterm    = tag.tag;
          searchprefix  = config.get('searchfield').tag.prefix;
 
-         tags_url = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}" ;
+         tags_url = "${path_prefix}/${config.get('search_loc')}.mobile?${request_base}${searchprefix}=${searchterm}" ;
          tags.push("<a href=\"${tags_url}\">${tag.tag}</a>");
       END ;
       titleinfos.push("Tags: ${tags.join(' ')}") ;
@@ -208,7 +208,7 @@
 
     titleinfo = titleinfos.join(" | ");
 -%]
-<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]">
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].mobile">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.lt == 'cover' %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% END %]
          <h3>[% title %]</h3>
          <p style="padding-left:1.5em;">

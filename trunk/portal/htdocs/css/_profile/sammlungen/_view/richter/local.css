@@ -1,0 +1,53 @@
+@media all
+{
+
+  header {
+    padding-bottom:70px;  
+  }
+
+  header #logo {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  }
+
+  header #institution {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    with: 30%;
+  }
+
+
+  #header_logo_image {
+    background: url(/images/openbib/views/richter/logo.png) center no-repeat;
+    width: 300px;
+    height: 114px;
+    position: absolute;
+    top: 15px;
+    left: 10px;
+  }
+
+/*
+  #header_institution_image {
+    background: url(/images/openbib/views/alekiddr/aleki_logo.png) center no-repeat;
+    width: 111px;
+    height: 90px;
+    position: absolute;
+    top: 30px;
+    right: 10px;
+  }
+*/
+  .details {
+    padding-top: 1em;
+  }
+
+  .images {
+    padding-top: 1em;
+  }
+
+
+}

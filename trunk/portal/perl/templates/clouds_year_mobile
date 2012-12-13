@@ -67,7 +67,7 @@
 <div data-role="page">
 
        <div  data-role="header">
-           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=de" >[% msg.maketext("Home") %]</a>
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].mobile?l=de" >[% msg.maketext("Home") %]</a>
 	   <h1>&Uuml;bersicht - Jahre</h1> 
        </div> 
 

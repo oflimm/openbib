@@ -30,6 +30,23 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+[%   thistopic = user.get_topic({ id => topicid }); #USE dumper;dumper.dump(thistopic)%]
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %].html?l=[% lang %]">[% msg.maketext("Browsen") %]</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]">[% msg.maketext("Fachgebiete") %]</a></li>
+         <li><a href="#" class="lastitem">[% thistopic.name %]</a></li>
+      </ul>
+     </div>
+     <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %]/id/[% topicid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+     </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -53,34 +70,35 @@
 
   bklist = bklist.sort;
 
-  thistopic = user.get_topic({ id => topicid });
-
 %]
 
 <h4>[% msg.maketext("Katalogtitel nach Bibliothekssystematik") %]</h4>
 
 <ul class="topiclist">
-[% FOREACH classification IN user.get_classifications_of_topic({ type => 'BK', topicid => topicid}) %]
-<li><a href="[% path_prefix %]/[% config.get('info_loc') %]?l=[% lang %];stid=51;field=[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
+[% FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topicid}) %]
+<li><a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
 [% END %]
 </ul>
 
 <p />
 
 [%-
-   ezb_classifications = user.get_classifications_of_topic({ type => 'EZB', topicid => topicid});
+   ezb_classifications = user.get_classifications_of_topic({ type => 'ezb', topicid => topicid});
    FOREACH ezb_topic IN ezb_classifications;
      ezb_mapping.$ezb_topic = 1;
    END ;
-   ezb_topics = ezb.get_subjects;
+   ezb_topics = ezb.get_classifications;
 -%]
 [% IF ezb_classifications.size > 0 %]
 <h4>[% msg.maketext("Elektronisch verfügbare Zeitschriften (EZB)")%]</h4>
 
 <ul class="topiclist">
 [% FOREACH topic IN ezb_topics %]
-[%   IF ezb_mapping.${topic.notation} %]
-<li><a href="[% path_prefix %]/[% config.get('ezb_loc') %]?l=[% lang %];notation=[% topic.notation %];action=show_journals">[% topic.desc %]</a> / [% topic.notation %] ([% msg.maketext("[_1] Zeitschriften",topic.count) %])</li>
+[%   IF ezb_mapping.${topic.name} ;
+   searchterm    = topic.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+%]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> / [% topic.name %] ([% msg.maketext("[_1] Zeitschriften",topic.count) %])</li>
 [%   END %]
 [% END %]
 </ul>
@@ -89,11 +107,11 @@
 [% END %]
 
 [%-
-   dbis_classifications = user.get_classifications_of_topic({ type => 'DBIS', topicid => topicid});
+   dbis_classifications = user.get_classifications_of_topic({ type => 'dbis', topicid => topicid});
    FOREACH dbis_topic IN dbis_classifications;
      dbis_mapping.$dbis_topic = 1;
    END ;
-   dbis_topics = dbis.get_subjects;
+   dbis_topics = dbis.get_classifications;
 -%]
 
 [% IF dbis_classifications.size > 0 %]
@@ -102,8 +120,11 @@
 [%# USE dumper;dumper.dump(dbis_topics) %]
 <ul class="topiclist">
 [% FOREACH topic IN dbis_topics %]
-[%   IF dbis_mapping.${topic.notation} %]
-<li><a href="[% path_prefix %]/[% config.get('dbis_loc') %]?l=[% lang %];notation=[% topic.notation %];lett=[% topic.lett %];action=show_dbs">[% topic.desc %]</a> / [% topic.notation %] ([% msg.maketext("[_1] Datenbanken",topic.count) %])</li>
+[%   IF dbis_mapping.${topic.name} ;
+   searchterm    = topic.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+%]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> / [% topic.name %] ([% msg.maketext("[_1] Datenbanken",topic.count) %])</li>
 [%   END %]
 [% END %]
 </ul>

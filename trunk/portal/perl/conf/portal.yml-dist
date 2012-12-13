@@ -397,7 +397,7 @@ dispatch_rules:
 
   - # rssfeeds_loc:
      module: 'OpenBib::Handler::Apache::RSSFeeds'
-     rule: '/portal/:view/rssfeeds[get]'
+     rule: '/portal/:view/rssfeeds/view[get]'
      representations:
        - none
        - html

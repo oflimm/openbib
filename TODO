@@ -246,6 +246,24 @@ Passworts an angegebene Adresse, das man dann aendern kann
 c) Alle URI's mit denen Resourcen bearbeitet werden bekommen Suffix
 /edit? Sinnvoll und einheitlich.
 
+d) Clouds
+
+Clouds fuer Normdaten in einem Katalog:
+
+/databases/id/:database/persons/cloud
+/databases/id/:database/classifications/cloud
+
+Allgemeine Clouds (Katalogauswahl, Literaturlisten, Suchbegriffe)
+
+Katalogauswahl
+/databases/clouds
+
+Literaturliste
+
+/litlists/cloud
+
+/search/cloud
+
 2) Browse_loc wird zu indexes_loc
 
 mit dem Schema

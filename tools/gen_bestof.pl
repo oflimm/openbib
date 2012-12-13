@@ -65,7 +65,7 @@ if ($help){
 $logfile=($logfile)?$logfile:'/var/log/openbib/gen_bestof.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -770,6 +770,8 @@ if ($type == 10){
 
         my $in_select_string = join(',',map {'?'} @databases);
         my $sqlstring="select count(distinct ai.titleid) as bkcount,n.content as bk from all_titles_by_isbn as ai, enriched_content_by_isbn as n where n.field=4100 and n.isbn=ai.isbn and ai.dbname in ($in_select_string) group by n.content,ai.dbname";
+
+        $logger->debug("$sqlstring");
         my $request=$enrichdbh->prepare($sqlstring) or $logger->error($DBI::errstr);
         $request->execute(@databases);
 
@@ -824,7 +826,7 @@ if ($type == 11){
 
         foreach my $database (@databases){
             $logger->info("Generating BK's for database $database");
-            my $sqlstring="select count(distinct ai.id) as bkcount,n.content as bk from all_isbn as ai, normdata as n where n.category=4100 and n.isbn=ai.isbn and ai.dbname=? group by n.content";
+            my $sqlstring="select count(distinct ai.isbn) as bkcount,n.content as bk from all_titles_by_isbn as ai, enriched_content_by_isbn as n where n.field=4100 and n.isbn=ai.isbn and ai.dbname=? group by n.content";
             my $request=$enrichdbh->prepare($sqlstring) or $logger->error($DBI::errstr);
             $request->execute($database);
             

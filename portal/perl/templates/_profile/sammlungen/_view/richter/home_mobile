@@ -23,7 +23,7 @@
 
 [% PROCESS common/subtemplate name="mainnavigation" active_menu="info" %]
 
-<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].mobile">
 <input type="hidden" name="num"        value="20" />
 <input type="hidden" name="page"       value="1" />
 
@@ -37,8 +37,9 @@
 
     <fieldset> 
       <div data-role="fieldcontain">
-         <label for="search">Search Input:</label>
+        <center>
          <input type="search" name="fs" id="search" value="" />
+         </center>
       </div>
     </fieldset> 
     </form>

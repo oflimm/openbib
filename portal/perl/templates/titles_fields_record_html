@@ -52,8 +52,11 @@
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
-[%- IF field == 'T0720' -%]
+[%- IF field == '0720' -%]
 <h2>Provenienzen</h2>
+
+[% IF nav.current_page == 1 %]
+<div class="box info">
 <p>
 [% msg.maketext("Das Register der Provenienzen listet die Namen von Privatpersonen und Rezensionszeitschriften auf.") %]
 </p>
@@ -73,15 +76,31 @@ Stempel als solche gekennzeichnet.") %]
 [% msg.maketext("Im Register werden sie unter dem Namen der Zeitschrift
 aufgef&uuml;hrt.") %]
 </p>
+</div>
+[% END %]
+[%- ELSIF field == '0501' -%]
+<h2>Richter-Indizien</h2>
+
+[% IF nav.current_page == 1 %]
+<div class="box info">
+<p>
+Das Register listet die Indizien auf, durch die die jeweiligen
+B&uuml;cher der Richter-Bibliothek indentifiziert werden konnten.
+</p>
+
+</div>
+[% END %]
 [%- END -%]
 
 <p />
 
-<table width="100%">
+<table class="ym-full">
 [% FOREACH item IN browselist %]
-<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=richter;fs=t0720:|[% item.replace('&amp;','%26').replace('/','').replace('\(','').replace('\)','') %]|">[% item %]</a></td></tr>
+<tr><td>[% IF cgiapp.get_searchprefix %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %];[% cgiapp.get_searchprefix %]=[% item.replace('&amp;','%26').replace('/','').replace('\(','').replace('\)','') %]">[% item %]</a>[% ELSE %][% item %][% END %]</td></tr>
 [% END %]
 </table>
+
+<p/>
 
   <div class="ob-footer">
     <div class="ob-navigation">

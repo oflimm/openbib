@@ -1126,7 +1126,6 @@ sub clear_data {
             $sessioninfo->eventlogs->delete;
             $sessioninfo->eventlogjsons->delete;
             $sessioninfo->queries->delete;
-            $sessioninfo->sessioncollections->delete;
             $sessioninfo->recordhistories->delete;
             $sessioninfo->searchhistories->delete;
             $sessioninfo->session_cartitems->cartitemid->delete;

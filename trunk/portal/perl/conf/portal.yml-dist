@@ -262,32 +262,6 @@ dispatch_rules:
      rule: '/portal/:view/users/id/:userid[get]'
      runmode: 'show_user'
 
-
-  - # cloud_loc:
-     module: 'OpenBib::Handler::Apache::Clouds'
-     rule: '/portal/:view/clouds.html'
-     runmode: 'show_collection'
-  - # cloud_loc:
-     module: 'OpenBib::Handler::Apache::Clouds'
-     rule: '/portal/:view/clouds.json'
-     runmode: 'show_collection'
-  - # cloud_loc:
-     module: 'OpenBib::Handler::Apache::Clouds'
-     rule: '/portal/:view/clouds.rdf'
-     runmode: 'show_collection'
-  - # cloud_loc:
-     module: 'OpenBib::Handler::Apache::Clouds'
-     rule: '/portal/:view/clouds'
-     runmode: 'show_collection'
-  - # cloud_loc:
-     module: 'OpenBib::Handler::Apache::Clouds'
-     rule: '/portal/:view/clouds/type/:cloudid'
-     runmode: 'show_record'
-  - # cloud_loc:
-     module: 'OpenBib::Handler::Apache::Clouds'
-     rule: '/portal/:view/clouds/type/:cloudid/database/:database'
-     runmode: 'show_record'
-
   - # user_loc:
      module: 'OpenBib::Handler::Apache::Users::Circulations'
      rule: '/portal/:view/users/id/:userid/circulations.html[get]'
@@ -2417,6 +2391,44 @@ dispatch_rules:
        - none
        - html
 
+#####################################################################
+# Clouds-Resource/Repraesentation
+  - # clouds_loc:
+     module: 'OpenBib::Handler::Apache::Clouds'
+     rule: '/portal/:view/clouds[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # clouds_loc:
+     module: 'OpenBib::Handler::Apache::Clouds'
+     rule: '/portal/:view/databases/clouds[get]'
+     runmode: 'show_collection_databases'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # clouds_loc:
+     module: 'OpenBib::Handler::Apache::Clouds'
+     rule: '/portal/:view/databases/id/:database/clouds[get]'
+     runmode: 'show_collection_databases_record'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users_loc/clouds_loc: Record show
+     module: 'OpenBib::Handler::Apache::Clouds'
+     rule: '/portal/:view/clouds/id/:cloudid[get]'
+     runmode: 'show_record'
+  - # users_loc/clouds_loc: Record show
+     module: 'OpenBib::Handler::Apache::Clouds'
+     rule: '/portal/:view/databases/id/:database/clouds/id/:cloudid[get]'
+     runmode: 'show_record'
+
 # Mapping der einzelnen Kompontenten zu ihren Templates
 tt_admin_authenticators_record_delete_confirm_tname: admin_authenticators_record_delete_confirm
 tt_admin_authenticators_record_edit_tname: admin_authenticators_record_edit
@@ -2542,8 +2554,10 @@ tt_catalogue_logout_tname: catalogue_logout
 tt_classifications_record_tname: classifications_record
 tt_classifications_tname: classifications
 
+tt_clouds_tname: clouds
 tt_clouds_classification_tname: clouds_classification
-tt_clouds_collection_tname: clouds_collection
+tt_clouds_databases_tname: clouds_databases
+tt_clouds_databases_record_tname: clouds_databases_record
 tt_clouds_corporatebody_tname: clouds_corporatebody
 tt_clouds_litlist_tname: clouds_litlist
 tt_clouds_person_tname: clouds_person

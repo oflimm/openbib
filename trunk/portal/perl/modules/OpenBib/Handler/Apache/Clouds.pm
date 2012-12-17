@@ -63,6 +63,7 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'                      => 'show_collection',
+        'show_collection_databases'            => 'show_collection_databases',
         'show_record'                          => 'show_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -116,7 +117,105 @@ sub show_collection {
         utils         => $utils,
     };
 
-    $self->print_page($config->{tt_clouds_collection_tname},$ttdata);
+    $self->print_page($config->{tt_clouds_tname},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
+sub show_collection_databases {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    # CGI Args
+    my $format         = $query->param('format')         || '';
+    
+    my $statistics  = new OpenBib::Statistics();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $utils       = new OpenBib::Template::Utilities;
+
+    my $profile       = $config->get_profilename_of_view($view);
+
+    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
+
+    # TT-Data erzeugen
+    my $ttdata={
+        format        => $format,
+        profile       => $profile,
+        queryoptions  => $queryoptions,
+        query         => $query,
+        viewdesc      => $viewdesc,
+        dbinfo        => $dbinfotable,
+        statistics    => $statistics,
+        utils         => $utils,
+    };
+
+    $self->print_page($config->{tt_clouds_databases_tname},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
+sub show_collection_databases_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    # CGI Args
+    my $format         = $query->param('format')         || '';
+    
+    my $statistics  = new OpenBib::Statistics();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $utils       = new OpenBib::Template::Utilities;
+
+    my $profile       = $config->get_profilename_of_view($view);
+
+    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
+
+    # TT-Data erzeugen
+    my $ttdata={
+        format        => $format,
+        profile       => $profile,
+        queryoptions  => $queryoptions,
+        query         => $query,
+        viewdesc      => $viewdesc,
+        dbinfo        => $dbinfotable,
+        statistics    => $statistics,
+        utils         => $utils,
+    };
+
+    $self->print_page($config->{tt_clouds_databases_record_tname},$ttdata);
 
     return Apache2::Const::OK;
 }
@@ -130,7 +229,7 @@ sub show_record {
     # Dispatched Args
     my $r              = $self->param('r');
     my $view           = $self->param('view');
-    my $cloudid        = $self->param('cloudid');
+    my $cloudid        = $self->strip_suffix($self->param('cloudid'));
     my $database       = $self->param('database');
     
     # Shared Args

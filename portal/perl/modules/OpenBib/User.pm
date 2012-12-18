@@ -185,7 +185,7 @@ sub set_credentials {
             {
                 username => $username,
             }
-        )->update({ password => $password });
+        )->update({ password => \"crypt('$password', gen_salt('bf'))" });
     }
     elsif ($self->{ID}) {
         # DBI: "update userinfo set pin = ? where id = ?"
@@ -193,7 +193,7 @@ sub set_credentials {
             {
                 id => $self->{ID},
             }
-        )->update({ password => $password });
+        )->update({ password => \"crypt('$password', gen_salt('bf'))" });
     }
     else {
         $logger->error("Neither username nor userid given");
@@ -225,6 +225,9 @@ sub add {
     my $password    = exists $arg_ref->{password}
         ? $arg_ref->{password}              : undef;
 
+    my $hashed_password    = exists $arg_ref->{hashed_password}
+        ? $arg_ref->{hashed_password}              : undef;
+
     my $email       = exists $arg_ref->{email}
         ? $arg_ref->{email}                 : '';
 
@@ -233,11 +236,50 @@ sub add {
     my $logger = get_logger();
 
     # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
-    $self->{schema}->resultset('Userinfo')->create({
+    my $new_user = $self->{schema}->resultset('Userinfo')->create({
         username  => $username,
-        password  => $password,
+        password  => $hashed_password,
         email     => $email,
     });
+
+    if ($password){
+        $new_user->update({ password => \"crypt('$password', gen_salt('bf'))" });
+    }
+    elsif ($hashed_password){
+        $new_user->update({ password => $hashed_password });
+    }
+    
+    return;
+}
+
+sub set_password {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $username   = exists $arg_ref->{username}
+        ? $arg_ref->{username}             : undef;
+
+    my $password    = exists $arg_ref->{password}
+        ? $arg_ref->{password}              : undef;
+
+    my $hashed_password    = exists $arg_ref->{hashed_password}
+        ? $arg_ref->{hashed_password}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
+    my $update_user = $self->{schema}->resultset('Userinfo')->search_rs({
+        username  => $username,
+    });
+
+    if ($password){
+        $update_user->update({ password => \"crypt('$password', gen_salt('bf'))" });
+    }
+    elsif ($hashed_password){
+        $update_user->update({ password => $hashed_password });
+    }
     
     return;
 }
@@ -266,7 +308,7 @@ sub add_confirmation_request {
     $self->{schema}->resultset('Registration')->create({
         id        => $registrationid,
         username  => $username,
-        password  => $password,
+        password  => \"crypt('$password', gen_salt('bf'))",
     });
     
     return $registrationid;
@@ -926,14 +968,18 @@ sub authenticate_self_user {
     my $authentication = $self->{schema}->resultset('Userinfo')->search_rs(
         {
             username  => $username,
-            password  => $password,
+        },
+        {
+            select => ['id', \"me.password  = crypt('$password',me.password)"],
+            as     => ['thisid','is_authenticated'],
         }
+            
     )->first;
     
     my $userid = -1;
 
-    if ($authentication){
-        $userid = $authentication->id;
+    if ($authentication && $authentication->get_column('is_authenticated')){
+        $userid = $authentication->get_column('thisid');
     }
 
     $logger->debug("Got Userid $userid");
@@ -3958,30 +4004,49 @@ sub wipe_account {
   
     my $logger = get_logger();
 
-    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $userinfo = $self->{schema}->resultset('Userinfo')->single({
         id => $self->{ID}
-    );
+    });
 
     if ($userinfo){
         # Zuerst werden die Datenbankprofile geloescht
         # DBI: "delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid"
-        $userinfo->delete_related('user_searchprofiles');
+        $userinfo->user_searchprofiles->delete;
     
         # .. dann die Suchfeldeinstellungen
         # DBI: "delete from searchfield where userid = ?"
-        $userinfo->delete_related('searchfields');
+        $userinfo->searchfields->delete;
 
         # .. dann die Livesearcheinstellungen
         # DBI: "delete from livesearch where userid = ?"
-        $userinfo->delete_related('livesearches');
+        $userinfo->livesearches->delete;
+
+        # .. dann die Tags
+        $userinfo->tit_tags->delete;
+
+        # .. dann die Literaturlisten
+#        $userinfo->litlists->litlist_topics->delete;
+#        $userinfo->litlists->litlistitems->delete;
+        $userinfo->litlists->delete;
+
+        # .. dann die Reviewratings
+        $userinfo->reviewratings->delete;
+
+        # .. dann die Reviews
+        $userinfo->reviews->delete;
+        
+        # .. dann die Rollen
+        # DBI: "delete from livesearch where userid = ?"
+        $userinfo->user_roles->delete;
 
         # .. dann die Merkliste
         # DBI: "delete from collection where userid = ?"
-        $userinfo->delete_related('collections');
+#        $userinfo->user_cartitems->cartitems->delete;
+        $userinfo->user_cartitems->delete;
 
         # .. dann die Verknuepfung zur Session
         # DBI: "delete from user_session where userid = ?"
-        $userinfo->delete_related('user_sessions');
+        $userinfo->user_sessions->delete;
     
         # und schliesslich der eigentliche Benutzereintrag
         # DBI: "delete from userinfo where userid = ?"

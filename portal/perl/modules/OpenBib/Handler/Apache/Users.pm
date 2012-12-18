@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::User2
+#  OpenBib::Handler::Apache::Users
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -60,8 +60,9 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'update_account'       => 'update_account',
-        'delete_account'       => 'delete_account',
+        'update_record'       => 'update_record',
+        'delete_record'       => 'delete_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -70,7 +71,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub update_account {
+sub update_record {
     my $self = shift;
     
     # Log4perl logger erzeugen
@@ -100,28 +101,6 @@ sub update_account {
         return;
     }
 
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-
-    if ($method eq "DELETE"){
-        $logger->debug("About to delete Userid $userid");
-        
-        if ($confirm){
-            
-            my $ttdata={
-                userid     => $userid,
-            };
-
-            $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_users_delete_confirm_tname},$ttdata);
-
-            return Apache2::Const::OK;
-        }
-        else {
-            $user->wipe_account();
-        }
-    }
-    
     my $new_location = "$path_prefix/$view/$config->{logout_loc}";
 
     $self->query->method('GET');
@@ -132,7 +111,29 @@ sub update_account {
     return;
 }
 
-sub delete_account {
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $userid      = $self->strip_suffix($self->param('userid'));
+    my $config         = $self->param('config');
+
+    my $ttdata={
+        userid => $userid,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_users_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
+}
+
+sub delete_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -143,13 +144,21 @@ sub delete_account {
     my $userid         = $self->strip_suffix($self->param('userid'));
 
     # Shared Args
+    my $config         = $self->param('config');
     my $user           = $self->param('user');
+    my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->is_authenticated('user',$userid)){
         return;
     }
 
     $user->wipe_account();
+
+    if ($self->param('representation') eq "html"){
+        $self->query->method('GET');
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{home_loc}");
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
 
     return;
 }

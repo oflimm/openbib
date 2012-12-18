@@ -60,6 +60,7 @@ Wenn Sie wirklich Ihre Kennung l&ouml;schen wollen, so klicken Sie auf die unten
 </table>
 <p />
 <input type="submit" value="[% msg.maketext("Kennung soll wirklich gel&ouml;scht werden") %]" />
+&nbsp; <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/preferences.html?l=[% lang %]" class="ob_button">[% msg.maketext("Abbruch") %]</a>
 </form>
 
         </div>

@@ -1,3 +1,5 @@
+CREATE EXTENSION pgcrypto;
+
 ALTER TABLE databaseinfo ADD PRIMARY KEY (id);
 ALTER TABLE databaseinfo ADD CONSTRAINT uq_databaseinfo_dbname UNIQUE (dbname);
 ALTER TABLE databaseinfo ADD CONSTRAINT fk_locationinfo FOREIGN KEY (locationid) REFERENCES locationinfo (id);

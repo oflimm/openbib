@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Registrations
+#  OpenBib::Handler::Apache::Users::Registrations
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Registrations;
+package OpenBib::Handler::Apache::Users::Registrations;
 
 use strict;
 use warnings;
@@ -117,81 +117,8 @@ sub show {
         
         lang       => $queryoptions->get_option('l'),
     };
-    $self->print_page($config->{tt_registrations_tname},$ttdata);
+    $self->print_page($config->{tt_users_registrations_tname},$ttdata);
  
-    return Apache2::Const::OK;
-}
-
-sub register {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    # Dispatched Args
-    my $view           = $self->param('view')           || '';
-    my $registrationid = $self->strip_suffix($self->param('registrationid')) || '';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $r->connection->remote_ip($1);
-    }
-
-    # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
-    # Jetzt eintragen und session mit dem Benutzer assoziieren;
-
-    my $confirmation_info_ref = $user->get_confirmation_request({registrationid => $registrationid});
-
-    my $username  = $confirmation_info_ref->{username};
-    my $password  = $confirmation_info_ref->{password};
-
-    if ($username && $password){
-
-      # Wurde dieser Nutzername inzwischen bereits registriert?
-      if ($user->user_exists($username)) {
-        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}.html\">","</a>"));
-        return Apache2::Const::OK;
-      }
-
-      # OK, neuer Nutzer -> eintragen
-      $user->add({
-		  username  => $username,
-		  password  => $password,
-		  email     => $username,
-		 });
-
-      # An dieser Stelle darf zur Bequemlichkeit der Nutzer die Session 
-      # nicht automatisch mit dem Nutzer verknuepft werden (=automatische
-      # Anmeldung), dann dann ueber das Ausprobieren von Registrierungs-IDs 
-      # Nutzer-Identitaeten angenommen werden koennten.
-      
-      $user->clear_confirmation_request({ registrationid => $registrationid });
-    }
-    else {
-      $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht."));
-    }
-
-    # TT-Data erzeugen
-    my $ttdata={
-        username   => $username,
-    };
-
-    $self->print_page($config->{tt_registrations_success_tname},$ttdata);
-
     return Apache2::Const::OK;
 }
 
@@ -299,7 +226,7 @@ sub mail_confirmation {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_registrations_mail_message_tname}, $mainttdata ) || do { 
+    $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
         $r->log_error($maintemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
     };
@@ -326,7 +253,80 @@ sub mail_confirmation {
         username      => $username,
     };
 
-    $self->print_page($config->{tt_registrations_confirmation_tname},$ttdata);
+    $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
+sub register {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    my $registrationid = $self->strip_suffix($self->param('registrationid')) || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+
+    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+    # Client-IP setzen
+    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $r->connection->remote_ip($1);
+    }
+
+    # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
+    # Jetzt eintragen und session mit dem Benutzer assoziieren;
+
+    my $confirmation_info_ref = $user->get_confirmation_request({registrationid => $registrationid});
+
+    my $username         = $confirmation_info_ref->{username};
+    my $hashed_password  = $confirmation_info_ref->{password};
+
+    if ($username && $hashed_password){
+
+      # Wurde dieser Nutzername inzwischen bereits registriert?
+      if ($user->user_exists($username)) {
+        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}.html\">","</a>"));
+        return Apache2::Const::OK;
+      }
+
+      # OK, neuer Nutzer -> eintragen
+      $user->add({
+		  username         => $username,
+		  hashed_password  => $hashed_password,
+		  email            => $username,
+		 });
+
+      # An dieser Stelle darf zur Bequemlichkeit der Nutzer die Session 
+      # nicht automatisch mit dem Nutzer verknuepft werden (=automatische
+      # Anmeldung), dann dann ueber das Ausprobieren von Registrierungs-IDs 
+      # Nutzer-Identitaeten angenommen werden koennten.
+      
+      $user->clear_confirmation_request({ registrationid => $registrationid });
+    }
+    else {
+      $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht."));
+    }
+
+    # TT-Data erzeugen
+    my $ttdata={
+        username   => $username,
+    };
+
+    $self->print_page($config->{tt_users_registrations_success_tname},$ttdata);
 
     return Apache2::Const::OK;
 }

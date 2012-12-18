@@ -75,8 +75,6 @@ sub show {
     
     # Dispatched Args
     my $view           = $self->param('view');
-    my $type           = $self->param('type');
-    my $url            = $self->param('dispatch_url_remainder');
 
     # Shared Args
     my $query          = $self->query();
@@ -90,12 +88,12 @@ sub show {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    # CGI Args
+    my $url  = uri_unescape($query->param('url'));
+    my $type = $query->param('type');
+
     $logger->debug("SessionID: $session->{ID} - Type: $type - URL: $url");
 
-    if ($self->query->args()){
-        $url .= "?".$self->query->args();
-    }
-    
     my $valid_redirection_type_ref = {
         500 => 1, # TOC / hbz-Server
         501 => 1, # TOC / ImageWaere-Server

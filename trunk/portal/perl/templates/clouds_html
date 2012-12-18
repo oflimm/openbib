@@ -67,8 +67,8 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
 </div>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/litlist.html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
-<li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/litlist.html?l=[% lang %]">[% msg.maketext("Suchbegriffe") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/id/litlist.html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/id/searchterm.html?l=[% lang %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge
 (Erscheinungsjahre, Personen, Körperschaften, Schlagworte, Notationen=") %]</a></li>
 </ul>

@@ -58,7 +58,7 @@ verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitt
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('registrations_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="action"    value="auth" />
 
 <fieldset class="ym-full">

@@ -19,7 +19,7 @@ sie haben sich heute im OpenBib Recherche-Portal selbst registriert.
 
 Ihre Registrierung wird wirksam, wenn Sie den folgenden URL aufrufen:
 
-http://[% servername %][% path_prefix %]/[% config.get('registrations_loc') %]/id/[% registrationid %]
+http://[% servername %][% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %]/id/[% registrationid %]
 
 Mit freundlichen Gruessen
 

@@ -64,6 +64,7 @@ sub setup {
     $self->run_modes(
         'show_collection'                      => 'show_collection',
         'show_collection_databases'            => 'show_collection_databases',
+        'show_collection_databases_record'     => 'show_collection_databases_record',
         'show_record'                          => 'show_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -178,7 +179,8 @@ sub show_collection_databases_record {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
     
     # Shared Args
     my $query          = $self->query();
@@ -205,6 +207,7 @@ sub show_collection_databases_record {
 
     # TT-Data erzeugen
     my $ttdata={
+        database      => $database,
         format        => $format,
         profile       => $profile,
         queryoptions  => $queryoptions,

@@ -457,7 +457,8 @@ if ($type == 6){
             }
         );
 
-        foreach my $item ($usage->all){
+        while (my $item = $usage->next()){
+#        foreach my $item ($usage->all){
             my $content = $item->get_column('thiscontent');
             my $count   = $item->get_column('titlecount');
         

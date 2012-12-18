@@ -32,7 +32,7 @@
 [%   IF active_submenu == "clouds_year" %]
   <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
 [%   ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/[% database %].html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
 [%   END %]
 [% END %]
 [% IF statistics.result_exists({ id => database, type => 6 }) %]

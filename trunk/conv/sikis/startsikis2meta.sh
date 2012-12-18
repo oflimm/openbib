@@ -8,7 +8,7 @@
 #  Konvertierung in das Meta-Format und Ablage in einem
 #  Web-Verzeichnis zur Abholung von OpenBib-Rechner(n)
 #
-#  Copyright 2003-2008 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2003-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -43,8 +43,8 @@ pool=$1
 
 export SYBPATH="/opt/sybase"
 
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SYBPATH/OCS-12_5/lib"
-export PATH="$PATH:$SYBPATH/OCS-12_5/bin"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/sybase/OCS-15_0/lib
+export PATH=$PATH:/opt/sybase/OCS-15_0/bin
 
 unset LANG LC_CTYPE
 
@@ -78,22 +78,25 @@ rm $BCPPATH/koe_daten.bcp
 rm $BCPPATH/swd_daten.bcp
 rm $BCPPATH/sys_daten.bcp
 rm $BCPPATH/titel_daten.bcp
+rm $BCPPATH/titel_exclude.bcp
+rm $BCPPATH/titel_buch_key.bcp
 rm $BCPPATH/d01buch.bcp
 rm $BCPPATH/d50zweig.bcp
 rm $BCPPATH/d60abteil.bcp
 
 # Entladen der sik_fstab plus Normdateien mit bcp
 
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.sik_fstab out $BCPPATH/sik_fstab.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.titel_daten out $BCPPATH/titel_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.per_daten out $BCPPATH/per_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.koe_daten out $BCPPATH/koe_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.swd_daten out $BCPPATH/swd_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.sys_daten out $BCPPATH/sys_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.d01buch out $BCPPATH/d01buch.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.d50zweig out $BCPPATH/d50zweig.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.d60abteil out $BCPPATH/d60abteil.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
-
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.sik_fstab out $BCPPATH/sik_fstab.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.titel_exclude out $BCPPATH/titel_exclude.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.titel_daten out $BCPPATH/titel_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.per_daten out $BCPPATH/per_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.koe_daten out $BCPPATH/koe_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.swd_daten out $BCPPATH/swd_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.sys_daten out $BCPPATH/sys_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.d01buch out $BCPPATH/d01buch.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.d50zweig out $BCPPATH/d50zweig.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.d60abteil out $BCPPATH/d60abteil.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-15_0/bin/bcp $pool.sisis.titel_buch_key out $BCPPATH/titel_buch_key.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
 echo "Ende des Entladens: "
 date
 
@@ -106,6 +109,22 @@ cd $IMXBASEPATH/$pool/
 
 echo "Start der Konvertierung: "
 date
+
+# Verschiedene Options-Varianten
+# 1) Institute ohne Buchdaten oder mit unvollstaendigen Buchdaten in der d01buch
+#    bcp2meta.pl
+#    d.h. Holdings werden generell aus den bibliographischen Daten der titel_daten (0005,0014,0016,1204) generiert
+# 2) Ausleihinstitute mit vollstaendigen Buchdaten in der d01buch
+#    bcp2meta.pl -use-d01buch -use-d01buch-standort -use-mcopynum
+#    d.h. Holdings werden aus der d01buch generiert, der Standort wird jedoch ueber das Standortfeld in
+#    der d01buch realisiert (und nicht via d50zweig/d60abteil). Ebenso wird entsprechend dem Bindeeinheitenkonzept mit
+#    mcopynum ueber titel_buch_key gegangen
+# 3) USB mit vollstaendigen Buchdaten in der d01buch
+#    bcp2meta.pl -use-d01buch -use-mcopynum
+#    d.h. Holdings werden aus der d01buch generiert, der Standort dabei via d50zweig/d60abteil. Ebenso wird entsprechend dem Bindeeinheitenkonzept mit
+#    mcopynum ueber titel_buch_key gegangen
+#
+# Bei 1)-3) werden Zeitschriften-Holdings jeweils via 1204 aus den bibliograph. Daten in titel_daten erzeugt.
 
 /pfad/zu/bcp2meta.pl 2> /dev/null
 
@@ -120,6 +139,8 @@ rm $BCPPATH/koe_daten.bcp
 rm $BCPPATH/swd_daten.bcp
 rm $BCPPATH/sys_daten.bcp
 rm $BCPPATH/titel_daten.bcp
+rm $BCPPATH/titel_exclude.bcp
+rm $BCPPATH/titel_buch_key.bcp
 rm $BCPPATH/d01buch.bcp
 rm $BCPPATH/d50zweig.bcp
 rm $BCPPATH/d60abteil.bcp

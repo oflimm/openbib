@@ -76,6 +76,10 @@ rss_types:
   neuzugang_nach_swt: 4
   neuzugang_nach_sys: 5
 
+location_types:
+  - ISIL
+  - Generic
+
 source_systems:
   - Sisis
   - Aleph

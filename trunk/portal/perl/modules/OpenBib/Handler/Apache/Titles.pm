@@ -59,7 +59,6 @@ sub setup {
     $self->start_mode('show_record');
     $self->run_modes(
         'show_record'             => 'show_record',
-        'show_record_searchindex' => 'show_record_searchindex',
         'show_popular'            => 'show_popular',
         'show_recent'             => 'show_recent',
         'redirect_to_bibsonomy'   => 'redirect_to_bibsonomy',
@@ -323,34 +322,6 @@ sub show_record {
     }
 
     $logger->debug("Done showing record");
-    return Apache2::Const::OK;
-}
-
-sub show_record_searchindex {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $database       = $self->param('database');
-    my $titleid        = $self->strip_suffix($self->param('titleid'));
-
-    # Shared Args
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-
-    my $terms_ref  = OpenBib::Search::Backend::Xapian->get_indexterms({ database => $database, id => $titleid });
-    my $values_ref = OpenBib::Search::Backend::Xapian->get_values({ database => $database, id => $titleid });
-
-    my $ttdata = {
-        terms  => $terms_ref,
-        values => $values_ref,
-    };
-    
-    $self->print_page($config->{'tt_titles_searchindex_tname'},$ttdata);
-
     return Apache2::Const::OK;
 }
 

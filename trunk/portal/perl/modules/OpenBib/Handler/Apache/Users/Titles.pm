@@ -418,7 +418,7 @@ sub show_record_searchindex {
         values => $values_ref,
     };
     
-    $self->print_page($config->{'tt_users_titles_searchindex_tname'},$ttdata);
+    $self->print_page($config->{'tt_users_titles_record_searchindex_tname'},$ttdata);
 
     return Apache2::Const::OK;
 }

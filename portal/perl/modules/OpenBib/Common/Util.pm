@@ -311,7 +311,7 @@ sub normalize {
     }
     
     # ISBN filtern
-    if ($field eq "T0540" || $field eq "T0541" || $field eq "T0547" || $field eq "T0553" || $field eq "T0634" || $field eq "T1586" || $field eq "T1587" || $field eq "T1589" || $field eq "T1590" || $field eq "T1591" || $field eq "T1592" || $field eq "T1593"){
+    if ($field eq "T0540" || $field eq "T0541" || $field eq "T0547" || $field eq "T0553" || $field eq "T0634" || $field eq "T1586" || $field eq "T1587" || $field eq "T1588" || $field eq "T1589" || $field eq "T1590" || $field eq "T1591" || $field eq "T1592" || $field eq "T1593"){
         # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
         $content=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;

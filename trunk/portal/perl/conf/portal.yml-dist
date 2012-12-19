@@ -175,9 +175,9 @@ info_loc: info
 login_loc: login
 logout_loc: logout
 mailcollection_loc: mailcollection
-mailpassword_loc: mailpassword
+passwords_loc: passwords
 redirect_loc: redirect
-registration_loc: registration
+registrations_loc: registrations
 search_history_loc: search/history
 search_loc: search
 searchforms_loc: searchforms
@@ -261,10 +261,6 @@ dispatch_rules:
      rule: '/portal/:view/index/:type/*'
      runmode: 'index'
 
-  - # user_loc:
-     module: 'OpenBib::Handler::Apache::Users'
-     rule: '/portal/:view/users/id/:userid[get]'
-     runmode: 'show_user'
 
   - # user_loc:
      module: 'OpenBib::Handler::Apache::Users::Circulations'
@@ -306,23 +302,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::ExternalJump'
      rule: '/portal/:view/jumpto.html'
      runmode: 'show'
-
-
-  - # mailpassword_loc:
-     module: 'OpenBib::Handler::Apache::MailPassword'
-     rule: '/portal/:view/mailpassword'
-     runmode: 'show'
-  - # mailpassword_loc:
-     module: 'OpenBib::Handler::Apache::MailPassword'
-     rule: '/portal/:view/mailpassword.html'
-     runmode: 'show'
-
-  - # redirect_loc:
-     module: 'OpenBib::Handler::Apache::Redirect'
-     rule: '/portal/:view/redirect/:type/*'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
 
 
 # Charakteristik
@@ -416,6 +395,16 @@ dispatch_rules:
      runmode: 'show_record'
 
 #####################################################################
+# Redirect-Resource/Repraesentation
+
+  - # redirect_loc:
+     module: 'OpenBib::Handler::Apache::Redirect'
+     rule: '/portal/:view/redirect'
+     runmode: 'show'
+     args:
+        disable_content_negotiation: 1
+
+#####################################################################
 # RSS-Feed Informations-Resource/Repraesentation
 
   - # rssfeeds_loc:
@@ -447,20 +436,35 @@ dispatch_rules:
 # Registrations-Resource/Repraesentation
 
   - # registrations_loc:
-     module: 'OpenBib::Handler::Apache::Registrations'
-     rule: '/portal/:view/registrations[get]'
+     module: 'OpenBib::Handler::Apache::Users::Registrations'
+     rule: '/portal/:view/users/registrations[get]'
      representations:
        - none
        - html
      runmode: 'show'
   - # registrations_loc:
-     module: 'OpenBib::Handler::Apache::Registrations'
-     rule: '/portal/:view/registrations[post]'
+     module: 'OpenBib::Handler::Apache::Users::Registrations'
+     rule: '/portal/:view/users/registrations[post]'
      runmode: 'mail_confirmation'
   - # registrations_loc:
-     module: 'OpenBib::Handler::Apache::Registrations'
-     rule: '/portal/:view/registrations/id/:registrationid[get]'
+     module: 'OpenBib::Handler::Apache::Users::Registrations'
+     rule: '/portal/:view/users/registrations/id/:registrationid[get]'
      runmode: 'register'
+
+#####################################################################
+# Passwort-Resource/Repraesentation
+
+  - # registrations_loc:
+     module: 'OpenBib::Handler::Apache::Users::Passwords'
+     rule: '/portal/:view/users/passwords[get]'
+     representations:
+       - none
+       - html
+     runmode: 'show_collection'
+  - # registrations_loc:
+     module: 'OpenBib::Handler::Apache::Users::Passwords'
+     rule: '/portal/:view/users/passwords[post]'
+     runmode: 'create_record'
 
 # Charakteristik
 # - ausschliesslich oeffentliche Resource ohne zugehoerige Repraesentation [get]
@@ -2360,6 +2364,10 @@ dispatch_rules:
 # User (Account)-Resource/Repraesentation
   - # users_loc: Update
      module: 'OpenBib::Handler::Apache::Users'
+     rule: '/portal/:view/users/id/:userid[get]'
+     runmode: 'show_user'
+  - # users_loc: Update
+     module: 'OpenBib::Handler::Apache::Users'
      rule: '/portal/:view/users/id/:userid[post]'
      runmode: 'update_account'
   - # users_loc: Update
@@ -2666,16 +2674,16 @@ tt_login_tname: login
 
 tt_logout_tname: logout
 
-tt_mailpassword_mail_main_tname: mailpassword_mail_main
-tt_mailpassword_success_tname: mailpassword_success
-tt_mailpassword_tname: mailpassword
+tt_users_passwords_mail_body_tname: users_passwords_mail_body
+tt_users_passwords_success_tname: users_passwords_success
+tt_users_passwords_tname: users_passwords
 
 tt_persons_record_tname: persons_record
 
-tt_registrations_confirmation_tname: registrations_confirmation
-tt_registrations_mail_message_tname: registrations_mail_message
-tt_registrations_success_tname: registrations_success
-tt_registrations_tname: registrations
+tt_users_registrations_confirmation_tname: users_registrations_confirmation
+tt_users_registrations_mail_message_tname: users_registrations_mail_message
+tt_users_registrations_success_tname: users_registrations_success
+tt_users_registrations_tname: users_registrations
 
 tt_reviews_by_isbn_tname: reviews_by_isbn
 tt_reviews_record_edit_tname: reviews_record_edit
@@ -2715,7 +2723,7 @@ tt_titles_fields_tname: titles_fields
 tt_titles_fields_record_tname: titles_fields_record
 tt_titles_recent_by_database_tname: titles_recent_by_database
 tt_titles_record_form_tname: titles_record_form
-tt_users_titles_searchindex_tname: users_titles_searchindex
+tt_users_titles_record_searchindex_tname: users_titles_record_searchindex
 tt_titles_record_tname: titles_record
 
 tt_topics_record_mapping_tname: topics_record_mapping
@@ -2729,7 +2737,7 @@ tt_users_circulations_orders_tname: users_circulations_orders
 tt_users_circulations_reminders_tname: users_circulations_reminders
 tt_users_circulations_renew_loans_tname: users_circulations_renew_loans
 tt_users_circulations_reservations_tname: users_circulations_reservations
-tt_users_delete_confirm_tname: users_delete_confirm
+tt_users_record_delete_confirm_tname: users_record_delete_confirm
 tt_users_litlists_tname: users_litlists
 tt_users_preferences_tname: users_preferences
 tt_users_searchprofiles_tname: users_searchprofiles

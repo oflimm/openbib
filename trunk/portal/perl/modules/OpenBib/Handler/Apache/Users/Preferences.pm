@@ -119,7 +119,7 @@ sub show_collection {
     # geaendert werden
     my $email_valid=Email::Valid->address($username);
     
-    my $targettype=$user->get_targettype_of_session($session->{ID});
+    my $authenticator=$session->get_authenticator;
     
     # TT-Data erzeugen
     my $ttdata={
@@ -127,7 +127,7 @@ sub show_collection {
         username            => $username,
         password            => $password,
         email_valid         => $email_valid,
-        targettype          => $targettype,
+        authenticator       => $authenticator,
         searchfields        => $searchfields_ref,
         spelling_suggestion => $spelling_suggestion_ref,
         livesearch          => $livesearch_ref,

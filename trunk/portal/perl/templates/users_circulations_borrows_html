@@ -30,6 +30,20 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Ausleihen") %]</a></li>
+       </ul>
+     </div>
+     <div class="ob-representation">
+<!-- <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% config.get('circulations_loc') %]/id/borrows.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>-->
+     </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -46,7 +60,7 @@
 [% ELSE  %]
 
 <p>
-<b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=renew_loans;validtarget=[% database %]" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
+<b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/renew_loans" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
 </p>
 
 <table cellpadding="5">
@@ -71,6 +85,11 @@ class="[% listrow %]"
 </td><td>[% borrow.Signatur %]</td><td>[% borrow.AusleihDatum %]-[% borrow.RueckgabeDatum %]</td></tr>
 [% END %]
 </table>
+
+<p/>
+[% borrow_url = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('circulations_loc')}/${config.get('databases_loc')}/id/${authenticator.dbname}/borrows.ics" %]
+Ausgeliehene Medien im <a href="[% borrow_url %]">iCalendar-Format</a> zur &Uuml;bernahme in einen Kalender <!-- oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% borrow_url.replace(';','%3B') %]" title="Ausleihen im iCalendar-Format via URL"><img src="[% config.get('qrcode_img') %]" /></a>-->
+<p/>
 
 [% END %]
 

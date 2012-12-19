@@ -57,13 +57,13 @@
 <table>
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% username %]</td>
 
-[% IF targettype == 'self' && username != 'admin' %]
+[% IF authenticator.type == 'self' && username != 'admin' %]
 <td><form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="confirm" value="1" /><input type="hidden" name="_method" value="DELETE" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
 [% END %]
 
 </tr>
 
-[% IF targettype == 'self' %]
+[% IF authenticator.type == 'self' %]
 <tr><form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded"><input type="hidden" name="_method"    value="PUT" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="" /></td><td><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></form></tr>
 [% END %]
 
@@ -71,24 +71,27 @@
 
 <p />
 
-[% IF targettype != 'self' %]
-<table width="100%">
-<tr><th>[% msg.maketext("Personendaten") %]</th><td></td><th>[% msg.maketext("Ausleihinformationen") %]</th></tr>
-<tr><td class="boxedclear">
+[% IF authenticator.type != 'self' %]
+
+<div class="ym-grid">
+  <div class="ym-g50 ym-gl">
+    <div class="ym-gbox">
+<h4>[% msg.maketext("Personendaten") %]</h4>
+
 <table>
-<tr><td><b>[% msg.maketext("Nachname") %]:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
-<tr><td><b>[% msg.maketext("Vorname") %]:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
-<tr><td><b>[% msg.maketext("Geburtsdatum") %]:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
-<tr><td><b>[% msg.maketext("Strasse") %]:</b></td><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
-<tr><td><b>[% msg.maketext("Ort") %]:</b></td><td align="left">
+<tr><th>[% msg.maketext("Nachname") %]:</th><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
+<tr><th>[% msg.maketext("Vorname") %]:</th><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
+<tr><th>[% msg.maketext("Geburtsdatum") %]:</th><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
+<tr><th>[% msg.maketext("Strasse") %]:</th><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
+<tr><th>[% msg.maketext("Ort") %]:</th><td align="left">
 [% IF userinfo.plz %]
 &nbsp;[% userinfo.plz %]
 [% END %] 
 &nbsp;[% userinfo.ort %]</td></tr>
 [% IF userinfo.email %]
-<tr><td><b>[% msg.maketext("E-Mail") %]:</b></td><td align="left">&nbsp;[% userinfo.email %]</td></tr>
+<tr><th>[% msg.maketext("E-Mail") %]:</th><td align="left">&nbsp;[% userinfo.email %]</td></tr>
 [% END %]
-<tr><td><b>[% msg.maketext("Sperre") %]:</b></td><td align="left">&nbsp;
+<tr><th>[% msg.maketext("Sperre") %]:</th><td align="left">&nbsp;
 [%- IF userinfo.sperre -%]
 [% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
 [%- ELSE -%]
@@ -96,54 +99,56 @@
 [%- END -%]
 </td></tr>
 </table>
-<br />
-<span style="font-size:0.8em">&nbsp;[% msg.maketext("Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.") %]</span>
-</td>
-<td>
-&nbsp;&nbsp;
-</td>
-<td class="boxedclear" valign="bottom">
-<table>
-<tr><td><b>[% msg.maketext("Guthaben") %]:</b></td><td align="right">[% userinfo.gut %] </td><td>&nbsp;EUR</td></tr>
-<tr><td><b>[% msg.maketext("Soll") %]:</b></td><td align="right"><span class="warning">[% userinfo.soll %] </td><td>&nbsp;EUR</span></td></tr>
-</table>
-<table>
-<tr><td><b>[% msg.maketext("Ausgeliehen") %]:</b></td><td align="left">&nbsp;
-[%- IF userinfo.avanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
-[%- ELSE -%]
-[%- userinfo.avanz -%]
-[%- END -%]
-</td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Vorgemerkt") %]:</b></td><td>
+   </div>
+  </div>
+  <div class="ym-g50 ym-gl">
+    <div class="ym-gbox">
 
-[%- IF userinfo.vmanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
-[%- ELSE -%]
-[%- userinfo.vmanz -%]
-[%- END -%]
+<h4>[% msg.maketext("Ausleihinformationen") %] / [% authenticator.description %]</h4>
 
-</td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Offene Geb&uuml;hren") %]:</b></td><td><span class="warning">
-
+<table class="ym-full">
+<tr><th>[% msg.maketext("Guthaben") %]:</th><td align="right">[% userinfo.gut %]&nbsp;EUR</td></tr>
+<tr><th>[% msg.maketext("Soll") %]:</th><td align="right">[% userinfo.soll %]&nbsp;EUR</td></tr>
+<tr><th>[% msg.maketext("Offene Geb&uuml;hren") %]</th><td>
 [% IF userinfo.maanz > 0 %]
-<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/id/reminders.html?l=[% lang %]">[% userinfo.maanz %]</a>
 [% ELSE %]
 [% userinfo.maanz %]
 [% END %]
+</td></tr>
 
-</span></td></tr>
-
-
-<tr><td><b>[% msg.maketext("Bestellungen") %]:</b></td><td align="left">&nbsp;
+<tr><th>[% msg.maketext("Ausgeliehen") %]:</th><td align="left">
+[%- IF userinfo.avanz > 0 -%]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/borrows.html?l=[% lang %]">[% userinfo.avanz %]</a>
+[%- ELSE -%]
+[%- userinfo.avanz -%]
+[%- END -%]
+</td></tr>
+<tr><th>[% msg.maketext("Vorgemerkt") %]:</th><td>
+[%- IF userinfo.vmanz > 0 -%]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/id/reservations.html?l=[% lang %]">[% userinfo.vmanz %]</a>
+[%- ELSE -%]
+[%- userinfo.vmanz -%]
+[%- END -%]
+</td></tr>
+<tr><th>[% msg.maketext("Bestellungen") %]:</th><td align="left">
 [%- IF userinfo.bsanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/id/orders.html?l=[% lang %]">[% userinfo.bsanz %]</a>
 [%- ELSE -%]
 [%- userinfo.bsanz -%]
 [%- END -%]
-</td><td>&nbsp;&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+</td></tr>
 </table>
-</td>
-</tr>
-</table>
+
+   </div>
+  </div>
+
+</div>
+
+<p>
+[% msg.maketext("Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.") %]
+</p>
+
 
 <p />
 [% END %]

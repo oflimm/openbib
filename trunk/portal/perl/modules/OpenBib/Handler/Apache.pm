@@ -363,7 +363,15 @@ sub process_uri {
         $path =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
     }
 
-    my ($id) = $last_uri_element =~m/^(.+?)\.(html|include|json|rdf|rss|mobile)$/;
+    my $suffixes = join '|', keys %{$config->{content_type_map_rev}};
+    my $regexp = "^(.+?)\.($suffixes)\$";
+    
+    $logger->debug("Suffixes: $suffixes");
+    
+#    my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
+    my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
+
+    $logger->debug("ID: $id");
     
     if ($id){
         $location_uri.="/$id";
@@ -484,8 +492,10 @@ sub set_content_type_from_uri {
     my $logger = get_logger();
 
     my $config = $self->param('config');
-    
-    my ($representation) = $uri =~m/^.*?\/[^\/]*?\.(json|html|include|rdf|rss|mobile)$/;
+
+    my $suffixes = join '|', keys %{$config->{content_type_map_rev}};
+
+    my ($representation) = $uri =~m/^.*?\/[^\/]*?\.($suffixes)$/;
 
     $logger->debug("Setting type from URI $uri. Got Represenation $representation");
 
@@ -1049,7 +1059,16 @@ sub strip_suffix {
     my $self    = shift;
     my $element = shift;
 
-    if ($element=~/^(.+?)(\.html|\.json|\.rdf|\.rss|\.include|\.mobile)$/){
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->param('config');
+    
+    my $suffixes = join '|', map { '\.'.$_ } keys %{$config->{content_type_map_rev}};
+
+    $logger->debug("Suffixes: $suffixes");
+    
+    if ($element=~/^(.+?)($suffixes)$/){
         return $1;
     }
     

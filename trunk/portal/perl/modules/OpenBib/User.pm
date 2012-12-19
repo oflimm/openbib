@@ -512,8 +512,8 @@ sub get_targetdb_of_session {
             'sid.sessionid' => $sessionID,
         },
         {
-            join   => ['sid','targetid'],
-            select => ['targetid.remotedb'],
+            join   => ['sid','authenticatorid'],
+            select => ['authenticatorid.dbname'],
             as     => ['thisdbname'],
         }
             
@@ -540,8 +540,8 @@ sub get_targettype_of_session {
             'sid.sessionid' => $sessionID,
         },
         {
-            join   => ['sid','targetid'],
-            select => ['targetid.type'],
+            join   => ['sid','authenticatorid'],
+            select => ['authenticatorid.type'],
             as     => ['thistype'],
         }
             
@@ -2022,32 +2022,29 @@ sub get_review_properties {
     return {} if (!$reviewid);
 
     # DBI: "select * from review where id = ?"
-    my $review = $self->{schema}->resultset('Review')->search_rs(
+    my $review = $self->{schema}->resultset('Review')->single({
         id => $reviewid,
-    )->first;
-
+    });
+    
     if ($review){
-        my $title     = $review->title;
-        my $titleid     = $review->titleid;
+        my $title      = $review->title;
+        my $titleid    = $review->titleid;
         my $dbname     = $review->dbname;
-        my $titisbn   = $review->titleisbn;
-        my $tstamp    = $review->tstamp;
-        my $nickname  = $review->nickname;
-        my $review    = $review->review;
-        my $rating    = $review->rating;
-        my $userid    = $review->userid;
-        
-        my $username = $self->get_username_for_userid($userid);
+        my $titisbn    = $review->titleisbn;
+        my $tstamp     = $review->tstamp;
+        my $nickname   = $review->nickname;
+        my $reviewtext = $review->reviewtext;
+        my $rating     = $review->rating;
+        my $userid     = $review->userid;
         
         my $review_ref = {
             id               => $reviewid,
             userid           => $userid,
-            username         => $username,
             title            => $title,
             dbname           => $dbname,
             titleid          => $titleid,
             tstamp           => $tstamp,
-            review           => $review,
+            reviewtext       => $reviewtext,
             rating           => $rating,
         };
 
@@ -4116,7 +4113,7 @@ sub connect_session {
         {
             sid      => $sid,
             userid   => $userid,
-            targetid => $targetid,
+            authenticatorid => $targetid,
         },
         {
             join => ['sid'],

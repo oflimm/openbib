@@ -103,7 +103,7 @@ ALTER TABLE authenticator ADD PRIMARY KEY (id);
 ALTER TABLE user_session ADD PRIMARY KEY (id);
 ALTER TABLE user_session ADD CONSTRAINT fk_usersession_user FOREIGN KEY (userid) REFERENCES userinfo (id);
 ALTER TABLE user_session ADD CONSTRAINT fk_usersession_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
-ALTER TABLE user_session ADD CONSTRAINT fk_usersession_authenticator FOREIGN KEY (targetid) REFERENCES authenticator (id);
+ALTER TABLE user_session ADD CONSTRAINT fk_usersession_authenticator FOREIGN KEY (authenticatorid) REFERENCES authenticator (id);
 
 ALTER TABLE searchprofile ADD PRIMARY KEY (id);
 CREATE INDEX searchprofile_dbases_as_json ON searchprofile (databases_as_json);

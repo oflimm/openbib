@@ -45,7 +45,7 @@ __PACKAGE__->table("authenticator");
   data_type: 'text'
   is_nullable: 1
 
-=head2 remotedb
+=head2 dbname
 
   data_type: 'text'
   is_nullable: 1
@@ -76,7 +76,7 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "remoteuser",
   { data_type => "text", is_nullable => 1 },
-  "remotedb",
+  "dbname",
   { data_type => "text", is_nullable => 1 },
   "description",
   { data_type => "text", is_nullable => 1 },
@@ -98,7 +98,7 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 user_sessions
+=head2 user_session_authenticatorids
 
 Type: has_many
 
@@ -107,15 +107,30 @@ Related object: L<OpenBib::Schema::System::Result::UserSession>
 =cut
 
 __PACKAGE__->has_many(
-  "user_sessions",
+  "user_session_authenticatorids",
   "OpenBib::Schema::System::Result::UserSession",
-  { "foreign.targetid" => "self.id" },
+  { "foreign.authenticatorid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 user_session_authenticatorids_2s
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::UserSession>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_session_authenticatorids_2s",
+  "OpenBib::Schema::System::Result::UserSession",
+  { "foreign.authenticatorid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-10 08:35:41
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u19j4t6CMDgZJDE5JqCFQA
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lDrLLE2RU1N8mKEtGpqpUw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

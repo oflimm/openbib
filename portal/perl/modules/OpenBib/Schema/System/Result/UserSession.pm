@@ -42,7 +42,7 @@ __PACKAGE__->table("user_session");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 targetid
+=head2 authenticatorid
 
   data_type: 'bigint'
   is_foreign_key: 1
@@ -62,7 +62,7 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
-  "targetid",
+  "authenticatorid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
 
@@ -80,6 +80,36 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
+=head2 authenticatorid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Authenticator>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "authenticatorid",
+  "OpenBib::Schema::System::Result::Authenticator",
+  { id => "authenticatorid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+=head2 authenticatorid_2
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Authenticator>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "authenticatorid_2",
+  "OpenBib::Schema::System::Result::Authenticator",
+  { id => "authenticatorid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
 =head2 sid
 
 Type: belongs_to
@@ -92,21 +122,6 @@ __PACKAGE__->belongs_to(
   "sid",
   "OpenBib::Schema::System::Result::Sessioninfo",
   { id => "sid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-=head2 targetid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Schema::System::Result::Authenticator>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "targetid",
-  "OpenBib::Schema::System::Result::Authenticator",
-  { id => "targetid" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
@@ -126,8 +141,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-10 08:35:41
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:s1boO/cU9i1fPSrMXGnUzw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2vI37zId1tDyzZGQWDlvsQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

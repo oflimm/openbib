@@ -1639,6 +1639,15 @@ sub update_local_clusterstatus {
 	}
 	)->update({ status => $status });
 
+    $self->get_clusterinfo->search_rs(
+	{
+	    'serverinfos.hostip' => $self->{local_ip},
+	},
+	{
+	    join => ['serverinfos'],
+	}
+	)->serverinfos->update({ status => $status });
+
     return;
 }
 

@@ -324,7 +324,12 @@ sub normalize {
         return $content;
     }
 
+    # Nichtsortierzeichen entfernen
     $content=~s/¬//g;
+
+    # RAK-Zeilenumbruch bei alten Drucken usw. entfernen
+    $content=~s/-\|\|//g; 
+    $content=~s/ \|\| / /g;
 
     # Ausfiltern spezieller HTML-Tags
     $content=~s/&[gl]t;//g;

@@ -195,8 +195,8 @@ sub authenticate {
         my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
             username      => $username,
             password      => $password,
-            circcheckurl  => $circinfotable->{$authenticator_ref->{db}}{circcheckurl},
-            circdb        => $circinfotable->{$authenticator_ref->{db}}{circdb},
+            circcheckurl  => $circinfotable->{$authenticator_ref->{dbname}}{circcheckurl},
+            circdb        => $circinfotable->{$authenticator_ref->{dbname}}{circdb},
         });
         
         my %userinfo=%$userinfo_ref;

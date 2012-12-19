@@ -2543,7 +2543,7 @@ sub get_authenticators {
             hostname    => $authenticator->hostname,
             port        => $authenticator->port,
             remoteuser  => $authenticator->remoteuser,
-            remotedb    => $authenticator->remotedb,
+            dbname      => $authenticator->dbname,
             description => $authenticator->description,
             type        => $authenticator->type,
         };
@@ -2574,7 +2574,7 @@ sub get_authenticator_by_id {
             hostname    => $authenticator->hostname,
             port        => $authenticator->port,
             remoteuser  => $authenticator->remoteuser,
-            remotedb    => $authenticator->remotedb,
+            dbname      => $authenticator->dbname,
             description => $authenticator->description,
             type        => $authenticator->type,
         };
@@ -2606,7 +2606,7 @@ sub get_authenticator_self {
             hostname    => $authenticator->hostname,
             port        => $authenticator->port,
             remoteuser  => $authenticator->remoteuser,
-            remotedb    => $authenticator->remotedb,
+            dbname      => $authenticator->dbname,
             description => $authenticator->description,
             type        => $authenticator->type,
         };

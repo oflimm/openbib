@@ -370,7 +370,7 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{profiles_loc}/id/$profilename/edit?l=$lang");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/edit?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {

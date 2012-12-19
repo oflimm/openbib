@@ -28,7 +28,7 @@ __PACKAGE__->table("authenticator");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'authenticationtarget_id_seq'
+  sequence: 'authenticator_id_seq'
 
 =head2 hostname
 
@@ -68,7 +68,7 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "authenticationtarget_id_seq",
+    sequence          => "authenticator_id_seq",
   },
   "hostname",
   { data_type => "text", is_nullable => 1 },
@@ -108,21 +108,6 @@ Related object: L<OpenBib::Schema::System::Result::UserSession>
 
 __PACKAGE__->has_many(
   "user_session_authenticatorids",
-  "OpenBib::Schema::System::Result::UserSession",
-  { "foreign.authenticatorid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 user_session_authenticatorids_2s
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::System::Result::UserSession>
-
-=cut
-
-__PACKAGE__->has_many(
-  "user_session_authenticatorids_2s",
   "OpenBib::Schema::System::Result::UserSession",
   { "foreign.authenticatorid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },

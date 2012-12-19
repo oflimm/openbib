@@ -52,32 +52,6 @@
    <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews.html?l=[% lang %]">[% msg.maketext("Rezensionen") %]</a></li>
 [%   END %]
 [% END %]
-[% IF user.get_targettype_of_session(session.ID) != 'self' %]
-<li><span>[% msg.maketext("Benutzerkonto") %]</span>
-    <ul>
-[%   IF active_submenu == "borows" %]
-      <li class="active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
-[%   ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/circulation/borrows.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
-[%   END %]
-[%   IF active_submenu == "reservations" %]
-      <li class="active"><strong>[% msg.maketext("Vormerkungen") %]</strong></li>
-[%   ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/circulation/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
-[%   END %]
-[%   IF active_submenu == "orders" %]
-      <li class="active"><strong>[% msg.maketext("Bestellungen") %]</strong></li>
-[%   ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/circulation/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
-[%   END %]
-[%   IF active_submenu == "reminders" %]
-      <li class="active"><strong>[% msg.maketext("Überziehungen / Gebühren") %]</strong></li>
-[%   ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/circulation/reminders.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
-[%   END %]
-    </ul>
-</li>
-[% END %]
 [% IF active_submenu == "databaseprofile" %]
   <li class="active"><strong>[% msg.maketext("Katalogprofile") %]</strong></li>
 [% ELSE %]
@@ -85,6 +59,39 @@
 [% END %]
  </ul>
 </nav>
+
+[% IF user.get_targettype_of_session(session.ID) != 'self' %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Benutzerkonto") %]</h6>
+ <ul>
+<li><span>[% authenticator.description %]</span>
+    <ul>
+[%   IF active_submenu == "borrows" %]
+      <li class="active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
+[%   ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/borrows.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
+[%   END %]
+[%   IF active_submenu == "reservations" %]
+      <li class="active"><strong>[% msg.maketext("Vormerkungen") %]</strong></li>
+[%   ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
+[%   END %]
+[%   IF active_submenu == "orders" %]
+      <li class="active"><strong>[% msg.maketext("Bestellungen") %]</strong></li>
+[%   ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
+[%   END %]
+[%   IF active_submenu == "reminders" %]
+      <li class="active"><strong>[% msg.maketext("Überziehungen / Gebühren") %]</strong></li>
+[%   ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/reminders.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
+[%   END %]
+    </ul>
+</li>
+ </ul>
+</ul>
+</nav>
+[% END %]
 
 [% IF cgiapp.is_authenticated('admin') %]
 [% PROCESS common/subtemplate name="admin_navigation" %]

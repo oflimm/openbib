@@ -4,6 +4,8 @@
 [%- PROCESS common/subtemplate name="users_circulations_borrows_rdf" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="users_circulations_borrows_json" -%]
+[%- ELSIF representation == 'ics' -%]
+[%- PROCESS common/subtemplate name="users_circulations_borrows_ics" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

@@ -318,17 +318,17 @@ CREATE TABLE authenticator (
  hostname    TEXT,
  port        TEXT,
  remoteuser  TEXT,
- remotedb    TEXT,
+ dbname      TEXT,
  description TEXT,
  type        TEXT
 );
 
 DROP TABLE IF EXISTS user_session;
 CREATE TABLE user_session (
-  id        BIGSERIAL,
-  sid       BIGINT NOT NULL,
-  userid    BIGINT NOT NULL,
-  targetid  BIGINT NOT NULL
+  id               BIGSERIAL,
+  sid              BIGINT NOT NULL,
+  userid           BIGINT NOT NULL,
+  authenticatorid  BIGINT NOT NULL
 );
 
 DROP TABLE IF EXISTS searchprofile;

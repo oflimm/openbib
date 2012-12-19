@@ -1653,6 +1653,26 @@ sub get_recently_selected_titles {
     return $recordlist;
 }
 
+sub get_authenticator {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: select type from user_session,authenticator where user_session.sessionid = ? and user_session.targetid = authenticator.targetid"
+    my $authenticator = $self->{schema}->resultset('Authenticator')->search_rs(
+        {
+            'sid.sessionid' => $self->{ID},
+        },
+        {
+            join   => ['user_session_authenticatorids',{ 'user_session_authenticatorids' => 'sid' }],
+        }
+            
+    )->single;
+
+    return $authenticator;
+}
+
 sub connectDB {
     my $self = shift;
 

@@ -980,7 +980,12 @@ while (my $jsonline=<IN>){
                                     }
                                     
                                     if (defined $isbnXX) {
-                                        push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$isbnXX->as_string];
+                                        my $enriched_isbn = OpenBib::Common::Util::normalize({
+                                            field    => "T0540",
+                                            content  => $isbnXX->as_string,
+                                        });                                    
+                                        
+                                        push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$enriched_isbn];
                                     }
                                 }
                             }

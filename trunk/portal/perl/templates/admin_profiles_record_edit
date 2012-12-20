@@ -94,7 +94,9 @@
 
 <fieldset class="ym-columnar">
 
-<legend>[% msg.maketext("Neue Organisationseinheit anlegen") %]</legend>
+<legend class="ob-toggable_legend">[% msg.maketext("Neue Organisationseinheit anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></legend>
+
+<div class="ob-fieldset">
 
 <div class="ym-fbox-text">
 <label for="orgunitname">[% msg.maketext("Name der Organisationseinheit") %]</label>[
@@ -110,6 +112,7 @@
 <input type="submit" value="[% msg.maketext("Neu") %]" />
 </div>
 
+</div>
 </fieldset>
 
 </form>

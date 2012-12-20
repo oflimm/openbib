@@ -54,7 +54,8 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
 <fieldset>
-<legend>[% msg.maketext("Neue Literaturliste anlegen") %]</legend>
+<legend class="ob-toggable_legend">[% msg.maketext("Neue Literaturliste anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></legend>
+<div class="ob-fieldset">
 
 <div class="ym-fbox-text">
 <label for="title">[% msg.maketext("Titel der Liste") %]</label>
@@ -81,6 +82,8 @@
 </div>
 
 <input type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" />
+
+</div>
 </fieldset>
 
 </form>

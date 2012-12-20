@@ -61,7 +61,9 @@
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]" class="ym-form">
 <fieldset class="ym-columnar">
 
-<legend>[% msg.maketext("Neuen Katalog anlegen") %]</legend>
+<legend class="ob-toggable_legend">[% msg.maketext("Neuen Katalog anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></legend>
+
+<div class="ob-fieldset">
 
 <div class="ym-fbox-text">
 <label for="dbname">[% msg.maketext("DB-Name") %]</label>
@@ -103,6 +105,8 @@
 
 <div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Neu") %]" />
+
+</div>
 
 </div>
 

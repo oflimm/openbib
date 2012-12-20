@@ -56,14 +56,20 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]" class="ym-form">
 <fieldset>
-<legend>[% msg.maketext("Neues Katalogprofil anlegen") %]</legend>
+<legend class="ob-toggable_legend">[% msg.maketext("Neues Katalogprofil anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></legend>
+
+<div class="ob-fieldset">
 
 <div class="ym-fbox-text">
 <label for="profilename">[% msg.maketext("Names des Profils") %]</label>
 <input type="text" name="profilename" id="profilename" size="50" />
 </div>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Neu") %]" />
+</div>
+
+</div>
 
 </fieldset>
 </form>

@@ -240,6 +240,13 @@ sub authenticate {
         }
     }
     elsif ($authenticator_ref->{type} eq "self") {
+        # Selbstregistrierung nur fuer email-Adresse und admin
+
+        if ($username ne "admin" && $username !~/\@/){
+            $self->print_warning($msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"));
+            return;
+        }
+        
         my $result = $user->authenticate_self_user({
             username  => $username,
             password  => $password,

@@ -2899,12 +2899,14 @@ content_type_map:
  'text/rdf+n3': 'n3'
  'text/html': 'html'
  'application/json': 'json'
+ 'text/calendar' : 'ics'
 
 content_type_map_rev:
  'rdf': 'application/rdf+xml'
  'rss': 'application/xml'
  'n3': 'text/rdf+n3'
  'html': 'text/html'
+ 'ics': 'text/calendar'
  'include': 'text/html'
  'json': 'application/json'
  'mobile': 'text/html'
@@ -3546,6 +3548,7 @@ representation:
    'refer': 'text/plain'
    'mobile': 'text/html'
    'html': 'text/html'
+   'ics': 'text/calendar'
 
 # Default Query-Options (Session)
 queryoptions:

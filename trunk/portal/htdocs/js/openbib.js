@@ -178,6 +178,14 @@ function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
 // Ende  BibSonomy Tags
 // --------------------------------------------------------------------------
 
+// Begin Togglen
+// Zuerst verstecken
+$(".ob-fieldset").hide();
+// und bei Klick Sichtbarkeit togglen
+$(".ob-toggable_legend").click(function(){
+   $(".ob-fieldset").toggle();
+});
+ 
 // // Begin Togglen / Suchhilfe
 // // Zuerst verstecken
 // $("#searchinfo").hide();

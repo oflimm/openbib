@@ -128,10 +128,10 @@ if ($complete_cluster_updated){
     $config->update_cluster({ id => $update_clusterid, status => "searchable" });
     
     foreach my $search_serverid (@search_serverids){
-        $config->update_server({ id => $search_serverid, status => ""});
+        $config->update_server({ id => $search_serverid, status => "updatable"});
     }
 
-    $config->update_cluster({ id => $search_clusterid, status => "" });
+    $config->update_cluster({ id => $search_clusterid, status => "updatable" });
 }
 
 $logger->info("###### Ende Clustermanagment");

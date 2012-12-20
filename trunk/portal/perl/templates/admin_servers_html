@@ -73,7 +73,7 @@
 <div class="ym-fbox-select">
 <label for="status">[% msg.maketext("Status") %]</label>
   <select name="status" id="status">
-     <option value="">[% msg.maketext("Keiner") %]</option>
+     <option value="updatable">[% msg.maketext("Aktualisierbar") %]</option>
      <option value="updating">[% msg.maketext("Aktualisieren") %]</option>
      <option value="updated">[% msg.maketext("Fertig mit Aktualisierung") %]</option>
      <option value="searchable">[% msg.maketext("Recherchierbar") %]</option>
@@ -125,8 +125,8 @@
 <td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %]">[% serverinfo.hostip %]</a></td>
 <td>[% serverinfo.description %]</td>
 <td>
-[% IF serverinfo.status == ''%]
-[% msg.maketext("Keiner") %]
+[% IF serverinfo.status == 'updatable'%]
+[% msg.maketext("Aktualisierbar") %]
 [% ELSIF serverinfo.status == "updating" %]
 [% msg.maketext("Aktualisieren") %]
 [% ELSIF serverinfo.status == "updated" %]

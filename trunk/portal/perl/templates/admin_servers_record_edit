@@ -81,7 +81,7 @@
 <div class="ym-fbox-select">
 <label for="status">[% msg.maketext("Status") %]</label>
   <select name="status" id="status">
-     <option value="" [% IF serverinfo.status == '' %]selected="selected"[% END %]>[% msg.maketext("Keiner") %]</option>
+     <option value="" [% IF serverinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Aktualisierbar") %]</option>
      <option value="updating" [% IF serverinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
      <option value="updated" [% IF serverinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
      <option value="searchable" [% IF serverinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Recherchierbar") %]</option>
@@ -91,7 +91,7 @@
 <div class="ym-fbox-select">
 <label for="clusterid">[% msg.maketext("Cluster") %]</label>
   <select name="clusterid" id="clusterid">
-     <option value="">[% msg.maketext("Keiner") %]</option>
+     <option value="updatable">[% msg.maketext("Aktualisierbar") %]</option>
 [%  FOREACH clusterinfo IN config.get_clusterinfo_overview.all %]
      <option value="[% clusterinfo.id %]" [% IF serverinfo.clusterid.id == clusterinfo.id %]selected="selected"[% END %]>[% clusterinfo.description %]</option>
 [% END %]

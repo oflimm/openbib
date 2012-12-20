@@ -76,7 +76,7 @@
 <div class="ym-fbox-select">
 <label for="status">[% msg.maketext("Status") %]</label>
   <select name="status" id="status">
-     <option value="" [% IF clusterinfo.status == '' %]selected="selected"[% END %]>[% msg.maketext("Keiner") %]</option>
+     <option value="updatable" [% IF clusterinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Akualisierbar") %]</option>
      <option value="updating" [% IF clusterinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
      <option value="updated" [% IF clusterinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
      <option value="searchable" [% IF clusterinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Recherchierbar") %]</option>

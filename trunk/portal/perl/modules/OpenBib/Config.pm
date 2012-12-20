@@ -2474,7 +2474,10 @@ sub update_cluster {
     my $logger = get_logger();
 
     # DBI: "update clusterinfo set active = ? where id = ?"
-    $self->{schema}->resultset('Clusterinfo')->search_rs({ id => $id })->update($update_args);
+    my $cluster = $self->{schema}->resultset('Clusterinfo')->single({ id => $id });
+
+    $cluster->update($update_args);
+    $cluster->serverinfos->update({status => $arg_ref->{status}, active => $arg_ref->{active}});
 
     return;
 }

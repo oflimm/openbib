@@ -3,7 +3,7 @@
 #
 #  quickinstall.pl
 #
-#  Dieses File ist (C) 2006-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -91,7 +91,7 @@ my @install_dirs = (
     '/usr/share/images/openbib',
 );
 
-my %cvs_links = (
+my %svn_links = (
     "$repositoryroot/portal/perl/templates"              => "/opt/openbib/templates",
     "$repositoryroot/tools"                              => "/opt/openbib/bin",
     "$repositoryroot/portal/perl/locales"                => "/opt/openbib/locales",
@@ -100,6 +100,7 @@ my %cvs_links = (
     "$repositoryroot/conv/allegro/ald2simple.pl"         => "/opt/openbib/conv/ald2simple.pl",
     "$repositoryroot/conv/amarok/amarok_mysql2meta.pl"   => "/opt/openbib/conv/amarok_mysql2meta.pl",
     "$repositoryroot/conv/auto/autoconv.pl"              => "/opt/openbib/autoconv/bin/autoconv.pl",
+    "$repositoryroot/conv/auto/autojoinindex_xapian.pl"  => "/opt/openbib/autoconv/bin/autojoinindex_xapian.pl",
     "$repositoryroot/conv/auto/openbib-clustermgmt.pl"   => "/opt/openbib/autoconv/bin/openbib-clustermgmt.pl",
     "$repositoryroot/conv/auto/filter"                   => "/opt/openbib/autoconv/filter",
     "$repositoryroot/conv/cdm/cdm2meta.pl"               => "/opt/openbib/conv/cdm2meta.pl",
@@ -172,7 +173,7 @@ foreach my $dir (@install_dirs){
 
 print "Erzeuge Links ins SVN\n";
 
-while (my ($from,$to) = each %cvs_links){
+while (my ($from,$to) = each %svn_links){
     if (-e $to ){
         system("rm $to");
         print "Loesche $to\n";

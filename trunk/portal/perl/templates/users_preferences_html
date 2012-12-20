@@ -111,7 +111,7 @@
 <tr><th>[% msg.maketext("Soll") %]:</th><td align="right">[% userinfo.soll %]&nbsp;EUR</td></tr>
 <tr><th>[% msg.maketext("Offene Geb&uuml;hren") %]</th><td>
 [% IF userinfo.maanz > 0 %]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/id/reminders.html?l=[% lang %]">[% userinfo.maanz %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reminders.html?l=[% lang %]">[% userinfo.maanz %]</a>
 [% ELSE %]
 [% userinfo.maanz %]
 [% END %]
@@ -119,21 +119,21 @@
 
 <tr><th>[% msg.maketext("Ausgeliehen") %]:</th><td align="left">
 [%- IF userinfo.avanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/borrows.html?l=[% lang %]">[% userinfo.avanz %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/borrows.html?l=[% lang %]">[% userinfo.avanz %]</a>
 [%- ELSE -%]
 [%- userinfo.avanz -%]
 [%- END -%]
 </td></tr>
 <tr><th>[% msg.maketext("Vorgemerkt") %]:</th><td>
 [%- IF userinfo.vmanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/id/reservations.html?l=[% lang %]">[% userinfo.vmanz %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% userinfo.vmanz %]</a>
 [%- ELSE -%]
 [%- userinfo.vmanz -%]
 [%- END -%]
 </td></tr>
 <tr><th>[% msg.maketext("Bestellungen") %]:</th><td align="left">
 [%- IF userinfo.bsanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/id/orders.html?l=[% lang %]">[% userinfo.bsanz %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% userinfo.bsanz %]</a>
 [%- ELSE -%]
 [%- userinfo.bsanz -%]
 [%- END -%]

@@ -59,7 +59,9 @@
 
 <fieldset class="ym-columnar">
 
-<legend>[% msg.maketext("Neues Anmeldeziel anlegen") %]</legend>
+<legend class="ob-toggable_legend">[% msg.maketext("Neues Anmeldeziel anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></legend>
+
+<div class="ob-fieldset">
 
 <div class="ym-fbox-text">
 <label for="hostname">[% msg.maketext("Hostname") %]</label>
@@ -96,6 +98,8 @@
 
 <div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Neu") %]" />
+
+</div>
 
 </div>
 

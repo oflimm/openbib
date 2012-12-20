@@ -61,7 +61,9 @@
 
 <fieldset class="ym-columnar">
 
-<legend>[% msg.maketext("Neues Themengebiet anlegen") %]</legend>
+<legend class="ob-toggable_legend">[% msg.maketext("Neues Themengebiet anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></legend>
+
+<div class="ob-fieldset">
 
 <div class="ym-fbox-text">
 <label for="name">[% msg.maketext("Themengebiet") %]</label>
@@ -78,6 +80,7 @@
 
 </div>
 
+</div>
 </fieldset>
 </form>
 

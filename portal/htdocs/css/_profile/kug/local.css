@@ -1,0 +1,83 @@
+@media all
+{
+
+  header {
+
+  }
+
+  body {
+    overflow-y:scroll
+  }
+
+  .ob-category_header {
+    width: 100%;
+    padding: 2px;
+    padding-left: 5px;
+    margin: 5px 5px -5px -5px;
+    background: #444;
+    background: rgba(0,0,0,.2);
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    -moz-box-shadow: 5px 5px 5px #888;
+    -webkit-box-shadow: 5px 5px 5px #888;
+    box-shadow: 5px 5px 5px #888;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  header #logo {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  }
+
+  header #institution {
+    padding: 0px;
+    position: absolute;
+    top: 40px;
+    right: 0px;
+    left: 160px;
+    font-family: 'Droid Sans', sans-serif;
+    font-size: 35px;
+    color: #aaaaaa;
+  }
+
+
+  #header_logo_image {
+    background: url(/images/openbib/kuglogo_small-40px.png) center no-repeat;
+    width: 88px;
+    height: 40px;
+    position: absolute;
+    top: 40px;
+    left: 60px;
+  }
+
+  .ym-wbox {
+    background: #ffffff;
+  }
+/*
+  #header_institution_image {
+    background: url(/images/openbib/views/alekiddr/aleki_logo.png) center no-repeat;
+    width: 111px;
+    height: 90px;
+    position: absolute;
+    top: 30px;
+    right: 10px;
+  }
+*/
+  .details {
+    padding-top: 1em;
+  }
+
+  .images {
+    padding-top: 1em;
+  }
+
+  nav {
+    background: #ffffff;
+  }
+
+}

@@ -560,26 +560,25 @@
 
   .ob-searchfield_supplement {
     text-align: center;
-    font-size: 90%;
+    font-size: 100%;
   }
 
   
   .ob-searchfield {
-    padding-top: 1em;
-    font-size: 120%;
+    font-size: 110%;
   }
 
 
   .ob-searchfield {
     width: 850px;
     padding: 15px;
-    margin: 50px auto 50px auto;
+    margin: 0px auto 0px auto;
     background: #444;
     background: rgba(0,0,0,.2);
     border-radius: 10px;
-          -moz-box-shadow: 10px 10px 5px #888;
-      -webkit-box-shadow: 10px 10px 5px #888;
-      box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
 
 /*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
   }
@@ -696,13 +695,13 @@
     border-bottom-width: 1px;
     border-left-width: 1px
 
-scrollbar-face-color:#990000;
-scrollbar-highlight-color:#FF0000;
-scrollbar-3dlight-color:#CC0000;
-scrollbar-darkshadow-color:#5B0000;
-scrollbar-shadow-color:#6C0000;
-scrollbar-arrow-color:#FFFFFF;
-scrollbar-track-color:#990000;
+    scrollbar-face-color:#990000;
+    scrollbar-highlight-color:#FF0000;
+    scrollbar-3dlight-color:#CC0000;
+    scrollbar-darkshadow-color:#5B0000;
+    scrollbar-shadow-color:#6C0000;
+    scrollbar-arrow-color:#FFFFFF;
+    scrollbar-track-color:#990000;
   }
 
 /*  .ob-selectbox option:before {
@@ -759,5 +758,5 @@ scrollbar-track-color:#990000;
   .ym-fbox-button {
     padding: 10px;
   }
-
+  
 }

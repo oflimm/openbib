@@ -1,0 +1,24 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_center
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Mitte
+#
+#######################################################################
+-%]
+
+<div class="ob-category_header">[%- IF viewdbs.size == 1 -%][% msg.maketext("In den Datenbestand eintauchen") %][%- ELSE -%][% msg.maketext("In den Gesamtbestand eintauchen") %][%- END -%]</div>
+
+<h4><img style="vertical-align:bottom" src="[% config.get('search_img') %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;</h4>
+
+<a style="font-size: 1.5em;" href="[% path_prefix %]/[% config.get('clouds_loc') %][%- IF viewdbs.size == 1 -%]/type/year/[% viewdbs.first %][% END %].html" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>,
+<a style="font-size: 1.3em;" href="[% path_prefix %]/[% config.get('litlists_loc') %][% IF view_config.${view}.topicid %]/[% config.get('topics_loc') %]/id/[% view_config.${view}.topicid %].html[% ELSE %].html[%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>,
+<a style="font-size: 1.1em;" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, 
+<a                           href="[% path_prefix %]/[% config.get('databases_loc') %][%- IF viewdbs.size == 1 -%]/id/[% viewdbs.first %][%- END -%]/[% config.get('titles_loc') %]/popular.html" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>,
+<a style="font-size: 1.2em;" href="[% path_prefix %]/[% config.get('info_loc') %]/other_portals.html" title="[% msg.maketext("weitere OpenBib-Portale") %]">[% msg.maketext("weitere OpenBib-Portale") %]</a>.<p/>
+

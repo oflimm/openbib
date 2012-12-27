@@ -646,6 +646,7 @@
 ../templates/_profile/kug/home_html_bottom_right
 ../templates/_profile/kug/info_impressum_html
 ../templates/_profile/kug/info_impressum_mobile
+../templates/_profile/kug/login
 ../templates/_profile/kug/mainnavigation_html
 ../templates/_profile/kug/newsflash
 ../templates/_profile/kug/searchforms_record_advanced
@@ -653,6 +654,7 @@
 ../templates/_profile/kug/searchforms_record_query
 ../templates/_profile/kug/std_footer_html
 ../templates/_profile/kug/std_header_html
+../templates/_profile/kug/users_preferences_html
 ../templates/_profile/mobile/_view/richtermobile/browse_title_html
 ../templates/_profile/mobile/_view/richtermobile/holding
 ../templates/_profile/mobile/_view/richtermobile/home

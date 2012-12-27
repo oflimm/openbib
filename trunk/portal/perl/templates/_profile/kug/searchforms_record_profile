@@ -21,8 +21,8 @@
 %]
 <option value="[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% msg.maketext("Fakultät") %]: [% unit.description %]</option>
 [%   END;
-    END %]
-[% END %]
+    END;
+   END %]
 </optgroup>
 <option value="[% searchprofileid_of_view %]"
 [%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%]

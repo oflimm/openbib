@@ -20,10 +20,8 @@
 
           <div class="ym-grid ym-equalize">
             <div class="ym-g33 ym-gl">
-              <div class="ym-gbox-left">
-                <div class="ob-searchform_bottom_left">
+              <div class="ym-gbox">
 [% PROCESS common/subtemplate name="home_html_bottom_left" %]
-                </div>
               </div>
             </div>
             <div class="ym-g33 ym-gl">
@@ -32,7 +30,7 @@
               </div>
             </div>
             <div class="ym-g33 ym-gr">
-             <div class="ym-gbox-right">
+             <div class="ym-gbox">
 [% PROCESS common/subtemplate name="home_html_bottom_right" %]
              </div>
             </div>

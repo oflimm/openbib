@@ -111,7 +111,7 @@ $(document).ready(function(){
 <button type="submit">[% msg.maketext("Suchen") %]</button>
 &nbsp;<br/>
 <div class="ob-searchfield_supplement">
-[% msg.maketext("in:") %]&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchforms_record_profile" %]&nbsp;&nbsp;|&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#topics">[% msg.maketext("Themengebiete") %]</a>
+[% msg.maketext("in:") %]&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchforms_record_profile" %]&nbsp;&nbsp;|&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get("browse_loc") %]/[% config.get("topics_loc") %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
 </div>
 
 </div>

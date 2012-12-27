@@ -36,13 +36,11 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix%]/[% config.get('browse_loc') %].html?l=[% lang %]">[% msg.maketext("Browsen") %]</a></li>
-         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %]/bks.html?l=[% lang %]">[% msg.maketext("Basisklassification") %]</a></li>
-         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %]/bks/id/[% toplevelbkid %].html?l=[% lang %]">[% msg.maketext("Basisklassification") %]</a></li>
-         <li><a href="#" class="lastitem">[% bkid %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Fachgebiete") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<!-- <a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bkid %]/databases.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a> -->
+<!-- <a href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %]/id/[% topicid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a> -->
      </div>
    </div>
 
@@ -56,26 +54,21 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h3>[% msg.maketext("Titel pro Katalog")%]</h3>
+<h4>[% msg.maketext("Themengebiete") %]</h4>
 
-[%
-  bks        = config.load_bk;
-  thisbklist = statistics.get_result({id => view, type => 11, subkey => bkid }); 
-%]
-[%
-  viewdbs = [];
-  IF view ;
-    viewdbs = config.get_dbs_of_view(view);
+<p />
+<ul class="topiclist">
+[%- FOREACH topic IN user.get_topics -%]
+[% titlecount = 0 ;
+   thisclassifications = user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+   FOREACH classification IN thisclassifications;
+     titlecount = titlecount + thisbklist.${classification};
   END ;
 %]
-
-<table class="ym-full">
-[% FOREACH bkinfo IN thisbklist %]
-[%   thisdb    = bkinfo.key %]
-[%   thiscount = bkinfo.value %]
-<tr><th><a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];db=[% thisdb %];t4100=[% bkid %]">[% dbinfo.get('dbnames').${thisdb}.short %]</a></th><td align="right"><b>[% thiscount%]</b> Titel</td></tr>
+<li><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,topic.litlistcount.public) %])</li>
 [% END %]
-</table>
+</ul>
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

@@ -36,13 +36,11 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix%]/[% config.get('browse_loc') %].html?l=[% lang %]">[% msg.maketext("Browsen") %]</a></li>
-         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %]/bks.html?l=[% lang %]">[% msg.maketext("Basisklassification") %]</a></li>
-         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %]/bks/id/[% toplevelbkid %].html?l=[% lang %]">[% msg.maketext("Basisklassification") %]</a></li>
-         <li><a href="#" class="lastitem">[% bkid %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Basisklassification") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<!-- <a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bkid %]/databases.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a> -->
+<!-- <a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a> -->
      </div>
    </div>
 
@@ -56,26 +54,36 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h3>[% msg.maketext("Titel pro Katalog")%]</h3>
-
 [%
   bks        = config.load_bk;
-  thisbklist = statistics.get_result({id => view, type => 11, subkey => bkid }); 
-%]
-[%
-  viewdbs = [];
-  IF view ;
-    viewdbs = config.get_dbs_of_view(view);
-  END ;
+
 %]
 
-<table class="ym-full">
-[% FOREACH bkinfo IN thisbklist %]
-[%   thisdb    = bkinfo.key %]
-[%   thiscount = bkinfo.value %]
-<tr><th><a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];db=[% thisdb %];t4100=[% bkid %]">[% dbinfo.get('dbnames').${thisdb}.short %]</a></th><td align="right"><b>[% thiscount%]</b> Titel</td></tr>
+
+[%
+bklist = [];
+FOREACH bk IN bks;
+%]
+[%
+  IF bk.key.length == 2  ;
+    bklist.push(bk.key);
+  END ;
+END ;
+
+bklist = bklist.sort;
+
+%]
+
+[%# USE dumper;dumper.dump(thisbklist)%]
+<h4>[% msg.maketext("Basisklassifikation - Hauptgruppen") %]</h4>
+
+<ul class="subjectlist">
+[% FOREACH bk IN bklist %]
+<li>[% bk %] / <a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bk %].html?l=[% lang %]">[% bks.${bk} %]</a></li>
 [% END %]
-</table>
+</ul>
+
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

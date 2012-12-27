@@ -12,11 +12,11 @@
 #######################################################################
 -%]
 
-<div class="ob-category_header">Informationsquellen</div>
+<div class="ob-category_header">Weitere Informationsquellen</div>
 
 [%- IF viewdbs.size == 1 && viewdbs.first.match("^inst[0-6]") -%]
 
-<h4><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="Bibliotheksangebote" />&nbsp;Weitere Angebote der Bibliothek</h4>
+<h4><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="Bibliotheksangebote" />&nbsp;Bibliotheksangebote</h4>
 
 <h5>Zeitschriften der Bibliothek</h5>
 

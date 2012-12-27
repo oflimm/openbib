@@ -91,7 +91,7 @@
 <p/>
 
 <div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Einloggen") %]" />
+<input type="submit" value="[% msg.maketext("Anmelden") %]" />
 </div>
 
 </fieldset>
@@ -132,7 +132,7 @@
 <p/>
 
 <div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Einloggen") %]" />
+<input type="submit" value="[% msg.maketext("Anmelden") %]" />
 </div>
 
 </fieldset>

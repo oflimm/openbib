@@ -62,6 +62,7 @@ use APR::Const -compile => qw(SUCCESS BLOCK_READ);
 use constant IOBUFSIZE => 8192;
 
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Common::Util;
 use OpenBib::Container;
 use OpenBib::L10N;
@@ -89,7 +90,8 @@ sub cgiapp_init {
     my $view         = $self->param('view');
     my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
+    my $dbinfo       = OpenBib::Config::DatabaseInfoTable->instance;
+    
     my $useragent    = $r->headers_in->get('User-Agent');
     my $browser      = HTTP::BrowserDetect->new($useragent);
 
@@ -98,6 +100,7 @@ sub cgiapp_init {
     $self->param('user',$user);
     $self->param('useragent',$useragent);
     $self->param('browser',$browser);
+    $self->param('dbinfo',$dbinfo);
     $self->param('qopts',OpenBib::QueryOptions->instance($self->query()));
     $self->param('servername',$r->get_server_name);
 
@@ -763,6 +766,7 @@ sub add_default_ttdata {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $servername     = $self->param('servername');
+    my $dbinfo         = $self->param('dbinfo');
     my $path_prefix    = $self->param('path_prefix');
     my $path           = $self->param('path');
     my $url            = $self->param('url');
@@ -807,6 +811,7 @@ sub add_default_ttdata {
     $ttdata->{'query'}          = $query;
     $ttdata->{'scheme'}         = $scheme;
     $ttdata->{'view'}           = $view;
+    $ttdata->{'dbinfo'}         = $dbinfo;
     $ttdata->{'sessionID'}      = $sessionID;
     $ttdata->{'representation'} = $representation;
     $ttdata->{'content_type'}   = $content_type;

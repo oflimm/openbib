@@ -75,6 +75,7 @@ sub setup {
         'create_record'              => 'create_record',
         'update_record'              => 'update_record',
         'delete_record'              => 'delete_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
         'dispatch_to_representation' => 'dispatch_to_representation',
     );
 
@@ -321,6 +322,28 @@ sub update_record {
     return;
 }
 
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $locationid     = $self->strip_suffix($self->param('locationid'));
+    my $config         = $self->param('config');
+
+    my $ttdata={
+        locationid => $locationid,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_admin_locations_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
+}
+
 sub delete_record {
     my $self = shift;
 
@@ -329,7 +352,7 @@ sub delete_record {
     
     # Dispatched Ards
     my $view           = $self->param('view');
-    my $dbname         = $self->param('databaseid');
+    my $locationid     = $self->param('locationid');
 
     # Shared Args
     my $query          = $self->query();
@@ -348,15 +371,10 @@ sub delete_record {
         return;
     }
 
-    if (!$config->db_exists($dbname)) {
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        return Apache2::Const::OK;
-    }
-    
-    $config->del_libinfo($dbname);
+    $config->delete_locationinfo($locationid);
     
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{locations_loc}");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

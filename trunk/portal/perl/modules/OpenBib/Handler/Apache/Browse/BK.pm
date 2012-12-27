@@ -132,6 +132,7 @@ sub show_record_databases {
 
     # Dispatched Args
     my $view             = $self->param('view');
+    my $toplevelbkid     = $self->param('tlbkid');
     my $bkid             = $self->strip_suffix($self->param('bkid'));
 
     # Shared Args
@@ -153,8 +154,9 @@ sub show_record_databases {
     # TT-Data erzeugen
     my $ttdata={
         statistics => $statistics,
-        bkid       => $bkid,
-        dbinfo     => $dbinfotable,
+        toplevelbkid => $toplevelbkid,
+        bkid         => $bkid,
+        dbinfo       => $dbinfotable,
     };
     
     $self->print_page($config->{'tt_browse_bks_record_databases_tname'},$ttdata);

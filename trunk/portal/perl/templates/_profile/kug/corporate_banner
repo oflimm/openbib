@@ -20,9 +20,9 @@
       </div>
       <div id="logo"><a href="[% path_prefix %]/[% config.get('home_loc') %]?l=[% lang %]" title="Startseite" id="header_logo_image"></a></div>
 <!--      <div id="header_right"><a href="http://www.uni-koeln.de" title="Startseite der Universität zu Köln" id="header2_uni_schriftzug" target="_blank"><span>Universit&auml;t zu K&ouml;ln</span></a>
-	<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header2_usb_schriftzug" target="_blank"><span>[% IF view %][% config.get_viewdesc_from_viewname(view) %][% ELSE %]K&ouml;lner Universit&auml;tsGesamtkatalog[% END %]</span></a>
+	<a href="http://search.ub.uni-koeln.de/portal/kug/home" title="KUG Startseite" id="header2_usb_schriftzug" target="_blank"><span>[% IF view %][% config.get_viewdesc_from_viewname(view) %][% ELSE %]K&ouml;lner Universit&auml;tsGesamtkatalog[% END %]</span></a>
 	<a href="http://www.uni-koeln.de" title="Startseite der Universit&auml;t zu Köln" id="header_uni_siegel_small" target="_blank"></a>
       </div>-->
-      <div id="institution">Bücher, Zeitschriften, E-Medien und mehr...</div>
+      <div id="institution">[% msg.maketext("Bücher, Zeitschriften, E-Medien und mehr...") %]</div>
     </header>
 <!-- End Template: corporate_banner -->

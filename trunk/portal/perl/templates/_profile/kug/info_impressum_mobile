@@ -18,7 +18,7 @@
 
        <div  data-role="header">
            <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].mobile?l=de" >[% msg.maketext("Home") %]</a>
-	   <h1>Impressum</h1> 
+	   <h1>[% msg.maketext("Impressum") %]</h1> 
        </div> 
 
        <div data-role="content">

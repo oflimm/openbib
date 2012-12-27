@@ -167,8 +167,6 @@ circulations_loc: circulations
 preferences_loc: preferences
 collection_loc: collection
 cartitems_loc: cartitems
-dispatchquery_loc: dispatchquery
-externaljump_loc: jumpto
 home_loc: home
 index_loc: index
 info_loc: info
@@ -196,26 +194,6 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Search'
      rule: '/portal/:view/index/:type/*'
      runmode: 'index'
-
-
-  - # dispatchquery_loc:
-     module: 'OpenBib::Handler::Apache::DispatchQuery'
-     rule: '/portal/:view/dispatchquery'
-     runmode: 'show'
-  - # dispatchquery_loc:
-     module: 'OpenBib::Handler::Apache::DispatchQuery'
-     rule: '/portal/:view/dispatchquery.html'
-     runmode: 'show'
-
-  - # externaljump_loc:
-     module: 'OpenBib::Handler::Apache::ExternalJump'
-     rule: '/portal/:view/jumpto'
-     runmode: 'show'
-  - # externaljump_loc:
-     module: 'OpenBib::Handler::Apache::ExternalJump'
-     rule: '/portal/:view/jumpto.html'
-     runmode: 'show'
-
 
 # Charakteristik
 # - ausschliesslich oeffentliche Repraesentation [get]
@@ -262,13 +240,6 @@ dispatch_rules:
      representations:
        - none
        - html
-     runmode: 'show'
-  - # Resource: browse_loc
-     module: 'OpenBib::Handler::Apache::Browse::Topics'
-     rule: '/portal/:view/browse/topics[get]'
-     representations:
-       - none
-       - html
      runmode: 'show_collection'
   - # Resource: browse_loc
      module: 'OpenBib::Handler::Apache::Browse::Topics'
@@ -293,10 +264,7 @@ dispatch_rules:
      runmode: 'show_record'
   - # Resource: browse_loc
      module: 'OpenBib::Handler::Apache::Browse::BK'
-     rule: '/portal/:view/browse/bks/id/:bkid/databases[get]'
-     representations:
-       - none
-       - html
+     rule: '/portal/:view/browse/bks/id/:tlbkid/id/:bkid[get]'
      runmode: 'show_record_databases'
 
 #####################################################################

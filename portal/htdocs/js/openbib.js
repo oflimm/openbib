@@ -332,18 +332,18 @@ $("#ob-tagging_toggle").click(function(){
  
   });
 
-$(window).load(function(){
-    $(window).scroll(function(){
-        if($(window).scrollTop()>110){
-            $('#ob-fixed_navigation').css('position', 'fixed');
-            $('#ob-fixed_navigation').css('top', 0);
-            $('#ob-fixed_navigation').css('margin-left', '60px');
-        } else {
-            $('#ob-fixed_navigation').css('position', 'relative');
-            $('#ob-fixed_navigation').css('margin', '0px auto 0px auto');
-        }
-    });
-});
+//$(window).load(function(){
+//    $(window).scroll(function(){
+//        if($(window).scrollTop()>110){
+//            $('#ob-fixed_navigation').css('position', 'fixed');
+//            $('#ob-fixed_navigation').css('top', 0);
+//            $('#ob-fixed_navigation').css('margin-left', '60px');
+//        } else {
+//            $('#ob-fixed_navigation').css('position', 'relative');
+//            $('#ob-fixed_navigation').css('margin', '0px 60px 0px');
+//        }
+//    });
+//});
 
 
   

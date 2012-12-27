@@ -13,7 +13,7 @@
     width: 100%;
     padding: 2px;
     padding-left: 5px;
-    margin: 5px 5px -5px -5px;
+    margin: 5px 10px -5px -5px;
     background: #444;
     background: rgba(0,0,0,.2);
     border-radius: 5px;
@@ -80,4 +80,10 @@
     background: #ffffff;
   }
 
+  nav.ob-fixed_navigation {
+    position: relative;
+    margin: 0px 60px 0px;
+    top: 0px;
+  }
+  
 }

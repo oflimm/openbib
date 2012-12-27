@@ -303,7 +303,7 @@ sub get_viewdesc_from_viewname {
     my $logger = get_logger();
 
     # DBI: "select description from viewinfo where viewname = ?"
-    my $desc = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'description' })->first->description;
+    my $desc = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->description;
     
     return $desc;
 }
@@ -1152,6 +1152,33 @@ sub get_orgunitinfo {
     return $orgunitinfo;
 }
 
+
+sub get_orgunitname_of_db_in_view {
+    my ($self,$dbname,$viewname) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $orgunitinfo = $self->get_orgunitinfo->search_rs(
+        {
+            'viewinfos.viewname' => $viewname,
+            'dbid.dbname'        => $dbname,
+            
+        },
+        {
+            select => ['me.orgunitname'],
+            as     => ['thisname'],
+            join => ['profileid',{'profileid' => 'viewinfos'},'orgunit_dbs',{'orgunit_dbs' => 'dbid'}],
+        }
+    )->single;
+
+    if ($orgunitinfo){
+        return $orgunitinfo->get_column('thisname');
+    }
+    
+    return -1;
+}
+
 sub get_profiledbs {
     my $self        = shift;
     my $profilename = shift;
@@ -1189,6 +1216,8 @@ sub get_profilename_of_view {
     eval {
         $profilename = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname })->profileid->profilename;
     };
+
+    $logger->debug("Got system profilename $profilename");
     
     return $profilename;
 }
@@ -1939,6 +1968,26 @@ sub update_locationinfo {
         if (@$update_fields_ref){
             $self->{schema}->resultset('LocationinfoField')->populate($update_fields_ref);
         }
+    }
+    
+    return;
+}
+
+sub delete_locationinfo {
+    my ($self,$locationid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single({ id => $locationid });
+
+    eval {
+        $locationinfo->locationinfo_fields->delete;
+        $locationinfo->delete;
+    };
+
+    if ($@){
+        $logger->error("Can't delete locationinfo: ".$@);
     }
     
     return;

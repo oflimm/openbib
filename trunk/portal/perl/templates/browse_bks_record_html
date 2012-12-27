@@ -36,12 +36,12 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix%]/[% config.get('browse_loc') %].html?l=[% lang %]">[% msg.maketext("Browsen") %]</a></li>
-         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %]/bks.html?l=[% lang %]">[% msg.maketext("Basisklassificatin") %]</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %]/bks.html?l=[% lang %]">[% msg.maketext("Basisklassification") %]</a></li>
          <li><a href="#" class="lastitem">[% bkid %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bkid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<!-- <a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bkid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a> -->
      </div>
    </div>
 
@@ -81,14 +81,11 @@ bklist = bklist.sort;
 %]
 
 [%# USE dumper;dumper.dump(thisbklist)%]
-<h3>Katalogtitel nach Bibliothekssystematik</h3>
+<h4>[% bks.${bkid} %]</h4>
 
 <ul class="subjectlist">
 [% FOREACH bk IN bklist %]
-[%   IF thisbklist.${bk}.defined %] 
-[%      localurl    = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};db=${viewdbs.first};t4100=${bk}" %]
-<li>[% bk %] / <a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bk %]/databases.html?l=[% lang %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
-[%   END %]
+<li>[% bk %] / <a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bkid %]/id/[% bk %].html?l=[% lang %]">[% bks.${bk} %]</a> ([% IF thisbklist.${bk} %][% thisbklist.${bk} %][% ELSE %][% msg.maketext("keine") %][% END %] Titel)</li>
 [% END %]
 </ul>
 

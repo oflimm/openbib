@@ -25,7 +25,8 @@
   </div>
 
   <div class="ym-g75 ym-gl">
-    <div class="ym-gbox-left">
+    <div class="ym-gbox">
+
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]

@@ -84,6 +84,9 @@ $(function(){
 // Tabs fuer Suchmaske nach Formaten 
 $('#ob-searchform_types').tabs();
 
+// Tabs fuer Login nach Ziel 
+$('#ob-login_forms').tabs();
+
 // Accordion fuer Datenbankauswahl
 //$('.ui-accordion').accordion({ 
 //      autoHeight: false,

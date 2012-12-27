@@ -4,9 +4,9 @@
 #  zmslibinfo2configdb.pl
 #
 #  Automatisierte Uebernahme der Informationen des Bibliotheksfuehrers
-#  aus ZMS und Einspielung in die libraryinfo-Tabelle der config-Datenbank
+#  aus ZMS und Einspielung in die locationinfo-Tabelle der System-Datenbank
 #
-#  Dieses File ist (C) 2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,16 +40,11 @@ my $database=$ARGV[0];
 
 my $config = OpenBib::Config->instance;
 
-# Verbindung zur SQL-Datenbank herstellen
-my $dbh
-    = OpenBib::Schema::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-    or $logger->error_die($DBI::errstr);
-
 my $s = scraper {
   process 'table.ZMSTable tr td ' => 'zeilen[]'   => 'HTML';
 };
 
-my $category_map_ref = {
+my $field_map_ref = {
     'Institutsname' => '10',
     'Straße' => '20',
     'Gebäude' => '30',
@@ -84,19 +79,21 @@ my $category_map_ref = {
     'Geo-Position (Bg,Lg)' => '280',
 };
 
-my $dboverview_ref = $config->get_dbinfo_overview();
-foreach my $katalog_ref (@$dboverview_ref){
+foreach my $dbinfo ($config->get_dbinfo_overview->all){
     
-    next unless ($katalog_ref->{url}=~/bibliotheksfuehrer/);
+    next unless ($dbinfo->url=~/bibliotheksfuehrer/);
 
-    my $url    = $katalog_ref->{url};
-    my $dbname = $katalog_ref->{dbname};
+    my $url         = $dbinfo->url;
+    my $dbname      = $dbinfo->dbname;
+    my $description = $dbinfo->description;
+    my $location    = $dbinfo->locationid;
+    my $sigel       = $dbinfo->sigel;
 
     if ($database && $dbname ne $database){
         next;
     }
 
-    print "### $dbname : $katalog_ref->{description}\n";
+    print "### $dbname : ".$dbinfo->description."\n";
     my $content = URI->new($url);
 
     my $r;
@@ -105,65 +102,105 @@ foreach my $katalog_ref (@$dboverview_ref){
     };
 
     next if ($@);
+
+    if (!$location){
+        $location = $config->{schema}->resultset("Locationinfo")->create(
+            {
+                identifier    => "DE-38-$sigel",
+                type          => "ISIL",
+                tstamp_create => \'NOW()',
+                description   => $description,
+            }
+        );
+        
+        $dbinfo->update({locationid => $location->id });
+    }
     
-    my $del_request = $dbh->prepare("delete from libraryinfo where dbname = ? and category < 1000");
-    $del_request->execute($dbname);
+    $location->locationinfo_fields->delete;
+
+    my $fields_ref = [];
     
-    my $request = $dbh->prepare("insert into libraryinfo values (?,?,NULL,?)");
     my @inhalt = @{$r->{zeilen}};
     
     for ($i=0;$i< $#inhalt;$i=$i+2){
-        my ($category,$content);
-        $category = decode("latin1",$inhalt[$i]);
-
+        my ($field,$content);
+        $field = decode("latin1",$inhalt[$i]);
+        
         eval {
             $content  = decode("latin1",$inhalt[$i+1]);
         };
         if ($@){
             $content = $inhalt[$i+1];
         }
-        my $category = $inhalt[$i];
+        my $field = $inhalt[$i];
         my $content  = $inhalt[$i+1];
-
-#        print "Content pre:$content:\n";
-        $category =~s{\</*p\>}{}g;
-        $category =~s{\<br.*?>}{}g;
-        $category =~s{^\s+}{}g;
-#        $content =~s/<br \/>//g;
+        
+        #        print "Content pre:$content:\n";
+        $field =~s{\</*p\>}{}g;
+        $field =~s{\<br.*?>}{}g;
+        $field =~s{^\s+}{}g;
+        #        $content =~s/<br \/>//g;
         $content =~s{\</p>\<p\>}{<br/>}g;
         $content =~s{\</*p\>}{}g;
         $content =~s{\<br \/>$}{}g;
         $content  =~s/^\s+//g;
         $content  =~s/\s+$//g;
-#        print "Content post:$content:\n";
+        #        print "Content post:$content:\n";
         
-        $num_category = $category_map_ref->{$category};
-
-        if ($num_category){
-            if ($num_category eq "120" && ($content =~/(\d+)\s+Mono/ || $content =~/(\d+)\s+Zeitschr/) ){
+        $num_field = $field_map_ref->{$field};
+        
+        if ($num_field){
+            if ($num_field eq "120" && ($content =~/(\d+)\s+Mono/ || $content =~/(\d+)\s+Zeitschr/) ){
                 my ($num_monos)    = $content =~/(\d+)\s+Mono/;
                 my ($num_zeitschr) = $content =~/(\d+)\s+Zeitsch/;
                 
                 if ($num_monos){
-                    $request->execute($dbname,120,$num_monos);
+                    push @$fields_ref,
+                        {
+                            field   => 120,
+                            mult    => 1,
+                            content => $num_monos,
+                        };
                 }
                 if ($num_zeitschr){
-                    $request->execute($dbname,130,$num_zeitschr);
+                    push @$fields_ref,
+                        {
+                            field   => 130,
+                            mult    => 1,
+                            content => $num_zeitschr,
+                        };
                 }
                 if (!$num_monos && !$num_zeitschr){
-                    $request->execute($dbname,120,encode_utf8($content));
+                    push @$fields_ref,
+                        {
+                            field   => 120,
+                            mult    => 1,
+                            content => $content,
+                        };
                 }
                 
             }
-            elsif ($num_category eq "120" || $num_category eq "130" || $num_category eq "140"){
+            elsif ($num_field eq "120" || $num_field eq "130" || $num_field eq "140"){
                 #            $content =~s/(\D+)//g;
-                $request->execute($dbname,$num_category,encode_utf8($content));
+                push @$fields_ref,
+                    {
+                        field   => $num_field,
+                        mult    => 1,
+                        content => $content,
+                    };
             }
             else {
-                $request->execute($dbname,$num_category,encode_utf8($content));
+                push @$fields_ref,
+                    {
+                        field   => $num_field,
+                        mult    => 1,
+                        content => $content,
+                    };
             }
         }
-        print ":$category: / :$num_category: - :$content:\n";
+        print ":$field: / :$num_field: - :$content:\n";
     }
+    
+    $location->locationinfo_fields->populate($fields_ref);
 }
 

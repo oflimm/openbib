@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2012-12-27 16:16+0100\n"
+"PO-Revision-Date: 2012-12-27 16:56+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -160,6 +160,11 @@ msgstr ""
 "The KUG's popularity function is very similar to the recommended entries "
 "function. It comprises:"
 
+#: ../templates/_profile/kug/users_preferences_html:243
+#: ../templates/_profile/kug/users_preferences_html:261
+#: ../templates/_profile/kug/users_preferences_html:311
+#: ../templates/_profile/kug/users_preferences_html:331
+#: ../templates/_profile/kug/users_preferences_html:357
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:325
 #: ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:93
 #: ../templates/_view/richter/users_litlists_record_edit:93
@@ -487,6 +492,7 @@ msgstr "API"
 msgid "Abbruch"
 msgstr "Cancel"
 
+#: ../templates/_profile/kug/users_preferences_html:344
 #: ../templates/users_preferences_html:360
 msgid "Abgleich zu BibSonomy"
 msgstr "Mirror to BibSonomy"
@@ -515,6 +521,7 @@ msgid "Abspeichern"
 msgstr "Save"
 
 #: ../templates/_profile/kug/searchforms_record_query:140
+#: ../templates/_profile/kug/users_preferences_html:222
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:119
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:119
 #: ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:133
@@ -530,6 +537,9 @@ msgstr "Abstract/Content"
 msgid "Administration"
 msgstr "Administration"
 
+#: ../templates/_profile/kug/users_preferences_html:275
+#: ../templates/_profile/kug/users_preferences_html:289
+#: ../templates/_profile/kug/users_preferences_html:302
 #: ../templates/admin_clusters_html:107 ../templates/admin_clusters_html:81
 #: ../templates/admin_clusters_record_edit:87
 #: ../templates/admin_databases_html:99
@@ -655,6 +665,7 @@ msgstr "All tags by name"
 msgid "Alle Treffer"
 msgstr "All hits"
 
+#: ../templates/_profile/kug/users_preferences_html:366
 #: ../templates/users_preferences_html:382
 msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr "Mirror all tagged titles to BibSonomy"
@@ -803,6 +814,7 @@ msgid "Anlegen einer neuen Literaturliste: "
 msgstr "Create a new literature list: "
 
 #: ../templates/_profile/kug/corporate_banner:17
+#: ../templates/_profile/kug/login:39 ../templates/_profile/kug/login:55
 #: ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:9
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner:9
 #: ../templates/_profile/sammlungen/_view/richter/corporate_banner:9
@@ -812,6 +824,14 @@ msgstr "Create a new literature list: "
 #: ../templates/login:39 ../templates/login:70
 msgid "Anmelden"
 msgstr "Login"
+
+#: ../templates/_profile/kug/login:63
+msgid "Anmelden mit einem Benutzerausweis"
+msgstr "Login with valid library card"
+
+#: ../templates/_profile/kug/login:62
+msgid "Anmelden mit registrierter E-Mail-Adresse"
+msgstr "Login with your registered e-mail address"
 
 #: ../templates/admin_authenticators_record_html:60
 #: ../templates/authenticators_record_html:57
@@ -1121,6 +1141,7 @@ msgstr "Off"
 msgid "Ausdrucken"
 msgstr "Print"
 
+#: ../templates/_profile/kug/users_preferences_html:120
 #: ../templates/users_preferences_html:120
 msgid "Ausgeliehen"
 msgstr "Borrowed"
@@ -1169,6 +1190,7 @@ msgstr "Loan"
 msgid "Ausleihfrist"
 msgstr "Loan period"
 
+#: ../templates/_profile/kug/users_preferences_html:107
 #: ../templates/users_preferences_html:107
 msgid "Ausleihinformationen"
 msgstr "Loan information"
@@ -1203,6 +1225,7 @@ msgid ""
 "Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy"
 msgstr "Automatic mirroring of tagged titles to BibSonomy"
 
+#: ../templates/_profile/kug/users_preferences_html:251
 #: ../templates/users_preferences_html:267
 msgid "Automatische Vorschl&auml;ge zur Suchanfrage"
 msgstr "Automatic suggestions for your search query"
@@ -1318,10 +1341,12 @@ msgstr ""
 "To search for any of the following symbols please use the appropriate   base "
 "letter:"
 
+#: ../templates/_profile/kug/users_preferences_html:285
 #: ../templates/users_preferences_html:301
 msgid "Bei der Eingabe von Personen"
 msgstr "As you enter persons"
 
+#: ../templates/_profile/kug/users_preferences_html:299
 #: ../templates/users_preferences_html:315
 msgid "Bei der Eingabe von Schlagworten"
 msgstr "As you enter subjects"
@@ -1423,11 +1448,13 @@ msgstr "User defined"
 msgid "Benutzerkonto"
 msgstr "User account"
 
+#: ../templates/_profile/kug/users_preferences_html:58
 #: ../templates/users_preferences_html:58
 msgid "Benutzername"
 msgstr "User name"
 
-#: ../templates/_profile/usb/login:71 ../templates/login_circulation:79
+#: ../templates/_profile/kug/login:124 ../templates/_profile/usb/login:71
+#: ../templates/login_circulation:79
 msgid "Benutzernummer"
 msgstr "User number"
 
@@ -1590,6 +1617,7 @@ msgstr "Order sucessful"
 msgid "Bestellung nicht m&ouml;glich"
 msgstr "Order impossible"
 
+#: ../templates/_profile/kug/users_preferences_html:134
 #: ../templates/users_circulations_borrows_ics:86
 #: ../templates/users_circulations_orders_html:39
 #: ../templates/users_navigation:80 ../templates/users_navigation:82
@@ -1620,6 +1648,7 @@ msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Ratings/reviews from users"
 
 #: ../templates/_database/openlibrary/titles_record_html_images:32
+#: ../templates/_profile/kug/users_preferences_html:339
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:56
 #: ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:24
 #: ../templates/_view/richter/cartitems_html_full:56
@@ -1636,10 +1665,12 @@ msgstr "BibSonomy"
 msgid "BibSonomy Tags"
 msgstr "BibSonomy Tags"
 
+#: ../templates/_profile/kug/users_preferences_html:353
 #: ../templates/users_preferences_html:369
 msgid "BibSonomy-API-Key"
 msgstr "BibSonomy API-Key"
 
+#: ../templates/_profile/kug/users_preferences_html:348
 #: ../templates/users_preferences_html:364
 msgid "BibSonomy-API-User"
 msgstr "BibSonomy API-User"
@@ -1714,6 +1745,7 @@ msgstr "Please enter your search term"
 msgid "Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"
 msgstr "Please log in with your registered e-mail address"
 
+#: ../templates/_profile/kug/users_preferences_html:149
 #: ../templates/users_preferences_html:149
 msgid ""
 "Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
@@ -2517,10 +2549,12 @@ msgstr ""
 msgid "E-Book"
 msgstr "E-Book"
 
+#: ../templates/_profile/kug/users_preferences_html:92
 #: ../templates/users_preferences_html:92 ../templates/users_roles_edit:82
 msgid "E-Mail"
 msgstr "E-mail"
 
+#: ../templates/_profile/kug/login:80
 #: ../templates/_profile/sammlungen/_view/richter/login:72
 #: ../templates/_profile/sammlungen/_view/richter/users_passwords:59
 #: ../templates/_profile/sammlungen/_view/richter/users_registrations:70
@@ -2683,6 +2717,7 @@ msgstr "Refine"
 msgid "Eingrenzung auf Gesamttitel (Serien)"
 msgstr "Restrict to main entries (series)"
 
+#: ../templates/_profile/kug/login:135 ../templates/_profile/kug/login:94
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:513
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:554
 #: ../templates/_profile/sammlungen/_view/richter/login:85
@@ -2692,6 +2727,7 @@ msgstr "Restrict to main entries (series)"
 msgid "Einloggen"
 msgstr "Log In"
 
+#: ../templates/_profile/kug/users_preferences_html:156
 #: ../templates/users_preferences_html:156
 msgid "Einstellungen"
 msgstr "Preferences"
@@ -2907,6 +2943,7 @@ msgstr ""
 "This is facilitated by several configuration options in OpenBib as well as "
 "simple URL-rewriting for the corresponding hostname."
 
+#: ../templates/_profile/kug/users_preferences_html:237
 #: ../templates/searchforms_record_options:3
 #: ../templates/users_preferences_html:253
 msgid "Erscheinungsjahr"
@@ -3387,6 +3424,7 @@ msgid "Französisch"
 msgstr "French"
 
 #: ../templates/_profile/kug/searchforms_record_query:70
+#: ../templates/_profile/kug/users_preferences_html:168
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:69
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:69
 #: ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:70
@@ -3467,6 +3505,7 @@ msgstr ""
 msgid "Geben Sie hier einen oder mehrere Tags ein"
 msgstr "Please enter one or more tags"
 
+#: ../templates/_profile/kug/users_preferences_html:84
 #: ../templates/users_preferences_html:84 ../templates/users_roles_edit:71
 msgid "Geburtsdatum"
 msgstr "Date of birth"
@@ -3541,12 +3580,15 @@ msgstr "Greek"
 msgid "Grund:"
 msgstr "Reason:"
 
+#: ../templates/_profile/kug/users_preferences_html:39
+#: ../templates/_profile/kug/users_preferences_html:55
 #: ../templates/users_navigation:19 ../templates/users_navigation:21
 #: ../templates/users_preferences_html:39
 #: ../templates/users_preferences_html:55
 msgid "Grundeinstellungen"
 msgstr "Basic settings"
 
+#: ../templates/_profile/kug/users_preferences_html:110
 #: ../templates/users_preferences_html:110
 msgid "Guthaben"
 msgstr "Funds"
@@ -3593,6 +3635,7 @@ msgstr ""
 msgid "Haftungsausschluss"
 msgstr "Exclusion of liability"
 
+#: ../templates/_profile/kug/users_preferences_html:173
 #: ../templates/users_preferences_html:189
 msgid "Hauptsachtitel (HST)"
 msgstr "Main title"
@@ -3758,6 +3801,7 @@ msgid "IP-Adresse"
 msgstr "IP address"
 
 #: ../templates/_profile/kug/searchforms_record_query:112
+#: ../templates/_profile/kug/users_preferences_html:198
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:99
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:99
 #: ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:105
@@ -3771,6 +3815,7 @@ msgid "ISBN"
 msgstr "ISBN"
 
 #: ../templates/_profile/kug/searchforms_record_query:119
+#: ../templates/_profile/kug/users_preferences_html:207
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:104
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:104
 #: ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:112
@@ -4113,6 +4158,7 @@ msgstr ""
 "on the icon. %1 is a free social bookmarking service specialized on managing "
 "and sharing bibliography lists."
 
+#: ../templates/_profile/kug/users_preferences_html:323
 #: ../templates/users_preferences_html:339
 msgid "In der Recherchemaske"
 msgstr "In the search mask"
@@ -4151,10 +4197,12 @@ msgstr ""
 "directly to the external search results page. Both your search query and,if "
 "available, your OpenBib login data will be transmitted."
 
+#: ../templates/_profile/kug/users_preferences_html:328
 #: ../templates/users_preferences_html:344
 msgid "In der Trefferliste"
 msgstr "In the result list"
 
+#: ../templates/_profile/kug/users_preferences_html:271
 #: ../templates/users_preferences_html:287
 msgid "In der einfachen Recherche bzw. dem freien Suchfeld"
 msgstr "In simple search or free search field"
@@ -4558,6 +4606,7 @@ msgstr "Japanese"
 msgid "K&ouml;perschaft"
 msgstr "Corporate body"
 
+#: ../templates/_profile/kug/users_preferences_html:183
 #: ../templates/users_preferences_html:199
 msgid "K&ouml;rperschaft"
 msgstr "Corporate body"
@@ -4735,6 +4784,7 @@ msgstr "Catalog title according to library classification"
 msgid "Kategorie"
 msgstr "Category"
 
+#: ../templates/_profile/kug/users_preferences_html:255
 #: ../templates/_profile/sammlungen/_view/richter/litlists_record_html:61
 #: ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:46
 #: ../templates/_view/richter/litlists_record_html:61
@@ -4765,6 +4815,7 @@ msgstr "None"
 msgid "Kennung"
 msgstr "Account"
 
+#: ../templates/_profile/kug/users_preferences_html:61
 #: ../templates/users_preferences_html:61
 #: ../templates/users_record_delete_confirm:45
 msgid "Kennung l&ouml;schen"
@@ -5138,6 +5189,8 @@ msgstr "Literature list"
 msgid "Literaturlisten"
 msgstr "Literature lists"
 
+#: ../templates/_profile/kug/users_preferences_html:256
+#: ../templates/_profile/kug/users_preferences_html:268
 #: ../templates/users_preferences_html:272
 #: ../templates/users_preferences_html:284
 msgid "LiveSearch"
@@ -5147,9 +5200,14 @@ msgstr "LiveSearch"
 msgid "Login"
 msgstr "Login"
 
-#: ../templates/_profile/usb/login:56 ../templates/login_circulation:63
+#: ../templates/_profile/kug/login:110 ../templates/_profile/usb/login:56
+#: ../templates/login_circulation:63
 msgid "Login mit einem Benutzerausweis"
 msgstr "Login with valid library card"
+
+#: ../templates/_profile/kug/login:78
+msgid "Login mit registrierter E-Mail-Adresse"
+msgstr "Login with your registered e-mail address"
 
 #: ../templates/_profile/usb/login:98
 msgid "Login ohne Benutzerausweis"
@@ -5176,6 +5234,7 @@ msgstr "Local"
 msgid "Lokale Signatur      "
 msgstr "Local location mark  "
 
+#: ../templates/_profile/kug/users_preferences_html:368
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:146
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:46
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:67
@@ -5245,6 +5304,7 @@ msgid "MedPilot"
 msgstr "MedPilot"
 
 #: ../templates/_profile/kug/searchforms_record_query:162
+#: ../templates/_profile/kug/users_preferences_html:232
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:135
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:130
 #: ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:155
@@ -5421,6 +5481,7 @@ msgstr ""
 "down the number in front of the location mark that indicates the exact "
 "library, click on Pedagogical Faculty and look for the required library code."
 
+#: ../templates/_profile/kug/users_preferences_html:82
 #: ../templates/users_preferences_html:82 ../templates/users_roles_edit:65
 msgid "Nachname"
 msgstr "Surname"
@@ -5730,6 +5791,7 @@ msgid "Niederländisch"
 msgstr "Dutch"
 
 #: ../templates/_profile/kug/searchforms_record_query:105
+#: ../templates/_profile/kug/users_preferences_html:193
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:94
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:94
 #: ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:98
@@ -5820,6 +5882,7 @@ msgstr "OLWS DB-name in the local system"
 msgid "OLWS Zugriffs-URL"
 msgstr "OLWS target URL"
 
+#: ../templates/_profile/kug/users_preferences_html:112
 #: ../templates/users_preferences_html:112
 msgid "Offene Geb&uuml;hren"
 msgstr "Remaining fees"
@@ -5909,6 +5972,7 @@ msgstr "Organizational units"
 msgid "Organisationseinheiten dieses Profils"
 msgstr "Organizational units of this profile"
 
+#: ../templates/_profile/kug/users_preferences_html:86
 #: ../templates/users_preferences_html:86 ../templates/users_roles_edit:76
 msgid "Ort"
 msgstr "City"
@@ -6011,6 +6075,8 @@ msgstr "Reference"
 msgid "P5000"
 msgstr "# of titles"
 
+#: ../templates/_profile/kug/login:128 ../templates/_profile/kug/login:84
+#: ../templates/_profile/kug/users_preferences_html:67
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:553
 #: ../templates/_profile/sammlungen/_view/richter/login:76
 #: ../templates/_profile/sammlungen/_view/richter/users_registrations:74
@@ -6022,6 +6088,7 @@ msgstr "# of titles"
 msgid "Passwort"
 msgstr "Password"
 
+#: ../templates/_profile/kug/users_preferences_html:67
 #: ../templates/users_preferences_html:67
 msgid "Passwort &auml;ndern"
 msgstr "Change password"
@@ -6042,6 +6109,7 @@ msgstr "Send password by mail"
 msgid "Passwort vergessen"
 msgstr "Forgotten password?"
 
+#: ../templates/_profile/kug/login:88
 #: ../templates/_profile/sammlungen/_view/richter/login:80
 #: ../templates/_profile/usb/login:107 ../templates/_profile/usb/login:76
 #: ../templates/_view/richter/login:80 ../templates/login:80
@@ -6123,6 +6191,7 @@ msgstr "Person-File"
 msgid "Personen-Information: %1 in Katalog %2"
 msgstr "Information about person: %1 in catalogue %2"
 
+#: ../templates/_profile/kug/users_preferences_html:79
 #: ../templates/users_preferences_html:79 ../templates/users_roles_edit:61
 msgid "Personendaten"
 msgstr "Personal data"
@@ -6401,6 +6470,8 @@ msgstr "Search for %1 electronically available media in %2 catalogues"
 msgid "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
 msgstr "Search for %1 journals/series in %2 catalogues"
 
+#: ../templates/_profile/kug/users_preferences_html:257
+#: ../templates/_profile/kug/users_preferences_html:319
 #: ../templates/users_preferences_html:273
 #: ../templates/users_preferences_html:335
 msgid "Rechtschreibvorschläge"
@@ -6424,6 +6495,7 @@ msgstr "Spelling suggestions"
 msgid "Register"
 msgstr "Register"
 
+#: ../templates/_profile/kug/login:88
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:557
 #: ../templates/_profile/sammlungen/_view/richter/login:80
 #: ../templates/_profile/sammlungen/_view/richter/users_registrations:38
@@ -6538,6 +6610,7 @@ msgstr "Later"
 msgid "S5000"
 msgstr "# of titles"
 
+#: ../templates/_profile/kug/users_preferences_html:188
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:54
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:56
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:126
@@ -6698,6 +6771,7 @@ msgid "Selbstregistrierung"
 msgstr "Self registration"
 
 #: ../templates/_profile/kug/searchforms_record_query:154
+#: ../templates/_profile/kug/users_preferences_html:227
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:129
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:124
 #: ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:147
@@ -7132,6 +7206,7 @@ msgstr "Library-Code"
 #: ../templates/_database/inst001/circset:31
 #: ../templates/_database/inst001/mexset:3
 #: ../templates/_profile/kug/searchforms_record_query:126
+#: ../templates/_profile/kug/users_preferences_html:212
 #: ../templates/_profile/mobile/_view/richtermobile/holding:16
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:109
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:109
@@ -7168,6 +7243,7 @@ msgstr ""
 "As soon as the system has authenticated your login data successfully you can "
 "make use of the advantages of <b>My OpenBib</b>:"
 
+#: ../templates/_profile/kug/users_preferences_html:111
 #: ../templates/users_preferences_html:111
 msgid "Soll"
 msgstr "Debit"
@@ -7200,6 +7276,7 @@ msgstr "Order by"
 msgid "Spanisch"
 msgstr "Spanish"
 
+#: ../templates/_profile/kug/users_preferences_html:94
 #: ../templates/users_preferences_html:94 ../templates/users_roles_edit:84
 msgid "Sperre"
 msgstr "Lockout"
@@ -7283,6 +7360,7 @@ msgstr "Edit information about location"
 
 #: ../templates/_database/dbis/classifications_html:36
 #: ../templates/_database/ezb/classifications_html:36
+#: ../templates/_profile/kug/login:38
 #: ../templates/_profile/kug/searchforms_record_advanced:37
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gaesdonck:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_koenigswinter:36
@@ -7391,6 +7469,7 @@ msgstr "Information about library"
 msgid "Stelle"
 msgstr "Position"
 
+#: ../templates/_profile/kug/users_preferences_html:85
 #: ../templates/users_preferences_html:85 ../templates/users_roles_edit:74
 msgid "Strasse"
 msgstr "Street"
@@ -7491,6 +7570,7 @@ msgstr "Search"
 msgid "Suchergebnis"
 msgstr "Search result"
 
+#: ../templates/_profile/kug/users_preferences_html:161
 #: ../templates/users_preferences_html:177
 msgid "Suchfelder"
 msgstr "Search fields"
@@ -8690,6 +8770,7 @@ msgstr "Title-File"
 msgid "Titel-Information: %1 in Katalog %2"
 msgstr "Information about title: %1 in catalogue %2"
 
+#: ../templates/_profile/kug/users_preferences_html:217
 #: ../templates/users_preferences_html:233
 msgid "Titel-String"
 msgstr "Title-string"
@@ -9013,6 +9094,7 @@ msgstr ""
 msgid "Ursprung"
 msgstr "Reset"
 
+#: ../templates/_profile/kug/users_preferences_html:178
 #: ../templates/users_circulations_make_order:79
 #: ../templates/users_preferences_html:194
 msgid "Verfasser"
@@ -9152,6 +9234,7 @@ msgstr "Full title"
 msgid "Von"
 msgstr "From"
 
+#: ../templates/_profile/kug/users_preferences_html:127
 #: ../templates/users_preferences_html:127
 msgid "Vorgemerkt"
 msgstr "Reserved"
@@ -9193,6 +9276,7 @@ msgstr "Reservations"
 msgid "Vormerkungsfrist"
 msgstr "Reservation period"
 
+#: ../templates/_profile/kug/users_preferences_html:83
 #: ../templates/users_preferences_html:83 ../templates/users_roles_edit:68
 msgid "Vorname"
 msgstr "First name"
@@ -9773,6 +9857,7 @@ msgstr "in internal course of business"
 msgid "in:"
 msgstr "in:"
 
+#: ../templates/_profile/kug/users_preferences_html:96
 #: ../templates/users_preferences_html:96 ../templates/users_roles_edit:86
 msgid "ja, seit"
 msgstr "yes, since"
@@ -9794,6 +9879,7 @@ msgstr "Librarian"
 msgid "meistgenutzte Titel"
 msgstr "most often used titles"
 
+#: ../templates/_profile/kug/login:113
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:520
 #: ../templates/_profile/usb/login:61
 msgid "mit"
@@ -9812,6 +9898,7 @@ msgstr ""
 "to the e-book is automatically added. Access restrictions might apply to e-"
 "books (only accessible from campus)."
 
+#: ../templates/_profile/kug/users_preferences_html:96
 #: ../templates/users_preferences_html:96 ../templates/users_roles_edit:86
 msgid "mit Grund"
 msgstr "with reason"
@@ -9951,6 +10038,7 @@ msgstr "per publisher"
 msgid "nach Z&auml;hlung"
 msgstr "by numbering"
 
+#: ../templates/_profile/kug/users_preferences_html:98
 #: ../templates/users_preferences_html:98 ../templates/users_roles_edit:88
 msgid "nein"
 msgstr "no"
@@ -10025,6 +10113,7 @@ msgstr "from"
 msgid "weitere OpenBib-Portale"
 msgstr "other OpenBib-Portals"
 
+#: ../templates/_profile/kug/users_preferences_html:67
 #: ../templates/users_preferences_html:67
 msgid "wiederholt"
 msgstr "repeated"

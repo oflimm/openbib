@@ -29,6 +29,16 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Credits") %]</a></li>
+       </ul>
+     </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -44,7 +54,7 @@
 <h3>[% msg.maketext("Danksagung") %]</h3>
 
 <p>
-Dieses Rechercheportal w&auml;re nicht m&ouml;glich ohne
+[% msg.maketext("Dieses Rechercheportal w&auml;re nicht m&ouml;glich ohne") %]
 </p>
 
 <table class="ym-full">

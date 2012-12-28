@@ -3438,7 +3438,7 @@ share_img: /images/openbib/share.png
 top20_img: /images/openbib/top20-12px.png
 thumbnail_img: /images/openbib/thumbnail.png
 tutorial_img: /images/openbib/tutorial.png
-toggle_show_img: /images/openbib/toggle_plus.png
+toggle_show_img: /images/openbib/plus.png
 wikipedia_img:  /images/openbib/wikipedia.png
 university_img:  /images/openbib/university.png
 

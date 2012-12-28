@@ -43,7 +43,7 @@ bklist = bklist.sort;
 
 %]
 
-<ul class="subjectlist">
+<ul class="topiclist">
 [% FOREACH bk IN bklist %]
 [%   IF thisbklist.${bk}.defined %] 
 <li>[% bk %] / <a href="[% path_prefix %]/[% config.get('info_loc') %]/51?category=[% bk %]"">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>

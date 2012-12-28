@@ -177,5 +177,4 @@ ALTER TABLE topicclassification ADD CONSTRAINT fk_topicclassification_topic FORE
 CREATE INDEX topicclassification_type ON topicclassification (type);
 CREATE INDEX topicclassification_classification ON topicclassification (classification);
 
-ALTER TABLE clusterinfo ADD PRIMARY KEY (id);
 ALTER TABLE serverinfo ADD CONSTRAINT fk_serverinfo_clusterinfo FOREIGN KEY (clusterid) REFERENCES clusterinfo (id);

@@ -172,7 +172,6 @@ while (my $result=$request->fetchrow_hashref){
             dbname => $result->{dbname},
             sigel => $result->{sigel},
             url => $result->{url},
-            use_libinfo => $use_libinfo,
             active => $active,
             protocol => $dboptions_ref->{$result->{dbname}}{protocol},
             host => $dboptions_ref->{$result->{dbname}}{host},
@@ -206,27 +205,8 @@ while (my $result=$request->fetchrow_hashref){
     
     print STDERR $result->{dbname},  " -> ID: ", $dbid{$result->{dbname}} ,"\n";
 
-    # libraryinfo
-    
-    print STDERR "### libraryinfo\n";
-    
-    my $request2 = $oldconfigdbh->prepare("select * from libraryinfo where dbname=?");
-    
-    $request2->execute($result->{dbname});
-
-    while (my $result2=$request2->fetchrow_hashref){
-        next unless ($result2->{category} && $result2->{content});
-        push @$libraryinfo_ref, {
-            dbid     => $insertid,
-            indicator => 1,
-            category => $result2->{category},
-            content  => $result2->{content},
-        };
-    }
 }
 
-
-$newschema->resultset('Libraryinfo')->populate($libraryinfo_ref);
 
 # profileinfo
 
@@ -594,7 +574,7 @@ my %userid_exists = ();
                 hostname => $result->{hostname},
                 port => $result->{port},
                 remoteuser => $result->{user},
-                remotedb => $result->{db},
+                dbname => $result->{db},
                 description => $result->{description},
                 type => $result->{type},
             }
@@ -841,7 +821,7 @@ my %searchprofileid = ();
     $newschema->resultset('Livesearch')->populate($livesearch_ref);
 }
 
-# collection    
+# collection -> cartitems
 {
     print STDERR "### collection \n";
 
@@ -849,21 +829,30 @@ my %searchprofileid = ();
     
     $request->execute();
 
-    my $collection_ref = [];
-    while (my $result=$request->fetchrow_hashref){        
+    my $cartitems_ref = [];
+    my $cartitems_idx = 1;
+    my $user_cartitems_ref = [];
+    while (my $result=$request->fetchrow_hashref){
         my $userid   = $result->{userid};
         my $dbname   = $result->{dbname};
         my $titleid  = $result->{singleidn};
 
         next unless ($userid_exists{$userid});
 
-        push @$collection_ref, {
-            userid  => $userid,
+        push @$cartitems_ref, {
+            id      => $cartitems_idx,
             dbname  => $dbname,
             titleid => $titleid,
         };
+        
+        push @$user_cartitems_ref, {
+            userid  => $userid,
+            cartitemid => $cartitems_idx,
+        };
+
+        $cartitems_idx++;
     }
-    $newschema->resultset('Collection')->populate($collection_ref);
+    $newschema->resultset('UserCartitem')->populate($collection_ref);
 
 }
 

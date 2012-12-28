@@ -41,7 +41,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h3>[% msg.maketext("Datenbank") %]</h3>
+<h3>[% msg.maketext("Katalog") %]</h3>
 
 <table class="ym-full">
 <tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% databaseinfo.dbname %]</td></tr>
@@ -49,16 +49,14 @@
 <tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td>[% databaseinfo.shortdesc %]</td></tr>
 <tr><td><b>[% msg.maketext("System") %]</b></td><td>[% databaseinfo.system %]</td></tr>
 <tr><td><b>[% msg.maketext("Sigel") %]</b></td><td>[% databaseinfo.sigel %]</td></tr>
-<tr><td><b>[% msg.maketext("URL") %]</b></td><td>[% databaseinfo.url %]</td></tr>
+<tr><td><b>[% msg.maketext("URL") %]</b></td><td><a href="[% databaseinfo.url %]" target="_blank">[% databaseinfo.url %]</a></td></tr>
+[% IF databaseinfo.locationid %]
+<tr><td><b>[% msg.maketext("Standort") %]</b></td><td><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% databaseinfo.locationid.id %].html?l=[% lang %]">[% msg.maketext('Informationen') %]</a></td></tr>
+[% END %]
 <tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>[%- IF databaseinfo.active == 1 -%][% msg.maketext("Ja") %][% END %][%- IF databaseinfo.active == 0 -%][% msg.maketext("Nein") %][% END %]</td></tr>
 </table>
 <p />
 
-<h3>[% msg.maketext("Ausleih-Einstellungen") %]</h3>
-
-<table class="ym-full">
-<tr><td><b>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</b></td><td>[% IF databaseinfo.circ == '0' %][% msg.maketext("Nein") %][% END %][% IF databaseinfo.circ == '1' %][% msg.maketext("Ja") %][% END %]</td></tr>
-</table>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

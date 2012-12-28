@@ -16,7 +16,7 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Standorte anzeigen' %]
 
-  <body>
+  <body onload="initialize_google_maps()">
 
 <!-- skip link navigation -->
 <ul class="ym-skiplinks">
@@ -61,6 +61,42 @@
 [% IF locations.size > 0 %]
 
 <h3>[% msg.maketext("Standorte") %]</h3>
+
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
+<script type="text/javascript">
+  function initialize_google_maps() {
+    var latlng = new google.maps.LatLng(50.925755,6.928751);
+
+    var myOptions = {
+      zoom: 14,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    var map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+
+[% FOREACH location IN locations %]
+[%  coordinates = location.fields.${"L0280"}.first.content %]
+[%  IF coordinates %]
+    var latlng[% location.id %] = new google.maps.LatLng([% coordinates %]);
+
+    var marker[% location.id %] = new google.maps.Marker({
+      position: latlng[% location.id %], 
+      map: map,
+      title: "[% location.description.replace('"','%22') %]"
+    });
+[%  END %]
+[% END %]
+  };
+</script>
+
+<p>
+<div id="map_canvas" style="width: 100%; height: 500px"></div>
+</p>
+
+
 [%# USE dumper;dumper.dump(locations)%]
 <table>
 <tr><th>[% msg.maketext("Identifier") %]</th><th>[% msg.maketext("Typ") %]</th><th>[% msg.maketext("Beschreibung") %]</th></tr>

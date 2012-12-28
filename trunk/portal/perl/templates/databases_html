@@ -49,6 +49,25 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
+<div class="box info">
+<p>
+Aus arbeitsrechtlichen Gründen dürfen wir leider keine exakte Titelzahl pro
+Katalog aufführen.
+</p>
+<p>
+Damit Sie dennoch abschätzen können, ob sich
+eine Recherche im jeweiligen Katalog lohnt oder besser der lokale
+Zettelkatalog (falls noch vorhanden) verwendet werden sollte, haben wir die Angaben zur
+Titelzahl in grobe Blöcke <b>A-I</b> unterteilt. Sammlungen sind
+i.d.R. trotz geringer Titelzahlen jedoch vollständig erfasst.
+</p>
+
+<p>
+Externe Kataloge, die über eine spezielle Abfrageschnittstelle
+angesprochen werden sind davon ausgenommen.
+</p>
+
+</div>
         </div>
       </div>
       <!-- end: #col1 -->
@@ -59,7 +78,7 @@
 [% IF databases.size > 0 %]
 [%# USE dumper;dumper.dump(kataloge) %]
 
-<h3>[% msg.maketext("Datenbanken") %]</h3>
+<h3>[% msg.maketext("Kataloge") %]</h3>
 
 <table class="ym-full">
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Titel-Anzahl</b></td></tr>
@@ -71,7 +90,9 @@
 <td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database.dbname %].html?l=[% lang %]">[% database.description %]</a></td>
 <td align="right">
 
-[% IF database.allcount < 100 %]
+[% IF database.system.match('Backend') %]
+extern
+[% ELSIF database.allcount < 100 %]
 <b>A:</b> &lt; 100
 [% ELSIF database.allcount >= 100 && database.allcount < 1000 %]
 <b>B:</b> 100&nbsp;-&nbsp;1.000

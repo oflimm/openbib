@@ -2926,6 +2926,19 @@ sub get_searchprofile_of_orgunit {
     return $self->get_searchprofile_or_create(\@databases);
 }
 
+sub get_searchprofile_of_systemprofile {
+    my ($self,$view)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @databases = $self->get_active_databases_of_systemprofile($view);
+
+    $logger->debug("Databases of Systemprofile for view $view: ".join(',',@databases));
+
+    return $self->get_searchprofile_or_create(\@databases);
+}
+
 sub searchprofiles_exists {
     my $self            = shift;
     my $searchprofileid = shift;

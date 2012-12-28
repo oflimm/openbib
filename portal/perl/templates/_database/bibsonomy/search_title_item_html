@@ -112,32 +112,9 @@
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
 [%- END -%]
   <div class="ob-footer">
-    <div class="ob-navigation">
-
-[% nav.total_entries = end_range ;
-   nav.pages_per_set = queryoptions.get_option('num'); # triggers calculation
-%]
-
-[% msg.maketext("Seite:") %]&nbsp;
-[%- IF nav.pages_in_set.first > nav.first_page -%]
-&nbsp;&nbsp;<b>...</b>
-[%- END -%]
-[%- FOREACH page IN nav.pages_in_set -%]
-[%-   lastpage = page -%]
-[%-   IF page == nav.current_page -%]
-&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
-[%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% cgiapp.to_cgi_querystring({ exclude = [ 'page'] }) %];page=[% page %]">[% page %]</a>
-[%-   END -%]
-[%- END -%]
-[% IF recordlist.get_size == '20' %]
-[% newpage = queryoptions.get_option('page') + 1 %]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgiapp.to_cgi_querystring( { change = { 'page' = newpage } }) %]">[% newpage %]</a>
-[% END %]
-
-    </div>
+[% PROCESS common/subtemplate name="pagination" %]
     <div class="ob-resulttime">
-in: [% resulttime %] [% msg.maketext("Sekunden") %]
+<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
     </div>
   </div>
 </div>

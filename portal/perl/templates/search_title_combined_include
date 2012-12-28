@@ -31,23 +31,6 @@
     <div class="ob-hits">
 [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% fullresultcount %]
     </div>
-    <div class="ob-navigation">
-[% msg.maketext("Seite:") %]&nbsp;
-[%- IF nav.pages_in_set.first > nav.first_page -%]
-&nbsp;&nbsp;<b>...</b>
-[%- END -%]
-[%- FOREACH page IN nav.pages_in_set -%]
-[%-   lastpage = page -%]
-[%-   IF page == nav.current_page -%]
-&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
-[%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% request_base %];searchprofile=1;queryid=[% queryid %]">[% page %]</a>
-[%-   END -%]
-[%- END -%]
-[%- IF lastpage < nav.last_page -%]
-&nbsp;&nbsp;<b>...</b>
-[%- END -%]
-    </div>
   </div>
 [% IF drilldown %]
   <div class="resultdrilldown">
@@ -59,23 +42,6 @@
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
 [%- END -%]
   <div class="ob-footer">
-    <div class="ob-navigation">
-[% msg.maketext("Seite:") %]&nbsp;
-[%- IF nav.pages_in_set.first > nav.first_page -%]
-&nbsp;&nbsp;<b>...</b>
-[%- END -%]
-[%- FOREACH page IN nav.pages_in_set -%]
-[%-   lastpage = page -%]
-[%-   IF page == nav.current_page -%]
-&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
-[%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% request_base %]searchprofile=1;queryid=[% queryid %]">[% page %]</a>
-[%-   END -%]
-[%- END -%]
-[%- IF lastpage < nav.last_page -%]
-&nbsp;&nbsp;<b>...</b>
-[%- END -%]
-    </div>
     <div class="ob-resulttime">
 in: [% resulttime %] [% msg.maketext("Sekunden") %]
     </div>

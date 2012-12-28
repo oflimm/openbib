@@ -95,23 +95,8 @@
 [%- END -%]
   </div>
   <div class="ob-footer">
-    <div class="ob-navigation">
-[% msg.maketext("Seite:") %]&nbsp;
-[%- IF nav.pages_in_set.first > nav.first_page -%]
-&nbsp;&nbsp;<b>...</b>
-[%- END -%]
-[%- FOREACH page IN nav.pages_in_set -%]
-[%-   lastpage = page -%]
-[%-   IF page == nav.current_page -%]
-&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
-[%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?page=[% page %];[% cgiapp.to_cgi_querystring({ exclude = ['page'] }) %]">[% page %]</a>
-[%-   END -%]
-[%- END -%]
-[%- IF lastpage < nav.last_page -%]
-&nbsp;&nbsp;<b>...</b>
-[%- END -%]
-    </div>
+[% cgi_args_base =  cgiapp.to_cgi_querystring({ exclude = ['page'] }) %]
+[% PROCESS common/subtemplate name="pagination" %]
     <div class="ob-resulttime">
     </div>
   </div>

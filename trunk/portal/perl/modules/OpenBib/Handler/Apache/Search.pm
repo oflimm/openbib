@@ -187,6 +187,10 @@ sub show_search {
                 content   => $searchquery->get_searchprofile,
     });
 
+    # Recherche-Profil in Session speichern
+
+    $session->set_profile($searchquery->get_searchprofile);
+    
     # BEGIN Index
     ####################################################################
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde

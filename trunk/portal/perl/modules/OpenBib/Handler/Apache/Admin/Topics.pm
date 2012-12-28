@@ -358,6 +358,7 @@ sub delete_record {
     # Shared Args
     my $config         = $self->param('config');
     my $user           = $self->param('user');
+    my $lang           = $self->param('lang');
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
@@ -370,7 +371,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
 
     $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_topics_loc}");
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
     $self->query->status(Apache2::Const::REDIRECT);
 
     return;

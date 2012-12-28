@@ -44,7 +44,7 @@
 
 <div class="content">
 <p />
-<ul class="subjectlist">
+<ul class="topiclist">
 [%- FOREACH subject IN user.get_subjects -%]
 [% titlecount = 0 ;
    thisclassifications = user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id});

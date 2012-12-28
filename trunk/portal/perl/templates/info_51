@@ -55,11 +55,11 @@ bklist = bklist.sort;
 <table width="100%">
 <tr><th>Katalogtitel nach Bibliothekssystematik</th></tr>
 <tr><td class="boxedclear">
-<ul class="subjectlist">
+<ul class="topiclist">
 [% FOREACH bk IN bklist %]
 [%   IF thisbklist.${bk}.defined %] 
 [%      localurl    = "${path_prefix}/${config.get('indexes_loc')}?database=${viewdbs.first};searchtitofcnt=${bk};category=E4100;num=${qopts.num}" %]
-<li>[% bk %] / <a style="font-weight:bold;font-size:1.2em;" href="[% IF viewdbs.size == 1 %][% localurl %][% ELSE %][% path_prefix %]/[% config.get('info_loc') %]/52?category=[% bk %][% END %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
+<li>[% bk %] / <a href="[% IF viewdbs.size == 1 %][% localurl %][% ELSE %][% path_prefix %]/[% config.get('info_loc') %]/52?category=[% bk %][% END %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
 [%   END %]
 [% END %]
 </ul>

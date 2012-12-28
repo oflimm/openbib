@@ -97,7 +97,7 @@ verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('user
 [%     END %]
 </ol>
 [%   ELSIF format == 'list' %]
-<ul class="subjectlist">
+<ul class="topiclist">
 [%-     FOREACH thisitem IN private_tags -%]
 [% item      = thisitem.name;
    itemcount = thisitem.count;

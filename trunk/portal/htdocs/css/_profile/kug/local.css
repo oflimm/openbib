@@ -9,6 +9,11 @@
     overflow-y:scroll
   }
 
+  ul.topiclist a {
+    font-weight:bold;
+    font-size:1.2em;
+  }
+  
   .ob-pagination {
     padding-top: 10px;
     padding-bottom: 10px;

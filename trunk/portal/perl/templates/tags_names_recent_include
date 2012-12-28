@@ -15,7 +15,7 @@
 
 
 [%# USE dumper;dumper.dump(recent_tags)%]
-<ul class="subjectlist">
+<ul class="topiclist">
 [%- FOREACH thistag IN recent_tags -%]
 <li><a href="[% path_prefix %]/[% config.get('tags_loc') %]/[% thistag.id %].html">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
 [% END %]

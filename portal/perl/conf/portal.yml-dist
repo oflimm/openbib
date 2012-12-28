@@ -3464,9 +3464,6 @@ recaptcha_user: 'kug'
 recaptcha_public_key: ''
 recaptcha_private_key: ''
 
-# Zugriffinformationen fuer das Google Maps API
-google_maps_api_key: ''
-
 # Aktivierung verschiedener Funktionalitaeten
 login_active: 1
 newsflash: 1

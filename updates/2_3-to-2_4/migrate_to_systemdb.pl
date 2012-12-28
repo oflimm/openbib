@@ -22,7 +22,7 @@ my $passwd = $ARGV[1];
 # oeffnet und damit eine Entfernung der DB nicht moeglich ist!!!
 
 my $systemdbimodule = "Pg";
-my $systemdbhost    = "localhost";
+my $systemdbhost    = "peterhof.ub.uni-koeln.de";
 my $systemdbname    = "openbib_system";
 my $systemdbuser    = "root";
 my $systemdbpasswd  = $passwd; # oder fest ala "StrengGeheim"
@@ -408,25 +408,6 @@ while (my $result=$request->fetchrow_hashref){
 
 $newschema->resultset('ViewRss')->populate($viewrss_ref);
 
-# serverinfo
-
-print STDERR "### serverinfo\n";
-
-$request = $oldconfigdbh->prepare("select * from loadbalancertargets");
-
-$request->execute();
-
-while (my $result=$request->fetchrow_hashref){
-    my $active = ($result->{active})?'true':'false';
-    
-    my $new_serverinfo = $newschema->resultset('Serverinfo')->create(
-        {
-            id     => $result->{id},
-            host   => $result->{host},
-            active => $active,
-        }
-    );
-}
 
 #####################################
 # Migration der UserDB
@@ -451,6 +432,7 @@ my %user_spelling = ();
 USERINFO:
 my %loginname = ();
 my %userid_exists = ();
+my %username_exists = ();
 
 # userinfo
 {
@@ -464,7 +446,10 @@ my %userid_exists = ();
     while (my $result=$request->fetchrow_hashref){
         my $userid    = $result->{userid};
         my $loginname = $result->{loginname};
-        
+       
+        next if ($userid_exists{$userid});
+        next if ($username_exists{$loginname});
+ 
         push @$userinfo_ref, {
             id => $userid,
             username => $loginname,
@@ -497,6 +482,7 @@ my %userid_exists = ();
 
         $loginname{$loginname} = $userid;
         $userid_exists{$userid} = 1 if ($loginname && $userid);
+        $username_exists{$loginname} = 1 if ($loginname && $userid);
         
         print STDERR $userid," - ",$loginname,"\n";
     }
@@ -852,7 +838,8 @@ my %searchprofileid = ();
 
         $cartitems_idx++;
     }
-    $newschema->resultset('UserCartitem')->populate($collection_ref);
+    $newschema->resultset('Cartitem')->populate($cartitems_ref);
+    $newschema->resultset('UserCartitem')->populate($user_cartitems_ref);
 
 }
 
@@ -908,7 +895,7 @@ my %searchprofileid = ();
             titleid => $titleid,
             titleisbn => $titleisbn,
             type => $type,
-        };
+        } if ($dbname && $titleid);
     }
     
     $newschema->resultset('TitTag')->populate($tittag_ref);
@@ -950,7 +937,7 @@ my %searchprofileid = ();
                 titleid => $titleid,
                 titleisbn => $titleisbn,
             }
-        );
+        ) if ($dbname && $titleid);
     }
 
 
@@ -1050,7 +1037,7 @@ my %litlistid_exists = ();
             dbname => $dbname,
             titleid => $titleid,
             titleisbn => $titleisbn,
-        };
+        } if ($dbname && $titleid);
     }
 
     $newschema->resultset('Litlistitem')->populate($litlistitem_ref);

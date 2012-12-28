@@ -2,7 +2,6 @@ CREATE EXTENSION pgcrypto;
 
 ALTER TABLE databaseinfo ADD PRIMARY KEY (id);
 ALTER TABLE databaseinfo ADD CONSTRAINT uq_databaseinfo_dbname UNIQUE (dbname);
-ALTER TABLE databaseinfo ADD CONSTRAINT fk_locationinfo FOREIGN KEY (locationid) REFERENCES locationinfo (id);
 CREATE INDEX databaseinfo_dbname ON databaseinfo (dbname);
 CREATE INDEX databaseinfo_active ON databaseinfo (active);
 CREATE INDEX databaseinfo_description ON databaseinfo (description);
@@ -12,6 +11,7 @@ CREATE INDEX locationinfo_tstamp_create on locationinfo (tstamp_create);
 CREATE INDEX locationinfo_tstamp_update on locationinfo (tstamp_update);
 CREATE INDEX locationinfo_identifier ON locationinfo (identifier);
 CREATE INDEX locationinfo_type ON locationinfo (type);
+ALTER TABLE databaseinfo ADD CONSTRAINT fk_locationinfo FOREIGN KEY (locationid) REFERENCES locationinfo (id);
 
 ALTER TABLE locationinfo_fields ADD CONSTRAINT fk_locationinfo_fields FOREIGN KEY (locationid) REFERENCES locationinfo (id);
 CREATE INDEX locationinfo_fields_locationid ON locationinfo_fields (locationid);
@@ -177,4 +177,3 @@ ALTER TABLE topicclassification ADD CONSTRAINT fk_topicclassification_topic FORE
 CREATE INDEX topicclassification_type ON topicclassification (type);
 CREATE INDEX topicclassification_classification ON topicclassification (classification);
 
-ALTER TABLE serverinfo ADD CONSTRAINT fk_serverinfo_clusterinfo FOREIGN KEY (clusterid) REFERENCES clusterinfo (id);

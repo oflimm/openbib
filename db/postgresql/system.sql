@@ -18,6 +18,7 @@ CREATE TABLE databaseinfo (
  url         TEXT,
  profileid   BIGINT,
  active      BOOL,
+ locationid  BIGINT,
 
 /* Import Configuration */
  protocol           TEXT,
@@ -146,7 +147,7 @@ CREATE TABLE serverinfo (
  hostip       TEXT,
  description  TEXT,
  status       TEXT,
- clusterid    TEXT
+ clusterid    BIGINT,
  active       BOOL
 );
 

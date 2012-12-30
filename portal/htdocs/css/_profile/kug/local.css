@@ -85,26 +85,31 @@
 /*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
   }
 
+  header {
+    color:#000;
+    background:#fff repeat-x top left;
+    padding: 40px 2em 5px 20px;
+    position:relative;
+  }
+  
   header #logo {
     padding: 0px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
+    position: relative;
+    margin: 0px auto 0px auto;
+    width: 850px;
   }
 
-  header #institution {
-    padding: 0px;
-    position: absolute;
-    top: 40px;
-    right: 0px;
-    left: 160px;
+  header #logo img {
+    margin-bottom: -5px;
+  }
+
+  header #logotext {
     font-family: 'Droid Sans', sans-serif;
     font-size: 35px;
     color: #aaaaaa;
   }
 
-
+/*
   #header_logo_image {
     background: url(/images/openbib/kuglogo_small-40px.png) center no-repeat;
     width: 88px;
@@ -113,7 +118,7 @@
     top: 40px;
     left: 60px;
   }
-
+*/
   .ym-wbox {
     background: #ffffff;
   }

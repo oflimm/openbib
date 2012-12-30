@@ -1,15 +1,6 @@
 @media all
 {
-
-  #header_logo_image {
-    background: url(/images/openbib/openbib-logo_small.gif) center no-repeat;
-    width: 200px;
-    height: 58px;
-    position: absolute;
-    top: 10px;
-    left: 5px;
-  }
-
+  
   footer {
     margin: 0.2em 0 0 0;
 /*    background: #e8fca4;
@@ -579,9 +570,11 @@
   }
   
   .ob-searchfield input {
-    width: 730px;
-    height: 20px;
-    padding: 10px 5px;
+    width: 740px;
+    height: 40px;
+    padding: 0px 0px;
+/*    height: 20px;
+    padding: 10px 5px;*/
     float: left;   
     font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';
     border: 0;
@@ -596,18 +589,21 @@
   }
   
   .ob-searchfield input::-webkit-input-placeholder {
+    padding-left: 10px;
     color: #999;
     font-weight: normal;
     font-style: italic;
   }
   
   .ob-searchfield input:-moz-placeholder {
+    padding-left: 0px;
     color: #999;
     font-weight: normal;
     font-style: italic;
   }
   
   .ob-searchfield input:-ms-input-placeholder {
+    padding-left: 0px;
     color: #999;
     font-weight: normal;
     font-style: italic;

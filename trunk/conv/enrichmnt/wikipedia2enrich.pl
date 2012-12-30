@@ -107,8 +107,6 @@ my $enrichment = new OpenBib::Enrichment;
 
 # Zuerst alle Anreicherungen loeschen
 # Origin 30 = Wikipedia-DE
-my $deleterequest = $enrichdbh->prepare("delete from normdata where category = ? and origin=30");
-my $insertrequest = $enrichdbh->prepare("insert into normdata values (?,30,?,?,?)");
 
 $article_isbn_ref = {};
 
@@ -139,8 +137,6 @@ else {
 }
 
 $logger->info("In Datenbank speichern");
-
-my $enrich_related_request = $enrichdbh->prepare("insert into related_isbn values (?,1)");
 
 $enrichment->{schema}->resultset('RelatedTitleByIsbn')->search_rs({ origin => $lang2isbn_origin_ref->{$lang} })->delete;
 

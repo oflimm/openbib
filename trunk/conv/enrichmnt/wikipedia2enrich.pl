@@ -7,7 +7,7 @@
 #  Extrahierung relevanter Artikel und der darin genannten Literatur
 #  fuer eine Anreicherung per ISBN
 #
-#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -45,6 +45,7 @@ use XML::Twig;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::Enrichment;
 use OpenBib::Common::Util;
 
 use vars qw($isbn_ref);
@@ -102,9 +103,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 # Verbindung zur SQL-Datenbank herstellen
-my $enrichdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-    or $logger->error_die($DBI::errstr);
+my $enrichment = new OpenBib::Enrichment;
 
 # Zuerst alle Anreicherungen loeschen
 # Origin 30 = Wikipedia-DE
@@ -117,56 +116,75 @@ if ($importyml){
     YAML::LoadFile($filename);
 }
 else {
-   $deleterequest->execute($lang2article_cat_ref->{$lang});
+    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => $lang2article_cat_ref->{$lang}, origin => 30 })->delete;
 
-   my $twig= XML::Twig->new(
-      TwigHandlers => {
-        "/mediawiki/siteinfo" => \&parse_siteinfo,
-        "/mediawiki/page" => \&parse_page,
-      },
+    my $twig= XML::Twig->new(
+        TwigHandlers => {
+            "/mediawiki/siteinfo" => \&parse_siteinfo,
+            "/mediawiki/page" => \&parse_page,
+        },
     );
-
-   $isbn_ref = {};
-   $counter  = 1;
-
-   $logger->info("Datei $filename einlesen");
-
-   $twig->safe_parsefile($filename);
-   #$twig->parsefile($filename);
-
-   $logger->info("In yml-Datei speichern");
-
-   YAML::DumpFile("wikipedia-isbn-$lang.yml",$isbn_ref);
+    
+    $isbn_ref = {};
+    $counter  = 1;
+    
+    $logger->info("Datei $filename einlesen");
+    
+    $twig->safe_parsefile($filename);
+    #$twig->parsefile($filename);
+    
+    $logger->info("In yml-Datei speichern");
+    
+    YAML::DumpFile("wikipedia-isbn-$lang.yml",$isbn_ref);
 }
 
 $logger->info("In Datenbank speichern");
 
 my $enrich_related_request = $enrichdbh->prepare("insert into related_isbn values (?,1)");
-my $del_related_request    = $enrichdbh->prepare("delete from related_isbn where origin=?");
-$del_related_request->execute($lang2isbn_origin_ref->{$lang});
+
+$enrichment->{schema}->resultset('RelatedTitleByIsbn')->search_rs({ origin => $lang2isbn_origin_ref->{$lang} })->delete;
 
 my %related_done = ();
+
+my $related_isbn_id = 1;
 
 foreach my $isbn (keys %$isbn_ref){
     my $indicator=1;
     my %related_isbn= ();
 
     # Artikelnamen anreichern
+    my $populate_article_names_ref = [];
     foreach my $articlename (@{$isbn_ref->{$isbn}}){
+        push @$populate_article_names_ref, {
+            isbn => $isbn,
+            field => $lang2article_cat_ref->{$lang},
+            content => $articlename,
+        };
+            
         %related_isbn = (%related_isbn,%{$article_isbn_ref->{"$articlename"}}) if (keys %{$article_isbn_ref->{"$articlename"}}); 
-        $insertrequest->execute($isbn,$lang2article_cat_ref->{$lang},$indicator,$articlename);
-        $indicator++;
     }
+    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($populate_article_names_ref);
 
     # b) Related ISBNs anreichern
 
+    my $populate_related_isbn_ref = [];
     if (keys %related_isbn){
         my $isbnstring=join(':',sort keys %related_isbn);
+
+        foreach my $isbn (keys %related_isbn){
+            push @$populate_related_isbn_ref, {
+                id => $related_isbn_id, 
+                isbn => $isbn,
+                origin => 1,
+            };
+        }
 
         # Schon bearbeitet?
         next if ($related_done{$isbnstring});
 
-        $enrich_related_request->execute($isbnstring);
+        $related_isbn_id++;
+
+        $enrichment->{schema}->resultset('RelatedTitletByIsbn')->populate($populate_related_isbn_ref);
 
         $related_done{$isbnstring} = 1;
     }

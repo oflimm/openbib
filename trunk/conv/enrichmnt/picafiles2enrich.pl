@@ -148,7 +148,7 @@ sub process_file {
             }
 
             $isbn = OpenBib::Common::Util::normalize({
-                field => '0540',
+                field => 'T0540',
                 content  => $isbn,
             });
 
@@ -171,7 +171,7 @@ sub process_file {
     elsif (@issns){
         foreach my $issn (@issns){
             $issn = OpenBib::Common::Util::normalize({
-                field => '0543',
+                field => 'T0543',
                 content  => $issn,
             });
             

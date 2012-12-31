@@ -132,7 +132,7 @@ sub parse_work {
             
             # Normierung als String
             $thisisbn = OpenBib::Common::Util::normalize({
-                field => '0540',
+                field => 'T0540',
                 content  => $thisisbn,
             });
 

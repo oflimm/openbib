@@ -130,7 +130,7 @@ else {
             next unless ($isbn);
             
             $isbn = OpenBib::Common::Util::normalize({
-                field => '0540',
+                field => 'T0540',
                 content  => $isbn,
             });
 

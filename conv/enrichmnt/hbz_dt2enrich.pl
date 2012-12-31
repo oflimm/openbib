@@ -180,8 +180,8 @@ else {
             }
         
             $isbn = OpenBib::Common::Util::normalize({
-                field => '0540',
-                content  => $isbn,
+                field   => 'T0540',
+                content => $isbn,
             });
 
             my @thisdata = exists ($isbndata{$isbn})?@{$isbndata{$isbn}}:();

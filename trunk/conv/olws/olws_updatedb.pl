@@ -421,7 +421,7 @@ sub process_raw_title {
                 
                 if (exists $conv_config->{inverted_tit}{$category}){
                     my $contentnormtmp = OpenBib::Common::Util::normalize({
-                        field => $category,
+                        field => "T$category",
                         content  => $content,
                     });
                     
@@ -437,49 +437,49 @@ sub process_raw_title {
 
                 if (   exists $conv_config->{search}{ejahr    }{$category}){
                     push @ejahr, OpenBib::Common::Util::normalize({
-                        field => $category,
+                        field => "T$category",
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{hst      }{$category}){
                     push @hst, OpenBib::Common::Util::normalize({
-                        field => $category,
+                        field => "T$category",
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{isbn     }{$category}){
                     push @isbn,      OpenBib::Common::Util::normalize({
-                        field => $category,
+                        field => "T$category",
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{issn     }{$category}){
                     push @issn,      OpenBib::Common::Util::normalize({
-                        field => $category,
+                        field => "T$category",
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{artinh   }{$category}){
                     push @artinh, OpenBib::Common::Util::normalize({
-                        field => $category,
+                        field => "T$category",
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{verf     }{$category}){
                     push @titverf, OpenBib::Common::Util::normalize({
-                        field => $category,
+                        field => "T$category",
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{kor      }{$category}){
                     push @titkor, OpenBib::Common::Util::normalize({
-                        field => $category,
+                        field => "T$category",
                         content  => $content,
                     });
                 }
                 elsif (exists $conv_config->{search}{swt      }{$category}){
                     push @titswt, OpenBib::Common::Util::normalize({
-                        field => $category,
+                        field => "T$category",
                         content  => $content,
                     });
                 }
@@ -761,7 +761,7 @@ sub process_raw_aut {
         my $contentnormft = "";
         if (exists $conv_config->{inverted_aut}{$category}){
             my $contentnormtmp = OpenBib::Common::Util::normalize({
-                field => $category,
+                field => "P$category",
                 content  => $content,
             });
             
@@ -875,7 +875,7 @@ sub process_raw_kor {
         my $contentnormft = "";
         if (exists $conv_config->{inverted_kor}{$category}){
             my $contentnormtmp = OpenBib::Common::Util::normalize({
-                field => $category,
+                field => "C$category",
                 content  => $content,
             });
             
@@ -983,7 +983,7 @@ sub process_raw_sys {
         my $contentnormft = "";
         if (exists $conv_config->{inverted_not}{$category}){
             my $contentnormtmp = OpenBib::Common::Util::normalize({
-                field => $category,
+                field => "N$category",
                 content  => $content,
             });
             
@@ -1096,7 +1096,7 @@ sub process_raw_swt {
         my $contentnormft = "";
         if (exists $conv_config->{inverted_swt}{$category}){
             my $contentnormtmp = OpenBib::Common::Util::normalize({
-                field => $category,
+                field => "S$category",
                 content  => $content,
             });
             
@@ -1191,7 +1191,7 @@ sub process_raw_mex {
             
             if (exists $conv_config->{inverted_mex}{$item_ref->{category}}){
                 my $contentnormtmp = OpenBib::Common::Util::normalize({
-                    field => $item_ref->{category},
+                    field => "X".$item_ref->{category},
                     content  => $item_ref->{content},
                 });
                 

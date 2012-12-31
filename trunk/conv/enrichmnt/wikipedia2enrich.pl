@@ -195,6 +195,8 @@ sub parse_page {
     my $id       = $page->first_child('id')->text() if ($page->first_child('id')->text());
     my $title    = $page->first_child('title')->text() if ($page->first_child('title')->text());
 
+    return if $title =~m/^Wikipedia/;
+    
     my $revision = $page->first_child('revision') if ($page->first_child('revision'));
 
     my $content  = $revision->first_child('text')->text() if ($revision->first_child('text')->text());
@@ -215,7 +217,7 @@ sub parse_page {
         }
 
         $isbn = OpenBib::Common::Util::normalize({
-            field => '0540',
+            field => 'T0540',
             content  => $isbn,
         });
 
@@ -239,7 +241,7 @@ sub parse_page {
         }
 
         $isbn = OpenBib::Common::Util::normalize({
-            field => '0540',
+            field    => 'T0540',
             content  => $isbn,
         });
 

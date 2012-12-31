@@ -180,7 +180,7 @@ foreach my $isbn (keys %$isbn_ref){
 
         $related_isbn_id++;
 
-        $enrichment->{schema}->resultset('RelatedTitletByIsbn')->populate($populate_related_isbn_ref);
+        $enrichment->{schema}->resultset('RelatedTitleByIsbn')->populate($populate_related_isbn_ref);
 
         $related_done{$isbnstring} = 1;
     }

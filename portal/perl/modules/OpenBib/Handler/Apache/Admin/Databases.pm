@@ -146,6 +146,10 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
+    if ($input_data_ref->{locationid} eq "NULL"){
+        delete $input_data_ref->{locationid};
+    }
+    
     my $new_databaseid = $config->new_databaseinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
@@ -271,6 +275,10 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
+    if ($input_data_ref->{locationid} eq "NULL"){
+        delete $input_data_ref->{locationid};
+    }
+
     $config->update_databaseinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
@@ -385,7 +393,7 @@ sub get_input_definition {
             type     => 'scalar',
         },
         locationid => {
-            default  => '',
+            default  => 'NULL',
             encoding => 'none',
             type     => 'scalar',
         },

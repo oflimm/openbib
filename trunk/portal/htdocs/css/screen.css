@@ -570,7 +570,7 @@
   }
   
   .ob-searchfield input {
-    width: 740px;
+    width: 735px;
     height: 40px;
     padding: 0px 0px;
 /*    height: 20px;
@@ -589,14 +589,14 @@
   }
   
   .ob-searchfield input::-webkit-input-placeholder {
-    padding-left: 10px;
+    padding-left: 5px;
     color: #999;
     font-weight: normal;
     font-style: italic;
   }
   
   .ob-searchfield input:-moz-placeholder {
-    padding-left: 0px;
+    padding-left: 5px;
     color: #999;
     font-weight: normal;
     font-style: italic;

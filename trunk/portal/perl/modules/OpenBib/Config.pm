@@ -877,7 +877,7 @@ sub get_locationinfo_of_database {
     );
 
     if ($databaseinfo && $databaseinfo->locationid){
-        return $self->get_locationinfo_fields($databaseinfo->locationid);
+        return $self->get_locationinfo_fields($databaseinfo->locationid->identifier);
     }
 
     return {};
@@ -895,18 +895,18 @@ sub get_locationinfo {
 }
 
 sub get_locationinfo_fields {
-    my $self   = shift;
-    my $id     = shift;
+    my $self        = shift;
+    my $locationid  = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return {} if (!$id);
+    return {} if (!$locationid);
 
     # DBI: "select category,content,indicator from libraryinfo where dbname = ?"
     my $locationinfo = $self->get_locationinfo->single(
         {
-            'id' => $id,
+            'identifier' => $locationid,
         },
     );
 
@@ -951,7 +951,7 @@ sub get_locationinfo_overview {
             identifier  => $location->identifier,
             description => $location->description,
             type        => $location->type,
-            fields      => $self->get_locationinfo_fields($location->id),            
+            fields      => $self->get_locationinfo_fields($location->identifier),
             
         };
         
@@ -1926,9 +1926,6 @@ sub update_locationinfo {
 
     my $update_args = {};
 
-    if ($locationinfo_ref->{identifier}){
-        $update_args->{identifier} = $locationinfo_ref->{identifier};
-    }
     if ($locationinfo_ref->{type}){
         $update_args->{type} = $locationinfo_ref->{type};
     }
@@ -1936,7 +1933,7 @@ sub update_locationinfo {
         $update_args->{description} = $locationinfo_ref->{description};
     }
 
-    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single({ id => $locationinfo_ref->{id} });
+    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single({ identifier => $locationinfo_ref->{identifier} });
 
     $locationinfo->update($update_args);
     
@@ -1954,7 +1951,7 @@ sub update_locationinfo {
         foreach my $field (keys %{$locationinfo_ref->{fields}}){
             foreach my $field_ref (@{$locationinfo_ref->{fields}{$field}}){
                 my $thisfield = {
-                    locationid => $locationinfo_ref->{id},
+                    locationid => $locationinfo->id,
                     field      => $field,
                     subfield   => $field_ref->{subfield},
                     mult       => $field_ref->{mult},
@@ -1979,10 +1976,10 @@ sub delete_locationinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single({ id => $locationid });
+    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single({ identifier => $locationid });
 
     eval {
-        $locationinfo->databaseinfos->update({ locationid => \'NULL' });;
+        $locationinfo->databaseinfos->update({ locationid => \'NULL' });
         $locationinfo->locationinfo_fields->delete;
         $locationinfo->delete;
     };

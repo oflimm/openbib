@@ -41,7 +41,7 @@
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% locationinfo.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
@@ -58,7 +58,7 @@
 
 [% PROCESS common/subtemplate name="visible_categories_location" %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.id %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
 <fieldset class="ym-columnar">
@@ -67,14 +67,14 @@
 
 <div class="ym-fbox-text">
 <label for="identifier">[% msg.maketext("Identifier") %]</label>
-<input type="text" name="identifier" id="identifier" value="[% locationinfo.identifier %]" size="8" />
+[% locationinfo.identifier %]
 </div>
 
 <div class="ym-fbox-text">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input type="text" name="description" id="description" value="[% locationinfo.description %]" size="20" />
 </div>
-
+                                   
 <div class="ym-fbox-select">
 <label for="type">[% msg.maketext("Typ") %]</label>
   <select name="type" id="type">
@@ -131,7 +131,7 @@ END ;-%]
 
 &nbsp;&nbsp;
 
-<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.id %]?_method=DELETE;confirm=1" class="ob_button">[% msg.maketext("Löschen") %]</a>
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]?_method=DELETE;confirm=1" class="ob_button">[% msg.maketext("Löschen") %]</a>
 
 </div>
 

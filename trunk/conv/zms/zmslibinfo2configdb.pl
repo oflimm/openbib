@@ -104,10 +104,18 @@ foreach my $dbinfo ($config->get_dbinfo_overview->all){
     next if ($@);
 
     if (!$location){
+        my $identifier = "DE-38-$sigel";
+        my $type       = "ISIL";
+
+        if ($dbname !~m/^inst[0-9][0-9][0-9]/){
+            $identifier = $dbname;
+            $type = "Generic";
+        }
+
         $location = $config->{schema}->resultset("Locationinfo")->create(
             {
-                identifier    => "DE-38-$sigel",
-                type          => "ISIL",
+                identifier    => $identifier,
+                type          => $type,
                 tstamp_create => \'NOW()',
                 description   => $description,
             }

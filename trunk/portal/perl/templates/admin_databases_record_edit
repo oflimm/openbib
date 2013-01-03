@@ -100,9 +100,9 @@
 <div class="ym-fbox-select">
 <label for="locationid">[% msg.maketext("Bibinformationen statt URL") %]</label>
   <select name="locationid" id ="locationid">
-       <option value="" [% IF NOT databaseinfo.locationid.id %]selected="selected"[% END %]>[% msg.maketext("Keine") %]</option>
+       <option value="" [% IF NOT databaseinfo.locationid %]selected="selected"[% END %]>[% msg.maketext("Keine") %]</option>
 [% FOREACH locationinfo IN config.get_locationinfo_overview %]
-       <option value="[% locationinfo.id %]" [% IF databaseinfo.locationid.id == locationinfo.id %]selected="selected"[% END %]>[% locationinfo.identifier %]: [% locationinfo.description %]</option>
+       <option value="[% locationinfo.identifier %]" [% IF databaseinfo.locationid.identifier == locationinfo.identifier %]selected="selected"[% END %]>[% locationinfo.identifier %]: [% locationinfo.description %]</option>
 [% END %]
   </select>
 </div>

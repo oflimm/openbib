@@ -137,17 +137,17 @@ sub show_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $locationinfo = $config->get_locationinfo->single({id => $locationid});
+    my $locationinfo = $config->get_locationinfo->single({identifier => $locationid});
 
     my $locationinfo_ref = {};
         
     if ($locationinfo){
         $locationinfo_ref = {
-            id          => $locationid,
+            id          => $locationinfo->id,
             identifier  => $locationinfo->identifier,
             description => $locationinfo->description,
             type        => $locationinfo->type,
-            fields      => $config->get_locationinfo_fields($locationinfo->id),            
+            fields      => $config->get_locationinfo_fields($locationid),
         };
     }
 
@@ -206,20 +206,17 @@ sub create_record {
         return Apache2::Const::OK;
     }
     
-    my $new_locationid = $config->new_locationinfo($input_data_ref);
+    $config->new_locationinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{locations_loc}/id/$new_locationid/edit.html?l=$lang");
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{locations_loc}/id/$input_data_ref->{identifier}/edit.html?l=$lang");
         $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
-        $logger->debug("Weiter zum Record");
-        if ($new_locationid){
-            $logger->debug("Weiter zum Record $new_locationid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->show_record;
-        }
+        $logger->debug("Weiter zum Record $input_data_ref->{identifier}");
+        $self->param('status',Apache2::Const::HTTP_CREATED);
+        $self->show_record;
     }
     
     return;
@@ -233,7 +230,7 @@ sub show_record_form {
     
     # Dispatched Args
     my $view           = $self->param('view');
-    my $locationid     = $self->strip_suffix($self->param('locationid'));
+    my $locationid     = $self->param('locationid');
 
     # Shared Args
     my $query          = $self->query();
@@ -252,17 +249,17 @@ sub show_record_form {
         return;
     }
 
-    my $locationinfo = $config->get_locationinfo($locationid)->single({id => $locationid});
+    my $locationinfo = $config->get_locationinfo->single({identifier => $locationid});
 
     my $locationinfo_ref = {};
-        
+    
     if ($locationinfo){
         $locationinfo_ref = {
-            id          => $locationid,
+            id          => $locationinfo->id,
             identifier  => $locationinfo->identifier,
             description => $locationinfo->description,
             type        => $locationinfo->type,
-            fields      => $config->get_locationinfo_fields($locationid),            
+            fields      => $config->get_locationinfo_fields($locationid),
         };
     }
     
@@ -300,7 +297,7 @@ sub update_record {
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
-    $input_data_ref->{id} = $locationid;
+    $input_data_ref->{identifier} = $locationid;
     
     if (!$self->authorization_successful){
         $self->print_authorization_error();

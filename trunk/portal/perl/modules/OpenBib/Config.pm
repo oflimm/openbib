@@ -1982,6 +1982,7 @@ sub delete_locationinfo {
     my $locationinfo = $self->{schema}->resultset('Locationinfo')->single({ id => $locationid });
 
     eval {
+        $locationinfo->databaseinfos->update({ locationid => \'NULL' });;
         $locationinfo->locationinfo_fields->delete;
         $locationinfo->delete;
     };

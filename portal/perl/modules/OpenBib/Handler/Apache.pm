@@ -1292,7 +1292,7 @@ sub parse_valid_input {
             elsif ($type eq "fields") {
                 my $fields_ref = $default;
                 foreach my $qparam ($query->param){
-                    if ($qparam=~/^fields_([TXPCSNL])(\d+)_([a-z0-0])_(\d+)$/){
+                    if ($qparam=~/^fields_([TXPCSNL])(\d+)_([a-z0-9])?_(\d+)$/){
                         my $prefix   = $1;
                         my $field    = $2;
                         my $subfield = $3;

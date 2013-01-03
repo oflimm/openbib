@@ -125,7 +125,6 @@ sub show_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $locationid     = $self->strip_suffix($self->param('locationid'));
-    my $isil           = $self->strip_suffix($self->param('isil'));
 
     # Shared Args
     my $query          = $self->query();
@@ -141,23 +140,16 @@ sub show_record {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    if ( $locationid || $isil ){ # Valide Informationen etc.
+    if ( $locationid ){ # Valide Informationen etc.
         my $search_args_ref = {};
         
         if ($locationid){
             $logger->debug("Id: $locationid");
                     
-            $search_args_ref->{id} = $locationid;
-        }
-        elsif ($isil){
-            $logger->debug("Isil: $isil");
-
-            $search_args_ref->{identifier} = $isil;
-            $search_args_ref->{type}       = 'ISIL';
+            $search_args_ref->{identifier} = $locationid;
         }
         
-        my $locationinfo = ($locationid)?$config->get_locationinfo->single({id => $locationid}):
-            ($isil)?$config->get_locationinfo->single({identifier => $isil}):undef;
+        my $locationinfo = $config->get_locationinfo->single({identifier => $locationid});
         
         my $locationinfo_ref = {};
         
@@ -167,19 +159,18 @@ sub show_record {
                 identifier  => $locationinfo->identifier,
                 description => $locationinfo->description,
                 type        => $locationinfo->type,
-                fields      => $config->get_locationinfo_fields($locationinfo->id),            
+                fields      => $config->get_locationinfo_fields($locationid),
             };
 
             $logger->debug("Found record:".YAML::Dump($locationinfo_ref));
 
         }
         else {
-            $logger->info("Can't find location with id $locationid / isil $isil")
+            $logger->info("Can't find location with id $locationid")
         }
                 
         my $ttdata = {
-            locationid     => $locationinfo->id,
-            isil           => $isil,
+            locationid     => $locationinfo->identifier,
             locationinfo   => $locationinfo_ref,
             dbinfo         => $dbinfotable,
         };

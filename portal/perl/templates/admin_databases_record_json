@@ -26,7 +26,7 @@ this_json_output = {
     system      = databaseinfo.system
     sigel       = databaseinfo.sigel
     url         = databaseinfo.url
-    use_libinfo = databaseinfo.use_libinfo
+    locationid  = databaseinfo.locationid.identifier
     autoconvert = databaseinfo.autoconvert
     count       = databaseinfo.count
 

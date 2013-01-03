@@ -107,7 +107,7 @@
 <tbody>
 [% FOREACH location IN locations %]
 <tr>
-<td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% location.id %]/edit.html?l=[% lang %]">[% location.identifier %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% location.identifier %]/edit.html?l=[% lang %]">[% location.identifier %]</a></td>
 <td>[% location.type %]</td>
 <td>[% location.description %]</td>
 </tr>

@@ -231,6 +231,7 @@ sub show_record_form {
         
         return Apache2::Const::OK;
     }
+    
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
     
     my $ttdata={
@@ -275,8 +276,15 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
-    if ($input_data_ref->{locationid} eq "NULL"){
+    if ($input_data_ref->{locationid} eq ""){
         delete $input_data_ref->{locationid};
+    }
+    else {
+        my $location = $config->get_locationinfo->single({identifier => $input_data_ref->{locationid} });
+
+        if ($location){
+            $input_data_ref->{locationid} = $location->id;
+        }
     }
 
     $config->update_databaseinfo($input_data_ref);
@@ -393,7 +401,7 @@ sub get_input_definition {
             type     => 'scalar',
         },
         locationid => {
-            default  => 'NULL',
+            default  => '',
             encoding => 'none',
             type     => 'scalar',
         },

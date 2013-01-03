@@ -16,9 +16,9 @@
 [% PROCESS common/subtemplate name="newsflash" %]
 
 [% IF viewdbs.size == 1 && config.have_locationinfo(viewdbs.first) %]
-[% locationid = config.get_databaseinfo.single({dbname = viewdbs.first}).locationid.id %]
-[%- libinfo = config.get_locationinfo_fields(locationid); -%]
-[%# USE dumper;dumper.dump(libinfo)%]
+[% lid = config.get_databaseinfo.single({dbname = viewdbs.first}).locationid.id %]
+[%- locationinfo = config.get_locationinfo_fields(lid); -%]
+[%# USE dumper;dumper.dump(locationinfo)%]
 [% categories = [
                 'L0010', # msg.maketext("L0010") # Institutsname
                 'L0020', # msg.maketext("L0020") # Strasse
@@ -35,7 +35,7 @@
 qrcode_infos = [];
 
 FOREACH category IN ["L0010","L0020","L0030","L0110"];
-      FOREACH item IN libinfo.$category;
+      FOREACH item IN locationinfo.$category;
         content = item.content.replace('%22','"');
         qrcode_infos.push(content);
       END;
@@ -46,7 +46,7 @@ qrcode = qrcode.replace('<br />',', ');
 
 FOREACH category IN categories;
 
-      FOREACH item IN libinfo.$category;
+      FOREACH item IN locationinfo.$category;
         content = item.content.replace('%22','"');
 
         SWITCH category;
@@ -61,7 +61,7 @@ FOREACH category IN categories;
         # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
         # kodiert.
         thiscategory = category ;
-        IF config.get('categorymapping').${libinfo.database}.$category ;
+        IF config.get('categorymapping').${locationinfo.database}.$category ;
           thiscategory = "${category}-${record.database}" ;
         END;
 -%]

@@ -102,7 +102,7 @@
 <tr><th>[% msg.maketext("Identifier") %]</th><th>[% msg.maketext("Typ") %]</th><th>[% msg.maketext("Beschreibung") %]</th></tr>
 [% FOREACH location IN locations %]
 <tr>
-<td><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% location.id %].html?l=[% lang %]">[% location.identifier %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% location.identifier %].html?l=[% lang %]">[% location.identifier %]</a></td>
 <td>[% location.type %]</td>
 <td>[% location.description %]</td>
 </tr>

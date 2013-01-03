@@ -16,8 +16,8 @@
 [% PROCESS common/subtemplate name="newsflash" %]
 
 [% IF viewdbs.size == 1 && config.have_locationinfo(viewdbs.first) %]
-[% lid = config.get_databaseinfo.single({dbname = viewdbs.first}).locationid.id %]
-[%- locationinfo = config.get_locationinfo_fields(lid); -%]
+[% locationid = config.get_databaseinfo.single({dbname = viewdbs.first}).locationid.identifier %]
+[%- locationinfo = config.get_locationinfo_fields(locationid); -%]
 [%# USE dumper;dumper.dump(locationinfo)%]
 [% categories = [
                 'L0010', # msg.maketext("L0010") # Institutsname
@@ -68,7 +68,7 @@ FOREACH category IN categories;
 <tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-   END ;
 END ;-%]
-<tr><td class="ob-field">QR-Code</td><td><a class="ob-qrcode" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
+<tr><td class="ob-field">QR-Code</td><td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
 </table>
 [<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationid %]">[% msg.maketext("Mehr") %]</a>]
 [% END %]

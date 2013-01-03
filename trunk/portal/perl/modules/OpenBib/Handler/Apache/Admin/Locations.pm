@@ -123,7 +123,7 @@ sub show_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $locationid     = $self->param('locationid');
+    my $locationid     = $self->strip_suffix($self->param('locationid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -233,7 +233,7 @@ sub show_record_form {
     
     # Dispatched Args
     my $view           = $self->param('view');
-    my $locationid     = $self->param('locationid');
+    my $locationid     = $self->strip_suffix($self->param('locationid'));
 
     # Shared Args
     my $query          = $self->query();

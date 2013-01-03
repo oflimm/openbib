@@ -405,7 +405,7 @@
     font-size: 0.8em;
   }
   
-  .ob-qrcode {
+  #ob-qrcode {
     margin-top:-416px;
     position:absolute;
     border:1px solid #ccc;
@@ -416,7 +416,7 @@
     text-align: center;
   }
 
-  .ob-qrcode .ob-closebutton {
+  #ob-qrcode .ob-closebutton {
     position: absolute;
     top: 3px;
     right: 3px;

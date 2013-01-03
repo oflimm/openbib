@@ -45,9 +45,9 @@ function qrcodeShow () {
   var yOffset = -25;
   /* END CONFIG */
     
-  $("a.ob-qrcode").click(function(e) {
-    $("body").append("<p id=\"qr\"><strong>QR-Code</strong> &nbsp; [ <a class=\"ext\" href=\"http://qrcode.wilkohartz.de/\" onclick=\"openMsgWin('','QR-Code Informationen','','','yes','yes');return true;\" target=\"QR-Code Informationen\">Reader-Software</a> ]<img src=\"/images/openbib/close.png\" alt=\"Schließen\" title=\"Schließen\" class=\"closebutton\" /><br/ ><img src=\""+ this.href +"\" alt=\"QR-Code\" style=\"margin:5px 0 5px 0;\" /><br/>" + this.title + "</p>"); 
-    $("#ob-qr")
+  $("a.ob-qrcode_preview").click(function(e) {
+    $("body").append("<p id=\"ob-qrcode\"><strong>QR-Code</strong> &nbsp; [ <a class=\"ext\" href=\"http://qrcode.wilkohartz.de/\" onclick=\"openMsgWin('','QR-Code Informationen','','','yes','yes');return true;\" target=\"QR-Code Informationen\">Reader-Software</a> ]<img src=\"/images/openbib/close.png\" alt=\"Schließen\" title=\"Schließen\" class=\"ob-closebutton\" /><br/ ><img src=\""+ this.href +"\" alt=\"QR-Code\" style=\"margin:5px 0 5px 0;\" /><br/>" + this.title + "</p>"); 
+    $("#ob-qrcode")
       .css("top",(e.pageY - yOffset) + "px")
       .css("left",(e.pageX + xOffset) + "px")
       .fadeIn("fast");
@@ -56,8 +56,8 @@ function qrcodeShow () {
 };
 
 function qrcodeRemove () {
-  $(".closebutton").click(function(e) {
-    $("#ob-qr").remove();
+  $(".ob-closebutton").click(function(e) {
+    $("#ob-qrcode").remove();
   });
 };
 

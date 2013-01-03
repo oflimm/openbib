@@ -25,7 +25,10 @@
 [%# USE dumper;dumper.dump(dbinfo)%]
 [% IF Aquisition == 0 %]
 <table class="ym-full">
-<tr align="center"><th>[% msg.maketext("Besitzende Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th><th>[% msg.maketext("Ausleihsystem") %]</th></tr>
+<thead>
+<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th><th>[% msg.maketext("Ausleihsystem") %]</th></tr>
+</thead>
+<tbody>
 [% FOREACH thiscirculation IN circulation %]
 [%-
   title    = normdata.${"T0331"}.first.content ;
@@ -64,6 +67,7 @@ Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
 [%   END %]
 </td></tr>
 [% END %]
+</tbody>
 </table>
 [% ELSIF Aquisition == 1 %]
 <table width="100%">

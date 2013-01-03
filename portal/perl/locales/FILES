@@ -108,6 +108,7 @@
 ../modules/OpenBib/Handler/Apache/Users/Preferences.pm
 ../modules/OpenBib/Handler/Apache/Users/Registrations.pm
 ../modules/OpenBib/Handler/Apache/Users/Reviews.pm
+../modules/OpenBib/Handler/Apache/Users/Reviews/Votes.pm
 ../modules/OpenBib/Handler/Apache/Users/Roles.pm
 ../modules/OpenBib/Handler/Apache/Users/Searchprofiles.pm
 ../modules/OpenBib/Handler/Apache/Users/Tags/Names.pm
@@ -497,10 +498,10 @@
 ../templates/_database/ezb/titles_record_html_categories
 ../templates/_database/ezb/titlist_item_html_short
 ../templates/_database/gutenberg/titles_record_html_categories
-../templates/_database/inst001/circset
+../templates/_database/inst001/circulation
 ../templates/_database/inst001/connector_digibib_circset
 ../templates/_database/inst001/connector_digibib_mexset
-../templates/_database/inst001/mexset
+../templates/_database/inst001/holding
 ../templates/_database/inst001/titles_record_html_categories
 ../templates/_database/inst001/visible_categories_title
 ../templates/_database/openlibrary/persons_record_html
@@ -629,6 +630,7 @@
 ../templates/orgunits_record
 ../templates/orgunits_record_html
 ../templates/orgunits_record_json
+../templates/pagination
 ../templates/persons_record
 ../templates/persons_record_html
 ../templates/persons_record_html_images
@@ -655,6 +657,8 @@
 ../templates/_profile/kug/std_footer_html
 ../templates/_profile/kug/std_header_html
 ../templates/_profile/kug/users_preferences_html
+../templates/_profile/kug/_view/kug/home_html_bottom_left
+../templates/_profile/kug/_view/kug/newsflash
 ../templates/_profile/mobile/_view/richtermobile/browse_title_html
 ../templates/_profile/mobile/_view/richtermobile/holding
 ../templates/_profile/mobile/_view/richtermobile/home

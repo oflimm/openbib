@@ -12,18 +12,21 @@
 #######################################################################
 -%]
 [% IF circulation.size <= 0 %]
-<table width="100%">
-<tr align="center"><td class="ob-headline">[% msg.maketext("Besitzende Bibliothek") %]</td><td class="ob-headline">QR-Code</td><td class="ob-headline">[% msg.maketext("Standort") %]</td><td class="ob-headline">[% msg.maketext("Inventarnummer") %]</td><td class="ob-headline">[% msg.maketext("Signatur") %]</td><td class="ob-headline">[% msg.maketext("Bestand") %]</td></tr>
-
+<table class="ym-full">
+<thead>
+<tr align="center"><th>[% msg.maketext("Besitzende Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Bestand") %]</th></tr>
+</thead>
+<tbody>
 [% FOREACH thisholding IN holding %]
 <tr align="center"><td><strong>
 [%- IF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
 [%-   thisdbname = thisholding.${"X4000"}.content.dbname -%]
-[%-   IF dbinfo.get('locationid').${thisdbname} %]
-<a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% thisdbname %]">[% thisholding.${"X4000"}.content.full %]</a>
+[%-   IF dbinfo.locationid.${record.database}.id %]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.locationid.${record.database}.id %].html?l=[% lang %]">
 [%-   ELSE -%]
-<a href="[% thisholding.${"X4001"}.content %]" target="_blank">[% thisholding.${"X4000"}.content.full %]</a>
+<a href="[% thisholding.${"X4001"}.content %]" target="_blank">
 [%-   END -%]
+[% thisholding.${"X4000"}.content.full %]</a>
 [%- ELSE -%]
 [% thisholding.${"X4000"}.content.full %]
 [%- END -%]
@@ -40,5 +43,6 @@
 <td><a class="ob-qrcode" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
 <td>[% thisholding.${"X0016"}.content %]</td><td>[% thisholding.${"X0005"}.content %]</td><td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td><td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]</td></tr>
 [% END %]
+</tbody>
 </table>
 [% END %]

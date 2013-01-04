@@ -1,5 +1,18 @@
 @media all
 {
+
+  .ym-form div.ym-fbox-button {
+    padding: 0.5em 1em 0.5em;
+    margin-bottom: 0.5em;
+  }
+  
+  .ym-form div.ym-fbox-button {
+    background: #ececec;
+    border-top: 1px #e0e0e0 solid;
+    padding:0.5em 1em 0.5em;
+    margin: 0;
+  }
+
   .ob_button, input[type="submit"] {
     display: inline-block;
     outline: none;

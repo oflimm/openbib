@@ -226,6 +226,8 @@ sub set_from_apache_request {
             
             if ($thissearchfield_norm_content){
                 # Zuerst Stringsuchen in der Freie Suche
+
+                $logger->debug("Stage1: $thissearchfield_norm_content");
                 
                 if ($name eq "freesearch" || $thissearchfield_norm_content=~/:|.+?|/){
                     while ($thissearchfield_norm_content=~m/^([^\|]+)\|([^\|]+)\|(.*)$/){
@@ -280,16 +282,22 @@ sub set_from_apache_request {
                         searchreq => 1,
                     });
                 }
-                
+
+                $logger->debug("Stage2: $thissearchfield_norm_content");
+
                 if ($config->{'searchfield'}{$searchfield}{type} eq "string"){
                     # Stringsuche auch mit Trunkierung via * moeglich
-                    $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
-                        content   => $thissearchfield_norm_content,
-                    });
+#                    $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
+#                        content   => $thissearchfield_norm_content,
+#                    });
 
+                    $logger->debug("Stage3: $thissearchfield_norm_content");
+                    
                     $thissearchfield_norm_content =~s/[^\w*]/_/g;
                 }
-                
+
+                $logger->debug("Stage4: $thissearchfield_norm_content");
+
                 if ($config->{'searchfield'}{$searchfield}{type} eq "integer"){
                     $thissearchfield_norm_content =~s/\D//g;
                 }

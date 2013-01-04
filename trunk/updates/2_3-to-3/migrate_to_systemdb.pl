@@ -128,6 +128,25 @@ while (my $result=$request->fetchrow_hashref){
     my $dbname = $result->{dbname};
 
     map { $dboptions_ref->{$dbname}{$_} = $result->{$_} } keys %{$result};
+
+    if ($dboptions_ref->{$dbname}{autfilename} eq "unload.PER.gz"){
+        $dboptions_ref->{$dbname}{autfilename} = "meta.person.gz";
+    }
+    if ($dboptions_ref->{$dbname}{korfilename} eq "unload.KOE.gz"){
+        $dboptions_ref->{$dbname}{korfilename} = "meta.corporatebody.gz";
+    }
+    if ($dboptions_ref->{$dbname}{swtfilename} eq "unload.SWD.gz"){
+        $dboptions_ref->{$dbname}{swtfilename} = "meta.subject.gz";
+    }
+    if ($dboptions_ref->{$dbname}{notfilename} eq "unload.SYS.gz"){
+        $dboptions_ref->{$dbname}{notfilename} = "meta.classification.gz";
+    }
+    if ($dboptions_ref->{$dbname}{titfilename} eq "unload.TIT.gz"){
+        $dboptions_ref->{$dbname}{titfilename} = "meta.title.gz";
+    }
+    if ($dboptions_ref->{$dbname}{mexfilename} eq "unload.MEX.gz"){
+        $dboptions_ref->{$dbname}{mexfilename} = "meta.holding.gz";
+    }
 }
 
 my $titcount_ref      = {};

@@ -57,7 +57,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::CollectionItems';
+use base 'OpenBib::Handler::Apache::CartItems';
 
 # Authentifizierung wird spezialisiert
 

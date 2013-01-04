@@ -408,12 +408,14 @@
   #ob-qrcode {
     margin-top:-416px;
     position:absolute;
-    border:1px solid #ccc;
-    background: aliceblue;
+    border:1px solid #666;
+    background: #cccccc;
     padding:5px;
     display:none;
     color:#000;
     text-align: center;
+    box-shadow: 5px 5px 5px #888; 
+
   }
 
   #ob-qrcode .ob-closebutton {

@@ -1659,23 +1659,19 @@ sub get_clusterinfo {
 sub update_local_clusterstatus {
     my ($self,$status) = @_;
 
-    $self->get_clusterinfo->search_rs(
+    my $local_cluster = $self->get_clusterinfo->search_rs(
 	{
 	    'serverinfos.hostip' => $self->{local_ip},
 	},
 	{
 	    join => ['serverinfos'],
 	}
-	)->update({ status => $status });
+    );
 
-    $self->get_clusterinfo->search_rs(
-	{
-	    'serverinfos.hostip' => $self->{local_ip},
-	},
-	{
-	    join => ['serverinfos'],
-	}
-	)->serverinfos->update({ status => $status });
+    if ($local_cluster){
+        $local_cluster->update({ status => $status });
+        $local_cluster->serverinfos->update({ status => $status });
+    }
 
     return;
 }

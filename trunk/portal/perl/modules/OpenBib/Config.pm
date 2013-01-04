@@ -1666,7 +1666,7 @@ sub update_local_clusterstatus {
 	{
 	    join => ['serverinfos'],
 	}
-    );
+    )->single;
 
     if ($local_cluster){
         $local_cluster->update({ status => $status });

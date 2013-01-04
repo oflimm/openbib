@@ -339,6 +339,7 @@ sub redirect_to_bibsonomy {
     # Shared Args
     my $r              = $self->param('r');
     my $config         = $self->param('config');
+    my $session        = $self->param('session');
     my $path_prefix    = $self->param('path_prefix');
     my $servername     = $self->param('servername');
 
@@ -347,15 +348,25 @@ sub redirect_to_bibsonomy {
     if ($titleid && $database){
         my $title_as_bibtex = OpenBib::Record::Title->new({id =>$titleid, database => $database})->load_full_record->to_bibtex({utf8 => 1});
         #        $title=~s/\n/ /g;
+
+        $logger->debug("Title as BibTeX: $title_as_bibtex");
+
+        my $bibsonomy_url = "http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape_utf8("http://$servername$path_prefix/$config->{home_loc}")."&description=".uri_escape_utf8($config->get_viewdesc_from_viewname($view))."&encoding=UTF-8&selection=".uri_escape_utf8($title_as_bibtex);
         
-        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape_utf8("http://$servername$path_prefix/$config->{home_loc}")."&description=".uri_escape_utf8($config->get_viewdesc_from_viewname($view))."&encoding=UTF-8&selection=".uri_escape_utf8($title_as_bibtex);
-        #        my $bibsonomy_uri = "$path_prefix/$config->{redirect_loc}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&encoding=UTF-8&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=OpenBib Recherche-Portal&selection=".uri_escape_utf8($title);
+        $logger->debug("Title as BibTeX: $title_as_bibtex");
         
-        $logger->debug($bibsonomy_uri);
+        # my $redirect_url = "$path_prefix/$config->{redirect_loc}?type=510;url=".uri_escape_utf8($bibsonomy_url);
         
+        $logger->debug($bibsonomy_url);
+
+        $session->log_event({
+            type      => 510,
+            content   => $bibsonomy_url
+        });
+
         $self->query->method('GET');
         $self->query->content_type('text/html; charset=UTF-8');
-        $self->query->headers_out->add(Location => $bibsonomy_uri);
+        $self->query->headers_out->add(Location => $bibsonomy_url);
         $self->query->status(Apache2::Const::REDIRECT);
     }
 

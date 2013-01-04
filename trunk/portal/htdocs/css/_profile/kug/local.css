@@ -73,14 +73,14 @@
     padding: 2px;
     padding-left: 5px;
     margin: 5px 10px -5px -5px;
-    background: #c8c8c8;
-    background: rgba(0,0,0,.2);
-    border-radius: 5px;
+    background: #eeeeee;
+    background: rgba(0,0,0,.1);
+    border-radius: 2px;
     font-size: 16px;
     font-weight: bold;
-    -moz-box-shadow: 5px 5px 5px #888;
-    -webkit-box-shadow: 5px 5px 5px #888;
-    box-shadow: 5px 5px 5px #888;
+    -moz-box-shadow: 2px 2px 2px #888;
+    -webkit-box-shadow: 2px 2px 2px #888;
+    box-shadow: 2px 2px 2px #888;
 
 /*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
   }
@@ -165,9 +165,13 @@
     background: #c8c8c8;
     background: rgba(0,0,0,.2);
     border-radius: 10px;
+    /*
     -moz-box-shadow: 10px 10px 5px #888;
     -webkit-box-shadow: 10px 10px 5px #888;
-    box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888; */
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; 
     font-size: 110%;
 
 /*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/

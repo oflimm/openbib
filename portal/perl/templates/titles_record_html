@@ -188,7 +188,7 @@ $(document).ready(function(){
 <fieldset class="ym-columnar">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
 <input type="hidden" name="titleid"           value="[% record.id %]" />
-<input type="hidden" name="dbname"           value="[% record.database %]" />
+<input type="hidden" name="dbname"            value="[% record.database %]" />
 <div class="ym-fbox-select">
 <label for="litlistid">[% msg.maketext("Name") %]</label>
 <select name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>

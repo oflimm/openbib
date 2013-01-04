@@ -36,7 +36,7 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">[% msg.maketext("Standorte") %]</a></li>
-         <li><a href="#" class="lastitem">[% locationinfo.description %]</a></li>
+         <li><a href="#" class="lastitem" title="[% locationinfo.description %]">[% locationinfo.description | truncate(75) %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">

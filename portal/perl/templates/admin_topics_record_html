@@ -81,7 +81,7 @@
 <tr><td colspan="3">
 [%
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 %]
@@ -114,7 +114,7 @@
 <tr><td colspan="3">
 [%-
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'EZB', topicid => topic.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'ezb', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 -%]
@@ -150,7 +150,7 @@
 <tr><td colspan="3">
 [%-
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'DBIS', topicid => topic.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'dbis', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 -%]

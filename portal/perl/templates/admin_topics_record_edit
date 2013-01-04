@@ -124,6 +124,7 @@
 
 </div>
 
+[%# USE dumper;dumper.dump(classification_selected)%]
 <div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Ändern") %]" />
 

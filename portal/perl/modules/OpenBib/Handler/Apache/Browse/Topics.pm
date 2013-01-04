@@ -37,6 +37,7 @@ use utf8;
 use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode_utf8/;
 
+use OpenBib::Statistics;
 use base 'OpenBib::Handler::Apache';
 
 # Run at startup
@@ -76,9 +77,11 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    my $statistics  = new OpenBib::Statistics();
     
     # TT-Data erzeugen
     my $ttdata={
+        statistics => $statistics,
     };
     
     $self->print_page($config->{'tt_browse_topics_tname'},$ttdata);
@@ -110,11 +113,15 @@ sub show_record {
 
     my $ezb          = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });
     my $dbis         = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
-    
+
+    my $statistics  = new OpenBib::Statistics();
+
     # TT-Data erzeugen
     my $ttdata={
         ezb     => $ezb,
         dbis    => $dbis,
+
+        statistics => $statistics,
         
         topicid => $topicid,
     };

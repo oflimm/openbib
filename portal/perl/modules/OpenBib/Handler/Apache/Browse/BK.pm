@@ -37,6 +37,7 @@ use utf8;
 use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode_utf8/;
 
+use OpenBib::Statistics;
 use OpenBib::Config::DatabaseInfoTable;
 
 use base 'OpenBib::Handler::Apache';
@@ -153,7 +154,7 @@ sub show_record_databases {
 
     # TT-Data erzeugen
     my $ttdata={
-        statistics => $statistics,
+        statistics   => $statistics,
         toplevelbkid => $toplevelbkid,
         bkid         => $bkid,
         dbinfo       => $dbinfotable,

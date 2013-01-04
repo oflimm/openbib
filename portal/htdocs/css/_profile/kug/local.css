@@ -281,7 +281,7 @@
     zoom:1;
   }    
 
-  .ob-selectbox select {
+/*  .ob-selectbox select {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
     border-color: #0088FF;
@@ -298,7 +298,7 @@
     scrollbar-shadow-color:#6C0000;
     scrollbar-arrow-color:#FFFFFF;
     scrollbar-track-color:#990000;
-  }
+  }*/
 
 /*  .ob-selectbox option:before {
     content: "> ";

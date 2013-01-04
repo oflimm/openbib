@@ -426,6 +426,7 @@ else {
     $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
 
     if ($old_database_exists){
+        $postgresdbh->do("DROP database ${database}tmp2");
 	$postgresdbh->do("ALTER database $database RENAME TO ${database}tmp2");
     }
 

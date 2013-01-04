@@ -228,7 +228,7 @@
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]
       </div>
-      <div class="ob-titlemark">[% signatur | truncate(config.get('maxlength_mark')) %]</div>
+      <div class="ob-titlemark">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]</div>
       <div class="ob-titleactions">
 [% IF tagname %]
       <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>

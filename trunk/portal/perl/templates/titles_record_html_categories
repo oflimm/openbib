@@ -158,12 +158,12 @@ FOREACH category IN categories;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
-         searchterm    = item.content;
+         searchterm    = item.content.replace('"','');
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}.html";
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;${searchprefix}=${uri_escape(searchterm)}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${uri_escape(searchterm)}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${searchterm}";
          content   = " ${rssfeed}<a href=\"${resourceurl}\" Title=\"Schlagwort-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;
 

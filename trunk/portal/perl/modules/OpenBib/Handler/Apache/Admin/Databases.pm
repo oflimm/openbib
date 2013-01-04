@@ -146,7 +146,7 @@ sub create_record {
         return Apache2::Const::OK;
     }
 
-    if ($input_data_ref->{locationid} eq "NULL"){
+    if ($input_data_ref->{locationid} eq ""){
         delete $input_data_ref->{locationid};
     }
     

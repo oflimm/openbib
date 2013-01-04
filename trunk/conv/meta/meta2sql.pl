@@ -340,7 +340,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                             }
                             push @{$hash_ref->{$searchfield}{$weight}}, ["S$field",$item_ref->{content}];
                             
-                            $indexed_subject{$id} = $hash_ref;    
+                            $indexed_subject{$id} = $hash_ref;
                         }
                         elsif ($type eq "classification"){
                             my $hash_ref = {};
@@ -384,7 +384,9 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 if (defined $record_ref->{'0800'}[1]){
                     # Schlagwortketten zusammensetzen
                     my @mainentries = ();
-                    foreach my $item (@{$record_ref->{'0800'}}){
+                    foreach my $item (map { $_->[0] }
+                                          sort { $a->[1] <=> $b->[1] }
+                                              map { [$_, $_->{mult}] } @{$record_ref->{'0800'}}){
                         push @mainentries, $item->{content};
                         $mainentry = join (' / ',@mainentries);
                     }

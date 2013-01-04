@@ -301,6 +301,9 @@ sub normalize {
     
     # Sonderbehandlung verschiedener Kategorien
 
+    # Korrektur fehlerhafter Inhalte mit abschliessenden Leerzeichen
+    $content=~s/\s+$//g;
+    
     # Datum normalisieren
 
     if ($field eq 'T0002'){

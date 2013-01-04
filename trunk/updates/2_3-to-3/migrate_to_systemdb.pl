@@ -1044,9 +1044,9 @@ my %litlistid_exists = ();
     while (my $result=$request->fetchrow_hashref){
         my $litlistid  = $result->{litlistid};
         my $tstamp     = $result->{tstamp};
-        my $titleid    = $result->{titleid};
+        my $titleid    = $result->{titid};
         my $titleisbn  = $result->{titisbn};
-        my $dbname     = $result->{dbname};
+        my $dbname     = $result->{titdb};
 
         next unless ($litlistid_exists{$litlistid});
 

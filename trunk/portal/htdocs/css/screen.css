@@ -211,11 +211,16 @@
     bottom:0;
     right:0;
     padding: 10px; 
-    font-weight:bold;
     /*  float: right;
        margin: -20px 5px 80px 120px;*/
   }
 
+  .ob-item .ob-titlemark span {
+    font-weight:bold;
+    /*  float: right;
+       margin: -20px 5px 80px 120px;*/
+  }
+  
   .ob-item .ob-tags {
     vertical-align: top;
     padding-right: 2px;

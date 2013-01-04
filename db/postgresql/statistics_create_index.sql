@@ -30,8 +30,8 @@ CREATE INDEX titleusage_origin ON titleusage (origin);
 
 -------------------------------------------------
 
-ALTER TABLE eventlog ADD CONSTRAINT fk_eventlog_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX eventlog_sid ON eventlog (sid);
+ALTER TABLE eventlog ADD CONSTRAINT fk_eventlog_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX eventlog_tstamp ON eventlog (tstamp);
 CREATE INDEX eventlog_tstamp_year ON eventlog (tstamp_year);
 CREATE INDEX eventlog_tstamp_month ON eventlog (tstamp_month);
@@ -41,8 +41,8 @@ CREATE INDEX eventlog_content ON eventlog (content text_pattern_ops);
 
 -------------------------------------------------
 
-ALTER TABLE eventlogjson ADD CONSTRAINT fk_eventlogjson_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX eventlogjson_sid ON eventlogjson (sid);
+ALTER TABLE eventlogjson ADD CONSTRAINT fk_eventlogjson_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX eventlogjson_tstamp ON eventlogjson (tstamp);
 CREATE INDEX eventlogjson_tstamp_year ON eventlogjson (tstamp_year);
 CREATE INDEX eventlogjson_tstamp_month ON eventlogjson (tstamp_month);

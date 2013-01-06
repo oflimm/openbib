@@ -1170,7 +1170,7 @@ sub get_orgunitname_of_db_in_view {
             as     => ['thisname'],
             join => ['profileid',{'profileid' => 'viewinfos'},'orgunit_dbs',{'orgunit_dbs' => 'dbid'}],
         }
-    )->single;
+    )->first;
 
     if ($orgunitinfo){
         return $orgunitinfo->get_column('thisname');

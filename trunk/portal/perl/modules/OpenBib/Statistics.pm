@@ -287,7 +287,7 @@ sub create_session {
     my $new_session = $self->{schema}->resultset('Sessioninfo')->create({
         sessionid  => $sessionid,
         createtime => $createtime,
-        createtime_year  => $parsed_tstamp->printf("%y"),
+        createtime_year  => $parsed_tstamp->printf("%Y"),
         createtime_month => $parsed_tstamp->printf("%m"),
         createtime_day   => $parsed_tstamp->printf("%d"),
         viewname         => $viewname,

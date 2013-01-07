@@ -42,6 +42,11 @@ __PACKAGE__->table("tit_tag");
   is_foreign_key: 1
   is_nullable: 0
 
+=head2 tstamp
+
+  data_type: 'timestamp'
+  is_nullable: 1
+
 =head2 dbname
 
   data_type: 'text'
@@ -69,11 +74,6 @@ __PACKAGE__->table("tit_tag");
   default_value: 1
   is_nullable: 0
 
-=head2 tstamp
-
-  data_type: 'timestamp'
-  is_nullable: 1
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -88,6 +88,8 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
+  "tstamp",
+  { data_type => "timestamp", is_nullable => 1 },
   "dbname",
   { data_type => "text", is_nullable => 0 },
   "titleid",
@@ -98,8 +100,6 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "type",
   { data_type => "smallint", default_value => 1, is_nullable => 0 },
-  "tstamp",
-  { data_type => "timestamp", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -147,8 +147,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XIZn7uuR7nv1XdHdqVUI7g
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NF3DVZzwQBw48o+tO+iE+A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -69,6 +69,11 @@ __PACKAGE__->table("titleusage");
   data_type: 'smallint'
   is_nullable: 1
 
+=head2 viewname
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -90,6 +95,8 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 0 },
   "origin",
   { data_type => "smallint", is_nullable => 1 },
+  "viewname",
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 RELATIONS
@@ -115,8 +122,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-11 15:02:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5AcBLEcr1EhGGC/Pb5N53w
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:57
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/OniqaJIi4XvsOvjXd9FNQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

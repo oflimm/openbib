@@ -54,6 +54,7 @@ __PACKAGE__->table("queries");
 =head2 searchprofileid
 
   data_type: 'bigint'
+  is_foreign_key: 1
   is_nullable: 1
 
 =cut
@@ -75,7 +76,7 @@ __PACKAGE__->add_columns(
   "hits",
   { data_type => "integer", is_nullable => 1 },
   "searchprofileid",
-  { data_type => "bigint", is_nullable => 1 },
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -91,6 +92,26 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("queryid");
 
 =head1 RELATIONS
+
+=head2 searchprofileid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Searchprofile>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "searchprofileid",
+  "OpenBib::Schema::System::Result::Searchprofile",
+  { id => "searchprofileid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
 
 =head2 sid
 
@@ -108,8 +129,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4dgbD7hcUlpOOphPp0rFrg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ic/7DxvWtog6QDO6rxRAJw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

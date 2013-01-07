@@ -85,6 +85,11 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'text'
   is_nullable: 1
 
+=head2 viewname
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -116,6 +121,8 @@ __PACKAGE__->add_columns(
   "bibsonomy_key",
   { data_type => "text", is_nullable => 1 },
   "bibsonomy_sync",
+  { data_type => "text", is_nullable => 1 },
+  "viewname",
   { data_type => "text", is_nullable => 1 },
 );
 
@@ -254,8 +261,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:whRQm4dgVsibwIhjRVjc+Q
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ocn/epUAFWHigIqJaHfnaQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

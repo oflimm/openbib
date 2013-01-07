@@ -40,6 +40,11 @@ __PACKAGE__->table("locationinfo");
   data_type: 'text'
   is_nullable: 1
 
+=head2 description
+
+  data_type: 'text'
+  is_nullable: 1
+
 =head2 tstamp_create
 
   data_type: 'timestamp'
@@ -48,11 +53,6 @@ __PACKAGE__->table("locationinfo");
 =head2 tstamp_update
 
   data_type: 'timestamp'
-  is_nullable: 1
-
-=head2 description
-
-  data_type: 'text'
   is_nullable: 1
 
 =cut
@@ -69,12 +69,12 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "type",
   { data_type => "text", is_nullable => 1 },
+  "description",
+  { data_type => "text", is_nullable => 1 },
   "tstamp_create",
   { data_type => "timestamp", is_nullable => 1 },
   "tstamp_update",
   { data_type => "timestamp", is_nullable => 1 },
-  "description",
-  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -88,6 +88,20 @@ __PACKAGE__->add_columns(
 =cut
 
 __PACKAGE__->set_primary_key("id");
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<uq_locationinfo_identifier>
+
+=over 4
+
+=item * L</identifier>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint("uq_locationinfo_identifier", ["identifier"]);
 
 =head1 RELATIONS
 
@@ -122,8 +136,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:itB6eKuw5akP+DOYb1GKIA
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mULLW0CO/UP9eGKVJ99LCw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

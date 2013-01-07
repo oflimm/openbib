@@ -98,7 +98,7 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 user_session_authenticatorids
+=head2 user_sessions
 
 Type: has_many
 
@@ -107,15 +107,15 @@ Related object: L<OpenBib::Schema::System::Result::UserSession>
 =cut
 
 __PACKAGE__->has_many(
-  "user_session_authenticatorids",
+  "user_sessions",
   "OpenBib::Schema::System::Result::UserSession",
   { "foreign.authenticatorid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lDrLLE2RU1N8mKEtGpqpUw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ebnS7NGU9KaA1R4NXDDBQA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

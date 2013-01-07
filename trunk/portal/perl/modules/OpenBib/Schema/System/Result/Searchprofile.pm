@@ -70,6 +70,21 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
+=head2 queries
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Query>
+
+=cut
+
+__PACKAGE__->has_many(
+  "queries",
+  "OpenBib::Schema::System::Result::Query",
+  { "foreign.searchprofileid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 searchprofile_dbs
 
 Type: has_many
@@ -116,8 +131,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2IOngWShBTjq9MR7OGZ1cg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CmNQpVSRGiW5WXpQwDSDEA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

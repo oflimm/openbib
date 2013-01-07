@@ -30,6 +30,11 @@ __PACKAGE__->table("clusterinfo");
   is_nullable: 0
   sequence: 'clusterinfo_id_seq'
 
+=head2 clustername
+
+  data_type: 'text'
+  is_nullable: 1
+
 =head2 description
 
   data_type: 'text'
@@ -55,6 +60,8 @@ __PACKAGE__->add_columns(
     is_nullable       => 0,
     sequence          => "clusterinfo_id_seq",
   },
+  "clustername",
+  { data_type => "text", is_nullable => 1 },
   "description",
   { data_type => "text", is_nullable => 1 },
   "status",
@@ -93,8 +100,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:G+X0AdKAD3PbXvZOsMB9qw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:i9rNMpzvd703FDD1/JBAnQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

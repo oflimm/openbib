@@ -54,18 +54,17 @@ __PACKAGE__->table("litlistitem");
 =head2 titleisbn
 
   data_type: 'text'
-  default_value: (empty string)
-  is_nullable: 1
-
-=head2 titlecache
-
-  data_type: 'text'
   is_nullable: 1
 
 =head2 comment
 
   data_type: 'text'
   default_value: (empty string)
+  is_nullable: 1
+
+=head2 titlecache
+
+  data_type: 'text'
   is_nullable: 1
 
 =cut
@@ -87,11 +86,11 @@ __PACKAGE__->add_columns(
   "titleid",
   { data_type => "text", is_nullable => 1 },
   "titleisbn",
-  { data_type => "text", default_value => "", is_nullable => 1 },
-  "titlecache",
   { data_type => "text", is_nullable => 1 },
   "comment",
   { data_type => "text", default_value => "", is_nullable => 1 },
+  "titlecache",
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -124,8 +123,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HjlgQgdikK/cdzQNAavm/Q
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u6cytK2599iasJmYrck2eQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

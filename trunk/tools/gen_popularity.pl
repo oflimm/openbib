@@ -6,7 +6,7 @@
 #  Erzeugen von Popularitaetsinformationen zu Titeln und Anreicherung
 #  im Katalog durch separate popularity-Tabelle
 #
-#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -82,7 +82,7 @@ if (!$database){
   exit;
 }
 
-my $request=$statistics->{dbh}->prepare("select katkey, count(katkey) as kcount from relevance where origin=2 and dbname=? group by katkey");
+my $request=$statistics->{dbh}->prepare("select katkey, count(katkey) as kcount from titleusage where origin=1 and dbname=? group by katkey");
 $request->execute($database);
 
 my @popularity=();

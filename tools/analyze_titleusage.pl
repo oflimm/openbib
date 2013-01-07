@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #####################################################################
 #
-#  analyze_relevances.pl
+#  analyze_titleusage.pl
 #
 #  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -51,7 +51,7 @@ if ($help){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/analyze_relevances.log';
+$logfile=($logfile)?$logfile:'/var/log/openbib/analyze_titleusage.log';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=INFO, LOGFILE, Screen

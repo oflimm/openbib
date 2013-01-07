@@ -100,8 +100,8 @@ CREATE TABLE searchfields (
  mark           BOOL,
  mediatype      BOOL,
  titlestring    BOOL,
- content        BOOL,
  source         BOOL,
- year           BOOL
+ year           BOOL,
+ content        BOOL
 );
 

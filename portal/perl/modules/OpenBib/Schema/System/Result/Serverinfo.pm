@@ -35,9 +35,9 @@ __PACKAGE__->table("serverinfo");
   data_type: 'text'
   is_nullable: 1
 
-=head2 active
+=head2 description
 
-  data_type: 'boolean'
+  data_type: 'text'
   is_nullable: 1
 
 =head2 status
@@ -51,9 +51,9 @@ __PACKAGE__->table("serverinfo");
   is_foreign_key: 1
   is_nullable: 1
 
-=head2 description
+=head2 active
 
-  data_type: 'text'
+  data_type: 'boolean'
   is_nullable: 1
 
 =cut
@@ -68,14 +68,14 @@ __PACKAGE__->add_columns(
   },
   "hostip",
   { data_type => "text", is_nullable => 1 },
-  "active",
-  { data_type => "boolean", is_nullable => 1 },
+  "description",
+  { data_type => "text", is_nullable => 1 },
   "status",
   { data_type => "text", is_nullable => 1 },
   "clusterid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
-  "description",
-  { data_type => "text", is_nullable => 1 },
+  "active",
+  { data_type => "boolean", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -113,8 +113,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-12-19 14:01:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Y0oqyrHGc7IKn1lxfKHTTw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oVbLeRLjFm6OjDmfYAfwRA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

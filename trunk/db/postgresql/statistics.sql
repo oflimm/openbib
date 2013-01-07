@@ -19,7 +19,8 @@ CREATE TABLE sessioninfo (
 
  createtime_year   SMALLINT,
  createtime_month  SMALLINT,
- createtime_day    SMALLINT
+ createtime_day    SMALLINT,
+ viewname TEXT
 );
 
 drop table IF EXISTS titleusage;
@@ -31,6 +32,7 @@ CREATE TABLE titleusage (
  tstamp_month SMALLINT,
  tstamp_day   SMALLINT,
 
+ viewname     TEXT,
  isbn         TEXT,
  dbname       TEXT NOT NULL,
  id           TEXT NOT NULL,

@@ -177,6 +177,8 @@ CREATE TABLE sessioninfo (
  username       TEXT,
  userpassword   TEXT,
 
+ viewname       TEXT,
+
  queryoptions   TEXT,
 
  searchform     TEXT,

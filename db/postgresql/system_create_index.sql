@@ -62,6 +62,7 @@ ALTER TABLE sessioninfo ADD PRIMARY KEY (id);
 CREATE INDEX sessioninfo_sessionid ON sessioninfo (sessionid);
 CREATE INDEX sessioninfo_createtime ON sessioninfo (createtime);
 CREATE INDEX sessioninfo_username ON sessioninfo (username);
+CREATE INDEX sessioninfo_viewname ON sessioninfo (viewname);
 
 ALTER TABLE cartitem ADD PRIMARY KEY (id);
 CREATE INDEX cartitem_dbname ON cartitem (dbname);

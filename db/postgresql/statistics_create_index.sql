@@ -14,6 +14,7 @@ CREATE INDEX sessioninfo_createtime ON sessioninfo (createtime);
 CREATE INDEX sessioninfo_createtime_year ON sessioninfo (createtime_year);
 CREATE INDEX sessioninfo_createtime_month ON sessioninfo (createtime_month);
 CREATE INDEX sessioninfo_createtime_day ON sessioninfo (createtime_day);
+CREATE INDEX sessioninfo_viewname ON sessioninfo (viewname);
 
 -------------------------------------------------
 
@@ -23,6 +24,7 @@ CREATE INDEX titleusage_tstamp ON titleusage (tstamp);
 CREATE INDEX titleusage_tstamp_year ON titleusage (tstamp_year);
 CREATE INDEX titleusage_tstamp_month ON titleusage (tstamp_month);
 CREATE INDEX titleusage_tstamp_day ON titleusage (tstamp_day);
+CREATE INDEX titleusage_viewname ON titleusage (viewname);
 CREATE INDEX titleusage_isbn ON titleusage (isbn);
 CREATE INDEX titleusage_dbname ON titleusage (dbname);
 CREATE INDEX titleusage_id ON titleusage (id);
@@ -30,8 +32,8 @@ CREATE INDEX titleusage_origin ON titleusage (origin);
 
 -------------------------------------------------
 
-CREATE INDEX eventlog_sid ON eventlog (sid);
 ALTER TABLE eventlog ADD CONSTRAINT fk_eventlog_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
+CREATE INDEX eventlog_sid ON eventlog (sid);
 CREATE INDEX eventlog_tstamp ON eventlog (tstamp);
 CREATE INDEX eventlog_tstamp_year ON eventlog (tstamp_year);
 CREATE INDEX eventlog_tstamp_month ON eventlog (tstamp_month);
@@ -41,8 +43,8 @@ CREATE INDEX eventlog_content ON eventlog (content text_pattern_ops);
 
 -------------------------------------------------
 
-CREATE INDEX eventlogjson_sid ON eventlogjson (sid);
 ALTER TABLE eventlogjson ADD CONSTRAINT fk_eventlogjson_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
+CREATE INDEX eventlogjson_sid ON eventlogjson (sid);
 CREATE INDEX eventlogjson_tstamp ON eventlogjson (tstamp);
 CREATE INDEX eventlogjson_tstamp_year ON eventlogjson (tstamp_year);
 CREATE INDEX eventlogjson_tstamp_month ON eventlogjson (tstamp_month);
@@ -80,3 +82,5 @@ CREATE INDEX searchfields_mediatype ON searchfields (mediatype);
 CREATE INDEX searchfields_titlestring ON searchfields (titlestring);
 CREATE INDEX searchfields_source ON searchfields (source);
 CREATE INDEX searchfields_year ON searchfields (year);
+
+vacuum analyze;

@@ -271,6 +271,7 @@ sub _init_new_session {
                     sessionid    => $sessionID,
                     createtime   => $createtime,
                     queryoptions => encode_json($queryoptions),
+                    viewname     => $self->{view},
                     searchform   => 'simple',
                 }
             );
@@ -978,21 +979,21 @@ sub save_eventlog_to_statisticsdb {
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
     my $statistics=new OpenBib::Statistics;
 
-    my $view = "";
+    my $view = $self->{view};
 
-    eval {
-        $view = $self->{schema}->resultset('Eventlog')->search_rs(
-            {
-                'sid.sessionid' => $self->{ID},
-                'me.type' => 100,
-            },
-            {
-                select => 'me.content',
-                as     => 'thisview',
-                join => 'sid'
-            }
-        )->single->get_column('thisview');
-    };
+#     eval {
+#         $view = $self->{schema}->resultset('Eventlog')->search_rs(
+#             {
+#                 'sid.sessionid' => $self->{ID},
+#                 'me.type' => 100,
+#             },
+#             {
+#                 select => 'me.content',
+#                 as     => 'thisview',
+#                 join => 'sid'
+#             }
+#         )->single->get_column('thisview');
+#     };
 
     # Rudimentaere Session-Informationen uebertragen
     my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->search_rs(
@@ -1004,6 +1005,7 @@ sub save_eventlog_to_statisticsdb {
     my $new_sid = $statistics->create_session({
         sessionid  => $self->{ID},
         createtime => $sessioninfo->createtime,
+        viewname   => $view,
     });
     
     # Alle skalaren Events in Statistics-DB uebertragen
@@ -1038,7 +1040,7 @@ sub save_eventlog_to_statisticsdb {
             content   => decode_utf8($content),
             serialize => 1, # in Eventlogjson
         });
-
+        
 	if ($type == 1){
             my $searchquery_ref = {};
 
@@ -1095,12 +1097,13 @@ sub save_eventlog_to_statisticsdb {
 	next if (exists $seen_title{"$dbname:$id"});
 
         $statistics->store_titleusage({
-            tstamp => $tstamp,
-            sid    => $sid,
-            isbn   => $isbn,
-            dbname => $dbname,
-            id     => $id,
-            origin => 2,
+            tstamp   => $tstamp,
+            sid      => $sid,
+            viewname => $view,
+            isbn     => $isbn,
+            dbname   => $dbname,
+            id       => $id,
+            origin   => 1,
         });
 
 	$seen_title{"$dbname:$id"}=1;
@@ -1222,6 +1225,8 @@ sub log_event {
 
     # DBI: "insert into eventlog values (?,NOW(),?,?)"
     if ($serialize){
+        # Backslashes Escapen fuer PostgreSQL!!!
+        $contentstring=~s/\\/\\\\/g;
         $self->{schema}->resultset('Eventlogjson')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
     }
     else {

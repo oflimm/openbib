@@ -1670,7 +1670,7 @@ sub get_authenticator {
             'sid.sessionid' => $self->{ID},
         },
         {
-            join   => ['user_session_authenticatorids',{ 'user_session_authenticatorids' => 'sid' }],
+            join   => ['user_sessions',{ 'user_sessions' => 'sid' }],
         }
             
     )->single;

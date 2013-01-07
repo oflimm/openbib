@@ -88,6 +88,8 @@ sub store_titleusage {
         ? $arg_ref->{sid}           : undef;
     my $type              = exists $arg_ref->{type}
         ? $arg_ref->{type  }        : undef;
+    my $viewname          = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}        : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -109,6 +111,7 @@ sub store_titleusage {
             dbname       => $dbname,
             type         => $type,
             sid          => $sid,
+            viewname     => $viewname,
         }
     );
 
@@ -275,6 +278,9 @@ sub create_session {
     my $createtime         = exists $arg_ref->{createtime}
         ? $arg_ref->{createtime}               : undef;
 
+    my $viewname           = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}                 : undef;
+
     my $parsed_tstamp = new Date::Manip::Date;
     $parsed_tstamp->parse($createtime);
 
@@ -284,6 +290,7 @@ sub create_session {
         createtime_year  => $parsed_tstamp->printf("%y"),
         createtime_month => $parsed_tstamp->printf("%m"),
         createtime_day   => $parsed_tstamp->printf("%d"),
+        viewname         => $viewname,
     });
 
     if ($new_session){
@@ -355,6 +362,9 @@ sub log_event {
     my $resultset = "Eventlog";
     
     if ($serialize){
+        # Backslashes Escapen fuer PostgreSQL!!!
+        $content=~s/\\/\\\\/g;        
+        
         $resultset = "Eventlogjson";
     }
     
@@ -688,7 +698,7 @@ sub log_query {
     # 13 => year
 
     my $cat2type_ref = {
-			freeesearch    => 1,
+			freesearch     => 1,
 			title          => 2,
 			person         => 3,
 			corporatebody  => 4,
@@ -701,22 +711,24 @@ sub log_query {
 		        titlestring    => 11,
 			source         => 12,
 			year           => 13,
+                        content        => 14,
 		       };
 
     my $used_category_ref = {
-        freeesearch    => 0,
-        title          => 0,
-        person         => 0,
-        corporatebody  => 0,
-        subject        => 0,
-        classification => 0,
-        isbn           => 0,
-        issn           => 0,
-        mark           => 0,
-        mediatype      => 0,
-        titlestring    => 0,
-        source         => 0,
-        year           => 0,
+        freesearch     => 'f',
+        title          => 'f',
+        person         => 'f',
+        corporatebody  => 'f',
+        subject        => 'f',
+        classification => 'f',
+        isbn           => 'f',
+        issn           => 'f',
+        mark           => 'f',
+        mediatype      => 'f',
+        titlestring    => 'f',
+        source         => 'f',
+        year           => 'f',
+        content        => 'f',
     };
 
     my $term_stopword_ref = {
@@ -759,7 +771,7 @@ sub log_query {
 
 	# Genutzte Kategorie merken
 	if ($thiscategory_terms){
-	  $used_category_ref->{$cat} = 1;
+	  $used_category_ref->{$cat} = 't';
 	}
 
 	my $tokenizer = String::Tokenizer->new();
@@ -793,6 +805,7 @@ sub log_query {
     # DBI: "insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     $self->{schema}->resultset('Searchfield')->create(
               {
+                  sid          => $sid,
                   tstamp       => $tstamp,
                   tstamp_year  => $parsed_tstamp->printf("%y"),
                   tstamp_month => $parsed_tstamp->printf("%m"),

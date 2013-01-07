@@ -3848,7 +3848,7 @@ sub delete_item_from_collection {
         my $item = $self->{schema}->resultset('Cartitem')->search_rs(
             {
                 'user_cartitems.userid' => $thisuserid,
-                'me.id'                       => $itemid
+                'me.id'                 => $itemid
             },
             {
                 join => ['user_cartitems']

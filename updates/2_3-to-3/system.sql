@@ -94,3 +94,5 @@ alter table authenticator rename to authenticator;
 
 alter table tit_tag add column tstamp timestamp;
 alter table authenticator rename remotedb to dbname;
+
+alter table sessioninfo add column viewname text;

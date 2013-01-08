@@ -554,8 +554,8 @@ sub negotiate_type {
         $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation'));
     }
 
-    # Korrektur bei mobilen Endgeraeten
-    if ($self->param('representation') eq "html" && $self->param('browser')->mobile() ){
+    # Korrektur bei mobilen Endgeraeten, wenn die Repraesentation in portal.yml definiert ist
+    if (defined $config->{enable_mobile}{$self->param('view')} && $self->param('representation') eq "html" && $self->param('browser')->mobile() ){
         $self->param('content_type','text/html');
         $self->param('representation','mobile');
     }

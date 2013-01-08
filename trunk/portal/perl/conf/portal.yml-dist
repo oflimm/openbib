@@ -3596,6 +3596,9 @@ reviews: 0
 coverscans:
   all: 1
 
+enable_mobile:
+  'richter': 1
+
 # BIX
 bix: 0
 

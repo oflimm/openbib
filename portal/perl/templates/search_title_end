@@ -2,6 +2,7 @@
 [%- PROCESS common/subtemplate name="search_title_end_html" -%]
 [%- ELSIF representation == 'mobile' -%]
 [%- PROCESS common/subtemplate name="search_title_end_mobile" -%]
+[%- ELSIF representation == 'rss' -%]
 [%- ELSIF representation == 'json' -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]

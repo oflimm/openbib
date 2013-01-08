@@ -50,12 +50,26 @@
 
 [% PROCESS common/subtemplate name="titles_record_mobile_categories" %]
 
-[% IF holding.size > 0 %]
+<style type="text/css"> 
+    .ob-holding_info table { width:100%; }
+    .ob-holding_info table caption { text-align:left;  }
+    .ob-holding_info table thead th { text-align:left; border-bottom-width:1px; border-top-width:1px; }
+    .ob-holding_info table th, td { text-align:left; padding:6px;} 
+</style>
+
+[% IF circulation.size > 0 %]
+<p/>
+
+<div id="ob-holding_info"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="circulation_mobile" %]
+</div><!-- End Bestand -->
+
+[% ELSIF holding.size > 0 %]
 <p/>
 
 <div id="ob-holding_info"><!-- Begin Bestand -->
 [%# USE dumper;dumper.dump(holding)%]
-[% PROCESS common/subtemplate name="holding" %]
+[% PROCESS common/subtemplate name="holding_mobile" %]
 </div><!-- End Bestand -->
 
 [% END %]

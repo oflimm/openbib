@@ -114,7 +114,7 @@ foreach my $item ($isbns->all){
     }
 
     $processed_isbn13 = OpenBib::Common::Util::normalize({
-        field => '0540',
+        field => 'T0540',
         content  => $processed_isbn13,
     });
 

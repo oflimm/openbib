@@ -114,9 +114,9 @@ if ($type == 1){
         my $titleusage = $statistics->{schema}->resultset('Titleusage')->search_rs(
             {
                 dbname => $database,
-                origin => 2,
+                origin => 1,
 #                tstamp => { '>' => 20110101000000 },
-                tstamp => { '>' => \'DATE_SUB(CURDATE(),INTERVAL 6 MONTH)' },
+                tstamp => { '>' => \'CURRENT_TIMESTAMP - INTERVAL \'180 days\'' },
                 
             },
             {
@@ -133,7 +133,7 @@ if ($type == 1){
 
             $logger->debug("Got Title with id $id and Session-Count $count");
             
-            my $item=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record();
+            my $item=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record->to_hash;
 
             push @$bestof_ref, {
                 item  => $item,

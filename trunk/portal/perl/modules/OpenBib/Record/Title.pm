@@ -1265,6 +1265,33 @@ sub to_rawdata {
     return ($self->{_fields},$self->{_holding},$self->{_circulation});
 }
 
+sub to_hash {
+    my ($self) = @_;
+    
+    my $hash_ref = {
+        'id'          => $self->{id},
+        'database'    => $self->{database},
+        'fields'      => $self->{_fields},
+        'items'       => $self->{_holding},
+        'circulation' => $self->{_circulation},
+    };
+
+    return $hash_ref;
+}
+
+sub from_hash {
+    my ($self,$hash_ref)=@_;
+    
+    $self->set_id($hash_ref->{id});
+    $self->set_database($hash_ref->{database});
+    
+    $self->set_fields($hash_ref->{fields});
+    $self->set_holding($hash_ref->{items});
+    $self->set_circulation($hash_ref->{circulation});
+
+    return $self;
+}
+    
 sub get_field {
     my ($self,$arg_ref) = @_;
 
@@ -1331,15 +1358,26 @@ sub to_drilldown_term {
 sub to_json {
     my ($self)=@_;
 
-    my $json_ref = {
-        'id'          => $self->{id},
-        'database'    => $self->{database},
-        'fields'      => $self->{_fields},
-        'items'       => $self->{_holding},
-        'circulation' => $self->{_circulation},
+    return encode_json $self->to_hash;
+}
+
+sub from_json {
+    my ($self,$json)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    eval {
+        my $json_ref = decode_json $json;
+
+        $self->from_hash($json_ref);
     };
 
-    return encode_json $json_ref;
+    if ($@){
+        $logger->error($@);
+    }
+        
+    return $self;
 }
 
 sub set_id {

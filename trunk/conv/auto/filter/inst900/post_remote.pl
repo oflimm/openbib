@@ -43,6 +43,6 @@ print "### $pool: Umwandlung in das Meta-Format\n";
 
 system("cd $pooldir/$pool ; rm meta.* pool.dat");
 system("gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");
-system("cd $pooldir/$pool ; $konvdir/colonia2meta.pl --filename=$pooldir/$pool/pool.dat");
+system("cd $pooldir/$pool ; $konvdir/simple2meta.pl --configfile=/opt/openbib/conf/inst900.yml --inputfile=$pooldir/$pool/pool.dat");
 system("rm $pooldir/$pool/pool.dat");
 system("cd $pooldir/$pool ; gzip meta.*");

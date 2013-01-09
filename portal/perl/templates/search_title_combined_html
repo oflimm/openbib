@@ -20,6 +20,8 @@
     <div class="ym-gbox">
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
+[% ELSE %]
+[% PROCESS common/subtemplate name="search_radius" %]
 [% END %]
     </div>
   </div>
@@ -81,6 +83,8 @@
    &nbsp;
 </div>
 <p/>
+[% ELSE %]
+<h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
 [% END %]
     </div>
   </div>

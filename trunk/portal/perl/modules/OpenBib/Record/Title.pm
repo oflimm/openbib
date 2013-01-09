@@ -213,7 +213,7 @@ sub load_full_record {
                 }
 
                 push @isbn_refs_tmp, OpenBib::Common::Util::normalize({
-                    field => '0540',
+                    field => 'T0540',
                     content  => $thisisbn,
                 });
 
@@ -224,7 +224,7 @@ sub load_full_record {
             
             @isbn_refs = grep { ! $seen_isbns{$_} ++ } @isbn_refs_tmp;
 
-            $logger->debug(YAML::Dump(\@isbn_refs));
+            $logger->debug("Relevante ISBNs des Titels fuer die Anreicherung: ".YAML::Dump(\@isbn_refs));
 
             # Anreicherung der Normdaten
             {
@@ -238,7 +238,7 @@ sub load_full_record {
                         order_by => ['field','content'],
                     }
                 );
-                    
+                
                 foreach my $item ($enriched_contents->all) {
                     my $field      = "E".sprintf "%04d",$item->field;
                     my $subfield   =                    $item->subfield;
@@ -279,7 +279,9 @@ sub load_full_record {
                         group_by => ['titleid','dbname','isbn','tstamp'],
                     }
                 );
-                    
+
+                $logger->debug("Found ".($same_titles->count)." records");
+                
                 foreach my $item ($same_titles->all) {
                     my $id         = $item->titleid;
                     my $database   = $item->dbname;
@@ -295,7 +297,7 @@ sub load_full_record {
                 my $similar_recordlist = $self->get_similar_records;
 
                 $logger->debug("Similar records via backend ".YAML::Dump($similar_recordlist));
-                my $similar_titles = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
+                my $works = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
                     {
                         isbn    => \@isbn_refs,,
                     },
@@ -304,10 +306,14 @@ sub load_full_record {
                         group_by => ['workid'],
                     }
                 );
-                    
-                foreach my $workitem ($similar_titles->all) {
+
+                $logger->debug("Found ".($works->count)." works");
+
+                foreach my $workitem ($works->all) {
                     my $workid         = $workitem->workid;
-                        
+
+                    $logger->debug("Workid: $workid");
+                    
                     my $isbns = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
                         {
                             isbn      => { '!=' => \@isbn_refs },
@@ -321,6 +327,8 @@ sub load_full_record {
                     );
                         
                     foreach my $isbnitem ($isbns->all) {
+                        $logger->debug("Found ISBN $isbnitem->item for workid $workid");
+                        
                         my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
                             {
                                 isbn      => $isbnitem->isbn,
@@ -330,7 +338,9 @@ sub load_full_record {
                         foreach my $titleitem ($titles->all) {
                             my $id         = $titleitem->titleid;
                             my $database   = $titleitem->dbname;
-                                
+
+                            $logger->debug("Found Title with id $id in database $database");
+                            
                             $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
                         }
                     }
@@ -343,7 +353,11 @@ sub load_full_record {
             # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
             {
                 my $related_recordlist = $self->get_related_records;
-                    
+
+                $logger->debug("Related records via backend ".YAML::Dump($related_recordlist));
+
+                my $titles_found_ref = {}; # Ein Titel kann ueber verschiedenen ISBNs erreicht werden. Das laesst sich nicht trivial via SQL loesen, daher haendisch                    
+
                 my $related_titles = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
                     {
                         isbn    => \@isbn_refs,
@@ -353,7 +367,9 @@ sub load_full_record {
                         group_by => ['id'],
                     }
                 );
-                    
+
+                $logger->debug("Found ".($related_titles->count)." related titles");
+
                 foreach my $item ($related_titles->all) {
                     my $id         = $item->id;
                         
@@ -363,24 +379,31 @@ sub load_full_record {
                             id    => $id,
                         },
                         {
-                                
+                            rows => 1,
                             columns => ['isbn'],
                             group_by => ['isbn'],
                         }
                     );
-                        
+
+                    $logger->debug("Found ".($isbns->count)." isbns");
+
                     foreach my $isbnitem ($isbns->all) {
                         my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
                             {
                                 isbn      => $isbnitem->isbn,
                             },
+                            {
+                                rows => 1,
+                            }
                         );
                             
                         foreach my $titleitem ($titles->all) {
                             my $id         = $titleitem->titleid;
                             my $database   = $titleitem->dbname;
-                                
+
+                            next if (defined $titles_found_ref->{"$database:$id"});
                             $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                            $titles_found_ref->{"$database:$id"} = 1;
                         }
                     }
                 }
@@ -732,7 +755,7 @@ sub to_normalized_isbn13 {
     }
     
     $thisisbn = OpenBib::Common::Util::normalize({
-        field => '0540',
+        field => 'T0540',
         content  => $thisisbn,
     });
     

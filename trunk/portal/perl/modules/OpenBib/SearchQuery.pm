@@ -599,7 +599,7 @@ sub to_cgi_params {
     push @cgiparams, {
         param => "profile",
         val   => $self->get_searchprofile,
-    };
+    } if (!exists $exclude_ref->{'profile'});
         
     return @cgiparams;
 }

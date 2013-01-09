@@ -2520,7 +2520,7 @@ sub update_cluster {
     my $cluster = $self->{schema}->resultset('Clusterinfo')->single({ id => $id });
 
     $cluster->update($update_args);
-    $cluster->serverinfos->update({status => $arg_ref->{status}, active => $arg_ref->{active}});
+    $cluster->serverinfos->update({status => $arg_ref->{status}});
 
     return;
 }

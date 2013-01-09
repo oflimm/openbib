@@ -280,6 +280,10 @@
   .ob-clear_floats:after{
     clear:both;
   }
+
+  .ob-strong {
+    font-weight: bold;
+  }
   
   .ob-clear_floats{
     zoom:1;

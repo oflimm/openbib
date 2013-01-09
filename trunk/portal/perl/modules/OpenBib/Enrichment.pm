@@ -266,7 +266,7 @@ sub check_availability_by_isbn {
     return $is_available;
 }
 
-sub normdata_to_bdb {
+sub enriched_content_to_bdb {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
@@ -290,36 +290,36 @@ sub normdata_to_bdb {
     tie %enrichmntdata,           'MLDBM', "$filename"
         or die "Could not tie enrichment data.\n";
 
-    my $sql_request = "select * from normdata";
+    my $sql_request = "select * from enriched_content_by_isbn";
 
     my $request = $dbh->prepare($sql_request);
     $request->execute();
 
     while (my $result = $request->fetchrow_hashref){
         my $isbn     = $result->{isbn};
-        my $category = $result->{category};
+        my $field = $result->{field};
         my $content  = $result->{content};
 
         if (! exists $enrichmntdata{$isbn}){
             $enrichmntdata{$isbn} = {
-                "$category" => [ $content ],
+                "$field" => [ $content ],
             } ;
             next;
         }
 
-        if (! exists $enrichmntdata{$isbn}{$category}){
+        if (! exists $enrichmntdata{$isbn}{$field}){
             $enrichmntdata{$isbn} = {
-                "$category" => [ $content ],
+                "$field" => [ $content ],
             } ;
             next;
         }
 
-        my $newcontent_ref = $enrichmntdata{$isbn}{$category};
+        my $newcontent_ref = $enrichmntdata{$isbn}{$field};
         
         push @{$newcontent_ref}, $content;
 
         $enrichmntdata{$isbn} = {
-            "$category" => $newcontent_ref,
+            "$field" => $newcontent_ref,
         };
     }
 
@@ -472,7 +472,7 @@ der Anreicherungsdatenbank. Diese lassen sich z.B. in den Templates
 
  my $enriched_normdata_ref = $enrich->get_additional_normdata({ isbn => '3-540-43645-6'})
 
- my $histogram_ref         = $enrich->get_db_histogram_of_occurence({ category => '4200', content => 'Perl'});
+ my $histogram_ref         = $enrich->get_db_histogram_of_occurence({ field => '4200', content => 'Perl'});
 
  my $similar_isbn_ref      = $enrich->get_similar_isbns({ isbn => '3-540-43645-6' })
 
@@ -496,10 +496,10 @@ Anreicherungsinhalte zur ISBN $isbn.
 Liefert eine Listenreferenz auf alle ähnliche Ausgaben (andere
 Sprache, Auflage, ...) des Werkes mit der ISBN $isbn.
 
-=item get_db_histogram_of_occurence({ category => $category, content => $content })
+=item get_db_histogram_of_occurence({ field => $field, content => $content })
 
 Entsprechend das Anreicherungsinhaltes $content in der Kategorie
-$category wird entsprechen der ISBN eine Abgleich mit allen Titeln in
+$field wird entsprechen der ISBN eine Abgleich mit allen Titeln in
 allen Datenbanken und ein Histogram in Form einer Hashreferenz auf den
 Inhalt content sowie eine Listenreferenz histogram mit den
 Informationen über die Datenbank dbname und der dortigen Anzahl count.

@@ -484,6 +484,9 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 
 </form>
 [% ELSE %]
+
+[% PROCESS common/subtemplate name="search_radius" %]
+
 <div class="box info">
 <p>
 [% msg.maketext("Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine

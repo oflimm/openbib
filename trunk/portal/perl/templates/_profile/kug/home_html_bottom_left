@@ -36,8 +36,10 @@ qrcode_infos = [];
 
 FOREACH category IN ["L0010","L0020","L0030","L0110"];
       FOREACH item IN locationinfo.$category;
-        content = item.content.replace('%22','"');
-        qrcode_infos.push(content);
+        content = item.content.replace('%22','"').replace('%22','');
+        IF NOT content.match('<a');
+          qrcode_infos.push(content);
+        END;
       END;
 END;
 

@@ -242,7 +242,10 @@ sub load_full_title_record {
     
     $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $content}) if ($content);
     $record->set_field({field => 'T0501', subfield => '', mult => 1, content => $instructions}) if ($instructions);
-    
+
+    $record->set_holding([]);
+    $record->set_circulation([]);
+
     return $record;
 }
 

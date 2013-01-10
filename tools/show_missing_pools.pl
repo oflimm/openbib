@@ -54,7 +54,7 @@ while (my $res=$request->fetchrow_hashref){
     $created_dbs{$res->{datname}}=1;
 }
 
-$request=$systemdbh->prepare("select dbname from databaseinfo");
+$request=$systemdbh->prepare("select dbname from databaseinfo where active is true");
 $request->execute();
 
 while (my $res=$request->fetchrow_hashref){

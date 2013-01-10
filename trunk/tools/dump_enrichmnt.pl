@@ -6,7 +6,7 @@
 #  Abspeichern der Anreicherungsinformationen der enrichmnt-Datenbank als
 #  BDB-Datei fuer eine Recherche-Anreicherung mittels meta2sql.pl
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -44,4 +44,4 @@ my $dumpfile = "$dumpdir/enrichmntdata.db";
 
 unlink $dumpfile;
 
-$enrichmnt->normdata_to_bdb({filename => $dumpfile});
+$enrichmnt->enriched_content_to_bdb({filename => $dumpfile});

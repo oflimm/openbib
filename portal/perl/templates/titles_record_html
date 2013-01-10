@@ -701,7 +701,9 @@ END ;
 </p>
 [% END %]
 
-
+<p>XX: [% holding.size %]</p>
+[% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
+> 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
 [%- issn              = normset.${"T0543"}.first.content ;
@@ -710,30 +712,27 @@ END ;
     END ;
 -%]
 [%# USE dumper;dumper.dump(same_records)%]
-[% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
-> 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
 <ul>
-[% IF circulation.size > 0 %]
+[%   IF circulation.size > 0 %]
 <li><a href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
-[% ELSE %]
-[%   IF holding.size > 0 %]
+[%   ELSE %]
+[%     IF holding.size > 0 %]
 <li><a href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+[%     END %]
 [%   END %]
-[% END %]
-[% IF journaltocs_feed %]
+[%   IF journaltocs_feed %]
 <li><a href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
-[% END %]
-[% IF same_records.get_size > 0 %]
+[%   END %]
+[%   IF same_records.get_size > 0 %]
 <li><a href="#ob-same_records">[% msg.maketext("In anderen Katalogen") %]</a></li>
-[% END %]
-[% IF similar_records.get_size > 0 %]
+[%   END %]
+[%   IF similar_records.get_size > 0 %]
 <li><a href="#similar_records">[% msg.maketext("Andere Ausgaben") %]</a></li>
-[% END %]
-[% IF config.get('reviews') %]
+[%   END %]
+[%   IF config.get('reviews') %]
 <li><a href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
-[% END %]
+[%   END %]
 </ul>
-[% END %]
 
 [% IF circulation.size > 0 %]
 
@@ -891,6 +890,8 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 [% END %]
 
 </div><!-- End: Additional Title Info -->
+[% END %]
+
 </div><!-- End: Bottom Info -->
 
 </div><!-- End Fulltitle -->

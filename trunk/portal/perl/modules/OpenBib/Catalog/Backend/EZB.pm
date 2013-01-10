@@ -258,6 +258,9 @@ sub load_full_title_record {
         }
     }
 
+    $record->set_holding([]);
+    $record->set_circulation([]);
+
     return $record;
 }
 

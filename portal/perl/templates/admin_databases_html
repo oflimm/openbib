@@ -132,7 +132,7 @@
 <td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/edit.html?l=[% lang %]">[% catalog.description %]</a></td>
 <td align="center">[%- IF catalog.locationid.id -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%] / [%- IF config.have_locationinfo(catalog.dbname) -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
 <td align="center">[%- IF catalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
-<td align="right">[% catalog.allcount %]</td></tr>
+<td align="right">[% IF catalog.system.match('Backend') %]extern[% ELSE %][% catalog.allcount %][% END %]</td></tr>
 [% END %]
 </tbody>
 </table>

@@ -232,7 +232,7 @@ sub get_posts {
 
         my $mult = 1;
         foreach my $subject (@{$generic_attributes_ref->{subjects}}){
-            $record->set_field({field => 'T0710', subfield => '', mult => $mult++, content => $subject });
+            $record->set_field({field => 'T0710', subfield => '', mult => $mult++, content => $self->conv($subject) });
         }
         
         if ($recordtype eq "publication"){
@@ -241,20 +241,20 @@ sub get_posts {
                 my $mult = 1;
                 if ($author=~/\s+and\s+/){
                     foreach my $singleauthor (split('\s+and\s+',$author)){
-                        $record->set_field({field => 'T0100', subfield => '', mult => $mult++, content => $singleauthor});
+                        $record->set_field({field => 'T0100', subfield => '', mult => $mult++, content => $self->conv($singleauthor)});
                     }
                 }
                 else {
-                    $record->set_field({field => 'T0100', subfield => '', mult => 1, content => $author});
+                    $record->set_field({field => 'T0100', subfield => '', mult => 1, content => $self->conv($author)});
                 }
             }
             
             if ($post_node->findvalue('bibtex/@editor')){
-                $record->set_field({field => 'T0101', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@editor')});
+                $record->set_field({field => 'T0101', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bibtex/@editor'))});
             }
             
             if ($post_node->findvalue('bibtex/@title')){
-                $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@title')});
+                $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bibtex/@title'))});
             }
 
             $record->set_field({field => 'T0800', subfield => '', mult => 1, content => 'publication'});
@@ -268,43 +268,43 @@ sub get_posts {
                 #             $singlepost_ref->{record}->{volume}    = $post_node->findvalue('bibtex/@volume');
                 #             $singlepost_ref->{record}->{number}    = $post_node->findvalue('bibtex/@number');
                 
-                $record->set_field({field => 'T0590', subfield => '', mult => 1, content => $journal});
+                $record->set_field({field => 'T0590', subfield => '', mult => 1, content => $self->conv($journal)});
             }
             
             if ($post_node->findvalue('bibtex/@address')){
-                $record->set_field({field => 'T0410', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@address')});
+                $record->set_field({field => 'T0410', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bibtex/@address'))});
             }
             
             if ($post_node->findvalue('bibtex/@publisher')){
-                $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@publisher')});
+                $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bibtex/@publisher'))});
             }
             
             if ($post_node->findvalue('bibtex/@bibtexAbstract')){
-                $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@bibtexAbstract')});
+                $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bibtex/@bibtexAbstract'))});
             }
             
             if ($post_node->findvalue('bibtex/@year')){
-                $record->set_field({field => 'T0425', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@year')});
+                $record->set_field({field => 'T0425', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bibtex/@year'))});
             }
             
             if ($post_node->findvalue('bibtex/@edition')){
-                $record->set_field({field => 'T0403', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@edition')});
+                $record->set_field({field => 'T0403', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bibtex/@edition'))});
             }
             
             if ($post_node->findvalue('bibtex/@url')){
-                $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@url')});
+                $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bibtex/@url'))});
             }
             
             if ($post_node->findvalue('bibtex/@misc')){
                 my $misc = $post_node->findvalue('bibtex/@misc');
 
                 if ($misc =~/isbn = \{([^}]+)\}/){
-                    $record->set_field({field => 'T0540', subfield => '', mult => 1, content => $1 });
+                    $record->set_field({field => 'T0540', subfield => '', mult => 1, content => $self->conv($1) });
                 }
             }
 
             if ($post_node->findvalue('bibtex/@series')){
-                $record->set_field({field => 'T0451', subfield => '', mult => 1, content => $post_node->findvalue('bibtex/@series')});
+                $record->set_field({field => 'T0451', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bibtex/@series'))});
             }
 
 #             $singlepost_ref->{record}->{entrytype} = $post_node->findvalue('bibtex/@entrytype');
@@ -316,16 +316,15 @@ sub get_posts {
             }
 
             if ($post_node->findvalue('bookmark/@title')){
-                $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $post_node->findvalue('bookmark/@title')});
+                $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $self->conv($post_node->findvalue('bookmark/@title'))});
             }
 
             $record->set_field({field => 'T0800', subfield => '', mult => 1, content => 'bookmark'});
         }
 
         if ($generic_attributes_ref->{user}){
-            $record->set_field({field => 'T4200', subfield => '', mult => 1, content => $generic_attributes_ref->{user} });
+            $record->set_field({field => 'T4200', subfield => '', mult => 1, content => $self->conv($generic_attributes_ref->{user}) });
         }
-
         
         $logger->debug($post_node->toString());
 
@@ -630,6 +629,17 @@ sub new_post {
     else{
        return 0;
     }
+}
+
+sub conv {
+    my ($self,$content) = @_;
+    
+    $content=~s/\&amp;/&/g;     # zuerst etwaige &amp; auf & normieren 
+    $content=~s/\&/&amp;/g;     # dann erst kann umgewandet werden (sonst &amp;amp;) 
+    $content=~s/>/&gt;/g;
+    $content=~s/</&lt;/g;
+    
+    return $content;
 }
 
 sub DESTROY {

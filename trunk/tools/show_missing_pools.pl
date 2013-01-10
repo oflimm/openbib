@@ -35,6 +35,7 @@
 use DBI;
 
 use OpenBib::Config;
+use YAML;
 
 my $config = OpenBib::Config->instance;
 
@@ -43,7 +44,9 @@ my $config = OpenBib::Config->instance;
 
 my $systemdbh=DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd}) or die "could not connect";
 
-my $request=$systemdbh->prepare("select datname from pg_database");
+my $localdbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{pgdbname};host=$config->{pgdbhost};port=$config->{pgdbport}", $config->{pgdbuser}, $config->{pgdbpasswd}) or die "could not connect";
+
+my $request=$localdbh->prepare("select datname from pg_database");
 $request->execute();
 
 my %created_dbs = ();

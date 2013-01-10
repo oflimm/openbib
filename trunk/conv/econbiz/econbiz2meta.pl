@@ -36,7 +36,7 @@ use utf8;
 
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
-
+use JSON::XS qw(encode_json);
 use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 
@@ -90,11 +90,11 @@ my $dbh=DBI->connect("DBI:$dbimodule:dbname=$dbname;host=$dbhost;port=$port", $d
 my $result=$dbh->prepare("select pid,cnt,lng from dc_tit") or die "Error -- $DBI::errstr";
 $result->execute();
 
-open (TIT,     ">:utf8","meta.title");
-open (AUT,     ">:utf8","meta.person");
-open (KOR,     ">:utf8","meta.corporatebody");
+open (TITLE,     ">:utf8","meta.title");
+open (PERSON,     ">:utf8","meta.person");
+open (CORPORATEBODY,     ">:utf8","meta.corporatebody");
 open (NOTATION,">:utf8","meta.classification");
-open (SWT,     ">:utf8","meta.subject");
+open (SUBJECT,     ">:utf8","meta.subject");
 
 my $titlecount = 1;
 while (my $res=$result->fetchrow_hashref){
@@ -106,22 +106,25 @@ while (my $res=$result->fetchrow_hashref){
     chomp($lang);
 
     $logger->debug("ID: $pid - HST: $hst - LANG: $lang");
+
+    my $title_ref = {};
+
+    $title_ref->{id} = $pid;
     
-    print TIT "0000:$pid\n";
-
-
     #my $cdateresult=$dbh->prepare("select cnt from dc_dat_cre where pid=?");
     #$cdateresult->execute($pid);
     #
     #while (my $cdateres=$cdateresult->fetchrow_hashref){
     #    my $cdate=$cdateres->{'cnt'};
     #    chomp($cdate);
-    #    print TIT "0002:$cdate\n";
+    #    print TITLE "0002:$cdate\n";
     #}
     
     my $urhresult=$dbh->prepare("select cnt from dc_cre_per_nam where pid=?");
     $urhresult->execute($pid);
-    
+
+    my $person_mult=1;
+
     while (my $urhres=$urhresult->fetchrow_hashref){
         my $urh=$urhres->{'cnt'};
         chomp($urh);
@@ -130,17 +133,30 @@ while (my $res=$result->fetchrow_hashref){
         my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($urh);
 	
         if ($new){
-            print AUT "0000:$person_id\n";
-            print AUT "0001:$urh\n";
-            print AUT "9999:\n";
+            my $item_ref = {};
+            $item_ref->{id} = $person_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $urh,
+            };
+            
+            print PERSON encode_json $item_ref, "\n";
         }
 
-        print TIT "0100:IDN: $person_id\n";
+        push @{$title_ref->{'0100'}}, {
+            mult       => $person_mult,
+            subfield   => '',
+            id         => $person_id,
+            supplement => '',
+        };
+                    
+        $person_mult++;
     }
     
     $urhresult=$dbh->prepare("select cnt from dc_pub_per_nam where pid=?");
     $urhresult->execute($pid);
-    
+
     while (my $urhres=$urhresult->fetchrow_hashref){
         my $urh=$urhres->{'cnt'};
         chomp($urh);
@@ -149,19 +165,33 @@ while (my $res=$result->fetchrow_hashref){
         my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($urh);
 	
         if ($new){
-            print AUT "0000:$person_id\n";
-            print AUT "0001:$urh\n";
-            print AUT "9999:\n";
+            my $item_ref = {};
+            $item_ref->{id} = $person_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $urh,
+            };
+
+            print PERSON encode_json $item_ref, "\n";
         }
-        
-        print TIT "0100:IDN: $person_id\n";
+
+        push @{$title_ref->{'0100'}}, {
+            mult       => $person_mult,
+            subfield   => '',
+            id         => $person_id,
+            supplement => '',
+        };
+                    
+        $person_mult++;
     } 
     
     $urhresult->finish();
     
     my $korresult=$dbh->prepare("select cnt from dc_cre_cor_nam where pid=?");
     $korresult->execute($pid);
-    
+
+    my $corporatebody_mult = 1;
     while (my $korres=$korresult->fetchrow_hashref){
         my $kor=$korres->{'cnt'};
         chomp($kor);
@@ -170,12 +200,25 @@ while (my $res=$result->fetchrow_hashref){
         my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($kor);
 	
         if ($new){
-            print KOR "0000:$corporatebody_id\n";
-            print KOR "0001:$kor\n";
-            print KOR "9999:\n";
+            my $item_ref = {};
+            $item_ref->{id} = $corporatebody_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $kor,
+            };
+            
+            print CORPORATEBODY encode_json $item_ref, "\n";
         }
-        
-        print TIT "0201:IDN: $corporatebody_id\n";
+
+        push @{$title_ref->{'0201'}}, {
+            mult       => $corporatebody_mult,
+            subfield   => '',
+            id         => $corporatebody_id,
+            supplement => '',
+        };
+                    
+        $corporatebody_mult++;
     } 
     
     $korresult=$dbh->prepare("select cnt from dc_pub_cor_nam where pid=?");
@@ -189,19 +232,38 @@ while (my $res=$result->fetchrow_hashref){
         my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($kor);
 	
         if ($new){
-            print KOR "0000:$corporatebody_id\n";
-            print KOR "0001:$kor\n";
-            print KOR "9999:\n";
+            my $item_ref = {};
+            $item_ref->{id} = $corporatebody_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $kor,
+            };
+            
+            print CORPORATEBODY encode_json $item_ref, "\n";
         }
+
+        push @{$title_ref->{'0201'}}, {
+            mult       => $corporatebody_mult,
+            subfield   => '',
+            id         => $corporatebody_id,
+            supplement => '',
+        };
         
-        print TIT "0201:IDN: $corporatebody_id\n";
+        $corporatebody_mult++;
     } 
     
     $korresult->finish();
 
     $hst=stripjunk($hst);
-    print TIT "0331:$hst\n";
-    
+
+    push @{$title_ref->{'0331'}}, {
+        content  => $hst,
+        subfield => '',
+        mult     => 1,
+    };
+
+    my $subject_mult = 1;
     my $swtresult=$dbh->prepare("select cntg,cnte from dc_sub_f where pid=?");
     $swtresult->execute($pid);
     
@@ -217,24 +279,50 @@ while (my $res=$result->fetchrow_hashref){
             my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($swtg);
             
             if ($new){
-                print SWT "0000:$subject_id\n";
-                print SWT "0001:$swtg\n";
-                print SWT "9999:\n";
+                my $item_ref = {};
+                $item_ref->{id} = $subject_id;
+                push @{$item_ref->{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $swtg,
+                };
+                
+                print SUBJECT encode_json $item_ref, "\n";
             }
 
-            print TIT "0710:IDN: $subject_id\n";
+            push @{$title_ref->{'0710'}}, {
+                mult       => $subject_mult,
+                subfield   => '',
+                id         => $subject_id,
+                supplement => '',
+            };
+            
+            $subject_mult++;
         }
         
         if ($swte){
             my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($swte);
-            
+
             if ($new){
-                print SWT "0000:$subject_id\n";
-                print SWT "0001:$swte\n";
-                print SWT "9999:\n";
+                my $item_ref = {};
+                $item_ref->{id} = $subject_id;
+                push @{$item_ref->{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $swte,
+                };
+                
+                print SUBJECT encode_json $item_ref, "\n";
             }
+
+            push @{$title_ref->{'0710'}}, {
+                mult       => $subject_mult,
+                subfield   => '',
+                id         => $subject_id,
+                supplement => '',
+            };
             
-            print TIT "0710:IDN: $subject_id\n";
+            $subject_mult++;
         }
     } 
     
@@ -244,13 +332,18 @@ while (my $res=$result->fetchrow_hashref){
     
     my $absresult=$dbh->prepare("select cnt from dc_des_abs where pid=?");
     $absresult->execute($pid);
-    
+
+    my $abstract_mult = 1;
     while (my $absres=$absresult->fetchrow_hashref){	    
         my $abs=$absres->{'cnt'};
         chomp($abs);
         $abs=stripjunk($abs);
         if ($abs){
-            print TIT "0750:$abs\n";
+            push @{$title_ref->{'0750'}}, {
+                content  => $abs,
+                subfield => '',
+                mult     => $abstract_mult++,
+            };
         }
     } 
     
@@ -261,68 +354,68 @@ while (my $res=$result->fetchrow_hashref){
     
     my $result=$dbh->prepare("select cnt from dc_for_med where pid=?");
     $result->execute($pid);
-    
+
+    my $media_mult = 1;
     while (my $res=$result->fetchrow_hashref){	    
         my $content=$res->{'cnt'};
         chomp($content);
         $content=stripjunk($content);
 
         if ($formattab{$content}){
-            print TIT "0435:$formattab{$content}\n";
+            push @{$title_ref->{'0435'}}, {
+                content  => $formattab{$content},
+                subfield => '',
+                mult     => $media_mult++,
+            };
         }
     } 
     
     $result->finish();
 
-    # Format(type)
-    
-    my $result1=$dbh->prepare("select cnt from dc_for_med where pid=?");
-    $result1->execute($pid);
-    
-    while (my $res1=$result1->fetchrow_hashref){	    
-        my $content=$res1->{'cnt'};
-        chomp($content);
-        $content=stripjunk($content);
-
-        if ($formattab{$content}){
-            print TIT "0435:$formattab{$content}\n";
-        }
-    } 
-    
-    $result1->finish();
-
     # Kollation
     
     my $result1=$dbh->prepare("select cnt from dc_for_ext where pid=?");
     $result1->execute($pid);
-    
+
+    my $coll_mult = 1;
     while (my $res1=$result1->fetchrow_hashref){	    
         my $content=$res1->{'cnt'};
         chomp($content);
         $content=stripjunk($content);
 
         if ($content){
-            print TIT "0433:$content S.\n";
+            push @{$title_ref->{'0433'}}, {
+                content  => "$content S.",
+                subfield => '',
+                mult     => $coll_mult++,
+            };
         }
     } 
     
     $result1->finish();
 
+#    push @{$title_ref->{'0662'}}, {
+#        content  => "http://www.econbiz.de/admin/onteam/einzelansicht.shtml?pid=$pid",
+#        subfield => '',
+#        mult     => 1,
+#    };
     
-    
-    print TIT "0662:http://www.econbiz.de/admin/onteam/einzelansicht.shtml?pid=$pid\n";
-
     # Dokument-URL
     my $result1=$dbh->prepare("select cnt from dc_ide where pid=?");
     $result1->execute($pid);
-    
+
+    my $url_mult = 1;
     while (my $res1=$result1->fetchrow_hashref){	    
         my $content=$res1->{'cnt'};
         chomp($content);
         $content=stripjunk($content);
 
         if ($content){
-            print TIT "0662:$content\n";
+            push @{$title_ref->{'0662'}}, {
+                content  => $content,
+                subfield => '',
+                mult     => $url_mult++,
+            };
         }
     } 
     
@@ -332,21 +425,25 @@ while (my $res=$result->fetchrow_hashref){
     # Dokumententyp/Medienart
     my $result1=$dbh->prepare("select cntg from stlv, dc_typ where dc_typ.pid=? and dc_typ.cnt=stlv.nr");
     $result1->execute($pid);
-    
+
+    my $type_mult = 1;
     while (my $res1=$result1->fetchrow_hashref){	    
         my $content=$res1->{'cntg'};
         chomp($content);
         $content=stripjunk($content);
 
         if ($content){
-            print TIT "0800:$content\n";
+            push @{$title_ref->{'0800'}}, {
+                content  => $content,
+                subfield => '',
+                mult     => $type_mult++,
+            };
         }
     } 
     
     $result1->finish();
 
-    
-    print TIT "9999:\n";
+    print TITLE encode_json $title_ref, "\n";
 
     if ($titlecount % 1000 == 0){
         $logger->info("Processed $titlecount titles");
@@ -360,11 +457,11 @@ $dbh->disconnect();
 
 close(DAT);
 
-close(TIT);
-close(AUT);
-close(KOR);
+close(TITLE);
+close(PERSON);
+close(CORPORATEBODY);
 close(NOTATION);
-close(SWT);
+close(SUBJECT);
 
 sub stripjunk {
     my ($item)=@_;

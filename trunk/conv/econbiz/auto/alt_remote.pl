@@ -48,5 +48,5 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Hole Daten via SQL und konvertiere in das Meta-Format\n";
 
-system("cd $pooldir/$pool ; rm unload.*");
-system("cd $pooldir/$pool ; $konvdir/econbiz2meta.pl econbiz > /dev/null 2>&1 ; gzip unload.*");
+system("cd $pooldir/$pool ; rm meta.*");
+system("cd $pooldir/$pool ; $konvdir/econbiz2meta.pl econbiz > /dev/null 2>&1 ; gzip meta.*");

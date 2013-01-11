@@ -701,7 +701,6 @@ END ;
 </p>
 [% END %]
 
-<p>XX: [% holding.size %]</p>
 [% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
 > 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->

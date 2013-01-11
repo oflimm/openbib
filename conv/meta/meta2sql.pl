@@ -1294,9 +1294,18 @@ while (my $jsonline=<IN>){
         }
     }
 
-    # Bibkey-Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel
-    {
-        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ fields => $record_ref});
+    # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
+    if ((defined $record_ref->{'0100'} || defined $record_ref->{'0101'}) && defined $record_ref->{'0331'} && defined $record_ref->{'0425'}){
+
+        my $bibkey_record_ref = {
+            'T0100' => $record_ref->{'0100'},
+            'T0101' => $record_ref->{'0101'},
+            'T0331' => $record_ref->{'0331'},
+            'T0425' => $record_ref->{'0425'},
+        };
+
+        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ fields => $bibkey_record_ref});
+
         my $bibkey      = ($bibkey_base)?OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base }):"";
         
         if ($bibkey) {

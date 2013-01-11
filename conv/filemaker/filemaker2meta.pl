@@ -6,7 +6,7 @@
 #
 #  Konvertierung des FileMaker XML-Formates in des OpenBib Einlade-Metaformat
 #
-#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -29,62 +29,69 @@
 
 use 5.008001;
 
+use strict;
+use warnings;
+
 use utf8;
 use Encode;
 
 use XML::Twig;
+use Getopt::Long;
+use Log::Log4perl qw(get_logger :levels);
 use YAML;
+use JSON::XS;
 
-use vars qw(@autbuffer @autdubbuf);
-use vars qw(@korbuffer @kordubbuf);
-use vars qw(@swtbuffer @swtdubbuf);
-use vars qw(@titbuffer @titdubbuf $titcount);
+use OpenBib::Conv::Common::Util;
 
-my $inputfile=$ARGV[0];
+my ($inputfile,$configfile,$logfile,$loglevel);
 
-my $titcount=0;
+&GetOptions(
+	    "inputfile=s"          => \$inputfile,
+            "logfile=s"            => \$logfile,
+            "loglevel=s"           => \$loglevel,
+	    );
 
-$autdublastidx=1;
-$autidx=0;
+if (!$inputfile){
+    print << "HELP";
+filemaker2meta.pl - Aufrufsyntax
 
-$kordublastidx=1;
-$koridx=0;
+    filemaker2meta.pl --inputfile=xxx
 
-$swtdublastidx=1;
-$swtidx=0;
+    filemaker2meta.pl --inputfile=xxx --loglevel=DEBUG --logfile=/tmp/out.log
+HELP
+exit;
+}
 
-$titdublastidx=1;
-$titleidx=0;
+$logfile=($logfile)?$logfile:'/var/log/openbib/filemaker2meta.log';
+$loglevel=($loglevel)?$loglevel:'INFO';
 
-$mexidn=1;
-$mexidx=0;
+our $metaidx = 0;
+our $mexidn  = 1;
+our %metadata;
 
-@autbuffer=();
-@autdubbuf=();
-@korbuffer=();
-@kordubbuf=();
-@swtbuffer=();
-@swtdubbuf=();
-@titbuffer=();
-@titdubbuf=();
-@mexbuffer=();
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
 
-%metadata=();
-%metaidx=0;
+Log::Log4perl::init(\$log4Perl_config);
 
-# my $twig_meta= XML::Twig->new(
-#    TwigHandlers => {
-#      "/FMPXMLRESULT/METADATA/FIELD" => \&parse_metadata
-#    },
-#  );
+# Log4perl logger erzeugen
+my $logger = get_logger();
 
-# # Metadata einlesen
-# $twig_meta->safe_parsefile($inputfile);
-
-# print YAML::Dump(\%metadata);
-
-# exit;
-
+open (TITLE,         ">:utf8","meta.title");
+open (PERSON,        ">:utf8","meta.person");
+open (CORPORATEBODY, ">:utf8","meta.corporatebody");
+open (CLASSIFICATION,">:utf8","meta.classification");
+open (SUBJECT,       ">:utf8","meta.subject");
+open (HOLDING,       ">:utf8","meta.holding");
 
 my $twig= XML::Twig->new(
    TwigHandlers => {
@@ -96,30 +103,6 @@ my $twig= XML::Twig->new(
 
 print STDERR "Daten werden eingelesen und geparsed\n";
 $twig->safe_parsefile($inputfile);
-
-print STDERR $@;
-
-print STDERR "Verfasser werden ausgegeben\n";
-
-ausgabeautfile();
-
-print STDERR "Koerperschaften werden ausgegeben\n";
-
-ausgabekorfile();
-
-print STDERR "Schlagworte werden ausgegeben\n";
-
-ausgabeswtfile();
-
-print STDERR "Titel werden ausgegeben\n";
-
-ausgabetitfile();
-
-print STDERR "Exemplardaten werden ausgegeben\n";
-
-ausgabemexfile();
-
-print STDERR "Titelzahl: $titcount\n";
 
 sub parse_metadata {
     my($t, $field)= @_;
@@ -139,14 +122,16 @@ sub parse_metadata {
 sub parse_titset {
     my($t, $titset)= @_;
 
-    $titcount++;
-
+    my $title_ref = {};
+    
     my $id=$titset->{'att'}->{'RECORDID'};
 
-    $titbuffer[$titleidx++]="0000:".$id;
+    $title_ref->{id} = $id;
+
 
     my @cols=$titset->children('COL');
-    
+
+
     # Verfasser/Personen
     # Autor
     my @verfasser=();
@@ -188,21 +173,35 @@ sub parse_titset {
     my %seen_terms = ();
     my @unique_verfasser = grep { ! $seen_terms{$_} ++ } @verfasser;
 
+    my $person_mult = 1;
     foreach my $singleverf (@unique_verfasser){        
-        my $autidn=get_autidn($singleverf);
-        if ($autidn > 0){
-            $autbuffer[$autidx++]="0000:".$autidn;
-            $autbuffer[$autidx++]="0001:".$singleverf;
-            $autbuffer[$autidx++]="9999:";
+        my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($singleverf);
+	
+        if ($new){
+            my $item_ref = {};
+            $item_ref->{id} = $person_id;
+            push @{$item_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $singleverf,
+            };
+            
+            print PERSON encode_json $item_ref, "\n";
         }
-        else {
-            $autidn=(-1)*$autidn;
-        }
-        
-        $titbuffer[$titleidx++]="0100:IDN: ".$autidn;
+
+        push @{$title_ref->{'0100'}}, {
+            mult       => $person_mult,
+            subfield   => '',
+            id         => $person_id,
+            supplement => '',
+        };
+                    
+        $person_mult++;
     }
 
+
     # Schlagworte
+    my $subject_mult = 1;
     if(exists $metadata{'Schlagwort'} && $cols[$metadata{'Schlagwort'}]->first_child('DATA')->text()) {
         my $swtans_all=$cols[$metadata{'Schlagwort'}]->text();
 
@@ -210,20 +209,32 @@ sub parse_titset {
             my @swts = split(" +",$swtans_all);
 
             foreach my $swtans (@swts){
-                my $swtidn=get_swtidn($swtans);
-                if ($swtidn > 0){
-                    $swtbuffer[$swtidx++]="0000:".$swtidn;
-                    $swtbuffer[$swtidx++]="0001:".$swtans;
-                    $swtbuffer[$swtidx++]="9999:";
-                }
-                else {
-                    $swtidn=(-1)*$swtidn;
+                my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($swtans);
+                
+                if ($new){
+                    my $item_ref = {};
+                    $item_ref->{id} = $subject_id;
+                    push @{$item_ref->{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $swtans,
+                    };
+                    
+                    print SUBJECT encode_json $item_ref, "\n";
                 }
                 
-                $titbuffer[$titleidx++]="0710:IDN: ".$swtidn;
+                push @{$title_ref->{'0710'}}, {
+                    mult       => $subject_mult,
+                    subfield   => '',
+                    id         => $subject_id,
+                    supplement => '',
+                };
+                
+                $subject_mult++;
             }
         }
     }
+
 
     # Titelkategorien
 
@@ -237,13 +248,22 @@ sub parse_titset {
         push @titel, $cols[$metadata{'TitelJap'}]->first_child('DATA')->text();
     }
     if (@titel){
-        $titbuffer[$titleidx++]="0331:".join(' / ',@titel);
+        push @{$title_ref->{'0331'}}, {
+            content  => join(' / ',@titel),
+            subfield => '',
+            mult     => 1,
+        };
     }
-    
+
     # Ausgabe
     if(exists $metadata{'Ausgabe'} && $cols[$metadata{'Ausgabe'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0403:".$cols[$metadata{'Ausgabe'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0403'}}, {
+            content  => $cols[$metadata{'Ausgabe'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
+
 
     # Verlag
     my @verlag=();
@@ -253,10 +273,15 @@ sub parse_titset {
     if(exists $metadata{'VerlJap'} && $cols[$metadata{'VerlJap'}]->first_child('DATA')->text()){
         push @verlag, $cols[$metadata{'VerlJap'}]->first_child('DATA')->text();
     }
+
     if (@verlag){
-        $titbuffer[$titleidx++]="0412:".join(' / ',@verlag);
+        push @{$title_ref->{'0412'}}, {
+            content  => join(' / ',@verlag),
+            subfield => '',
+            mult     => 1,
+        };
     }
-    
+
     # Verlagsort
     my @verlagsorte=();
     if(exists $metadata{'Ort'} && $cols[$metadata{'Ort'}]->first_child('DATA')->text()){
@@ -266,17 +291,29 @@ sub parse_titset {
         push @verlagsorte, $cols[$metadata{'OrtJap'}]->first_child('DATA')->text();
     }
     if (@verlagsorte){
-        $titbuffer[$titleidx++]="0410:".join(' / ',@verlagsorte);
+        push @{$title_ref->{'0410'}}, {
+            content  => join(' / ',@verlagsorte),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
     # Umfang/Format
     if(exists $metadata{'Kollation'} && $cols[$metadata{'Kollation'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0433:".$cols[$metadata{'Kollation'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0433'}}, {
+            content  => $cols[$metadata{'Kollation'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
     # Jahr
     if(exists $metadata{'Jahr'} && $cols[$metadata{'Jahr'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0425:".$cols[$metadata{'Jahr'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0425'}}, {
+            content  => $cols[$metadata{'Jahr'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
     # Gesamttitel / Reihe
@@ -294,187 +331,134 @@ sub parse_titset {
         push @gesamttitel, $cols[$metadata{'ReiheJap'}]->first_child('DATA')->text();
     }
     if (@gesamttitel){
-        $titbuffer[$titleidx++]="0451:".join(' / ',@gesamttitel);
+        push @{$title_ref->{'0451'}}, {
+            content  => join(' / ',@gesamttitel),
+            subfield => '',
+            mult     => 1,
+        };
     }
     
     if(exists $metadata{'Sprache'} && $cols[$metadata{'Sprache'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0015:".$cols[$metadata{'Sprache'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0015'}}, {
+            content  => $cols[$metadata{'Sprache'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
     if(exists $metadata{'Nummer'} && $cols[$metadata{'Nummer'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0089:".$cols[$metadata{'Nummer'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0089'}}, {
+            content  => $cols[$metadata{'Nummer'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
     if(exists $metadata{'Fußnote'} && $cols[$metadata{'Fußnote'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0501:".$cols[$metadata{'Fußnote'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0501'}}, {
+            content  => $cols[$metadata{'Fußnote'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
     if(exists $metadata{'Inventar'} && $cols[$metadata{'Inventar'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0005.001:".$cols[$metadata{'Inventar'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0005'}}, {
+            content  => $cols[$metadata{'Inventar'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
     # Quelle
     if(exists $metadata{'Jg,Heft,Bd'} && $cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0590:".$cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0590'}}, {
+            content  => $cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
     # ISBN
+    my $isbn_mult = 1;
     if(exists $metadata{'ISBN'} && $cols[$metadata{'ISBN'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0540:".$cols[$metadata{'ISBN'}]->first_child('DATA')->text();
+        foreach my $isbn (split /\n/, $cols[$metadata{'ISBN'}]->first_child('DATA')->text()){
+            push @{$title_ref->{'0540'}}, { 
+                content  => $isbn, 
+                subfield => '',
+                mult     => $isbn_mult++,
+            };
+        }
     }
 
     # Datum
     if(exists $metadata{'Datum'} && $cols[$metadata{'Datum'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0002:".$cols[$metadata{'Datum'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0002'}}, {
+            content  => $cols[$metadata{'Datum'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
     if(exists $metadata{'Standort'} && $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0016.001:".$cols[$metadata{'Standort'}]->first_child('DATA')->text();
-    }
-    
-    if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
-        $titbuffer[$titleidx++]="0014.001:".$cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text();
+        push @{$title_ref->{'0016'}}, {
+            content  => $cols[$metadata{'Standort'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
     }
 
-    $titbuffer[$titleidx++]="9999:";
+    if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
+        push @{$title_ref->{'0014'}}, {
+            content  => $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text(),
+            subfield => '',
+            mult     => 1,
+        };
+    }
+
+    print TITLE encode_json $title_ref, "\n";
 
     # Exemplardaten
-    if (exists $metadata{'Signatur'} && $cols[$metadata{'Signatur'}]->first_child('DATA')->text() || $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
+    if ((exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()) || $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
 
-        $mexbuffer[$mexidx++]="0000:$mexidn";
-        $mexbuffer[$mexidx++]="0004:$id";
+        my $item_ref = {};
+        $item_ref->{id} = $mexidn;
+        push @{$item_ref->{'0004'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $id,
+        };
 
         if(exists $metadata{'Standort'} && $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
-            $mexbuffer[$mexidx++]="0016.001:".$cols[$metadata{'Standort'}]->first_child('DATA')->text();
+            push @{$item_ref->{'0016'}}, {
+                content  => $cols[$metadata{'Standort'}]->first_child('DATA')->text(),
+                subfield => '',
+                mult     => 1,
+            };
         }
-
+        
         if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
-            $mexbuffer[$mexidx++]="0014.001:".$cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text();
+            push @{$item_ref->{'0014'}}, {
+                content  => $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text(),
+                subfield => '',
+                mult     => 1,
+            };
         }
-        $mexbuffer[$mexidx++]="9999:";
+        
         $mexidn++;
+        
+        print HOLDING encode_json $item_ref, "\n";
     }
 
 
     # Release memory of processed tree
     # up to here
     $t->purge();
-}
-                                   
-                                   
-sub get_autidn {
-    ($autans)=@_;
-    
-    $autdubidx=1;
-    $autdubidn=0;
-                                   
-    while ($autdubidx < $autdublastidx){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;      
-            
-            # print STDERR "AutIDN schon vorhanden: $autdubidn\n";
-        }
-        $autdubidx++;
-    }
-    if (!$autdubidn){
-        $autdubbuf[$autdublastidx]=$autans;
-        $autdubidn=$autdublastidx;
-        #print STDERR "AutIDN noch nicht vorhanden: $autdubidn\n";
-        $autdublastidx++;
-        
-    }
-    return $autdubidn;
-}
-                                   
-sub get_swtidn {
-    ($swtans)=@_;
-    
-    $swtdubidx=1;
-    $swtdubidn=0;
-    
-    while ($swtdubidx < $swtdublastidx){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;      
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdublastidx]=$swtans;
-        $swtdubidn=$swtdublastidx;
-        $swtdublastidx++;
-        
-    }
-    return $swtdubidn;
-}
-                                   
-sub get_koridn {
-    ($korans)=@_;
-    
-    $kordubidx=1;
-    $kordubidn=0;
-    
-    while ($kordubidx < $kordublastidx){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;
-        }
-        $kordubidx++;
-    }
-    if (!$kordubidn){
-        $kordubbuf[$kordublastidx]=$korans;
-        $kordubidn=$kordublastidx;
-        $kordublastidx++;
-    }
-    return $kordubidn;
-}
+}                                                                    
 
-sub ausgabeautfile {
-    open(AUT,">:utf8","unload.PER");
-    $i=0;
-    while ($i < $autidx){
-        print AUT $autbuffer[$i],"\n";
-        $i++;
-    }
-    close(AUT);
-}
-
-sub ausgabetitfile
-{
-    open (TIT,">:utf8","unload.TIT");
-    $i=0;
-    while ($i < $titleidx){
-        print TIT $titbuffer[$i],"\n";
-        $i++;
-    }
-    close(TIT);
-}
-
-sub ausgabemexfile {
-    open(MEX,">:utf8","unload.MEX");
-    $i=0;
-    while ($i < $mexidx){
-	print MEX $mexbuffer[$i],"\n";
-	$i++;
-    }
-    close(MEX);
-}
-
-sub ausgabeswtfile {
-  open(SWT,">:utf8","unload.SWD");
-  $i=0;
-  while ($i < $swtidx) {
-      print SWT $swtbuffer[$i],"\n";
-      $i++;
-  }
-  close(SWT);
-}
-
-sub ausgabekorfile {
-    open(KOR,">:utf8","unload.KOE");
-    $i=0;
-    while ($i < $koridx){
-	print KOR $korbuffer[$i],"\n";
-	$i++;
-    }
-    close(KOR);
-}
-
+close(TITLE);
+close(PERSON);
+close(CORPORATEBODY);
+close(CLASSIFICATION);
+close(SUBJECT);
+close(HOLDING);

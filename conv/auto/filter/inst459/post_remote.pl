@@ -4,7 +4,7 @@
 #
 #  post_remote.pl
 #
-#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -43,6 +43,6 @@ print "### $pool: Umwandlung in das Meta-Format\n";
 
 system("cd $pooldir/$pool ; rm unload.* pool.dat");
 system("gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");
-system("cd $pooldir/$pool ; $konvdir/filemaker2meta.pl $pooldir/$pool/pool.dat");
+system("cd $pooldir/$pool ; $konvdir/filemaker2meta.pl --inputfile=$pooldir/$pool/pool.dat");
 system("rm $pooldir/$pool/pool.dat");
-system("cd $pooldir/$pool ; gzip unload.*");
+system("cd $pooldir/$pool ; gzip meta.*");

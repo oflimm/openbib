@@ -1849,8 +1849,14 @@ sub del_databaseinfo_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Rssinfo')->single({ id => $id})->delete;
+    eval {
+        $self->{schema}->resultset('Rssinfo')->single({ id => $id})->delete;
+    };
 
+    if ($@){
+        $logger->error($@);
+    }
+    
     return;
 }
 
@@ -1860,8 +1866,16 @@ sub del_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->delete;
+    eval {
+        my $view = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname});
+        $view->view_dbs->delete;
+        $view->delete;
+    };
 
+    if ($@){
+        $logger->error($@);
+    }
+        
     return;
 }
 
@@ -2194,12 +2208,19 @@ sub del_profile {
     my $logger = get_logger();
 
     # DBI: "delete from profileinfo where profilename = ?"
-    $self->{schema}->resultset('Profileinfo')->single(
-        {
-            profilename => $profilename,
-        }
-    )->delete;
-    
+
+    eval {
+        $self->{schema}->resultset('Profileinfo')->single(
+            {
+                profilename => $profilename,
+            }
+        )->delete;
+    };
+
+    if ($@){
+        $logger->error($@);
+    }
+
     my $orgunits_ref=$self->get_orgunitinfo_overview($profilename);
 
     foreach my $thisorgunit ($orgunits_ref->all){
@@ -2396,8 +2417,14 @@ sub del_server {
 
     $logger->debug("About to delete id $id");
 
-    # DBI: "delete from serverinfo where id = ?"
-    $self->{schema}->resultset('Serverinfo')->single({ id => $id })->delete;
+    eval {
+        # DBI: "delete from serverinfo where id = ?"
+        $self->{schema}->resultset('Serverinfo')->single({ id => $id })->delete;
+    };
+
+    if ($@){
+        $logger->error($@);
+    }
 
     return;
 }
@@ -2486,8 +2513,14 @@ sub del_cluster {
 
     $logger->debug("About to delete id $id");
 
-    # DBI: "delete from clusterinfo where id = ?"
-    $self->{schema}->resultset('Clusterinfo')->single({ id => $id })->delete;
+    eval {
+        # DBI: "delete from clusterinfo where id = ?"
+        $self->{schema}->resultset('Clusterinfo')->single({ id => $id })->delete;
+    };
+    
+    if ($@){
+        $logger->error($@);
+    }
 
     return;
 }
@@ -2703,11 +2736,17 @@ sub delete_authenticator {
   
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Authenticator')->search_rs(
-        {
-            id => $targetid,
-        }   
-    )->delete;
+    eval {
+        $self->{schema}->resultset('Authenticator')->search_rs(
+            {
+                id => $targetid,
+            }   
+        )->delete;
+    };
+
+    if ($@){
+        $logger->error($@);
+    }
 
     return;
 }

@@ -115,7 +115,7 @@
 <label for="databases">[% msg.maketext("Katalogauswahl zu diesem View") %]</label>
 <select id="databases" name="databases" multiple="multiple" size="20">
 [% FOREACH singledb IN dbnames %]
-<option value="[% singledb %]" [% IF viewdbs.${singledb} %]selected="selected"[% END %]>[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</option>
+<option value="[% singledb %]" [% IF selected_viewdbs.${singledb} %]selected="selected"[% END %]>[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</option>
 [% END %]
 </select>
 </div>

@@ -734,10 +734,10 @@ sub to_bibkey {
     my $logger = get_logger();
 
     my $bibkey_record_ref = {
-        'T0100' => $self->{_fields}->{'0100'},
-        'T0101' => $self->{_fields}->{'0101'},
-        'T0331' => $self->{_fields}->{'0331'},
-        'T0425' => $self->{_fields}->{'0425'},
+        'T0100' => $self->{_fields}->{'T0100'},
+        'T0101' => $self->{_fields}->{'T0101'},
+        'T0331' => $self->{_fields}->{'T0331'},
+        'T0425' => $self->{_fields}->{'T0425'},
     };
 
     return OpenBib::Common::Util::gen_bibkey({ fields => $bibkey_record_ref});

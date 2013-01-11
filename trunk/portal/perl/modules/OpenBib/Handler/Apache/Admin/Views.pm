@@ -265,7 +265,7 @@ sub show_record_form {
 
     my $ttdata={
         viewinfo   => $viewinfo,
-        viewdbs    => $viewdbs_ref,
+        selected_viewdbs    => $viewdbs_ref,
 
         allrssfeeds  => $all_rssfeeds_ref,
         viewrssfeed  => $viewrssfeed_ref,

@@ -41,6 +41,7 @@ use Getopt::Long;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 use YAML::Syck;
+use JSON::XS qw(encode_json);
 use DB_File;
 use Encode qw /decode_utf8/;
 
@@ -225,7 +226,7 @@ sub process_file {
             push @{$title_ref->{'0331'}}, {
                 content  => $content,
                 subfield => '',
-                mult     => $title_mult++;,
+                mult     => $title_mult++,
             };
         }
 

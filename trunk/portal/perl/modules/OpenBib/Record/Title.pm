@@ -733,7 +733,14 @@ sub to_bibkey {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return OpenBib::Common::Util::gen_bibkey({ fields => $self->{_fields}});
+    my $bibkey_record_ref = {
+        'T0100' => $self->{_fields}->{'0100'},
+        'T0101' => $self->{_fields}->{'0101'},
+        'T0331' => $self->{_fields}->{'0331'},
+        'T0425' => $self->{_fields}->{'0425'},
+    };
+
+    return OpenBib::Common::Util::gen_bibkey({ fields => $bibkey_record_ref});
 }
 
 sub to_normalized_isbn13 {

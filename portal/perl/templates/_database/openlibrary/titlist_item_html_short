@@ -207,7 +207,7 @@
     <div class="ob-item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="http://covers.openlibrary.org/b/olid/[% record.id %]-S.jpg" title="OpenLibrary Cover" />[% ELSE %]&nbsp;[% END %]
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) %]<img src="http://covers.openlibrary.org/b/olid/[% record.id %]-S.jpg" title="OpenLibrary Cover" />[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]

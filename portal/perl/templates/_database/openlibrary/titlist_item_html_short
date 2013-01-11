@@ -9,11 +9,7 @@
 #
 # Einzelner Eintrag in einer Liste (Kurztitel)
 #
-#
-# Erhaelt neben Default-Objekten (config, session usw.)
-#
-# record
-# dbinfo 
+# Anpassung: Thumbnail direkt aus der OpenLibrary via TitelID
 #
 #######################################################################
 -%]
@@ -149,6 +145,11 @@
         END;
      END;
 
+     # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
+     IF NOT title ;
+       title = "Bitte melden Sie uns die <b>ID ${record.id}</b> und die Datenbank <b>${record.database}</b> dieses Titels als fehlerhaft zur Korrektur!";
+     END;
+ 
      # Auflage konstruieren
      edition = item.${'T0403'}.first.content;
 
@@ -164,7 +165,7 @@
          signaturen.push("${part.content}");
      END;
      signatur = signaturen.sort.unique.join(' ; ');
-     isbn     = item.${"T0540"}.first.content.replace('-','');
+     isbn     = item.${"T0540"}.first.content.replace('-','') || item.${"T0553"}.first.content.replace('-','');
      dbdesc   = dbinfo.get('dbnames').${record.database}.full;
      dburl    = dbinfo.get('urls').${record.database};
 
@@ -188,12 +189,12 @@
     END ;
 
     IF ebook ;
-      ebook = "${path_prefix}/${config.get('redirect_loc')}/503/${ebook}" ;
+      ebook = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(ebook)}" ;
       titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
     END ;
 
     IF toc ;
-      toc = "${path_prefix}/${config.get('redirect_loc')}/500/${toc}" ;
+      toc = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(toc)}" ;
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
@@ -206,15 +207,15 @@
     <div class="ob-item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn && qopts.lt == 'cover' %]<img src="http://covers.openlibrary.org/b/olid/[% record.id %]-S.jpg" title="OpenLibrary Cover" />[% ELSE %]&nbsp;[% END %]
-      </div> 
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="http://covers.openlibrary.org/b/olid/[% record.id %]-S.jpg" title="OpenLibrary Cover" />[% ELSE %]&nbsp;[% END %]
+      </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]
          <span class="ob-person">[% person %]</span><br />[% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>   
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-   IF dbinfo.locationid.${record.database}.identifier %]
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/[% dbinfo.locationid.${record.database}.identifier %]">
+         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.locationid.${record.database}.identifier %]">
 [%-   ELSE -%]
          <a href="[% dburl %]" target="_blank">
 [%-   END -%]
@@ -225,7 +226,10 @@
       </div>
       <div class="ob-titlemark">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]</div>
       <div class="ob-titleactions">
-[% IF record.id && record.database %]<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>[% END %]
+[% IF tagname %]
+      <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
+[% END %]
+[% IF record.id && record.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>[% END %]
 [% IF user_owns_litlist %]
 &nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]

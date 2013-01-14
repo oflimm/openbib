@@ -498,10 +498,40 @@
   }
   .ob-facets h4 {
     margin-top: 2px;
-    border-bottom:2px solid #ddd;
+    border-bottom: none;
+    font-weight: bold;
   }
 
-  .ym-full.ym-gbox {
+  .ym-full .ym-gbox {
+    padding: 0 10px;
+  }
+
+  .ym-grid .ym-gbox {
     padding: 0 15px;
+  }
+
+  .ob-items dt {
+    margin-top:.75em;
+    font-weight:bold;
+    padding:0.2em 0.4em;
+    background-color: #ebeff5;
+  }
+
+  .ob-fulltitle {
+    margin-top: 10px;
+/*    background: #fff;*/
+  }
+
+  .ob-title_wikipedia_articles {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .ym-form {
+    background: none repeat scroll 0 0 #dfe2e8;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 0 4px #DDDDDD;
+    margin: 1.5em 0 0;
+    padding: 0;
   }
 }

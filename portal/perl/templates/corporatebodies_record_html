@@ -53,7 +53,7 @@ title      = msg.maketext("Körperschafts-Information: [_1] in Katalog [_2]",rec
    </div>
 
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
+      <div class="ym-col1 ob-hidden">
         <div class="ym-cbox" class="ym-clearfix">
         </div>
       </div>

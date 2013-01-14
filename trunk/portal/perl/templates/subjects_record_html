@@ -64,6 +64,8 @@ title      = msg.maketext("Schlagwort-Information: [_1] in Katalog [_2]",recordn
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+<div class="ob-authority_record">
+
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 
@@ -102,30 +104,7 @@ END;
 -%]
 </table>
 
-[%
-
-    headings = [];
-    FOREACH item IN normset.${"S0800"};
-      headings.push(item.content);
-    END ;
-   
-    searchterm        = headings.join(' / ');
-    searchprefix      = config.get('searchfield').subjectstring.prefix;
-
-
-
-
-    globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-
-    globalurl         = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-
-%]
-
-<p> <img style="vertical-align:bottom" src="[% config.get('hint_img')
-%]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Dehnen Sie Ihre Recherche nach <i>[_1]</i> über die
-[_2]G[_3] lobale Suche auf alle
-vorhandenen Kataloge aus.","${searchterm}","<a href=\"${globalurl}\"><span
-class=\"globalsearch\">","</span></a>") %]</p>
+</div>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

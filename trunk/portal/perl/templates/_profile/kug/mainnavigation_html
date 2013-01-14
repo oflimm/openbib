@@ -34,8 +34,8 @@ $.get("[% IF user.ID %][% path_prefix %]/[% config.get('users_loc') %]/id/[% use
 });
 
     </script> -->
-[% IF NOT without_navigation_search %]
-<nav id="ob-fixed_navigation">
+
+<nav id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]>
 [% IF user.is_authenticated %]
 [% autocompletion_type = user.get_autocompletion %]
 [% livesearch          = user.get_livesearch %]
@@ -117,6 +117,6 @@ $(document).ready(function(){
 </div>
 </form>
 </nav>
-[% END %]
-<p/>
+
+[% IF NOT without_navigation_search %]<p/>[% END %]
     <!-- end: main navigation -->

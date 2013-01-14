@@ -502,6 +502,20 @@
     font-weight: bold;
   }
 
+  .ym-col3 .ym-cbox {
+    padding: 5px;
+    margin-left: 10px;
+    background: #fff;    
+  }
+
+  .ym-col1 .ym-cbox {
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 10px;
+    background: #fff;    
+  }
+
+    
   .ym-full .ym-gbox {
     padding: 0 10px;
   }
@@ -517,6 +531,11 @@
     background-color: #ebeff5;
   }
 
+  .ob-authority_record {
+    background: #fff;
+
+  }
+  
   .ob-fulltitle {
     margin-top: 10px;
 /*    background: #fff;*/
@@ -533,5 +552,17 @@
     box-shadow: 0 0 4px #DDDDDD;
     margin: 1.5em 0 0;
     padding: 0;
+  }
+
+ nav.ob-hidden {
+    display: none;
+  }
+
+  .ym-col1.ob-hidden {
+    background: #ebeff5;
+    display: none;
+    height: 0px;
+    width: 0px;
+    padding: 0px;
   }
 }

@@ -13,18 +13,15 @@
 -%]
 
 <ul class="news">
-<li><b>21.4.2011</b>: Zur schnellen Übernahme wesentlicher
-Informationen aus OpenBib mit dem Handy als "Merkzettel" - Signatur/Standort, um ein Buch im Regal zu
-finden oder Adresse/Öffnungszeiten einer Bibliothek, um
-diese zu finden - setzt OpenBib nun <a
-href="http://de.wikipedia.org/wiki/QR-Code"
-target="_blank">QR-Codes</a> <img style="vertical-align:bottom;"
-src="[% config.get('qrcode_img') %]" alt="QR-Code Icon" />
-ein. Geeignete Programme, wie z.B. <a class="ext" href="http://www.i-nigma.com/Downloadi-nigmaReader.html"
-target="_blank">i-nigma Reader</a> oder <a class="ext" href="http://reader.kaywa.com/" target="_blank">Kaywa Reader</a>, sind für
-viele Handys verfügbar. (weitergehende Informationen in diesem
-<a href="http://blog.openbib.org/2011/04/21/qr-codes-im-kug/" target="_blank">Blog-Artikel</a>)</li>
-<li><b>30.10.2010</b>: Hintergrundinformationen zum Einsatz von OpenBib als K&ouml;lner Universit&auml;tsGesamtkatalog KUG wurden in einem eigenen Beitrag im "Handbuch Bibliothek 2.0" zusammengefasst und k&ouml;nnen mit weiteren Beitr&auml;gen zu aktuellen Entwicklungen im Themenbereich "Nutzerzentrierung in Bibliotheken" (Suchmaschinen, E-Learning, Games, ...) in diesem als Open Access ver&ouml;ffentlichten Buch kostenlos gelesen werden (<a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103.293" target="_blank">OpenBib-Beitrag</a> oder <a href="http://www.reference-global.com/doi/pdfplusdirect/10.1515/9783110232103" target="_blank">gesamtes Buch</a> im PDF-Format). </li>
+<li><b>19.3.2012</b>: Die Anzeige "Letzte Artikel" bei Zeitschriften
+wurde wegen der Einstellung des <a href="http://www.tictocs.ac.uk/"
+target="_blank">TicTocs-Dienstes</a> auf den Nachfolger <a href="http://www.journaltocs.hw.ac.uk/" target="_blank">JournalTocs</a> umgestellt.
+</li>
+<li><b>13.1.2012</b>: Gesamtbestand von PaperC als eigener Katalog im
+KUG recherchierbar. Beim externen Anbieter PaperC k&ouml;nnen Fachb&uuml;cher nach kostenfreier
+Registrierung kostenlos online gelesen werden. Weitergehende Informationen in diesem
+<a href="http://blog.openbib.org/2012/01/13/paperc-als-eigener-katalog/" target="_blank">Blog-Artikel</a>
+</li>
 </ul>
 
 <script>

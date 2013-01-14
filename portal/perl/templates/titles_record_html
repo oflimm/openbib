@@ -146,8 +146,6 @@ $(document).ready(function(){
       <div class="ym-g33 ym-gr">
         <div class="ym-gbox" class="ym-clearfix">
 
-<p />
-
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 [%
   private_tags_of_tit = [];
@@ -614,6 +612,7 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
         <div class="ym-gbox" class="ym-clearfix">
 
 <div class="ob-fulltitle"><!-- Begin Fulltitle -->
+
 <div class="details ym-grid linearize-level-2"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="images ym-g33 ym-gr"><!-- Begin Images -->
@@ -624,7 +623,7 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 
 <div class="categories ym-g66 ym-gl"><!-- Begin Categories -->
 
-  <div class="ym-gbox-left">
+  <div class="ym-gbox-left ob-title_record">
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
 [%
@@ -677,6 +676,7 @@ END ;
 
 <div class="ob-bottominfo"><!-- Begin Bottominfo -->
 
+<div class="ob-title_wikipedia_articles">
 [%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">
 <img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
@@ -700,9 +700,13 @@ END ;
 [%-   END -%]
 </p>
 [% END %]
+</div>
+
+<p class="ob-background">&nbsp;</p>
 
 [% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
 > 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
+
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
 [%- issn              = normset.${"T0543"}.first.content ;
@@ -726,7 +730,7 @@ END ;
 <li><a href="#ob-same_records">[% msg.maketext("In anderen Katalogen") %]</a></li>
 [%   END %]
 [%   IF similar_records.get_size > 0 %]
-<li><a href="#similar_records">[% msg.maketext("Andere Ausgaben") %]</a></li>
+<li><a href="#ob-similar_records">[% msg.maketext("Andere Ausgaben") %]</a></li>
 [%   END %]
 [%   IF config.get('reviews') %]
 <li><a href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>

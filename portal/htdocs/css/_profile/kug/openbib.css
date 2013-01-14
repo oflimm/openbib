@@ -7,7 +7,6 @@
 
 /* import default CSS */
 @import url("/yaml/navigation/hlist.css");
-@import url("/yaml/navigation/vlist.css");
 @import url("/yaml/print/print.css");
 @import url("/yaml/screen/typography.css");
 
@@ -15,10 +14,12 @@
 @import url("typography.css");
 @import url("layout.css");
 @import url("hlist.css");
+@import url("vlist.css");
 @import url("screen.css");
 @import url("forms.css");
 @import url("buttons.css"); 
 @import url("print.css");
+@import url("jquery-ui-1.8.14.custom.css");
 
 /* import specific classes */
 @import url("local.css");

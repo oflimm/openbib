@@ -1,19 +1,24 @@
 @media all
 {
 
-    footer {
+  .ym-wbox {
+    padding: 0px;
+  }
+  
+  #main {
+    background: #ebeff5;
+    padding:10px 0;
+  }
+  
+  footer {
     margin: 0.2em 0 0 0;
 /*    background: #e8fca4;
     color: #444; */
     padding: 0.5em;
 
-    background: #ebeff5;;
+    background: #fff;
     
-    border: 0px #c8c8c8 solid;
-  }
-
-  header {
-
+    border: none;
   }
 
   body {
@@ -84,8 +89,8 @@
     padding: 2px;
     padding-left: 5px;
     margin: 5px 10px -5px -5px;
-    background: #eeeeee;
-    background: rgba(0,0,0,.1);
+    background: #41799e;
+    color: #fff;
     border-radius: 2px;
     font-size: 16px;
     font-weight: bold;
@@ -126,8 +131,8 @@
     background: url(/images/openbib/skyline.png) no-repeat scroll 40% 100% #fff;
     background-color: #fff;
     display: block;
-    padding: 0;
-    height: 10.4em;
+    padding: 0px;
+    height: 115px;
     width: 100%;
     border-bottom: 1.6em solid #ebeff5;
   }
@@ -210,8 +215,8 @@
   .ym-wbox {
     background: #ffffff;
   }
-/*
-  #header_institution_image {
+/* 
+ #header_institution_image {
     background: url(/images/openbib/views/alekiddr/aleki_logo.png) center no-repeat;
     width: 111px;
     height: 90px;
@@ -229,8 +234,8 @@
   }
 
   nav {
-    margin-top: 1em;
-    background: #ffffff;
+    margin-top: 10px;
+    background: #fff;
   }
 
   nav.ob-fixed_navigation {
@@ -402,31 +407,101 @@
   }
   */
 
-
-  
   #ob-searchform_bottom {
     font-size: 90%;
-    margin-top: -1.5em;
+    padding: 0px;
+/*    margin-top: -1.5em;
+    background: #ebeff5;*/
   }
 
   #ob-searchform_bottom .ym-gbox,   #ob-searchform_bottom .ym-gbox-left,   #ob-searchform_bottom .ym-gbox-right {
-    border-top: 2px black solid;
-    background: #ebeff5; /*#ededed ; /* #f6f6f8; /*#eaedf0;*/
+    border-top: none;
+    background: #fff; /*#ededed ; /* #f6f6f8; /*#eaedf0;*/
   }
   #ob-searchform_bottom .ym-gbox-left {
-    border-left: 1px white solid;
+    border-left: 1px #ebeff5 solid;
   }
 
   #ob-searchform_bottom .ym-gbox {
-    border-left: 4px white solid;
-    border-right: 4px white solid;
+    border-left: 4px #ebeff5 solid;
+    border-right: 4px #ebeff5 solid;
   }
   #ob-searchform_bottom .ym-gbox-right {
-    border-right: 1px white solid;
+    border-right: 1px #ebeff5 solid;
   }
   
  .ob-searchform_bottom_left {
     padding: 5px;
   }
+
   
+  .ob-functional_nav {
+    width:100%;
+    margin:0 0 0 0;
+    padding:0;
+    height:32px;
+    background: #fff;
+    border-top: 2px #ebeff5 solid;
+    border-bottom: 2px #ebeff5 solid;
+  }
+
+  .ob-functional_nav .ob-breadcrumb {
+    padding:0;
+    margin-top:-20px;
+    margin-left: 0px;
+  }
+  
+  .ob-functional_nav .ob-breadcrumb ul li {
+    list-style:none;
+    float:left;
+    height:30px
+    display:inline;
+  }
+  .ob-functional_nav .ob-breadcrumb ul li a {
+    font:12px Arial, Helvetica, sans-serif;
+    color:rgb(0,0,0);
+    text-decoration:none;
+    line-height:30px;
+    display:block;
+    background:url('/images/openbib/breadcrumb.png') 100% no-repeat;
+    padding:5px 17px 0 0;
+  }
+  .ob-functional_nav .ob-breadcrumb ul li a:hover {
+    text-decoration:underline;
+    color:rbg(0,0,0);
+  }
+  .ob-functional_nav .ob-breadcrumb ul li a.lastitem {
+    background:none;
+    color:rgb(0,0,0);
+  }
+  .ob-functional_nav .ob-breadcrumb ul li a.lastitem:hover {
+    text-decoration:none;
+  }
+
+  .ob-functional_nav .ob-representation {
+    float: right;
+    margin-top: 8px;
+    margin-right: 20px;
+  }
+
+  #topnav { 
+    top:5px;
+  }
+
+  .ob-resultlist {
+    background: #fff;
+  }
+  
+  .ob-facets {
+    margin-top: 0px;
+    background: #fff;
+  }
+  .ob-facets h4 {
+    margin-top: 2px;
+    border-bottom:2px solid #ddd;
+  }
+
+  .ym-full.ym-gbox {
+    padding: 0 15px;
+  }
 }

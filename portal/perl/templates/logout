@@ -30,9 +30,8 @@
     <!-- begin: main content area #main -->
     <div id="main">
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1" style="display:none;">
+      <div class="ym-col1 ob-hidden">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="subnavigation" %]
         </div>
       </div>
       <!-- end: #col1 -->

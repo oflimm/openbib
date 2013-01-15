@@ -55,7 +55,7 @@ function update_fak(yourform, checked, fak) {
    </div>
 
     <div class="ym-column linearize-level-1">
-      <div id="col1" style="display:none" role="complementary">
+      <div id="col1 ob-hidden" role="complementary">
         <div class="ym-cbox" class="ym-clearfix">
 
         </div>

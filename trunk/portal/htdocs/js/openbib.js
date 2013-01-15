@@ -122,25 +122,22 @@ $('select.autosubmit').change(function(){
 // );
 
 //    }
- 
-$(".ob-collect a").click(function(){
+
+ $(".ob-collection").click(function(){
+
 
    // Insert-Funktion aufrufen
    $.get(this.href);
 
-   if (View){
+   // Signalisieren, dass in Merkliste transferiert wurde
+   $(this).children("img").attr("src","/images/openbib/success.png");
+
    // Merklistenfuellstand aktualisieren
-   $.get("/portal/"+View+"/collection/count",
-function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
-   }
-   else {
-   // Merklistenfuellstand aktualisieren
-   $.get("/portal/collection/count",
-function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
-   }
+   //  $.get("[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/count",
+   //function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
+
    return false;
  });
-
 
 // Ende Merkliste
 

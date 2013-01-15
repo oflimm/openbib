@@ -58,7 +58,7 @@ function update_collection(yourform, checked, item) {
     <form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]">
       
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
+      <div class="ym-col1 [% IF recordlist.get_size == 0 %]ob-hidden[% END %]">
         <div class="ym-cbox" class="ym-clearfix">
 [% IF recordlist.get_size > 0 %]
 [% IF format == 'short' ;

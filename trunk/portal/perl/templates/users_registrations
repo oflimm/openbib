@@ -43,14 +43,15 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<div id="infobox">
-<h3><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h3>
+
+<div class="ob-category_header">[% msg.maketext("Hinweis") %]</div>
+<p>
 [% msg.maketext("Geben Sie f&uuml;r die Selbstregistrierung bitte als
 Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal
 Ihr selbst gew&auml;hltes Passwort. Zur Absicherung gegen einen
 automatisierten Missbrauch wird ein sog. [_1]CAPTCHA[_2] verwendet. Daher m&uuml;ssen Sie zus&auml;tzlich die zwei
 verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.","<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\">","</a>") %]
-</div>
+</p>
         </div>
       </div>
       <!-- end: #col1 -->

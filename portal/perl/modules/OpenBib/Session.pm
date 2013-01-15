@@ -1637,14 +1637,22 @@ sub get_recently_selected_titles {
     my $logger = get_logger();
 
     # DBI: "select content from eventlog where sessionid=? and type=10 order by tstamp DESC limit $offset,$hitrange"
-    my $lastrecords = $self->{schema}->resultset('Eventlog')->search({ 'sid.sessionid' => $self->{ID}, 'me.type' => 10 }, { select => 'me.content', as => 'thiscontent', join => 'sid', order_by => ['tstamp DESC'], limit => "$offset,$hitrange" });
+    my $lastrecords = $self->{schema}->resultset('Eventlogjson')->search({ 'sid.sessionid' => $self->{ID}, 'me.type' => 10 }, { select => ['me.content'], as => ['thiscontent'], join => 'sid', order_by => ['me.tstamp DESC'], group_by => ['me.content','me.tstamp'], limit => "$offset,$hitrange" });
 
+    $logger->debug("Got ".($lastrecords->count)." titles for sid/sessionID ".$self->{sid}."/".$self->{ID});
+    
     my $recordlist = new OpenBib::RecordList::Title;
 
+    my $have_item_ref = {};
     foreach my $item ($lastrecords->all){
+        my $thiscontent = $item->get_column('thiscontent');
         my $content_ref = {};
+        next if (defined $have_item_ref->{$thiscontent});
+                                          
         eval {
+            $logger->debug("Got ".$item->get_column('thiscontent'));
             $content_ref = decode_json $item->get_column('thiscontent');
+            $have_item_ref->{$thiscontent} = 1;
         };
 
         if ($@){

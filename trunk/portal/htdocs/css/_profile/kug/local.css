@@ -415,6 +415,7 @@
   }
 
   #ob-searchform_bottom .ym-gbox,   #ob-searchform_bottom .ym-gbox-left,   #ob-searchform_bottom .ym-gbox-right {
+    padding-top: 2px;
     border-top: none;
     background: #fff; /*#ededed ; /* #f6f6f8; /*#eaedf0;*/
   }

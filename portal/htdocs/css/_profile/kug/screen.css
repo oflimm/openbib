@@ -372,12 +372,21 @@
       padding: 15px;
   }
 
-  .ob-reuse_data h4, .ob-discover_sources h4 {
+  .ob-reuse_data h4, .ob-discover_sources h4, .ob-session_history h4 {
+    font-family: Arial,Verdana,Helvetica,sans-serif;
     display: block;
-    margin: 10px 5px 5px 5px;
-    border-bottom: 1px #c88 solid;
-    font-style:normal;
-    font-variant:small-caps;
+    width: 100%;
+    padding: 2px;
+    padding-left: 5px;
+    margin: 0px 10px -5px -3px;
+    background: #41799e;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: bold;
+    -moz-box-shadow: 2px 2px 2px #888;
+    -webkit-box-shadow: 2px 2px 2px #888;
+    box-shadow: 2px 2px 2px #888;
   }
 
   #ob-newreview_do { 

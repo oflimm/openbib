@@ -83,12 +83,12 @@
   .ob-pagination_lastpage {
     font-size: 1.4em;
   }
-  
+
   .ob-category_header {
     width: 100%;
     padding: 2px;
     padding-left: 5px;
-    margin: 5px 10px -5px -3px;
+    margin: 10px 10px -5px -3px;
     background: #41799e;
     color: #fff;
     border-radius: 2px;

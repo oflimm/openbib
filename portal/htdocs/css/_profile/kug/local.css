@@ -504,6 +504,7 @@
 
   .ym-col3 .ym-cbox {
     padding: 5px;
+    padding-bottom: 2em;
     margin-left: 10px;
     background: #fff;    
   }

@@ -92,24 +92,4 @@
       <div class="ym-full" >
         <div class="ym-clearfix">
 
-<script language="JavaScript" type="text/javascript">
-$(document).ready(function(){
- $(".ob-collection").click(function(){
-
-
-   // Insert-Funktion aufrufen
-   $.get(this.href);
-
-   // Signalisieren, dass in Merkliste transferiert wurde
-   $(this).children("img").attr("src","/images/openbib/success.png");
-
-   // Merklistenfuellstand aktualisieren
-   //  $.get("[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/count",
-   //function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
-
-   return false;
- });
-});
-</script>
-
 [%- END -%]

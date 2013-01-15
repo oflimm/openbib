@@ -61,38 +61,40 @@ verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitt
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
 
-<fieldset class="ym-full">
-<legend>Registrieren</legend>
-<div class="ym-grid">
-<div class="ym-g50 ym-gl">
+<fieldset class="ym-columnar">
 
-<div class="ym-gbox-left type-text">
+<legend>[% msg.maketext("Registrieren") %]</legend>
+<div class="ym-grid">
+  <div class="ym-g50 ym-gl">
+    <div class="ym-gbox">
+<div class="ym-fbox-text">
 <label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 <input type="text" name="username" id="email_username" value="[% username %]" />
 </div>
-<div class="ym-gbox-left type-text">
+<div class="ym-fbox-text">
 <label for="email_password1"/>[% msg.maketext("Passwort") %]</label>
 <input type="password" name="password1" id="email_password1" />
 </div>
-<div class="ym-gbox-left type-text">
+<div class="ym-fbox-text">
 <label for="email_password"/>[% msg.maketext("Passwort (wiederholt)") %]</label>
 <input type="password" name="password2" id="email_password" />
 </div>
-
-</div>
-<div class="ym-g50 ym-gr">
+   </div>
+  </div>
+  <div class="ym-g40 ym-gr">
+    <div class="ym-gbox">
 [%- IF config.${"recaptcha_public_key"} -%]
 [%- recaptcha_options = { lang => lang, theme => 'white' } -%]
 [% recaptcha.get_html(config.${"recaptcha_public_key"},'',0,recaptcha_options) %]
 [%- END -%]
-</div>
+    </div>
+  </div>
 
 </div>
 
 <p/>
 
 <input type="submit" value="[% msg.maketext("Registrieren") %]" />
-</fieldset>
 </fieldset>
 
 </form>

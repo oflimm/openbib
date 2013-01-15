@@ -152,7 +152,7 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 
 [% PROCESS common/subtemplate name="search_radius" %]
 
-<h4>[% msg.maketext("Treffermenge eingrenzen") %]</h4>
+<div class="ob-category_header">[% msg.maketext("Treffermenge eingrenzen") %]</div>
 
 [% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
@@ -487,7 +487,8 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 
 [% PROCESS common/subtemplate name="search_radius" %]
 
-<div class="box info">
+<div class="ob-category_header">[% msg.maketext("Treffermenge eingrenzen") %]</div>
+
 <p>
 [% msg.maketext("Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine
 sinnvolle Eingrenzung durch eine Rechercheverfeinerung nicht
@@ -500,7 +501,7 @@ Sie diese auf sinntragende Worte reduzieren (z.B. der, die das
 weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)
 durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 </p>
-</div>
+
 
 [% END %]
 </div>

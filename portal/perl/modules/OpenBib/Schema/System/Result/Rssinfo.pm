@@ -41,26 +41,6 @@ __PACKAGE__->table("rssinfo");
   data_type: 'smallint'
   is_nullable: 1
 
-=head2 subtype
-
-  data_type: 'smallint'
-  is_nullable: 1
-
-=head2 subtypedesc
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 cache_tstamp
-
-  data_type: 'timestamp'
-  is_nullable: 1
-
-=head2 cache_content
-
-  data_type: 'text'
-  is_nullable: 1
-
 =head2 active
 
   data_type: 'boolean'
@@ -80,14 +60,6 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "type",
   { data_type => "smallint", is_nullable => 1 },
-  "subtype",
-  { data_type => "smallint", is_nullable => 1 },
-  "subtypedesc",
-  { data_type => "text", is_nullable => 1 },
-  "cache_tstamp",
-  { data_type => "timestamp", is_nullable => 1 },
-  "cache_content",
-  { data_type => "text", is_nullable => 1 },
   "active",
   { data_type => "boolean", is_nullable => 1 },
 );
@@ -121,6 +93,21 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
+=head2 rsscaches
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Rsscache>
+
+=cut
+
+__PACKAGE__->has_many(
+  "rsscaches",
+  "OpenBib::Schema::System::Result::Rsscache",
+  { "foreign.rssinfoid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 view_rsses
 
 Type: has_many
@@ -152,8 +139,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xORpA+6wtC7sJLXxxKuGZg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-16 16:01:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GsU4R0ipJhxVt9LhPKNaTw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

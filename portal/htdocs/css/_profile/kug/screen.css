@@ -599,4 +599,11 @@
   .ob-background {
     background: #ebeff5;
   }
+
+  a.ext {
+    padding-left: 1.3em;
+    padding-top: 5px;
+    background: url('/images/openbib/extern.gif') no-repeat left center;
+  }
+
 }

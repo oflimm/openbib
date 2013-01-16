@@ -18,13 +18,13 @@
 
 <h3><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="Bibliotheksangebote" />&nbsp;Bibliotheksangebote</h3>
 
-<h4>Digitalisierter Kartenkatalog</h4>
-
 <h4>Sammlungen</h4>
 
 <ul>
 <li><a href="http://abklatschsammlung.ub.uni-koeln.de/" target="_blank">Abklatsch-Sammlung des Instituts f&uuml;r Altertumskunde</a></li>
 </ul>
+
+<h4>Digitalisierter Kartenkatalog</h4>
 
 <p> Sie finden weitere Best&auml;nde der Bibliothek <i>Klassische
 Philologie - Alte Geschichte</i> in den zugeh&ouml;rigen Katalogen des

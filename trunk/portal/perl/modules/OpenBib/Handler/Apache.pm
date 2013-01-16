@@ -840,7 +840,7 @@ sub add_default_ttdata {
     
     $ttdata->{'uri_escape'}     = sub {
         my $string = shift;
-        return uri_escape($string);
+        return uri_escape_utf8($string);
     };
 
     $ttdata->{'iso2utf'}        = sub {

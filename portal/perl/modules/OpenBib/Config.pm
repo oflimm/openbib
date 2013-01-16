@@ -421,8 +421,8 @@ sub get_valid_rsscache_entry {
         ? $arg_ref->{database}            : undef;
     my $type                   = exists $arg_ref->{type}
         ? $arg_ref->{type}                : undef;
-    my $subtype                = exists $arg_ref->{subtype}
-        ? $arg_ref->{subtype}             : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
     my $expiretimedate         = exists $arg_ref->{expiretimedate}
         ? $arg_ref->{expiretimedate}      : 20110101;
 
@@ -435,25 +435,32 @@ sub get_valid_rsscache_entry {
     # Bestimmung, ob ein valider Cacheeintrag existiert
 
     # DBI ehemals: "select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?"
-    my $rss_content = $self->{schema}->resultset('Rssinfo')->search_rs(
+
+    my $rssinfo = $self->{schema}->resultset('Rssinfo')->search_rs(
         {
             'dbid.dbname'  => $database,
             'type'         => $type,
-            'subtype'      => $subtype,
-            'cache_tstamp' => { '>' => $expiretimedate },
         },
         {
-            select => ['cache_content'],
-            as     => ['thiscache_content'],
             join   => 'dbid',
         }
     )->single;
 
-    my $rss;
-    if ($rss_content){
-        $rss = $rss_content->get_column('thiscache_content');
+    if ($rssinfo){
+        my $rsscache = $rssinfo->rsscaches->search_rs(
+        {
+            'id'        => $id,
+            'tstamp'    => { '>' => $expiretimedate },
+        }
+    )->single;
+        
+        if ($rsscache){
+            $logger->debug("Got valid cached entry");
+            return $rsscache->content;
+        }
     }
-    return $rss;
+    
+    return '';
 }
 
 sub get_dbs_of_view {
@@ -696,18 +703,20 @@ sub get_activefeeds_of_db  {
     my $feeds = $self->{schema}->resultset('Rssinfo')->search(
         {
             'dbid.dbname' => $dbname,
-            'dbid.active' => 1,
         },
         {
-            select => 'type',
-            join   => 'dbid',
+            select => ['type'],
+            as     => ['thistype'],
+            join   => ['dbid'],
         }
     );
+
+    $logger->debug("Got ".$feeds->count);
     
     my $activefeeds_ref = {};
 
     foreach my $item ($feeds->all){
-        $activefeeds_ref->{$item->get_column('type')} = 1;
+        $activefeeds_ref->{$item->get_column('thistype')} = 1;
     }
     
     return $activefeeds_ref;
@@ -747,6 +756,7 @@ sub get_rssfeedinfo  {
                 select => [ 'dbid.dbname', 'dbid.description', 'orgunitid.description', 'me.type' ],
                 as     => [ 'thisdbname', 'thisdbdescription', 'thisorgunitdescription', 'thisrsstype' ],
                 order_by => [ 'dbid.description ASC' ],
+                group_by => ['dbid.dbname', 'dbid.description', 'orgunitid.description', 'me.type'],
             }
         );
     }
@@ -792,8 +802,8 @@ sub update_rsscache {
         ? $arg_ref->{database}        : undef;
     my $type                   = exists $arg_ref->{type}
         ? $arg_ref->{type}            : undef;
-    my $subtype                = exists $arg_ref->{subtype}
-        ? $arg_ref->{subtype}         : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}              : undef;
     my $rssfeed                = exists $arg_ref->{rssfeed}
         ? $arg_ref->{rssfeed}         : undef;
     
@@ -801,17 +811,30 @@ sub update_rsscache {
     my $logger = get_logger();
 
     # DBI: "update rssinfo,databaseinfo set rssinfo.cache_content = ? where databaseinfo.dbname = ? and rssinfo.type = ? and rssinfo.subtype = ? and databaseinfo.id=rssinfo.dbid"
-    $self->{schema}->resultset('Rssinfo')->search(
+    my $rssinfo =$self->{schema}->resultset('Rssinfo')->search(
         {
             'dbid.dbname' => $database,
             'me.type'     => $type,
-            'me.subtype'  => $subtype,
+            'me.active'   => 'true',
         },
         {
-            join => 'dbid',
+            join => ['dbid'],
         }
-    )->single->update({ cache_content => $rssfeed, cache_tstamp => \'NOW()' });
+    )->single;
 
+    if ($rssinfo){
+        eval {
+            $rssinfo->rsscaches->search({ id => $id })->delete;
+        };
+        if ($@){
+            $logger->error($@);
+        }
+        $rssinfo->rsscaches->create({ id => $id, content => $rssfeed, tstamp => \'NOW()' });
+    }
+    else {
+        $logger->error("No match with database $database, type $type and id $id");
+    }
+    
     return $self;
 }
 

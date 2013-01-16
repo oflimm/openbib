@@ -284,7 +284,7 @@ sub show_record {
             format      => $format,
 
             searchquery => $searchquery,
-            activefeed  => $config->get_activefeeds_of_db($self->{database}),
+            activefeed  => $config->get_activefeeds_of_db($database),
             
             authenticatordb => $authenticatordb,
             

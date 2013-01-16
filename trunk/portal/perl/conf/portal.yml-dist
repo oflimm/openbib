@@ -1107,10 +1107,6 @@ dispatch_rules:
      runmode: 'show_record'
      args:
         admin_loc: 'locations'
-  - # admin_loc/locations_loc: Record show
-     module: 'OpenBib::Handler::Apache::Locations'
-     rule: '/portal/:view/locations/isil/:isil[get]'
-     runmode: 'show_record'
   - # users/locations_loc:
      module: 'OpenBib::Handler::Apache::Admin::Locations'
      rule: '/portal/:view/admin/locations[get]'
@@ -1826,6 +1822,13 @@ dispatch_rules:
      runmode: 'show_record'
      args:
         users_loc: 'databases'
+  - # users_loc/persons_loc: Record show
+     module: 'OpenBib::Handler::Apache::Persons::Titles'
+     rule: '/portal/:view/databases/id/:database/persons/id/:personid/titles/recent[get]'
+     runmode: 'show_recent'
+     representations:
+       - none
+       - rss
   - # users/persons_loc:
      module: 'OpenBib::Handler::Apache::Persons'
      rule: '/portal/:view/users/id/:id/databases/id/:database/persons/id/:personid[get]'
@@ -2579,6 +2582,7 @@ tt_catalogue_login_tname: catalogue_login
 tt_catalogue_logout_tname: catalogue_logout
 
 tt_classifications_record_tname: classifications_record
+tt_classifications_record_titles_recent_tname: classifications_record_titles_recent
 tt_classifications_tname: classifications
 
 tt_clouds_tname: clouds
@@ -2621,6 +2625,7 @@ tt_connector_unapi_mods_tname: connector_unapi_mods
 tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
 
 tt_corporatebodies_record_tname: corporatebodies_record
+tt_corporatebodies_record_titles_recent_tname: corporatebodies_record_titles_recent
 
 tt_searchprofiles_session_tname: searchprofiles_session
 tt_error_tname: error
@@ -2652,6 +2657,7 @@ tt_info_60_tname: info_60
 tt_info_64_tname: info_64
 tt_info_65_tname: info_65
 tt_info_66_tname: info_66
+tt_info_terms_of_use_tname: info_terms_of_use
 tt_info_cardcatalogues_tname: info_cardcatalogues
 tt_info_feedback_tname: info_feedback
 tt_info_help_tname: info_help
@@ -2694,6 +2700,7 @@ tt_users_passwords_success_tname: users_passwords_success
 tt_users_passwords_tname: users_passwords
 
 tt_persons_record_tname: persons_record
+tt_persons_record_titles_recent_tname: persons_record_titles_recent
 
 tt_users_registrations_confirmation_tname: users_registrations_confirmation
 tt_users_registrations_mail_message_tname: users_registrations_mail_message
@@ -2725,6 +2732,7 @@ tt_searchprofiles_tname: searchprofiles
 
 tt_subjects_tname: subjects
 tt_subjects_record_tname: subjects_record
+tt_subjects_record_titles_recent_tname: subjects_record_titles_recent
 
 tt_tags_recent_tname: tags_recent
 tt_tags_tname: tags

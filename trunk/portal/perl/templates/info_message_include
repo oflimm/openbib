@@ -11,9 +11,8 @@
 #
 #######################################################################
 -%]
-<table width="100%">
-<tr><th>[% msg.maketext("Meldung") %]</th></tr>
-<tr><td class="boxedclear">
+<h3>[% msg.maketext("Meldung") %]</h3>
+
+<p>
 [% info_msg %]
-</td></tr>
-</table>
+</p>

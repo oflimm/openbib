@@ -1,0 +1,21 @@
+[%#-
+#######################################################################
+#
+# Templatename: persons_record_titles_recent_rss
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des RSS-Feeds zu einer Personen-ID
+#
+#######################################################################
+-%]
+[%-
+
+channel_link        = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('persons_loc')}/id/${personid}/titles/recent.rss";
+channel_description = "Hier finden Sie die 50 zuletzt katalogisierten Medien des Kataloges zu Verfasser/Person" ;
+channel_title       = "Neue Katalogisate zu Verfasser/Person" ;
+recordlist.to_rss({ path_prefix = path_prefix, servername = servername, view = view, channel_title = channel_title, channel_link = channel_link, channel_language = lang });
+
+-%]

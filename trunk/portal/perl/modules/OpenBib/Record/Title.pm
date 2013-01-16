@@ -1334,7 +1334,7 @@ sub get_field {
 
     if (defined $mult && $mult){
         foreach my $field_ref (@{$self->{_fields}->{$field}}){
-            if ($field_ref->{mult} eq $mult){
+            if ($field_ref->{mult} == $mult){
                 return $field_ref->{content};
             }
         }

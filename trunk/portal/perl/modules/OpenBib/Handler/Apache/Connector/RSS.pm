@@ -54,6 +54,7 @@ use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Common::Util;
 use OpenBib::L10N;
+use OpenBib::Catalog::Factory;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
@@ -104,6 +105,8 @@ sub show {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $path           = $self->param('path');
+    my $servername     = $self->param('servername');
 
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -126,21 +129,19 @@ sub show {
     
 #    $logger->debug("ExpireTimeDate: $expiretimedate");
 
+#    my $rss_content;
     my $rss_content = $config->get_valid_rsscache_entry({
         database       => $database,
         type           => $type,
-        subtype        => $subtype,
+        id             => $subtype,
         expiretimedate => $expiretimedate,
     });
     
     if (! $rss_content ){
-        my $bestserver='localhost';#OpenBib::Common::Util::get_loadbalanced_servername();
 
-        $logger->debug("Getting RSS-Data from Server $bestserver");
-        
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$bestserver;port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
+        $logger->debug("Getting RSS-Data");
+
+        my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database });
 
         my $rssfeedinfo_ref = {
             1 => {
@@ -171,20 +172,20 @@ sub show {
         };
 
         if    ($type == 2){
-            $rssfeedinfo_ref->{2}->{channel_title}.=" '".OpenBib::Record::Person->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
-            $rssfeedinfo_ref->{2}->{channel_desc} .=" '".OpenBib::Record::Person->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
+            $rssfeedinfo_ref->{2}->{channel_title}.=" '".OpenBib::Record::Person->new({database => $database, id => $subtype})->load_name->name_as_string."'";
+            $rssfeedinfo_ref->{2}->{channel_desc} .=" '".OpenBib::Record::Person->new({database => $database, id => $subtype})->load_name->name_as_string."'";
         }
         elsif ($type == 3){
-            $rssfeedinfo_ref->{3}->{channel_title}.=" '".OpenBib::Record::CorporateBody->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
-            $rssfeedinfo_ref->{3}->{channel_desc} .=" '".OpenBib::Record::CorporateBody->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
+            $rssfeedinfo_ref->{3}->{channel_title}.=" '".OpenBib::Record::CorporateBody->new({database => $database, id => $subtype})->load_name->name_as_string."'";
+            $rssfeedinfo_ref->{3}->{channel_desc} .=" '".OpenBib::Record::CorporateBody->new({database => $database, id => $subtype})->load_name->name_as_string."'";
         }
         elsif ($type == 4){
-            $rssfeedinfo_ref->{4}->{channel_title}.=" '".OpenBib::Record::Subject->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
-            $rssfeedinfo_ref->{4}->{channel_desc} .=" '".OpenBib::Record::Subject->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
+            $rssfeedinfo_ref->{4}->{channel_title}.=" '".OpenBib::Record::Subject->new({database => $database, id => $subtype})->load_name->name_as_string."'";
+            $rssfeedinfo_ref->{4}->{channel_desc} .=" '".OpenBib::Record::Subject->new({database => $database, id => $subtype})->load_name->name_as_string."'";
         }
         elsif ($type == 5){
-            $rssfeedinfo_ref->{5}->{channel_title}.=" '".OpenBib::Record::Classification->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
-            $rssfeedinfo_ref->{5}->{channel_desc} .=" '".OpenBib::Record::Classification->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
+            $rssfeedinfo_ref->{5}->{channel_title}.=" '".OpenBib::Record::Classification->new({database => $database, id => $subtype})->load_name->name_as_string."'";
+            $rssfeedinfo_ref->{5}->{channel_desc} .=" '".OpenBib::Record::Classification->new({database => $database, id => $subtype})->load_name->name_as_string."'";
         }
         
         $logger->debug("Update des RSS-Caches");
@@ -195,7 +196,7 @@ sub show {
         
         $rss->channel(
             title         => "$dbdesc: ".$rssfeedinfo_ref->{$type}{channel_title},
-            link        => "http://".$self->param('servername').$self->param('path_prefix')."/".$config->{loadbalancer_loc},            
+            link          => "http://$servername$path",            
             language      => "de",
             description   => $rssfeedinfo_ref->{$type}{channel_desc},
         );
@@ -206,41 +207,35 @@ sub show {
 
         # Letzte 50 Neuaufnahmen
         if ($type == 1){
-            $recordlist=OpenBib::Search::Util::get_recent_titleids({
-                id       => $subtype,
-                database => $database,
+            $recordlist = $catalog->get_recent_titles({
                 limit    => 50,
             });
         }
         # Letzte 50 Neuaufnahmen zu Verfasser/Person mit Id subtypeid
         elsif ($type == 2 && $subtype){
-            $recordlist=OpenBib::Search::Util::get_recent_titleids_by_aut({
+            $recordlist = $catalog->get_recent_titles_of_person({
                 id       => $subtype,
-                database => $database,
                 limit    => 50,
             });
         }
         # Letzte 50 Neuaufnahmen zu Koerperschaft/Urheber mit Id subtypeid
         elsif ($type == 3 && $subtype){
-            $recordlist=OpenBib::Search::Util::get_recent_titleids_by_kor({
+            $recordlist = $catalog->get_recent_titles_of_corporatebody({
                 id       => $subtype,
-                database => $database,
                 limit    => 50,
             });
         }
         # Letzte 50 Neuaufnahmen zu Schlagwort mit Id subtypeid
         elsif ($type == 4 && $subtype){
-            $recordlist=OpenBib::Search::Util::get_recent_titleids_by_swt({
+            $recordlist = $catalog->get_recent_titles_of_subject({
                 id       => $subtype,
-                database => $database,
                 limit    => 50,
             });
         }
         # Letzte 50 Neuaufnahmen zu Systematik mit Id subtypeid
         elsif ($type == 5 && $subtype){
-            $recordlist=OpenBib::Search::Util::get_recent_titleids_by_not({
+            $recordlist = $catalog->get_recent_titles_of_classification({
                 id       => $subtype,
-                database => $database,
                 limit    => 50,
             });
         }
@@ -281,23 +276,23 @@ sub show {
             
             $logger->debug("Adding $title / $desc") if (defined $title && defined $desc);
 
+            my $link = "http://$servername$path_prefix/".$config->{databases_loc}."/id/$record->{database}/".$config->{titles_loc}."/id/".$record->{id};
             $rss->add_item(
                 title       => $title,
-                link        => "http://".$self->param('servername').$self->param('path_prefix')."/".$config->{titles_loc}."/database/$database/id/".$record->{id}.".html",
+                link        => $link,
                 description => $desc
             );
         }
         
         $rss_content=$rss->as_string;
 
-        $config->update_rsscache({
-            database => $database,
-            type     => $type,
-            subtype  => $subtype,
-            rssfeed  => $rss_content,
-        });
+       $config->update_rsscache({
+           database => $database,
+           type     => $type,
+           id       => $subtype,
+           rssfeed  => $rss_content,
+       });
 
-        $dbh->disconnect;
     }
     else {
         $logger->debug("Verwende Eintrag aus RSS-Cache");

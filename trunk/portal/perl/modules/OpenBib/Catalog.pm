@@ -90,6 +90,26 @@ sub get_recent_titles {
     return $recordlist;
 }
 
+sub get_recent_titles {
+    return new OpenBib::RecordList::Title();
+}
+
+sub get_recent_titles_of_person {
+    return new OpenBib::RecordList::Title();
+}
+
+sub get_recent_titles_of_corporatebody {
+    return new OpenBib::RecordList::Title();
+}
+
+sub get_recent_titles_of_classification {
+    return new OpenBib::RecordList::Title();
+}
+
+sub get_recent_titles_of_subject {
+    return new OpenBib::RecordList::Title();
+}
+
 sub connectDB {
     my $self = shift;
     my $database = shift;

@@ -14,7 +14,6 @@
 -%]
 [% IF format == "full" %]
 
-[%# USE dumper;dumper.dump(record) %]
 <table class="ym-full ob-title_fields">
 <tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
 
@@ -37,11 +36,6 @@ FOREACH category IN categories;
          wikicontent = content.split(', ').reverse.join(' ');
          wikicontent = wikicontent.replace('¬','');
 
-         rssfeed = "" ;
-         IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
-
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
@@ -49,13 +43,18 @@ FOREACH category IN categories;
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
 
+         rssfeed = "" ;
+         IF activefeed.2 ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+
          normdataicon = "";
 
          IF thisid ;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
          END;
 
-         icons     = "<div class=\"float-right\">${rssfeed}&nbsp;<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>${normdataicon}</div>";
+         icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${rssfeed}&nbsp;${normdataicon}</div>";
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
@@ -63,7 +62,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${servername}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;
@@ -170,7 +169,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${servername}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content.replace('"','');
@@ -195,7 +194,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${servername}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;

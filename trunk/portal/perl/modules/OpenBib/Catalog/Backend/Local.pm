@@ -102,6 +102,166 @@ sub get_recent_titles {
     return $recordlist;
 }
 
+sub get_recent_titles_of_person {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}               : undef;
+
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    eval {
+        my $titles = $self->{schema}->resultset('Title')->search_rs(
+            {
+                'title_people.personid' => $id,
+            },
+            {
+                join     => ['title_people'],
+                order_by => ['me.tstamp_create DESC'],
+                rows     => $limit,
+            }
+        );
+        
+        foreach my $title ($titles->all){
+            $logger->debug("Adding Title ".$title->id);
+            $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
+    }
+    
+    return $recordlist;
+}
+
+sub get_recent_titles_of_corporatebody {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}               : undef;
+
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    eval {
+        my $titles = $self->{schema}->resultset('Title')->search_rs(
+            {
+                'title_corporatebodies.corporatebodyid' => $id,
+            },
+            {
+                join     => ['title_corporatebodies'],
+                order_by => ['me.tstamp_create DESC'],
+                rows     => $limit,
+            }
+        );
+        
+        foreach my $title ($titles->all){
+            $logger->debug("Adding Title ".$title->id);
+            $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
+    }
+    
+    return $recordlist;
+}
+
+sub get_recent_titles_of_classification {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}               : undef;
+
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    eval {
+        my $titles = $self->{schema}->resultset('Title')->search_rs(
+            {
+                'title_classifications.classificationid' => $id,
+            },
+            {
+                join     => ['title_classifications'],
+                order_by => ['me.tstamp_create DESC'],
+                rows     => $limit,
+            }
+        );
+        
+        foreach my $title ($titles->all){
+            $logger->debug("Adding Title ".$title->id);
+            $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
+    }
+    
+    return $recordlist;
+}
+
+sub get_recent_titles_of_subject {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}               : undef;
+
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    eval {
+        my $titles = $self->{schema}->resultset('Title')->search_rs(
+            {
+                'title_subjects.subjectid' => $id,
+            },
+            {
+                join     => ['title_subjects'],
+                order_by => ['me.tstamp_create DESC'],
+                rows     => $limit,
+            }
+        );
+        
+        foreach my $title ($titles->all){
+            $logger->debug("Adding Title ".$title->id);
+            $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
+    }
+    
+    return $recordlist;
+}
+
 sub load_full_title_record {
     my ($self,$arg_ref) = @_;
 

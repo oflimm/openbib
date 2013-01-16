@@ -75,8 +75,8 @@ $(function(){
  qrcodeShow();
  
  // Focus auf erstes Eingabefeld
- $(":input:visible:enabled:first").focus();
- $("input[@id='to_focus']").focus();
+  $(":input:visible:enabled:first").focus();
+  //$("input[@id='to_focus']").focus();
 
 // Tabs fuer weitere Informationen
  //$('#ob-additional_title_info > ul').tabs();

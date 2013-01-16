@@ -74,12 +74,16 @@ create table rssinfo (
  id            BIGSERIAL,
  dbid          BIGINT NOT NULL,
  type          SMALLINT,
- subtype       SMALLINT,
- subtypedesc   TEXT,
- cache_tstamp  TIMESTAMP,
- cache_content TEXT,
 
  active        BOOL
+);
+
+drop table IF EXISTS rsscache;
+create table rsscache (
+ rssinfoid     BIGINT NOT NULL,
+ id            TEXT,
+ tstamp        TIMESTAMP,
+ content       TEXT
 );
 
 drop table IF EXISTS profileinfo;

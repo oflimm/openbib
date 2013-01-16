@@ -24,8 +24,11 @@ CREATE INDEX locationinfo_fields_content ON locationinfo_fields (content);
 ALTER TABLE rssinfo ADD PRIMARY KEY (id);
 ALTER TABLE rssinfo ADD CONSTRAINT fk_rssinfo_db FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
 CREATE INDEX rssinfo_type ON rssinfo (type);
-CREATE INDEX rssinfo_subtype ON rssinfo (subtype);
-CREATE INDEX rssinfo_cachetstamp ON rssinfo (cache_tstamp);
+CREATE INDEX rssinfo_dbid ON rssinfo (dbid);
+
+CREATE INDEX rsscache_rssinfo ON rsscache (rssinfoid);
+ALTER TABLE rsscache ADD CONSTRAINT fk_rsscache_rssinfo FOREIGN KEY (rssinfoid) REFERENCES rssinfo (id);
+CREATE INDEX rsscache_tstamp ON rsscache (tstamp);
 
 ALTER TABLE profileinfo ADD PRIMARY KEY (id);
 ALTER TABLE profileinfo ADD CONSTRAINT uq_profileinfo_profilename UNIQUE (profilename);

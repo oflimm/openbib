@@ -116,6 +116,7 @@ searchprofiles_loc: searchprofiles
 users_loc: users
 roles_loc: roles
 rss_loc: rss
+rssfeeds_loc: rssfeeds
 statistics_loc: statistics
 servers_loc: servers
 clusters_loc: clusters
@@ -290,7 +291,7 @@ dispatch_rules:
 
   - # rssfeeds_loc:
      module: 'OpenBib::Handler::Apache::RSSFeeds'
-     rule: '/portal/:view/rss/view[get]'
+     rule: '/portal/:view/rssfeeds[get]'
      representations:
        - none
        - html
@@ -1872,6 +1873,13 @@ dispatch_rules:
      runmode: 'show_record'
      args:
         users_loc: 'databases'
+  - # users_loc/corporatebodies_loc: Record show
+     module: 'OpenBib::Handler::Apache::CorporateBodies::Titles'
+     rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid/titles/recent[get]'
+     runmode: 'show_recent'
+     representations:
+       - none
+       - rss
   - # users/corporatebodies_loc:
      module: 'OpenBib::Handler::Apache::CorporateBodies'
      rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/id/:corporatebodyid[get]'
@@ -1925,6 +1933,13 @@ dispatch_rules:
      runmode: 'show_record'
      args:
         users_loc: 'databases'
+  - # users_loc/subjects_loc: Record show
+     module: 'OpenBib::Handler::Apache::Subjects::Titles'
+     rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid/titles/recent[get]'
+     runmode: 'show_recent'
+     representations:
+       - none
+       - rss
   - # users/subjects_loc:
      module: 'OpenBib::Handler::Apache::Subjects'
      rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/id/:subjectid[get]'
@@ -1978,6 +1993,13 @@ dispatch_rules:
      runmode: 'show_record'
      args:
         users_loc: 'databases'
+  - # users_loc/classifications_loc: Record show
+     module: 'OpenBib::Handler::Apache::Classifications::Titles'
+     rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid/titles/recent[get]'
+     runmode: 'show_recent'
+     representations:
+       - none
+       - rss
   - # users/classifications_loc:
      module: 'OpenBib::Handler::Apache::Classifications'
      rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/id/:classificationid[get]'
@@ -3435,6 +3457,7 @@ openbib_img: /images/openbib/openbib-powered.png
 paperc_img: /images/openbib/paperc.png
 pdf_img: /images/openbib/pdf-document.png
 permalink_img: /images/openbib/3d-file-blue-permalink.png
+persons_img: /images/openbib/persons.png
 previous_img: /images/openbib/previous.png
 print_img: /images/openbib/3d-file-blue-printer.png
 qrcode_img: /images/openbib/qrsymb.png

@@ -22,7 +22,7 @@
   }
 
   body {
-    overflow-y:scroll
+    overflow-y: scroll;
   }
 
   ul.topiclist a {
@@ -250,7 +250,19 @@
     font-size: 100%;
   }
 
+  .ob-searchfield_supplement a {
+    padding: 2px;
+    text-decoration: underline;
+  }
+
+  .ob-searchfield_supplement a:hover {
+    padding: 2px;
+    background: #41799e;
+    color: #fff;
+    text-decoration: none;
+  }
   
+    
   .ob-searchfield {
     width: 850px;
     padding: 15px;
@@ -279,7 +291,9 @@
 /*    height: 20px;
     padding: 10px 5px;*/
     float: left;   
-    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
     border: 0;
     background: #fff;
     border-radius: 3px 0 0 3px;     

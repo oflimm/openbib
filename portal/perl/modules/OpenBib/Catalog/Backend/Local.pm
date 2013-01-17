@@ -128,13 +128,13 @@ sub get_recent_titles_of_person {
                 rows     => $limit,
             }
         );
-        
+
         foreach my $title ($titles->all){
             $logger->debug("Adding Title ".$title->id);
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
     };
-        
+
     if ($@){
         $logger->fatal($@);
     }

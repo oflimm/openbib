@@ -1,0 +1,6 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[% IF representation == 'rss' %]
+[%- PROCESS common/subtemplate name="classifications_record_titles_recent_rss" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

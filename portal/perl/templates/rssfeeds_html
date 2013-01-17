@@ -90,31 +90,22 @@ href="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]
 
 [%-  FOREACH category = config.get_orgunitinfo_overview(sysprofile).all -%]
 [%# USE dumper;dumper.dump(category)%]
-<table width="100%">
-<tr><th style="font-size:1.2em">RSS-Feeds: [% category.description %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.8em">
+<h4>[% category.description %]</h4>
 [%     IF NOT rssfeedinfo.${category.description} %]
-Keine
-[%     ELSE %]
+<dl>
+<dt>Keine</dt>
+</dl>
 [%     END %]
 
+<dl>
 [%     FOREACH item IN rssfeedinfo.${category.description} %]
-<table width="100%">
-<tr><th style="text-align: left">[% item.pooldesc %]</th></tr>
-<tr><td class="boxed" valign="top" align="left">
-<table>
+<dt>[% item.pooldesc %]</dt>
 [%        IF item.type == 'neuzugang' %]
-<tr><td><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
-href="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.pool %]/[% config.get('titles_loc') %]/recent.rss?l=[% lang %]" target="_blank">http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.pool %]/[% config.get('titles_loc') %]/recent.rss?l=[% lang %]</a>)</td></tr>
+<dd><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
+href="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.pool %]/[% config.get('titles_loc') %]/recent.rss?l=[% lang %]" target="_blank">http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.pool %]/[% config.get('titles_loc') %]/recent.rss?l=[% lang %]</a>)</dd>
 [%        END %]
-</table>
-</td></tr></table>
-<p />
 [%     END %]
-
-</td></tr>
-</table>
-<p />
+</dl>
 [%-  END -%]
 
 [% END %]

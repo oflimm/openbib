@@ -45,7 +45,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          normdataicon = "";
@@ -60,16 +60,17 @@ FOREACH category IN categories;
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
 
-         rssfeed = "" ;
-         IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${servername}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
 
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+
+         rssfeed = "" ;
+         IF activefeed.3 ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
 
          normdataicon = "";
 
@@ -167,16 +168,16 @@ FOREACH category IN categories;
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
 
-         rssfeed = "" ;
-         IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${servername}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
-
          searchterm    = item.content.replace('"','');
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+
+         rssfeed = "" ;
+         IF activefeed.4 ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
 
          normdataicon = "";
 
@@ -192,16 +193,16 @@ FOREACH category IN categories;
     CASE "T0700";
          thisid     = item.id;
 
-         rssfeed = "" ;
-         IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${servername}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
-
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}.html";
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+
+         rssfeed = "" ;
+         IF activefeed.5 ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
 
          normdataicon = "";
 

@@ -1156,7 +1156,7 @@ sub get_orgunitinfo_overview {
             'profileid.profilename' => $profilename,
         },
         {
-            join     => 'profileid',
+            join     => ['profileid'],
             order_by => 'nr',
         }
     );

@@ -244,7 +244,7 @@ sub to_rss {
         description   => $channel_description,
     );
 
-        
+
     foreach my $record ($self->get_records){
         my $desc  = "";
         my $title = $record->get_field({field => 'T0331'});
@@ -252,15 +252,15 @@ sub to_rss {
         if (ref $title eq "ARRAY"){
             $title=$title->[0];
         }
-        
+
         my $ast   = $record->get_field({field => 'T0310'});
 
         if (ref $ast eq "ARRAY"){
             $ast=$ast->[0];
         }
-        
+
         $title = $ast if ($ast);
-        
+
         my $itemtemplatename = $config->{tt_connector_rss_item_tname};
             my $itemtemplate = Template->new({
                 LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -270,14 +270,13 @@ sub to_rss {
                 RECURSION      => 1,
                 OUTPUT         => \$desc,
             });
-        
-        
+
         # TT-Data erzeugen
         my $ttdata={
                 record          => $record,
                 msg             => $msg,
             };
-        
+
         $itemtemplate->process($itemtemplatename, $ttdata) || do {
             $logger->error($itemtemplate->error());
         };

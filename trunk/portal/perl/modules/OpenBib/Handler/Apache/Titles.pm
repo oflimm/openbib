@@ -45,6 +45,7 @@ use URI::Escape qw(uri_escape uri_escape_utf8);
 use Encode 'decode_utf8';
 
 use OpenBib::Catalog;
+use OpenBib::Catalog::Factory;
 use OpenBib::Search::Backend::Xapian;
 use OpenBib::Search::Util;
 use OpenBib::Record::Title;
@@ -142,11 +143,11 @@ sub show_recent {
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
     my $profile       = $config->get_profilename_of_view($view);
 
-    my $catalog = new OpenBib::Catalog($database);
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database});
     
     my $recordlist = $catalog->get_recent_titles({
         limit    => 50,
-    });
+    })->load_brief_records;
 
     # TT-Data erzeugen
     my $ttdata={

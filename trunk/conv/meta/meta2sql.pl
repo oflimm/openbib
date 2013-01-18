@@ -457,13 +457,13 @@ while (my $jsonline=<IN>){
     }
     
     foreach my $field (keys %{$record_ref}) {
-        next if ($field eq "id" || defined $stammdateien_ref->{holding}{blacklist_ref}->{$field} );
+        next if ($field eq "id" || defined $stammdateien_ref->{holding}{blacklist_ref}{$field} );
         
         foreach my $item_ref (@{$record_ref->{$field}}) {
             next unless ($item_ref->{content});
             
             my $contentnorm   = "";
-            if (defined $field && exists $stammdateien_ref->{holding}{inverted_ref}->{$field}) {
+            if (defined $field && exists $stammdateien_ref->{holding}{inverted_ref}{$field}) {
                 $contentnorm = OpenBib::Common::Util::normalize({
                     field    => "X$field",
                     content  => $item_ref->{content},
@@ -475,11 +475,11 @@ while (my $jsonline=<IN>){
                     my $weight = $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}{$searchfield};
                     
                     my $hash_ref = {};
-                    if (exists $indexed_holding{$titleid}){
+                    if (defined $indexed_holding{$titleid}){
                         $hash_ref = $indexed_holding{$titleid};
                     }
                     
-                    push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$content];
+                    push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$item_ref->{content}];
                     
                     $indexed_holding{$titleid} = $hash_ref;
                 }

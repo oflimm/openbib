@@ -126,107 +126,75 @@ convtab:
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_person:
       '0800':         # Ansetzung
-        ft: 1
-        string: 1
         index:
           'person': 1
           'personstring': 1
           'freesearch': 1
       '0830':         # Verweisform
-        ft: 1
-        string: 1
         index:
           'person': 1
           'freesearch': 1
     inverted_corporatebody:
       '0800':         # Ansetzung
-        ft: 1
-        string: 1
         index:
           'corporatebody': 1
           'corporatebodystring': 1
           'freesearch': 1
       '0810':         # Verweisform
-        ft: 1
-        string: 1
         index:
           'corporatebody': 1
           'freesearch': 1
       '0812':         # Abkuerzung der Verweisform
-        ft: 1
-        string: 1
         index:
           'corporatebody': 1
           'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
-        ft: 1
-        string: 1
         index:
           'corporatebody': 1
           'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
-        ft: 1
-        string: 1
         index:
           'corporatebody': 1
           'freesearch': 1
     inverted_holding:
       '0014':         # Signatur
-        ft: 1
-        string: 1
         index:
           'mark': 1
           'markstring': 1
           'freesearch': 1
     inverted_classification:
       '0800':         # Ansetzung
-        ft: 1
-        string: 1
         index:
           'classification': 1
           'classificationstring': 1
           'freesearch': 1
       '0801':         # Ansetzung
-        ft: 1
-        string: 1
         index:
           'classification': 1
           'freesearch': 1
       '0830':         # Stichwort
-        ft: 1
-        string: 1
         index:
           'classification': 1
           'freesearch': 1
       '0840':         # Verweisform
-        ft: 1
-        string: 1
         index:
           'classification': 1
           'freesearch': 1
     inverted_subject:
       '0800':         # Ansetzung
-        ft: 1
-        string: 1
         index:
           'subject': 1
           'subjectstring': 1
           'freesearch': 20
       '0830':         # Verweisform
-        ft: 1
-        string: 1
         index:
           'subject': 1
           'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
-        ft: 1
-        string: 1
         index:
           'subject': 1
           'freesearch': 1
       '0870':         # Frueher
-        ft: 1
-        string: 1
         index:
           'subject': 1
           'freesearch': 1
@@ -250,10 +218,10 @@ convtab:
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
-      '0014':         # Signatur, wenn nicht in den Exemplardaten
-        index:
-          'mark': 1
-          'markstring': 1
+#      '0014':         # Signatur, wenn nicht in den Exemplardaten
+#        index:
+#          'mark': 1
+#          'markstring': 1
       '0015':
         index:
           'language': 1
@@ -266,92 +234,95 @@ convtab:
           'source': 1
           'freesearch': 1
       '0100':
-        index:
-          'personstring': 1
+#        index:
+#          'freesearch': 1
+#	  'person': 1
+#          'personstring': 1
         facet:
           'person': 1
       '0101':
-        index:
-          'personstring': 1
+#        index:
+#          'freesearch': 1
+#	  'person': 1
+#          'personstring': 1
         facet:
           'person': 1
       '0102':
-        index:
-          'personstring': 1
+#        index:
+#          'freesearch': 1
+#	  'person': 1
+#          'personstring': 1
         facet:
           'person': 1
       '0103':
-        index:
-          'personstring': 1
+#        index:
+#          'freesearch': 1
+#	  'person': 1
+#          'personstring': 1
         facet:
           'person': 1
       '0110':
-        index:
-          'person': 1
-          'personstring': 1
+#        index:
+#          'freesearch': 1
+#          'person': 1
+#          'personstring': 1
         facet:
           'person': 1
       '0111':
-        index:
-          'person': 1
-          'personstring': 1
+#        index:
+#          'freesearch': 1
+#          'person': 1
+#          'personstring': 1
         facet:
           'person': 1
       '0112':
-        index:
-          'person': 1
-          'personstring': 1
+#        index:
+#          'freesearch': 1
+#          'person': 1
+#          'personstring': 1
         facet:
           'person': 1
       '0200':
-        index:
-          'corporatebodystring': 1
+#        index:
+#          'freesearch': 1
+#          'corporatebody': 1
+#          'corporatebodystring': 1
         facet:
           'corporatebody': 1
       '0201':
-        index:
-          'corporatebodystring': 1
+#        index:
+#          'freesearch': 1
+#          'corporatebody': 1
+#          'corporatebodystring': 1
         facet:
           'corporatebody': 1
       '0304':         # EST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0310':         # AST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'freesearch': 1
           'titlestring': 1
       '0331':         # HST
-        ft: 1
-        string: 1
         index:
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0335':         # Zusatz zum HST
-        ft: 1
-        string: 0
         index:
           't0335': 1
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0340':         # PSTAnsetzung
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0341':         # PSTVorlage
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -362,15 +333,11 @@ convtab:
           'titlestring': 40
           'freesearch': 40
       '0370':         # WST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0375':         # ZSTnorm
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -449,15 +416,11 @@ convtab:
           'isbn': 1
           'freesearch': 1
       '0670':         # TitelOrth
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0675':         # HSTmodern
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -468,10 +431,10 @@ convtab:
         facet:
           'classification': 1
       '0710':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
+#        index:
+#          'freesearch': 1
+#          'subject': 1
+#          'subjectstring': 1
         facet:
           'subject': 1
       '0750':         # Abstract
@@ -487,17 +450,17 @@ convtab:
         facet:
           'mediatype': 1
       '0902':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
+#        index:
+#          'freesearch': 1
+#          'subject': 1
+#          'subjectstring': 1
         facet:
           'subject': 1
       '0907':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
+#        index:
+#          'freesearch': 1
+#          'subject': 1
+#          'subjectstring': 1
         facet:
           'subject': 1
       '0912':
@@ -617,36 +580,26 @@ convtab:
           'isbn': 1
           'freesearch': 1
       '1800':         # Nebeneintragung 1. Person
-        ft: 1
-        string: 1
         index:
           'person': 1
           'personstring': 1
           'freesearch': 1
       '1802':         # Nebeneintragung 2. Koerperschaft
-        ft: 1
-        string: 1
         index:
           'corporatebody': 1
           'corporatebodystring': 1
           'freesearch': 1
       '1804':         # Nebeneintragung 1. Titel EST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '1805':         # Nebeneintragung 1. Titel Ansetzungsform
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '1806':         # Nebeneintragung 1. Titel in Mischform
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -935,43 +888,31 @@ convtab:
         facet:
           'corporatebody': 1
       '0304':         # EST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0310':         # AST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'freesearch': 1
           'titlestring': 1
       '0331':         # HST
-        ft: 1
-        string: 1
         index:
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0335':         # Zusatz zum HST
-        ft: 1
-        string: 0
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0340':         # PSTAnsetzung
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0341':         # PSTVorlage
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -982,15 +923,11 @@ convtab:
           'titlestring': 40
           'freesearch': 40
       '0370':         # WST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0375':         # ZSTnorm
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -1068,15 +1005,11 @@ convtab:
           'isbn': 1
           'freesearch': 1
       '0670':         # TitelOrth
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0675':         # HSTmodern
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -1236,36 +1169,26 @@ convtab:
           'isbn': 1
           'freesearch': 1
       '1800':         # Nebeneintragung 1. Person
-        ft: 1
-        string: 1
         index:
           'person': 1
           'personstring': 1
           'freesearch': 1
       '1802':         # Nebeneintragung 2. Koerperschaft
-        ft: 1
-        string: 1
         index:
           'corporatebody': 1
           'corporatebodystring': 1
           'freesearch': 1
       '1804':         # Nebeneintragung 1. Titel EST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '1805':         # Nebeneintragung 1. Titel Ansetzungsform
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '1806':         # Nebeneintragung 1. Titel in Mischform
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -1302,16 +1225,12 @@ convtab:
   kapsel:
     inverted_classification:
       '0800':         # Ansetzung
-        ft: 1
-        string: 1
         index:
           'classification': 1
           'classificationstring': 1
           'freesearch': 1
 
       '0830':         # Verweisform
-        ft: 1
-        string: 1
         index:
           'classification': 1
           'classificationstring': 1
@@ -1319,15 +1238,11 @@ convtab:
 
     inverted_subject:
       '0800':         # Ansetzung
-        ft: 1
-        string: 1
         index:
           'subject': 1
           'subjectstring': 1
           'freesearch': 20
       '0831':         # Verweisform
-        ft: 1
-        string: 1
         index:
           'subject': 1
           'subjectstring': 1
@@ -1398,36 +1313,26 @@ convtab:
         facet:
           'person': 1
       '0304':         # EST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0310':         # AST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'freesearch': 1
           'titlestring': 1
       '0331':         # HST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0335':         # Zusatz zum HST
-        ft: 1
-        string: 0
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0341':         # PSTVorlage
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -1438,8 +1343,6 @@ convtab:
           'titlestring': 1
           'freesearch': 1
       '0370':         # WST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -1657,35 +1560,25 @@ convtab:
         facet:
           'person': 1
       '0304':         # Hier: Werkzeug
-        ft: 1
-        string: 1
         index:
           'source': 1
           'freesearch': 1
       '0310':         # AST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'freesearch': 1
           'titlestring': 1
       '0331':         # HST
-        ft: 1
-        string: 1
         index:
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0335':         # Zusatz zum HST
-        ft: 1
-        string: 0
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0341':         # PSTVorlage
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -1696,8 +1589,6 @@ convtab:
           'titlestring': 40
           'freesearch': 40
       '0370':         # WST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -1937,36 +1828,26 @@ convtab:
         facet:
           'person': 1
       '0304':         # EST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0310':         # AST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'freesearch': 1
           'titlestring': 1
       '0331':         # HST
-        ft: 1
-        string: 1
         index:
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0335':         # Zusatz zum HST
-        ft: 1
-        string: 0
         index:
           'title': 1
           'titlestring': 1
           'freesearch': 1
       '0341':         # PSTVorlage
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1
@@ -1977,8 +1858,6 @@ convtab:
           'titlestring': 40
           'freesearch': 40
       '0370':         # WST
-        ft: 1
-        string: 1
         index:
           'title': 1
           'titlestring': 1

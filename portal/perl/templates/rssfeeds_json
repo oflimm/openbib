@@ -12,7 +12,6 @@
 #######################################################################
 -%]
 [%
-
 rssfeeds = [] ; 
 
 FOREACH orgunitdesc IN rssfeedinfo.keys;
@@ -20,7 +19,7 @@ FOREACH orgunitdesc IN rssfeedinfo.keys;
     thisrssfeed = {
         link = {
            rel = 'self'
-           url = "${path_prefix}/${config.get('databases_loc')}/id/${rssfeed.pool}/titles/recent.rss?l=${lang}"
+           url = "http://${servername}${path_prefix}/${config.get('databases_loc')}/id/${rssfeed.pool}/titles/recent.rss?l=${lang}"
         }
         orgunit_description = orgunitdesc
         database            = rssfeed.pool
@@ -34,7 +33,7 @@ END;
 this_rssfeeds = {
         link = {
            rel = 'self'
-           url = ${path_prefix}/${config.get('rssfeeds_loc')}.json?l=${lang}"
+           url = "http://${servername}${path_prefix}/${config.get('rssfeeds_loc')}.json?l=${lang}"
         }
         rssfeeds = rssfeeds
 };

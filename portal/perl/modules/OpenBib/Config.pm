@@ -906,6 +906,41 @@ sub get_locationinfo_of_database {
     return {};
 }
 
+sub get_locationid_of_database {
+    my $self   = shift;
+    my $dbname = shift;
+
+    my $databaseinfo = $self->{schema}->resultset('Databaseinfo')->single(
+        {
+            'dbname' => $dbname,
+        },
+    );
+
+    if ($databaseinfo && $databaseinfo->locationid){
+        return $databaseinfo->locationid->identifier;
+    }
+
+    return "";
+}
+
+sub get_locationinfo_by_id {
+    my $self   = shift;
+    my $id = shift;
+
+    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single(
+        {
+            'identifier' => $id,
+        },
+    );
+
+    if ($locationinfo){
+        return $locationinfo;
+    }
+
+    return "";
+}
+
+
 sub get_locationinfo {
     my ($self) = @_;
     

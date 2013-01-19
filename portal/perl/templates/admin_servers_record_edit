@@ -81,7 +81,7 @@
 <div class="ym-fbox-select">
 <label for="status">[% msg.maketext("Status") %]</label>
   <select name="status" id="status">
-     <option value="" [% IF serverinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Aktualisierbar") %]</option>
+     <option value="updatable" [% IF serverinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Aktualisierbar") %]</option>
      <option value="updating" [% IF serverinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
      <option value="updated" [% IF serverinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
      <option value="searchable" [% IF serverinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Recherchierbar") %]</option>
@@ -101,8 +101,8 @@
 <div class="ym-fbox-select">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
   <select name="active" id="active">
-     <option value="true" [%- IF databaseinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Ja") %]</option>
-     <option value="false" [%- IF NOT databaseinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Nein") %]</option>
+     <option value="true" [%- IF serverinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Ja") %]</option>
+     <option value="false" [%- IF NOT serverinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Nein") %]</option>
   </select>
 </div>
 

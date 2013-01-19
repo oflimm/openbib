@@ -111,9 +111,13 @@ $logger->info("Loeschung des alten Index fuer Datenbank $database");
 
 system("rm $indexpath/*");
 
+my $locationid = $config->get_locationid_of_database($database);
+my $norm_locationid =  OpenBib::Common::Util::normalize({ content => $locationid});
+$norm_locationid=~s/\W/_/g;
+
 my $atime = new Benchmark;
 
-{    
+{
     $logger->info("Aufbau eines neuen temporaeren Index fuer Datenbank $database");
     
     my $db = Search::Xapian::WritableDatabase->new( $indexpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
@@ -165,6 +169,7 @@ my $atime = new Benchmark;
             
             # Katalogname des Satzes recherchierbar machen
             $doc->add_term($config->{xapian_search_prefix}{'fdb'}.$thisdbname);
+            $doc->add_term($config->{xapian_search_prefix}{'floc'}.$norm_locationid);
             
             foreach my $searchfield (keys %{$config->{searchfield}}) {
                 
@@ -294,8 +299,9 @@ my $atime = new Benchmark;
             # Facetten
             foreach my $type (keys %{$config->{xapian_drilldown_value}}){
                 # Datenbankname
-                $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($database)) if ($type eq "db" && $database);
-                
+                $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($database)) if ($type eq "database" && $database);
+                $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($locationid)) if ($type eq "location" && $locationid);
+
                 next if (!defined $index_ref->{"facet_".$type});
                 
                 my %seen_terms = ();

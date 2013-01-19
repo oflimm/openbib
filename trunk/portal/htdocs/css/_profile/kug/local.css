@@ -397,6 +397,11 @@
     zoom:1;
   }    
 
+  .ob-selectbox optgroup[label] {
+    font-style: normal;
+
+  }
+
 /*  .ob-selectbox select {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;

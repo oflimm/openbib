@@ -619,6 +619,7 @@ open(OUT,           ">:utf8","title.dump"        )      || die "OUT konnte nicht
 open(OUTFIELDS,     ">:utf8","title_fields.dump"     )  || die "OUTFIELDS konnte nicht geoeffnet werden";
 open(SEARCHENGINE,  ">:utf8","searchengine.json" )       || die "SEARCHENGINE konnte nicht goeffnet werden";
 
+my $locationid = $config->get_locationid_of_database($database);
 
 $count = 1;
 
@@ -637,7 +638,9 @@ while (my $jsonline=<IN>){
     {
         push @{$searchengine_ref->{id}{1}}, ['id',$id];
         push @{$searchengine_ref->{dbstring}{1}}, ['database',$database];
+        push @{$searchengine_ref->{locationstring}{1}}, ['location',$locationid];
         push @{$searchengine_ref->{facet_database}}, $database;
+        push @{$searchengine_ref->{facet_location}}, $locationid;
         
         $titlecache_ref->{id}       = $id;
         $titlecache_ref->{database} = $database;

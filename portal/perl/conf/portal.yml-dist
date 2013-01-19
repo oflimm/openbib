@@ -3034,6 +3034,9 @@ searchfield:
   'dbstring':
      'prefix': 'fdb'
      'type': 'string'
+  'locationstring':
+     'prefix': 'floc'
+     'type': 'string'
   'bibkey':
      'prefix': 'bkey'
      'type': 'string'
@@ -3352,6 +3355,7 @@ xapian_search_prefix:
   'ftag': 'E3'
   'flitlist': 'E4'
   'fpubl': 'E5'
+  'floc': 'E6'
 
   # Einzelne Kategorieinhalte
   't0335': 'T0335'
@@ -3373,6 +3377,7 @@ xapian_drilldown_value:
   database: 8
   tag: 9
   litlist: 10
+#  location: 11
 
 xapian_sorttype_value:
   'person': 20

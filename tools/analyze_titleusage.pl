@@ -252,7 +252,7 @@ foreach my $item ($isbns->all){
                 
                 $count++;
                
-                if ($record->get_category({ category => 'T0331' }) && $item_ref->{isbn}){
+                if ($record->get_field({ category => 'T0331' }) && $item_ref->{isbn}){
 
                     # ISBN
                     push @$enriched_content_ref, {

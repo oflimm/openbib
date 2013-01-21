@@ -1,0 +1,50 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_right
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Rechts
+#
+#######################################################################
+-%]
+
+<div class="ob-category_header">[% msg.maketext("Weitere Informationsquellen") %]</div>
+
+<h3><img style="vertical-align:bottom" src="[% config.get('university_img') %]" alt="Universit&auml;t" />&nbsp;Dienste an der Universit&auml;t</h3>
+
+<h4>Recherche im USB-Portal</h4>
+
+Zus&auml;tzlich zum KUG bietet die USB K&ouml;ln einen eigenen <a
+href="http://www.ub.uni-koeln.de/usbportal" target="_blank">Recherche-Einstieg</a> an. Dort k&ouml;nnen
+Sie in weiteren externen Informationsquellen (Datenbanken,
+Verbundkataloge) recherchieren.
+
+<h4>Digitalisierte Kartenkataloge</h4>
+
+Zahlreiche &auml;ltere Best&auml;nde verschiedener Institute sind hier
+nicht recherchierbar, werden jedoch durch digitalisierte
+Katalogkarten-Bilder erschlossen.
+
+<ul>
+<li><a href="[% path_prefix %]/[% config.get('info_loc') %]/cardcatalogs.html?l=[% lang %]">Philosophische Fakult&auml;t</a></li>
+</ul>
+
+<h3><img style="vertical-align:bottom" src="[% config.get('global_img') %]" alt="Externe Angebote" />&nbsp;Allgemeine Informationsquellen</h3>
+
+<h4>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h4>
+
+<p>
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/ezb/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1\">","</a>") %]
+</p>
+
+<h4>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h4>
+
+<p>
+[% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
+lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1;access_national=1\">","</a>") %]
+</p>
+

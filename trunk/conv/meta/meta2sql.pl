@@ -1047,7 +1047,12 @@ while (my $jsonline=<IN>){
                     foreach my $fields_ref (@{$searchengine_ref->{isbn}{$weight}}) {
 			my $isbn13 = $fields_ref->[1];
                         if (defined $enrichmntdata{$isbn13}{$field}) {
-                            push @$enrichmnt_data_ref, @{$enrichmntdata{$isbn13}{$field}};
+			    eval {
+				push @$enrichmnt_data_ref, @{$enrichmntdata{$isbn13}{$field}};
+			    };
+			    if ($@){
+				$logger->error($@);
+			    }
                         }
                     }
                 }
@@ -1056,9 +1061,14 @@ while (my $jsonline=<IN>){
                 foreach my $weight (keys %{$searchengine_ref->{issn}}) {
                     foreach my $fields_ref (@{$searchengine_ref->{issn}{$weight}}) {
 			my $issn = $fields_ref->[1];
-                        if (defined $enrichmntdata{$issn}{$field}) {
-                            push @$enrichmnt_data_ref, @{$enrichmntdata{$issn}{$field}};
-                        }
+			eval {
+			    if (defined $enrichmntdata{$issn}{$field}) {
+				push @$enrichmnt_data_ref, @{$enrichmntdata{$issn}{$field}};
+			    }
+			};
+			if ($@){
+			    $logger->error($@);
+			}
                     }
                 }
             }

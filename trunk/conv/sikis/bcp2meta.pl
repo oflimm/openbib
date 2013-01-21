@@ -825,8 +825,13 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
 
 #    print TITSIK "9999:\n\n";
 
-    print TITSIKJSON encode_json $title_ref, "\n";
-    
+    eval {
+        print TITSIKJSON encode_json $title_ref, "\n";
+    };
+
+    if ($@){
+        print STDERR $@, "\n";
+    }
 
     %inventarbuf     = ();
     %signaturbuf     = ();

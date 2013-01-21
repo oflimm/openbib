@@ -65,7 +65,7 @@ $(document).ready(function(){
 <fieldset class="ym-columnar">
 <legend>[% msg.maketext("Erweiterte Suche") %]</legend>
 
-[% USE dumper;dumper.dump(available_searchfields)%]
+[%# USE dumper;dumper.dump(available_searchfields)%]
 
 [% IF available_searchfields.freesearch.active %]
 [%- cgiparam = searchfield.freesearch.prefix ;

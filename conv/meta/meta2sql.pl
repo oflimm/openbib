@@ -297,7 +297,48 @@ foreach my $type (keys %{$stammdateien_ref}) {
         }
         
         print OUT "$id$create_tstamp$update_tstamp\n";
+
+        # Ansetzungsformen fuer Kurztitelliste merken
         
+        my $mainentry;
+        
+        if (exists $record_ref->{'0800'} && exists $record_ref->{'0800'}[0] ) {
+            $mainentry = $record_ref->{'0800'}[0]{content};
+        }
+        
+        if ($mainentry) {
+            if ($type eq "person") {
+                $listitemdata_person{$id}=$mainentry;
+            }
+            elsif ($type eq "corporatebody") {
+                $listitemdata_corporatebody{$id}=$mainentry;
+            }
+            elsif ($type eq "classification") {
+                $listitemdata_classification{$id}=$mainentry;
+            }
+            elsif ($type eq "subject") {
+                if (defined $record_ref->{'0800'}[1]){
+                    # Schlagwortketten zusammensetzen
+                    my @mainentries = ();
+                    foreach my $item (map { $_->[0] }
+                                          sort { $a->[1] <=> $b->[1] }
+                                              map { [$_, $_->{mult}] } @{$record_ref->{'0800'}}){
+                        push @mainentries, $item->{content};
+                        $mainentry = join (' / ',@mainentries);
+                    }
+
+                    $record_ref->{'0800'} = [
+                        {
+                            content  => $mainentry,
+                            mult     => 1,
+                            subfield => '',
+                        }
+                    ];
+                }
+                $listitemdata_subject{$id}=$mainentry;
+            }
+        }
+
         foreach my $field (keys %{$record_ref}) {
             next if ($field eq "id" || defined $stammdateien_ref->{$type}{blacklist_ref}->{$field} );
             foreach my $item_ref (@{$record_ref->{$field}}) {
@@ -362,38 +403,6 @@ foreach my $type (keys %{$stammdateien_ref}) {
             }
         }
         
-        # Ansetzungsformen fuer Kurztitelliste merken
-        
-        my $mainentry;
-        
-        if (exists $record_ref->{'0800'} && exists $record_ref->{'0800'}[0] ) {
-            $mainentry = $record_ref->{'0800'}[0]{content};
-        }
-        
-        if ($mainentry) {
-            if ($type eq "person") {
-                $listitemdata_person{$id}=$mainentry;
-            }
-            elsif ($type eq "corporatebody") {
-                $listitemdata_corporatebody{$id}=$mainentry;
-            }
-            elsif ($type eq "classification") {
-                $listitemdata_classification{$id}=$mainentry;
-            }
-            elsif ($type eq "subject") {
-                if (defined $record_ref->{'0800'}[1]){
-                    # Schlagwortketten zusammensetzen
-                    my @mainentries = ();
-                    foreach my $item (map { $_->[0] }
-                                          sort { $a->[1] <=> $b->[1] }
-                                              map { [$_, $_->{mult}] } @{$record_ref->{'0800'}}){
-                        push @mainentries, $item->{content};
-                        $mainentry = join (' / ',@mainentries);
-                    }
-                }
-                $listitemdata_subject{$id}=$mainentry;
-            }
-        }
     }
 
     close(OUT);

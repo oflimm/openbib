@@ -171,8 +171,15 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
         };
 
     }
-    
-    print PERSIKJSON encode_json $person_ref, "\n";
+
+    eval {
+        print PERSIKJSON encode_json $person_ref, "\n";
+    };
+
+    if ($@){
+        print STDERR $@, "\n";
+    }
+        
 #    print PERSIK "9999:\n\n";    
 }
 close(PERSIKJSON);
@@ -219,7 +226,13 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)) {
 
     }
 
-    print KOESIKJSON encode_json $corporatebody_ref, "\n";
+    eval {
+        print KOESIKJSON encode_json $corporatebody_ref, "\n";
+    };
+    
+    if ($@){
+        print STDERR $@, "\n";
+    }
 
 #    print KOESIK "9999:\n\n";
 }
@@ -267,7 +280,13 @@ while (my ($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)) {
 
     }
 
-    print SYSSIKJSON encode_json $classification_ref, "\n";
+    eval {
+        print SYSSIKJSON encode_json $classification_ref, "\n";
+    };
+
+    if ($@){
+        print STDERR $@, "\n";
+    }
 
 #    print SYSSIK "9999:\n\n";
 }
@@ -346,8 +365,14 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
         };
     }
 
-    print SWDSIKJSON encode_json $subject_ref, "\n";
-    
+    eval {
+        print SWDSIKJSON encode_json $subject_ref, "\n";
+    };
+
+    if ($@){
+        print STDERR $@, "\n";
+    }
+
 #    print SWDSIK "9999:\n\n";
 }
 
@@ -719,7 +744,13 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     };
                 }
 
-                print MEXSIKJSON encode_json $holding_ref, "\n";
+                eval {
+                    print MEXSIKJSON encode_json $holding_ref, "\n";
+                };
+
+                if ($@){
+                    print STDERR $@, "\n";
+                }
             }
             else {
                 my $erschverl=$erschverlbuf{$multkey};
@@ -766,8 +797,13 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     };
                 }
 
-                print MEXSIKJSON encode_json $holding_ref, "\n";
+                eval {
+                    print MEXSIKJSON encode_json $holding_ref, "\n";
+                };
 
+                if ($@){
+                    print STDERR $@, "\n";
+                }
             }
           
             $mexid++;
@@ -814,8 +850,14 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     subfield => '',
                 };
             }
-              
-            print MEXSIKJSON encode_json $holding_ref, "\n";
+
+            eval {
+                print MEXSIKJSON encode_json $holding_ref, "\n";
+            };
+
+            if ($@){
+                print STDERR $@, "\n";
+            }
 
             $mexid++;
         }

@@ -56,12 +56,16 @@ sub new {
     # Set defaults
     my $database        = exists $arg_ref->{database}
         ? $arg_ref->{database}         : undef;
-    
+
+    my $id              = exists $arg_ref->{id}
+        ? $arg_ref->{id}               : undef;
+
     my $self = { };
 
     bless ($self, $class);
 
     $self->{database} = $database;
+    $self->{id}       = $id;
     
     $self->connectDB($database);
     
@@ -486,7 +490,7 @@ sub load_full_title_record {
                 $atime=new Benchmark;
             }
             
-            my @sub = $self->get_connected_titles({ type => 'sub' });
+            my @sub = $self->get_connected_titles({ type => 'sub', id => $id });
             
             if (@sub){
                 
@@ -499,7 +503,7 @@ sub load_full_title_record {
                 
                 my $mult = 1;
                 foreach my $id (@sub){
-                    $title_record->set_field({                
+                    $title_record->set_field({
                         field      => 'T5003',
                         content    => $id,
                         subfield   => '',
@@ -521,10 +525,10 @@ sub load_full_title_record {
                 $atime=new Benchmark;
             }
             
-            my @super = $self->get_connected_titles({ type => 'super' });
+            my @super = $self->get_connected_titles({ type => 'super', id => $id });
             
             if (@super){
-                $title_record->set_field({                
+                $title_record->set_field({
                     field      => 'T5002',
                     content    => scalar(@super),
                     subfield   => '',
@@ -949,6 +953,8 @@ sub get_connected_titles {
     foreach my $item ($titles->all){
         push @titles, $item->get_column('thistitleid');
     }
+
+    $logger->debug("Related title id's for type $type and id $id :".YAML::Dump(@titles));
     
     return @titles;
 }

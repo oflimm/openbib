@@ -3412,6 +3412,8 @@ default_searchfields:
     'active': 1
   'content':
     'active': 1
+  'markstring':
+    'active': 1
   'source':
     'active': 1
   'year':

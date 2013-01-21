@@ -18,16 +18,20 @@
 
 <h4>Recherche im USB-Portal</h4>
 
+<p>
 Zus&auml;tzlich zum KUG bietet die USB K&ouml;ln einen eigenen <a
 href="http://www.ub.uni-koeln.de/usbportal" target="_blank">Recherche-Einstieg</a> an. Dort k&ouml;nnen
 Sie in weiteren externen Informationsquellen (Datenbanken,
 Verbundkataloge) recherchieren.
+</p>
 
 <h4>Digitalisierte Kartenkataloge</h4>
 
+<p>
 Zahlreiche &auml;ltere Best&auml;nde verschiedener Institute sind hier
 nicht recherchierbar, werden jedoch durch digitalisierte
 Katalogkarten-Bilder erschlossen.
+</p>
 
 <ul>
 <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/cardcatalogs.html?l=[% lang %]">Philosophische Fakult&auml;t</a></li>

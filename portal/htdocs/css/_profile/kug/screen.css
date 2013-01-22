@@ -163,8 +163,11 @@
   }
 
   .ob-item:hover {
+    margin-left: -3px;
+    border-left-width: 4px;
+    border-left-color: #41799e; 
 /*    border-color: #000;*/
-    background: #ebeff5;
+/*    background: #ebeff5;*/
 /*   background: #ececec;*/
   }
 

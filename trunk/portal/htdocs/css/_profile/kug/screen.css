@@ -149,6 +149,7 @@
   }
 
   .ob-item {
+    height: 105px;
     width: 100%;
     position: relative;
     border-style: solid;
@@ -208,9 +209,9 @@
 
   .ob-item .ob-brieftitle {
     position: absolute;
-    top: 20px;
+    top: 26px;
     left:120px;
-    width: auto; 
+    width: auto;
   }
 
   /* ob-liststyle not used
@@ -250,7 +251,7 @@
   .ob-item .ob-titleactions {
     position: absolute;
     text-align: right;
-    top: 0;
+    top: 2px;
     right: 0;
     padding-top: 5px;
     padding-right: 5px;

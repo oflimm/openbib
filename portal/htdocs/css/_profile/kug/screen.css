@@ -157,6 +157,18 @@
     margin-bottom: 5px;
   }
 
+  .ob-item .ob-titleactions {
+    display: none;
+  }
+
+  .ob-item:hover {
+    background: #ebeff5;
+  }
+
+  .ob-item:hover .ob-titleactions {
+    display: block;
+  }
+
   .ob-item .ob-numbering {
     position: absolute;
     background: #ffffff none repeat scroll 0 0;
@@ -238,7 +250,8 @@
     text-align: right;
     top: 0;
     right: 0;
-    padding: 10px;
+    padding-top: 5px;
+    padding-right: 5px;
   }
 
   .ob-resultitems .ob-footer {
@@ -606,4 +619,47 @@
     background: url('/images/openbib/extern.gif') no-repeat left center;
   }
 
+  .ob-collection {
+    font-size: 12px;
+    border: 1px solid #777;
+    webkit-border-radius: .2em;
+    moz-border-radius: .2em;
+    border-radius: .2em;
+    padding: 3px;
+  }
+
+  .ob-collection img {
+    padding-right: 5px;
+    vertical-align:text-top;
+  }
+
+  .ob-bibsonomy {
+    font-size: 12px;
+    border: 1px solid #777;
+    webkit-border-radius: .2em;
+    moz-border-radius: .2em;
+    border-radius: .2em;
+    padding: 3px;
+  }
+
+  .ob-bibsonomy img {
+    padding-right: 5px;
+    vertical-align:text-top;
+  }
+
+  .ob-delete {
+    font-size: 12px;
+    border: 1px solid #777;
+    webkit-border-radius: .2em;
+    moz-border-radius: .2em;
+    border-radius: .2em;
+    padding: 3px;
+  }
+
+  .ob-delete img {
+    padding-right: 5px;
+    vertical-align:text-top;
+  }
+
+      
 }

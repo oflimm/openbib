@@ -51,13 +51,14 @@ use JSON::XS;
 #use MLDBM qw(DB_File Storable);
 use Storable ();
 
-our ($bcppath,$used01buch,$usemcopynum,$blobencoding,$reducemem);
+our ($bcppath,$used01buch,$used01buchstandort,$usemcopynum,$blobencoding,$reducemem);
 
 &GetOptions(
     "reduce-mem"      => \$reducemem,
     "bcp-path=s"      => \$bcppath,
     "blob-encoding=s" => \$blobencoding, # V<4.0: iso-8859-1, V>=4.0: utf8
     "use-d01buch"     => \$used01buch,
+    "use-d01buch-standort" => \$used01buchstandort,
     "use-mcopynum"    => \$usemcopynum,
 );
 
@@ -90,15 +91,16 @@ our $fstab_ref = read_fstab();
 
 my %zweigstelle  = ();
 my %abteilung    = ();
+my %standort     = ();
 my %buchdaten    = ();
 my %titelbuchkey = ();
 
 if ($reducemem) {
-#    tie %buchdaten,        'MLDBM', "./buchdaten.db"
-#        or die "Could not tie buchdaten.\n";
+    #tie %buchdaten,        'MLDBM', "./buchdaten.db"
+        #or die "Could not tie buchdaten.\n";
 
-#    tie %titelbuchkey,     'MLDBM', "./titelbuchkey.db"
-#        or die "Could not tie titelbuchkey.\n";
+    #tie %titelbuchkey,     'MLDBM', "./titelbuchkey.db"
+        #or die "Could not tie titelbuchkey.\n";
 }
 
 #goto WEITER;
@@ -171,15 +173,14 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
         };
 
     }
-
+    
     eval {
-        print PERSIKJSON encode_json $person_ref, "\n";
+	print PERSIKJSON encode_json $person_ref, "\n";
     };
 
     if ($@){
-        print STDERR $@, "\n";
+	print STDERR $@, "\n";
     }
-        
 #    print PERSIK "9999:\n\n";    
 }
 close(PERSIKJSON);
@@ -227,11 +228,11 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)) {
     }
 
     eval {
-        print KOESIKJSON encode_json $corporatebody_ref, "\n";
+	print KOESIKJSON encode_json $corporatebody_ref, "\n";
     };
-    
+
     if ($@){
-        print STDERR $@, "\n";
+	print STDERR $@, "\n";
     }
 
 #    print KOESIK "9999:\n\n";
@@ -281,11 +282,11 @@ while (my ($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)) {
     }
 
     eval {
-        print SYSSIKJSON encode_json $classification_ref, "\n";
+	print SYSSIKJSON encode_json $classification_ref, "\n";
     };
 
     if ($@){
-        print STDERR $@, "\n";
+	print STDERR $@, "\n";
     }
 
 #    print SYSSIK "9999:\n\n";
@@ -366,13 +367,13 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
     }
 
     eval {
-        print SWDSIKJSON encode_json $subject_ref, "\n";
+	print SWDSIKJSON encode_json $subject_ref, "\n";
     };
 
     if ($@){
-        print STDERR $@, "\n";
+	print STDERR $@, "\n";
     }
-
+    
 #    print SWDSIK "9999:\n\n";
 }
 
@@ -400,16 +401,30 @@ if ($used01buch) {
     }
     close(ZWEIG);
     
-    ###
-    ## Abteilungen auswerten
-    #
-    
-    open(ABT,"cat $bcppath/d60abteil.bcp |");
-    while (<ABT>) {
-        my ($zwnr,$abtnr,$abtname)=split("",$_);
-        $abteilung{$zwnr}{$abtnr}=$abtname;
+    if ($used01buchstandort){
+	###
+	## Originaeres Standortfeld auswerten
+	#
+	
+	open(ORT,"cat $bcppath/d615standort.bcp |");
+	while (<ORT>) {
+	    my ($lfd,$standortkuerzel,$text)=split("",$_);
+	    $standort{$standortkuerzel}=$text;
+	}
+	close(ORT);
+    } 
+    else {
+	###
+	## Abteilungen als "Standorte" auswerten
+	#
+	
+	open(ABT,"cat $bcppath/d60abteil.bcp |");
+	while (<ABT>) {
+	    my ($zwnr,$abtnr,$abtname)=split("",$_);
+	    $abteilung{$zwnr}{$abtnr}=$abtname;
+	}
+	close(ABT);
     }
-    close(ABT);
 
     ###
     ## Titel-Buch-Key auswerten
@@ -435,15 +450,15 @@ if ($used01buch) {
         my @line = split("",$_);
 
         if ($usemcopynum) {            
-            my ($d01gsi,$d01ex,$d01zweig,$d01mcopynum,$d01ort,$d01abtlg)=@line[0,1,2,7,24,31];
+            my ($d01gsi,$d01ex,$d01zweig,$d01mcopynum,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,7,24,31,55];
             #print "$d01gsi,$d01ex,$d01zweig,$d01mcopynum,$d01ort,$d01abtlg\n";
             foreach my $katkey (@{$titelbuchkey{$d01mcopynum}}) {
-                push @{$buchdaten{$katkey}}, [$d01zweig,$d01ort,$d01abtlg];
+                push @{$buchdaten{$katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort];
             }
         } else {
-            my ($d01gsi,$d01ex,$d01zweig,$d01katkey,$d01ort,$d01abtlg)=@line[0,1,2,7,24,31];
+            my ($d01gsi,$d01ex,$d01zweig,$d01katkey,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,7,24,31,55];
             #print "$d01gsi,$d01ex,$d01zweig,$d01katkey,$d01ort,$d01abtlg\n";
-            push @{$buchdaten{$d01katkey}}, [$d01zweig,$d01ort,$d01abtlg];
+            push @{$buchdaten{$d01katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort];
         }
     }
     close(D01BUCH);
@@ -534,8 +549,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     id         => $id,
                     supplement => $supplement,
                 };
-            }
-            else {
+            } else {
 
                 push @{$title_ref->{$field}}, {
                     mult       => $mult,
@@ -703,10 +717,26 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                         },
                     ],
                 };
-              
+
+                if ($inventar) {
+                    push @{$holding_ref->{'0005'}}, {
+                        content  => $inventar,
+                        mult     => 1,
+                        subfield => '',
+                    };
+                }
+                            
                 if ($signatur) {
                     push @{$holding_ref->{'0014'}}, {
                         content  => $signatur,
+                        mult     => 1,
+                        subfield => '',
+                    };
+                }
+
+                if ($standort) {
+                    push @{$holding_ref->{'0016'}}, {
+                        content  => $standort,
                         mult     => 1,
                         subfield => '',
                     };
@@ -744,13 +774,13 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     };
                 }
 
-                eval {
-                    print MEXSIKJSON encode_json $holding_ref, "\n";
-                };
+		eval {
+		    print MEXSIKJSON encode_json $holding_ref, "\n";
+		};
 
-                if ($@){
-                    print STDERR $@, "\n";
-                }
+		if ($@){
+		    print STDERR $@, "\n";
+		}
             }
             else {
                 my $erschverl=$erschverlbuf{$multkey};
@@ -772,10 +802,26 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                             },
                         ],
                 };
+
+                if ($inventar) {
+                    push @{$holding_ref->{'0005'}}, {
+                        content  => $inventar,
+                        mult     => 1,
+                        subfield => '',
+                    };
+                }
               
                 if ($signatur) {
                     push @{$holding_ref->{'0014'}}, {
                         content  => $signatur,
+                        mult     => 1,
+                        subfield => '',
+                    };
+                }
+
+                if ($standort) {
+                    push @{$holding_ref->{'0016'}}, {
+                        content  => $standort,
                         mult     => 1,
                         subfield => '',
                     };
@@ -797,13 +843,13 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     };
                 }
 
-                eval {
-                    print MEXSIKJSON encode_json $holding_ref, "\n";
-                };
+		eval {
+		    print MEXSIKJSON encode_json $holding_ref, "\n";
+		};
 
-                if ($@){
-                    print STDERR $@, "\n";
-                }
+		if ($@){
+		    print STDERR $@, "\n";
+		}
             }
           
             $mexid++;
@@ -814,7 +860,19 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
         foreach my $buchsatz_ref (@{$buchdaten{$katkey}}) {
             #print join(" ; ",@{$buchsatz});
             my $signatur = $buchsatz_ref->[1];
-            my $standort = $zweigstelle{$buchsatz_ref->[0]}." / ".$abteilung{$buchsatz_ref->[0]}{$buchsatz_ref->[2]};
+
+            my $standort = $zweigstelle{$buchsatz_ref->[0]};
+
+	    if ($used01buchstandort){
+		if ($standort{$buchsatz_ref->[3]}){
+		    $standort .= " / ".$standort{$buchsatz_ref->[3]};
+		}
+	    }
+	    else {
+		if ($abteilung{$buchsatz_ref->[0]}{$buchsatz_ref->[2]}){
+		    $standort .= " / ".$abteilung{$buchsatz_ref->[0]}{$buchsatz_ref->[2]};
+		}
+	    }
             chomp($standort);
 	  
 #            print MEXSIK "0000:$mexid\n";
@@ -851,13 +909,13 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 };
             }
 
-            eval {
-                print MEXSIKJSON encode_json $holding_ref, "\n";
-            };
+	    eval {
+		print MEXSIKJSON encode_json $holding_ref, "\n";
+	    };
 
-            if ($@){
-                print STDERR $@, "\n";
-            }
+	    if ($@){
+		print STDERR $@, "\n";
+	    }
 
             $mexid++;
         }
@@ -868,11 +926,11 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
 #    print TITSIK "9999:\n\n";
 
     eval {
-        print TITSIKJSON encode_json $title_ref, "\n";
+      print TITSIKJSON encode_json $title_ref, "\n";
     };
 
     if ($@){
-        print STDERR $@, "\n";
+       print STDERR $@,"\n";
     }
 
     %inventarbuf     = ();

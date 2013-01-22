@@ -12,6 +12,7 @@
 #
 # Anpassungen: Normdatenlinks entfernt
 #              Rechercheverlinkung der Normdaten nur nach BibSonomy
+#              Verlinkung des Nutzernamens in 4200
 #######################################################################
 -%]
 [% IF format == "full" %]
@@ -220,6 +221,10 @@ FOREACH category IN categories;
          IF content.match('Sie einen Bestellschein aus');
              content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" class=\"ext\" target=\"_blank\">Ortsleihe</a> schicken";
          END;
+
+    CASE "T4200";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};sm=seq;user=${content}";
+         content       = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a>";
 
     CASE "T4500";
          # Dummy-Eintrag, damit dieser Eintrag nicht vom higlightquery

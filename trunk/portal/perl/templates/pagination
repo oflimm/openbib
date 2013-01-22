@@ -1,5 +1,4 @@
     <div class="ob-pagination">
-[% PROCESS common/subtemplate name="" this_loc=config.get('search_loc') %]
 [% IF nav.current_page > 1 %]
 <a class="ob-pagination_previous" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]">Zurück</a>
 [% ELSE %]

@@ -12,6 +12,7 @@
 #
 #######################################################################
 -%]
+[%- bklookup    = config.load_bk -%]
 [% IF format == "full" %]
 
 <table class="ym-full ob-title_fields">
@@ -132,7 +133,6 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').t4100.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
-         bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
          IF bkdesc ;

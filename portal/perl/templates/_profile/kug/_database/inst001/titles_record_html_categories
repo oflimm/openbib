@@ -17,11 +17,15 @@
 [%- bklookup    = config.load_bk -%]
 [% IF format == "full" %]
 
-[%# USE dumper;dumper.dump(record) %]
-<table class="ym-full">
+<table class="ym-full ob-title_fields">
 <tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
 
 [%-
+request_base = config.get('search_defaultparams');
+local_searchprofile = config.get_searchprofile_of_database(record.database) ;
+view_searchprofile  = config.get_searchprofile_of_view(view) ;
+globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+rswkswt_done      = {};
 
 sammlungen = {
    'Slg. Gertrud von le Fort' => {
@@ -101,11 +105,6 @@ IF portals ;
   normset.${"T4600"} = portals;
 END;
 
-request_base = config.get('search_defaultparams');
-
-globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-rswkswt_done      = {};
-
 FOREACH category IN categories;
     FOREACH item IN normdata.$category;
     content = item.content;
@@ -114,77 +113,87 @@ FOREACH category IN categories;
 
     CASE [ "T0100" "T0101" "T0103" ];
          thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
 
          wikicontent = content.split(', ').reverse.join(' ');
          wikicontent = wikicontent.replace('¬','');
-
-         rssfeed = "" ;
-         IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
 
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
-         wikipediaurl = "http://${lang}.wikipedia.org/wiki/index.php?search=${wikicontent}";
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
-         content   = "${rssfeed}<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+
+         rssfeed = "" ;
+         IF activefeed.2 ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+
+         normdataicon = "";
+
+         IF thisid ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${rssfeed}&nbsp;${normdataicon}</div>";
+         content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
 
-         rssfeed = "" ;
-         IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
 
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}.html";
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
-         content   = "${rssfeed}&nbsp;<a href=\"${resourceurl}\" Title=\"K&ouml;rperschafts-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+
+         rssfeed = "" ;
+         IF activefeed.3 ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+
+         normdataicon = "";
+
+         IF thisid ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
+
+         content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
-    CASE [ "T0531" "T0533" ];
-         IF content.match("---&gt;: ") ;
-            previssues = content.split("---&gt;: ");
-            globalurl  = "${path_prefix}/${config.get('search_loc')}?searchall=1;hststring=${previssues.1}";
-            localurl   = "${path_prefix}/${config.get('indexes_loc')}?db=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
-            content    = "<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
-         END ;
+#    CASE [ "T0531" "T0533" ];
+#         IF content.match("---&gt;: ") ;
+#            previssues = content.split("---&gt;: ");
+#            globalurl  = "${path_prefix}/${config.get('search_loc')}?searchall=1;hststring=${previssues.1}";
+#            localurl   = "${path_prefix}/${config.get('indexes_loc')}?fdb=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
+#            content    = "&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
+#         END ;
           
     CASE "T0540";
          wikipediaurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
-         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_encode(wikipediaurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+         content   = "<div class=\"float-right\"><a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a></div>${highlightquery(searchquery,content)}";
 
     CASE "T0543";
          ezburl  = "${config.get('ezb_exturl')}&jq_term1=${content}";
          content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530;url=${uri_escape(ezburl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE [ "T0662" "T2662" ];
-         thisindicator = item.indicator ;
+         thismult = item.mult ;
          thiscontent   = '' ;
          IF category == 'T0662' ;
            FOREACH thisitem IN normdata.${"T0663"} ;
-             IF thisitem.indicator == thisindicator ;
+             IF thisitem.mult == thismult ;
                 thiscontent = thisitem.content ;
              END ;
            END ;
          ELSIF category == 'T2662' ;
            FOREACH thisitem IN normdata.${"T2663"} ;
-             IF thisitem.indicator == thisindicator ;
+             IF thisitem.mult == thismult ;
                 thiscontent = thisitem.content ;
              END ;
            END ;
@@ -203,8 +212,7 @@ FOREACH category IN categories;
          searchterm    = item.content.replace('&amp;','%26');
          searchprefix  = config.get('searchfield').t4100.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
-         bklookup    = config.load_bk ;
+         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
          IF bkdesc ;
@@ -212,7 +220,6 @@ FOREACH category IN categories;
          END ;
 
     CASE "E4110";
-         thisindicator = item.indicator ;
          thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
          content       = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(content)}" ;
          content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
@@ -228,7 +235,7 @@ FOREACH category IN categories;
          searchterm    = item.content.replace('&amp;','%26');
          searchprefix  = config.get('searchfield').t4300.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
+         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
 	 content       = "<a href=\"${localurl}\">${content}</a>";
@@ -236,45 +243,61 @@ FOREACH category IN categories;
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
 
          thiscontent = item.content;
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
 
-         rssfeed = "" ;
-         IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
-
-         searchterm    = item.content;
+         searchterm    = item.content.replace('"','');
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}.html";
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
-         content   = " ${rssfeed}<a href=\"${resourceurl}\" Title=\"Schlagwort-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+
+         rssfeed = "" ;
+         IF activefeed.4 ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+
+         normdataicon = "";
+
+         IF thisid ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
+
+         content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;
 
     CASE "T0700";
          thisid     = item.id;
-         IF NOT thisid.match('^\d+$');
-             thisid = item.content;
-         END;
-
-         rssfeed = "" ;
-         IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
-         END ;
 
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}.html";
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:|${searchterm}|";
-         content   = " ${rssfeed}<a href=\"${resourceurl}\" title=\"Systematik-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+
+         rssfeed = "" ;
+         IF activefeed.5 ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+
+         normdataicon = "";
+
+         IF thisid ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
+
+         content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+         bkdesc      = bklookup.${content};
+         IF bkdesc ;
+            content   = "${content} (${bkdesc})" ;
+         END ;
 
     CASE "T1600";
          IF content.match('Sie einen Bestellschein aus');
@@ -292,14 +315,14 @@ FOREACH category IN categories;
             searchterms.push("id:${superid.content}");
          END;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};dop=or;fs=${searchterms.join(' ')}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};dop=or;fs=${searchterms.join(' ')}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}db=${database};fs=${searchprefix}:${record.id}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;

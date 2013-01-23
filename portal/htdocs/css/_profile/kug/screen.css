@@ -692,4 +692,13 @@
     list-style-type: square;
   }
 
+  .ob-fulltitle {
+    padding: 5px;
+  }
+
+  .ob-fulltitle .ob-category_header {
+    float: left;
+    margin-left: 2px;
+    width: 98%;
+  }
 }

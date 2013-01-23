@@ -19,7 +19,7 @@
 <div class="ob-headline"><span id="ob-formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-formats_do"><!-- Begin formats do -->
 <p>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=full" [%- IF format == 'full'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=Text" [%- IF format == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=BibTeX" [%- IF format == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=EndNote" [%- IF format == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=full" [%- IF format == 'full' || format == '' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
 </p>
 </div>
 <p/>
@@ -274,11 +274,12 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% IF litlists.size > 0 %]
 <div class="ob-available_litlists"><!-- Begin Vorhandene Literaturlisten -->
 <div class="ob-headline">[% msg.maketext("Literaturlisten") %]</div>
-<ul style="list-style-type: square">
+<ul>
 [% FOREACH litlist IN litlists %]
 <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].html">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
 [% END %]
 </ul>
+<p/>
 </div>
 [% END %]
 <!-- Ende Literaturlisten -->
@@ -309,8 +310,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <li>[% content %]</li>
 [%- END -%]
 </ul>
+<p/>
 </div>
-<p />
 [% END %]
 <!-- Ende Verschlagwortung in anderen Katalogen -->
 
@@ -326,8 +327,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/id/[% tag.id %].html">[% tag.name %]</a>&nbsp;
 [%- END -%]
 [% END %]
+<p/>
 </div>
-<p />
 [% END %]
 <!-- Ende Tags -->
 
@@ -396,7 +397,7 @@ $(document).ready(function(){
 <div class="ob-misc"><!-- Begin Verschiedenes -->
 <div class="ob-headline"><span id="ob-misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-misc_do"><!-- Begin misc do -->
-<ul style="list-style-type: square">
+<ul>
 <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/popular.html" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 </div>

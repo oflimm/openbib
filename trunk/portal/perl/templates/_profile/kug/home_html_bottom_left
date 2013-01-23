@@ -24,6 +24,7 @@
                 'L0020', # msg.maketext("L0020") # Strasse
                 'L0030', # msg.maketext("L0030") # Gebäude
                 'L0110', # msg.maketext("L0110") # Öffnungszeiten
+                'L0180', # msg.maketext("L0180") # Art der Bibliothek
                 'L0230', # msg.maketext("L0230") # Katalogisierung seit...
                 'L0235', # msg.maketext("L0235") # Katalogisierung seit...
                 ]

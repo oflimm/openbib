@@ -145,7 +145,7 @@ sub show_collection {
 
     # TT-Data erzeugen
     my $ttdata={
-        authenticator => $authenticatorid,
+        authenticator => $authenticator,
         loginname  => $loginname,
         password   => $password,
         

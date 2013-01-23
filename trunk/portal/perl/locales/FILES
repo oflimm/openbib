@@ -998,7 +998,7 @@
 ../modules/OpenBib/Handler/Apache/Users/Circulations/Orders.pm
 ../modules/OpenBib/Handler/Apache/Users/Circulations.pm
 ../modules/OpenBib/Handler/Apache/Users/Circulations/Reminders.pm
-../modules/OpenBib/Handler/Apache/Users/Circulations/Reserverations.pm
+../modules/OpenBib/Handler/Apache/Users/Circulations/Reservations.pm
 ../modules/OpenBib/Handler/Apache/Users/LitLists/Item.pm
 ../modules/OpenBib/Handler/Apache/Users/LitLists.pm
 ../modules/OpenBib/Handler/Apache/Users/Passwords.pm

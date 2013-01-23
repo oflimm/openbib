@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-01-22 11:04+0100\n"
+"PO-Revision-Date: 2013-01-23 10:06+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1308,7 +1308,6 @@ msgstr "Start a new search request"
 #: ../templates/_database/ezb/titles_record_html_categories:25
 #: ../templates/_database/gutenberg/titles_record_html_categories:28
 #: ../templates/_database/inst001/titles_record_html_categories:106
-#: ../templates/_database/openlibrary/persons_record_html:131
 #: ../templates/_database/openlibrary/titles_record_html_categories:25
 #: ../templates/_database/wikisource_de/persons_record_html:131
 #: ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:25
@@ -2093,7 +2092,6 @@ msgid "Datenquelle"
 msgstr "Data source"
 
 #. ("${searchterm}","<a href=\"${globalurl}\"><spanclass=\"globalsearch\">","</span></a>")
-#: ../templates/_database/openlibrary/persons_record_html:140
 #: ../templates/_database/wikisource_de/persons_record_html:138
 #: ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:112
 #: ../templates/_profile/sammlungen/_view/richter/persons_record_html:136
@@ -2634,7 +2632,7 @@ msgstr "E-mail"
 #: ../templates/_view/richter/users_passwords:59
 #: ../templates/_view/richter/users_registrations:70
 #: ../templates/cartitems_mail:60 ../templates/login:72
-#: ../templates/users_passwords:69 ../templates/users_registrations:71
+#: ../templates/users_passwords:69 ../templates/users_registrations:69
 msgid "E-Mail-Adresse"
 msgstr "E-mail address"
 
@@ -3889,7 +3887,6 @@ msgstr ""
 msgid "Hilfe"
 msgstr "Help"
 
-#: ../templates/_database/openlibrary/persons_record_html:139
 #: ../templates/_database/wikisource_de/persons_record_html:137
 #: ../templates/_profile/kug/_database/inst302/circulation:74
 #: ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:111
@@ -4956,7 +4953,7 @@ msgid "Kataloge dieser Spezial-Sicht"
 msgstr "Catalogues of this view"
 
 #: ../templates/_profile/kug/home_html_bottom_center:26
-msgid "Kataloge, ihre Standorte und Bestand"
+msgid "Kataloge, ihre Standorte und der Bestand"
 msgstr "Catalogs, locations and holdings"
 
 #: ../templates/users_navigation:56 ../templates/users_navigation:58
@@ -5653,6 +5650,7 @@ msgstr "Most used catalogues"
 msgid "Meldung"
 msgstr "Message"
 
+#: ../templates/_database/openlibrary/titlist_item_html_short:232
 #: ../templates/titlist_item_html_short:236
 msgid "Merken"
 msgstr "Collect"
@@ -6361,7 +6359,7 @@ msgstr "# of titles"
 #: ../templates/_view/richter/login:76
 #: ../templates/_view/richter/users_registrations:74 ../templates/login:76
 #: ../templates/login_circulation:80 ../templates/users_preferences_html:67
-#: ../templates/users_registrations:75
+#: ../templates/users_registrations:73
 msgid "Passwort"
 msgstr "Password"
 
@@ -6372,7 +6370,7 @@ msgstr "Change password"
 
 #: ../templates/_profile/sammlungen/_view/richter/users_registrations:78
 #: ../templates/_view/richter/users_registrations:78
-#: ../templates/users_registrations:79
+#: ../templates/users_registrations:77
 msgid "Passwort (wiederholt)"
 msgstr "Password (again)"
 
@@ -6812,7 +6810,7 @@ msgstr "Register"
 #: ../templates/_view/richter/users_registrations:38
 #: ../templates/_view/richter/users_registrations:94 ../templates/login:80
 #: ../templates/users_registrations:38 ../templates/users_registrations:66
-#: ../templates/users_registrations:97
+#: ../templates/users_registrations:90
 msgid "Registrieren"
 msgstr "Register"
 
@@ -7376,11 +7374,11 @@ msgstr ""
 #: ../modules/OpenBib/Handler/Apache/Titles/Tag.pm:150
 #: ../modules/OpenBib/Handler/Apache/Titles/Tag.pm:272
 #: ../modules/OpenBib/Handler/Apache/Titles/Tag.pm:331
-#: ../modules/OpenBib/Handler/Apache/Users/Circulations.pm:149
+#: ../modules/OpenBib/Handler/Apache/Users/Circulations.pm:152
 #: ../modules/OpenBib/Handler/Apache/Users/Circulations/Borrows.pm:110
 #: ../modules/OpenBib/Handler/Apache/Users/Circulations/Orders.pm:110
 #: ../modules/OpenBib/Handler/Apache/Users/Circulations/Reminders.pm:108
-#: ../modules/OpenBib/Handler/Apache/Users/Circulations/Reserverations.pm:116
+#: ../modules/OpenBib/Handler/Apache/Users/Circulations/Reservations.pm:111
 #: ../modules/OpenBib/Handler/Apache/Users/LitLists.pm:385
 #: ../modules/OpenBib/Handler/Apache/Users/Tags/Names.pm:335
 #: ../modules/OpenBib/Handler/Apache/Users/Tags/Names.pm:399
@@ -7800,6 +7798,10 @@ msgstr "Position"
 #: ../templates/users_preferences_html:85 ../templates/users_roles_edit:74
 msgid "Strasse"
 msgstr "Street"
+
+#: ../templates/_profile/kug/home_html_bottom_center:29
+msgid "Struktur des Katalogbestandes als Wortwolken"
+msgstr "Catalogs structure as tag clouds"
 
 #: ../templates/info_help:273 ../templates/info_help:72
 msgid "Such-Index"
@@ -11283,6 +11285,10 @@ msgstr "Overview"
 #: ../templates/users_navigation:85 ../templates/users_navigation:87
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#, fuzzy
+#~ msgid "Merkliste "
+#~ msgstr "List of Interest"
 
 #~ msgid "Information"
 #~ msgstr "Information"

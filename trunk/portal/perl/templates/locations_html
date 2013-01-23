@@ -101,11 +101,13 @@
 <table>
 <tr><th>[% msg.maketext("Identifier") %]</th><th>[% msg.maketext("Typ") %]</th><th>[% msg.maketext("Beschreibung") %]</th></tr>
 [% FOREACH location IN locations %]
+[%   IF location.type == 'ISIL' %]
 <tr>
 <td><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% location.identifier %].html?l=[% lang %]">[% location.identifier %]</a></td>
 <td>[% location.type %]</td>
 <td>[% location.description %]</td>
 </tr>
+[%   END %]
 [% END %]
 
 </table>

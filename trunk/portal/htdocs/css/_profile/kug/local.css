@@ -526,12 +526,13 @@
     padding: 5px;
     padding-bottom: 2em;
     margin-left: 10px;
+    margin-right: 10px;
     background: #fff;    
   }
 
   .ym-col1 .ym-cbox {
     padding: 5px;
-    margin-left: 5px;
+    margin-left: 10px;
     margin-right: 10px;
     background: #fff;    
   }
@@ -586,4 +587,10 @@
     width: 0px;
     padding: 0px;
   }
+
+  .ob-cartitems.ob-reuse_data {
+    padding: 5px;
+    padding-top: 0px;
+  }
+
 }

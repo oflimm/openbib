@@ -2721,6 +2721,10 @@ msgstr ""
 msgid "Informationen"
 msgstr ""
 
+#: ../templates/_profile/kug/home_html_bottom_center:30
+msgid "Informationen zu den Katalogen"
+msgstr ""
+
 #: ../templates/libraries_html:59
 msgid "Informationen zu dieser Bibliothek"
 msgstr ""
@@ -2873,7 +2877,7 @@ msgstr ""
 msgid "Katalogauswahl zu diesem View"
 msgstr ""
 
-#: ../templates/_profile/kug/home_html_bottom_center:30 ../templates/admin_databases_html:42 ../templates/admin_databases_record_delete_confirm:39 ../templates/admin_databases_record_edit:39 ../templates/admin_databases_rss_html:40 ../templates/admin_databases_rss_record_delete_confirm:39 ../templates/admin_databases_rss_record_edit:56 ../templates/admin_navigation:44 ../templates/admin_navigation:46 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:92 ../templates/admin_profiles_record_edit:124 ../templates/admin_searchprofiles_record_edit:81 ../templates/admin_searchprofiles_record_html:68 ../templates/databases_html:41 ../templates/databases_html:81 ../templates/databases_record_html:38 ../templates/databases_rss_html:39 ../templates/databases_rss_record_html:55 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/searchprofiles_record_html:70
+#: ../templates/admin_databases_html:42 ../templates/admin_databases_record_delete_confirm:39 ../templates/admin_databases_record_edit:39 ../templates/admin_databases_rss_html:40 ../templates/admin_databases_rss_record_delete_confirm:39 ../templates/admin_databases_rss_record_edit:56 ../templates/admin_navigation:44 ../templates/admin_navigation:46 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:92 ../templates/admin_profiles_record_edit:124 ../templates/admin_searchprofiles_record_edit:81 ../templates/admin_searchprofiles_record_html:68 ../templates/databases_html:41 ../templates/databases_html:81 ../templates/databases_record_html:38 ../templates/databases_rss_html:39 ../templates/databases_rss_record_html:55 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/searchprofiles_record_html:70
 msgid "Kataloge"
 msgstr ""
 
@@ -2888,7 +2892,7 @@ msgid "Kataloge dieser Spezial-Sicht"
 msgstr ""
 
 #: ../templates/_profile/kug/home_html_bottom_center:26
-msgid "Kataloge, ihre Standorte und der Bestand"
+msgid "Kataloge, Standorte und Bestand"
 msgstr ""
 
 #: ../templates/users_navigation:56 ../templates/users_navigation:58 ../templates/users_searchprofiles_html:41 ../templates/users_searchprofiles_record_edit:56 ../templates/users_searchprofiles_record_html:55
@@ -4452,8 +4456,12 @@ msgstr ""
 msgid "Standort des Buches"
 msgstr ""
 
-#: ../templates/_profile/kug/home_html_bottom_center:31 ../templates/admin_locations_html:42 ../templates/admin_locations_record_delete_confirm:39 ../templates/admin_locations_record_edit:39 ../templates/admin_locations_record_html:39 ../templates/admin_navigation:28 ../templates/admin_navigation:30 ../templates/locations_html:41 ../templates/locations_html:63 ../templates/locations_record_html:38
+#: ../templates/admin_locations_html:42 ../templates/admin_locations_record_delete_confirm:39 ../templates/admin_locations_record_edit:39 ../templates/admin_locations_record_html:39 ../templates/admin_navigation:28 ../templates/admin_navigation:30 ../templates/locations_html:41 ../templates/locations_html:63 ../templates/locations_record_html:38
 msgid "Standorte"
+msgstr ""
+
+#: ../templates/_profile/kug/home_html_bottom_center:31
+msgid "Standorte der Bibliotheken"
 msgstr ""
 
 #: ../templates/admin_locations_record_edit:66

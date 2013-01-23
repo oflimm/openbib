@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-01-23 10:06+0100\n"
+"PO-Revision-Date: 2013-01-23 10:16+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -4494,6 +4494,10 @@ msgstr "Info"
 msgid "Informationen"
 msgstr "Information"
 
+#: ../templates/_profile/kug/home_html_bottom_center:30
+msgid "Informationen zu den Katalogen"
+msgstr "Information about the catalogs"
+
 #: ../templates/libraries_html:59
 msgid "Informationen zu dieser Bibliothek"
 msgstr "Information about this library"
@@ -4919,7 +4923,6 @@ msgstr "Choice of catalogues for this organizational unit"
 msgid "Katalogauswahl zu diesem View"
 msgstr "Choice of catalogues for this view"
 
-#: ../templates/_profile/kug/home_html_bottom_center:30
 #: ../templates/admin_databases_html:42
 #: ../templates/admin_databases_record_delete_confirm:39
 #: ../templates/admin_databases_record_edit:39
@@ -4953,7 +4956,7 @@ msgid "Kataloge dieser Spezial-Sicht"
 msgstr "Catalogues of this view"
 
 #: ../templates/_profile/kug/home_html_bottom_center:26
-msgid "Kataloge, ihre Standorte und der Bestand"
+msgid "Kataloge, Standorte und Bestand"
 msgstr "Catalogs, locations and holdings"
 
 #: ../templates/users_navigation:56 ../templates/users_navigation:58
@@ -5134,7 +5137,7 @@ msgstr "Remove"
 #: ../templates/_profile/kug/home_html_bottom_left:23
 #: ../templates/bibfuehrer_tex:285 ../templates/visible_categories_location:17
 msgid "L0010"
-msgstr "Name of institute"
+msgstr "Name of institution"
 
 #: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:25
 #: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:23
@@ -7660,7 +7663,6 @@ msgstr "Location             "
 msgid "Standort des Buches"
 msgstr "Book Location"
 
-#: ../templates/_profile/kug/home_html_bottom_center:31
 #: ../templates/admin_locations_html:42
 #: ../templates/admin_locations_record_delete_confirm:39
 #: ../templates/admin_locations_record_edit:39
@@ -7670,6 +7672,10 @@ msgstr "Book Location"
 #: ../templates/locations_record_html:38
 msgid "Standorte"
 msgstr "Locations"
+
+#: ../templates/_profile/kug/home_html_bottom_center:31
+msgid "Standorte der Bibliotheken"
+msgstr "Locations of the libraries"
 
 #: ../templates/admin_locations_record_edit:66
 msgid "Standortinformationen bearbeiten"

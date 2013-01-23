@@ -141,8 +141,11 @@ sub show_collection {
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
     
+    my $authenticator=$session->get_authenticator;
+
     # TT-Data erzeugen
     my $ttdata={
+        authenticator => $authenticatorid,
         loginname  => $loginname,
         password   => $password,
         
@@ -233,9 +236,12 @@ sub create_record {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    my $authenticator=$session->get_authenticator;
     
     # TT-Data erzeugen
     my $ttdata={
+        authenticator => $authenticator,
         result     => $circexlist,
     };
     

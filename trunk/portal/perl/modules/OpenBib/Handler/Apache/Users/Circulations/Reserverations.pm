@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Users::Circulations::Reservations
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -89,11 +89,6 @@ sub show_collection {
     my $userid         = $self->param('userid');
     my $database       = $self->param('database');
 
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
-
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
@@ -118,7 +113,7 @@ sub show_collection {
         }
     }
     my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
+    #my $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
@@ -145,10 +140,13 @@ sub show_collection {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    my $authenticator=$session->get_authenticator;
     
     # TT-Data erzeugen
     
     my $ttdata={
+        authenticator => $authenticator,
         loginname    => $loginname,
         password     => $password,
         

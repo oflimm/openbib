@@ -68,9 +68,9 @@
 
 <input type="hidden" name="redirect_to" value="[% redirect_to %]">
 
-[%- FOREACH target IN authenticators -%]
-[%-   IF target.type == 'self' -%]
-<input type="hidden" name="targetid" value="[% target.id %]">
+[%- FOREACH authenticator IN authenticators -%]
+[%-   IF authenticator.type == 'self' -%]
+<input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
 [%-   END -%]
 [%- END -%]
 
@@ -112,9 +112,9 @@
 <div class="ym-fbox-select">
 <label for="authenticator">[% msg.maketext("mit") %]:</label>
 <select name="authenticatorid">
-[%- FOREACH target IN authenticators -%]
-[%-   IF target.type != 'self' -%]
-<option value="[% target.id %]">[% target.description %]</option>
+[%- FOREACH authenticator IN authenticators -%]
+[%-   IF authenticator.type != 'self' -%]
+<option value="[% authenticator.id %]">[% authenticator.description %]</option>
 [%-   END -%]
 [%- END -%]
 </select>

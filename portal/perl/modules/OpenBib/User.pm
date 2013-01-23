@@ -4082,8 +4082,8 @@ sub connect_session {
     my $userid           = exists $arg_ref->{userid}
         ? $arg_ref->{userid}                 : undef;
 
-    my $targetid         = exists $arg_ref->{targetid}
-        ? $arg_ref->{targetid}               : undef;
+    my $authenticatorid         = exists $arg_ref->{authenticatorid}
+        ? $arg_ref->{authenticatorid}               : undef;
 
     # Log4perl logger erzeugen
   
@@ -4113,7 +4113,7 @@ sub connect_session {
         {
             sid      => $sid,
             userid   => $userid,
-            authenticatorid => $targetid,
+            authenticatorid => $authenticatorid,
         },
         {
             join => ['sid'],

@@ -34,8 +34,9 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="#">[% msg.maketext("Fachgruppen") %]</a></li>
-         <li><a href="#" class="lastitem">[% dbinfo.dbnames.${database}.short %]</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
+         <li><a href="#">DBIS</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Fachgruppen") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
@@ -83,7 +84,7 @@
 <h2>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h2>
 <p/>
 <div class="ob-listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'cloud' }}) %]"[% IF query.param('type') == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'list' }}) %]"[% IF query.param('type') == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'cloud' }}) %]"[% IF query.param('type') == 'cloud' %] class="ob-selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'list' }}) %]"[% IF query.param('type') == 'list' %] class="ob-selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
 <div class="left_side23">

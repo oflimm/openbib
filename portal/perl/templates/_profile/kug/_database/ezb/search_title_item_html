@@ -118,7 +118,7 @@
 <div class="ob-resultlist">
   <div class="ob-resultheader">
     <div class="left">
-[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
   </div>
 

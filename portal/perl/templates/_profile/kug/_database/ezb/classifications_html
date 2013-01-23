@@ -34,8 +34,9 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="#">[% msg.maketext("Fachgebiete") %]</a></li>
-         <li><a href="#" class="lastitem">[% dbinfo.dbnames.${database}.short %]</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
+         <li><a href="#">EZB</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Fachgebiete") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
@@ -46,7 +47,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-<div class="ob-headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
+<div class="ob-category_header">[% msg.maketext("Suche nach Zeitschriften") %]</div>
 <p/>
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 <input type="hidden" name="db"        value="ezb" />
@@ -65,7 +66,8 @@
 </table>
 <p/>
 <table>
-<tr><td><input id="to_focus" class="fs_field" type="text" name="tit" value="" size="13" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td>[% msg.maketext("Name") %]</td><td><input id="to_focus" class="fs_field" type="text" name="tit" value="" size="13" maxlength="200" /></td></tr>
+<tr><td colspan="2"><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></td>
 </table>
 </form>
         </div>
@@ -82,7 +84,7 @@
 <h1>[% msg.maketext("Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten") %]</h1>
 <p/>
 <div class="ob-listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'cloud' }}) %]"[% IF query.param('type') == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'list' }}) %]"[% IF type == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'cloud' }}) %]"[% IF query.param('type') == 'cloud' %] class="ob-selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'list' }}) %]"[% IF type == 'list' %] class="ob-selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
 <div class="left_side23">

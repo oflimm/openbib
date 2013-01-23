@@ -47,8 +47,7 @@
 
 <p/>
 
-<div id="infobox">
-<h4><img style="vertical-align:bottom" src="[% config.get('hint_img') %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</h4>
+<div class="box info">
 [% msg.maketext("W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
 <b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten
 Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,

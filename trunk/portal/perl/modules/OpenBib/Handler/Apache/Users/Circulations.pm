@@ -104,8 +104,11 @@ sub show_collection {
         return;
     }
 
+    my $authenticator=$session->get_authenticator;
+    
     # TT-Data erzeugen
     my $ttdata={
+        authenticator => $authenticator,
     };
     
     $self->print_page($config->{tt_users_collections_tname},$ttdata);
@@ -122,8 +125,8 @@ sub show_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $circulationid  = $self->strip_suffix($self->param('circulationid'))           || 'borrows';
-    my $database       = $self->strip_suffix($self->param('circulationid'));
+    my $circulationid  = $self->strip_suffix($self->param('circulationid')) || 'borrows';
+    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -211,7 +214,7 @@ sub show_reservations {
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
+    #my $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
@@ -238,10 +241,13 @@ sub show_reservations {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
-    
+
+    my $authenticator=$session->get_authenticator;
+
     # TT-Data erzeugen
     
     my $ttdata={
+        authenticator => $authenticator,
         loginname    => $loginname,
         password     => $password,
         
@@ -323,10 +329,13 @@ sub show_reminders {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    my $authenticator=$session->get_authenticator;
     
     # TT-Data erzeugen
     
     my $ttdata={
+        authenticator => $authenticator,
         loginname  => $loginname,
         password   => $password,
         
@@ -406,9 +415,12 @@ sub show_orders {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    my $authenticator=$session->get_authenticator;
     
     # TT-Data erzeugen
     my $ttdata={
+        authenticator => $authenticator,
         loginname  => $loginname,
         password   => $password,
         
@@ -488,9 +500,12 @@ sub show_borrows {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    my $authenticator=$session->get_authenticator;
     
     # TT-Data erzeugen
     my $ttdata={
+        authenticator => $authenticator,
         loginname  => $loginname,
         password   => $password,
         
@@ -579,9 +594,12 @@ sub make_reservation {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    my $authenticator=$session->get_authenticator;
     
     # TT-Data erzeugen
     my $ttdata={
+        authenticator => $authenticator,
         result     => $circexlist,
     };
     
@@ -741,9 +759,12 @@ sub make_order {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    my $authenticator=$session->get_authenticator;
     
     # TT-Data erzeugen
     my $ttdata={
+        authenticator => $authenticator,
         result     => $circexlist,
     };
     
@@ -815,9 +836,12 @@ sub renew_loans {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    my $authenticator=$session->get_authenticator;
     
     # TT-Data erzeugen
     my $ttdata={
+        authenticator => $authenticator,
         result     => $circexlist,
     };
     

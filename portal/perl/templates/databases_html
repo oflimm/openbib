@@ -75,6 +75,14 @@ angesprochen werden sind davon ausgenommen.
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+[% database_in_view = {};
+
+   FOREACH dbname IN config.get_profiledbs(sysprofile) ;
+     database_in_view.${dbname} = 1;
+   END;
+
+%]
+
 [% IF databases.size > 0 %]
 [%# USE dumper;dumper.dump(kataloge) %]
 
@@ -83,7 +91,7 @@ angesprochen werden sind davon ausgenommen.
 <table class="ym-full">
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Titel-Anzahl</b></td></tr>
 [% FOREACH database IN databases.all %]
-[% NEXT IF database.active != 1 %]
+[% NEXT IF database.active != 1 || database_in_view.${database.dbname} != 1%]
 
 <tr>
 <td>[% database.dbname %]</td>

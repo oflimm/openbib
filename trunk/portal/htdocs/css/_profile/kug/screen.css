@@ -309,15 +309,17 @@
 
   .ob-listoptions {
     overflow: hidden;   
-    background: #fef6e2;
+/*    background: #fef6e2;*/
     margin-top: 5px;
+    margin-right: 5px;
     width: 99.7%;
+    /*
     border-top-style: solid;
     border-top-color: #edebe3;
     border-top-width: 1px; 
     border-bottom-style: solid;
     border-bottom-color: #edebe3;
-    border-bottom-width: 1px; 
+    border-bottom-width: 1px; */
 
   }
 
@@ -386,12 +388,13 @@
   }
 
   .ob-reuse_data, .ob-discover_sources, .ob-session_history {
-      background-color: #fff;
+    background-color: #fff;
     margin-top: 10px;
-      padding: 15px;
+    padding: 15px;
+    padding-top: 5px;
   }
 
-  .ob-reuse_data h4, .ob-discover_sources h4, .ob-session_history h4 {
+/*  .ob-reuse_data h4, .ob-discover_sources h4, .ob-session_history h4 {
     font-family: Arial,Verdana,Helvetica,sans-serif;
     display: block;
     width: 100%;
@@ -407,7 +410,8 @@
     -webkit-box-shadow: 2px 2px 2px #888;
     box-shadow: 2px 2px 2px #888;
   }
-
+*/
+  
   #ob-newreview_do { 
     font-size: 0.8em;
   }
@@ -672,5 +676,8 @@
     vertical-align:text-top;
   }
 
-      
+  .ob-selected_item {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
 }

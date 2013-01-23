@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Login
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -100,7 +100,7 @@ sub show_form {
     # CGI Args
     my $action      = ($query->param('action'))?$query->param('action'):'none';
     my $code        = ($query->param('code'))?$query->param('code'):'1';
-    my $targetid    = ($query->param('targetid'))?$query->param('targetid'):'none';
+    my $authenticatorid  = ($query->param('authenticatorid'))?$query->param('authenticatorid'):'none';
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type        = ($query->param('type'))?$query->param('type'):'';
     my $username    = ($query->param('username'))?$query->param('username'):'';
@@ -158,7 +158,7 @@ sub authenticate {
     
     # CGI Args
     my $code        = ($query->param('code'))?$query->param('code'):'1';
-    my $targetid    = ($query->param('targetid'))?$query->param('targetid'):undef;
+    my $authenticatorid    = ($query->param('authenticatorid'))?$query->param('authenticatorid'):undef;
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type        = ($query->param('type'))?$query->param('type'):'';
     my $username    = ($query->param('username'))?$query->param('username'):'';
@@ -182,7 +182,7 @@ sub authenticate {
         $loginfailed=1;
     }
     
-    my $authenticator_ref = $config->get_authenticator_by_id($targetid);
+    my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
 
     $logger->debug(YAML::Dump($authenticator_ref));
     
@@ -272,7 +272,7 @@ sub authenticate {
         $user->connect_session({
             sessionID => $session->{ID},
             userid    => $userid,
-            targetid  => $targetid,
+            authenticatorid  => $authenticatorid,
         });
         
         # Falls noch keins da ist, eintragen
@@ -357,7 +357,7 @@ sub failure {
 
     # CGI Args
     my $code      = ($query->param('code'))?$query->param('code'):'1';
-    my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
+    my $authenticatorid  = ($query->param('authenticatorid'))?$query->param('authenticatorid'):'none';
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'';
     my $username = ($query->param('username'))?$query->param('username'):'';

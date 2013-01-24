@@ -701,4 +701,12 @@
     margin-left: 2px;
     width: 98%;
   }
+
+  .ob-titleimage {
+
+  }
+
+  .ob-titleimage a {
+    padding-left: 50px;
+  }
 }

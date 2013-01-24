@@ -12,7 +12,7 @@
 #
 #######################################################################
 -%]
-[% IF normset.${"T6051"} %]
+[% IF normdata.${"T6051"} %]
 <p>
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=560;url=[% uri_escape("http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F${servername}%2Fportal%2F${view}%2Fconnector%2Funapi%3Fid%3D${record.database}%3A${record.id}%26format%3Dmets") %]" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[Online lesen im DFG-Viewer]</center></a>
 </p>
@@ -33,9 +33,9 @@
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=511;url=[% uri_escape("http://www.bibsonomy.org/bibtex/${bibkey}") %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
-[% IF normset.${"E4122"} %]
+[% IF normdata.${"E4122"} %]
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=512;url=[% uri_escape(normset.${"E4122"}.first.content) %]" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('paperc_img') %]" alt="Bei PaperC vorhanden" border="0" /></a><br/>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=512;url=[% uri_escape(normdata.${"E4122"}.first.content) %]" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('paperc_img') %]" alt="Bei PaperC vorhanden" border="0" /></a><br/>
 </p>
 [% END %]
 [% IF cgiapp.is_authenticated('admin') %]

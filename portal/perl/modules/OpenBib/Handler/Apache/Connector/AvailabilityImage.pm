@@ -68,8 +68,6 @@ sub setup {
         'ebook'      => 'process_ebook',
         'ol'         => 'process_ol',
         'wikipedia'  => 'process_wikipedia',
-        'paperc'     => 'process_paperc',
-        'unifloh'    => 'process_unifloh',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -372,70 +370,6 @@ sub process_ol {
     return '';
 }
 
-sub process_unifloh {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $id             = $self->param('id');
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-
-    my $client_ip="";
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
-
-    my $isbn = $self->id2isbnX($id);
-
-    my $redirect_url = "/images/openbib/no_img.png";
-    
-    if ($isbn->{isbn13}){
-        my $ua       = LWP::UserAgent->new();
-        $ua->agent($useragent);
-        $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
-        my $url      ="http://www.unifloh.de/apicall?a=4f4ad14a8a543ed4ec90e2a136e5fbcc&uni_tag=koeln&method=getoffers&isbn=$isbn->{isbn13}";
-        $logger->debug("Querying Unifloh with $url");
-        my $request  = HTTP::Request->new('GET', $url);
-        my $response = $ua->request($request);
-        
-        if ( $response->is_error() ) {
-            $logger->info("Error querying Unifloh");
-            $logger->debug("Error-Code:".$response->code());
-            $logger->debug("Fehlermeldung:".$response->message());
-        }
-        else {
-            $logger->debug($response->content());
-            
-            my $content = $response->content();
-            if ($content=~/<numlocal>(\d+)<\/numlocal>/){
-                my $localitems=$1;
-                if ($localitems > 0){
-                    $redirect_url = "http://www.unifloh.de/template_new/images/logo2.gif";
-                }
-            }
-        }
-    }
-
-    $self->query->headers_out->add(Location => $redirect_url);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return '';
-}
-
 sub process_wikipedia {
     my $self = shift;
 
@@ -444,7 +378,7 @@ sub process_wikipedia {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $id             = $self->param('key');
+    my $id             = $self->param('id');
 
     # Shared Args
     my $query          = $self->query();
@@ -499,71 +433,6 @@ sub process_wikipedia {
     return '';
 }
 
-sub process_paperc {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $id             = $self->param('id');
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-
-    my $client_ip="";
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
-
-    my $redirect_url = "http://$config->{servername}/images/openbib/no_img.png";
-    
-    my $ua       = LWP::UserAgent->new();
-    $ua->agent($useragent);
-    $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
-    my $url      ="http://paperc.de/search?query=$id&commit=Suchen";
-    $logger->debug("Querying PaperC with $url");
-    my $request  = HTTP::Request->new('GET', $url);
-    my $response = $ua->request($request);
-    
-    if ( $response->is_error() ) {
-        $logger->info("Error querying PaperC");
-        $logger->debug("Error-Code:".$response->code());
-        $logger->debug("Fehlermeldung:".$response->message());
-    }
-    else {
-        $logger->debug($response->content());
-        
-        my $content = $response->content();
-        if ($content=~/Die Suche nach.+?ergab 1 Treffer/){
-            my $uri = "";
-            if ($content=~/<a href="(.+?)">Info<\/a>/){
-                $uri = $1;
-                $logger->debug("Item found in PaperC with URI: $uri");
-            }
-            
-            if ($uri){
-                $redirect_url = "http://$config->{servername}/images/openbib/paperc.png";
-            }
-        }
-    }
-
-    $self->query->headers_out->add(Location => $redirect_url);
-    $self->query->status(Apache2::Const::REDIRECT);
-   
-    return '';
-}
-
 sub id2isbnX {
     my ($self,$id) = @_;
 
@@ -578,12 +447,12 @@ sub id2isbnX {
         $isbn10 = $isbnXX->as_isbn10->as_string;
         
         $isbn13 = OpenBib::Common::Util::normalize({
-            field => '0540',
+            field => 'T0540',
             content  => $isbn13,
         });
         
         $isbn10 = OpenBib::Common::Util::normalize({
-            field => '0540',
+            field => 'T0540',
             content  => $isbn10,
         });
     }

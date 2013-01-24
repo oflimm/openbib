@@ -41,6 +41,7 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Enrichment;
 
 # Autoflush
 $|=1;
@@ -93,17 +94,13 @@ $logger->debug($wget);
 system($wget);
 
 # Verbindung zur SQL-Datenbank herstellen
-my $enrichdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-    or $logger->error_die($DBI::errstr);
+my $enrichment = new OpenBib::Enrichment;
 
 my $origin = "25";
 
 $logger->debug("Origin: $origin");
 
 # 25 = PaperC
-my $deleterequest = $enrichdbh->prepare("delete from normdata where category=4122 and origin=?");
-my $enrichrequest = $enrichdbh->prepare("insert into normdata values(?,?,4122,?,?)");
 
 my $isbn_ref = {};
 
@@ -147,11 +144,14 @@ else {
 
 
 $logger->info("Loeschen der bisherigen Daten");
-$deleterequest->execute($origin);
+
+$enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => '4122', origin => $origin })->delete;
 
 $logger->info("Einladen der neuen Daten");
 
 my $isbncount = 0;
+
+my $populate_ref =
 foreach my $thisisbn (keys %{$isbn_ref}){
 
     my $indicator = 1;
@@ -161,7 +161,15 @@ foreach my $thisisbn (keys %{$isbn_ref}){
     my @unique_urls = grep { ! $seen_terms{$_} ++ } @{$isbn_ref->{$thisisbn}}; 
 
     foreach my $thisurl (@unique_urls){
-        $enrichrequest->execute($thisisbn,$origin,$indicator,$thisurl);
+        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->create(
+            {
+                isbn => $thisisbn,
+                origin => $origin,
+                field => '4122',
+                subfield => $indicator,
+                content => $thisurl,
+            }
+        );
         
         $indicator++;
     }

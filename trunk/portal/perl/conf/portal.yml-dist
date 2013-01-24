@@ -366,19 +366,19 @@ dispatch_rules:
 
   - # connector_availabilityimage_loc: 
      module: 'OpenBib::Handler::Apache::Connector::AvailabilityImage'
-     rule: '/portal/:view/connector/availabilityimage/:rm/:key'
+     rule: '/portal/:view/connector/availabilityimage/:rm/:id'
      runmode: 'gbs'
      args:
         disable_content_negotiation: 1
   - # connector_availability_loc:
      module: 'OpenBib::Handler::Apache::Connector::Availability'
-     rule: '/portal/:view/connector/availability/:key'
+     rule: '/portal/:view/connector/availability/:id'
      runmode: 'show_collection'
      args:
         disable_content_negotiation: 1
   - # connector_availability_loc:
      module: 'OpenBib::Handler::Apache::Connector::Availability'
-     rule: '/portal/:view/connector/availability/:rm/:key'
+     rule: '/portal/:view/connector/availability/:rm/:id'
      runmode: 'isbn'
      args:
         disable_content_negotiation: 1
@@ -2176,6 +2176,8 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::CartItems'
      rule: '/portal/:view/cartitems/id/:itemid[delete]'
      runmode: 'delete_record'
+     args:
+        users_loc: 'cartitems'
   - # users_loc/cartitems_loc: Delete Record
      module: 'OpenBib::Handler::Apache::Users::CartItems'
      rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid[delete]'
@@ -2680,7 +2682,7 @@ tt_info_64_tname: info_64
 tt_info_65_tname: info_65
 tt_info_66_tname: info_66
 tt_info_terms_of_use_tname: info_terms_of_use
-tt_info_cardcatalogues_tname: info_cardcatalogues
+tt_info_cardcatalogs_tname: info_cardcatalogs
 tt_info_feedback_tname: info_feedback
 tt_info_help_tname: info_help
 tt_info_credits_tname: info_credits
@@ -3431,6 +3433,7 @@ document_root_path: /var/www
 image_root_path: /usr/share/images
 
 # Verwendete Funktionsbilder
+books_img: /images/openbib/bookcase.png
 chart_img: /images/openbib/log.png
 courses_img: /images/openbib/courses.png
 dbis_green_img: /images/openbib/dbis/z0.gif
@@ -3439,6 +3442,7 @@ dbis_red_img: /images/openbib/dbis/z-ppu.gif
 dbis_yellow_red_img: /images/openbib/dbis/z5.gif
 dbis_de_img: /images/openbib/dbis/z-de.gif
 delete_img: /images/openbib/cancel.png
+delete_small_img: /images/openbib/cancel-16px.png
 follow_img: /images/openbib/solidrightarrow.png
 infotopic_img: /images/openbib/info.png
 info_img: /images/openbib/info_small.png
@@ -3449,7 +3453,8 @@ home_img: /images/openbib/home.png
 home_small_img: /images/openbib/home3.png
 lang_de_img: /images/openbib/de.gif
 lang_en_img: /images/openbib/en.gif
-listofinterest_img: /images/openbib/bookmark.png
+listofinterest_img: /images/openbib/pencil.png
+listofinterest_small_img: /images/openbib/pencil-16px.png
 liststyle_cover_img: /images/openbib/view_detailed.png
 liststyle_list_img: /images/openbib/view_text.png
 mail_img: /images/openbib/3d-file-blue-mailbox.png
@@ -3473,6 +3478,7 @@ save_img: /images/openbib/3d-file-blue-disk35.png
 search_img: /images/openbib/search.png
 search_small_img: /images/openbib/search_small.png
 share_img: /images/openbib/share.png
+share_small_img: /images/openbib/share-16px.png
 top20_img: /images/openbib/top20-12px.png
 thumbnail_img: /images/openbib/thumbnail.png
 tutorial_img: /images/openbib/tutorial.png

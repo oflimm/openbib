@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -31,6 +31,8 @@ use 5.008001;
 use utf8;
 use strict;
 use warnings;
+use threads;
+use threads::shared;
 
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
@@ -66,8 +68,8 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-
 my $blacklist_ref = {
+    'alekiddr' => 1,
     'edz' => 1,
     'lehrbuchsmlg' => 1,
     'rheinabt' => 1,
@@ -75,6 +77,7 @@ my $blacklist_ref = {
     'lesesaal' => 1,
     'wiso' => 1,
     'econbiz' => 1,
+    'inst301' => 1,
     'inst303' => 1,
     'inst304' => 1,
     'inst305' => 1,
@@ -96,85 +99,131 @@ my $blacklist_ref = {
     'inst321' => 1,
     'inst324' => 1,
     'inst325' => 1,
+    'inst420master' => 1,
     'inst420' => 1,
     'inst421' => 1,
     'inst422' => 1,
     'inst423' => 1,
-    'openlibrary' => 1,    
+    'openlibrary' => 1,
 };
 
 $logger->info("###### Starting automatic update");
 
-if ($cluster && $config->local_server_belongs_to_updatable_cluster()){
-    $logger->info("### Updating in cluster mode");
-    $logger->info("### Changing cluster/server-status to updating");
-    $config->update_local_serverstatus("updating");
-    $config->update_local_clusterstatus("updating");
+if ($cluster){
+    if ($config->local_server_belongs_to_updatable_cluster()){
+        $logger->info("### Updating in cluster mode");
+        $logger->info("### Changing server-status to updating");
+        $config->update_local_serverstatus("updating");
+        $logger->info("### Changing cluster-status to updating");
+        $config->update_local_clusterstatus("updating");
+    }
+    else {
+        $logger->info("### Local server is not updatable. Exiting.");
+        exit;
+    }
 }
-else {
-    $logger->info("### Local server is not updatable. Exiting.");
-    exit;
+
+my @threads;
+
+push @threads, threads->new(\&update_single,'Einzelne Kataloge');
+push @threads, threads->new(\&update_dependent,'Abhaengige Kataloge');
+
+foreach my $thread (@threads) {
+    my $thread_description = $thread->join;
+    $logger->info("### -> done with $thread_description");
 }
 
-$logger->info("### OpenBib");
-
-autoconvert({ sync => 1, databases => ['openbib'] });
-
-goto ENDGAME;
-
-$logger->info("### VUBPDA");
-
-autoconvert({ sync => 1, databases => ['vubpda'] });
-
-##############################
-
-$logger->info("### Standard-Institutskataloge");
-
-autoconvert({ blacklist => $blacklist_ref, sync => 1, autoconv => 1});
-
-##############################
-
-$logger->info("### Aufgesplittete Kataloge inst301");
-
-autoconvert({ sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst316','inst317','inst319','inst320','inst321','inst324','inst325'] });
-
-##############################
-
-$logger->info("### Aufgesplittete Kataloge inst420");
-
-autoconvert({ sync => 1, databases => ['inst420','inst421','inst422','inst423'] });
-
-##############################
-
-$logger->info("### Katalog der USB");
-
-autoconvert({ sync => 1, databases => ['inst001'] });
-
-##############################
-
-$logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
-
-autoconvert({ sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'wiso'] });
-
-##############################
-
-$logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
-
-autoconvert({ sync => 1, databases => ['afrikaans','alff','baeumker','becker','dante','digitalis','dirksen','evang','fichte','gabel','gruen','gymnasialbibliothek','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
-
-##############################
-
-ENDGAME:
 $logger->info("### Generating joined searchindexes");
 
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 
 if ($cluster){
-    $logger->info("### Changing server-status to updated");
+    $logger->info("### Changing cluster/server-status to updated");
     $config->update_local_serverstatus("updated");
 }
 
 $logger->info("###### Updating done");
+
+sub update_single {
+    my $thread_description = shift;
+
+    $logger->info("### -> Aufgesplittete Kataloge");
+
+    $logger->info("### VUBPDA");
+
+    autoconvert({ sync => 1, databases => ['vubpda'] });
+
+    ##############################
+
+    $logger->info("### Standard-Institutskataloge");
+
+    autoconvert({ blacklist => $blacklist_ref, sync => 1, autoconv => 1});
+
+    return $thread_description;
+}
+
+sub update_dependent {
+    my $thread_description = shift;
+    
+    $logger->info("### -> Abhaengige Kataloge");
+
+    $logger->info("### Master: USB Katalog");
+    
+    autoconvert({ sync => 1, databases => ['inst001'] });
+    
+    ##############################
+    
+    $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
+    
+    autoconvert({ sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'wiso','usbsab','usbhwa'] });
+    
+    ##############################
+    
+    $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
+    
+    autoconvert({ sync => 1, databases => ['afrikaans','alff','baeumker','becker','dante','digitalis','dirksen','evang','fichte','gabel','gruen','gymnasialbibliothek','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
+    
+    ##############################
+
+    $logger->info("### Master: inst301");
+    
+    autoconvert({ sync => 1, databases => ['inst301'] });
+    
+    ##############################
+    
+    $logger->info("### Aufgesplittete Kataloge inst301");
+    
+    autoconvert({ sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst319','inst320','inst321','inst324','inst325'] });
+
+    ##############################
+
+    $logger->info("### Master: inst420master");
+    
+    autoconvert({ sync => 1, databases => ['inst420master'] });
+
+    ##############################
+    
+    $logger->info("### Aufgesplittete Kataloge inst420");
+    
+    autoconvert({ sync => 1, databases => ['inst420','inst421','inst422','inst423'] });
+    
+    ##############################
+
+    $logger->info("### Master: inst323, inst137");
+    
+    autoconvert({ sync => 1, databases => ['inst323','inst137'] });
+
+    ##############################
+    
+    $logger->info("### Sammlungen aus dem Universitaet");
+    
+    autoconvert({ sync => 1, databases => ['alekiddr','digitalis'] });
+    
+    ##############################
+    
+
+    return $thread_description;
+}
 
 sub autoconvert {
     my ($arg_ref) = @_;

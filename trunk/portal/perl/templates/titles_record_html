@@ -457,7 +457,7 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
        if (thisbook.thumbnail_url != undefined){         
           document.getElementById('cover_full').src      = thisbook.thumbnail_url.replace("zoom=5","zoom=1");
           document.getElementById('cover_full').title    = "Cover von Google Books";
-          document.getElementById('cover_full_url').href = thisbook.previews_url;
+          document.getElementById('cover_full_url').href = thisbook.preview_url;
        }
      }
    }

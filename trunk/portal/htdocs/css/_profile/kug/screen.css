@@ -191,14 +191,20 @@
   .ob-item .ob-thumbnail {
     position: relative;
     top: 5px;
-    left:40px;
+    left: 35px;
     width: 60px;
     height: 90px;
-    
+/*    border: 1px solid #000; */
     background: none repeat scroll 0 0;
-
   }
 
+  .ob-item .ob-thumbnail img {
+    display: block;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+   }
+  
   .ob-item .ob-dbis_availability {
     position: relative;
     top: 22px;
@@ -213,7 +219,7 @@
   .ob-item .ob-brieftitle {
     position: absolute;
     top: 26px;
-    left:120px;
+    left:110px;
     width: auto;
   }
 

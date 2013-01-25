@@ -1,10 +1,20 @@
 [%# USE dumper; dumper.dump(dbchoice)%]
-[% viewdbs = config.get_dbs_of_view(view);
+[%
    orgunitname = config.get_orgunitname_of_db_in_view(viewdbs.first,view);
-   prevprofile = session.get_profile; %]
+   IF NOT prevprofile ;
+       prevprofile = session.get_profile ;
+   END ;
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+   END ;
+   IF NOT searchprofileid_of_sysprofile ;
+      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
+   END ;
+
+   checked_profile = 0 ;
+%]
 <select name="profile" class="ob-selectbox">
-[% searchprofileid_of_view = config.get_searchprofile_of_view(view) ; checked_profile = 0 %]
-[% searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view) %]
+   
 [% IF userprofile.size > 0 %]
 <optgroup label="Eigene Suchprofile">
 [%- FOREACH profile IN userprofile -%]

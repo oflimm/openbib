@@ -81,3 +81,16 @@
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
    </head>
+
+[%# Immer/haeufig genutzte Variablen %]
+[%
+   IF NOT prevprofile ;
+       prevprofile = session.get_profile ;
+   END ;
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+   END ;
+   IF NOT searchprofileid_of_sysprofile ;
+      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
+   END ;
+%]

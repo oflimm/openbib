@@ -448,14 +448,30 @@ sub enrich_content {
                         group_by => ['isbn'],
                     }
                 );
-                
+
                 foreach my $isbnitem ($isbns->all) {
                     $logger->debug("Found ISBN $isbnitem->item for workid $workid");
+
+                    my $where_ref = {
+                        isbn    => $isbnitem->isbn,
+                    };
+
+                    if (@filter_databases){
+                        $where_ref = {
+                            isbn    => $isbnitem->isbn,
+                            -and => [
+                                {
+                                    dbname  => {'!=' => $self->{database}}
+                                },
+                                {
+                                    dbname => \@filter_databases,
+                                },
+                            ]
+                        };
+                    }
                     
                     my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
-                        {
-                            isbn      => $isbnitem->isbn,
-                        },
+                        $where_ref,
                     );
                     
                     foreach my $titleitem ($titles->all) {

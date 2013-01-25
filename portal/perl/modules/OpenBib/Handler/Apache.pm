@@ -44,6 +44,7 @@ use Apache2::RequestRec ();
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_UNAUTHORIZED MODE_READBYTES);
 use Apache2::URI ();
 use APR::URI ();
+use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8 encode_utf8);
 use HTTP::Negotiate;
 use HTTP::BrowserDetect;
@@ -85,9 +86,10 @@ sub cgiapp_init {
     my $logger = get_logger();
     
     $logger->debug("Entering cgiapp_init");
-   
+    
     my $r            = $self->param('r');
     my $view         = $self->param('view');
+    my $config       = OpenBib::Config->instance;
     my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
     my $dbinfo       = OpenBib::Config::DatabaseInfoTable->instance;
@@ -95,7 +97,7 @@ sub cgiapp_init {
     my $useragent    = $r->headers_in->get('User-Agent');
     my $browser      = HTTP::BrowserDetect->new($useragent);
 
-    $self->param('config',OpenBib::Config->instance);
+    $self->param('config',$config);
     $self->param('session',$session);
     $self->param('user',$user);
     $self->param('useragent',$useragent);
@@ -103,6 +105,12 @@ sub cgiapp_init {
     $self->param('dbinfo',$dbinfo);
     $self->param('qopts',OpenBib::QueryOptions->instance($self->query()));
     $self->param('servername',$r->get_server_name);
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
 
     $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
 
@@ -136,7 +144,13 @@ sub cgiapp_init {
     $logger->debug("This request after initialization: SessionID: $session->{ID} - User? $user->{ID}");
 
     $logger->debug("Main objects initialized");    
-    
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for cgiapp_init is ".timestr($timeall));
+    }
+
     return;
 }
 
@@ -729,8 +743,9 @@ sub print_page {
             INCLUDE_PATH   => $config->{tt_include_path},
 	    ABSOLUTE       => 1,
         }) ],
-         OUTPUT         => $r,    # Output geht direkt an Apache Request
-         RECURSION      => 1,
+        STAT_TTL => 60,  # one minute
+        OUTPUT         => $r,    # Output geht direkt an Apache Request
+        RECURSION      => 1,
     });
   
     # Dann Ausgabe des neuen Headers

@@ -38,6 +38,7 @@ use Apache2::Const -compile => qw(:common REDIRECT);
 use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
+use Benchmark ':hireswallclock';
 use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
 use Date::Manip;
@@ -210,6 +211,12 @@ sub show_record {
         $logger->debug("Testing authorization for given userid $userid");
         return;
     }
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
     
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
@@ -220,6 +227,12 @@ sub show_record {
         $logger->debug("ID: $titleid - DB: $database");
         
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid})->load_full_record;
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 0 is ".timestr($timeall));
+        }
 
         my $poolname=$dbinfotable->{dbnames}{$database};
 
@@ -234,6 +247,14 @@ sub show_record {
             view       => $view,
         });
 
+        my $active_feeds = $config->get_activefeeds_of_db($database);
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 1 is ".timestr($timeall));
+        }
+        
         # Literaturlisten finden
 
         my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database});
@@ -269,6 +290,16 @@ sub show_record {
             }
         }
 
+        my $sysprofile= $config->get_profilename_of_view($view);
+
+        $record->enrich_content({ profilename => $sysprofile });
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 2 is ".timestr($timeall));
+        }
+
         # TT-Data erzeugen
         my $ttdata={
             database    => $database, # Zwingend wegen common/subtemplate
@@ -285,7 +316,7 @@ sub show_record {
             format      => $format,
 
             searchquery => $searchquery,
-            activefeed  => $config->get_activefeeds_of_db($database),
+            activefeed  => $active_feeds,
             
             authenticatordb => $authenticatordb,
             
@@ -294,6 +325,12 @@ sub show_record {
         };
 
         $self->print_page($config->{tt_titles_record_tname},$ttdata);
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 3 is ".timestr($timeall));
+        }
 
         # Log Event
 
@@ -320,6 +357,12 @@ sub show_record {
     }
     else {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for show_record is ".timestr($timeall));
     }
 
     $logger->debug("Done showing record");

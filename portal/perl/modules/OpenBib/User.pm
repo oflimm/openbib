@@ -33,6 +33,7 @@ use utf8;
 
 use base qw(Apache::Singleton);
 
+use Benchmark ':hireswallclock';
 use Digest::MD5;
 use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
@@ -1395,6 +1396,14 @@ sub get_all_tags_of_tit {
   
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
     # DBI: "select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where tt.titleid=? and tt.dbname=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.name") or $logger->error($DBI::errstr);
     my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
         {
@@ -1433,7 +1442,13 @@ sub get_all_tags_of_tit {
             $taglist_ref->[$i]->{class} = int($taglist_ref->[$i]->{count} / (int($maxcount/6)+1));
         }
     }
-    
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time is ".timestr($timeall));
+    }
+
     return $taglist_ref;
 }
 

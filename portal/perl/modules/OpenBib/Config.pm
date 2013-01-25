@@ -1246,16 +1246,22 @@ sub get_profiledbs {
 
     my @profiledbs=();
     my %profiledbs_done = ();
-    foreach my $orgunit ($self->get_orgunitinfo_overview($profilename)->all){
-        $logger->debug("Getting DBs for Orgunit ".$orgunit->orgunitname);
-        foreach my $item ($orgunit->orgunit_dbs->all){
-            my $dbname      = $item->dbid->dbname;
 
-            $logger->debug("Getting DB $dbname");
-
-            push @profiledbs, $dbname unless ($profiledbs_done{$dbname});
-            $profiledbs_done{$dbname} = 1;
+    my $dbnames = $self->{schema}->resultset('Orgunitinfo')->search_rs(
+        {
+            'profileid.profilename' => $profilename,
+        },
+        {
+            group_by => ['dbid.dbname'],
+            select => ['dbid.dbname'],
+            as     => ['thisdbname'],
+            join   => ['profileid','orgunit_dbs', {'orgunit_dbs' => 'dbid'}],
         }
+    );
+    
+    foreach my $dbname ($dbnames->all){
+        push @profiledbs, $dbname->get_column('thisdbname');
+        
     }
 
     $logger->debug("Profile $profilename: ".YAML::Dump(\@profiledbs));

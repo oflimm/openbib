@@ -40,6 +40,7 @@ use Apache2::Request ();
 use Apache2::RequestRec ();
 use Apache2::URI ();
 use APR::URI ();
+use Benchmark ':hireswallclock';
 use Log::Log4perl qw(get_logger :levels);
 use YAML;
 
@@ -52,6 +53,8 @@ sub handler : method {
 
     my $logger = get_logger();
 
+    my $config  = OpenBib::Config->instance;
+    
     # set the PATH_INFO
     $ENV{PATH_INFO} = $r->uri(); # was $r->path_info();
 
@@ -84,9 +87,21 @@ sub handler : method {
     }
 
     $logger->debug("Dispatching");
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
     
     $self->dispatch(%args);
 
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for dispatching ".$r->uri()." is ".timestr($timeall));
+    }
+    
     $logger->debug("Dispatching done with status ".$r->status);
 
     if($r->status == 404) {

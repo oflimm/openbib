@@ -33,6 +33,7 @@ use utf8;
 use base qw(OpenBib::Catalog);
 
 use Business::ISBN;
+use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use MLDBM qw(DB_File Storable);

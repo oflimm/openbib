@@ -33,6 +33,7 @@ use utf8;
 use base qw(Apache::Singleton);
 
 use Apache2::Cookie;
+use Benchmark ':hireswallclock';
 use Digest::MD5;
 use Encode 'decode_utf8';
 use JSON::XS qw(encode_json decode_json);
@@ -630,7 +631,15 @@ sub get_all_searchqueries {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
     my $thissid = (defined $sid)?$sid:$self->{sid};
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
 
     # DBI: "select queryid from queries where sessionid = ? order by queryid DESC "
     my $searchqueries = $self->{schema}->resultset('Query')->search_rs(
@@ -651,6 +660,12 @@ sub get_all_searchqueries {
         $logger->debug("Found Searchquery with id ".$item->get_column('thisqueryid'));
         my $searchquery = OpenBib::SearchQuery->new->load({sid => $thissid, queryid => $item->get_column('thisqueryid') });
         push @queries, $searchquery;
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time is ".timestr($timeall));
     }
 
     return @queries;

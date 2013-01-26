@@ -92,9 +92,9 @@ sub show_popular {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
+    my $dbinfotable    = $self->param('dbinfo');
     
     my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
@@ -105,7 +105,6 @@ sub show_popular {
         database      => $database,
         profile       => $profile,
         viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
     };
@@ -136,9 +135,9 @@ sub show_recent {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
+    my $dbinfotable    = $self->param('dbinfo');
     
     my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
@@ -156,7 +155,6 @@ sub show_recent {
         recordlist    => $recordlist,
         profile       => $profile,
         viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
     };
@@ -193,6 +191,7 @@ sub show_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
     my $representation = $self->param('represenation');
+    my $dbinfotable    = $self->param('dbinfo');
 
     # CGI Args
     my $stid          = $query->param('stid')              || '';
@@ -218,10 +217,15 @@ sub show_record {
         $atime=new Benchmark;
     }
     
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $searchquery   = OpenBib::SearchQuery->instance({r => $r, view => $view});
     my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time until stage -1 is ".timestr($timeall));
+    }
 
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
@@ -303,12 +307,11 @@ sub show_record {
         # TT-Data erzeugen
         my $ttdata={
             database    => $database, # Zwingend wegen common/subtemplate
-            dbinfo      => $dbinfotable,
             userid      => $userid,
             poolname    => $poolname,
             prevurl     => $prevurl,
             nexturl     => $nexturl,
-            qopts       => $queryoptions->get_options,
+#            qopts       => $queryoptions->get_options,
             queryid     => $searchquery->get_id,
             record      => $record,
             titleid      => $titleid,
@@ -386,8 +389,7 @@ sub redirect_to_bibsonomy {
     my $session        = $self->param('session');
     my $path_prefix    = $self->param('path_prefix');
     my $servername     = $self->param('servername');
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $dbinfotable    = $self->param('dbinfo');
     
     if ($titleid && $database){
         my $title_as_bibtex = OpenBib::Record::Title->new({id =>$titleid, database => $database})->load_full_record->to_bibtex({utf8 => 1});

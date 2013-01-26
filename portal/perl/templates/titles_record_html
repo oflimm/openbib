@@ -17,9 +17,9 @@
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
   circulation     = record.get_circulation ; 
-  same_records    = record.get_same_records;#.filter_by_profile(sysprofile);
-  similar_records = record.get_similar_records;#.filter_by_profile(sysprofile) ;
-  related_records = record.get_related_records;#.filter_by_profile(sysprofile) ;
+  same_records    = record.get_same_records;
+  similar_records = record.get_similar_records;
+  related_records = record.get_related_records;
 
   bibkey = record.to_bibkey ;
   isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
@@ -173,44 +173,6 @@ $(document).ready(function(){
 
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
-[%
-  css_classes = [
-        'fast-nicht-genutzt',
-        'nicht-sehr-genutzt',
-        'etwas-genutzt',
-        'genutzt',
-        'sehr-viel-genutzt',
-        'ultra-genutzt',
-        'am-meisten-genutzt',
-  ];
-%]
-
-[%
-   all_tags = user.get_all_tags_of_tit({ titleid => record.id, dbname => record.database });
-
-   IF config.get('social_tagging') ;
-
-     IF all_tags.size > 0 ;
-
-     alltags_cloud = "<ol class=\"cloud\">\n" ;
-
-     FOREACH thisitem IN all_tags ;
-       item          = thisitem.name;
-       itemcount     = thisitem.count;
-       classnr       = thisitem.class;
-       itemid        = thisitem.id;
-       itemclass     = css_classes.$classnr;
-
-       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('tags_loc')}/${itemid}.html\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
-     END ;
-     alltags_cloud = "${alltags_cloud}\n</ol>" ;
-     clouds_item = {
-                    content => alltags_cloud,
-                  } ;
-     normdata.${"T4500"} = [ clouds_item ];
-   END ;
-END ;
-%]
 
 [% PROCESS common/subtemplate name="titles_record_html_categories" %]
 

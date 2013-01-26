@@ -140,10 +140,6 @@ sub load_full_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config        = OpenBib::Config->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-
     # (Re-)Initialisierung
     delete $self->{_fields}         if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
@@ -459,14 +455,7 @@ sub enrich_content {
                     if (@filter_databases){
                         $where_ref = {
                             isbn    => $isbnitem->isbn,
-                            -and => [
-                                {
-                                    dbname  => {'!=' => $self->{database}}
-                                },
-                                {
-                                    dbname => \@filter_databases,
-                                },
-                            ]
+                            dbname => \@filter_databases,
                         };
                     }
                     
@@ -533,10 +522,19 @@ sub enrich_content {
                 $logger->debug("Found ".($isbns->count)." isbns");
                 
                 foreach my $isbnitem ($isbns->all) {
+                    my $where_ref = {
+                        isbn    => $isbnitem->isbn,
+                    };
+                    
+                    if (@filter_databases){
+                        $where_ref = {
+                            isbn    => $isbnitem->isbn,
+                            dbname => \@filter_databases,
+                        };
+                    }
+
                     my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
-                        {
-                            isbn      => $isbnitem->isbn,
-                        },
+                        $where_ref,
                         {
                             rows => 1,
                         }

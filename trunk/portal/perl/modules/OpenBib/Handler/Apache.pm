@@ -86,14 +86,21 @@ sub cgiapp_init {
     my $logger = get_logger();
     
     $logger->debug("Entering cgiapp_init");
-    
+
+
     my $r            = $self->param('r');
     my $view         = $self->param('view');
     my $config       = OpenBib::Config->instance;
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
     my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
     my $dbinfo       = OpenBib::Config::DatabaseInfoTable->instance;
-    
     my $useragent    = $r->headers_in->get('User-Agent');
     my $browser      = HTTP::BrowserDetect->new($useragent);
 
@@ -103,13 +110,14 @@ sub cgiapp_init {
     $self->param('useragent',$useragent);
     $self->param('browser',$browser);
     $self->param('dbinfo',$dbinfo);
+
     $self->param('qopts',OpenBib::QueryOptions->instance($self->query()));
     $self->param('servername',$r->get_server_name);
 
-    my ($atime,$btime,$timeall)=(0,0,0);
-
     if ($config->{benchmark}) {
-        $atime=new Benchmark;
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 1 is ".timestr($timeall));
     }
 
     $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
@@ -118,23 +126,59 @@ sub cgiapp_init {
     # Setzt: location,path,path_prefix,uri
     $self->process_uri;
 
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 2 is ".timestr($timeall));
+    }
+
     # Setzen von content_type/representation, wenn konkrete Repraesentation ausgewaehlt wurde
     $self->set_content_type_from_uri;
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 3 is ".timestr($timeall));
+    }
 
     # content_type, representation und lang durch content-Negotiation bestimmen
     # und ggf. zum konkreten Repraesenations-URI redirecten
     # Setzt: content_type,represenation,lang
     $self->negotiate_content;
 
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 4 is ".timestr($timeall));
+    }
+    
     # Ggf Personalisiere URI
     $self->personalize_uri;
-        
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 5 is ".timestr($timeall));
+    }
+
     # Bearbeitung HTTP Basic Authentication als Shortcut
     # Setzt ggf: basic_auth_failure (auf 1)
     $self->check_http_basic_authentication;
 
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 6 is ".timestr($timeall));
+    }
+
     # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
     $self->alter_negotiated_language;
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 7 is ".timestr($timeall));
+    }
     
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
@@ -724,7 +768,13 @@ sub print_page {
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $location       = $self->param('location');
     my $url            = $self->param('url');
-    
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
     $ttdata = $self->add_default_ttdata($ttdata);
     
     $logger->debug("Using base Template $templatename");
@@ -742,7 +792,10 @@ sub print_page {
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
 	    ABSOLUTE       => 1,
+            STAT_TTL => 60,  # one minute
         }) ],
+        COMPILE_EXT => '.ttc',
+        COMPILE_DIR => '/tmp/ttc',
         STAT_TTL => 60,  # one minute
         OUTPUT         => $r,    # Output geht direkt an Apache Request
         RECURSION      => 1,
@@ -756,6 +809,12 @@ sub print_page {
     $head->set('Location' => $location);
     $head->set('Content-Location' => $location);
 
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time until stage 1 is ".timestr($timeall));
+    }
+
     $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
@@ -764,7 +823,13 @@ sub print_page {
     if ($self->param('status')){
         $r->status($self->param('status'));
     }
-        
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time until stage 2 is ".timestr($timeall));
+    }
+
     return;
 }
 

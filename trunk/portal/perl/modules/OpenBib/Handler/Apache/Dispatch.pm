@@ -54,7 +54,13 @@ sub handler : method {
     my $logger = get_logger();
 
     my $config  = OpenBib::Config->instance;
-    
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
     # set the PATH_INFO
     $ENV{PATH_INFO} = $r->uri(); # was $r->path_info();
 
@@ -88,12 +94,12 @@ sub handler : method {
 
     $logger->debug("Dispatching");
 
-    my ($atime,$btime,$timeall)=(0,0,0);
-
     if ($config->{benchmark}) {
-        $atime=new Benchmark;
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 2 ".$r->uri()." is ".timestr($timeall));
     }
-    
+
     $self->dispatch(%args);
 
     if ($config->{benchmark}) {

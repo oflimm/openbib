@@ -33,7 +33,7 @@ use utf8;
 use base qw(Apache::Singleton);
 
 use Benchmark ':hireswallclock';
-use DBI;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
@@ -70,16 +70,17 @@ sub _new_instance {
             select => ['me.dbname','me.description','me.shortdesc','me.sigel','me.url','locationid.id'],
             as     => ['thisdbname','thisdescription','thisshortdesc','thissigel','thisurl','thislocationid'],
             join   => ['locationid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
 
     foreach my $dbinfo ($dbinfos->all){
-        my $description = $dbinfo->get_column('thisdescription');
-        my $shortdesc   = $dbinfo->get_column('thisshortdesc');
-        my $dbname      = $dbinfo->get_column('thisdbname');
-        my $sigel       = $dbinfo->get_column('thissigel');
-        my $url         = $dbinfo->get_column('thisurl');
-        my $locationid  = $dbinfo->get_column('thislocationid');
+        my $description = $dbinfo->{thisdescription};
+        my $shortdesc   = $dbinfo->{thisshortdesc};
+        my $dbname      = $dbinfo->{thisdbname};
+        my $sigel       = $dbinfo->{thissigel};
+        my $url         = $dbinfo->{thisurl};
+        my $locationid  = $dbinfo->{thislocationid};
         
         ##################################################################### 
         ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname

@@ -33,6 +33,7 @@ use utf8;
 use base qw(Apache::Singleton);
 
 use Apache2::Cookie;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Benchmark ':hireswallclock';
 use Digest::MD5;
 use Encode 'decode_utf8';
@@ -728,15 +729,16 @@ sub get_all_searchqueries {
             select => 'me.queryid',
             as     => 'thisqueryid',
             order_by => [ 'me.queryid DESC' ],
-            join => 'sid'
+            join => 'sid',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
 
     my @queries=();
 
     foreach my $item ($searchqueries->all){
-        $logger->debug("Found Searchquery with id ".$item->get_column('thisqueryid'));
-        my $searchquery = OpenBib::SearchQuery->new->load({sid => $thissid, queryid => $item->get_column('thisqueryid') });
+        $logger->debug("Found Searchquery with id ".$item->{thisqueryid});
+        my $searchquery = OpenBib::SearchQuery->new->load({sid => $thissid, queryid => $item->{thisqueryid} });
         push @queries, $searchquery;
     }
 
@@ -780,16 +782,17 @@ sub get_items_in_collection {
             select => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache', 'cartitemid.id', 'cartitemid.tstamp', 'cartitemid.comment' ],
             as     => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid','thiststamp','thiscomment' ],
             join   => ['sid','cartitemid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',                        
         }
     );
 
     foreach my $item ($items->all){
-        my $database   = $item->get_column('thisdbname');
-        my $titleid    = $item->get_column('thistitleid');
-        my $titlecache = $item->get_column('thistitlecache');
-        my $listid     = $item->get_column('thislistid');
-        my $tstamp     = $item->get_column('thiststamp');
-        my $comment    = $item->get_column('thiscomment');
+        my $database   = $item->{thisdbname};
+        my $titleid    = $item->{thistitleid};
+        my $titlecache = $item->{thistitlecache};
+        my $listid     = $item->{thislistid};
+        my $tstamp     = $item->{thiststamp};
+        my $comment    = $item->{thiscomment};
 
         if ($database && $titleid){
             $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, , date => $tstamp, comment => $comment})->load_brief_record);
@@ -1730,7 +1733,21 @@ sub get_recently_selected_titles {
     my $logger = get_logger();
 
     # DBI: "select content from eventlog where sessionid=? and type=10 order by tstamp DESC limit $offset,$hitrange"
-    my $lastrecords = $self->{schema}->resultset('Eventlogjson')->search({ 'sid.sessionid' => $self->{ID}, 'me.type' => 10 }, { select => ['me.content'], as => ['thiscontent'], join => 'sid', order_by => ['me.tstamp DESC'], group_by => ['me.content','me.tstamp'], limit => "$offset,$hitrange" });
+    my $lastrecords = $self->{schema}->resultset('Eventlogjson')->search(
+        {
+            'sid.sessionid' => $self->{ID},
+            'me.type' => 10
+        },
+        {
+            select => ['me.content'],
+            as => ['thiscontent'],
+            join => 'sid',
+            order_by => ['me.tstamp DESC'],
+            group_by => ['me.content','me.tstamp'],
+            limit => "$offset,$hitrange",
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+        }
+    );
 
     $logger->debug("Got ".($lastrecords->count)." titles for sid/sessionID ".$self->{sid}."/".$self->{ID});
     
@@ -1738,18 +1755,18 @@ sub get_recently_selected_titles {
 
     my $have_item_ref = {};
     foreach my $item ($lastrecords->all){
-        my $thiscontent = $item->get_column('thiscontent');
+        my $thiscontent = $item->{thiscontent};
         my $content_ref = {};
         next if (defined $have_item_ref->{$thiscontent});
                                           
         eval {
-            $logger->debug("Got ".$item->get_column('thiscontent'));
-            $content_ref = decode_json $item->get_column('thiscontent');
+            $logger->debug("Got ".$item->{thiscontent});
+            $content_ref = decode_json $item->{thiscontent};
             $have_item_ref->{$thiscontent} = 1;
         };
 
         if ($@){
-            $logger->error("Error decoding JSON $@ ".$item->get_column('thiscontent'));
+            $logger->error("Error decoding JSON $@ ".$item->{thiscontent});
         }
         
         $recordlist->add(new OpenBib::Record::Title({database => $content_ref->{database}, id => $content_ref->{id}}));

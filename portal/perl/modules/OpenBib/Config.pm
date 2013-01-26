@@ -34,6 +34,7 @@ use base qw(Apache::Singleton::Process);
 
 use Apache2::Reload;
 use Apache2::Const -compile => qw(:common);
+use DBIx::Class::ResultClass::HashRefInflator;
 use Cache::Memcached;
 use Encode 'decode_utf8';
 use JSON::XS;
@@ -151,7 +152,6 @@ sub get_number_of_all_dbs {
         {
             columns => [ qw/dbname/ ],
             group_by => [ qw/dbname/ ],
-
         })->count;
     
     return $alldbs;
@@ -171,7 +171,6 @@ sub get_number_of_views {
         {
             columns => [ qw/viewname/ ],
             group_by => [ qw/viewname/ ],
-
         }
     )->count;
     
@@ -190,7 +189,6 @@ sub get_number_of_all_views {
         {
             columns => [ qw/viewname/ ],
             group_by => [ qw/viewname/ ],
-            
         }
     )->count;
     
@@ -229,6 +227,7 @@ sub get_number_of_titles {
             },
             {
                 columns => [qw/ allcount journalcount articlecount digitalcount /],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         )->first;
         
@@ -245,6 +244,7 @@ sub get_number_of_titles {
 
                 select => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
                 as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         )->first;
     }
@@ -260,6 +260,7 @@ sub get_number_of_titles {
                 select   => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
                 as       => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
                 group_by => ['orgunitid.id'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',                
             }
         )->first;
 
@@ -273,15 +274,16 @@ sub get_number_of_titles {
             {
                 select => [ {'sum' => 'allcount'}, {'sum' => 'journalcount'}, {'sum' => 'articlecount'}, {'sum' => 'digitalcount'}],
                 as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             })->first;
     }
 
     if ($counts){
         my $alltitles_ref = {   
-            allcount     => $counts->get_column('allcount'),
-            journalcount => $counts->get_column('journalcount'),
-            articlecount => $counts->get_column('articlecount'),
-            digitalcount => $counts->get_column('digitalcount'),
+            allcount     => $counts->{allcount},
+            journalcount => $counts->{journalcount},
+            articlecount => $counts->{articlecount},
+            digitalcount => $counts->{digitalcount},
         };
         
         return $alltitles_ref;
@@ -406,6 +408,7 @@ sub orgunit_exists {
         },
         {
             join => 'profileid',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     )->count;
     
@@ -480,13 +483,14 @@ sub get_dbs_of_view {
             select => 'dbid.dbname',
             as     => 'thisdbname',
             order_by => 'dbid.dbname',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
 
     my @dblist=();
 
     foreach my $item ($dbnames->all){
-        push @dblist, $item->get_column('thisdbname');
+        push @dblist, $item->{thisdbname};
     }
 
     $logger->debug("View-Databases:\n".YAML::Dump(\@dblist));
@@ -509,13 +513,14 @@ sub get_rssfeeds_of_view {
             select => 'rssid.id',
             as     => 'thisrssid',
             join   => ['viewid','rssid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
     
     my $viewrssfeed_ref  = {};
 
     foreach my $item ($rssinfos->all){
-        $viewrssfeed_ref->{$item->get_column('thisrssid')}=1;
+        $viewrssfeed_ref->{$item->{thisrssid}}=1;
     }
 
     return $viewrssfeed_ref;
@@ -535,6 +540,7 @@ sub get_rssfeed_overview {
             as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'dbname'],
             join   => 'dbid',
             order_by => ['dbid.dbname','type','subtype'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
     
@@ -542,11 +548,9 @@ sub get_rssfeed_overview {
     
     foreach my $item ($rssinfos->all){
         push @$rssfeed_ref, {
-            feedid      => $item->get_column('id'),
-            dbname      => $item->get_column('dbname'),
-            type        => $item->get_column('type'),
-            subtype     => $item->get_column('subtype'),
-            subtypedesc => $item->get_column('subtypedesc'),
+            feedid      => $item->{id},
+            dbname      => $item->{dbname},
+            type        => $item->{type},
         };
     }
     
@@ -569,16 +573,15 @@ sub get_rssfeed_by_id {
             as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'active', 'dbname'],
             join   => 'dbid',
             order_by => ['dbid.dbname','type','subtype'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     )->first;
 
     my $rssfeed_ref = {
-        id          => $rssinfo->get_column('id'),
-        dbname      => $rssinfo->get_column('dbname'),
-        type        => $rssinfo->get_column('type'),
-        subtype     => $rssinfo->get_column('subtype'),
-        subtypedesc => $rssinfo->get_column('subtypedesc'),
-        active      => $rssinfo->get_column('active'),
+        id          => $rssinfo->{id},
+        dbname      => $rssinfo->{dbname},
+        type        => $rssinfo->{type},
+        active      => $rssinfo->{active},
     };
 
     return $rssfeed_ref;
@@ -600,6 +603,7 @@ sub get_rssfeeds_of_db {
             as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'active', 'dbname'],
             join   => 'dbid',
             order_by => ['dbid.dbname','type','subtype'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
     
@@ -607,12 +611,10 @@ sub get_rssfeeds_of_db {
     
     foreach my $item ($rssinfos->all){
         push @$rssfeed_ref, {
-            id          => $item->get_column('id'),
-            dbname      => $item->get_column('dbname'),
-            type        => $item->get_column('type'),
-            subtype     => $item->get_column('subtype'),
-            subtypedesc => $item->get_column('subtypedesc'),
-            active      => $item->get_column('active'),
+            id          => $item->{id},
+            dbname      => $item->{dbname},
+            type        => $item->{type},
+            active      => $item->{active},
         };
     }
 
@@ -635,18 +637,17 @@ sub get_rssfeeds_of_db_by_type {
             as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'active', 'dbname'],
             join   => 'dbid',
             order_by => ['type','subtype'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
 
     my $rssfeed_ref  = {};
 
     foreach my $item ($rssinfos->all){
-        push @{$rssfeed_ref->{$item->get_column('type')}}, {
-            id          => $item->get_column('id'),
-            subtype     => $item->get_column('subtype'),
-            subtypedesc => $item->get_column('subtypedesc'),
-            active      => $item->get_column('active'),
-            dbname      => $item->get_column('dbname'),
+        push @{$rssfeed_ref->{$item->{type}}}, {
+            id          => $item->{id},
+            active      => $item->{active},
+            dbname      => $item->{dbname},
         };
     }
 
@@ -670,12 +671,12 @@ sub get_primary_rssfeed_of_view  {
             select => [ 'rssid.type', 'rssid.subtype', 'dbid.dbname'],
             as     => [ 'type', 'subtype', 'dbname'],
             join   => [ 'rssid', { 'rssid' => 'dbid' } ],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     )->first;
     
-    my $dbname  = decode_utf8($rssinfos->get_column('dbname')) || '';
-    my $type    = $rssinfos->get_column('type')    || 0;
-    my $subtype = $rssinfos->get_column('subtype') || 0;
+    my $dbname  = $rssinfos->{dbname} || '';
+    my $type    = $rssinfos->{type}    || 0;
 
     foreach my $typename (keys %{$self->{rss_types}}){
         if ($self->{rss_types}{$typename} eq $type){
@@ -708,6 +709,7 @@ sub get_activefeeds_of_db  {
             select => ['type'],
             as     => ['thistype'],
             join   => ['dbid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
 
@@ -716,7 +718,7 @@ sub get_activefeeds_of_db  {
     my $activefeeds_ref = {};
 
     foreach my $item ($feeds->all){
-        $activefeeds_ref->{$item->get_column('thistype')} = 1;
+        $activefeeds_ref->{$item->{thistype}} = 1;
     }
     
     return $activefeeds_ref;
@@ -757,6 +759,7 @@ sub get_rssfeedinfo  {
                 as     => [ 'thisdbname', 'thisdbdescription', 'thisorgunitdescription', 'thisrsstype' ],
                 order_by => [ 'dbid.description ASC' ],
                 group_by => ['dbid.dbname', 'dbid.description', 'orgunitid.description', 'me.type'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
             }
         );
     }
@@ -772,6 +775,7 @@ sub get_rssfeedinfo  {
                 select => [ 'dbid.dbname', 'dbid.description', 'orgunitid.description', 'me.type' ],
                 as     => [ 'thisdbname', 'thisdbdescription', 'thisorgunitdescription', 'thisrsstype' ],
                 order_by => [ 'dbid.description ASC' ],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
             }
         );
     }
@@ -779,10 +783,10 @@ sub get_rssfeedinfo  {
     my $rssfeedinfo_ref = {};
 
     foreach my $item ($feedinfos->all){
-        my $orgunit    = decode_utf8($item->get_column('thisorgunitdescription'));
-        my $name       = decode_utf8($item->get_column('thisdbdescription'));
-        my $pool       = decode_utf8($item->get_column('thisdbname'));
-        my $rsstype    = decode_utf8($item->get_column('thisrsstype'));
+        my $orgunit    = decode_utf8($item->{thisorgunitdescription});
+        my $name       = decode_utf8($item->{thisdbdescription});
+        my $pool       = decode_utf8($item->{thisdbname});
+        my $rsstype    = decode_utf8($item->{thisrsstype});
         
         push @{$rssfeedinfo_ref->{$orgunit}},{
             pool     => $pool,
@@ -962,19 +966,25 @@ sub get_locationinfo_fields {
     return {} if (!$locationid);
 
     # DBI: "select category,content,indicator from libraryinfo where dbname = ?"
-    my $locationinfo = $self->get_locationinfo->single(
+    my $locationfields = $self->{schema}->resultset('LocationinfoField')->search_rs(
         {
-            'identifier' => $locationid,
+            'locationid.identifier' => $locationid,
         },
+        {
+#            select => ['me.field','me.subfield','me.mult','me.content'].
+#            as => ['field','subfield','mult','content'].
+            join => ['locationid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+        }
     );
 
     my $locationinfo_ref= {};
 
-    foreach my $item ($locationinfo->locationinfo_fields->all){
-        my $field    = "L".sprintf "%04d",$item->field;
-        my $subfield =                    $item->subfield || '';
-        my $mult     =                    $item->mult     || 1;
-        my $content  =                    $item->content;
+    foreach my $item ($locationfields->all){
+        my $field    = "L".sprintf "%04d",$item->{field};
+        my $subfield =                    $item->{subfield} || '';
+        my $mult     =                    $item->{mult}     || 1;
+        my $content  =                    $item->{content};
 
         next if ($content=~/^\s*$/);
 
@@ -998,6 +1008,7 @@ sub get_locationinfo_overview {
         undef,
         {
             order_by => 'identifier',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
 
@@ -1005,11 +1016,11 @@ sub get_locationinfo_overview {
 
     foreach my $location ($locations->all){
         my $thislocation_ref = {
-            id          => $location->id,
-            identifier  => $location->identifier,
-            description => $location->description,
-            type        => $location->type,
-            fields      => $self->get_locationinfo_fields($location->identifier),
+            id          => $location->{id},
+            identifier  => $location->{identifier},
+            description => $location->{description},
+            type        => $location->{type},
+            fields      => $self->get_locationinfo_fields($location->{identifier}),
             
         };
         
@@ -1227,11 +1238,12 @@ sub get_orgunitname_of_db_in_view {
             select => ['me.orgunitname'],
             as     => ['thisname'],
             join => ['profileid',{'profileid' => 'viewinfos'},'orgunit_dbs',{'orgunit_dbs' => 'dbid'}],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     )->first;
 
     if ($orgunitinfo){
-        return $orgunitinfo->get_column('thisname');
+        return $orgunitinfo->{thisname};
     }
     
     return -1;
@@ -1256,11 +1268,12 @@ sub get_profiledbs {
             select => ['dbid.dbname'],
             as     => ['thisdbname'],
             join   => ['profileid','orgunit_dbs', {'orgunit_dbs' => 'dbid'}],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
     
     foreach my $dbname ($dbnames->all){
-        push @profiledbs, $dbname->get_column('thisdbname');
+        push @profiledbs, $dbname->{thisdbname};
         
     }
 
@@ -1298,9 +1311,20 @@ sub get_orgunitdbs {
     
     my @orgunitdbs=();
 
-    foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs({ 'orgunitid' => $orgunitid },{ join => 'dbid', order_by => 'dbid.dbname' })->all){
+    foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs(
+        {
+            'me.orgunitid' => $orgunitid,
+        },
+        {
+            select => ['dbid.dbname'],
+            as => ['thisdbname'],
+            join => ['dbid'],
+            order_by => 'dbid.dbname',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+        }
+    )->all){
         $logger->debug("Found");
-        push @orgunitdbs, $item->dbid->dbname;
+        push @orgunitdbs, $item->{thisdbname};
     }
 
     return @orgunitdbs;
@@ -1336,13 +1360,14 @@ sub get_viewdbs {
             join     => [ 'view_dbs', { 'view_dbs' => 'dbid' } ],
             order_by => 'dbid.dbname',
             group_by => 'dbid.dbname',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
 
     my @viewdbs=();
 
     foreach my $item ($dbnames->all){
-        push @viewdbs, $item->get_column('thisdbname');
+        push @viewdbs, $item->{thisdbname};
     }
 
     return @viewdbs;
@@ -1362,13 +1387,14 @@ sub get_active_databases {
         {
             select   => 'dbname',
             order_by => [ 'dbname ASC' ],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
     
     my @dblist=();
 
     foreach my $item ($dbnames->all){
-        push @dblist, $item->dbname;
+        push @dblist, $item->{dbname};
     }
     
     return @dblist;
@@ -1395,6 +1421,7 @@ sub get_active_databases_of_systemprofile {
             join => [ 'orgunitid', 'dbid',  ],
             prefetch => [ { 'orgunitid' => 'profileid' } ],
             order_by => 'dbid.dbname',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
 #            columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
 #            group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
         }
@@ -1403,7 +1430,7 @@ sub get_active_databases_of_systemprofile {
     my @dblist=();
 
     foreach my $item ($dbnames->all){
-        push @dblist, $item->get_column('thisdbname');
+        push @dblist, $item->{thisdbname};
     }
 
     return @dblist;
@@ -1441,13 +1468,14 @@ sub get_active_views {
         {
             select   => 'viewname',
             order_by => [ 'description ASC' ],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
     
     my @viewlist=();
 
     foreach my $item ($views->all){
-        push @viewlist, $item->viewname;
+        push @viewlist, $item->{viewname};
     }
 
     return @viewlist;
@@ -1472,6 +1500,7 @@ sub get_active_databases_of_orgunit {
             join => [ 'orgunitid', 'dbid',  ],
             prefetch => [ { 'orgunitid' => 'profileid' } ],
             order_by => 'dbid.description',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
 #            columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
 #            group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
         }
@@ -1480,7 +1509,7 @@ sub get_active_databases_of_orgunit {
     my @dblist=();
 
     foreach my $item ($dbnames->all){
-        push @dblist, $item->get_column('thisdbname');
+        push @dblist, $item->{thisdbname};
     }
 
     return @dblist;
@@ -1540,6 +1569,7 @@ sub get_infomatrix_of_active_databases {
                 select => [ 'orgunitinfos.description', 'dbid.description', 'dbid.system', 'dbid.dbname', 'dbid.url', 'dbid.sigel', 'dbid.locationid' ],
                 as     => [ 'thisorgunitdescription', 'thisdescription', 'thissystem', 'thisdbname', 'thisurl', 'thissigel', 'thislocationid' ],
                 order_by => [ 'orgunitid ASC', 'dbid.description ASC' ],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
             }
         );
     }
@@ -1553,6 +1583,7 @@ sub get_infomatrix_of_active_databases {
                 select => [ 'description', 'system', 'dbname', 'url', 'sigel', 'locationid' ],
                 as     => [ 'thisdescription', 'thissystem', 'thisdbname', 'thisurl', 'thissigel', 'thislocationid' ],
                 order_by => [ 'description ASC' ],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
             }
         );
 
@@ -1561,13 +1592,13 @@ sub get_infomatrix_of_active_databases {
     my @catdb=();
 
     foreach my $item ($dbinfos->all){
-        my $category   = decode_utf8($item->get_column('thisorgunitdescription'));
-        my $name       = decode_utf8($item->get_column('thisdescription'));
-        my $systemtype = decode_utf8($item->get_column('thissystem'));
-        my $pool       = decode_utf8($item->get_column('thisdbname'));
-        my $url        = decode_utf8($item->get_column('thisurl'));
-        my $sigel      = decode_utf8($item->get_column('thissigel'));
-        my $locationid = decode_utf8($item->get_column('thislocationid'));
+        my $category   = decode_utf8($item->{thisorgunitdescription});
+        my $name       = decode_utf8($item->{thisdescription});
+        my $systemtype = decode_utf8($item->{thissystem});
+        my $pool       = decode_utf8($item->{thisdbname});
+        my $url        = decode_utf8($item->{thisurl});
+        my $sigel      = decode_utf8($item->{thissigel});
+        my $locationid = decode_utf8($item->{thislocationid});
 	
         my $rcolumn;
         
@@ -2674,7 +2705,8 @@ sub get_authenticators {
     my $authenticators = $self->{schema}->resultset('Authenticator')->search_rs(
         undef,
         {
-            order_by => ['type DESC','description']
+            order_by => ['type DESC','description'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
 
@@ -2682,13 +2714,13 @@ sub get_authenticators {
 
     foreach my $authenticator ($authenticators->all){
         push @$authenticators_ref, {
-            id          => $authenticator->id,
-            hostname    => $authenticator->hostname,
-            port        => $authenticator->port,
-            remoteuser  => $authenticator->remoteuser,
-            dbname      => $authenticator->dbname,
-            description => $authenticator->description,
-            type        => $authenticator->type,
+            id          => $authenticator->{id},
+            hostname    => $authenticator->{hostname},
+            port        => $authenticator->{port},
+            remoteuser  => $authenticator->{remoteuser},
+            dbname      => $authenticator->{dbname},
+            description => $authenticator->{description},
+            type        => $authenticator->{type},
         };
     }
 
@@ -2972,13 +3004,14 @@ sub get_databases_of_searchprofile {
             select   => ['dbid.dbname'],
             as       => ['thisdbname'],
             order_by => ['dbid.dbname ASC'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
 
     my @databases = ();
     
     foreach my $searchprofiledb ($searchprofiledbs->all){
-        push @databases, $searchprofiledb->get_column('thisdbname');
+        push @databases, $searchprofiledb->{thisdbname};
 
     }
 

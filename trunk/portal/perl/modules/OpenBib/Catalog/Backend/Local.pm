@@ -34,6 +34,7 @@ use base qw(OpenBib::Catalog);
 
 use Business::ISBN;
 use Benchmark ':hireswallclock';
+use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use MLDBM qw(DB_File Storable);
@@ -303,14 +304,15 @@ sub load_full_title_record {
                     select => ['title_fields.field','title_fields.mult','title_fields.subfield','title_fields.content'],
                     as     => ['thisfield','thismult','thissubfield','thiscontent'],
                     join   => ['title_fields'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
             foreach my $item ($title_fields->all){
-                my $field    = "T".sprintf "%04d",$item->get_column('thisfield');
-                my $subfield =                    $item->get_column('thissubfield');
-                my $mult     =                    $item->get_column('thismult');
-                my $content  =                    $item->get_column('thiscontent');
+                my $field    = "T".sprintf "%04d",$item->{thisfield};
+                my $subfield =                    $item->{thissubfield};
+                my $mult     =                    $item->{thismult};
+                my $content  =                    $item->{thiscontent};
                 
                 $title_record->set_field({
                     field     => $field,
@@ -346,14 +348,15 @@ sub load_full_title_record {
                     select => ['title_people.field','title_people.personid','title_people.supplement'],
                     as     => ['thisfield','thispersonid','thissupplement'],
                     join   => ['title_people'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
             my $mult = 1;
             foreach my $item ($title_persons->all){
-                my $field      = "T".sprintf "%04d",$item->get_column('thisfield');
-                my $personid   =                    $item->get_column('thispersonid');
-                my $supplement =                    $item->get_column('thissupplement');
+                my $field      = "T".sprintf "%04d",$item->{thisfield};
+                my $personid   =                    $item->{thispersonid};
+                my $supplement =                    $item->{thissupplement};
                 
                 my $record = OpenBib::Record::Person->new({database=>$self->{database}});
                 $record->load_name({id=>$personid});
@@ -380,14 +383,15 @@ sub load_full_title_record {
                     select => ['title_corporatebodies.field','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
                     as     => ['thisfield','thiscorporatebodyid','thissupplement'],
                     join   => ['title_corporatebodies'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
             $mult = 1;        
             foreach my $item ($title_corporatebodies->all){
-                my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
-                my $corporatebodyid   =                    $item->get_column('thiscorporatebodyid');
-                my $supplement        =                    $item->get_column('thissupplement');
+                my $field             = "T".sprintf "%04d",$item->{thisfield};
+                my $corporatebodyid   =                    $item->{thiscorporatebodyid};
+                my $supplement        =                    $item->{thissupplement};
                 
                 my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}});
                 $record->load_name({id=>$corporatebodyid});
@@ -414,14 +418,15 @@ sub load_full_title_record {
                     select => ['title_subjects.field','title_subjects.subjectid','title_subjects.supplement'],
                     as     => ['thisfield','thissubjectid','thissupplement'],
                     join   => ['title_subjects'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
             $mult = 1;
             foreach my $item ($title_subjects->all){
-                my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
-                my $subjectid         =                    $item->get_column('thissubjectid');
-                my $supplement        =                    $item->get_column('thissupplement');
+                my $field             = "T".sprintf "%04d",$item->{thisfield};
+                my $subjectid         =                    $item->{thissubjectid};
+                my $supplement        =                    $item->{thissupplement};
                 
                 my $record = OpenBib::Record::Subject->new({database=>$self->{database}});
                 $record->load_name({id=>$subjectid});
@@ -448,14 +453,15 @@ sub load_full_title_record {
                     select => ['title_classifications.field','title_classifications.classificationid','title_classifications.supplement'],
                     as     => ['thisfield','thisclassificationid','thissupplement'],
                     join   => ['title_classifications'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
             $mult = 1;
             foreach my $item ($title_classifications->all){
-                my $field             = "T".sprintf "%04d",$item->get_column('thisfield');
-                my $classificationid  =                    $item->get_column('thisclassificationid');
-                my $supplement        =                    $item->get_column('thissupplement');
+                my $field             = "T".sprintf "%04d",$item->{thisfield};
+                my $classificationid  =                    $item->{thisclassificationid};
+                my $supplement        =                    $item->{thissupplement};
                 
                 my $record = OpenBib::Record::Classification->new({database=>$self->{database}});
                 $record->load_name({id=>$classificationid});
@@ -572,11 +578,12 @@ sub load_full_title_record {
                     as       => ['thisholdingid'],
                     group_by => ['title_holdings.holdingid'], # = distinct holdingid
                     join     => ['title_holdings'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
             foreach my $item ($title_holdings->all){
-                my $holdingid =                    $item->get_column('thisholdingid');
+                my $holdingid =                    $item->{thisholdingid};
                 
                 push @$holding_ref, $self->_get_holding({
                     id             => $holdingid,
@@ -767,14 +774,15 @@ sub _get_holding {
             select => ['holding_fields.field','holding_fields.mult','holding_fields.subfield','holding_fields.content'],
             as     => ['thisfield','thismult','thissubfield','thiscontent'],
             join   => ['holding_fields'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
     
     foreach my $item ($holding_fields->all){
-        my $field    = "X".sprintf "%04d",$item->get_column('thisfield');
-        my $subfield =                    $item->get_column('thissubfield');
-        my $mult     =                    $item->get_column('thismult');
-        my $content  =                    $item->get_column('thiscontent');
+        my $field    = "X".sprintf "%04d",$item->{thisfield};
+        my $subfield =                    $item->{thissubfield};
+        my $mult     =                    $item->{thismult};
+        my $content  =                    $item->{thiscontent};
         
         # Exemplar-Normdaten werden als nicht multipel angenommen
         # und dementsprechend vereinfacht in einer Datenstruktur
@@ -868,7 +876,6 @@ sub get_number_of_titles {
                 select   => ['target_titleid'],
                 as       => ['thistitleid' ], 
                 group_by => ['target_titleid'], # via group_by und nicht via distinct (Performance)
-                
             }
         )->count;
     }
@@ -882,7 +889,6 @@ sub get_number_of_titles {
                 select   => ['source_titleid'],
                 as       => ['thistitleid'], 
                 group_by => ['source_titleid'], # via group_by und nicht via distinct (Performance)
-                
             }
         )->count;
     }
@@ -928,7 +934,7 @@ sub get_connected_titles {
                 select   => ['target_titleid'],
                 as       => ['thistitleid' ], 
                 group_by => ['target_titleid'], # via group_by und nicht via distinct (Performance)
-                
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',                
             }
         );
     }
@@ -942,7 +948,7 @@ sub get_connected_titles {
                 select   => ['source_titleid'],
                 as       => ['thistitleid'], 
                 group_by => ['source_titleid'], # via group_by und nicht via distinct (Performance)
-                
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',                
             }
         );
     }
@@ -952,7 +958,7 @@ sub get_connected_titles {
 
     my @titles = ();
     foreach my $item ($titles->all){
-        push @titles, $item->get_column('thistitleid');
+        push @titles, $item->{thistitleid};
     }
 
     $logger->debug("Related title id's for type $type and id $id :".YAML::Dump(@titles));

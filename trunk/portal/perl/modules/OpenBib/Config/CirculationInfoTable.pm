@@ -32,7 +32,8 @@ use utf8;
 
 use base qw(Apache::Singleton);
 
-use DBI;
+use Benchmark ':hireswallclock';
+use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
@@ -55,19 +56,35 @@ sub _new_instance {
     #####################################################################
     ## Ausleihkonfiguration fuer den Katalog einlesen
 
-    my $object = $config->get_databaseinfo->search(
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    my $dbinfos = $config->{schema}->resultset('Databaseinfo')->search_rs(
         {
             circ => 1,
         },
+        {
+            columns => ['dbname','circ','circurl','circwsurl','circdb'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
     );
 
-    foreach my $result ($object->all){
-        my $dbname                     = decode_utf8($result->dbname);
+    foreach my $dbinfo ($dbinfos->all){
+        my $dbname                     = $dbinfo->{dbname};
 
-        $self->{$dbname}{circ}         = decode_utf8($result->circ);
-        $self->{$dbname}{circurl}      = decode_utf8($result->circurl);
-        $self->{$dbname}{circcheckurl} = decode_utf8($result->circwsurl);
-        $self->{$dbname}{circdb}       = decode_utf8($result->circdb);
+        $self->{$dbname}{circ}         = $dbinfo->{circ};
+        $self->{$dbname}{circurl}      = $dbinfo->{circurl};
+        $self->{$dbname}{circcheckurl} = $dbinfo->{circwsurl};
+        $self->{$dbname}{circdb}       = $dbinfo->{circdb};
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time is ".timestr($timeall));
     }
 
     return $self;

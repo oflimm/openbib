@@ -35,6 +35,7 @@ use utf8;
 use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use Business::ISBN;
+use DBIx::Class::ResultClass::HashRefInflator;
 use DBI;
 use Encode 'decode_utf8';
 use JSON::XS;
@@ -324,13 +325,14 @@ sub enrich_content {
                 {
                     group_by => ['isbn','field','content','origin','subfield'],
                     order_by => ['field','content'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
 
             foreach my $item ($enriched_contents->all) {
-                my $field      = "E".sprintf "%04d",$item->field;
-                my $subfield   =                    $item->subfield;
-                my $content    =                    $item->content;
+                my $field      = "E".sprintf "%04d",$item->{field};
+                my $subfield   =                    $item->{subfield};
+                my $content    =                    $item->{content};
 
                 if ($seen_content{$content}) {
                     next;
@@ -387,14 +389,15 @@ sub enrich_content {
                 $where_ref,
                 {
                     group_by => ['titleid','dbname','isbn','tstamp'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
-            $logger->debug("Found ".($same_titles->count)." records");
+#            $logger->debug("Found ".($same_titles->count)." records");
             
             foreach my $item ($same_titles->all) {
-                my $id         = $item->titleid;
-                my $database   = $item->dbname;
+                my $id         = $item->{titleid};
+                my $database   = $item->{dbname};
                 
                 $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
             }
@@ -424,13 +427,14 @@ sub enrich_content {
                 {
                     columns => ['workid'],
                     group_by => ['workid'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
             $logger->debug("Found ".($works->count)." works");
             
             foreach my $workitem ($works->all) {
-                my $workid         = $workitem->workid;
+                my $workid         = $workitem->{workid};
                 
                 $logger->debug("Workid: $workid");
                 
@@ -442,30 +446,34 @@ sub enrich_content {
                     {
                         columns => ['isbn'],
                         group_by => ['isbn'],
+                        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                     }
                 );
 
                 foreach my $isbnitem ($isbns->all) {
-                    $logger->debug("Found ISBN $isbnitem->item for workid $workid");
+                    $logger->debug("Found ISBN $isbnitem->{isbn} for workid $workid");
 
                     my $where_ref = {
-                        isbn    => $isbnitem->isbn,
+                        isbn    => $isbnitem->{isbn},
                     };
 
                     if (@filter_databases){
                         $where_ref = {
-                            isbn    => $isbnitem->isbn,
+                            isbn    => $isbnitem->{isbn},
                             dbname => \@filter_databases,
                         };
                     }
                     
                     my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
                         $where_ref,
+                        {
+                            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                        }
                     );
                     
                     foreach my $titleitem ($titles->all) {
-                        my $id         = $titleitem->titleid;
-                        my $database   = $titleitem->dbname;
+                        my $id         = $titleitem->{titleid};
+                        my $database   = $titleitem->{dbname};
                         
                         $logger->debug("Found Title with id $id in database $database");
                         
@@ -499,13 +507,14 @@ sub enrich_content {
                 {
                     columns => ['id'],
                     group_by => ['id'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
             $logger->debug("Found ".($related_titles->count)." related titles");
             
             foreach my $item ($related_titles->all) {
-                my $id         = $item->id;
+                my $id         = $item->{id};
                 
                 my $isbns = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
                     {
@@ -516,6 +525,7 @@ sub enrich_content {
                         rows => 1,
                         columns => ['isbn'],
                         group_by => ['isbn'],
+                        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                     }
                 );
                 
@@ -523,12 +533,12 @@ sub enrich_content {
                 
                 foreach my $isbnitem ($isbns->all) {
                     my $where_ref = {
-                        isbn    => $isbnitem->isbn,
+                        isbn    => $isbnitem->{isbn},
                     };
                     
                     if (@filter_databases){
                         $where_ref = {
-                            isbn    => $isbnitem->isbn,
+                            isbn    => $isbnitem->{isbn},
                             dbname => \@filter_databases,
                         };
                     }
@@ -536,13 +546,14 @@ sub enrich_content {
                     my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
                         $where_ref,
                         {
+                            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                             rows => 1,
                         }
                     );
                     
                     foreach my $titleitem ($titles->all) {
-                        my $id         = $titleitem->titleid;
-                        my $database   = $titleitem->dbname;
+                        my $id         = $titleitem->{titleid};
+                        my $database   = $titleitem->{dbname};
                         
                         next if (defined $titles_found_ref->{"$database:$id"});
                         $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));

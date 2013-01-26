@@ -160,6 +160,12 @@ sub _new_instance {
 
     bless ($self, $class);
 
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
     $self->connectDB();
     $self->connectMemcached();
 
@@ -169,6 +175,12 @@ sub _new_instance {
     # Setzen der Defaults
 
     $logger->debug("Entering Session->instance");
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 1 is ".timestr($timeall));
+    }
 
     my $lang;
     
@@ -186,7 +198,13 @@ sub _new_instance {
             $logger->debug("Got language-Cookie: $lang");
 	}
     }
-       
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 2 is ".timestr($timeall));
+    }
+
     if (!defined $sessionID || !$sessionID){
         $self->_init_new_session($r);
         $logger->debug("Generation of new SessionID $self->{ID} successful");
@@ -203,7 +221,13 @@ sub _new_instance {
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
-    
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 3 is ".timestr($timeall));
+    }
+
     # Neuer Cookie?, dann senden
     if ($r && $sessionID ne $self->{ID}){
         
@@ -220,7 +244,13 @@ sub _new_instance {
         
         $r->err_headers_out->set('Set-Cookie', $cookie);
     }
-    
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 4 is ".timestr($timeall));
+    }
+
     if ($self->{ID} && !$self->{sid}){
         my $search_sid = $self->{schema}->resultset('Sessioninfo')->single(
             {
@@ -232,7 +262,13 @@ sub _new_instance {
             $self->{sid} = $search_sid->id;
         }
     }
-    
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for is ".timestr($timeall));
+    }
+
     #$logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
 }
@@ -248,7 +284,13 @@ sub _init_new_session {
     my $sessionID="";
 
     my $havenewsessionID=0;
-    
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
     while ($havenewsessionID == 0) {
         my $gmtime = localtime(time);
         my $md5digest=Digest::MD5->new();
@@ -257,8 +299,20 @@ sub _init_new_session {
     
         $sessionID=$md5digest->hexdigest;
 
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for stage 1 is ".timestr($timeall));
+        }
+
         my $anzahl=$self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $sessionID })->count;
-    
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for stage 2 is ".timestr($timeall));
+        }
+
         # Wenn wir nichts gefunden haben, dann ist alles ok.
         if ($anzahl == 0 ) {
             $havenewsessionID=1;
@@ -277,12 +331,24 @@ sub _init_new_session {
                 }
             );
 
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Total time for stage 2a is ".timestr($timeall));
+            }
+
             $self->{ID}  = $sessionID;
             $self->{sid} = $new_session->id;
         }
     }
 
     $logger->debug("Request Object: ".YAML::Dump($r));
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 3 is ".timestr($timeall));
+    }
 
     if ($r){
         # Loggen des Brower-Types
@@ -319,6 +385,12 @@ sub _init_new_session {
         });
     }
 
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 4 is ".timestr($timeall));
+    }
+
     # BEGIN View (Institutssicht)
     #
     ####################################################################
@@ -345,6 +417,12 @@ sub _init_new_session {
         else {
             $self->{view}="";
         }
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time is ".timestr($timeall));
     }
 
     return $sessionID;

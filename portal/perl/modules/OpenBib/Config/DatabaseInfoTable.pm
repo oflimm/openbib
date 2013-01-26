@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config::DatabaseInfoTable
 #
-#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,6 +32,7 @@ use utf8;
 
 use base qw(Apache::Singleton);
 
+use Benchmark ':hireswallclock';
 use DBI;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
@@ -56,43 +57,68 @@ sub _new_instance {
     # Dynamische Definition diverser Variablen
   
     # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
-  
-    # Verbindung zur SQL-Datenbank herstellen
 
-    foreach my $dbinfo ($config->get_dbinfo_overview->all){
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
     
+    my $dbinfos = $config->{schema}->resultset('Databaseinfo')->search_rs(
+        undef,
+        {
+            select => ['me.dbname','me.description','me.shortdesc','me.sigel','me.url','locationid.id'],
+            as     => ['thisdbname','thisdescription','thisshortdesc','thissigel','thisurl','thislocationid'],
+            join   => ['locationid'],
+        }
+    );
+
+    foreach my $dbinfo ($dbinfos->all){
+        my $description = $dbinfo->get_column('thisdescription');
+        my $shortdesc   = $dbinfo->get_column('thisshortdesc');
+        my $dbname      = $dbinfo->get_column('thisdbname');
+        my $sigel       = $dbinfo->get_column('thissigel');
+        my $url         = $dbinfo->get_column('thisurl');
+        my $locationid  = $dbinfo->get_column('thislocationid');
+        
         ##################################################################### 
         ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
     
-        $self->{sigel}->{$dbinfo->sigel} = {
-            full   => $dbinfo->description,
-            short  => $dbinfo->shortdesc,
-            dbname => $dbinfo->dbname,
+        $self->{sigel}->{$sigel} = {
+            full   => $description,
+            short  => $shortdesc,
+            dbname => $dbname,
         };
     
         #####################################################################
         ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
     
-        $self->{bibinfo}->{$dbinfo->sigel} = $dbinfo->url;
+        $self->{bibinfo}->{$sigel} = $url;
         
         #####################################################################
         ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
         
-        $self->{dbases}->{$dbinfo->dbname}       = $dbinfo->sigel;
+        $self->{dbases}->{$dbname}       = $sigel;
 
         #####################################################################
         ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
 
-        $self->{dbnames}->{$dbinfo->dbname}      = {
-            full  => $dbinfo->description,
-            short => $dbinfo->shortdesc,
+        $self->{dbnames}->{$dbname}      = {
+            full  => $description,
+            short => $shortdesc,
         };
 
-        $self->{urls}->{$dbinfo->dbname}        = $dbinfo->url;
-        $self->{locationid}->{$dbinfo->dbname}  = $dbinfo->locationid;
+        $self->{urls}->{$dbname}        = $url;
+        $self->{locationid}->{$dbname}  = $locationid;
 
     }
-  
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time is ".timestr($timeall));
+    }
+
     return $self;
 }
 

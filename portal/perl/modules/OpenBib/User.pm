@@ -45,7 +45,7 @@ use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Schema::DBI;
-use OpenBib::Schema::System;
+use OpenBib::Schema::System::Singleton;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 
@@ -5215,7 +5215,7 @@ sub connectDB {
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1}
-        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::System::Singleton->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
         
     };
     

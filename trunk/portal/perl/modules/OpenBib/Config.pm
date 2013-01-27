@@ -44,7 +44,7 @@ use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
 use OpenBib::Schema::DBI;
-use OpenBib::Schema::System;
+use OpenBib::Schema::System::Singleton;
 
 sub new {
     my $class = shift;
@@ -1814,7 +1814,7 @@ sub connectDB {
 
     # UTF8: {'pg_enable_utf8'    => 1}
     eval {        
-        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::System::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
         
     };
     

@@ -39,7 +39,7 @@ use MLDBM qw(DB_File Storable);
 use Storable ();
 
 use OpenBib::Config;
-use OpenBib::Schema::DBI;
+use OpenBib::Schema::Enrichment::Singleton;
 use OpenBib::Record::Title;
 
 sub new {
@@ -439,7 +439,7 @@ sub connectDB {
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1}
-        $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
     };
 
     if ($@){

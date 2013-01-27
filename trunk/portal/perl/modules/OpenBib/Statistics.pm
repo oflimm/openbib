@@ -39,8 +39,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Storable ();
 
 use OpenBib::Config;
-use OpenBib::Schema::DBI;
-use OpenBib::Schema::Statistics;
+use OpenBib::Schema::Statistics::Singleton;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -956,7 +955,7 @@ sub connectDB {
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1 |
-        $self->{schema} = OpenBib::Schema::Statistics->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::Statistics::Singleton->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
     };
 
     if ($@){

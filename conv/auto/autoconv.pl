@@ -92,7 +92,6 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
 my $meta2mexexe   = "$config->{'conv_dir'}/meta2mex.pl";
 my $meta2waisexe  = "$config->{'conv_dir'}/meta2wais.pl";
-my $wais2sqlexe   = "$config->{'conv_dir'}/wais2searchSQL.pl";
 my $pgsqlexe      = "/usr/bin/psql -U $config->{'dbuser'} ";
 
 if (!$database){
@@ -261,7 +260,9 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
     # Temporaer Zugriffspassword setzen
     system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-    
+   
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'"); 
+
     system("/usr/bin/dropdb -U $config->{'dbuser'} $databasetmp");
     system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $databasetmp");
     
@@ -429,11 +430,14 @@ else {
     my $old_database_exists = $result->{dbcount};
 
     $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${database}tmp2'");
 
     if ($old_database_exists){
         $postgresdbh->do("DROP database ${database}tmp2");
 	$postgresdbh->do("ALTER database $database RENAME TO ${database}tmp2");
     }
+
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");
 
     $postgresdbh->do("ALTER database $databasetmp RENAME TO $database");
 
@@ -513,7 +517,7 @@ if ($serverinfo){
     $counter->{tstamp_start} = UnixDate($tstamp_start,"%Y-%m-%d %T");
     $counter->{duration} = $duration;
     
-    $serverinfo->updatelogs->insert($counter);
+    $serverinfo->updatelogs->create($counter);
 }
 
 sub print_help {

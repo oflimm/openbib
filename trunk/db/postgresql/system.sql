@@ -155,6 +155,24 @@ CREATE TABLE serverinfo (
  active       BOOL
 );
 
+DROP TABLE IF EXISTS updatelog;
+CREATE TABLE updatelog (
+ id           BIGSERIAL,
+ dbid         BIGINT,
+ serverid     BIGINT,
+ tstamp_start TIMESTAMP,
+ duration     INTERVAL,
+ title_count          INT,
+ title_journalcount   INT,
+ title_articlecount   INT,
+ title_digitalcount   INT,
+ person_count         INT,
+ corporatebody_count  INT,
+ classification_count INT,
+ subject_count        INT,
+ holding_count        INT 
+);
+
 drop table IF EXISTS cartitem;
 CREATE TABLE cartitem (
  id         BIGSERIAL,

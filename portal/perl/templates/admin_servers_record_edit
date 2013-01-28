@@ -119,6 +119,21 @@
 
 </form>
 
+[% IF updatelog.size > 0 %]
+<h4>Update</h4>
+
+<table class="ym-full">
+<thead>
+<tr><th>[% msg.maketext("Katalog") %]</th><th>Start</th><th>Dauer</th><th>Titel</th></tr>
+</thead>
+<tbody>
+[% FOREACH logentry IN updatelog.all %]
+<tr><td>[% logentry.dbid.dbname %]</td><td>[% logentry.tstamp_start %]</td><td>[% logentry.duration %]</td><td>[% logentry.title_count %]</td></tr>
+[% END %]
+</tbody>
+</table>
+[% END %]
+
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

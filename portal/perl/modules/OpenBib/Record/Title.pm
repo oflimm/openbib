@@ -570,13 +570,14 @@ sub enrich_content {
             {                        
                 group_by => ['field','content','bibkey','origin','subfield'],
                 order_by => ['field','content'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
         foreach my $item ($enriched_contents->all) {
-            my $field      = "E".sprintf "%04d",$item->field;
-            my $subfield   =                    $item->subfield;
-            my $content    =                    $item->content;
+            my $field      = "E".sprintf "%04d",$item->{field};
+            my $subfield   =                    $item->{subfield};
+            my $content    =                    $item->{content};
             
             if ($seen_content{$content}) {
                 next;
@@ -603,7 +604,7 @@ sub enrich_content {
             my $thisissn = $issn_ref->{content};
             
             push @issn_refs_tmp, OpenBib::Common::Util::normalize({
-                field => '0543',
+                field => 'T0543',
                 content  => $thisissn,
             });
             
@@ -624,13 +625,14 @@ sub enrich_content {
             {                        
                 group_by => ['field','content','issn','origin','subfield'],
                 order_by => ['field','content'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
         foreach my $item ($enriched_contents->all) {
-            my $field      = "E".sprintf "%04d",$item->field;
-            my $subfield   =                    $item->subfield;
-            my $content    =                    $item->content;
+            my $field      = "E".sprintf "%04d",$item->{field};
+            my $subfield   =                    $item->{subfield};
+            my $content    =                    $item->{content};
             
             if ($seen_content{$content}) {
                 next;

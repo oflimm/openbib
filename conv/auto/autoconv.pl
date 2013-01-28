@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -39,12 +39,14 @@ use strict;
 use warnings;
 
 use Benchmark ':hireswallclock';
+use Date::Manip qw/DateCalc ParseDate Delta_Format UnixDate/;
 use DBI;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 use OpenBib::Catalog;
+use OpenBib::Catalog::Factory;
 
 my ($database,$sync,$genmex,$help,$keepfiles,$logfile,$loglevel);
 
@@ -105,9 +107,12 @@ if (!$config->db_exists($database)){
   exit;
 }
 
-my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
+my $dbinfo     = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
+my $serverinfo = $config->get_serverinfo->search_rs({ hostip => $config->{local_ip} })->single;
 
-$logger->info("### POOL $database");
+my $tstamp_start = ParseDate("now");
+
+$logger->info("### POOL $database on ".UnixDate($tstamp_start,"%Y-%m-%d %T"));
 
 my $atime = new Benchmark;
 
@@ -491,9 +496,29 @@ $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
 $logger->info("### $database: Gesamte Zeit -> $resulttime");
 
+my $tstamp_end = ParseDate("now");
+
+my $duration = DateCalc($tstamp_start,$tstamp_end);
+
+$duration=Delta_Format($duration, 0,"%st seconds");
+
+if ($serverinfo){
+    $logger->info("### $database: Writing updatelog");
+    
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database});
+    
+    my $counter = $catalog->get_bibliographic_counters;
+    
+    $counter->{dbid} = $dbinfo->id;
+    $counter->{tstamp_start} = UnixDate($tstamp_start,"%Y-%m-%d %T");
+    $counter->{duration} = $duration;
+    
+    $serverinfo->updatelogs->insert($counter);
+}
+
 sub print_help {
     print << "ENDHELP";
-autoconv-sikis.pl - Automatische Konvertierung von SIKIS-Daten
+autoconv.pl - Automatisches Update der Katalogdaten in OpenBib aus dem Metaformat
 
    Optionen:
    -help                 : Diese Informationsseite

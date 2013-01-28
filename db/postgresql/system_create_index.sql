@@ -61,6 +61,13 @@ ALTER TABLE serverinfo ADD PRIMARY KEY (id);
 CREATE INDEX serverinfo_active ON serverinfo (active);
 ALTER TABLE serverinfo ADD CONSTRAINT fk_serverinfo_clusterinfo FOREIGN KEY (clusterid) REFERENCES clusterinfo (id);
 
+ALTER TABLE updatelog ADD PRIMARY KEY (id);
+CREATE INDEX updatelog_database ON updatelog (dbid);
+CREATE INDEX updatelog_server ON updatelog (serverid);
+CREATE INDEX updatelog_start ON updatelog (tstamp_start);
+ALTER TABLE updatelog ADD CONSTRAINT fk_updatelog_serverinfo FOREIGN KEY (serverid) REFERENCES serverinfo (id);
+ALTER TABLE updatelog ADD CONSTRAINT fk_updatelog_databaseinfo FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
+
 ALTER TABLE sessioninfo ADD PRIMARY KEY (id);
 CREATE INDEX sessioninfo_sessionid ON sessioninfo (sessionid);
 CREATE INDEX sessioninfo_createtime ON sessioninfo (createtime);

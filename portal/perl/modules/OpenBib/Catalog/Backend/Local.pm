@@ -37,8 +37,6 @@ use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
-use MLDBM qw(DB_File Storable);
-use Storable ();
 
 use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
@@ -990,6 +988,89 @@ sub record_exists {
     return $self->{_exists};
 }
 
+sub get_bibliographic_counters {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my ($title_count,$title_journalcount,$title_articlecount,$title_digitalcount,$person_count,$corporatebody_count,$classification_count,$subject_count,$holding_count)=
+        (0,0,0,0,0,0,0,0,0);
+
+    eval {
+        $person_count = $self->{schema}->resultset('Person')->count;
+        $corporatebody_count = $self->{schema}->resultset('Corporatebody')->count;
+        $classification_count = $self->{schema}->resultset('Classification')->count;
+        $subject_count = $self->{schema}->resultset('Subject')->count;
+        $holding_count = $self->{schema}->resultset('Holding')->count;
+        
+	# Gesamt-Titelzahl bestimmen;
+	$title_count = $self->{schema}->resultset('Title')->count;
+	
+	# Serien/Zeitschriften bestimmen
+	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'"
+	$title_journalcount = $self->{schema}->resultset('TitleField')->search(
+	    {
+		'field'                   => '0800',
+		'content'                 => 'Zeitschrift/Serie',
+	    },
+	    {
+		select   => ['titleid'],
+		as       => ['thistitleid'], 
+		group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
+		
+	    }
+	    )->count;
+	
+	# Aufsaetze bestimmen
+	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'"
+	$title_articlecount = $self->{schema}->resultset('TitleField')->search(
+	    {
+		'field'                   => '0800',
+		'content'                 => 'Aufsatz',
+	    },
+	    {
+		select   => ['titleid'],
+		as       => ['thistitleid'], 
+		group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
+		
+	    }
+	    )->count;
+	
+	# E-Median bestimmen
+	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Digital'"
+	$title_digitalcount = $self->{schema}->resultset('TitleField')->search(
+	    {
+		'field'                   => '0800',
+		'content'                 => 'Digital',
+	    },
+	    {
+		select   => ['titleid'],
+		as       => ['thistitleid'], 
+		group_by => ['titleid'], # via group_by und nicht via distinct (Performance)
+		
+	    }
+        )->count;
+
+    };
+
+    if ($@){
+        $logger->error($@);
+    }
+
+    return {
+        person_count => $person_count,
+        corporatebody_count => $corporatebody_count,
+        classification_count => $classification_count,
+        subject_count => $subject_count,
+        holding_count => $holding_count,
+        title_count => $title_count,
+        title_journalcount => $title_journalcount,
+        title_articlecount => $title_articlecount,
+        title_digitalcount => $title_digitalcount,
+    };
+}
+    
 sub connectDB {
     my $self = shift;
     my $database = shift;

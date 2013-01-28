@@ -112,9 +112,24 @@ __PACKAGE__->belongs_to(
   },
 );
 
+=head2 updatelogs
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-16 16:01:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jx3aBMCEmW5ersgiFnSFlg
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Updatelog>
+
+=cut
+
+__PACKAGE__->has_many(
+  "updatelogs",
+  "OpenBib::Schema::System::Result::Updatelog",
+  { "foreign.serverid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-28 16:56:17
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6KQdJqo+cSVAM5t0MTtI6g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

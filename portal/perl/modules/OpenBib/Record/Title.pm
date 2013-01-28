@@ -427,60 +427,48 @@ sub enrich_content {
                 {
                     columns => ['workid'],
                     group_by => ['workid'],
+                }
+            );
+            
+            my $similar_isbns = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
+                {
+                    isbn      => { '!=' => \@isbn_refs },
+                    workid    => { -in => $works->as_query },
+                },
+                {
+                    columns => ['isbn'],
+                    group_by => ['isbn'],
+                }
+            );
+
+            my $where_ref = {
+                isbn    => { -in => $similar_isbns->as_query },
+            };
+            
+            if (@filter_databases){
+                $where_ref = {
+                    isbn    => { -in => $similar_isbns->as_query },                            
+                    dbname => \@filter_databases,
+                };
+            }
+            
+            my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+                $where_ref,
+                {
+                    group_by => ['dbname','isbn','tstamp','titleid'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
-            $logger->debug("Found ".($works->count)." works");
-            
-            foreach my $workitem ($works->all) {
-                my $workid         = $workitem->{workid};
+            foreach my $titleitem ($titles->all) {
+                my $id         = $titleitem->{titleid};
+                my $database   = $titleitem->{dbname};
                 
-                $logger->debug("Workid: $workid");
+                $logger->debug("Found Title with id $id in database $database");
                 
-                my $isbns = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
-                    {
-                        isbn      => { '!=' => \@isbn_refs },
-                        workid    => $workid,
-                    },
-                    {
-                        columns => ['isbn'],
-                        group_by => ['isbn'],
-                        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                    }
-                );
-
-                foreach my $isbnitem ($isbns->all) {
-                    $logger->debug("Found ISBN $isbnitem->{isbn} for workid $workid");
-
-                    my $where_ref = {
-                        isbn    => $isbnitem->{isbn},
-                    };
-
-                    if (@filter_databases){
-                        $where_ref = {
-                            isbn    => $isbnitem->{isbn},
-                            dbname => \@filter_databases,
-                        };
-                    }
-                    
-                    my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
-                        $where_ref,
-                        {
-                            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                        }
-                    );
-                    
-                    foreach my $titleitem ($titles->all) {
-                        my $id         = $titleitem->{titleid};
-                        my $database   = $titleitem->{dbname};
-                        
-                        $logger->debug("Found Title with id $id in database $database");
-                        
-                        $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
-                    }
-                }
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
             }
+
             $similar_recordlist->load_brief_records;
             
             $self->set_similar_records($similar_recordlist);
@@ -494,77 +482,83 @@ sub enrich_content {
         
         # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
         {
+            my $ctime;
+            my $dtime;
+            if ($config->{benchmark}) {
+                $ctime=new Benchmark;
+            }
+
             my $related_recordlist = $self->get_related_records;
             
             $logger->debug("Related records via backend ".YAML::Dump($related_recordlist));
             
             my $titles_found_ref = {}; # Ein Titel kann ueber verschiedenen ISBNs erreicht werden. Das laesst sich nicht trivial via SQL loesen, daher haendisch                    
             
-            my $related_titles = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
+            my $related_ids = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
                 {
                     isbn    => \@isbn_refs,
                 },
                 {
                     columns => ['id'],
                     group_by => ['id'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
-            $logger->debug("Found ".($related_titles->count)." related titles");
+            $logger->debug("Found ".($related_ids->count)." related isbns");
             
-            foreach my $item ($related_titles->all) {
-                my $id         = $item->{id};
-                
-                my $isbns = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
-                    {
-                        isbn      => { '!=' => \@isbn_refs },
-                        id    => $id,
-                    },
-                    {
-                        rows => 1,
-                        columns => ['isbn'],
-                        group_by => ['isbn'],
-                        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                    }
-                );
-                
-                $logger->debug("Found ".($isbns->count)." isbns");
-                
-                foreach my $isbnitem ($isbns->all) {
-                    my $where_ref = {
-                        isbn    => $isbnitem->{isbn},
-                    };
-                    
-                    if (@filter_databases){
-                        $where_ref = {
-                            isbn    => $isbnitem->{isbn},
-                            dbname => \@filter_databases,
-                        };
-                    }
-
-                    my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
-                        $where_ref,
-                        {
-                            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                            rows => 1,
-                        }
-                    );
-                    
-                    foreach my $titleitem ($titles->all) {
-                        my $id         = $titleitem->{titleid};
-                        my $database   = $titleitem->{dbname};
-                        
-                        next if (defined $titles_found_ref->{"$database:$id"});
-                        $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
-                        $titles_found_ref->{"$database:$id"} = 1;
-                    }
+            my $related_isbns = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
+                {
+                    isbn      => { '!=' => \@isbn_refs },
+                    id    => { -in => $related_ids->as_query },
+                },
+                {
+                    columns => ['isbn'],
+                    group_by => ['isbn'],
                 }
+            );
+            
+            $logger->debug("Found ".($related_isbns->count)." isbns");
+            
+            my $where_ref = {
+                isbn    => { -in => $related_isbns->as_query },
+            };
+            
+            if (@filter_databases){
+                $where_ref = {
+                    isbn    => { -in => $related_isbns->as_query },
+                    dbname => \@filter_databases,
+                };
             }
+            
+            my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+                $where_ref,
+                {
+                    group_by => ['dbname','isbn','tstamp','titleid'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                    rows => 20,
+                }
+            );
+            
+            foreach my $titleitem ($titles->all) {
+                my $id         = $titleitem->{titleid};
+                my $database   = $titleitem->{dbname};
+                
+                next if (defined $titles_found_ref->{"$database:$id"});
+                $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                $titles_found_ref->{"$database:$id"} = 1;
+            }
+
+            if ($config->{benchmark}) {
+                $dtime=new Benchmark;
+                $timeall=timediff($dtime,$ctime);
+                $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen related_recordlist ist ".timestr($timeall));
+            }
+
             $related_recordlist->load_brief_records;
             $related_recordlist->sort({order => 'up', type => 'title'});
             
             $self->set_related_records($related_recordlist);
+            
         }
     }
     elsif ($bibkey){

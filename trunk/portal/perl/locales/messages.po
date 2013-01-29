@@ -23,12 +23,12 @@ msgstr ""
 msgid "${category}"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titles_record_html_categories:230 ../templates/_database/bibsonomy/titles_record_html_categories:258 ../templates/_database/dbis/titles_record_html_categories:229 ../templates/_database/dbis/titles_record_html_categories:260 ../templates/_database/ezb/titles_record_html_categories:204 ../templates/_database/ezb/titles_record_html_categories:235 ../templates/_database/gutenberg/titles_record_html_categories:255 ../templates/_database/gutenberg/titles_record_html_categories:286 ../templates/_database/inst001/titles_record_html_categories:319 ../templates/_database/inst001/titles_record_html_categories:350 ../templates/_database/openlibrary/persons_record_html:100 ../templates/_database/openlibrary/titles_record_html_categories:205 ../templates/_database/openlibrary/titles_record_html_categories:255 ../templates/_database/wikisource_de/persons_record_html:112 ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:230 ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:261 ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:71 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:69 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:71 ../templates/_profile/kug/home_html_bottom_left:70 ../templates/_profile/kug/titles_record_html_categories:257 ../templates/_profile/kug/titles_record_html_categories:288 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:38 ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:220 ../templates/_profile/sammlungen/_view/richter/classifications_record_html:97 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:96 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:21 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:221 ../templates/_profile/sammlungen/_view/richter/persons_record_html:110 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:98 ../templates/_profile/sammlungen/_view/richter/titles_fields_html:61 ../templates/_profile/usb/libraries_include:62 ../templates/_profile/usb/resource_title_html_categories:237 ../templates/_profile/usb/titles_record_html_categories:240 ../templates/_view/richter/cartitems_html_as_text:38 ../templates/_view/richter/cartitems_html_full:220 ../templates/_view/richter/classifications_record_html:97 ../templates/_view/richter/corporatebodies_record_html:96 ../templates/_view/richter/litlists_record_html_as_text:21 ../templates/_view/richter/litlists_record_html_full:221 ../templates/_view/richter/persons_record_html:110 ../templates/_view/richter/subjects_record_html:98 ../templates/admin_locations_record_edit:112 ../templates/admin_locations_record_edit:123 ../templates/admin_locations_record_html:110 ../templates/admin_locations_record_html:118 ../templates/bibfuehrer_tex:480 ../templates/bibfuehrer_tex:481 ../templates/bibfuehrer_tex:632 ../templates/bibfuehrer_tex:633 ../templates/cartitems_html_as_text:38 ../templates/cartitems_html_full:220 ../templates/classifications_record_html:99 ../templates/corporatebodies_record_html:97 ../templates/libraries_html:101 ../templates/libraries_include:59 ../templates/litlists_record_html_as_text:21 ../templates/litlists_record_html_full:221 ../templates/locations_record_html:110 ../templates/locations_record_mobile:101 ../templates/persons_record_html:110 ../templates/persons_record_include:53 ../templates/searchforms_record_bottom_left:67 ../templates/subjects_record_html:100 ../templates/titles_fields_html:58 ../templates/titles_form:69 ../templates/titles_form:78 ../templates/titles_record_html_categories:225 ../templates/titles_record_html_categories:256 ../templates/titles_record_mobile_categories:237 ../templates/titles_record_mobile_categories:268
+#: ../templates/_database/bibsonomy/titles_record_html_categories:230 ../templates/_database/bibsonomy/titles_record_html_categories:258 ../templates/_database/dbis/titles_record_html_categories:229 ../templates/_database/dbis/titles_record_html_categories:260 ../templates/_database/ezb/titles_record_html_categories:204 ../templates/_database/ezb/titles_record_html_categories:235 ../templates/_database/gutenberg/titles_record_html_categories:255 ../templates/_database/gutenberg/titles_record_html_categories:286 ../templates/_database/inst001/titles_record_html_categories:319 ../templates/_database/inst001/titles_record_html_categories:350 ../templates/_database/openlibrary/persons_record_html:100 ../templates/_database/openlibrary/titles_record_html_categories:205 ../templates/_database/openlibrary/titles_record_html_categories:255 ../templates/_database/wikisource_de/persons_record_html:112 ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:72 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:70 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:72 ../templates/_profile/kug/home_html_bottom_left:71 ../templates/_profile/kug/titles_record_html_categories:269 ../templates/_profile/kug/titles_record_html_categories:300 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:38 ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:220 ../templates/_profile/sammlungen/_view/richter/classifications_record_html:97 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:96 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:21 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:221 ../templates/_profile/sammlungen/_view/richter/persons_record_html:110 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:98 ../templates/_profile/sammlungen/_view/richter/titles_fields_html:61 ../templates/_profile/usb/libraries_include:62 ../templates/_profile/usb/resource_title_html_categories:237 ../templates/_profile/usb/titles_record_html_categories:240 ../templates/_view/richter/cartitems_html_as_text:38 ../templates/_view/richter/cartitems_html_full:220 ../templates/_view/richter/classifications_record_html:97 ../templates/_view/richter/corporatebodies_record_html:96 ../templates/_view/richter/litlists_record_html_as_text:21 ../templates/_view/richter/litlists_record_html_full:221 ../templates/_view/richter/persons_record_html:110 ../templates/_view/richter/subjects_record_html:98 ../templates/admin_locations_record_edit:112 ../templates/admin_locations_record_edit:123 ../templates/admin_locations_record_html:110 ../templates/admin_locations_record_html:118 ../templates/bibfuehrer_tex:480 ../templates/bibfuehrer_tex:481 ../templates/bibfuehrer_tex:632 ../templates/bibfuehrer_tex:633 ../templates/cartitems_html_as_text:38 ../templates/cartitems_html_full:220 ../templates/classifications_record_html:99 ../templates/corporatebodies_record_html:97 ../templates/libraries_html:101 ../templates/libraries_include:59 ../templates/litlists_record_html_as_text:21 ../templates/litlists_record_html_full:221 ../templates/locations_record_html:110 ../templates/locations_record_mobile:101 ../templates/persons_record_html:110 ../templates/persons_record_include:53 ../templates/searchforms_record_bottom_left:67 ../templates/subjects_record_html:100 ../templates/titles_fields_html:58 ../templates/titles_form:69 ../templates/titles_form:78 ../templates/titles_record_html_categories:225 ../templates/titles_record_html_categories:256 ../templates/titles_record_mobile_categories:237 ../templates/titles_record_mobile_categories:268
 msgid "${thiscategory}"
 msgstr ""
 
 #. (item.votes.positive,item.votes.all)
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:794 ../templates/titles_record_html:375 ../templates/titles_record_include:242
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:794 ../templates/titles_record_html:341 ../templates/titles_record_include:242
 msgid ""
 "%1\n"
 "von %2 Nutzer fanden die folgende Rezension hilfreich:"
@@ -56,7 +56,7 @@ msgid "%1 Titel in %2 Gruppen, %3 Literaturlisten"
 msgstr ""
 
 #. (itemcount)
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:129 ../templates/_profile/sammlungen/_view/richter/titles_record_html:284 ../templates/_profile/sammlungen/_view/richter/titles_record_html:308 ../templates/_view/richter/cartitems_html_actions:129 ../templates/cartitems_html_actions:135 ../templates/titles_record_html_actions:140 ../templates/titles_record_html_actions:164 ../templates/titles_record_include:463 ../templates/titles_record_include:491 ../templates/titles_record_include:537 ../templates/titles_record_include:565
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:129 ../templates/_profile/sammlungen/_view/richter/titles_record_html:284 ../templates/_profile/sammlungen/_view/richter/titles_record_html:308 ../templates/_view/richter/cartitems_html_actions:129 ../templates/cartitems_html_actions:144 ../templates/titles_record_html_actions:152 ../templates/titles_record_html_actions:202 ../templates/titles_record_include:463 ../templates/titles_record_include:491 ../templates/titles_record_include:537 ../templates/titles_record_include:565
 msgid ""
 "%1 Titel sind\n"
 "verkn&uuml;pft mit dem Tag"
@@ -113,7 +113,7 @@ msgstr ""
 msgid "&ntilde; <i>suchen mit:</i> n"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:62 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:95 ../templates/_profile/sammlungen/_view/richter/titles_record_html:222 ../templates/_profile/sammlungen/_view/richter/titles_record_html:258 ../templates/_profile/sammlungen/_view/richter/titles_record_html:322 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:73 ../templates/_view/richter/cartitems_html_actions:62 ../templates/_view/richter/cartitems_html_actions:95 ../templates/_view/richter/users_litlists_record_edit:73 ../templates/cartitems_html_actions:101 ../templates/cartitems_html_actions:68 ../templates/litlists_record_include:72 ../templates/titles_record_html_actions:111 ../templates/titles_record_html_actions:188 ../templates/titles_record_html_actions:69 ../templates/titles_record_include:408 ../templates/titles_record_include:437 ../templates/titles_record_include:509 ../templates/users_litlists_html:103 ../templates/users_litlists_html:68 ../templates/users_litlists_record_edit:87
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:62 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:95 ../templates/_profile/sammlungen/_view/richter/titles_record_html:222 ../templates/_profile/sammlungen/_view/richter/titles_record_html:258 ../templates/_profile/sammlungen/_view/richter/titles_record_html:322 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:73 ../templates/_view/richter/cartitems_html_actions:62 ../templates/_view/richter/cartitems_html_actions:95 ../templates/_view/richter/users_litlists_record_edit:73 ../templates/cartitems_html_actions:107 ../templates/cartitems_html_actions:70 ../templates/litlists_record_include:72 ../templates/titles_record_html_actions:123 ../templates/titles_record_html_actions:226 ../templates/titles_record_html_actions:69 ../templates/titles_record_include:408 ../templates/titles_record_include:437 ../templates/titles_record_include:509 ../templates/users_litlists_html:103 ../templates/users_litlists_html:68 ../templates/users_litlists_record_edit:87
 msgid "&ouml;ffentlich"
 msgstr ""
 
@@ -146,7 +146,7 @@ msgstr ""
 msgid "<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: "
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:83 ../templates/_view/richter/cartitems_html_actions:83 ../templates/cartitems_html_actions:89
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:83 ../templates/_view/richter/cartitems_html_actions:83 ../templates/cartitems_html_actions:94
 msgid "<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:"
 msgstr ""
 
@@ -283,7 +283,7 @@ msgstr ""
 msgid "Abgleich zu BibSonomy"
 msgstr ""
 
-#: ../templates/_profile/kug/corporate_banner:15 ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:7 ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner:7 ../templates/_profile/sammlungen/_view/richter/corporate_banner:7 ../templates/_view/richter/corporate_banner:6 ../templates/corporate_banner:9
+#: ../templates/_profile/kug/corporate_banner:18 ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:7 ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner:7 ../templates/_profile/sammlungen/_view/richter/corporate_banner:7 ../templates/_view/richter/corporate_banner:6 ../templates/corporate_banner:9
 msgid "Abmelden"
 msgstr ""
 
@@ -327,7 +327,7 @@ msgstr ""
 msgid "Aktuelle Recherche"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:14 ../templates/newsflash:15
+#: ../templates/_profile/kug/_view/kug/newsflash:14 ../templates/newsflash:15
 msgid "Aktuelles"
 msgstr ""
 
@@ -351,7 +351,7 @@ msgstr ""
 msgid "Alle Formate"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/search_radius:20 ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:26 ../templates/_profile/kug/_view/inst132/search_radius:20 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:26 ../templates/_profile/kug/search_radius:21 ../templates/_profile/kug/searchforms_record_profile:28 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:16 ../templates/_profile/rheinlandbib/searchforms_record_simple:161 ../templates/_profile/rheinlandbib/searchforms_record_simple:251 ../templates/_profile/rheinlandbib/searchforms_record_simple:343 ../templates/_profile/rheinlandbib/searchforms_record_simple:436 ../templates/_profile/usb/searchforms_record_query:154 ../templates/searchforms_record_profile:20 ../templates/searchprofiles_session:77 ../templates/users_searchprofiles_record_edit:88 ../templates/users_searchprofiles_record_html:80
+#: ../templates/_profile/kug/_view/engportrom/search_radius:20 ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:26 ../templates/_profile/kug/_view/inst132/search_radius:20 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:26 ../templates/_profile/kug/search_radius:34 ../templates/_profile/kug/searchforms_record_profile:38 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:16 ../templates/_profile/rheinlandbib/searchforms_record_simple:161 ../templates/_profile/rheinlandbib/searchforms_record_simple:251 ../templates/_profile/rheinlandbib/searchforms_record_simple:343 ../templates/_profile/rheinlandbib/searchforms_record_simple:436 ../templates/_profile/usb/searchforms_record_query:154 ../templates/searchforms_record_profile:20 ../templates/searchprofiles_session:77 ../templates/users_searchprofiles_record_edit:88 ../templates/users_searchprofiles_record_html:80
 msgid "Alle Kataloge"
 msgstr ""
 
@@ -399,7 +399,7 @@ msgstr ""
 msgid "Allgemeine Statistikdaten zu OpenBib"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:28 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:28 ../templates/_profile/kug/searchforms_record_profile:30
+#: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:28 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:28 ../templates/_profile/kug/searchforms_record_profile:40
 msgid "Allgemeine Suchprofile"
 msgstr ""
 
@@ -441,7 +441,7 @@ msgstr ""
 msgid "An BibSonomy senden"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:694 ../templates/_profile/usb/titles_record_include:130 ../templates/titles_record_html:276 ../templates/titles_record_include:135 ../templates/titles_record_include:284
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:694 ../templates/_profile/usb/titles_record_include:130 ../templates/titles_record_html:242 ../templates/titles_record_include:135 ../templates/titles_record_include:284
 msgid "Andere Ausgaben"
 msgstr ""
 
@@ -461,11 +461,15 @@ msgstr ""
 msgid "Angelegt"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:52 ../templates/_view/richter/cartitems_html_actions:52 ../templates/cartitems_html_actions:58
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:51
+msgid "Angemeldete Nutzer"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:52 ../templates/_view/richter/cartitems_html_actions:52 ../templates/cartitems_html_actions:60
 msgid "Anlegen einer neuen Literaturliste: "
 msgstr ""
 
-#: ../templates/_profile/kug/corporate_banner:18 ../templates/_profile/kug/login:135 ../templates/_profile/kug/login:39 ../templates/_profile/kug/login:55 ../templates/_profile/kug/login:94 ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:9 ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner:9 ../templates/_profile/sammlungen/_view/richter/corporate_banner:9 ../templates/_profile/sammlungen/_view/richter/login:39 ../templates/_view/richter/corporate_banner:8 ../templates/_view/richter/login:39 ../templates/corporate_banner:12 ../templates/login:39 ../templates/login:70 ../templates/users_passwords:39
+#: ../templates/_profile/kug/corporate_banner:21 ../templates/_profile/kug/login:135 ../templates/_profile/kug/login:39 ../templates/_profile/kug/login:55 ../templates/_profile/kug/login:94 ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:9 ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner:9 ../templates/_profile/sammlungen/_view/richter/corporate_banner:9 ../templates/_profile/sammlungen/_view/richter/login:39 ../templates/_view/richter/corporate_banner:8 ../templates/_view/richter/login:39 ../templates/corporate_banner:12 ../templates/login:39 ../templates/login:70 ../templates/users_passwords:39
 msgid "Anmelden"
 msgstr ""
 
@@ -704,7 +708,7 @@ msgid ""
 "dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:774 ../templates/titles_record_html:355 ../templates/titles_record_include:220
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:774 ../templates/titles_record_html:321 ../templates/titles_record_include:220
 msgid "Aufnehmen"
 msgstr ""
 
@@ -768,7 +772,7 @@ msgstr ""
 msgid "Ausleih-Einstellungen"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_simple:62 ../templates/_profile/sammlungen/_view/richter/titles_record_html:681 ../templates/_profile/usb/titles_record_include:70 ../templates/_view/richter/cartitems_html_simple:62 ../templates/cartitems_html_simple:59 ../templates/titles_record_html:263 ../templates/titles_record_include:122 ../templates/titles_record_include:144
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_simple:62 ../templates/_profile/sammlungen/_view/richter/titles_record_html:681 ../templates/_profile/usb/titles_record_include:70 ../templates/_view/richter/cartitems_html_simple:62 ../templates/cartitems_html_simple:59 ../templates/titles_record_html:229 ../templates/titles_record_include:122 ../templates/titles_record_include:144
 msgid "Ausleihe/Exemplare"
 msgstr ""
 
@@ -838,7 +842,7 @@ msgstr ""
 msgid "Beginnen Sie eine neue Recherche"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titles_record_html_categories:25 ../templates/_database/dbis/titles_record_html_categories:25 ../templates/_database/ezb/titles_record_html_categories:25 ../templates/_database/gutenberg/titles_record_html_categories:28 ../templates/_database/inst001/titles_record_html_categories:106 ../templates/_database/openlibrary/titles_record_html_categories:25 ../templates/_database/wikisource_de/persons_record_html:131 ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:25 ../templates/_profile/kug/titles_record_html_categories:24 ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:68 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:105 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:36 ../templates/_profile/sammlungen/_view/richter/persons_record_html:129 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:118 ../templates/_profile/usb/resource_title_html_categories:20 ../templates/_profile/usb/titles_record_html_categories:20 ../templates/_view/richter/cartitems_html_full:68 ../templates/_view/richter/corporatebodies_record_html:105 ../templates/_view/richter/litlists_record_html_full:36 ../templates/_view/richter/persons_record_html:129 ../templates/_view/richter/subjects_record_html:118 ../templates/cartitems_html_full:68 ../templates/litlists_record_html_full:36 ../templates/persons_record_include:67 ../templates/titles_record_html_categories:25 ../templates/titles_record_mobile_categories:24
+#: ../templates/_database/bibsonomy/titles_record_html_categories:25 ../templates/_database/dbis/titles_record_html_categories:25 ../templates/_database/ezb/titles_record_html_categories:25 ../templates/_database/gutenberg/titles_record_html_categories:28 ../templates/_database/inst001/titles_record_html_categories:106 ../templates/_database/openlibrary/titles_record_html_categories:25 ../templates/_database/wikisource_de/persons_record_html:131 ../templates/_profile/kug/titles_record_html_categories:37 ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:68 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:105 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:36 ../templates/_profile/sammlungen/_view/richter/persons_record_html:129 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:118 ../templates/_profile/usb/resource_title_html_categories:20 ../templates/_profile/usb/titles_record_html_categories:20 ../templates/_view/richter/cartitems_html_full:68 ../templates/_view/richter/corporatebodies_record_html:105 ../templates/_view/richter/litlists_record_html_full:36 ../templates/_view/richter/persons_record_html:129 ../templates/_view/richter/subjects_record_html:118 ../templates/cartitems_html_full:68 ../templates/litlists_record_html_full:36 ../templates/persons_record_include:67 ../templates/titles_record_html_categories:25 ../templates/titles_record_mobile_categories:24
 msgid "Begriff in allen Katalogen suchen"
 msgstr ""
 
@@ -933,7 +937,7 @@ msgstr ""
 msgid "Benutzer"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:13 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:13 ../templates/_profile/kug/searchforms_record_profile:13 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:10 ../templates/_profile/rheinlandbib/searchforms_record_simple:155 ../templates/_profile/rheinlandbib/searchforms_record_simple:245 ../templates/_profile/rheinlandbib/searchforms_record_simple:337 ../templates/_profile/rheinlandbib/searchforms_record_simple:430 ../templates/_profile/usb/searchforms_record_query:148 ../templates/searchforms_record_profile:12
+#: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:13 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:13 ../templates/_profile/kug/searchforms_record_profile:23 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:10 ../templates/_profile/rheinlandbib/searchforms_record_simple:155 ../templates/_profile/rheinlandbib/searchforms_record_simple:245 ../templates/_profile/rheinlandbib/searchforms_record_simple:337 ../templates/_profile/rheinlandbib/searchforms_record_simple:430 ../templates/_profile/usb/searchforms_record_query:148 ../templates/searchforms_record_profile:12
 msgid "Benutzerdefiniert"
 msgstr ""
 
@@ -997,11 +1001,11 @@ msgstr ""
 msgid "Bereits existierende Views"
 msgstr ""
 
-#: ../templates/admin_authenticators_html:119 ../templates/admin_authenticators_html:87 ../templates/admin_authenticators_record_edit:87 ../templates/admin_authenticators_record_html:67 ../templates/admin_clusters_html:107 ../templates/admin_clusters_html:66 ../templates/admin_clusters_record_edit:72 ../templates/admin_databases_html:124 ../templates/admin_databases_html:74 ../templates/admin_databases_record_edit:72 ../templates/admin_databases_record_html:49 ../templates/admin_locations_html:105 ../templates/admin_locations_html:74 ../templates/admin_locations_record_edit:74 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:76 ../templates/admin_orgunits_record_html:67 ../templates/admin_profiles_html:100 ../templates/admin_profiles_html:73 ../templates/admin_profiles_record_edit:107 ../templates/admin_profiles_record_edit:124 ../templates/admin_profiles_record_edit:72 ../templates/admin_profiles_record_html:63 ../templates/admin_profiles_record_html:79 ../templates/admin_servers_html:123 ../templates/admin_servers_html:71 ../templates/admin_servers_record_edit:77 ../templates/admin_topics_html:74 ../templates/admin_topics_html:99 ../templates/admin_topics_mappings_html:79 ../templates/admin_topics_mappings_record_html:77 ../templates/admin_topics_record_edit:87 ../templates/admin_views_html:117 ../templates/admin_views_html:73 ../templates/admin_views_record_edit:72 ../templates/admin_views_rss_record_html:52 ../templates/authenticators_html:62 ../templates/authenticators_record_html:61 ../templates/clusters_html:62 ../templates/clusters_record_html:61 ../templates/databases_html:84 ../templates/databases_record_html:61 ../templates/locations_html:102 ../templates/orgunits_html:66 ../templates/orgunits_record_html:67 ../templates/profiles_html:62 ../templates/profiles_record_html:65 ../templates/profiles_record_html:75 ../templates/servers_html:64 ../templates/servers_record_html:62 ../templates/topics_html:63 ../templates/topics_mappings_html:77 ../templates/topics_mappings_record_html:76 ../templates/topics_record_html:108 ../templates/topics_record_html:129 ../templates/topics_record_html:80 ../templates/topics_record_html:89 ../templates/topics_record_mapping_html:83 ../templates/views_html:61 ../templates/views_record_html:62
+#: ../templates/admin_authenticators_html:119 ../templates/admin_authenticators_html:87 ../templates/admin_authenticators_record_edit:87 ../templates/admin_authenticators_record_html:67 ../templates/admin_clusters_html:107 ../templates/admin_clusters_html:66 ../templates/admin_clusters_record_edit:72 ../templates/admin_databases_html:124 ../templates/admin_databases_html:74 ../templates/admin_databases_record_edit:72 ../templates/admin_databases_record_html:49 ../templates/admin_locations_html:105 ../templates/admin_locations_html:74 ../templates/admin_locations_record_edit:74 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:76 ../templates/admin_orgunits_record_html:67 ../templates/admin_profiles_html:100 ../templates/admin_profiles_html:73 ../templates/admin_profiles_record_edit:107 ../templates/admin_profiles_record_edit:124 ../templates/admin_profiles_record_edit:72 ../templates/admin_profiles_record_html:63 ../templates/admin_profiles_record_html:79 ../templates/admin_servers_html:123 ../templates/admin_servers_html:71 ../templates/admin_servers_record_edit:77 ../templates/admin_topics_html:74 ../templates/admin_topics_html:99 ../templates/admin_topics_mappings_html:79 ../templates/admin_topics_mappings_record_html:77 ../templates/admin_topics_record_edit:87 ../templates/admin_views_html:117 ../templates/admin_views_html:73 ../templates/admin_views_record_edit:72 ../templates/admin_views_rss_record_html:52 ../templates/authenticators_html:62 ../templates/authenticators_record_html:61 ../templates/clusters_html:62 ../templates/clusters_record_html:61 ../templates/databases_html:92 ../templates/databases_record_html:61 ../templates/locations_html:102 ../templates/orgunits_html:66 ../templates/orgunits_record_html:67 ../templates/profiles_html:62 ../templates/profiles_record_html:65 ../templates/profiles_record_html:75 ../templates/servers_html:64 ../templates/servers_record_html:62 ../templates/topics_html:63 ../templates/topics_mappings_html:77 ../templates/topics_mappings_record_html:76 ../templates/topics_record_html:108 ../templates/topics_record_html:129 ../templates/topics_record_html:80 ../templates/topics_record_html:89 ../templates/topics_record_mapping_html:83 ../templates/views_html:61 ../templates/views_record_html:62
 msgid "Beschreibung"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titles_record_html_categories:263 ../templates/_database/dbis/titles_record_html_categories:265 ../templates/_database/ezb/titles_record_html_categories:240 ../templates/_database/gutenberg/titles_record_html_categories:291 ../templates/_database/inst001/circulation:123 ../templates/_database/inst001/holding:17 ../templates/_database/inst001/titles_record_html_categories:355 ../templates/_database/openlibrary/titles_record_html_categories:260 ../templates/_profile/kug/_database/inst302/circulation:83 ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:266 ../templates/_profile/kug/titles_record_html_categories:293 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:43 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:26 ../templates/_profile/usb/circulation:106 ../templates/_profile/usb/circulation:31 ../templates/_profile/usb/holding:19 ../templates/_view/richter/cartitems_html_as_text:43 ../templates/_view/richter/litlists_record_html_as_text:26 ../templates/cartitems_html_as_text:43 ../templates/circulation:77 ../templates/circulation_mobile:76 ../templates/litlists_record_html_as_text:26 ../templates/titles_record_html_categories:261 ../templates/titles_record_mobile_categories:273
+#: ../templates/_database/bibsonomy/titles_record_html_categories:263 ../templates/_database/dbis/titles_record_html_categories:265 ../templates/_database/ezb/titles_record_html_categories:240 ../templates/_database/gutenberg/titles_record_html_categories:291 ../templates/_database/inst001/circulation:123 ../templates/_database/inst001/holding:17 ../templates/_database/inst001/titles_record_html_categories:355 ../templates/_database/openlibrary/titles_record_html_categories:260 ../templates/_profile/kug/_database/inst302/circulation:83 ../templates/_profile/kug/titles_record_html_categories:305 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:43 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:26 ../templates/_profile/usb/circulation:106 ../templates/_profile/usb/circulation:31 ../templates/_profile/usb/holding:19 ../templates/_view/richter/cartitems_html_as_text:43 ../templates/_view/richter/litlists_record_html_as_text:26 ../templates/cartitems_html_as_text:43 ../templates/circulation:77 ../templates/circulation_mobile:76 ../templates/litlists_record_html_as_text:26 ../templates/titles_record_html_categories:261 ../templates/titles_record_mobile_categories:273
 msgid "Besitzende Bibliothek"
 msgstr ""
 
@@ -1013,7 +1017,7 @@ msgstr ""
 msgid "Bestaetigen Sie Ihre Registrierung"
 msgstr ""
 
-#: ../templates/_database/inst001/holding:17 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/sammlungen/_view/richter/cartitems_html_simple:70 ../templates/_profile/sammlungen/_view/richter/titles_record_html:684 ../templates/_profile/usb/holding:19 ../templates/_profile/usb/titles_record_include:77 ../templates/_view/richter/cartitems_html_simple:70 ../templates/cartitems_html_simple:67 ../templates/holding:17 ../templates/holding_mobile:17 ../templates/titles_record_html:266 ../templates/titles_record_include:125 ../templates/titles_record_include:151
+#: ../templates/_database/inst001/holding:17 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/sammlungen/_view/richter/cartitems_html_simple:70 ../templates/_profile/sammlungen/_view/richter/titles_record_html:684 ../templates/_profile/usb/holding:19 ../templates/_profile/usb/titles_record_include:77 ../templates/_view/richter/cartitems_html_simple:70 ../templates/cartitems_html_simple:67 ../templates/holding:17 ../templates/holding_mobile:17 ../templates/titles_record_html:232 ../templates/titles_record_include:125 ../templates/titles_record_include:151
 msgid "Bestand"
 msgstr ""
 
@@ -1045,15 +1049,15 @@ msgstr ""
 msgid "Betreff"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:754 ../templates/reviews_edit:216 ../templates/reviews_record_html:69 ../templates/titles_record_html:335 ../templates/titles_record_include:200
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:754 ../templates/reviews_edit:216 ../templates/reviews_record_html:69 ../templates/titles_record_html:301 ../templates/titles_record_include:200
 msgid "Bewertung"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:697 ../templates/titles_record_html:279 ../templates/titles_record_include:138 ../templates/titles_record_include:178
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:697 ../templates/titles_record_html:245 ../templates/titles_record_include:138 ../templates/titles_record_include:178
 msgid "Bewertungen/Rezensionen"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:788 ../templates/titles_record_html:369 ../templates/titles_record_include:236
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:788 ../templates/titles_record_html:335 ../templates/titles_record_include:236
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr ""
 
@@ -1061,7 +1065,7 @@ msgstr ""
 msgid "BibSonomy"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:466 ../templates/titles_record_html_actions:348 ../templates/titles_record_include:673
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:466 ../templates/titles_record_html_actions:387 ../templates/titles_record_include:673
 msgid "BibSonomy Tags"
 msgstr ""
 
@@ -1109,7 +1113,7 @@ msgstr ""
 msgid "Bisher haben Sie noch keine Rezensionen geschrieben oder Bewertungen vergeben."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:134 ../templates/_profile/sammlungen/_view/richter/titles_record_html:289 ../templates/_view/richter/cartitems_html_actions:134 ../templates/cartitems_html_actions:140 ../templates/titles_record_html_actions:145 ../templates/titles_record_include:468 ../templates/titles_record_include:542 ../templates/users_tags_edit:91 ../templates/users_tags_names_html:113
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:134 ../templates/_profile/sammlungen/_view/richter/titles_record_html:289 ../templates/_view/richter/cartitems_html_actions:134 ../templates/cartitems_html_actions:149 ../templates/titles_record_html_actions:157 ../templates/titles_record_include:468 ../templates/titles_record_include:542 ../templates/users_tags_edit:91 ../templates/users_tags_names_html:113
 msgid "Bisher haben Sie noch keine Tags vergeben."
 msgstr ""
 
@@ -1375,7 +1379,7 @@ msgstr ""
 msgid "Deutsch"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:240 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:241 ../templates/_profile/sammlungen/_view/richter/titles_record_html:652 ../templates/_profile/usb/titles_record_include:48 ../templates/_view/richter/cartitems_html_full:240 ../templates/_view/richter/litlists_record_html_full:241 ../templates/cartitems_html_full:240 ../templates/litlists_record_html_full:241 ../templates/titles_record_html:229 ../templates/titles_record_include:95
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:240 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:241 ../templates/_profile/sammlungen/_view/richter/titles_record_html:652 ../templates/_profile/usb/titles_record_include:48 ../templates/_view/richter/cartitems_html_full:240 ../templates/_view/richter/litlists_record_html_full:241 ../templates/cartitems_html_full:240 ../templates/litlists_record_html_full:241 ../templates/titles_record_html:195 ../templates/titles_record_include:95
 msgid "Deutsche Wikipedia"
 msgstr ""
 
@@ -1441,7 +1445,7 @@ msgstr ""
 msgid "Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Classifications.pm:132 ../modules/OpenBib/Handler/Apache/CorporateBodies.pm:126 ../modules/OpenBib/Handler/Apache/Persons.pm:126 ../modules/OpenBib/Handler/Apache/Subjects.pm:128 ../modules/OpenBib/Handler/Apache/Titles.pm:322 ../modules/OpenBib/Handler/Apache/Users/Titles.pm:389
+#: ../modules/OpenBib/Handler/Apache/Classifications.pm:132 ../modules/OpenBib/Handler/Apache/CorporateBodies.pm:126 ../modules/OpenBib/Handler/Apache/Persons.pm:126 ../modules/OpenBib/Handler/Apache/Subjects.pm:128 ../modules/OpenBib/Handler/Apache/Titles.pm:362 ../modules/OpenBib/Handler/Apache/Users/Titles.pm:418
 msgid "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 msgstr ""
 
@@ -1550,7 +1554,7 @@ msgstr ""
 msgid "Diese Session existiert nicht."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:546 ../templates/titles_record_html_actions:428 ../templates/titles_record_include:753
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:546 ../templates/titles_record_html_actions:467 ../templates/titles_record_include:753
 msgid "Diese Titel interessierten Sie bereits:"
 msgstr ""
 
@@ -1594,7 +1598,7 @@ msgstr ""
 msgid "Dieser Nutzer ist nicht registriert."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:237 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:238 ../templates/_profile/sammlungen/_view/richter/titles_record_html:649 ../templates/_profile/usb/titles_record_include:45 ../templates/_view/richter/cartitems_html_full:237 ../templates/_view/richter/litlists_record_html_full:238 ../templates/cartitems_html_full:237 ../templates/litlists_record_html_full:238 ../templates/titles_record_html:225 ../templates/titles_record_include:91
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:237 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:238 ../templates/_profile/sammlungen/_view/richter/titles_record_html:649 ../templates/_profile/usb/titles_record_include:45 ../templates/_view/richter/cartitems_html_full:237 ../templates/_view/richter/litlists_record_html_full:238 ../templates/cartitems_html_full:237 ../templates/litlists_record_html_full:238 ../templates/titles_record_html:191 ../templates/titles_record_include:91
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr ""
 
@@ -1692,11 +1696,11 @@ msgstr ""
 msgid "Eigene Tags"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:799 ../templates/titles_record_html:380 ../templates/titles_record_include:247
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:799 ../templates/titles_record_html:346 ../templates/titles_record_include:247
 msgid "Eigenen Review bearbeiten"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:800 ../templates/titles_record_html:381 ../templates/titles_record_include:248
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:800 ../templates/titles_record_html:347 ../templates/titles_record_include:248
 msgid "Eigenen Review l&ouml;schen"
 msgstr ""
 
@@ -1770,7 +1774,7 @@ msgstr ""
 msgid "Einfache Suche"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:86 ../templates/_profile/sammlungen/_view/richter/titles_record_html:249 ../templates/_view/richter/cartitems_html_actions:86 ../templates/cartitems_html_actions:92 ../templates/titles_record_html_actions:101 ../templates/titles_record_include:427
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:86 ../templates/_profile/sammlungen/_view/richter/titles_record_html:249 ../templates/_view/richter/cartitems_html_actions:86 ../templates/cartitems_html_actions:97 ../templates/titles_record_html_actions:113 ../templates/titles_record_include:427
 msgid "Eingabe neuer Tags"
 msgstr ""
 
@@ -1853,7 +1857,7 @@ msgid ""
 "die aufgrund ihres Alters nicht infrage kam."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:346 ../templates/titles_record_html_actions:228 ../templates/titles_record_include:591
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:346 ../templates/titles_record_html_actions:266 ../templates/titles_record_include:591
 msgid "Empfehlungen"
 msgstr ""
 
@@ -1865,11 +1869,11 @@ msgstr ""
 msgid "Englisch"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:245 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:246 ../templates/_profile/sammlungen/_view/richter/titles_record_html:657 ../templates/_profile/usb/titles_record_include:53 ../templates/_view/richter/cartitems_html_full:245 ../templates/_view/richter/litlists_record_html_full:246 ../templates/cartitems_html_full:245 ../templates/litlists_record_html_full:246 ../templates/titles_record_html:235 ../templates/titles_record_include:101
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:245 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:246 ../templates/_profile/sammlungen/_view/richter/titles_record_html:657 ../templates/_profile/usb/titles_record_include:53 ../templates/_view/richter/cartitems_html_full:245 ../templates/_view/richter/litlists_record_html_full:246 ../templates/cartitems_html_full:245 ../templates/litlists_record_html_full:246 ../templates/titles_record_html:201 ../templates/titles_record_include:101
 msgid "Englische Wikipedia"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:340 ../templates/titles_record_html_actions:222 ../templates/titles_record_include:585
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:340 ../templates/titles_record_html_actions:260 ../templates/titles_record_include:585
 msgid "Entdecken Sie weitere Titel &uuml;ber:"
 msgstr ""
 
@@ -1924,11 +1928,11 @@ msgstr ""
 msgid "Erscheinungsjahr"
 msgstr ""
 
-#: ../templates/clouds_databases_record_html:71 ../templates/clouds_year_html:51 ../templates/clouds_year_html:70
+#: ../templates/clouds_databases_record_html:70 ../templates/clouds_year_html:51 ../templates/clouds_year_html:70
 msgid "Erscheinungsjahre"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titles_record_html_categories:267 ../templates/_database/dbis/titles_record_html_categories:269 ../templates/_database/ezb/titles_record_html_categories:244 ../templates/_database/gutenberg/titles_record_html_categories:295 ../templates/_database/inst001/titles_record_html_categories:359 ../templates/_database/openlibrary/titles_record_html_categories:264 ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:270 ../templates/_profile/kug/titles_record_html_categories:297 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:47 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:30 ../templates/_view/richter/cartitems_html_as_text:47 ../templates/_view/richter/litlists_record_html_as_text:30 ../templates/cartitems_html_as_text:47 ../templates/litlists_record_html_as_text:30 ../templates/titles_record_html_categories:265 ../templates/titles_record_mobile_categories:277
+#: ../templates/_database/bibsonomy/titles_record_html_categories:267 ../templates/_database/dbis/titles_record_html_categories:269 ../templates/_database/ezb/titles_record_html_categories:244 ../templates/_database/gutenberg/titles_record_html_categories:295 ../templates/_database/inst001/titles_record_html_categories:359 ../templates/_database/openlibrary/titles_record_html_categories:264 ../templates/_profile/kug/titles_record_html_categories:309 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:47 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:30 ../templates/_view/richter/cartitems_html_as_text:47 ../templates/_view/richter/litlists_record_html_as_text:30 ../templates/cartitems_html_as_text:47 ../templates/litlists_record_html_as_text:30 ../templates/titles_record_html_categories:265 ../templates/titles_record_mobile_categories:277
 msgid "Erscheinungsverlauf  "
 msgstr ""
 
@@ -2058,7 +2062,7 @@ msgstr ""
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache.pm:922 ../modules/OpenBib/RecordList/Title.pm:350
+#: ../modules/OpenBib/Handler/Apache.pm:1002 ../modules/OpenBib/RecordList/Title.pm:350
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr ""
 
@@ -2130,7 +2134,7 @@ msgid "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff ein
 msgstr ""
 
 #. ("<a href=\"${path_prefix}/${config.get('info_loc')
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:728 ../templates/_profile/usb/titles_record_include:99 ../templates/titles_record_html:309 ../templates/titles_record_include:173
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:728 ../templates/_profile/usb/titles_record_include:99 ../templates/titles_record_html:275 ../templates/titles_record_include:173
 msgid "F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine %1&Uuml;bersicht%2 an."
 msgstr ""
 
@@ -2230,7 +2234,7 @@ msgstr ""
 msgid "Fragen und Anmerkungen richten Sie bitte an:"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:250 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:251 ../templates/_profile/sammlungen/_view/richter/titles_record_html:662 ../templates/_profile/usb/titles_record_include:58 ../templates/_view/richter/cartitems_html_full:250 ../templates/_view/richter/litlists_record_html_full:251 ../templates/cartitems_html_full:250 ../templates/litlists_record_html_full:251 ../templates/titles_record_html:241 ../templates/titles_record_include:107
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:250 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:251 ../templates/_profile/sammlungen/_view/richter/titles_record_html:662 ../templates/_profile/usb/titles_record_include:58 ../templates/_view/richter/cartitems_html_full:250 ../templates/_view/richter/litlists_record_html_full:251 ../templates/cartitems_html_full:250 ../templates/litlists_record_html_full:251 ../templates/titles_record_html:207 ../templates/titles_record_include:107
 msgid "Franz&ouml;sische Wikipedia"
 msgstr ""
 
@@ -2238,7 +2242,7 @@ msgstr ""
 msgid "Französisch"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:75 ../templates/_profile/kug/searchforms_record_query:75 ../templates/_profile/kug/users_preferences_html:168 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:69 ../templates/_profile/rheinlandbib/searchforms_record_query:69 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:70 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:70 ../templates/_profile/sammlungen/_view/richter/titles_record_html:87 ../templates/_profile/usb/searchforms_record_query:69 ../templates/_view/richter/searchforms_record_query:70 ../templates/admin_statistics_query_html:91 ../templates/search_history:61 ../templates/search_title_start_html:36 ../templates/searchforms_record_query:70 ../templates/titles_record_html:87 ../templates/users_preferences_html:184
+#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:75 ../templates/_profile/kug/searchforms_record_query:75 ../templates/_profile/kug/users_preferences_html:168 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:69 ../templates/_profile/rheinlandbib/searchforms_record_query:69 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:70 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:70 ../templates/_profile/sammlungen/_view/richter/titles_record_html:87 ../templates/_profile/usb/searchforms_record_query:69 ../templates/_view/richter/searchforms_record_query:70 ../templates/admin_statistics_query_html:91 ../templates/search_history:61 ../templates/search_title_start_html:36 ../templates/searchforms_record_query:70 ../templates/titles_record_html:88 ../templates/users_preferences_html:184
 msgid "Freie Suche"
 msgstr ""
 
@@ -2389,11 +2393,11 @@ msgstr ""
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgstr ""
 
-#: ../templates/_profile/kug/corporate_banner:14 ../templates/_profile/kug/corporate_banner:17 ../templates/corporate_banner:11 ../templates/corporate_banner:8 ../templates/info_navigation:2
+#: ../templates/_profile/kug/corporate_banner:17 ../templates/_profile/kug/corporate_banner:20 ../templates/corporate_banner:11 ../templates/corporate_banner:8 ../templates/info_navigation:2
 msgid "Hilfe"
 msgstr ""
 
-#: ../templates/_database/wikisource_de/persons_record_html:137 ../templates/_profile/kug/_database/inst302/circulation:74 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:111 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:477 ../templates/_profile/sammlungen/_view/richter/persons_record_html:135 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:125 ../templates/_profile/sammlungen/_view/richter/users_passwords:47 ../templates/_profile/sammlungen/_view/richter/users_registrations:47 ../templates/_profile/usb/drilldown_categorized:475 ../templates/_view/richter/corporatebodies_record_html:111 ../templates/_view/richter/drilldown_categorized:477 ../templates/_view/richter/persons_record_html:135 ../templates/_view/richter/subjects_record_html:125 ../templates/_view/richter/users_passwords:47 ../templates/_view/richter/users_registrations:47 ../templates/clouds_databases_html:51 ../templates/clouds_databases_record_html:60 ../templates/info_11:47 ../templates/info_15:35 ../templates/info_other_portals:39 ../templates/login_circulation:47 ../templates/persons_record_include:73 ../templates/rssfeeds_html:49 ../templates/search_facet:485 ../templates/users_registrations:47
+#: ../templates/_database/wikisource_de/persons_record_html:137 ../templates/_profile/kug/_database/inst302/circulation:74 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:111 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:477 ../templates/_profile/sammlungen/_view/richter/persons_record_html:135 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:125 ../templates/_profile/sammlungen/_view/richter/users_passwords:47 ../templates/_profile/sammlungen/_view/richter/users_registrations:47 ../templates/_profile/usb/drilldown_categorized:475 ../templates/_view/richter/corporatebodies_record_html:111 ../templates/_view/richter/drilldown_categorized:477 ../templates/_view/richter/persons_record_html:135 ../templates/_view/richter/subjects_record_html:125 ../templates/_view/richter/users_passwords:47 ../templates/_view/richter/users_registrations:47 ../templates/info_11:47 ../templates/info_15:35 ../templates/info_other_portals:39 ../templates/login_circulation:47 ../templates/persons_record_include:73 ../templates/rssfeeds_html:49 ../templates/search_facet:485 ../templates/users_registrations:47
 msgid "Hinweis"
 msgstr ""
 
@@ -2404,7 +2408,7 @@ msgid ""
 "Suchm&ouml;glichkeiten erhalten Sie %1hier%2"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:100 ../templates/_profile/sammlungen/_view/richter/titles_record_html:263 ../templates/_view/richter/cartitems_html_actions:100 ../templates/cartitems_html_actions:106 ../templates/titles_record_html_actions:117 ../templates/titles_record_html_actions:195 ../templates/titles_record_include:437
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:100 ../templates/_profile/sammlungen/_view/richter/titles_record_html:263 ../templates/_view/richter/cartitems_html_actions:100 ../templates/cartitems_html_actions:113 ../templates/titles_record_html_actions:129 ../templates/titles_record_html_actions:233 ../templates/titles_record_include:437
 msgid "Hinzuf&uuml;gen"
 msgstr ""
 
@@ -2604,7 +2608,7 @@ msgstr ""
 msgid "In OpenBib werden derzeit folgende Arten von RSS-Feeds angeboten:"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:691 ../templates/_profile/usb/titles_record_include:104 ../templates/titles_record_html:273 ../templates/titles_record_include:132 ../templates/titles_record_include:269
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:691 ../templates/_profile/usb/titles_record_include:104 ../templates/titles_record_html:239 ../templates/titles_record_include:132 ../templates/titles_record_include:269
 msgid "In anderen Katalogen"
 msgstr ""
 
@@ -2729,7 +2733,7 @@ msgstr ""
 msgid "Informationen zu dieser Bibliothek"
 msgstr ""
 
-#: ../templates/_database/openlibrary/persons_record_html:69 ../templates/_database/wikisource_de/persons_record_html:69 ../templates/_profile/sammlungen/_view/richter/cartitems_html_simple:42 ../templates/_profile/sammlungen/_view/richter/classifications_record_html:67 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:66 ../templates/_profile/sammlungen/_view/richter/persons_record_html:79 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:68 ../templates/_profile/sammlungen/_view/richter/titles_record_html:90 ../templates/_view/richter/cartitems_html_simple:42 ../templates/_view/richter/classifications_record_html:67 ../templates/_view/richter/corporatebodies_record_html:66 ../templates/_view/richter/persons_record_html:79 ../templates/_view/richter/subjects_record_html:68 ../templates/admin_sessions_active_record_html:83 ../templates/admin_sessions_archived_record_html:67 ../templates/cartitems_html_simple:39 ../templates/classifications_record_html:69 ../templates/corporatebodies_record_html:67 ../templates/persons_record_html:79 ../templates/persons_record_include:22 ../templates/search_history:64 ../templates/search_title_start_html:39 ../templates/subjects_record_html:70 ../templates/titles_record_html:90
+#: ../templates/_database/openlibrary/persons_record_html:69 ../templates/_database/wikisource_de/persons_record_html:69 ../templates/_profile/sammlungen/_view/richter/cartitems_html_simple:42 ../templates/_profile/sammlungen/_view/richter/classifications_record_html:67 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:66 ../templates/_profile/sammlungen/_view/richter/persons_record_html:79 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:68 ../templates/_profile/sammlungen/_view/richter/titles_record_html:90 ../templates/_view/richter/cartitems_html_simple:42 ../templates/_view/richter/classifications_record_html:67 ../templates/_view/richter/corporatebodies_record_html:66 ../templates/_view/richter/persons_record_html:79 ../templates/_view/richter/subjects_record_html:68 ../templates/admin_sessions_active_record_html:83 ../templates/admin_sessions_archived_record_html:67 ../templates/cartitems_html_simple:39 ../templates/classifications_record_html:69 ../templates/corporatebodies_record_html:67 ../templates/persons_record_html:79 ../templates/persons_record_include:22 ../templates/search_history:64 ../templates/search_title_start_html:39 ../templates/subjects_record_html:70 ../templates/titles_record_html:91
 msgid "Inhalt"
 msgstr ""
 
@@ -2781,7 +2785,7 @@ msgstr ""
 msgid "Inventarnummer"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titles_record_html_categories:266 ../templates/_database/dbis/titles_record_html_categories:268 ../templates/_database/ezb/titles_record_html_categories:243 ../templates/_database/gutenberg/titles_record_html_categories:294 ../templates/_database/inst001/titles_record_html_categories:358 ../templates/_database/openlibrary/titles_record_html_categories:263 ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:269 ../templates/_profile/kug/titles_record_html_categories:296 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:46 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:29 ../templates/_view/richter/cartitems_html_as_text:46 ../templates/_view/richter/litlists_record_html_as_text:29 ../templates/cartitems_html_as_text:46 ../templates/litlists_record_html_as_text:29 ../templates/titles_record_html_categories:264 ../templates/titles_record_mobile_categories:276
+#: ../templates/_database/bibsonomy/titles_record_html_categories:266 ../templates/_database/dbis/titles_record_html_categories:268 ../templates/_database/ezb/titles_record_html_categories:243 ../templates/_database/gutenberg/titles_record_html_categories:294 ../templates/_database/inst001/titles_record_html_categories:358 ../templates/_database/openlibrary/titles_record_html_categories:263 ../templates/_profile/kug/titles_record_html_categories:308 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:46 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:29 ../templates/_view/richter/cartitems_html_as_text:46 ../templates/_view/richter/litlists_record_html_as_text:29 ../templates/cartitems_html_as_text:46 ../templates/litlists_record_html_as_text:29 ../templates/titles_record_html_categories:264 ../templates/titles_record_mobile_categories:276
 msgid "Inventarnummer       "
 msgstr ""
 
@@ -2797,19 +2801,19 @@ msgstr ""
 msgid "JSON konnte nicht geparst werden"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:803 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:79 ../templates/_view/richter/users_litlists_record_edit:79 ../templates/admin_authenticators_record_delete_confirm:66 ../templates/admin_clusters_html:115 ../templates/admin_clusters_html:83 ../templates/admin_clusters_record_delete_confirm:66 ../templates/admin_clusters_record_edit:89 ../templates/admin_databases_html:101 ../templates/admin_databases_html:133 ../templates/admin_databases_html:134 ../templates/admin_databases_record_delete_confirm:66 ../templates/admin_databases_record_edit:113 ../templates/admin_databases_record_edit:190 ../templates/admin_databases_record_edit:206 ../templates/admin_databases_record_html:54 ../templates/admin_databases_record_html:55 ../templates/admin_databases_record_html:81 ../templates/admin_databases_record_html:92 ../templates/admin_databases_rss_html:106 ../templates/admin_databases_rss_html:71 ../templates/admin_databases_rss_json:27 ../templates/admin_databases_rss_record_delete_confirm:68 ../templates/admin_databases_rss_record_edit:43 ../templates/admin_databases_rss_record_edit:96 ../templates/admin_databases_rss_record_html:147 ../templates/admin_databases_rss_record_html:204 ../templates/admin_databases_rss_record_html:261 ../templates/admin_databases_rss_record_html:318 ../templates/admin_databases_rss_record_html:90 ../templates/admin_locations_record_delete_confirm:66 ../templates/admin_orgunits_record_delete_confirm:68 ../templates/admin_profiles_record_delete_confirm:66 ../templates/admin_searchprofiles_record_edit:75 ../templates/admin_searchprofiles_record_html:65 ../templates/admin_servers_html:143 ../templates/admin_servers_html:99 ../templates/admin_servers_record_delete_confirm:66 ../templates/admin_servers_record_edit:104 ../templates/admin_topics_record_delete_confirm:66 ../templates/admin_views_html:121 ../templates/admin_views_html:91 ../templates/admin_views_record_delete_confirm:66 ../templates/admin_views_record_edit:90 ../templates/admin_views_record_edit:99 ../templates/clusters_html:68 ../templates/clusters_record_html:69 ../templates/databases_record_html:69 ../templates/databases_rss_html:69 ../templates/databases_rss_json:27 ../templates/databases_rss_record_html:43 ../templates/databases_rss_record_html:97 ../templates/litlists_record_include:75 ../templates/searchforms_record_options:4 ../templates/searchprofiles_record_html:65 ../templates/servers_html:82 ../templates/servers_record_html:77 ../templates/titles_record_html:384 ../templates/titles_record_include:251 ../templates/users_litlists_record_delete_confirm:54 ../templates/users_litlists_record_edit:93 ../templates/users_searchprofiles_record_delete_confirm:54 ../templates/views_html:64 ../templates/views_record_html:73
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:803 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:79 ../templates/_view/richter/users_litlists_record_edit:79 ../templates/admin_authenticators_record_delete_confirm:66 ../templates/admin_clusters_html:115 ../templates/admin_clusters_html:83 ../templates/admin_clusters_record_delete_confirm:66 ../templates/admin_clusters_record_edit:89 ../templates/admin_databases_html:101 ../templates/admin_databases_html:133 ../templates/admin_databases_html:134 ../templates/admin_databases_record_delete_confirm:66 ../templates/admin_databases_record_edit:113 ../templates/admin_databases_record_edit:190 ../templates/admin_databases_record_edit:206 ../templates/admin_databases_record_html:54 ../templates/admin_databases_record_html:55 ../templates/admin_databases_record_html:81 ../templates/admin_databases_record_html:92 ../templates/admin_databases_rss_html:106 ../templates/admin_databases_rss_html:71 ../templates/admin_databases_rss_json:27 ../templates/admin_databases_rss_record_delete_confirm:68 ../templates/admin_databases_rss_record_edit:43 ../templates/admin_databases_rss_record_edit:96 ../templates/admin_databases_rss_record_html:147 ../templates/admin_databases_rss_record_html:204 ../templates/admin_databases_rss_record_html:261 ../templates/admin_databases_rss_record_html:318 ../templates/admin_databases_rss_record_html:90 ../templates/admin_locations_record_delete_confirm:66 ../templates/admin_orgunits_record_delete_confirm:68 ../templates/admin_profiles_record_delete_confirm:66 ../templates/admin_searchprofiles_record_edit:75 ../templates/admin_searchprofiles_record_html:65 ../templates/admin_servers_html:143 ../templates/admin_servers_html:99 ../templates/admin_servers_record_delete_confirm:66 ../templates/admin_servers_record_edit:104 ../templates/admin_topics_record_delete_confirm:66 ../templates/admin_views_html:121 ../templates/admin_views_html:91 ../templates/admin_views_record_delete_confirm:66 ../templates/admin_views_record_edit:90 ../templates/admin_views_record_edit:99 ../templates/clusters_html:68 ../templates/clusters_record_html:69 ../templates/databases_record_html:69 ../templates/databases_rss_html:69 ../templates/databases_rss_json:27 ../templates/databases_rss_record_html:43 ../templates/databases_rss_record_html:97 ../templates/litlists_record_include:75 ../templates/searchforms_record_options:4 ../templates/searchprofiles_record_html:65 ../templates/servers_html:82 ../templates/servers_record_html:77 ../templates/titles_record_html:350 ../templates/titles_record_include:251 ../templates/users_litlists_record_delete_confirm:54 ../templates/users_litlists_record_edit:93 ../templates/users_searchprofiles_record_delete_confirm:54 ../templates/views_html:64 ../templates/views_record_html:73
 msgid "Ja"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:243 ../templates/_profile/kug/search_facet:171 ../templates/_profile/kug/searchforms_record_query:243 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:33 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:35 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:140 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:111 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:113 ../templates/_profile/rheinlandbib/clouds_navigation:28 ../templates/_profile/rheinlandbib/clouds_navigation:30 ../templates/_profile/rheinlandbib/searchforms_record_query:135 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:162 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:54 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:56 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:74 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:76 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:28 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:30 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:150 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:141 ../templates/_profile/sammlungen/_view/richter/subnavigation:85 ../templates/_profile/sammlungen/_view/richter/subnavigation:87 ../templates/_profile/sammlungen/_view/richter/titles_record_html:109 ../templates/_profile/sammlungen/_view/richter/titles_record_html:97 ../templates/_profile/sammlungen/clouds_navigation:28 ../templates/_profile/sammlungen/clouds_navigation:30 ../templates/_profile/usb/drilldown_categorized:150 ../templates/_profile/usb/searchforms_record_query:135 ../templates/_view/richter/clouds_navigation:28 ../templates/_view/richter/clouds_navigation:30 ../templates/_view/richter/drilldown_categorized:150 ../templates/_view/richter/searchforms_record_query:141 ../templates/_view/richter/subnavigation:71 ../templates/_view/richter/subnavigation:73 ../templates/admin_statistics_access_html:62 ../templates/admin_statistics_query_html:102 ../templates/admin_statistics_request_html:62 ../templates/admin_statistics_view_html:62 ../templates/clouds_navigation:33 ../templates/clouds_navigation:35 ../templates/search_facet:169 ../templates/search_history:71 ../templates/search_history:83 ../templates/search_title_start_html:46 ../templates/search_title_start_html:58 ../templates/searchforms_record_query:169 ../templates/subnavigation:55 ../templates/subnavigation:57 ../templates/titles_record_html:109 ../templates/titles_record_html:97
+#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:243 ../templates/_profile/kug/search_facet:171 ../templates/_profile/kug/searchforms_record_query:243 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:33 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:35 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:140 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:111 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:113 ../templates/_profile/rheinlandbib/clouds_navigation:28 ../templates/_profile/rheinlandbib/clouds_navigation:30 ../templates/_profile/rheinlandbib/searchforms_record_query:135 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:162 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:54 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:56 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:74 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:76 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:28 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:30 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:150 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:141 ../templates/_profile/sammlungen/_view/richter/subnavigation:85 ../templates/_profile/sammlungen/_view/richter/subnavigation:87 ../templates/_profile/sammlungen/_view/richter/titles_record_html:109 ../templates/_profile/sammlungen/_view/richter/titles_record_html:97 ../templates/_profile/sammlungen/clouds_navigation:28 ../templates/_profile/sammlungen/clouds_navigation:30 ../templates/_profile/usb/drilldown_categorized:150 ../templates/_profile/usb/searchforms_record_query:135 ../templates/_view/richter/clouds_navigation:28 ../templates/_view/richter/clouds_navigation:30 ../templates/_view/richter/drilldown_categorized:150 ../templates/_view/richter/searchforms_record_query:141 ../templates/_view/richter/subnavigation:71 ../templates/_view/richter/subnavigation:73 ../templates/admin_statistics_access_html:62 ../templates/admin_statistics_query_html:102 ../templates/admin_statistics_request_html:62 ../templates/admin_statistics_view_html:62 ../templates/clouds_navigation:33 ../templates/clouds_navigation:35 ../templates/search_facet:169 ../templates/search_history:71 ../templates/search_history:83 ../templates/search_title_start_html:46 ../templates/search_title_start_html:58 ../templates/searchforms_record_query:169 ../templates/subnavigation:55 ../templates/subnavigation:57 ../templates/titles_record_html:110 ../templates/titles_record_html:98
 msgid "Jahr"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:99 ../templates/search_history:73 ../templates/search_title_start_html:48 ../templates/titles_record_html:99
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:99 ../templates/search_history:73 ../templates/search_title_start_html:48 ../templates/titles_record_html:100
 msgid "Jahr bis"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:98 ../templates/search_history:72 ../templates/search_title_start_html:47 ../templates/titles_record_html:98
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:98 ../templates/search_history:72 ../templates/search_title_start_html:47 ../templates/titles_record_html:99
 msgid "Jahr von"
 msgstr ""
 
@@ -2821,7 +2825,7 @@ msgstr ""
 msgid "Japanisch"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:166 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:145 ../templates/_profile/sammlungen/_view/richter/titles_record_html:104 ../templates/_profile/sammlungen/_view/richter/titles_record_html:92 ../templates/_profile/usb/drilldown_categorized:145 ../templates/_view/richter/drilldown_categorized:145 ../templates/search_facet:164 ../templates/search_history:66 ../templates/search_history:78 ../templates/search_title_start_html:41 ../templates/search_title_start_html:53 ../templates/titles_record_html:104 ../templates/titles_record_html:92
+#: ../templates/_profile/kug/search_facet:166 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:145 ../templates/_profile/sammlungen/_view/richter/titles_record_html:104 ../templates/_profile/sammlungen/_view/richter/titles_record_html:92 ../templates/_profile/usb/drilldown_categorized:145 ../templates/_view/richter/drilldown_categorized:145 ../templates/search_facet:164 ../templates/search_history:66 ../templates/search_history:78 ../templates/search_title_start_html:41 ../templates/search_title_start_html:53 ../templates/titles_record_html:105 ../templates/titles_record_html:93
 msgid "K&ouml;perschaft"
 msgstr ""
 
@@ -2845,7 +2849,7 @@ msgstr ""
 msgid "Kartenkataloge der Philosophischen Fakultät"
 msgstr ""
 
-#: ../templates/_database/openlibrary/titlist_item_html_short:216 ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left:21 ../templates/_profile/kug/search_facet:164 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:226 ../templates/_profile/sammlungen/_view/richter/cartitems_html_short:134 ../templates/_profile/sammlungen/_view/richter/resultlists_choice:109 ../templates/_profile/sammlungen/_view/richter/titles_record_html:102 ../templates/_profile/sammlungen/_view/richter/titles_record_html:89 ../templates/_profile/usb/titlist_item_html_short:178 ../templates/_view/richter/cartitems_html_short:134 ../templates/_view/richter/resultlists_choice:109 ../templates/_view/richter/titlist_item_html_short:220 ../templates/cartitems_html_short:133 ../templates/databases_record_html:57 ../templates/databases_rss_record_html:85 ../templates/reviews_edit:189 ../templates/search_facet:162 ../templates/search_history:63 ../templates/search_history:76 ../templates/search_title_start_html:38 ../templates/search_title_start_html:51 ../templates/titles_popular_by_database_html:281 ../templates/titles_popular_html:163 ../templates/titles_popular_include:157 ../templates/titles_record_html:102 ../templates/titles_record_html:89 ../templates/titlist_item_html_short:220 ../templates/titlist_item_mobile_short:217
+#: ../templates/_database/openlibrary/titlist_item_html_short:216 ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left:21 ../templates/_profile/kug/search_facet:164 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:226 ../templates/_profile/sammlungen/_view/richter/cartitems_html_short:134 ../templates/_profile/sammlungen/_view/richter/resultlists_choice:109 ../templates/_profile/sammlungen/_view/richter/titles_record_html:102 ../templates/_profile/sammlungen/_view/richter/titles_record_html:89 ../templates/_profile/usb/titlist_item_html_short:178 ../templates/_view/richter/cartitems_html_short:134 ../templates/_view/richter/resultlists_choice:109 ../templates/_view/richter/titlist_item_html_short:220 ../templates/admin_servers_record_edit:127 ../templates/cartitems_html_short:133 ../templates/databases_record_html:57 ../templates/databases_rss_record_html:85 ../templates/reviews_edit:189 ../templates/search_facet:162 ../templates/search_history:63 ../templates/search_history:76 ../templates/search_title_start_html:38 ../templates/search_title_start_html:51 ../templates/titles_popular_by_database_html:281 ../templates/titles_popular_html:163 ../templates/titles_popular_include:157 ../templates/titles_record_html:103 ../templates/titles_record_html:90 ../templates/titlist_item_html_short:220 ../templates/titlist_item_mobile_short:217
 msgid "Katalog"
 msgstr ""
 
@@ -2877,7 +2881,7 @@ msgstr ""
 msgid "Katalogauswahl zu diesem View"
 msgstr ""
 
-#: ../templates/admin_databases_html:42 ../templates/admin_databases_record_delete_confirm:39 ../templates/admin_databases_record_edit:39 ../templates/admin_databases_rss_html:40 ../templates/admin_databases_rss_record_delete_confirm:39 ../templates/admin_databases_rss_record_edit:56 ../templates/admin_navigation:44 ../templates/admin_navigation:46 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:92 ../templates/admin_profiles_record_edit:124 ../templates/admin_searchprofiles_record_edit:81 ../templates/admin_searchprofiles_record_html:68 ../templates/databases_html:41 ../templates/databases_html:81 ../templates/databases_record_html:38 ../templates/databases_rss_html:39 ../templates/databases_rss_record_html:55 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/searchprofiles_record_html:70
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:31 ../templates/admin_databases_html:42 ../templates/admin_databases_record_delete_confirm:39 ../templates/admin_databases_record_edit:39 ../templates/admin_databases_rss_html:40 ../templates/admin_databases_rss_record_delete_confirm:39 ../templates/admin_databases_rss_record_edit:56 ../templates/admin_navigation:44 ../templates/admin_navigation:46 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:92 ../templates/admin_profiles_record_edit:124 ../templates/admin_searchprofiles_record_edit:81 ../templates/admin_searchprofiles_record_html:68 ../templates/databases_html:41 ../templates/databases_html:89 ../templates/databases_record_html:38 ../templates/databases_rss_html:39 ../templates/databases_rss_record_html:55 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/searchprofiles_record_html:70
 msgid "Kataloge"
 msgstr ""
 
@@ -2935,6 +2939,10 @@ msgstr ""
 msgid "Kennung soll wirklich gel&ouml;scht werden"
 msgstr ""
 
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:22
+msgid "Kennzahlen"
+msgstr ""
+
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:125 ../templates/topics_record_html:108 ../templates/topics_record_html:129 ../templates/topics_record_html:89
 msgid "Klassifikation"
 msgstr ""
@@ -2987,7 +2995,7 @@ msgstr ""
 msgid "Körperschaft"
 msgstr ""
 
-#: ../templates/clouds_databases_record_html:75
+#: ../templates/clouds_databases_record_html:74
 msgid "Körperschaften"
 msgstr ""
 
@@ -3068,7 +3076,7 @@ msgstr ""
 msgid "L0170"
 msgstr ""
 
-#: ../templates/bibfuehrer_tex:302 ../templates/visible_categories_location:34
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:28 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:26 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:28 ../templates/_profile/kug/home_html_bottom_left:27 ../templates/bibfuehrer_tex:302 ../templates/visible_categories_location:34
 msgid "L0180"
 msgstr ""
 
@@ -3088,11 +3096,11 @@ msgstr ""
 msgid "L0220"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:28 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:26 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:28 ../templates/_profile/kug/home_html_bottom_left:27 ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:40
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:29 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:27 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:29 ../templates/_profile/kug/home_html_bottom_left:28 ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:40
 msgid "L0230"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:29 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:27 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:29 ../templates/_profile/kug/home_html_bottom_left:28 ../templates/bibfuehrer_tex:309 ../templates/visible_categories_location:41
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:30 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:28 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:30 ../templates/_profile/kug/home_html_bottom_left:29 ../templates/bibfuehrer_tex:309 ../templates/visible_categories_location:41
 msgid "L0235"
 msgstr ""
 
@@ -3158,7 +3166,7 @@ msgstr ""
 msgid "Letzte 50 Neuaufnahmen"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:688 ../templates/_profile/usb/titles_record_include:96 ../templates/titles_record_html:270 ../templates/titles_record_include:129 ../templates/titles_record_include:170
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:688 ../templates/_profile/usb/titles_record_include:96 ../templates/titles_record_html:236 ../templates/titles_record_include:129 ../templates/titles_record_include:170
 msgid "Letzte Artikel"
 msgstr ""
 
@@ -3170,11 +3178,11 @@ msgstr ""
 msgid "Liste"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:173 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:21 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:152 ../templates/_profile/sammlungen/_view/richter/titles_record_html:101 ../templates/_profile/sammlungen/_view/richter/titles_record_html:111 ../templates/_profile/sammlungen/_view/richter/titles_record_html:185 ../templates/_profile/usb/drilldown_categorized:152 ../templates/_view/richter/cartitems_html_actions:21 ../templates/_view/richter/drilldown_categorized:152 ../templates/cartitems_html_actions:27 ../templates/search_facet:171 ../templates/search_history:75 ../templates/search_history:85 ../templates/search_title_start_html:50 ../templates/search_title_start_html:60 ../templates/titles_record_html:101 ../templates/titles_record_html:111 ../templates/titles_record_html_actions:30 ../templates/titles_record_include:382
+#: ../templates/_profile/kug/search_facet:173 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:21 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:152 ../templates/_profile/sammlungen/_view/richter/titles_record_html:101 ../templates/_profile/sammlungen/_view/richter/titles_record_html:111 ../templates/_profile/sammlungen/_view/richter/titles_record_html:185 ../templates/_profile/usb/drilldown_categorized:152 ../templates/_view/richter/cartitems_html_actions:21 ../templates/_view/richter/drilldown_categorized:152 ../templates/cartitems_html_actions:27 ../templates/search_facet:171 ../templates/search_history:75 ../templates/search_history:85 ../templates/search_title_start_html:50 ../templates/search_title_start_html:60 ../templates/titles_record_html:102 ../templates/titles_record_html:112 ../templates/titles_record_html_actions:30 ../templates/titles_record_include:382
 msgid "Literaturliste"
 msgstr ""
 
-#: ../templates/_profile/kug/home_html_bottom_center:20 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:81 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:83 ../templates/_profile/rheinlandbib/clouds_navigation:76 ../templates/_profile/rheinlandbib/clouds_navigation:78 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:76 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:78 ../templates/_profile/sammlungen/_view/richter/litlists_record_html:43 ../templates/_profile/sammlungen/_view/richter/titles_record_html:394 ../templates/_profile/sammlungen/clouds_navigation:76 ../templates/_profile/sammlungen/clouds_navigation:78 ../templates/_view/richter/clouds_navigation:76 ../templates/_view/richter/clouds_navigation:78 ../templates/_view/richter/litlists_record_html:43 ../templates/browse_topics_record_html:137 ../templates/clouds_html:69 ../templates/clouds_litlist_html:44 ../templates/clouds_navigation:81 ../templates/clouds_navigation:83 ../templates/info_tutorials:66 ../templates/litlists_by_single_topic_html:46 ../templates/litlists_by_single_topic_html:68 ../templates/litlists_by_single_topic_recent_html:47 ../templates/litlists_by_topic_html:38 ../templates/litlists_by_topic_html:58 ../templates/litlists_html:38 ../templates/litlists_navigation:21 ../templates/litlists_recent_html:38 ../templates/litlists_record_html:43 ../templates/searchforms_record_bottom_center:17 ../templates/titles_record_html_actions:276 ../templates/titles_record_include:613 ../templates/users_litlists_html:39 ../templates/users_litlists_record_edit:44 ../templates/users_litlists_record_html:44 ../templates/users_navigation:25 ../templates/users_navigation:27
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:55 ../templates/_profile/kug/home_html_bottom_center:20 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:81 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:83 ../templates/_profile/rheinlandbib/clouds_navigation:76 ../templates/_profile/rheinlandbib/clouds_navigation:78 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:76 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:78 ../templates/_profile/sammlungen/_view/richter/litlists_record_html:43 ../templates/_profile/sammlungen/_view/richter/titles_record_html:394 ../templates/_profile/sammlungen/clouds_navigation:76 ../templates/_profile/sammlungen/clouds_navigation:78 ../templates/_view/richter/clouds_navigation:76 ../templates/_view/richter/clouds_navigation:78 ../templates/_view/richter/litlists_record_html:43 ../templates/browse_topics_record_html:137 ../templates/clouds_html:69 ../templates/clouds_litlist_html:44 ../templates/clouds_navigation:81 ../templates/clouds_navigation:83 ../templates/info_tutorials:66 ../templates/litlists_by_single_topic_html:46 ../templates/litlists_by_single_topic_html:68 ../templates/litlists_by_single_topic_recent_html:47 ../templates/litlists_by_topic_html:38 ../templates/litlists_by_topic_html:58 ../templates/litlists_html:38 ../templates/litlists_navigation:21 ../templates/litlists_recent_html:38 ../templates/litlists_record_html:43 ../templates/searchforms_record_bottom_center:17 ../templates/titles_record_html_actions:314 ../templates/titles_record_include:613 ../templates/users_litlists_html:39 ../templates/users_litlists_record_edit:44 ../templates/users_litlists_record_html:44 ../templates/users_navigation:25 ../templates/users_navigation:27
 msgid "Literaturlisten"
 msgstr ""
 
@@ -3202,15 +3210,15 @@ msgstr ""
 msgid "Lokal"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titles_record_html_categories:265 ../templates/_database/dbis/titles_record_html_categories:267 ../templates/_database/ezb/titles_record_html_categories:242 ../templates/_database/gutenberg/titles_record_html_categories:293 ../templates/_database/inst001/titles_record_html_categories:357 ../templates/_database/openlibrary/titles_record_html_categories:262 ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:268 ../templates/_profile/kug/titles_record_html_categories:295 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:45 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:28 ../templates/_view/richter/cartitems_html_as_text:45 ../templates/_view/richter/litlists_record_html_as_text:28 ../templates/cartitems_html_as_text:45 ../templates/litlists_record_html_as_text:28 ../templates/titles_record_html_categories:263 ../templates/titles_record_mobile_categories:275
+#: ../templates/_database/bibsonomy/titles_record_html_categories:265 ../templates/_database/dbis/titles_record_html_categories:267 ../templates/_database/ezb/titles_record_html_categories:242 ../templates/_database/gutenberg/titles_record_html_categories:293 ../templates/_database/inst001/titles_record_html_categories:357 ../templates/_database/openlibrary/titles_record_html_categories:262 ../templates/_profile/kug/titles_record_html_categories:307 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:45 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:28 ../templates/_view/richter/cartitems_html_as_text:45 ../templates/_view/richter/litlists_record_html_as_text:28 ../templates/cartitems_html_as_text:45 ../templates/litlists_record_html_as_text:28 ../templates/titles_record_html_categories:263 ../templates/titles_record_mobile_categories:275
 msgid "Lokale Signatur      "
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:368 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:146 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:46 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:67 ../templates/_profile/sammlungen/_view/richter/titles_record_html:202 ../templates/_profile/sammlungen/_view/richter/titles_record_html:225 ../templates/_view/richter/cartitems_html_actions:146 ../templates/_view/richter/cartitems_html_actions:46 ../templates/_view/richter/cartitems_html_actions:67 ../templates/admin_users_html:71 ../templates/admin_users_search_form:65 ../templates/cartitems_html_actions:52 ../templates/cartitems_html_actions:73 ../templates/titles_record_html_actions:48 ../templates/titles_record_html_actions:73 ../templates/titles_record_include:396 ../templates/titles_record_include:409 ../templates/titlist_options:24 ../templates/users_preferences_html:384 ../templates/users_roles_edit:110 ../templates/users_tags_names_record_html:78
+#: ../templates/_profile/kug/users_preferences_html:368 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:146 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:46 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:67 ../templates/_profile/sammlungen/_view/richter/titles_record_html:202 ../templates/_profile/sammlungen/_view/richter/titles_record_html:225 ../templates/_view/richter/cartitems_html_actions:146 ../templates/_view/richter/cartitems_html_actions:46 ../templates/_view/richter/cartitems_html_actions:67 ../templates/admin_users_html:71 ../templates/admin_users_search_form:65 ../templates/cartitems_html_actions:53 ../templates/cartitems_html_actions:76 ../templates/titles_record_html_actions:48 ../templates/titles_record_html_actions:73 ../templates/titles_record_include:396 ../templates/titles_record_include:409 ../templates/titlist_options:26 ../templates/users_preferences_html:384 ../templates/users_roles_edit:110 ../templates/users_tags_names_record_html:78
 msgid "Los"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:774 ../templates/admin_authenticators_record_edit:104 ../templates/admin_clusters_record_edit:100 ../templates/admin_databases_record_edit:232 ../templates/admin_databases_rss_record_edit:109 ../templates/admin_databases_rss_record_html:351 ../templates/admin_locations_record_edit:134 ../templates/admin_orgunits_record_edit:107 ../templates/admin_profiles_record_edit:83 ../templates/admin_servers_record_edit:114 ../templates/admin_topics_record_edit:96 ../templates/admin_views_record_edit:129 ../templates/admin_views_rss_record_edit:96 ../templates/cartitems_html_actions:151 ../templates/cartitems_html_short:144 ../templates/titles_record_html:355 ../templates/titles_record_include:220 ../templates/topics_record_mapping_html:95 ../templates/users_litlists_html:110 ../templates/users_searchprofiles_html:93
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:774 ../templates/admin_authenticators_record_edit:104 ../templates/admin_clusters_record_edit:100 ../templates/admin_databases_record_edit:232 ../templates/admin_databases_rss_record_edit:109 ../templates/admin_databases_rss_record_html:351 ../templates/admin_locations_record_edit:134 ../templates/admin_orgunits_record_edit:107 ../templates/admin_profiles_record_edit:83 ../templates/admin_servers_record_edit:114 ../templates/admin_topics_record_edit:96 ../templates/admin_views_record_edit:129 ../templates/admin_views_rss_record_edit:96 ../templates/cartitems_html_actions:160 ../templates/cartitems_html_short:144 ../templates/titles_record_html:321 ../templates/titles_record_include:220 ../templates/topics_record_mapping_html:95 ../templates/users_litlists_html:110 ../templates/users_searchprofiles_html:93
 msgid "Löschen"
 msgstr ""
 
@@ -3222,7 +3230,7 @@ msgstr ""
 msgid "Mapping"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:237 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:238 ../templates/_profile/sammlungen/_view/richter/titles_record_html:649 ../templates/_profile/usb/titles_record_include:45 ../templates/_view/richter/cartitems_html_full:237 ../templates/_view/richter/litlists_record_html_full:238 ../templates/cartitems_html_full:237 ../templates/litlists_record_html_full:238 ../templates/titles_record_html:225 ../templates/titles_record_include:91
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:237 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:238 ../templates/_profile/sammlungen/_view/richter/titles_record_html:649 ../templates/_profile/usb/titles_record_include:45 ../templates/_view/richter/cartitems_html_full:237 ../templates/_view/richter/litlists_record_html_full:238 ../templates/cartitems_html_full:237 ../templates/litlists_record_html_full:238 ../templates/titles_record_html:191 ../templates/titles_record_include:91
 msgid "Mashup mit Wikipedia"
 msgstr ""
 
@@ -3238,11 +3246,11 @@ msgstr ""
 msgid "Medienart"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:169 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:148 ../templates/_profile/sammlungen/_view/richter/titles_record_html:107 ../templates/_profile/sammlungen/_view/richter/titles_record_html:95 ../templates/_profile/usb/drilldown_categorized:148 ../templates/_view/richter/drilldown_categorized:148 ../templates/search_facet:167 ../templates/search_history:69 ../templates/search_history:81 ../templates/search_title_start_html:44 ../templates/search_title_start_html:56 ../templates/titles_record_html:107 ../templates/titles_record_html:95
+#: ../templates/_profile/kug/search_facet:169 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:148 ../templates/_profile/sammlungen/_view/richter/titles_record_html:107 ../templates/_profile/sammlungen/_view/richter/titles_record_html:95 ../templates/_profile/usb/drilldown_categorized:148 ../templates/_view/richter/drilldown_categorized:148 ../templates/search_facet:167 ../templates/search_history:69 ../templates/search_history:81 ../templates/search_title_start_html:44 ../templates/search_title_start_html:56 ../templates/titles_record_html:108 ../templates/titles_record_html:96
 msgid "Medientyp"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:76 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:74 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:76 ../templates/_profile/kug/_view/kug/newsflash:33 ../templates/_profile/kug/home_html_bottom_left:75 ../templates/_profile/kug/search_facet:102 ../templates/_profile/kug/search_facet:114 ../templates/_profile/kug/search_facet:126 ../templates/_profile/kug/search_facet:138 ../templates/_profile/kug/search_facet:36 ../templates/_profile/kug/search_facet:47 ../templates/_profile/kug/search_facet:58 ../templates/_profile/kug/search_facet:69 ../templates/_profile/kug/search_facet:80 ../templates/_profile/kug/search_facet:91 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:109 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:18 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:29 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:40 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:51 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:62 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:7 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:73 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:85 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:97 ../templates/_profile/sammlungen/_view/richter/titles_record_html:531 ../templates/_profile/usb/drilldown_categorized:110 ../templates/_profile/usb/drilldown_categorized:19 ../templates/_profile/usb/drilldown_categorized:30 ../templates/_profile/usb/drilldown_categorized:41 ../templates/_profile/usb/drilldown_categorized:52 ../templates/_profile/usb/drilldown_categorized:63 ../templates/_profile/usb/drilldown_categorized:74 ../templates/_profile/usb/drilldown_categorized:8 ../templates/_profile/usb/drilldown_categorized:86 ../templates/_profile/usb/drilldown_categorized:98 ../templates/_view/richter/drilldown_categorized:109 ../templates/_view/richter/drilldown_categorized:18 ../templates/_view/richter/drilldown_categorized:29 ../templates/_view/richter/drilldown_categorized:40 ../templates/_view/richter/drilldown_categorized:51 ../templates/_view/richter/drilldown_categorized:62 ../templates/_view/richter/drilldown_categorized:7 ../templates/_view/richter/drilldown_categorized:73 ../templates/_view/richter/drilldown_categorized:85 ../templates/_view/richter/drilldown_categorized:97 ../templates/newsflash:35 ../templates/search_facet:102 ../templates/search_facet:114 ../templates/search_facet:126 ../templates/search_facet:138 ../templates/search_facet:36 ../templates/search_facet:47 ../templates/search_facet:58 ../templates/search_facet:69 ../templates/search_facet:80 ../templates/search_facet:91 ../templates/searchforms_record_bottom_left:77 ../templates/searchforms_record_bottom_right:32 ../templates/titles_record_html_actions:413 ../templates/titles_record_include:738
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:77 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:75 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:77 ../templates/_profile/kug/_view/kug/newsflash:34 ../templates/_profile/kug/home_html_bottom_left:76 ../templates/_profile/kug/search_facet:102 ../templates/_profile/kug/search_facet:114 ../templates/_profile/kug/search_facet:126 ../templates/_profile/kug/search_facet:138 ../templates/_profile/kug/search_facet:36 ../templates/_profile/kug/search_facet:47 ../templates/_profile/kug/search_facet:58 ../templates/_profile/kug/search_facet:69 ../templates/_profile/kug/search_facet:80 ../templates/_profile/kug/search_facet:91 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:109 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:18 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:29 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:40 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:51 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:62 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:7 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:73 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:85 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:97 ../templates/_profile/sammlungen/_view/richter/titles_record_html:531 ../templates/_profile/usb/drilldown_categorized:110 ../templates/_profile/usb/drilldown_categorized:19 ../templates/_profile/usb/drilldown_categorized:30 ../templates/_profile/usb/drilldown_categorized:41 ../templates/_profile/usb/drilldown_categorized:52 ../templates/_profile/usb/drilldown_categorized:63 ../templates/_profile/usb/drilldown_categorized:74 ../templates/_profile/usb/drilldown_categorized:8 ../templates/_profile/usb/drilldown_categorized:86 ../templates/_profile/usb/drilldown_categorized:98 ../templates/_view/richter/drilldown_categorized:109 ../templates/_view/richter/drilldown_categorized:18 ../templates/_view/richter/drilldown_categorized:29 ../templates/_view/richter/drilldown_categorized:40 ../templates/_view/richter/drilldown_categorized:51 ../templates/_view/richter/drilldown_categorized:62 ../templates/_view/richter/drilldown_categorized:7 ../templates/_view/richter/drilldown_categorized:73 ../templates/_view/richter/drilldown_categorized:85 ../templates/_view/richter/drilldown_categorized:97 ../templates/newsflash:35 ../templates/search_facet:102 ../templates/search_facet:114 ../templates/search_facet:126 ../templates/search_facet:138 ../templates/search_facet:36 ../templates/search_facet:47 ../templates/search_facet:58 ../templates/search_facet:69 ../templates/search_facet:80 ../templates/search_facet:91 ../templates/searchforms_record_bottom_left:77 ../templates/searchforms_record_bottom_right:32 ../templates/titles_record_html_actions:452 ../templates/titles_record_include:738
 msgid "Mehr"
 msgstr ""
 
@@ -3250,7 +3258,7 @@ msgstr ""
 msgid "Mehr entdecken"
 msgstr ""
 
-#: ../templates/_profile/kug/corporate_banner:13 ../templates/info_tutorials:67
+#: ../templates/_profile/kug/corporate_banner:16 ../templates/info_tutorials:67
 msgid "Mein KUG"
 msgstr ""
 
@@ -3274,7 +3282,7 @@ msgstr ""
 msgid "Merken"
 msgstr ""
 
-#: ../templates/_profile/kug/corporate_banner:10 ../templates/_profile/kug/corporate_banner:8 ../templates/_profile/rheinlandbib/mainnavigation:46 ../templates/_profile/rheinlandbib/mainnavigation:48 ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:51 ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:53 ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:51 ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:53 ../templates/_profile/sammlungen/_view/richter/cartitems_empty:38 ../templates/_profile/sammlungen/_view/richter/cartitems_html:53 ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:23 ../templates/_profile/sammlungen/_view/richter/cartitems_save_html:50 ../templates/_profile/sammlungen/_view/richter/mainnavigation_html:56 ../templates/_profile/sammlungen/_view/richter/mainnavigation_html:58 ../templates/_view/richter/cartitems_empty:38 ../templates/_view/richter/cartitems_html:53 ../templates/_view/richter/cartitems_html_full:23 ../templates/_view/richter/cartitems_save_html:50 ../templates/_view/richter/mainnavigation:51 ../templates/_view/richter/mainnavigation:53 ../templates/cartitems_html:53 ../templates/cartitems_html_full:23 ../templates/cartitems_save_html:50 ../templates/info_tutorials:68 ../templates/mainnavigation_html:62 ../templates/mainnavigation_html:65 ../templates/mainnavigation_html:67
+#: ../templates/_profile/kug/corporate_banner:11 ../templates/_profile/kug/corporate_banner:13 ../templates/_profile/rheinlandbib/mainnavigation:46 ../templates/_profile/rheinlandbib/mainnavigation:48 ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:51 ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:53 ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:51 ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:53 ../templates/_profile/sammlungen/_view/richter/cartitems_empty:38 ../templates/_profile/sammlungen/_view/richter/cartitems_html:53 ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:23 ../templates/_profile/sammlungen/_view/richter/cartitems_save_html:50 ../templates/_profile/sammlungen/_view/richter/mainnavigation_html:56 ../templates/_profile/sammlungen/_view/richter/mainnavigation_html:58 ../templates/_view/richter/cartitems_empty:38 ../templates/_view/richter/cartitems_html:53 ../templates/_view/richter/cartitems_html_full:23 ../templates/_view/richter/cartitems_save_html:50 ../templates/_view/richter/mainnavigation:51 ../templates/_view/richter/mainnavigation:53 ../templates/cartitems_html:53 ../templates/cartitems_html_full:23 ../templates/cartitems_save_html:50 ../templates/info_tutorials:68 ../templates/mainnavigation_html:62 ../templates/mainnavigation_html:65 ../templates/mainnavigation_html:67
 msgid "Merkliste"
 msgstr ""
 
@@ -3321,7 +3329,7 @@ msgstr ""
 msgid "Nachname"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:38 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:55 ../templates/_profile/sammlungen/_view/richter/titles_record_html:198 ../templates/_profile/sammlungen/_view/richter/titles_record_html:216 ../templates/_view/richter/cartitems_html_actions:38 ../templates/_view/richter/cartitems_html_actions:55 ../templates/admin_orgunits_html:66 ../templates/admin_profiles_record_edit:124 ../templates/cartitems_html_actions:44 ../templates/cartitems_html_actions:61 ../templates/databases_html:84 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/titles_record_html_actions:43 ../templates/titles_record_html_actions:63 ../templates/users_searchprofiles_html:84
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:38 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:55 ../templates/_profile/sammlungen/_view/richter/titles_record_html:198 ../templates/_profile/sammlungen/_view/richter/titles_record_html:216 ../templates/_view/richter/cartitems_html_actions:38 ../templates/_view/richter/cartitems_html_actions:55 ../templates/admin_orgunits_html:66 ../templates/admin_profiles_record_edit:124 ../templates/cartitems_html_actions:44 ../templates/cartitems_html_actions:63 ../templates/databases_html:92 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/titles_record_html_actions:43 ../templates/titles_record_html_actions:63 ../templates/users_searchprofiles_html:84
 msgid "Name"
 msgstr ""
 
@@ -3361,7 +3369,7 @@ msgid ""
 "eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:804 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:79 ../templates/_view/richter/users_litlists_record_edit:79 ../templates/admin_authenticators_record_delete_confirm:72 ../templates/admin_clusters_html:115 ../templates/admin_clusters_html:84 ../templates/admin_clusters_record_delete_confirm:72 ../templates/admin_clusters_record_edit:90 ../templates/admin_databases_html:102 ../templates/admin_databases_html:133 ../templates/admin_databases_html:134 ../templates/admin_databases_record_delete_confirm:72 ../templates/admin_databases_record_edit:114 ../templates/admin_databases_record_edit:189 ../templates/admin_databases_record_edit:205 ../templates/admin_databases_record_html:54 ../templates/admin_databases_record_html:55 ../templates/admin_databases_record_html:81 ../templates/admin_databases_record_html:92 ../templates/admin_databases_rss_html:107 ../templates/admin_databases_rss_html:70 ../templates/admin_databases_rss_json:26 ../templates/admin_databases_rss_record_delete_confirm:74 ../templates/admin_databases_rss_record_edit:42 ../templates/admin_databases_rss_record_edit:97 ../templates/admin_databases_rss_record_html:141 ../templates/admin_databases_rss_record_html:198 ../templates/admin_databases_rss_record_html:255 ../templates/admin_databases_rss_record_html:312 ../templates/admin_databases_rss_record_html:84 ../templates/admin_locations_record_delete_confirm:72 ../templates/admin_orgunits_record_delete_confirm:74 ../templates/admin_profiles_record_delete_confirm:72 ../templates/admin_searchprofiles_record_edit:76 ../templates/admin_searchprofiles_record_html:65 ../templates/admin_servers_html:100 ../templates/admin_servers_html:143 ../templates/admin_servers_record_delete_confirm:72 ../templates/admin_servers_record_edit:105 ../templates/admin_topics_record_delete_confirm:72 ../templates/admin_views_html:121 ../templates/admin_views_html:92 ../templates/admin_views_record_delete_confirm:72 ../templates/admin_views_record_edit:100 ../templates/admin_views_record_edit:91 ../templates/clusters_html:68 ../templates/clusters_record_html:70 ../templates/databases_record_html:69 ../templates/databases_rss_html:68 ../templates/databases_rss_json:26 ../templates/databases_rss_record_html:42 ../templates/databases_rss_record_html:98 ../templates/litlists_record_include:75 ../templates/searchforms_record_options:4 ../templates/searchprofiles_record_html:66 ../templates/servers_html:82 ../templates/servers_record_html:78 ../templates/titles_record_html:385 ../templates/titles_record_include:252 ../templates/users_litlists_record_delete_confirm:60 ../templates/users_litlists_record_edit:93 ../templates/users_searchprofiles_record_delete_confirm:60 ../templates/views_html:64 ../templates/views_record_html:73
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:804 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:79 ../templates/_view/richter/users_litlists_record_edit:79 ../templates/admin_authenticators_record_delete_confirm:72 ../templates/admin_clusters_html:115 ../templates/admin_clusters_html:84 ../templates/admin_clusters_record_delete_confirm:72 ../templates/admin_clusters_record_edit:90 ../templates/admin_databases_html:102 ../templates/admin_databases_html:133 ../templates/admin_databases_html:134 ../templates/admin_databases_record_delete_confirm:72 ../templates/admin_databases_record_edit:114 ../templates/admin_databases_record_edit:189 ../templates/admin_databases_record_edit:205 ../templates/admin_databases_record_html:54 ../templates/admin_databases_record_html:55 ../templates/admin_databases_record_html:81 ../templates/admin_databases_record_html:92 ../templates/admin_databases_rss_html:107 ../templates/admin_databases_rss_html:70 ../templates/admin_databases_rss_json:26 ../templates/admin_databases_rss_record_delete_confirm:74 ../templates/admin_databases_rss_record_edit:42 ../templates/admin_databases_rss_record_edit:97 ../templates/admin_databases_rss_record_html:141 ../templates/admin_databases_rss_record_html:198 ../templates/admin_databases_rss_record_html:255 ../templates/admin_databases_rss_record_html:312 ../templates/admin_databases_rss_record_html:84 ../templates/admin_locations_record_delete_confirm:72 ../templates/admin_orgunits_record_delete_confirm:74 ../templates/admin_profiles_record_delete_confirm:72 ../templates/admin_searchprofiles_record_edit:76 ../templates/admin_searchprofiles_record_html:65 ../templates/admin_servers_html:100 ../templates/admin_servers_html:143 ../templates/admin_servers_record_delete_confirm:72 ../templates/admin_servers_record_edit:105 ../templates/admin_topics_record_delete_confirm:72 ../templates/admin_views_html:121 ../templates/admin_views_html:92 ../templates/admin_views_record_delete_confirm:72 ../templates/admin_views_record_edit:100 ../templates/admin_views_record_edit:91 ../templates/clusters_html:68 ../templates/clusters_record_html:70 ../templates/databases_record_html:69 ../templates/databases_rss_html:68 ../templates/databases_rss_json:26 ../templates/databases_rss_record_html:42 ../templates/databases_rss_record_html:98 ../templates/litlists_record_include:75 ../templates/searchforms_record_options:4 ../templates/searchprofiles_record_html:66 ../templates/servers_html:82 ../templates/servers_record_html:78 ../templates/titles_record_html:351 ../templates/titles_record_include:252 ../templates/users_litlists_record_delete_confirm:60 ../templates/users_litlists_record_edit:93 ../templates/users_searchprofiles_record_delete_confirm:60 ../templates/views_html:64 ../templates/views_record_html:73
 msgid "Nein"
 msgstr ""
 
@@ -3393,7 +3401,7 @@ msgstr ""
 msgid "Neuaufnahmen nach Verfasser"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:751 ../templates/titles_record_html:332 ../templates/titles_record_include:197
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:751 ../templates/titles_record_html:298 ../templates/titles_record_include:197
 msgid "Neue Bewertung/Rezension"
 msgstr ""
 
@@ -3497,7 +3505,7 @@ msgstr ""
 msgid "Notation"
 msgstr ""
 
-#: ../templates/admin_statistics_query_html:96 ../templates/clouds_databases_record_html:74
+#: ../templates/admin_statistics_query_html:96 ../templates/clouds_databases_record_html:73
 msgid "Notationen"
 msgstr ""
 
@@ -3725,7 +3733,7 @@ msgstr ""
 msgid "Permanenter Link zu diesem Titel"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:165 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:144 ../templates/_profile/sammlungen/_view/richter/persons_record_html:48 ../templates/_profile/sammlungen/_view/richter/titles_record_html:103 ../templates/_profile/sammlungen/_view/richter/titles_record_html:91 ../templates/_profile/usb/drilldown_categorized:144 ../templates/_view/richter/drilldown_categorized:144 ../templates/_view/richter/persons_record_html:48 ../templates/persons_record_html:48 ../templates/search_facet:163 ../templates/search_history:65 ../templates/search_history:77 ../templates/search_title_start_html:40 ../templates/search_title_start_html:52 ../templates/titles_record_html:103 ../templates/titles_record_html:91
+#: ../templates/_profile/kug/search_facet:165 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:144 ../templates/_profile/sammlungen/_view/richter/persons_record_html:48 ../templates/_profile/sammlungen/_view/richter/titles_record_html:103 ../templates/_profile/sammlungen/_view/richter/titles_record_html:91 ../templates/_profile/usb/drilldown_categorized:144 ../templates/_view/richter/drilldown_categorized:144 ../templates/_view/richter/persons_record_html:48 ../templates/persons_record_html:48 ../templates/search_facet:163 ../templates/search_history:65 ../templates/search_history:77 ../templates/search_title_start_html:40 ../templates/search_title_start_html:52 ../templates/titles_record_html:104 ../templates/titles_record_html:92
 msgid "Person"
 msgstr ""
 
@@ -3733,7 +3741,7 @@ msgstr ""
 msgid "Person/Körperschaft"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:95 ../templates/_profile/kug/searchforms_record_query:95 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:40 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:42 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:79 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:116 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:118 ../templates/_profile/rheinlandbib/clouds_navigation:35 ../templates/_profile/rheinlandbib/clouds_navigation:37 ../templates/_profile/rheinlandbib/searchforms_record_query:79 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:84 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:59 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:61 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:79 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:81 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:35 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:37 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:80 ../templates/_profile/sammlungen/_view/richter/subnavigation:90 ../templates/_profile/sammlungen/_view/richter/subnavigation:92 ../templates/_profile/sammlungen/clouds_navigation:35 ../templates/_profile/sammlungen/clouds_navigation:37 ../templates/_profile/usb/searchforms_record_query:79 ../templates/_view/richter/clouds_navigation:35 ../templates/_view/richter/clouds_navigation:37 ../templates/_view/richter/searchforms_record_query:80 ../templates/_view/richter/subnavigation:76 ../templates/_view/richter/subnavigation:78 ../templates/admin_statistics_query_html:93 ../templates/clouds_databases_record_html:72 ../templates/clouds_navigation:40 ../templates/clouds_navigation:42 ../templates/clouds_person_html:51 ../templates/clouds_person_html:70 ../templates/cloudss_navigation:19 ../templates/search_classification:75 ../templates/search_corporatebody:75 ../templates/search_person:75 ../templates/search_subject:75 ../templates/searchforms_record_query:84 ../templates/subnavigation:60 ../templates/subnavigation:62
+#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:95 ../templates/_profile/kug/searchforms_record_query:95 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:40 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:42 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:79 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:116 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:118 ../templates/_profile/rheinlandbib/clouds_navigation:35 ../templates/_profile/rheinlandbib/clouds_navigation:37 ../templates/_profile/rheinlandbib/searchforms_record_query:79 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:84 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:59 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:61 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:79 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:81 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:35 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:37 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:80 ../templates/_profile/sammlungen/_view/richter/subnavigation:90 ../templates/_profile/sammlungen/_view/richter/subnavigation:92 ../templates/_profile/sammlungen/clouds_navigation:35 ../templates/_profile/sammlungen/clouds_navigation:37 ../templates/_profile/usb/searchforms_record_query:79 ../templates/_view/richter/clouds_navigation:35 ../templates/_view/richter/clouds_navigation:37 ../templates/_view/richter/searchforms_record_query:80 ../templates/_view/richter/subnavigation:76 ../templates/_view/richter/subnavigation:78 ../templates/admin_statistics_query_html:93 ../templates/clouds_databases_record_html:71 ../templates/clouds_navigation:40 ../templates/clouds_navigation:42 ../templates/clouds_person_html:51 ../templates/clouds_person_html:70 ../templates/cloudss_navigation:19 ../templates/search_classification:75 ../templates/search_corporatebody:75 ../templates/search_person:75 ../templates/search_subject:75 ../templates/searchforms_record_query:84 ../templates/subnavigation:60 ../templates/subnavigation:62
 msgid "Personen"
 msgstr ""
 
@@ -3809,7 +3817,7 @@ msgstr ""
 msgid "Provenienz"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:767 ../templates/reviews_edit:230 ../templates/titles_record_html:348 ../templates/titles_record_include:213
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:767 ../templates/reviews_edit:230 ../templates/titles_record_html:314 ../templates/titles_record_include:213
 msgid "Pseudonym"
 msgstr ""
 
@@ -3870,7 +3878,7 @@ msgstr ""
 msgid "ReadMe"
 msgstr ""
 
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:84 ../templates/_profile/sammlungen/_view/richter/subnavigation:53 ../templates/_profile/sammlungen/_view/richter/titles_record_html:123 ../templates/search_title_start_html:71 ../templates/subnavigation:22 ../templates/titles_record_html:123 ../templates/users_titles_record_searchindex_html:42
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:84 ../templates/_profile/sammlungen/_view/richter/subnavigation:53 ../templates/_profile/sammlungen/_view/richter/titles_record_html:123 ../templates/search_title_start_html:71 ../templates/subnavigation:22 ../templates/titles_record_html:124 ../templates/users_titles_record_searchindex_html:42
 msgid "Recherche"
 msgstr ""
 
@@ -3941,7 +3949,7 @@ msgstr ""
 msgid "Relevanz"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:765 ../templates/reviews_edit:228 ../templates/reviews_record_html:70 ../templates/titles_record_html:346 ../templates/titles_record_include:211
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:765 ../templates/reviews_edit:228 ../templates/reviews_record_html:70 ../templates/titles_record_html:312 ../templates/titles_record_include:211
 msgid "Rezension"
 msgstr ""
 
@@ -4042,7 +4050,7 @@ msgstr ""
 msgid "Schlagwort-Information: %1 in Katalog %2"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:115 ../templates/_profile/kug/searchforms_record_query:115 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:89 ../templates/_profile/rheinlandbib/searchforms_record_query:89 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:91 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:90 ../templates/_profile/usb/searchforms_record_query:89 ../templates/_view/richter/searchforms_record_query:90 ../templates/admin_statistics_query_html:95 ../templates/clouds_databases_record_html:73 ../templates/clouds_subject_html:51 ../templates/clouds_subject_html:70 ../templates/cloudss_navigation:16 ../templates/search_classification:75 ../templates/search_corporatebody:75 ../templates/search_person:75 ../templates/search_subject:75 ../templates/searchforms_record_query:98
+#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:115 ../templates/_profile/kug/searchforms_record_query:115 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:89 ../templates/_profile/rheinlandbib/searchforms_record_query:89 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:91 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:90 ../templates/_profile/usb/searchforms_record_query:89 ../templates/_view/richter/searchforms_record_query:90 ../templates/admin_statistics_query_html:95 ../templates/clouds_databases_record_html:72 ../templates/clouds_subject_html:51 ../templates/clouds_subject_html:70 ../templates/cloudss_navigation:16 ../templates/search_classification:75 ../templates/search_corporatebody:75 ../templates/search_person:75 ../templates/search_subject:75 ../templates/searchforms_record_query:98
 msgid "Schlagworte"
 msgstr ""
 
@@ -4127,7 +4135,7 @@ msgstr ""
 msgid "Sessions"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:60 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:93 ../templates/_profile/sammlungen/_view/richter/titles_record_html:221 ../templates/_profile/sammlungen/_view/richter/titles_record_html:256 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:72 ../templates/_view/richter/cartitems_html_actions:60 ../templates/_view/richter/cartitems_html_actions:93 ../templates/_view/richter/users_litlists_record_edit:72 ../templates/cartitems_html_actions:66 ../templates/cartitems_html_actions:99 ../templates/litlists_record_include:72 ../templates/titles_record_html_actions:109 ../templates/titles_record_html_actions:68 ../templates/users_litlists_html:66 ../templates/users_litlists_html:99 ../templates/users_litlists_record_edit:86
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:60 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:93 ../templates/_profile/sammlungen/_view/richter/titles_record_html:221 ../templates/_profile/sammlungen/_view/richter/titles_record_html:256 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:72 ../templates/_view/richter/cartitems_html_actions:60 ../templates/_view/richter/cartitems_html_actions:93 ../templates/_view/richter/users_litlists_record_edit:72 ../templates/litlists_record_include:72 ../templates/titles_record_html_actions:121 ../templates/titles_record_html_actions:68 ../templates/users_litlists_html:66 ../templates/users_litlists_html:99 ../templates/users_litlists_record_edit:86
 msgid "Sichtbarkeit"
 msgstr ""
 
@@ -4139,7 +4147,7 @@ msgstr ""
 msgid "Sie befinden sich derzeit auf einem Testsystem, das nicht f&uuml;r den produktiven Einsatz gedacht ist. Stattdessen k&ouml;nnen Sie hier die neuen in Entwicklung befindlichen Funktionen von OpenBib austesten. Da OpenBib auf diesem System kontinuierlich verbessert wird, k&ouml;nnen w&auml;hrend dieser &Auml;nderungen zeitweise sicherlich auch schon einmal 'Internal Server Errors' beobachtet werden. Dies ist vollkommen normal, solange die aktuelle Version auf diesem System nicht eingefroren und in eine offiziell bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache.pm:640
+#: ../modules/OpenBib/Handler/Apache.pm:698
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr ""
 
@@ -4308,7 +4316,7 @@ msgstr ""
 msgid "Sie müssen einen RSS-Typ eingeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Servers.pm:192
+#: ../modules/OpenBib/Handler/Apache/Admin/Servers.pm:201
 msgid "Sie müssen einen Servernamen eingeben."
 msgstr ""
 
@@ -4356,7 +4364,7 @@ msgstr ""
 msgid "Sie sind nicht authentifiziert."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache.pm:1346
+#: ../modules/OpenBib/Handler/Apache.pm:1426
 msgid "Sie sind nicht authorisiert"
 msgstr ""
 
@@ -4432,11 +4440,11 @@ msgid "Spezialisierte Portale"
 msgstr ""
 
 #. (l)
-#: ../templates/_profile/kug/corporate_banner:5 ../templates/_profile/rheinlandbib/searchforms_record_simple:507 ../templates/_profile/rheinlandbib/searchforms_record_simple:54 ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:4 ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner:4 ../templates/_view/richter/corporate_banner:4 ../templates/corporate_banner:4 ../templates/info_journaltocs:43
+#: ../templates/_profile/kug/corporate_banner:8 ../templates/_profile/rheinlandbib/searchforms_record_simple:507 ../templates/_profile/rheinlandbib/searchforms_record_simple:54 ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:4 ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner:4 ../templates/_view/richter/corporate_banner:4 ../templates/corporate_banner:4 ../templates/info_journaltocs:43
 msgid "Sprach-Icon für %1"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:170 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:149 ../templates/_profile/sammlungen/_view/richter/titles_record_html:108 ../templates/_profile/sammlungen/_view/richter/titles_record_html:96 ../templates/_profile/usb/drilldown_categorized:149 ../templates/_view/richter/drilldown_categorized:149 ../templates/search_facet:168 ../templates/search_history:70 ../templates/search_history:82 ../templates/search_title_start_html:45 ../templates/search_title_start_html:57 ../templates/titles_record_html:108 ../templates/titles_record_html:96
+#: ../templates/_profile/kug/search_facet:170 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:149 ../templates/_profile/sammlungen/_view/richter/titles_record_html:108 ../templates/_profile/sammlungen/_view/richter/titles_record_html:96 ../templates/_profile/usb/drilldown_categorized:149 ../templates/_view/richter/drilldown_categorized:149 ../templates/search_facet:168 ../templates/search_history:70 ../templates/search_history:82 ../templates/search_title_start_html:45 ../templates/search_title_start_html:57 ../templates/titles_record_html:109 ../templates/titles_record_html:97
 msgid "Sprache"
 msgstr ""
 
@@ -4448,7 +4456,7 @@ msgstr ""
 msgid "Standort"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titles_record_html_categories:264 ../templates/_database/dbis/titles_record_html_categories:266 ../templates/_database/ezb/titles_record_html_categories:241 ../templates/_database/gutenberg/titles_record_html_categories:292 ../templates/_database/inst001/titles_record_html_categories:356 ../templates/_database/openlibrary/titles_record_html_categories:261 ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:267 ../templates/_profile/kug/titles_record_html_categories:294 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:44 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:27 ../templates/_view/richter/cartitems_html_as_text:44 ../templates/_view/richter/litlists_record_html_as_text:27 ../templates/cartitems_html_as_text:44 ../templates/litlists_record_html_as_text:27 ../templates/titles_record_html_categories:262 ../templates/titles_record_mobile_categories:274
+#: ../templates/_database/bibsonomy/titles_record_html_categories:264 ../templates/_database/dbis/titles_record_html_categories:266 ../templates/_database/ezb/titles_record_html_categories:241 ../templates/_database/gutenberg/titles_record_html_categories:292 ../templates/_database/inst001/titles_record_html_categories:356 ../templates/_database/openlibrary/titles_record_html_categories:261 ../templates/_profile/kug/titles_record_html_categories:306 ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:44 ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:27 ../templates/_view/richter/cartitems_html_as_text:44 ../templates/_view/richter/litlists_record_html_as_text:27 ../templates/cartitems_html_as_text:44 ../templates/litlists_record_html_as_text:27 ../templates/titles_record_html_categories:262 ../templates/titles_record_mobile_categories:274
 msgid "Standort             "
 msgstr ""
 
@@ -4468,7 +4476,7 @@ msgstr ""
 msgid "Standortinformationen bearbeiten"
 msgstr ""
 
-#: ../templates/_database/dbis/classifications_html:36 ../templates/_database/ezb/classifications_html:36 ../templates/_profile/kug/login:38 ../templates/_profile/kug/searchforms_record_advanced:37 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gaesdonck:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_koenigswinter:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_rheinischeabteilung:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_advanced:37 ../templates/_profile/sammlungen/_view/alekiddr/info_project:36 ../templates/_profile/sammlungen/_view/alekiddr/info_sammlung:36 ../templates/_profile/sammlungen/_view/inst404abklatsch/browse_title_html:37 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_abklatsch:36 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:36 ../templates/_profile/sammlungen/_view/richter/browse_title_html:37 ../templates/_profile/sammlungen/_view/richter/cartitems_empty:37 ../templates/_profile/sammlungen/_view/richter/cartitems_html:52 ../templates/_profile/sammlungen/_view/richter/classifications_record_html:47 ../templates/_profile/sammlungen/_view/richter/clouds_searchterm_html:42 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:46 ../templates/_profile/sammlungen/_view/richter/info_ansprechpartner:36 ../templates/_profile/sammlungen/_view/richter/info_arbeitsablauf:36 ../templates/_profile/sammlungen/_view/richter/info_buecherlisten:36 ../templates/_profile/sammlungen/_view/richter/info_elise_richter_html:36 ../templates/_profile/sammlungen/_view/richter/info_externe_nachweise:36 ../templates/_profile/sammlungen/_view/richter/info_helene_richter_html:36 ../templates/_profile/sammlungen/_view/richter/info_publikationen:36 ../templates/_profile/sammlungen/_view/richter/info_richterbibliothek_heute:36 ../templates/_profile/sammlungen/_view/richter/litlists_record_html:42 ../templates/_profile/sammlungen/_view/richter/login:38 ../templates/_profile/sammlungen/_view/richter/persons_record_html:47 ../templates/_profile/sammlungen/_view/richter/searchforms_record_advanced:37 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:47 ../templates/_profile/sammlungen/_view/richter/titles_record_html:121 ../templates/_profile/sammlungen/_view/richter/users_registrations:37 ../templates/_view/richter/browse_title_html:37 ../templates/_view/richter/cartitems_empty:37 ../templates/_view/richter/cartitems_html:52 ../templates/_view/richter/classifications_record_html:47 ../templates/_view/richter/clouds_searchterm_html:42 ../templates/_view/richter/corporatebodies_record_html:46 ../templates/_view/richter/litlists_record_html:42 ../templates/_view/richter/login:38 ../templates/_view/richter/persons_record_html:47 ../templates/_view/richter/searchforms_record_advanced:37 ../templates/_view/richter/subjects_record_html:47 ../templates/_view/richter/users_registrations:37 ../templates/browse_bks_html:37 ../templates/browse_bks_record_databases_html:37 ../templates/browse_bks_record_html:37 ../templates/browse_html:37 ../templates/browse_topics_html:37 ../templates/browse_topics_record_html:39 ../templates/cartitems_html:52 ../templates/classifications_record_html:47 ../templates/clouds_corporatebody_html:48 ../templates/clouds_databases_html:37 ../templates/clouds_databases_record_html:37 ../templates/clouds_html:37 ../templates/clouds_litlist_html:42 ../templates/clouds_searchterm_html:42 ../templates/clouds_subject_html:48 ../templates/clouds_tag_html:48 ../templates/clouds_year_html:48 ../templates/corporatebodies_record_html:46 ../templates/error_html:24 ../templates/info_cardcatalogs:36 ../templates/info_feedback:36 ../templates/info_help:37 ../templates/info_project:36 ../templates/info_versions:36 ../templates/litlists_by_single_topic_html:45 ../templates/litlists_by_single_topic_recent_html:46 ../templates/litlists_by_topic_html:37 ../templates/litlists_html:37 ../templates/litlists_recent_html:37 ../templates/litlists_record_html:42 ../templates/login:38 ../templates/persons_record_html:47 ../templates/reviews_record_html:37 ../templates/search_history:37 ../templates/searchforms_record_advanced:37 ../templates/searchprofiles_session:51 ../templates/subjects_record_html:47 ../templates/tags_html:40 ../templates/tags_names_html:37 ../templates/tags_names_recent_html:37 ../templates/tags_names_record_html:40 ../templates/titles_record_html:121 ../templates/users_passwords:38 ../templates/users_registrations:37 ../templates/users_tags_html:40 ../templates/users_tags_names_html:37 ../templates/users_tags_names_record_html:40 ../templates/users_titles_record_searchindex_html:40
+#: ../templates/_database/dbis/classifications_html:36 ../templates/_database/ezb/classifications_html:36 ../templates/_profile/kug/login:38 ../templates/_profile/kug/searchforms_record_advanced:37 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gaesdonck:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_koenigswinter:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_rheinischeabteilung:36 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_advanced:37 ../templates/_profile/sammlungen/_view/alekiddr/info_project:36 ../templates/_profile/sammlungen/_view/alekiddr/info_sammlung:36 ../templates/_profile/sammlungen/_view/inst404abklatsch/browse_title_html:37 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_abklatsch:36 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:36 ../templates/_profile/sammlungen/_view/richter/browse_title_html:37 ../templates/_profile/sammlungen/_view/richter/cartitems_empty:37 ../templates/_profile/sammlungen/_view/richter/cartitems_html:52 ../templates/_profile/sammlungen/_view/richter/classifications_record_html:47 ../templates/_profile/sammlungen/_view/richter/clouds_searchterm_html:42 ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:46 ../templates/_profile/sammlungen/_view/richter/info_ansprechpartner:36 ../templates/_profile/sammlungen/_view/richter/info_arbeitsablauf:36 ../templates/_profile/sammlungen/_view/richter/info_buecherlisten:36 ../templates/_profile/sammlungen/_view/richter/info_elise_richter_html:36 ../templates/_profile/sammlungen/_view/richter/info_externe_nachweise:36 ../templates/_profile/sammlungen/_view/richter/info_helene_richter_html:36 ../templates/_profile/sammlungen/_view/richter/info_publikationen:36 ../templates/_profile/sammlungen/_view/richter/info_richterbibliothek_heute:36 ../templates/_profile/sammlungen/_view/richter/litlists_record_html:42 ../templates/_profile/sammlungen/_view/richter/login:38 ../templates/_profile/sammlungen/_view/richter/persons_record_html:47 ../templates/_profile/sammlungen/_view/richter/searchforms_record_advanced:37 ../templates/_profile/sammlungen/_view/richter/subjects_record_html:47 ../templates/_profile/sammlungen/_view/richter/titles_record_html:121 ../templates/_profile/sammlungen/_view/richter/users_registrations:37 ../templates/_view/richter/browse_title_html:37 ../templates/_view/richter/cartitems_empty:37 ../templates/_view/richter/cartitems_html:52 ../templates/_view/richter/classifications_record_html:47 ../templates/_view/richter/clouds_searchterm_html:42 ../templates/_view/richter/corporatebodies_record_html:46 ../templates/_view/richter/litlists_record_html:42 ../templates/_view/richter/login:38 ../templates/_view/richter/persons_record_html:47 ../templates/_view/richter/searchforms_record_advanced:37 ../templates/_view/richter/subjects_record_html:47 ../templates/_view/richter/users_registrations:37 ../templates/browse_bks_html:37 ../templates/browse_bks_record_databases_html:37 ../templates/browse_bks_record_html:37 ../templates/browse_html:37 ../templates/browse_topics_html:37 ../templates/browse_topics_record_html:39 ../templates/cartitems_html:52 ../templates/classifications_record_html:47 ../templates/clouds_corporatebody_html:48 ../templates/clouds_databases_html:37 ../templates/clouds_databases_record_html:37 ../templates/clouds_html:37 ../templates/clouds_litlist_html:42 ../templates/clouds_searchterm_html:42 ../templates/clouds_subject_html:48 ../templates/clouds_tag_html:48 ../templates/clouds_year_html:48 ../templates/corporatebodies_record_html:46 ../templates/error_html:24 ../templates/info_cardcatalogs:36 ../templates/info_feedback:36 ../templates/info_help:37 ../templates/info_project:36 ../templates/info_versions:36 ../templates/litlists_by_single_topic_html:45 ../templates/litlists_by_single_topic_recent_html:46 ../templates/litlists_by_topic_html:37 ../templates/litlists_html:37 ../templates/litlists_recent_html:37 ../templates/litlists_record_html:42 ../templates/login:38 ../templates/persons_record_html:47 ../templates/reviews_record_html:37 ../templates/search_history:37 ../templates/searchforms_record_advanced:37 ../templates/searchprofiles_session:51 ../templates/subjects_record_html:47 ../templates/tags_html:40 ../templates/tags_names_html:37 ../templates/tags_names_recent_html:37 ../templates/tags_names_record_html:40 ../templates/titles_record_html:122 ../templates/users_passwords:38 ../templates/users_registrations:37 ../templates/users_tags_html:40 ../templates/users_tags_names_html:37 ../templates/users_tags_names_record_html:40 ../templates/users_titles_record_searchindex_html:40
 msgid "Start"
 msgstr ""
 
@@ -4568,11 +4576,11 @@ msgstr ""
 msgid "Suchprofile"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:17 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:17 ../templates/_profile/kug/searchforms_record_profile:17
+#: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:17 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:17 ../templates/_profile/kug/searchforms_record_profile:27
 msgid "Suchradius"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/search_radius:3 ../templates/_profile/kug/_view/inst132/search_radius:3 ../templates/_profile/kug/search_radius:4
+#: ../templates/_profile/kug/_view/engportrom/search_radius:3 ../templates/_profile/kug/_view/inst132/search_radius:3 ../templates/_profile/kug/search_radius:18
 msgid "Suchradius ändern"
 msgstr ""
 
@@ -4580,7 +4588,7 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:168 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:61 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:63 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:131 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:133 ../templates/_profile/rheinlandbib/clouds_navigation:56 ../templates/_profile/rheinlandbib/clouds_navigation:58 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:74 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:76 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:94 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:96 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:56 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:58 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:147 ../templates/_profile/sammlungen/_view/richter/subnavigation:105 ../templates/_profile/sammlungen/_view/richter/subnavigation:107 ../templates/_profile/sammlungen/_view/richter/titles_record_html:106 ../templates/_profile/sammlungen/_view/richter/titles_record_html:94 ../templates/_profile/sammlungen/clouds_navigation:56 ../templates/_profile/sammlungen/clouds_navigation:58 ../templates/_profile/usb/drilldown_categorized:147 ../templates/_view/richter/clouds_navigation:56 ../templates/_view/richter/clouds_navigation:58 ../templates/_view/richter/drilldown_categorized:147 ../templates/_view/richter/subnavigation:91 ../templates/_view/richter/subnavigation:93 ../templates/clouds_classification_html:51 ../templates/clouds_classification_html:70 ../templates/clouds_navigation:61 ../templates/clouds_navigation:63 ../templates/search_facet:166 ../templates/search_history:68 ../templates/search_history:80 ../templates/search_title_start_html:43 ../templates/search_title_start_html:55 ../templates/subnavigation:75 ../templates/subnavigation:77 ../templates/titles_record_html:106 ../templates/titles_record_html:94
+#: ../templates/_profile/kug/search_facet:168 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:61 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:63 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:131 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:133 ../templates/_profile/rheinlandbib/clouds_navigation:56 ../templates/_profile/rheinlandbib/clouds_navigation:58 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:74 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:76 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:94 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:96 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:56 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:58 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:147 ../templates/_profile/sammlungen/_view/richter/subnavigation:105 ../templates/_profile/sammlungen/_view/richter/subnavigation:107 ../templates/_profile/sammlungen/_view/richter/titles_record_html:106 ../templates/_profile/sammlungen/_view/richter/titles_record_html:94 ../templates/_profile/sammlungen/clouds_navigation:56 ../templates/_profile/sammlungen/clouds_navigation:58 ../templates/_profile/usb/drilldown_categorized:147 ../templates/_view/richter/clouds_navigation:56 ../templates/_view/richter/clouds_navigation:58 ../templates/_view/richter/drilldown_categorized:147 ../templates/_view/richter/subnavigation:91 ../templates/_view/richter/subnavigation:93 ../templates/clouds_classification_html:51 ../templates/clouds_classification_html:70 ../templates/clouds_navigation:61 ../templates/clouds_navigation:63 ../templates/search_facet:166 ../templates/search_history:68 ../templates/search_history:80 ../templates/search_title_start_html:43 ../templates/search_title_start_html:55 ../templates/subnavigation:75 ../templates/subnavigation:77 ../templates/titles_record_html:107 ../templates/titles_record_html:95
 msgid "Systematik"
 msgstr ""
 
@@ -5097,7 +5105,7 @@ msgstr ""
 msgid "T5100"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:172 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:151 ../templates/_profile/sammlungen/_view/richter/titles_record_html:100 ../templates/_profile/sammlungen/_view/richter/titles_record_html:110 ../templates/_profile/usb/drilldown_categorized:151 ../templates/_view/richter/drilldown_categorized:151 ../templates/search_facet:170 ../templates/search_history:74 ../templates/search_history:84 ../templates/search_title_start_html:49 ../templates/search_title_start_html:59 ../templates/titles_record_html:100 ../templates/titles_record_html:110
+#: ../templates/_profile/kug/search_facet:172 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:151 ../templates/_profile/sammlungen/_view/richter/titles_record_html:100 ../templates/_profile/sammlungen/_view/richter/titles_record_html:110 ../templates/_profile/usb/drilldown_categorized:151 ../templates/_view/richter/drilldown_categorized:151 ../templates/search_facet:170 ../templates/search_history:74 ../templates/search_history:84 ../templates/search_title_start_html:49 ../templates/search_title_start_html:59 ../templates/titles_record_html:101 ../templates/titles_record_html:111
 msgid "Tag"
 msgstr ""
 
@@ -5109,15 +5117,15 @@ msgstr ""
 msgid "Taggen"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:80 ../templates/_profile/sammlungen/_view/richter/titles_record_html:238 ../templates/_view/richter/cartitems_html_actions:80 ../templates/cartitems_html_actions:86 ../templates/titles_record_html_actions:87 ../templates/titles_record_include:421
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:80 ../templates/_profile/sammlungen/_view/richter/titles_record_html:238 ../templates/_view/richter/cartitems_html_actions:80 ../templates/cartitems_html_actions:91 ../templates/titles_record_html_actions:99 ../templates/titles_record_include:421
 msgid "Tagging"
 msgstr ""
 
-#: ../templates/_profile/kug/home_html_bottom_center:22 ../templates/_profile/sammlungen/_view/richter/titles_record_html:438 ../templates/clouds_tag_html:50 ../templates/tags_html:41 ../templates/tags_html:75 ../templates/tags_names_html:58 ../templates/tags_navigation:21 ../templates/titles_record_html_actions:104 ../templates/titles_record_html_actions:181 ../templates/titles_record_html_actions:320 ../templates/titles_record_include:657 ../templates/users_navigation:31 ../templates/users_navigation:46 ../templates/users_tags_html:78
+#: ../templates/_profile/kug/home_html_bottom_center:22 ../templates/_profile/sammlungen/_view/richter/titles_record_html:438 ../templates/cartitems_html_actions:100 ../templates/clouds_tag_html:50 ../templates/tags_html:41 ../templates/tags_html:75 ../templates/tags_names_html:58 ../templates/tags_navigation:21 ../templates/titles_record_html_actions:116 ../templates/titles_record_html_actions:219 ../templates/titles_record_html_actions:359 ../templates/titles_record_include:657 ../templates/users_navigation:31 ../templates/users_navigation:46 ../templates/users_tags_html:78
 msgid "Tags"
 msgstr ""
 
-#: ../templates/titles_record_html_actions:203
+#: ../templates/titles_record_html_actions:241
 msgid "Tags entfernen"
 msgstr ""
 
@@ -5137,11 +5145,11 @@ msgstr ""
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:769 ../templates/titles_record_html:350 ../templates/titles_record_include:215
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:769 ../templates/titles_record_html:316 ../templates/titles_record_include:215
 msgid "Text"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:167 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:146 ../templates/_profile/sammlungen/_view/richter/titles_record_html:105 ../templates/_profile/sammlungen/_view/richter/titles_record_html:93 ../templates/_profile/usb/drilldown_categorized:146 ../templates/_view/richter/drilldown_categorized:146 ../templates/search_facet:165 ../templates/search_history:67 ../templates/search_history:79 ../templates/search_title_start_html:42 ../templates/search_title_start_html:54 ../templates/titles_record_html:105 ../templates/titles_record_html:93
+#: ../templates/_profile/kug/search_facet:167 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:146 ../templates/_profile/sammlungen/_view/richter/titles_record_html:105 ../templates/_profile/sammlungen/_view/richter/titles_record_html:93 ../templates/_profile/usb/drilldown_categorized:146 ../templates/_view/richter/drilldown_categorized:146 ../templates/search_facet:165 ../templates/search_history:67 ../templates/search_history:79 ../templates/search_title_start_html:42 ../templates/search_title_start_html:54 ../templates/titles_record_html:106 ../templates/titles_record_html:94
 msgid "Thema"
 msgstr ""
 
@@ -5187,7 +5195,7 @@ msgstr ""
 msgid "Tip: Digitaler Kartenkatalog"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:26 ../templates/_profile/sammlungen/_view/richter/litlists_record_html:87 ../templates/_profile/sammlungen/_view/richter/titles_record_html:135 ../templates/_profile/sammlungen/_view/richter/titles_record_html:768 ../templates/_profile/sammlungen/_view/richter/titles_record_html:88 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:122 ../templates/_profile/usb/litlists_record_include:42 ../templates/_view/richter/cartitems_html_full:26 ../templates/_view/richter/litlists_record_html:87 ../templates/_view/richter/users_litlists_record_edit:122 ../templates/cartitems_html_full:26 ../templates/litlists_record_html:86 ../templates/litlists_record_include:35 ../templates/search_history:62 ../templates/search_title_start_html:37 ../templates/searchforms_record_options:3 ../templates/tags_include:29 ../templates/tags_names_record_html:77 ../templates/titles_record_html:135 ../templates/titles_record_html:349 ../templates/titles_record_html:88 ../templates/titles_record_include:214 ../templates/users_circulations_make_order:82 ../templates/users_litlists_record_edit:134 ../templates/users_litlists_record_html:89 ../templates/users_titles_record_searchindex_html:54
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:35 ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:26 ../templates/_profile/sammlungen/_view/richter/litlists_record_html:87 ../templates/_profile/sammlungen/_view/richter/titles_record_html:135 ../templates/_profile/sammlungen/_view/richter/titles_record_html:768 ../templates/_profile/sammlungen/_view/richter/titles_record_html:88 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:122 ../templates/_profile/usb/litlists_record_include:42 ../templates/_view/richter/cartitems_html_full:26 ../templates/_view/richter/litlists_record_html:87 ../templates/_view/richter/users_litlists_record_edit:122 ../templates/cartitems_html_full:26 ../templates/litlists_record_html:86 ../templates/litlists_record_include:35 ../templates/search_history:62 ../templates/search_title_start_html:37 ../templates/searchforms_record_options:3 ../templates/tags_include:29 ../templates/tags_names_record_html:77 ../templates/titles_record_html:136 ../templates/titles_record_html:315 ../templates/titles_record_html:89 ../templates/titles_record_include:214 ../templates/users_circulations_make_order:82 ../templates/users_litlists_record_edit:134 ../templates/users_litlists_record_html:89 ../templates/users_titles_record_searchindex_html:54
 msgid "Titel"
 msgstr ""
 
@@ -5207,7 +5215,7 @@ msgstr ""
 msgid "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:822 ../templates/titles_record_html:403 ../templates/titles_record_include:272
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:822 ../templates/titles_record_html:369 ../templates/titles_record_include:272
 msgid "Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden"
 msgstr ""
 
@@ -5236,7 +5244,7 @@ msgid "Titel-Datei"
 msgstr ""
 
 #. (recordname,dbdesc)
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:34 ../templates/titles_record_html:34 ../templates/titles_record_mobile:33 ../templates/users_titles_record_searchindex_html:15
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:34 ../templates/titles_record_html:35 ../templates/titles_record_mobile:33 ../templates/users_titles_record_searchindex_html:15
 msgid "Titel-Information: %1 in Katalog %2"
 msgstr ""
 
@@ -5272,7 +5280,7 @@ msgstr ""
 msgid "Titelzugriffe"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:518 ../templates/info_11:34 ../templates/info_tutorials:73 ../templates/titles_popular_by_database_html:44 ../templates/titles_popular_by_database_html:62 ../templates/titles_popular_include:31 ../templates/titles_record_html_actions:400 ../templates/titles_record_include:725
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:518 ../templates/info_11:34 ../templates/info_tutorials:73 ../templates/titles_popular_by_database_html:44 ../templates/titles_popular_by_database_html:62 ../templates/titles_popular_include:31 ../templates/titles_record_html_actions:439 ../templates/titles_record_include:725
 msgid "Top 20"
 msgstr ""
 
@@ -5319,7 +5327,7 @@ msgstr ""
 msgid "Tutorien zu einzelnen Themen:"
 msgstr ""
 
-#: ../templates/admin_authenticators_html:119 ../templates/admin_authenticators_html:92 ../templates/admin_authenticators_record_edit:92 ../templates/admin_authenticators_record_html:68 ../templates/admin_locations_html:105 ../templates/admin_locations_html:79 ../templates/admin_locations_record_edit:79 ../templates/authenticators_html:62 ../templates/authenticators_record_html:62 ../templates/locations_html:102
+#: ../templates/admin_authenticators_html:119 ../templates/admin_authenticators_html:92 ../templates/admin_authenticators_record_edit:92 ../templates/admin_authenticators_record_html:68 ../templates/admin_locations_html:105 ../templates/admin_locations_html:79 ../templates/admin_locations_record_edit:79 ../templates/authenticators_html:62 ../templates/authenticators_record_html:62 ../templates/cartitems_html_actions:105 ../templates/cartitems_html_actions:68 ../templates/locations_html:102
 msgid "Typ"
 msgstr ""
 
@@ -5328,7 +5336,7 @@ msgstr ""
 msgid "Typ %1 ist nicht definiert"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:322 ../templates/titles_record_html_actions:186 ../templates/titles_record_include:437 ../templates/titles_record_include:509
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:322 ../templates/titles_record_html_actions:224 ../templates/titles_record_include:437 ../templates/titles_record_include:509
 msgid "Typ:"
 msgstr ""
 
@@ -5459,11 +5467,11 @@ msgstr ""
 msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:515 ../templates/titles_record_html_actions:397 ../templates/titles_record_include:722
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:515 ../templates/titles_record_html_actions:436 ../templates/titles_record_include:722
 msgid "Verschiedenes"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:416 ../templates/titles_record_html_actions:298 ../templates/titles_record_include:635
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:416 ../templates/titles_record_html_actions:337 ../templates/titles_record_include:635
 msgid "Verschlagwortung anderer Kataloge"
 msgstr ""
 
@@ -5475,7 +5483,7 @@ msgid ""
 "durch zus&auml;tzliche Worte weiter eingrenzen."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:486 ../templates/connector_similarpersons_html:40 ../templates/titles_record_html_actions:368 ../templates/titles_record_include:693
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:486 ../templates/connector_similarpersons_html:40 ../templates/titles_record_html_actions:407 ../templates/titles_record_include:693
 msgid "Verwandte Personen"
 msgstr ""
 
@@ -5483,7 +5491,7 @@ msgstr ""
 msgid "Verwandte Schlagworte"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:505 ../templates/titles_record_html_actions:387 ../templates/titles_record_include:712
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:505 ../templates/titles_record_html_actions:426 ../templates/titles_record_include:712
 msgid "Verwandte Themen"
 msgstr ""
 
@@ -5582,7 +5590,7 @@ msgid ""
 msgstr ""
 
 #. ("<img src=\"${config.get('wikipedia_img')
-#: ../templates/clouds_databases_html:52
+#: ../templates/clouds_databases_html:51
 msgid ""
 "W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine\n"
 "<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten\n"
@@ -5593,7 +5601,7 @@ msgid ""
 msgstr ""
 
 #. ("<img src=\"${config.get('wikipedia_img')
-#: ../templates/clouds_databases_record_html:61 ../templates/clouds_html:59
+#: ../templates/clouds_databases_record_html:60 ../templates/clouds_html:59
 msgid ""
 "W&auml;hlen Sie einen Wolken-Typ aus, um f&uuml;r diesen eine\n"
 "<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten Begriffe bzw.\n"
@@ -5607,7 +5615,7 @@ msgstr ""
 msgid "Wann"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:803 ../templates/titles_record_html:384 ../templates/titles_record_include:251
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:803 ../templates/titles_record_html:350 ../templates/titles_record_include:251
 msgid "War diese Rezension hilfreich?"
 msgstr ""
 
@@ -5857,7 +5865,7 @@ msgstr ""
 msgid "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:836 ../templates/titles_record_html:417 ../templates/titles_record_include:287
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:836 ../templates/titles_record_html:383 ../templates/titles_record_include:287
 msgid "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen"
 msgstr ""
 
@@ -5960,6 +5968,26 @@ msgstr ""
 
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:259 ../templates/_profile/kug/searchforms_record_query:259 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:144 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:170 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:145 ../templates/_view/richter/searchforms_record_query:145 ../templates/searchforms_record_query:177
 msgid "bis"
+msgstr ""
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:43
+msgid "davon Artikel"
+msgstr ""
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:47
+msgid "davon Digital"
+msgstr ""
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:39
+msgid "davon Zeitschriften/Serien"
+msgstr ""
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:64
+msgid "davon privat"
+msgstr ""
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:60
+msgid "davon öffentlich"
 msgstr ""
 
 #: ../templates/_database/dbis/classifications_html:62 ../templates/_database/dbis/search_title_item_html:47
@@ -6073,7 +6101,7 @@ msgstr ""
 msgid "nach Relevanz"
 msgstr ""
 
-#: ../templates/_profile/usb/search_title_combined_include:67
+#: ../templates/_profile/usb/search_title_combined_include:67 ../templates/titlist_options:23 ../templates/titlist_options:24
 msgid "nach Signatur"
 msgstr ""
 
@@ -6121,7 +6149,7 @@ msgstr ""
 msgid "ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:63 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:96 ../templates/_profile/sammlungen/_view/richter/titles_record_html:222 ../templates/_profile/sammlungen/_view/richter/titles_record_html:259 ../templates/_profile/sammlungen/_view/richter/titles_record_html:322 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:73 ../templates/_view/richter/cartitems_html_actions:63 ../templates/_view/richter/cartitems_html_actions:96 ../templates/_view/richter/users_litlists_record_edit:73 ../templates/cartitems_html_actions:102 ../templates/cartitems_html_actions:69 ../templates/litlists_record_include:72 ../templates/titles_record_html_actions:112 ../templates/titles_record_html_actions:189 ../templates/titles_record_html_actions:69 ../templates/titles_record_include:408 ../templates/titles_record_include:437 ../templates/titles_record_include:509 ../templates/users_litlists_html:105 ../templates/users_litlists_html:69 ../templates/users_litlists_record_edit:87
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:63 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:96 ../templates/_profile/sammlungen/_view/richter/titles_record_html:222 ../templates/_profile/sammlungen/_view/richter/titles_record_html:259 ../templates/_profile/sammlungen/_view/richter/titles_record_html:322 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:73 ../templates/_view/richter/cartitems_html_actions:63 ../templates/_view/richter/cartitems_html_actions:96 ../templates/_view/richter/users_litlists_record_edit:73 ../templates/cartitems_html_actions:108 ../templates/cartitems_html_actions:71 ../templates/litlists_record_include:72 ../templates/titles_record_html_actions:124 ../templates/titles_record_html_actions:227 ../templates/titles_record_html_actions:69 ../templates/titles_record_include:408 ../templates/titles_record_include:437 ../templates/titles_record_include:509 ../templates/users_litlists_html:105 ../templates/users_litlists_html:69 ../templates/users_litlists_record_edit:87
 msgid "privat"
 msgstr ""
 
@@ -6129,11 +6157,11 @@ msgstr ""
 msgid "realisiert mit"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:756 ../templates/reviews_edit:218 ../templates/titles_record_html:337 ../templates/titles_record_include:202
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:756 ../templates/reviews_edit:218 ../templates/titles_record_html:303 ../templates/titles_record_include:202
 msgid "schlecht"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:762 ../templates/reviews_edit:224 ../templates/titles_record_html:343 ../templates/titles_record_include:208
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:762 ../templates/reviews_edit:224 ../templates/titles_record_html:309 ../templates/titles_record_include:208
 msgid "sehr gut"
 msgstr ""
 
@@ -6157,11 +6185,15 @@ msgstr ""
 msgid "Ändern"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:298 ../templates/titles_record_html_actions:154 ../templates/titles_record_include:480 ../templates/titles_record_include:554
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:14
+msgid "Über den KUG"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:298 ../templates/titles_record_html_actions:192 ../templates/titles_record_include:480 ../templates/titles_record_include:554
 msgid "Übernahme bereits von Nutzern vergebener Tags"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:105 ../templates/_profile/sammlungen/_view/richter/titles_record_html:271 ../templates/_view/richter/cartitems_html_actions:105 ../templates/cartitems_html_actions:111 ../templates/titles_record_html_actions:127 ../templates/titles_record_include:449 ../templates/titles_record_include:523
+#: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:105 ../templates/_profile/sammlungen/_view/richter/titles_record_html:271 ../templates/_view/richter/cartitems_html_actions:105 ../templates/cartitems_html_actions:120 ../templates/titles_record_html_actions:139 ../templates/titles_record_include:449 ../templates/titles_record_include:523
 msgid "Übernahme eigener Tags"
 msgstr ""
 

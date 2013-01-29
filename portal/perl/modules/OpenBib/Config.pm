@@ -536,10 +536,10 @@ sub get_rssfeed_overview {
     my $rssinfos = $self->{schema}->resultset('Rssinfo')->search(
         undef,
         {
-            select => [ 'me.id', 'me.type', 'me.subtype', 'me.subtypedesc', 'dbid.dbname'],
-            as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'dbname'],
+            select => [ 'me.id', 'me.type', 'dbid.dbname'],
+            as     => [ 'id', 'type', 'dbname'],
             join   => 'dbid',
-            order_by => ['dbid.dbname','type','subtype'],
+            order_by => ['dbid.dbname','type'],
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
@@ -569,10 +569,10 @@ sub get_rssfeed_by_id {
             'me.id' => $id,
         },
         {
-            select => [ 'me.id', 'me.type', 'me.subtype', 'me.subtypedesc', 'me.active', 'dbid.dbname'],
-            as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'active', 'dbname'],
+            select => [ 'me.id', 'me.type', 'me.active', 'dbid.dbname'],
+            as     => [ 'id', 'type', 'active', 'dbname'],
             join   => 'dbid',
-            order_by => ['dbid.dbname','type','subtype'],
+            order_by => ['dbid.dbname','type'],
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     )->first;
@@ -599,10 +599,10 @@ sub get_rssfeeds_of_db {
             'dbid.dbname' => $dbname
         },
         {
-            select => [ 'me.id', 'me.type', 'me.subtype', 'me.subtypedesc', 'me.active', 'dbid.dbname'],
-            as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'active', 'dbname'],
+            select => [ 'me.id', 'me.type', 'me.active', 'dbid.dbname'],
+            as     => [ 'id', 'type', 'active', 'dbname'],
             join   => 'dbid',
-            order_by => ['dbid.dbname','type','subtype'],
+            order_by => ['dbid.dbname','type'],
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
@@ -633,10 +633,10 @@ sub get_rssfeeds_of_db_by_type {
             'dbid.dbname' => $dbname
         },
         {
-            select => [ 'me.id', 'me.type', 'me.subtype', 'me.subtypedesc', 'me.active', 'dbid.dbname'],
-            as     => [ 'id', 'type', 'subtype', 'subtypedesc', 'active', 'dbname'],
+            select => [ 'me.id', 'me.type', 'me.active', 'dbid.dbname'],
+            as     => [ 'id', 'type', 'active', 'dbname'],
             join   => 'dbid',
-            order_by => ['type','subtype'],
+            order_by => ['type'],
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
@@ -668,8 +668,8 @@ sub get_primary_rssfeed_of_view  {
             'rssid.active' => 1,
         },
         {
-            select => [ 'rssid.type', 'rssid.subtype', 'dbid.dbname'],
-            as     => [ 'type', 'subtype', 'dbname'],
+            select => [ 'rssid.type', 'dbid.dbname'],
+            as     => [ 'type', 'dbname'],
             join   => [ 'rssid', { 'rssid' => 'dbid' } ],
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
@@ -1273,7 +1273,7 @@ sub get_profiledbs {
     );
     
     while (my $dbname = $dbnames->next){
-        push @profiledbs, $dbname->{thisdbname};
+        push @profiledbs, $dbname->{thisdbname} if ($dbname->{thisdbname});
         
     }
 

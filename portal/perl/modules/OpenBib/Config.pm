@@ -234,32 +234,52 @@ sub get_number_of_titles {
     }
     elsif ($view){
         # DBI: "select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,view_db,viewinfo where viewinfo.viewname=? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and databaseinfo.active is true"
-        $counts = $self->{schema}->resultset('ViewDb')->search_rs(
+        my $databases =  $self->{schema}->resultset('ViewDb')->search(
             {
-                'dbid.active'     => 1,
-                'viewid.viewname' => $view,
-            },
+                'dbid.active'           => 1,
+                'viewid.viewname'       => $view,
+            }, 
             {
                 join => ['dbid','viewid'],
+                select   => [ 'dbid.id' ],
+                as       => ['dbid'],
+                group_by => ['dbid.id'],
+            }
+        );
 
-                select => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
-                as     => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
-                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        $counts = $self->{schema}->resultset('Databaseinfo')->search(
+            {
+                'id'           => { -in => $databases->as_query },
+            }, 
+            {
+                select   => [ {'sum' => 'allcount'}, {'sum' => 'journalcount'}, {'sum' => 'articlecount'}, {'sum' => 'digitalcount'}],
+                as       => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',                
             }
         )->first;
     }
     elsif ($profile){
         # DBI: "select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunit_db,profileinfo,orgunitinfo where profileinfo.profilename = ? and orgunitinfo.profileid=profileinfo.id and orgunit_db.orgunitid=orgunitinfo.id and orgunit_db.dbid=databaseinfo.id and databaseinfo.active is true"
-        $counts = $self->{schema}->resultset('OrgunitDb')->search(
+        my $databases =  $self->{schema}->resultset('OrgunitDb')->search(
             {
                 'dbid.active'           => 1,
                 'profileid.profilename' => $profile,
             }, 
             {
                 join     => [ 'orgunitid', 'dbid', { 'orgunitid' => 'profileid' } ],
-                select   => [ {'sum' => 'dbid.allcount'}, {'sum' => 'dbid.journalcount'}, {'sum' => 'dbid.articlecount'}, {'sum' => 'dbid.digitalcount'}],
+                select   => [ 'dbid.id' ],
+                as       => ['dbid'],
+                group_by => ['dbid.id'],
+            }
+        );
+
+        $counts = $self->{schema}->resultset('Databaseinfo')->search(
+            {
+                'id'           => { -in => $databases->as_query },
+            }, 
+            {
+                select   => [ {'sum' => 'allcount'}, {'sum' => 'journalcount'}, {'sum' => 'articlecount'}, {'sum' => 'digitalcount'}],
                 as       => ['allcount', 'journalcount', 'articlecount', 'digitalcount'],
-                group_by => ['orgunitid.id'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',                
             }
         )->first;

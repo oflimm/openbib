@@ -1342,10 +1342,6 @@ msgstr ""
 msgid "Der Eintrag in der Literaturliste existiert nicht"
 msgstr ""
 
-#: ../templates/_profile/kug/std_footer_html:17
-msgid "Der KUG ist ein Dienst der USB Köln"
-msgstr ""
-
 #: ../templates/info_help:574
 msgid ""
 "Der Link <i>Trefferliste</i> gibt Ihnen die aktuelle Suchanfrage an und darunter die Treffermenge insgesamt und die der\n"
@@ -6043,6 +6039,10 @@ msgstr ""
 
 #: ../templates/_database/dbis/classifications_html:64 ../templates/_database/dbis/search_title_item_html:49 ../templates/_database/ezb/classifications_html:63 ../templates/_database/ezb/search_title_item_html:48 ../templates/_profile/kug/_database/dbis/classifications_html:65 ../templates/_profile/kug/_database/dbis/search_title_item_html:87 ../templates/_profile/kug/_database/ezb/classifications_html:64 ../templates/_profile/kug/_database/ezb/search_title_item_html:86 ../templates/_profile/kug/_view/inst501/searchforms_record_query:265 ../templates/_profile/kug/mainnavigation_html:114 ../templates/_profile/kug/searchforms_record_query:265 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:147 ../templates/_profile/rheinlandbib/searchforms_record_query:139 ../templates/_profile/rheinlandbib/searchforms_record_simple:147 ../templates/_profile/rheinlandbib/searchforms_record_simple:237 ../templates/_profile/rheinlandbib/searchforms_record_simple:329 ../templates/_profile/rheinlandbib/searchforms_record_simple:422 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:173 ../templates/_profile/sammlungen/_view/richter/searchforms_record_simple:158 ../templates/_profile/sammlungen/_view/richter/searchforms_record_simple:200 ../templates/_profile/sammlungen/_view/richter/searchforms_record_simple:243 ../templates/_profile/sammlungen/_view/richter/searchforms_record_simple:287 ../templates/_profile/usb/searchforms_record_query:141 ../templates/_view/richter/searchforms_record_simple:158 ../templates/_view/richter/searchforms_record_simple:200 ../templates/_view/richter/searchforms_record_simple:243 ../templates/_view/richter/searchforms_record_simple:287 ../templates/searchforms_record_query:180 ../templates/searchforms_record_simple:152 ../templates/searchforms_record_simple:194 ../templates/searchforms_record_simple:237 ../templates/searchforms_record_simple:281
 msgid "in:"
+msgstr ""
+
+#: ../templates/_profile/kug/std_footer_html:17
+msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
 msgstr ""
 
 #: ../templates/_profile/kug/users_preferences_html:96 ../templates/users_preferences_html:96 ../templates/users_roles_edit:86

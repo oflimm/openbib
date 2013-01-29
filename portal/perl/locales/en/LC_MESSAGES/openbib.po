@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-01-29 16:31+0100\n"
+"PO-Revision-Date: 2013-01-29 17:03+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -945,8 +945,8 @@ msgid ""
 msgstr ""
 "Enhancement with ISBN10 and ISBN13. A given title with a ISBN10 can also be "
 "retrieved with the corresponding ISBN13 and vice versa. So you can now find "
-"titles with ISBN13, eg. used in catalogs of publishers since 1.1.2007, "
-"that were catalogd at a time when only a ISBN10 was known."
+"titles with ISBN13, eg. used in catalogs of publishers since 1.1.2007, that "
+"were catalogd at a time when only a ISBN10 was known."
 
 #: ../templates/litlists_by_single_topic_include:16
 msgid "Anzahl"
@@ -2175,10 +2175,6 @@ msgstr "Topics corresponding to EZB"
 #: ../modules/OpenBib/Handler/Apache/Users/LitLists/Item.pm:320
 msgid "Der Eintrag in der Literaturliste existiert nicht"
 msgstr "This entry of the literature list does not exist."
-
-#: ../templates/_profile/kug/std_footer_html:17
-msgid "Der KUG ist ein Dienst der USB Köln"
-msgstr "KUG is a service of USB Köln"
 
 #: ../templates/info_help:574
 msgid ""
@@ -5952,9 +5948,9 @@ msgid ""
 "eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
 msgstr ""
 "Apart from the standard portal with all catalogs there exist a lot of "
-"special views with preselected catalogs and additional information. Some "
-"of these even present a separate portal. On this page we give you an "
-"overview of all available special views."
+"special views with preselected catalogs and additional information. Some of "
+"these even present a separate portal. On this page we give you an overview "
+"of all available special views."
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:804
 #: ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:79
@@ -7630,8 +7626,7 @@ msgid ""
 "Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-"
 "Profil eingeben."
 msgstr ""
-"You have to enter at least a view name, a description and a catalog "
-"profile."
+"You have to enter at least a view name, a description and a catalog profile."
 
 #: ../templates/_profile/sammlungen/_view/richter/users_registrations_success:45
 #: ../templates/_view/richter/users_registrations_success:45
@@ -11428,6 +11423,12 @@ msgstr "in internal course of business"
 msgid "in:"
 msgstr "in:"
 
+#: ../templates/_profile/kug/std_footer_html:17
+msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
+msgstr ""
+"is a service of  Universitäts- und "
+"Stadtbibliothek Köln"
+
 #: ../templates/_profile/kug/users_preferences_html:96
 #: ../templates/users_preferences_html:96 ../templates/users_roles_edit:86
 msgid "ja, seit"
@@ -11782,6 +11783,9 @@ msgstr "Overview"
 #: ../templates/users_navigation:85 ../templates/users_navigation:87
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#~ msgid "Der KUG ist ein Dienst der USB Köln"
+#~ msgstr "KUG is a service of USB Köln"
 
 #~ msgid "Credits"
 #~ msgstr "Credits"

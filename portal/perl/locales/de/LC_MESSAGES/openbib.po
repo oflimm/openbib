@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-01-29 16:27+0100\n"
+"PO-Revision-Date: 2013-01-29 17:02+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2233,10 +2233,6 @@ msgstr "Der EZB zugeordnete Themengebiete"
 #: ../modules/OpenBib/Handler/Apache/Users/LitLists/Item.pm:320
 msgid "Der Eintrag in der Literaturliste existiert nicht"
 msgstr "Der Eintrag in der Literaturliste existiert nicht"
-
-#: ../templates/_profile/kug/std_footer_html:17
-msgid "Der KUG ist ein Dienst der USB Köln"
-msgstr "Der KUG ist ein Dienst der USB Köln"
 
 #: ../templates/info_help:574
 msgid ""
@@ -11759,6 +11755,10 @@ msgstr "im Gesch&auml;ftsgang"
 msgid "in:"
 msgstr "in:"
 
+#: ../templates/_profile/kug/std_footer_html:17
+msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
+msgstr "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
+
 #: ../templates/_profile/kug/users_preferences_html:96
 #: ../templates/users_preferences_html:96 ../templates/users_roles_edit:86
 msgid "ja, seit"
@@ -12114,6 +12114,9 @@ msgstr "Übersicht"
 #: ../templates/users_navigation:85 ../templates/users_navigation:87
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "Der KUG ist ein Dienst der USB Köln"
+#~ msgstr "Der KUG ist ein Dienst der USB Köln"
 
 #~ msgid "Credits"
 #~ msgstr "Credits"

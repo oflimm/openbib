@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-01-23 10:16+0100\n"
+"PO-Revision-Date: 2013-01-29 15:26+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -42,14 +42,12 @@ msgstr "${category}"
 #: ../templates/_database/openlibrary/titles_record_html_categories:205
 #: ../templates/_database/openlibrary/titles_record_html_categories:255
 #: ../templates/_database/wikisource_de/persons_record_html:112
-#: ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:230
-#: ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:261
-#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:71
-#: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:69
-#: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:71
-#: ../templates/_profile/kug/home_html_bottom_left:70
-#: ../templates/_profile/kug/titles_record_html_categories:257
-#: ../templates/_profile/kug/titles_record_html_categories:288
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:72
+#: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:70
+#: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:72
+#: ../templates/_profile/kug/home_html_bottom_left:71
+#: ../templates/_profile/kug/titles_record_html_categories:269
+#: ../templates/_profile/kug/titles_record_html_categories:300
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:38
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:220
 #: ../templates/_profile/sammlungen/_view/richter/classifications_record_html:97
@@ -97,7 +95,7 @@ msgstr "${thiscategory}"
 
 #. (item.votes.positive,item.votes.all)
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:794
-#: ../templates/titles_record_html:375 ../templates/titles_record_include:242
+#: ../templates/titles_record_html:341 ../templates/titles_record_include:242
 msgid ""
 "%1\n"
 "von %2 Nutzer fanden die folgende Rezension hilfreich:"
@@ -146,9 +144,9 @@ msgstr "%1 titles in %2 groups, %4 literature lists"
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:284
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:308
 #: ../templates/_view/richter/cartitems_html_actions:129
-#: ../templates/cartitems_html_actions:135
-#: ../templates/titles_record_html_actions:140
-#: ../templates/titles_record_html_actions:164
+#: ../templates/cartitems_html_actions:144
+#: ../templates/titles_record_html_actions:152
+#: ../templates/titles_record_html_actions:202
 #: ../templates/titles_record_include:463
 #: ../templates/titles_record_include:491
 #: ../templates/titles_record_include:537
@@ -271,11 +269,11 @@ msgstr "Substitute n for &ntilde;"
 #: ../templates/_view/richter/cartitems_html_actions:62
 #: ../templates/_view/richter/cartitems_html_actions:95
 #: ../templates/_view/richter/users_litlists_record_edit:73
-#: ../templates/cartitems_html_actions:101
-#: ../templates/cartitems_html_actions:68
+#: ../templates/cartitems_html_actions:107
+#: ../templates/cartitems_html_actions:70
 #: ../templates/litlists_record_include:72
-#: ../templates/titles_record_html_actions:111
-#: ../templates/titles_record_html_actions:188
+#: ../templates/titles_record_html_actions:123
+#: ../templates/titles_record_html_actions:226
 #: ../templates/titles_record_html_actions:69
 #: ../templates/titles_record_include:408
 #: ../templates/titles_record_include:437
@@ -333,7 +331,7 @@ msgstr "Add <b>selected titles</b> to existing literature lists"
 
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:83
 #: ../templates/_view/richter/cartitems_html_actions:83
-#: ../templates/cartitems_html_actions:89
+#: ../templates/cartitems_html_actions:94
 msgid "<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:"
 msgstr "Tag <b>selected titles</b> with these tags:"
 
@@ -514,7 +512,7 @@ msgstr "Cancel"
 msgid "Abgleich zu BibSonomy"
 msgstr "Mirror to BibSonomy"
 
-#: ../templates/_profile/kug/corporate_banner:15
+#: ../templates/_profile/kug/corporate_banner:18
 #: ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/richter/corporate_banner:7
@@ -623,8 +621,7 @@ msgstr "Update"
 msgid "Aktuelle Recherche"
 msgstr "This search"
 
-#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:14
-#: ../templates/newsflash:15
+#: ../templates/_profile/kug/_view/kug/newsflash:14 ../templates/newsflash:15
 msgid "Aktuelles"
 msgstr "News"
 
@@ -657,8 +654,8 @@ msgstr "All types"
 #: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:26
 #: ../templates/_profile/kug/_view/inst132/search_radius:20
 #: ../templates/_profile/kug/_view/inst132/searchforms_record_profile:26
-#: ../templates/_profile/kug/search_radius:21
-#: ../templates/_profile/kug/searchforms_record_profile:28
+#: ../templates/_profile/kug/search_radius:34
+#: ../templates/_profile/kug/searchforms_record_profile:38
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:16
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:161
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:251
@@ -734,7 +731,7 @@ msgstr "General statistic data of OpenBib"
 
 #: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:28
 #: ../templates/_profile/kug/_view/inst132/searchforms_record_profile:28
-#: ../templates/_profile/kug/searchforms_record_profile:30
+#: ../templates/_profile/kug/searchforms_record_profile:40
 msgid "Allgemeine Suchprofile"
 msgstr "Generic search profiles"
 
@@ -808,7 +805,7 @@ msgstr "Send to BibSonomy"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:694
 #: ../templates/_profile/usb/titles_record_include:130
-#: ../templates/titles_record_html:276 ../templates/titles_record_include:135
+#: ../templates/titles_record_html:242 ../templates/titles_record_include:135
 #: ../templates/titles_record_include:284
 msgid "Andere Ausgaben"
 msgstr "Other editions"
@@ -838,13 +835,17 @@ msgstr "Types of RSS-Feeds"
 msgid "Angelegt"
 msgstr "Created"
 
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:51
+msgid "Angemeldete Nutzer"
+msgstr "Registered users"
+
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:52
 #: ../templates/_view/richter/cartitems_html_actions:52
-#: ../templates/cartitems_html_actions:58
+#: ../templates/cartitems_html_actions:60
 msgid "Anlegen einer neuen Literaturliste: "
 msgstr "Create a new literature list: "
 
-#: ../templates/_profile/kug/corporate_banner:18
+#: ../templates/_profile/kug/corporate_banner:21
 #: ../templates/_profile/kug/login:135 ../templates/_profile/kug/login:39
 #: ../templates/_profile/kug/login:55 ../templates/_profile/kug/login:94
 #: ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:9
@@ -1126,7 +1127,7 @@ msgstr ""
 "please copy the corresponding URL from this page to your RSS-reader program."
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:774
-#: ../templates/titles_record_html:355 ../templates/titles_record_include:220
+#: ../templates/titles_record_html:321 ../templates/titles_record_include:220
 msgid "Aufnehmen"
 msgstr "Save"
 
@@ -1207,7 +1208,7 @@ msgstr "Circulation options"
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:681
 #: ../templates/_profile/usb/titles_record_include:70
 #: ../templates/_view/richter/cartitems_html_simple:62
-#: ../templates/cartitems_html_simple:59 ../templates/titles_record_html:263
+#: ../templates/cartitems_html_simple:59 ../templates/titles_record_html:229
 #: ../templates/titles_record_include:122
 #: ../templates/titles_record_include:144
 msgid "Ausleihe/Exemplare"
@@ -1310,8 +1311,7 @@ msgstr "Start a new search request"
 #: ../templates/_database/inst001/titles_record_html_categories:106
 #: ../templates/_database/openlibrary/titles_record_html_categories:25
 #: ../templates/_database/wikisource_de/persons_record_html:131
-#: ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:25
-#: ../templates/_profile/kug/titles_record_html_categories:24
+#: ../templates/_profile/kug/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:68
 #: ../templates/_profile/sammlungen/_view/richter/corporatebodies_record_html:105
 #: ../templates/_profile/sammlungen/_view/richter/litlists_record_html_full:36
@@ -1471,7 +1471,7 @@ msgstr "User"
 
 #: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:13
 #: ../templates/_profile/kug/_view/inst132/searchforms_record_profile:13
-#: ../templates/_profile/kug/searchforms_record_profile:13
+#: ../templates/_profile/kug/searchforms_record_profile:23
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:10
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:155
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:245
@@ -1574,7 +1574,7 @@ msgstr "Already existing views"
 #: ../templates/admin_views_rss_record_html:52
 #: ../templates/authenticators_html:62
 #: ../templates/authenticators_record_html:61 ../templates/clusters_html:62
-#: ../templates/clusters_record_html:61 ../templates/databases_html:84
+#: ../templates/clusters_record_html:61 ../templates/databases_html:92
 #: ../templates/databases_record_html:61 ../templates/locations_html:102
 #: ../templates/orgunits_html:66 ../templates/orgunits_record_html:67
 #: ../templates/profiles_html:62 ../templates/profiles_record_html:65
@@ -1598,8 +1598,7 @@ msgstr "Description"
 #: ../templates/_database/inst001/titles_record_html_categories:355
 #: ../templates/_database/openlibrary/titles_record_html_categories:260
 #: ../templates/_profile/kug/_database/inst302/circulation:83
-#: ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:266
-#: ../templates/_profile/kug/titles_record_html_categories:293
+#: ../templates/_profile/kug/titles_record_html_categories:305
 #: ../templates/_profile/mobile/_view/richtermobile/holding:16
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:43
 #: ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:26
@@ -1632,7 +1631,7 @@ msgstr "Please confirm your registration"
 #: ../templates/_profile/usb/titles_record_include:77
 #: ../templates/_view/richter/cartitems_html_simple:70
 #: ../templates/cartitems_html_simple:67 ../templates/holding:17
-#: ../templates/holding_mobile:17 ../templates/titles_record_html:266
+#: ../templates/holding_mobile:17 ../templates/titles_record_html:232
 #: ../templates/titles_record_include:125
 #: ../templates/titles_record_include:151
 msgid "Bestand"
@@ -1673,18 +1672,18 @@ msgstr "Subject"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:754
 #: ../templates/reviews_edit:216 ../templates/reviews_record_html:69
-#: ../templates/titles_record_html:335 ../templates/titles_record_include:200
+#: ../templates/titles_record_html:301 ../templates/titles_record_include:200
 msgid "Bewertung"
 msgstr "Rating"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:697
-#: ../templates/titles_record_html:279 ../templates/titles_record_include:138
+#: ../templates/titles_record_html:245 ../templates/titles_record_include:138
 #: ../templates/titles_record_include:178
 msgid "Bewertungen/Rezensionen"
 msgstr "Ratings/reviews"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:788
-#: ../templates/titles_record_html:369 ../templates/titles_record_include:236
+#: ../templates/titles_record_html:335 ../templates/titles_record_include:236
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Ratings/reviews from users"
 
@@ -1702,7 +1701,7 @@ msgid "BibSonomy"
 msgstr "BibSonomy"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:466
-#: ../templates/titles_record_html_actions:348
+#: ../templates/titles_record_html_actions:387
 #: ../templates/titles_record_include:673
 msgid "BibSonomy Tags"
 msgstr "BibSonomy Tags"
@@ -1763,8 +1762,8 @@ msgstr "You didn't enter a review or rating."
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:134
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:289
 #: ../templates/_view/richter/cartitems_html_actions:134
-#: ../templates/cartitems_html_actions:140
-#: ../templates/titles_record_html_actions:145
+#: ../templates/cartitems_html_actions:149
+#: ../templates/titles_record_html_actions:157
 #: ../templates/titles_record_include:468
 #: ../templates/titles_record_include:542 ../templates/users_tags_edit:91
 #: ../templates/users_tags_names_html:113
@@ -2202,7 +2201,7 @@ msgstr "German"
 #: ../templates/_view/richter/litlists_record_html_full:241
 #: ../templates/cartitems_html_full:240
 #: ../templates/litlists_record_html_full:241
-#: ../templates/titles_record_html:229 ../templates/titles_record_include:95
+#: ../templates/titles_record_html:195 ../templates/titles_record_include:95
 msgid "Deutsche Wikipedia"
 msgstr "German Wikipedia"
 
@@ -2293,8 +2292,8 @@ msgstr "This resource was not properly referenced by database."
 #: ../modules/OpenBib/Handler/Apache/CorporateBodies.pm:126
 #: ../modules/OpenBib/Handler/Apache/Persons.pm:126
 #: ../modules/OpenBib/Handler/Apache/Subjects.pm:128
-#: ../modules/OpenBib/Handler/Apache/Titles.pm:322
-#: ../modules/OpenBib/Handler/Apache/Users/Titles.pm:389
+#: ../modules/OpenBib/Handler/Apache/Titles.pm:362
+#: ../modules/OpenBib/Handler/Apache/Users/Titles.pm:418
 msgid "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 msgstr "This resource was not properly referenced by database/id."
 
@@ -2440,7 +2439,7 @@ msgid "Diese Session existiert nicht."
 msgstr "This session does not exist."
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:546
-#: ../templates/titles_record_html_actions:428
+#: ../templates/titles_record_html_actions:467
 #: ../templates/titles_record_include:753
 msgid "Diese Titel interessierten Sie bereits:"
 msgstr "These titles were already interesting to you:"
@@ -2504,7 +2503,7 @@ msgstr "This user does not exist."
 #: ../templates/_view/richter/litlists_record_html_full:238
 #: ../templates/cartitems_html_full:237
 #: ../templates/litlists_record_html_full:238
-#: ../templates/titles_record_html:225 ../templates/titles_record_include:91
+#: ../templates/titles_record_html:191 ../templates/titles_record_include:91
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr "This title is referenced in Wikipedia under"
 
@@ -2689,12 +2688,12 @@ msgid "Eigene Tags"
 msgstr "Your tags"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:799
-#: ../templates/titles_record_html:380 ../templates/titles_record_include:247
+#: ../templates/titles_record_html:346 ../templates/titles_record_include:247
 msgid "Eigenen Review bearbeiten"
 msgstr "Edit your review"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:800
-#: ../templates/titles_record_html:381 ../templates/titles_record_include:248
+#: ../templates/titles_record_html:347 ../templates/titles_record_include:248
 msgid "Eigenen Review l&ouml;schen"
 msgstr "Remove your review"
 
@@ -2811,8 +2810,8 @@ msgstr "Simple search"
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:86
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:249
 #: ../templates/_view/richter/cartitems_html_actions:86
-#: ../templates/cartitems_html_actions:92
-#: ../templates/titles_record_html_actions:101
+#: ../templates/cartitems_html_actions:97
+#: ../templates/titles_record_html_actions:113
 #: ../templates/titles_record_include:427
 msgid "Eingabe neuer Tags"
 msgstr "Enter new tags"
@@ -2955,7 +2954,7 @@ msgstr ""
 "1901."
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:346
-#: ../templates/titles_record_html_actions:228
+#: ../templates/titles_record_html_actions:266
 #: ../templates/titles_record_include:591
 msgid "Empfehlungen"
 msgstr "Recommendations"
@@ -2989,12 +2988,12 @@ msgstr "English"
 #: ../templates/_view/richter/litlists_record_html_full:246
 #: ../templates/cartitems_html_full:245
 #: ../templates/litlists_record_html_full:246
-#: ../templates/titles_record_html:235 ../templates/titles_record_include:101
+#: ../templates/titles_record_html:201 ../templates/titles_record_include:101
 msgid "Englische Wikipedia"
 msgstr "English Wikipedia"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:340
-#: ../templates/titles_record_html_actions:222
+#: ../templates/titles_record_html_actions:260
 #: ../templates/titles_record_include:585
 msgid "Entdecken Sie weitere Titel &uuml;ber:"
 msgstr "Discover other titles using:"
@@ -3093,7 +3092,7 @@ msgstr ""
 msgid "Erscheinungsjahr"
 msgstr "Year of publication"
 
-#: ../templates/clouds_databases_record_html:71
+#: ../templates/clouds_databases_record_html:70
 #: ../templates/clouds_year_html:51 ../templates/clouds_year_html:70
 msgid "Erscheinungsjahre"
 msgstr "Years of publication"
@@ -3104,8 +3103,7 @@ msgstr "Years of publication"
 #: ../templates/_database/gutenberg/titles_record_html_categories:295
 #: ../templates/_database/inst001/titles_record_html_categories:359
 #: ../templates/_database/openlibrary/titles_record_html_categories:264
-#: ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:270
-#: ../templates/_profile/kug/titles_record_html_categories:297
+#: ../templates/_profile/kug/titles_record_html_categories:309
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:47
 #: ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:30
 #: ../templates/_view/richter/cartitems_html_as_text:47
@@ -3318,7 +3316,7 @@ msgstr "You either didn't enter a username or less than two passwords "
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "You didn't enter any search criteria."
 
-#: ../modules/OpenBib/Handler/Apache.pm:922
+#: ../modules/OpenBib/Handler/Apache.pm:1002
 #: ../modules/OpenBib/RecordList/Title.pm:350
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "No hits available in the catalogue for your search request"
@@ -3411,7 +3409,7 @@ msgstr "To use the index you have to enter a suitable term"
 #. ("<a href=\"${path_prefix}/${config.get('info_loc')
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:728
 #: ../templates/_profile/usb/titles_record_include:99
-#: ../templates/titles_record_html:309 ../templates/titles_record_include:173
+#: ../templates/titles_record_html:275 ../templates/titles_record_include:173
 msgid ""
 "F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel "
 "bieten wir eine eine %1&Uuml;bersicht%2 an."
@@ -3552,7 +3550,7 @@ msgstr "Please send questions and feedback to:"
 #: ../templates/_view/richter/litlists_record_html_full:251
 #: ../templates/cartitems_html_full:250
 #: ../templates/litlists_record_html_full:251
-#: ../templates/titles_record_html:241 ../templates/titles_record_include:107
+#: ../templates/titles_record_html:207 ../templates/titles_record_include:107
 msgid "Franz&ouml;sische Wikipedia"
 msgstr "French Wikipedia"
 
@@ -3585,7 +3583,7 @@ msgstr "French"
 #: ../templates/_view/richter/searchforms_record_query:70
 #: ../templates/admin_statistics_query_html:91 ../templates/search_history:61
 #: ../templates/search_title_start_html:36
-#: ../templates/searchforms_record_query:70 ../templates/titles_record_html:87
+#: ../templates/searchforms_record_query:70 ../templates/titles_record_html:88
 #: ../templates/users_preferences_html:184
 msgid "Freie Suche"
 msgstr "Free search"
@@ -3880,8 +3878,8 @@ msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgstr ""
 "Here you can search in your choice of catalogue,  catalogue profiles, resp."
 
-#: ../templates/_profile/kug/corporate_banner:14
 #: ../templates/_profile/kug/corporate_banner:17
+#: ../templates/_profile/kug/corporate_banner:20
 #: ../templates/corporate_banner:11 ../templates/corporate_banner:8
 #: ../templates/info_navigation:2
 msgid "Hilfe"
@@ -3901,9 +3899,7 @@ msgstr "Help"
 #: ../templates/_view/richter/persons_record_html:135
 #: ../templates/_view/richter/subjects_record_html:125
 #: ../templates/_view/richter/users_passwords:47
-#: ../templates/_view/richter/users_registrations:47
-#: ../templates/clouds_databases_html:51
-#: ../templates/clouds_databases_record_html:60 ../templates/info_11:47
+#: ../templates/_view/richter/users_registrations:47 ../templates/info_11:47
 #: ../templates/info_15:35 ../templates/info_other_portals:39
 #: ../templates/login_circulation:47 ../templates/persons_record_include:73
 #: ../templates/rssfeeds_html:49 ../templates/search_facet:485
@@ -3921,9 +3917,9 @@ msgstr "Hints and examples for more types of searches are available %1here%2."
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:100
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:263
 #: ../templates/_view/richter/cartitems_html_actions:100
-#: ../templates/cartitems_html_actions:106
-#: ../templates/titles_record_html_actions:117
-#: ../templates/titles_record_html_actions:195
+#: ../templates/cartitems_html_actions:113
+#: ../templates/titles_record_html_actions:129
+#: ../templates/titles_record_html_actions:233
 #: ../templates/titles_record_include:437
 msgid "Hinzuf&uuml;gen"
 msgstr "Add"
@@ -4270,7 +4266,7 @@ msgstr "OpenBib currently offers the following types of RSS-Feeds:"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:691
 #: ../templates/_profile/usb/titles_record_include:104
-#: ../templates/titles_record_html:273 ../templates/titles_record_include:132
+#: ../templates/titles_record_html:239 ../templates/titles_record_include:132
 #: ../templates/titles_record_include:269
 msgid "In anderen Katalogen"
 msgstr "In other catalogues"
@@ -4522,7 +4518,7 @@ msgstr "Information about this library"
 #: ../templates/corporatebodies_record_html:67
 #: ../templates/persons_record_html:79 ../templates/persons_record_include:22
 #: ../templates/search_history:64 ../templates/search_title_start_html:39
-#: ../templates/subjects_record_html:70 ../templates/titles_record_html:90
+#: ../templates/subjects_record_html:70 ../templates/titles_record_html:91
 msgid "Inhalt"
 msgstr "Content"
 
@@ -4621,8 +4617,7 @@ msgstr "Inventory number"
 #: ../templates/_database/gutenberg/titles_record_html_categories:294
 #: ../templates/_database/inst001/titles_record_html_categories:358
 #: ../templates/_database/openlibrary/titles_record_html_categories:263
-#: ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:269
-#: ../templates/_profile/kug/titles_record_html_categories:296
+#: ../templates/_profile/kug/titles_record_html_categories:308
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:46
 #: ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:29
 #: ../templates/_view/richter/cartitems_html_as_text:46
@@ -4711,7 +4706,7 @@ msgstr "JSON cannot be parsed"
 #: ../templates/litlists_record_include:75
 #: ../templates/searchforms_record_options:4
 #: ../templates/searchprofiles_record_html:65 ../templates/servers_html:82
-#: ../templates/servers_record_html:77 ../templates/titles_record_html:384
+#: ../templates/servers_record_html:77 ../templates/titles_record_html:350
 #: ../templates/titles_record_include:251
 #: ../templates/users_litlists_record_delete_confirm:54
 #: ../templates/users_litlists_record_edit:93
@@ -4763,20 +4758,20 @@ msgstr "Yes"
 #: ../templates/search_history:83 ../templates/search_title_start_html:46
 #: ../templates/search_title_start_html:58
 #: ../templates/searchforms_record_query:169 ../templates/subnavigation:55
-#: ../templates/subnavigation:57 ../templates/titles_record_html:109
-#: ../templates/titles_record_html:97
+#: ../templates/subnavigation:57 ../templates/titles_record_html:110
+#: ../templates/titles_record_html:98
 msgid "Jahr"
 msgstr "Year"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:99
 #: ../templates/search_history:73 ../templates/search_title_start_html:48
-#: ../templates/titles_record_html:99
+#: ../templates/titles_record_html:100
 msgid "Jahr bis"
 msgstr "Year to"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:98
 #: ../templates/search_history:72 ../templates/search_title_start_html:47
-#: ../templates/titles_record_html:98
+#: ../templates/titles_record_html:99
 msgid "Jahr von"
 msgstr "Year from"
 
@@ -4800,8 +4795,8 @@ msgstr "Japanese"
 #: ../templates/_view/richter/drilldown_categorized:145
 #: ../templates/search_facet:164 ../templates/search_history:66
 #: ../templates/search_history:78 ../templates/search_title_start_html:41
-#: ../templates/search_title_start_html:53 ../templates/titles_record_html:104
-#: ../templates/titles_record_html:92
+#: ../templates/search_title_start_html:53 ../templates/titles_record_html:105
+#: ../templates/titles_record_html:93
 msgid "K&ouml;perschaft"
 msgstr "Corporate body"
 
@@ -4863,6 +4858,7 @@ msgstr "Digital card catalogue (faculty of arts)"
 #: ../templates/_view/richter/cartitems_html_short:134
 #: ../templates/_view/richter/resultlists_choice:109
 #: ../templates/_view/richter/titlist_item_html_short:220
+#: ../templates/admin_servers_record_edit:127
 #: ../templates/cartitems_html_short:133 ../templates/databases_record_html:57
 #: ../templates/databases_rss_record_html:85 ../templates/reviews_edit:189
 #: ../templates/search_facet:162 ../templates/search_history:63
@@ -4870,8 +4866,8 @@ msgstr "Digital card catalogue (faculty of arts)"
 #: ../templates/search_title_start_html:51
 #: ../templates/titles_popular_by_database_html:281
 #: ../templates/titles_popular_html:163
-#: ../templates/titles_popular_include:157 ../templates/titles_record_html:102
-#: ../templates/titles_record_html:89 ../templates/titlist_item_html_short:220
+#: ../templates/titles_popular_include:157 ../templates/titles_record_html:103
+#: ../templates/titles_record_html:90 ../templates/titlist_item_html_short:220
 #: ../templates/titlist_item_mobile_short:217
 msgid "Katalog"
 msgstr "Catalogue"
@@ -4923,6 +4919,7 @@ msgstr "Choice of catalogues for this organizational unit"
 msgid "Katalogauswahl zu diesem View"
 msgstr "Choice of catalogues for this view"
 
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:31
 #: ../templates/admin_databases_html:42
 #: ../templates/admin_databases_record_delete_confirm:39
 #: ../templates/admin_databases_record_edit:39
@@ -4935,7 +4932,7 @@ msgstr "Choice of catalogues for this view"
 #: ../templates/admin_profiles_record_edit:124
 #: ../templates/admin_searchprofiles_record_edit:81
 #: ../templates/admin_searchprofiles_record_html:68
-#: ../templates/databases_html:41 ../templates/databases_html:81
+#: ../templates/databases_html:41 ../templates/databases_html:89
 #: ../templates/databases_record_html:38 ../templates/databases_rss_html:39
 #: ../templates/databases_rss_record_html:55 ../templates/orgunits_html:66
 #: ../templates/profiles_record_html:75
@@ -5033,6 +5030,10 @@ msgstr "Remove account"
 msgid "Kennung soll wirklich gel&ouml;scht werden"
 msgstr "Really remove account"
 
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:22
+msgid "Kennzahlen"
+msgstr "Metrics"
+
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:125
 #: ../templates/topics_record_html:108 ../templates/topics_record_html:129
 #: ../templates/topics_record_html:89
@@ -5114,7 +5115,7 @@ msgstr "Brief title"
 msgid "Körperschaft"
 msgstr "Corporate Body"
 
-#: ../templates/clouds_databases_record_html:75
+#: ../templates/clouds_databases_record_html:74
 msgid "Körperschaften"
 msgstr "Corporate Bodies"
 
@@ -5215,6 +5216,10 @@ msgstr "Other holding information"
 msgid "L0170"
 msgstr "Special collecting fields"
 
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:28
+#: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:26
+#: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:28
+#: ../templates/_profile/kug/home_html_bottom_left:27
 #: ../templates/bibfuehrer_tex:302 ../templates/visible_categories_location:34
 msgid "L0180"
 msgstr "Type of library"
@@ -5235,18 +5240,18 @@ msgstr "IT equipment"
 msgid "L0220"
 msgstr "Type of library system"
 
-#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:28
-#: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:26
-#: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:28
-#: ../templates/_profile/kug/home_html_bottom_left:27
-#: ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:40
-msgid "L0230"
-msgstr "Online cataloguing"
-
 #: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:29
 #: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:27
 #: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:29
 #: ../templates/_profile/kug/home_html_bottom_left:28
+#: ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:40
+msgid "L0230"
+msgstr "Online cataloguing"
+
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:30
+#: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:28
+#: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:30
+#: ../templates/_profile/kug/home_html_bottom_left:29
 #: ../templates/bibfuehrer_tex:309 ../templates/visible_categories_location:41
 msgid "L0235"
 msgstr "Online cataloguing since year of acquisition"
@@ -5354,7 +5359,7 @@ msgstr "Newest 50 catalogue entries"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:688
 #: ../templates/_profile/usb/titles_record_include:96
-#: ../templates/titles_record_html:270 ../templates/titles_record_include:129
+#: ../templates/titles_record_html:236 ../templates/titles_record_include:129
 #: ../templates/titles_record_include:170
 msgid "Letzte Artikel"
 msgstr "Most recent articles"
@@ -5381,13 +5386,14 @@ msgstr "List"
 #: ../templates/cartitems_html_actions:27 ../templates/search_facet:171
 #: ../templates/search_history:75 ../templates/search_history:85
 #: ../templates/search_title_start_html:50
-#: ../templates/search_title_start_html:60 ../templates/titles_record_html:101
-#: ../templates/titles_record_html:111
+#: ../templates/search_title_start_html:60 ../templates/titles_record_html:102
+#: ../templates/titles_record_html:112
 #: ../templates/titles_record_html_actions:30
 #: ../templates/titles_record_include:382
 msgid "Literaturliste"
 msgstr "Literature list"
 
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:55
 #: ../templates/_profile/kug/home_html_bottom_center:20
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:81
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:83
@@ -5413,7 +5419,7 @@ msgstr "Literature list"
 #: ../templates/litlists_navigation:21 ../templates/litlists_recent_html:38
 #: ../templates/litlists_record_html:43
 #: ../templates/searchforms_record_bottom_center:17
-#: ../templates/titles_record_html_actions:276
+#: ../templates/titles_record_html_actions:314
 #: ../templates/titles_record_include:613 ../templates/users_litlists_html:39
 #: ../templates/users_litlists_record_edit:44
 #: ../templates/users_litlists_record_html:44 ../templates/users_navigation:25
@@ -5455,8 +5461,7 @@ msgstr "Local"
 #: ../templates/_database/gutenberg/titles_record_html_categories:293
 #: ../templates/_database/inst001/titles_record_html_categories:357
 #: ../templates/_database/openlibrary/titles_record_html_categories:262
-#: ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:268
-#: ../templates/_profile/kug/titles_record_html_categories:295
+#: ../templates/_profile/kug/titles_record_html_categories:307
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:45
 #: ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:28
 #: ../templates/_view/richter/cartitems_html_as_text:45
@@ -5478,12 +5483,12 @@ msgstr "Local location mark  "
 #: ../templates/_view/richter/cartitems_html_actions:46
 #: ../templates/_view/richter/cartitems_html_actions:67
 #: ../templates/admin_users_html:71 ../templates/admin_users_search_form:65
-#: ../templates/cartitems_html_actions:52
-#: ../templates/cartitems_html_actions:73
+#: ../templates/cartitems_html_actions:53
+#: ../templates/cartitems_html_actions:76
 #: ../templates/titles_record_html_actions:48
 #: ../templates/titles_record_html_actions:73
 #: ../templates/titles_record_include:396
-#: ../templates/titles_record_include:409 ../templates/titlist_options:24
+#: ../templates/titles_record_include:409 ../templates/titlist_options:26
 #: ../templates/users_preferences_html:384 ../templates/users_roles_edit:110
 #: ../templates/users_tags_names_record_html:78
 msgid "Los"
@@ -5502,8 +5507,8 @@ msgstr "Go"
 #: ../templates/admin_topics_record_edit:96
 #: ../templates/admin_views_record_edit:129
 #: ../templates/admin_views_rss_record_edit:96
-#: ../templates/cartitems_html_actions:151
-#: ../templates/cartitems_html_short:144 ../templates/titles_record_html:355
+#: ../templates/cartitems_html_actions:160
+#: ../templates/cartitems_html_short:144 ../templates/titles_record_html:321
 #: ../templates/titles_record_include:220
 #: ../templates/topics_record_mapping_html:95
 #: ../templates/users_litlists_html:110
@@ -5528,7 +5533,7 @@ msgstr "Mapping"
 #: ../templates/_view/richter/litlists_record_html_full:238
 #: ../templates/cartitems_html_full:237
 #: ../templates/litlists_record_html_full:238
-#: ../templates/titles_record_html:225 ../templates/titles_record_include:91
+#: ../templates/titles_record_html:191 ../templates/titles_record_include:91
 msgid "Mashup mit Wikipedia"
 msgstr "Mashup with Wikipedia"
 
@@ -5562,16 +5567,16 @@ msgstr "Type of media"
 #: ../templates/_view/richter/drilldown_categorized:148
 #: ../templates/search_facet:167 ../templates/search_history:69
 #: ../templates/search_history:81 ../templates/search_title_start_html:44
-#: ../templates/search_title_start_html:56 ../templates/titles_record_html:107
-#: ../templates/titles_record_html:95
+#: ../templates/search_title_start_html:56 ../templates/titles_record_html:108
+#: ../templates/titles_record_html:96
 msgid "Medientyp"
 msgstr "Type of media"
 
-#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:76
-#: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:74
-#: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:76
-#: ../templates/_profile/kug/_view/kug/newsflash:33
-#: ../templates/_profile/kug/home_html_bottom_left:75
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:77
+#: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:75
+#: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:77
+#: ../templates/_profile/kug/_view/kug/newsflash:34
+#: ../templates/_profile/kug/home_html_bottom_left:76
 #: ../templates/_profile/kug/search_facet:102
 #: ../templates/_profile/kug/search_facet:114
 #: ../templates/_profile/kug/search_facet:126
@@ -5620,7 +5625,7 @@ msgstr "Type of media"
 #: ../templates/search_facet:69 ../templates/search_facet:80
 #: ../templates/search_facet:91 ../templates/searchforms_record_bottom_left:77
 #: ../templates/searchforms_record_bottom_right:32
-#: ../templates/titles_record_html_actions:413
+#: ../templates/titles_record_html_actions:452
 #: ../templates/titles_record_include:738
 msgid "Mehr"
 msgstr "More"
@@ -5629,7 +5634,7 @@ msgstr "More"
 msgid "Mehr entdecken"
 msgstr "Discover much more"
 
-#: ../templates/_profile/kug/corporate_banner:13
+#: ../templates/_profile/kug/corporate_banner:16
 #: ../templates/info_tutorials:67
 msgid "Mein KUG"
 msgstr "My KUG"
@@ -5658,8 +5663,8 @@ msgstr "Message"
 msgid "Merken"
 msgstr "Collect"
 
-#: ../templates/_profile/kug/corporate_banner:10
-#: ../templates/_profile/kug/corporate_banner:8
+#: ../templates/_profile/kug/corporate_banner:11
+#: ../templates/_profile/kug/corporate_banner:13
 #: ../templates/_profile/rheinlandbib/mainnavigation:46
 #: ../templates/_profile/rheinlandbib/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:51
@@ -5753,7 +5758,7 @@ msgstr "Surname"
 #: ../templates/admin_orgunits_html:66
 #: ../templates/admin_profiles_record_edit:124
 #: ../templates/cartitems_html_actions:44
-#: ../templates/cartitems_html_actions:61 ../templates/databases_html:84
+#: ../templates/cartitems_html_actions:63 ../templates/databases_html:92
 #: ../templates/orgunits_html:66 ../templates/profiles_record_html:75
 #: ../templates/titles_record_html_actions:43
 #: ../templates/titles_record_html_actions:63
@@ -5860,7 +5865,7 @@ msgstr ""
 #: ../templates/litlists_record_include:75
 #: ../templates/searchforms_record_options:4
 #: ../templates/searchprofiles_record_html:66 ../templates/servers_html:82
-#: ../templates/servers_record_html:78 ../templates/titles_record_html:385
+#: ../templates/servers_record_html:78 ../templates/titles_record_html:351
 #: ../templates/titles_record_include:252
 #: ../templates/users_litlists_record_delete_confirm:60
 #: ../templates/users_litlists_record_edit:93
@@ -5940,7 +5945,7 @@ msgid "Neuaufnahmen nach Verfasser"
 msgstr "New titles per author"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:751
-#: ../templates/titles_record_html:332 ../templates/titles_record_include:197
+#: ../templates/titles_record_html:298 ../templates/titles_record_include:197
 msgid "Neue Bewertung/Rezension"
 msgstr "New rating/review"
 
@@ -6079,7 +6084,7 @@ msgid "Notation"
 msgstr "Classification"
 
 #: ../templates/admin_statistics_query_html:96
-#: ../templates/clouds_databases_record_html:74
+#: ../templates/clouds_databases_record_html:73
 msgid "Notationen"
 msgstr "Classification"
 
@@ -6409,8 +6414,8 @@ msgstr "Permanent Link to This Entry"
 #: ../templates/persons_record_html:48 ../templates/search_facet:163
 #: ../templates/search_history:65 ../templates/search_history:77
 #: ../templates/search_title_start_html:40
-#: ../templates/search_title_start_html:52 ../templates/titles_record_html:103
-#: ../templates/titles_record_html:91
+#: ../templates/search_title_start_html:52 ../templates/titles_record_html:104
+#: ../templates/titles_record_html:92
 msgid "Person"
 msgstr "Person"
 
@@ -6447,7 +6452,7 @@ msgstr "Person/Corporate Body"
 #: ../templates/_view/richter/subnavigation:76
 #: ../templates/_view/richter/subnavigation:78
 #: ../templates/admin_statistics_query_html:93
-#: ../templates/clouds_databases_record_html:72
+#: ../templates/clouds_databases_record_html:71
 #: ../templates/clouds_navigation:40 ../templates/clouds_navigation:42
 #: ../templates/clouds_person_html:51 ../templates/clouds_person_html:70
 #: ../templates/cloudss_navigation:19 ../templates/search_classification:75
@@ -6593,7 +6598,7 @@ msgid "Provenienz"
 msgstr "Provenance"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:767
-#: ../templates/reviews_edit:230 ../templates/titles_record_html:348
+#: ../templates/reviews_edit:230 ../templates/titles_record_html:314
 #: ../templates/titles_record_include:213
 msgid "Pseudonym"
 msgstr "Pseudonym"
@@ -6680,7 +6685,7 @@ msgstr "ReadMe"
 #: ../templates/_profile/sammlungen/_view/richter/subnavigation:53
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:123
 #: ../templates/search_title_start_html:71 ../templates/subnavigation:22
-#: ../templates/titles_record_html:123
+#: ../templates/titles_record_html:124
 #: ../templates/users_titles_record_searchindex_html:42
 msgid "Recherche"
 msgstr "Search"
@@ -6827,7 +6832,7 @@ msgstr "relevance"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:765
 #: ../templates/reviews_edit:228 ../templates/reviews_record_html:70
-#: ../templates/titles_record_html:346 ../templates/titles_record_include:211
+#: ../templates/titles_record_html:312 ../templates/titles_record_include:211
 msgid "Rezension"
 msgstr "Review"
 
@@ -6975,7 +6980,7 @@ msgstr "Informatio about subject heading: %1 in catalogue %2"
 #: ../templates/_profile/usb/searchforms_record_query:89
 #: ../templates/_view/richter/searchforms_record_query:90
 #: ../templates/admin_statistics_query_html:95
-#: ../templates/clouds_databases_record_html:73
+#: ../templates/clouds_databases_record_html:72
 #: ../templates/clouds_subject_html:51 ../templates/clouds_subject_html:70
 #: ../templates/cloudss_navigation:16 ../templates/search_classification:75
 #: ../templates/search_corporatebody:75 ../templates/search_person:75
@@ -7123,10 +7128,8 @@ msgstr "Sessions"
 #: ../templates/_view/richter/cartitems_html_actions:60
 #: ../templates/_view/richter/cartitems_html_actions:93
 #: ../templates/_view/richter/users_litlists_record_edit:72
-#: ../templates/cartitems_html_actions:66
-#: ../templates/cartitems_html_actions:99
 #: ../templates/litlists_record_include:72
-#: ../templates/titles_record_html_actions:109
+#: ../templates/titles_record_html_actions:121
 #: ../templates/titles_record_html_actions:68
 #: ../templates/users_litlists_html:66 ../templates/users_litlists_html:99
 #: ../templates/users_litlists_record_edit:86
@@ -7153,7 +7156,7 @@ msgstr ""
 "Because this version of OpenBib is continously extended error messages are "
 "quite possible."
 
-#: ../modules/OpenBib/Handler/Apache.pm:640
+#: ../modules/OpenBib/Handler/Apache.pm:698
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "You are accessing an unauthorized session"
 
@@ -7396,7 +7399,7 @@ msgstr "You have to enter one or more tags for your selected titles."
 msgid "Sie müssen einen RSS-Typ eingeben."
 msgstr "You have to enter a RSS type."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Servers.pm:192
+#: ../modules/OpenBib/Handler/Apache/Admin/Servers.pm:201
 msgid "Sie müssen einen Servernamen eingeben."
 msgstr "You have to enter a server name"
 
@@ -7464,7 +7467,7 @@ msgstr "Your registration was successful"
 msgid "Sie sind nicht authentifiziert."
 msgstr "You are not authenticated."
 
-#: ../modules/OpenBib/Handler/Apache.pm:1346
+#: ../modules/OpenBib/Handler/Apache.pm:1426
 msgid "Sie sind nicht authorisiert"
 msgstr "You are not authorized"
 
@@ -7601,7 +7604,7 @@ msgid "Spezialisierte Portale"
 msgstr "Specialized portals"
 
 #. (l)
-#: ../templates/_profile/kug/corporate_banner:5
+#: ../templates/_profile/kug/corporate_banner:8
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:507
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:54
 #: ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:4
@@ -7619,8 +7622,8 @@ msgstr "Language icon for %1"
 #: ../templates/_view/richter/drilldown_categorized:149
 #: ../templates/search_facet:168 ../templates/search_history:70
 #: ../templates/search_history:82 ../templates/search_title_start_html:45
-#: ../templates/search_title_start_html:57 ../templates/titles_record_html:108
-#: ../templates/titles_record_html:96
+#: ../templates/search_title_start_html:57 ../templates/titles_record_html:109
+#: ../templates/titles_record_html:97
 msgid "Sprache"
 msgstr "Language"
 
@@ -7645,8 +7648,7 @@ msgstr "Location"
 #: ../templates/_database/gutenberg/titles_record_html_categories:292
 #: ../templates/_database/inst001/titles_record_html_categories:356
 #: ../templates/_database/openlibrary/titles_record_html_categories:261
-#: ../templates/_profile/kug/_database/inst526earchive/titles_record_html_categories:267
-#: ../templates/_profile/kug/titles_record_html_categories:294
+#: ../templates/_profile/kug/titles_record_html_categories:306
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_as_text:44
 #: ../templates/_profile/sammlungen/_view/richter/litlists_record_html_as_text:27
 #: ../templates/_view/richter/cartitems_html_as_text:44
@@ -7752,7 +7754,7 @@ msgstr "Edit information about location"
 #: ../templates/searchprofiles_session:51 ../templates/subjects_record_html:47
 #: ../templates/tags_html:40 ../templates/tags_names_html:37
 #: ../templates/tags_names_recent_html:37
-#: ../templates/tags_names_record_html:40 ../templates/titles_record_html:121
+#: ../templates/tags_names_record_html:40 ../templates/titles_record_html:122
 #: ../templates/users_passwords:38 ../templates/users_registrations:37
 #: ../templates/users_tags_html:40 ../templates/users_tags_names_html:37
 #: ../templates/users_tags_names_record_html:40
@@ -7969,13 +7971,13 @@ msgstr "Search profile"
 
 #: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:17
 #: ../templates/_profile/kug/_view/inst132/searchforms_record_profile:17
-#: ../templates/_profile/kug/searchforms_record_profile:17
+#: ../templates/_profile/kug/searchforms_record_profile:27
 msgid "Suchradius"
 msgstr "Search radius"
 
 #: ../templates/_profile/kug/_view/engportrom/search_radius:3
 #: ../templates/_profile/kug/_view/inst132/search_radius:3
-#: ../templates/_profile/kug/search_radius:4
+#: ../templates/_profile/kug/search_radius:18
 msgid "Suchradius ändern"
 msgstr "Alter search radius"
 
@@ -8018,8 +8020,8 @@ msgstr "System"
 #: ../templates/search_facet:166 ../templates/search_history:68
 #: ../templates/search_history:80 ../templates/search_title_start_html:43
 #: ../templates/search_title_start_html:55 ../templates/subnavigation:75
-#: ../templates/subnavigation:77 ../templates/titles_record_html:106
-#: ../templates/titles_record_html:94
+#: ../templates/subnavigation:77 ../templates/titles_record_html:107
+#: ../templates/titles_record_html:95
 msgid "Systematik"
 msgstr "Classification"
 
@@ -9527,8 +9529,8 @@ msgstr "Common numbering"
 #: ../templates/_view/richter/drilldown_categorized:151
 #: ../templates/search_facet:170 ../templates/search_history:74
 #: ../templates/search_history:84 ../templates/search_title_start_html:49
-#: ../templates/search_title_start_html:59 ../templates/titles_record_html:100
-#: ../templates/titles_record_html:110
+#: ../templates/search_title_start_html:59 ../templates/titles_record_html:101
+#: ../templates/titles_record_html:111
 msgid "Tag"
 msgstr "Tag"
 
@@ -9543,25 +9545,26 @@ msgstr "Tagging"
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:80
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:238
 #: ../templates/_view/richter/cartitems_html_actions:80
-#: ../templates/cartitems_html_actions:86
-#: ../templates/titles_record_html_actions:87
+#: ../templates/cartitems_html_actions:91
+#: ../templates/titles_record_html_actions:99
 #: ../templates/titles_record_include:421
 msgid "Tagging"
 msgstr "Tagging"
 
 #: ../templates/_profile/kug/home_html_bottom_center:22
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:438
-#: ../templates/clouds_tag_html:50 ../templates/tags_html:41
-#: ../templates/tags_html:75 ../templates/tags_names_html:58
-#: ../templates/tags_navigation:21 ../templates/titles_record_html_actions:104
-#: ../templates/titles_record_html_actions:181
-#: ../templates/titles_record_html_actions:320
+#: ../templates/cartitems_html_actions:100 ../templates/clouds_tag_html:50
+#: ../templates/tags_html:41 ../templates/tags_html:75
+#: ../templates/tags_names_html:58 ../templates/tags_navigation:21
+#: ../templates/titles_record_html_actions:116
+#: ../templates/titles_record_html_actions:219
+#: ../templates/titles_record_html_actions:359
 #: ../templates/titles_record_include:657 ../templates/users_navigation:31
 #: ../templates/users_navigation:46 ../templates/users_tags_html:78
 msgid "Tags"
 msgstr "Tags"
 
-#: ../templates/titles_record_html_actions:203
+#: ../templates/titles_record_html_actions:241
 msgid "Tags entfernen"
 msgstr "Remove tag"
 
@@ -9585,7 +9588,7 @@ msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr "Development system - Not intended for regular use"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:769
-#: ../templates/titles_record_html:350 ../templates/titles_record_include:215
+#: ../templates/titles_record_html:316 ../templates/titles_record_include:215
 msgid "Text"
 msgstr "Text"
 
@@ -9597,8 +9600,8 @@ msgstr "Text"
 #: ../templates/_view/richter/drilldown_categorized:146
 #: ../templates/search_facet:165 ../templates/search_history:67
 #: ../templates/search_history:79 ../templates/search_title_start_html:42
-#: ../templates/search_title_start_html:54 ../templates/titles_record_html:105
-#: ../templates/titles_record_html:93
+#: ../templates/search_title_start_html:54 ../templates/titles_record_html:106
+#: ../templates/titles_record_html:94
 msgid "Thema"
 msgstr "Subject heading"
 
@@ -9695,6 +9698,7 @@ msgstr "Timestamp"
 msgid "Tip: Digitaler Kartenkatalog"
 msgstr "Hint: Digital Card Catalogue"
 
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:35
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_full:26
 #: ../templates/_profile/sammlungen/_view/richter/litlists_record_html:87
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:135
@@ -9709,8 +9713,8 @@ msgstr "Hint: Digital Card Catalogue"
 #: ../templates/litlists_record_include:35 ../templates/search_history:62
 #: ../templates/search_title_start_html:37
 #: ../templates/searchforms_record_options:3 ../templates/tags_include:29
-#: ../templates/tags_names_record_html:77 ../templates/titles_record_html:135
-#: ../templates/titles_record_html:349 ../templates/titles_record_html:88
+#: ../templates/tags_names_record_html:77 ../templates/titles_record_html:136
+#: ../templates/titles_record_html:315 ../templates/titles_record_html:89
 #: ../templates/titles_record_include:214
 #: ../templates/users_circulations_make_order:82
 #: ../templates/users_litlists_record_edit:134
@@ -9742,7 +9746,7 @@ msgstr ""
 "Titles with this ISBN are also available in the following KUG-catalogues"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:822
-#: ../templates/titles_record_html:403 ../templates/titles_record_include:272
+#: ../templates/titles_record_html:369 ../templates/titles_record_include:272
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen "
 "vorhanden"
@@ -9777,7 +9781,7 @@ msgstr "Title-File"
 
 #. (recordname,dbdesc)
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:34
-#: ../templates/titles_record_html:34 ../templates/titles_record_mobile:33
+#: ../templates/titles_record_html:35 ../templates/titles_record_mobile:33
 #: ../templates/users_titles_record_searchindex_html:15
 msgid "Titel-Information: %1 in Katalog %2"
 msgstr "Information about title: %1 in catalogue %2"
@@ -9835,7 +9839,7 @@ msgstr "Title accesses"
 #: ../templates/titles_popular_by_database_html:44
 #: ../templates/titles_popular_by_database_html:62
 #: ../templates/titles_popular_include:31
-#: ../templates/titles_record_html_actions:400
+#: ../templates/titles_record_html_actions:439
 #: ../templates/titles_record_include:725
 msgid "Top 20"
 msgstr "Top 20"
@@ -9925,7 +9929,9 @@ msgstr "Tutorials to specific subjects:"
 #: ../templates/admin_locations_html:105 ../templates/admin_locations_html:79
 #: ../templates/admin_locations_record_edit:79
 #: ../templates/authenticators_html:62
-#: ../templates/authenticators_record_html:62 ../templates/locations_html:102
+#: ../templates/authenticators_record_html:62
+#: ../templates/cartitems_html_actions:105
+#: ../templates/cartitems_html_actions:68 ../templates/locations_html:102
 msgid "Typ"
 msgstr "Type"
 
@@ -9935,7 +9941,7 @@ msgid "Typ %1 ist nicht definiert"
 msgstr "Type %1 ist not defined"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:322
-#: ../templates/titles_record_html_actions:186
+#: ../templates/titles_record_html_actions:224
 #: ../templates/titles_record_include:437
 #: ../templates/titles_record_include:509
 msgid "Typ:"
@@ -10154,13 +10160,13 @@ msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr "Load Sharing in OpenBib"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:515
-#: ../templates/titles_record_html_actions:397
+#: ../templates/titles_record_html_actions:436
 #: ../templates/titles_record_include:722
 msgid "Verschiedenes"
 msgstr "Misc"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:416
-#: ../templates/titles_record_html_actions:298
+#: ../templates/titles_record_html_actions:337
 #: ../templates/titles_record_include:635
 msgid "Verschlagwortung anderer Kataloge"
 msgstr "Subject headings from other catalogues"
@@ -10182,7 +10188,7 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:486
 #: ../templates/connector_similarpersons_html:40
-#: ../templates/titles_record_html_actions:368
+#: ../templates/titles_record_html_actions:407
 #: ../templates/titles_record_include:693
 msgid "Verwandte Personen"
 msgstr "Similar persons"
@@ -10192,7 +10198,7 @@ msgid "Verwandte Schlagworte"
 msgstr "Related subject headings"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:505
-#: ../templates/titles_record_html_actions:387
+#: ../templates/titles_record_html_actions:426
 #: ../templates/titles_record_include:712
 msgid "Verwandte Themen"
 msgstr "Similar subject headings"
@@ -10317,7 +10323,7 @@ msgid ""
 msgstr "Please select a catalogue to get information about its usage."
 
 #. ("<img src=\"${config.get('wikipedia_img')
-#: ../templates/clouds_databases_html:52
+#: ../templates/clouds_databases_html:51
 msgid ""
 "W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine\n"
 "<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten\n"
@@ -10333,7 +10339,7 @@ msgstr ""
 "connected to a term the bigger the corresponding term is displayed."
 
 #. ("<img src=\"${config.get('wikipedia_img')
-#: ../templates/clouds_databases_record_html:61 ../templates/clouds_html:59
+#: ../templates/clouds_databases_record_html:60 ../templates/clouds_html:59
 msgid ""
 "W&auml;hlen Sie einen Wolken-Typ aus, um f&uuml;r diesen eine\n"
 "<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten Begriffe bzw.\n"
@@ -10353,7 +10359,7 @@ msgid "Wann"
 msgstr "When"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:803
-#: ../templates/titles_record_html:384 ../templates/titles_record_include:251
+#: ../templates/titles_record_html:350 ../templates/titles_record_include:251
 msgid "War diese Rezension hilfreich?"
 msgstr "Was this review helpful?"
 
@@ -10750,7 +10756,7 @@ msgstr ""
 "edition, ...) exist in all KUG-catalogues"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:836
-#: ../templates/titles_record_html:417 ../templates/titles_record_include:287
+#: ../templates/titles_record_html:383 ../templates/titles_record_include:287
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
 "Auflage usw.) in den Katalogen"
@@ -10898,6 +10904,26 @@ msgstr "ordered from supplier"
 #: ../templates/searchforms_record_query:177
 msgid "bis"
 msgstr "to"
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:43
+msgid "davon Artikel"
+msgstr "articles only"
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:47
+msgid "davon Digital"
+msgstr "digital only"
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:39
+msgid "davon Zeitschriften/Serien"
+msgstr "journals/series only"
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:64
+msgid "davon privat"
+msgstr "private only"
+
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:60
+msgid "davon öffentlich"
+msgstr "public only"
 
 #: ../templates/_database/dbis/classifications_html:62
 #: ../templates/_database/dbis/search_title_item_html:47
@@ -11090,6 +11116,7 @@ msgid "nach Relevanz"
 msgstr "by relevance"
 
 #: ../templates/_profile/usb/search_title_combined_include:67
+#: ../templates/titlist_options:23 ../templates/titlist_options:24
 msgid "nach Signatur"
 msgstr "by location mark"
 
@@ -11172,11 +11199,11 @@ msgstr ""
 #: ../templates/_view/richter/cartitems_html_actions:63
 #: ../templates/_view/richter/cartitems_html_actions:96
 #: ../templates/_view/richter/users_litlists_record_edit:73
-#: ../templates/cartitems_html_actions:102
-#: ../templates/cartitems_html_actions:69
+#: ../templates/cartitems_html_actions:108
+#: ../templates/cartitems_html_actions:71
 #: ../templates/litlists_record_include:72
-#: ../templates/titles_record_html_actions:112
-#: ../templates/titles_record_html_actions:189
+#: ../templates/titles_record_html_actions:124
+#: ../templates/titles_record_html_actions:227
 #: ../templates/titles_record_html_actions:69
 #: ../templates/titles_record_include:408
 #: ../templates/titles_record_include:437
@@ -11194,13 +11221,13 @@ msgid "realisiert mit"
 msgstr "powered by"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:756
-#: ../templates/reviews_edit:218 ../templates/titles_record_html:337
+#: ../templates/reviews_edit:218 ../templates/titles_record_html:303
 #: ../templates/titles_record_include:202
 msgid "schlecht"
 msgstr "bad"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:762
-#: ../templates/reviews_edit:224 ../templates/titles_record_html:343
+#: ../templates/reviews_edit:224 ../templates/titles_record_html:309
 #: ../templates/titles_record_include:208
 msgid "sehr gut"
 msgstr "very good"
@@ -11261,8 +11288,12 @@ msgstr "repeated"
 msgid "Ändern"
 msgstr "Change"
 
+#: ../templates/_profile/kug/_view/kug/home_html_bottom_left:14
+msgid "Über den KUG"
+msgstr "About KUG"
+
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:298
-#: ../templates/titles_record_html_actions:154
+#: ../templates/titles_record_html_actions:192
 #: ../templates/titles_record_include:480
 #: ../templates/titles_record_include:554
 msgid "Übernahme bereits von Nutzern vergebener Tags"
@@ -11271,8 +11302,8 @@ msgstr "Transfer already used tags of other users"
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:105
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:271
 #: ../templates/_view/richter/cartitems_html_actions:105
-#: ../templates/cartitems_html_actions:111
-#: ../templates/titles_record_html_actions:127
+#: ../templates/cartitems_html_actions:120
+#: ../templates/titles_record_html_actions:139
 #: ../templates/titles_record_include:449
 #: ../templates/titles_record_include:523
 msgid "Übernahme eigener Tags"
@@ -11291,6 +11322,9 @@ msgstr "Overview"
 #: ../templates/users_navigation:85 ../templates/users_navigation:87
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#~ msgid "Titel gesamt"
+#~ msgstr "Titles "
 
 #, fuzzy
 #~ msgid "Merkliste "

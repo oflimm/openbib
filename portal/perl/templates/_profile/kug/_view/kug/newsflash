@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+<h3>[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
 <li><b>19.3.2012</b>: Die Anzeige "Letzte Artikel" bei Zeitschriften

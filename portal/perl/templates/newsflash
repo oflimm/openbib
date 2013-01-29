@@ -15,6 +15,12 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="[% msg.maketext("Aktuelles") %]" />&nbsp;[% msg.maketext("Aktuelles") %]</h3>
 
 <ul>
+<li><b style="color:red;">29.1.2013</b>: Am Freitag, dem 1.2.2013, ist der KUG aufgrund
+einer Software-Aktualisierung ab 12 Uhr nicht nutzbar. F&uuml;r Ihre
+Recherchen k&ouml;nnen Sie bis zum Abschluss der Arbeiten auf
+das <a href="http://www.ub.uni-koeln.de/" target="_blank">USB
+Portal</a> ausweichen.
+</li>
 <li><b>19.3.2012</b>: Die Anzeige "Letzte Artikel" bei Zeitschriften
 wurde wegen der Einstellung des <a href="http://www.tictocs.ac.uk/"
 target="_blank">TicTocs-Dienstes</a> auf den Nachfolger <a href="http://www.journaltocs.hw.ac.uk/" target="_blank">JournalTocs</a> umgestellt.

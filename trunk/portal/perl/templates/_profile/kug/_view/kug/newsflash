@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-<h3>[% msg.maketext("Aktuelles") %]</h3>
+<h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
 <li><b>19.3.2012</b>: Die Anzeige "Letzte Artikel" bei Zeitschriften

@@ -329,7 +329,7 @@ sub enrich_content {
                 }
             );
 
-            foreach my $item ($enriched_contents->all) {
+            while (my $item = $enriched_contents->next) {
                 my $field      = "E".sprintf "%04d",$item->{field};
                 my $subfield   =                    $item->{subfield};
                 my $content    =                    $item->{content};
@@ -395,7 +395,7 @@ sub enrich_content {
             
 #            $logger->debug("Found ".($same_titles->count)." records");
             
-            foreach my $item ($same_titles->all) {
+            while (my $item = $same_titles->next) {
                 my $id         = $item->{titleid};
                 my $database   = $item->{dbname};
                 
@@ -460,7 +460,7 @@ sub enrich_content {
                 }
             );
             
-            foreach my $titleitem ($titles->all) {
+            while (my $titleitem = $titles->next) {
                 my $id         = $titleitem->{titleid};
                 my $database   = $titleitem->{dbname};
                 
@@ -539,7 +539,7 @@ sub enrich_content {
                 }
             );
             
-            foreach my $titleitem ($titles->all) {
+            while (my $titleitem = $titles->next) {
                 my $id         = $titleitem->{titleid};
                 my $database   = $titleitem->{dbname};
                 
@@ -574,7 +574,7 @@ sub enrich_content {
             }
         );
         
-        foreach my $item ($enriched_contents->all) {
+        while (my $item = $enriched_contents->next) {
             my $field      = "E".sprintf "%04d",$item->{field};
             my $subfield   =                    $item->{subfield};
             my $content    =                    $item->{content};
@@ -629,7 +629,7 @@ sub enrich_content {
             }
         );
         
-        foreach my $item ($enriched_contents->all) {
+        while (my $item = $enriched_contents->next) {
             my $field      = "E".sprintf "%04d",$item->{field};
             my $subfield   =                    $item->{subfield};
             my $content    =                    $item->{content};

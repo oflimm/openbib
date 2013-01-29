@@ -19,7 +19,7 @@
 
 [% titlecount = config.get_number_of_titles({profile = sysprofile}) %]
 
-<h3>[% msg.maketext("Kennzahlen") %]</h3>
+<h3><img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h3>
 
 <style>
 .ob-right_align td {
@@ -32,7 +32,7 @@
 <td>[% config.get_profiledbs(sysprofile).size %]</td>
 </tr>
 <tr>
-<th>[% msg.maketext("Titel gesamt") %]</th>
+<th>[% msg.maketext("Titel") %]</th>
 <td>[% titlecount.allcount.chunk(-3).join('.') %]</td>
 </tr>
 <tr>

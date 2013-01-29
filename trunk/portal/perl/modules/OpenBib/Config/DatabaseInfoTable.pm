@@ -74,7 +74,7 @@ sub _new_instance {
         }
     );
 
-    foreach my $dbinfo ($dbinfos->all){
+    while (my $dbinfo = $dbinfos->next){
         my $description = $dbinfo->{thisdescription};
         my $shortdesc   = $dbinfo->{thisshortdesc};
         my $dbname      = $dbinfo->{thisdbname};

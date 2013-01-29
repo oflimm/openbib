@@ -14,7 +14,7 @@
 
 [% IF NOT hide_foot_banner %]
     <!-- begin: #footer -->
-    <footer role="contentinfo">[% msg.maketext("Der KUG ist ein Dienst der USB Köln") %]&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/credits.html?l=[% lang %]">[% msg.maketext("Dank") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>[% config.get('version')%] </tt></footer>
+    <footer role="contentinfo"><b>KUG</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/credits.html?l=[% lang %]">[% msg.maketext("Dank") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>[% config.get('version')%] </tt></footer>
     <!-- end: #footer -->
 [% END %]
 

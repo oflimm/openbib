@@ -72,7 +72,7 @@ sub _new_instance {
         }
     );
 
-    foreach my $dbinfo ($dbinfos->all){
+    while (my $dbinfo = $dbinfos->next){
         my $dbname                     = $dbinfo->{dbname};
 
         $self->{$dbname}{circ}         = $dbinfo->{circ};

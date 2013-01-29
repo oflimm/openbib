@@ -93,7 +93,7 @@ sub get_recent_titles {
             }
         );
         
-        foreach my $title ($titles->all){
+        while (my $title = $titles->next){
             $logger->debug("Adding Title ".$title->id);
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
@@ -133,7 +133,7 @@ sub get_recent_titles_of_person {
             }
         );
 
-        foreach my $title ($titles->all){
+        while (my $title = $titles->next){
             $logger->debug("Adding Title ".$title->id);
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
@@ -173,7 +173,7 @@ sub get_recent_titles_of_corporatebody {
             }
         );
         
-        foreach my $title ($titles->all){
+        while (my $title = $titles->next){
             $logger->debug("Adding Title ".$title->id);
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
@@ -213,7 +213,7 @@ sub get_recent_titles_of_classification {
             }
         );
         
-        foreach my $title ($titles->all){
+        while (my $title = $titles->next){
             $logger->debug("Adding Title ".$title->id);
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
@@ -253,7 +253,7 @@ sub get_recent_titles_of_subject {
             }
         );
         
-        foreach my $title ($titles->all){
+        while (my $title = $titles->next){
             $logger->debug("Adding Title ".$title->id);
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
@@ -306,7 +306,7 @@ sub load_full_title_record {
                 }
             );
             
-            foreach my $item ($title_fields->all){
+            while (my $item = $title_fields->next){
                 my $field    = "T".sprintf "%04d",$item->{thisfield};
                 my $subfield =                    $item->{thissubfield};
                 my $mult     =                    $item->{thismult};
@@ -351,7 +351,7 @@ sub load_full_title_record {
             );
             
             my $mult = 1;
-            foreach my $item ($title_persons->all){
+            while (my $item = $title_persons->next){
                 my $field      = "T".sprintf "%04d",$item->{thisfield};
                 my $personid   =                    $item->{thispersonid};
                 my $supplement =                    $item->{thissupplement};
@@ -386,7 +386,7 @@ sub load_full_title_record {
             );
             
             $mult = 1;        
-            foreach my $item ($title_corporatebodies->all){
+            while (my $item = $title_corporatebodies->next){
                 my $field             = "T".sprintf "%04d",$item->{thisfield};
                 my $corporatebodyid   =                    $item->{thiscorporatebodyid};
                 my $supplement        =                    $item->{thissupplement};
@@ -421,7 +421,7 @@ sub load_full_title_record {
             );
             
             $mult = 1;
-            foreach my $item ($title_subjects->all){
+            while (my $item = $title_subjects->next){
                 my $field             = "T".sprintf "%04d",$item->{thisfield};
                 my $subjectid         =                    $item->{thissubjectid};
                 my $supplement        =                    $item->{thissupplement};
@@ -456,7 +456,7 @@ sub load_full_title_record {
             );
             
             $mult = 1;
-            foreach my $item ($title_classifications->all){
+            while (my $item = $title_classifications->next){
                 my $field             = "T".sprintf "%04d",$item->{thisfield};
                 my $classificationid  =                    $item->{thisclassificationid};
                 my $supplement        =                    $item->{thissupplement};
@@ -580,7 +580,7 @@ sub load_full_title_record {
                 }
             );
             
-            foreach my $item ($title_holdings->all){
+            while (my $item = $title_holdings->next){
                 my $holdingid =                    $item->{thisholdingid};
                 
                 push @$holding_ref, $self->_get_holding({
@@ -776,7 +776,7 @@ sub _get_holding {
         }
     );
     
-    foreach my $item ($holding_fields->all){
+    while (my $item = $holding_fields->next){
         my $field    = "X".sprintf "%04d",$item->{thisfield};
         my $subfield =                    $item->{thissubfield};
         my $mult     =                    $item->{thismult};
@@ -955,7 +955,7 @@ sub get_connected_titles {
     }
 
     my @titles = ();
-    foreach my $item ($titles->all){
+    while (my $item = $titles->next){
         push @titles, $item->{thistitleid};
     }
 

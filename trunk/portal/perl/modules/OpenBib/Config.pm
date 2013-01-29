@@ -489,7 +489,7 @@ sub get_dbs_of_view {
 
     my @dblist=();
 
-    foreach my $item ($dbnames->all){
+    while (my $item = $dbnames->next){
         push @dblist, $item->{thisdbname};
     }
 
@@ -519,7 +519,7 @@ sub get_rssfeeds_of_view {
     
     my $viewrssfeed_ref  = {};
 
-    foreach my $item ($rssinfos->all){
+    while (my $item = $rssinfos->next){
         $viewrssfeed_ref->{$item->{thisrssid}}=1;
     }
 
@@ -546,7 +546,7 @@ sub get_rssfeed_overview {
     
     my $rssfeed_ref=[];
     
-    foreach my $item ($rssinfos->all){
+    while (my $item = $rssinfos->next){
         push @$rssfeed_ref, {
             feedid      => $item->{id},
             dbname      => $item->{dbname},
@@ -609,7 +609,7 @@ sub get_rssfeeds_of_db {
     
     my $rssfeed_ref=[];
     
-    foreach my $item ($rssinfos->all){
+    while (my $item = $rssinfos->next){
         push @$rssfeed_ref, {
             id          => $item->{id},
             dbname      => $item->{dbname},
@@ -643,7 +643,7 @@ sub get_rssfeeds_of_db_by_type {
 
     my $rssfeed_ref  = {};
 
-    foreach my $item ($rssinfos->all){
+    while (my $item = $rssinfos->next){
         push @{$rssfeed_ref->{$item->{type}}}, {
             id          => $item->{id},
             active      => $item->{active},
@@ -717,7 +717,7 @@ sub get_activefeeds_of_db  {
     
     my $activefeeds_ref = {};
 
-    foreach my $item ($feeds->all){
+    while (my $item = $feeds->next){
         $activefeeds_ref->{$item->{thistype}} = 1;
     }
     
@@ -782,7 +782,7 @@ sub get_rssfeedinfo  {
     
     my $rssfeedinfo_ref = {};
 
-    foreach my $item ($feedinfos->all){
+    while (my $item = $feedinfos->next){
         my $orgunit    = decode_utf8($item->{thisorgunitdescription});
         my $name       = decode_utf8($item->{thisdbdescription});
         my $pool       = decode_utf8($item->{thisdbname});
@@ -980,7 +980,7 @@ sub get_locationinfo_fields {
 
     my $locationinfo_ref= {};
 
-    foreach my $item ($locationfields->all){
+    while (my $item = $locationfields->next){
         my $field    = "L".sprintf "%04d",$item->{field};
         my $subfield =                    $item->{subfield} || '';
         my $mult     =                    $item->{mult}     || 1;
@@ -1014,7 +1014,7 @@ sub get_locationinfo_overview {
 
     my $locations_ref = [];
 
-    foreach my $location ($locations->all){
+    while (my $location = $locations->next){
         my $thislocation_ref = {
             id          => $location->{id},
             identifier  => $location->{identifier},
@@ -1272,7 +1272,7 @@ sub get_profiledbs {
         }
     );
     
-    foreach my $dbname ($dbnames->all){
+    while (my $dbname = $dbnames->next){
         push @profiledbs, $dbname->{thisdbname};
         
     }
@@ -1311,7 +1311,7 @@ sub get_orgunitdbs {
     
     my @orgunitdbs=();
 
-    foreach my $item ($self->{schema}->resultset('OrgunitDb')->search_rs(
+    my $orgunitdatabases = $self->{schema}->resultset('OrgunitDb')->search_rs(
         {
             'me.orgunitid' => $orgunitid,
         },
@@ -1322,7 +1322,9 @@ sub get_orgunitdbs {
             order_by => 'dbid.dbname',
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
-    )->all){
+    );
+    
+    while (my $item = $orgunitdatabases->next){
         $logger->debug("Found");
         push @orgunitdbs, $item->{thisdbname};
     }
@@ -1366,7 +1368,7 @@ sub get_viewdbs {
 
     my @viewdbs=();
 
-    foreach my $item ($dbnames->all){
+    while (my $item = $dbnames->next){
         push @viewdbs, $item->{thisdbname};
     }
 
@@ -1393,7 +1395,7 @@ sub get_active_databases {
     
     my @dblist=();
 
-    foreach my $item ($dbnames->all){
+    while (my $item = $dbnames->next){
         push @dblist, $item->{dbname};
     }
     
@@ -1429,7 +1431,7 @@ sub get_active_databases_of_systemprofile {
 
     my @dblist=();
 
-    foreach my $item ($dbnames->all){
+    while (my $item = $dbnames->next){
         push @dblist, $item->{thisdbname};
     }
 
@@ -1474,7 +1476,7 @@ sub get_active_views {
     
     my @viewlist=();
 
-    foreach my $item ($views->all){
+    while (my $item = $views->next){
         push @viewlist, $item->{viewname};
     }
 
@@ -1508,7 +1510,7 @@ sub get_active_databases_of_orgunit {
 
     my @dblist=();
 
-    foreach my $item ($dbnames->all){
+    while (my $item = $dbnames->next){
         push @dblist, $item->{thisdbname};
     }
 
@@ -1591,7 +1593,7 @@ sub get_infomatrix_of_active_databases {
 
     my @catdb=();
 
-    foreach my $item ($dbinfos->all){
+    while (my $item = $dbinfos->next){
         my $category   = decode_utf8($item->{thisorgunitdescription});
         my $name       = decode_utf8($item->{thisdescription});
         my $systemtype = decode_utf8($item->{thissystem});
@@ -2318,7 +2320,7 @@ sub del_profile {
 
     my $orgunits_ref=$self->get_orgunitinfo_overview($profilename);
 
-    foreach my $thisorgunit ($orgunits_ref->all){
+    while (my $thisorgunit = $orgunits_ref->next){
         $self->del_orgunit($profilename,$thisorgunit->orgunitname);
     }
 
@@ -2712,7 +2714,7 @@ sub get_authenticators {
 
     my $authenticators_ref = [];
 
-    foreach my $authenticator ($authenticators->all){
+    while (my $authenticator = $authenticators->next){
         push @$authenticators_ref, {
             id          => $authenticator->{id},
             hostname    => $authenticator->{hostname},
@@ -2981,7 +2983,7 @@ sub get_searchprofiles {
     
     my $searchprofiles = $self->{schema}->resultset('Searchprofile')->search_rs(undef,{ sort_by => ['id'] });
 
-    foreach my $thissearchprofile ($searchprofiles->all){
+    while (my $thissearchprofile = $searchprofiles->next){
         push @searchprofiles, $thissearchprofile;
     }
         
@@ -3010,7 +3012,7 @@ sub get_databases_of_searchprofile {
 
     my @databases = ();
     
-    foreach my $searchprofiledb ($searchprofiledbs->all){
+    while (my $searchprofiledb = $searchprofiledbs->next){
         push @databases, $searchprofiledb->{thisdbname};
 
     }
@@ -3116,7 +3118,7 @@ sub get_searchprofiles_with_own_index {
     
     my $searchprofiles = $self->{schema}->resultset('Searchprofile')->search_rs({ own_index => 1 });
 
-    foreach my $thissearchprofile ($searchprofiles->all){
+    while (my $thissearchprofile = $searchprofiles->next){
         push @searchprofiles, $thissearchprofile->id;
     }
         
@@ -3131,7 +3133,7 @@ sub delete_stale_searchprofile_indexes {
 
     my $searchprofiles = $self->{schema}->resultset('Searchprofile');
 
-    foreach my $searchprofile ($searchprofiles->all){
+    while (my $searchprofile = $searchprofiles->next){
         my $profileindex_path = $self->{xapian_index_base_path}."/_searchprofile/".$searchprofile->id;        
 
         $logger->debug("Deleting stale Index for searchprofile $searchprofile->id with path $profileindex_path");

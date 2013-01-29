@@ -1197,10 +1197,6 @@ msgstr ""
 msgid "Cluster bearbeiten"
 msgstr ""
 
-#: ../templates/info_credits_html:37
-msgid "Credits"
-msgstr ""
-
 #: ../templates/admin_authenticators_html:119 ../templates/admin_authenticators_html:82 ../templates/admin_authenticators_record_edit:82 ../templates/admin_authenticators_record_html:66 ../templates/admin_databases_html:124 ../templates/admin_databases_html:69 ../templates/admin_databases_record_edit:67 ../templates/admin_databases_record_html:48 ../templates/databases_record_html:60
 msgid "DB-Name"
 msgstr ""
@@ -1244,7 +1240,11 @@ msgid ""
 "k&ouml;nnen Sie Ihrer Treffermenge dann vor und zur&uuml;ck bl&auml;ttern."
 msgstr ""
 
-#: ../templates/info_credits_html:53 ../templates/info_credits_mobile:26
+#: ../templates/_profile/kug/std_footer_html:17
+msgid "Dank"
+msgstr ""
+
+#: ../templates/info_credits_html:37 ../templates/info_credits_html:53 ../templates/info_credits_mobile:26
 msgid "Danksagung"
 msgstr ""
 
@@ -1340,6 +1340,10 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Users/LitLists/Item.pm:320
 msgid "Der Eintrag in der Literaturliste existiert nicht"
+msgstr ""
+
+#: ../templates/_profile/kug/std_footer_html:17
+msgid "Der KUG ist ein Dienst der USB Köln"
 msgstr ""
 
 #: ../templates/info_help:574

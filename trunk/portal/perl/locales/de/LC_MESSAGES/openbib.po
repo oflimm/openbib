@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-01-29 15:28+0100\n"
+"PO-Revision-Date: 2013-01-29 16:01+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1914,10 +1914,6 @@ msgstr "Cluster"
 msgid "Cluster bearbeiten"
 msgstr "Cluster bearbeiten"
 
-#: ../templates/info_credits_html:37
-msgid "Credits"
-msgstr "Credits"
-
 #: ../templates/admin_authenticators_html:119
 #: ../templates/admin_authenticators_html:82
 #: ../templates/admin_authenticators_record_edit:82
@@ -1996,7 +1992,12 @@ msgstr ""
 "gleichzeitig angezeigt</b>. In diesen Bl&ouml;cken aus 50 Treffern\n"
 "k&ouml;nnen Sie Ihrer Treffermenge dann vor und zur&uuml;ck bl&auml;ttern."
 
-#: ../templates/info_credits_html:53 ../templates/info_credits_mobile:26
+#: ../templates/_profile/kug/std_footer_html:17
+msgid "Dank"
+msgstr "Dank"
+
+#: ../templates/info_credits_html:37 ../templates/info_credits_html:53
+#: ../templates/info_credits_mobile:26
 msgid "Danksagung"
 msgstr "Danksagung"
 
@@ -2184,6 +2185,10 @@ msgstr "Der EZB zugeordnete Themengebiete"
 #: ../modules/OpenBib/Handler/Apache/Users/LitLists/Item.pm:320
 msgid "Der Eintrag in der Literaturliste existiert nicht"
 msgstr "Der Eintrag in der Literaturliste existiert nicht"
+
+#: ../templates/_profile/kug/std_footer_html:17
+msgid "Der KUG ist ein Dienst der USB Köln"
+msgstr "Der KUG ist ein Dienst der USB Köln"
 
 #: ../templates/info_help:574
 msgid ""
@@ -11650,6 +11655,9 @@ msgstr "Übersicht"
 #: ../templates/users_navigation:85 ../templates/users_navigation:87
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "Credits"
+#~ msgstr "Credits"
 
 #, fuzzy
 #~ msgid "Titel gesamt"

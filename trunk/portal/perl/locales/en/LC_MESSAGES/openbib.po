@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-01-29 15:26+0100\n"
+"PO-Revision-Date: 2013-01-29 16:02+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1873,10 +1873,6 @@ msgstr "Cluster"
 msgid "Cluster bearbeiten"
 msgstr "Edit cluster"
 
-#: ../templates/info_credits_html:37
-msgid "Credits"
-msgstr "Credits"
-
 #: ../templates/admin_authenticators_html:119
 #: ../templates/admin_authenticators_html:82
 #: ../templates/admin_authenticators_record_edit:82
@@ -1948,7 +1944,12 @@ msgstr ""
 "<b>Only 50 hits are shown at a time</b> to prevent you from huge result "
 "lists. In this blocks of 50 hits you can browse back and forward."
 
-#: ../templates/info_credits_html:53 ../templates/info_credits_mobile:26
+#: ../templates/_profile/kug/std_footer_html:17
+msgid "Dank"
+msgstr "Credits"
+
+#: ../templates/info_credits_html:37 ../templates/info_credits_html:53
+#: ../templates/info_credits_mobile:26
 msgid "Danksagung"
 msgstr "Credits"
 
@@ -2126,6 +2127,10 @@ msgstr "Topics corresponding to EZB"
 #: ../modules/OpenBib/Handler/Apache/Users/LitLists/Item.pm:320
 msgid "Der Eintrag in der Literaturliste existiert nicht"
 msgstr "This entry of the literature list does not exist."
+
+#: ../templates/_profile/kug/std_footer_html:17
+msgid "Der KUG ist ein Dienst der USB Köln"
+msgstr "KUG is a service of USB Köln"
 
 #: ../templates/info_help:574
 msgid ""
@@ -11322,6 +11327,9 @@ msgstr "Overview"
 #: ../templates/users_navigation:85 ../templates/users_navigation:87
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#~ msgid "Credits"
+#~ msgstr "Credits"
 
 #~ msgid "Titel gesamt"
 #~ msgstr "Titles "

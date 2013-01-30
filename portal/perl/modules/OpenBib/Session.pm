@@ -117,7 +117,7 @@ sub new {
                                           -name    => "sessionID",
                                           -value   => $self->{ID},
                                           -expires => '+24h',
-                                          -path    => '/',
+                                          -path    => $config->{base_loc},
                                       );
         
         $r->err_headers_out->set('Set-Cookie', $cookie);
@@ -240,7 +240,7 @@ sub _new_instance {
                                           -name    => "sessionID",
                                           -value   => $self->{ID},
                                           -expires => '+24h',
-                                          -path    => '/',
+                                          -path    => $config->{base_loc},
                                       );
         
         $r->err_headers_out->set('Set-Cookie', $cookie);
@@ -432,11 +432,13 @@ sub _init_new_session {
 sub set_cookie {
     my ($self,$r,$name,$value)=@_;
 
+    my $config = OpenBib::Config->instance;
+    
     my $cookie = Apache2::Cookie->new($r,
                                       -name    => $name,
                                       -value   => $value,
                                       -expires => '+24h',
-                                      -path    => '/',
+                                      -path    => $config->{base_loc},
                                   );
     
     $r->err_headers_out->set('Set-Cookie', $cookie);

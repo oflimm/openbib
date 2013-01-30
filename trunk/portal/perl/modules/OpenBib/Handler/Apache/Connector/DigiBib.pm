@@ -45,12 +45,14 @@ use Log::Log4perl qw(get_logger :levels);
 
 use DBI;
 
+use OpenBib::Catalog::Factory;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
+use OpenBib::Search::Factory;
 use OpenBib::SearchQuery;
 use OpenBib::Session;
 
@@ -78,7 +80,6 @@ sub show {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view');
 
     # Shared Args
     my $query          = $self->query();
@@ -127,8 +128,33 @@ sub show {
     # idn = Titelidn
     # database = Datenbank
     # tosearch = Langanzeige
+
+    my $fs = $query->param('fs');
+    my $verf = $query->param('verf');
+    my $kor = $query->param('kor');
+    my $hst = $query->param('hst');
+    my $swt = $query->param('swt');
+    my $notation = $query->param('notation');
+    my $isbn = $query->param('isbn');
+    my $issn = $query->param('issn');
+    my $sign = $query->param('sign');
+    my $ejahr = $query->param('ejahr');
+    my $boolhst = $query->param('bool1');
+    my $boolswt = $query->param('bool2');
+    my $boolkor = $query->param('bool3');
+    my $boolnotation = $query->param('bool4');
+    my $boolisbn = $query->param('bool5');
+    my $boolsign = $query->param('bool6');
+    my $boolejahr = $query->param('bool7');
+    my $boolissn = $query->param('bool8');
+    my $boolverf = $query->param('bool9');
+    my $boolhst = $query->param('bool1');
+    my $boolhst = $query->param('bool1');
+    my $boolhst = $query->param('bool1');
+
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     my $hitrange   = 20;
+    my $view       = $query->param('view')       || '';
     my $idn        = $query->param('idn')        || '';
     my $database   = $query->param('database')   || '';
     my $maxhits    = $query->param('maxhits')    || 200;
@@ -141,7 +167,7 @@ sub show {
     my $sb         = $query->param('sb')         || 'xapian';
     my $up         = $query->param('up')         || '0';
     my $down       = $query->param('down')       || '0';
-
+    
     # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
 
     # Wenn 'erste Trefferliste' oder Langtitelanzeige
@@ -211,25 +237,18 @@ sub show {
         
         # Up/Down werden per SQL bestimmt
         if ($database && $up){
+            my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database});
+    
             $recordlist = new OpenBib::RecordList::Title();
 
             $logger->debug("Searching Supertit for Id $up in Database $database");
-            
-            my $dbh
-                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                    or $logger->error_die($DBI::errstr);
-            
-            # Bestimmung der Titel
-            my $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1";
-            my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-            $request->execute($up) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
             my $i=0;
-            while (my $res=$request->fetchrow_hashref) {
+            foreach my $superid ($catalog->get_connected_titles({ type => 'super', id => $up })){
                 last if ($i > $maxhits);
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{targetid}}));
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $superid }));
             }
-
+            
             $recordlist->load_brief_records;
             
             if ($sorttype && $sortorder){
@@ -238,30 +257,21 @@ sub show {
 
             push @ergebnisse, @{$recordlist->to_list};
             
-            $request->finish();
-
             $treffercount=$#ergebnisse+1;            
         }
         elsif ($database && $down){
+            my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database});
+    
             $recordlist = new OpenBib::RecordList::Title();
 
-            $logger->debug("Searching Subtit for Id $up in Database $database");
-            
-            my $dbh
-                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                    or $logger->error_die($DBI::errstr);
-
-            # Bestimmung der Titel
-            my $reqstring="select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1";
-            my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-            $request->execute($down) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+            $logger->debug("Searching Subtit for Id $down in Database $database");
 
             my $i=0;
-            while (my $res=$request->fetchrow_hashref) {
+            foreach my $subid ($catalog->get_connected_titles({ type => 'sub', id => $down })){
                 last if ($i > $maxhits);
-                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $subid }));
             }
-
+            
             $recordlist->load_brief_records;
             
             if ($sorttype && $sortorder){
@@ -270,212 +280,32 @@ sub show {
 
             push @ergebnisse, @{$recordlist->to_list};
             
-            $request->finish();
-
             $treffercount=$#ergebnisse+1;            
         }        
-        elsif ($sb eq "xapian"){
-            $recordlist = new OpenBib::RecordList::Title();
+        else {
+            my $search_args_ref = OpenBib::Common::Util::query2hashref($query);
+            
+            # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
+            # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
+            # und OpenBib::QueryOptions - alle weiteren benoetigten Parameter individuell
+            # heraussuchen.
+            # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
 
-            my $dbh;
-
-            foreach my $database (@databases){
-                if (!defined $dbh){
-                    # Erstes Objekt erzeugen,
-                    
-                    $logger->debug("Creating Xapian DB-Object for database $database");                
-                    
-                    eval {
-                        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-                    };
-                    
-                    if ($@){
-                        $logger->error("Database: $database - :".$@);
-                        $fallbacksb="sql";
-                    }
-                }
-                else {
-                    $logger->debug("Adding database $database");
-
-                    eval {
-                        $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
-                    };
-
-                    if ($@){
-                        $logger->error("Database: $database - :".$@);
-                        $fallbacksb="sql";
-                    }                        
-                }
-            }
-
-            if (!$fallbacksb){
-                my $request = new OpenBib::Search::Backend::Xapian();
+            $logger->debug(YAML::Dump($search_args_ref));
+            
+            my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
+            
+            # Recherche starten
+            $searcher->search;
+            
+            $searcher->search;
+            
+            $recordlist   = $searcher->get_records();            
+            $treffercount = $searcher->get_resultcount;
                 
-                $request->search({
-                    serien          => $serien,
-                    dbh             => $dbh,
-                    database        => $database,
-                    
-                    enrich          => undef,
-                    enrichkeys_ref  => undef,
-                    dd_categorized  => 0,
-                });
+            $logger->info($treffercount . " results found");
                 
-                $treffercount = $request->{resultcount};
-                
-                $logger->info($treffercount . " results found");
-                
-                if ($treffercount >= 1) {
-                    my @matches = $request->matches;
-                    my $i = 0; 
-                    foreach my $match (@matches) {
-                        last if ($i > $maxhits);
-                        my $document        = $match->get_document();
-
-                        my $titlistitem_ref;
-                        
-                        if ($config->{internal_serialize_type} eq "packed_storable"){
-                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
-                        }
-                        elsif ($config->{internal_serialize_type} eq "json"){
-                            $titlistitem_ref = decode_json $document->get_data();
-                        }
-                        else {
-                            $titlistitem_ref = Storable::thaw(pack "H*", $document->get_data());
-                        }
-
-                        $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_fields_from_storable($titlistitem_ref));
-                        $i++;
-                    }
-                    
-                    $recordlist->sort({order=>$sortorder,type=>$sorttype});
-                    
-                    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-                    push @ergebnisse, @{$recordlist->to_list};
-                }
-            }
         }            
-
-        if ($sb eq "sql"  || $fallbacksb eq 'sql'){
-            # Folgende nicht erlaubte Anfragen werden sofort ausgesondert
-            
-            my $firstsql;
-            
-            if ($searchquery->get_searchfield('fs')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('verf')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('kor')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('hst')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('swt')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('notation')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('sign')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('isbn')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('issn')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('mart')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('hststring')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('inhalt')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('gtquelle')->{norm}) {
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('ejahr')->{norm}){
-                $firstsql=1;
-            }
-            
-            if ($searchquery->get_searchfield('ejahr')->{norm}) {
-                my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
-                if (!$ejtest) {
-                    OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
-                    return Apache2::Const::OK;
-                }
-            }
-            
-            if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
-                if ($searchquery->get_searchfield('ejahr')->{norm}) {
-                    OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-                    return Apache2::Const::OK;
-                }
-            }
-            
-            
-            if ($searchquery->get_searchfield('ejahr')->{bool} eq "AND") {
-                if ($searchquery->get_searchfield('ejahr')->{norm}) {
-                    if (!$firstsql) {
-                        OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-                        return Apache2::Const::OK;
-                    }
-                }
-            }
-            
-            if (!$firstsql) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
-                return Apache2::Const::OK;
-            }
-            
-            foreach my $database (@databases){
-                my ($recordlist,$fullresultcount) = OpenBib::Search::Util::initial_search_for_titleids({
-                    serien          => $serien,
-                    
-                    database        => $database,
-                    
-                    hitrange        => $hitrange,
-                    
-                    maxhits         => $maxhits,
-                    
-                    enrich          => 0,
-                    enrichkeys_ref  => [],
-                });
-                
-                $logger->debug("Treffer-Ids in $database:".$recordlist->to_ids);
-                
-                # Wenn mindestens ein Treffer gefunden wurde
-                if ($recordlist->get_size() > 0) {
-                    # Kurztitelinformationen fuer RecordList laden
-                    $recordlist->load_brief_records;
-                    
-                    $recordlist->sort({order=>$sortorder,type=>$sorttype});
-                    
-                    push @ergebnisse, @{$recordlist->to_list};
-                }
-            }
-
-            $treffercount=$#ergebnisse+1;
-        }
         
         # Dann den eigenen URL bestimmen
         my $myself="http://".$r->hostname.$r->uri."?".$r->args;
@@ -548,7 +378,7 @@ sub show {
         
         my $liststart = ($offset<= $treffercount)?$offset:0;
         my $listend   = ($offset+$listlength <= $treffercount)?$offset+$listlength-1:$treffercount-1;
-        
+
         my $itemtemplatename=$config->{tt_connector_digibib_result_item_tname};
 
         $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({

@@ -683,6 +683,13 @@ sub get_tstamp {
     return $self->{_tstamp};
 }
 
+sub set_searchprofile {
+    my ($self,$searchprofile)=@_;
+
+    $self->{_searchprofile} = $searchprofile;
+    return;
+}
+
 sub get_searchprofile {
     my ($self)=@_;
 

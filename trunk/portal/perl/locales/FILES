@@ -12,8 +12,6 @@
 ../modules/OpenBib/Config/CirculationInfoTable.pm
 ../modules/OpenBib/Config/DatabaseInfoTable.pm
 ../modules/OpenBib/Config.pm
-../modules/OpenBib/Connector/OLWS/Admin.pm
-../modules/OpenBib/Connector/OLWS/Enrichment.pm
 ../modules/OpenBib/Container.pm
 ../modules/OpenBib/Conv/Common/Util.pm
 ../modules/OpenBib/Conv/Config.pm
@@ -48,11 +46,8 @@
 ../modules/OpenBib/Handler/Apache/Clusters.pm
 ../modules/OpenBib/Handler/Apache/Connector/AvailabilityImage.pm
 ../modules/OpenBib/Handler/Apache/Connector/Availability.pm
-../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm
 ../modules/OpenBib/Handler/Apache/Connector/LiveSearch.pm
 ../modules/OpenBib/Handler/Apache/Connector/LocationMark.pm
-../modules/OpenBib/Handler/Apache/Connector/OLWS.pm
-../modules/OpenBib/Handler/Apache/Connector/PermaLink.pm
 ../modules/OpenBib/Handler/Apache/Connector/QRCode.pm
 ../modules/OpenBib/Handler/Apache/Connector/RSS.pm
 ../modules/OpenBib/Handler/Apache/Connector/SeeAlso.pm
@@ -470,14 +465,7 @@
 ../templates/common/navitembar
 ../templates/common/subtemplate
 ../templates/connector_availability
-../templates/connector_digibib_circulation
-../templates/connector_digibib_holding
-../templates/connector_digibib_result_end
-../templates/connector_digibib_result_item
-../templates/connector_digibib_result_start
-../templates/connector_digibib_title_record
 ../templates/connector_locationmark_titlist
-../templates/connector_permalink
 ../templates/connector_rss_item
 ../templates/connector_similarpersons
 ../templates/connector_similarpersons_html
@@ -678,6 +666,7 @@
 ../templates/_profile/kug/_database/dbis/search_title_item_rdf
 ../templates/_profile/kug/_database/dbis/titles_record_html_categories
 ../templates/_profile/kug/_database/dbis/titlist_item_html_short
+../templates/_profile/kug/_database/ebooks/visible_categories_title
 ../templates/_profile/kug/_database/ezb/classifications_html
 ../templates/_profile/kug/_database/ezb/search_title_item_html
 ../templates/_profile/kug/_database/ezb/search_title_item_rdf

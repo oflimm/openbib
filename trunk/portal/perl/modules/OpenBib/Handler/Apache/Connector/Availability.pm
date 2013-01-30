@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::Availability
 #
-#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -171,27 +171,27 @@ sub show_collection_by_isbn {
     }
     
     my $isbn = OpenBib::Common::Util::normalize({
-        field => '0540',
+        field    => 'T0540',
         content  => $id,
     });
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $enrichdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-            or $logger->error_die($DBI::errstr);
+
+    my $enrichment = new OpenBib::Enrichment;
     
     # 1.) Ist dieser Titel im KUG vorhanden? ja/nein
     # 2.) Wo ist er vorhanden (Katalogname/ID/PermaLink)
     
     my $recordlist = new OpenBib::RecordList::Title();
-    
-    my $reqstring="select distinct id,dbname from all_isbn where isbn=?";
-    my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-    $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-    
-    while (my $res=$request->fetchrow_hashref) {
-        my $id         = $res->{id};
-        my $database   = $res->{dbname};
+
+    # DBI: "select distinct id,dbname from all_isbn where isbn=?";
+    my $alltitles = $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
+        {
+            isbn => $isbn,
+        }
+    );
+
+    while (my $title = $alltitles->next){
+        my $id         = $title->titleid;
+        my $database   = $title->dbname;
         
         # Verfuegbarkeit ist immer im Kontext des Views zu sehen!
         if ($viewdb_lookup_ref->{$database}){
@@ -202,54 +202,10 @@ sub show_collection_by_isbn {
     
     $recordlist->load_brief_records;
     
-    # 3.) Gibt es andere Ausgaben, die im KUG vorhanden sind? (Katalogname/ID/PermaLink)
-    
-    # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
-    my $similar_recordlist = new OpenBib::RecordList::Title();
-    
-    $reqstring="select isbn from similar_isbn where match (isbn) against (?)";
-    $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-    $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-    
-    my $similar_isbn_ref = {};
-    while (my $res=$request->fetchrow_hashref) {
-        my $similarisbnstring = $res->{isbn};
-        foreach my $similarisbn (split(':',$similarisbnstring)){
-            $similar_isbn_ref->{$similarisbn}=1 if ($similarisbn ne $isbn);
-        }
-    }
-    
-    my @similar_args = keys %$similar_isbn_ref;
-    
-    if (@similar_args){
-        my $in_select_string = join(',',map {'?'} @similar_args);
-        
-        $logger->debug("InSelect $in_select_string");
-        
-        $reqstring="select distinct id,dbname from all_isbn where isbn in ($in_select_string) order by dbname";
-        
-        $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute(@similar_args) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-        
-        while (my $res=$request->fetchrow_hashref) {
-            my $id         = $res->{id};
-            my $database   = $res->{dbname};
-            
-            if (exists $viewdb_lookup_ref->{$database}){
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
-            }
-        }
-    }
-    
-    $similar_recordlist->load_brief_records;
-    $request->finish();
-    $logger->debug("Enrich: $isbn -> $reqstring");
-    
     my $ttdata = {
         dbinfo               => $dbinfotable,
         key                  => $id,
         available_recordlist => $recordlist,
-        similar_recordlist   => $similar_recordlist,
     };
 
     $self->print_page($config->{tt_connector_availability_tname},$ttdata);

@@ -129,6 +129,64 @@
 
 [% END %]
 
+[%# USE dumper;dumper.dump(other_litlists)%]
+
+[% IF other_litlists.same_user.size > 0 || other_litlists.same_title.size > 0%] 
+<p />
+
+<div id="ob-additional_title_info">
+<ul>
+[%    IF other_litlists.same_user.size > 0 %]
+<li><a href="#same_user"><span>[% msg.maketext("Andere Listen dieses Nutzers") %]</span></a></li>
+[%    END %]
+
+[%    IF other_litlists.same_title.size > 0 %]
+<li><a href="#same_title"><span>[% msg.maketext("Listen mit gemeinsamen Titeln") %]</span></a></li>
+[%    END %]
+</ul>
+
+[%    IF other_litlists.same_user.size > 0%] 
+
+<h2 class="ob-nojs_show">[% msg.maketext("Andere Listen dieses Nutzers") %]</h2>
+
+<div id="same_user">
+<!-- Begin: Gleicher Nutzer -->
+
+<ul>
+[%      FOREACH other_litlist IN other_litlists.same_user %]
+[%        IF other_litlist.type == 1 %]
+<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% other_litlist.id %].html?l=[% lang %]"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)[%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+[%        END %]
+[%      END %]
+
+</ul>
+
+<!-- Ende: Gleicher Nutzer -->
+</div>
+[%    END %]
+
+[%    IF other_litlists.same_title.size > 0%] 
+
+<h2 class="ob-nojs_show">[% msg.maketext("Listen mit gemeinsamen Titeln") %]</h2>
+
+<div id="same_title">
+<!-- Begin: Gleicher Nutzer -->
+
+<ul>
+[%       FOREACH other_litlist IN other_litlists.same_title %]
+[%         IF other_litlist.type == 1 %]
+<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% other_litlist.id %].html?l=[% lang %]"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)&nbsp;[%- IF other_litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+[%       END %]
+[%    END %]
+
+</table>
+
+<!-- Ende: Gleicher Nutzer -->
+</div>
+[%  END %]
+
+[% END %]
+
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
@@ -136,6 +194,15 @@
      </div> <!-- end: ym-column -->
     </div>
     <!-- end: #main -->
+
+               <script type="text/javascript">
+                        $(function(){
+
+                                // Tabs
+                                $('#ob-additional_title_info').tabs();
+                                        
+                        });
+                </script>
 
 
 [% PROCESS common/subtemplate name="std_footer" %]

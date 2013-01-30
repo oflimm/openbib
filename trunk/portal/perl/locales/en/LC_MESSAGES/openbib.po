@@ -849,11 +849,7 @@ msgstr "Other editions"
 msgid "Andere Formate"
 msgstr "Other formats"
 
-#: ../templates/litlists_record_html:148
-msgid "Andere Listen dieses Nutzer"
-msgstr "Other lists of the same user"
-
-#: ../templates/litlists_record_html:138
+#: ../templates/litlists_record_html:138 ../templates/litlists_record_html:148
 msgid "Andere Listen dieses Nutzers"
 msgstr "Lists of same user"
 
@@ -11798,6 +11794,9 @@ msgstr "Overview"
 #: ../templates/users_navigation:85 ../templates/users_navigation:87
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#~ msgid "Andere Listen dieses Nutzer"
+#~ msgstr "Other lists of the same user"
 
 #~ msgid "Der KUG ist ein Dienst der USB Köln"
 #~ msgstr "KUG is a service of USB Köln"

@@ -67,8 +67,8 @@ sub _new_instance {
     my $dbinfos = $config->{schema}->resultset('Databaseinfo')->search_rs(
         undef,
         {
-            select => ['me.dbname','me.description','me.shortdesc','me.sigel','me.url','locationid.id'],
-            as     => ['thisdbname','thisdescription','thisshortdesc','thissigel','thisurl','thislocationid'],
+            select => ['me.dbname','me.description','me.shortdesc','me.sigel','me.url','locationid.identifier','locationid.type'],
+            as     => ['thisdbname','thisdescription','thisshortdesc','thissigel','thisurl','thislocationid','thislocationtype'],
             join   => ['locationid'],
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
@@ -81,6 +81,7 @@ sub _new_instance {
         my $sigel       = $dbinfo->{thissigel};
         my $url         = $dbinfo->{thisurl};
         my $locationid  = $dbinfo->{thislocationid};
+        my $locationtype  = $dbinfo->{thislocationtype};
         
         ##################################################################### 
         ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
@@ -110,8 +111,10 @@ sub _new_instance {
         };
 
         $self->{urls}->{$dbname}        = $url;
-        $self->{locationid}->{$dbname}  = $locationid;
 
+        if ($locationtype eq "ISIL"){
+            $self->{locationid}->{$dbname}  = $locationid;
+        }
     }
 
     if ($config->{benchmark}) {

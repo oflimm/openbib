@@ -2976,6 +2976,7 @@ sub get_other_litlists {
     # DBI: "select id,title from litlist where type = 1 and id != ? and userid in () order by title";
 
     my $inside_same_user = $self->{schema}->resultset('Litlist')->search_rs({ id => $litlistid});
+    
     my $same_user = $self->{schema}->resultset('Litlist')->search_rs(
         {
             id   => { '!=' => $litlistid },
@@ -3010,10 +3011,13 @@ sub get_other_litlists {
 
     foreach my $litlist ($same_title->all){
         my $litlistid        = $litlist->litlistid;
+        $logger->debug("Found litlist $litlistid with same title");
         my $litlist_props    = $self->get_litlist_properties({litlistid => $litlistid});
-        push @{$litlists_ref->{same_title}}, $litlist_props; # if ($litlist_props->{type} == 1);
+        push @{$litlists_ref->{same_title}}, $litlist_props if ($litlist_props->{type} == 1);
     }
 
+    $logger->debug($litlists_ref);
+    
     return $litlists_ref;
 }
 

@@ -872,11 +872,7 @@ msgstr "Andere Ausgaben"
 msgid "Andere Formate"
 msgstr "Andere Formate"
 
-#: ../templates/litlists_record_html:148
-msgid "Andere Listen dieses Nutzer"
-msgstr "Andere Listen dieses Nutzer"
-
-#: ../templates/litlists_record_html:138
+#: ../templates/litlists_record_html:138 ../templates/litlists_record_html:148
 msgid "Andere Listen dieses Nutzers"
 msgstr "Andere Listen dieses Nutzers"
 
@@ -12131,6 +12127,9 @@ msgstr "Übersicht"
 #: ../templates/users_navigation:85 ../templates/users_navigation:87
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "Andere Listen dieses Nutzer"
+#~ msgstr "Andere Listen dieses Nutzer"
 
 #~ msgid "Der KUG ist ein Dienst der USB Köln"
 #~ msgstr "Der KUG ist ein Dienst der USB Köln"

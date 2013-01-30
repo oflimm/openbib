@@ -271,9 +271,11 @@ sub set_password {
     my $logger = get_logger();
 
     # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
-    my $update_user = $self->{schema}->resultset('Userinfo')->search_rs({
-        username  => $username,
-    });
+    my $update_user = $self->{schema}->resultset('Userinfo')->search_rs(
+        {
+            username  => $username,
+        }
+    );
 
     if ($password){
         $update_user->update({ password => \"crypt('$password', gen_salt('bf'))" });
@@ -1212,8 +1214,10 @@ sub rename_tag {
     if ($fromid && $toid){
         # DBI: "update tit_tag set tagid = ? where tagid = ? and userid = ?"
         $self->{schema}->resultset('TitTag')->search_rs(
-            tagid  => $fromid,
-            userid => $userid,
+            {
+                tagid  => $fromid,
+                userid => $userid,
+            }
         )->update(
             {
                 tagid => $toid,
@@ -1287,11 +1291,11 @@ sub del_tags {
                 'me.titleid'      => $titleid,
                 'me.dbname'       => $dbname,
                 'userid.id'       => $userid,
-                },
-                {
-                    join => ['userid'],
-                }
-            )->delete;
+            },
+            {
+                join => ['userid'],
+            }
+        )->delete;
     }
     
     return;
@@ -3894,7 +3898,9 @@ sub update_userrole {
 
     # DBI: "delete from user_role where userid=?"
     $self->{schema}->resultset('UserRole')->search_rs(
-        userid => $userinfo_ref->{id},
+        {
+            userid => $userinfo_ref->{id},
+        }
     )->delete_all;
     
     foreach my $roleid (@{$userinfo_ref->{roles}}){
@@ -3902,7 +3908,9 @@ sub update_userrole {
 
         # DBI: "insert into user_role values (?,?)"
         $self->{schema}->resultset('UserRole')->search_rs(
-            userid => $userinfo_ref->{id},
+            {
+                userid => $userinfo_ref->{id},
+            }
         )->create(
             {
                 userid => $userinfo_ref->{id},
@@ -4076,7 +4084,9 @@ sub disconnect_session {
     my $logger = get_logger();
 
     my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
-        id => $self->{ID}
+        {
+            id => $self->{ID}
+        }
     )->first;
 
     if ($userinfo){

@@ -288,7 +288,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <div class="ob-headline">Literaturanalyse in der Wikipedia</div>
 
 <ul>
-[% FOREACH related_record IN related_records.get_records %]
+[% FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records %]
 [% item = related_record.get_fields %]
 [% related_url = "${path_prefix}/${config.get('databases_loc')}/id/${related_record.database}/${config.get('titles_loc')}/id/${related_record.id}.html?l=${lang}" %]
 [%# Titel konstruieren %]

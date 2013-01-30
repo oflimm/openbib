@@ -896,9 +896,9 @@ my %searchprofileid = ();
     while (my $result=$request->fetchrow_hashref){        
         my $id        = $result->{ttid};
         my $tagid     = $result->{tagid};
-        my $titleid   = $result->{titleid};
+        my $titleid   = $result->{titid};
         my $titleisbn = $result->{titisbn};
-        my $dbname    = $result->{dbname};
+        my $dbname    = $result->{titdb};
         my $loginname = $result->{loginname};
         my $type      = $result->{type};
 

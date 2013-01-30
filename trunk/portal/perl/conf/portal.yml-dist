@@ -125,20 +125,15 @@ topics_loc: topics
 ## Konnektoren
 connector_availabilityimage_loc: connector/availabilityimage
 connector_availability_loc: connector/availability
-connector_bibmanager_loc: connector/literaturverwaltung
-connector_digibib_loc: connector/digibib
 connector_livesearch_loc: connector/livesearch
 connector_locationmark_loc: connector/sykasignatur
-connector_olws_loc: connector/olws
 # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
-connector_permalink_loc: connector/permalink
 connector_qrcode_loc: connector/qrcode
 connector_rss_loc: connector/rss
 connector_seealso_loc: connector/seealso
 connector_similarpersons_loc: connector/similarpersons
 connector_similarsubjects_loc: connector/similarsubjects
 connector_spellcheck_loc: connector/spellcheck
-connector_ukonline_loc: connector/uk-online
 connector_unapi_loc: connector/unapi
 
 ## Resourcen mit dedizierten IDs
@@ -223,6 +218,164 @@ dispatch_rules:
        - none
        - html
      runmode: 'show'
+
+#####################################################################
+# Titel-Resource/Repraesentation
+  - # users/titles_loc: only public
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/titles/popular[get]'
+     runmode: 'show_popular'
+     representations:
+       - none
+       - html
+       - json
+       - include
+       - rdf
+  - # users/titles_loc: only public
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/popular[get]'
+     runmode: 'show_popular'
+     representations:
+       - none
+       - html
+       - json
+       - include
+       - rdf
+  - # users/titles_loc: only public
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/recent[get]'
+     runmode: 'show_recent'
+     representations:
+       - none
+       - html
+       - json
+       - rss
+       - include
+       - rdf
+  - # users_loc/titles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Titles::Fields'
+     rule: '/portal/:view/databases/id/:database/titles/fields[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+  - # users_loc/titles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Titles::Fields'
+     rule: '/portal/:view/databases/id/:database/titles/fields/id/:fieldid[get]'
+     runmode: 'show_record'
+  - # users_loc/titles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[get]'
+     runmode: 'show_record'
+     args:
+        users_loc: 'databases'
+  - # users_loc/titles_loc: Record show
+     module: 'OpenBib::Handler::Apache::CartItems'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/save[get]'
+     runmode: 'save_collection'
+     representations:
+       - none
+       - html
+     args:
+        users_loc: 'databases'
+  - # users_loc/titles_loc: Record show
+     module: 'OpenBib::Handler::Apache::CartItems'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/mail[get]'
+     runmode: 'mail_collection'
+     representations:
+       - none
+       - html
+     args:
+        users_loc: 'databases'
+  - # users_loc/titles_loc: Record show
+     module: 'OpenBib::Handler::Apache::CartItems'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/mail[post]'
+     runmode: 'mail_collection_send'
+  - # users_loc/titles_loc: Record show
+     module: 'OpenBib::Handler::Apache::CartItems'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/print[get]'
+     runmode: 'print_collection'
+     representations:
+       - none
+       - html
+     args:
+        users_loc: 'databases'
+
+  - # users_loc/titles_loc: Record redirect to bibsonomy
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/to_bibsonomy[get]'
+     runmode: 'redirect_to_bibsonomy'
+     representations:
+       - none
+       - html
+  - # users/titles_loc:
+     module: 'OpenBib::Handler::Apache::Users::Titles'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid[get]'
+     runmode: 'show_record'
+  - # users/titles_loc:
+     module: 'OpenBib::Handler::Apache::Users::CartItems'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/save[get]'
+     runmode: 'save_collection'
+     representations:
+       - none
+       - html
+  - # users/titles_loc:
+     module: 'OpenBib::Handler::Apache::Users::CartItems'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/mail[get]'
+     runmode: 'mail_collection'
+     representations:
+       - none
+       - html
+  - # users/titles_loc:
+     module: 'OpenBib::Handler::Apache::Users::CartItems'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/mail[post]'
+     runmode: 'mail_collection_send'
+  - # users/titles_loc:
+     module: 'OpenBib::Handler::Apache::Users::CartItems'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/print[get]'
+     runmode: 'print_collection'
+     representations:
+       - none
+       - html
+  - # users/titles_loc:
+     module: 'OpenBib::Handler::Apache::Users::Titles'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/searchindex[get]'
+     runmode: 'show_record_searchindex'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+  - # users/titles_loc:
+     module: 'OpenBib::Handler::Apache::Users::Titles'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/edit[get]'
+     runmode: 'show_record_form'
+     representations:
+       - none
+       - html
+  - # users/titles_loc:
+     module: 'OpenBib::Handler::Apache::Users::Titles'
+     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/edit[get]'
+     runmode: 'show_collection_form'
+     representations:
+       - none
+       - html
+  - # users_loc/titles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Users::Titles'
+     rule: '/portal/:view/databases/id/:database/titles[post]'
+     runmode: 'create_record'
+  - # users_loc/titles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Users::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[post]'
+     runmode: 'update_record'
+  - # users_loc/titles_loc: Update Record
+     module: 'OpenBib::Handler::Apache::Users::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[put]'
+     runmode: 'update_record'
+  - # users_loc/titles_loc: Delete Record
+     module: 'OpenBib::Handler::Apache::Users::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[delete]'
+     runmode: 'delete_record'
 
 #####################################################################
 # Browse-Resource/Repraesentation
@@ -382,18 +535,6 @@ dispatch_rules:
      runmode: 'isbn'
      args:
         disable_content_negotiation: 1
-  - # connector_bibmanager_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/literaturverwaltung'
-     runmode: 'show'
-     args:
-        disable_disable_content_negotiation: 1
-  - # connector_digibib_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/digibib'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
   - # connector_livesearch_loc:
      module: 'OpenBib::Handler::Apache::Connector::LiveSearch'
      rule: '/portal/:view/connector/livesearch'
@@ -408,17 +549,9 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Connector:LocationMark'
      rule: '/portal/:view/connector/locationmark.html'
      runmode: 'show'
-  - # connector_olws_loc:
-     module: 'OpenBib::Handler::Apache::Connector::OLWS'
-     rule: '/portal/:view/connector/olws'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
   # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
-  - # connector_permalink_loc:
-     module: 'OpenBib::Handler::Apache::Connector::PermaLink'
-     rule: '/portal/connector/permalink/:id1/:id2/:type/:view/index.html'
-     runmode: 'show'
+  # Die Rueckwaertskompatabilitaet wird durch URL-Rewriting und 301er
+  # Redirects direkt im Apache gewaehrleistet
   - # connector_qrcode_loc:
      module: 'OpenBib::Handler::Apache::Connector::QRCode'
      rule: '/portal/:view/connector/qrcode'
@@ -464,12 +597,6 @@ dispatch_rules:
   - # connector_spellcheck_loc:
      module: 'OpenBib::Handler::Apache::Connector::SpellCheck'
      rule: '/portal/:view/connector/spellcheck'
-     runmode: 'show'
-     args:
-        disable_content_negotiation: 1
-  - # connector_ukonline_loc:
-     module: 'OpenBib::Handler::Apache::Connector::DigiBib'
-     rule: '/portal/:view/connector/uk-online'
      runmode: 'show'
      args:
         disable_content_negotiation: 1
@@ -1653,164 +1780,6 @@ dispatch_rules:
      runmode: 'update_record'
  
 #####################################################################
-# Titel-Resource/Repraesentation
-  - # users/titles_loc: only public
-     module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/databases/titles/popular[get]'
-     runmode: 'show_popular'
-     representations:
-       - none
-       - html
-       - json
-       - include
-       - rdf
-  - # users/titles_loc: only public
-     module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/databases/id/:database/titles/popular[get]'
-     runmode: 'show_popular'
-     representations:
-       - none
-       - html
-       - json
-       - include
-       - rdf
-  - # users/titles_loc: only public
-     module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/databases/id/:database/titles/recent[get]'
-     runmode: 'show_recent'
-     representations:
-       - none
-       - html
-       - json
-       - rss
-       - include
-       - rdf
-  - # users_loc/titles_loc: Record show
-     module: 'OpenBib::Handler::Apache::Titles::Fields'
-     rule: '/portal/:view/databases/id/:database/titles/fields[get]'
-     runmode: 'show_collection'
-     representations:
-       - none
-       - html
-  - # users_loc/titles_loc: Record show
-     module: 'OpenBib::Handler::Apache::Titles::Fields'
-     rule: '/portal/:view/databases/id/:database/titles/fields/id/:fieldid[get]'
-     runmode: 'show_record'
-  - # users_loc/titles_loc: Record show
-     module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[get]'
-     runmode: 'show_record'
-     args:
-        users_loc: 'databases'
-  - # users_loc/titles_loc: Record show
-     module: 'OpenBib::Handler::Apache::CartItems'
-     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/save[get]'
-     runmode: 'save_collection'
-     representations:
-       - none
-       - html
-     args:
-        users_loc: 'databases'
-  - # users_loc/titles_loc: Record show
-     module: 'OpenBib::Handler::Apache::CartItems'
-     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/mail[get]'
-     runmode: 'mail_collection'
-     representations:
-       - none
-       - html
-     args:
-        users_loc: 'databases'
-  - # users_loc/titles_loc: Record show
-     module: 'OpenBib::Handler::Apache::CartItems'
-     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/mail[post]'
-     runmode: 'mail_collection_send'
-  - # users_loc/titles_loc: Record show
-     module: 'OpenBib::Handler::Apache::CartItems'
-     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/print[get]'
-     runmode: 'print_collection'
-     representations:
-       - none
-       - html
-     args:
-        users_loc: 'databases'
-
-  - # users_loc/titles_loc: Record redirect to bibsonomy
-     module: 'OpenBib::Handler::Apache::Titles'
-     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/to_bibsonomy[get]'
-     runmode: 'redirect_to_bibsonomy'
-     representations:
-       - none
-       - html
-  - # users/titles_loc:
-     module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid[get]'
-     runmode: 'show_record'
-  - # users/titles_loc:
-     module: 'OpenBib::Handler::Apache::Users::CartItems'
-     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/save[get]'
-     runmode: 'save_collection'
-     representations:
-       - none
-       - html
-  - # users/titles_loc:
-     module: 'OpenBib::Handler::Apache::Users::CartItems'
-     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/mail[get]'
-     runmode: 'mail_collection'
-     representations:
-       - none
-       - html
-  - # users/titles_loc:
-     module: 'OpenBib::Handler::Apache::Users::CartItems'
-     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/mail[post]'
-     runmode: 'mail_collection_send'
-  - # users/titles_loc:
-     module: 'OpenBib::Handler::Apache::Users::CartItems'
-     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/print[get]'
-     runmode: 'print_collection'
-     representations:
-       - none
-       - html
-  - # users/titles_loc:
-     module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/searchindex[get]'
-     runmode: 'show_record_searchindex'
-     representations:
-       - none
-       - html
-       - json
-       - rdf
-  - # users/titles_loc:
-     module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/edit[get]'
-     runmode: 'show_record_form'
-     representations:
-       - none
-       - html
-  - # users/titles_loc:
-     module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/users/id/:id/databases/id/:database/titles/edit[get]'
-     runmode: 'show_collection_form'
-     representations:
-       - none
-       - html
-  - # users_loc/titles_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/databases/id/:database/titles[post]'
-     runmode: 'create_record'
-  - # users_loc/titles_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[post]'
-     runmode: 'update_record'
-  - # users_loc/titles_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[put]'
-     runmode: 'update_record'
-  - # users_loc/titles_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Users::Titles'
-     rule: '/portal/:view/databases/id/:database/titles/id/:titleid[delete]'
-     runmode: 'delete_record'
-
-#####################################################################
 # Alle anderen Normdaten sind bis jetzt nicht Nutzerabhaengig,
 # koennten es aber spaeter einmal werden. Daher vereinheitlichtes URI
 # Schema wie bei den Titeln
@@ -2633,12 +2602,7 @@ tt_cartitems_save_plain_tname: cartitems_save_plain
 tt_cartitems_tname: cartitems
 
 tt_connector_availability_tname: connector_availability
-tt_connector_digibib_result_end_tname: connector_digibib_result_end
-tt_connector_digibib_result_item_tname: connector_digibib_result_item
-tt_connector_digibib_result_start_tname: connector_digibib_result_start
-tt_connector_digibib_title_record_tname: connector_digibib_title_record
 tt_connector_locationmark_titlist_tname: connector_locationmark_titlist
-tt_connector_permalink_tname: connector_permalink
 tt_connector_rss_item_tname: connector_rss_item
 tt_connector_similarpersons_tname: connector_similarpersons
 tt_connector_similarsubjects_tname: connector_similarsubjects

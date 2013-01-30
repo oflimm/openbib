@@ -16,18 +16,14 @@
 [%- normset = "" -%]
 [%-
    num_of_available_records = available_recordlist.get_size;
-   num_of_similar_records   = similar_recordlist.get_size;
    normset_type = "";
    
    IF     num_of_available_records > 0;
       normset = available_recordlist.get_records.first.get_fields;
-   ELSIF num_of_similar_records > 0;
-      normset = similar_recordlist.get_records.first.get_fields;
-      normset_type = "similar";
    END;
 -%]
 [%- IF normset.${"T0331"}.first.content || normset.${"T0540"}.first.content %]
-<title_summary[%- IF normset_type == "similar" -%] type="similar"[%- END -%]>
+<title_summary>
 [%- IF normset.${"T0331"}.first.content %]
   <title>[% normset.${"T0331"}.first.content %]</title>
 [%- END %]
@@ -53,33 +49,24 @@
   <identifier>URN:ISBN:[% normset.${"T0540"}.first.content %]</identifier>
 [%- ELSIF have_bibkey -%]
   <identifier>URN:BIBKEY:[% key %]</identifier>
-[%- END -%]
+[% END %]
 </title_summary>
-[%- END -%]
+[% END -%]
 
 <availability>
 <size>[% num_of_available_records %]</size>
 [% FOREACH record IN available_recordlist.get_records %]
 <catalogue>
+[% IF dbinfo.locationid.${record.database} -%]
+  <isil>[% dbinfo.locationid.${record.database} %]</isil>
+[% END -%]
   <sigel>[% dbinfo.dbases.${record.database} %]</sigel>
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
   <description>[% dbinfo.get('dbnames').${record.database}.short %]</description>
-  <permalink>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</permalink>
+  <permalink>http://[% servername %][% path_prefix %]/[% config.get('databases_loc')%]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]</permalink>
 </catalogue>
 [% END %]
 </availability>
 
-<similar_record_availability>
-<size>[% num_of_similar_records %]</size>
-[% FOREACH record IN similar_recordlist.get_records %]
-<catalogue>
-  <sigel>[% dbinfo.dbases.${record.database} %]</sigel>
-  <name>[% record.database %]</name>
-  <id>[% record.id %]</id>
-  <description>[% dbinfo.get('dbnames').${record.database}.short %]</description>
-  <permalink>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</permalink>
-</catalogue>
-[% END %]
-</similar_record_availability>
 </availability_response>

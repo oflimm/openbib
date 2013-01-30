@@ -453,11 +453,7 @@ msgstr ""
 msgid "Andere Formate"
 msgstr ""
 
-#: ../templates/litlists_record_html:148
-msgid "Andere Listen dieses Nutzer"
-msgstr ""
-
-#: ../templates/litlists_record_html:138
+#: ../templates/litlists_record_html:138 ../templates/litlists_record_html:148
 msgid "Andere Listen dieses Nutzers"
 msgstr ""
 

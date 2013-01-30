@@ -261,6 +261,7 @@
 </fieldset>
 </form>
 
+[% IF 0 == 1 %]
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 <fieldset class="ym-full">
@@ -348,6 +349,7 @@
 
 </fieldset>
 </form>
+[% END %]
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/bibsonomy" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />

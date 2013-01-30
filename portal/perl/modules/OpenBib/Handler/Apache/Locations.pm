@@ -170,7 +170,7 @@ sub show_record {
         }
                 
         my $ttdata = {
-            locationid     => $locationinfo->identifier,
+            locationid     => $locationid,
             locationinfo   => $locationinfo_ref,
             dbinfo         => $dbinfotable,
         };

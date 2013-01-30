@@ -49,20 +49,22 @@
 </tr>
 <tr>
 <th>[% msg.maketext("Angemeldete Nutzer") %]</th>
-<td>[% user.get_number_of_users %]</td>
+<td>[% user.get_number_of_users.chunk(-3).join('.') %]</td>
 </tr>
 <tr>
 <th>[% msg.maketext("Literaturlisten") %]</th>
-[% ret = user.get_number_of_litlists %]
-<td>[% ret.public + ret.private %]</td>
+[% ret = user.get_number_of_litlists ;
+   litlists_all = ret.publc + ret.private ;
+%]
+<td>[% litlists_all.chunk(-3).join('.') %]</td>
 </tr>
 <tr>
 <td>&nbsp;&nbsp;[% msg.maketext("davon öffentlich") %]</td>
-<td>[% ret.public %]</td>
+<td>[% ret.public.chunk(-3).join('.') %]</td>
 </tr>
 <tr>
 <td>&nbsp;&nbsp;[% msg.maketext("davon privat") %]</td>
-<td>[% ret.private %]</td>
+<td>[% ret.private.chunk(-3).join('.') %]</td>
 </tr>
 </table>
 

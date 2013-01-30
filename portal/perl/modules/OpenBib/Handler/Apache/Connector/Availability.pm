@@ -186,7 +186,11 @@ sub show_collection_by_isbn {
     my $alltitles = $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
         {
             isbn => $isbn,
+        },
+        {
+            group_by => ['tstamp','isbn','dbname','titleid'],
         }
+            
     );
 
     while (my $title = $alltitles->next){

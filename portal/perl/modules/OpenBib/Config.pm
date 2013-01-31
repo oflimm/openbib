@@ -337,9 +337,17 @@ sub get_startpage_of_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $start_loc;
+    
     # DBI: "select start_loc from viewinfo where viewname = ?"
-    my $start_loc = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'start_loc' })->first->start_loc;
+    eval {
+        $start_loc = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'start_loc' })->first->start_loc;
+    };
 
+    if ($@){
+        $logger->error($@);
+    }
+    
     $logger->debug("Got Startpage $start_loc") if (defined $start_loc);
     
     return $start_loc;

@@ -51,7 +51,7 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 print "### $pool: Hole Exportdateien mit wget von $baseurl\n";
 
-system("cd $pooldir/$pool ; rm unload.* *.bcp* *.exp*");
+system("cd $pooldir/$pool ; rm meta.* *.bcp*");
 system("$wgetexe -P $pooldir/$pool/ $baseurl/titel_daten.bcp.gz   > /dev/null 2>&1 ");
 system("$wgetexe -P $pooldir/$pool/ $baseurl/per_daten.bcp.gz     > /dev/null 2>&1 ");
 system("$wgetexe -P $pooldir/$pool/ $baseurl/koe_daten.bcp.gz     > /dev/null 2>&1 ");
@@ -64,5 +64,5 @@ system("$wgetexe -P $pooldir/$pool/ $baseurl/sik_fstab.bcp.gz     > /dev/null 2>
 system("$wgetexe -P $pooldir/$pool/ $baseurl/titel_exclude.bcp.gz > /dev/null 2>&1 ");
 system("$wgetexe -P $pooldir/$pool/ $baseurl/titel_buch_key.bcp.gz > /dev/null 2>&1 ");
 
-system("cd $pooldir/$pool ; gzip -d *.bcp.gz ; $bcp2metaexe --blob-encoding=iso-8859-1 -use-d01buch -use-mcopynum --bcp-path=$pooldir/$pool > /dev/null 2>&1 ; gzip *.bcp");
+system("cd $pooldir/$pool ; gzip -d *.bcp.gz ; $bcp2metaexe -use-d01buch -use-mcopynum --bcp-path=$pooldir/$pool --blob-encoding=\"iso-8859-1\" > /dev/null 2>&1 ; gzip *.bcp");
 system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/filter-rswk.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");

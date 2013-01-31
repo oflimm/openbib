@@ -52,7 +52,7 @@ Weiterleitung kann in der Web-Administration sehr einfach in den
 Einstellungen der Sicht vorgenommen werden. Dort wird dann im
 Eingabefeld <i>Anderer Start-URI-Pfad</i> einfach der Pfad zur
 (einfachen) Recherchemaske eingegeben, also
-z.B. <i>/portal/openbib/searchform/simple.html</i>.  <p>
+z.B. <i>/portal/openbib/searchforms/id/simple.html</i>.  <p>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

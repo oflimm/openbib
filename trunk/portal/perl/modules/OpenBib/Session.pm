@@ -1222,6 +1222,7 @@ sub clear_data {
     my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
 
     if ($sessioninfo){
+        $logger->debug("Trying to clear data for sessionID ".$sessioninfo->sessionid);
 
         eval {
             $sessioninfo->eventlogs->delete;
@@ -1229,7 +1230,7 @@ sub clear_data {
             $sessioninfo->queries->delete;
             $sessioninfo->recordhistories->delete;
             $sessioninfo->searchhistories->delete;
-            $sessioninfo->session_cartitems->cartitemid->delete;
+#            $sessioninfo->session_cartitems->cartitemid->delete;
             $sessioninfo->session_cartitems->delete;
             $sessioninfo->session_searchprofiles->delete;
             $sessioninfo->user_sessions->delete;

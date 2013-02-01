@@ -695,6 +695,7 @@
 ../templates/_profile/kug/_database/openlibrary/visible_categories_title
 ../templates/_profile/kug/_database/wikisource_de/persons_record_html
 ../templates/_profile/kug/_database/wikisource_de/visible_categories_title
+../templates/_profile/kug/cartitems_mail_message
 ../templates/_profile/kug/home_html
 ../templates/_profile/kug/home_html_bottom
 ../templates/_profile/kug/home_html_bottom_center

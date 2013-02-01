@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-01-30 16:11+0100\n"
+"PO-Revision-Date: 2013-02-01 10:13+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -796,6 +796,7 @@ msgid "Als Mail verschicken"
 msgstr "Send as e-mail"
 
 #: ../templates/litlists_record_html:178
+#: ../templates/users_litlists_record_html:178
 msgid "Als Permanenten Link verwenden"
 msgstr "Permanent link of this entry"
 
@@ -850,6 +851,8 @@ msgid "Andere Formate"
 msgstr "Other formats"
 
 #: ../templates/litlists_record_html:140 ../templates/litlists_record_html:150
+#: ../templates/users_litlists_record_html:140
+#: ../templates/users_litlists_record_html:150
 msgid "Andere Listen dieses Nutzers"
 msgstr "Lists of same user"
 
@@ -5505,6 +5508,8 @@ msgid "Liste"
 msgstr "List"
 
 #: ../templates/litlists_record_html:144 ../templates/litlists_record_html:170
+#: ../templates/users_litlists_record_html:144
+#: ../templates/users_litlists_record_html:170
 msgid "Listen mit gemeinsamen Titeln"
 msgstr "Lists sharing titles"
 
@@ -6340,6 +6345,8 @@ msgstr "Official"
 #: ../templates/searchforms_record_bottom_right:28
 #: ../templates/users_litlists_html:102
 #: ../templates/users_litlists_record_edit:52
+#: ../templates/users_litlists_record_html:158
+#: ../templates/users_litlists_record_html:178
 #: ../templates/users_litlists_record_html:52
 msgid "Offizielle Literaturliste des Instituts/Seminars"
 msgstr "Official literature list of the institute/seminar"
@@ -7186,6 +7193,24 @@ msgstr "Subjects in displayed titles"
 #: ../templates/search_facet:447
 msgid "Schwedisch"
 msgstr "Swedish"
+
+#: ../templates/_profile/kug/cartitems_mail_message:1
+msgid ""
+"Sehr geehrte Damen und Herren,\n"
+"\n"
+"anbei Ihre Merkliste aus dem KUG Recherche-Portal.\n"
+"\n"
+"Mit freundlichen Grüßen\n"
+"\n"
+"Ihr KUG Team"
+msgstr ""
+"Dear ladies and gentlemen,\n"
+"\n"
+"please find attached your list of interest.\n"
+"\n"
+"Regards,\n"
+"\n"
+"Your KUG team"
 
 #: ../templates/cartitems_mail_message:1
 msgid ""

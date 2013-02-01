@@ -429,7 +429,7 @@ msgstr ""
 msgid "Als Mail verschicken"
 msgstr ""
 
-#: ../templates/litlists_record_html:178
+#: ../templates/litlists_record_html:178 ../templates/users_litlists_record_html:178
 msgid "Als Permanenten Link verwenden"
 msgstr ""
 
@@ -453,7 +453,7 @@ msgstr ""
 msgid "Andere Formate"
 msgstr ""
 
-#: ../templates/litlists_record_html:140 ../templates/litlists_record_html:150
+#: ../templates/litlists_record_html:140 ../templates/litlists_record_html:150 ../templates/users_litlists_record_html:140 ../templates/users_litlists_record_html:150
 msgid "Andere Listen dieses Nutzers"
 msgstr ""
 
@@ -3190,7 +3190,7 @@ msgstr ""
 msgid "Liste"
 msgstr ""
 
-#: ../templates/litlists_record_html:144 ../templates/litlists_record_html:170
+#: ../templates/litlists_record_html:144 ../templates/litlists_record_html:170 ../templates/users_litlists_record_html:144 ../templates/users_litlists_record_html:170
 msgid "Listen mit gemeinsamen Titeln"
 msgstr ""
 
@@ -3585,7 +3585,7 @@ msgstr ""
 msgid "Offiziell"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/litlists_record_html:54 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:39 ../templates/_profile/usb/litlists_collection_by_single_subject_recent_include:17 ../templates/_profile/usb/litlists_collection_by_single_topic_include:16 ../templates/_view/richter/litlists_record_html:54 ../templates/_view/richter/users_litlists_record_edit:39 ../templates/browse_topics_record_html:142 ../templates/browse_topics_record_html:144 ../templates/litlists_by_single_topic_html:75 ../templates/litlists_by_single_topic_include:29 ../templates/litlists_by_single_topic_recent_html:77 ../templates/litlists_by_single_topic_recent_include:21 ../templates/litlists_html:64 ../templates/litlists_html:66 ../templates/litlists_recent_html:64 ../templates/litlists_recent_include:17 ../templates/litlists_record_html:158 ../templates/litlists_record_html:178 ../templates/litlists_record_html:54 ../templates/searchforms_record_bottom_right:28 ../templates/users_litlists_html:102 ../templates/users_litlists_record_edit:52 ../templates/users_litlists_record_html:52
+#: ../templates/_profile/sammlungen/_view/richter/litlists_record_html:54 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:39 ../templates/_profile/usb/litlists_collection_by_single_subject_recent_include:17 ../templates/_profile/usb/litlists_collection_by_single_topic_include:16 ../templates/_view/richter/litlists_record_html:54 ../templates/_view/richter/users_litlists_record_edit:39 ../templates/browse_topics_record_html:142 ../templates/browse_topics_record_html:144 ../templates/litlists_by_single_topic_html:75 ../templates/litlists_by_single_topic_include:29 ../templates/litlists_by_single_topic_recent_html:77 ../templates/litlists_by_single_topic_recent_include:21 ../templates/litlists_html:64 ../templates/litlists_html:66 ../templates/litlists_recent_html:64 ../templates/litlists_recent_include:17 ../templates/litlists_record_html:158 ../templates/litlists_record_html:178 ../templates/litlists_record_html:54 ../templates/searchforms_record_bottom_right:28 ../templates/users_litlists_html:102 ../templates/users_litlists_record_edit:52 ../templates/users_litlists_record_html:158 ../templates/users_litlists_record_html:178 ../templates/users_litlists_record_html:52
 msgid "Offizielle Literaturliste des Instituts/Seminars"
 msgstr ""
 
@@ -4084,6 +4084,17 @@ msgstr ""
 
 #: ../templates/_profile/kug/search_facet:449 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:435 ../templates/_profile/usb/drilldown_categorized:433 ../templates/_view/richter/drilldown_categorized:435 ../templates/search_facet:447
 msgid "Schwedisch"
+msgstr ""
+
+#: ../templates/_profile/kug/cartitems_mail_message:1
+msgid ""
+"Sehr geehrte Damen und Herren,\n"
+"\n"
+"anbei Ihre Merkliste aus dem KUG Recherche-Portal.\n"
+"\n"
+"Mit freundlichen Grüßen\n"
+"\n"
+"Ihr KUG Team"
 msgstr ""
 
 #: ../templates/cartitems_mail_message:1

@@ -412,6 +412,7 @@ $(document).ready(function(){
 </div>
 [% END %]
 
+[% IF config.get('login_active') %]
 <div id="login"><!-- Begin login-->
 <img style="vertical-align:bottom" src="/images/openbib/persons.png" alt="[% msg.maketext("Einloggen") %]"/>&nbsp;&nbsp;[% msg.maketext("<b>Einloggen</b> f&uuml;r Tagging,
 Literaturlisten usw.<p/>") %]
@@ -468,7 +469,7 @@ Literaturlisten usw.<p/>") %]
 
 
 </div><!-- End login -->
-
+[% END %]
 <p />
 </div><!-- End teaser -->
 [% END %]

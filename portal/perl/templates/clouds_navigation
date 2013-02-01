@@ -84,11 +84,12 @@
 [%     END %]
 [%   END %]
 [% END %]
+<!--
 [% IF active_submenu == "clouds_searchterm" %]
   <li class="active"><strong>[% msg.maketext("Suchbegriffe") %]</strong></li>
 [% ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/id/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 [% END %]
-
+-->
  </ul>
 </nav>

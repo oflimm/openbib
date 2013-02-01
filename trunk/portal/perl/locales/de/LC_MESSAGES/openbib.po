@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-01-30 16:11+0100\n"
+"PO-Revision-Date: 2013-02-01 10:13+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -819,6 +819,7 @@ msgid "Als Mail verschicken"
 msgstr "Als Mail verschicken"
 
 #: ../templates/litlists_record_html:178
+#: ../templates/users_litlists_record_html:178
 msgid "Als Permanenten Link verwenden"
 msgstr "Als Permanenten Link verwenden"
 
@@ -873,6 +874,8 @@ msgid "Andere Formate"
 msgstr "Andere Formate"
 
 #: ../templates/litlists_record_html:140 ../templates/litlists_record_html:150
+#: ../templates/users_litlists_record_html:140
+#: ../templates/users_litlists_record_html:150
 msgid "Andere Listen dieses Nutzers"
 msgstr "Andere Listen dieses Nutzers"
 
@@ -5713,6 +5716,8 @@ msgid "Liste"
 msgstr "Liste"
 
 #: ../templates/litlists_record_html:144 ../templates/litlists_record_html:170
+#: ../templates/users_litlists_record_html:144
+#: ../templates/users_litlists_record_html:170
 msgid "Listen mit gemeinsamen Titeln"
 msgstr "Listen mit gemeinsamen Titeln"
 
@@ -6559,6 +6564,8 @@ msgstr "Offiziell"
 #: ../templates/searchforms_record_bottom_right:28
 #: ../templates/users_litlists_html:102
 #: ../templates/users_litlists_record_edit:52
+#: ../templates/users_litlists_record_html:158
+#: ../templates/users_litlists_record_html:178
 #: ../templates/users_litlists_record_html:52
 msgid "Offizielle Literaturliste des Instituts/Seminars"
 msgstr "Offizielle Literaturliste des Instituts/Seminars"
@@ -7417,6 +7424,24 @@ msgstr "Schlagworte in den angezeigten Titeln"
 #: ../templates/search_facet:447
 msgid "Schwedisch"
 msgstr "Schwedisch"
+
+#: ../templates/_profile/kug/cartitems_mail_message:1
+msgid ""
+"Sehr geehrte Damen und Herren,\n"
+"\n"
+"anbei Ihre Merkliste aus dem KUG Recherche-Portal.\n"
+"\n"
+"Mit freundlichen Grüßen\n"
+"\n"
+"Ihr KUG Team"
+msgstr ""
+"Sehr geehrte Damen und Herren,\n"
+"\n"
+"anbei Ihre Merkliste aus dem KUG Recherche-Portal.\n"
+"\n"
+"Mit freundlichen Grüßen\n"
+"\n"
+"Ihr KUG Team"
 
 #: ../templates/cartitems_mail_message:1
 msgid ""

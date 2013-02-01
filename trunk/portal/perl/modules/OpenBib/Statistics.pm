@@ -102,7 +102,7 @@ sub store_titleusage {
     $self->{schema}->resultset('Titleusage')->create(
         {
             tstamp       => $tstamp,
-            tstamp_year  => $parsed_tstamp->printf("%y"),
+            tstamp_year  => $parsed_tstamp->printf("%Y"),
             tstamp_month => $parsed_tstamp->printf("%m"),
             tstamp_day   => $parsed_tstamp->printf("%d"),
             id           => $id,
@@ -371,7 +371,7 @@ sub log_event {
         {
             sid          => $sid,
             tstamp       => $tstamp,
-            tstamp_year  => $parsed_tstamp->printf("%y"),
+            tstamp_year  => $parsed_tstamp->printf("%Y"),
             tstamp_month => $parsed_tstamp->printf("%m"),
             tstamp_day   => $parsed_tstamp->printf("%d"),
             type         => $type,
@@ -789,7 +789,7 @@ sub log_query {
               {
                   sid          => $sid,
                   tstamp       => $tstamp,
-                  tstamp_year  => $parsed_tstamp->printf("%y"),
+                  tstamp_year  => $parsed_tstamp->printf("%Y"),
                   tstamp_month => $parsed_tstamp->printf("%m"),
                   tstamp_day   => $parsed_tstamp->printf("%d"),
                   viewname     => $view,
@@ -806,7 +806,7 @@ sub log_query {
               {
                   sid          => $sid,
                   tstamp       => $tstamp,
-                  tstamp_year  => $parsed_tstamp->printf("%y"),
+                  tstamp_year  => $parsed_tstamp->printf("%Y"),
                   tstamp_month => $parsed_tstamp->printf("%m"),
                   tstamp_day   => $parsed_tstamp->printf("%d"),
                   

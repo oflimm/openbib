@@ -2193,15 +2193,15 @@ dispatch_rules:
      rule: '/portal/:view/users/id/:userid/searchprofiles[post]'
      runmode: 'create_record'
   - # users_loc/searchprofiles_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
      rule: '/portal/:view/users/id/:userid/searchprofiles/id/:serachprofileid[post]'
      runmode: 'update_record'
   - # users_loc/searchprofiles_loc: Update Record
-     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
      rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid[put]'
      runmode: 'update_record'
   - # users_loc/searchprofiles_loc: Delete Record
-     module: 'OpenBib::Handler::Apache::Users::Userprofiles'
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
      rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid[delete]'
      runmode: 'delete_record'
 

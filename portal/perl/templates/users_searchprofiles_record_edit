@@ -53,7 +53,7 @@ function update_fak(yourform, checked, fak) {
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/profiles.html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
          <li><a href="#" class="lastitem">[% profilename %]</a></li>
        </ul>
      </div>
@@ -62,7 +62,7 @@ function update_fak(yourform, checked, fak) {
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="databaseprofile" %] 
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="databaseprofile" active_subsubmenu="databaseprofile_record" %] 
         </div>
       </div>
       <!-- end: #col1 -->
@@ -70,16 +70,16 @@ function update_fak(yourform, checked, fak) {
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% profileid %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% profileid %]" enctype="application/x-www-form-urlencoded" class="ym-form">
 
-<table width="100%">
-<tr><th>[% msg.maketext("Derzeit angezeigtes Profil") %]: <b><input type="text" name="profilename" value="[% profilename %]" />
-</b></th></tr>
-<tr><td class="boxedclear">
+<fieldset class="ym-full">
 
-<table>
-<tr><td><input type="submit" value="[% msg.maketext("Ändern") %]" />&nbsp;</td><td><input type="reset" value="[% msg.maketext("Ursprung") %]" /></td></tr>
-</table>
+<legend>[% msg.maketext("Derzeit angezeigtes Profil") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="profilename">[% msg.maketext("Name") %]</label>
+<input type="text" name="profile" id="profilename" value="[% profilename %]" />
+</div>
 
 [%# USE dumper;dumper.dump(catdb)%]
 [%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
@@ -133,13 +133,15 @@ function update_fak(yourform, checked, fak) {
 [%- END -%]
 </table>
 <p />
-<table>
-<tr><td><input type="submit" value="[% msg.maketext("Ändern") %]" />&nbsp;</td><td><input type="reset" value="[% msg.maketext("Ursprung") %]" /></td></tr>
-</table>
-
 </td></tr>
 </table>
 <p />
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
+</div>
+
+</fieldset>
 
 </form>
 

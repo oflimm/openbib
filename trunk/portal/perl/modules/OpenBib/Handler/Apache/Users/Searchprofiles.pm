@@ -349,7 +349,7 @@ sub create_record {
     $logger->debug("Created Profile $profilename with ID $profileid");
     
     if ($self->param('representation') eq "html"){
-        my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{searchprofiles_loc}/id/$profileid.html";
+        my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{searchprofiles_loc}/id/$profileid/edit";
         
         $self->query->method('GET');
         $self->query->content_type('text/html');

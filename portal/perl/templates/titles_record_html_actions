@@ -167,7 +167,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
      IF all_tags.size > 0 ;
 
-        alltags_cloud = "<ol class=\"cloud\">\n" ;
+        alltags_cloud = "<ol class=\"ob-cloud\">\n" ;
 
          FOREACH thisitem IN all_tags ;
            item          = thisitem.name;
@@ -176,7 +176,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
            itemid        = thisitem.id;
            itemclass     = css_classes.$classnr;
 
-           alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('tags_loc')}/${itemid}.html\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
+           alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${path_prefix}/${config.get('tags_loc')}/names/id/${item}.html?l=${lang}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
          END ;
          alltags_cloud = "${alltags_cloud}\n</ol>" ;
          clouds_item = {

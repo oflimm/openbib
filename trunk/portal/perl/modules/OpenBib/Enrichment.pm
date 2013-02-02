@@ -297,32 +297,39 @@ sub enriched_content_to_bdb {
 
     while (my $result = $request->fetchrow_hashref){
         my $isbn     = $result->{isbn};
-        my $field = $result->{field};
+        my $field    = $result->{field};
         my $content  = $result->{content};
 
-        if (! exists $enrichmntdata{$isbn}){
+        if (! defined $enrichmntdata{$isbn}){
             $enrichmntdata{$isbn} = {
                 "$field" => [ $content ],
             } ;
+#            print "adding new field $field with content $content\n";
             next;
         }
 
-        if (! exists $enrichmntdata{$isbn}{$field}){
-            $enrichmntdata{$isbn} = {
-                "$field" => [ $content ],
-            } ;
+        if (! defined $enrichmntdata{$isbn}{$field}){
+            my $old_content_ref = $enrichmntdata{$isbn};
+
+#            print YAML::Dump($old_content_ref),":\n";
+            $old_content_ref->{$field} = [ $content ];
+
+            $enrichmntdata{$isbn} = $old_content_ref;
+            
+#            print "adding new content $content to field $field;\n";
             next;
         }
 
-        my $newcontent_ref = $enrichmntdata{$isbn}{$field};
-        
-        push @{$newcontent_ref}, $content;
+        my $old_content_ref = $enrichmntdata{$isbn};
 
-        $enrichmntdata{$isbn} = {
-            "$field" => $newcontent_ref,
-        };
+        push @{$old_content_ref->{$field}}, $content;
+
+        $enrichmntdata{$isbn} = $old_content_ref;
+
+#        print "adding content $content to existing field $field;\n";
     }
 
+#    print YAML::Dump(\%enrichmntdata);
     $request->finish();
     $dbh->disconnect;
 }

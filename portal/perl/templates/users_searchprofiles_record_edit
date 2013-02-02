@@ -78,7 +78,7 @@ function update_fak(yourform, checked, fak) {
 
 <div class="ym-fbox-text">
 <label for="profilename">[% msg.maketext("Name") %]</label>
-<input type="text" name="profile" id="profilename" value="[% profilename %]" />
+<input type="text" name="profilename" id="profilename" value="[% profilename %]" />
 </div>
 
 [%# USE dumper;dumper.dump(catdb)%]

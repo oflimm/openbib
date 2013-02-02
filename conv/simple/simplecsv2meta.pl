@@ -171,6 +171,14 @@ while ($csv->getline ($in)){
         $title_ref->{id} = $titleid++;
     }
 
+    if ($convconfig->{defaultmediatype}){
+        push @{$title_ref->{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $convconfig->{defaultmediatype},
+        };
+    }
+    
     foreach my $kateg (keys %{$convconfig->{title}}){
         my $content = $row->{$kateg};
         #my $content = decode($convconfig->{encoding},$row->{$kateg});

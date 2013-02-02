@@ -943,7 +943,7 @@ sub get_all_profiles {
             
     my @userdbprofiles=();
         
-    foreach my $userprofile ($userprofiles->all){
+    while (my $userprofile = $userprofiles->next){
         push @userdbprofiles, {
             profileid        => $userprofile->id,
             searchprofileid  => $userprofile->searchprofileid->id,
@@ -952,6 +952,35 @@ sub get_all_profiles {
     }
     
     return @userdbprofiles;
+}
+
+sub get_all_searchprofiles {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select profilid, profilename from userdbprofile where userid = ? order by profilename"
+    my $userprofiles = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+        {
+            userid => $self->{ID},
+        },
+        {
+            order_by => ['profilename'],
+        }
+    );
+            
+    my $searchprofiles_ref = [];
+        
+    while (my $userprofile = $userprofiles->next){
+        push @{$searchprofiles_ref}, {
+            profileid        => $userprofile->id,
+            searchprofileid  => $userprofile->searchprofileid->id,
+            profilename      => $userprofile->profilename,
+        };
+    }
+    
+    return $searchprofiles_ref;
 }
 
 sub authenticate_self_user {

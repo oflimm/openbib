@@ -156,9 +156,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [%    ELSE %]
 [% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
 [%    END %]
-
-[%  END %]
 <p />
+[%  END %]
 [%
 
    all_tags = user.get_all_tags_of_tit({ titleid => record.id, dbname => record.database });
@@ -187,7 +186,6 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
   END ;
 %]
 [%  IF config.get('social_tagging') && all_tags.size > 0 %]
-<p />
 <!-- Beginn generelle Tag-Uebernahme -->
 <h4>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</h4>
 
@@ -357,7 +355,6 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% IF all_tags.size > 0 %]
 <div class="available_tags"><!-- Begin Vorhandene tags -->
 <div class="ob-headline">[% msg.maketext("Tags") %]</div>
-<p/>
 [% alltags_cloud %]
 [% IF username && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:

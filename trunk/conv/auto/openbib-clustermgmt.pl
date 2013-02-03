@@ -99,7 +99,10 @@ foreach my $server ($serverinfos->all){
     my $hostip    = $server->get_column('hostip');
     my $clusterid = $server->get_column('clusterid');
     my $status    = $server->get_column('status');
-    
+    my $active    = $server->get_column('active');
+
+    next if (!$active);
+
     if ($clusterid == $update_clusterid){
         push @update_serverids, $id;
         
@@ -121,15 +124,17 @@ my $complete_cluster_updated = ($server_updated == $#update_serverids+1)?1:0;
 if ($complete_cluster_updated){
     $logger->info("### Tausch Update-Cluster <-> Recherche-Cluster");
 
-    foreach my $update_serverid (@update_serverids){
-        $config->update_server({ id => $update_serverid, status => "searchable"});
-    }
+#    foreach my $update_serverid (@update_serverids){
+#        $config->update_server({ id => $update_serverid, status => "searchable"});
+#    }
 
     $config->update_cluster({ id => $update_clusterid, status => "searchable" });
-    
-    foreach my $search_serverid (@search_serverids){
-        $config->update_server({ id => $search_serverid, status => "updatable"});
-    }
+
+    sleep 20;
+
+#    foreach my $search_serverid (@search_serverids){
+#        $config->update_server({ id => $search_serverid, status => "updatable"});
+#    }
 
     $config->update_cluster({ id => $search_clusterid, status => "updatable" });
 }

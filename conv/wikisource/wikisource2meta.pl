@@ -471,6 +471,13 @@ sub parse_titset {
         $i++;
     }   
 
+    # Jeder Titel ist Digital
+    push @{$title_ref->{'0800'}}, {
+        mult     => 1,
+        subfield => '',
+        content  => 'Digital',
+    };
+
     print TIT encode_json $title_ref, "\n";
     
     # Release memory of processed tree

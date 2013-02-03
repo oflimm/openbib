@@ -303,6 +303,14 @@ sub parse_titset {
                     content  => $oainode->first_child('dc:date')->text(),
                 };
             }
+
+            # Medientyp Digital
+            push @{$title_ref->{'0800'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => "Digital",
+            };
+            
         }
     }
     

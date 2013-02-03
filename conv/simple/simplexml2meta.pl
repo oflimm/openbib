@@ -408,6 +408,14 @@ sub parse_record {
     }
     # Schlagworte abarbeiten Ende
 
+    if ($convconfig->{defaultmediatype}){
+        push @{$title_ref->{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $convconfig->{defaultmediatype},
+        };
+    }
+
     print TITLE encode_json $title_ref, "\n";
 
     $counter++;

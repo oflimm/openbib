@@ -213,6 +213,7 @@ Materialien</option>
 <option value="Aufsatz">Aufsatz</option>
 <option value="Aufsatz-Fotokopie">Aufsatz-Fotokopie</option>
 <option value="CD-ROM">CD-ROM</option>
+<option value="Digital">Digital</option>
 <option value="Diskette">Diskette</option>
 <option value="Dissertation">Dissertation</option>
 <option value="DVD">DVD</option>

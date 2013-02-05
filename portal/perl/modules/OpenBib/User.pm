@@ -34,6 +34,7 @@ use utf8;
 use base qw(Apache::Singleton);
 
 use Benchmark ':hireswallclock';
+use DBIx::Class::ResultClass::HashRefInflator;
 use Digest::MD5;
 use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
@@ -1545,7 +1546,7 @@ sub get_private_tags {
     my $offset       = exists $arg_ref->{offset}
         ? $arg_ref->{offset}        : undef;
     my $num          = exists $arg_ref->{num}
-        ? $arg_ref->{num}        : undef;
+        ? $arg_ref->{num}           : undef;
     my $userid       = exists $arg_ref->{userid}
         ? $arg_ref->{userid}        : undef;
     
@@ -1567,14 +1568,15 @@ sub get_private_tags {
             offset   => $offset,
             select   => ['id','tagid','titleid','dbname'],
             as       => ['thisid','thistagid','thistitleid','thisdbname'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
     
-    foreach my $singletag ($tags->all){
-        my $id        = $singletag->get_column('thisid');
-        my $tagid     = $singletag->get_column('thistagid');
-        my $titleid   = $singletag->get_column('thistitleid');
-        my $dbname    = $singletag->get_column('thisdbname');
+    while (my $singletag = $tags->next){
+        my $id        = $singletag->{thisid};
+        my $tagid     = $singletag->{thistagid};
+        my $titleid   = $singletag->{thistitleid};
+        my $dbname    = $singletag->{thisdbname};
 
         my $tagname   = $self->get_name_of_tag({ tagid => $tagid});
         
@@ -1599,19 +1601,19 @@ sub get_private_tags_by_name {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $username           = exists $arg_ref->{username}
-        ? $arg_ref->{username}           : undef;
+    my $userid           = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}           : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    $logger->debug("username: $username");
+    $logger->debug("userid: $userid");
 
     # DBI: "select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where t.id=tt.tagid and tt.userid=? group by tt.tagid order by t.name"
     my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
         {
-            'userid.username' => $username,
+            'userid.id' => $userid,
         },
         {
             group_by => ['tagid.id','tagid.name'],
@@ -1619,15 +1621,16 @@ sub get_private_tags_by_name {
             join     => ['tagid','userid'],
             select   => ['tagid.name','tagid.id',{ count => 'me.tagid' }],
             as       => ['thistagname','thistagid','thistagcount'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
 
     my $taglist_ref = [];
     my $maxcount = 0;
-    foreach my $tittag ($tittags->all){
-        my $tag       = $tittag->get_column('thistagname');
-        my $id        = $tittag->get_column('thistagid');
-        my $count     = $tittag->get_column('thistagcount');
+    while (my $tittag = $tittags->next){
+        my $tag       = $tittag->{thistagname};
+        my $id        = $tittag->{thistagid};
+        my $count     = $tittag->{thistagcount};
 
         $logger->debug("Gefundene Tags: $tag - $id - $count");
         if ($maxcount < $count){

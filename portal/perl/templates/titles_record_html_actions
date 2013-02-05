@@ -1,11 +1,12 @@
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 [%
   private_tags_of_tit = [];
-  IF username ;
-    private_tags        = user.get_private_tags({ username => username  });
+  IF user.ID ;
+    private_tags        = user.get_private_tags_by_name({ userid => user.ID  });
     private_tags_of_tit = user.get_private_tags_of_tit({ titleid => record.id, dbname => record.database, username => username  });
   END ;
 %]
+
 <div class="ob-category_header">[% msg.maketext("Behalten Sie diesen Titel") %]:</div><p/>
 
 <img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>

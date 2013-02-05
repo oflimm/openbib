@@ -45,6 +45,7 @@ use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Schema::DBI;
+use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;

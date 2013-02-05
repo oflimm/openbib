@@ -44,6 +44,7 @@ use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
 use OpenBib::Schema::DBI;
+use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
 
 sub new {

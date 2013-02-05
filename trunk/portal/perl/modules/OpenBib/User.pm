@@ -4000,7 +4000,7 @@ sub new_dbprofile {
         }
     );
     
-    return $new_profile->searchprofileid->id;
+    return $new_profile->id;
 }
 
 sub update_dbprofile {
@@ -4017,17 +4017,21 @@ sub update_dbprofile {
     # DBI: "insert into user_profile values (NULL,?,?)"
     my $profile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
         {
-            userid      => $self->{ID},
-            id          => $profileid,
+            userid           => $self->{ID},
+            id               => $profileid,
 
         }
-    )->single()->update(
-        {
-            profilename     => $profilename,
-            userid          => $self->{ID},
-            searchprofileid => $searchprofileid,
-        }
-    );
+    )->single();
+
+    if ($profile){
+        $profile->update(
+            {
+                profilename     => $profilename,
+                userid          => $self->{ID},
+                searchprofileid => $searchprofileid,
+            }
+        );
+    }
     
     return;
 }

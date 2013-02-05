@@ -54,7 +54,7 @@
 <tr>
 <th>[% msg.maketext("Literaturlisten") %]</th>
 [% ret = user.get_number_of_litlists ;
-   litlists_all = ret.publc + ret.private ;
+   litlists_all = ret.public + ret.private ;
 %]
 <td>[% litlists_all.chunk(-3).join('.') %]</td>
 </tr>

@@ -45,6 +45,7 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::DBI;
+use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;

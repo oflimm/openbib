@@ -63,6 +63,13 @@
    private_tags = user.get_private_tags_by_name({ userid => user.ID  });
 %]
 
+<style>
+.ob-cloud {
+  font-size: 150%;
+}
+
+</style>
+
 
 [%- IF private_tags.size > 0 -%]
 

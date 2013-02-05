@@ -32,11 +32,12 @@ use utf8;
 
 use base qw(Apache::Singleton);
 
+use DB_File ;
 use Business::ISBN;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
-use MLDBM qw(DB_File Storable);
 use Storable ();
+use MLDBM qw(DB_File Storable);
 
 use OpenBib::Config;
 use OpenBib::Schema::Enrichment::Singleton;
@@ -285,9 +286,11 @@ sub enriched_content_to_bdb {
     
     return {} unless (defined $filename && defined $dbh);
 
-    my %enrichmntdata           = ();
+    my %enrichmntdata;
+
+    unlink $filename;
     
-    tie %enrichmntdata,           'MLDBM', "$filename"
+    tie %enrichmntdata,           'MLDBM', $filename,
         or die "Could not tie enrichment data.\n";
 
     my $sql_request = "select * from enriched_content_by_isbn";

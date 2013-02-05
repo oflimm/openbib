@@ -60,7 +60,7 @@
 <b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.html?format=cloud"[% IF format == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.html?format=list"[% IF format == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 [%
-   private_tags = user.get_private_tags_by_name({ username => username  });
+   private_tags = user.get_private_tags_by_name({ userid => user.ID  });
 %]
 
 

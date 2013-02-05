@@ -115,6 +115,26 @@
   </select>
 </div>
 
+<div class="ym-fbox-text">
+<label>[% msg.maketext("Titel") %]</label>
+[% databaseinfo.allcount.chunk(-3).join('.') %]
+</div>
+
+<div class="ym-fbox-text">
+<label>&nbsp;&nbsp;[% msg.maketext("davon Zeitschriften/Serien") %]</label>
+[% databaseinfo.journalcount.chunk(-3).join('.') %]
+</div>
+
+<div class="ym-fbox-text">
+<label>&nbsp;&nbsp;[% msg.maketext("davon Artikel") %]</label>
+[% databaseinfo.articlecount.chunk(-3).join('.') %]
+</div>
+
+<div class="ym-fbox-text">
+<label>&nbsp;&nbsp;[% msg.maketext("davon Digital") %]</label>
+[% databaseinfo.digitalcount.chunk(-3).join('.') %]
+</div>
+
 </fieldset>
 
 <p/>

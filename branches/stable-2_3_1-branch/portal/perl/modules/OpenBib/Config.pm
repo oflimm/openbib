@@ -300,8 +300,8 @@ sub view_exists {
         = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $request=$dbh->prepare("select count(viewname) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-    $request->execute($viewname) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select count(viewname) as rowcount from viewinfo where viewname = ? and active = ?") or $logger->error($DBI::errstr);
+    $request->execute($viewname,1) or $logger->error($DBI::errstr);
     my $res       = $request->fetchrow_hashref;
     my $rowcount  = $res->{rowcount};
     $request->finish();

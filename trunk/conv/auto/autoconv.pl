@@ -484,7 +484,7 @@ CLEANUP:
 $logger->info("### $database: Cleanup");
 
 # Temporaer Zugriffspassword setzen
-system("rm ~/.pgpass ");
+# system("rm ~/.pgpass ");
 
 system("rm $rootdir/data/$database/*") unless ($keepfiles);
 

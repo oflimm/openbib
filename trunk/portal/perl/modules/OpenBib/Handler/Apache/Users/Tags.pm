@@ -257,7 +257,7 @@ sub show_collection_form {
 
     if (! $user->{ID}){
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator;            
+            return $self->tunnel_through_authenticator('POST');            
         }
         else {
             $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
@@ -302,7 +302,7 @@ sub create_record {
 
     if (! $user->{ID}){
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator;            
+            return $self->tunnel_through_authenticator('POST');            
         }
         else {
             $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
@@ -362,7 +362,7 @@ sub delete_record {
 
     if (! $user->{ID}){
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator;            
+            return $self->tunnel_through_authenticator('POST');            
         }
         else {
             $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));

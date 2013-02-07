@@ -1,4 +1,13 @@
 <div class="ob-reuse_data"><!-- Begin Reuse -->
+
+<style>
+.ob-cloud {
+  font-size: 150%;
+}
+
+</style>
+
+
 [%
   private_tags_of_tit = [];
   IF user.ID ;
@@ -38,6 +47,7 @@
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
 <fieldset class="ym-columnar">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
+<input type="hidden" name="redirect_to"       value="[% uri_escape(location) %]" />
 <input type="hidden" name="titleid"           value="[% record.id %]" />
 <input type="hidden" name="dbname"            value="[% record.database %]" />
 <div class="ym-fbox-select">
@@ -57,7 +67,8 @@
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
 <fieldset class="ym-columnar">
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
-<input type="hidden" name="titleid"           value="[% record.id %]" />
+<input type="hidden" name="redirect_to"      value="[% uri_escape(location) %]" />
+<input type="hidden" name="titleid"          value="[% record.id %]" />
 <input type="hidden" name="dbname"           value="[% record.database %]" />
 
 <div class="ym-fbox-text">
@@ -101,12 +112,9 @@
 <div id="ob-tagging_do"><!-- Begin Tagging do -->
 
 [%  IF private_tags_of_tit.size <= 0  %]
-<form method="[% IF username %]post[% ELSE %]get[% END %]" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
 
-[% IF NOT username %]
-<input type="hidden" name="_method" value="POST"/>
-[% END %]
-
+<input type="hidden" name="redirect_to" value="[% uri_escape(location) %]" />
 <input type="hidden" name="dbname" value="[% record.database %]"/>
 <input type="hidden" name="titleid" value="[% record.id %]"/>
 

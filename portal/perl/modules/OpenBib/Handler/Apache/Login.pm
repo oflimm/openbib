@@ -105,10 +105,10 @@ sub show_form {
     my $type        = ($query->param('type'))?$query->param('type'):'';
     my $username    = ($query->param('username'))?$query->param('username'):'';
     my $password    = decode_utf8($query->param('password')) || $query->param('password') || '';
-    my $redirect_to = uri_unescape($query->param('redirect_to')); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
+    my $redirect_to = $query->param('redirect_to'); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
 
     # Wenn die Session schon authentifiziert ist, dann wird
-    # wird in die Benutzereinstellungen gesprungen
+    # in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
         $self->query->method('GET');

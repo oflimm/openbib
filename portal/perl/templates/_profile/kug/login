@@ -66,7 +66,7 @@
 <div id="ob-login_forms_selfreg">
 <form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="ym-form">
 
-<input type="hidden" name="redirect_to" value="[% redirect_to %]">
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 
 [%- FOREACH authenticator IN authenticators -%]
 [%-   IF authenticator.type == 'self' -%]
@@ -103,7 +103,7 @@
 <form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
 
 [% IF redirect_to %]
-<input type="hidden" name="redirect_to" value="[% redirect_to %]">
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 [% END %]
 
 <fieldset class="ym-columnar">

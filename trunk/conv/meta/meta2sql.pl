@@ -1068,10 +1068,10 @@ while (my $jsonline=<IN>){
             if (@{$enrichmnt_isbns_ref}) {
                 foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
                     my $lookup_ref = $enrichmntdata{$isbn13};
-                    $logger->info("Enrichmnt_data for isbn $isbn13 ".YAML::Dump($lookup_ref));
-                    $logger->info("Testing ISBN $isbn13 for field $field");
+                    $logger->debug("Enrichmnt_data for isbn $isbn13 ".YAML::Dump($lookup_ref));
+                    $logger->debug("Testing ISBN $isbn13 for field $field");
                     foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                        $logger->info("Enrich field $field for ISBN $isbn13 with $enrich_content");
+                        $logger->debug("Enrich field $field for ISBN $isbn13 with $enrich_content");
                         push @$enrichmnt_data_ref, $enrich_content;
                     }
                 }
@@ -1106,7 +1106,7 @@ while (my $jsonline=<IN>){
                     # ToDo: Parametrisierbarkeit in convert.yml im Bereich search fuer
                     #       die Recherchierbarkeit via Suchmaschine
                     
-                    $logger->info("Id: $id - Adding $field -> $content");
+                    $logger->debug("Id: $id - Adding $field -> $content");
 #                    push @{$record_ref->{'E'.$field}}, {
 #                        mult      => $mult,
 #                        content   => $content,

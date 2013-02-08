@@ -642,6 +642,7 @@ while (my $jsonline=<IN>){
 
     my $titlecache_ref   = {}; # Inhalte fuer den Titel-Cache
     my $searchengine_ref = {}; # Inhalte fuer die Suchmaschinen
+    my $enrichmnt_isbns_ref = [];
     
     # Basisinformationen setzen
     {
@@ -983,9 +984,17 @@ while (my $jsonline=<IN>){
                             if ($flag_isbn) {
                                 
                                 # Alternative ISBN zur Rechercheanreicherung erzeugen
-                                my $isbn = Business::ISBN->new($item_ref->{norm});
+                                my $isbn = Business::ISBN->new($item_ref->{content});
                                 
                                 if (defined $isbn && $isbn->is_valid) {
+
+                                    # ISBN13 fuer Anreicherung merken
+
+                                    push @{$enrichmnt_isbns_ref}, OpenBib::Common::Util::normalize({
+                                        field    => "T0540",
+                                        content  => $isbn->as_isbn13->as_string,
+                                    });
+                                    
                                     my $isbnXX;
                                     if (length($item_ref->{norm}) == 10) {
                                         $isbnXX = $isbn->as_isbn13;
@@ -1048,21 +1057,22 @@ while (my $jsonline=<IN>){
     }
     
     # Zentrale Anreicherungsdaten lokal einspielen
-    if ($local_enrichmnt && (defined $searchengine_ref->{isbn} || defined $searchengine_ref->{issn})) {
+    if ($local_enrichmnt && (@{$enrichmnt_isbns_ref} || defined $searchengine_ref->{issn})) {
+        @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique
+
+#        $logger->info("GOT ISBNs: ".YAML::Dump($enrichmnt_isbns_ref));
+        
         foreach my $field (keys %{$conv_config->{local_enrichmnt}}) {
             my $enrichmnt_data_ref = [];
-            if (defined $searchengine_ref->{isbn}) {
-                foreach my $weight (keys %{$searchengine_ref->{isbn}}) {
-                    foreach my $fields_ref (@{$searchengine_ref->{isbn}{$weight}}) {
-			my $isbn13 = $fields_ref->[1];
-                        if (defined $enrichmntdata{$isbn13}{$field}) {
-			    eval {
-				push @$enrichmnt_data_ref, @{$enrichmntdata{$isbn13}{$field}};
-			    };
-			    if ($@){
-				$logger->error($@);
-			    }
-                        }
+            
+            if (@{$enrichmnt_isbns_ref}) {
+                foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
+                    my $lookup_ref = $enrichmntdata{$isbn13};
+                    $logger->info("Enrichmnt_data for isbn $isbn13 ".YAML::Dump($lookup_ref));
+                    $logger->info("Testing ISBN $isbn13 for field $field");
+                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                        $logger->info("Enrich field $field for ISBN $isbn13 with $enrich_content");
+                        push @$enrichmnt_data_ref, $enrich_content;
                     }
                 }
             }
@@ -1082,27 +1092,33 @@ while (my $jsonline=<IN>){
                 }
             }
             
-            if ($enrichmnt_data_ref) {
+            if (@{$enrichmnt_data_ref}) {
+#                $logger->info("Got Enrichmntdata: ".YAML::Dump($enrichmnt_data_ref));
                 my $mult = 1;
                 foreach my $content (@{$enrichmnt_data_ref}) {
-                    $content = decode_utf8($content);
+#                    $content = decode_utf8($content);
 
-                    my $contentnormtmp = OpenBib::Common::Util::normalize({
-                        field    => "T$field",
-                        content  => $content,
-                    });
+#                    my $contentnormtmp = OpenBib::Common::Util::normalize({
+##                        field    => "T$field",
+#                        content  => $content,
+#                    });
                     
                     # ToDo: Parametrisierbarkeit in convert.yml im Bereich search fuer
                     #       die Recherchierbarkeit via Suchmaschine
                     
-                    $logger->debug("Id: $id - Adding $field -> $content");
-                    push @{$record_ref->{$field}}, {
-                        mult      => $mult,
-                        content   => $content,
-                        subfield  => '',
-                    };
+                    $logger->info("Id: $id - Adding $field -> $content");
+#                    push @{$record_ref->{'E'.$field}}, {
+#                        mult      => $mult,
+#                        content   => $content,
+#                        subfield  => '',
+#                    };
                     
-                    # ToDo: Wird Suchmaschine hiermit befuellt?
+                    # ToDo: Wird Suchmaschine hiermit befuellen
+
+                    push @{$searchengine_ref->{'t'.$field}{'1'}}, [
+                        'E'.$field, $content,
+                    ];
+
                     
                     if (defined $conv_config->{'listitemcat'}{$field}) {
                         push @{$titlecache_ref->{"T".$field}}, {

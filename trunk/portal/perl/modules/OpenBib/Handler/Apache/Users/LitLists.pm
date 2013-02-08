@@ -423,7 +423,19 @@ sub create_record {
         }
         
         $user->add_litlistentry({ litlistid =>$litlistid, titleid => $titleid, dbname => $dbname});
+
+        if ($self->param('representation') eq "html"){
+            if ($query->param('redirect_to')){
+                my $new_location = uri_unescape($query->param('redirect_to'));
+                return $self->redirect($new_location,'303 See Other');
+            }
+            else {
+                $self->return_baseurl;
+            }
+        }
+
         $self->return_baseurl;
+        
         return;
     }
 
@@ -434,11 +446,17 @@ sub create_record {
     else {
         $logger->debug("Weiter zum Record");
         if ($litlistid){
-            $logger->debug("Weiter zum Record $litlistid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
-            $self->param('litlistid',$litlistid);
-            $self->param('location',"$location/$litlistid");
-            $self->show_record;
+            if ($query->param('redirect_to')){
+                my $new_location = uri_unescape($query->param('redirect_to'));
+                return $self->redirect($new_location,'303 See Other');
+            }
+            else {                
+                $logger->debug("Weiter zum Record $litlistid");
+                $self->param('status',Apache2::Const::HTTP_CREATED);
+                $self->param('litlistid',$litlistid);
+                $self->param('location',"$location/$litlistid");
+                $self->show_record;
+            }
         }
     }
     

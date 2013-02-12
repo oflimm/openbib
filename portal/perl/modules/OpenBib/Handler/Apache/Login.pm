@@ -100,7 +100,7 @@ sub show_form {
     # CGI Args
     my $action      = ($query->param('action'))?$query->param('action'):'none';
     my $code        = ($query->param('code'))?$query->param('code'):'1';
-    my $authenticatorid  = ($query->param('authenticatorid'))?$query->param('authenticatorid'):'none';
+    my $authenticatorid  = ($query->param('authenticatorid'))?$query->param('authenticatorid'):0;
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type        = ($query->param('type'))?$query->param('type'):'';
     my $username    = ($query->param('username'))?$query->param('username'):'';

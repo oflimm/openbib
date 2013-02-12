@@ -112,6 +112,7 @@ sub show_collection {
             return Apache2::Const::OK;
         }
     }
+    
     my ($loginname,$password) = $user->get_credentials();
     #my $database              = $user->get_targetdb_of_session($session->{ID});
 
@@ -141,12 +142,9 @@ sub show_collection {
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
 
-    my $authenticator=$session->get_authenticator;
-    
     # TT-Data erzeugen
     
     my $ttdata={
-        authenticator => $authenticator,
         loginname    => $loginname,
         password     => $password,
         
@@ -171,8 +169,7 @@ sub create_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $circulationid  = $self->strip_suffix($self->param('circulationid'))           || 'borrows';
+    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -187,27 +184,25 @@ sub create_record {
     my $path_prefix    = $self->param('path_prefix');
     
     # CGI Args
-    my $action     = ($query->param('action'    ))?$query->param('action'):'none';
-    my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
-    my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-
-    # Aktive Aenderungen des Nutzerkontos
-    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
-    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
-    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
+    my $authenticatorid = ($query->param('authenticatorid'))?$query->param('authenticatorid'):undef;
+    my $mediennummer    = ($query->param('mediaid'        ))?$query->param('mediaid'):undef;
+    my $ausgabeort      = ($query->param('pickup'       ))?$query->param('pickup'):0;
+    my $zweigstelle     = ($query->param('branchid'        ))?$query->param('branchid'):0;
 
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST',$authenticatorid);            
+        }
+        else  {
+            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+            return Apache2::Const::OK;
+        }
     }
     
     my $circexlist=undef;
@@ -257,9 +252,9 @@ sub delete_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
+    my $database       = $self->param('database');
     my $branchid       = $self->param('branchid');
-    my $mediaid        = $self->strip_suffix($self->param('mediaid'));
+    my $mediaid        = $self->strip_suffix($self->param('dispatch_url_remainder'));
 
     # Shared Args
     my $query          = $self->query();
@@ -278,15 +273,19 @@ sub delete_record {
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
     
     my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+            return Apache2::Const::OK;
+        }
     }
-    
+
     my $circexlist=undef;
     
     $logger->info("Zweigstelle: $branchid");
@@ -314,9 +313,13 @@ sub delete_record {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    return unless ($self->param('representation') eq "html");
     
-    $r->internal_redirect("$config->{base_loc}/$view/$config->{circulation_loc}?action=showcirc;circaction=reservations");
-    
+    $self->query->method('GET');
+    $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$database/$config->{circulations_loc}/id/reservations.html");
+    $self->query->status(Apache2::Const::REDIRECT);
+
     return Apache2::Const::OK;
 }
 

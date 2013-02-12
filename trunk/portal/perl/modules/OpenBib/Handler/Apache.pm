@@ -871,10 +871,12 @@ sub add_default_ttdata {
     }
 
     my $username="";
-
+    my $authenticator = {};
+    
     # Wenn wir authentifiziert sind, dann
     if ($user->{ID}) {
         $username=$user->get_username();
+        $authenticator=$session->get_authenticator;
     }
 
     # Mitgelieferter Username geht vor:
@@ -909,6 +911,7 @@ sub add_default_ttdata {
     $ttdata->{'path'}           = $path;
     $ttdata->{'url'}            = $url;
     $ttdata->{'location'}       = $location;
+    $ttdata->{'authenticator'}  = $authenticator;
     $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'container'}      = $container;
     
@@ -1493,7 +1496,7 @@ sub check_http_basic_authentication {
 }
 
 sub tunnel_through_authenticator {
-    my ($self,$method) = @_;
+    my ($self,$method,$authenticatorid) = @_;
 
     my $config   = $self->param('config');
     my $view     = $self->param('view');    
@@ -1512,7 +1515,7 @@ sub tunnel_through_authenticator {
     
     my $return_uri = uri_escape($location);
     
-    my $new_location = "$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri";
+    my $new_location = "$config->{base_loc}/$view/$config->{login_loc}?authenticatorid=$authenticatorid;redirect_to=$return_uri";
     
     return $self->redirect($new_location,'303 See Other');
 }

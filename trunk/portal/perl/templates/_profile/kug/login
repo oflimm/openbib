@@ -56,6 +56,14 @@
 
 <p/>
 
+[% IF authenticatorid %]
+<script>
+$(document).ready(function(){
+  $('#ob-login_forms').tabs('select', '#ob-login_forms_library');
+});
+</script>
+[% END %]
+
 <div id="ob-login_forms">
 
 <ul>
@@ -114,7 +122,7 @@
 <select name="authenticatorid">
 [%- FOREACH authenticator IN authenticators -%]
 [%-   IF authenticator.type != 'self' -%]
-<option value="[% authenticator.id %]">[% authenticator.description %]</option>
+<option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
 [%-   END -%]
 [%- END -%]
 </select>

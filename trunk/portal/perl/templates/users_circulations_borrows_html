@@ -60,7 +60,7 @@
 [% ELSE  %]
 
 <p>
-<b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/renew_loans" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
+<b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/renew_loans" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
 </p>
 
 <table cellpadding="5">

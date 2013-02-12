@@ -30,6 +30,18 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/borrows.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]</a></li>
+       </ul>
+     </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -46,14 +58,9 @@
 [%# USE dumper;dumper.dump(result); %]
 
 <p />
-<table width="100%">
-<tr><th>Gesamtkonto-Verl&auml;ngerung</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
 <table>
 <tr><td><b>Erfolgreich</b> verl&auml;ngerte Medien:</td><td><b>[% result.GesamtVerlaengerung.AnzPos %]</b></td></tr>
 <tr><td><b>Nicht</b> verl&auml;ngerte Medien:</td><td><b>[% result.GesamtVerlaengerung.AnzNeg %]</b></td></tr>
-</table>
-</td></tr>
 </table>
 
         </div>

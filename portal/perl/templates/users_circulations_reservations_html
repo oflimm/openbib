@@ -78,7 +78,7 @@ class="[% listrow %]"
 , [% reservation.EJahr %]
 [% END %]
 
-</td><td>[% reservation.Signatur %]</td><td>[% reservation.VormerkDatum %]-[% reservation.AufrechtDatum %]</td><td>[% reservation.Stelle %]. Stelle</td><td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/reservations/branches/id/[% reservation.Zweigstelle %]/media/id/[% reservation.Mediennummer %]?_method=DELETE" title="Vormerkung l&ouml;lschen">Vormerkung l&ouml;schen</a></td></tr>
+</td><td>[% reservation.Signatur %]</td><td>[% reservation.VormerkDatum %]-[% reservation.AufrechtDatum %]</td><td>[% reservation.Stelle %]. Stelle</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reservations/branches/id/[% reservation.Zweigstelle %]/media/id/[% reservation.Mediennummer %]?_method=DELETE" title="Vormerkung l&ouml;schen" class="ob_button">Vormerkung l&ouml;schen</a></td></tr>
 [% END %]
 </table>
 

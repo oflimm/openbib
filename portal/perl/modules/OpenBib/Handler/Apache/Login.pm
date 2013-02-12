@@ -122,10 +122,11 @@ sub show_form {
     
     # TT-Data erzeugen
     my $ttdata={
-        authenticators => $authenticators_ref,
-        validtarget  => $validtarget,
-        username     => $username,
-        redirect_to  => $redirect_to,
+        authenticatorid => $authenticatorid,
+        authenticators  => $authenticators_ref,
+        validtarget     => $validtarget,
+        username        => $username,
+        redirect_to     => $redirect_to,
     };
     
     my $templatename = ($type)?"tt_login_".$type."_tname":"tt_login_tname";

@@ -2337,10 +2337,17 @@ dispatch_rules:
   - # users/circulations_loc:
      module: 'OpenBib::Handler::Apache::Users::Circulations'
      rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/renew_loans[get]'
+     representations:
+       - none
+       - html
      runmode: 'renew_loans'
   - # users/circulations_loc:
      module: 'OpenBib::Handler::Apache::Users::Circulations::Reservations'
-     rule: '/portal/:view/databases/id/:database/circulations/id/reservations/branches/id/:branchid/media/id/:mediaid[delete]'
+     rule: '/portal/:view/databases/id/:database/circulations/id/reservations[post]'
+     runmode: 'create_record'
+  - # users/circulations_loc:
+     module: 'OpenBib::Handler::Apache::Users::Circulations::Reservations'
+     rule: '/portal/:view/databases/id/:database/circulations/id/reservations/branches/id/:branchid/media/id/*[delete]'
      runmode: 'delete_record'
 
 #####################################################################

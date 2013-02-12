@@ -30,6 +30,17 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]" class="lastitem">[% msg.maketext("Vormerkungen") %]</a></li>
+       </ul>
+     </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -47,13 +58,15 @@
      errorstring = result.Vormerkung.Error ;
 %]
 <p />
-<table width="100%">
-<tr><th>[% msg.maketext("Vormerkung nicht m&ouml;glich") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
+
+<h2>[% msg.maketext("Vormerkung nicht m&ouml;glich") %]</h2>
+
+<p>
 [% msg.maketext("Eine Vormerkung auf das von Ihnen gew&uuml;nsche
 Medium ist leider nicht m&ouml;glich!") %]
-<p />
-[% msg.maketext("Grund:") %]
+</p>
+
+<h3>[% msg.maketext("Grund:") %]</h3>
 <p/ >
 [% IF    errorstring == "MehrfachExemplarNichtErlaubtVM" %]
 [% msg.maketext("Sie haben dieses Medium bereits vorgemerkt") %]
@@ -62,21 +75,17 @@ Medium ist leider nicht m&ouml;glich!") %]
 [% ELSE %]
 [% errorstring %]
 [% END %]
-</td></tr>
-</table>
 [% ELSIF result.Vormerkung.OK ;
      successstring = result.Vormerkung.OK ;
 %]
 <p />
-<table width="100%">
-<tr><th>[% msg.maketext("Vormerkung erfolgreich durchgef&uuml;hrt") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
+<h2>[% msg.maketext("Vormerkung erfolgreich durchgef&uuml;hrt") %]</h2>
+
+<p>
 [% msg.maketext("Die Vormerkung wurde erfolgreich durchgef&uuml;hrt.") %]
-<p />
+</p>
 <p/ >
 [% successstring %]
-</td></tr>
-</table>
 [% END %]
 
         </div>

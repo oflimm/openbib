@@ -561,6 +561,17 @@ sub make_reservation {
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
+    if (! $user->{ID}){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else {
+            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+        }   
+
+        return Apache2::Const::OK;
+    }
+    
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;

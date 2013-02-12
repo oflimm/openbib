@@ -2803,6 +2803,37 @@ sub get_authenticator_by_id {
     return $authenticator_ref;
 }
 
+sub get_authenticator_by_dbname {
+    my ($self,$dbname) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $authenticator = $self->{schema}->resultset('Authenticator')->single(
+        {
+            dbname => $dbname,
+        },
+    );
+
+    my $authenticator_ref = {};
+    
+    if ($authenticator){
+        $authenticator_ref = {
+            id          => $authenticator->id,
+            hostname    => $authenticator->hostname,
+            port        => $authenticator->port,
+            remoteuser  => $authenticator->remoteuser,
+            dbname      => $authenticator->dbname,
+            description => $authenticator->description,
+            type        => $authenticator->type,
+        };
+    }
+
+    $logger->debug("Getting Info for dbname: $dbname -> Got: ".YAML::Dump($authenticator_ref));
+    return $authenticator_ref;
+}
+
 sub get_authenticator_self {
     my ($self) = @_;
 

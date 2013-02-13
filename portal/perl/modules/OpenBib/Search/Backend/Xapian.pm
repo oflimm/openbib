@@ -150,7 +150,7 @@ sub search {
     my $searchprofile = $searchquery->get_searchprofile;
 
     if ($searchprofile){
-        my $profileindex_path = $config->{xapian_index_base_path}."/profile/".$searchprofile;
+        my $profileindex_path = $config->{xapian_index_base_path}."/_searchprofile/".$searchprofile;
         
         if (-d $profileindex_path){
             $logger->debug("Adding Xapian DB-Object for profile $searchprofile with path $profileindex_path");

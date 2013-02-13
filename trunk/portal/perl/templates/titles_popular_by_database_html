@@ -67,7 +67,7 @@
 <div class="ob-resultlist">
   <div class="ob-resultheader">
     <div class="ob-catalog">
-Die 20 meist aufgerufenen Titel in den letzten 6 Monaten
+[% msg.maketext("Die 20 meist aufgerufenen Titel in den letzten 6 Monaten") %]
     </div>
     <div class="ob-hits">
     </div>
@@ -79,7 +79,6 @@ Die 20 meist aufgerufenen Titel in den letzten 6 Monaten
 [% 
    itemcount = thisitem.count;
    item      = thisitem.item.fields; %]
-[%# USE dumper;dumper.dump(item)%]
 
 [%-
      start_range = 1;

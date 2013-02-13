@@ -3144,7 +3144,7 @@ sub get_searchprofile_of_systemprofile {
     return $self->get_searchprofile_or_create(\@databases);
 }
 
-sub searchprofiles_exists {
+sub searchprofile_exists {
     my $self            = shift;
     my $searchprofileid = shift;
     

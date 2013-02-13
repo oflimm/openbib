@@ -207,7 +207,7 @@ sub update_record {
         return;
     }
 
-    if (!$config->searchprofiles_exists($searchprofileid)) {
+    if (!$config->searchprofile_exists($searchprofileid)) {
         $self->print_warning($msg->maketext("Es existiert kein Suchprofil mit dieser ID"));
         return Apache2::Const::OK;
     }

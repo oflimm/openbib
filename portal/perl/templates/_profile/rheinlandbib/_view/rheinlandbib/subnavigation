@@ -26,12 +26,12 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]">Die Rheinische Abteilung der USB</a></li>
 [% END %]
-[% IF active_submenu == "gdonck"  %]
+[% IF active_submenu == "gaesdonck"  %]
   <li class="active"><strong>Bibliotheca Domus Presbyterorum Gaesdonck</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/gaesdonck.html?l=[% lang %]">Bibliotheca Domus Presbyterorum Gaesdonck</a></li>
 [% END %]
-[% IF active_submenu == "kwinter" %]
+[% IF active_submenu == "koenigswinter" %]
   <li class="active"><strong>Heimatverein Siebengebirge in Königswinter</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/koenigswinter.html?l=[% lang %]">Heimatverein Siebengebirge in Königswinter</a></li>
@@ -41,7 +41,7 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/gleuel.html?l=[% lang %]">Alte Pfarrbibliothek St. Dionysius Hürth-Gleuel</a></li>
 [% END %]
-[% IF active_submenu == "gbroich" %]
+[% IF active_submenu == "grevenbroich" %]
   <li class="active"><strong>Alte Pfarrbibliothek in St. Georg, Grevenbroich-Neu-Elfgen</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/grevenbroich.html?l=[% lang %]">Alte Pfarrbibliothek in St. Georg, Grevenbroich-Neu-Elfgen</a></li>
@@ -70,11 +70,6 @@
   <li class="active"><strong>Stiftsbibliothek Xanten</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/xanten.html?l=[% lang %]">Stiftsbibliothek Xanten</a></li>
-[% END %]
-[% IF active_submenu == "rheinabt" %]
-  <li class="active"><strong>Rheinische Abteilung der USB K&ouml;ln</strong></li>
-[% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]">Rheinische Abteilung der USB K&ouml;ln</a></li>
 [% END %]
  </ul>
 </nav>

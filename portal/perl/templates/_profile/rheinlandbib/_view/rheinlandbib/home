@@ -28,29 +28,23 @@
 [% PROCESS common/subtemplate name="mainnavigation" active_menu='' %]
 
     <!-- begin: main content area #main -->
-    <div id="main">
+    <div id="main" style="padding:10px;">
 
-         <div class="ym-grid">
-          <div class="ym-g33 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
+<h1>Virtueller Katalog der Arbeitsstelle Historische Bestände im Rheinland</h1>
 
-<center style="padding-top:60px;">
+ <div class="float-left" style="padding:8px;">
+
+<center>
 <img src="/images/openbib/views/rheinlandbib/logo_start.png" alt="Linz am
 Rhein" /><br><br>
 <i style="font-size:0.8em">Linz am Rhein - Druckgraphik von Christoph
 Boethius - datiert auf das Jahr 1690</i>
 </center>
-
-          </div>
-         </div>
-          <div class="ym-g66 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-<h2>Virtueller Katalog der Arbeitsstelle Historische Bestände im Rheinland</h2>
+</div>
 
 <p>
 Der Virtuelle Katalog der Kölner "<a
-href="http://www.ub.uni-koeln.de/bibliothek/ssg/arbeitsstelle_rheinland/index_ger.html"
+href="http://www.ub.uni-koeln.de/bibliothek/profil/projekte/arbeitsstelle_rheinland/index_ger.html"
 target="_blank">Arbeitsstelle Historische Bestände im
 Rheinland</a>" trägt die Bestände kleiner historischer
 Bibliotheken des Rheinlandes zusammen. 
@@ -66,19 +60,21 @@ gemeinsam recherchiert werden.
 
 <p>
 Zum gegenw&auml;rtigen Zeitpunkt umfasst dieser virtuelle Katalog die
-Best&auml;nde von <a href="" >10 Bibliotheken</a>.
+Best&auml;nde von <a href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]" >10 Bibliotheken</a>.
 </p>
 
 <p> Neben den rheinischen Bibliotheken ist auch der Bestand der <a
-href="http://www.ub.uni-koeln.de/bibliothek/ssg/histsamm/rheinische_abteilung/index_ger.html"
+href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/rheinabt/index_ger.html"
 target="_blank">Rheinischen Abteilung der USB</a> mit mehr als 117.000
 Titeln integriert. Darüber hinaus stellt die Rheinische Abteilung der
 USB Köln für jede der rheinischen Bibliotheken einen eigenständigen
 Online-Katalog bereit.  </p>
 
-          </div>
-         </div>
-      </div>
+<p>Während die USB Köln im Rahmen Ihrer landesbibliothekarischen
+Aufgaben die historischen rheinischen Bibliotheken betreut, ist die
+Aufgabe der ULB Münster die Betreuung der <a
+href="http://www.ulb.uni-muenster.de/landesbibliothek/sammlungen/histbibl/index.html">historischen
+westfälischen Bibliotheken</a>.</p>
 
     </div>
     <!-- end: #main -->

@@ -1,0 +1,111 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_portal
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='info' %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">Stadtarchiv Hennef (mit Turmmuseum Stadt Blankenberg)</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='hennef' %]
+
+        </div>
+      </div>
+
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3">
+        <div class="ym-cbox" class="ym-clearfix">
+
+<h2>Stadtarchiv Hennef (mit Turmmuseum Stadt Blankenberg)</h2>
+
+<p> Die hier präsentierte Sammlung, die über das Stadtarchiv Hennef
+zugänglich ist, besteht aus zwei Teilen. Zunächst sammelte sich ein
+älterer Buchbestand, der im Kern aus der katholischen Pfarrei
+St. Katharina Blankenberg stammt, im Turmmuseum Stadt Blankenberg. Er
+befindet sich bis auf einen kleinen, dort ausgestellten Teil heute im
+Stadtarchiv Hennef. Dazu kam die Sammlung des Domänen- und Forstrates
+Franz Joseph Wilhelm Scheven aus Hennef, der ab 1816 zunächst Landrat
+des Kreises Uckerath, später bis 1837 des Siegkreises war.  </p>
+
+<p> Die Blankenberger Sammlung umfasst knapp 140 Nummern und besteht
+weitgehend aus theologischer Literatur aus dem Zeitraum Mitte
+16. Jahrhundert - Ende 19. Jahrhundert. Überwiegt im älteren Bestand
+die lateinische Fachliteratur, so gewinnen im Laufe der Zeit die
+Gebets- und Andachtsbücher in deutscher Sprache spürbar an
+Bedeutung. Daneben finden sich aber Werke aus fast allen damals
+gängigen Wissensgebieten: Klassische Philologie, Geschichte, Jura,
+Philosophie, Kunst, Literatur. Einen guten Einblick bietet dazu:
+Helmut Fischer. Der historische Buchbestand des Turmmuseums Stadt
+Blankenberg. In: Heimatblätter des Rhein-Sieg-Kreises. Bd. 56, 1988,
+S. 80-95. Einige Bände dieses Sammlungsteils fehlen dort, u. a. die
+älteste Schrift der Sammlung, der Band 3: "De Sanctis" der
+<emph>Homiliae</emph> Johannes Ecks (Köln 1538).  </p>
+
+<p> Die gut hundert Nummern (in rund 166 Bänden) der Sammlung Scheven
+sind durch juristische Literatur mit Werken vom Ende des
+16. Jahrhunderts bis zur Mitte des 19. Jahrhunderts geprägt. Darunter
+befinden sich Ausgaben maßgeblicher Rechtstexte wie des "Codex
+Iustinianus" oder Johann Josef Scottis "Sammlung der Gesetze und
+Verordnungen ... Jülich, Cleve und Berg", wie auch Kommentare zu
+solchen Rechtstexten oder wichtige Entscheidungssammlungen - etwa die
+"Decisiones" des David Mevius oder die "Decisiones diversarum
+causarum" des Johann Meichsner. Beispiele aus beiden Beständen finden
+sich auch im Katalog einer Buchpatenaktion: "Alte Bücher in neuem
+Glanz". Buchpaten gesucht zur Restaurierung der Buchbestände des
+Stadtarchivs Hennef.  </p>
+
+<p>
+Der Bestand dieser Bibliothek ist auch separat in einem
+eigenst&auml;ndigen Portal recherchierbar.
+</p>
+
+<p>
+&gt;&gt;&nbsp;<a href="http://hennef.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
+</p>
+
+</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

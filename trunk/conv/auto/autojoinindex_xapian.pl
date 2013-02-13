@@ -88,10 +88,10 @@ else {
     push @searchprofiles, $config->get_searchprofiles_with_own_index;
 }
 
-if (! -d "$xapian_base/profile"){
+if (! -d "$xapian_base/_searchprofile"){
     $logger->info("Profil-Verzeichnis wurde angelegt");
     
-    mkdir "$xapian_base/profile";
+    mkdir "$xapian_base/_searchprofile";
 }
 
 foreach my $searchprofile (@searchprofiles){
@@ -126,7 +126,7 @@ foreach my $searchprofile (@searchprofiles){
         push @xapian_args, "--multipass";
     }
 
-    my $thisindex         = "profile/$searchprofile";
+    my $thisindex         = "_searchprofile/$searchprofile";
     my $thistmpindex      = $thisindex.".tmp";
 
     my $thisindex_path    = "$xapian_base/$thisindex";
@@ -160,25 +160,12 @@ foreach my $searchprofile (@searchprofiles){
 
 sub print_help {
     print << "ENDHELP";
-autoconv-sikis.pl - Automatische Konvertierung von SIKIS-Daten
+autojoinindex_xapian.pl - Automatische Verschmelzung von Xapian-Indizes fuer Suchprofile
 
    Optionen:
    -help                 : Diese Informationsseite
        
-   -sync                 : Hole Pool automatisch ueber das Netz
-   --database=...        : Angegebenen Katalog verwenden
-
-   Datenbankabhaengige Filter:
-
-   pre_remote.pl
-   alt_remote.pl
-   post_remote.pl
-   pre_move.pl
-   pre_conv.pl
-   post_conv.pl
-   post_dbload.pl
-   post_index_off.pl
-   post_index_on.pl
+   --searchprofileid=... : Angegebne Suchprofil-ID verwenden (ansonsten fuer alle Kataloge die own_index=true in Admin haben)
 
 ENDHELP
     exit;

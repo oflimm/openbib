@@ -1076,7 +1076,7 @@ sub save_eventlog_to_statisticsdb {
     $logger->debug("Saving Evenlog of Session $self->{ID}");
     
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
-    my $statistics=new OpenBib::Statistics;
+    my $statistics = OpenBib::Statistics->instance;
 
     my $view = $self->{view};
 

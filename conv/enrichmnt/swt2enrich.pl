@@ -32,15 +32,17 @@ use warnings;
 use strict;
 
 use YAML;
-use DBI;
 
 use Business::ISBN;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Encode 'decode_utf8';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Enrichment;
+use OpenBib::Catalog::Factory;
 
 # Autoflush
 $|=1;
@@ -79,25 +81,18 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-# Verbindung zur SQL-Datenbank herstellen
-my $enrichdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-    or $logger->error_die($DBI::errstr);
-
-my $sigel = $config->get_dbinfo($database)->{sigel};
+my $sigel = $config->get_dbinfo({ dbname => $database})->single->sigel;
 
 if (! $sigel =~/^\d+$/){
-    $logger->fatal("Datenbank muss numerisches Sigel besitzen");
+    $logger->fatal("Datenbank muss numerisches Sigel besitzen: $sigel");
     exit;
 }
+
+my $enrichment = new OpenBib::Enrichment;
 
 my $origin = 5000+$sigel;
 
 $logger->debug("Origin: $origin");
-
-# 20 = USB
-my $deleterequest = $enrichdbh->prepare("delete from normdata where category=4300 and origin=?");
-my $enrichrequest = $enrichdbh->prepare("insert into normdata values(?,?,4300,?,?)");
 
 my $isbn_ref = {};
 
@@ -106,18 +101,29 @@ if ($importyml){
     $isbn_ref = YAML::LoadFile($filename);
 }
 else {
-    # Kein Spooling von DB-Handles!
-    my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-        or $logger->error_die($DBI::errstr);
-    
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database});
+
     $logger->info("Bestimmung der Schlagworte");
     
-    my $request=$dbh->prepare("select tit.content as isbn,swt.content as schlagwort from swt,tit,conn where swt.category=1 and conn.targettype=4 and conn.targetid=swt.id and conn.sourcetype=1 and tit.id=conn.sourceid and tit.category in (540,553)");
-    $request->execute();
-    
-    while (my $res=$request->fetchrow_hashref){
-        my $isbn        = decode_utf8($res->{isbn});
-        my $schlagwort  = decode_utf8($res->{schlagwort});
+    my $isbn_swts = $catalog->{schema}->resultset('TitleSubject')->search(
+        {
+            'subject_fields.field' => '0800',
+            -or => [
+                'title_fields.field' => '0540',
+                'title_fields.field' => '0553',
+            ],
+        },
+        {
+            select => ['subject_fields.content','title_fields.content'],
+            as     => ['schlagwort','isbn'],
+            join   => ['titleid', { 'titleid' => 'title_fields'},'subjectid', {'subjectid' => 'subject_fields'}],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }   
+    );
+
+    while (my $isbn_swt = $isbn_swts->next()){
+        my $isbn        = $isbn_swt->{isbn};
+        my $schlagwort  = $isbn_swt->{schlagwort};
         
         my $isbnXX = Business::ISBN->new($isbn);
         
@@ -129,7 +135,7 @@ else {
         }
         
         $isbn = OpenBib::Common::Util::normalize({
-            field => 'T0540',
+            field    => 'T0540',
             content  => $isbn,
         });
         
@@ -140,11 +146,16 @@ else {
 }
 
 $logger->info("Loeschen der bisherigen Daten");
-$deleterequest->execute($origin);
+
+$enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => '4300', origin => $origin })->delete;
 
 $logger->info("Einladen der neuen Daten");
 
 my $isbncount = 0;
+
+my $count = 1;
+my $enrich_data_ref = [];
+
 foreach my $thisisbn (keys %{$isbn_ref}){
 
     my $indicator = 1;
@@ -154,15 +165,32 @@ foreach my $thisisbn (keys %{$isbn_ref}){
     my @unique_swts = grep { ! $seen_terms{$_} ++ } @{$isbn_ref->{$thisisbn}}; 
 
     foreach my $thisswt (@unique_swts){
-        $enrichrequest->execute($thisisbn,$origin,$indicator,$thisswt);
+        push @{$enrich_data_ref},
+            {
+                isbn     => $thisisbn,
+                origin   => $origin,
+                field    => '4300',
+                subfield => $indicator,
+                content  => $thisswt,
+            };
         
         $indicator++;
     }
 
+    if ($count % 1000 == 0){
+        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+        $enrich_data_ref = [];
+    }
+    $count++;
+
     $isbncount++;
 }
 
-$logger->info("Fuer $isbncount ISBNs wurden Schlagworte angereichtert");
+if (@$enrich_data_ref){
+    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+}
+
+$logger->info("Fuer $isbncount ISBNs wurden Schlagworte angereichert");
 
 sub print_help {
     print << "ENDHELP";

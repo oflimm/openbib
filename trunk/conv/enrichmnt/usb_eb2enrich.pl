@@ -31,6 +31,7 @@ use YAML;
 use DBI;
 
 use Business::ISBN;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Encode 'decode_utf8';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
@@ -92,12 +93,25 @@ if ($importyml){
 else {
     $logger->info("Bestimmung der ebook-URL");
 
-    my $request=$catalog->{schema}->storage->dbh->prepare("select t1.content as isbn, t2.content as eburl from title_fields as t1 left join title_fields as t2 on t1.titleid=t2.titleid where t2.field=662 and (t1.field=540 or t1.field=553)");
-    $request->execute();
+    my $isbn_urls = $catalog->{schema}->resultset('Title')->search(
+        {
+            'title_fields.field' => '0662',
+            -or => [
+                'title_fields_2.field' => '0540',
+                'title_fields_2.field' => '0553',
+            ],
+        },
+        {
+            select => ['title_fields.content','title_fields_2.content'],
+            as     => ['eburl','isbn'],
+            join   => ['title_fields','title_fields'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }   
+    );
     
-    while (my $res=$request->fetchrow_hashref){
-        my $isbn  = decode_utf8($res->{isbn});
-        my $eburl = decode_utf8($res->{eburl});
+    while (my $isbn_url = $isbn_urls->next()){
+        my $isbn  = decode_utf8($isbn_url->{isbn});
+        my $eburl = decode_utf8($isbn_url->{eburl});
         
         my $isbnXX = Business::ISBN->new($isbn);
         

@@ -329,6 +329,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% END %]
 <!-- Ende Literaturlisten -->
 
+
 <!-- Anfang Verschlagwortung in anderen Katalogen -->
 [% more_subjects = 0 ;
    FOREACH item IN normdata.${"E4300"};
@@ -339,7 +340,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
       LAST;
    END;
 %]
-[% IF more_subjects %]
+[% IF 0 == 1 #more_subjects %]
 <div class="available_subjects"><!-- Begin Vorhandene Schlagworte -->
 <div class="ob-headline">[% msg.maketext("Verschlagwortung anderer Kataloge") %]</div>
 <p/>

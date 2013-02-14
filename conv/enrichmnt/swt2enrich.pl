@@ -83,7 +83,7 @@ my $logger = get_logger();
 
 my $sigel = $config->get_dbinfo({ dbname => $database})->single->sigel;
 
-if (! $sigel =~/^\d+$/){
+if (!$sigel || ! $sigel =~/^\d+$/){
     $logger->fatal("Datenbank muss numerisches Sigel besitzen: $sigel");
     exit;
 }

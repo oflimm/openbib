@@ -7,7 +7,7 @@
 #  Extrahierung der Links zu digitalisierten Inhaltsverzeichnissen
 #  aus den USB-Daten fuer eine Anreicherung per ISBN
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -29,14 +29,16 @@
 #####################################################################   
 
 use YAML;
-use DBI;
 
 use Business::ISBN;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Encode 'decode_utf8';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Common::Util;
+use OpenBib::Enrichment;
+use OpenBib::Catalog::Factory;
 use OpenBib::Config;
 
 # Autoflush
@@ -75,14 +77,12 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-# Verbindung zur SQL-Datenbank herstellen
-my $enrichdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-    or $logger->error_die($DBI::errstr);
+my $enrichment = new OpenBib::Enrichment;
+
+my $catalog = OpenBib::Catalog::Factory->create_catalog({database => 'inst001'});
 
 # 20 = USB
-my $deleterequest = $enrichdbh->prepare("delete from normdata where category=4110 and origin=20");
-my $enrichrequest = $enrichdbh->prepare("insert into normdata values(?,20,4110,?,?)");
+my $origin = 20;
 
 my $isbn_ref = {};
 
@@ -91,18 +91,30 @@ if ($importyml){
     $isbn_ref = YAML::LoadFile($filename);
 }
 else {
-    # Kein Spooling von DB-Handles!
-    $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-        or $logger->error_die($DBI::errstr);
-    
     $logger->info("Bestimmung der TOC-URL's");
     
     my $request=$dbh->prepare("select t1.content as isbn, t2.content as tocurl from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category=662 and t2.content like '%digitool%' and t1.category in (540,553)");
     $request->execute();
+
+    my $isbn_tocurls = $catalog->{schema}->resultset('Title')->search(
+        {
+            'title_fields.content' => { '~' => '%digitool%'},
+            -or => [
+                'title_fields_2.field' => '0540',
+                'title_fields_2.field' => '0553',
+            ],
+        },
+        {
+            select => ['title_fields.content','title_fields_2.content'],
+            as     => ['tocurl','isbn'],
+            join   => ['title_fields','title_fields'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }   
+    );
     
-    while (my $res=$request->fetchrow_hashref){
-        my $isbn   = decode_utf8($res->{isbn});
-        my $tocurl = decode_utf8($res->{tocurl});
+    while (my $isbn_tocurl = $isbn_tocurls->next()){
+        my $isbn   = $isbn_tocurl->{isbn};
+        my $tocurl = $isbn_tocurl->{tocurl};
         
         my $isbnXX = Business::ISBN->new($isbn);
         
@@ -124,22 +136,43 @@ else {
 }
 
 $logger->info("Loeschen der bisherigen Daten");
-$deleterequest->execute();
+
+$enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => '4110', origin => $origin })->delete;
 
 $logger->info("Einladen der neuen Daten in die Datenbank");
+
+my $count = 1;
+my $enrich_data_ref = [];
 
 foreach my $thisisbn (keys %{$isbn_ref}){
     my $indicator = 1;
 
     # Dublette Inhalte entfernen
     my %seen_terms = ();
-    my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$isbn_ref->{$thisisbn}}; 
+    my @unique_urls = grep { ! $seen_terms{$_} ++ } @{$isbn_ref->{$thisisbn}}; 
 
-    foreach my $thisterm (@unique_terms){
-        $enrichrequest->execute($thisisbn,$indicator,$thisterm);
-        
+    foreach my $thisurl (@unique_urls){
+        push @{$enrich_data_ref},
+            {
+                isbn     => $thisisbn,
+                origin   => $origin,
+                field    => '4110',
+                subfield => $indicator,
+                content  => $thisurl,
+            };
         $indicator++;
     }
+
+    if ($count % 1000 == 0){
+        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+        $enrich_data_ref = [];
+    }
+    $count++;
+
+}
+
+if (@$enrich_data_ref){
+    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
 }
 
 unless ($importyml){

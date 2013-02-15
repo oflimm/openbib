@@ -1073,7 +1073,7 @@ msgstr ""
 msgid "BibSonomy"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:466 ../templates/titles_record_html_actions:393 ../templates/titles_record_include:673
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:466 ../templates/titles_record_html_actions:401 ../templates/titles_record_include:673
 msgid "BibSonomy Tags"
 msgstr ""
 
@@ -1570,7 +1570,7 @@ msgstr ""
 msgid "Diese Session existiert nicht."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:546 ../templates/titles_record_html_actions:473 ../templates/titles_record_include:753
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:546 ../templates/titles_record_html_actions:481 ../templates/titles_record_include:753
 msgid "Diese Titel interessierten Sie bereits:"
 msgstr ""
 
@@ -3270,7 +3270,7 @@ msgstr ""
 msgid "Medientyp"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:77 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:75 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:77 ../templates/_profile/kug/_view/kug/newsflash:39 ../templates/_profile/kug/home_html_bottom_left:76 ../templates/_profile/kug/search_facet:102 ../templates/_profile/kug/search_facet:114 ../templates/_profile/kug/search_facet:126 ../templates/_profile/kug/search_facet:138 ../templates/_profile/kug/search_facet:36 ../templates/_profile/kug/search_facet:47 ../templates/_profile/kug/search_facet:58 ../templates/_profile/kug/search_facet:69 ../templates/_profile/kug/search_facet:80 ../templates/_profile/kug/search_facet:91 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:109 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:18 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:29 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:40 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:51 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:62 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:7 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:73 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:85 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:97 ../templates/_profile/sammlungen/_view/richter/titles_record_html:531 ../templates/_profile/usb/drilldown_categorized:110 ../templates/_profile/usb/drilldown_categorized:19 ../templates/_profile/usb/drilldown_categorized:30 ../templates/_profile/usb/drilldown_categorized:41 ../templates/_profile/usb/drilldown_categorized:52 ../templates/_profile/usb/drilldown_categorized:63 ../templates/_profile/usb/drilldown_categorized:74 ../templates/_profile/usb/drilldown_categorized:8 ../templates/_profile/usb/drilldown_categorized:86 ../templates/_profile/usb/drilldown_categorized:98 ../templates/_view/richter/drilldown_categorized:109 ../templates/_view/richter/drilldown_categorized:18 ../templates/_view/richter/drilldown_categorized:29 ../templates/_view/richter/drilldown_categorized:40 ../templates/_view/richter/drilldown_categorized:51 ../templates/_view/richter/drilldown_categorized:62 ../templates/_view/richter/drilldown_categorized:7 ../templates/_view/richter/drilldown_categorized:73 ../templates/_view/richter/drilldown_categorized:85 ../templates/_view/richter/drilldown_categorized:97 ../templates/newsflash:35 ../templates/search_facet:102 ../templates/search_facet:114 ../templates/search_facet:126 ../templates/search_facet:138 ../templates/search_facet:36 ../templates/search_facet:47 ../templates/search_facet:58 ../templates/search_facet:69 ../templates/search_facet:80 ../templates/search_facet:91 ../templates/searchforms_record_bottom_left:77 ../templates/searchforms_record_bottom_right:32 ../templates/titles_record_html_actions:458 ../templates/titles_record_include:738
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:77 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:75 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:77 ../templates/_profile/kug/_view/kug/newsflash:39 ../templates/_profile/kug/home_html_bottom_left:76 ../templates/_profile/kug/search_facet:102 ../templates/_profile/kug/search_facet:114 ../templates/_profile/kug/search_facet:126 ../templates/_profile/kug/search_facet:138 ../templates/_profile/kug/search_facet:36 ../templates/_profile/kug/search_facet:47 ../templates/_profile/kug/search_facet:58 ../templates/_profile/kug/search_facet:69 ../templates/_profile/kug/search_facet:80 ../templates/_profile/kug/search_facet:91 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:109 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:18 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:29 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:40 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:51 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:62 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:7 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:73 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:85 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:97 ../templates/_profile/sammlungen/_view/richter/titles_record_html:531 ../templates/_profile/usb/drilldown_categorized:110 ../templates/_profile/usb/drilldown_categorized:19 ../templates/_profile/usb/drilldown_categorized:30 ../templates/_profile/usb/drilldown_categorized:41 ../templates/_profile/usb/drilldown_categorized:52 ../templates/_profile/usb/drilldown_categorized:63 ../templates/_profile/usb/drilldown_categorized:74 ../templates/_profile/usb/drilldown_categorized:8 ../templates/_profile/usb/drilldown_categorized:86 ../templates/_profile/usb/drilldown_categorized:98 ../templates/_view/richter/drilldown_categorized:109 ../templates/_view/richter/drilldown_categorized:18 ../templates/_view/richter/drilldown_categorized:29 ../templates/_view/richter/drilldown_categorized:40 ../templates/_view/richter/drilldown_categorized:51 ../templates/_view/richter/drilldown_categorized:62 ../templates/_view/richter/drilldown_categorized:7 ../templates/_view/richter/drilldown_categorized:73 ../templates/_view/richter/drilldown_categorized:85 ../templates/_view/richter/drilldown_categorized:97 ../templates/newsflash:35 ../templates/search_facet:102 ../templates/search_facet:114 ../templates/search_facet:126 ../templates/search_facet:138 ../templates/search_facet:36 ../templates/search_facet:47 ../templates/search_facet:58 ../templates/search_facet:69 ../templates/search_facet:80 ../templates/search_facet:91 ../templates/searchforms_record_bottom_left:77 ../templates/searchforms_record_bottom_right:32 ../templates/titles_record_html_actions:466 ../templates/titles_record_include:738
 msgid "Mehr"
 msgstr ""
 
@@ -5236,7 +5236,7 @@ msgstr ""
 msgid "Tagging"
 msgstr ""
 
-#: ../templates/_profile/kug/home_html_bottom_center:22 ../templates/_profile/sammlungen/_view/richter/titles_record_html:438 ../templates/cartitems_html_actions:100 ../templates/clouds_tag_html:50 ../templates/tags_html:41 ../templates/tags_html:75 ../templates/tags_names_html:58 ../templates/tags_navigation:21 ../templates/titles_record_html_actions:125 ../templates/titles_record_html_actions:226 ../templates/titles_record_html_actions:366 ../templates/titles_record_include:657 ../templates/users_navigation:31 ../templates/users_navigation:46 ../templates/users_tags_html:78
+#: ../templates/_profile/kug/home_html_bottom_center:22 ../templates/_profile/sammlungen/_view/richter/titles_record_html:438 ../templates/cartitems_html_actions:100 ../templates/clouds_tag_html:50 ../templates/tags_html:41 ../templates/tags_html:75 ../templates/tags_names_html:58 ../templates/tags_navigation:21 ../templates/titles_record_html_actions:125 ../templates/titles_record_html_actions:226 ../templates/titles_record_html_actions:374 ../templates/titles_record_include:657 ../templates/users_navigation:31 ../templates/users_navigation:46 ../templates/users_tags_html:78
 msgid "Tags"
 msgstr ""
 
@@ -5395,7 +5395,7 @@ msgstr ""
 msgid "Titelzugriffe"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:518 ../templates/info_11:34 ../templates/info_tutorials:73 ../templates/titles_popular_by_database_html:44 ../templates/titles_popular_by_database_html:62 ../templates/titles_popular_include:31 ../templates/titles_record_html_actions:445 ../templates/titles_record_include:725
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:518 ../templates/info_11:34 ../templates/info_tutorials:73 ../templates/titles_popular_by_database_html:44 ../templates/titles_popular_by_database_html:62 ../templates/titles_popular_include:31 ../templates/titles_record_html_actions:453 ../templates/titles_record_include:725
 msgid "Top 20"
 msgstr ""
 
@@ -5582,12 +5582,16 @@ msgstr ""
 msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:515 ../templates/titles_record_html_actions:442 ../templates/titles_record_include:722
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:515 ../templates/titles_record_html_actions:450 ../templates/titles_record_include:722
 msgid "Verschiedenes"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:416 ../templates/titles_record_html_actions:344 ../templates/titles_record_include:635
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:416 ../templates/titles_record_include:635
 msgid "Verschlagwortung anderer Kataloge"
+msgstr ""
+
+#: ../templates/titles_record_html_actions:352
+msgid "Verschlagwortung dieses Titels in anderen Katalogen"
 msgstr ""
 
 #: ../templates/_profile/kug/search_facet:499 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:486 ../templates/_profile/usb/drilldown_categorized:484 ../templates/_view/richter/drilldown_categorized:486 ../templates/search_facet:494
@@ -5598,7 +5602,7 @@ msgid ""
 "durch zus&auml;tzliche Worte weiter eingrenzen."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:486 ../templates/connector_similarpersons_html:40 ../templates/titles_record_html_actions:413 ../templates/titles_record_include:693
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:486 ../templates/connector_similarpersons_html:40 ../templates/titles_record_html_actions:421 ../templates/titles_record_include:693
 msgid "Verwandte Personen"
 msgstr ""
 
@@ -5606,7 +5610,7 @@ msgstr ""
 msgid "Verwandte Schlagworte"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:505 ../templates/titles_record_html_actions:432 ../templates/titles_record_include:712
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:505 ../templates/titles_record_html_actions:440 ../templates/titles_record_include:712
 msgid "Verwandte Themen"
 msgstr ""
 

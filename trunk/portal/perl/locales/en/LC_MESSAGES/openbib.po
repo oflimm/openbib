@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-02-01 10:13+0100\n"
+"PO-Revision-Date: 2013-02-15 10:49+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1756,7 +1756,7 @@ msgid "BibSonomy"
 msgstr "BibSonomy"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:466
-#: ../templates/titles_record_html_actions:393
+#: ../templates/titles_record_html_actions:401
 #: ../templates/titles_record_include:673
 msgid "BibSonomy Tags"
 msgstr "BibSonomy Tags"
@@ -2263,9 +2263,8 @@ msgid "Deutsche Wikipedia"
 msgstr "German Wikipedia"
 
 #: ../templates/titles_popular_by_database_html:70
-#, fuzzy
 msgid "Die 20 meist aufgerufenen Titel in den letzten 6 Monaten"
-msgstr "Show the Top 20 Most Viewed Entries in this catalog"
+msgstr "Top 20 most viewed titles in the last 6 months"
 
 #: ../templates/databases_popular:49
 msgid "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
@@ -2505,7 +2504,7 @@ msgid "Diese Session existiert nicht."
 msgstr "This session does not exist."
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:546
-#: ../templates/titles_record_html_actions:473
+#: ../templates/titles_record_html_actions:481
 #: ../templates/titles_record_include:753
 msgid "Diese Titel interessierten Sie bereits:"
 msgstr "These titles were already interesting to you:"
@@ -5780,7 +5779,7 @@ msgstr "Type of media"
 #: ../templates/search_facet:69 ../templates/search_facet:80
 #: ../templates/search_facet:91 ../templates/searchforms_record_bottom_left:77
 #: ../templates/searchforms_record_bottom_right:32
-#: ../templates/titles_record_html_actions:458
+#: ../templates/titles_record_html_actions:466
 #: ../templates/titles_record_include:738
 msgid "Mehr"
 msgstr "More"
@@ -10186,7 +10185,7 @@ msgstr "Tagging"
 #: ../templates/tags_names_html:58 ../templates/tags_navigation:21
 #: ../templates/titles_record_html_actions:125
 #: ../templates/titles_record_html_actions:226
-#: ../templates/titles_record_html_actions:366
+#: ../templates/titles_record_html_actions:374
 #: ../templates/titles_record_include:657 ../templates/users_navigation:31
 #: ../templates/users_navigation:46 ../templates/users_tags_html:78
 msgid "Tags"
@@ -10469,7 +10468,7 @@ msgstr "Title accesses"
 #: ../templates/titles_popular_by_database_html:44
 #: ../templates/titles_popular_by_database_html:62
 #: ../templates/titles_popular_include:31
-#: ../templates/titles_record_html_actions:445
+#: ../templates/titles_record_html_actions:453
 #: ../templates/titles_record_include:725
 msgid "Top 20"
 msgstr "Top 20"
@@ -10791,16 +10790,19 @@ msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr "Load Sharing in OpenBib"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:515
-#: ../templates/titles_record_html_actions:442
+#: ../templates/titles_record_html_actions:450
 #: ../templates/titles_record_include:722
 msgid "Verschiedenes"
 msgstr "Misc"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:416
-#: ../templates/titles_record_html_actions:344
 #: ../templates/titles_record_include:635
 msgid "Verschlagwortung anderer Kataloge"
 msgstr "Subject headings from other catalogs"
+
+#: ../templates/titles_record_html_actions:352
+msgid "Verschlagwortung dieses Titels in anderen Katalogen"
+msgstr "Subject headings of this title in other catalogs"
 
 #: ../templates/_profile/kug/search_facet:499
 #: ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:486
@@ -10819,7 +10821,7 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:486
 #: ../templates/connector_similarpersons_html:40
-#: ../templates/titles_record_html_actions:413
+#: ../templates/titles_record_html_actions:421
 #: ../templates/titles_record_include:693
 msgid "Verwandte Personen"
 msgstr "Similar persons"
@@ -10829,7 +10831,7 @@ msgid "Verwandte Schlagworte"
 msgstr "Related subject headings"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:505
-#: ../templates/titles_record_html_actions:432
+#: ../templates/titles_record_html_actions:440
 #: ../templates/titles_record_include:712
 msgid "Verwandte Themen"
 msgstr "Similar subject headings"

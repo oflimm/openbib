@@ -60,16 +60,23 @@
 <td>[% searchprofileid %]</td>
 </tr>
 <tr>
-<th>[% msg.maketext("Eigener Index") %]</th>
-<td>
-[% IF searchprofile.own_index %][% msg.maketext("Ja") %][% END %]
-[% IF NOT searchprofile.own_index %][% msg.maketext("Nein") %][% END %]
-</td>
-</tr>
-<tr>
 <th>[% msg.maketext("Kataloge") %]</th>
 <td>
-<ul>[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]<li>[% dbinfo.dbnames.${dbname}.short %]</li>[% END %]</ul>
+<ul>
+[% databases = {};
+   FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) ;
+     dbdesc     = dbinfo.dbnames.${dbname}.short;
+     locationid = dbinfo.locationid.${dbname};
+     databases.${dbdesc} = dbname;
+   END %]
+[% FOREACH dbdesc IN databases.keys.sort %]
+[%   IF locationid %]
+<li><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationid %].html?l=[% lang %]">[% dbdesc %]</a></li>
+[%   ELSE %]
+<li>[% dbdesc %]</li>
+[%   END %]
+[% END %]
+</ul>
 </td>
 </tr>
 </table>

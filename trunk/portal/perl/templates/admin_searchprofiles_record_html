@@ -60,16 +60,20 @@
 <tr><th>[% msg.maketext("Id") %]</th>
 <td>[% searchprofileid %]</td></tr>
 
+<tr><th>[% msg.maketext("Kataloge") %]</th>
+<td>
+<ul>
+[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% dbname %]/edit">[% dbinfo.dbnames.${dbname}.short %]</a></li>
+[% END %]
+</ul>
+</td>
+</tr>
 <tr><th>[% msg.maketext("Eigener Index") %]</th>
 <td>
 [% IF searchprofile.own_index %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]
 </td></tr>
 
-<tr><th>[% msg.maketext("Kataloge") %]</th>
-<td>
-<ul>[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]<li>[% dbinfo.dbnames.${dbname}.short %]</li>[% END %]</ul>
-</td>
-</tr>
 </table>
 
         </div>

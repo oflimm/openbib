@@ -329,29 +329,36 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% END %]
 <!-- Ende Literaturlisten -->
 
-
+[%# USE dumper;dumper.dump(normdata) %]
 <!-- Anfang Verschlagwortung in anderen Katalogen -->
 [% more_subjects = 0 ;
-   FOREACH item IN normdata.${"E4300"};
-      thiscontent = item.content;
+   subject_done  = {};
 
-      NEXT IF rswkswt_done.${thiscontent} == 1;
+   FOREACH category IN ["T0710","T0902","T0907","T0912","T0917","T0922","T0927","T0932","T0937","T0942","T0947"];
+     FOREACH item IN normdata.$category;
+       subject_done.${item.content} = 1;
+     END;
+   END ;
+
+   FOREACH item IN normdata.${"T4300"};
+      NEXT IF subject_done.${item.content} == 1;
+      subject_done.${item.content} = 1;
       more_subjects = 1;
-      LAST;
    END;
 %]
-[% IF 0 == 1 #more_subjects %]
+
+[% IF more_subjects %]
 <div class="available_subjects"><!-- Begin Vorhandene Schlagworte -->
-<div class="ob-headline">[% msg.maketext("Verschlagwortung anderer Kataloge") %]</div>
+<div class="ob-headline">[% msg.maketext("Verschlagwortung dieses Titels in anderen Katalogen") %]</div>
 <p/>
 <ul>
-[% FOREACH item IN normdata.${"E4300"};
+[% FOREACH item IN normdata.${"T4300"};
       thiscontent = item.content;
 
-      NEXT IF rswkswt_done.${thiscontent} == 1;
-      localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base};db=${record.database};fs=t4300:|${thiscontent.replace('&amp;','%26')}|";
-      content       = "<a href=\"${localurl}\">${thiscontent}</a>";
-      rswkswt_done.${thiscontent} = 1;
+      NEXT IF subject_done.${thiscontent} == 1;
+      localurl    = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};profile=${searchprofileid_of_view};t4300=${thiscontent.replace('&amp;','%26')}";
+      content     = "<a href=\"${localurl}\">${thiscontent}</a>";
+      subject_done.${thiscontent} = 1;
 %]
 <li>[% content %]</li>
 [%- END -%]

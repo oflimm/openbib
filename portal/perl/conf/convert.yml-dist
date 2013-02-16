@@ -607,7 +607,8 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-        string: 1
+        facet:
+          'classification': 1
       '4201':         # Wikipedia
         index:
           'content': 1
@@ -626,6 +627,8 @@ convtab:
           'subjectstring': 20
           'freesearch': 20
           't4300': 1
+        facet:
+          'subject': 1
       '5050':         # Bibkey
         index:
           'bkey': 1

@@ -331,7 +331,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 [%# USE dumper;dumper.dump(normdata) %]
 <!-- Anfang Verschlagwortung in anderen Katalogen -->
-[% more_subjects = 0 ;
+[% more_subjects = [] ;
    subject_done  = {};
 
    FOREACH category IN ["T0710","T0902","T0907","T0912","T0917","T0922","T0927","T0932","T0937","T0942","T0947"];
@@ -342,23 +342,20 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
    FOREACH item IN normdata.${"T4300"};
       NEXT IF subject_done.${item.content} == 1;
-      more_subjects = 1;
+      more_subjects.push(item.content);
+      subject_done.${item.content} = 1;
    END;
 %]
 
-[% IF more_subjects ;
-   subject_done  = {}; %]
+[% IF more_subjects %]
 <div class="available_subjects"><!-- Begin Vorhandene Schlagworte -->
 <div class="ob-headline">[% msg.maketext("Verschlagwortung dieses Titels in anderen Katalogen") %]</div>
 <p/>
 <ul>
-[% FOREACH item IN normdata.${"T4300"};
-      thiscontent = item.content;
+[% FOREACH thiscontent IN more_subjects.sort;
 
-      NEXT IF subject_done.${thiscontent} == 1;
       localurl    = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};profile=${searchprofileid_of_view};t4300=${thiscontent.replace('&amp;','%26')}";
       content     = "<a href=\"${localurl}\">${thiscontent}</a>";
-      subject_done.${thiscontent} = 1;
 %]
 <li>[% content %]</li>
 [%- END -%]

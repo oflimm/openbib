@@ -342,12 +342,12 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
    FOREACH item IN normdata.${"T4300"};
       NEXT IF subject_done.${item.content} == 1;
-      subject_done.${item.content} = 1;
       more_subjects = 1;
    END;
 %]
 
-[% IF more_subjects %]
+[% IF more_subjects ;
+   subject_done  = {}; %]
 <div class="available_subjects"><!-- Begin Vorhandene Schlagworte -->
 <div class="ob-headline">[% msg.maketext("Verschlagwortung dieses Titels in anderen Katalogen") %]</div>
 <p/>

@@ -131,7 +131,13 @@ sub show_record_form {
     my $updatelog_ref;
 
     if ($serverinfo_ref) {
-        $updatelog_ref = $serverinfo_ref->updatelogs->search_rs(undef,{ rows => $queryoptions->get_option('num'), order_by => ['tstamp_start DESC']});
+        $updatelog_ref = $serverinfo_ref->updatelogs->search_rs(
+            undef,
+            {                
+                rows => $queryoptions->get_option('num'),
+                order_by => ['id DESC']
+            }
+        );
     }
     
     my $ttdata = {

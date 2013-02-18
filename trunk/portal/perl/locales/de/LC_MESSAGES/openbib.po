@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-02-15 10:46+0100\n"
+"PO-Revision-Date: 2013-02-18 08:53+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -647,6 +647,10 @@ msgstr "Aktualisierbar"
 msgid "Aktualisieren"
 msgstr "Aktualisieren"
 
+#: ../templates/admin_servers_record_edit:123
+msgid "Aktualisierung"
+msgstr "Aktualisierung"
+
 #: ../templates/_profile/sammlungen/_view/richter/resultlists_choice:54
 #: ../templates/_view/richter/resultlists_choice:54
 msgid "Aktuelle Recherche"
@@ -766,6 +770,7 @@ msgstr "Allgemeine Statistikdaten zu OpenBib"
 
 #: ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:28
 #: ../templates/_profile/kug/_view/inst132/searchforms_record_profile:28
+#: ../templates/_profile/kug/home_html_bottom_center:32
 #: ../templates/_profile/kug/searchforms_record_profile:45
 msgid "Allgemeine Suchprofile"
 msgstr "Allgemeine Suchprofile"
@@ -988,6 +993,7 @@ msgstr ""
 "     Erfassung im Katalog lediglich die 10-stellige ISBN bekannt\n"
 "     war."
 
+#: ../templates/admin_servers_record_edit:126
 #: ../templates/litlists_by_single_topic_include:16
 msgid "Anzahl"
 msgstr "Anzahl"
@@ -1795,7 +1801,7 @@ msgid "BibSonomy"
 msgstr "BibSonomy"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:466
-#: ../templates/titles_record_html_actions:401
+#: ../templates/titles_record_html_actions:398
 #: ../templates/titles_record_include:673
 msgid "BibSonomy Tags"
 msgstr "BibSonomy Tags"
@@ -2202,6 +2208,10 @@ msgstr "Datenbankinformationssystem (DBIS)"
 msgid "Datenquelle"
 msgstr "Datenquelle"
 
+#: ../templates/admin_servers_record_edit:136
+msgid "Dauer"
+msgstr "Dauer"
+
 #. ("${searchterm}","<a href=\"${globalurl}\"><spanclass=\"globalsearch\">","</span></a>")
 #: ../templates/_database/wikisource_de/persons_record_html:138
 #: ../templates/_profile/kug/_database/wikisource_de/persons_record_html:138
@@ -2592,7 +2602,7 @@ msgid "Diese Session existiert nicht."
 msgstr "Diese Session existiert nicht."
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:546
-#: ../templates/titles_record_html_actions:481
+#: ../templates/titles_record_html_actions:478
 #: ../templates/titles_record_include:753
 msgid "Diese Titel interessierten Sie bereits:"
 msgstr "Diese Titel interessierten Sie bereits:"
@@ -2875,8 +2885,7 @@ msgstr "Eigenen Review l&ouml;schen"
 
 #: ../templates/admin_searchprofiles_html:64
 #: ../templates/admin_searchprofiles_record_edit:73
-#: ../templates/admin_searchprofiles_record_html:63
-#: ../templates/searchprofiles_record_html:63
+#: ../templates/admin_searchprofiles_record_html:72
 msgid "Eigener Index"
 msgstr "Eigener Index"
 
@@ -5022,7 +5031,7 @@ msgstr "JSON konnte nicht geparst werden"
 #: ../templates/admin_orgunits_record_delete_confirm:68
 #: ../templates/admin_profiles_record_delete_confirm:66
 #: ../templates/admin_searchprofiles_record_edit:75
-#: ../templates/admin_searchprofiles_record_html:65
+#: ../templates/admin_searchprofiles_record_html:74
 #: ../templates/admin_servers_html:143 ../templates/admin_servers_html:99
 #: ../templates/admin_servers_record_delete_confirm:66
 #: ../templates/admin_servers_record_edit:104
@@ -5036,8 +5045,7 @@ msgstr "JSON konnte nicht geparst werden"
 #: ../templates/databases_rss_record_html:43
 #: ../templates/databases_rss_record_html:97
 #: ../templates/litlists_record_include:75
-#: ../templates/searchforms_record_options:4
-#: ../templates/searchprofiles_record_html:65 ../templates/servers_html:82
+#: ../templates/searchforms_record_options:4 ../templates/servers_html:82
 #: ../templates/servers_record_html:77 ../templates/titles_record_html:350
 #: ../templates/titles_record_include:251
 #: ../templates/users_litlists_record_delete_confirm:54
@@ -5193,7 +5201,7 @@ msgstr "Kartenkataloge der Philosophischen Fakultät"
 #: ../templates/_view/richter/cartitems_html_short:134
 #: ../templates/_view/richter/resultlists_choice:109
 #: ../templates/_view/richter/titlist_item_html_short:220
-#: ../templates/admin_servers_record_edit:127
+#: ../templates/admin_servers_record_edit:136
 #: ../templates/cartitems_html_short:133 ../templates/databases_record_html:57
 #: ../templates/databases_rss_record_html:85 ../templates/reviews_edit:189
 #: ../templates/search_facet:162 ../templates/search_history:63
@@ -5268,12 +5276,12 @@ msgstr "Katalogauswahl zu diesem View"
 #: ../templates/admin_orgunits_record_edit:92
 #: ../templates/admin_profiles_record_edit:124
 #: ../templates/admin_searchprofiles_record_edit:81
-#: ../templates/admin_searchprofiles_record_html:68
+#: ../templates/admin_searchprofiles_record_html:63
 #: ../templates/databases_html:41 ../templates/databases_html:89
 #: ../templates/databases_record_html:38 ../templates/databases_rss_html:39
 #: ../templates/databases_rss_record_html:55 ../templates/orgunits_html:66
 #: ../templates/profiles_record_html:75
-#: ../templates/searchprofiles_record_html:70
+#: ../templates/searchprofiles_record_html:63
 msgid "Kataloge"
 msgstr "Kataloge"
 
@@ -5987,7 +5995,7 @@ msgstr "Medientyp"
 #: ../templates/search_facet:69 ../templates/search_facet:80
 #: ../templates/search_facet:91 ../templates/searchforms_record_bottom_left:77
 #: ../templates/searchforms_record_bottom_right:32
-#: ../templates/titles_record_html_actions:466
+#: ../templates/titles_record_html_actions:463
 #: ../templates/titles_record_include:738
 msgid "Mehr"
 msgstr "Mehr"
@@ -6231,7 +6239,7 @@ msgstr ""
 #: ../templates/admin_orgunits_record_delete_confirm:74
 #: ../templates/admin_profiles_record_delete_confirm:72
 #: ../templates/admin_searchprofiles_record_edit:76
-#: ../templates/admin_searchprofiles_record_html:65
+#: ../templates/admin_searchprofiles_record_html:74
 #: ../templates/admin_servers_html:100 ../templates/admin_servers_html:143
 #: ../templates/admin_servers_record_delete_confirm:72
 #: ../templates/admin_servers_record_edit:105
@@ -6245,8 +6253,7 @@ msgstr ""
 #: ../templates/databases_rss_record_html:42
 #: ../templates/databases_rss_record_html:98
 #: ../templates/litlists_record_include:75
-#: ../templates/searchforms_record_options:4
-#: ../templates/searchprofiles_record_html:66 ../templates/servers_html:82
+#: ../templates/searchforms_record_options:4 ../templates/servers_html:82
 #: ../templates/servers_record_html:78 ../templates/titles_record_html:351
 #: ../templates/titles_record_include:252
 #: ../templates/users_litlists_record_delete_confirm:60
@@ -7880,7 +7887,7 @@ msgstr "Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."
 msgid "Sie müssen einen RSS-Typ eingeben."
 msgstr "Sie müssen einen RSS-Typ eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Servers.pm:201
+#: ../modules/OpenBib/Handler/Apache/Admin/Servers.pm:207
 msgid "Sie müssen einen Servernamen eingeben."
 msgstr "Sie müssen einen Servernamen eingeben."
 
@@ -8234,7 +8241,7 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_view/richter/searchforms_record_advanced:37
 #: ../templates/_view/richter/subjects_record_html:47
 #: ../templates/_view/richter/users_registrations:37
-#: ../templates/browse_bks_html:37
+#: ../templates/admin_servers_record_edit:136 ../templates/browse_bks_html:37
 #: ../templates/browse_bks_record_databases_html:37
 #: ../templates/browse_bks_record_html:37 ../templates/browse_html:37
 #: ../templates/browse_topics_html:37
@@ -10447,7 +10454,7 @@ msgstr "Tagging"
 #: ../templates/tags_names_html:58 ../templates/tags_navigation:21
 #: ../templates/titles_record_html_actions:125
 #: ../templates/titles_record_html_actions:226
-#: ../templates/titles_record_html_actions:374
+#: ../templates/titles_record_html_actions:371
 #: ../templates/titles_record_include:657 ../templates/users_navigation:31
 #: ../templates/users_navigation:46 ../templates/users_tags_html:78
 msgid "Tags"
@@ -10602,6 +10609,7 @@ msgstr "Tip: Digitaler Kartenkatalog"
 #: ../templates/_view/richter/litlists_record_html:87
 #: ../templates/_view/richter/users_litlists_record_edit:122
 #: ../templates/admin_databases_record_edit:119
+#: ../templates/admin_servers_record_edit:136
 #: ../templates/cartitems_html_full:26 ../templates/litlists_record_html:86
 #: ../templates/litlists_record_include:35 ../templates/search_history:62
 #: ../templates/search_title_start_html:37
@@ -10735,7 +10743,7 @@ msgstr "Titelzugriffe"
 #: ../templates/titles_popular_by_database_html:44
 #: ../templates/titles_popular_by_database_html:62
 #: ../templates/titles_popular_include:31
-#: ../templates/titles_record_html_actions:453
+#: ../templates/titles_record_html_actions:450
 #: ../templates/titles_record_include:725
 msgid "Top 20"
 msgstr "Top 20"
@@ -11076,7 +11084,7 @@ msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr "Verlinkung und Lastverteilung von OpenBib"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:515
-#: ../templates/titles_record_html_actions:450
+#: ../templates/titles_record_html_actions:447
 #: ../templates/titles_record_include:722
 msgid "Verschiedenes"
 msgstr "Verschiedenes"
@@ -11108,7 +11116,7 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:486
 #: ../templates/connector_similarpersons_html:40
-#: ../templates/titles_record_html_actions:421
+#: ../templates/titles_record_html_actions:418
 #: ../templates/titles_record_include:693
 msgid "Verwandte Personen"
 msgstr "Verwandte Personen"
@@ -11118,7 +11126,7 @@ msgid "Verwandte Schlagworte"
 msgstr "Verwandte Schlagworte"
 
 #: ../templates/_profile/sammlungen/_view/richter/titles_record_html:505
-#: ../templates/titles_record_html_actions:440
+#: ../templates/titles_record_html_actions:437
 #: ../templates/titles_record_include:712
 msgid "Verwandte Themen"
 msgstr "Verwandte Themen"

@@ -347,7 +347,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
    END;
 %]
 
-[% IF more_subjects %]
+[%# USE dumper;dumper.dump(more_subjects)%]
+[% IF more_subjects.size > 0 %]
 <div class="available_subjects"><!-- Begin Vorhandene Schlagworte -->
 <div class="ob-headline">[% msg.maketext("Verschlagwortung dieses Titels in anderen Katalogen") %]</div>
 <p/>

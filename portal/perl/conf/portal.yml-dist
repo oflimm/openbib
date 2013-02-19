@@ -1,5 +1,5 @@
 # Versionsnummer
-version: OpenBib 3 / alpha5
+version: OpenBib 3
 
 # Unter dieser IP wird der lokale Server angesprochen
 local_ip: 127.0.0.1
@@ -2867,7 +2867,7 @@ tt_include_path: /opt/openbib/templates
 
 content_type_map:
  'application/rdf+xml': 'rdf'
- 'application/xml': 'rss'
+# 'application/xml': 'rss'
  'text/rdf+n3': 'n3'
  'text/html': 'html'
  'application/json': 'json'
@@ -2976,6 +2976,9 @@ searchfield:
      'type': 'string'
   'litliststring':
      'prefix': 'flitlist'
+     'type': 'string'
+  'availabilitystring':
+     'prefix': 'favail'
      'type': 'string'
   'subjectstring':
      'prefix': 'fsubj'
@@ -3329,6 +3332,7 @@ xapian_search_prefix:
   'flitlist': 'E4'
   'fpubl': 'E5'
   'floc': 'E6'
+  'favail': 'E7'
 
   # Einzelne Kategorieinhalte
   't0335': 'T0335'
@@ -3340,17 +3344,18 @@ xapian_search_prefix:
   't4300': 'T4300'
 
 xapian_drilldown_value:
+  subject: 1
+  classification: 2
   person: 3
   mediatype: 4
-  classification: 2
-  language: 6
-  subject: 1
   year: 5
+  language: 6
   corporatebody: 7
   database: 8
   tag: 9
   litlist: 10
 #  location: 11
+  availability: 12
 
 xapian_sorttype_value:
   'person': 20
@@ -3405,7 +3410,7 @@ image_root_path: /usr/share/images
 
 # Verwendete Funktionsbilder
 books_img: /images/openbib/bookcase.png
-chart_img: /images/openbib/log.png
+chart_img: /images/openbib/kchart.png
 courses_img: /images/openbib/courses.png
 dbis_green_img: /images/openbib/dbis/z0.gif
 dbis_yellow_img: /images/openbib/dbis/z2.gif
@@ -3508,16 +3513,18 @@ testsystem: 0
 
 # Facets
 facets:
-  person: 3
-  mediatype: 4
-  classification: 2
-  language: 6
   subject: 1
+  classification: 2
+  person: 3
   year: 5
+  mediatype: 4
+  language: 6
   corporatebody: 7
   database: 8
   tag: 9
   litlist: 10
+#  location: 11
+  availability: 12
 
 # Repraesentationen
 

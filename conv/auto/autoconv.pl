@@ -179,6 +179,11 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 {    
     my $atime = new Benchmark;
 
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_unpack.pl"){
+        $logger->info("### $database: Verwende Plugin pre_unpack.pl");
+        system("$config->{autoconv_dir}/filter/$database/pre_unpack.pl $database");
+    }
+
     $logger->info("### $database: Entpacken der Pool-Daten");
 
     if (! -d "$rootdir/data/$database"){
@@ -210,11 +215,17 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");
 
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/post_unpack.pl"){
+        $logger->info("### $database: Verwende Plugin post_unpack.pl");
+        system("$config->{autoconv_dir}/filter/$database/post_unpack.pl $database");
+    }
+
     if (! -e "$rootdir/data/$database/meta.title" || ! -s "$rootdir/data/$database/meta.title"){
         $logger->error("### $database: Keine Daten vorhanden");
 
         goto CLEANUP;
     }
+    
 }
     
 # Konvertierung aus dem Meta- in das SQL-Einladeformat

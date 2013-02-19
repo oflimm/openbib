@@ -18,7 +18,7 @@
 #  Programm, Konvertierungsroutinen in das Metaformat
 #  und generelle Optimierung auf Bulk-Konvertierungen
 #
-#  Copyright 2003-2012 Oliver Flimm
+#  Copyright 2003-2013 Oliver Flimm
 #                      <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
@@ -51,15 +51,17 @@ use JSON::XS;
 #use MLDBM qw(DB_File Storable);
 use Storable ();
 
-our ($bcppath,$used01buch,$used01buchstandort,$usemcopynum,$blobencoding,$reducemem);
+our ($bcppath,$usestatus,$useusbschema,$used01buch,$used01buchstandort,$usemcopynum,$blobencoding,$reducemem);
 
 &GetOptions(
-    "reduce-mem"      => \$reducemem,
-    "bcp-path=s"      => \$bcppath,
-    "blob-encoding=s" => \$blobencoding, # V<4.0: iso-8859-1, V>=4.0: utf8
-    "use-d01buch"     => \$used01buch,
+    "reduce-mem"           => \$reducemem,
+    "bcp-path=s"           => \$bcppath,
+    "blob-encoding=s"      => \$blobencoding, # V<4.0: iso-8859-1, V>=4.0: utf8
+    "use-d01buch"          => \$used01buch,
+    "use-status"           => \$usestatus,
+    "use-usbschema"        => \$useusbschema,
     "use-d01buch-standort" => \$used01buchstandort,
-    "use-mcopynum"    => \$usemcopynum,
+    "use-mcopynum"         => \$usemcopynum,
 );
 
 # Konfiguration:
@@ -82,6 +84,14 @@ my $indicator_tab = {
         '0806c' => '0305',      # Geburtsort
     },
 };
+
+our $entl_map_ref = {
+      'X' => 0, # nein
+      ' ' => 1, # ja
+      'L' => 2, # Lesesaal
+      'B' => 3, # Bes. Lesesaal
+      'W' => 4, # Wochenende
+  };
 
 ###
 ## Feldstrukturtabelle auswerten
@@ -431,7 +441,7 @@ if ($used01buch) {
     #
 
     if ($usemcopynum) {
-        print STDERR  "Usinb mcopynum\n";
+        print STDERR  "Using mcopynum\n";
         open(TITELBUCHKEY,"cat $bcppath/titel_buch_key.bcp |");
         while (<TITELBUCHKEY>) {
             my ($katkey,$mcopynum,$seqnr)=split("",$_);
@@ -450,15 +460,15 @@ if ($used01buch) {
         my @line = split("",$_);
 
         if ($usemcopynum) {            
-            my ($d01gsi,$d01ex,$d01zweig,$d01mcopynum,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,7,24,31,55];
+            my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01mcopynum,$d01status,$d01skond,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,3,7,11,12,24,31,55];
             #print "$d01gsi,$d01ex,$d01zweig,$d01mcopynum,$d01ort,$d01abtlg\n";
             foreach my $katkey (@{$titelbuchkey{$d01mcopynum}}) {
-                push @{$buchdaten{$katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort];
+                push @{$buchdaten{$katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond];
             }
         } else {
-            my ($d01gsi,$d01ex,$d01zweig,$d01katkey,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,7,24,31,55];
+            my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01katkey,$d01status,$d01skond,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,3,7,11,12,24,31,55];
             #print "$d01gsi,$d01ex,$d01zweig,$d01katkey,$d01ort,$d01abtlg\n";
-            push @{$buchdaten{$d01katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort];
+            push @{$buchdaten{$d01katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond];
         }
     }
     close(D01BUCH);
@@ -481,12 +491,8 @@ while (<TEXCL>) {
 close(TEXCL);
 
 open(TITEL,"cat $bcppath/titel_daten.bcp |");
-#open(TITSIK,"| gzip >./unload.TIT.gz");
-#open(MEXSIK,"| gzip >./unload.MEX.gz");
 open(TITSIKJSON,"| gzip >./meta.title.gz");
 open(MEXSIKJSON,"| gzip >./meta.holding.gz");
-#binmode(TITSIK, ":utf8");
-#binmode(MEXSIK, ":utf8");
 binmode(TITSIKJSON, ":utf8");
 binmode(MEXSIKJSON, ":utf8");
 
@@ -549,7 +555,8 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     id         => $id,
                     supplement => $supplement,
                 };
-            } else {
+            }
+            else {
 
                 push @{$title_ref->{$field}}, {
                     mult       => $mult,
@@ -557,9 +564,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     content    => $content,
                 };
                 
-                if ($used01buch) {
-                    # Anfang: Exemplardaten fuer Zeitschriften ZDB-Aufnahme
-                    
+                if ($useusbschema) {
                     # Grundsignatur ZDB-Aufnahme
                     if ($line=~/^1204\.(\d\d\d):(.*$)/) {
                         my $zaehlung=$1;
@@ -605,7 +610,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                             $maxmex=$zaehlung;
                         }
                     }
-                    
+
                     if ($line=~/^0012\.(\d\d\d):(.*$)/) {
                         my $zaehlung=$1;
                         my $inhalt=$2;
@@ -615,7 +620,6 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                         }
                     }
                 }
-                # Ende: Exemplardaten fuer Zeitschriften ZDB-Aufnahme
                 else {
                     if ($line=~/^0016.(\d\d\d):(.*$)/) {
                         my $zaehlung = $1;
@@ -634,18 +638,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                             $maxmex=$zaehlung;
                         }
                     }
-                    
-                    # Zeitschriftensignaturen USB Koeln
-                    
-                    if ($line=~/^1203\.(\d\d\d):(.*$)/) {
-                        my $zaehlung = $1;
-                        my $inhalt   = $2;
-                        $signaturbuf{$zaehlung}=$inhalt;
-                        if ($maxmex <= $zaehlung) {
-                            $maxmex=$zaehlung;
-                        }
-                    }
-                    
+                                        
                     if ($line=~/^1204\.(\d\d\d):(.*$)/) {
                         my $zaehlung = $1;
                         my $inhalt   = $2;
@@ -682,30 +675,21 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
   
     # Wenn ZDB-Aufnahmen gefunden wurden, dann diese Ausgeben
     if ($maxmex && !exists $buchdaten{$katkey}) {
-        #      print STDERR "$katkey - $maxmex\n";
         my $k=1;
         while ($k <= $maxmex) {	  
             my $multkey=sprintf "%03d",$k;
             
-            my $signatur=$signaturbuf{$multkey};
-            my $standort=$standortbuf{$multkey};
-            my $inventar=$inventarbuf{$multkey};
-            my $bemerk1=$bemerkbuf1{$multkey};
-            my $bemerk2=$bemerkbuf2{$multkey};
-            my $sigel=$besbibbuf{$multkey};
+            my $signatur = $signaturbuf{$multkey};
+            my $standort = $standortbuf{$multkey};
+            my $inventar = $inventarbuf{$multkey};
+            my $bemerk1  = $bemerkbuf1{$multkey};
+            my $bemerk2  = $bemerkbuf2{$multkey};
+            my $sigel    = $besbibbuf{$multkey};
             $sigel=~s!^38/!!;
             
-            if ($used01buch) {
+            if ($useusbschema) {
                 my $erschverl=$erschverlbufpos{$multkey};
                 $erschverl.=" ".$erschverlbufneg{$multkey} if (exists $erschverlbufneg{$multkey});
-#                print MEXSIK "0000:$mexid\n";
-#                print MEXSIK "0004:$katkey\n";
-#                print MEXSIK "0014:$signatur\n"  if ($signatur);
-#                print MEXSIK "1200:$bemerk1\n" if ($bemerk1);
-#                print MEXSIK "1203:$bemerk2\n" if ($bemerk2);
-#                print MEXSIK "1204:$erschverl\n" if ($erschverl);
-#                print MEXSIK "3330:$sigel\n"     if ($sigel);
-#                print MEXSIK "9999:\n";
                 
                 my $holding_ref = {
                     'id'     => $mexid,
@@ -784,12 +768,6 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
             }
             else {
                 my $erschverl=$erschverlbuf{$multkey};
-#                print MEXSIK "0000:$mexid\n";
-#                print MEXSIK "0004:$katkey\n";
-#                print MEXSIK "0014:$signatur\n"  if ($signatur);
-#                print MEXSIK "1204:$erschverl\n" if ($erschverl);
-#                print MEXSIK "3330:$sigel\n"     if ($sigel);
-#                print MEXSIK "9999:\n";
 
                 my $holding_ref = {
                     id     => $mexid,
@@ -855,14 +833,44 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
             $mexid++;
             $k++;
         }
-    } elsif (exists $buchdaten{$katkey}) {
-        #      print STDERR "D01BUCH $katkey";
+
+        if ($usestatus){
+            push @{$title_ref->{'4400'}}, {
+                mult       => 1,
+                subfield   => '',
+                content    => 'presence',
+            };
+        }
+    }
+    elsif (exists $buchdaten{$katkey}) {
+        my $overall_mediastatus_ref = {}; # lendable_[immediate|order|weekend] oder presence_[immediate|order]
+        
         foreach my $buchsatz_ref (@{$buchdaten{$katkey}}) {
-            #print join(" ; ",@{$buchsatz});
-            my $signatur = $buchsatz_ref->[1];
+            my $signatur    = $buchsatz_ref->[1];
+            my $standort    = $zweigstelle{$buchsatz_ref->[0]};
+            my $mediastatus;
+            
+            if ($usestatus){
+                $mediastatus = get_mediastatus($buchsatz_ref) ;
 
-            my $standort = $zweigstelle{$buchsatz_ref->[0]};
-
+                if ($mediastatus eq "bestellbar"){
+                    $overall_mediastatus_ref->{lendable} = 1;
+#                    $overall_mediastatus_ref->{lendable_order} = 1;
+                }
+                elsif ($mediastatus eq "nur in Lesesaal bestellbar" || $mediastatus eq "nur in bes. Lesesaal bestellbar"){
+                    $overall_mediastatus_ref->{presence} = 1;
+#                    $overall_mediastatus_ref->{presence_order} = 1;                    
+                }
+                elsif ($mediastatus eq "nur Wochenende"){
+                    $overall_mediastatus_ref->{lendable} = 1;
+#                    $overall_mediastatus_ref->{lendable_weekend} = 1;                    
+                }
+                elsif ($mediastatus eq "nicht entleihbar"){
+#                    $overall_mediastatus_ref->{presence} = 1;
+                    $overall_mediastatus_ref->{presence_immediate} = 1;                    
+                }
+            }
+            
 	    if ($used01buchstandort){
 		if ($standort{$buchsatz_ref->[3]}){
 		    $standort .= " / ".$standort{$buchsatz_ref->[3]};
@@ -875,12 +883,6 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
 	    }
             chomp($standort);
 	  
-#            print MEXSIK "0000:$mexid\n";
-#            print MEXSIK "0004:$katkey\n";
-#            print MEXSIK "0014:$signatur\n"  if ($signatur);
-#            print MEXSIK "0016:$standort\n"  if ($standort);
-#            print MEXSIK "9999:\n";
-
             my $holding_ref = {
                 id     => $mexid,
                 '0004' =>
@@ -908,7 +910,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     subfield => '',
                 };
             }
-
+            
 	    eval {
 		print MEXSIKJSON encode_json $holding_ref, "\n";
 	    };
@@ -919,20 +921,29 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
 
             $mexid++;
         }
+
+        if ($usestatus){
+            my $mult = 1;
+            foreach my $thisstatus (keys %{$overall_mediastatus_ref}){
+                push @{$title_ref->{'4400'}}, {
+                    mult       => $mult++,
+                    subfield   => '',
+                    content    => $thisstatus,
+                };                
+            }
+        }
     }
 
     # Exemplardaten abarbeiten Ende
 
-#    print TITSIK "9999:\n\n";
-
     eval {
-      print TITSIKJSON encode_json $title_ref, "\n";
+        print TITSIKJSON encode_json $title_ref, "\n";
     };
-
+    
     if ($@){
-       print STDERR $@,"\n";
+        print STDERR $@,"\n";
     }
-
+    
     %inventarbuf     = ();
     %signaturbuf     = ();
     %standortbuf     = ();
@@ -945,11 +956,60 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
 
 }                               # Ende einzelner Satz in while
 
-#close(TITSIK);
 close(TITSIKJSON);
 close(TITEL);
 #close(MEXSIK);
 close(MEXSIKJSON);
+
+sub get_mediastatus {
+    my ($buchsatz_ref) = @_;
+
+    my $statusstring   = "";
+    my $entl   = $buchsatz_ref->[4];
+    my $status = $buchsatz_ref->[5];
+    my $skond  = $buchsatz_ref->[6];
+
+    if    ($entl_map_ref->{$entl} == 0){
+        $statusstring="nicht entleihbar";
+    }
+    elsif ($entl_map_ref->{$entl} == 1){
+    	if ($status eq "0"){
+            $statusstring="bestellbar";
+        }
+        elsif ($status eq "2"){
+            $statusstring="entliehen"; # Sonderwunsch. Eigentlich: bestellt
+        }
+        elsif ($status eq "4"){
+            $statusstring="entliehen";
+        }
+        else {
+            $statusstring="unbekannt";
+        }
+    }
+    elsif ($entl_map_ref->{$entl} == 2){
+      $statusstring="nur in Lesesaal bestellbar";
+    }
+    elsif ($entl_map_ref->{$entl} == 3){
+      $statusstring="nur in bes. Lesesaal bestellbar";
+    }
+    elsif ($entl_map_ref->{$entl} == 4){
+      $statusstring="nur Wochenende";
+    }
+    else {
+      $statusstring="unbekannt";
+    }
+
+    # Sonderkonditionen
+
+    if ($skond eq "16"){
+      $statusstring="verloren";
+    }
+    elsif ($skond eq "32"){
+      $statusstring="vermi&szlig;t";
+    }
+
+    return $statusstring;
+}
 
 sub konv {
     my ($content)=@_;

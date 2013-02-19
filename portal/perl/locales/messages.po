@@ -307,7 +307,7 @@ msgstr ""
 msgid "Aktiv"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:161 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:140 ../templates/_profile/usb/drilldown_categorized:140 ../templates/_view/richter/drilldown_categorized:140 ../templates/search_facet:159
+#: ../templates/_profile/kug/search_facet:173 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:140 ../templates/_profile/usb/drilldown_categorized:140 ../templates/_view/richter/drilldown_categorized:140 ../templates/search_facet:159
 msgid "Aktive Filter"
 msgstr ""
 
@@ -696,7 +696,7 @@ msgstr ""
 msgid "Anzeige:"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:458 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:444 ../templates/_profile/usb/drilldown_categorized:442 ../templates/_view/richter/drilldown_categorized:444 ../templates/search_facet:456
+#: ../templates/_profile/kug/search_facet:508 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:444 ../templates/_profile/usb/drilldown_categorized:442 ../templates/_view/richter/drilldown_categorized:444 ../templates/search_facet:456
 msgid "Arabisch"
 msgstr ""
 
@@ -1029,7 +1029,7 @@ msgstr ""
 msgid "Bestaetigen Sie Ihre Registrierung"
 msgstr ""
 
-#: ../templates/_database/inst001/holding:17 ../templates/_profile/kug/_database/inst001/holding:17 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/sammlungen/_view/richter/cartitems_html_simple:70 ../templates/_profile/sammlungen/_view/richter/titles_record_html:684 ../templates/_profile/usb/holding:19 ../templates/_profile/usb/titles_record_include:77 ../templates/_view/richter/cartitems_html_simple:70 ../templates/cartitems_html_simple:67 ../templates/holding:17 ../templates/holding_mobile:17 ../templates/titles_record_html:232 ../templates/titles_record_include:125 ../templates/titles_record_include:151
+#: ../templates/_database/inst001/holding:17 ../templates/_profile/kug/_database/inst001/holding:17 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/sammlungen/_view/richter/cartitems_html_simple:70 ../templates/_profile/sammlungen/_view/richter/titles_record_html:684 ../templates/_profile/usb/holding:19 ../templates/_profile/usb/titles_record_include:77 ../templates/_view/richter/cartitems_html_simple:70 ../templates/cartitems_html_simple:67 ../templates/holding:33 ../templates/holding_mobile:17 ../templates/titles_record_html:232 ../templates/titles_record_include:125 ../templates/titles_record_include:151
 msgid "Bestand"
 msgstr ""
 
@@ -1077,7 +1077,7 @@ msgstr ""
 msgid "BibSonomy"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:466 ../templates/titles_record_html_actions:398 ../templates/titles_record_include:673
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:466 ../templates/titles_record_html_actions:399 ../templates/titles_record_include:673
 msgid "BibSonomy Tags"
 msgstr ""
 
@@ -1097,7 +1097,7 @@ msgstr ""
 msgid "Bibinformationen statt URL"
 msgstr ""
 
-#: ../templates/_database/inst001/circulation:33 ../templates/_profile/kug/_database/inst001/circulation:33 ../templates/_profile/kug/_database/inst302/circulation:29 ../templates/circulation:29 ../templates/circulation_mobile:29 ../templates/holding:17 ../templates/holding_mobile:17
+#: ../templates/_database/inst001/circulation:33 ../templates/_profile/kug/_database/inst001/circulation:33 ../templates/_profile/kug/_database/inst302/circulation:29 ../templates/circulation:29 ../templates/circulation_mobile:29 ../templates/holding:33 ../templates/holding_mobile:17
 msgid "Bibliothek"
 msgstr ""
 
@@ -1197,7 +1197,7 @@ msgstr ""
 msgid "C5000"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:457 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:443 ../templates/_profile/usb/drilldown_categorized:441 ../templates/_view/richter/drilldown_categorized:443 ../templates/search_facet:455
+#: ../templates/_profile/kug/search_facet:507 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:443 ../templates/_profile/usb/drilldown_categorized:441 ../templates/_view/richter/drilldown_categorized:443 ../templates/search_facet:455
 msgid "Chinesisch"
 msgstr ""
 
@@ -1391,7 +1391,7 @@ msgstr ""
 msgid "Derzeit werden folgende externe Recherchequellen angeboten:"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:426 ../templates/_profile/kug/search_facet:427 ../templates/_profile/kug/search_facet:428 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:412 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:413 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:414 ../templates/_profile/usb/drilldown_categorized:410 ../templates/_profile/usb/drilldown_categorized:411 ../templates/_profile/usb/drilldown_categorized:412 ../templates/_view/richter/drilldown_categorized:412 ../templates/_view/richter/drilldown_categorized:413 ../templates/_view/richter/drilldown_categorized:414 ../templates/search_facet:424 ../templates/search_facet:425 ../templates/search_facet:426
+#: ../templates/_profile/kug/search_facet:476 ../templates/_profile/kug/search_facet:477 ../templates/_profile/kug/search_facet:478 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:412 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:413 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:414 ../templates/_profile/usb/drilldown_categorized:410 ../templates/_profile/usb/drilldown_categorized:411 ../templates/_profile/usb/drilldown_categorized:412 ../templates/_view/richter/drilldown_categorized:412 ../templates/_view/richter/drilldown_categorized:413 ../templates/_view/richter/drilldown_categorized:414 ../templates/search_facet:424 ../templates/search_facet:425 ../templates/search_facet:426
 msgid "Deutsch"
 msgstr ""
 
@@ -1499,7 +1499,7 @@ msgid ""
 "wahrscheinlich am 8. November 1942 starb."
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:493 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:480 ../templates/_profile/usb/drilldown_categorized:478 ../templates/_view/richter/drilldown_categorized:480 ../templates/search_facet:488
+#: ../templates/_profile/kug/search_facet:543 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:480 ../templates/_profile/usb/drilldown_categorized:478 ../templates/_view/richter/drilldown_categorized:480 ../templates/search_facet:488
 msgid ""
 "Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine\n"
 "sinnvolle Eingrenzung durch eine Rechercheverfeinerung nicht\n"
@@ -1578,7 +1578,7 @@ msgstr ""
 msgid "Diese Session existiert nicht."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:546 ../templates/titles_record_html_actions:478 ../templates/titles_record_include:753
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:546 ../templates/titles_record_html_actions:479 ../templates/titles_record_include:753
 msgid "Diese Titel interessierten Sie bereits:"
 msgstr ""
 
@@ -1889,7 +1889,7 @@ msgstr ""
 msgid "Ende"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:429 ../templates/_profile/kug/search_facet:430 ../templates/_profile/kug/search_facet:431 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:415 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:416 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:417 ../templates/_profile/usb/drilldown_categorized:413 ../templates/_profile/usb/drilldown_categorized:414 ../templates/_profile/usb/drilldown_categorized:415 ../templates/_view/richter/drilldown_categorized:415 ../templates/_view/richter/drilldown_categorized:416 ../templates/_view/richter/drilldown_categorized:417 ../templates/search_facet:427 ../templates/search_facet:428 ../templates/search_facet:429
+#: ../templates/_profile/kug/search_facet:479 ../templates/_profile/kug/search_facet:480 ../templates/_profile/kug/search_facet:481 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:415 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:416 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:417 ../templates/_profile/usb/drilldown_categorized:413 ../templates/_profile/usb/drilldown_categorized:414 ../templates/_profile/usb/drilldown_categorized:415 ../templates/_view/richter/drilldown_categorized:415 ../templates/_view/richter/drilldown_categorized:416 ../templates/_view/richter/drilldown_categorized:417 ../templates/search_facet:427 ../templates/search_facet:428 ../templates/search_facet:429
 msgid "Englisch"
 msgstr ""
 
@@ -1901,7 +1901,7 @@ msgstr ""
 msgid "Entdecken Sie weitere Titel &uuml;ber:"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titlist_item_html_short:228 ../templates/_database/bibsonomy/titlist_item_html_short:231 ../templates/_database/openlibrary/titlist_item_html_short:234 ../templates/_database/openlibrary/titlist_item_html_short:237 ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:233 ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:236 ../templates/_profile/kug/_database/dbis/titlist_item_html_short:240 ../templates/_profile/kug/_database/dbis/titlist_item_html_short:243 ../templates/_profile/kug/_database/ezb/titlist_item_html_short:240 ../templates/_profile/kug/_database/ezb/titlist_item_html_short:243 ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:234 ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:237 ../templates/_profile/kug/search_facet:187 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:241 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:244 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:145 ../templates/_profile/sammlungen/_view/richter/cartitems_html_short:145 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:166 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:181 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:184 ../templates/_profile/usb/drilldown_categorized:166 ../templates/_view/richter/cartitems_html_actions:145 ../templates/_view/richter/cartitems_html_short:145 ../templates/_view/richter/drilldown_categorized:166 ../templates/_view/richter/titlist_item_html_short:235 ../templates/_view/richter/titlist_item_html_short:238 ../templates/cartitems_html_short:144 ../templates/reviews_edit:201 ../templates/reviews_edit:204 ../templates/search_facet:185 ../templates/titles_popular_by_database_html:298 ../templates/titles_popular_by_database_html:301 ../templates/titlist_item_html_short:238 ../templates/titlist_item_html_short:241 ../templates/users_litlists_html:110 ../templates/users_searchprofiles_html:93
+#: ../templates/_database/bibsonomy/titlist_item_html_short:228 ../templates/_database/bibsonomy/titlist_item_html_short:231 ../templates/_database/openlibrary/titlist_item_html_short:234 ../templates/_database/openlibrary/titlist_item_html_short:237 ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:233 ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:236 ../templates/_profile/kug/_database/dbis/titlist_item_html_short:240 ../templates/_profile/kug/_database/dbis/titlist_item_html_short:243 ../templates/_profile/kug/_database/ezb/titlist_item_html_short:240 ../templates/_profile/kug/_database/ezb/titlist_item_html_short:243 ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:234 ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:237 ../templates/_profile/kug/search_facet:200 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:241 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:244 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:145 ../templates/_profile/sammlungen/_view/richter/cartitems_html_short:145 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:166 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:181 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:184 ../templates/_profile/usb/drilldown_categorized:166 ../templates/_view/richter/cartitems_html_actions:145 ../templates/_view/richter/cartitems_html_short:145 ../templates/_view/richter/drilldown_categorized:166 ../templates/_view/richter/titlist_item_html_short:235 ../templates/_view/richter/titlist_item_html_short:238 ../templates/cartitems_html_short:144 ../templates/reviews_edit:201 ../templates/reviews_edit:204 ../templates/search_facet:185 ../templates/titles_popular_by_database_html:298 ../templates/titles_popular_by_database_html:301 ../templates/titlist_item_html_short:238 ../templates/titlist_item_html_short:241 ../templates/users_litlists_html:110 ../templates/users_searchprofiles_html:93
 msgid "Entfernen"
 msgstr ""
 
@@ -2250,7 +2250,7 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:456 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:442 ../templates/_profile/usb/drilldown_categorized:440 ../templates/_view/richter/drilldown_categorized:442 ../templates/search_facet:454
+#: ../templates/_profile/kug/search_facet:506 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:442 ../templates/_profile/usb/drilldown_categorized:440 ../templates/_view/richter/drilldown_categorized:442 ../templates/search_facet:454
 msgid "Finnisch"
 msgstr ""
 
@@ -2262,7 +2262,7 @@ msgstr ""
 msgid "Franz&ouml;sische Wikipedia"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:432 ../templates/_profile/kug/search_facet:433 ../templates/_profile/kug/search_facet:434 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:418 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:419 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:420 ../templates/_profile/usb/drilldown_categorized:416 ../templates/_profile/usb/drilldown_categorized:417 ../templates/_profile/usb/drilldown_categorized:418 ../templates/_view/richter/drilldown_categorized:418 ../templates/_view/richter/drilldown_categorized:419 ../templates/_view/richter/drilldown_categorized:420 ../templates/search_facet:430 ../templates/search_facet:431 ../templates/search_facet:432
+#: ../templates/_profile/kug/search_facet:482 ../templates/_profile/kug/search_facet:483 ../templates/_profile/kug/search_facet:484 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:418 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:419 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:420 ../templates/_profile/usb/drilldown_categorized:416 ../templates/_profile/usb/drilldown_categorized:417 ../templates/_profile/usb/drilldown_categorized:418 ../templates/_view/richter/drilldown_categorized:418 ../templates/_view/richter/drilldown_categorized:419 ../templates/_view/richter/drilldown_categorized:420 ../templates/search_facet:430 ../templates/search_facet:431 ../templates/search_facet:432
 msgid "Französisch"
 msgstr ""
 
@@ -2348,7 +2348,7 @@ msgstr ""
 msgid "Greifen Sie fachspezifisch auf alle %1freien und lizenzierten Zeitschriften%2 zu"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:437 ../templates/_profile/kug/search_facet:438 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:423 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:424 ../templates/_profile/usb/drilldown_categorized:421 ../templates/_profile/usb/drilldown_categorized:422 ../templates/_view/richter/drilldown_categorized:423 ../templates/_view/richter/drilldown_categorized:424 ../templates/search_facet:435 ../templates/search_facet:436
+#: ../templates/_profile/kug/search_facet:487 ../templates/_profile/kug/search_facet:488 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:423 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:424 ../templates/_profile/usb/drilldown_categorized:421 ../templates/_profile/usb/drilldown_categorized:422 ../templates/_view/richter/drilldown_categorized:423 ../templates/_view/richter/drilldown_categorized:424 ../templates/search_facet:435 ../templates/search_facet:436
 msgid "Griechisch"
 msgstr ""
 
@@ -2813,11 +2813,11 @@ msgstr ""
 msgid "Inventarnummer       "
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:455 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:441 ../templates/_profile/usb/drilldown_categorized:439 ../templates/_view/richter/drilldown_categorized:441 ../templates/search_facet:453
+#: ../templates/_profile/kug/search_facet:505 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:441 ../templates/_profile/usb/drilldown_categorized:439 ../templates/_view/richter/drilldown_categorized:441 ../templates/search_facet:453
 msgid "Isländisch"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:442 ../templates/_profile/kug/search_facet:443 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:428 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:429 ../templates/_profile/usb/drilldown_categorized:426 ../templates/_profile/usb/drilldown_categorized:427 ../templates/_view/richter/drilldown_categorized:428 ../templates/_view/richter/drilldown_categorized:429 ../templates/search_facet:440 ../templates/search_facet:441
+#: ../templates/_profile/kug/search_facet:492 ../templates/_profile/kug/search_facet:493 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:428 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:429 ../templates/_profile/usb/drilldown_categorized:426 ../templates/_profile/usb/drilldown_categorized:427 ../templates/_view/richter/drilldown_categorized:428 ../templates/_view/richter/drilldown_categorized:429 ../templates/search_facet:440 ../templates/search_facet:441
 msgid "Italienisch"
 msgstr ""
 
@@ -2829,7 +2829,7 @@ msgstr ""
 msgid "Ja"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:243 ../templates/_profile/kug/search_facet:171 ../templates/_profile/kug/searchforms_record_query:244 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:33 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:35 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:140 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:106 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:108 ../templates/_profile/rheinlandbib/clouds_navigation:28 ../templates/_profile/rheinlandbib/clouds_navigation:30 ../templates/_profile/rheinlandbib/searchforms_record_query:135 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:162 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:54 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:56 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:74 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:76 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:28 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:30 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:150 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:141 ../templates/_profile/sammlungen/_view/richter/subnavigation:85 ../templates/_profile/sammlungen/_view/richter/subnavigation:87 ../templates/_profile/sammlungen/_view/richter/titles_record_html:109 ../templates/_profile/sammlungen/_view/richter/titles_record_html:97 ../templates/_profile/sammlungen/clouds_navigation:28 ../templates/_profile/sammlungen/clouds_navigation:30 ../templates/_profile/usb/drilldown_categorized:150 ../templates/_profile/usb/searchforms_record_query:135 ../templates/_view/richter/clouds_navigation:28 ../templates/_view/richter/clouds_navigation:30 ../templates/_view/richter/drilldown_categorized:150 ../templates/_view/richter/searchforms_record_query:141 ../templates/_view/richter/subnavigation:71 ../templates/_view/richter/subnavigation:73 ../templates/admin_statistics_access_html:62 ../templates/admin_statistics_query_html:102 ../templates/admin_statistics_request_html:62 ../templates/admin_statistics_view_html:62 ../templates/clouds_navigation:33 ../templates/clouds_navigation:35 ../templates/search_facet:169 ../templates/search_history:71 ../templates/search_history:83 ../templates/search_title_start_html:46 ../templates/search_title_start_html:58 ../templates/searchforms_record_query:169 ../templates/subnavigation:55 ../templates/subnavigation:57 ../templates/titles_record_html:110 ../templates/titles_record_html:98
+#: ../templates/_profile/kug/_view/inst501/searchforms_record_query:243 ../templates/_profile/kug/search_facet:183 ../templates/_profile/kug/searchforms_record_query:244 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:33 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:35 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:140 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:106 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:108 ../templates/_profile/rheinlandbib/clouds_navigation:28 ../templates/_profile/rheinlandbib/clouds_navigation:30 ../templates/_profile/rheinlandbib/searchforms_record_query:135 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:162 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:54 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:56 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:74 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:76 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:28 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:30 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:150 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:141 ../templates/_profile/sammlungen/_view/richter/subnavigation:85 ../templates/_profile/sammlungen/_view/richter/subnavigation:87 ../templates/_profile/sammlungen/_view/richter/titles_record_html:109 ../templates/_profile/sammlungen/_view/richter/titles_record_html:97 ../templates/_profile/sammlungen/clouds_navigation:28 ../templates/_profile/sammlungen/clouds_navigation:30 ../templates/_profile/usb/drilldown_categorized:150 ../templates/_profile/usb/searchforms_record_query:135 ../templates/_view/richter/clouds_navigation:28 ../templates/_view/richter/clouds_navigation:30 ../templates/_view/richter/drilldown_categorized:150 ../templates/_view/richter/searchforms_record_query:141 ../templates/_view/richter/subnavigation:71 ../templates/_view/richter/subnavigation:73 ../templates/admin_statistics_access_html:62 ../templates/admin_statistics_query_html:102 ../templates/admin_statistics_request_html:62 ../templates/admin_statistics_view_html:62 ../templates/clouds_navigation:33 ../templates/clouds_navigation:35 ../templates/search_facet:169 ../templates/search_history:71 ../templates/search_history:83 ../templates/search_title_start_html:46 ../templates/search_title_start_html:58 ../templates/searchforms_record_query:169 ../templates/subnavigation:55 ../templates/subnavigation:57 ../templates/titles_record_html:110 ../templates/titles_record_html:98
 msgid "Jahr"
 msgstr ""
 
@@ -2845,11 +2845,11 @@ msgstr ""
 msgid "Jahre"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:448 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:434 ../templates/_profile/usb/drilldown_categorized:432 ../templates/_view/richter/drilldown_categorized:434 ../templates/search_facet:446
+#: ../templates/_profile/kug/search_facet:498 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:434 ../templates/_profile/usb/drilldown_categorized:432 ../templates/_view/richter/drilldown_categorized:434 ../templates/search_facet:446
 msgid "Japanisch"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:166 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:145 ../templates/_profile/sammlungen/_view/richter/titles_record_html:104 ../templates/_profile/sammlungen/_view/richter/titles_record_html:92 ../templates/_profile/usb/drilldown_categorized:145 ../templates/_view/richter/drilldown_categorized:145 ../templates/search_facet:164 ../templates/search_history:66 ../templates/search_history:78 ../templates/search_title_start_html:41 ../templates/search_title_start_html:53 ../templates/titles_record_html:105 ../templates/titles_record_html:93
+#: ../templates/_profile/kug/search_facet:178 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:145 ../templates/_profile/sammlungen/_view/richter/titles_record_html:104 ../templates/_profile/sammlungen/_view/richter/titles_record_html:92 ../templates/_profile/usb/drilldown_categorized:145 ../templates/_view/richter/drilldown_categorized:145 ../templates/search_facet:164 ../templates/search_history:66 ../templates/search_history:78 ../templates/search_title_start_html:41 ../templates/search_title_start_html:53 ../templates/titles_record_html:105 ../templates/titles_record_html:93
 msgid "K&ouml;perschaft"
 msgstr ""
 
@@ -2873,7 +2873,7 @@ msgstr ""
 msgid "Kartenkataloge der Philosophischen Fakultät"
 msgstr ""
 
-#: ../templates/_database/openlibrary/titlist_item_html_short:216 ../templates/_profile/kug/_database/dbis/titlist_item_html_short:222 ../templates/_profile/kug/_database/ezb/titlist_item_html_short:222 ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:216 ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left:21 ../templates/_profile/kug/search_facet:164 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:226 ../templates/_profile/sammlungen/_view/richter/cartitems_html_short:134 ../templates/_profile/sammlungen/_view/richter/resultlists_choice:109 ../templates/_profile/sammlungen/_view/richter/titles_record_html:102 ../templates/_profile/sammlungen/_view/richter/titles_record_html:89 ../templates/_profile/usb/titlist_item_html_short:178 ../templates/_view/richter/cartitems_html_short:134 ../templates/_view/richter/resultlists_choice:109 ../templates/_view/richter/titlist_item_html_short:220 ../templates/admin_servers_record_edit:136 ../templates/cartitems_html_short:133 ../templates/databases_record_html:57 ../templates/databases_rss_record_html:85 ../templates/reviews_edit:189 ../templates/search_facet:162 ../templates/search_history:63 ../templates/search_history:76 ../templates/search_title_start_html:38 ../templates/search_title_start_html:51 ../templates/titles_popular_by_database_html:280 ../templates/titles_popular_html:163 ../templates/titles_popular_include:157 ../templates/titles_record_html:103 ../templates/titles_record_html:90 ../templates/titlist_item_html_short:220 ../templates/titlist_item_mobile_short:217
+#: ../templates/_database/openlibrary/titlist_item_html_short:216 ../templates/_profile/kug/_database/dbis/titlist_item_html_short:222 ../templates/_profile/kug/_database/ezb/titlist_item_html_short:222 ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:216 ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left:21 ../templates/_profile/kug/search_facet:176 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:226 ../templates/_profile/sammlungen/_view/richter/cartitems_html_short:134 ../templates/_profile/sammlungen/_view/richter/resultlists_choice:109 ../templates/_profile/sammlungen/_view/richter/titles_record_html:102 ../templates/_profile/sammlungen/_view/richter/titles_record_html:89 ../templates/_profile/usb/titlist_item_html_short:178 ../templates/_view/richter/cartitems_html_short:134 ../templates/_view/richter/resultlists_choice:109 ../templates/_view/richter/titlist_item_html_short:220 ../templates/admin_servers_record_edit:136 ../templates/cartitems_html_short:133 ../templates/databases_record_html:57 ../templates/databases_rss_record_html:85 ../templates/reviews_edit:189 ../templates/search_facet:162 ../templates/search_history:63 ../templates/search_history:76 ../templates/search_title_start_html:38 ../templates/search_title_start_html:51 ../templates/titles_popular_by_database_html:280 ../templates/titles_popular_html:163 ../templates/titles_popular_include:157 ../templates/titles_record_html:103 ../templates/titles_record_html:90 ../templates/titlist_item_html_short:220 ../templates/titlist_item_mobile_short:217
 msgid "Katalog"
 msgstr ""
 
@@ -3144,7 +3144,7 @@ msgstr ""
 msgid "L0280"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:435 ../templates/_profile/kug/search_facet:436 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:421 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:422 ../templates/_profile/usb/drilldown_categorized:419 ../templates/_profile/usb/drilldown_categorized:420 ../templates/_view/richter/drilldown_categorized:421 ../templates/_view/richter/drilldown_categorized:422 ../templates/search_facet:433 ../templates/search_facet:434
+#: ../templates/_profile/kug/search_facet:485 ../templates/_profile/kug/search_facet:486 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:421 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:422 ../templates/_profile/usb/drilldown_categorized:419 ../templates/_profile/usb/drilldown_categorized:420 ../templates/_view/richter/drilldown_categorized:421 ../templates/_view/richter/drilldown_categorized:422 ../templates/search_facet:433 ../templates/search_facet:434
 msgid "Latein"
 msgstr ""
 
@@ -3206,7 +3206,7 @@ msgstr ""
 msgid "Listen mit gemeinsamen Titeln"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:173 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:21 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:152 ../templates/_profile/sammlungen/_view/richter/titles_record_html:101 ../templates/_profile/sammlungen/_view/richter/titles_record_html:111 ../templates/_profile/sammlungen/_view/richter/titles_record_html:185 ../templates/_profile/usb/drilldown_categorized:152 ../templates/_view/richter/cartitems_html_actions:21 ../templates/_view/richter/drilldown_categorized:152 ../templates/cartitems_html_actions:27 ../templates/search_facet:171 ../templates/search_history:75 ../templates/search_history:85 ../templates/search_title_start_html:50 ../templates/search_title_start_html:60 ../templates/titles_record_html:102 ../templates/titles_record_html:112 ../templates/titles_record_html_actions:40 ../templates/titles_record_include:382
+#: ../templates/_profile/kug/search_facet:185 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:21 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:152 ../templates/_profile/sammlungen/_view/richter/titles_record_html:101 ../templates/_profile/sammlungen/_view/richter/titles_record_html:111 ../templates/_profile/sammlungen/_view/richter/titles_record_html:185 ../templates/_profile/usb/drilldown_categorized:152 ../templates/_view/richter/cartitems_html_actions:21 ../templates/_view/richter/drilldown_categorized:152 ../templates/cartitems_html_actions:27 ../templates/search_facet:171 ../templates/search_history:75 ../templates/search_history:85 ../templates/search_title_start_html:50 ../templates/search_title_start_html:60 ../templates/titles_record_html:102 ../templates/titles_record_html:112 ../templates/titles_record_html_actions:40 ../templates/titles_record_include:382
 msgid "Literaturliste"
 msgstr ""
 
@@ -3274,11 +3274,11 @@ msgstr ""
 msgid "Medienart"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:169 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:148 ../templates/_profile/sammlungen/_view/richter/titles_record_html:107 ../templates/_profile/sammlungen/_view/richter/titles_record_html:95 ../templates/_profile/usb/drilldown_categorized:148 ../templates/_view/richter/drilldown_categorized:148 ../templates/search_facet:167 ../templates/search_history:69 ../templates/search_history:81 ../templates/search_title_start_html:44 ../templates/search_title_start_html:56 ../templates/titles_record_html:108 ../templates/titles_record_html:96
+#: ../templates/_profile/kug/search_facet:181 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:148 ../templates/_profile/sammlungen/_view/richter/titles_record_html:107 ../templates/_profile/sammlungen/_view/richter/titles_record_html:95 ../templates/_profile/usb/drilldown_categorized:148 ../templates/_view/richter/drilldown_categorized:148 ../templates/search_facet:167 ../templates/search_history:69 ../templates/search_history:81 ../templates/search_title_start_html:44 ../templates/search_title_start_html:56 ../templates/titles_record_html:108 ../templates/titles_record_html:96
 msgid "Medientyp"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:77 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:75 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:77 ../templates/_profile/kug/_view/kug/newsflash:39 ../templates/_profile/kug/home_html_bottom_left:76 ../templates/_profile/kug/search_facet:102 ../templates/_profile/kug/search_facet:114 ../templates/_profile/kug/search_facet:126 ../templates/_profile/kug/search_facet:138 ../templates/_profile/kug/search_facet:36 ../templates/_profile/kug/search_facet:47 ../templates/_profile/kug/search_facet:58 ../templates/_profile/kug/search_facet:69 ../templates/_profile/kug/search_facet:80 ../templates/_profile/kug/search_facet:91 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:109 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:18 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:29 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:40 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:51 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:62 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:7 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:73 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:85 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:97 ../templates/_profile/sammlungen/_view/richter/titles_record_html:531 ../templates/_profile/usb/drilldown_categorized:110 ../templates/_profile/usb/drilldown_categorized:19 ../templates/_profile/usb/drilldown_categorized:30 ../templates/_profile/usb/drilldown_categorized:41 ../templates/_profile/usb/drilldown_categorized:52 ../templates/_profile/usb/drilldown_categorized:63 ../templates/_profile/usb/drilldown_categorized:74 ../templates/_profile/usb/drilldown_categorized:8 ../templates/_profile/usb/drilldown_categorized:86 ../templates/_profile/usb/drilldown_categorized:98 ../templates/_view/richter/drilldown_categorized:109 ../templates/_view/richter/drilldown_categorized:18 ../templates/_view/richter/drilldown_categorized:29 ../templates/_view/richter/drilldown_categorized:40 ../templates/_view/richter/drilldown_categorized:51 ../templates/_view/richter/drilldown_categorized:62 ../templates/_view/richter/drilldown_categorized:7 ../templates/_view/richter/drilldown_categorized:73 ../templates/_view/richter/drilldown_categorized:85 ../templates/_view/richter/drilldown_categorized:97 ../templates/newsflash:35 ../templates/search_facet:102 ../templates/search_facet:114 ../templates/search_facet:126 ../templates/search_facet:138 ../templates/search_facet:36 ../templates/search_facet:47 ../templates/search_facet:58 ../templates/search_facet:69 ../templates/search_facet:80 ../templates/search_facet:91 ../templates/searchforms_record_bottom_left:77 ../templates/searchforms_record_bottom_right:32 ../templates/titles_record_html_actions:463 ../templates/titles_record_include:738
+#: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:77 ../templates/_profile/kug/_view/inst132/home_html_bottom_left:75 ../templates/_profile/kug/_view/inst420/home_html_bottom_left:77 ../templates/_profile/kug/_view/kug/newsflash:39 ../templates/_profile/kug/home_html_bottom_left:76 ../templates/_profile/kug/search_facet:102 ../templates/_profile/kug/search_facet:114 ../templates/_profile/kug/search_facet:126 ../templates/_profile/kug/search_facet:138 ../templates/_profile/kug/search_facet:150 ../templates/_profile/kug/search_facet:36 ../templates/_profile/kug/search_facet:47 ../templates/_profile/kug/search_facet:58 ../templates/_profile/kug/search_facet:69 ../templates/_profile/kug/search_facet:80 ../templates/_profile/kug/search_facet:91 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:109 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:18 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:29 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:40 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:51 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:62 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:7 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:73 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:85 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:97 ../templates/_profile/sammlungen/_view/richter/titles_record_html:531 ../templates/_profile/usb/drilldown_categorized:110 ../templates/_profile/usb/drilldown_categorized:19 ../templates/_profile/usb/drilldown_categorized:30 ../templates/_profile/usb/drilldown_categorized:41 ../templates/_profile/usb/drilldown_categorized:52 ../templates/_profile/usb/drilldown_categorized:63 ../templates/_profile/usb/drilldown_categorized:74 ../templates/_profile/usb/drilldown_categorized:8 ../templates/_profile/usb/drilldown_categorized:86 ../templates/_profile/usb/drilldown_categorized:98 ../templates/_view/richter/drilldown_categorized:109 ../templates/_view/richter/drilldown_categorized:18 ../templates/_view/richter/drilldown_categorized:29 ../templates/_view/richter/drilldown_categorized:40 ../templates/_view/richter/drilldown_categorized:51 ../templates/_view/richter/drilldown_categorized:62 ../templates/_view/richter/drilldown_categorized:7 ../templates/_view/richter/drilldown_categorized:73 ../templates/_view/richter/drilldown_categorized:85 ../templates/_view/richter/drilldown_categorized:97 ../templates/newsflash:35 ../templates/search_facet:102 ../templates/search_facet:114 ../templates/search_facet:126 ../templates/search_facet:138 ../templates/search_facet:36 ../templates/search_facet:47 ../templates/search_facet:58 ../templates/search_facet:69 ../templates/search_facet:80 ../templates/search_facet:91 ../templates/searchforms_record_bottom_left:77 ../templates/searchforms_record_bottom_right:32 ../templates/titles_record_html_actions:464 ../templates/titles_record_include:738
 msgid "Mehr"
 msgstr ""
 
@@ -3405,7 +3405,7 @@ msgstr ""
 msgid "Neu"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:439 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:425 ../templates/_profile/usb/drilldown_categorized:423 ../templates/_view/richter/drilldown_categorized:425 ../templates/search_facet:437
+#: ../templates/_profile/kug/search_facet:489 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:425 ../templates/_profile/usb/drilldown_categorized:423 ../templates/_view/richter/drilldown_categorized:425 ../templates/search_facet:437
 msgid "Neu-Griechisch"
 msgstr ""
 
@@ -3525,7 +3525,7 @@ msgstr ""
 msgid "Nichtkommerzielle Natur dieser Webseite"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:453 ../templates/_profile/kug/search_facet:454 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:439 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:440 ../templates/_profile/usb/drilldown_categorized:437 ../templates/_profile/usb/drilldown_categorized:438 ../templates/_view/richter/drilldown_categorized:439 ../templates/_view/richter/drilldown_categorized:440 ../templates/search_facet:451 ../templates/search_facet:452
+#: ../templates/_profile/kug/search_facet:503 ../templates/_profile/kug/search_facet:504 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:439 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:440 ../templates/_profile/usb/drilldown_categorized:437 ../templates/_profile/usb/drilldown_categorized:438 ../templates/_view/richter/drilldown_categorized:439 ../templates/_view/richter/drilldown_categorized:440 ../templates/search_facet:451 ../templates/search_facet:452
 msgid "Niederländisch"
 msgstr ""
 
@@ -3761,7 +3761,7 @@ msgstr ""
 msgid "Permanenter Link zu diesem Titel"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:165 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:144 ../templates/_profile/sammlungen/_view/richter/persons_record_html:48 ../templates/_profile/sammlungen/_view/richter/titles_record_html:103 ../templates/_profile/sammlungen/_view/richter/titles_record_html:91 ../templates/_profile/usb/drilldown_categorized:144 ../templates/_view/richter/drilldown_categorized:144 ../templates/_view/richter/persons_record_html:48 ../templates/persons_record_html:48 ../templates/search_facet:163 ../templates/search_history:65 ../templates/search_history:77 ../templates/search_title_start_html:40 ../templates/search_title_start_html:52 ../templates/titles_record_html:104 ../templates/titles_record_html:92
+#: ../templates/_profile/kug/search_facet:177 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:144 ../templates/_profile/sammlungen/_view/richter/persons_record_html:48 ../templates/_profile/sammlungen/_view/richter/titles_record_html:103 ../templates/_profile/sammlungen/_view/richter/titles_record_html:91 ../templates/_profile/usb/drilldown_categorized:144 ../templates/_view/richter/drilldown_categorized:144 ../templates/_view/richter/persons_record_html:48 ../templates/persons_record_html:48 ../templates/search_facet:163 ../templates/search_history:65 ../templates/search_history:77 ../templates/search_title_start_html:40 ../templates/search_title_start_html:52 ../templates/titles_record_html:104 ../templates/titles_record_html:92
 msgid "Person"
 msgstr ""
 
@@ -3797,7 +3797,7 @@ msgid ""
 "           z.B: %3kernighan, brian%4 (alle Titel von Brian Kernighan)"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:452 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:438 ../templates/_profile/usb/drilldown_categorized:436 ../templates/_view/richter/drilldown_categorized:438 ../templates/search_facet:450
+#: ../templates/_profile/kug/search_facet:502 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:438 ../templates/_profile/usb/drilldown_categorized:436 ../templates/_view/richter/drilldown_categorized:438 ../templates/search_facet:450
 msgid "Polnisch"
 msgstr ""
 
@@ -4017,7 +4017,7 @@ msgstr ""
 msgid "Rollen"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:446 ../templates/_profile/kug/search_facet:447 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:432 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:433 ../templates/_profile/usb/drilldown_categorized:430 ../templates/_profile/usb/drilldown_categorized:431 ../templates/_view/richter/drilldown_categorized:432 ../templates/_view/richter/drilldown_categorized:433 ../templates/search_facet:444 ../templates/search_facet:445
+#: ../templates/_profile/kug/search_facet:496 ../templates/_profile/kug/search_facet:497 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:432 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:433 ../templates/_profile/usb/drilldown_categorized:430 ../templates/_profile/usb/drilldown_categorized:431 ../templates/_view/richter/drilldown_categorized:432 ../templates/_view/richter/drilldown_categorized:433 ../templates/search_facet:444 ../templates/search_facet:445
 msgid "Russisch"
 msgstr ""
 
@@ -4094,7 +4094,7 @@ msgstr ""
 msgid "Schlagworte in den angezeigten Titeln"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:449 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:435 ../templates/_profile/usb/drilldown_categorized:433 ../templates/_view/richter/drilldown_categorized:435 ../templates/search_facet:447
+#: ../templates/_profile/kug/search_facet:499 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:435 ../templates/_profile/usb/drilldown_categorized:433 ../templates/_view/richter/drilldown_categorized:435 ../templates/search_facet:447
 msgid "Schwedisch"
 msgstr ""
 
@@ -4434,7 +4434,7 @@ msgstr ""
 msgid "Sigel"
 msgstr ""
 
-#: ../templates/_database/bibsonomy/titlist_item_html_short:224 ../templates/_database/inst001/circulation:33 ../templates/_database/inst001/holding:17 ../templates/_database/openlibrary/titlist_item_html_short:227 ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:226 ../templates/_profile/kug/_database/inst001/circulation:33 ../templates/_profile/kug/_database/inst001/holding:17 ../templates/_profile/kug/_database/inst302/circulation:29 ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:227 ../templates/_profile/kug/_view/inst501/searchforms_record_query:155 ../templates/_profile/kug/searchforms_record_query:155 ../templates/_profile/kug/users_preferences_html:212 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:109 ../templates/_profile/rheinlandbib/searchforms_record_query:109 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:119 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:237 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:110 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:177 ../templates/_profile/usb/circulation:31 ../templates/_profile/usb/holding:19 ../templates/_profile/usb/searchforms_record_query:109 ../templates/_view/richter/searchforms_record_query:110 ../templates/_view/richter/titlist_item_html_short:231 ../templates/admin_statistics_query_html:99 ../templates/cartitems_html_short:141 ../templates/circulation:29 ../templates/circulation_mobile:29 ../templates/holding:17 ../templates/holding_mobile:17 ../templates/searchforms_record_query:126 ../templates/titles_popular_by_database_html:291 ../templates/titlist_item_html_short:231 ../templates/users_circulations_borrows_html:67 ../templates/users_circulations_borrows_ics:117 ../templates/users_circulations_orders_html:63 ../templates/users_circulations_reminders_html:82 ../templates/users_circulations_reservations_html:63 ../templates/users_preferences_html:228
+#: ../templates/_database/bibsonomy/titlist_item_html_short:224 ../templates/_database/inst001/circulation:33 ../templates/_database/inst001/holding:17 ../templates/_database/openlibrary/titlist_item_html_short:227 ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:226 ../templates/_profile/kug/_database/inst001/circulation:33 ../templates/_profile/kug/_database/inst001/holding:17 ../templates/_profile/kug/_database/inst302/circulation:29 ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:227 ../templates/_profile/kug/_view/inst501/searchforms_record_query:155 ../templates/_profile/kug/searchforms_record_query:155 ../templates/_profile/kug/users_preferences_html:212 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:109 ../templates/_profile/rheinlandbib/searchforms_record_query:109 ../templates/_profile/sammlungen/_view/alekiddr/searchforms_record_query:119 ../templates/_profile/sammlungen/_view/alekiddr/titlist_item_html_short:237 ../templates/_profile/sammlungen/_view/richter/searchforms_record_query:110 ../templates/_profile/sammlungen/_view/richter/titlist_item_html_short:177 ../templates/_profile/usb/circulation:31 ../templates/_profile/usb/holding:19 ../templates/_profile/usb/searchforms_record_query:109 ../templates/_view/richter/searchforms_record_query:110 ../templates/_view/richter/titlist_item_html_short:231 ../templates/admin_statistics_query_html:99 ../templates/cartitems_html_short:141 ../templates/circulation:29 ../templates/circulation_mobile:29 ../templates/holding:33 ../templates/holding_mobile:17 ../templates/searchforms_record_query:126 ../templates/titles_popular_by_database_html:291 ../templates/titlist_item_html_short:231 ../templates/users_circulations_borrows_html:67 ../templates/users_circulations_borrows_ics:117 ../templates/users_circulations_orders_html:63 ../templates/users_circulations_reminders_html:82 ../templates/users_circulations_reservations_html:63 ../templates/users_preferences_html:228
 msgid "Signatur"
 msgstr ""
 
@@ -4470,7 +4470,7 @@ msgstr ""
 msgid "Sortierung nach"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:444 ../templates/_profile/kug/search_facet:445 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:430 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:431 ../templates/_profile/usb/drilldown_categorized:428 ../templates/_profile/usb/drilldown_categorized:429 ../templates/_view/richter/drilldown_categorized:430 ../templates/_view/richter/drilldown_categorized:431 ../templates/search_facet:442 ../templates/search_facet:443
+#: ../templates/_profile/kug/search_facet:494 ../templates/_profile/kug/search_facet:495 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:430 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:431 ../templates/_profile/usb/drilldown_categorized:428 ../templates/_profile/usb/drilldown_categorized:429 ../templates/_view/richter/drilldown_categorized:430 ../templates/_view/richter/drilldown_categorized:431 ../templates/search_facet:442 ../templates/search_facet:443
 msgid "Spanisch"
 msgstr ""
 
@@ -4491,7 +4491,7 @@ msgstr ""
 msgid "Sprach-Icon für %1"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:170 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:149 ../templates/_profile/sammlungen/_view/richter/titles_record_html:108 ../templates/_profile/sammlungen/_view/richter/titles_record_html:96 ../templates/_profile/usb/drilldown_categorized:149 ../templates/_view/richter/drilldown_categorized:149 ../templates/search_facet:168 ../templates/search_history:70 ../templates/search_history:82 ../templates/search_title_start_html:45 ../templates/search_title_start_html:57 ../templates/titles_record_html:109 ../templates/titles_record_html:97
+#: ../templates/_profile/kug/search_facet:182 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:149 ../templates/_profile/sammlungen/_view/richter/titles_record_html:108 ../templates/_profile/sammlungen/_view/richter/titles_record_html:96 ../templates/_profile/usb/drilldown_categorized:149 ../templates/_view/richter/drilldown_categorized:149 ../templates/search_facet:168 ../templates/search_history:70 ../templates/search_history:82 ../templates/search_title_start_html:45 ../templates/search_title_start_html:57 ../templates/titles_record_html:109 ../templates/titles_record_html:97
 msgid "Sprache"
 msgstr ""
 
@@ -4499,7 +4499,7 @@ msgstr ""
 msgid "Sprung in externe Recherchequellen"
 msgstr ""
 
-#: ../templates/_database/inst001/circulation:33 ../templates/_database/inst001/holding:17 ../templates/_profile/kug/_database/inst001/circulation:33 ../templates/_profile/kug/_database/inst001/holding:17 ../templates/_profile/kug/_database/inst302/circulation:29 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/usb/circulation:31 ../templates/_profile/usb/holding:19 ../templates/circulation:29 ../templates/circulation_mobile:29 ../templates/databases_record_html:67 ../templates/holding:17 ../templates/holding_mobile:17
+#: ../templates/_database/inst001/circulation:33 ../templates/_database/inst001/holding:17 ../templates/_profile/kug/_database/inst001/circulation:33 ../templates/_profile/kug/_database/inst001/holding:17 ../templates/_profile/kug/_database/inst302/circulation:29 ../templates/_profile/mobile/_view/richtermobile/holding:16 ../templates/_profile/usb/circulation:31 ../templates/_profile/usb/holding:19 ../templates/circulation:29 ../templates/circulation_mobile:29 ../templates/databases_record_html:67 ../templates/holding:33 ../templates/holding_mobile:17
 msgid "Standort"
 msgstr ""
 
@@ -4635,7 +4635,7 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:168 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:61 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:63 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:126 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:128 ../templates/_profile/rheinlandbib/clouds_navigation:56 ../templates/_profile/rheinlandbib/clouds_navigation:58 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:74 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:76 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:94 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:96 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:56 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:58 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:147 ../templates/_profile/sammlungen/_view/richter/subnavigation:105 ../templates/_profile/sammlungen/_view/richter/subnavigation:107 ../templates/_profile/sammlungen/_view/richter/titles_record_html:106 ../templates/_profile/sammlungen/_view/richter/titles_record_html:94 ../templates/_profile/sammlungen/clouds_navigation:56 ../templates/_profile/sammlungen/clouds_navigation:58 ../templates/_profile/usb/drilldown_categorized:147 ../templates/_view/richter/clouds_navigation:56 ../templates/_view/richter/clouds_navigation:58 ../templates/_view/richter/drilldown_categorized:147 ../templates/_view/richter/subnavigation:91 ../templates/_view/richter/subnavigation:93 ../templates/clouds_classification_html:51 ../templates/clouds_classification_html:70 ../templates/clouds_navigation:61 ../templates/clouds_navigation:63 ../templates/search_facet:166 ../templates/search_history:68 ../templates/search_history:80 ../templates/search_title_start_html:43 ../templates/search_title_start_html:55 ../templates/subnavigation:75 ../templates/subnavigation:77 ../templates/titles_record_html:107 ../templates/titles_record_html:95
+#: ../templates/_profile/kug/search_facet:180 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:61 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:63 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:126 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:128 ../templates/_profile/rheinlandbib/clouds_navigation:56 ../templates/_profile/rheinlandbib/clouds_navigation:58 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:74 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:76 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:94 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:96 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:56 ../templates/_profile/sammlungen/_view/richter/clouds_navigation:58 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:147 ../templates/_profile/sammlungen/_view/richter/subnavigation:105 ../templates/_profile/sammlungen/_view/richter/subnavigation:107 ../templates/_profile/sammlungen/_view/richter/titles_record_html:106 ../templates/_profile/sammlungen/_view/richter/titles_record_html:94 ../templates/_profile/sammlungen/clouds_navigation:56 ../templates/_profile/sammlungen/clouds_navigation:58 ../templates/_profile/usb/drilldown_categorized:147 ../templates/_view/richter/clouds_navigation:56 ../templates/_view/richter/clouds_navigation:58 ../templates/_view/richter/drilldown_categorized:147 ../templates/_view/richter/subnavigation:91 ../templates/_view/richter/subnavigation:93 ../templates/clouds_classification_html:51 ../templates/clouds_classification_html:70 ../templates/clouds_navigation:61 ../templates/clouds_navigation:63 ../templates/search_facet:166 ../templates/search_history:68 ../templates/search_history:80 ../templates/search_title_start_html:43 ../templates/search_title_start_html:55 ../templates/subnavigation:75 ../templates/subnavigation:77 ../templates/titles_record_html:107 ../templates/titles_record_html:95
 msgid "Systematik"
 msgstr ""
 
@@ -5228,7 +5228,7 @@ msgstr ""
 msgid "T5100"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:172 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:151 ../templates/_profile/sammlungen/_view/richter/titles_record_html:100 ../templates/_profile/sammlungen/_view/richter/titles_record_html:110 ../templates/_profile/usb/drilldown_categorized:151 ../templates/_view/richter/drilldown_categorized:151 ../templates/search_facet:170 ../templates/search_history:74 ../templates/search_history:84 ../templates/search_title_start_html:49 ../templates/search_title_start_html:59 ../templates/titles_record_html:101 ../templates/titles_record_html:111
+#: ../templates/_profile/kug/search_facet:184 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:151 ../templates/_profile/sammlungen/_view/richter/titles_record_html:100 ../templates/_profile/sammlungen/_view/richter/titles_record_html:110 ../templates/_profile/usb/drilldown_categorized:151 ../templates/_view/richter/drilldown_categorized:151 ../templates/search_facet:170 ../templates/search_history:74 ../templates/search_history:84 ../templates/search_title_start_html:49 ../templates/search_title_start_html:59 ../templates/titles_record_html:101 ../templates/titles_record_html:111
 msgid "Tag"
 msgstr ""
 
@@ -5244,7 +5244,7 @@ msgstr ""
 msgid "Tagging"
 msgstr ""
 
-#: ../templates/_profile/kug/home_html_bottom_center:22 ../templates/_profile/sammlungen/_view/richter/titles_record_html:438 ../templates/cartitems_html_actions:100 ../templates/clouds_tag_html:50 ../templates/tags_html:41 ../templates/tags_html:75 ../templates/tags_names_html:58 ../templates/tags_navigation:21 ../templates/titles_record_html_actions:125 ../templates/titles_record_html_actions:226 ../templates/titles_record_html_actions:371 ../templates/titles_record_include:657 ../templates/users_navigation:31 ../templates/users_navigation:46 ../templates/users_tags_html:78
+#: ../templates/_profile/kug/home_html_bottom_center:22 ../templates/_profile/sammlungen/_view/richter/titles_record_html:438 ../templates/cartitems_html_actions:100 ../templates/clouds_tag_html:50 ../templates/tags_html:41 ../templates/tags_html:75 ../templates/tags_names_html:58 ../templates/tags_navigation:21 ../templates/titles_record_html_actions:125 ../templates/titles_record_html_actions:226 ../templates/titles_record_html_actions:372 ../templates/titles_record_include:657 ../templates/users_navigation:31 ../templates/users_navigation:46 ../templates/users_tags_html:78
 msgid "Tags"
 msgstr ""
 
@@ -5272,7 +5272,7 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:167 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:146 ../templates/_profile/sammlungen/_view/richter/titles_record_html:105 ../templates/_profile/sammlungen/_view/richter/titles_record_html:93 ../templates/_profile/usb/drilldown_categorized:146 ../templates/_view/richter/drilldown_categorized:146 ../templates/search_facet:165 ../templates/search_history:67 ../templates/search_history:79 ../templates/search_title_start_html:42 ../templates/search_title_start_html:54 ../templates/titles_record_html:106 ../templates/titles_record_html:94
+#: ../templates/_profile/kug/search_facet:179 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:146 ../templates/_profile/sammlungen/_view/richter/titles_record_html:105 ../templates/_profile/sammlungen/_view/richter/titles_record_html:93 ../templates/_profile/usb/drilldown_categorized:146 ../templates/_view/richter/drilldown_categorized:146 ../templates/search_facet:165 ../templates/search_history:67 ../templates/search_history:79 ../templates/search_title_start_html:42 ../templates/search_title_start_html:54 ../templates/titles_record_html:106 ../templates/titles_record_html:94
 msgid "Thema"
 msgstr ""
 
@@ -5403,7 +5403,7 @@ msgstr ""
 msgid "Titelzugriffe"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:518 ../templates/info_11:34 ../templates/info_tutorials:73 ../templates/titles_popular_by_database_html:44 ../templates/titles_popular_by_database_html:62 ../templates/titles_popular_include:31 ../templates/titles_record_html_actions:450 ../templates/titles_record_include:725
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:518 ../templates/info_11:34 ../templates/info_tutorials:73 ../templates/titles_popular_by_database_html:44 ../templates/titles_popular_by_database_html:62 ../templates/titles_popular_include:31 ../templates/titles_record_html_actions:451 ../templates/titles_record_include:725
 msgid "Top 20"
 msgstr ""
 
@@ -5419,7 +5419,7 @@ msgstr ""
 msgid "Treffermenge"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:155 ../templates/_profile/kug/search_facet:490 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:124 ../templates/_profile/usb/drilldown_categorized:124 ../templates/_view/richter/drilldown_categorized:124 ../templates/search_facet:153
+#: ../templates/_profile/kug/search_facet:167 ../templates/_profile/kug/search_facet:540 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:124 ../templates/_profile/usb/drilldown_categorized:124 ../templates/_view/richter/drilldown_categorized:124 ../templates/search_facet:153
 msgid "Treffermenge eingrenzen"
 msgstr ""
 
@@ -5438,7 +5438,7 @@ msgid ""
 "           z.B: <b>program*</b> (alle Titel, die mit program beginnen und beliebig enden, wie programming, programme, programm usw.)"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:451 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:437 ../templates/_profile/usb/drilldown_categorized:435 ../templates/_view/richter/drilldown_categorized:437 ../templates/search_facet:449
+#: ../templates/_profile/kug/search_facet:501 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:437 ../templates/_profile/usb/drilldown_categorized:435 ../templates/_view/richter/drilldown_categorized:437 ../templates/search_facet:449
 msgid "Tschechisch"
 msgstr ""
 
@@ -5463,7 +5463,7 @@ msgstr ""
 msgid "Typ:"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:450 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:436 ../templates/_profile/usb/drilldown_categorized:434 ../templates/_view/richter/drilldown_categorized:436 ../templates/search_facet:448
+#: ../templates/_profile/kug/search_facet:500 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:436 ../templates/_profile/usb/drilldown_categorized:434 ../templates/_view/richter/drilldown_categorized:436 ../templates/search_facet:448
 msgid "Türkisch"
 msgstr ""
 
@@ -5511,7 +5511,7 @@ msgstr ""
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:440 ../templates/_profile/kug/search_facet:441 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:426 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:427 ../templates/_profile/usb/drilldown_categorized:424 ../templates/_profile/usb/drilldown_categorized:425 ../templates/_view/richter/drilldown_categorized:426 ../templates/_view/richter/drilldown_categorized:427 ../templates/search_facet:438 ../templates/search_facet:439
+#: ../templates/_profile/kug/search_facet:490 ../templates/_profile/kug/search_facet:491 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:426 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:427 ../templates/_profile/usb/drilldown_categorized:424 ../templates/_profile/usb/drilldown_categorized:425 ../templates/_view/richter/drilldown_categorized:426 ../templates/_view/richter/drilldown_categorized:427 ../templates/search_facet:438 ../templates/search_facet:439
 msgid "Ungarisch"
 msgstr ""
 
@@ -5568,6 +5568,10 @@ msgstr ""
 msgid "Verfasser"
 msgstr ""
 
+#: ../templates/_profile/kug/search_facet:186
+msgid "Verfügbarkeit"
+msgstr ""
+
 #: ../templates/info_help:199
 msgid ""
 "Verkn&uuml;pfungen innerhalb eines\n"
@@ -5590,7 +5594,7 @@ msgstr ""
 msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:515 ../templates/titles_record_html_actions:447 ../templates/titles_record_include:722
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:515 ../templates/titles_record_html_actions:448 ../templates/titles_record_include:722
 msgid "Verschiedenes"
 msgstr ""
 
@@ -5598,11 +5602,11 @@ msgstr ""
 msgid "Verschlagwortung anderer Kataloge"
 msgstr ""
 
-#: ../templates/titles_record_html_actions:352
+#: ../templates/titles_record_html_actions:353
 msgid "Verschlagwortung dieses Titels in anderen Katalogen"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:499 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:486 ../templates/_profile/usb/drilldown_categorized:484 ../templates/_view/richter/drilldown_categorized:486 ../templates/search_facet:494
+#: ../templates/_profile/kug/search_facet:549 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:486 ../templates/_profile/usb/drilldown_categorized:484 ../templates/_view/richter/drilldown_categorized:486 ../templates/search_facet:494
 msgid ""
 "Versuchen Sie daher Ihre Rechercheanfrage zu pr&auml;zisieren, indem\n"
 "Sie diese auf sinntragende Worte reduzieren (z.B. der, die das\n"
@@ -5610,7 +5614,7 @@ msgid ""
 "durch zus&auml;tzliche Worte weiter eingrenzen."
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:486 ../templates/connector_similarpersons_html:40 ../templates/titles_record_html_actions:418 ../templates/titles_record_include:693
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:486 ../templates/connector_similarpersons_html:40 ../templates/titles_record_html_actions:419 ../templates/titles_record_include:693
 msgid "Verwandte Personen"
 msgstr ""
 
@@ -5618,7 +5622,7 @@ msgstr ""
 msgid "Verwandte Schlagworte"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:505 ../templates/titles_record_html_actions:437 ../templates/titles_record_include:712
+#: ../templates/_profile/sammlungen/_view/richter/titles_record_html:505 ../templates/titles_record_html_actions:438 ../templates/titles_record_include:712
 msgid "Verwandte Themen"
 msgstr ""
 
@@ -6168,6 +6172,22 @@ msgstr ""
 msgid "lecturer"
 msgstr ""
 
+#: ../templates/_profile/kug/search_facet:236
+msgid "lendable"
+msgstr ""
+
+#: ../templates/_profile/kug/search_facet:237
+msgid "lendable_immediate"
+msgstr ""
+
+#: ../templates/_profile/kug/search_facet:238
+msgid "lendable_order"
+msgstr ""
+
+#: ../templates/_profile/kug/search_facet:239
+msgid "lendable_weekend"
+msgstr ""
+
 #: ../templates/admin_users_html:81 ../templates/admin_users_search_form:75
 msgid "librarian"
 msgstr ""
@@ -6207,23 +6227,23 @@ msgstr ""
 msgid "mit frei zugänglichen Volltextartikeln"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:267 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:298 ../templates/_profile/usb/drilldown_categorized:296 ../templates/_profile/usb/search_title_combined_include:65 ../templates/_view/richter/drilldown_categorized:298 ../templates/search_facet:265 ../templates/titlist_options:18 ../templates/titlist_options:19
+#: ../templates/_profile/kug/search_facet:317 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:298 ../templates/_profile/usb/drilldown_categorized:296 ../templates/_profile/usb/search_title_combined_include:65 ../templates/_view/richter/drilldown_categorized:298 ../templates/search_facet:265 ../templates/titlist_options:18 ../templates/titlist_options:19
 msgid "nach Jahr"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:387 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:223 ../templates/_profile/usb/drilldown_categorized:221 ../templates/_view/richter/drilldown_categorized:223 ../templates/search_facet:385
+#: ../templates/_profile/kug/search_facet:437 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:223 ../templates/_profile/usb/drilldown_categorized:221 ../templates/_view/richter/drilldown_categorized:223 ../templates/search_facet:385
 msgid "nach K&ouml;perschaften"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:195 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:176 ../templates/_profile/usb/drilldown_categorized:175 ../templates/_view/richter/drilldown_categorized:176 ../templates/search_facet:193
+#: ../templates/_profile/kug/search_facet:208 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:176 ../templates/_profile/usb/drilldown_categorized:175 ../templates/_view/richter/drilldown_categorized:176 ../templates/search_facet:193
 msgid "nach Katalog"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:339 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:373 ../templates/_profile/usb/drilldown_categorized:371 ../templates/_view/richter/drilldown_categorized:373 ../templates/search_facet:337
+#: ../templates/_profile/kug/search_facet:389 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:373 ../templates/_profile/usb/drilldown_categorized:371 ../templates/_view/richter/drilldown_categorized:373 ../templates/search_facet:337
 msgid "nach Literaturliste"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:219 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:323 ../templates/_profile/usb/drilldown_categorized:321 ../templates/_view/richter/drilldown_categorized:323 ../templates/search_facet:217
+#: ../templates/_profile/kug/search_facet:269 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:323 ../templates/_profile/usb/drilldown_categorized:321 ../templates/_view/richter/drilldown_categorized:323 ../templates/search_facet:217
 msgid "nach Medienart"
 msgstr ""
 
@@ -6231,7 +6251,7 @@ msgstr ""
 msgid "nach Person"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:363 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:198 ../templates/_profile/usb/drilldown_categorized:196 ../templates/_view/richter/drilldown_categorized:198 ../templates/search_facet:361
+#: ../templates/_profile/kug/search_facet:413 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:198 ../templates/_profile/usb/drilldown_categorized:196 ../templates/_view/richter/drilldown_categorized:198 ../templates/search_facet:361
 msgid "nach Personen"
 msgstr ""
 
@@ -6247,11 +6267,11 @@ msgstr ""
 msgid "nach Signatur"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:412 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:398 ../templates/_profile/usb/drilldown_categorized:396 ../templates/_view/richter/drilldown_categorized:398 ../templates/search_facet:410
+#: ../templates/_profile/kug/search_facet:462 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:398 ../templates/_profile/usb/drilldown_categorized:396 ../templates/_view/richter/drilldown_categorized:398 ../templates/search_facet:410
 msgid "nach Sprache"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:291 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:273 ../templates/_profile/usb/drilldown_categorized:271 ../templates/_view/richter/drilldown_categorized:273 ../templates/search_facet:289
+#: ../templates/_profile/kug/search_facet:341 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:273 ../templates/_profile/usb/drilldown_categorized:271 ../templates/_view/richter/drilldown_categorized:273 ../templates/search_facet:289
 msgid "nach Systematik"
 msgstr ""
 
@@ -6259,11 +6279,11 @@ msgstr ""
 msgid "nach Tagnamen"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:315 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:348 ../templates/_profile/usb/drilldown_categorized:346 ../templates/_view/richter/drilldown_categorized:348 ../templates/search_facet:313
+#: ../templates/_profile/kug/search_facet:365 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:348 ../templates/_profile/usb/drilldown_categorized:346 ../templates/_view/richter/drilldown_categorized:348 ../templates/search_facet:313
 msgid "nach Tags"
 msgstr ""
 
-#: ../templates/_profile/kug/search_facet:243 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:248 ../templates/_profile/usb/drilldown_categorized:246 ../templates/_view/richter/drilldown_categorized:248 ../templates/search_facet:241
+#: ../templates/_profile/kug/search_facet:293 ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:248 ../templates/_profile/usb/drilldown_categorized:246 ../templates/_view/richter/drilldown_categorized:248 ../templates/search_facet:241
 msgid "nach Themen"
 msgstr ""
 
@@ -6283,12 +6303,32 @@ msgstr ""
 msgid "nach Z&auml;hlung"
 msgstr ""
 
+#: ../templates/_profile/kug/search_facet:244
+msgid "nach Zugriff"
+msgstr ""
+
 #: ../templates/_profile/kug/users_preferences_html:98 ../templates/users_preferences_html:98 ../templates/users_roles_edit:88
 msgid "nein"
 msgstr ""
 
 #: ../templates/_database/dbis/classifications_html:61 ../templates/_database/dbis/search_title_item_html:46 ../templates/_database/ezb/classifications_html:61 ../templates/_database/ezb/search_title_item_html:46 ../templates/_profile/kug/_database/dbis/classifications_html:62 ../templates/_profile/kug/_database/dbis/search_title_item_html:84 ../templates/_profile/kug/_database/ezb/classifications_html:62 ../templates/_profile/kug/_database/ezb/search_title_item_html:84
 msgid "ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)"
+msgstr ""
+
+#: ../templates/_profile/kug/search_facet:235
+msgid "online"
+msgstr ""
+
+#: ../templates/_profile/kug/search_facet:240
+msgid "presence"
+msgstr ""
+
+#: ../templates/_profile/kug/search_facet:241
+msgid "presence_immediate"
+msgstr ""
+
+#: ../templates/_profile/kug/search_facet:242
+msgid "presence_order"
 msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:63 ../templates/_profile/sammlungen/_view/richter/cartitems_html_actions:96 ../templates/_profile/sammlungen/_view/richter/titles_record_html:222 ../templates/_profile/sammlungen/_view/richter/titles_record_html:259 ../templates/_profile/sammlungen/_view/richter/titles_record_html:322 ../templates/_profile/sammlungen/_view/richter/users_litlists_record_edit:73 ../templates/_view/richter/cartitems_html_actions:63 ../templates/_view/richter/cartitems_html_actions:96 ../templates/_view/richter/users_litlists_record_edit:73 ../templates/cartitems_html_actions:108 ../templates/cartitems_html_actions:71 ../templates/litlists_record_include:72 ../templates/titles_record_html_actions:133 ../templates/titles_record_html_actions:234 ../templates/titles_record_html_actions:81 ../templates/titles_record_include:408 ../templates/titles_record_include:437 ../templates/titles_record_include:509 ../templates/users_litlists_html:105 ../templates/users_litlists_html:69 ../templates/users_litlists_record_edit:87

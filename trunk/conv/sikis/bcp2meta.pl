@@ -866,8 +866,8 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
 #                    $overall_mediastatus_ref->{lendable_weekend} = 1;                    
                 }
                 elsif ($mediastatus eq "nicht entleihbar"){
-#                    $overall_mediastatus_ref->{presence} = 1;
-                    $overall_mediastatus_ref->{presence_immediate} = 1;                    
+                    $overall_mediastatus_ref->{presence} = 1;
+#                    $overall_mediastatus_ref->{presence_immediate} = 1;                    
                 }
             }
             

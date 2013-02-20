@@ -30,9 +30,9 @@ convtab:
       '0009': 1        # Herkunft
      #'0010': 1        # Fremdnummer
       '0011': 1        # Lokale ID
-      '0014': 1        # Signatur (in holding vorhanden)
+     #'0014': 1        # Signatur (in holding vorhanden)
      #'0015': 1        # Sprache
-      '0016': 1        # Standort (in holding vorhanden)
+     #'0016': 1        # Standort (in holding vorhanden)
       '0027': 1        # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
       '0028': 1        # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
       '0036': 1        # Erscheinungsform
@@ -607,6 +607,7 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
+          'classification': 1
         facet:
           'classification': 1
       '4201':         # Wikipedia
@@ -629,7 +630,7 @@ convtab:
           't4300': 1
         facet:
           'subject': 1
-      '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder visible_[immediate|order]
+      '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
         index:
           'availabilitystring': 1
         facet:
@@ -719,9 +720,9 @@ convtab:
       '0009': 1        # Herkunft
      #'0010': 1        # Fremdnummer
       '0011': 1        # Lokale ID
-      '0014': 1        # Signatur (in holding vorhanden)
+     #'0014': 1        # Signatur (in holding vorhanden)
      #'0015': 1        # Sprache
-      '0016': 1        # Standort (in holding vorhanden)
+     #'0016': 1        # Standort (in holding vorhanden)
       '0027': 1        # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
       '0028': 1        # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
       '0036': 1        # Erscheinungsform
@@ -836,6 +837,7 @@ convtab:
         index:
           'mark': 1
           'markstring': 1
+          'freesearch': 1
       '0015':
         index:
           'language': 1
@@ -1223,6 +1225,11 @@ convtab:
           'subjectstring': 20
           'freesearch': 20
           't4300': 1
+      '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder visible_[immediate|order]
+        index:
+          'availabilitystring': 1
+        facet:
+          'availability' : 1
       '5050':         # Bibkey
         index:
           'bkey': 1

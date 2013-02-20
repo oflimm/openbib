@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-02-19 15:40+0100\n"
+"PO-Revision-Date: 2013-02-20 16:45+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2814,7 +2814,7 @@ msgstr "E-Mail-Adresse"
 #: ../templates/_database/openlibrary/visible_categories_title:106
 #: ../templates/_database/wikisource_de/visible_categories_title:104
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:102
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:111
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:112
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:104
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:102
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:102
@@ -2823,7 +2823,7 @@ msgstr "E-Mail-Adresse"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:104
 #: ../templates/_profile/usb/visible_categories_title:105
 #: ../templates/search_history:87 ../templates/search_title_start_html:62
-#: ../templates/visible_categories_title:106
+#: ../templates/visible_categories_title:107
 msgid "E4100"
 msgstr "Basis-Klassifikation"
 
@@ -2837,7 +2837,7 @@ msgstr "Basis-Klassifikation"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:115
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:112
 #: ../templates/_profile/usb/visible_categories_title:113
-#: ../templates/visible_categories_title:115
+#: ../templates/visible_categories_title:116
 msgid "E4110"
 msgstr "Inhaltsverzeichnis"
 
@@ -2851,17 +2851,17 @@ msgstr "Inhaltsverzeichnis"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:116
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:113
 #: ../templates/_profile/usb/visible_categories_title:114
-#: ../templates/visible_categories_title:116
+#: ../templates/visible_categories_title:117
 msgid "E4120"
 msgstr "Volltext-URL"
 
 #: ../templates/_database/inst001/visible_categories_title:102
 #: ../templates/_database/openlibrary/visible_categories_title:104
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:102
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:103
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:102
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:104
 #: ../templates/_profile/usb/visible_categories_title:103
-#: ../templates/visible_categories_title:104
+#: ../templates/visible_categories_title:105
 msgid "E4300"
 msgstr "Schlagwort (ext.)"
 
@@ -5945,7 +5945,7 @@ msgstr "Medientyp"
 #: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/inst132/home_html_bottom_left:75
 #: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:77
-#: ../templates/_profile/kug/_view/kug/newsflash:39
+#: ../templates/_profile/kug/_view/kug/newsflash:45
 #: ../templates/_profile/kug/home_html_bottom_left:76
 #: ../templates/_profile/kug/search_facet:102
 #: ../templates/_profile/kug/search_facet:114
@@ -9769,7 +9769,7 @@ msgstr "Vorr. Erschtermin"
 #: ../templates/_database/richter/visible_categories_title:102
 #: ../templates/_database/wikisource_de/visible_categories_title:105
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:103
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:104
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:105
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:105
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:103
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:103
@@ -9777,7 +9777,7 @@ msgstr "Vorr. Erschtermin"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:107
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:105
 #: ../templates/_profile/usb/visible_categories_title:106
-#: ../templates/visible_categories_title:107
+#: ../templates/visible_categories_title:108
 msgid "T0540"
 msgstr "ISBN"
 
@@ -9786,7 +9786,7 @@ msgstr "ISBN"
 #: ../templates/_database/richter/visible_categories_title:104
 #: ../templates/_database/wikisource_de/visible_categories_title:107
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:105
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:105
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:106
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:107
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:105
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:105
@@ -9794,7 +9794,7 @@ msgstr "ISBN"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:109
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:107
 #: ../templates/_profile/usb/visible_categories_title:108
-#: ../templates/visible_categories_title:109
+#: ../templates/visible_categories_title:110
 msgid "T0543"
 msgstr "ISSN"
 
@@ -9809,7 +9809,7 @@ msgstr "ISSN"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:108
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:106
 #: ../templates/_profile/usb/visible_categories_title:107
-#: ../templates/visible_categories_title:108
+#: ../templates/visible_categories_title:109
 msgid "T0553"
 msgstr "ISBN"
 
@@ -9986,7 +9986,7 @@ msgstr "EDV Adress"
 #: ../templates/_database/openlibrary/visible_categories_title:110
 #: ../templates/_database/richter/visible_categories_title:105
 #: ../templates/_database/wikisource_de/visible_categories_title:108
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:106
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:107
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:108
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:106
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:106
@@ -9994,7 +9994,7 @@ msgstr "EDV Adress"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:110
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:108
 #: ../templates/_profile/usb/visible_categories_title:109
-#: ../templates/visible_categories_title:110
+#: ../templates/visible_categories_title:111
 msgid "T0662"
 msgstr "Web-Link"
 
@@ -10021,7 +10021,7 @@ msgstr "Sachtitel in abweichender Orthographie"
 #: ../templates/_database/richter/visible_categories_title:101
 #: ../templates/_database/wikisource_de/visible_categories_title:103
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:101
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:103
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:104
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:103
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:101
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:101
@@ -10029,7 +10029,7 @@ msgstr "Sachtitel in abweichender Orthographie"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:105
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:103
 #: ../templates/_profile/usb/visible_categories_title:104
-#: ../templates/visible_categories_title:105
+#: ../templates/visible_categories_title:106
 msgid "T0700"
 msgstr "Notation"
 
@@ -10038,7 +10038,7 @@ msgstr "Notation"
 #: ../templates/_database/richter/visible_categories_title:90
 #: ../templates/_database/wikisource_de/visible_categories_title:92
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:90
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:91
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:92
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:90
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:90
 #: ../templates/_profile/kug/_database/inst423/visible_categories_title:90
@@ -10046,7 +10046,7 @@ msgstr "Notation"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:93
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:92
 #: ../templates/_profile/usb/visible_categories_title:92
-#: ../templates/visible_categories_title:93
+#: ../templates/visible_categories_title:94
 msgid "T0710"
 msgstr "Schlagwort"
 
@@ -10080,7 +10080,7 @@ msgstr "Beschreibung"
 #: ../templates/_database/richter/visible_categories_title:89
 #: ../templates/_database/wikisource_de/visible_categories_title:91
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:89
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:90
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:91
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:90
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:89
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:89
@@ -10089,7 +10089,7 @@ msgstr "Beschreibung"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:92
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:91
 #: ../templates/_profile/usb/visible_categories_title:91
-#: ../templates/visible_categories_title:92
+#: ../templates/visible_categories_title:93
 msgid "T0800"
 msgstr "Medienart"
 
@@ -10102,7 +10102,7 @@ msgstr "Art"
 #: ../templates/_database/richter/visible_categories_title:91
 #: ../templates/_database/wikisource_de/visible_categories_title:93
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:91
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:92
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:93
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:92
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:91
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:91
@@ -10110,7 +10110,7 @@ msgstr "Art"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:94
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:93
 #: ../templates/_profile/usb/visible_categories_title:93
-#: ../templates/visible_categories_title:94
+#: ../templates/visible_categories_title:95
 msgid "T0902"
 msgstr "Schlagwort"
 
@@ -10119,7 +10119,7 @@ msgstr "Schlagwort"
 #: ../templates/_database/richter/visible_categories_title:92
 #: ../templates/_database/wikisource_de/visible_categories_title:94
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:92
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:93
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:94
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:93
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:92
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:92
@@ -10127,7 +10127,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:95
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:94
 #: ../templates/_profile/usb/visible_categories_title:94
-#: ../templates/visible_categories_title:95
+#: ../templates/visible_categories_title:96
 msgid "T0907"
 msgstr "Schlagwort"
 
@@ -10136,7 +10136,7 @@ msgstr "Schlagwort"
 #: ../templates/_database/richter/visible_categories_title:93
 #: ../templates/_database/wikisource_de/visible_categories_title:95
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:93
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:94
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:95
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:94
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:93
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:93
@@ -10144,7 +10144,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:96
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:95
 #: ../templates/_profile/usb/visible_categories_title:95
-#: ../templates/visible_categories_title:96
+#: ../templates/visible_categories_title:97
 msgid "T0912"
 msgstr "Schlagwort"
 
@@ -10153,7 +10153,7 @@ msgstr "Schlagwort"
 #: ../templates/_database/richter/visible_categories_title:94
 #: ../templates/_database/wikisource_de/visible_categories_title:96
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:94
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:95
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:96
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:95
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:94
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:94
@@ -10161,7 +10161,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:97
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:96
 #: ../templates/_profile/usb/visible_categories_title:96
-#: ../templates/visible_categories_title:97
+#: ../templates/visible_categories_title:98
 msgid "T0917"
 msgstr "Schlagwort"
 
@@ -10170,7 +10170,7 @@ msgstr "Schlagwort"
 #: ../templates/_database/richter/visible_categories_title:95
 #: ../templates/_database/wikisource_de/visible_categories_title:97
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:95
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:96
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:97
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:96
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:95
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:95
@@ -10178,7 +10178,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:98
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:97
 #: ../templates/_profile/usb/visible_categories_title:97
-#: ../templates/visible_categories_title:98
+#: ../templates/visible_categories_title:99
 msgid "T0922"
 msgstr "Schlagwort"
 
@@ -10187,7 +10187,7 @@ msgstr "Schlagwort"
 #: ../templates/_database/richter/visible_categories_title:96
 #: ../templates/_database/wikisource_de/visible_categories_title:98
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:96
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:97
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:98
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:97
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:96
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:96
@@ -10195,7 +10195,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:99
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:98
 #: ../templates/_profile/usb/visible_categories_title:98
-#: ../templates/visible_categories_title:99
+#: ../templates/visible_categories_title:100
 msgid "T0927"
 msgstr "Schlagwort"
 
@@ -10204,7 +10204,7 @@ msgstr "Schlagwort"
 #: ../templates/_database/richter/visible_categories_title:97
 #: ../templates/_database/wikisource_de/visible_categories_title:99
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:97
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:98
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:99
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:98
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:97
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:97
@@ -10212,7 +10212,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:100
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:99
 #: ../templates/_profile/usb/visible_categories_title:99
-#: ../templates/visible_categories_title:100
+#: ../templates/visible_categories_title:101
 msgid "T0932"
 msgstr "Schlagwort"
 
@@ -10221,7 +10221,7 @@ msgstr "Schlagwort"
 #: ../templates/_database/richter/visible_categories_title:98
 #: ../templates/_database/wikisource_de/visible_categories_title:100
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:98
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:99
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:100
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:99
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:98
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:98
@@ -10229,7 +10229,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:101
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:100
 #: ../templates/_profile/usb/visible_categories_title:100
-#: ../templates/visible_categories_title:101
+#: ../templates/visible_categories_title:102
 msgid "T0937"
 msgstr "Schlagwort"
 
@@ -10238,7 +10238,7 @@ msgstr "Schlagwort"
 #: ../templates/_database/richter/visible_categories_title:99
 #: ../templates/_database/wikisource_de/visible_categories_title:101
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:99
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:100
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:101
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:100
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:99
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:99
@@ -10246,7 +10246,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:102
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:101
 #: ../templates/_profile/usb/visible_categories_title:101
-#: ../templates/visible_categories_title:102
+#: ../templates/visible_categories_title:103
 msgid "T0942"
 msgstr "Schlagwort"
 
@@ -10255,7 +10255,7 @@ msgstr "Schlagwort"
 #: ../templates/_database/richter/visible_categories_title:100
 #: ../templates/_database/wikisource_de/visible_categories_title:102
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:100
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:101
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:102
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:101
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:100
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:100
@@ -10263,12 +10263,12 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:103
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:102
 #: ../templates/_profile/usb/visible_categories_title:102
-#: ../templates/visible_categories_title:103
+#: ../templates/visible_categories_title:104
 msgid "T0947"
 msgstr "Schlagwort"
 
 #: ../templates/_database/inst001/visible_categories_title:110
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:110
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:111
 msgid "T1600"
 msgstr "Hinweis"
 
@@ -10277,14 +10277,14 @@ msgstr "Hinweis"
 #: ../templates/_database/richter/visible_categories_title:106
 #: ../templates/_database/wikisource_de/visible_categories_title:109
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:108
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:107
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:108
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:107
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:107
 #: ../templates/_profile/kug/_database/inst423/visible_categories_title:107
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:111
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:109
 #: ../templates/_profile/usb/visible_categories_title:110
-#: ../templates/visible_categories_title:111
+#: ../templates/visible_categories_title:112
 msgid "T1664"
 msgstr "Provenienz"
 
@@ -10297,7 +10297,7 @@ msgstr "Ort der Inschrift"
 #: ../templates/_database/richter/visible_categories_title:107
 #: ../templates/_database/wikisource_de/visible_categories_title:110
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:109
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:108
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:109
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:110
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:108
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:108
@@ -10305,7 +10305,7 @@ msgstr "Ort der Inschrift"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:112
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:110
 #: ../templates/_profile/usb/visible_categories_title:111
-#: ../templates/visible_categories_title:112
+#: ../templates/visible_categories_title:113
 msgid "T2662"
 msgstr "USB URL"
 
@@ -10314,7 +10314,7 @@ msgstr "USB URL"
 #: ../templates/_database/richter/visible_categories_title:108
 #: ../templates/_database/wikisource_de/visible_categories_title:111
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:110
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:109
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:110
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:111
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:109
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:109
@@ -10322,7 +10322,7 @@ msgstr "USB URL"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:113
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:111
 #: ../templates/_profile/usb/visible_categories_title:112
-#: ../templates/visible_categories_title:113
+#: ../templates/visible_categories_title:114
 msgid "T2663"
 msgstr "USB URL-Info"
 
@@ -10340,15 +10340,20 @@ msgstr "TOC / PDF"
 
 #: ../templates/_database/openlibrary/visible_categories_title:114
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:114
-#: ../templates/visible_categories_title:114
+#: ../templates/visible_categories_title:115
 msgid "T4200"
 msgstr "Nutzername"
+
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:90
+#: ../templates/visible_categories_title:92
+msgid "T4410"
+msgstr "Typ"
 
 #: ../templates/_database/inst001/visible_categories_title:112
 #: ../templates/_database/openlibrary/visible_categories_title:117
 #: ../templates/_database/richter/visible_categories_title:112
 #: ../templates/_database/wikisource_de/visible_categories_title:114
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:112
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:113
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:114
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:112
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:112
@@ -10356,12 +10361,12 @@ msgstr "Nutzername"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:117
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:114
 #: ../templates/_profile/usb/visible_categories_title:115
-#: ../templates/visible_categories_title:117
+#: ../templates/visible_categories_title:118
 msgid "T4500"
 msgstr "KUG Nutzer-Tags"
 
 #: ../templates/_database/inst001/visible_categories_title:113
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:113
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:114
 msgid "T4600"
 msgstr "Sammlungs-Portale"
 
@@ -10371,7 +10376,7 @@ msgstr "Sammlungs-Portale"
 #: ../templates/_database/richter/visible_categories_title:113
 #: ../templates/_database/wikisource_de/visible_categories_title:115
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:113
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:114
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:115
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:115
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:113
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:113
@@ -10379,7 +10384,7 @@ msgstr "Sammlungs-Portale"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:118
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:115
 #: ../templates/_profile/usb/visible_categories_title:116
-#: ../templates/visible_categories_title:118
+#: ../templates/visible_categories_title:119
 msgid "T5001"
 msgstr "Anzahl Gesamttitel"
 
@@ -10389,7 +10394,7 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/_database/richter/visible_categories_title:114
 #: ../templates/_database/wikisource_de/visible_categories_title:116
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:114
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:115
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:116
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:116
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:114
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:114
@@ -10397,7 +10402,7 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:119
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:116
 #: ../templates/_profile/usb/visible_categories_title:117
-#: ../templates/visible_categories_title:119
+#: ../templates/visible_categories_title:120
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
@@ -10406,7 +10411,7 @@ msgstr "Anzahl Bände/Stücke"
 #: ../templates/_database/richter/visible_categories_title:115
 #: ../templates/_database/wikisource_de/visible_categories_title:117
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:115
-#: ../templates/_profile/kug/_database/inst001/visible_categories_title:116
+#: ../templates/_profile/kug/_database/inst001/visible_categories_title:117
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:117
 #: ../templates/_profile/kug/_database/inst420/visible_categories_title:115
 #: ../templates/_profile/kug/_database/inst422/visible_categories_title:115
@@ -10414,7 +10419,7 @@ msgstr "Anzahl Bände/Stücke"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:120
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:117
 #: ../templates/_profile/usb/visible_categories_title:118
-#: ../templates/visible_categories_title:120
+#: ../templates/visible_categories_title:121
 msgid "T5100"
 msgstr "Zählung"
 
@@ -12129,7 +12134,6 @@ msgstr "nach Katalog"
 msgid "nach Literaturliste"
 msgstr "nach Literaturliste"
 
-#: ../templates/_profile/kug/search_facet:269
 #: ../templates/_profile/sammlungen/_view/richter/drilldown_categorized:323
 #: ../templates/_profile/usb/drilldown_categorized:321
 #: ../templates/_view/richter/drilldown_categorized:323
@@ -12209,6 +12213,10 @@ msgstr "nach Titel"
 #: ../templates/users_navigation:39 ../templates/users_navigation:41
 msgid "nach Titeln"
 msgstr "nach Titeln"
+
+#: ../templates/_profile/kug/search_facet:269
+msgid "nach Typ"
+msgstr "nach Typ"
 
 #: ../templates/_profile/usb/search_title_combined_include:66
 msgid "nach Verlag"

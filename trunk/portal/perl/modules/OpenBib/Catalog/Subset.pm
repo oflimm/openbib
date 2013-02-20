@@ -34,6 +34,7 @@ no warnings 'redefine';
 use utf8;
 
 use DBI;
+use DBIx::Class::ResultClass::HashRefInflator;
 use OpenBib::Config;
 use OpenBib::Catalog;
 use OpenBib::Schema::Catalog;
@@ -136,13 +137,14 @@ sub identify_by_mark {
                 as       => ['thistitleid'],
                 join     => ['titleid','holdingid', {'holdingid' => 'holding_fields' }],
                 group_by => ['titleid.id'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
 
 	$logger->info("### $self->{source} -> $self->{destination}: ".$titles->count." Titel mit $thismark");
 	
-        foreach my $item ($titles->all){
-            my $titleid = $item->get_column('thistitleid');
+        while (my $item = $titles->next){
+            my $titleid = $item->{thistitleid};
             
             $self->{titleid}{$titleid} = 1;
         }
@@ -173,11 +175,12 @@ sub identify_by_mark {
                 as       => ['thisholdingid'],
                 join     => ['holding_fields'],
                 group_by => ['me.id'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
-        foreach my $item ($holdings->all){
-            my $holdingid = $item->get_column('thisholdingid');
+        while (my $item = $holdings->next){
+            my $holdingid = $item->{thisholdingid};
             
             $self->{holdingid}{$holdingid} = 1;
         }
@@ -240,6 +243,7 @@ sub identify_by_field_content {
             {
                 select   => ['titleid'],
                 as       => ['thisid'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
@@ -254,20 +258,21 @@ sub identify_by_field_content {
                     select   => ['me.titleid'],
                     as       => ['thisid'],
                     join     => $table_type{$table}{join},
+		    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
         }
 
         if ($mode eq "all" && $first_criteria){
             $first_criteria = 0;
-            foreach my $item ($titles->all){
-                my $thisid = $item->get_column('thisid');                
+            while (my $item = $titles->next){
+                my $thisid = $item->{thisid};                
                 $title_a{$thisid} = 1;
             }            
         }
         elsif ($mode eq "all" && !$first_criteria){
-            foreach my $item ($titles->all){
-                my $thisid = $item->get_column('thisid');                
+            while (my $item = $titles->next){
+                my $thisid = $item->{thisid};                
                 if ($title_a{$thisid} == 1){
                     $title_b{$thisid} = 1;
                 }
@@ -276,7 +281,7 @@ sub identify_by_field_content {
         }
         else {
             foreach my $item ($titles->all){
-                my $thisid = $item->get_column('thisid');
+                my $thisid = $item->{'thisid'};
                 
                 $self->{titleid}{$thisid} = 1;
             }
@@ -310,11 +315,12 @@ sub identify_by_field_content {
             {
                 select   => ['holdingid'],
                 as       => ['thisid'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
-        foreach my $item ($holdings->all){
-            my $thisid = $item->get_column('thisid');
+        while (my $item = $holdings->next){
+            my $thisid = $item->{thisid};
 
             $self->{holdingid}{$thisid}=1;
         }    
@@ -377,11 +383,12 @@ sub identify_by_olws_circulation {
             {
                 select   => ['holdingid'],
                 as       => ['thisid'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
-        foreach my $item ($holdings->all){
-            my $thisid = $item->get_column('thisid');
+        while (my $item = $holdings->next){
+            my $thisid = $item->{thisid};
 
             $self->{holdingid}{$thisid}=1;
         }    
@@ -424,11 +431,12 @@ sub get_title_hierarchy {
                     select   => ['target_titleid'],
                     as       => ['supertitleid'],
                     group_by => ['target_titleid'],
+		    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
 
-            foreach my $item ($supertitles->all){
-                my $supertitleid = $item->get_column('supertitleid');
+            while (my $item = $supertitles->next){
+                my $supertitleid = $item->{supertitleid};
 
                 $self->{titleid}{$supertitleid} = 1;
                 if ($titleid != $supertitleid){ # keine Ringschluesse - ja, das gibt es
@@ -467,11 +475,12 @@ sub get_title_normdata {
             {
                 select   => ['personid'],
                 as       => ['thisid'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
-        foreach my $item ($persons->all){
-            my $thisid = $item->get_column('thisid');
+        while (my $item = $persons->next){
+            my $thisid = $item->{thisid};
 
             $self->{personid}{$thisid}=1;
         }
@@ -485,11 +494,12 @@ sub get_title_normdata {
             {
                 select   => ['corporatebodyid'],
                 as       => ['thisid'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
-        foreach my $item ($corporatebodies->all){
-            my $thisid = $item->get_column('thisid');
+        while (my $item = $corporatebodies->next){
+            my $thisid = $item->{thisid};
 
             $self->{corporatebodyid}{$thisid}=1;
         }
@@ -503,11 +513,12 @@ sub get_title_normdata {
             {
                 select   => ['classificationid'],
                 as       => ['thisid'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
-        foreach my $item ($classifications->all){
-            my $thisid = $item->get_column('thisid');
+        while (my $item = $classifications->next){
+            my $thisid = $item->{thisid};
 
             $self->{classificationid}{$thisid}=1;
         }
@@ -521,11 +532,12 @@ sub get_title_normdata {
             {
                 select   => ['subjectid'],
                 as       => ['thisid'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
-        foreach my $item ($subjects->all){
-            my $thisid = $item->get_column('thisid');
+        while (my $item = $subjects->next){
+            my $thisid = $item->{thisid};
 
             $self->{subjectid}{$thisid}=1;
         }

@@ -266,7 +266,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && category_map.4.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Medienart") %]</dt>
+<dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Typ") %]</dt>
 [%             FOREACH termitem IN category_map.4 ;
                   LAST IF loop.count > 25 ;
  %]

@@ -1,4 +1,4 @@
-#####################################################################
+####################################################################
 #
 #  OpenBib::Common::Util
 #
@@ -830,7 +830,7 @@ sub to_isbn13 {
     }
     
     $thisisbn = OpenBib::Common::Util::normalize({
-        field => '0540',
+        field => 'T0540',
         content  => $thisisbn,
     });
 
@@ -843,7 +843,7 @@ sub to_issn {
     return undef unless (defined $thisissn);
     
     $thisissn = OpenBib::Common::Util::normalize({
-        field => '0543',
+        field => 'T0543',
         content  => $thisissn,
     });
 

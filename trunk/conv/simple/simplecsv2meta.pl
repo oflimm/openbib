@@ -50,12 +50,13 @@ use OpenBib::Conv::Common::Util;
 my $config    = new OpenBib::Config;
 my $enrichmnt = new OpenBib::Enrichment;
 
-my ($inputfile,$configfile,$logfile);
+my ($inputfile,$configfile,$logfile,$loglevel);
 
 &GetOptions(
 	    "inputfile=s"          => \$inputfile,
             "configfile=s"         => \$configfile,
             "logfile=s"            => \$logfile,
+            "loglevel=s"           => \$loglevel,
 	    );
 
 if (!$inputfile && !$configfile){
@@ -68,9 +69,10 @@ exit;
 }
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/simplecsv2meta.log';
+$loglevel=($loglevel)?$loglevel:'ERROR';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append

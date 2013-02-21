@@ -34,6 +34,7 @@ use base qw(Apache::Singleton);
 
 use DB_File ;
 use Business::ISBN;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
@@ -100,46 +101,62 @@ sub get_db_histogram_of_occurence {
     return $histogram_ref;
 }
 
-sub get_additional_normdata {
+sub get_enriched_content {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
     my $isbn              = exists $arg_ref->{isbn}
         ? $arg_ref->{isbn}        : undef;
+    my $issn              = exists $arg_ref->{issn}
+        ? $arg_ref->{issn}        : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    return {} unless (defined $isbn && defined $dbh);
+    return {} unless (defined $isbn || defined $issn);
 
-    if (length($isbn) <= 9){
-        # Normierung der ISSN
-        $isbn = OpenBib::Common::Util::to_issn($isbn);
-    }
-    else {
-        # Normierung auf ISBN13
-        $isbn = OpenBib::Common::Util::to_isbn13($isbn);
-    }
-    
-    my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
-    my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-    $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+    $issn = OpenBib::Common::Util::to_issn($issn);
+
+    # Normierung auf ISBN13
+    $isbn = OpenBib::Common::Util::to_isbn13($isbn);
 
     my $normset_ref = {};
-    
-    # Anreicherung der Normdaten
-    while (my $res=$request->fetchrow_hashref) {
-        my $category   = "E".sprintf "%04d",$res->{category };
-        my $content    =        decode_utf8($res->{content});
 
-        push @{$normset_ref->{$category}}, $content;
+    my $titles;
+    
+    if ($isbn){
+        $titles = $self->{schema}->resultset('EnrichedContentByIsbn')->search(
+            {
+                isbn => $isbn,
+            },
+            {
+                group_by => ['field','content','mult'],
+                order_by => ['field','mult'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+    }
+    elsif ($issn){
+        my $titles = $self->{schema}->resultset('EnrichedContentByIsbn')->search(
+            {
+                issn => $issn,
+            },
+            {
+                group_by => ['field','content','mult'],
+                order_by => ['field','mult'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+    }
+
+    # Anreicherung der Normdaten
+    while (my $title=$titles->next()) {
+        my $field      = "E".sprintf "%04d",$title->{field};
+        my $content    =                    $title->{content};
+
+        push @{$normset_ref->{$field}}, $content;
     }
 
     $logger->debug(YAML::Dump($normset_ref));

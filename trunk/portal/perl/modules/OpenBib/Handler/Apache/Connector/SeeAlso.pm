@@ -122,7 +122,7 @@ sub show {
 
                 my $enrichmnt = new OpenBib::Enrichment;
 
-                my $result_ref = $enrichmnt->get_additional_normdata({isbn => $identifier});
+                my $result_ref = $enrichmnt->get_enriched_content({isbn => $identifier});
 
                 # Deutsche Wikipedia
                 foreach my $content (@{$result_ref->{E4200}}){
@@ -145,7 +145,7 @@ sub show {
 
                 my $enrichmnt = new OpenBib::Enrichment;
 
-                my $result_ref = $enrichmnt->get_additional_normdata({isbn => $identifier});
+                my $result_ref = $enrichmnt->get_enriched_content({isbn => $identifier});
                 
                 foreach my $content (@{$result_ref->{E4300}}){
                     my $uri = URI->new( "http://de.wikipedia.org/wiki/$content" )->canonical;

@@ -39,7 +39,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Enrichment;
 use OpenBib::Config;
 
-sub get_additional_normdata {
+sub get_enriched_content {
     my ($class, $args_ref) = @_;
 
     # Parameter
@@ -60,7 +60,7 @@ sub get_additional_normdata {
 
     my $enrichmnt = OpenBib::Enrichment->instance;
 
-    my $normset_ref = $enrichmnt->get_additional_normdata({ isbn => $isbn});
+    my $normset_ref = $enrichmnt->get_enriched_content({ isbn => $isbn});
 
     my @enrich_category_items = ();
     foreach my $category (keys %$normset_ref){

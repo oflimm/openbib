@@ -1,5 +1,5 @@
 # Encoding der Daten
-encoding: utf8
+encoding: iso-8859-1
 
 # Tracelevel
 tracelevel:

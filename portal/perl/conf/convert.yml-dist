@@ -441,14 +441,6 @@ convtab:
         index:
           'content': 1
           'freesearch': 1
-      '0800':         # Medienart
-        string: 1
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
       '0902':
 #        index:
 #          'freesearch': 1
@@ -635,6 +627,14 @@ convtab:
           'availabilitystring': 1
         facet:
           'availability' : 1
+      '4410':         # Medientyp
+        string: 1
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
+          'freesearch': 1
+        facet:
+          'mediatype': 1
       '5050':         # Bibkey
         index:
           'bkey': 1
@@ -1932,14 +1932,6 @@ convtab:
         index:
           'content': 1
           'freesearch': 1
-      '0800':         # Medienart
-        string: 1
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
       '0902':
         facet:
           'subject': 1
@@ -1995,6 +1987,14 @@ convtab:
           'subjectstring': 20
           'freesearch': 20
           't4300': 1
+      '4410':         # Medientyp
+        string: 1
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
+          'freesearch': 1
+        facet:
+          'mediatype': 1
       '5050':         # Bibkey
         index:
           'bkey': 1

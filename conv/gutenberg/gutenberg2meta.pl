@@ -7,7 +7,7 @@
 #  Konvertierung des Gutenberg RDF-Formates in das OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2009-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -214,12 +214,13 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     }
     
     # Medientyp
-    push @{$title_ref->{'0800'}}, {
+    push @{$title_ref->{'4410'}}, {
         mult     => 1,
         subfield => '',
         content  => 'Digital',
     };
-    $mult=2;
+    
+    $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:type//text()')) {
         my $content = konv($item->textContent);
         push @{$title_ref->{'0800'}}, {

@@ -786,21 +786,37 @@ while (my $jsonline=<IN>){
         # Zeitschriften/Serien:
         # ISSN und/oder ZDB-ID besetzt
         if (defined $record_ref->{'0572'} || defined $record_ref->{'0543'}) {
+            my $have_journal = 0;
+
+            foreach my $item_ref (@{$record_ref->{'4410'}}) {
+                if ($item_ref->{'0800'} eq "Zeitschrift/Serie"){
+                    $have_journal = 1;
+                }
+            }
+
             push @{$record_ref->{'4410'}}, {
                 mult      => $type_mult++,
                 content   => 'Zeitschrift/Serie',
                 subfield  => '',
-            };
+            } unless ($have_journal);
         }   
                 
         # Aufsatz
         # HSTQuelle besetzt
         if ($record_ref->{'0590'}) {
+            my $have_article = 0;
+            
+            foreach my $item_ref (@{$record_ref->{'4410'}}) {
+                if ($item_ref->{'0800'} eq "Aufsatz"){
+                    $have_article = 1;
+                }
+            }
+            
             push @{$record_ref->{'4410'}}, {
                 mult      => $type_mult,
                 content   => 'Aufsatz',
                 subfield  => '',
-            };
+            } if ($have_article);
         }   
         
         # Elektronisches Medium mit Online-Zugriff

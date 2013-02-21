@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -775,7 +775,38 @@ while (my $jsonline=<IN>){
             }
         }
     }
-    
+
+    # Medientypen erkennen und anreichern
+    if ($addmediatype) {
+        my $type_mult = 1;
+        foreach my $item_ref (@{$record_ref->{'4410'}}) {
+            $type_mult++;
+        }
+
+        # Zeitschriften/Serien:
+        # ISSN und/oder ZDB-ID besetzt
+        if (defined $record_ref->{'0572'} || defined $record_ref->{'0543'}) {
+            push @{$record_ref->{'4410'}}, {
+                mult      => $type_mult++,
+                content   => 'Zeitschrift/Serie',
+                subfield  => '',
+            };
+        }   
+                
+        # Aufsatz
+        # HSTQuelle besetzt
+        if ($record_ref->{'0590'}) {
+            push @{$record_ref->{'4410'}}, {
+                mult      => $type_mult,
+                content   => 'Aufsatz',
+                subfield  => '',
+            };
+        }   
+        
+        # Elektronisches Medium mit Online-Zugriff
+        # werden vorher katalogspezifisch per pre_unpack.pl angereichert
+    } 
+
     # Verknuepfungskategorien bearbeiten    
     if (defined $record_ref->{'0004'}) {
         foreach my $item_ref (@{$record_ref->{'0004'}}) {
@@ -1134,125 +1165,6 @@ while (my $jsonline=<IN>){
         }
     }
         
-    # Medientypen erkennen und anreichern
-    if ($addmediatype) {
-        
-        # Zeitschriften/Serien:
-        # ISSN und/oder ZDB-ID besetzt
-        if (defined $record_ref->{'0572'} || defined $record_ref->{'0543'}) {
-            # Steht Medientyp schon auf Zeitschrift?
-            my $have_journal   = 0;
-            my $type_mult      = 1;
-            foreach my $item_ref (@{$record_ref->{'0800'}}) {
-                $have_journal = 1 if ($item_ref->{content} eq "Zeitschrift/Serie");
-                $type_mult++;
-            }
-            
-            if (!$have_journal) {
-                if (! defined $searchengine_ref->{mediatype} ) {
-                    $searchengine_ref->{mediatype}{1} = [];
-                }
-                
-                push @{$searchengine_ref->{mediatype}{1}}, ['0800',"Zeitschrift/Serie"];
-                
-                push @{$record_ref->{'0800'}}, {
-                    mult      => $type_mult,
-                    content   => 'Zeitschrift/Serie',
-                    subfield  => '',
-                };
-            }
-        }   
-        
-        
-        # Aufsatz
-        # HSTQuelle besetzt
-        if ($record_ref->{'0590'}) {
-            # Steht Medientyp schon auf Aufsatz?
-            my $have_article=0;
-            my $type_mult = 1;
-            foreach my $item_ref (@{$record_ref->{'0800'}}) {
-                if ($item_ref->{content} eq "Aufsatz") {
-                    $have_article = 1 ;
-                }
-                $type_mult++;
-            }
-            
-            if (!$have_article) {
-                if (! defined $searchengine_ref->{mediatype} ) {
-                    $searchengine_ref->{mediatype}{1} = [];
-                }
-                
-                push @{$searchengine_ref->{mediatype}{1}}, ['0800',"Aufsatz"];
-                
-                push @{$record_ref->{'0800'}}, {
-                    mult      => $type_mult,
-                    content   => 'Aufsatz',
-                    subfield  => '',
-                };
-            }
-        }   
-        
-        # Elektronisches Medium mit Online-Zugriff
-        # Besetzung der folgenden Kategorien
-        # [02]807:g
-        # 0334:Elektronische Ressource
-        # 0652:Online-Ressource
-        #
-        # Lizensiert:
-        # [02]663.001:Info: Zugriff nur im Hochschulnetz der Universitaet Koeln bzw.
-        #          fuer autorisierte Benutzer moeglich
-        
-        if (((defined $record_ref->{'0807'} && $record_ref->{'0807'}[0]{content} eq "g") || (defined $record_ref->{'2807'} && $record_ref->{'2807'}[0]{content} eq "g"))
-                && defined $record_ref->{'0334'} && $record_ref->{'0334'}[0]{content} eq "Elektronische Ressource"
-                    && defined $record_ref->{'0652'} && $record_ref->{'0652'}[0]{content} eq "Online-Ressource") {
-            # Steht Medientyp schon auf Online-Zugriff?
-            my $have_digital=0;
-            my $type_mult = 1;
-            foreach my $item_ref (@{$record_ref->{'0800'}}) {
-                if ($item_ref->{content} eq "Digital") {
-                    $have_digital = 1 ;
-                }
-                $type_mult++;
-            }
-            
-            if (!$have_digital) {
-                if (! defined $searchengine_ref->{mediatype} ) {
-                    $searchengine_ref->{mediatype}{1} = [];
-                }
-                
-                push @{$searchengine_ref->{mediatype}{1}}, ['0800',"Digital"];
-                
-                push @{$record_ref->{'0800'}}, {
-                    mult      => $type_mult,
-                    content   => 'Digital',
-                    subfield  => '',
-                };
-            }
-        }   
-        
-        # mit Inhaltsverzeichnis
-        # Anreicherungskategorie 4110
-        if (defined $record_ref->{'4110'}) {
-            my $have_toc=0;
-            my $type_mult = 1;
-            foreach my $item_ref (@{$record_ref->{'0800'}}) {
-                $have_toc = 1 if ($item_ref->{content} eq "mit Inhaltsverzeichnis");
-                $type_mult++;
-            }
-            
-            if (!$have_toc) {
-                push @{$searchengine_ref->{mediatype}{1}}, ['0800',"mit Inhaltsverzeichnis"];
-                
-                push @{$record_ref->{'0800'}}, {
-                    mult      => $type_mult,
-                    content   => 'mit Inhaltsverzeichnis',
-                    subfield  => '',
-                };
-            }
-        }   
-        
-    } 
-
     # Indexierte Informationen aus anderen Normdateien fuer Suchmaschine
     {
         # Im Falle einer Personenanreicherung durch Ueberordnungen mit

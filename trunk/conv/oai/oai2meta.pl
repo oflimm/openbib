@@ -7,7 +7,7 @@
 #  Konvertierung des OAI_DC XML-Formates in des OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -305,7 +305,7 @@ sub parse_titset {
             }
 
             # Medientyp Digital
-            push @{$title_ref->{'0800'}}, {
+            push @{$title_ref->{'4410'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => "Digital",

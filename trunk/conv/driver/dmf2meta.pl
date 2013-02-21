@@ -7,7 +7,7 @@
 #  Konvertierung des DRIVER-XML-Formates DMF in das OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2010-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der

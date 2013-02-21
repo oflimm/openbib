@@ -6,7 +6,7 @@
 #
 #  Konverierung der einfach aufgebauter CVS-Daten in das Meta-Format
 #
-#  Dieses File ist (C) 1999-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1999-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -174,7 +174,7 @@ while ($csv->getline ($in)){
     }
 
     if ($convconfig->{defaultmediatype}){
-        push @{$title_ref->{'0800'}}, {
+        push @{$title_ref->{'4410'}}, {
             mult     => 1,
             subfield => '',
             content  => $convconfig->{defaultmediatype},

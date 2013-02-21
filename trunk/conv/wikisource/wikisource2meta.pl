@@ -7,7 +7,7 @@
 #  Konvertierung der Textdaten des Wikisource Formates in das OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2013 Oliver Flimm <flimm@openbib.org>
 #
 #                      und
 #
@@ -472,7 +472,7 @@ sub parse_titset {
     }   
 
     # Jeder Titel ist Digital
-    push @{$title_ref->{'0800'}}, {
+    push @{$title_ref->{'4410'}}, {
         mult     => 1,
         subfield => '',
         content  => 'Digital',

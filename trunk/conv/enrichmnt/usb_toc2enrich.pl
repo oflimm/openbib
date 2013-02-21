@@ -150,8 +150,8 @@ foreach my $thisisbn (keys %{$isbn_ref}){
     # Dublette Inhalte entfernen
     my %seen_terms = ();
     my @unique_urls = grep { ! $seen_terms{$_} ++ } @{$isbn_ref->{$thisisbn}}; 
-
-    foreach my $thisurl (@unique_urls){
+ 
+   foreach my $thisurl (@unique_urls){
         push @{$enrich_data_ref},
             {
                 isbn     => $thisisbn,

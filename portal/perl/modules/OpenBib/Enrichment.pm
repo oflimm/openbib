@@ -132,20 +132,22 @@ sub get_enriched_content {
                 isbn => $isbn,
             },
             {
-                group_by => ['field','content','mult'],
-                order_by => ['field','mult'],
+                select => ['field','content'],
+                group_by => ['field','content','subfield','origin'],
+                order_by => ['field','subfield'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
     }
     elsif ($issn){
-        my $titles = $self->{schema}->resultset('EnrichedContentByIsbn')->search(
+        $titles = $self->{schema}->resultset('EnrichedContentByIsbn')->search(
             {
                 issn => $issn,
             },
             {
-                group_by => ['field','content','mult'],
-                order_by => ['field','mult'],
+                select => ['field','content'],
+                group_by => ['field','content','mult','subfield','origin'],
+                order_by => ['field','subfield'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );

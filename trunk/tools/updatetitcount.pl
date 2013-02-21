@@ -96,7 +96,7 @@ foreach $database (@databases){
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'"
 	my $journalcount = $catalog->{schema}->resultset('TitleField')->search(
 	    {
-		'field'                   => '0800',
+		'field'                   => '4410',
 		'content'                 => 'Zeitschrift/Serie',
 	    },
 	    {
@@ -111,7 +111,7 @@ foreach $database (@databases){
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'"
 	my $articlecount = $catalog->{schema}->resultset('TitleField')->search(
 	    {
-		'field'                   => '0800',
+		'field'                   => '4410',
 		'content'                 => 'Aufsatz',
 	    },
 	    {
@@ -126,7 +126,7 @@ foreach $database (@databases){
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Digital'"
 	my $digitalcount = $catalog->{schema}->resultset('TitleField')->search(
 	    {
-		'field'                   => '0800',
+		'field'                   => '4410',
 		'content'                 => 'Digital',
 	    },
 	    {

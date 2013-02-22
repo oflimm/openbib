@@ -1011,7 +1011,7 @@ sub get_bibliographic_counters {
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'"
 	$title_journalcount = $self->{schema}->resultset('TitleField')->search(
 	    {
-		'field'                   => '0800',
+		'field'                   => '4410',
 		'content'                 => 'Zeitschrift/Serie',
 	    },
 	    {
@@ -1026,7 +1026,7 @@ sub get_bibliographic_counters {
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'"
 	$title_articlecount = $self->{schema}->resultset('TitleField')->search(
 	    {
-		'field'                   => '0800',
+		'field'                   => '4410',
 		'content'                 => 'Aufsatz',
 	    },
 	    {
@@ -1041,7 +1041,7 @@ sub get_bibliographic_counters {
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Digital'"
 	$title_digitalcount = $self->{schema}->resultset('TitleField')->search(
 	    {
-		'field'                   => '0800',
+		'field'                   => '4410',
 		'content'                 => 'Digital',
 	    },
 	    {

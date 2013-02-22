@@ -48,7 +48,7 @@ use OpenBib::Config;
 use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 
-my ($database,$sync,$genmex,$help,$keepfiles,$logfile,$loglevel);
+my ($database,$sync,$genmex,$help,$keepfiles,$logfile,$loglevel,$updatemaster);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
@@ -56,6 +56,7 @@ my ($database,$sync,$genmex,$help,$keepfiles,$logfile,$loglevel);
 	    "sync"            => \$sync,
             "gen-mex"         => \$genmex,
             "keep-files"      => \$keepfiles,
+            "update-master"   => \$updatemaster,
 	    "help"            => \$help
 	    );
 
@@ -478,14 +479,14 @@ else {
 
 # Titelanzahl in Datenbank festhalten
 
-{
+if ($updatemaster){
     $logger->info("### $database: Updating Titcount");    
     system("$config->{'base_dir'}/bin/updatetitcount.pl --database=$database");
 }
 
 # ISBNs etc. zentral merken
 
-{
+if ($updatemaster){
     $logger->info("### $database: Updating All-ISBN table");    
     system("$config->{'base_dir'}/bin/update_all_isbn_table.pl --database=$database");
 }
@@ -539,7 +540,12 @@ autoconv.pl - Automatisches Update der Katalogdaten in OpenBib aus dem Metaforma
    -help                 : Diese Informationsseite
        
    -sync                 : Hole Pool automatisch ueber das Netz
+   -gen-mex              : Exemplardaten aus den Titeldaten erzeugen (obsolet)
    --database=...        : Angegebenen Katalog verwenden
+   --loglevel=[DEBUG|..] : Loglevel aendern
+   --logfile=...         : Logdateinamen aendern
+   -update-master        : Aktualisierung Titelzahl/ISBN-Vergabe in zentraler Datenbank
+   -keep-files           : Temporaere Dateien in data-Verzeichnis nicht loeschen
 
    Datenbankabhaengige Filter:
 

@@ -38,12 +38,13 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 
-my ($logfile,$loglevel,$cluster);
+my ($logfile,$loglevel,$cluster,$updatemaster);
 
 &GetOptions(
     "cluster"       => \$cluster,
     "logfile=s"     => \$logfile,
     "loglevel=s"    => \$loglevel,
+    "update-master" => \$updatemaster,
     );
 
 my $config = OpenBib::Config->new;
@@ -151,13 +152,13 @@ sub update_single {
 
     $logger->info("### VUBPDA");
 
-    autoconvert({ sync => 1, databases => ['vubpda'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['vubpda'] });
 
     ##############################
 
     $logger->info("### Standard-Institutskataloge");
 
-    autoconvert({ blacklist => $blacklist_ref, sync => 1, autoconv => 1});
+    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
 
     return $thread_description;
 }
@@ -169,55 +170,55 @@ sub update_dependent {
 
     $logger->info("### Master: USB Katalog");
     
-    autoconvert({ sync => 1, databases => ['inst001'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
     
     ##############################
     
     $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
     
-    autoconvert({ sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'wiso','usbsab','usbhwa'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'wiso','usbsab','usbhwa'] });
     
     ##############################
     
     $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
     
-    autoconvert({ sync => 1, databases => ['afrikaans','alff','baeumker','becker','dante','digitalis','dirksen','evang','fichte','gabel','gruen','gymnasialbibliothek','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','baeumker','becker','dante','digitalis','dirksen','evang','fichte','gabel','gruen','gymnasialbibliothek','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
     
     ##############################
 
     $logger->info("### Master: inst301");
     
-    autoconvert({ sync => 1, databases => ['inst301'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst301'] });
     
     ##############################
     
     $logger->info("### Aufgesplittete Kataloge inst301");
     
-    autoconvert({ sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst319','inst320','inst321','inst324','inst325'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst319','inst320','inst321','inst324','inst325'] });
 
     ##############################
 
     $logger->info("### Master: inst420master");
     
-    autoconvert({ sync => 1, databases => ['inst420master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst420master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete Kataloge inst420");
     
-    autoconvert({ sync => 1, databases => ['inst420','inst421','inst422','inst423'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst420','inst421','inst422','inst423'] });
     
     ##############################
 
     $logger->info("### Master: inst323, inst137");
     
-    autoconvert({ sync => 1, databases => ['inst323','inst137'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst323','inst137'] });
 
     ##############################
     
     $logger->info("### Sammlungen aus dem Universitaet");
     
-    autoconvert({ sync => 1, databases => ['alekiddr','digitalis'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alekiddr','digitalis'] });
     
     ##############################
     
@@ -246,6 +247,9 @@ sub autoconvert {
     my $autoconv        = exists $arg_ref->{autoconv}
         ? $arg_ref->{autoconv}              : 0;
 
+    my $updatemaster    = exists $arg_ref->{updatemaster}
+        ? $arg_ref->{updatemaster}          : 0;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -253,6 +257,7 @@ sub autoconvert {
     push @ac_cmd, "/opt/openbib/autoconv/bin/autoconv.pl";
     push @ac_cmd, "-sync"    if ($sync); 
     push @ac_cmd, "-gen-mex" if ($genmex);
+    push @ac_cmd, "-update-master" if ($updatemaster);
 
     my $ac_cmd_base = join(' ',@ac_cmd);
 

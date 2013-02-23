@@ -1,0 +1,30 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_swtset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Schlagwortsatz
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                 'S0800', # msg.maketext("S0800") Ansetzung
+                 'S0820', # msg.maketext("S0820") Alternative Ansetzung
+                 'S0830', # msg.maketext("S0830") Verweisung
+                 'S0850', # msg.maketext("S0850") Übergeordnet
+                 'S0860', # msg.maketext("S0860") Assoziiert
+                 'S0870', # msg.maketext("S0870") Früher
+                 'S0880', # msg.maketext("S0880") Später
+                 'S0805', # msg.maketext("S0805") Definition
+                 'S0806', # msg.maketext("S0806") Hinweise
+                 'S0807', # msg.maketext("S0807") Quelle
+                 'S0810', # msg.maketext("S0810") Systematikzuordnung
+                 'S5000', # msg.maketext("S5000") Anzahl Titel 
+                ];
+
+%]

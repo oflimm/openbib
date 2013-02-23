@@ -1,0 +1,28 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_profile_record_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Profiles
+#
+#######################################################################
+-%]
+[%-
+
+this_json_output = {
+   link = {
+         rel = 'self'
+         href = location
+   }
+
+   profilename = profileinfo.profilename
+   description = profileinfo.description
+};
+
+to_json(this_json_output) ;
+
+-%]

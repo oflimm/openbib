@@ -1,0 +1,142 @@
+@media all
+{
+
+  body {
+    background:#9eff84 url("/images/openbib/bg_green.png") repeat-x top left fixed;
+  }
+
+  footer {
+    margin: 0.5em 0 0 0;
+/*    background: #e8fca4;
+    color: #444; */
+    padding: 0.5em;
+    background: #e8fca4;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#e8fca4), to(#c9ff0f));
+    background: -moz-linear-gradient(top,  #e8fca4,  #c9ff0f);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8fca4', endColorstr='#c9ff0f');
+    
+    
+    border: 1px #e8fca4 solid;
+  }
+
+  .ym-vlist li.active {
+    background-color:#e8fca4;
+   /* background-color:#e8fc4a;  */
+    color: #444444;
+  }
+
+  .ym-vlist li ul li a, .ym-vlist li ul li a:visited {
+    background-color: #f5ffd1;
+    color: #333333;
+}
+  .ym-hlist {
+    padding: 0px;
+    margin-left:0px;
+    width: auto;
+    background: #e8fca4;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#e8fca4), to(#c9ff0f));
+    background: -moz-linear-gradient(top,  #e8fca4,  #c9ff0f);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8fca4', endColorstr='#c9ff0f');
+    
+    
+    border: 1px #e8fca4 solid;
+  }
+
+  .ym-hlist ul li a, .ym-hlist ul li strong {  
+    text-shadow: none !important;
+  }
+
+  header {
+    padding-bottom:70px;  
+  }
+
+  header #logo {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  }
+
+  header #institution {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    with: 30%;
+  }
+
+
+  #header_logo_image {
+    background: url(/images/openbib/views/alekiddr/logo.png) center no-repeat;
+    width: 1000px;
+    height: 100px;
+    position: absolute;
+    top: 35px;
+    left: 0px;
+  }
+
+/*
+  #header_institution_image {
+    background: url(/images/openbib/views/alekiddr/aleki_logo.png) center no-repeat;
+    width: 111px;
+    height: 90px;
+    position: absolute;
+    top: 30px;
+    right: 10px;
+  }
+*/
+  .details {
+    padding-top: 1em;
+  }
+
+  .images {
+    padding-top: 1em;
+  }
+
+  .ym-form {
+    background: #fff;
+  }
+
+  .ob-items dt {
+    background: #e8fca4;
+  }
+
+  .ob-reuse_data, .ob-discover_sources, .ob-session_history {
+      background: #e8fca4;
+      border: 1px solid #c9ff0f ;
+      padding: 15px;
+
+/*
+      border-top-left-radius: 60px 90px;
+      border-bottom-right-radius: 60px 90px;
+
+      box-shadow: 64px 64px 24px 40px #888
+      12px 12px 0px 18px #888 inset;
+*/
+/*
+      box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4)
+      12px 12px 0px 18px rgba(0,0,0,0.4) inset;
+
+      -moz-box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4)
+      12px 12px 0px 18px rgba(0,0,0,0.4) inset;
+
+      -webkit-box-shadow: 64px 64px 24px 40px rgba(0,0,0,0.4)
+      12px 12px 0px 18px rgba(0,0,0,0.4) inset;
+*/
+
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      -moz-box-shadow: 5px 5px 5px black;
+      -webkit-box-shadow: 5px 5px 5px black;
+      box-shadow: 5px 5px 5px black;
+
+/*
+      -moz-box-shadow: 10px 10px 5px #888;
+      -webkit-box-shadow: 10px 10px 5px #888;
+      box-shadow: 10px 10px 5px #888; */
+  }
+
+}

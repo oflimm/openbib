@@ -1,0 +1,2135 @@
+---
+'01': 'Allgemeines'
+'01.00': Allgemeines
+'01.10': 'Bibliographie: Allgemeines'
+'01.11': 'Allgemeinbibliographien, Universalbibliographien'
+'01.14': 'Nationalbibliographien, Regionalbibliographien'
+'01.18': Spezialbibliographien
+'01.20': 'Allgemeine Nachschlagewerke: Allgemeines'
+'01.22': 'Allgemeinenzyklopädien, Universallexika'
+'01.24': Adressbücher
+'01.25': Abkürzungsverzeichnisse
+'01.29': 'Allgemeine Nachschlagewerke: Sonstiges'
+'01.30': 'Biographie, biographisches Nachschlagewerk'
+'01.31': Biographische Nachschlagewerke
+'01.40': Allgemeine Sammelwerke
+'01.99': 'Allgemeines: Sonstiges'
+'02': 'Wissenschaft und Kultur allgemein'
+'02.00': 'Wissenschaft und Kultur allgemein: Allgemeines'
+'02.01': Geschichte der Wissenschaft und Kultur
+'02.02': Wissenschaftstheorie
+'02.10': Wissenschaft und Gesellschaft
+'02.13': Wissenschaftspraxis
+'02.14': Organisation von Wissenschaft und Kultur
+'02.15': 'Wissenschaftspolitik, Kulturpolitik'
+'02.16': Wissenschaftliche und kulturelle Zusammenarbeit
+'02.20': Wissenschaftsinformation
+'02.30': Museumskunde
+'02.40': Futurologie
+'02.50': Esoterik
+'02.60': 'Freimaurerei'
+'02.99': 'Wissenschaft und Kultur allgemein: Sonstiges'
+'05': 'Kommunikationswissenschaft'
+'05.00': 'Kommunikationswissenschaft: Allgemeines'
+'05.01': 'Geschichte der Kommunikationswissenschaft'
+'05.02': 'Kommunikationstheorie'
+'05.04': 'Ausbildung, Beruf, Organisationen'
+'05.12': Kommunikationsprozesse
+'05.15': Leseforschung
+'05.20': Kommunikation und Gesellschaft
+'05.30': 'Massenkommunikation, Massenmedien: Allgemeines'
+'05.31': Öffentlichkeit
+'05.32': Öffentliche Meinung
+'05.33': Pressewesen
+'05.34': Rundfunk allgemein
+'05.35': Hörfunk
+'05.36': Fernsehen
+'05.37': 'Film, Video'
+'05.38': Neue elektronische Medien
+'05.39': 'Massenkommunikation, Massenmedien: Sonstiges'
+'05.40': Nachrichtenwesen
+'05.42': Telekommunikation
+'05.99': 'Kommunikationswissenschaft: Sonstiges'
+'06': Information und Dokumentation
+'06.00': 'Information und Dokumentation: Allgemeines'
+'06.01': 'Geschichte des Informations- und Dokumentationswesens'
+'06.04': 'Ausbildung, Beruf, Organisationen'
+'06.10': 'Handschriftenkunde: Allgemeines'
+'06.11': 'Abendländische Handschriftenkunde: Allgemeines'
+'06.12': 'Kodikologie'
+'06.13': 'Paläographie'
+'06.14': 'Kataloge, Inventare'
+'06.15': Faksimiles
+'06.16': 'Abendländische Handschriftenkunde: Sonstiges'
+'06.17': 'Orientalische Handschriftenkunde'
+'06.18': 'Schrift, Schreiben'
+'06.19': 'Handschriftenkunde: Sonstiges'
+'06.20': 'Buchwesen: Allgemeines'
+'06.21': 'Buchgeschichte'
+'06.22': Buchgestaltung
+'06.23': 'Buchproduktion, Buchrestaurierung'
+'06.24': 'Bibliophilie, private Buchsammlungen'
+'06.25': Buchhandel
+'06.29': 'Buchwesen: Sonstiges'
+'06.30': 'Bibliothekswesen, Dokumentationswesen: Allgemeines'
+'06.35': 'Informationsmanagement'
+'06.38': Kooperation
+'06.40': 'Bibliotheksarten, IuD-Einrichtungen: Allgemeines'
+'06.41': 'Wissenschaftliche Bibliotheken'
+'06.42': 'Öffentliche Bibliotheken'
+'06.43': 'Spezialbibliotheken'
+'06.44': 'IuD-Einrichtungen'
+'06.49': 'Bibliotheksarten, IuD-Einrichtungen: Sonstiges'
+'06.50': Bibliotheksverwaltung
+'06.51': 'Bibliothekstechnik, Bibliothekseinrichtung'
+'06.53': 'Erwerbung, Bestandsaufbau'
+'06.54': 'Bibliotheksautomatisierung'
+'06.60': 'Bibliotheksbenutzung'
+'06.70': 'Katalogisierung, Bestandserschließung'
+'06.74': Informationssysteme
+'06.80': Bibliothekskataloge
+'06.90': 'Archive, Archivkunde'
+'06.99': 'Information und Dokumentation: Sonstiges'
+'08': Philosophie
+'08.00': 'Philosophie: Allgemeines'
+'08.03': Grundlagen und Methoden der Philosophie
+'08.04': 'Ausbildung, Beruf, Organisationen'
+'08.10': 'Nichtwestliche Philosophie: Allgemeines'
+'08.20': 'Geschichte der westlichen Philosophie: Allgemeines'
+'08.21': 'Griechische Philosophie, römische Philosophie'
+'08.22': Mittelalterliche Philosophie
+'08.23': Philosophie der Renaissance
+'08.24': ' Neue westliche Philosophie'
+'08.25': Zeitgenössische westliche Philosophie
+'08.30': 'Systematische Philosophie: Allgemeines'
+'08.31': 'Metaphysik, Ontologie'
+'08.32': Erkenntnistheorie
+'08.33': Logik
+'08.34': 'Sprachphilosophie'
+'08.36': Philosophische Anthropologie
+'08.37': 'Religionsphilosophie'
+'08.38': Ethik
+'08.41': Ästhetik
+'08.42': Kulturphilosophie
+'08.43': 'Geschichtsphilosophie'
+'08.44': Sozialphilosophie
+'08.45': Politische Philosophie
+'08.46': Naturphilosophie
+'08.47': Pseudophilosophie
+'08.49': 'Systematische Philosophie: Sonstiges'
+'08.99': 'Philosophie: Sonstiges'
+'10': 'Geisteswissenschaften allgemein'
+'10.00': 'Geisteswissenschaften allgemein: Allgemeines'
+'10.01': ' Geschichte der Geisteswissenschaften'
+'10.02': Philosophie und Theorie der Geisteswissenschaften
+'10.03': 'Methoden und Techniken der geisteswissenschaftlichen Forschung'
+'10.04': 'Ausbildung, Beruf, Organisationen'
+'10.99': 'Geisteswissenschaften allgemein: Sonstiges'
+'11': 'Theologie, Religionswissenschaft'
+'11.00': 'Theologie, Religionswissenschaft: Allgemeines'
+'11.01': 'Systematische Religionswissenschaft: Allgemeines'
+'11.04': 'Ausbildung, Beruf, Organisationen'
+'11.05': Religionssoziologie
+'11.06': Religionspsychologie
+'11.07': Interreligiöse Beziehungen
+'11.08': 'Religionskritik, Atheismus'
+'11.09': 'Systematische Religionswissenschaft: Sonstiges'
+'11.10': 'Antike Religionen: Allgemeines'
+'11.11': Ägyptische Religion
+'11.12': Mesopotamische Religion
+'11.13': Kanaanäische Religion
+'11.14': Persische Religion
+'11.15': Griechische Religion
+'11.16': Hellenistische Religion
+'11.17': Römische Religion
+'11.19': 'Antike Religionen: Sonstiges'
+'11.20': 'Judentum: Allgemeines'
+'11.21': Prärabbinisches Judentum
+'11.22': Rabbinica
+'11.23': 'Ritus, religiöse Gebräuche'
+'11.24': Jüdisch-christliche Beziehungen
+'11.29': 'Judentum: Sonstiges'
+'11.30': 'Bibel: Allgemeines'
+'11.31': 'Bibeltext, Bibelübersetzungen'
+'11.33': 'Textkritik, historische Kritik'
+'11.34': 'Exegese, Hermeneutik'
+'11.36': Biblische Theologie
+'11.37': 'Apokryphen, Pseudepigraphen'
+'11.38': Altes Testament
+'11.39': 'Textkritik, historische Kritik'
+'11.40': 'Exegese, Hermeneutik'
+'11.41': 'Theologie des Alten Testaments'
+'11.43': 'Altes Testament in Beziehung zu anderen Kulturen'
+'11.44': Neues Testament
+'11.45': 'Textkritik, historische Kritik'
+'11.46': 'Exegese, Hermeneutik'
+'11.47': Theologie des Neuen Testaments
+'11.48': Kulturgeschichtlicher Hintergrund
+'11.49': 'Bibel: Sonstiges'
+'11.50': 'Kirchengeschichte, Dogmengeschichte'
+'11.51': Frühes Christentum
+'11.52': Mittelalterliches Christentum
+'11.53': 'Neuzeitliches Christentum'
+'11.54': Katholizismus
+'11.55': 'Protestantismus'
+'11.57': 'Ostchristentum'
+'11.58': Sonstige christliche Gemeinschaften
+'11.60': 'Systematische Theologie: Allgemeines'
+'11.61': 'Dogmatik, Konfessionskunde'
+'11.62': Christliche Ethik
+'11.63': Christliche Erbauungsliteratur
+'11.69': 'Systematische Theologie: Sonstiges'
+'11.70': 'Praktische Theologie: Allgemeines'
+'11.71': Seelsorge
+'11.72': Kirchliche Soziologie
+'11.73': Kirchenorganisation
+'11.74': Liturgik
+'11.75': 'Homiletik'
+'11.76': 'Geistliches Amt'
+'11.77': Religionspädagogik
+'11.78': Missionswissenschaft
+'11.79': 'Praktische Theologie: Sonstiges'
+'11.80': 'Islam: Allgemeines'
+'11.81': 'Koran'
+'11.82': Traditionsliteratur
+'11.83': 'Strömungen, Glaubensrichtungen'
+'11.84': 'Islam: Sonstiges'
+'11.87': Chinesische Religionen
+'11.88': 'Schintoismus'
+'11.90': 'Indische Religionen: Allgemeines'
+'11.91': 'Vedismus, Brahmanismus'
+'11.92': 'Hinduismus'
+'11.93': 'Buddhismus'
+'11.94': 'Indische Religionen: Sonstiges'
+'11.97': 'Neue religiöse Bewegungen, Sekten'
+'11.98': Sonstige Religionen
+'11.99': 'Theologie, Religionswissenschaft: Sonstiges'
+'15': Geschichte
+'15.00': 'Geschichte: Allgemeines'
+'15.01': Historiographie
+'15.03': ' Theorie und Methoden der Geschichtswissenschaft'
+'15.04': 'Ausbildung, Beruf, Organisationen'
+'15.06': Politische Geschichte
+'15.07': Kulturgeschichte
+'15.08': Sozialgeschichte
+'15.09': Wirtschaftsgeschichte
+'15.10': Historische Hilfswissenschaften
+'15.11': ' Chronologie'
+'15.12': 'Genealogie, Heraldik'
+'15.13': 'Numismatik, Sphragistik'
+'15.14': 'Diplomatik, Epigraphik'
+'15.15': 'Archäologie'
+'15.16': 'Altorientalische Archäologie, christliche Archäologie'
+'15.17': Klassische Archäologie
+'15.18': 'Mittelalterliche Archäologie, neuzeitliche Archäologie'
+'15.19': 'Vor- und Frühgeschichte'
+'15.20': Allgemeine Weltgeschichte
+'15.21': Geschichte großer Gebietsräume
+'15.22': Geschichte der Entdeckungen
+'15.23': 'Erster Weltkrieg'
+'15.24': 'Zweiter Weltkrieg'
+'15.25': Alte Geschichte
+'15.26': 'Alter Orient, Nordafrika'
+'15.27': Griechische Welt
+'15.28': Römisches Reich
+'15.29': 'Byzantinisches Reich'
+'15.30': 'Europäische Geschichte in Mittelalter und Neuzeit: Allgemeines'
+'15.31': Frühes Mittelalter
+'15.32': 'Fränkisches Reich'
+'15.33': 'Hoch- und Spätmittelalter'
+'15.34': Europäische Geschichte 1492-1789
+'15.35': Europäische Geschichte 1789-1815
+'15.36': Europäische Geschichte 1815-1914
+'15.37': Europäische Geschichte 1914-1945
+'15.38': 'Europäische Geschichte nach 1945'
+'15.40': 'Deutsche Geschichte: Allgemeines'
+'15.41': Deutsche Geschichte bis 1499
+'15.42': Deutsche Geschichte 1500-1800
+'15.43': 'Deutsche Geschichte des 19. und 20. Jahrhunderts'
+'15.45': 'Geschichte der deutschen Länder und Städte: Allgemeines'
+'15.46': 'Brandenburg, Preußen, Berlin'
+'15.47': 'Mecklenburg-Vorpommern, Pommern'
+'15.48': 'Sachsen, Sachsen-Anhalt, Thüringen'
+'15.49': Ostmitteleuropa
+'15.50': 'Schleswig-Holstein, Lübeck, Hamburg'
+'15.51': 'Niedersachsen, Bremen'
+'15.52': Hessen
+'15.53': Nordrhein-Westfalen
+'15.54': 'Rheinland-Pfalz, Saarland'
+'15.55': Baden-Württemberg
+'15.56': Bayern
+'15.60': 'Schweiz, Österreich-Ungarn, Österreich'
+'15.61': 'Tschechien, Slowakei, Ungarn'
+'15.62': 'Skandinavien, Nordeuropa'
+'15.63': 'Belgien, Niederlande, Luxemburg'
+'15.64': 'Großbritannien, Irland'
+'15.65': Frankreich
+'15.66': 'Spanien, Portugal'
+'15.67': Italien
+'15.68': Türkei
+'15.69': Griechenland
+'15.70': Balkanstaaten
+'15.71': Osteuropa
+'15.72': Polen
+'15.73': Baltische Republiken
+'15.74': Russland
+'15.75': 'Asien: Allgemeines'
+'15.76': Vorderer und mittlerer Orient
+'15.77': Indischer Subkontinent
+'15.78': Südostasien
+'15.79': China
+'15.80': Japan
+'15.81': Korea
+'15.85': 'Amerika: Allgemeines'
+'15.86': Kanada
+'15.87': USA
+'15.88': 'Mittelamerika, Südamerika'
+'15.90': 'Afrika: Allgemeines'
+'15.91': Nordafrika
+'15.92': Afrika südlich der Sahara
+'15.95': 'Australien, Neuseeland, Ozeanien'
+'15.96': Geschichte des jüdischen Volkes außerhalb des Staates Israel
+'15.99': 'Geschichte: Sonstiges'
+'17': 'Sprach- und Literaturwissenschaft'
+'17.00': 'Sprach- und Literaturwissenschaft: Allgemeines'
+'17.01': 'Geschichte der Sprach- und Literaturwissenschaft'
+'17.03': 'Theorie und Methoden der Sprach- und Literaturwissenschaft'
+'17.04': 'Ausbildung, Beruf, Organisationen'
+'17.06': 'Sprachwissenschaft: Allgemeines'
+'17.08': Semiotik
+'17.10': Sprache in Beziehung zu anderen Bereichen der Wissenschaft und Kultur
+'17.13': Sprachtypologie
+'17.14': Vergleichende Sprachwissenschaft
+'17.15': Historische Linguistik
+'17.16': 'Etymologie'
+'17.18': Dialektologie
+'17.20': 'Soziolinguistik: Allgemeines'
+'17.22': 'Sprachlenkung, Sprachpolitik'
+'17.23': Mehrsprachigkeit
+'17.24': 'Gruppensprachen, Fachsprachen, Sondersprachen'
+'17.25': 'Soziolinguistik: Sonstiges'
+'17.28': Ethnolinguistik
+'17.30': 'Psycholinguistik: Allgemeines'
+'17.31': Spracherwerb
+'17.34': 'Psycholinguistik: Sonstiges'
+'17.35': Neurolinguistik
+'17.40': 'Angewandte Sprachwissenschaft: Allgemeines'
+'17.41': Sprachdidaktik
+'17.42': Sprachbeherrschung
+'17.43': 'Zweitsprachenerwerb'
+'17.45': Übersetzungswissenschaft
+'17.46': Mathematische Linguistik
+'17.49': 'Angewandte Sprachwissenschaft: Sonstiges'
+'17.50': 'Allgemeine Grammatik'
+'17.51': 'Einzelne Theorien der Grammatik'
+'17.52': 'Syntax'
+'17.53': 'Phonetik, Phonologie'
+'17.54': Orthographie
+'17.55': 'Morphologie, Wortbildung'
+'17.56': Semantik
+'17.57': Namenkunde
+'17.59': Lexikologie
+'17.60': Lexikographie
+'17.61': 'Pragmatik, Sprechakttheorie'
+'17.62': 'Rhetorik, Stilistik'
+'17.63': Textlinguistik
+'17.69': 'Sprachwissenschaft: Sonstiges'
+'17.70': 'Literaturwissenschaft: Allgemeines'
+'17.71': Literaturgeschichte
+'17.73': 'Literaturtheorie: Allgemeines'
+'17.74': Literaturwissenschaftliche Richtungen
+'17.75': Literaturkritik
+'17.77': 'Stilistik, Rhetorik'
+'17.78': Textkritik
+'17.80': 'Literarische Gattungen: Allgemeines'
+'17.81': 'Epik, Prosa'
+'17.82': Dramatik
+'17.83': Lyrik
+'17.84': Sonstige literarische Gattungen
+'17.87': Besondere Literaturkategorien
+'17.89': 'Literaturtheorie: Sonstiges'
+'17.90': Literatur in Beziehung zu anderen Bereichen von Wissenschaft und Kultur
+'17.91': Literatursoziologie
+'17.92': 'Vergleichende Literaturwissenschaft: Allgemeines'
+'17.93': 'Literarische Stoffe, literarische Motive, literarische Themen'
+'17.94': 'Literarische Einflüsse und Beziehungen, Rezeption'
+'17.95': Literarische Übersetzung
+'17.96': 'Vergleichende Literaturwissenschaft: Sonstiges'
+'17.97': Texte einzelner Autoren
+'17.98': Textsammlungen
+'17.99': 'Literaturwissenschaft: Sonstiges'
+'18': 'Einzelne Sprachen und Literaturen'
+'18.00': Sprache und Literatur allgemein
+'18.01': 'Indogermanische Sprachen und Literaturen: Allgemeines'
+'18.02': 'Germanische Sprachen und Literaturen: Allgemeines'
+'18.03': 'Englische Sprache und Literatur'
+'18.04': 'Englische Sprache'
+'18.05': Englische Literatur
+'18.06': 'Angloamerikanische Literatur'
+'18.07': Englische Literatur außerhalb Großbritanniens und der USA
+'18.08': 'Deutsche Sprache und Literatur'
+'18.09': 'Deutsche Sprache'
+'18.10': 'Deutsche Literatur'
+'18.11': 'Niederländische Sprache und Literatur'
+'18.12': 'Niederländische Sprache'
+'18.13': 'Niederländische Literatur'
+'18.15': Skandinavische Sprachen und Literaturen
+'18.16': 'Norwegische Sprache und Literatur'
+'18.17': 'Schwedische Sprache und Literatur'
+'18.18': 'Dänische Sprache und Literatur'
+'18.19': 'Germanische Sprachen und Literaturen: Sonstiges'
+'18.20': 'Romanische Sprachen und Literaturen: Allgemeines'
+'18.21': 'Französische Sprache und Literatur'
+'18.22': 'Französische Sprache'
+'18.23': 'Französische Literatur'
+'18.24': Französische Literatur außerhalb Europas
+'18.25': 'Italienische Sprache und Literatur'
+'18.26': 'Italienische Sprache'
+'18.27': 'Italienische Literatur'
+'18.30': 'Spanische Sprache und Literatur'
+'18.31': Spanische Sprache
+'18.32': 'Spanische Literatur'
+'18.33': Spanische Literatur außerhalb Spaniens
+'18.34': Katalanische Sprache und Literatur
+'18.35': 'Portugiesische Sprache und Literatur'
+'18.36': 'Portugiesische Sprache'
+'18.37': 'Portugiesische Literatur'
+'18.38': Portugiesische Literatur außerhalb Portugals
+'18.39': 'Romanische Sprachen und Literaturen: Sonstiges'
+'18.40': 'Klassische Sprachen und Literaturen: Allgemeines'
+'18.41': Griechische Sprache
+'18.42': Klassische griechische Literatur
+'18.43': 'Byzantinische Sprache und Literatur'
+'18.44': 'Lateinische Sprache'
+'18.45': 'Klassische lateinische Literatur'
+'18.46': 'Mittellateinische Literatur'
+'18.47': 'Neulateinische Literatur'
+'18.48': 'Neugriechische Sprache und Literatur'
+'18.50': 'Slawische Sprachen und Literaturen: Allgemeines'
+'18.51': 'Ostslawische Sprachen und Literaturen: Allgemeines'
+'18.52': 'Russische Sprache'
+'18.53': 'Russische Literatur'
+'18.54': 'Ostslawische Sprachen und Literaturen: Sonstiges'
+'18.55': 'Westslawische Sprachen und Literaturen: Allgemeines'
+'18.56': 'Tschechische Sprache und Literatur'
+'18.57': 'Slowakische Sprache und Literatur'
+'18.58': 'Polnische Sprache und Literatur'
+'18.59': 'Westslawische Sprachen und Literaturen: Sonstiges'
+'18.60': 'Südslawische Sprachen und Literaturen'
+'18.61': 'Bulgarische Sprache und Literatur'
+'18.62': 'Makedonische Sprache und Literatur'
+'18.63': 'Serbokroatische Sprache und Literatur'
+'18.64': 'Slowenische Sprache und Literatur'
+'18.65': Baltische Sprachen und Literaturen
+'18.66': Indische Sprachen und Literaturen
+'18.67': 'Sanskrit: Sprache und Literatur'
+'18.68': 'Mittelindische Sprachen und Literaturen, neuindische Sprachen und Literaturen'
+'18.69': Iranische Sprachen und Literaturen
+'18.70': 'Indogermanische Sprachen und Literaturen: Sonstiges'
+'18.71': 'Hamito-semitische Sprachen und Literaturen: Allgemeines'
+'18.72': Ägyptische Sprache und Literatur
+'18.73': 'Semitische Sprachen und Literaturen: Allgemeines'
+'18.74': Arabische Sprache und Literatur
+'18.75': Hebräische Sprache und Literatur
+'18.77': Neuhebräische Sprache und Literatur
+'18.78': 'Semitische Sprachen und Literaturen: Sonstiges'
+'18.79': 'Hamito-semitische Sprachen und Literaturen: Sonstiges'
+'18.80': 'Uralaltaische Sprachen und Literaturen: Allgemeines'
+'18.81': Uralische Sprachen und Literaturen
+'18.82': 'Finno-ugrische Sprachen und Literaturen'
+'18.83': 'Ungarische Sprache und Literatur'
+'18.84': 'Finnische Sprache und Literatur'
+'18.85': 'Estnische Sprache und Literatur'
+'18.86': Altaische Sprachen und Literaturen
+'18.87': 'Türkische Sprachen und Literaturen'
+'18.88': 'Koreanische Sprache und Literatur'
+'18.89': 'Uralaltaische Sprachen und Literaturen: Sonstiges'
+'18.90': 'Chinesische Sprache und Literatur'
+'18.91': 'Japanische Sprache und Literatur'
+'18.92': Sonstige asiatische Sprachen und Literaturen
+'18.93': 'Indianersprachen und -literaturen, Eskimosprachen und -literaturen'
+'18.94': 'Afrikanische Sprachen und Literaturen'
+'18.95': 'Austronesische Sprachen und Literaturen, australische Sprachen und Literaturen'
+'18.97': Künstliche Weltsprachen
+'18.99': Sonstige Sprachen und Literaturen
+'20': 'Kunstwissenschaften'
+'20.00': 'Kunstwissenschaften: Allgemeines'
+'20.01': 'Geschichte der Kunstwissenschaften'
+'20.03': Methoden und Techniken der Kunstwissenschaften
+'20.04': 'Ausbildung, Beruf, Organisationen'
+'20.05': 'Kunst in Beziehung zu anderen Wissenschaftsgebieten'
+'20.06': 'Kunstphilosophie, Kunsttheorie'
+'20.07': 'Kunstkritik, Kunstinterpretation'
+'20.08': 'Kunstpsychologie'
+'20.10': Kunst und Gesellschaft
+'20.11': Kunstsammlung
+'20.12': Kunstmuseum
+'20.13': Kunstausstellung
+'20.14': Kunsthandel
+'20.15': 'Restaurierung, Konservierung, Fälschung'
+'20.16': Kunstförderung
+'20.20': Ikonographie
+'20.21': 'Religion, Magie'
+'20.22': Natur
+'20.23': Mensch
+'20.24': 'Gesellschaft, Kultur'
+'20.25': Abstraktes
+'20.26': Geschichte
+'20.27': Bibel
+'20.28': Literatur
+'20.29': Antike Mythologie
+'20.30': 'Kunstgeschichte: Allgemeines'
+'20.31': Bildende Künstler
+'20.33': 'Volkskunst'
+'20.40': Außereuropäische Kunst
+'20.41': 'Asiatische Kunst'
+'20.48': 'Jüdische Kunst'
+'20.49': 'Hinduistische Kunst'
+'20.50': 'Islamische Kunst'
+'20.51': 'Buddhistische Kunst'
+'20.52': 'Afrikanische Kunst'
+'20.54': Amerikanische Kunst
+'20.56': Australische Kunst
+'20.60': 'Kunst der Antike: Allgemeines'
+'20.61': 'Griechische Kunst'
+'20.62': 'Italische Kunst, etruskische Kunst, römische Kunst'
+'20.63': 'Spätantike Kunst, frühchristliche Kunst, byzantinische Kunst'
+'20.64': 'Kunst der Völkerwanderungszeit'
+'20.69': 'Kunst der Antike: Sonstiges'
+'20.70': 'Europäische Kunst: Allgemeines'
+'20.89': 'Kunstgeschichte: Sonstiges'
+'20.99': 'Kunstwissenschaften: Sonstiges'
+'21': 'Einzelne Kunstformen'
+'21.00': 'Malerei: Allgemeines'
+'21.01': 'Maltechnik, Malmaterial'
+'21.02': Geschichte der Malerei
+'21.10': Miniaturmalerei
+'21.11': Wandmalerei
+'21.12': Glasmalerei
+'21.13': Tafelmalerei
+'21.19': 'Malerei: Sonstiges'
+'21.20': 'Zeichnung: Allgemeines'
+'21.21': 'Zeichentechnik, Zeichenmaterial'
+'21.22': Geschichte der Zeichnung
+'21.29': 'Zeichnung: Sonstiges'
+'21.30': 'Graphik: Allgemeines'
+'21.31': 'Graphische Technik, Graphisches Materia'
+'21.32': 'Geschichte der Graphik'
+'21.37': Graphikdesign
+'21.39': 'Graphik: Sonstiges'
+'21.40': 'Photographie: Allgemeines'
+'21.41': 'Photographische Technik, photographisches Material'
+'21.42': Geschichte der Photographie
+'21.49': 'Photographie: Sonstiges'
+'21.50': 'Bildhauerei: Allgemeines'
+'21.51': 'Bildhauertechnik, Bildhauermaterial'
+'21.52': Geschichte der Bildhauerei
+'21.59': 'Bildhauerei: Sonstiges'
+'21.60': 'Baugeschichte: Allgemeines'
+'21.70': Geschichte der Sakralbaukunst
+'21.71': Geschichte öffentlicher Bauten
+'21.72': Wohnungsbaugeschichte
+'21.73': 'Stadtbaugeschichte, Geschichte ländlicher Siedlungen'
+'21.74': 'Landschaftsgestaltung, Gartenkunst'
+'21.75': 'Denkmalpflege, Stadtbildpflege'
+'21.79': 'Baugeschichte: Sonstiges'
+'21.80': 'Kunsthandwerk, Kunstgewerbe: Allgemeines'
+'21.81': 'Geschichte des Kunsthandwerks und Kunstgewerbes'
+'21.82': Industriedesign
+'21.83': Ornamentik
+'21.84': Innenarchitektur
+'21.85': Modedesign
+'21.86': Textilkunst
+'21.87': Holzkunst
+'21.88': Keramik
+'21.90': Glaskunst
+'21.91': Metallkunst
+'21.92': Edelmetallkunst
+'21.93': Schriftkunst
+'21.97': 'Kunsthandwerk, Kunstgewerbe: Sonstiges'
+'21.98': Mediale Kunst
+'21.99': Sonstige Kunstformen
+'24': 'Theater, Film, Musik'
+'24.00': 'Theater, Film, Musik: Allgemeines'
+'24.01': Darstellende Künstler
+'24.02': 'Theater: Allgemeines'
+'24.03': Theorie und Ästhetik des Theaters
+'24.04': 'Ausbildung, Beruf, Organisationen'
+'24.05': 'Systematische Theaterwissenschaft'
+'24.06': 'Theatergeschichte'
+'24.07': 'Theatereinrichtung, Bühnentechnik'
+'24.08': 'Theatersoziologie, Theaterpsychologie'
+'24.10': Schauspielkunst
+'24.12': 'Regie, Dramaturgie'
+'24.13': 'Theatergattungen, Theatersparten'
+'24.15': 'Tanzkunst, Bewegungskunst'
+'24.23': 'Kleinkunst, Kabarett, Revue'
+'24.24': 'Puppenspiel, Marionettenspiel'
+'24.25': 'Varieté, Zirkus'
+'24.29': 'Theater: Sonstiges'
+'24.30': 'Film: Allgemeines'
+'24.31': Systematische Filmwissenschaft
+'24.32': 'Filmgeschichte'
+'24.33': 'Filmproduktion, Filmtechnik'
+'24.34': 'Filmgattungen, Filmsparten'
+'24.37': 'Film: Sonstiges'
+'24.38': 'Fernsehen, Hörfunk'
+'24.40': 'Musik: Allgemeines'
+'24.41': 'Ausbildung, Beruf, Organisationen'
+'24.42': 'Systematische Musikwissenschaft: Allgemeines'
+'24.43': 'Musikphilosophie, Musikästhetik'
+'24.44': 'Musikpsychologie'
+'24.45': Musiksoziologie
+'24.46': Musikalische Akustik
+'24.49': 'Systematische Musikwissenschaft: Sonstiges'
+'24.50': Historische Musikwissenschaft
+'24.55': 'Komponisten, Musiker, Sänger'
+'24.60': 'Musikformen, Musikgattungen: Allgemeines'
+'24.61': Vokalmusik
+'24.62': 'Musiktheater, Theatermusik'
+'24.63': Unterhaltungsmusik
+'24.64': Instrumentalmusik
+'24.65': 'Jazzmusik, Popmusik, Rockmusik'
+'24.66': 'Religiöse Musik, geistliche Musik'
+'24.68': 'Musikformen, Musikgattungen: Sonstiges'
+'24.75': 'Musiktheorie'
+'24.76': Kompositionslehre
+'24.77': Musikinterpretation
+'24.80': 'Musikinstrumente und ihre Musik: Allgemeines'
+'24.81': 'Tasteninstrumente'
+'24.82': 'Saiteninstrumente'
+'24.83': 'Blasinstrumente'
+'24.84': 'Schlaginstrumente'
+'24.85': 'Mechanische Musikinstrumente, elektronische Musikinstrumente'
+'24.89': 'Musikinstrumente und ihre Musik: Sonstiges'
+'24.90': Gesangskunst
+'24.98': 'Musik: Sonstiges'
+'24.99': 'Theater, Film, Musik: Sonstiges'
+'30': 'Naturwissenschaften allgemein'
+'30.00': 'Naturwissenschaften allgemein: Allgemeines'
+'30.01': 'Geschichte der Naturwissenschaften'
+'30.02': Philosophie und Theorie der Naturwissenschaften
+'30.03': Methoden und Techniken in den Naturwissenschaften
+'30.04': 'Ausbildung, Beruf, Organisationen'
+'30.10': Systemtheorie
+'30.20': Nichtlineare Dynamik
+'30.30': 'Naturwissenschaften in Beziehung zu anderen Fachgebieten'
+'30.99': 'Naturwissenschaften allgemein: Sonstiges'
+'31': 'Mathematik'
+'31.00': 'Mathematik: Allgemeines'
+'31.01': 'Geschichte der Mathematik'
+'31.02': Philosophie und Wissenschaftstheorie der Mathematik
+'31.04': 'Ausbildung, Beruf, Organisationen'
+'31.08': Unterhaltungsmathematik
+'31.10': 'Mathematische Logik, Mengenlehre'
+'31.11': 'Ordnungen, allgemeine mathematische Systeme'
+'31.12': 'Kombinatorik, Graphentheorie'
+'31.14': Zahlentheorie
+'31.20': 'Algebra: Allgemeines'
+'31.21': Gruppentheorie
+'31.23': 'Ideale, Ringe, Moduln, Algebren'
+'31.24': 'Körper, Polynome'
+'31.25': 'Lineare Algebra, multilineare Algebra'
+'31.27': Kategorientheorie
+'31.29': 'Algebra: Sonstiges'
+'31.30': 'Topologische Gruppen, Liegruppen'
+'31.35': Harmonische Analyse
+'31.40': 'Analysis: Allgemeines'
+'31.41': Reelle Analysis
+'31.42': Funktionen mit einer komplexen Variablen
+'31.43': Funktionen mit mehreren komplexen Variablen
+'31.44': 'Gewöhnliche Differentialgleichungen'
+'31.45': 'Partielle Differentialgleichungen'
+'31.46': Funktionalanalysis
+'31.47': Operatortheorie
+'31.48': 'Variationsrechnung'
+'31.49': 'Analysis: Sonstiges'
+'31.50': 'Geometrie: Allgemeines'
+'31.51': 'Algebraische Geometrie'
+'31.52': Differentialgeometrie
+'31.55': 'Globale Analysis'
+'31.59': 'Geometrie: Sonstiges'
+'31.60': 'Topologie: Allgemeines'
+'31.61': Algebraische Topologie
+'31.62': Kategorielle Topologie
+'31.65': 'Mannigfaltigkeiten, Zellkomplexe'
+'31.69': 'Topologie: Sonstiges'
+'31.70': Wahrscheinlichkeitsrechnung
+'31.73': Mathematische Statistik
+'31.76': Numerische Mathematik
+'31.78': 'Fuzzy-Mengen, Fuzzy-Theorie'
+'31.80': Angewandte Mathematik
+'31.99': 'Mathematik: Sonstiges'
+'33': Physik
+'33.00': 'Physik: Allgemeines'
+'33.01': 'Geschichte der Physik'
+'33.02': 'Philosophie der Physik'
+'33.03': 'Physikalische Einheiten, physikalische Konstanten'
+'33.04': 'Ausbildung, Beruf, Organisationen'
+'33.05': Experimentalphysik
+'33.06': Mathematische Methoden der Physik
+'33.07': Spektroskopie
+'33.09': Physik unter besonderen Bedingungen
+'33.10': 'Theoretische Physik: Allgemeines'
+'33.11': Mechanik
+'33.12': Akustik
+'33.14': Kontinuumsphysik
+'33.16': 'Elektrizität, Magnetismus'
+'33.18': Optik
+'33.19': 'Theoretische Physik: Sonstiges'
+'33.20': 'Moderne Physik: Allgemeines'
+'33.21': 'Relativität, Gravitation'
+'33.23': Quantenphysik
+'33.24': Quantenfeldtheorie
+'33.25': 'Thermodynamik, statistische Physik'
+'33.28': 'Transportvorgänge, irreversible Thermodynamik'
+'33.29': 'Moderne Physik: Sonstiges'
+'33.30': 'Atomphysik, Molekülphysik'
+'33.38': 'Quantenoptik, nichtlineare Optik'
+'33.40': 'Kernphysik'
+'33.43': 'Radioaktivität'
+'33.46': Hochenergie-Kernphysik
+'33.50': 'Physik der Elementarteilchen und Felder: Allgemeines'
+'33.52': Feldtheorien
+'33.56': Elementarteilchenphysik
+'33.59': 'Physik der Elementarteilchen und Felder: Sonstiges'
+'33.60': 'Kondensierte Materie: Allgemeines'
+'33.61': Festkörperphysik
+'33.62': 'Mechanische Eigenschaften, akustische Eigenschaften, thermische Eigenschaften'
+'33.64': 'Zustandsgleichungen, Phasenübergänge'
+'33.66': 'Amorpher Zustand, Gläser'
+'33.68': 'Oberflächen, Dünne Schichten, Grenzflächen'
+'33.69': Flüssigkeiten
+'33.70': Flüssigkristalle
+'33.72': Halbleiterphysik
+'33.74': Supraleitung
+'33.75': Magnetische Materialien
+'33.77': 'Dielektrika'
+'33.79': 'Kondensierte Materie: Sonstiges'
+'33.80': 'Plasmaphysik'
+'33.81': Kernfusion
+'33.90': Physik in Beziehung zu anderen Fachgebieten
+'33.99': 'Physik: Sonstiges'
+'35': 'Chemie'
+'35.00': 'Chemie: Allgemeines'
+'35.01': Geschichte der Chemie
+'35.02': Philosophie der Chemie
+'35.04': 'Ausbildung, Beruf, Organisationen'
+'35.05': 'Mathematische Chemie, chemische Statistik'
+'35.06': Computeranwendungen
+'35.07': 'Chemisches Labor, chemische Methoden'
+'35.08': Sicherheit im Labor
+'35.10': 'Physikalische Chemie: Allgemeines'
+'35.11': 'Quantenchemie, chemische Bindung'
+'35.12': 'Chemische Thermodynamik, Phasenlehre'
+'35.13': Reaktionskinetik
+'35.14': 'Elektrochemie'
+'35.15': Radiochemie
+'35.16': Photochemie
+'35.17': 'Katalyse'
+'35.18': 'Kolloidchemie, Grenzflächenchemie'
+'35.19': Austauschreaktionen
+'35.20': Magnetochemie
+'35.21': 'Lösungen, Flüssigkeiten'
+'35.22': 'Physikalische Chemie: Sonstiges'
+'35.23': 'Analytische Chemie: Allgemeines'
+'35.24': Klassische analytische Chemie
+'35.25': Spektrochemische Analyse
+'35.26': 'Massenspektrometrie'
+'35.27': 'Elektrochemische Analyse'
+'35.28': 'Radiochemische Analyse'
+'35.29': 'Chromatographische Analyse, Elektrophorese'
+'35.30': 'Mikroanalyse, Spurenanalyse'
+'35.31': 'Anorganische Analyse'
+'35.33': 'Organische Analyse'
+'35.39': 'Analytische Chemie: Sonstiges'
+'35.40': 'Anorganische Chemie: Allgemeines'
+'35.41': 'Anorganische Reaktionen, Stereochemie'
+'35.42': 'Präparative Anorganische Chemie'
+'35.43': 'Koordinationsverbindungen, Komplexchemie'
+'35.44': 'Alkalimetalle, Erdalkalimetalle und ihre Verbindungen'
+'35.45': Übergangselemente und ihre Verbindungen
+'35.46': Halogene und ihre Verbindungen
+'35.47': Chalkogene und ihre Verbindungen
+'35.48': Sonstige anorganische Elemente und ihre Verbindungen
+'35.49': 'Anorganische Chemie: Sonstiges'
+'35.50': 'Organische Chemie: Allgemeines'
+'35.51': 'Organische Reaktionen, Stereochemie'
+'35.52': 'Präparative Organische Chemie'
+'35.53': 'Supramolekulare Chemie'
+'35.55': 'Aliphatische Verbindungen'
+'35.57': Isocyclische Verbindungen
+'35.59': Heterocyclische Verbindungen
+'35.60': 'Metallorganische Verbindungen'
+'35.61': Funktionelle Gruppen
+'35.62': 'Aminosäuren, Peptide, Eiweiße'
+'35.63': Kohlenhydrate
+'35.65': Nukleinsäuren
+'35.66': 'Terpene, Steroide, Alkaloide'
+'35.68': 'Organische Verbindungen: Sonstiges'
+'35.69': 'Organische Chemie: Sonstiges'
+'35.70': 'Biochemie: Allgemeines'
+'35.71': 'Biochemische Methoden'
+'35.72': Bioenergetik
+'35.73': 'Biochemische Reaktionen'
+'35.74': 'Enzyme, Hormone, Vitamine'
+'35.75': Nukleinsäuren
+'35.76': 'Aminosäuren, Peptide, Eiweiße'
+'35.77': Kohlenhydrate
+'35.78': Lipide
+'35.79': 'Biochemie: Sonstiges'
+'35.80': Makromolekulare Chemie
+'35.90': Festkörperchemie
+'35.99': 'Chemie: Sonstiges'
+'38': 'Geowissenschaften'
+'38.00': 'Geowissenschaften: Allgemeines'
+'38.01': 'Geschichte der Geowissenschaften'
+'38.03': Methoden und Techniken der Geowissenschaften
+'38.04': 'Ausbildung, Beruf, Organisationen'
+'38.09': Physische Geographie
+'38.10': 'Geologie: Allgemeines'
+'38.15': 'Historische Geologie: Allgemeines'
+'38.16': 'Stratigraphie'
+'38.17': Geochronologie
+'38.19': 'Historische Geologie: Sonstiges'
+'38.20': 'Paläontologie: Allgemeines'
+'38.21': Paläobotanik
+'38.22': 'Paläozoologie'
+'38.23': Palökologie
+'38.24': 'Paläontologie: Sonstiges'
+'38.25': 'Petrologie: Allgemeines'
+'38.26': Magmatische Gesteine
+'38.27': Metamorphe Gesteine
+'38.28': Sedimentgesteine
+'38.29': 'Petrologie: Sonstiges'
+'38.30': Mineralogie
+'38.31': Kristallographie
+'38.32': 'Geochemie'
+'38.35': 'Endogene Geologie: Allgemeines'
+'38.36': 'Tektonik'
+'38.37': 'Magmatismus, Vulkanologie'
+'38.38': Seismologie
+'38.39': 'Endogene Geologie: Sonstiges'
+'38.40': 'Exogene Geologie: Allgemeines'
+'38.41': Sedimentation
+'38.42': 'Verwitterung, Erosion'
+'38.43': 'Gletscherkunde'
+'38.44': 'Exogene Geologie: Sonstiges'
+'38.45': 'Geomorphologie'
+'38.46': 'Karsterscheinungen, Speläologie'
+'38.47': Moore
+'38.48': Marine Geologie
+'38.49': Glazialmorphologie
+'38.50': 'Geologie mineralischer Rohstoffe: Allgemeines'
+'38.51': Geologie fossiler Brennstoffe
+'38.52': 'Geologie der Erze'
+'38.53': 'Geologie der Industrieminerale'
+'38.54': 'Geologie mineralischer Rohstoffe: Sonstiges'
+'38.55': Regionale Geologie
+'38.58': Geomechanik
+'38.59': 'Geologie: Sonstiges'
+'38.60': 'Bodenkunde: Allgemeines'
+'38.61': 'Bodenbildung, Bodenentwicklung'
+'38.63': Bodeneigenschaften
+'38.65': 'Bodengenetik, Bodensystematik'
+'38.69': 'Bodenkunde: Sonstiges'
+'38.70': 'Geophysik: Allgemeines'
+'38.71': 'Geomagnetik, Geoelektrik, Geothermie'
+'38.72': Seismik
+'38.73': Geodäsie
+'38.79': 'Geophysik: Sonstiges'
+'38.80': 'Meteorologie: Allgemeines'
+'38.81': Atmosphäre
+'38.82': Klimatologie
+'38.84': 'Meteorologie: Sonstiges'
+'38.85': 'Hydrologie: Allgemeines'
+'38.86': Grundwasser
+'38.87': 'Oberflächenwasser'
+'38.88': 'Regionale Hydrologie'
+'38.89': 'Hydrologie: Sonstiges'
+'38.90': 'Ozeanologie, Ozeanographie'
+'38.95': 'Umweltgeologie, Geoökologie'
+'38.99': 'Geowissenschaften: Sonstiges'
+'39': 'Astronomie'
+'39.00': 'Astronomie: Allgemeines'
+'39.01': Geschichte der Astronomie
+'39.02': 'Philosophie und Theorie der Astronomie'
+'39.04': 'Ausbildung, Beruf, Organisationen'
+'39.10': 'Praktische Astronomie: Allgemeines'
+'39.11': 'Astronomische Beobachtung, Observatorien, Planetarien'
+'39.12': 'Astronomische Instrumente'
+'39.13': Radioastronomie
+'39.19': 'Praktische Astronomie: Sonstiges'
+'39.20': 'Theoretische Astronomie: Allgemeines'
+'39.22': Astrophysik
+'39.23': 'Himmelsmechanik, Astrodynamik'
+'39.29': 'Theoretische Astronomie: Sonstiges'
+'39.30': Kosmologie
+'39.40': 'Sternsysteme, Sterne'
+'39.41': 'Extragalaktische Systeme, Galaxien'
+'39.42': 'Milchstraßensystem'
+'39.43': Interstellare Materie
+'39.50': 'Sonnensystem: Allgemeines'
+'39.51': 'Sonne'
+'39.52': 'Mond'
+'39.53': 'Planeten'
+'39.54': Interplanetare Materie
+'39.59': 'Sonnensystem: Sonstiges'
+'39.99': 'Astronomie: Sonstiges'
+'42': 'Biologie'
+'42.00': 'Biologie: Allgemeines'
+'42.01': 'Geschichte der Biologie'
+'42.02': Philosophie und Theorie der Biologie
+'42.03': Methoden und Techniken der Biologie
+'42.04': 'Ausbildung, Beruf, Organisationen'
+'42.05': Naturgeschichte
+'42.07': Biogeographie
+'42.10': Theoretische Biologie
+'42.11': 'Biomathematik, Biokybernetik'
+'42.12': Biophysik
+'42.13': Molekularbiologie
+'42.14': 'Strahlenbiologie'
+'42.15': Zellbiologie
+'42.17': Allgemeine Physiologie
+'42.18': 'Physiologie der Enzyme, Hormone, Sekrete'
+'42.20': Genetik
+'42.21': Evolution
+'42.22': 'Exobiologie'
+'42.23': Entwicklungsbiologie
+'42.25': Spezielle Biologie
+'42.30': Mikrobiologie
+'42.32': Virologie
+'42.35': Protistologie
+'42.36': Parasitologie
+'42.38': 'Botanik: Allgemeines'
+'42.40': 'Pflanzencytologie, , Pflanzenhistologie, Pflanzenmorphologie'
+'42.41': Pflanzenphysiologie
+'42.42': 'Fortpflanzung, Entwicklung'
+'42.43': Pflanzengenetik
+'42.44': 'Pflanzengeographie, Pflanzenökologie, Pflanzensoziologie'
+'42.45': 'Botanische Gärten, Herbarien'
+'42.47': 'Spezielle Botanik: Allgemeines'
+'42.48': Kryptogamen
+'42.49': Prokaryota
+'42.50': Phycophyta
+'42.51': 'Mycophyta, Lichenes'
+'42.52': Bryophyta
+'42.53': Pteridophyta
+'42.54': Spermatophyta
+'42.55': Gymnospermae
+'42.56': Angiospermae
+'42.57': Monocotyledoneae
+'42.58': Dicotyledoneae
+'42.59': 'Botanik: Sonstiges'
+'42.60': 'Zoologie: Allgemeines'
+'42.61': 'Tiercytologie, Tierhistologie'
+'42.62': 'Tiermorphologie, Tieranatomie'
+'42.63': Tierphysiologie
+'42.64': Tiergenetik
+'42.65': 'Tiergeographie, Tierökologie'
+'42.66': Ethologie
+'42.67': 'Fortpflanzung, Entwicklung'
+'42.68': 'Tiergärten, Aquarien, Terrarien'
+'42.69': 'Spezielle Zoologie: Allgemeines'
+'42.70': Protozoa
+'42.71': 'Invertebrata: Allgemeines'
+'42.72': 'Porifera, Coelenterata'
+'42.73': Mollusca
+'42.74': Articulata
+'42.75': Insecta
+'42.76': 'Plathelminthes, Aschelminthes, Nemertini'
+'42.78': Echinodermata
+'42.79': 'Invertebrata: Sonstiges'
+'42.80': 'Vertebrata: Allgemeines'
+'42.81': Pisces
+'42.82': 'Amphibia, Reptilia'
+'42.83': Aves
+'42.84': Mammalia
+'42.86': 'Spezielle Zoologie: Sonstiges'
+'42.88': Physische Anthropologie
+'42.89': 'Zoologie: Sonstiges'
+'42.90': 'Ökologie: Allgemeines'
+'42.91': Terrestrische Ökologie
+'42.92': 'Hydrobiologie'
+'42.93': 'Limnologie'
+'42.94': 'Meeresbiologie'
+'42.97': 'Ökologie: Sonstiges'
+'42.99': 'Biologie: Sonstiges'
+'43': 'Umweltforschung, Umweltschutz'
+'43.00': 'Umweltforschung, Umweltschutz: Allgemeines'
+'43.01': 'Geschichte der Umweltforschung und des Umweltschutzes'
+'43.02': Philosophie und Theorie der Umweltforschung und des Umweltschutzes
+'43.03': Methoden der Umweltforschung und des Umweltschutzes
+'43.04': 'Ausbildung, Beruf, Organisationen'
+'43.11': Umweltüberwachung
+'43.12': Umweltchemie
+'43.13': Umwelttoxikologie
+'43.30': 'Umweltpolitik'
+'43.31': Naturschutz
+'43.33': 'Umweltfreundliche Nutzung natürlicher Ressourcen'
+'43.35': 'Umweltrichtlinien, Umweltnormen'
+'43.47': Globale Umweltprobleme
+'43.48': Regionale Umweltprobleme
+'43.50': Umweltbelastungen
+'43.61': 'Umweltbelastung durch Land- und Forstwirtschaft'
+'43.62': 'Umweltbelastung durch Transport und Verkehr'
+'43.63': 'Umweltbelastung durch Industrie, Bergbau und Energieerzeugung'
+'43.64': 'Umweltbelastung durch Städtebau'
+'43.65': Umweltbelastung durch Freizeit und Erholung
+'43.66': 'Umweltbelastung durch private Haushalte'
+'43.68': Umweltbelastung durch Strahlung
+'43.69': 'Umweltbelastung durch sonstige Ursachen'
+'43.70': 'Entwicklungsländer und Umwelt'
+'43.99': 'Umweltforschung, Umweltschutz: Sonstiges'
+'44': 'Medizin'
+'44.00': 'Medizin: Allgemeines'
+'44.01': 'Geschichte der Medizin'
+'44.02': Philosophie und Theorie der Medizin
+'44.03': Methoden und Techniken der Medizin
+'44.04': 'Ausbildung, Beruf, Organisationen'
+'44.05': 'Gesundheitsökonomie'
+'44.06': 'Medizinsoziologie'
+'44.07': Medizinische Psychologie
+'44.08': Medizinische Meteorologie
+'44.09': Medizintechnik
+'44.10': 'Gesundheitswesen: Allgemeines'
+'44.11': Präventivmedizin
+'44.12': 'Arbeitsmedizin, betriebliches Gesundheitswesen'
+'44.13': Medizinische Ökologie
+'44.14': Gesundheitsvorsorge
+'44.15': Medizinische Grundversorgung
+'44.17': 'Stationäres Gesundheitswesen, Krankenhauswesen'
+'44.19': 'Gesundheitswesen: Sonstiges'
+'44.20': 'Persönliche Gesundheitspflege, Körperhygiene'
+'44.21': Ernährung
+'44.30': 'Medizinische Grundlagenfächer: Allgemeines'
+'44.31': 'Medizinische Physik'
+'44.32': 'Medizinische Mathematik, medizinische Statistik'
+'44.33': Physiologische Chemie
+'44.34': 'Anatomie'
+'44.35': Histologie
+'44.36': 'Embryologie'
+'44.37': Physiologie
+'44.38': Pharmakologie
+'44.39': Toxikologie
+'44.40': 'Pharmazie, Pharmazeutika'
+'44.41': Pharmazeutische Biologie
+'44.42': 'Pharmazeutische Chemie'
+'44.43': Medizinische Mikrobiologie
+'44.44': Parasitologie
+'44.45': 'Immunologie'
+'44.46': Klinische Pathologie
+'44.47': Pathologie
+'44.48': Medizinische Genetik
+'44.49': 'Medizinische Grundlagenfächer: Sonstiges'
+'44.51': Diagnostik
+'44.52': Therapie
+'44.60': 'Medizinische Spezialfächer: Allgemeines'
+'44.61': 'Innere Medizin'
+'44.62': Allgemeinmedizin
+'44.63': 'Krankenpflege'
+'44.64': Radiologie
+'44.65': Chirurgie
+'44.66': Anästhesiologie
+'44.67': Kinderheilkunde
+'44.68': 'Gerontologie, Geriatrie'
+'44.69': Intensivmedizin
+'44.70': 'Sportmedizin'
+'44.71': Verkehrsmedizin
+'44.72': 'Rechtsmedizin'
+'44.73': Geomedizin
+'44.74': Sexualmedizin
+'44.75': 'Infektionskrankheiten, parasitäre Krankheiten'
+'44.76': 'Ernährungsstörungen, Mangelkrankheiten'
+'44.77': 'Stoffwechselkrankheiten'
+'44.78': Immunkrankheiten
+'44.80': 'Unfallmedizin, Notfallmedizin'
+'44.81': Onkologie
+'44.83': 'Rheumatologie, Orthopädie'
+'44.84': Pulmologie
+'44.85': 'Kardiologie, Angiologie'
+'44.86': Hämatologie
+'44.87': Gastroenterologie
+'44.88': 'Urologie, Nephrologie'
+'44.89': 'Endokrinologie'
+'44.90': Neurologie
+'44.91': 'Psychiatrie, Psychopathologie'
+'44.92': Gynäkologie
+'44.93': 'Dermatologie'
+'44.94': 'Hals-Nasen-Ohrenheilkunde'
+'44.95': 'Augenheilkunde'
+'44.96': Zahnmedizin
+'44.97': 'Medizinische Spezialfächer: Sonstiges'
+'44.98': Alternativmedizin
+'44.99': 'Medizin: Sonstiges'
+'46': 'Tiermedizin'
+'46.00': 'Tiermedizin: Allgemeines'
+'46.01': 'Geschichte der Tiermedizin'
+'46.02': Philosophie und Theorie der Tiermedizin
+'46.03': Methoden und Techniken der Tiermedizin
+'46.04': 'Ausbildung, Beruf, Organisationen'
+'46.10': Tiermedizinische Grundlagenfächer
+'46.14': 'Veterinärpharmakologie, Veterinärtoxikologie'
+'46.20': Veterinärhygiene
+'46.30': Präventive Tiermedizin
+'46.40': Veterinärpathologie
+'46.50': 'Veterinärmedizinische Mikrobiologie'
+'46.52': 'Infektionskrankheiten, parasitäre Krankheiten'
+'46.54': 'Veterinärimmunologie'
+'46.60': 'Fortpflanzung, Entwicklung'
+'46.70': Geographie der Tierkrankheiten
+'46.80': Klinische Tiermedizin
+'46.90': Versuchstierkunde
+'46.99': 'Tiermedizin: Sonstiges'
+'48': 'Land- und Forstwirtschaft'
+'48.00': 'Land- und Forstwirtschaft: Allgemeines'
+'48.01': 'Geschichte der Land- und Forstwirtschaft'
+'48.03': 'Methoden und Techniken der Land- und Forstwirtschaft'
+'48.04': 'Ausbildung, Beruf, Organisationen'
+'48.10': 'Regionale Land- und Forstwirtschaft'
+'48.16': Agrarsysteme
+'48.18': 'Land- und forstwirtschaftliche Betriebslehre'
+'48.20': 'Landtechnik, Forsttechnik'
+'48.30': Natürliche Ressourcen
+'48.32': 'Bodenkunde, Bodenbewertung'
+'48.34': 'Bewässerung, Entwässerung'
+'48.36': Bodenbearbeitung
+'48.40': Forstwirtschaft
+'48.46': Holz
+'48.47': Waldschäden
+'48.50': 'Pflanzenproduktion: Allgemeines'
+'48.52': 'Pflanzenernährung, Düngung'
+'48.54': Pflanzenpathologie
+'48.56': 'Pflanzenvermehrung'
+'48.58': Pflanzenzüchtung
+'48.59': 'Pflanzenproduktion: Sonstiges'
+'48.60': 'Tierproduktion, Tierhaltung: Allgemeines'
+'48.61': 'Tierernährung, Tierfutter'
+'48.63': 'Nützlinge, Schädlinge'
+'48.64': Tierzucht
+'48.66': Jagd
+'48.67': Fischerei
+'48.68': Aquakultur
+'48.69': 'Tierproduktion, Tierhaltung: Sonstiges'
+'48.99': 'Land- und Forstwirtschaft: Sonstiges'
+'49': 'Hauswirtschaft'
+'49.00': 'Hauswirtschaft: Allgemeines'
+'49.01': 'Geschichte der Hauswirtschaftswissenschaft'
+'49.04': 'Ausbildung, Beruf, Organisationen'
+'49.15': Wirtschaftslehre des Haushalts
+'49.20': 'Haushaltsgeräte, Haushaltstechnik'
+'49.25': 'Lebensmittelkunde, Ernährungslehre'
+'49.30': Wohnung
+'49.35': Textiles Gestalten
+'49.55': 'Gastgewerbe, Catering'
+'49.99': 'Hauswirtschaft: Sonstiges'
+'50': 'Technik allgemein'
+'50.00': 'Technik allgemein: Allgemeines'
+'50.01': Technikgeschichte
+'50.02': 'Technikphilosophie'
+'50.03': Methoden und Techniken der Ingenieurwissenschaften
+'50.04': 'Ausbildung, Beruf, Organisationen'
+'50.06': 'Patentwesen, Erfindungen'
+'50.07': 'Normung, technische Regeln'
+'50.14': Technik in Beziehung zu anderen Gebieten
+'50.15': Konstruktionslehre
+'50.16': 'Technische Zuverlässigkeit, Instandhaltung'
+'50.17': Sicherheitstechnik
+'50.20': Automatisierungstechnik
+'50.21': Messtechnik
+'50.22': Sensorik
+'50.23': 'Regelungstechnik, Steuerungstechnik'
+'50.25': Robotertechnik
+'50.30': 'Technische Physik: Allgemeines'
+'50.31': Technische Mechanik
+'50.32': 'Dynamik, Schwingungslehre'
+'50.33': Technische Strömungsmechanik
+'50.34': 'Gasdynamik, Aerodynamik'
+'50.35': Mechanik sonstiger Medien
+'50.36': Technische Akustik
+'50.37': Technische Optik
+'50.38': Technische Thermodynamik
+'50.39': 'Technische Physik: Sonstiges'
+'50.70': 'Energie: Allgemeines'
+'50.90': 'Sonstige technische Fachgebiete'
+'50.91': Wehrtechnik
+'50.92': Meerestechnik
+'50.93': Weltraumforschung
+'50.94': 'Mikrosystemtechnik, Nanotechnologie'
+'50.95': Handwerkstechnik
+'50.97': 'Technisches Spielzeug, Modellbau'
+'50.99': 'Technik allgemein: Sonstiges'
+'51': 'Werkstoffkunde'
+'51.00': 'Werkstoffkunde: Allgemeines'
+'51.01': 'Geschichte der Werkstoffkunde'
+'51.04': 'Ausbildung, Beruf, Organisationen'
+'51.10': Metallphysik
+'51.20': Werkstoffoberflächeneigenschaften
+'51.24': Korrosion
+'51.30': 'Werkstoffprüfung, Werkstoffuntersuchung'
+'51.32': Werkstoffmechanik
+'51.40': Werkstoffe für bestimmte Anwendungsgebiete
+'51.45': Werkstoffe mit besonderen Eigenschaften
+'51.50': 'Metallische Werkstoffe: Allgemeines'
+'51.52': 'Eisenwerkstoffe, Stähle'
+'51.54': Nichteisenmetalle und ihre Legierungen
+'51.60': 'Keramische Werkstoffe, Hartstoffe'
+'51.70': 'Polymerwerkstoffe, Kunststoffe'
+'51.75': 'Verbundwerkstoffe, Schichtstoffe'
+'51.79': Sonstige Werkstoffe
+'51.99': 'Werkstoffkunde: Sonstiges'
+'52': 'Maschinenbau, Energietechnik, Fertigungstechnik'
+'52.00': 'Maschinenbau, Energietechnik, Fertigungstechnik: Allgemeines'
+'52.01': 'Geschichte des Maschinenbaus, der Energie- und Fertigungstechnik'
+'52.04': 'Ausbildung, Beruf, Organisationen'
+'52.10': 'Maschinenbau: Allgemeines'
+'52.12': Tribologie
+'52.15': 'Maschinenelemente, Maschinenbaugruppen'
+'52.20': 'Antriebstechnik, Getriebelehre'
+'52.23': Fluidtechnik
+'52.25': 'Behälter, Rohrleitungen, Armaturen'
+'52.30': 'Strömungskraftmaschinen, Turbomaschinen'
+'52.35': Kolbenkraftmaschinen
+'52.38': Arbeitsmaschinen
+'52.42': 'Heizungstechnik, Lüftungstechnik, Klimatechnik'
+'52.43': Kältetechnik
+'52.47': 'Fördertechnik, Lagertechnik'
+'52.49': 'Maschinenbau: Sonstiges'
+'52.50': 'Energietechnik: Allgemeines'
+'52.51': Feuerungstechnik
+'52.52': 'Thermische Energieerzeugung, Wärmetechnik'
+'52.53': Kraftwerkstechnik
+'52.54': Wärmekraftwerke
+'52.55': 'Kerntechnik, Reaktortechnik'
+'52.56': 'Regenerative Energieformen, alternative Energieformen'
+'52.57': Energiespeicherung
+'52.58': Gastechnik
+'52.59': 'Energietechnik: Sonstiges'
+'52.70': 'Fertigungstechnik: Allgemeines'
+'52.71': Qualitätssicherung
+'52.72': Fertigungsautomatisierung
+'52.74': 'Werkstoffbearbeitung, Werkzeugmaschinen: Allgemeines'
+'52.75': Spanende Materialbearbeitung
+'52.76': Umformtechnik
+'52.77': Urformen
+'52.78': 'Oberflächentechnik, Wärmebehandlung'
+'52.79': 'Werkstoffbearbeitung, Werkzeugmaschinen: Sonstiges'
+'52.80': 'Montage, Handhabungstechnik'
+'52.82': Fügetechnik
+'52.85': 'Fertigungstechnik: Sonstiges'
+'52.86': 'Verpackungstechnik'
+'52.87': Graphische Technik
+'52.88': 'Feinwerktechnik, Mechatronik'
+'52.99': 'Maschinenbau, Energietechnik, Fertigungstechnik: Sonstiges'
+'53': 'Elektrotechnik'
+'53.00': 'Elektrotechnik: Allgemeines'
+'53.01': 'Geschichte der Elektrotechnik'
+'53.03': Methoden und Techniken der Elektrotechnik
+'53.04': 'Ausbildung, Beruf, Organisationen'
+'53.09': 'Werkstoffe der Elektrotechnik'
+'53.11': Elektromagnetische Felder
+'53.12': Bauelemente der Elektrotechnik
+'53.13': Elektrische Netzwerke und Schaltungen
+'53.15': Elektrische Messtechnik und Prüftechnik
+'53.16': 'Elektrische und elektronische Steuerungs- und Regelungssysteme'
+'53.30': 'Elektrische Energietechnik: Allgemeines'
+'53.31': Elektrische Energieübertragung
+'53.32': 'Niederspannungsanlagen, Elektroinstallation'
+'53.33': Elektrische Maschinen und Antriebe
+'53.35': 'Stromrichter, Transformatoren'
+'53.36': 'Energiedirektumwandler, elektrische Energiespeicher'
+'53.37': 'Hochspannungstechnik'
+'53.38': Lichttechnik
+'53.39': 'Elektrische Energietechnik: Sonstiges'
+'53.50': 'Elektronik: Allgemeines'
+'53.51': Bauelemente der Elektronik
+'53.52': Elektronische Schaltungen
+'53.53': 'Leiterplatten, Anschlusstechnik in der Elektronik'
+'53.54': Optoelektronik
+'53.55': Mikroelektronik
+'53.56': Halbleitertechnologie
+'53.59': 'Elektronik: Sonstiges'
+'53.70': 'Nachrichtentechnik, Kommunikationstechnik: Allgemeines'
+'53.71': Theoretische Nachrichtentechnik
+'53.72': Nachrichtenvermittlung
+'53.73': Nachrichtenübertragung
+'53.74': 'Hochfrequenztechnik, Funktechnik'
+'53.75': Optische Nachrichtentechnik
+'53.76': 'Kommunikationsdienste, Fernmeldetechnik'
+'53.77': Rundfunktechnik
+'53.78': Fernsehtechnik
+'53.79': 'Elektroakustik, Tonstudiotechnik'
+'53.82': 'Mikrowellentechnik, Höchstfrequenztechnik'
+'53.83': 'Überwachungstechnik, Leittechnik'
+'53.84': 'Ortungstechnik, Radartechnik'
+'53.89': 'Nachrichtentechnik, Kommunikationstechnik: Sonstiges'
+'53.99': 'Elektrotechnik: Sonstiges'
+'54': 'Informatik'
+'54.00': 'Informatik: Allgemeines'
+'54.01': 'Geschichte der Informatik'
+'54.04': 'Ausbildung, Beruf, Organisationen'
+'54.08': 'Informatik in Beziehung zu Mensch und Gesellschaft'
+'54.10': Theoretische Informatik
+'54.20': 'Datenverarbeitungsanlagen: Allgemeines'
+'54.21': 'Rechnerperipherie, Datenkommunikationshardware'
+'54.22': Datenspeicher
+'54.23': Rechnerhardware
+'54.25': Parallele Datenverarbeitung
+'54.26': Mikrocomputer
+'54.27': Prozessrechner
+'54.28': Nichtelektronische Datenverarbeitung
+'54.29': 'Datenverarbeitungsanlagen: Sonstiges'
+'54.30': 'Systemarchitektur: Allgemeines'
+'54.31': Rechnerarchitektur
+'54.32': Rechnerkommunikation
+'54.33': Computerbewertung
+'54.38': Computersicherheit
+'54.39': 'Systemarchitektur: Sonstiges'
+'54.50': 'Programmierung: Allgemeines'
+'54.51': Programmiermethodik
+'54.52': Software engineering
+'54.53': Programmiersprachen
+'54.54': Betriebssysteme
+'54.55': 'Auszeichnungssprachen'
+'54.59': 'Programmierung: Sonstiges'
+'54.61': Datenverarbeitungsmanagement
+'54.62': Datenstrukturen
+'54.64': Datenbanken
+'54.65': 'Webentwicklung, Webanwendungen'
+'54.70': 'Computermethodik: Allgemeines'
+'54.71': Logikprogrammierung
+'54.72': Künstliche Intelligenz
+'54.73': Computergraphik
+'54.74': Maschinelles Sehen
+'54.75': Sprachverarbeitung
+'54.76': Computersimulation
+'54.79': 'Computermethodik: Sonstiges'
+'54.80': Angewandte Informatik
+'54.81': Anwendungssoftware
+'54.82': Textverarbeitung
+'54.84': Webmanagement
+'54.87': Multimedia
+'54.88': Computer in der Freizeit
+'54.89': 'Angewandte Informatik: Sonstiges'
+'54.99': 'Informatik: Sonstiges'
+'55': 'Verkehrswesen, Verkehrstechnik'
+'55.00': 'Technik der Verkehrsmittel, Verkehrswesen: Allgemeines'
+'55.01': Geschichte des Verkehrswesens
+'55.04': 'Ausbildung, Beruf, Organisationen'
+'55.10': 'Technik der Verkehrsmittel, Transporttechnik: Allgemeines'
+'55.20': Straßenfahrzeugtechnik
+'55.21': Kraftfahrzeuge
+'55.23': 'Kraftfahrzeugwartung, Kraftfahrzeugreparatur'
+'55.24': 'Fahrzeugführung, Fahrtechnik'
+'55.30': 'Schienenfahrzeugtechnik, Eisenbahntechnik'
+'55.31': Schienenfahrzeuge
+'55.34': Bahnbetriebstechnik
+'55.39': Sonderbahnen
+'55.40': 'Schiffstechnik, Schiffbau'
+'55.41': Schiffe
+'55.44': Schiffsführung
+'55.45': 'Amphibienfahrzeuge, Luftkissenfahrzeuge'
+'55.50': Luftfahrzeugtechnik
+'55.51': Flugzeuge
+'55.54': Flugführung
+'55.59': 'Ballons, Luftschiffe, Fallschirme'
+'55.60': Raumfahrttechnik
+'55.61': Raumfahrzeuge
+'55.64': Raumfahrzeugführung
+'55.79': 'Technik der Verkehrsmittel, Transporttechnik: Sonstiges'
+'55.80': 'Verkehrswesen, Transportwesen: Allgemeines'
+'55.81': 'Personenverkehr'
+'55.82': Güterverkehr
+'55.83': 'Stadtverkehr, Nahverkehr'
+'55.84': Straßenverkehr
+'55.85': Schienenverkehr
+'55.86': 'Schiffsverkehr, Schifffahrt'
+'55.88': 'Luftverkehr, Raumfahrt'
+'55.89': 'Verkehrswesen, Transportwesen: Sonstiges'
+'55.99': 'Technik der Verkehrsmittel, Verkehrswesen: Sonstiges'
+'56': 'Bauwesen'
+'56.00': 'Bauwesen: Allgemeines'
+'56.01': Geschichte des Bauingenieurwesens
+'56.03': Methoden im Bauingenieurwesen
+'56.04': 'Ausbildung, Beruf, Organisationen'
+'56.08': Bauvorbereitung
+'56.10': 'Ingenieurhochbau: Allgemeines'
+'56.11': Baukonstruktion
+'56.12': 'Betonbau'
+'56.13': 'Stahlbau, Metallbau'
+'56.14': 'Holzbau'
+'56.15': 'Massivbau, Mauerwerksbau'
+'56.19': 'Ingenieurhochbau: Sonstiges'
+'56.20': 'Ingenieurgeologie, Bodenmechanik'
+'56.21': 'Erdbau, Tiefbau, Grundbau'
+'56.22': 'Unterirdisches Bauen, Tunnelbau'
+'56.23': 'Brückenbau'
+'56.24': Straßenbau
+'56.25': 'Schienenbahnbau, Gleisbau'
+'56.30': Wasserbau
+'56.31': 'Wasserbaugeologie, Wasserbauhydrologie'
+'56.35': 'Siedlungswasserwirtschaft, industrielle Wasserwirtschaft'
+'56.40': Baubetrieb
+'56.45': Baustoffkunde
+'56.46': 'Gebäudeausbau, Ausbaugewerke'
+'56.47': 'Gebäudeunterhaltung, Gebäudesanierung, Bauschäden'
+'56.50': Technischer Ausbau
+'56.55': 'Bauphysik, Bautenschutz'
+'56.59': 'Bauingenieurwesen, Bautechnik: Sonstiges'
+'56.60': 'Architektur: Allgemeines'
+'56.61': Architektonisches Zeichnen
+'56.62': 'Architekturtheorie, Architekturentwicklung'
+'56.63': 'Architekten, Baumeister'
+'56.64': Bauentwurfslehre
+'56.65': 'Bauökologie, Baubiologie'
+'56.66': 'Gebäudeteile'
+'56.80': 'Gebäudelehre: Allgemeines'
+'56.81': Wohnungsbau
+'56.82': 'Verwaltungsbau, Geschäftshäuser'
+'56.83': Industriebau
+'56.84': 'Schulbau, Bibliotheksbau, Museumsbau, Theaterbau'
+'56.85': 'Sportbauten, Freizeitanlagen'
+'56.86': 'Sozialbauten, Krankenhausbau'
+'56.87': 'Hotelbau, Messearchitektur'
+'56.88': Sakralbau
+'56.89': 'Gebäudelehre: Sonstiges'
+'56.90': 'Architektur: Sonstiges'
+'56.99': 'Bauwesen: Sonstiges'
+'57': 'Bergbau'
+'57.00': 'Bergbau: Allgemeines'
+'57.01': Geschichte des Bergbaus
+'57.04': 'Ausbildung, Beruf, Organisationen'
+'57.08': 'Markscheidekunde, Bergschadenskunde'
+'57.10': 'Untertagebau, Bergwerk'
+'57.11': 'Grubensicherheit, Grubenklima'
+'57.12': Tagebau
+'57.14': Meeresbergbau
+'57.18': Tiefbohrtechnik
+'57.20': Exploration und Prospektion von Bodenschätzen
+'57.30': 'Gewinnung von Bodenschätzen: Allgemeines'
+'57.31': 'Erzbergbau'
+'57.35': Gewinnung fossiler Brennstoffe
+'57.36': 'Erdölgewinnung, , Erdgasgewinnung'
+'57.37': Kohlenbergbau
+'57.40': Gewinnung von Steinen und Erden
+'57.45': Gewinnung von Salzen
+'57.49': Gewinnung sonstiger Bodenschätze
+'57.50': Aufbereitung von Bodenschätzen
+'57.60': Entsorgungsbergbau
+'57.99': 'Bergbau: Sonstiges'
+'58': 'Chemische Technik, Umwelttechnik, verschiedene Technologien'
+'58.00': 'Chemische Technik: Allgemeines'
+'58.01': Geschichte der Chemischen Technik
+'58.03': Methoden und Techniken der chemischen Technik
+'58.04': 'Ausbildung, Beruf, Organisationen'
+'58.10': 'Verfahrenstechnik: Allgemeines'
+'58.11': Mechanische Verfahrenstechnik
+'58.13': Thermische Verfahrenstechnik
+'58.14': Chemische Reaktionstechnik
+'58.16': Chemischer Anlagenbau
+'58.17': Chemische Prozesstechnik
+'58.18': Chemische Betriebstechnik
+'58.19': 'Verfahrenstechnik: Sonstiges'
+'58.20': 'Chemische Technologien: Allgemeines'
+'58.21': 'Brennstoffe, Kraftstoffe, Explosivstoffe'
+'58.22': Kunststofftechnologie
+'58.26': Technologie der Farben und Lacke
+'58.27': 'Technologie land- und forstwirtschaftlicher Chemikalien'
+'58.28': Pharmazeutische Technologie
+'58.29': 'Chemische Technologien: Sonstiges'
+'58.30': Biotechnologie
+'58.34': Lebensmitteltechnologie
+'58.40': 'Verschiedene Industriezweige: Allgemeines'
+'58.41': Hüttenwesen
+'58.45': Gesteinshüttenkunde
+'58.46': Holzindustrie
+'58.47': 'Zellstoffindustrie, Papierindustrie'
+'58.48': Textilindustrie
+'58.49': 'Verschiedene Industriezweige: Sonstiges'
+'58.50': 'Umwelttechnik: Allgemeines'
+'58.51': 'Abwassertechnik, Wasseraufbereitung'
+'58.52': 'Technischer Bodenschutz, technischer Gewässerschutz'
+'58.53': Abfallwirtschaft
+'58.54': Radioaktive Abfälle und ihre Behandlung
+'58.55': Luftreinhaltung
+'58.56': 'Lärmschutz, Erschütterungsdämpfung'
+'58.59': 'Umwelttechnik: Sonstiges'
+'58.99': 'Chemische Technik: Sonstiges'
+'70': 'Sozialwissenschaften allgemein'
+'70.00': 'Sozialwissenschaften allgemein: Allgemeines'
+'70.01': Geschichte der Sozialwissenschaften
+'70.02': Philosophie und Theorie der Sozialwissenschaften
+'70.03': 'Methoden, Techniken und Organisation der sozialwissenschaftlichen Forschung'
+'70.04': 'Ausbildung, Beruf, Organisationen'
+'70.99': 'Sozialwissenschaften allgemein: Sonstiges'
+'71': 'Soziologie'
+'71.00': 'Soziologie: Allgemeines'
+'71.01': 'Geschichte der Soziologie'
+'71.02': Theorie der Soziologie
+'71.04': 'Ausbildung, Beruf, Organisationen'
+'71.05': 'Soziologische Richtungen'
+'71.07': Soziographie
+'71.10': 'Sozialstruktur: Allgemeines'
+'71.11': Gesellschaft
+'71.12': 'Soziale Stratifikation, soziale Mobilität'
+'71.13': 'Soziales Milieu'
+'71.14': 'Städtische Gesellschaft'
+'71.15': 'Ländliche Gesellschaft'
+'71.19': 'Sozialstruktur: Sonstiges'
+'71.20': 'Formen des Zusammenlebens: Allgemeines'
+'71.21': 'Familie, Verwandtschaft'
+'71.22': Ehe
+'71.23': 'Nichteheliches Zusammenleben'
+'71.24': Alleinstehende
+'71.25': Sexualität
+'71.29': 'Formen des Zusammenlebens: Sonstiges'
+'71.30': 'Soziale Gruppen: Allgemeines'
+'71.31': Geschlechter und ihr Verhalten
+'71.32': Mann
+'71.33': Frau
+'71.34': Altersgruppen
+'71.35': 'Kindersoziologie, Jugendsoziologie'
+'71.36': Alterssoziologie
+'71.37': Ethnosoziologie
+'71.38': Soziale Bewegungen
+'71.39': 'Soziale Gruppen: Sonstiges'
+'71.40': 'Soziale Prozesse: Allgemeines'
+'71.41': 'Sozialer Wandel'
+'71.42': Wirtschaftliche Faktoren
+'71.43': Technologische Faktoren
+'71.44': Gruppenprozesse
+'71.49': 'Soziale Prozesse: Sonstiges'
+'71.50': 'Kultursoziologie: Allgemeines'
+'71.51': 'Werte, Normen'
+'71.52': Kulturelle Prozesse
+'71.59': 'Kultursoziologie: Sonstiges'
+'71.60': 'Soziale Fragen, soziale Konflikte: Allgemeines'
+'71.61': Diskriminierung
+'71.62': Ethnische Beziehungen
+'71.63': 'Minderheitenproblem'
+'71.64': 'Abweichendes Verhalten'
+'71.65': Kriminalität als soziales Problem
+'71.66': Sucht als soziales Problem
+'71.67': Sexualität als soziales Problem
+'71.68': Sozial Schwache
+'71.70': Behinderte
+'71.79': 'Soziale Fragen, soziale Konflikte: Sonstiges'
+'71.80': 'Sozialpolitik: Allgemeines'
+'71.81': Sozialhilfe
+'71.83': Wohnungspolitik
+'71.85': Soziale Sicherheit
+'71.89': 'Sozialpolitik: Sonstiges'
+'71.99': 'Soziologie: Sonstiges'
+'73': 'Ethnologie, Volkskunde'
+'73.00': 'Ethnologie: Allgemeines'
+'73.01': 'Geschichte der Ethnologie'
+'73.02': Philosophie und Theorie der Ethnologie
+'73.03': 'Methoden und Techniken der Ethnologie'
+'73.04': 'Ausbildung, Beruf, Organisationen'
+'73.05': 'Ethnologische Museen'
+'73.06': Ethnographie
+'73.07': 'Entwicklungsethnologie'
+'73.08': Regionale Ethnologie
+'73.10': 'Umwelt und Kultur, Kulturökologie: Allgemeines'
+'73.11': Natürliche Umwelt
+'73.12': Demographie
+'73.13': Siedlungsweise
+'73.19': 'Umwelt und Kultur, Kulturökologie: Sonstiges'
+'73.20': 'Materielle Kultur: Allgemeines'
+'73.21': Gebrauchsgegenstände
+'73.22': Kleidung
+'73.24': 'Behausung, Gebäude'
+'73.25': 'Ernährung, Nahrungszubereitung'
+'73.29': 'Materielle Kultur: Sonstiges'
+'73.30': 'Wirtschaftsethnologie: Allgemeines'
+'73.31': 'Bodenbau, Tierhaltung'
+'73.32': 'Jagen, Sammeln'
+'73.34': 'Gewerbe, Handel, Tausch'
+'73.39': 'Wirtschaftsethnologie: Sonstiges'
+'73.40': 'Sozialethnologie: Allgemeines'
+'73.41': Deszendenz
+'73.42': 'Altersgruppen, Initiation, Sozialisation'
+'73.43': 'Familie, Verwandtschaft, Ehe'
+'73.44': 'Sexualität, Geschlecht'
+'73.45': 'Einzelne soziale Gruppen, Außenseiter, Randgruppen'
+'73.49': 'Sozialethnologie: Sonstiges'
+'73.50': Kultureller Wandel
+'73.53': Immaterielle Kultur
+'73.55': 'Religionsethnologie: Allgemeines'
+'73.56': Mythologie
+'73.57': 'Kulte, Riten'
+'73.58': Magie
+'73.59': 'Religionsethnologie: Sonstiges'
+'73.61': Ethnotheorie
+'73.62': 'Kunstethnologie, Musikethnologie'
+'73.63': Orale Traditionen
+'73.64': 'Sprache, Kommunikation'
+'73.65': Bildung
+'73.66': 'Spiele, Feste, Bewegungskultur'
+'73.70': 'Politische Ethnologie: Allgemeines'
+'73.71': 'Recht, Normen'
+'73.72': Politische Organisationsformen
+'73.73': Ethnische Identität
+'73.74': Interethnische Beziehungen
+'73.76': 'Politische Ethnologie: Sonstiges'
+'73.78': Ethnopsychologie
+'73.79': 'Ethnologie: Sonstiges'
+'73.80': 'Volkskunde: Allgemeines'
+'73.81': 'Geschichte, Theorie und Methoden der Volkskunde'
+'73.82': 'Ausbildung, Beruf, Organisationen'
+'73.83': Regionale Volkskunde
+'73.84': Umwelt und Kultur
+'73.85': 'Materielle Kultur: Allgemeines'
+'73.86': 'Kleidung, Mode'
+'73.87': 'Architektur, Bauen, Wohnen'
+'73.88': 'Ernährung, Nahrungsmittelzubereitung'
+'73.89': 'Materielle Kultur: Sonstiges'
+'73.90': Kulturelle Aspekte von Wirtschaft und Arbeitswelt
+'73.91': Brauchtum
+'73.92': 'Lebenslauf, Familie'
+'73.93': Immaterielle Kultur
+'73.94': 'Volkswissen, Kulturtechniken'
+'73.95': 'Zeichen, Symbole'
+'73.96': Ethnische Identität
+'73.97': Interethnische Beziehungen
+'73.99': 'Volkskunde: Sonstiges'
+'74': 'Geographie, Raumordnung, Städtebau'
+'74.00': 'Geographie, Anthropogeographie: Allgemeines'
+'74.01': 'Geschichte der Geographie und Anthropogeographie'
+'74.02': 'Theorie der Geographie und Anthropogeographie'
+'74.03': Methoden und Techniken der Geographie und Anthropogeographie
+'74.04': 'Ausbildung, Beruf, Organisationen'
+'74.05': 'Reisebeschreibungen, Geschichte des Reisens'
+'74.07': Historische Geographie
+'74.08': Wirtschaftsgeographie
+'74.09': 'Sozialgeographie'
+'74.10': Politische Geographie
+'74.11': 'Kulturlandschaft'
+'74.12': 'Stadtgeographie, Siedlungsgeographie'
+'74.13': Erde
+'74.15': Großgebiete
+'74.17': Weltmeere
+'74.19': Europa
+'74.20': Deutschland
+'74.21': Asien
+'74.23': Afrika
+'74.24': Amerika
+'74.25': Nordamerika
+'74.26': 'Mittelamerika, Südamerika'
+'74.27': 'Australien, Ozeanien'
+'74.28': Polargebiete
+'74.29': 'Geographie, Anthropogeographie: Sonstiges'
+'74.30': 'Kartographie: Allgemeines'
+'74.31': Geschichte der Kartographie
+'74.35': 'Topographische Kartographie'
+'74.37': 'Thematische Kartographie'
+'74.40': Kartenherstellung
+'74.41': 'Luftaufnahmen, Photogrammetrie'
+'74.47': 'Kartengebrauch'
+'74.48': Geoinformationssysteme
+'74.49': 'Kartographie: Sonstiges'
+'74.60': 'Raumordnung, Städtebau: Allgemeines'
+'74.61': Geschichte der Raumordnung
+'74.64': 'Ausbildung, Beruf, Organisationen'
+'74.69': 'Nationale Planung, supranationale Planung'
+'74.70': Landesplanung
+'74.71': Regionalplanung
+'74.72': 'Stadtplanung, kommunale Planung'
+'74.73': 'Stadtsanierung, Stadterneuerung'
+'74.74': Ländliche Planung
+'74.75': 'Verkehrsplanung, Verkehrspolitik'
+'74.77': 'Landschaftsplanung, Landschaftspflege'
+'74.79': 'Raumordnung, Städtebau: Sonstiges'
+'74.80': Demographie
+'74.95': Bevölkerungspolitik
+'76': 'Sport, Freizeit, Erholung'
+'76.00': 'Sport, Freizeit, Erholung: Allgemeines'
+'76.01': 'Geschichte des Sports, der Freizeit und Erholung'
+'76.02': 'Philosophie und Theorie des Sports, der Freizeit und Erholung'
+'76.04': 'Ausbildung, Beruf, Organisationen'
+'76.10': 'Sport, Sportwissenschaft: Allgemeines'
+'76.11': 'Sportsoziologie, Sportpsychologie'
+'76.12': 'Biomechanik, Bewegungslehre'
+'76.13': 'Sportarten: Allgemeines'
+'76.14': Sportspiele
+'76.15': 'Leichtathletik'
+'76.16': 'Schwimmsport'
+'76.17': 'Turnen, Gymnastik'
+'76.18': 'Kraftsport, Kampfsport'
+'76.19': 'Sportarten: Sonstiges'
+'76.20': Sportorganisation
+'76.21': 'Sportvereine'
+'76.22': Sporteinrichtungen
+'76.23': 'Sportgeräte, Sportausrüstung'
+'76.24': Sport für besondere Zielgruppen
+'76.25': Wettkämpfe
+'76.29': 'Sport, Sportwissenschaft: Sonstiges'
+'76.30': Spiele
+'76.40': 'Freizeitgestaltung, Hobby: Allgemeines'
+'76.41': Gärtnern
+'76.44': 'Basteln, Heimwerken'
+'76.49': 'Freizeitgestaltung, Hobby: Sonstiges'
+'76.50': Vereinsleben
+'76.60': 'Erholung, Tourismus: Allgemeines'
+'76.61': Öffentliche Vergnügungsveranstaltungen
+'76.62': 'Freizeiteinrichtungen'
+'76.70': Touristenunterkünfte
+'76.72': 'Urlaubsgestaltung, Urlaubsreiseverhalten'
+'76.79': 'Erholung und Tourismus: Sonstiges'
+'76.99': 'Sport, Freizeit, Erholung: Sonstiges'
+'77': 'Psychologie'
+'77.00': 'Psychologie: Allgemeines'
+'77.01': 'Geschichte der Psychologie'
+'77.02': Philosophie und Theorie der Psychologie
+'77.03': Methoden und Techniken der Psychologie
+'77.04': 'Ausbildung, Beruf, Organisationen'
+'77.05': 'Experimentelle Psychologie'
+'77.08': Psychologische Diagnostik
+'77.10': 'Strömungen und Richtungen in der Psychologie: Allgemeines'
+'77.11': Bewusstseinspsychologie
+'77.12': 'Gestaltpsychologie'
+'77.13': 'Tiefenpsychologie'
+'77.14': Psychoanalyse
+'77.15': Analytische Psychologie
+'77.16': 'Individualpsychologie'
+'77.17': Neopsychoanalyse
+'77.18': 'Ich-Psychologie'
+'77.20': 'Behaviorismus'
+'77.21': 'Humanistische Psychologie'
+'77.22': Phänomenologische Psychologie
+'77.23': 'Historische Psychologie'
+'77.24': 'Kritische Psychologie'
+'77.29': 'Strömungen und Richtungen in der Psychologie: Sonstiges'
+'77.30': 'Allgemeine Psychologie: Allgemeines'
+'77.31': Kognition
+'77.34': Lernpsychologie
+'77.37': Aufmerksamkeit
+'77.40': 'Wahrnehmungspsychologie'
+'77.45': Motivationspsychologie
+'77.46': Emotion
+'77.47': Bewusstseinszustände
+'77.48': Psychomotorik
+'77.49': 'Allgemeine Psychologie: Sonstiges'
+'77.50': Psychophysiologie
+'77.51': Vergleichende Psychologie
+'77.52': Differentielle Psychologie
+'77.53': 'Entwicklungspsychologie: Allgemeines'
+'77.55': Kinderpsychologie
+'77.56': Jugendpsychologie
+'77.57': 'Erwachsenenpsychologie'
+'77.58': Alterspsychologie
+'77.59': 'Entwicklungspsychologie: Sonstiges'
+'77.60': 'Sozialpsychologie: Allgemeines'
+'77.61': 'Einstellung, Vorurteil, Beeinflussung'
+'77.62': 'Soziale Wahrnehmung, Attribution'
+'77.63': 'Soziale Interaktion, Soziale Beziehungen'
+'77.64': 'Gruppendynamik'
+'77.65': 'Massenpsychologie'
+'77.69': 'Sozialpsychologie: Sonstiges'
+'77.70': Klinische Psychologie
+'77.71': 'Behandlung, Rehabilitation: Allgemeines'
+'77.72': 'Psychotherapie: Allgemeines'
+'77.73': 'Autogenes Training, Entspannungstherapie'
+'77.74': Kognitive Psychotherapie
+'77.75': Verhaltenstherapie
+'77.76': Gruppentherapie
+'77.77': Humanistische Therapie
+'77.78': Psychoanalytische Therapie
+'77.79': 'Psychotherapie: Sonstiges'
+'77.80': Spezielle Intervention
+'77.82': Rehabilitation
+'77.83': 'Behandlung, Rehabilitation: Sonstiges'
+'77.84': Krisenbewältigung
+'77.85': Sexualpsychologie
+'77.91': Ökologische Psychologie
+'77.92': Parapsychologie
+'77.93': Angewandte Psychologie
+'77.99': 'Psychologie: Sonstiges'
+'79': 'Sozialpädagogik, Sozialarbeit'
+'79.00': 'Sozialpädagogik, Sozialarbeit: Allgemeines'
+'79.01': 'Geschichte der Sozialpädagogik und Sozialarbeit'
+'79.02': 'Theorie der Sozialpädagogik und Sozialarbeit'
+'79.03': 'Methoden und Techniken der Sozialpädagogik und Sozialarbeit'
+'79.04': 'Ausbildung, Beruf, Organisationen'
+'79.10': 'Sozialarbeit: Allgemeines'
+'79.12': Soziale Dienste
+'79.13': Altenhilfe
+'79.14': 'Behindertenhilfe'
+'79.15': 'Familienhilfe'
+'79.16': Jugendhilfe
+'79.17': 'Soziale Arbeit in Lebens- und Familienkrisen'
+'79.18': Soziale Arbeit mit Minderheiten
+'79.20': 'Resozialisierung'
+'79.21': 'Obdachlosenhilfe'
+'79.22': Soziale Arbeit mit Suchtkranken
+'79.23': 'Hilfe für Opfer von Kriegen, Katastrophen oder Unfällen'
+'79.29': 'Sozialarbeit: Sonstiges'
+'79.30': Beratungskunde
+'79.40': Betriebliche Sozialarbeit
+'79.50': Gemeinwesenarbeit
+'79.60': 'Bildungsarbeit: Allgemeines'
+'79.61': 'Klubarbeit, Stadtteilarbeit'
+'79.62': Kulturarbeit
+'79.63': Erwachsenenbildung
+'79.64': Institutionen der Erwachsenenbildung
+'79.65': Lebenslanges Lernen
+'79.69': 'Bildungsarbeit: Sonstiges'
+'79.99': 'Sozialpädagogik, Sozialarbeit: Sonstiges'
+'80': 'Pädagogik'
+'80.00': 'Pädagogik: Allgemeines'
+'80.01': Geschichte der Pädagogik und Erziehung
+'80.02': Philosophie und Theorie der Pädagogik
+'80.03': 'Methoden und Techniken der Pädagogik'
+'80.04': 'Ausbildung, Beruf, Organisationen'
+'80.10': Hauptrichtungen in der Pädagogik
+'80.20': Teilgebiete der Pädagogik
+'80.25': 'Sonderpädagogik: Allgemeines'
+'80.26': 'Geistigbehindertenpädagogik'
+'80.27': 'Körperbehindertenpädagogik'
+'80.28': 'Verhaltensgestörtenpädagogik'
+'80.29': 'Hörgeschädigtenpädagogik'
+'80.30': 'Sehgeschädigtenpädagogik'
+'80.31': Sprachheilpädagogik
+'80.34': 'Sonderpädagogik: Sonstiges'
+'80.35': 'Vergleichende Pädagogik'
+'80.36': 'Erziehung und Gesellschaft'
+'80.39': 'Teilgebiete der Pädagogik: Sonstiges'
+'80.40': 'Erziehungsinhalte: Allgemeines'
+'80.41': 'Persönlichkeitserziehung'
+'80.42': Affektive Erziehung
+'80.43': 'Intellektuelle Bildung'
+'80.44': Soziale Erziehung
+'80.45': Ethische Erziehung
+'80.46': Bewegungserziehung
+'80.47': Sexualerziehung
+'80.48': Ästhetische Erziehung
+'80.49': Medienerziehung
+'80.50': 'Gesundheitserziehung'
+'80.51': 'Religiöse Erziehung'
+'80.55': Arbeitslehre
+'80.57': Interkulturelle Erziehung
+'80.59': 'Erziehungsinhalte: Sonstiges'
+'80.60': 'Schreibunterricht, Leseunterricht'
+'80.70': Erziehungspraxis
+'80.80': 'Pädagogisches Umfeld: Allgemeines'
+'80.81': Soziales Umfeld
+'80.82': 'Erziehung innerhalb der Familie'
+'80.83': Erziehung in Erziehungseinrichtungen
+'80.89': 'Pädagogisches Umfeld: Sonstiges'
+'80.99': 'Pädagogik: Sonstiges'
+'81': 'Bildungswesen'
+'81.00': 'Bildungswesen: Allgemeines'
+'81.01': 'Geschichte des Bildungswesens'
+'81.02': Philosophie und Theorie des Bildungswesens
+'81.05': Bildungsforschung
+'81.10': 'Bildungspolitik: Allgemeines'
+'81.11': Recht auf Bildung
+'81.12': Entwicklung des Bildungswesens
+'81.13': 'Bildungsplanung'
+'81.14': 'Bildungsökonomie'
+'81.17': 'Ausbildungsförderung'
+'81.19': 'Bildungspolitik: Sonstiges'
+'81.20': 'Bildungssoziologie: Allgemeines'
+'81.21': 'Soziale Ungleichheit im Bildungswesen'
+'81.22': Geschlechterunterschied im Bildungswesen
+'81.23': Soziale Prozesse in Ausbildungssituationen
+'81.24': Bildung und Beruf
+'81.29': 'Bildungssoziologie: Sonstiges'
+'81.31': 'Lehrpersonal, Erziehungspersonal'
+'81.32': 'Elternarbeit'
+'81.40': 'Schulwesen, Hochschulwesen, Ausbildungswesen: Allgemeines'
+'81.41': 'Zulassung zu den Bildungsinstitutionen'
+'81.42': 'Unterrichtsorganisation, Ausbildungsorganisation'
+'81.43': 'Versetzung, Schulabschluss'
+'81.44': 'Schulbesuch, Studium'
+'81.45': Schulverwaltung
+'81.46': 'Bildungsberatung, Ausbildungsberatung'
+'81.49': 'Schulwesen, Hochschulwesen, Ausbildungswesen: Sonstiges'
+'81.50': 'Pädagogische Psychologie, Unterrichtspsychologie, Schulpsychologie: Allgemeines'
+'81.51': Lernprozess
+'81.52': Lernleistung
+'81.53': Lernbeurteilung
+'81.55': 'Schülerverhalten, Studentenverhalten'
+'81.57': Schulpsychologischer Dienst
+'81.58': 'Begabtenförderung'
+'81.59': 'Pädagogische Psychologie, Unterrichtspsychologie, Schulpsychologie: Sonstiges'
+'81.60': 'Unterrichtsprozess: Allgemeines'
+'81.61': 'Didaktik, Hochschuldidaktik'
+'81.62': Curriculum
+'81.64': 'Unterrichtsprozess: Sonstiges'
+'81.65': 'Lehrmittel, Lernmittel: Allgemeines'
+'81.66': Schulbuch
+'81.67': 'Audiovisuelle Medien'
+'81.68': Computereinsatz in Unterricht und Ausbildung
+'81.69': 'Lehrmittel, Lernmittel: Sonstiges'
+'81.70': 'Bildungssysteme, Bildungsinstitutionen: Allgemeines'
+'81.71': 'Öffentliche Schulen, nichtöffentliche Schulen'
+'81.72': 'Schulische Erziehung'
+'81.73': Vorschulerziehung
+'81.74': 'Grundschule, Primarstufe'
+'81.75': Sekundarstufe
+'81.76': Sekundarstufe I
+'81.77': Sekundarstufe II
+'81.78': Berufsbildendes Schulwesen
+'81.80': 'Hochschulen, Fachhochschulen'
+'81.81': Außerschulische Bildung
+'81.82': Schulen für besondere Gruppen
+'81.85': Fernunterricht
+'81.90': 'Alternative Schulformen, Privatschulen'
+'81.91': Betriebliche Berufsbildung
+'81.92': Berufliche Weiterbildung
+'81.94': 'Bildungssysteme, Bildungsinstitutionen: Sonstiges'
+'81.99': 'Bildungswesen: Sonstiges'
+'83': 'Volkswirtschaft'
+'83.00': 'Volkswirtschaft: Allgemeines'
+'83.01': Geschichte der Volkswirtschaft
+'83.02': Philosophie und Theorie der Volkswirtschaft
+'83.03': Methoden und Techniken der Volkswirtschaft
+'83.04': 'Ausbildung, Beruf, Organisationen'
+'83.05': 'Wirtschaftssoziologie, Wirtschaftspsychologie'
+'83.10': 'Wirtschaftstheorie: Allgemeines'
+'83.11': Mikroökonomie
+'83.12': Makroökonomie
+'83.13': 'Theorie der Wirtschaftspolitik, Wohlfahrtstheorie'
+'83.14': 'Einkommen, Beschäftigung, Arbeitsmarkt'
+'83.19': 'Wirtschaftstheorie: Sonstiges'
+'83.20': 'Wirtschaftssysteme: Allgemeines'
+'83.21': Marktwirtschaft
+'83.22': 'Sozialistische Wirtschaftslehre, Marxistische Wirtschaftslehre'
+'83.29': 'Wirtschaftssysteme: Sonstiges'
+'83.30': 'Wirtschaftsentwicklung, Wirtschaftsstruktur: Allgemeines'
+'83.31': Wirtschaftswachstum
+'83.32': Wettbewerb
+'83.33': Konjunktur
+'83.39': 'Wirtschaftsentwicklung, Wirtschaftsstruktur: Sonstiges'
+'83.40': 'Außenwirtschaft: Allgemeines'
+'83.44': Währung
+'83.46': Entwicklungsökonomie
+'83.48': Internationale Wirtschaftsorganisationen
+'83.49': 'Außenwirtschaft: Sonstiges'
+'83.50': 'Geld, Inflation, Kapitalmarkt'
+'83.52': Finanzwissenschaft
+'83.60': 'Wirtschaftssektoren: Allgemeines'
+'83.63': 'Volkswirtschaftliche Ressourcen, Umweltökonomie'
+'83.64': Regionalwirtschaft
+'83.65': Versorgungswirtschaft
+'83.66': Agrarwirtschaft
+'83.67': Produzierendes Gewerbe
+'83.68': 'Dienstleistungen: Allgemeines'
+'83.70': 'Banken, Versicherungen'
+'83.71': 'Handel'
+'83.72': Verkehrswirtschaft
+'83.73': 'Dienstleistungen: Sonstiges'
+'83.79': 'Wirtschaftssektoren: Sonstiges'
+'83.99': 'Volkswirtschaft: Sonstiges'
+'85': 'Betriebswirtschaft'
+'85.00': 'Betriebswirtschaft: Allgemeines'
+'85.01': Geschichte der Betriebswirtschaft
+'85.02': Philosophie und Theorie der Betriebswirtschaft
+'85.03': Methoden und Techniken der Betriebswirtschaft
+'85.04': 'Ausbildung, Beruf, Organisationen'
+'85.05': 'Betriebssoziologie, Betriebspsychologie'
+'85.06': Unternehmensführung
+'85.09': 'Unternehmensorganisation'
+'85.10': 'Unternehmensplanung, Unternehmenskontrolle'
+'85.15': Forschung und Entwicklung
+'85.20': Betriebliche Information und Kommunikation
+'85.25': Betriebliches Rechnungswesen
+'85.27': 'Betriebswirtschaftliche Steuerlehre, Betriebliches Prüfungswesen'
+'85.30': 'Investition, Finanzierung'
+'85.32': 'Beschaffung, Materialwirtschaft'
+'85.35': Fertigung
+'85.38': Qualitätsmanagement
+'85.40': Marketing
+'85.50': 'Personalwirtschaft, Arbeitsökonomik: Allgemeines'
+'85.52': Arbeitswissenschaft
+'85.62': Personalwesen
+'85.63': Arbeitsbeziehungen
+'85.64': Berufe
+'85.69': 'Personalwirtschaft, Arbeitsökonomik: Sonstiges'
+'85.99': 'Betriebswirtschaft: Sonstiges'
+'86': 'Recht'
+'86.00': 'Recht: Allgemeines'
+'86.01': 'Geschichte der Rechtswissenschaft'
+'86.02': 'Rechtsphilosophie'
+'86.03': 'Rechtstheorie, Rechtsmethodik, Allgemeine Rechtslehre'
+'86.04': 'Ausbildung, Beruf, Organisationen'
+'86.05': 'Rechtssoziologie, Rechtspsychologie'
+'86.06': 'Rechtsvergleichung, Rechtsvereinheitlichung'
+'86.07': 'Rechtsquellenlehre'
+'86.08': 'Rechtspflege, Rechtsprechungslehre'
+'86.09': Rechtsgeschichte
+'86.10': 'Recht einzelner Länder, Gebiete und Völker'
+'86.11': Römisches Recht
+'86.12': Common Law
+'86.13': Gerichtsverfassung
+'86.14': Rechtshilfe
+'86.15': 'Allgemeines Prozessrecht, Zivilprozess'
+'86.16': Zwangsvollstreckung
+'86.17': 'Freiwillige Gerichtsbarkeit, Schiedsgerichtsbarkeit'
+'86.18': 'Privatrecht: Allgemeines'
+'86.19': Allgemeiner Teil des BGB
+'86.20': Schuldrecht
+'86.21': Sachenrecht
+'86.22': Familienrecht
+'86.23': 'Erbrecht'
+'86.24': Handelsrecht
+'86.25': 'Bankrecht, Börsenrecht'
+'86.26': 'Versicherungsrecht'
+'86.27': Gesellschaftsrecht
+'86.28': 'Gewerblicher Rechtsschutz, Verlagsrecht'
+'86.29': 'Wettbewerbsrecht, Kartellrecht'
+'86.30': Internationales Privatrecht
+'86.32': 'Privatrecht: Sonstiges'
+'86.33': 'Strafrecht: Allgemeines'
+'86.34': 'Strafrecht: Allgemeiner Teil'
+'86.35': 'Strafrecht: Besonderer Teil'
+'86.36': 'Strafprozessrecht'
+'86.37': Strafvollzug
+'86.38': Nebenstrafrecht
+'86.39': 'Jugendstrafrecht'
+'86.40': 'Internationales Strafrecht, Internationales Strafprozessrecht'
+'86.41': Kriminologie
+'86.42': 'Strafrecht: Sonstiges'
+'86.43': 'Öffentliches Recht: Allgemeines'
+'86.44': 'Staatsrecht, Verfassungsrecht: Allgemeines'
+'86.45': Grundrechte
+'86.46': 'Staatsrecht, Verfassungsrecht: Sonstiges'
+'86.47': 'Allgemeines Verwaltungsrecht: Allgemeines'
+'86.48': 'Verwaltungsorganisationsrecht, Verwaltungsverfahren'
+'86.49': 'Verwaltungsprozessrecht'
+'86.50': 'Allgemeines Verwaltungsrecht: Sonstiges'
+'86.51': 'Besonderes Verwaltungsrecht: Allgemeines'
+'86.52': 'Recht des Öffentlichen Dienstes'
+'86.53': 'Ausländerrecht, Asylrecht'
+'86.54': 'Polizeirecht , Ordnungsrecht'
+'86.55': Datenschutzrecht
+'86.56': 'Gesundheitsrecht, Lebensmittelrecht'
+'86.57': Kommunalrecht
+'86.58': 'Schulrecht, Bildungsrecht, Hochschulrecht'
+'86.59': Medienrecht
+'86.60': 'Raumordnungsrecht, Baurecht'
+'86.61': 'Straßenrecht, Wegerecht'
+'86.62': 'Naturschutzrecht, Landschaftsschutzrecht, Umweltrecht'
+'86.63': 'Wehrrecht, Zivilschutzrecht'
+'86.64': 'Besonderes Verwaltungsrecht: Sonstiges'
+'86.65': 'Wirtschaftsrecht'
+'86.66': 'Wirtschaftsverfassung, Wirtschaftsverwaltung'
+'86.67': Gewerberecht
+'86.68': 'Bergrecht, Energierecht, Strahlenschutzrecht'
+'86.69': 'Landwirtschaftsrecht, Wasserrecht, Jagdrecht'
+'86.70': 'Internationales Wirtschaftsrecht'
+'86.71': Verkehrsrecht
+'86.72': 'Haushaltsrecht, Finanzrecht'
+'86.73': Steuerrecht
+'86.74': 'Arbeitsrecht: Allgemeines'
+'86.75': Individualarbeitsrecht
+'86.76': Kollektivarbeitsrecht
+'86.77': 'Arbeitsrecht: Sonstiges'
+'86.78': 'Sozialrecht: Allgemeines'
+'86.79': Sozialversicherungsrecht
+'86.80': Jugendrecht
+'86.81': 'Sozialhilferecht'
+'86.82': 'Sozialrecht: Sonstiges'
+'86.83': 'Öffentliches Recht: Sonstiges'
+'86.84': 'Völkerrecht: Allgemeines'
+'86.85': Menschenrechte
+'86.86': 'Europarecht: Allgemeines'
+'86.88': 'Gemeinschaftsaufgaben, Rechtsvereinheitlichung'
+'86.90': 'Europarecht: Sonstiges'
+'86.91': Recht der internationalen Organisationen
+'86.92': Staaten und Räume im Völkerrecht
+'86.93': Völkerrechtliche Sondergebiete
+'86.94': 'Kriegsrecht, Kriegsverhütungsrecht'
+'86.95': Internationale Gerichtsbarkeit
+'86.96': 'Völkerrecht: Sonstiges'
+'86.97': 'Kirchenrecht'
+'86.99': 'Recht: Sonstiges'
+'88': 'Verwaltungslehre'
+'88.00': 'Verwaltungslehre, Verwaltungswissenschaft: Allgemeines'
+'88.01': 'Geschichte der Verwaltungslehre'
+'88.02': 'Philosophie und Theorie der Verwaltungslehre'
+'88.03': 'Methoden und Techniken der Verwaltungslehre'
+'88.04': 'Ausbildung, Beruf, Organisationen'
+'88.10': 'Öffentliche Verwaltung: Allgemeines'
+'88.11': Zentrale staatliche Verwaltung
+'88.12': 'Territorialverwaltung, Regionalverwaltung'
+'88.13': Kommunalverwaltung
+'88.14': 'Funktionale Behörden, Behördendienststellen'
+'88.17': Ordnungskräfte
+'88.19': 'Öffentliche Verwaltung: Sonstiges'
+'88.20': 'Organisation staatlicher Einrichtungen, Management staatlicher Einrichtungen'
+'88.30': Öffentlicher Dienst
+'88.60': Politische Maßnahmen
+'88.70': Vergleichende Verwaltungslehre
+'88.99': 'Verwaltungslehre, Verwaltungswissenschaft: Sonstiges'
+'89': 'Politologie'
+'89.00': 'Politologie: Allgemeines'
+'89.01': 'Geschichte der Politologie'
+'89.03': 'Theorie und Methoden der Politologie'
+'89.04': 'Ausbildung, Beruf, Organisationen'
+'89.05': 'Politische Theorie'
+'89.10': 'Politische Richtungen: Allgemeines'
+'89.11': Konservativismus
+'89.12': Liberalismus
+'89.13': 'Christliche Demokratie'
+'89.14': Sozialismus
+'89.15': Kommunismus
+'89.19': Sozialistische Richtungen
+'89.20': 'Anarchismus'
+'89.21': Faschismus
+'89.22': Nationalismus
+'89.29': 'Politische Richtungen: Sonstiges'
+'89.30': 'Politische Systeme: Allgemeines'
+'89.31': Staatslehre
+'89.32': 'Staatsformen, Regierungsformen'
+'89.33': Monarchie
+'89.34': 'Republik'
+'89.35': Demokratie
+'89.36': 'Autoritäre Systeme'
+'89.37': Föderalismus
+'89.39': 'Politische Systeme: Sonstiges'
+'89.40': 'Innere Beziehungen des Staates: Allgemeines'
+'89.41': Staat und einzelne Gruppierungen
+'89.42': Staat und Bürger
+'89.49': 'Innere Beziehungen des Staates: Sonstiges'
+'89.50': 'Politische Prozesse: Allgemeines'
+'89.51': 'Parlament'
+'89.52': 'Politische Psychologie, Politische Soziologie'
+'89.53': Politische Kultur
+'89.54': Politischer Einfluss
+'89.55': Politische Entscheidung
+'89.56': Politische Kommunikation
+'89.57': Politische Beteiligung
+'89.58': Politische Gewalt
+'89.59': 'Politische Prozesse: Sonstiges'
+'89.60': 'Politische Organisationen: Allgemeines'
+'89.61': Politische Parteien
+'89.62': Politische Bewegungen
+'89.63': Pressure-groups
+'89.69': 'Politische Organisationen: Sonstiges'
+'89.70': 'Internationale Beziehungen: Allgemeines'
+'89.71': 'Internationale Zusammenarbeit: Allgemeines'
+'89.72': Internationale Organisationen
+'89.73': 'Europapolitik, Europäische Union'
+'89.74': 'Internationale Zusammenarbeit: Sonstiges'
+'89.75': 'Internationale Konflikte: Allgemeines'
+'89.76': 'Friedensforschung, Konfliktforschung'
+'89.77': Rüstungspolitik
+'89.78': 'Friedensbewegung'
+'89.79': 'Internationale Konflikte: Sonstiges'
+'89.80': 'Militärwesen: Allgemeines'
+'89.81': Streitkräfte
+'89.82': Militärpersonal
+'89.83': Kriegführung
+'89.84': 'Strategie, Taktik'
+'89.85': 'Militärische Logistik, Bevorratung'
+'89.86': 'Nachrichtendienste, Militärische Nachrichtendienste'
+'89.87': 'Waffen, Kampfmittel'
+'89.89': 'Militärwesen: Sonstiges'
+'89.90': 'Außenpolitik, Internationale Politik'
+'89.91': Imperialismus
+'89.92': Ost-West-Verhältnis
+'89.93': Nord-Süd-Verhältnis
+'89.94': 'Internationale Beziehungen: Sonstiges'
+'89.99': 'Politologie: Sonstiges'

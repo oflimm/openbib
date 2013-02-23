@@ -1,0 +1,25 @@
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Hilfe") %]</h6>
+ <ul>
+[% IF active_submenu == "help" %]
+  <li class="active"><strong>[% msg.maketext("Suchhilfe") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]">[% msg.maketext("Suchhilfe") %]</a></li>
+[% END %]
+[% IF active_submenu == "project" %]
+  <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">[% msg.maketext("Projekt") %]</a></li>
+[% END %]
+[% IF active_submenu == "versions" %]
+  <li class="active"><strong>[% msg.maketext("OpenBib-Versionen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/versions.html?l=[% lang %]">[% msg.maketext("OpenBib-Versionen") %]</a></li>
+[% END %]
+[% IF active_submenu == "feedback" %]
+  <li class="active"><strong>[% msg.maketext("Artikel/Stimmen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/feedback.html?l=[% lang %]">[% msg.maketext("Artikel/Stimmen") %]</a></li>
+[% END %]
+ </ul>
+</nav>

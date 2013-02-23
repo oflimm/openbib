@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_message
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Informations-Meldung
+#
+#######################################################################
+-%]
+<h3>[% msg.maketext("Meldung") %]</h3>
+
+<p>
+[% info_msg %]
+</p>

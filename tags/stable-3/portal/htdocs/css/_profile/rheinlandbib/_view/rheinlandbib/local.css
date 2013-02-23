@@ -1,0 +1,73 @@
+@media all
+{
+  header {
+    padding-bottom:68px;
+  }
+
+  header #logo {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  }
+
+  header #institution {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    with: 30%;
+  }
+
+
+  #header_logo_image {
+    background: url(/images/openbib/views/rheinlandbib/logo.png) center no-repeat;
+    width: 1000px;
+    height: 100px;
+    position: absolute;
+    top: 35px;
+    left: 0px;
+  }
+
+  #header_institution_image {
+    background: url(/images/openbib/views/rheinlandbib/usb-logo.png) center no-repeat;
+    width: 188px;
+    height: 80px;
+    position: absolute;
+    top: 30px;
+    right: 0px;
+  }
+
+   .ob-titleactions .ob-collection {
+    font-size: 12px;
+    border: 1px solid #777;
+    webkit-border-radius: .2em;
+    moz-border-radius: .2em;
+    border-radius: .2em;
+    padding: 3px;
+  }
+
+  .ob-titleactions .ob-collection img {
+    padding-right: 5px;
+    vertical-align:text-top;
+  }
+
+    .ob-item .ob-titleactions {
+    display: none;
+  }
+
+  .ob-item:hover {
+    margin-left: -3px;
+    border-left-width: 4px;
+    border-left-color: #41799e; 
+/*    border-color: #000;*/
+/*    background: #ebeff5;*/
+/*   background: #ececec;*/
+  }
+
+  .ob-item:hover .ob-titleactions {
+    display: block;
+  }
+
+}

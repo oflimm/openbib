@@ -1,0 +1,102 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+         <div class="ym-grid">
+          <div class="ym-g33 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+ <center style="padding-top: 5em;"> <img src="/images/openbib/views/inst404abklatsch/abklatschabnahme.jpg"
+alt="Abklatschabnahme" /><br /><br /><i
+style="font-size:0.8em">Anfertigung eines Abklatsches</i></center>
+
+          </div>
+         </div>
+          <div class="ym-g66 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+<h1>Die Abklatsch-Sammlung des Instituts für Altertumskunde</h1>
+
+<p>
+Neben der Papyrus- und Münzsammlung beherbergt die Arbeitsstelle für
+Papyrologie, Epigraphik und Numismatik der Nordrhein-Westfälischen
+Akademie der Wissenschaften und der Künste am Institut für
+Altertumskunde der Universität zu Köln ca. 2000 Abklatsche. Die
+Sammlung entstand größtenteils im Zusammenhang der Edition von
+"Inschriften griechischer Städte aus Kleinasien", welche in der
+gleichnamigen, in Gemeinschaft mit der Österreichischen Akademie der
+Wissenschaften herausgegebenen Reihe mit derzeit 67 Bänden (Kürzel:
+"IK", Habelt : Bonn, seit 1972) ihren Ausdruck findet.
+</p>
+
+<p>
+Daneben ist in der Kölner Abklatsch-Sammlung eine große Anzahl von
+Inschriften dokumentiert, die in der von der Arbeitsstelle
+herausgegebenen <a href="http://www.uni-koeln.de/phil-fak/ifa/epanat" target="_blank">Zeitschrift Epigraphica Anatolica</a> ediert sind (Kürzel:
+"EA", Habelt : Bonn, 1/1983 - 42/2008).
+</p>
+
+<p>
+Zur Zeit erhält die Abklatsch-Sammlung stetigen Zuwachs durch die
+unter der Leitung des Deutschen Archäologischen Instituts (Abteilung Istanbul) seit
+2007 laufenden Feld-Forschungen zur philosophischen <a
+href="http://www.dainst.de/index_76085265bb1f14a136940017f0000011_de.html"
+target="_blank">Monumentalinschrift des Diogenes aus Oinoanda</a> in
+Lykien.
+</p>
+
+<p>
+Der vorrangige Zweck der noch im Aufbau befindlichen
+Abklatsch-Datenbank besteht darin, den Bestand der im Institut für
+Altertumskunde der Universität zu Köln vorhandenen Abklatsche
+systematisch zu erschließen und auch externen Interessenten eine
+Recherche-Möglichkeit anzubieten, die über die Kölner Dokumentation
+von Inschriften detailliert Auskunft gibt.
+</p>
+
+<p>
+Zu Forschungszwecken können nach Absprache Abklatsche bereits
+publizierter Inschriften vor Ort angeschaut oder auf Anfrage gescannt
+und deren Digitalisate an Interessenten verschickt werden.
+</p>
+
+<p>
+<a href="[% path_prefix %]/[% config.get('info_loc') %]/abklatsch.html?l=[% lang %]">Was ist ein Abklatsch?</a>
+</p>
+
+          </div>
+         </div>
+      </div>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

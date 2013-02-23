@@ -1,0 +1,177 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_helene_richter
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='info' %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/richterbibliothek_heute.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/elise_richter.html?l=[% lang %]">Biographien</a></li>
+         <li><a href="#" class="lastitem">Helene Richter</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='helene' %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+        <div class="ym-grid">
+          <div class="ym-g33 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+           <img src="/images/openbib/views/richter/HeleneRichter.jpg" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; &Ouml;sterreichische Nationalbibliothek</span>
+
+           <p/>
+
+           <span style="font-size:1.1em;text-align:center">Portrait Helene Richter</span>
+          </div>
+         </div>
+          <div class="ym-g66 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+           <img src="/images/openbib/views/richter/Helene.jpg" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; &Ouml;sterreichische Nationalbibliothek</span>
+
+           <p/>
+
+           <span style="font-size:1.1em;text-align:center">Verleihung der
+Ehrenb&uuml;rgerschaft der Stadt Wien an Helene Richter, Alfred
+Adler <br />und Rudolf von Larisch im Januar 1932, rechts Bürgermeister Karl Seitz
+</span>
+          </div>
+         </div>
+      </div>
+
+<p/>
+
+<table width="100%" border="2" bgcolor="#FFFFFF" cellpadding="6" cellspacing="2">
+  <tr>
+  <td>4. August 1861</td>
+  <td>Helene Richter wird in Wien geboren.</td>
+ </tr>
+ <tr>
+  <td>1872</td>
+  <td>Beginn des Privatunterrichts durch preu&szlig;ische Erzieherin.</td>
+ </tr>
+ <tr>
+  <td>1873</td>
+  <td>Erster Besuch im k.u.k. Burgtheater.</td>
+ </tr>
+ <tr>
+  <td>1889</td>
+  <td>Tod der Mutter Emilie Richter.</td>
+ </tr>
+ <tr>
+  <td>1890</td>
+  <td>Tod des Vaters Dr. Maximilian Richter.</td>
+ </tr>
+ <tr>
+  <td>1891</td>
+  <td>Erste Begegnung mit Adolf Mussafia.</td>
+ </tr>
+ <tr>
+  <td>1892</td>
+  <td>Umzug in die Florianigasse 1 hinter dem Wiener Rathaus.</td>
+ </tr>
+ <tr>
+  <td>1895</td>
+  <td>Helene Richter ver&ouml;ffentlicht ihre &Uuml;bersetzung des Buches "Der entfesselte Prometheus" von Percy Bysshe Shelley.</td>
+ </tr>
+ <tr>
+  <td>Winter 1895</td>
+  <td>Umzug ins selbst entworfene Haus im W&auml;hringer-D&ouml;bliner-Cottage-Viertel, Weimarer Stra&szlig;e 83.</td>
+ </tr>
+ <tr>
+  <td>1911-1916</td>
+  <td>Helene schreibt ihre 1.600 Seiten umfassende "Geschichte der englischen Romantik".</td>
+ </tr>
+ <tr>
+  <td>1926</td>
+  <td>Ernennung zur "Burgtheaterbiographin" anl&auml;sslich des 150 j&auml;hrigen Jubil&auml;ums des Theaters und ihrer Festschrift
+  f&uuml;r den Burgschauspieler Josef Lewinsky.</td>
+ </tr>
+ <tr>
+  <td>1931</td>
+  <td>Anl&auml;sslich ihres 70. Geburtstags wird Helene Richter die Ehrendoktorw&uuml;rde der Universit&auml;ten Heidelberg
+  und Erlangen verliehen.</td>
+ </tr>
+ <tr>
+  <td>13. M&auml;rz 1938</td>
+  <td>Anschluss Österreichs an das Deutsche Reich. Die Judenverfolgung
+in Österreich beginnt.</td>
+ </tr>
+ <tr>
+  <td>24. August 1941</td>
+  <td>Elise Richter wendet sich bez&uuml;glich des Verkaufs der gemeinsamen Bibliothek nach K&ouml;ln.</td>
+ </tr>
+ <tr>
+  <td>Januar 1932</td>
+  <td>Helenes Heimatstadt Wien ernennt sie zum "B&uuml;rger ehrenhalber der Stadt Wien".</td>
+ </tr>
+ <tr>
+  <td>Februar 1938</td>
+  <td>Letzter Besuch der Schwestern im Burgtheater.</td>
+ </tr>
+ <tr>
+  <td>1939/40</td>
+  <td>Helene Richter verkauft ihre englische Bibliothek. </td>
+ </tr>
+ <tr>
+  <td>10. M&auml;rz 1942</td>
+  <td>Elise und Helene Richter m&uuml;ssen ins J&uuml;dische Altersheim umziehen.</td>
+ </tr>
+ <tr>
+  <td>9. Oktober 1942</td>
+  <td>Deportation nach Theresienstadt.</td>
+ </tr>
+ <tr>
+  <td>8. November 1942</td>
+  <td>Helene Richter stirbt mit 82 Jahren in Theresienstadt.</td>
+ </tr>
+ </table>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

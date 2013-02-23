@@ -1,0 +1,39 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+# encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# XPath-Parameter
+
+# Record-Selector
+recordselector: /ONIXMessage/product
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'a001'
+
+# Personen
+person:
+  'Contributor/PersonName': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+
+# Titel
+title:
+  'title/b203': '0331'
+  'productidentifier/b244': '0540'
+  'b003': '0425'
+# 'Kurzbeschreibung': '0750'
+  'productwebsite/f123': '0662'
+  'publisher/b081': '0412'
+  'b209': '0410'
+
+defaultmediatype: 'Digital'

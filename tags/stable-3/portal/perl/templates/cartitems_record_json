@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: cartitems_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Anzeigen der Merkliste
+#
+#######################################################################
+-%]
+[%-
+
+     thisrecord = {
+       link = {
+          rel = 'self'
+          href = location
+       }
+       record = record.get_fields
+       itemid  = record.listid
+     };
+
+     IF record.id && record.database ;
+       thisrecord.titleid = record.id;
+       thisrecord.dbname  = record.database;
+     END;
+
+     to_json(thisrecord);
+-%]

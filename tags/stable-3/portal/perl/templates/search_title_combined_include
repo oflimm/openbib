@@ -1,0 +1,54 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[% IF fullresultcount > 0 %]
+<!-- Beginn Result Item -->
+[%-
+    request_base    = "num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
+    start_range     = nav.current_page*qopts.num-qopts.num + 1;
+    end_range       = nav.current_page*qopts.num;
+    IF end_range >= fullresultcount ;
+       end_range       = fullresultcount;
+    END;
+-%]
+
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="ob-catalog">
+        Trefferliste
+    </div>
+    <div class="ob-hits">
+[% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% fullresultcount %]
+    </div>
+  </div>
+[% IF drilldown %]
+  <div class="resultdrilldown">
+[% PROCESS common/subtemplate name="drilldown_categorized" %]
+  </div>
+[% END %]
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
+[%- END -%]
+  <div class="ob-footer">
+    <div class="ob-resulttime">
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
+    </div>
+  </div>
+</div>
+<div class="ob-resultfooter">
+   &nbsp;
+</div>
+<p/>
+[% END %]

@@ -1,0 +1,55 @@
+/* CSS fuer neuere Versionen des IE */
+
+body {
+  margin: 5px; /* Margin-Handling in IE is broken */
+  width: 97.5%;
+}
+
+input[type="submit"] {
+  font: 100% Arial,helv,Helvetica,Verdana;
+  border: 1px solid #666;  
+  color: #000000;
+  background-color: #efefef;
+  vertical-align: middle;
+  margin-bottom: 1px;
+}
+
+input[type="reset"] {
+  font: 100% Arial,helv,Helvetica,Verdana;
+  border: 1px solid #666;  
+  color: #000000;
+  background-color: #efefef;
+  vertical-align: middle;
+  margin-bottom: 1px;
+}
+
+input[type="submit"]:hover {
+  color:      HighlightText;
+  background: Highlight;
+  border:     1px groove Highlight;
+  outline:    1px solid #000;
+}
+
+input[type="reset"]:hover {
+  color:      HighlightText;
+  background: Highlight;
+  border:     1px groove Highlight;
+  outline:    1px solid #000;
+}
+
+a.button {
+  font: 100% Arial,helv,Helvetica,Verdana;
+  text-decoration: none; 
+  display: block;
+  width: 150px; 
+  text-align: center; 
+  border-width: 1px;
+  color: #000000; 
+  border-color: #666; 
+  border-style: solid; 
+  background:	#efefef;
+}
+
+a.button:active {
+  border-style: inset;
+} 

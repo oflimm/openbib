@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_authenticators
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste der Anmeldeziele.
+#
+#######################################################################
+-%]
+[%-
+
+ this_json_output = {
+       link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('servers_loc')}/id/${serverinfo.id}"
+       }
+       id = serverinfo.id
+       hostip = serverinfo.hostip
+       description = serverinfo.description
+       clusterid = serverinfo.clusterid.id
+       status = serverinfo.status
+       active = serverinfo.active
+   };
+
+  to_json(this_json_output);
+
+-%]

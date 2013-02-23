@@ -1,0 +1,327 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_simple
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der einfachen Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+  <body>
+
+               <script type="text/javascript">
+                        $(function(){
+
+                                // Tabs
+                                $('#tabs_types').tabs();
+                                        
+                        });
+                </script>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" without_navigation_search=1 %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+    <div class="ym-grid">
+      <!-- begin: full static column -->
+      <div class="ym-gl" style="width:100%;">
+        <div class="ym-gbox" class="ym-clearfix">
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+[%
+  bks         = config.load_bk;
+  thisbklist  = statistics.get_result({id => view, type => 10}); 
+
+  num_of_sysprofiledbs = config.get_number_of_dbs(sysprofile);
+
+%]
+
+[% IF config.get('testsystem') %]
+<div id="testsystem">
+[% PROCESS common/subtemplate name="testsystem_info" %]
+<p />
+</div>
+[% END %]
+
+<div id="searchform"><!-- Begin searchform -->
+
+<div id="searchform_types" ><!-- Begin searchform_types -->
+<div id="tabs_types">
+  <ul>
+    <li><a href="#alltypes">[% msg.maketext("Alles") %]</a></li>
+    <li><a href="#only_serials">[% msg.maketext("Zeitschriften/Serien") %]</a></li>
+    <li><a href="#only_articles">[% msg.maketext("Aufs&auml;tze") %]</a></li>
+    <li><a href="#only_online">[% msg.maketext("Online") %]</a></li>
+    <li><a href="#topics">[% msg.maketext("Themengebiete") %]</a></li>
+  </ul>
+<div id="alltypes"><!-- Begin alle Typen -->
+[% IF user.is_authenticated %]
+[% autocompletion_type = user.get_autocompletion %]
+[% livesearch          = user.get_livesearch %]
+[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+})
+</script>
+[%   END %]
+[% END %]
+
+<h3>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %]</h3>
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="relevance_desc" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
+[%# sysprofile%]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
+
+<table>
+<tr><td colspan="2"><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchforms_record_profile" %]</td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+</div><!-- End alle Typen -->
+
+<div id="only_serials"><!-- Begin Serials-->
+
+[% IF spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% END %]
+
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.journalcount.chunk(-3).join('.')}","${alldbs}") %]</h3>
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+
+<input type="hidden" name="num"  value="20" />
+<input type="hidden" name="page"      value="1" />
+
+<input type="hidden" name="srt"  value="relevance_desc" />
+<input type="hidden" name="st"   value="1" />
+<input type="hidden" name="lt"   value="[% qopts.lt %]" />
+
+<input type="hidden" name="f[typ]"      value="Zeitschrift/Serie" />
+
+<table>
+<tr><td colspan="2"><input id="input_box_serials" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchforms_record_profile" %]</td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+</div><!-- End Serials -->
+
+<div id="only_articles"><!-- Begin nur Aufsaetze -->
+
+[% IF spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% END %]
+
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articlecount.chunk(-3).join('.')}","${alldbs}") %]</h3>
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+
+<input type="hidden" name="num"  value="20" />
+<input type="hidden" name="page" value="1" />
+
+<input type="hidden" name="srt"  value="relevance_desc" />
+<input type="hidden" name="st"   value="1" />
+<input type="hidden" name="lt"   value="[% qopts.lt %]" />
+
+
+<input type="hidden" name="f[typ]"    value="Aufsatz" />
+
+<table>
+<tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchforms_record_profile" %]</td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+
+</div><!-- End nur Aufsaetze -->
+
+<div id="only_online"><!-- Begin nur Online -->
+
+[% IF spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% END %]
+
+<h3>[% msg.maketext("Recherchieren Sie nach [_1] E-Medien mit Online-Zugriff in [_2] Katalogen","${alldbcount.digitalcount.chunk(-3).join('.')}","${alldbs}") %]</h3>
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+
+<input type="hidden" name="num"  value="20" />
+<input type="hidden" name="page" value="1" />
+
+<input type="hidden" name="srt"  value="relevance_desc" />
+<input type="hidden" name="srto" value="desc" />
+<input type="hidden" name="st"   value="1" />
+<input type="hidden" name="lt"   value="[% qopts.lt %]" />
+
+<input type="hidden" name="f[typ]" value="Digital" />
+
+<table>
+<tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchforms_record_profile" %]</td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
+
+
+</div><!-- End nur Online -->
+
+<div id="topics"><!-- Begin Themengebiete -->
+
+<p />
+<ul class="topiclist">
+[%- FOREACH topic IN user.get_topics -%]
+[% titlecount = 0 ;
+   thisclassifications = user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+   FOREACH classification IN thisclassifications;
+     titlecount = titlecount + thisbklist.${classification};
+  END ;
+%]
+<li><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,topic.litlistcount.public) %])</li>
+[% END %]
+</ul>
+</div><!-- End Themengebiete -->
+
+</div> <!-- End jquery_tabs -->
+
+</div><!-- End searchform_types -->
+
+</div><!-- End searchform -->
+
+[% PROCESS common/subtemplate name="searchforms_record_bottom" %]
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

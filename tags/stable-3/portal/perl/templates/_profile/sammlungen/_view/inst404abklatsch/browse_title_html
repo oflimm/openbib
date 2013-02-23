@@ -1,0 +1,130 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation"  active_menu='register' %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Register") %]</a></li>
+         <li><a href="#" class="lastitem">
+[%- IF field == '0200' -%]
+Ort der Inschrift
+[%- END -%]
+[%- IF field == '0425' -%]
+Datierung der Inschrift
+[%- END -%]
+[%- IF field == '0710' -%]
+Kategorie
+[%- END -%]
+[%- IF field == '0410' -%]
+Aufbewahrungsort der Inschrift
+[%- END -%]
+[%- IF field == '0335' -%]
+Edition/SEG-Nummber
+[%- END -%]
+</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_submenu="register_T${field}" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[%-
+    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+[%- IF field == '0200';
+      searchprefix = config.get('searchfield').corporatebodystring.prefix; 
+-%]
+<h2>Ort der Inschrift</h2>
+[%- END -%]
+[%- IF field == '0425' ;
+      searchprefix = config.get('searchfield').yearstring.prefix; 
+-%]
+<h2>Datierung der Inschrift</h2>
+[%- END -%]
+[%- IF field == '0710' ;
+      searchprefix = config.get('searchfield').subjectstring.prefix; 
+-%]
+<h2>Kategorie</h2>
+[%- END -%]
+[%- IF field == '0410' ;
+      searchprefix = 't0410';
+-%]
+<h2>Aufbewahrungsort der Inschrift</h2>
+[%- END -%]
+[%- IF field == '0335' ;
+      searchprefix = 't0335';
+-%]
+<h2>Edition/SEG-Nummber</h2>
+[%- END -%]
+
+<p />
+
+<table width="100%">
+[% FOREACH item IN browselist %]
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];page=1;db=inst404abklatsch;[% searchprefix %]=[% uri_escape(item.replace('/','').replace('\(','').replace('\)','').replace('\?','')) %]">[% item %]</a></td></tr>
+[% END %]
+</table>
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+    <div class="ob-resulttime">
+    </div>
+  </div>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

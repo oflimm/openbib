@@ -1,0 +1,15 @@
+[%-
+
+circulation = [];
+
+FOREACH item IN record.get_circulation;
+  item.delete('Entleiher','Gruppe');
+  circulation.push(item);
+END;
+
+record.set_circulation(circulation);
+
+record.to_json
+
+
+-%]

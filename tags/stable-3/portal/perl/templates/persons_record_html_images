@@ -1,0 +1,8 @@
+[% FOREACH item IN normset.${"P0308"};
+      image_url = item.content;
+%]
+<p>
+<center><img src="[% image_url %]" title="Bild" />
+</p>
+[% END %]
+

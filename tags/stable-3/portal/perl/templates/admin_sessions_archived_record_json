@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_session_record_json
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Meta-Informationen einer einzelnen Session, z.B.
+# die getaetigten Suchanfragen etc.
+#
+#######################################################################
+-%]
+[%-
+
+queriesinfos = [];
+FOREACH query IN queries;
+  thisqueryinfo = {
+    link = {
+          rel = 'self'
+          href = "${location}/${query.get_id}"
+    }
+    id  = query.get_id
+    query = query.get_searchquery
+    searchprofile = query.get_searchprofile
+  };
+  queriesinfos.push(thisqueryinfo);
+END;
+
+
+this_json_output = {
+    link = {
+          rel = 'self'
+          href = location
+    }
+
+    id = thissession.sessionid
+    createtime = thissession.createtime
+    numqueries = thissession.numqueries
+    queries = queriesinfos
+    events = events
+};
+
+to_json(this_json_output) %]

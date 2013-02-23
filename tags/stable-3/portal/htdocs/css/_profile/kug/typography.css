@@ -1,0 +1,69 @@
+@media all {
+
+  body {
+    font-family: Arial,Verdana,Helvetica,sans-serif;
+    font-size:75.00%;
+    color:#444; 
+    webkit-text-size-adjust:100%;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+/*    font-family:"Times New Roman", Times, serif;
+    font-weight:bold; */
+    color:#222;
+    margin:0 0 0.25em 0;
+    /* font-family: "Droid Sans", Arial, Helvetica, sans-serif;
+       font-weight: 400;
+       color:#161e21;
+       margin:0; */
+  }
+  
+  h1 {
+    font-size:220%;
+    line-height: 0.8571em;
+    margin: 0.4286em 0 0;
+  }
+  
+  h2 {
+    font-size:175%;
+    line-height: 1.2em;
+    margin: 0.6em 0 0 0;
+  }
+  
+  h3 {
+    font-size:150%;
+    line-height: 0.8571em;
+    margin:0.8571em 0 0 0;
+  }
+  
+  h4 {
+    font-size:133.33%;
+    line-height: 1.125em;
+    margin:1.125em 0 0 0;
+  }
+  
+  h5 {
+    font-size:116.67%;
+    line-height: 1.2857em;
+    margin: 1.2857em 0 0 0;
+  }
+  
+  h6 {
+    font-weight: bold;
+    font-size:100%;
+    line-height: 1.5em;
+    margin: 1.5em 0 0 0;
+  }
+
+  a:hover,
+  a:focus {
+    background-color: #fff;
+    color:#4D87C7;
+    text-decoration:underline;
+  }
+}

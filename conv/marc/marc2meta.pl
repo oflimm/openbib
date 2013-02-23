@@ -6,7 +6,7 @@
 #
 #  Konverierung von MARC-Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,13 +40,8 @@ use MARC::Batch;
 use YAML::Syck;
 
 use OpenBib::Config;
+use OpenBib::Conv::Common::Util;
 
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
-
-@autdubbuf = ();
-@kordubbuf = ();
-@swtdubbuf = ();
-@notdubbuf = ();
 $mexidn  =  1;
 
 my $config = OpenBib::Config->instance;
@@ -74,14 +69,16 @@ my $convconfig = YAML::Syck::LoadFile($configfile);
 
 open(DAT,"$inputfile");
 
-open (TIT,     ">:utf8","unload.TIT");
-open (AUT,     ">:utf8","unload.PER");
-open (KOR,     ">:utf8","unload.KOE");
-open (NOTATION,">:utf8","unload.SYS");
-open (SWT,     ">:utf8","unload.SWD");
-open (MEX,     ">:utf8","unload.MEX");
+open (TITLE,         ">:utf8","meta.title");
+open (PERSON,        ">:utf8","meta.person");
+open (CORPORATEBODY, ">:utf8","meta.corporatebody");
+open (CLASSIFICATION,">:utf8","meta.classification");
+open (SUBJECT,       ">:utf8","meta.subject");
+open (HOLDING,       ">:utf8","meta.holding");
 
 my $titleid = 1;
+
+my $multcount_ref = {};
 
 my $batch = MARC::Batch->new('USMARC', $inputfile);
 
@@ -93,10 +90,13 @@ $batch->warnings_off();
 my @buffer = ();
 while (my $record = $batch->next()){
 
-    my $idfield = $record->field('000');
-    printf TIT "0000:%d\n", $idfield->as_string();
+    my $title_ref  = {};
+    $multcount_ref = {};
 
-#    print YAML::Dump($idfield),"\n";
+    my $idfield = $record->field('000');
+
+    $title_ref->{id} = $idfield->as_string();
+
     foreach my $field ($record->fields()){
         my $kateg   = $field->tag(),defined $field->indicator(1)?$field->indicator(1):"",$field->indicator(2)?$field->indicator(2):"";
         my $content = decode($convconfig->{encoding},$field->as_string()) || $field->as_string();
@@ -111,14 +111,26 @@ while (my $record = $batch->next()){
 
             if ($kateg eq "245"){
                 my ($vorlverf) = $content=~m/\s+\/\s+(.*?)$/;
-                print TIT "0359:$vorlverf\n" if ($vorlverf);
+
+                push @{$title_ref->{'0359'}}, {
+                    mult       => 1,
+                    subfield   => '',
+                    content    => $vorlverf,
+                } if ($vorlverf);
+
                 $content=~s/\s+\/\s+(.*?)$//;
                 $content=~s/\s+\[electronic resource\]//;
             }
 
             if ($kateg eq "260"){
                 my ($ejahr) = $content=~m/,\s+(\d\d\d\d)$/;
-                print TIT "0425:$ejahr\n" if ($ejahr);
+
+                push @{$title_ref->{'0425'}}, {
+                    mult       => 1,
+                    subfield   => '',
+                    content    => $ejahr,
+                } if ($ejahr);
+
                 $content=~s/,\s+\d\d\d\d$//;
             }
 
@@ -265,104 +277,11 @@ while (my $record = $batch->next()){
     $titleid++;
 }
 
-close(TIT);
-close(AUT);
-close(KOR);
-close(NOTATION);
-close(SWT);
-close(MEX);
+close(TITLE);
+close(PERSON);
+close(CORPORATEBODY);
+close(CLASSIFICATION);
+close(SUBJECT);
+close(HOLDING);
 
 close(DAT);
-
-sub get_autidn {
-    my ($autans)=@_;
-
-#    print "AUT $autans\n";
-
-    my $autdubidx=1;
-    my $autdubidn=0;
-
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-
-    while ($autdubidx <= $#autdubbuf){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;      
-        }
-        $autdubidx++;
-    }
-    if (!$autdubidn){
-        $autdubbuf[$autdubidx]=$autans;
-        $autdubidn=$autdubidx;
-    }
-
-#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
-    
-#    print $autdubidn,"\n";
-    return $autdubidn;
-}
-
-sub get_swtidn {
-    my ($swtans)=@_;
-
-#    print "SWT $swtans\n";
-    
-    my $swtdubidx=1;
-    my $swtdubidn=0;
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-    
-    while ($swtdubidx <= $#swtdubbuf){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;      
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdubidx]=$swtans;
-        $swtdubidn=$swtdubidx;
-    }
-#    print $swtdubidn,"\n";
-
-#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
-#    print "-----\n";
-    return $swtdubidn;
-}
-
-sub get_koridn {
-    my ($korans)=@_;
-    
-    my $kordubidx=1;
-    my $kordubidn=0;
-    
-    while ($kordubidx <= $#kordubbuf){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;      
-        }
-        $kordubidx++;
-    }
-    if (!$kordubidn){
-        $kordubbuf[$kordubidx]=$korans;
-        $kordubidn=$kordubidx;
-    }
-    return $kordubidn;
-}
-
-sub get_notidn {
-    my ($notans)=@_;
-    
-    my $notdubidx=1;
-    my $notdubidn=0;
-    
-    while ($notdubidx <= $#notdubbuf){
-        if ($notans eq $notdubbuf[$notdubidx]){
-            $notdubidn=(-1)*$notdubidx;      
-        }
-        $notdubidx++;
-    }
-    if (!$notdubidn){
-        $notdubbuf[$notdubidx]=$notans;
-        $notdubidn=$notdubidx;
-    }
-    return $notdubidn;
-}
-

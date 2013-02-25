@@ -43,5 +43,5 @@ print "### $pool: ZDBID wird zur ID\n";
 
 system("$rootdir/filter/$pool/zdbid2id.pl < $rootdir/data/$pool/meta.title > $rootdir/data/$pool/meta.title.tmp");
 system("mv -f $rootdir/data/$pool/meta.title.tmp $rootdir/data/$pool/meta.title");
-system("$rootdir/filter/$pool/zdbid2id-mex.pl < $rootdir/data/$pool/meta.holding > $rootdir/data/$pool/meta.holding.tmp");
+system("$rootdir/filter/$pool/zdbid2id-mex.pl < $rootdir/data/$pool/meta.holding | $rootdir/filter/$pool/join-journalholdings.pl > $rootdir/data/$pool/meta.holding.tmp");
 system("mv -f $rootdir/data/$pool/meta.holding.tmp $rootdir/data/$pool/meta.holding");

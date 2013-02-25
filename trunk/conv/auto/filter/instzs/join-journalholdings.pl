@@ -11,11 +11,14 @@ while (<>){
     my $holdings = "";
     if (defined $record_ref->{'1200'}){
         $holdings = $record_ref->{'1200'}[0]{content};
+        delete $record_ref->{'1200'};
     }
 
     if (defined $record_ref->{'1201'}){
         $holdings .= " ".$record_ref->{'1201'}[0]{content};
+        delete $record_ref->{'1201'};
     }
+
 
     if ($holdings){
         $record_ref->{'1204'} = [ {

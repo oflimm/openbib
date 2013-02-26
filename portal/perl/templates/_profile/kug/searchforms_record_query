@@ -202,36 +202,12 @@ $(document).ready(function(){
     this_searchfield = 'mediatypestring';
  -%]
 <div class="ym-fbox-select">
-<label for="[% cgiparam %]">[% msg.maketext("Medienart") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Typ") %]</label>
 <select id="[% cgiparam %]" name="[% cgiparam %]">
-<option value="" selected="selected">Keine ausgewählt</option>
-<option value="Hochschulangehoerige">Hochschulangehörige(r)</option>
-<option value="Audio CD">Audio-CD</option>
-<option value="Audio Mitschnitt">Audio Mitschnitt</option>
-<option value="audiovisuelle Materialien">Audiovisuelle
-Materialien</option>
+<option value="" selected="selected">Keiner ausgewählt</option>
 <option value="Aufsatz">Aufsatz</option>
-<option value="Aufsatz-Fotokopie">Aufsatz-Fotokopie</option>
-<option value="CD-ROM">CD-ROM</option>
 <option value="Digital">Digital</option>
-<option value="Diskette">Diskette</option>
-<option value="Dissertation">Dissertation</option>
-<option value="DVD">DVD</option>
-<option value="Festschrift">Festschrift</option>
-<option value="Fotokopie">Fotokopie</option>
-<option value="Geschaeftsbericht">Geschäftsbericht</option>
-<option value="Kassette">Kassette</option>
-<option value="Loseblattsammlung">Loseblattsammlung</option>
-<option value="masch.Schr.">Masch.Schr.</option>
-<option value="Medienkombination">Medienkombination</option>
-<option value="Musikdruck Noten">Musikdruck / Noten</option>
-<option value="Original">Original</option>
-<option value="Reisefuehrer, Karte oder Atlas">Reiseführer, Karte oder Atlas</option>
-<option value="Sprachkassette">Sprachkassette</option>
-<option value="Standardmonographie">Standardmonographie</option>
-<option value="Video">Video</option>
-<option value="Zeitschrift">Zeitschrift</option>
-<option value="Zeitung">Zeitung</option>
+<option value="Zeitschrift/Serie">Zeitschrift/Serie</option>
 </select>
 </div>
 [% END %]

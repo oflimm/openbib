@@ -426,11 +426,11 @@ holding:
          # Bestandsverlauf
         'mult': 0
         'subfield':
-            'a': '1200'
-            'b': '1200'
-            'c': '1204'
-            'e': '0016'
-            'f': '0014'
+            'a': '1202' # Bemerkung
+            'b': '1200' # Positiv
+            'c': '1201' # Negativ
+            'e': '0016' # Standort
+            'f': '0014' # Signatur
     '071 ':
         'newcat': '3330' # Bestandsverlauf
         'mult': 0

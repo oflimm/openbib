@@ -25,7 +25,7 @@ while (<>){
     }
 
 
-    if ($holdings){
+    if (@$holdings_ref){
         $record_ref->{'1204'} = [ {
             content  => join (" ",@$holdings_ref),
             subfield => '',

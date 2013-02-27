@@ -256,8 +256,12 @@ sub search {
         return [];
     }
 
-    $self->{qp}->set_default_op($default_op_ref->{$defaultop});
-
+    if ($defaultop ne "or"){
+        $logger->debug("Setting default op to ".$default_op_ref->{$defaultop});
+        $self->{qp}->set_default_op($default_op_ref->{$defaultop});
+        $logger->debug("Got default op ".$self->{qp}->get_default_op);
+    }
+    
     foreach my $prefix (keys %{$config->{xapian_search_prefix}}){
         $self->{qp}->add_prefix($prefix,$config->{xapian_search_prefix}{$prefix});
     }

@@ -1,56 +1,33 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-
-    <meta http-equiv="content-type"  content="text/html; charset=utf-8"/>
-    <meta http-equiv="Pragma"        content="no-cache" />
-    <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
-    <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
-
-    <meta name="sessionID"           content="" />
-
-<link href="/images/openbib/favicon.ico" rel="shortcut icon" />
-
-
-  <style type="text/css">
-      @import url(/styles/views/portrait/openbib_generic.css);
-      @import url(/styles/views/portrait/openbib.css);
-    </style>
-    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
-
-    <title>Portrait-Sammlung</title>
-  </head>
-
-
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
   <body>
 
-<!-- Begin Template: corporate_banner -->
-    <table  border="0" cellspacing="0" cellpadding="0" width="100%">
-	<tr>
-	  <td align="left" width="5%">
-           <img src="/images/openbib/views/portrait/logo.png">
-          </td>
-	  <td align="left" width="65%">
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
 
-                      <img src="/images/openbib/views/portrait/banner.png">
-	  </td>
+<div class="ym-wrapper">
+  <div class="ym-wbox">
 
-	  <td width="10%"> &nbsp;&nbsp;</td>
-	  
-	  <td align="right" width="20%">
-	    <a target="_blank" href="http://www.uni-koeln.de/"><img src="http://www.ub.uni-koeln.de/common/unilogo.gif" height="95" border="0" alt="Goldenes Universit&auml;tssigel" /></a>
-	  </td>
-	</tr>
-    </table>
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 
-<!-- End Template: corporate_banner -->
- 
+    <!-- begin: main content area #main -->
+    <div id="main" style="padding:10px;">
 
-<div id="maincontent">
-
-<br />
-  <br />
   <center>
 
   <p>
@@ -75,13 +52,8 @@ Sammlungen einsehen.
 </form>
 </p>
 </center>
-<br />
-<br />
-<br />
 
-<br />
+    </div>
+    <!-- end: #main -->
 
-</body>
-</div>
-</html>
-
+[% PROCESS common/subtemplate name="std_footer" %]

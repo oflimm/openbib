@@ -13,6 +13,26 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
+[%- IF field == '0102' ;
+       field_description = 'Dargestellte Person';
+       searchfield = 't0102' ;
+    ELSIF field == '0100' ;
+       field_description = 'Maler / Zeichner';
+       searchfield = 't0100' ;
+    ELSIF field == '0101' ;
+       field_description = 'Stecher / Lithograph';
+       searchfield = 't0101' ;
+    ELSIF field == '0103' ;
+       field_description = 'Weitere Person';
+       searchfield = 't0103';
+    ELSIF field == '0710' ;
+       field_description = 'Region';
+       searchfield = 'subjectstring' ;
+    ELSIF field == '0700' ;
+       field_description = 'Beruf / Weltanschauung';
+       searchfield = 'classificationstring' ;
+     END ; -%]
+
 <body>
 
 <!-- skip link navigation -->
@@ -30,6 +50,17 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Register") %]</a></li>
+         <li><a href="#" class="lastitem">[% field_description %]</a></li>
+      </ul>
+     </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
@@ -52,27 +83,7 @@
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
-[%- IF field == '0102' -%]
-<h2>Dargestellte Person</h2>
-[% searchfield = 't0102' %]
-[%- ELSIF field == '0100' -%]
-<h2>Maler / Zeichner</h2>
-[% searchfield = 't0100' %]
-[%- ELSIF field == '0101' -%]
-<h2>Stecher / Lithograph</h2>
-[% searchfield = 't0101' %]
-[%- ELSIF field == '0103' -%]
-<h2>Weitere Person</h2>
-[% searchfield = 't0103' %]
-[%- ELSIF field == '0710' -%]
-<h2>Region</h2>
-[% searchfield = 'subjectstring' %]
-[%- ELSIF field == '0700' -%]
-<h2>Beruf / Weltanschauung</h2>
-[% searchfield = 'classificationstring' %]
-[%- END -%]
-
-<p />
+<h2>[% field_description %]</h2>
 
 <table class="ym-full">
 [% FOREACH item IN browselist %]

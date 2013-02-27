@@ -162,7 +162,7 @@ $(document).ready(function(){
 <div class="details ym-grid linearize-level-2"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="ob-titleimage ym-g33 ym-gr"><!-- Begin Images -->
-  <div class="ym-gbox-right">
+  <div class="ym-gbox">
 [% PROCESS common/subtemplate name="titles_record_html_images" %]
   </div>
 </div><!-- End Images -->

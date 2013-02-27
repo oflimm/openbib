@@ -259,7 +259,7 @@ sub show_record_form {
         $viewdbs_ref->{$dbname} = 1;
     }
 
-    my @profiledbs       = $config->get_profiledbs($config->get_profilename_of_view($viewname));
+    my @profiledbs       = sort $config->get_profiledbs($config->get_profilename_of_view($viewname));
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
     my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
 

@@ -809,6 +809,7 @@
 ../templates/_profile/sammlungen/_view/portrait/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/portrait/corporate_banner
 ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query
+../templates/_profile/sammlungen/_view/portrait/search_facet
 ../templates/_profile/sammlungen/_view/portrait/clouds_person_html
 ../templates/_profile/sammlungen/_view/portrait/std_footer_html
 ../templates/_profile/sammlungen/_view/portrait/mainnavigation

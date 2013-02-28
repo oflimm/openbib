@@ -2,7 +2,7 @@
 {
 
   header {
-    padding-bottom:70px;  
+    padding-bottom:65px;  
   }
 
   header #logo {
@@ -24,11 +24,11 @@
 
   #header_logo_image {
     background: url(/images/openbib/views/portrait/logo.png) center no-repeat;
-    width: 407px;
+    width: 1000px;
     height: 120px;
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 20px;
+    left: 12px;
   }
 
 /*
@@ -114,23 +114,6 @@
     font-size: 1.4em;
   }
 
-  .ob-category_header {
-    width: 100%;
-    padding: 2px;
-    padding-left: 5px;
-    margin: 10px 10px -5px -3px;
-    background: #ddd;
-    color: #000;
-    border-radius: 2px;
-    font-size: 16px;
-    font-weight: bold;
-    -moz-box-shadow: 2px 2px 2px #aaa;
-    -webkit-box-shadow: 2px 2px 2px #aaa;
-    box-shadow: 2px 2px 2px #aaa;
-
-/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
-  }
-
   .ob-titleactions .ob-collection {
     font-size: 12px;
     border: 1px solid #777;
@@ -143,12 +126,6 @@
   .ob-titleactions .ob-collection img {
     padding-right: 5px;
     vertical-align:text-top;
-  }
-
-  .ob-reuse_data, .ob-discover_sources, .ob-session_history {
-    margin-top: 10px;
-    padding: 15px;
-    padding-top: 0px;
   }
 
   .ob-fulltitle {

@@ -1,0 +1,272 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_terms_of_use
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "info" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Nutzungsbedingungen") %]</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1 ob-hidden">
+        <div class="ym-cbox" class="ym-clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<h1>KATALOG Nutzungsbedingungen</h1>
+
+<h2>Geltungsbereich</h2>
+
+<p> Die nachfolgenden Allgemeinen Nutzungsbedingungen gelten für die
+Nutzung von mein.recherche.portal (im Folgenden "Der KATALOG" genannt). Der
+KATALOG ist ein Angebot der EINRICHTUNG. </p>
+
+<p> Mit der Nutzung des KATALOG erkennen die Nutzer die nachfolgenden
+Allgemeinen Nutzungsbedingungen an.  </p>
+
+<p>
+Die Nutzung des KATALOG ist zwingend an die Zustimmung zu diesen
+Nutzungsbedingungen geknüpft. Anderernfalls hat eine Nutzung zu
+unterbleiben und ein ggf. bereits existierende Kennung für "Mein KATALOG"
+zu löschen.
+</p>
+
+<h2>Inhalte</h2>
+
+<p>
+
+Über den KATALOG kann man nach Büchern, Zeitschriften, Zeitungen,
+digitalen sowie audiovisuellen Materialien recherchieren und die
+bibliografischen Informationen in andere Anwendungen übernehmen. Der
+KATALOG umfasst derzeit die erfassten Bestände der
+beteiligten Bibliotheken, Metadaten aus den deutschen
+Nationallizenzen, verschiedenen Online-Quellen sowie externe
+Datenbestände. Der Umfang wird ständig erweitert.
+
+</p>
+
+<p>
+
+Neben den Recherchemöglichkeiten im KATALOG gibt es einen
+registrierungspflichtigen Bereich (im Folgenden
+"Mein KATALOG" genannt).
+</p>
+
+<p>
+Der Zugang erfolgt entweder über die Benutzernummer und das Passwort
+des Bibliotheksausweise, oder über die bei einer Selbstregistrierung
+eingetragene E-Mail-Adresse und Passwort.
+</p>
+
+<p>
+In "Mein KATALOG" kann  man u.a.
+</p>
+
+<ul>
+
+<li>das Rechercheverhalten an seine eigenen Wünsche anpassen</p>
+
+<li>Merklisteneinträge dauerhaft speichern.</li>
+
+<li>eigene Literaturlisten - für sich privat oder für alle Nutzer
+öffentlich - dauerhaft anlegen und verwalten.</li>
+
+<li>Titel mit Tags versehen - für sich privat oder für alle Nutzer
+öffentlich - und diese dauerhaft speichern.</li>
+
+<li>beliebige Kataloge für eine Recherche unter einem eigenen Namen
+dauerhaft als "Katalog- oder Suchprofil" speichern und darauf bei der Recherche zugreifen.</li>
+
+<li>bei der Anmeldung mit der Benutzernummer des Bibliotheksausweises bei
+einer konkreten Bibliothek einen Zugriff auf sein Ausleihkonto bekommen
+(Persönliche Daten, Gebühren, Ausleihen, Vormerkungen, Bestellungen,
+Überziehungen).</li>
+
+</ul>
+
+</p>
+
+
+<p>
+
+Eine Haftung der EINRICHTUNG als
+Betreiberin des KATALOG für Störungen, Unterbrechungen oder einen etwaigen
+Ausfall des KATALOG ist ausgeschlossen. Die EINRICHTUNG wird sich jedoch
+bemühen, Fehler und Störungen des Angebots in angemessener Frist zu
+beseitigen.
+
+</p>
+
+<p>
+
+Im KATALOG sind Links auf andere Webseiten enthalten. Die EINRICHTUNG
+macht sich die Inhalte der Webseiten Dritter nicht zu eigen und haftet
+nicht für Inhalte, die von Dritten zur Verfügung gestellt werden.
+
+</p>
+
+
+<h2>Zugangsberechtigung für "Mein KATALOG"</h2>
+
+<p>
+Bei der Selbstregistrierung für "Mein KATALOG" gibt jeder Nutzer ein
+persönliches Passwort an, das im Profil geändert werden kann. Die
+Zugangsberechtigung gilt nur für den Nutzer persönlich, sie ist nicht
+übertragbar. Der Nutzer ist für die Geheimhaltung seines Passwortes
+selbst verantwortlich. Der Nutzer übernimmt die volle Verantwortung
+für sämtliche Handlungen, die unter Verwendung seines Namens in
+Verbindung mit seinem Passwort vorgenommen werden.
+</p>
+
+<p>
+
+Der Nutzer verpflichtet sich, der EINRICHTUNG unverzüglich jede missbräuchliche Benutzung
+seines Logins mitzuteilen, sobald ihm eine solche bekannt geworden
+ist. Im Falle einer missbräuchlichen Benutzung muss der Nutzer
+sofort sein Passwort ändern. Die EINRICHTUNG schließt jegliche Haftung für Schäden aus einer
+unberechtigten Verwendung eines persönlichen Passworts durch Dritte
+aus.
+
+</p>
+
+<p>
+Gleiches gilt für die Nutzung von "Mein KATALOG" über die Nummer des eigenen
+Bibliotheksausweise in der jeweiligen Bibliothek samt  zugehörigem Passwort.
+</p>
+
+<p>
+
+Die EINRICHTUNG
+behält sich vor, Nutzern den Zugang zu "Mein KATALOG" aus wichtigem
+Grund, insbesondere wegen eines Verstoßes gegen diese Allgemeinen
+Nutzungsbedingungen, zu verweigern.
+
+</p>
+
+<h2>Datenschutzbestimmungen</h2>
+
+<p>
+
+Der Nutzer wird hiermit davon unterrichtet, dass die im Rahmen der
+Registrierung angegebenen personenbezogenen Daten ausschließlich zu
+dem Zwecke maschinenlesbar gespeichert, verarbeitet und genutzt
+werden, zu dem der Nutzer diese angegeben hat.
+
+</p>
+
+<p>
+Der registrierungspflichtige Bereich "Mein KATALOG" dient dazu,
+Literaturlisten, Tags, Titel in Merklisten sowie Katalogprofile dauerhaft anzulegen und zu
+verwalten. Bei erfolgter Selbstregistrierung werden an
+personenbezogenen Daten lediglich E-Mailadresse und Passwort sowie die
+in "Mein KATALOG" vom Nutzer dauerhaft angelegten Inhalte (im Folgenden User
+Generated Content genannt, UGC) gespeichert. Das Passwort wird
+individuell verschlüsselt und nicht im Klartext abgelegt.
+</p>
+
+<p> Die Anmeldung in "Mein KATALOG" über einen Bibliotheksauweis geschieht
+über entsprechende Schnittstellen zum jeweiligen
+Bibliothekssystem. Für die Dauer der Anmeldung in "Mein KATALOG" werden
+verschiedene Informationen (Name, Vorname, Ausleihen, Gebühren usw.) 
+im KATALOG zwischengespeichert und nach der Abmeldung von "Mein KATALOG" 
+dort wieder gelöscht.  </p>
+
+<p>
+Durch die Nutzung des KATALOG werden diesbezuegliche Informationen
+(z.B. aufgerufene Titel, Recherchen, verwendeter Browser) anonymisiert
+über die jeweilige Session-ID erfasst und dauerhaft in einer
+speziellen Statistik-Datenbank gespeichert.
+</p>
+
+<p> Diese Daten dienen generell der Verbesserung des KATALOG. Speziell
+werden aus diesen Daten durch verschiedene Algorithmen neue Inhalte
+(z.B. thematisch passende Literaturvorschläge, Popularität einzelner
+Titel, Top 20 Listen häufig genutzter Titel, Wortwolken häufig
+genutzter Suchbegriffe) erzeugt und im KATALOG als Hilfestellung bei der
+Literaturrecherche für alle seine Nutzer öffentlich
+bereitgestellt. </p>
+
+<p> Der Benutzer erklärt sich mit der Nutzung des KATALOG einverstanden,
+dass diese statistischen Daten erfasst, verarbeitet und in
+anonymisierter Form öffentlich im KATALOG und darüber hinaus als Open Data
+unter der CC0-Lizenz bereitgestellt werden. </p>
+
+<p> Der Benutzer erklärt sich mit der Nutzung von "Mein KATALOG" einverstanden, dass von ihm zu einem beliebigen Zeitpunkt erstellte und als
+öffentlich gekennzeichnete Inhalte (Literaturlisten/-einträge, Tags)
+anonymisiert als Open Data unter der CC0-Lizenz - für die Allgemeinheit und speziell für andere
+Recherchesysteme - von der EINRICHTUNG
+verbreitet werden können.  </p>
+
+<p>
+Persönliche Daten anderer Mitglieder in "Mein KATALOG" dürfen nicht an
+Dritte weiter gegeben werden.
+</p>
+
+<h2>Sonstige Regelungen</h2>
+
+<p>
+
+Auf diese Allgemeinen Nutzungsbedingungen sowie das Verhältnis
+zwischen dem Nutzer und der EINRICHTUNG
+findet ausschließlich deutsches Recht Anwendung.
+
+</p>
+<p>
+
+Sollten einzelne Bestimmungen dieser Nutzungsbedingungen ganz oder
+teilweise unwirksam sein oder werden, so bleiben die übrigen
+Bestimmungen wirksam.
+
+</p>
+
+<p>
+Die EINRICHTUNG ist berechtigt, die
+vorliegenden Nutzungsbedingungen jederzeit mit Wirkung für die Zukunft
+zu ändern.
+</p>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

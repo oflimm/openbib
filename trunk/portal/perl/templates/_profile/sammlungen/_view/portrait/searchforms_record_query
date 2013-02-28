@@ -62,6 +62,8 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
+<input type="hidden" name="db" value="portrait" />
+
 <table>
 [% IF available_searchfields.freesearch.active %]
 [%- cgiparam = searchfield.freesearch.prefix ;
@@ -74,7 +76,7 @@ $(document).ready(function(){
 [%- cgiparam = searchfield.title.prefix;
     this_searchfield = 'title';
  -%]
-<tr><td class="ob-field">[% msg.maketext("Titelworte") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="ob-field">[% msg.maketext("Bildtitelwort(e)") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF available_searchfields.person.active %]
@@ -84,32 +86,25 @@ $(document).ready(function(){
 <tr><td class="ob-field">[% msg.maketext("Personen") %]</td><td><input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
+[% IF available_searchfields.corporatebody.active %]
+[%- cgiparam = searchfield.corporatebody.prefix;
+    this_searchfield = 'corporatebody';
+ -%]
+<tr><td class="ob-field">[% msg.maketext("Körperschaft") %]</td><td><input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
 [% IF available_searchfields.subject.active %]
 [%- cgiparam = searchfield.subject.prefix;
     this_searchfield = 'subject';
  -%]
-<tr><td class="ob-field">[% msg.maketext("Schlagworte") %]</td><td><input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="ob-field">[% msg.maketext("Region") %]</td><td><input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF available_searchfields.classification.active %]
 [%- cgiparam = searchfield.classification.prefix;
     this_searchfield = 'classification';
  -%]
-<tr><td class="ob-field">[% msg.maketext("Notation") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF available_searchfields.isbn.active %]
-[%- cgiparam = searchfield.isbn.prefix;
-    this_searchfield = 'isbn';
- -%]
-<tr><td class="ob-field">[% msg.maketext("ISBN") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF available_searchfields.issn.active %]
-[%- cgiparam = searchfield.issn.prefix;
-    this_searchfield = 'issn';
- -%]
-<tr><td class="ob-field">[% msg.maketext("ISSN") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="ob-field">[% msg.maketext("Beruf/Weltanschauung") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF available_searchfields.mark.active %]
@@ -119,41 +114,10 @@ $(document).ready(function(){
 <tr><td class="ob-field">[% msg.maketext("Signatur") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF available_searchfields.titlestring.active %]
-[%- cgiparam = searchfield.titlestring.prefix;
-    this_searchfield = 'titlestring';
- -%]
-<tr><td class="ob-field">[% msg.maketext("Kompletter Titel") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF available_searchfields.content.active %]
-[%- cgiparam = searchfield.content.prefix;
-    this_searchfield = 'content';
- -%]
-<tr><td class="ob-field">[% msg.maketext("Abstrakt/Inhalt") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF available_searchfields.publisher.active %]
-[%- cgiparam = searchfield.publisher.prefix;
-    this_searchfield = 'publisher';
- -%]
-<tr><td class="ob-field">[% msg.maketext("Verlag") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF available_searchfields.source.active %]
-[%- cgiparam = searchfield.source.prefix;
-    this_searchfield = 'source';
- -%]
-<tr><td class="ob-field">[% msg.maketext("Serie/Band/Quelle")
-%]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF available_searchfields.mediatype.active %]
 [%- cgiparam = searchfield.mediatypestring.prefix;
     this_searchfield = 'mediatypestring';
  -%]
-<tr><td class="ob-field">[% msg.maketext("Medienart") %]</td><td><select name="[% cgiparam %]"><option value="" selected="selected">Keine ausgewählt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Hochschulangehoerige">Hochschulangehörige(r)</option><option value="Audio CD">Audio-CD</option><option value="Audio Mitschnitt">Audio Mitschnitt</option><option value="audiovisuelle Materialien">Audiovisuelle Materialien</option><option value="Aufsatz">Aufsatz</option><option value="Aufsatz-Fotokopie">Aufsatz-Fotokopie</option><option value="CD-ROM">CD-ROM</option><option value="Diskette">Diskette</option><option value="Dissertation">Dissertation</option><option value="DVD">DVD</option><option value="Festschrift">Festschrift</option><option value="Fotokopie">Fotokopie</option><option value="Geschaeftsbericht">Geschäftsbericht</option><option value="Kassette">Kassette</option><option value="Loseblattsammlung">Loseblattsammlung</option><option value="masch.Schr.">Masch.Schr.</option><option value="Medienkombination">Medienkombination</option><option value="Musikdruck Noten">Musikdruck / Noten</option><option value="Original">Original</option><option value="Reisefuehrer, Karte oder Atlas">Reiseführer, Karte oder Atlas</option><option value="Sprachkassette">Sprachkassette</option><option value="Standardmonographie">Standardmonographie</option><option value="Video">Video</option><option value="Zeitschrift">Zeitschrift</option><option value="Zeitung">Zeitung</option></select>&nbsp;</td><td></td></tr>
-[% END %]
+<tr><td class="ob-field">[% msg.maketext("Portraitart") %]</td><td><select name="[% cgiparam %]"><option value="" selected="selected">Keine ausgewählt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Fotografie">Fotografie</option><option value="Holzschnitt">Holzschnitt</option><option value="Kupferstich">Kupferstich</option><option value="Lithografie">Lithografie</option><option value="Punktierstich">Punktierstich</option><option value="Radierung">Radierung</option><option value="Schabkunst">Schabkunst</option><option value="Stahlstich">Stahlstich</option></select>&nbsp;</td><td></td></tr>
 
 [% IF available_searchfields.year.active %]
 [%- cgiparam      = searchfield.yearstring.prefix;
@@ -169,11 +133,6 @@ $(document).ready(function(){
    -%]
 <tr><td class="ob-field">[% msg.maketext("Zeitraum") %]</td><td><input type="text" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />&nbsp[% msg.maketext("bis") %]&nbsp;<input type="text" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" /></td><td></td></tr>
 [% END %]
-<!-- <tr><td class="ob-field">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="ob-field">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr> -->
-<tr><td class="ob-field"><span class="bigtext">[% msg.maketext("in:") %]</span></td><td colspan="2">[% PROCESS common/subtemplate name="searchforms_record_profile" %]</td><td></td></tr>
 
-<tr><td colspan="3"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></td></tr>
-<tr><td colspan="3"></td></tr>
-<tr><td ><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/simple.html" class="navlink">[% msg.maketext("Einfache Suche") %]</a></td><td colspan="2" align="right">[% IF queries.size > 0 %]<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html">[% msg.maketext("Suchhistorie") %]&nbsp;([% queries.size %])</a>[% END %]</td></tr>
-
+<tr><td colspan="3"><input type="submit" title="[% msg.maketext("Hier suchen Sie in der Sammlung") %]" value="[% msg.maketext("Suchen") %]" /></td></tr>
 </table>

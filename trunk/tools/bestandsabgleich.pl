@@ -83,9 +83,6 @@ my $enrichmnt = new OpenBib::Enrichment;
 
 my $common_holdings_ref = $enrichmnt->get_common_holdings({ selector => $selector, databases => \@databases});
 
-my $dbh = DBI->connect("DBI:CSV:f_dir=.;csv_sep_char=,;csv_eol=\n");
-
-
 my $csv = Text::CSV_XS->new ({
     'eol'         => "\n",
     'sep_char'    => "\t",

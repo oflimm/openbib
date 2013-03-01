@@ -5,7 +5,7 @@
 #  Zusammenfassung von Funktionen, die von mehreren Datenbackends
 #  verwendet werden
 #
-#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -682,6 +682,140 @@ sub write_set {
         close(HOLDINGOUT);
     }    
     
+}
+
+
+sub titleid_by_field_content {
+    my $self    = shift;
+    my $table   = shift;
+    my $arg_ref = shift;
+    my $mode    = shift || '';
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config;
+    
+    my %table_type = (
+        'person'         => {
+            resultset => 'TitlePerson',
+            field => 'person_fields.field',
+            join => ['personid', { 'personid' => 'person_fields' }]
+        },
+        'corporatebody'  => {
+            resultset => 'TitleCorporatebody',
+            field => 'corporatebody_fields.field',
+            join => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }]
+        },
+        'subject'        => {
+            resultset => 'TitleSubject',
+            field => 'subject_fields.field',
+            join => ['subjectid', { 'subjectid' => 'subject_fields' }]
+        },
+        'classification' => {
+            resultset => 'TitleClassification',
+            field => 'classification_fields.field',
+            join => ['classificationid', { 'classificationid' => 'classification_fields' }]
+        },
+        'holding' => {
+            resultset => 'TitleHolding',
+            field => 'holding_fields.field',
+            join => ['holdingid', { 'holdingid' => 'holding_fields' }]
+        },
+
+    );
+
+    my $first_criteria = 1;
+    my %title_a = ();
+    my %title_b = ();
+
+    foreach my $criteria_ref (@$arg_ref){
+        my $operator = ($criteria_ref->{operator})?$criteria_ref->{operator}:'~';
+        my $content = 'content';
+        
+        if (defined $criteria_ref->{content_norm}){
+            $content = 'content_norm';
+        }
+        
+        # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
+        my $titles = $self->{schema}->resultset('TitleField')->search_rs(
+            {
+                'field'   => $criteria_ref->{field},
+                $content => { $operator => $criteria_ref->{$content} },
+            },
+            {
+                select   => ['titleid'],
+                as       => ['thisid'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+        
+        if ($table ne "title"){
+            # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
+            $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
+                {
+                    $table_type{$table}{field} => $criteria_ref->{field},
+                    $content => { $operator => $criteria_ref->{$content} },
+                },
+                {
+                    select   => ['me.titleid'],
+                    as       => ['thisid'],
+                    join     => $table_type{$table}{join},
+		    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                }
+            );
+        }
+
+        if ($mode eq "all" && $first_criteria){
+            $first_criteria = 0;
+            while (my $item = $titles->next){
+                my $thisid = $item->{thisid};                
+                $title_a{$thisid} = 1;
+            }            
+        }
+        elsif ($mode eq "all" && !$first_criteria){
+            while (my $item = $titles->next){
+                my $thisid = $item->{thisid};                
+                if ($title_a{$thisid} == 1){
+                    $title_b{$thisid} = 1;
+                }
+            }
+            %title_a = %title_b;
+        }
+        else {
+            foreach my $item ($titles->all){
+                my $thisid = $item->{'thisid'};
+                
+                $self->{titleid}{$thisid} = 1;
+            }
+        }
+    }
+
+    if ($mode eq "all"){
+        $self->{titleid} = \%title_a;
+    }
+    
+    my $count=0;
+
+    foreach my $key (keys %{$self->{titleid}}){
+        $count++;
+    }
+
+    $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
+
+    return $self;
+}
+
+sub get_titleid {
+    my $self=shift;
+
+    return $self->{titleid};
+}
+
+sub set_titleid {
+    my ($self,$titleid_ref) = @_;
+
+    $self->{titleid} = $titleid_ref;
 }
 
 1;

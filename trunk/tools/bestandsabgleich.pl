@@ -42,6 +42,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
 use DBI;
 use Getopt::Long;
+use Text::CSV_XS;
 use YAML::Syck;
 
 my $config      = OpenBib::Config->instance;
@@ -62,7 +63,7 @@ if ($help || !@databases || !$selector || !$filename){
 $logfile=($logfile)?$logfile:'/var/log/openbib/bestandsabgleich.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=ERROR, LOGFILE, Screen
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -84,44 +85,56 @@ my $common_holdings_ref = $enrichmnt->get_common_holdings({ selector => $selecto
 
 my $dbh = DBI->connect("DBI:CSV:f_dir=.;csv_sep_char=,;csv_eol=\n");
 
+
+my $csv = Text::CSV_XS->new ({
+    'eol'         => "\n",
+    'sep_char'    => "\t",
+});
+
+
+#my $csv = new Text::CSV_XS;
+
 my %database_lookup = ();
 map { $database_lookup{$_} = 1 } @databases;
 
-
 my @categories = sort keys %{$common_holdings_ref->[0]};
 
-my $sql_create_table = "create table $filename (".join(",",map {"$_ CHAR(64)"} @categories).")";
+my $fh;
 
-$dbh->do("drop table $filename");
+open $fh, ">:encoding(utf8)", $filename;
 
-$logger->debug($sql_create_table);
+my $out_ref = [
+    'selector',
+    'persons',
+    'title',
+];
 
-my $request = $dbh->prepare($sql_create_table);
-$request->execute(@categories);
-
-foreach my $item_ref (@{$common_holdings_ref}){
-    $logger->debug(YAML::Dump($item_ref));
-    my $sql_insert = "insert into $filename (".join(',',@categories).") values (".join(',',map {'?'} @categories).")";
-
-    $logger->debug($sql_insert);
-    
-    my @sql_args = ();
-    
-    foreach my $row (@categories){
-        if ($database_lookup{$row}){
-            push @sql_args, $item_ref->{$row}->{loc_mark};
-        }
-        else {
-            push @sql_args, $item_ref->{$row};
-        }       
-    }
-    $logger->debug("Args: ".join(',',@sql_args));
-    $request = $dbh->prepare($sql_insert);
-    $request->execute(@sql_args);
+foreach my $database (sort @databases){
+    push @$out_ref, $database;
 }
 
-$request->finish;
-$dbh->disconnect;
+$csv->print($fh,$out_ref);
+
+foreach my $item_ref (@{$common_holdings_ref}){
+    my $out_ref = [
+        $item_ref->{$selector},
+        $item_ref->{persons},
+        $item_ref->{title}
+    ];
+
+    foreach my $database (sort @databases){
+        if ($item_ref->{$database}->{loc_mark}){
+            push @$out_ref, $item_ref->{$database}->{loc_mark};
+        }
+        else {
+            push @$out_ref, '-';
+        }
+    }
+
+    $csv->print($fh,$out_ref);
+}
+
+close $fh;
 
 sub print_help {
     print << "HELP";

@@ -23,12 +23,21 @@
 
 
   #header_logo_image {
-    background: url(/images/openbib/views/portrait/logo.png) center no-repeat;
+
+    display: block;
     width: 1000px;
     height: 120px;
-    position: absolute;
-    top: 20px;
-    left: 12px;
+    padding-top: 40px;
+    
+    margin-left: auto;
+    margin-right: auto; 
+    background: url(/images/openbib/views/portrait/logo.png) center no-repeat;
+/*
+   left: 12px;
+
+
+
+     */
   }
 
 /*
@@ -50,7 +59,7 @@
   }
 
 
-    .ob-fulltitle {
+  .ob-fulltitle {
     padding: 5px;
   }
 

@@ -373,57 +373,62 @@ sub get_common_holdings {
 
     my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
 
-    my %selector_length = (
-        'BibKey' => 33,
-        'ISBN13' => 13,
-        'ISSN'   => 8,
-    );
-
-    return () unless (@{$databases_ref} && defined $dbh && exists $selector_length{$selector});
+    return () unless (@{$databases_ref} && defined $dbh);
 
     my $common_holdings_ref = [];
 
-    my %all_isbn             = ();
+    my %all_by_matchkey             = ();
 
     my $in_select_string = join(',',map {'?'} @{$databases_ref});
     
-    my $sql_string = "select * from all_isbn where dbname in ($in_select_string) and length(isbn)=?";
+    my $sql_string = ($selector eq "ISBN13")?"select * from all_titles_by_isbn where dbname in ($in_select_string)":
+        ($selector eq "ISSN")?"select * from all_titles_by_issn where dbname in ($in_select_string)":
+            ($selector eq "BibKey")?"select * from all_titles_by_bibkey where dbname in ($in_select_string)":"select * from all_titles_by_isbn where dbname in ($in_select_string)";
     
     $logger->debug($sql_string);
     
     my $request=$dbh->prepare($sql_string) or $logger->error($DBI::errstr);
     
-    $request->execute(@{$databases_ref},$selector_length{$selector}) or $logger->error($DBI::errstr);;
+    $request->execute(@{$databases_ref}) or $logger->error($DBI::errstr);;
+
+    my $matchkey_column = ($selector eq "ISBN13")?'isbn':
+        ($selector eq "ISSN")?'issn':
+            ($selector eq "BibKey")?'bibkey':'isbn';
+
+    $logger->debug("Matchkey Column for Selector $selector is $matchkey_column");
     
     while (my $result=$request->fetchrow_hashref){
-        if (!exists $all_isbn{$result->{isbn}}{$result->{dbname}} && $result->{id}){
-            $all_isbn{$result->{isbn}}{$result->{dbname}} = [ $result->{id} ];
+            
+        if ($result->{titleid} && !defined $all_by_matchkey{$result->{$matchkey_column}}{$result->{dbname}} ){
+            $all_by_matchkey{$result->{$matchkey_column}}{$result->{dbname}} = [ $result->{titleid} ];
         }
-        elsif ($result->{id}) {
-            push @{$all_isbn{$result->{isbn}}{$result->{dbname}}}, $result->{id};
+        elsif ($result->{titleid}) {
+            push @{$all_by_matchkey{$result->{$matchkey_column}}{$result->{dbname}}}, $result->{titleid};
         }
     }
     
     # Einzelbestaende entfernen
-    foreach my $isbn (keys %all_isbn){
-        my @owning_dbs = keys %{$all_isbn{$isbn}};
+    foreach my $matchkey (keys %all_by_matchkey){
+        my @owning_dbs = keys %{$all_by_matchkey{$matchkey}};
 
-        $logger->debug("$isbn - $#owning_dbs - ".join(" ; ",@owning_dbs));
+        if ($#owning_dbs > 0){
+            $logger->debug("$matchkey - $#owning_dbs - ".join(" ; ",@owning_dbs));
+        }
         
         if ($#owning_dbs < 1){
-            delete($all_isbn{$isbn});
+            delete($all_by_matchkey{$matchkey});
         }
     }
 
-    foreach my $isbn (keys %all_isbn){
+    foreach my $matchkey (keys %all_by_matchkey){
         my $this_item_ref = {};
         
         my $persons = "";
         my $title   = "";
         foreach my $database (@{$databases_ref}){
-            if (exists $all_isbn{$isbn}{$database}){
+            if (exists $all_by_matchkey{$matchkey}{$database}){
                 my @signaturen = ();
-                foreach my $id (@{$all_isbn{$isbn}{$database}}){
+                foreach my $id (@{$all_by_matchkey{$matchkey}{$database}}){
                     my $record=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record->get_fields;
                     if (!$persons){
                         $persons=$record->{PC0001}[0]{content};
@@ -443,10 +448,11 @@ sub get_common_holdings {
             }
         }
 
-        $this_item_ref->{$selector}  = $isbn;
+        $this_item_ref->{$selector}  = $matchkey;
         $this_item_ref->{persons}    = $persons;
         $this_item_ref->{title}      = $title;
 
+        $logger->debug(YAML::Dump($this_item_ref));
         push @{$common_holdings_ref}, $this_item_ref;
     }
 

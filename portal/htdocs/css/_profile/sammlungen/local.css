@@ -20,9 +20,9 @@
     border: none;
   }
 
-  body {
+/*  body {
     overflow-y: scroll;
-  }
+  }*/
 
   ul.topiclist a {
     font-weight:bold;

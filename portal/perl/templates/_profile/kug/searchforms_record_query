@@ -147,7 +147,7 @@ $(document).ready(function(){
 </div>
 [% END %]
 
-[% IF available_searchfields.markstring.active %]
+[% IF available_searchfields.mark.active %]
 [%- cgiparam = searchfield.markstring.prefix;
     this_searchfield = 'markstring';
  -%]

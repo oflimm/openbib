@@ -138,7 +138,7 @@ foreach my $key (keys %{$subset->{titleid}}){
 
 $logger->info("### $subset->{source} -> $subset->{destination}: Gefundene Titel-ID's $count");
 
-$subset->get_title_hierarchy;
+# Keine Ueberordnungen, da Weiterverarbeitung der ids in titel_exclude $subset->get_title_hierarchy;
 
 $subset->get_title_normdata;
 

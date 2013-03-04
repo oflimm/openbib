@@ -79,6 +79,7 @@
           "subjectstring" = msg.maketext("Thema")
           "classificationstring" = msg.maketext("Systematik")
           "mediatypestring" = msg.maketext("Medientyp")
+          "markstring" = msg.maketext("Signatur")
           "languagestring" = msg.maketext("Sprache")
           "yearstring" = msg.maketext("Jahr")
           "tagstring" = msg.maketext("Tag")

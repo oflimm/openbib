@@ -2,7 +2,7 @@
 {
 
   header {
-    padding-bottom:65px;  
+    padding-bottom:75px;  
   }
 
   header #logo {
@@ -10,7 +10,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 100%;
+    width: 60%;
   }
 
   header #institution {
@@ -22,34 +22,25 @@
   }
 
 
-  #header_logo_image {
-
-    display: block;
-    width: 1000px;
-    height: 120px;
-    padding-top: 40px;
-    
-    margin-left: auto;
-    margin-right: auto; 
+  #header_logo_image  {
     background: url(/images/openbib/views/portrait/logo.png) center no-repeat;
-/*
-   left: 12px;
-
-
-
-     */
+    position: absolute;
+    width: 407px;
+    height: 120px;
+    top: 20px;
+    left: 5px;    
   }
 
-/*
+
   #header_institution_image {
-    background: url(/images/openbib/views/alekiddr/aleki_logo.png) center no-repeat;
-    width: 111px;
-    height: 90px;
+    background: url(/images/openbib/usblogotrans190.png) center no-repeat;
+    width: 190px;
+    height: 78px;
     position: absolute;
-    top: 30px;
+    top: 45px;
     right: 10px;
   }
-*/
+
   .details {
     padding-top: 1em;
   }

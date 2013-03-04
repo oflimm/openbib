@@ -69,7 +69,7 @@ und künstlerisch interessanten Einbänden und Kassetten versehen.  </p>
 
 <p>
 Die Einsichtnahme für Forschungszwecke erfolgt im  <a
-href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/histsamm/lesesaal/index_ger.html"target="_blank">
+href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/histsamm/lesesaal/index_ger.html" target="_blank">
 Lesesaal Historische Sammlungen</a>. Alle Titel sind in Suchen & Bestellen der USB und im
 Verbundkatalog NRW erfasst. [<a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Weitere Informationen</a>] </p>
 

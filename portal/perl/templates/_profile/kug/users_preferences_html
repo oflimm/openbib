@@ -198,11 +198,6 @@
 <label for="isbn">[% msg.maketext("ISBN") %]</label>
 </div>
 
-<div class="ym-gbox-left ym-fbox-check">
-<input type="checkbox" name="mark"     value="1" [% IF searchfields.mark.active %]checked="checked"[% END %]/>
-<label for="mark">[% msg.maketext("Signatur") %]</label>
-</div>
-
 </div>
 
 <div class="ym-g50 ym-gr">
@@ -213,8 +208,8 @@
 </div>
 
 <div class="ym-gbox-left ym-fbox-check">
-<input type="checkbox" name="mark"     value="1" [% IF searchfields.mark.active %]checked="checked"[% END %]/>
-<label for="mark">[% msg.maketext("Signatur") %]</label>
+<input type="checkbox" name="markstring"     value="1" [% IF searchfields.markstring.active %]checked="checked"[% END %]/>
+<label for="markstring">[% msg.maketext("Signatur") %]</label>
 </div>
 
 <div class="ym-gbox-left ym-fbox-check">

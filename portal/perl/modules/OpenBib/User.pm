@@ -4533,8 +4533,8 @@ sub set_searchfields {
         ? $arg_ref->{isbn}                  : undef;
     my $issn           = exists $arg_ref->{issn}
         ? $arg_ref->{issn}                  : undef;
-    my $mark           = exists $arg_ref->{mark}
-        ? $arg_ref->{mark}                  : undef;
+    my $markstring     = exists $arg_ref->{markstring}
+        ? $arg_ref->{markstring}            : undef;
     my $mediatype      = exists $arg_ref->{mediatype}
         ? $arg_ref->{mediatype}            : undef;
     my $year           = exists $arg_ref->{year}
@@ -4626,8 +4626,8 @@ sub set_searchfields {
             },
             {
                 userid      => $self->{ID},
-                searchfield => 'mark',
-                active      => $mark,
+                searchfield => 'markstring',
+                active      => $markstring,
             },
             {
                 userid      => $self->{ID},

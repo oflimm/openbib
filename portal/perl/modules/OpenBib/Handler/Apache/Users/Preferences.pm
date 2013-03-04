@@ -173,7 +173,7 @@ sub update_searchfields {
     my $classification = ($query->param('classification'))?$query->param('classification'):'0';
     my $isbn           = ($query->param('isbn'))?$query->param('isbn'):'0';
     my $issn           = ($query->param('issn'))?$query->param('issn'):'0';
-    my $mark           = ($query->param('mark'))?$query->param('mark'):'0';
+    my $markstring     = ($query->param('markstring'))?$query->param('markstring'):'0';
     my $content        = ($query->param('content'))?$query->param('content'):'0';
     my $mediatype      = ($query->param('mediatype'))?$query->param('mediatype'):'0';
     my $year           = ($query->param('year'))?$query->param('year'):'0';
@@ -194,7 +194,7 @@ sub update_searchfields {
         classification => $classification,
         isbn           => $isbn,
         issn           => $issn,
-        mark           => $mark,
+        markstring     => $markstring,
         mediatype      => $mediatype,
         year           => $year,
         content        => $content,

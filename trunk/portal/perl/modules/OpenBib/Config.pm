@@ -2008,6 +2008,7 @@ sub del_view {
     eval {
         my $view = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname});
         $view->view_dbs->delete;
+        $view->view_rsses->delete;
         $view->delete;
     };
 

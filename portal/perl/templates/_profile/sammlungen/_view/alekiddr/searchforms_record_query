@@ -112,7 +112,7 @@ $(document).ready(function(){
 <tr><td class="ob-field">[% msg.maketext("ISSN") %]</td><td><input type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
-[% IF available_searchfields.mark.active %]
+[% IF available_searchfields.markstring.active %]
 [%- cgiparam = searchfield.markstring.prefix;
     this_searchfield = 'markstring';
  -%]

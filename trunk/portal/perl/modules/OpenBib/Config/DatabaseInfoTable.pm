@@ -75,26 +75,26 @@ sub _new_instance {
     );
 
     while (my $dbinfo = $dbinfos->next){
-        my $description = $dbinfo->{thisdescription};
-        my $shortdesc   = $dbinfo->{thisshortdesc};
-        my $dbname      = $dbinfo->{thisdbname};
-        my $sigel       = $dbinfo->{thissigel};
-        my $url         = $dbinfo->{thisurl};
-        my $locationid  = $dbinfo->{thislocationid};
-        my $locationtype  = $dbinfo->{thislocationtype};
+        my $description  = $dbinfo->{thisdescription} || '';
+        my $shortdesc    = $dbinfo->{thisshortdesc}   || '';
+        my $dbname       = $dbinfo->{thisdbname};
+        my $sigel        = $dbinfo->{thissigel}       || '';
+        my $url          = $dbinfo->{thisurl}         || '';
+        my $locationid   = $dbinfo->{thislocationid};
+        my $locationtype = $dbinfo->{thislocationtype};
         
         ##################################################################### 
         ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
-    
+
         $self->{sigel}->{$sigel} = {
             full   => $description,
             short  => $shortdesc,
             dbname => $dbname,
         };
-    
+        
         #####################################################################
         ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
-    
+
         $self->{bibinfo}->{$sigel} = $url;
         
         #####################################################################
@@ -112,7 +112,7 @@ sub _new_instance {
 
         $self->{urls}->{$dbname}        = $url;
 
-        if ($locationtype eq "ISIL"){
+        if (defined $locationtype && defined $locationid && $locationtype eq "ISIL"){
             $self->{locationid}->{$dbname}  = $locationid;
         }
     }

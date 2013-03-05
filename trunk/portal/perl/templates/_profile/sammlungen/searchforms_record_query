@@ -62,6 +62,8 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
+<input type="hidden" name="db" value="[% config.get_dbs_of_view(view).first %]" />
+
 <fieldset class="ym-columnar">
 <legend>[% msg.maketext("Erweiterte Suche") %]</legend>
 
@@ -237,11 +239,6 @@ $(document).ready(function(){
 <input id="[% cgiparam_to %]" type="text" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" />
 </div>
 [% END %]
-<!-- <tr><td class="ob-field">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="ob-field">und</td><td><input id="[% cgiparam %]" type="checkbox" name="serien" /></td><td></td></tr> -->
-<div class="ym-fbox-select">
-<label for="[% cgiparam %]">[% msg.maketext("in:") %]</label>
-[% PROCESS common/subtemplate name="searchforms_record_profile" %]
-</div>
 
 <p/>
 

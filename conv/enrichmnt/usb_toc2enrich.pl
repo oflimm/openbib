@@ -93,12 +93,12 @@ if ($importyml){
 else {
     $logger->info("Bestimmung der TOC-URL's");
     
-    my $request=$dbh->prepare("select t1.content as isbn, t2.content as tocurl from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category=662 and t2.content like '%digitool%' and t1.category in (540,553)");
-    $request->execute();
-
     my $isbn_tocurls = $catalog->{schema}->resultset('Title')->search(
         {
-            'title_fields.content' => { '~' => '%digitool%'},
+	    'title_fields_3.field'   => '0663',
+            'title_fields_3.content' => { '~' => '.*Interna: Inhaltsverzeichnis.*'},
+	    'title_fields.field'     => '0662',
+#	    'title_fields.content'   => { '~" => '.*digitool.*' },
             -or => [
                 'title_fields_2.field' => '0540',
                 'title_fields_2.field' => '0553',
@@ -107,7 +107,7 @@ else {
         {
             select => ['title_fields.content','title_fields_2.content'],
             as     => ['tocurl','isbn'],
-            join   => ['title_fields','title_fields'],
+            join   => ['title_fields','title_fields', 'title_fields'],
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }   
     );
@@ -116,6 +116,7 @@ else {
         my $isbn   = $isbn_tocurl->{isbn};
         my $tocurl = $isbn_tocurl->{tocurl};
         
+	print "$isbn -> $tocurl\n";
         my $isbnXX = Business::ISBN->new($isbn);
         
         if (defined $isbnXX && $isbnXX->is_valid){

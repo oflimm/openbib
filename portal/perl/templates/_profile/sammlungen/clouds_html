@@ -53,10 +53,10 @@
         <div class="ym-cbox" class="ym-clearfix">
 
 <p/>
-
+[% thisdbname = config.get_dbs_of_view(view).first %]
 <ul>
 <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/id/searchterm.html?l=[% lang %]">[% msg.maketext("Suchbegriffe") %]</a></li>
-<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/artmann/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]">Jahre, Schlagworte, Notationen, Personen, K&ouml;rperschaften</a></li>
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisdbname %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">Jahre, Schlagworte, Notationen, Personen, K&ouml;rperschaften</a></li>
 </ul>
 
         </div>

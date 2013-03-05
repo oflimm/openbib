@@ -1467,13 +1467,13 @@ sub to_drilldown_term {
     return $term;
 }
 
-sub to_json {
+sub to_json ($){
     my ($self)=@_;
 
     return encode_json $self->to_hash;
 }
 
-sub from_json {
+sub from_json ($){
     my ($self,$json)=@_;
 
     # Log4perl logger erzeugen

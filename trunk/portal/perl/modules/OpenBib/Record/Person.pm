@@ -254,7 +254,7 @@ sub to_rawdata {
     return $self->{_fields};
 }
 
-sub to_json {
+sub to_json ($) {
     my ($self)=@_;
 
     my $json_ref = {

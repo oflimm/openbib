@@ -1,0 +1,191 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_22
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='info' %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Informationen") %]</a></li>
+         <li><a href="#" class="lastitem">Sammlung</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='sammlung' %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+   <div class="ym-grid">
+          <div class="ym-g33 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+<p> <img
+src="/images/openbib/views/dirksen/exlibris.png"
+class="img" alt="Exlibris" />
+<center><i>Exlibris</i></center>
+</p>
+
+          </div>
+         </div>
+          <div class="ym-g66 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+<h2>Biographische Notizen zu Herbert von Dirksen </h2>
+
+<p> Herbert von Dirksen entstammte einer ursprünglich aus den
+Niederlanden kommenden, seit vielen Generationen in preu&szlig;ischen
+Diensten stehenden mennonitischen Familie. Bekannt unter seinen
+Vorfahren ist vor allem der Jurist Heinrich Eduard Dirksen
+(1790-1868), der an den Universit&auml;ten Königsberg und Berlin
+lehrte. Mit dem Eintritt von Herberts Vater Willibald Dirksen
+(1852-1928) in den preu&szlig;ischen Adelsstand wurde der Familie das Adelsprädikat
+"von" verliehen. Neben dem Staatsdienst verwalteten die von Dirksens
+ihren Landbesitz, darunter das Rittergut Jessen im Kreis Spremberg,
+sowie den Besitz der Burg Gr&ouml;ditzberg. Letztere ist auf dem
+Exlibris von Herbert von Dirksen abgebildet. Dirksen zählte zu den
+Spitzendiplomaten der Weimarer Republik, die der
+nationalsozialistischen Bewegung kritisch gegenüberstanden. Er ging
+jedoch nicht soweit, nach der Machtergreifung Hitlers vom Amt zurückzutreten.</p>
+
+<h2>Der Karrierediplomat 1918 bis 1940 </h2>
+
+<p>
+Schon Willibald Dirksen hatte viele Jahre hindurch das
+V&ouml;lkerrechts-Referat im Ausw&auml;rtigen Amt betreut. Herbert von
+Dirksen war w&auml;hrend des Ersten Weltkrieges in der deutschen
+Verwaltung in Belgien und in der Gesandtschaft in Den Haag tätig. Nach
+dem Krieg trat er 1918 ins Ausw&auml;rtige Amt ein und war hier von
+Anfang an haupts&auml;chlich mit Angelegenheiten Osteuropas (u.a. in
+Kiew und Warschau) besch&auml;ftigt, bis er 1928 zum Botschafter in
+Moskau ernannt wurde, eine wichtige diplomatische Aufgabe und
+bemerkenswert als erster Botschafterposten. Vergeblich versuchte er
+die deutsch-sowjetischen Beziehungen in ein unproblematisches und
+freundschaftliches Verhältnis zu wandeln. 1933 wurde er in gleicher
+Eigenschaft auf den Posten in Tokio versetzt. Sein Auftrag lautete,
+die deutsch-japanischen Beziehungen zu konsolidieren und als
+Gegengewicht zur Sowjetunion auszubauen. In seine Amtszeit fiel der
+Abschluss des Antikominternpaktes (1936), den aber Joachim von
+Ribbentrop an ihm und dem Ausw&auml;rtigen Amt vorbei aushandelte. Aus
+gesundheitlichen Gründen erbat Dirksen um Abberufung aus Japan. Auf
+der Heimreise erfuhr er von seiner Ernennung zum Botschafter in
+London. Er war in die Verhandlungen während der entscheidenden Wochen
+des Jahres 1939 involviert, die letztlich den Krieg zwischen
+Deutschland und England nicht verhindern konnten. Dirksen befand sich
+bei Kriegserklärung in Deutschland und wurde in den Ruhestand
+versetzt. In den folgenden Jahren hielt er etliche Vorträge vor
+Soldaten zumeist zum Thema Schlesien, in welchen er die
+Kriegsziele Hitlers befürwortete. Als sowjetische Truppen 1944 große
+Teile Schlesiens besetzten, wurde er auf Weisung des Außenministers
+von Wehrmachtssoldaten entsetzt. Ribbentrop wollte verhindern, dass
+der ehemalige Diplomat in sowjetische Gefangenschaft
+geriet. Dirksen gelangte über Prag nach Bayern, wo er für den Rest
+seines Lebens seinen Wohnsitz nahm. Nach seiner Entnazifizierung
+versuchte er fortan als Publizist zu einer friedlichen Lösung der
+deutschen Frage beizutragen.</p>
+
+<h2>Bibliothekstransfer Irland - K&ouml;ln</h2>
+
+<p>
+Dirksens Bibliothek war nach seiner Abberufung aus London in England
+verblieben. 1939 wurde der gegenseitige Austausch des Privateigentums
+des deutschen und englischen Botschafters zwischen den
+Au&szlig;enministerien vereinbart. Dirksens Bibliothek brachte man zu
+diesem Zweck in einen irischen Hafen, von wo aus ein von der Schweizer
+Regierung gechartertes Schiff sie nach Deutschland bringen sollte. Die
+Transaktion wurde durch den beginnenden Krieg verhindert und so
+lagerten Dirksens Bücher letzlich bis 1949 in Irland.<br /> Im
+Dezember 1948 hatte sich Herbert von Dirksen an den Generaldirektor
+der K&ouml;lner Museen gewandt, weil er seine B&uuml;chersammlung der
+Wissenschaft zur Verf&uuml;gung stellen wollte. Dieser nahm
+R&uuml;cksprache mit Prof. Dr. Peter Rassow, Historiker
+an der Universit&auml;t zu K&ouml;ln, der bedauerte, die Sammlung aus
+Platzmangel nicht einstellen zu können, und Dirksen deshalb an den
+damaligen Ltd. Direktor der USB Prof. Dr. Hermann Corsten
+verwies. Zwischen Dirksen und Corsten begann daraufhin ein
+umfangreicher Briefwechsel. Obwohl Dirksen Anfang 1949 nach Irland
+reiste und sich pers&ouml;nlich um den Abtransport seiner Bücher
+k&uuml;mmerte, konnten diese erst im August in Köln in Empfang
+genommen werden. Der USB wurden damit rund 1.000 Titel mit 1.598
+Bänden übergeben.  </p> <p> Die Bibliothek Dirksen ist nicht nach
+wissenschaftlichen Gesichtspunkten entstanden, sondern sie zeigt ein
+Spektrum, das von beruflichen und privaten Interessen des Besitzers
+gepr&auml;gt ist. Dennoch war und ist sie eine interessante Bereicherung
+der Sammlungen der USB Köln.  </p>
+
+<p> Quelle: Schmitz, Wolfgang: Herbert von Dirksen (1882-1955), in: <a
+href="http://www.ub.uni-koeln.de/bibliothek/pub/schriften/index_ger.html#e4975"
+target="_blank"> Kölner Sammler und ihre Bücherkollektionen in der
+Universitäts- und Stadtbibliothek</a>, Köln, 2003; <a
+href="http://www.ub.uni-koeln.de/usbportal?query=USB:5435976"
+target="_blank"> Mund, Gerald: Herbert von Dirksen
+(1882-1955)</a>. Ein deutscher Diplomat in Kaiserreich, Weimarer
+Republik und Drittem Reich. Berlin, 2003; <a
+href="http://www.ub.uni-koeln.de/usbportal?query=USB:6500370"
+target="_blank">Conze, Eckart [u.a.]: Das Amt und die
+Vergangenheit</a>. Deutsche Diplomaten im Dritten Reich und in der
+Bundesrepublik. 3. Aufl., München, 2010. </p>
+
+
+<p> <a
+href="http://zbw.eu/beta/p20/person/4054/about.de.html"
+target="_blank">Herbert von Dirksen</a> im Pressearchiv "Pressemappe
+20. Jahrhundert" der ZBW Leibniz Informationszentrum Wirtschaft.
+</p>
+
+<!--
+<h2>Ansprechpartner:</h2>
+Tel.: 0221 470-3877
+<br />
+<a href="http://www.ub.uni-koeln.de/e50/e2492/e3030/index_ger.html?preview=preview"
+target="_blank">E-Mail</a><br /></p>
+-->
+
+          </div>
+         </div>
+        </div>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -260,7 +260,8 @@ sub to_rawdata {
     return $self->{_fields};
 }
 
-sub to_json {
+# unnoetiges Prototype, da sonst unnoetige Warning
+sub to_json ($){
     my ($self)=@_;
 
     my $json_ref = {

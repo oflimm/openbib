@@ -85,7 +85,7 @@ sub handler : method {
     $args{args_to_new}->{PARAMS}->{r} = $r;
 
     # set debug if we need to
-    $DEBUG = 1 if($config_args->{CGIAPP_DISPATCH_DEBUG});
+    $DEBUG = 0; # if($config_args->{CGIAPP_DISPATCH_DEBUG});
     if($DEBUG) {
         require Data::Dumper;
         warn "[Dispatch] Calling dispatch() with the following arguments: "
@@ -190,7 +190,7 @@ sub dispatch_args {
     # $logger->debug("Dispatch-table: ".YAML::Dump($table_ref));
     
     return {
-        debug => $config->{debug_dispatcher},
+        #debug => 1,
         table => $table_ref,
     };
 }

@@ -48,7 +48,7 @@
           <div class="ym-g66 ym-gl">
            <div class="ym-gbox" class="ym-clearfix">
 
-<h3>Die Virtuelle Bibliothek Elise und Helene Richter</h3>
+<h1>Die Virtuelle Bibliothek Elise und Helene Richter</h1>
 
 
 <p> Die Bibliothek der Schwestern Elise und Helene Richter wurde im Rahmen der NS-Provenienzforschung
@@ -63,7 +63,7 @@ config.get('info_loc') %]/externe_nachweise.html?l=[% lang %]">weiteren Institut
 </p>
 
 
-<h4> Elise und Helene Richter</h4>
+<h2> Elise und Helene Richter</h2>
 
 <p>
 Die Wiener Philologinnen <a href="[% path_prefix %]/[%

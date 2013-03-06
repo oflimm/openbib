@@ -53,10 +53,12 @@
 
 <h1>Die Bibliothek Richter heute</h1>
 
-<table width="100%" cellpadding="10">
-<tr>
-<td><a href="/images/openbib/views/richter/richterexlibris.jpg"><img src="/images/openbib/views/richter/richterexlibris.jpg" width="200" alt="Ex Libris der Schwestern Richter"></a></td>
-<td>
+
+ <div class="float-left" style="padding:10px;">
+
+ <center><a href="/images/openbib/views/richter/richterexlibris.jpg"><img src="/images/openbib/views/richter/richterexlibris.jpg" width="200" alt="Ex Libris der Schwestern Richter"></a></center>
+
+ </div>
 
 <p> Heute ist sicher, dass nicht die komplette Bibliothek der
 Schwestern Richter in den Bestand der USB K&ouml;ln eingegangen
@@ -84,10 +86,6 @@ auff&auml;lligste Provenienz-Merkmal dar. In unserer Bibliothek kommt
 es f&uuml;r die Provenienzrecherche erschwerend hinzu, dass die
 Inventarisierungsb&uuml;cher (Akzessionsjournale) der Erwerbungsjahre
 bis 1948 in den Kriegswirren verloren gegangen sind.  </p>
-
-</td>
-</tr>
-</table>
 
 <p> Im Mai 2005 begann die Rekonstruktion der Richterbibliothek die im
 September 2007 weitestgehend abgeschlossen wurde. Alle gefundenden

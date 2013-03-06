@@ -240,7 +240,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && category_map.4.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Typ") %]</dt>
+<dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Art") %]</dt>
 [%             FOREACH termitem IN category_map.4 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -264,7 +264,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && category_map.1.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_subjects_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
+<dt class="ob-headline" id="dd_subjects_[% database %]_anchor">[% msg.maketext("nach Jahrhundert") %]</dt>
 [%             FOREACH termitem IN category_map.1 ;
                   LAST IF loop.count > 25 ;
 %]
@@ -312,7 +312,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && category_map.2.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</dt>
+<dt class="ob-headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Einband") %]</dt>
 [%             FOREACH termitem IN category_map.2 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -384,7 +384,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin person facet -->
 [%         IF config.get('facets').person && category_map.3.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Personen") %]</dt>
+<dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Person / Werkstattt(Werkzeug)") %]</dt>
 [%             FOREACH termitem IN category_map.3 ;
                   LAST IF loop.count > 25 ;
 %]
@@ -408,7 +408,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && category_map.7.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
+<dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach Region") %]</dt>
 <tr><td>
 [%             FOREACH termitem IN category_map.7 ;
                   LAST IF loop.count > 25 ;

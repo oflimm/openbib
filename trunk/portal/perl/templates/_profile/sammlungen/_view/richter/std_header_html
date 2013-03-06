@@ -12,16 +12,20 @@
 #######################################################################
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!doctype html>
+<html lang="[% lang %]">
   <head>
+    <meta charset="utf-8"/>
 [% IF NOT disable_cache_control %]
     <meta http-equiv="content-type"  content="text/html; charset=utf-8"/>
     <meta http-equiv="Pragma"        content="no-cache" />
     <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
 [% END %]
-    
+
+ <!-- mobile viewport optimisation -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 [% IF record %]
     <meta name="Bibkey"              content="[% record.to_bibkey %]" />
     <meta name="Tags"                content="[% record.to_tags %]" />
@@ -30,6 +34,7 @@
     <meta name="View"                content="[% view %]" />
 [% END %]
 <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
+
 [% IF view && primrssfeed %]
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% path_prefix %]/[% primrssfeed %]" />
 [% END %]
@@ -58,27 +63,23 @@
     [%- END -%]
   [%- END -%]
 
-  <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/cssbuttons.css" %]" type="text/css" media="print, projection, screen" />
-  <link rel="stylesheet" href="[% "${config.get('css_loc')}/cssbuttons/skins/glass/glass.css" %]" type="text/css" media="print, projection, screen" />
-<!--[if lte IE 7]>
-  <link href="[% config.get('css_loc') %]/patches/patch_2col_right_31.css" rel="stylesheet" type="text/css" />
-<![endif]-->
-<!--[if lt IE 7.]>
-<style type="text/css" media="all"> 
-   @import url("[% "${config.get('css_loc')}/cssbuttons/ieBrowserHacks.css" %]");
-</style>
-<script defer type="text/javascript" src="/js/pngfix.js"></script>
-<![endif]-->
-
 <!-- jQuery & Plugins -->
     <link type="text/css" href="/css/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />     
     <script type="text/javascript" src="/js/jquery-1.5.1.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.8.14.custom.min.js"></script>
 
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/cloud-zoom.1.0.2.min.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
 
 
-    <title>[% IF title %][% title %][% ELSE %][% msg.maketext("OpenBib - Demo-Portal") %][% END %]</title>
+    <title>[% IF page_title %][% page_title %][% ELSE %]Virtuelle Bibliothek Elise und Helene Richter[% END %]</title>
 
+<!--[if lt IE 7.]>
+<script defer type="text/javascript" src="/js/pngfix.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
    </head>

@@ -292,7 +292,8 @@ sub set_from_apache_request {
 #                    });
 
                     $logger->debug("Stage3: $thissearchfield_norm_content");
-                    
+
+                    $thissearchfield_norm_content =~s/://g;
                     $thissearchfield_norm_content =~s/[^\w*]/_/g;
                 }
 

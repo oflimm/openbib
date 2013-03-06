@@ -53,6 +53,7 @@
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
 [% PROCESS common/subtemplate name="subnavigation" active_submenu="register_${field}" %]
+<div class="ob-reuse_data">
 <p>
 [% msg.maketext("Das Register der Provenienzen listet die Namen von Privatpersonen und Rezensionszeitschriften auf.") %]
 </p>
@@ -72,7 +73,7 @@ Stempel als solche gekennzeichnet.") %]
 [% msg.maketext("Im Register werden sie unter dem Namen der Zeitschrift
 aufgef&uuml;hrt.") %]
 </p>
-
+</div>
        </div>
       </div>
       <!-- end: #col1 -->

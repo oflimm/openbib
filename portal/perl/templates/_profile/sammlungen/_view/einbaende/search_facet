@@ -384,7 +384,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin person facet -->
 [%         IF config.get('facets').person && category_map.3.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Person / Werkstattt(Werkzeug)") %]</dt>
+<dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Person / Werkstatt(Werkzeug)") %]</dt>
 [%             FOREACH termitem IN category_map.3 ;
                   LAST IF loop.count > 25 ;
 %]

@@ -346,14 +346,6 @@ sub parse_titset {
         };
     }
 
-    if(exists $metadata{'Nummer'} && $cols[$metadata{'Nummer'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0089'}}, {
-            content  => $cols[$metadata{'Nummer'}]->first_child('DATA')->text(),
-            subfield => '',
-            mult     => 1,
-        };
-    }
-
     if(exists $metadata{'Fußnote'} && $cols[$metadata{'Fußnote'}]->first_child('DATA')->text()){
         push @{$title_ref->{'0501'}}, {
             content  => $cols[$metadata{'Fußnote'}]->first_child('DATA')->text(),

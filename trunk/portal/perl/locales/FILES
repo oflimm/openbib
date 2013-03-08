@@ -904,6 +904,7 @@
 ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/kempis/circulation
 ../templates/_profile/sammlungen/_database/lefort/circulation
+../templates/_profile/sammlungen/_database/muenzen/visible_categories_title
 ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories
 ../templates/_profile/sammlungen/_database/portrait/titles_record_html_images
 ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short
@@ -912,6 +913,10 @@
 ../templates/_profile/sammlungen/_database/richter/visible_categories_title
 ../templates/_profile/sammlungen/_database/schmalenbach/circulation
 ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation
+../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories
+../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_images
+../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short
+../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title
 ../templates/_profile/sammlungen/_database/wallraf/circulation
 ../templates/_profile/sammlungen/info_impressum_html
 ../templates/_profile/sammlungen/info_impressum_mobile

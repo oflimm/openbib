@@ -93,6 +93,8 @@ msgstr "${category}"
 #: ../templates/_profile/kug/titles_record_html_categories:300
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:342
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:373
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:342
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:373
 #: ../templates/_profile/sammlungen/_view/richter/titles_fields_html:61
 #: ../templates/_profile/sammlungen/titles_record_html_categories:269
 #: ../templates/_profile/sammlungen/titles_record_html_categories:300
@@ -868,6 +870,7 @@ msgstr "On"
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:237
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:236
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/titlist_item_html_short:226
 #: ../templates/_view/richter/cartitems_html_short:144
@@ -1463,6 +1466,7 @@ msgstr "Start a new search request"
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:27
 #: ../templates/_profile/kug/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:27
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:27
 #: ../templates/_profile/sammlungen/titles_record_html_categories:37
 #: ../templates/_profile/usb/resource_title_html_categories:20
 #: ../templates/_profile/usb/titles_record_html_categories:20
@@ -1813,6 +1817,7 @@ msgstr "Description"
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:378
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:123
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:123
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:378
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:123
 #: ../templates/_profile/sammlungen/titles_record_html_categories:305
 #: ../templates/_profile/usb/circulation:106
@@ -2885,6 +2890,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:22
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/titlist_item_html_short:22
 #: ../templates/_profile/usb/litlists_record_include:14
@@ -2964,6 +2970,7 @@ msgstr "Basic classification"
 #: ../templates/_profile/kug/_database/inst423/visible_categories_title:110
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:115
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:112
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:38
 #: ../templates/_profile/usb/visible_categories_title:113
 #: ../templates/visible_categories_title:116
 msgid "E4110"
@@ -2978,6 +2985,7 @@ msgstr "Table of contents"
 #: ../templates/_profile/kug/_database/inst423/visible_categories_title:111
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:116
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:113
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:39
 #: ../templates/_profile/usb/visible_categories_title:114
 #: ../templates/visible_categories_title:117
 msgid "E4120"
@@ -3366,6 +3374,8 @@ msgstr "Discover other titles using:"
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:241
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:241
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:228
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:198
@@ -3481,6 +3491,7 @@ msgstr "Years of publication"
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:382
 #: ../templates/_profile/kug/titles_record_html_categories:309
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:382
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:382
 #: ../templates/_profile/sammlungen/titles_record_html_categories:309
 #: ../templates/_view/richter/cartitems_html_as_text:47
 #: ../templates/_view/richter/litlists_record_html_as_text:30
@@ -4803,6 +4814,7 @@ msgstr "In simple search or free search field"
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:237
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:236
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/titlist_item_html_short:226
 #: ../templates/_view/richter/titlist_item_html_short:233
@@ -4966,6 +4978,7 @@ msgstr "Content"
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:23
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/titlist_item_html_short:23
 #: ../templates/_profile/usb/litlists_record_include:15
@@ -5072,6 +5085,7 @@ msgstr "Inventory number"
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:381
 #: ../templates/_profile/kug/titles_record_html_categories:308
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:381
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:381
 #: ../templates/_profile/sammlungen/titles_record_html_categories:308
 #: ../templates/_view/richter/cartitems_html_as_text:46
 #: ../templates/_view/richter/litlists_record_html_as_text:29
@@ -5637,6 +5651,8 @@ msgstr "Information about corporate body: %1 in catalog %2"
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:241
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:241
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:228
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/titlist_item_html_short:228
@@ -6099,6 +6115,7 @@ msgstr "Local"
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:380
 #: ../templates/_profile/kug/titles_record_html_categories:307
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:380
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:380
 #: ../templates/_profile/sammlungen/titles_record_html_categories:307
 #: ../templates/_view/richter/cartitems_html_as_text:45
 #: ../templates/_view/richter/litlists_record_html_as_text:28
@@ -6339,6 +6356,7 @@ msgstr "Message"
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:237
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:236
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/titlist_item_html_short:226
 #: ../templates/titles_popular_by_database_html:296
@@ -7261,6 +7279,7 @@ msgstr "Popularity-Functions"
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:24
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/titlist_item_html_short:24
 #: ../templates/_profile/usb/litlists_record_include:16
@@ -8397,6 +8416,7 @@ msgstr "Library-Code"
 #: ../templates/_profile/sammlungen/_database/richter/holding:35
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:33
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:33
+#: ../templates/_profile/sammlungen/_database/totenzettel/titlist_item_html_short:221
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:33
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:221
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:125
@@ -8595,6 +8615,7 @@ msgstr "Location"
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:379
 #: ../templates/_profile/kug/titles_record_html_categories:306
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:379
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:379
 #: ../templates/_profile/sammlungen/titles_record_html_categories:306
 #: ../templates/_view/richter/cartitems_html_as_text:44
 #: ../templates/_view/richter/litlists_record_html_as_text:27
@@ -9226,8 +9247,16 @@ msgstr ""
 msgid "T0100-inst450"
 msgstr "Author"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:16
+msgid "T0100-muenzen"
+msgstr ""
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:17
 msgid "T0100-portrait"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:16
+msgid "T0100-totenzettel"
 msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:17
@@ -9263,6 +9292,10 @@ msgstr "Co-author"
 msgid "T0101-portrait"
 msgstr ""
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:29
+msgid "T0101-totenzettel"
+msgstr ""
+
 #: ../templates/_database/wikisource_de/visible_categories_title:17
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:17
 msgid "T0101-wikisource_de"
@@ -9274,6 +9307,10 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:16
 msgid "T0102-portrait"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:30
+msgid "T0102-totenzettel"
 msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:18
@@ -9305,6 +9342,10 @@ msgstr "Celebrated person"
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:19
 msgid "T0103-portrait"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:28
+msgid "T0103-totenzettel"
 msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:19
@@ -9341,8 +9382,16 @@ msgstr "Place of inscription"
 msgid "T0200-inst450"
 msgstr "Agency, corporation, institution"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:17
+msgid "T0200-muenzen"
+msgstr ""
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:84
 msgid "T0200-portrait"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:17
+msgid "T0200-totenzettel"
 msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:20
@@ -9382,6 +9431,10 @@ msgstr "Publishing institution"
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:27
 msgid "T0201-portrait"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:18
+msgid "T0201-totenzettel"
 msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:25
@@ -9473,6 +9526,14 @@ msgstr "Supplied title"
 msgid "T0310-einbaende"
 msgstr ""
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:20
+msgid "T0310-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:21
+msgid "T0310-totenzettel"
+msgstr ""
+
 #: ../templates/_database/inst001/visible_categories_title:24
 #: ../templates/_database/openlibrary/visible_categories_title:24
 #: ../templates/_database/richter/visible_categories_title:24
@@ -9508,8 +9569,16 @@ msgstr ""
 msgid "T0331-inst404abklatsch"
 msgstr "Short title"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:21
+msgid "T0331-muenzen"
+msgstr ""
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:20
 msgid "T0331-portrait"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:19
+msgid "T0331-totenzettel"
 msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:29
@@ -9606,6 +9675,14 @@ msgstr ""
 msgid "T0335-inst404abklatsch"
 msgstr "Edition"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:27
+msgid "T0335-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:22
+msgid "T0335-totenzettel"
+msgstr ""
+
 #: ../templates/_database/inst001/visible_categories_title:27
 #: ../templates/_database/openlibrary/visible_categories_title:27
 #: ../templates/_database/richter/visible_categories_title:27
@@ -9633,6 +9710,30 @@ msgstr "Edition"
 msgid "T0341"
 msgstr "Parallel title"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:32
+msgid "T0350-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:33
+msgid "T0351-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:34
+msgid "T0352-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:35
+msgid "T0353-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:36
+msgid "T0354-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:37
+msgid "T0355-muenzen"
+msgstr ""
+
 #: ../templates/_database/inst001/visible_categories_title:33
 #: ../templates/_database/openlibrary/visible_categories_title:34
 #: ../templates/_database/richter/visible_categories_title:32
@@ -9659,6 +9760,10 @@ msgstr "Parallel title"
 #: ../templates/visible_categories_title:34
 msgid "T0359"
 msgstr "Author/corp. body statement"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:22
+msgid "T0359-muenzen"
+msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:22
 msgid "T0359-portrait"
@@ -9797,6 +9902,10 @@ msgstr "Other titles"
 msgid "T0370-einbaende"
 msgstr ""
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:20
+msgid "T0370-totenzettel"
+msgstr ""
+
 #: ../templates/_database/inst001/visible_categories_title:35
 #: ../templates/_database/openlibrary/visible_categories_title:36
 #: ../templates/_database/richter/visible_categories_title:34
@@ -9878,6 +9987,10 @@ msgstr "Dates/periods of publication"
 msgid "T0407"
 msgstr "Measure"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:31
+msgid "T0407-muenzen"
+msgstr ""
+
 #: ../templates/_database/inst001/visible_categories_title:36
 #: ../templates/_database/openlibrary/visible_categories_title:37
 #: ../templates/_database/richter/visible_categories_title:35
@@ -9913,6 +10026,18 @@ msgstr ""
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:35
 msgid "T0410-inst404abklatsch"
 msgstr "Place of storage"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:23
+msgid "T0410-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:26
+msgid "T0410-totenzettel"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:24
+msgid "T0411-totenzettel"
+msgstr ""
 
 #: ../templates/_database/einbaende/visible_categories_title:20
 #: ../templates/_database/inst001/visible_categories_title:37
@@ -10010,6 +10135,10 @@ msgstr ""
 msgid "T0424-portrait"
 msgstr ""
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:27
+msgid "T0424-totenzettel"
+msgstr ""
+
 #: ../templates/_database/inst001/visible_categories_title:38
 #: ../templates/_database/openlibrary/visible_categories_title:39
 #: ../templates/_database/richter/visible_categories_title:37
@@ -10032,6 +10161,7 @@ msgstr ""
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:38
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:37
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:32
 #: ../templates/_profile/usb/visible_categories_title:38
 #: ../templates/visible_categories_title:39
 msgid "T0425"
@@ -10041,8 +10171,20 @@ msgstr "Year of publication"
 msgid "T0425-inst404abklatsch"
 msgstr "Dating"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:24
+msgid "T0425-muenzen"
+msgstr ""
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:32
 msgid "T0425-portrait"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:25
+msgid "T0426-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:26
+msgid "T0427-muenzen"
 msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:50
@@ -10076,6 +10218,14 @@ msgstr "Extent of item"
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:49
 msgid "T0433-inst404abklatsch"
 msgstr "Size of letters"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:30
+msgid "T0433-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:23
+msgid "T0433-totenzettel"
+msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:45
 #: ../templates/_database/inst001/visible_categories_title:58
@@ -10160,6 +10310,10 @@ msgstr "Dimensions"
 msgid "T0435-einbaende"
 msgstr ""
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:29
+msgid "T0435-muenzen"
+msgstr ""
+
 #: ../templates/_database/inst001/visible_categories_title:59
 #: ../templates/_database/openlibrary/visible_categories_title:60
 #: ../templates/_database/richter/visible_categories_title:58
@@ -10214,6 +10368,14 @@ msgstr "Accompanying material"
 #: ../templates/visible_categories_title:55
 msgid "T0451"
 msgstr "Series title"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:40
+msgid "T0451-muenzen"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:31
+msgid "T0451-totenzettel"
+msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:60
 #: ../templates/_database/openlibrary/visible_categories_title:61
@@ -10406,6 +10568,10 @@ msgstr "Source"
 
 #: ../templates/_database/einbaende/visible_categories_toolset:23
 msgid "T0508-einbaende"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:38
+msgid "T0508-muenzen"
 msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:86
@@ -11230,6 +11396,10 @@ msgstr "Publication place of source"
 msgid "T0595"
 msgstr "Publication year of source"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:25
+msgid "T0595-totenzettel"
+msgstr ""
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:68
 #, fuzzy
 msgid "T0596"
@@ -11307,6 +11477,10 @@ msgstr "Drawer"
 #: ../templates/visible_categories_title:84
 msgid "T0619"
 msgstr "Year of publication"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:39
+msgid "T0622-muenzen"
+msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:84
 #: ../templates/_database/openlibrary/visible_categories_title:86
@@ -11412,6 +11586,7 @@ msgstr "Electronic location / access"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:108
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:105
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:34
 #: ../templates/_profile/usb/visible_categories_title:109
 #: ../templates/visible_categories_title:111
 msgid "T0662"
@@ -11487,8 +11662,16 @@ msgstr "Title in variant spelling"
 msgid "T0700"
 msgstr "Classification"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:19
+msgid "T0700-muenzen"
+msgstr ""
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:25
 msgid "T0700-portrait"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:33
+msgid "T0700-totenzettel"
 msgstr ""
 
 #: ../templates/_database/inst001/visible_categories_title:91
@@ -11521,6 +11704,10 @@ msgstr "Subject headings"
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:91
 msgid "T0710-inst404abklatsch"
 msgstr "Category"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:18
+msgid "T0710-muenzen"
+msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:26
 msgid "T0710-portrait"
@@ -11587,6 +11774,10 @@ msgstr "Type of publication"
 
 #: ../templates/_database/einbaende/visible_categories_toolset:25
 msgid "T0800-einbaende"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:28
+msgid "T0800-muenzen"
 msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:81
@@ -11907,6 +12098,7 @@ msgstr "Remark"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:109
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:106
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:35
 #: ../templates/_profile/usb/visible_categories_title:110
 #: ../templates/visible_categories_title:112
 msgid "T1664"
@@ -11938,6 +12130,7 @@ msgstr "Place of inscription"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:110
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:109
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:107
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:36
 #: ../templates/_profile/usb/visible_categories_title:111
 #: ../templates/visible_categories_title:113
 msgid "T2662"
@@ -11965,6 +12158,7 @@ msgstr "USB URL"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:111
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:110
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:108
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:37
 #: ../templates/_profile/usb/visible_categories_title:112
 #: ../templates/visible_categories_title:114
 msgid "T2663"
@@ -12034,6 +12228,7 @@ msgstr "Type"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:114
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:112
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:40
 #: ../templates/_profile/usb/visible_categories_title:115
 #: ../templates/visible_categories_title:118
 msgid "T4500"
@@ -12076,6 +12271,7 @@ msgstr "Separate collection portal"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:115
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:113
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:41
 #: ../templates/_profile/usb/visible_categories_title:116
 #: ../templates/visible_categories_title:119
 msgid "T5001"
@@ -12104,6 +12300,7 @@ msgstr "# of superordinate titles"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:116
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:114
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:42
 #: ../templates/_profile/usb/visible_categories_title:117
 #: ../templates/visible_categories_title:120
 msgid "T5002"
@@ -12131,6 +12328,7 @@ msgstr "# of dependent titles"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:117
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:115
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:43
 #: ../templates/_profile/usb/visible_categories_title:118
 #: ../templates/visible_categories_title:121
 msgid "T5100"
@@ -13970,7 +14168,7 @@ msgid "nach Person"
 msgstr "by person"
 
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:387
-msgid "nach Person / Werkstattt(Werkzeug)"
+msgid "nach Person / Werkstatt(Werkzeug)"
 msgstr ""
 
 #: ../templates/_profile/kug/search_facet:413

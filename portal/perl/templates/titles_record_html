@@ -412,6 +412,7 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 
 <!-- Title ends here -->
 
+<!--
 <script>
    function addFullCover(resultbooks) {
      for (i in resultbooks) {
@@ -426,7 +427,7 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 </script>
 
 <script src="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN:[% isbn %]&callback=addFullCover"></script>
-
+-->
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

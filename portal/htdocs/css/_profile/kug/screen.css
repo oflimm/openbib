@@ -708,11 +708,14 @@
     width: 98%;
   }
 
-  .ob-titleimage {
-
+  .ob-titleimage img {
+    display: block;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .ob-titleimage a {
-    padding-left: 50px;
+
   }
 }

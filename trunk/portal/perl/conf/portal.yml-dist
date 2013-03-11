@@ -3018,17 +3018,47 @@ searchfield:
      'type': 'string'
 
   # Suche nach speziellen Kategorien
+  't0101':
+     'prefix': 't0101'
+     'type': 'string'
+  't0102':
+     'prefix': 't0102'
+     'type': 'string'
+  't0200':
+     'prefix': 't0200'
+     'type': 'string'
+  't0201':
+     'prefix': 't0201'
+     'type': 'string'
+  't0304':
+     'prefix': 't0304'
+     'type': 'string'
   't0335':
      'prefix': 't0335'
      'type': 'string'
   't0410':
      'prefix': 't0410'
      'type': 'string'
+  't0411':
+     'prefix': 't0411'
+     'type': 'string'
+  't0413':
+     'prefix': 't0413'
+     'type': 'string'
+  't0425':
+     'prefix': 't0425'
+     'type': 'string'
   't0531':
      'prefix': 't0531'
      'type': 'string'
   't0533':
      'prefix': 't0533'
+     'type': 'string'
+  't0700':
+     'prefix': 't0700'
+     'type': 'string'
+  't0710':
+     'prefix': 't0710'
      'type': 'string'
   't0720':
      'prefix': 't0720'
@@ -3335,10 +3365,20 @@ xapian_search_prefix:
   'favail': 'E7'
 
   # Einzelne Kategorieinhalte
+  't0101': 'T0101'
+  't0102': 'T0102'
+  't0200': 'T0200'
+  't0201': 'T0201'
+  't0304': 'T0304'
   't0335': 'T0335'
   't0410': 'T0410'
+  't0411': 'T0411'
+  't0413': 'T0413'
+  't0425': 'T0425'
   't0531': 'T0531'
   't0533': 'T0533'
+  't0700': 'T0700'
+  't0710': 'T0710'
   't0720': 'T0720'
   't4100': 'T4100'
   't4300': 'T4300'

@@ -67,45 +67,9 @@ $(document).ready(function(){
 <div id="ob-login_forms">
 
 <ul>
-<li><a href="#ob-login_forms_selfreg">[% msg.maketext("Anmelden mit registrierter E-Mail-Adresse") %]</a></li>
-<li><a href="#ob-login_forms_library">[% msg.maketext("Anmelden mit einem Benutzerausweis") %]</a></li>
+<li><a href="#ob-login_forms_library">[% msg.maketext("Anmeldung mit einem Benutzerausweis") %]</a></li>
+<li><a href="#ob-login_forms_selfreg">[% msg.maketext("Anmeldung/Registrierung mit einer E-Mail-Adresse") %]</a></li>
 </ul>
-
-<div id="ob-login_forms_selfreg">
-<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="ym-form">
-
-<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
-
-[%- FOREACH authenticator IN authenticators -%]
-[%-   IF authenticator.type == 'self' -%]
-<input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
-[%-   END -%]
-[%- END -%]
-
-<fieldset class="ym-columnar">
-<legend>[% msg.maketext("Login mit registrierter E-Mail-Adresse") %]</legend>
-<div class="ym-fbox-text">
-<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
-<input type="text" name="username" id="email_username" value="[% username %]" />
-</div>
-<div class="ym-fbox-text">
-<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
-<input type="password" name="password" id="email_username" />
-</div>
-<div>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen?") %]</a>
-</div>
-
-<p/>
-
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Anmelden") %]" />
-</div>
-
-</fieldset>
-
-</form>
-</div>
 
 <div id="ob-login_forms_library">
 <form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
@@ -115,7 +79,7 @@ $(document).ready(function(){
 [% END %]
 
 <fieldset class="ym-columnar">
-<legend>[% msg.maketext("Login mit einem Benutzerausweis") %]</legend>
+<legend>[% msg.maketext("Anmeldung mit einem Benutzerausweis") %]</legend>
 
 <div class="ym-fbox-select">
 <label for="authenticator">[% msg.maketext("mit") %]:</label>
@@ -135,6 +99,42 @@ $(document).ready(function(){
 <div class="ym-fbox-text">
 <label for="password"/>[% msg.maketext("Passwort") %]</label>
 <input type="password" name="password" id="password" />
+</div>
+
+<p/>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Anmelden") %]" />
+</div>
+
+</fieldset>
+
+</form>
+</div>
+
+<div id="ob-login_forms_selfreg">
+<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="ym-form">
+
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+
+[%- FOREACH authenticator IN authenticators -%]
+[%-   IF authenticator.type == 'self' -%]
+<input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
+[%-   END -%]
+[%- END -%]
+
+<fieldset class="ym-columnar">
+<legend>[% msg.maketext("Anmeldung mit registrierter E-Mail-Adresse") %]</legend>
+<div class="ym-fbox-text">
+<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+<input type="text" name="username" id="email_username" value="[% username %]" />
+</div>
+<div class="ym-fbox-text">
+<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
+<input type="password" name="password" id="email_username" />
+</div>
+<div>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen?") %]</a>
 </div>
 
 <p/>

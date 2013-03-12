@@ -18,11 +18,11 @@
        searchfield = 't0101' ;
     ELSIF field == '0102' ;
        field_description = msg.maketext("Werkstatt/Werkzeug");
-       searchfield = 't0200' ;
+       searchfield = 't0102' ;
     ELSIF field == '0200' ;
        field_description = msg.maketext("Region");
        searchfield = 't0200' ;
-    ELSIF field == '0200' ;
+    ELSIF field == '0201' ;
        field_description = msg.maketext("Region/Werkzeug");
        searchfield = 't0201' ;
     ELSIF field == '0413' ;

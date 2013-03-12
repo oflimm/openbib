@@ -142,5 +142,30 @@
 
   }
 
+  .ob-item {
+    height: 145px;
+    width: 100%;
+    position: relative;
+    border-style: solid;
+    border-color: #edebe3;
+    border-width: 1px;
+    margin-bottom: 5px;
+  }
+
+  .ob-item .ob-thumbnail {
+    position: relative;
+    top: 0px;
+    left: 35px;
+    width: 160px;
+    height: 120px;
+    background: none repeat scroll 0 0;
+  }
+
+  .ob-item .ob-brieftitle {
+    position: absolute;
+    top: 26px;
+    left:210px;
+    width: auto;
+  }
 
 }

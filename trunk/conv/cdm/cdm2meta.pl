@@ -45,6 +45,8 @@ use OpenBib::Conv::Common::Util;
 
 our $mexidn  =  1;
 
+our %have_title = ();
+
 my ($inputfile,$configfile);
 
 &GetOptions(
@@ -94,6 +96,10 @@ sub parse_titset {
 
     $title_ref->{id} = $titset->first_child($convconfig->{uniqueidfield})->text();
 
+    next if (exists $have_title{$title_ref->{id}});
+
+    $have_title{$title_ref->{id}} = 1;
+    
     # Erstellungsdatum
     if(defined $titset->first_child('cdmcreated') && $titset->first_child('cdmcreated')->text()){
         my ($year,$month,$day)=split("-",$titset->first_child('cdmcreated')->text());

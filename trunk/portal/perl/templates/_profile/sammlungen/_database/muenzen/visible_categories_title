@@ -13,7 +13,7 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
-                'T0010', # msg.maketext("T0100-muenzen") Katalognummer
+                'T0010', # msg.maketext("T0010-muenzen") Katalognummer
                 'T0200', # msg.maketext("T0200-muenzen") Provenienz
                 'T0710', # msg.maketext("T0710-muenzen") Region
                 'T0700', # msg.maketext("T0700-muenzen") Stadt

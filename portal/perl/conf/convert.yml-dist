@@ -2464,6 +2464,18 @@ convtab:
         string: 1
       '5051':         # Bibkey Base
         string: 1
+    listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
+      '0100': 1
+      '0331': 1
+      '0410': 1
+      '0411': 1
+      '0424': 1
+      '0425': 1
+      '0595': 1
+      '2662': 1
   muenzen:
     inverted_title:
       'tag':

@@ -514,7 +514,7 @@ while (my $jsonline=<IN>){
     }
     
     # Bestandsverlauf in Jahreszahlen umwandeln
-    if (exists $record_ref->{'1204'} && $titleid) {        
+    if ((exists $record_ref->{'0425'} || exists $record_ref->{'1204'}) && $titleid) {        
         my $array_ref=[];
         if (exists $listitemdata_enriched_years{$titleid}){
             $array_ref = $listitemdata_enriched_years{$titleid};
@@ -545,7 +545,33 @@ while (my $jsonline=<IN>){
                 push @$array_ref, $1;
             }
         }
-        
+
+        foreach my $date (split(";",cleanup_content($record_ref->{'0425'}[0]{content}))) {
+            if ($date =~/^.*?(\d\d\d\d)[^-]+?\s*-\s*.*?(\d\d\d\d)/) {
+                my $startyear = $1;
+                my $endyear   = $2;
+                
+                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                for (my $year=$startyear;$year<=$endyear; $year++) {
+                    $logger->debug("Adding year $year");
+                    push @$array_ref, $year;
+                }
+            }
+            elsif ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-/) {
+                my $startyear = $1;
+                my $endyear   = $thisyear;
+                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                for (my $year=$startyear;$year<=$endyear;$year++) {
+                    $logger->debug("Adding year $year");
+                    push @$array_ref, $year;
+                }                
+            }
+            elsif ($date =~/(\d\d\d\d)/) {
+                $logger->debug("Not expanding $date, just adding year $1");
+                push @$array_ref, $1;
+            }
+        }
+
         $listitemdata_enriched_years{$titleid}=$array_ref;
     }
     

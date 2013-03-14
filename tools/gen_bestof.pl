@@ -616,10 +616,10 @@ if ($type == 8){
 	  my @sqlargs = ($view);
 
 	  if ($category eq 'all'){
-	    $sqlstring="select content, count(content) as scount from queryterm where viewname=? group by content order by scount DESC limit 200";
+	    $sqlstring="select content, count(content) as scount from searchterms where viewname=? group by content order by scount DESC limit 200";
 	  }
 	  else {
-	    $sqlstring="select content, count(content) as scount from queryterm where viewname=? and type = ? group by content order by scount DESC limit 200";
+	    $sqlstring="select content, count(content) as scount from searchterms where viewname=? and type = ? group by content order by scount DESC limit 200";
 	    push @sqlargs, $cat2type_ref->{$category}; 
 	  }
 

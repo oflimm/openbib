@@ -514,7 +514,7 @@ while (my $jsonline=<IN>){
     }
     
     # Bestandsverlauf in Jahreszahlen umwandeln
-    if ((exists $record_ref->{'0425'} || exists $record_ref->{'1204'}) && $titleid) {        
+    if ((exists $record_ref->{'1204'}) && $titleid) {        
         my $array_ref=[];
         if (exists $listitemdata_enriched_years{$titleid}){
             $array_ref = $listitemdata_enriched_years{$titleid};
@@ -522,32 +522,6 @@ while (my $jsonline=<IN>){
         
         foreach my $date (split(";",cleanup_content($record_ref->{'1204'}[0]{content}))) {
             if ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-\s+.*?(\d\d\d\d)/) {
-                my $startyear = $1;
-                my $endyear   = $2;
-                
-                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
-                for (my $year=$startyear;$year<=$endyear; $year++) {
-                    $logger->debug("Adding year $year");
-                    push @$array_ref, $year;
-                }
-            }
-            elsif ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-/) {
-                my $startyear = $1;
-                my $endyear   = $thisyear;
-                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
-                for (my $year=$startyear;$year<=$endyear;$year++) {
-                    $logger->debug("Adding year $year");
-                    push @$array_ref, $year;
-                }                
-            }
-            elsif ($date =~/(\d\d\d\d)/) {
-                $logger->debug("Not expanding $date, just adding year $1");
-                push @$array_ref, $1;
-            }
-        }
-
-        foreach my $date (split(";",cleanup_content($record_ref->{'0425'}[0]{content}))) {
-            if ($date =~/^.*?(\d\d\d\d)[^-]+?\s*-\s*.*?(\d\d\d\d)/) {
                 my $startyear = $1;
                 my $endyear   = $2;
                 
@@ -848,6 +822,36 @@ while (my $jsonline=<IN>){
         # Elektronisches Medium mit Online-Zugriff
         # werden vorher katalogspezifisch per pre_unpack.pl angereichert
     } 
+
+    # Jahreszahlen umwandeln
+    if (defined $record_ref->{'0425'}) {        
+        my $array_ref=[];
+
+        if (exists $listitemdata_enriched_years{$id}){
+            $array_ref = $listitemdata_enriched_years{$id};
+        }
+
+        foreach my $item_ref (@{$record_ref->{'0425'}}){
+            my $date = $item_ref->{content};
+            
+            if ($date =~/^(\d\d\d\d)\s*-\s*(\d\d\d\d)/) {
+                my $startyear = $1;
+                my $endyear   = $2;
+                
+                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                for (my $year=$startyear;$year<=$endyear; $year++) {
+                    $logger->debug("Adding year $year");
+                    push @$array_ref, $year;
+                }
+            }
+            else {
+                $logger->debug("Not expanding $date, just adding year $1");
+                push @$array_ref, $date;
+            }
+        }
+        
+        $listitemdata_enriched_years{$id}=$array_ref;
+    }
 
     # Verknuepfungskategorien bearbeiten    
     if (defined $record_ref->{'0004'}) {
@@ -1315,23 +1319,20 @@ while (my $jsonline=<IN>){
             };
             
             # Bibkey merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'bkey'}{1}}, ['5050',$bibkey];
-            push @{$searchengine_ref->{'bkey'}{1}}, ['5051',$bibkey];
+            push @{$searchengine_ref->{'bkey'}{1}}, ['T5050',$bibkey];
+            push @{$searchengine_ref->{'bkey'}{1}}, ['T5051',$bibkey];
         }
     }
     
-    # Automatische Anreicherung mit Bestandsjahren wenn kein
-    # Erscheinungsjahr vorhanden, aber Bestandsverlauf besetzt.
+    # Automatische Anreicherung mit Bestands- oder Jahresverlaeufen
     {
-        if (!defined $record_ref->{'0424'} && !defined $record_ref->{'0425'}) {
-            if (exists $listitemdata_enriched_years{$id}) {
-                foreach my $year (@{$listitemdata_enriched_years{$id}}) {
-                    $logger->debug("Enriching year $year to Title-ID $id");
-                    push @{$searchengine_ref->{year}{1}}, ['0425',$year];
-                    push @{$searchengine_ref->{freesearch}{1}}, ['0425',$year];
-                }
+        if (exists $listitemdata_enriched_years{$id}) {
+            foreach my $year (@{$listitemdata_enriched_years{$id}}) {
+                $logger->debug("Enriching year $year to Title-ID $id");
+                push @{$searchengine_ref->{year}{1}}, ['T0425',$year];
+                push @{$searchengine_ref->{freesearch}{1}}, ['T0425',$year];
             }
-        } 
+        }
     }
     
     # Titlecache mit Titelfeldern fuellen

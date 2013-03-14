@@ -2265,6 +2265,20 @@ convtab:
       '5051':         # Bibkey Base
         string: 1
   totenzettel:
+    inverted_classification:
+      '0800':         # Ansetzung
+        index:
+          'classification': 1
+          'classificationstring': 1
+      '0801':         # Ansetzung
+        index:
+          'classification': 1
+      '0830':         # Stichwort
+        index:
+          'classification': 1
+      '0840':         # Verweisform
+        index:
+          'classification': 1
     inverted_title:
       'tag':
         index:

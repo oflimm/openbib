@@ -65,7 +65,7 @@ $(document).ready(function(){
 <input type="hidden" name="db" value="[% config.get_dbs_of_view(view).first %]" />
 
 <fieldset class="ym-columnar">
-<legend>[% msg.maketext("Einband") %]</legend>
+<legend>Totenzettel</legend>
 
 [%# USE dumper;dumper.dump(available_searchfields)%]
 

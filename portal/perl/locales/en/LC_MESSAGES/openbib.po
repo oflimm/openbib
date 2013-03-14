@@ -135,6 +135,7 @@ msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
 #. (item.votes.positive,item.votes.all)
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:341
 #: ../templates/titles_record_html:341 ../templates/titles_record_include:242
 msgid ""
 "%1\n"
@@ -626,6 +627,7 @@ msgstr "Active"
 #: ../templates/_profile/kug/search_facet:173
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:171
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:173
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:171
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:159
 #: ../templates/_profile/sammlungen/search_facet:171
 #: ../templates/_profile/usb/drilldown_categorized:140
@@ -891,6 +893,7 @@ msgstr "On"
 msgid "An BibSonomy senden"
 msgstr "Send to BibSonomy"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:242
 #: ../templates/_profile/usb/titles_record_include:130
 #: ../templates/titles_record_html:242 ../templates/titles_record_include:135
 #: ../templates/titles_record_include:284
@@ -1202,6 +1205,7 @@ msgstr "View:"
 #: ../templates/_profile/kug/search_facet:508
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:482
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:484
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:447
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:456
 #: ../templates/_profile/sammlungen/search_facet:482
 #: ../templates/_profile/usb/drilldown_categorized:442
@@ -1243,6 +1247,7 @@ msgstr ""
 "On this page you can subscribe to RSS-feeds of several catalogs. To do so, "
 "please copy the corresponding URL from this page to your RSS-reader program."
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321
 #: ../templates/titles_record_html:321 ../templates/titles_record_include:220
 msgid "Aufnehmen"
 msgstr "Save"
@@ -1320,6 +1325,7 @@ msgstr "Date of issue/booking date"
 msgid "Ausleih-Einstellungen"
 msgstr "Circulation options"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:229
 #: ../templates/_profile/usb/titles_record_include:70
 #: ../templates/_view/richter/cartitems_html_simple:62
 #: ../templates/cartitems_html_simple:59 ../templates/titles_record_html:229
@@ -1914,16 +1920,19 @@ msgstr "Orders"
 msgid "Betreff"
 msgstr "Subject"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:301
 #: ../templates/reviews_edit:216 ../templates/reviews_record_html:69
 #: ../templates/titles_record_html:301 ../templates/titles_record_include:200
 msgid "Bewertung"
 msgstr "Rating"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:245
 #: ../templates/titles_record_html:245 ../templates/titles_record_include:138
 #: ../templates/titles_record_include:178
 msgid "Bewertungen/Rezensionen"
 msgstr "Ratings/reviews"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:335
 #: ../templates/titles_record_html:335 ../templates/titles_record_include:236
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Ratings/reviews from users"
@@ -2127,6 +2136,7 @@ msgstr "C5000"
 #: ../templates/_profile/kug/search_facet:507
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:481
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:483
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:446
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:455
 #: ../templates/_profile/sammlungen/search_facet:481
 #: ../templates/_profile/usb/drilldown_categorized:441
@@ -2479,6 +2489,9 @@ msgstr "The following external services  are currently being offered:"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:452
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:453
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:454
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:415
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:416
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:417
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:424
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:425
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:426
@@ -2496,6 +2509,7 @@ msgstr "The following external services  are currently being offered:"
 msgid "Deutsch"
 msgstr "German"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:195
 #: ../templates/_profile/usb/titles_record_include:48
 #: ../templates/_view/richter/cartitems_html_full:240
 #: ../templates/_view/richter/litlists_record_html_full:241
@@ -2654,6 +2668,7 @@ msgstr ""
 #: ../templates/_profile/kug/search_facet:543
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:517
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:519
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:482
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:488
 #: ../templates/_profile/sammlungen/search_facet:517
 #: ../templates/_profile/usb/drilldown_categorized:478
@@ -2805,6 +2820,7 @@ msgstr ""
 msgid "Dieser Nutzer ist nicht registriert."
 msgstr "This user does not exist."
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:191
 #: ../templates/_profile/usb/titles_record_include:45
 #: ../templates/_view/richter/cartitems_html_full:237
 #: ../templates/_view/richter/litlists_record_html_full:238
@@ -3034,6 +3050,15 @@ msgstr "Subject headings (ext.)"
 msgid "EZB"
 msgstr "EZB"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/holding:16
+msgid "Ehepartner"
+msgstr ""
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:232
+#, fuzzy
+msgid "Eheschließung"
+msgstr "Description"
+
 #: ../templates/_profile/kug/info_other_portals:41
 msgid "Eigene KUG-Portale für Institute und mehr"
 msgstr "Specialized KUG-portals of institutes and more"
@@ -3042,10 +3067,12 @@ msgstr "Specialized KUG-portals of institutes and more"
 msgid "Eigene Tags"
 msgstr "Your tags"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:346
 #: ../templates/titles_record_html:346 ../templates/titles_record_include:247
 msgid "Eigenen Review bearbeiten"
 msgstr "Edit your review"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:347
 #: ../templates/titles_record_html:347 ../templates/titles_record_include:248
 msgid "Eigenen Review l&ouml;schen"
 msgstr "Remove your review"
@@ -3348,6 +3375,9 @@ msgstr "End"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:455
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:456
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:457
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:418
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:419
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:420
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:427
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:428
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:429
@@ -3365,6 +3395,7 @@ msgstr "End"
 msgid "Englisch"
 msgstr "English"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:201
 #: ../templates/_profile/usb/titles_record_include:53
 #: ../templates/_view/richter/cartitems_html_full:245
 #: ../templates/_view/richter/litlists_record_html_full:246
@@ -3402,6 +3433,7 @@ msgstr "Discover other titles using:"
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:198
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:200
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:198
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:240
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:243
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:185
@@ -3842,6 +3874,7 @@ msgid ""
 msgstr "To use the index you have to enter a suitable term"
 
 #. ("<a href=\"${path_prefix}/${config.get('info_loc')
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:275
 #: ../templates/_profile/usb/titles_record_include:99
 #: ../templates/titles_record_html:275 ../templates/titles_record_include:173
 msgid ""
@@ -3968,6 +4001,7 @@ msgstr "Filter"
 #: ../templates/_profile/kug/search_facet:506
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:480
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:482
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:445
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:454
 #: ../templates/_profile/sammlungen/search_facet:480
 #: ../templates/_profile/usb/drilldown_categorized:440
@@ -3980,6 +4014,7 @@ msgstr "Finnish"
 msgid "Fragen und Anmerkungen richten Sie bitte an:"
 msgstr "Please send questions and feedback to:"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:207
 #: ../templates/_profile/usb/titles_record_include:58
 #: ../templates/_view/richter/cartitems_html_full:250
 #: ../templates/_view/richter/litlists_record_html_full:251
@@ -3998,6 +4033,9 @@ msgstr "French Wikipedia"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:458
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:459
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:460
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:421
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:422
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:423
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:430
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:431
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:432
@@ -4020,6 +4058,7 @@ msgstr "French"
 #: ../templates/_profile/kug/users_preferences_html:168
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:69
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:69
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:88
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:76
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:76
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:72
@@ -4209,6 +4248,8 @@ msgstr "Browse all available %1free and licensed journals%2 by subject."
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:462
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:463
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:464
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:426
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:427
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:435
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:436
 #: ../templates/_profile/sammlungen/search_facet:461
@@ -4287,6 +4328,16 @@ msgstr "Exclusion of liability"
 #: ../templates/users_preferences_html:189
 msgid "Hauptsachtitel (HST)"
 msgstr "Main title"
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/holding:16
+#, fuzzy
+msgid "Heiratsdatum"
+msgstr "Date of birth"
+
+#: ../templates/_profile/sammlungen/_database/totenzettel/holding:16
+#, fuzzy
+msgid "Heiratsort"
+msgstr "Place of birth"
 
 #: ../templates/_profile/sammlungen/_view/richter/info_helene_richter_mobile:51
 #: ../templates/_view/richter/info_helene_richter:48
@@ -4731,6 +4782,7 @@ msgstr ""
 msgid "In OpenBib werden derzeit folgende Arten von RSS-Feeds angeboten:"
 msgstr "OpenBib currently offers the following types of RSS-Feeds:"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:239
 #: ../templates/_profile/usb/titles_record_include:104
 #: ../templates/titles_record_html:239 ../templates/titles_record_include:132
 #: ../templates/titles_record_include:269
@@ -5001,6 +5053,7 @@ msgstr "Information about this library"
 #: ../templates/_database/wikisource_de/persons_record_html:69
 #: ../templates/_profile/kug/_database/openlibrary/persons_record_html:69
 #: ../templates/_profile/kug/_database/wikisource_de/persons_record_html:69
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:91
 #: ../templates/_view/richter/cartitems_html_simple:42
 #: ../templates/_view/richter/classifications_record_html:67
 #: ../templates/_view/richter/corporatebodies_record_html:66
@@ -5147,6 +5200,7 @@ msgstr "Inventory number     "
 #: ../templates/_profile/kug/search_facet:505
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:479
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:481
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:444
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:453
 #: ../templates/_profile/sammlungen/search_facet:479
 #: ../templates/_profile/usb/drilldown_categorized:439
@@ -5161,6 +5215,8 @@ msgstr "Icelandic"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:467
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:468
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:469
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:431
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:432
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:440
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:441
 #: ../templates/_profile/sammlungen/search_facet:466
@@ -5182,6 +5238,7 @@ msgstr "Italian"
 msgid "JSON konnte nicht geparst werden"
 msgstr "JSON cannot be parsed"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:350
 #: ../templates/_view/richter/users_litlists_record_edit:79
 #: ../templates/admin_authenticators_record_delete_confirm:66
 #: ../templates/admin_clusters_html:115 ../templates/admin_clusters_html:83
@@ -5247,6 +5304,8 @@ msgstr "Yes"
 #: ../templates/_profile/rheinlandbib/clouds_navigation:28
 #: ../templates/_profile/rheinlandbib/clouds_navigation:30
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:135
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:110
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:98
 #: ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:54
 #: ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:56
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_databases_record_html:61
@@ -5269,6 +5328,7 @@ msgstr "Yes"
 #: ../templates/_profile/sammlungen/_view/richter/subnavigation:71
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_navigation:30
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:181
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:59
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:61
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:28
@@ -5301,11 +5361,13 @@ msgstr "Yes"
 msgid "Jahr"
 msgstr "Year"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:100
 #: ../templates/search_history:73 ../templates/search_title_start_html:48
 #: ../templates/titles_record_html:100
 msgid "Jahr bis"
 msgstr "Year to"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:99
 #: ../templates/search_history:72 ../templates/search_title_start_html:47
 #: ../templates/titles_record_html:99
 msgid "Jahr von"
@@ -5334,6 +5396,7 @@ msgstr "Century"
 #: ../templates/_profile/kug/search_facet:498
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:472
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:474
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:437
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:446
 #: ../templates/_profile/sammlungen/search_facet:472
 #: ../templates/_profile/usb/drilldown_categorized:432
@@ -5343,8 +5406,11 @@ msgid "Japanisch"
 msgstr "Japanese"
 
 #: ../templates/_profile/kug/search_facet:178
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:105
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:93
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:176
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:178
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:176
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:164
 #: ../templates/_profile/sammlungen/search_facet:176
 #: ../templates/_profile/usb/drilldown_categorized:145
@@ -5414,8 +5480,11 @@ msgstr "Digital card catalog (faculty of arts)"
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:216
 #: ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left:21
 #: ../templates/_profile/kug/search_facet:176
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:103
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:90
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:174
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:176
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:174
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:162
 #: ../templates/_profile/sammlungen/search_facet:174
 #: ../templates/_profile/usb/titlist_item_html_short:178
@@ -5963,6 +6032,8 @@ msgstr "Geographic coordinates"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:460
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:461
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:462
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:424
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:425
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:433
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:434
 #: ../templates/_profile/sammlungen/search_facet:459
@@ -6061,6 +6132,7 @@ msgstr "End of loan period"
 msgid "Letzte 50 Neuaufnahmen"
 msgstr "Newest 50 catalog entries"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:236
 #: ../templates/_profile/usb/titles_record_include:96
 #: ../templates/titles_record_html:236 ../templates/titles_record_include:129
 #: ../templates/titles_record_include:170
@@ -6086,8 +6158,11 @@ msgid "Listen mit gemeinsamen Titeln"
 msgstr "Lists sharing titles"
 
 #: ../templates/_profile/kug/search_facet:185
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:102
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:112
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:183
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:185
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:183
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:171
 #: ../templates/_profile/sammlungen/search_facet:183
 #: ../templates/_profile/usb/drilldown_categorized:152
@@ -6206,6 +6281,7 @@ msgid "Lokale Signatur      "
 msgstr "Local location mark  "
 
 #: ../templates/_profile/kug/users_preferences_html:369
+#: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:22
 #: ../templates/_view/richter/cartitems_html_actions:146
 #: ../templates/_view/richter/cartitems_html_actions:46
 #: ../templates/_view/richter/cartitems_html_actions:67
@@ -6221,6 +6297,7 @@ msgstr "Local location mark  "
 msgid "Los"
 msgstr "Go"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321
 #: ../templates/admin_authenticators_record_edit:104
 #: ../templates/admin_clusters_record_edit:100
 #: ../templates/admin_databases_record_edit:252
@@ -6258,6 +6335,7 @@ msgstr "Painter / Drawer"
 msgid "Mapping"
 msgstr "Mapping"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:191
 #: ../templates/_profile/usb/titles_record_include:45
 #: ../templates/_view/richter/cartitems_html_full:237
 #: ../templates/_view/richter/litlists_record_html_full:238
@@ -6287,8 +6365,11 @@ msgid "Medienart"
 msgstr "Type of media"
 
 #: ../templates/_profile/kug/search_facet:181
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:108
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:96
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:179
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:181
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:179
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:167
 #: ../templates/_profile/sammlungen/search_facet:179
 #: ../templates/_profile/usb/drilldown_categorized:148
@@ -6350,6 +6431,17 @@ msgstr "Type of media"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:69
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:80
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:91
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:102
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:114
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:126
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:138
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:150
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:36
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:47
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:58
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:69
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:80
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:91
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:102
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:114
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:126
@@ -6624,6 +6716,7 @@ msgstr ""
 "these even present a separate portal. On this page we give you an overview "
 "of all available special views."
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:351
 #: ../templates/_view/richter/users_litlists_record_edit:79
 #: ../templates/admin_authenticators_record_delete_confirm:72
 #: ../templates/admin_clusters_html:115 ../templates/admin_clusters_html:84
@@ -6698,6 +6791,7 @@ msgstr "New"
 #: ../templates/_profile/kug/search_facet:489
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:463
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:465
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:428
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:437
 #: ../templates/_profile/sammlungen/search_facet:463
 #: ../templates/_profile/usb/drilldown_categorized:423
@@ -6751,6 +6845,7 @@ msgstr "New titles per subject category"
 msgid "Neuaufnahmen nach Verfasser"
 msgstr "New titles per author"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:298
 #: ../templates/titles_record_html:298 ../templates/titles_record_include:197
 msgid "Neue Bewertung/Rezension"
 msgstr "New rating/review"
@@ -6887,6 +6982,8 @@ msgstr "Non-commercial nature of this web site"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:478
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:479
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:480
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:442
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:443
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:451
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:452
 #: ../templates/_profile/sammlungen/search_facet:477
@@ -7259,9 +7356,12 @@ msgid "Permanenter Link zu diesem Titel"
 msgstr "Permanent Link to This Entry"
 
 #: ../templates/_profile/kug/search_facet:177
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:104
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:92
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:175
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:92
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:177
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:175
 #: ../templates/_profile/sammlungen/clouds_databases_record_html:62
 #: ../templates/_profile/sammlungen/search_facet:175
 #: ../templates/_profile/usb/drilldown_categorized:144
@@ -7363,6 +7463,7 @@ msgstr ""
 #: ../templates/_profile/kug/search_facet:502
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:476
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:478
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:441
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:450
 #: ../templates/_profile/sammlungen/search_facet:476
 #: ../templates/_profile/usb/drilldown_categorized:436
@@ -7507,6 +7608,7 @@ msgstr "Provenance"
 msgid "Prägejahr"
 msgstr "Year of coinage"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:314
 #: ../templates/reviews_edit:230 ../templates/titles_record_html:314
 #: ../templates/titles_record_include:213
 msgid "Pseudonym"
@@ -7594,6 +7696,7 @@ msgid "ReadMe"
 msgstr "ReadMe"
 
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:79
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:124
 #: ../templates/_profile/sammlungen/_view/richter/subnavigation:53
 #: ../templates/search_title_start_html:73 ../templates/subnavigation:22
 #: ../templates/titles_record_html:124
@@ -7797,6 +7900,7 @@ msgstr "Forgotten registered password?"
 msgid "Relevanz"
 msgstr "relevance"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:312
 #: ../templates/reviews_edit:228 ../templates/reviews_record_html:70
 #: ../templates/titles_record_html:312 ../templates/titles_record_include:211
 msgid "Rezension"
@@ -7840,6 +7944,8 @@ msgstr "Roles"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:471
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:472
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:473
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:435
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:436
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:444
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:445
 #: ../templates/_profile/sammlungen/search_facet:470
@@ -7975,6 +8081,7 @@ msgstr "Subjects in displayed titles"
 #: ../templates/_profile/kug/search_facet:499
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:473
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:475
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:438
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:447
 #: ../templates/_profile/sammlungen/search_facet:473
 #: ../templates/_profile/usb/drilldown_categorized:433
@@ -8552,7 +8659,6 @@ msgstr "Library-Code"
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:125
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:117
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:114
-#: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:233
 #: ../templates/_profile/sammlungen/searchforms_record_query:157
 #: ../templates/_profile/sammlungen/titlist_item_html_short:221
 #: ../templates/_profile/usb/circulation:31
@@ -8608,6 +8714,7 @@ msgid ""
 "schreiben Sie als <b>Trunkierungszeichen</b> ein *."
 msgstr "Please use * as the <b>truncation mark</b>."
 
+#: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:14
 #: ../templates/titlist_options:14
 msgid "Sortierung"
 msgstr "Alphabetic sorting"
@@ -8622,6 +8729,8 @@ msgstr "Order by"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:469
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:470
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:471
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:433
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:434
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:442
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:443
 #: ../templates/_profile/sammlungen/search_facet:468
@@ -8667,8 +8776,11 @@ msgid "Sprach-Icon für %1"
 msgstr "Language icon for %1"
 
 #: ../templates/_profile/kug/search_facet:182
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:109
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:97
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:180
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:182
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:180
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:168
 #: ../templates/_profile/sammlungen/search_facet:180
 #: ../templates/_profile/usb/drilldown_categorized:149
@@ -8806,6 +8918,7 @@ msgstr "Edit information about location"
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_wickrath:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_xanten:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_advanced:37
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:122
 #: ../templates/_profile/sammlungen/_view/alekiddr/info_project:36
 #: ../templates/_profile/sammlungen/_view/alekiddr/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/artmann/info_sammlung:36
@@ -9227,6 +9340,8 @@ msgstr "System"
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:128
 #: ../templates/_profile/rheinlandbib/clouds_navigation:56
 #: ../templates/_profile/rheinlandbib/clouds_navigation:58
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:107
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:95
 #: ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:74
 #: ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:76
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:178
@@ -9239,6 +9354,7 @@ msgstr "System"
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:123
 #: ../templates/_profile/sammlungen/_view/richter/subnavigation:89
 #: ../templates/_profile/sammlungen/_view/richter/subnavigation:91
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:178
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:79
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:81
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:56
@@ -12507,8 +12623,11 @@ msgid "T5100"
 msgstr "Common numbering"
 
 #: ../templates/_profile/kug/search_facet:184
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:101
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:111
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:182
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:184
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:182
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:170
 #: ../templates/_profile/sammlungen/search_facet:182
 #: ../templates/_profile/usb/drilldown_categorized:151
@@ -12573,13 +12692,17 @@ msgstr "Tags by name"
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr "Development system - Not intended for regular use"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316
 #: ../templates/titles_record_html:316 ../templates/titles_record_include:215
 msgid "Text"
 msgstr "Text"
 
 #: ../templates/_profile/kug/search_facet:179
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:106
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:94
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:177
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:179
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:177
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:165
 #: ../templates/_profile/sammlungen/search_facet:177
 #: ../templates/_profile/usb/drilldown_categorized:146
@@ -12682,6 +12805,9 @@ msgid "Tip: Digitaler Kartenkatalog"
 msgstr "Hint: Digital Card Catalog"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:35
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:136
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:315
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:89
 #: ../templates/_profile/usb/litlists_record_include:42
 #: ../templates/_view/richter/cartitems_html_full:26
 #: ../templates/_view/richter/litlists_record_html:87
@@ -12722,6 +12848,7 @@ msgid ""
 "Katalogen vorhanden"
 msgstr "Titles with this ISBN are also available in the following KUG-catalogs"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:369
 #: ../templates/titles_record_html:369 ../templates/titles_record_include:272
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen "
@@ -12756,6 +12883,7 @@ msgid "Titel-Datei"
 msgstr "Title-File"
 
 #. (recordname,dbdesc)
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:35
 #: ../templates/titles_record_html:35 ../templates/titles_record_mobile:33
 #: ../templates/users_titles_record_searchindex_html:15
 msgid "Titel-Information: %1 in Katalog %2"
@@ -12854,6 +12982,8 @@ msgstr "Resultlist"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:514
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:167
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:516
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:165
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:479
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:153
 #: ../templates/_profile/sammlungen/search_facet:165
 #: ../templates/_profile/sammlungen/search_facet:514
@@ -12895,6 +13025,7 @@ msgstr ""
 #: ../templates/_profile/kug/search_facet:501
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:475
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:477
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:440
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:449
 #: ../templates/_profile/sammlungen/search_facet:475
 #: ../templates/_profile/usb/drilldown_categorized:435
@@ -12940,6 +13071,7 @@ msgstr "Type:"
 #: ../templates/_profile/kug/search_facet:500
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:474
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:476
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:439
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:448
 #: ../templates/_profile/sammlungen/search_facet:474
 #: ../templates/_profile/usb/drilldown_categorized:434
@@ -13019,6 +13151,8 @@ msgstr "AND-relation in a search field"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:465
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:466
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:467
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:429
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:430
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:438
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:439
 #: ../templates/_profile/sammlungen/search_facet:464
@@ -13127,6 +13261,7 @@ msgstr "Author"
 #: ../templates/_profile/kug/search_facet:186
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:184
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:186
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:184
 #: ../templates/_profile/sammlungen/search_facet:184
 msgid "Verfügbarkeit"
 msgstr "Availability"
@@ -13177,6 +13312,7 @@ msgstr "Subject headings of this title in other catalogs"
 #: ../templates/_profile/kug/search_facet:549
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:523
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:525
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:488
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:494
 #: ../templates/_profile/sammlungen/search_facet:523
 #: ../templates/_profile/usb/drilldown_categorized:484
@@ -13361,6 +13497,7 @@ msgstr ""
 msgid "Wann"
 msgstr "When"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:350
 #: ../templates/titles_record_html:350 ../templates/titles_record_include:251
 msgid "War diese Rezension hilfreich?"
 msgstr "Was this review helpful?"
@@ -13845,6 +13982,7 @@ msgstr ""
 "For this title the following other manifestations (other language, other "
 "edition, ...) exist in all KUG-catalogs"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:383
 #: ../templates/titles_record_html:383 ../templates/titles_record_include:287
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
@@ -14319,6 +14457,7 @@ msgid "nach Jahrhundert"
 msgstr "by year"
 
 #: ../templates/_profile/kug/search_facet:437
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:376
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:385
 #: ../templates/_profile/sammlungen/search_facet:411
 #: ../templates/_profile/usb/drilldown_categorized:221
@@ -14338,6 +14477,7 @@ msgstr "by catalog"
 #: ../templates/_profile/kug/search_facet:389
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:363
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:365
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:328
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:337
 #: ../templates/_profile/sammlungen/search_facet:363
 #: ../templates/_profile/usb/drilldown_categorized:371
@@ -14367,6 +14507,7 @@ msgid "nach Person / Werkstatt(Werkzeug)"
 msgstr ""
 
 #: ../templates/_profile/kug/search_facet:413
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:352
 #: ../templates/_profile/sammlungen/search_facet:387
 #: ../templates/_profile/usb/drilldown_categorized:196
 #: ../templates/_view/richter/drilldown_categorized:198
@@ -14374,12 +14515,14 @@ msgstr ""
 msgid "nach Personen"
 msgstr "by person"
 
+#: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:17
 #: ../templates/_profile/usb/search_title_combined_include:68
 #: ../templates/titlist_options:17
 msgid "nach Popularit&auml;t"
 msgstr "by popularity"
 
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:413
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:280
 #, fuzzy
 msgid "nach Provenienz"
 msgstr "Provenance"
@@ -14390,6 +14533,7 @@ msgstr "Provenance"
 msgid "nach Region"
 msgstr "by person"
 
+#: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:16
 #: ../templates/_profile/usb/search_title_combined_include:61
 #: ../templates/titlist_options:16
 msgid "nach Relevanz"
@@ -14403,6 +14547,7 @@ msgstr "by location mark"
 #: ../templates/_profile/kug/search_facet:462
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:436
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:438
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:401
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:410
 #: ../templates/_profile/sammlungen/search_facet:436
 #: ../templates/_profile/usb/drilldown_categorized:396
@@ -14410,6 +14555,13 @@ msgstr "by location mark"
 #: ../templates/search_facet:410
 msgid "nach Sprache"
 msgstr "by language"
+
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:256
+#: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:18
+#: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:19
+#, fuzzy
+msgid "nach Sterbejahr"
+msgstr "Year of death"
 
 #: ../templates/_profile/kug/search_facet:341
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:289
@@ -14429,6 +14581,7 @@ msgstr "by tag name"
 #: ../templates/_profile/kug/search_facet:365
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:339
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:341
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:304
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:313
 #: ../templates/_profile/sammlungen/search_facet:339
 #: ../templates/_profile/usb/drilldown_categorized:346
@@ -14438,6 +14591,7 @@ msgid "nach Tags"
 msgstr "by tag"
 
 #: ../templates/_profile/kug/search_facet:293
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:232
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:241
 #: ../templates/_profile/sammlungen/search_facet:267
 #: ../templates/_profile/usb/drilldown_categorized:246
@@ -14459,6 +14613,7 @@ msgstr "by titles"
 
 #: ../templates/_profile/kug/search_facet:269
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:245
+#: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:208
 #: ../templates/_profile/sammlungen/search_facet:243
 msgid "nach Typ"
 msgstr "by type"
@@ -14466,6 +14621,11 @@ msgstr "by type"
 #: ../templates/_profile/usb/search_title_combined_include:66
 msgid "nach Verlag"
 msgstr "per publisher"
+
+#: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:20
+#, fuzzy
+msgid "nach Verstorbenen"
+msgstr "by person"
 
 #: ../templates/_profile/usb/search_title_combined_include:64
 #: ../templates/titlist_options:22
@@ -14556,11 +14716,13 @@ msgstr "private"
 msgid "realisiert mit"
 msgstr "powered by"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:303
 #: ../templates/reviews_edit:218 ../templates/titles_record_html:303
 #: ../templates/titles_record_include:202
 msgid "schlecht"
 msgstr "bad"
 
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:309
 #: ../templates/reviews_edit:224 ../templates/titles_record_html:309
 #: ../templates/titles_record_include:208
 msgid "sehr gut"

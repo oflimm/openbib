@@ -177,8 +177,8 @@ my $atime = new Benchmark;
 
                 $logger->debug("Processing Searchfield $searchfield for id $id");
 
-                # IDs
-                if ($config->{searchfield}{$searchfield}{type} eq 'id'){
+                # IDs oder Integer
+                if ($config->{searchfield}{$searchfield}{type} eq 'id' || $config->{searchfield}{$searchfield}{type} eq 'integer'){
                     # Tokenize
                     next if (! exists $index_ref->{$searchfield});
 

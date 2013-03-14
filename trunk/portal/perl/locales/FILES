@@ -914,9 +914,10 @@
 ../templates/_profile/sammlungen/_database/richter/visible_categories_title
 ../templates/_profile/sammlungen/_database/schmalenbach/circulation
 ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation
+../templates/_profile/sammlungen/_database/totenzettel/holding
+../templates/_profile/sammlungen/_database/totenzettel/titles_record_html
 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories
 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_images
-../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title
 ../templates/_profile/sammlungen/_database/wallraf/circulation
 ../templates/_profile/sammlungen/info_impressum_html
@@ -1064,10 +1065,13 @@
 ../templates/_profile/sammlungen/_view/totenzettel/home_html
 ../templates/_profile/sammlungen/_view/totenzettel/info_sammlung
 ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation
+../templates/_profile/sammlungen/_view/totenzettel/search_facet
 ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query
 ../templates/_profile/sammlungen/_view/totenzettel/std_header_html
 ../templates/_profile/sammlungen/_view/totenzettel/subnavigation
 ../templates/_profile/sammlungen/_view/totenzettel/titles_fields_record_html
+../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short
+../templates/_profile/sammlungen/_view/totenzettel/titlist_options
 ../templates/_profile/sammlungen/_view/wallraf/home
 ../templates/_profile/sammlungen/_view/wallraf/info_sammlung
 ../templates/_profile/sammlungen/_view/wallraf/std_header_html

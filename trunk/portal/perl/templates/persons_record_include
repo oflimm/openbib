@@ -65,7 +65,7 @@ END;
     searchprefix      = config.get('searchfield').personstring.prefix;
 
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-    globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;fs=${searchprefix}:|${searchterm}|";
+    globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;${searchprefix}=${searchterm}";
 
 %]
 

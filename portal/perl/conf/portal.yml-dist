@@ -3018,11 +3018,17 @@ searchfield:
      'type': 'string'
 
   # Suche nach speziellen Kategorien
+  't0100':
+     'prefix': 't0100'
+     'type': 'string'
   't0101':
      'prefix': 't0101'
      'type': 'string'
   't0102':
      'prefix': 't0102'
+     'type': 'string'
+  't0103':
+     'prefix': 't0103'
      'type': 'string'
   't0200':
      'prefix': 't0200'
@@ -3365,8 +3371,10 @@ xapian_search_prefix:
   'favail': 'E7'
 
   # Einzelne Kategorieinhalte
+  't0100': 'T0100'
   't0101': 'T0101'
   't0102': 'T0102'
+  't0103': 'T0103'
   't0200': 'T0200'
   't0201': 'T0201'
   't0304': 'T0304'

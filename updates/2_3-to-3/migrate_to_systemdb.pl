@@ -297,8 +297,6 @@ while (my $result=$request->fetchrow_hashref){
         id          => $result->{id},
         dbid        => $dbid{$result->{dbname}},
         type        => $result->{type},
-        subtype     => $result->{subtype},
-        subtypedesc => $result->{subtypedesc},
         active      => $active,
     };
 }
@@ -468,7 +466,7 @@ my %username_exists = ();
        
         next if ($userid_exists{$userid});
         next if ($username_exists{$loginname});
- 
+
         push @$userinfo_ref, {
             id => $userid,
             username => $loginname,

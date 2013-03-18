@@ -270,32 +270,51 @@ my $chars_to_replace = join '|',
 
 $chars_to_replace = qr/$chars_to_replace/;
 
+# Aufruf-Varianten fuer normalize
+#
+# a) Fuer ein field
+# b) Fuer einen typ
+# c)
+
 sub normalize {
     my ($arg_ref) = @_;
     
     # Set defaults
     my $content   = exists $arg_ref->{content}
-        ? $arg_ref->{content}             : "";
+        ? $arg_ref->{content}          : "";
 
     my $field  = exists $arg_ref->{field}
         ? $arg_ref->{field}            : "";
+
+    my $type   = exists $arg_ref->{type}
+        ? $arg_ref->{type}             : "";
 
     my $option_ref = exists $arg_ref->{option}
         ? $arg_ref->{option}           : {};
 
     my $searchreq = exists $arg_ref->{searchreq}
-        ? $arg_ref->{searchreq}           : undef;
+        ? $arg_ref->{searchreq}        : undef;
 
     my $tagging   = exists $arg_ref->{tagging}
-        ? $arg_ref->{tagging}             : undef;
+        ? $arg_ref->{tagging}          : undef;
 
     # Log4perl logger erzeugen
-    # my $logger = get_logger();
+    my $logger = get_logger();
 
-    # $logger->debug("IN: $content");
+    $logger->debug("IN: $content / Type $type");
     
     return "" unless (defined $content);
+    
+    # Typ Integer kann sofort normiert werden
 
+    if ($type eq "integer"){
+        $logger->debug("Processing Type $type");
+                
+        $content =~s/\D//g;
+
+        return $content;
+    }
+    
     # Normalisierung auf Kleinschreibung
     $content = lc($content);
     
@@ -303,7 +322,7 @@ sub normalize {
 
     # Korrektur fehlerhafter Inhalte mit abschliessenden Leerzeichen
     $content=~s/\s+$//g;
-    
+        
     # Datum normalisieren
 
     if ($field eq 'T0002'){
@@ -314,17 +333,19 @@ sub normalize {
     }
     
     # ISBN filtern
-    if ($field eq "T0540" || $field eq "T0541" || $field eq "T0547" || $field eq "T0553" || $field eq "T0634" || $field eq "T1586" || $field eq "T1587" || $field eq "T1588" || $field eq "T1589" || $field eq "T1590" || $field eq "T1591" || $field eq "T1592" || $field eq "T1593"){
+    if (defined $option_ref->{'filter_isbn'} || $field eq "T0540" || $field eq "T0541" || $field eq "T0547" || $field eq "T0553" || $field eq "T0634" || $field eq "T1586" || $field eq "T1587" || $field eq "T1588" || $field eq "T1589" || $field eq "T1590" || $field eq "T1591" || $field eq "T1592" || $field eq "T1593"){
         # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
         $content=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
-        return $content;
-    }
 
+        return $content unless (defined $option_ref->{'filter_isbn'}); # Short circuit for field-specific normalization
+    }
+    
     # ISSN filtern
-    if ($field eq "T0543" || $field eq "T0544" || $field eq "T0585" || $field eq "T1550" || $field eq "T1551" || $field eq "T1552" || $field eq "T1553" || $field eq "T1567" ){
+    if (defined $option_ref->{'filter_issn'} || $field eq "T0543" || $field eq "T0544" || $field eq "T0585" || $field eq "T1550" || $field eq "T1551" || $field eq "T1552" || $field eq "T1553" || $field eq "T1567" ){
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8/g;
-        return $content;
+
+        return $content unless (defined $option_ref->{'filter_issn'}); # Short circuit for field-specific normalization
     }
 
     # Nichtsortierzeichen entfernen
@@ -358,41 +379,61 @@ sub normalize {
         $content=~s/\s+<.*?>//g;
     }
     
-    # $logger->debug("Checkpoint 1: $content");
-    
+    $logger->debug("Checkpoint 1: $content");
+
+    # Recherche
     if ($searchreq){
-        # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
-        $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: '()"^*_]//g;
-
-        # Verbundene Terme splitten
-        $content=~s/(\w)-(\w)/$1 $2/g;
-        $content=~s/(\w)'(\w)/$1 $2/g;
-
-        # Bei Termen mit abschliessendem Bindestrich diesen entfernen
-        $content=~s/(\w)-(\s)/$1$2/g;
-        $content=~s/(\w)-$/$1/g;
+        if ($type eq 'string'){
+            $logger->debug("Processing Type $type");
+            
+            # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+            # * wird fuer die Recherche als Wildcard nicht angefasst
+            $content=~s/[^\p{Alphabetic}\p{Sc}0-9*]/_/g;
+        }
+        else {
+            # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+            $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: '()"^*_]//g;
+            
+            # Verbundene Terme splitten
+            $content=~s/(\w)-(\w)/$1 $2/g;
+            $content=~s/(\w)'(\w)/$1 $2/g;
+            
+            # Bei Termen mit abschliessendem Bindestrich diesen entfernen
+            $content=~s/(\w)-(\s)/$1$2/g;
+            $content=~s/(\w)-$/$1/g;
+        }
     }
+    # Normierung der Tags bei Nutzereingabe
     elsif ($tagging){
         $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9._]//g;
 
     }
+    # Indexierung
     else {
-        # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
-        $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/:* ']//g;
-
-        # Verbundene Terme splitten
-        $content=~s/(\w)-(\w)/$1 $2/g;
-        $content=~s/(\w)'(\w)/$1 $2/g;
-
-        # Bei Termen mit abschliessendem Bindestrich diesen entfernen
-        $content=~s/(\w)-(\s)/$1$2/g;
-        $content=~s/(\w)-$/$1/g;
-        
-	# Sonderbehandlung : fuer die Indexierung (bei der Recherche wird : fuer intitle: usw. benoetigt)
-	$content=~s/:/ /g;
+        if ($type eq 'string'){
+            $logger->debug("Processing Type $type");
+            # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+            # * wird fuer die Indexierung auf _ normiert
+            $content=~s/[^\p{Alphabetic}\p{Sc}0-9]/_/g;
+        }
+        else {
+            # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
+            $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/:* ']//g;
+            
+            # Verbundene Terme splitten
+            $content=~s/(\w)-(\w)/$1 $2/g;
+            $content=~s/(\w)'(\w)/$1 $2/g;
+            
+            # Bei Termen mit abschliessendem Bindestrich diesen entfernen
+            $content=~s/(\w)-(\s)/$1$2/g;
+            $content=~s/(\w)-$/$1/g;
+            
+            # Sonderbehandlung : fuer die Indexierung (bei der Recherche wird : fuer intitle: usw. benoetigt)
+            $content=~s/:/ /g;
+        }
     }
 
-    # $logger->debug("Checkpoint 2: $content");
+     $logger->debug("Checkpoint 2: $content");
     
     # Leerzeichen bei CJK einfuegen
 

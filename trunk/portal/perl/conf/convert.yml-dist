@@ -600,6 +600,7 @@ convtab:
         index:
           't4100': 1
           'classification': 1
+          'classificationstring': 1
         facet:
           'classification': 1
       '4201':         # Wikipedia
@@ -3184,8 +3185,7 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
-        string: 1
-  
+        string: 1  
   portrait:
     inverted_title:
       'tag':

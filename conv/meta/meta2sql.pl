@@ -845,7 +845,7 @@ while (my $jsonline=<IN>){
                 }
             }
             else {
-                $logger->debug("Not expanding $date, just adding year $1");
+                $logger->debug("Not expanding $date, just adding year");
                 push @$array_ref, $date;
             }
         }
@@ -1519,6 +1519,7 @@ while (my $jsonline=<IN>){
     $count++;
 }
 
+$logger->info("$count Titelsaetze bearbeitet");
 
 close(OUT);
 close(OUTFIELDS);
@@ -1534,84 +1535,21 @@ open(CONTROL,        ">control.sql");
 open(CONTROLINDEXOFF,">control_index_off.sql");
 open(CONTROLINDEXON, ">control_index_on.sql");
 
-# Einlade-Kontrolldateien fuer MySQL
-if ($config->{dbimodule} eq "mysql") {
-    foreach my $type (keys %{$stammdateien_ref}) {
-        print CONTROLINDEXOFF << "DISABLEKEYS";
-alter table $type        disable keys;
-alter table ${type}_fields     disable keys;
-SET FOREIGN_KEY_CHECKS=0;
-DISABLEKEYS
-    }
 
-    print CONTROLINDEXOFF "alter table title_title          disable keys;\n";
-    print CONTROLINDEXOFF "alter table title_person         disable keys;\n";
-    print CONTROLINDEXOFF "alter table title_corporatebody  disable keys;\n";
-    print CONTROLINDEXOFF "alter table title_subject        disable keys;\n";
-    print CONTROLINDEXOFF "alter table title_classification disable keys;\n";
-    print CONTROLINDEXOFF "alter table title_holding        disable keys;\n";
+# Index und Contstraints werden zentral via pool_drop_index.sql geloescht
 
-    foreach my $type (keys %{$stammdateien_ref}){
-        print CONTROL << "ITEMTRUNC";
+foreach my $type (keys %{$stammdateien_ref}){
+    print CONTROL << "ITEMTRUNC";
 truncate table $type;
 truncate table ${type}_fields;
 ITEMTRUNC
-        print CONTROL << "ITEM";
-load data infile '$dir/$stammdateien_ref->{$type}{outfile}'            into table $type              fields terminated by '' ;
-load data infile '$dir/$stammdateien_ref->{$type}{outfile_fields}'     into table ${type}_fields     fields terminated by '' ;
-ITEM
-    }
-
-    print CONTROL << "TITLEITEMTRUNC";
-truncate table title_title;
-truncate table title_person;
-truncate table title_corporatebody;
-truncate table title_subject;
-truncate table title_classification;
-truncate table title_holding;
-TITLEITEMTRUNC
-    
-    print CONTROL << "TITLEITEM";
-load data infile '$dir/title_title.dump'          into table title_title   fields terminated by '' ;
-load data infile '$dir/title_person.dump'         into table title_person   fields terminated by '' ;
-load data infile '$dir/title_corporatebody.dump'  into table title_corporatebody   fields terminated by '' ;
-load data infile '$dir/title_subject.dump'        into table title_subject   fields terminated by '' ;
-load data infile '$dir/title_classification.dump' into table title_classification   fields terminated by '' ;
-load data infile '$dir/title_holding.dump'        into table title_holding   fields terminated by '' ;
-TITLEITEM
-
-    foreach my $type (keys %{$stammdateien_ref}){
-        print CONTROLINDEXON << "ENABLEKEYS";
-SET FOREIGN_KEY_CHECKS=1;
-alter table $type              enable keys;
-alter table ${type}_fields     enable keys;
-ENABLEKEYS
-    }
-
-    print CONTROLINDEXON "alter table title_title           enable keys;\n";
-    print CONTROLINDEXON "alter table title_person          enable keys;\n";
-    print CONTROLINDEXON "alter table title_corporatebody   enable keys;\n";
-    print CONTROLINDEXON "alter table title_subject         enable keys;\n";
-    print CONTROLINDEXON "alter table title_classification  enable keys;\n";
-    print CONTROLINDEXON "alter table title_holding         enable keys;\n";
-}
-# Einlade-Kontrolldateien fuer PostgreSQL
-elsif ($config->{dbimodule} eq "Pg"){
-
-    # Index und Contstraints werden zentral via pool_drop_index.sql geloescht
-
-    foreach my $type (keys %{$stammdateien_ref}){
-        print CONTROL << "ITEMTRUNC";
-truncate table $type;
-truncate table ${type}_fields;
-ITEMTRUNC
-        print CONTROL << "ITEM";
+    print CONTROL << "ITEM";
 COPY $type FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
 COPY ${type}_fields FROM '$dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';
 ITEM
-    }
+}
 
-    print CONTROL << "TITLEITEMTRUNC";
+print CONTROL << "TITLEITEMTRUNC";
 truncate table title_title;
 truncate table title_person;
 truncate table title_corporatebody;
@@ -1620,7 +1558,7 @@ truncate table title_classification;
 truncate table title_holding;
 TITLEITEMTRUNC
     
-    print CONTROL << "TITLEITEM";
+print CONTROL << "TITLEITEM";
 COPY title_title FROM '$dir/title_title.dump' WITH DELIMITER '' NULL AS '';
 COPY title_person FROM '$dir/title_person.dump' WITH DELIMITER '' NULL AS '';
 COPY title_corporatebody FROM '$dir/title_corporatebody.dump' WITH DELIMITER '' NULL AS '';
@@ -1629,11 +1567,7 @@ COPY title_classification FROM '$dir/title_classification.dump' WITH DELIMITER '
 COPY title_holding FROM '$dir/title_holding.dump' WITH DELIMITER '' NULL AS '';
 TITLEITEM
 
-    # Index und Contstraints werden zentral via pool_create_index.sql eingerichtet
-}
-# Einlade-Kontrolldateien fuer SQLite
-elsif ($config->{dbimodule} eq "SQLite"){
-}
+# Index und Contstraints werden zentral via pool_create_index.sql eingerichtet
 
 close(CONTROL);
 close(CONTROLINDEXOFF);

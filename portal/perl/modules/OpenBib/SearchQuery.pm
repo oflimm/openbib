@@ -204,7 +204,7 @@ sub set_from_apache_request {
             my $prefix = $thissearchfield->{prefix};
             my $name   = $thissearchfield->{name};
             my ($thissearchfield_content, $thissearchfield_norm_content,$thissearchfield_bool_op);
-            $thissearchfield_content = $thissearchfield_norm_content = decode_utf8($query->param("$prefix")) || $query->param("$prefix")      || '';
+            $thissearchfield_content = $thissearchfield_norm_content = decode_utf8(uri_unescape($query->param("$prefix"))) || uri_unescape($query->param("$prefix"))      || '';
             $thissearchfield_bool_op = (defined $query && $query->param("b\[$prefix\]"))?$query->param("b\[$prefix\]"):
                 (defined $legacy_bool_op_ref->{"b\[$prefix\]"} && $query->param($legacy_bool_op_ref->{"b\[$prefix\]"}))?$query->param($legacy_bool_op_ref->{"b\[$prefix\]"}):"AND";
             
@@ -228,16 +228,17 @@ sub set_from_apache_request {
                 # Zuerst Stringsuchen in der Freie Suche
 
                 $logger->debug("Stage1: $thissearchfield_norm_content");
-                
+
                 if ($name eq "freesearch" || $thissearchfield_norm_content=~/:|.+?|/){
                     while ($thissearchfield_norm_content=~m/^([^\|]+)\|([^\|]+)\|(.*)$/){
-                        my $first = $1;
+                        my $first  = $1;
                         my $string = $2;
-                        my $last = $3;
+                        my $last   = $3;
                         
                         #                    $logger->debug("Fullstring IN: $string");
                         my $string_norm = OpenBib::Common::Util::normalize({
                             content   => $string,
+                            type      => 'string',
                         });
                         
                         $string_norm=~s/\W/_/g;
@@ -253,61 +254,18 @@ sub set_from_apache_request {
 
                 $logger->debug("Filter Option: ".$config->{'searchfield'}{$searchfield}{option});
                 
-                if ($config->{'searchfield'}{$searchfield}{option}{filter_isbn}){
-                    $thissearchfield_norm_content = lc($thissearchfield_norm_content);
-                    # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
-                    $thissearchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
-                    $thissearchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
-                    $logger->debug("Filtering ISBN -> $thissearchfield_norm_content");
-                }
-                
-                # Entfernung der Minus-Zeichen bei der ISSN
-                if ($config->{'searchfield'}{$searchfield}{option}{filter_issn}){
-                    $thissearchfield_norm_content = lc($thissearchfield_norm_content);
-                    $thissearchfield_norm_content =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8/g;
-                    $logger->debug("Filtering ISSN -> $thissearchfield_norm_content");
-                }
-                
-                if ($config->{'searchfield'}{$searchfield}{option}{strip_first_stopword}){
-                    $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
-                        option    => $config->{'searchfield'}{$searchfield}{option},
-                        content   => $thissearchfield_norm_content,
-                        searchreq => 1,
-                    });
-                    $logger->debug("Filtering Stopword -> $thissearchfield_norm_content");
-                }
-                else {
-                    $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
-                        content   => $thissearchfield_norm_content,
-                        searchreq => 1,
-                    });
-                }
+                $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
+                    option    => $config->{'searchfield'}{$searchfield}{option},
+                    content   => $thissearchfield_norm_content,
+                    type      => $config->{'searchfield'}{$searchfield}{type},
+                    searchreq => 1,
+                });
 
-                $logger->debug("Stage2: $thissearchfield_norm_content");
-
-                if ($config->{'searchfield'}{$searchfield}{type} eq "string"){
-                    # Stringsuche auch mit Trunkierung via * moeglich
-#                    $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
-#                        content   => $thissearchfield_norm_content,
-#                    });
-
-                    $logger->debug("Stage3: $thissearchfield_norm_content");
-
-                    $thissearchfield_norm_content =~s/://g;
-                    $thissearchfield_norm_content =~s/[^\w*]/_/g;
-                }
-
-                $logger->debug("Stage4: $thissearchfield_norm_content");
-
-                if ($config->{'searchfield'}{$searchfield}{type} eq "integer"){
-                    $thissearchfield_norm_content =~s/\D//g;
-                }
-                
                 if ($thissearchfield_norm_content){
                     $self->{_have_searchterms} = 1;
                     $self->{_searchquery}->{$name}->{norm} = $thissearchfield_norm_content;
                 }
-                
+
                 $logger->debug("Added searchterm $thissearchfield_bool_op - $thissearchfield_content - $thissearchfield_norm_content");
             }
         }
@@ -331,15 +289,14 @@ sub set_from_apache_request {
         $logger->debug("Filter: $filter with terms ".YAML::Dump(\@terms));
         
         foreach my $term (@terms){
-            $term = decode_utf8($term);
+            $term = decode_utf8(uri_unescape($term));
             
             my $string  = $term;
             
             $string = OpenBib::Common::Util::normalize({
                 content   => $string,
+                type      => 'string',
             });
-            
-            $string=~s/\W/_/g;
             
             $logger->debug("Field: $field Norm: $string Term: $term");
             

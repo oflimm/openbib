@@ -175,13 +175,12 @@ my $atime = new Benchmark;
                 
 		my $option_ref = (defined $config->{searchfield}{$searchfield}{option})?$config->{searchfield}{$searchfield}{option}:{};
 
-                $logger->debug("Processing Searchfield $searchfield for id $id");
-
                 # IDs oder Integer
                 if ($config->{searchfield}{$searchfield}{type} eq 'id' || $config->{searchfield}{$searchfield}{type} eq 'integer'){
-                    # Tokenize
                     next if (! exists $index_ref->{$searchfield});
 
+                    $logger->debug("Processing Searchfield $searchfield for id $id and type ".$config->{searchfield}{$searchfield}{type});
+                    
                     foreach my $weight (keys %{$index_ref->{$searchfield}}){
                         # Naechstes, wenn keine ID
                         foreach my $fields_ref (@{$index_ref->{$searchfield}{$weight}}){
@@ -190,7 +189,7 @@ my $atime = new Benchmark;
 
                             next if (!$content);
 
-			    my $normalize_cache_id = "$field:".join(":",keys %$option_ref).":$content";
+			    my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$content";
 
 			    my $normcontent = "";
 
@@ -198,7 +197,7 @@ my $atime = new Benchmark;
 				$normcontent = $normalize_cache{$normalize_cache_id};
 			    }
 			    else {
-				$normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref });
+				$normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
 				$normalize_cache{$normalize_cache_id} = $normcontent;
 			    }
                             
@@ -213,6 +212,8 @@ my $atime = new Benchmark;
                     # Tokenize
                     next if (! exists $index_ref->{$searchfield});
 
+                    $logger->debug("Processing Searchfield $searchfield for id $id and type ".$config->{searchfield}{$searchfield}{type});
+                    
                     foreach my $weight (keys %{$index_ref->{$searchfield}}){
                         # Naechstes, wenn keine ID
                         foreach my $fields_ref (@{$index_ref->{$searchfield}{$weight}}){
@@ -221,7 +222,7 @@ my $atime = new Benchmark;
 			    
                             next if (!$content);
 
-			    my $normalize_cache_id = "$field:".join(":",keys %$option_ref).":$content";
+			    my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$content";
 
 			    my $normcontent = "";
 
@@ -229,7 +230,7 @@ my $atime = new Benchmark;
 				$normcontent = $normalize_cache{$normalize_cache_id};
 			    }
 			    else {
-				$normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref });
+				$normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
 				$normalize_cache{$normalize_cache_id} = $normcontent;
 			    }
 
@@ -249,6 +250,8 @@ my $atime = new Benchmark;
                 # Zusammenhaengende Zeichenkette
                 elsif ($config->{searchfield}{$searchfield}{type} eq 'string'){
                     next if (!exists $index_ref->{$searchfield});
+
+                    $logger->debug("Processing Searchfield $searchfield for id $id and type ".$config->{searchfield}{$searchfield}{type});
                     
                     foreach my $weight (keys %{$index_ref->{$searchfield}}){
                         my %seen_terms = ();
@@ -259,28 +262,21 @@ my $atime = new Benchmark;
 			    my $field       = $unique_term_ref->[0];
 			    my $unique_term = $unique_term_ref->[1];
 
+                            $logger->debug("Processing string $unique_term in field $searchfield");
+                            
                             next if (!$unique_term);
 
-			    my $normalize_cache_id = "$field:".join(":",keys %$option_ref).":$unique_term";
+			    my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$unique_term";
 
 			    if (defined $normalize_cache{$normalize_cache_id}){
 				$unique_term = $normalize_cache{$normalize_cache_id};
 			    }
 			    else {
-				$unique_term = OpenBib::Common::Util::normalize({ field => $field, content => $unique_term, option => $option_ref });
+				$unique_term = OpenBib::Common::Util::normalize({ field => $field, content => $unique_term, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
 				$normalize_cache{$normalize_cache_id} = $unique_term;
 			    }
 
                             next unless ($unique_term);
-                            
-#                             if (exists $config->{searchfield}{$searchfield}{option}{string_first_stopword}){
-#                                 $unique_term = OpenBib::Common::Stopwords::strip_first_stopword($unique_term);
-#                                 $logger->debug("Stripped first stopword");
-                                
-#                             }
-                        
-                            $unique_term=~s/\W/_/g;
-                            
                             
                             $unique_term=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$unique_term;
                             
@@ -378,6 +374,7 @@ my $atime = new Benchmark;
                         
                         $content = OpenBib::Common::Util::normalize({
                             content   => $content,
+                            type      => 'string',
                         });
                         
                         if ($content){

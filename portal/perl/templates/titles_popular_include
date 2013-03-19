@@ -61,7 +61,7 @@ Die 20 meist aufgerufenen Titel
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
-[%-  searchterm    = part.content;
+[%-  searchterm    = uri_escape(part.content);
      searchprefix  = config.get('searchfield').personstring.prefix;
 
      globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;${searchprefix}=${searchterm}";
@@ -70,7 +70,7 @@ Die 20 meist aufgerufenen Titel
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'P0101'}  -%]
-[%-  searchterm    = part.content;
+[%-  searchterm    = uri_escape(part.content);
      searchprefix  = config.get('searchfield').personstring.prefix;
 
      globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;${searchprefix}=${searchterm}";
@@ -80,7 +80,7 @@ Die 20 meist aufgerufenen Titel
 [%- END -%]
 [%- FOREACH part IN item.${'C0200'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%-  searchterm    = part.content;
+[%-  searchterm    = uri_escape(part.content);
      searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
      globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;${searchprefix}=${searchterm}";
@@ -89,7 +89,7 @@ Die 20 meist aufgerufenen Titel
 [%- END -%]
 [%- FOREACH part IN item.${'C0201'}  -%]
 [%#- persons.push("${part.content}") -%]
-[%-  searchterm    = part.content;
+[%-  searchterm    = uri_escape(part.content);
      searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
      globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}searchall=1;${searchprefix}=${searchterm}";

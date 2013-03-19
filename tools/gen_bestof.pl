@@ -5,7 +5,7 @@
 #
 #  Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 #
-#  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -151,42 +151,60 @@ if ($type == 1){
 
 # Typ 2 => Meistgenutzte Datenbanken
 if ($type == 2){
-    $logger->info("Generating Type 2 BestOf-Values for all databases");
-    
-    my $bestof_ref=[];
-    # DBI: "select dbname, count(katkey) as kcount from titleusage where origin=2 group by dbname order by kcount desc limit 20"
-    my $databaseusage = $statistics->{schema}->resultset('Titleusage')->search_rs(
-        {
-            dbname => $database,
-            origin => 2,
-            #                tstamp => { '>' => 20110101000000 },
-            tstamp => { '>' => \'DATE_SUB(CURDATE(),INTERVAL 6 MONTH)' },
-            
-        },
-        {
-            select   => ['dbname', {'count' => 'id'}],
-            as       => ['dbname','idcount'],
-            group_by => ['dbname'],
-            order_by => { -desc => \'count(idcount)' },
-            rows     => 20,
-        }
-    );
-    
-    foreach my $item ($databaseusage->all){
-        my $dbname = $item->get_column('dbname');
-        my $count  = $item->get_column('kcount');
-        
-        push @$bestof_ref, {
-            item  => $dbname,
-            count => $count,
-        };
+    my @views = ();
+
+    if ($view){
+        push @views, $view;
+    }
+    else {
+        @views=$config->get_active_views();
     }
 
-    $statistics->cache_data({
-        type => 2,
-        id   => 'all',
-        data => $bestof_ref,
-    });
+    foreach my $view (@views){
+        $logger->info("Generating Type 2 BestOf-Values for view $view");
+
+        my $viewdb_ref = [];
+        foreach my $dbname ($config->get_viewdbs($view)){
+            push @$viewdb_ref, {dbname => $dbname };
+        }
+
+        next unless (@$viewdb_ref);
+        
+        my $bestof_ref=[];
+        # DBI: "select dbname, count(katkey) as kcount from titleusage where origin=2 group by dbname order by kcount desc limit 20"
+        my $databaseusage = $statistics->{schema}->resultset('Titleusage')->search_rs(
+            {
+                -or    => $viewdb_ref,
+                origin => 1,
+                #                tstamp => { '>' => 20110101000000 },
+                tstamp => { '>' => \'CURRENT_TIMESTAMP - INTERVAL \'180 days\'' },
+                
+            },
+            {
+                select   => ['dbname', {'count' => 'id'}],
+                as       => ['dbname','kcount'],
+                group_by => ['dbname'],
+                order_by => { -desc => \'count(id)' },
+                rows     => 20,
+            }
+        );
+        
+        foreach my $item ($databaseusage->all){
+            my $dbname = $item->get_column('dbname');
+            my $count  = $item->get_column('kcount');
+            
+            push @$bestof_ref, {
+                item  => $dbname,
+                count => $count,
+            };
+        }
+        
+        $statistics->cache_data({
+            type => 2,
+            id   => $view,
+            data => $bestof_ref,
+        });
+    }
 }
 
 # Typ 3 => Meistgenutzte Schlagworte
@@ -921,34 +939,50 @@ if ($type == 12){
     });
 }
 
-# Typ 12 => Meistaufgerufene Titel allgemein
+# Typ 13 => Meistaufgerufene Titel allgemein
 if ($type == 13){
-    my @profiles = ();
-    if ($profile){
-        push @profiles, $config->get_profile->single({ profilename => $profile});
+    my @views = ();
+
+    if ($view){
+        push @views, $view;
     }
     else {
-        foreach my $profile_ref ($config->get_profileinfo_overview->all){
-            push @profiles, $profile_ref;
-        }
+        @views=$config->get_active_views();
     }
 
-    foreach my $profile (@profiles){
-        my $profilename = $profile->get_column('profilename');
-        $logger->info("Generating Type 12 BestOf-Values for profile $profilename");
+    foreach my $view (@views){
+        $logger->info("Generating Type 13 BestOf-Values for view $view");
 
-        my $profilestring = "('".join('\',\'',$config->get_profiledbs($profilename))."')";
+        my $viewdb_ref = [];
+        foreach my $dbname ($config->get_viewdbs($view)){
+            push @$viewdb_ref, {dbname => $dbname };
+        }
 
-        $logger->info($profilestring);
+        next unless (@$viewdb_ref);
+
         my $bestof_ref=[];
-        my $request=$statisticsdbh->prepare("select katkey, dbname, count(id) as idcount from titleusage where origin=2 and dbname in $profilestring and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
-        $request->execute();
-        while (my $result=$request->fetchrow_hashref){
-            my $katkey   = $result->{katkey};
-            my $database = $result->{dbname};
-            my $count    = $result->{idcount};
 
-            my $item=OpenBib::Record::Title->new({database => $database, id => $katkey})->load_brief_record();
+        my $titleusage = $statistics->{schema}->resultset('Titleusage')->search_rs(
+            {
+                -or    => $viewdb_ref,
+                origin => 1,
+                tstamp => { '>' => \'CURRENT_TIMESTAMP - INTERVAL \'180 days\'' },
+                
+            },
+            {
+                select   => ['id', 'dbname', {'count' => 'sid'}],
+                as       => ['id','dbname','sidcount'],
+                group_by => ['id','dbname'],
+                order_by => { -desc => \'count(sid)' },
+                rows     => 20,
+            }
+        );
+        foreach my $item ($titleusage->all){
+            my $id       = $item->get_column('id');
+            my $count    = $item->get_column('sidcount');
+            my $database = $item->get_column('dbname');
+
+            my $item=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record()->to_hash;
 
             push @$bestof_ref, {
                 item  => $item,
@@ -958,7 +992,7 @@ if ($type == 13){
 
         $statistics->cache_data({
             type => 13,
-            id   => $profile->get_column('profilename'),
+            id   => $view,
             data => $bestof_ref,
         });
     }
@@ -1032,7 +1066,7 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
    Typen:
 
    1 => Meistaufgerufene Titel pro Datenbank
-   2 => Meistgenutzte Kataloge bezogen auf Titelaufrufe
+   2 => Meistgenutzte Kataloge bezogen auf Titelaufrufe pro View
    3 => Meistgenutzte Schlagworte pro Katalog (Wolke)
    4 => Meistgenutzte Notationen/Systematiken pro Katalog (Wolke)
    5 => Meistgenutzte Koerperschaften/Urheber pro Katalog (Wolke)

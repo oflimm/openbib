@@ -35,7 +35,7 @@
    NEXT IF classnr <= 1;
    classnr = classnr - 1;
 
-   searchterm    = item;
+   searchterm    = uri_escape(item);
    searchprefix  = config.get('searchfield').subjectstring.prefix;
 
    localurl  = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};db=${database};${searchprefix}=${searchterm}";

@@ -76,7 +76,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 
-   searchterm    = item;
+   searchterm    = uri_escape(item);
    searchprefix  = config.get('searchfield').personstring.prefix;
 
    localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};db=${database};${searchprefix}=${searchterm}";

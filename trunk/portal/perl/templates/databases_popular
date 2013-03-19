@@ -12,10 +12,9 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
-[% show_foot_banner = 1%]
 <body>
 [%
-      funcargs = { id => 'all', type => 2 } ;
+      funcargs = { id => view, type => 2 } ;
       resultlist = statistics.get_result(funcargs);
 %]
 
@@ -44,21 +43,19 @@
       <!-- begin: #col3 static column -->
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
-[%# USE dumper;dumper.dump(dbinfo)%]
-<table width="100%">
-<tr><th>[% msg.maketext("Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe") %]</th></tr>
-<tr><td class="boxedclear">
+[%# USE dumper;dumper.dump(resultlist)%]
+<h3>[% msg.maketext("Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe") %]</h3>
+
 <table>
 <!-- Beginn Result Item -->
 [%- FOREACH thisitem IN resultlist -%]
 [% item      = thisitem.item;
    itemcount = thisitem.count;
 %]
-<tr><td><b>[% loop.count %]</b></td><td><strong>[% dbinfo.dbnames.${item}.short %]</td><td><b>[% itemcount %]&nbsp;[% msg.maketext("Titelzugriffe") %]</b></td></tr>
+<tr><td><b>[% loop.count %]</b></td><td>[% dbinfo.dbnames.${item}.short %]</td><td style="text-align:right;"><b>[% itemcount %]&nbsp;[% msg.maketext("Titelzugriffe") %]</b></td></tr>
 [% END %]
 </table>
-</td></tr>
-</table>
+
 <p />
 
         </div>

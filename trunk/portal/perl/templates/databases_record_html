@@ -36,7 +36,7 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
-         <li><a href="#" class="lastitem">[% databaseinfo.description %]</a></li>
+         <li><a href="#" class="lastitem">[% databaseinfo.shortdesc %]</a></li>
       </ul>
      </div>
     <div class="ob-representation">

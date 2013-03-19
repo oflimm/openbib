@@ -88,9 +88,12 @@ sub show_popular {
     # Shared Args
     my $config         = $self->param('config');
 
+    my $statistics     = OpenBib::Statistics->instance;
+    
     my $dbinfo_ref = $config->get_dbinfo_overview();
     
     my $ttdata={
+        statistics  => $statistics,
         databases   => $dbinfo_ref,
     };
     

@@ -31,7 +31,7 @@
      FOREACH part IN item.${'P0100'} ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = part.content;
+         searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
@@ -58,7 +58,7 @@
        END ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = part.content;
+         searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
@@ -81,7 +81,7 @@
      FOREACH part IN item.${'C0200'}  ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = part.content;
+         searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
@@ -104,7 +104,7 @@
      FOREACH part IN item.${'C0201'}  ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = part.content;
+         searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";

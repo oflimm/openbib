@@ -47,11 +47,12 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% msg.maketext("Wolken") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% dbinfo.dbnames.${database}.short %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Tags") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/tag.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/tag.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
      </div>
    </div>
 
@@ -90,9 +91,11 @@
    itemcount = thisitem.count;
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
+   searchterm    = uri_escape(item);
+   searchprefix  = config.get('searchfield').tagstring.prefix;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind 
-verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('tags_loc') %]?searchtitoftag=[% id %];database=[% database %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;[% searchprefix %]=[% searchterm %];profile=[% config.get_searchprofile_of_database(database) %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

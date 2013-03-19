@@ -539,7 +539,7 @@ sub to_cgi_params {
             };
             push @cgiparams, {
                 param  => $base_prefix.$param_suffix,
-                val    => $self->_html_escape($self->{_searchquery}->{$param}{val}),
+                val    => uri_escape_utf8($self->{_searchquery}->{$param}{val}),
             };
         }
     }

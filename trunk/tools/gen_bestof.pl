@@ -160,7 +160,7 @@ if ($type == 2){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type 2 BestOf-Values for view $view");
 
         my $viewdb_ref = [];
@@ -232,6 +232,7 @@ if ($type == 3){
         my $usage = $catalog->{schema}->resultset('Subject')->search_rs(
             {
                 'subject_fields.field' => 800,
+                'subject_fields.mult'  => 1,
             },
             {
                 select   => ['subject_fields.content', {'count' => 'title_subjects.titleid'}],
@@ -950,7 +951,7 @@ if ($type == 13){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type 13 BestOf-Values for view $view");
 
         my $viewdb_ref = [];

@@ -52,7 +52,7 @@
 [% item      = thisitem.item;
    itemcount = thisitem.count;
 %]
-<tr><td><b>[% loop.count %]</b></td><td>[% dbinfo.dbnames.${item}.short %]</td><td style="text-align:right;"><b>[% itemcount %]&nbsp;[% msg.maketext("Titelzugriffe") %]</b></td></tr>
+<tr><td><b>[% loop.count %]</b></td><td><a href="[% path_prefix %]/[% config.get("databases_loc") %]/id/[% item %]/titles/popular.html?l=[% lang %]">[% dbinfo.dbnames.${item}.short %]</a></td><td style="text-align:right;"><b>[% itemcount %]&nbsp;[% msg.maketext("Titelzugriffe") %]</b></td></tr>
 [% END %]
 </table>
 

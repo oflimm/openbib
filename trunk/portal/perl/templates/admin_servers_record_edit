@@ -137,7 +137,7 @@
 </thead>
 <tbody>
 [% FOREACH logentry IN updatelog.all %]
-<tr><td>[% logentry.dbid.dbname %]</td><td>[% logentry.tstamp_start %]</td><td>[% logentry.duration %]</td><td>[% logentry.title_count %]</td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% logentry.dbid.dbname %]/updates.html?l=[% lang %]">[% logentry.dbid.dbname %]</a></td><td>[% logentry.tstamp_start %]</td><td>[% logentry.duration %]</td><td>[% logentry.title_count %]</td></tr>
 [% END %]
 </tbody>
 </table>

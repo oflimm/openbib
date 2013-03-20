@@ -57,8 +57,21 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+    <script language="JavaScript" type="text/javascript" src="/js/jquery.flot.js"></script>
+
 [% IF databaseinfo.updatelogs.size > 0 %]
+
+[% plot_data = [] %]
+[% USE date %]
+
 <h4>[% msg.maketext("Aktualisierung") %]</h4>
+
+<p>
+
+<div id="placeholder" style="width:600px;height:300px"></div>
+
+</p>
+
 <p>
 [% msg.maketext("Anzahl") %]
 &nbsp;
@@ -74,11 +87,31 @@
 </thead>
 <tbody>
 [% FOREACH logentry IN databaseinfo.search_related("updatelogs", {}, { order_by => 'tstamp_start DESC' } ) %]
+[% thisdate = date.format(logentry.tstamp_start,"%s"); plot_data.push("[${thisdate}*1000,${logentry.title_count}]") %]
 <tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% logentry.serverid.id %]/edit?l=[% lang %]">[% logentry.serverid.hostip %]</a></td><td>[% logentry.tstamp_start %]</td><td>[% logentry.duration %]</td><td>[% logentry.title_count %]</td></tr>
 [% END %]
 </tbody>
 </table>
 [% END %]
+<script type="text/javascript">
+$(function () {
+    var d = [[% plot_data.join(',') %]];
+
+// first correct the timestamps - they are recorded as the daily
+    // midnights in UTC+0100, but Flot always displays dates in UTC
+    // so we have to add one hour to hit the midnights in the plot
+    for (var i = 0; i < d.length; ++i)
+      d[i][0] += 60 * 60 * 1000;
+    
+    var options = {
+        xaxis: { mode: "time", tickLength: 5 },
+        selection: { mode: "x" },
+    };
+    
+    $.plot($("#placeholder"), [{ data: d}], options);
+    
+});
+</script>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

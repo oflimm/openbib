@@ -1217,6 +1217,18 @@ dispatch_rules:
      runmode: 'delete_record'
 
 #####################################################################
+# Databases Updates-Resource/Repraesentation
+  - # users/databases_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Databases::Updates'
+     rule: '/portal/:view/admin/databases/id/:databaseid/updates[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - rdf
+
+#####################################################################
 # Standortgruppierung/Locations-Resource/Repraesentation
   - # users/locations_loc:
      module: 'OpenBib::Handler::Apache::Locations'
@@ -2474,6 +2486,7 @@ tt_admin_databases_rss_record_delete_confirm_tname: admin_databases_rss_record_d
 tt_admin_databases_rss_record_edit_tname: admin_databases_rss_record_edit
 tt_admin_databases_rss_record_tname: admin_databases_rss_record
 tt_admin_databases_rss_tname: admin_databases_rss
+tt_admin_databases_updates_tname: admin_databases_updates
 tt_admin_databases_tname: admin_databases
 tt_admin_locations_tname: admin_locations
 tt_admin_locations_record_delete_confirm_tname: admin_locations_record_delete_confirm

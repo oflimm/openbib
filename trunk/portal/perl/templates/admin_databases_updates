@@ -57,9 +57,10 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-    <script language="JavaScript" type="text/javascript" src="/js/jquery.flot.js"></script>
-
 [% IF databaseinfo.updatelogs.size > 0 %]
+
+    <script language="JavaScript" type="text/javascript" src="/js/jquery.flot.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery.flot.tooltip.min.js"></script>
 
 [% plot_data = [] %]
 [% USE date %]
@@ -93,24 +94,50 @@
 </tbody>
 </table>
 [% END %]
+
+<style>
+.legend table {
+  width: auto;
+  border: none;
+}
+.legend .legendLabel {
+  border: none;
+}
+.legend .legendColorBox {
+  border: none;
+}
+</style>
+
 <script type="text/javascript">
 $(function () {
     var d = [[% plot_data.join(',') %]];
 
-// first correct the timestamps - they are recorded as the daily
+    // first correct the timestamps - they are recorded as the daily
     // midnights in UTC+0100, but Flot always displays dates in UTC
     // so we have to add one hour to hit the midnights in the plot
     for (var i = 0; i < d.length; ++i)
       d[i][0] += 60 * 60 * 1000;
     
     var options = {
-        xaxis: { mode: "time", tickLength: 5 },
+        xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
         selection: { mode: "x" },
+        legend: { position: "nw", },
+        series: {
+          lines: { show: true },
+          points: { show: true },
+        },
+        grid: { hoverable: true, },
+        tooltip: true,
+        tooltipOpts: {
+           content: "%x: <b>%y Titel</b>",
+        },
+
     };
     
-    $.plot($("#placeholder"), [{ data: d}], options);
+    $.plot($("#placeholder"), [{ data: d, label: "Bestandsentwicklung",}], options);
     
 });
+
 </script>
 
         </div>

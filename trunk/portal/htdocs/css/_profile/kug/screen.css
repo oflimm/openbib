@@ -718,4 +718,48 @@
   .ob-titleimage a {
 
   }
+
+  .ob-availability_lendable {
+    margin-top: -3px;
+    float: right;
+    padding: 2px;
+    width: 5em;
+    background: green;    
+    color: #fff;
+    border-radius: 2px;
+    font-size: 110%;
+    font-weight: bold;
+    -moz-box-shadow: 2px 2px 2px #888;
+    -webkit-box-shadow: 2px 2px 2px #888;
+    box-shadow: 2px 2px 2px #888;       
+  }
+  .ob-availability_presence {
+    margin-top: -3px;
+    float: right;
+    padding: 2px;
+    width: 5em;
+    background: orange;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 110%;
+    font-weight: bold;
+    -moz-box-shadow: 2px 2px 2px #888;
+    -webkit-box-shadow: 2px 2px 2px #888;
+    box-shadow: 2px 2px 2px #888;       
+    
+  }
+  .ob-availability_borrowed {
+    margin-top: -3px;
+    float: right;
+    padding: 2px;
+    width: 5em;
+    background: red;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 110%;
+    font-weight: bold;
+    -moz-box-shadow: 2px 2px 2px #888;
+    -webkit-box-shadow: 2px 2px 2px #888;
+    box-shadow: 2px 2px 2px #888;           
+  }
 }

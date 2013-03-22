@@ -776,7 +776,6 @@
 ../templates/_profile/kug/search_radius
 ../templates/_profile/kug/std_footer_html
 ../templates/_profile/kug/std_header_html
-../templates/_profile/kug/titles_record_html_categories
 ../templates/_profile/kug/users_preferences_html
 ../templates/_profile/kug/_view/abwl/home_html_bottom_left
 ../templates/_profile/kug/_view/abwl/home_html_bottom_right
@@ -932,7 +931,6 @@
 ../templates/_profile/sammlungen/std_footer_html
 ../templates/_profile/sammlungen/std_header
 ../templates/_profile/sammlungen/std_header_mobile
-../templates/_profile/sammlungen/titles_record_html_categories
 ../templates/_profile/sammlungen/titlist_item_html_short
 ../templates/_profile/sammlungen/users_navigation
 ../templates/_profile/sammlungen/_view/alekiddr/home
@@ -1090,7 +1088,6 @@
 ../templates/_profile/usb/clouds_subject_include
 ../templates/_profile/usb/clouds_year_include
 ../templates/_profile/usb/_database/schmalenbach/titles_record_html_images
-../templates/_profile/usb/drilldown_categorized
 ../templates/_profile/usb/holding
 ../templates/_profile/usb/libraries_include
 ../templates/_profile/usb/litlists_collection_by_single_subject_recent_include
@@ -1221,6 +1218,7 @@
 ../templates/titles_recent_by_database_html
 ../templates/titles_recent_by_database_rss
 ../templates/titles_record
+../templates/titles_record_availability
 ../templates/titles_record_bibtex
 ../templates/titles_record_endnote
 ../templates/titles_record_html
@@ -1323,7 +1321,6 @@
 ../templates/_view/richter/clouds_searchterm_html
 ../templates/_view/richter/corporate_banner
 ../templates/_view/richter/corporatebodies_record_html
-../templates/_view/richter/drilldown_categorized
 ../templates/_view/richter/info_elise_richter
 ../templates/_view/richter/info_helene_richter
 ../templates/_view/richter/info_impressum_html

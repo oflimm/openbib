@@ -39,7 +39,6 @@ use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
-use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::Catalog;
 use OpenBib::Record::Title;
@@ -278,7 +277,6 @@ sub load_full_title_record {
     my $logger = get_logger();
 
     my $config        = OpenBib::Config->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
@@ -589,84 +587,8 @@ sub load_full_title_record {
             }
         }
         
-        # Ausleihinformationen der Exemplare
-        my $circulation_ref = [];
-        {
-            my $circexlist=undef;
-            
-            if (exists $circinfotable->{$self->{database}}{circ}) {
-                
-                my $circid=($title_record->has_field('T0001') && $title_record->get_field({ field => 'T0001', mult => 1}) && $title_record->get_field({ field => 'T0001', mult => 1}) > 0 && $title_record->get_field({ field => 'T0001', mult => 1}) != $id )?$title_record->get_field({ field => 'T0001', mult => 1}):$id;
-                
-                $logger->debug("Katkey: $id - Circ-ID: $circid");
-                
-                eval {
-                    my $soap = SOAP::Lite
-                        -> uri("urn:/MediaStatus")
-                            -> proxy($circinfotable->{$self->{database}}{circcheckurl});
-                    my $result = $soap->get_mediastatus(
-                        SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                            SOAP::Data->name(katkey   => $circid)->type('string'),
-                            SOAP::Data->name(database => $circinfotable->{$self->{database}}{circdb})->type('string'))));
-                    
-                    unless ($result->fault) {
-                        $circexlist=$result->result;
-                    }
-                    else {
-                        $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-                    }
-                };
-                
-                if ($@){
-                    $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-                }
-                
-            }
-            
-            # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
-            # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
-            # titelbasierten Exemplardaten
-            
-            if (defined($circexlist)) {
-                $circulation_ref = $circexlist;
-            }
-            
-            # Anreichern mit Bibliotheksinformationen
-            if (exists $circinfotable->{$self->{database}}{circ}
-                    && @{$circulation_ref}) {
-                for (my $i=0; $i < scalar(@{$circulation_ref}); $i++) {
-                    
-                    my $bibliothek="-";
-                    my $sigel=$dbinfotable->{dbases}{$self->{database}};
-                
-                    if (length($sigel)>0) {
-                        if (exists $dbinfotable->{sigel}{$sigel}) {
-                            $bibliothek=$dbinfotable->{sigel}{$sigel};
-                        } else {
-                            $bibliothek="($sigel)";
-                        }
-                    } else {
-                        if (exists $dbinfotable->{sigel}{$dbinfotable->{dbases}{$self->{database}}}) {
-                            $bibliothek=$dbinfotable->{sigel}{
-                                $dbinfotable->{dbases}{$self->{database}}};
-                        }
-                    }
-                
-                    my $bibinfourl=$dbinfotable->{bibinfo}{
-                        $dbinfotable->{dbases}{$self->{database}}};
-                
-                    $circulation_ref->[$i]{'Bibliothek'} = $bibliothek;
-                    $circulation_ref->[$i]{'Bibinfourl'} = $bibinfourl;
-                    $circulation_ref->[$i]{'Ausleihurl'} = $circinfotable->{$self->{database}}{circurl};
-                }
-            } else {
-                $circulation_ref=[];
-            }
-        }
-
         $logger->debug(YAML::Dump($title_record->get_fields));
         $title_record->set_holding($holding_ref);
-        $title_record->set_circulation($circulation_ref);
     };
 
     if ($@){

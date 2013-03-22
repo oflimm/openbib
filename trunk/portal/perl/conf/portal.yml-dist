@@ -300,7 +300,12 @@ dispatch_rules:
        - html
      args:
         users_loc: 'databases'
-
+  - # users_loc/titles_loc: Record show
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/availability[get]'
+     runmode: 'show_availability'
+     args:
+        disable_content_negotiation: 1
   - # users_loc/titles_loc: Record redirect to bibsonomy
      module: 'OpenBib::Handler::Apache::Titles'
      rule: '/portal/:view/databases/id/:database/titles/id/:titleid/to_bibsonomy[get]'
@@ -2757,6 +2762,7 @@ tt_titles_recent_by_database_tname: titles_recent_by_database
 tt_titles_record_form_tname: titles_record_form
 tt_users_titles_record_searchindex_tname: users_titles_record_searchindex
 tt_titles_record_tname: titles_record
+tt_titles_record_availability_tname: titles_record_availability
 
 tt_topics_record_mapping_tname: topics_record_mapping
 tt_topics_record_tname: topics_record

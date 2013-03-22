@@ -209,6 +209,15 @@
     titleinfo = titleinfos.join(" | ");
 -%]
     <div class="ob-item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+<script>
+$(document).ready(function(){
+   $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/availability?l=[% lang %]",
+     function (txt){
+        $("#availability_[% record.database %]_[% uri_escape(record.id) %]").html(txt);
+   });
+});
+</script>
+
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
@@ -226,9 +235,9 @@
 [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
 [% ELSE %]
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
-[% END %]
+[% END %]      
       </div>
-      <div class="ob-titlemark">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]</div>
+      <div class="ob-titlemark">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]&nbsp;<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span></div>
       <div class="ob-titleactions">
 [% IF tagname %]
       <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>

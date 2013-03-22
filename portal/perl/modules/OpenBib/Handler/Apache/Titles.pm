@@ -63,6 +63,7 @@ sub setup {
         'show_record'             => 'show_record',
         'show_popular'            => 'show_popular',
         'show_recent'             => 'show_recent',
+        'show_availability'       => 'show_availability',
         'redirect_to_bibsonomy'   => 'redirect_to_bibsonomy',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -414,6 +415,46 @@ sub redirect_to_bibsonomy {
         $self->query->content_type('text/html; charset=UTF-8');
         $self->query->headers_out->add(Location => $bibsonomy_url);
         $self->query->status(Apache2::Const::REDIRECT);
+    }
+
+    return;
+}
+
+sub show_availability {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $titleid        = $self->param('titleid');
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');
+    my $dbinfotable    = $self->param('dbinfo');
+
+    my $availability_status = 0;
+    
+    if ($titleid && $database){
+        # Wenn Datenbank an Ausleihsystem gekoppelt, dann Medienstatus hollen und auswerten
+        if ($config->get_databaseinfo->single({ dbname => $database })->get_column('circ')){
+            my $record = OpenBib::Record::Title->new({id =>$titleid, database => $database})->load_circulation;
+            # TT-Data erzeugen
+            my $ttdata={
+                database    => $database, # Zwingend wegen common/subtemplate
+                record      => $record,
+                titleid     => $titleid,
+            };
+
+            $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
+            return;
+        }
     }
 
     return;

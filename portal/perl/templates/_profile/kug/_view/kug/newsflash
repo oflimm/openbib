@@ -14,10 +14,6 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
-<li><b>22.3.2013</b>: Ausleihstatus in den Trefferlisten. Bei
-Katalogen mit integriertem Ausleihsystem wird jetzt der Ausleihstatus
-- ausleihbar, einsehbar und entliehen - dynamisch in die Trefferlisten eingebunden.
-</li>
 <li><b>20.2.2013</b>: Neue Zugriffsfacette im KUG. Recherchen können
 nun nach der Zugriffsmöglichkeit auf die Medien eingegrenzt werden. Weitergehende Informationen in diesem
 <a

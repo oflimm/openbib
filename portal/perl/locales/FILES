@@ -500,8 +500,11 @@
 ../templates/_database/dbis/search_title_item_rdf
 ../templates/_database/dbis/titles_record_html_categories
 ../templates/_database/dbis/titlist_item_html_short
+../templates/_database/einbaende/titles_record_html_categories
+../templates/_database/einbaende/titles_record_html
+../templates/_database/einbaende/visible_categories_cover
+../templates/_database/einbaende/visible_categories_tool
 ../templates/_database/einbaende/visible_categories_title
-../templates/_database/einbaende/visible_categories_toolset
 ../templates/_database/ezb/classifications_html
 ../templates/_database/ezb/search_title_item_html
 ../templates/_database/ezb/search_title_item_rdf

@@ -756,6 +756,53 @@ sub load_circulation {
     return $self;
 }
 
+sub load_olwsviewer {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config        = OpenBib::Config->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+
+    # Anreicherung mit OLWS-Daten
+    if (exists $circinfotable->{$self->{database}} && exists $circinfotable->{$self->{database}}{circcheckurl}){
+        $logger->debug("Endpoint: ".$circinfotable->{$self->{database}}{circcheckurl});
+        my $soapresult;
+        eval {
+            my $soap = SOAP::Lite
+                -> uri("urn:/Viewer")
+                    -> proxy($circinfotable->{$self->{database}}{circcheckurl});
+            
+            my $result = $soap->get_item_info(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(collection => $circinfotable->{$self->{database}}{circdb})->type('string'),
+                    SOAP::Data->name(item       => $self->{id})->type('string'))));
+            
+            unless ($result->fault) {
+                $soapresult=$result->result;
+            }
+            else {
+                $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+            }
+        };
+        
+        if ($@){
+            $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+        }
+        
+        $self->{olws}=$soapresult;
+    }
+    
+    return $self;
+}
+
 sub is_brief {
     my ($self)=@_;
 

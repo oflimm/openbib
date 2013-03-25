@@ -13,11 +13,6 @@
 -%]
 <div id="ob-searchform_bottom"><!-- Begin searchform_bottom -->
 
-[% IF config.get('bix') %]
-<!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
-  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
-[% END %]
-
           <div class="ym-grid ym-equalize">
             <div class="ym-g33 ym-gl">
               <div class="ym-gbox-left">

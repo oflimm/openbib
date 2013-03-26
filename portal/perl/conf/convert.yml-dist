@@ -1798,6 +1798,7 @@ convtab:
           'freesearch': 1
       '0100':
         index:
+          't0100': 1
           'personstring': 1
         facet:
           'person': 1

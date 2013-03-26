@@ -836,6 +836,7 @@ sub print_page {
 sub add_default_ttdata {
     my ($self,$ttdata) = @_; 
 
+    my $r              = $self->param('r');
     my $view           = $self->param('view');
     my $config         = $self->param('config');
     my $session        = $self->param('session');
@@ -889,7 +890,18 @@ sub add_default_ttdata {
         $ttdata->{'rss'}           = $rss;
     }
 
+    if ($self->param('representation') eq "csv"){
+        my $csv = Text::CSV_XS->new ({
+            'binary'       => 1, # potential newlines inside fields
+            'always_quote' => 1,
+            'eol'          => "\n",
+#            'sep_char'    => "\t",
+        });
+        $ttdata->{'csv'}           = $csv;
+    }
+    
     # TT-Data anreichern
+    $ttdata->{'r'}              = $r;
     $ttdata->{'query'}          = $query;
     $ttdata->{'scheme'}         = $scheme;
     $ttdata->{'view'}           = $view;

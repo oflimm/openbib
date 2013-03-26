@@ -666,6 +666,7 @@ convtab:
       '1203': 1
       '4110': 1
       '4120': 1
+      '4400': 1
 
 ##############################################################################
 # Sonderanpassungen fuer einzelne Kataloge
@@ -692,6 +693,7 @@ convtab:
       '2662': 1
       '1203': 1
       '2662': 1
+      '4400': 1
   ebooks:
     listitemcat:
       'tag': 1
@@ -713,6 +715,7 @@ convtab:
       '0662': 1
       '2662': 1
       '1203': 1
+      '4400': 1
   inst001:
     blacklist_title:
      #'0002': 1        # Aufnahmedatum
@@ -2020,6 +2023,7 @@ convtab:
       '0710': 1
       '0800': 1
       '1203': 1
+      '4400': 1
   lesesaal:
     listitemcat:
       'tag': 1
@@ -2042,6 +2046,7 @@ convtab:
       '0662': 1
       '2662': 1
       '1203': 1
+      '4400': 1
   umschlaege:
     inverted_title:
       'tag':
@@ -2742,6 +2747,7 @@ convtab:
       '0425': 1
       '0595': 1
       '2662': 1
+      '4400': 1
   muenzen:
     inverted_title:
       'tag':

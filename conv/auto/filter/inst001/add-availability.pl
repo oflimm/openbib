@@ -38,6 +38,14 @@ while (<>){
                 content  => "online",
             },
         ];
+        
+        $title_ref->{'4410'} = [
+            {
+                mult     => 1,
+                subfield => '',
+                content  => "Digital",
+            },
+        ];
     }
    
     print encode_json $title_ref, "\n";

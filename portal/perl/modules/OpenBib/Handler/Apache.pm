@@ -52,6 +52,7 @@ use JSON::XS;
 use Template;
 use URI::Escape;
 use XML::RSS;
+use Text::CSV_XS;
 use YAML ();
 
 use APR::Brigade ();

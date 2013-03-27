@@ -163,6 +163,8 @@
      # Ejahr konstruieren
      yearofpub = item.${'T0425'}.first.content;
 
+     availability = item.${'T4400'}.first.content;
+
      # Signaturen konstruieren
      signaturen = [];
      FOREACH part IN item.${'X0014'};
@@ -237,7 +239,7 @@ $(document).ready(function(){
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]      
       </div>
-      <div class="ob-titlemark">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]&nbsp;<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span></div>
+      <div class="ob-titlemark">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]&nbsp;[% IF availability == "online" %]<span class="ob-availability_online">online</span>[% ELSE %]<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span>[% END %]</div>
       <div class="ob-titleactions">
 [% IF tagname %]
       <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>

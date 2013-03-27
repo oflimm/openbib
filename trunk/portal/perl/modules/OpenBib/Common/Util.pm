@@ -388,7 +388,7 @@ sub normalize {
             
             # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
             # * wird fuer die Recherche als Wildcard nicht angefasst
-            $content=~s/[^\p{Alphabetic}\p{Sc}0-9*]/_/g;
+            $content=~s/[^\p{Alphabetic}0-9*]/_/g;
         }
         else {
             # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
@@ -414,7 +414,7 @@ sub normalize {
             $logger->debug("Processing Type $type");
             # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
             # * wird fuer die Indexierung auf _ normiert
-            $content=~s/[^\p{Alphabetic}\p{Sc}0-9]/_/g;
+            $content=~s/[^\p{Alphabetic}0-9]/_/g;
         }
         else {
             # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)

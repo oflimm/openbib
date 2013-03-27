@@ -719,6 +719,21 @@
 
   }
 
+  .ob-availability_online {
+    margin-top: -3px;
+    float: right;
+    padding: 2px;
+    width: 5em;
+    background: #7dde7d;    
+    color: #fff;
+    border-radius: 2px;
+    font-size: 110%;
+    font-weight: bold;
+    -moz-box-shadow: 2px 2px 2px #888;
+    -webkit-box-shadow: 2px 2px 2px #888;
+    box-shadow: 2px 2px 2px #888;       
+  }
+
   .ob-availability_lendable {
     margin-top: -3px;
     float: right;

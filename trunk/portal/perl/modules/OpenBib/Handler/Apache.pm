@@ -121,8 +121,12 @@ sub cgiapp_init {
         $logger->info("Total time for stage 1 is ".timestr($timeall));
     }
 
-    $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
+    $logger->debug("This request: SessionID: $session->{ID}");
 
+    if (defined $user->{ID}){
+        $logger->debug("This request: User? $user->{ID}");
+    }
+    
     # Bestimmung diverser Parameter aus dem URI
     # Setzt: location,path,path_prefix,uri
     $self->process_uri;
@@ -186,8 +190,17 @@ sub cgiapp_init {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     $self->param('msg',$msg);
 
-    $logger->debug("This request after initialization: SessionID: $session->{ID} - User? $user->{ID}");
+    if (defined $user->{ID}){
+        $logger->debug("This request after initialization: User? $user->{ID}");
+    }
 
+    if (defined $session->{ID}){
+        $logger->debug("This request after initialization: SessionID: $session->{ID}");
+    }
+    else {
+        $logger->error("No SessionID after initialization");
+    }
+    
     $logger->debug("Main objects initialized");    
 
     if ($config->{benchmark}) {
@@ -1468,7 +1481,11 @@ sub check_http_basic_authentication {
     
     # Es interessiert nicht der per so in der Apache-Konfiguration openbib.conf definierte Authentifizierungstyp,
     # sondern der etwaig mit dem aktuellen Request gesendete Typ!
-    my ($http_authtype) = $r->headers_in->{'Authorization'} =~/^(\S+)\s+/; #  $r->ap_auth_type(); #
+    my $http_authtype = "";
+    
+    if (defined $r->headers_in->{'Authorization'}){
+        ($http_authtype) = $r->headers_in->{'Authorization'} =~/^(\S+)\s+/; #  $r->ap_auth_type(); 
+    }
     
     $logger->debug("HTTP Authtype: $http_authtype");
     

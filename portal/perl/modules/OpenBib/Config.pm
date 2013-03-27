@@ -342,7 +342,13 @@ sub get_startpage_of_view {
     
     # DBI: "select start_loc from viewinfo where viewname = ?"
     eval {
-        $start_loc = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'start_loc' })->first->start_loc;
+        my $rs = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'start_loc' })->first;
+        if ($rs){
+            $start_loc = $rs->start_loc;
+        }
+        else {
+            $logger->error("No start_loc for view $viewname");
+        }
     };
 
     if ($@){

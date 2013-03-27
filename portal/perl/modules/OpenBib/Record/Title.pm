@@ -125,8 +125,10 @@ sub new {
         $self->{generic_attributes}   = $generic_attributes;
     }
 
-    $logger->debug("Title-Record-Object created with id $id in database $database");
-
+    if (defined $id && defined $database){
+        $logger->debug("Title-Record-Object created with id $id in database $database");
+    }
+    
     return $self;
 }
 

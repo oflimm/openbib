@@ -5,6 +5,14 @@ use JSON::XS;
 while (<>){
     my $title_ref = decode_json $_;
 
+    $title_ref->{'4400'} = [
+        {
+            mult     => 1,
+            subfield => '',
+            content  => "online",
+        },
+    ];
+
     $title_ref->{'4410'} = [
         {
             mult     => 1,

@@ -44,6 +44,7 @@
      records = records
 
      facets = {
+         availability   = category_map.12
          databases      = category_map.8
          persons        = category_map.3
          corporatebody  = category_map.7

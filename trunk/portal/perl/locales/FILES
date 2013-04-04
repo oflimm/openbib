@@ -1389,3 +1389,6 @@
 ../templates/_profile/sammlungen/_view/umschlaege/search_facet
 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html
 ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title
+../templates/_profile/sammlungen/_view/umschlaege/search_title_field
+../templates/search_title_field
+../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories

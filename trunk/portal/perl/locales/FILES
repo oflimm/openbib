@@ -1373,3 +1373,16 @@
 ../templates/visible_categories_title
 ../templates/zsstlist_pdf
 ../templates/zsstlist_tex
+../templates/_profile/sammlungen/_view/umschlaege/subnavigation
+../templates/_profile/sammlungen/_view/umschlaege/info_sammlung
+../templates/_profile/sammlungen/_view/umschlaege/titles_fields_record_html
+../templates/_profile/sammlungen/_view/umschlaege/home_html
+../templates/_profile/sammlungen/_view/umschlaege/info_bibliographie
+../templates/_profile/sammlungen/_view/umschlaege/info_dokumentation
+../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html
+../templates/_profile/sammlungen/_view/umschlaege/clouds_databases_record_html
+../templates/_profile/sammlungen/_view/umschlaege/clouds_navigation
+../templates/_profile/sammlungen/_view/umschlaege/info_redaktion
+../templates/_profile/sammlungen/_view/umschlaege/subnavigation_project
+../templates/_profile/sammlungen/_view/umschlaege/std_header_html
+../templates/_profile/sammlungen/_view/umschlaege/clouds_html

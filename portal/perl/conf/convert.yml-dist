@@ -2085,6 +2085,7 @@ convtab:
       '0100':
         index:
           'personstring': 1
+          't0100': 1
         facet:
           'person': 1
       '0101':
@@ -2103,6 +2104,8 @@ convtab:
         facet:
           'person': 1
       '0200':
+        index:
+          't0200': 1
         facet:
           'corporatebody': 1
       '0201':
@@ -2149,6 +2152,7 @@ convtab:
       '0412':         # Hier: Verlag recherchierbar via source
         string: 1
         index:
+          't0412': 1
           'source': 1
       '0413':         # Drucker
         string: 1
@@ -2161,6 +2165,7 @@ convtab:
           'freesearch': 1
       '0425':
         index:
+          't0425': 1
           'year': 1
           'yearstring': 1
           'freesearch': 1
@@ -2195,6 +2200,8 @@ convtab:
         facet:
           'classification': 1
       '0710':
+        index:
+          't0710': 1
         facet:
           'subject': 1
       '0750':         # Abstract

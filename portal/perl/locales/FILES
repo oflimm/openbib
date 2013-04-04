@@ -1386,3 +1386,6 @@
 ../templates/_profile/sammlungen/_view/umschlaege/subnavigation_project
 ../templates/_profile/sammlungen/_view/umschlaege/std_header_html
 ../templates/_profile/sammlungen/_view/umschlaege/clouds_html
+../templates/_profile/sammlungen/_view/umschlaege/search_facet
+../templates/_profile/sammlungen/_database/umschlaege/titles_record_html
+../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title

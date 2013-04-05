@@ -459,7 +459,7 @@ $(document).ready(function(){
 
 <div class="ob-discover_sources"><!-- Begin Discover-Sources -->
 <div class="ob-category_header">Titel bestellen:</div><p/>
-<p>in den Lesesaal Historische Sammlungen</p>
+<p>in den Lesesaal Historische Sammlungen der USB K&ouml;ln</p>
 
 [% signaturen = [] ;
    FOREACH mex IN record.get_holding ;

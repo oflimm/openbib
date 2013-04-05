@@ -286,7 +286,7 @@ CREATE TABLE userinfo (
  vorname    TEXT,
  strasse    TEXT,
  ort        TEXT,
- plz        INT,
+ plz        TEXT,
  soll       TEXT,
  gut        TEXT,
  avanz      TEXT,

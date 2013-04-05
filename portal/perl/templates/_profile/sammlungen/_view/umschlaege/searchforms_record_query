@@ -106,7 +106,7 @@ $(document).ready(function(){
  -%]
 <div class="ym-fbox-text">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Am Umschlag Beteiligte") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0710.html?l=[% lang %];page=1">[% msg.maketext("Register") %]</a>
 </div>
 
 [%- cgiparam = searchfield.publisher.prefix;

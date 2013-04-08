@@ -1390,6 +1390,9 @@ sub parse_valid_input {
                 }
             }
             # sonst array
+            elsif ($type eq "bool"){
+                $input_params_ref->{$param} = $query->param($param)  || $default;
+            }
             elsif ($type eq "array") {
                 if ($query->param($param)){
                     @{$input_params_ref->{$param}} = $query->param($param);

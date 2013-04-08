@@ -19,8 +19,8 @@
 [% FOREACH thisholding IN holding %]
 <tr align="center">
 <td>[% thisholding.${"X0014"}.content %]</td>
-<td>[% thisholding.${"X0016"}.content %]</td>
 <td>[% thisholding.${"X0005"}.content %]</td>
+<td>[% thisholding.${"X0016"}.content %]</td>
 </tr>
 [% END %]
 </tbody>

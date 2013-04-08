@@ -16,8 +16,8 @@
           "litlist" = msg.maketext("Literaturliste")
           "dbstring" = msg.maketext("Katalog")
           "personstring" = msg.maketext("Autor")
-          "corporatebodystring" = msg.maketext("Zusammenarbeit")
-          "subjectstring" = msg.maketext("Am Umschlag Beteiligte")
+          "corporatebodystring" = 'Ort der Inschrift'
+          "subjectstring" = 'Kategorie'
           "classificationstring" = msg.maketext("Systematik")
           "mediatypestring" = msg.maketext("Medientyp")
           "markstring" = 'Inventarnummer'

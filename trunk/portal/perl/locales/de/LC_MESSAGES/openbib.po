@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-04-05 15:58+0200\n"
+"PO-Revision-Date: 2013-04-08 13:39+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -275,8 +275,9 @@ msgstr "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:108
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:41
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:43
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:21
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:46
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:71
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:33
@@ -2365,6 +2366,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/alekiddr/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
@@ -3030,6 +3032,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/alekiddr/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
@@ -3181,6 +3184,7 @@ msgstr "E-Mail-Adresse"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:112
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:104
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:112
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:102
 #: ../templates/_profile/usb/visible_categories_title:105
@@ -3198,6 +3202,7 @@ msgstr "Basis-Klassifikation"
 #: ../templates/_profile/kug/_database/inst423/visible_categories_title:110
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:115
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:112
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:112
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:110
@@ -3215,6 +3220,7 @@ msgstr "Inhaltsverzeichnis"
 #: ../templates/_profile/kug/_database/inst423/visible_categories_title:111
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:116
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:113
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:37
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:111
@@ -3237,6 +3243,7 @@ msgstr "Volltext-URL"
 #: ../templates/_profile/kug/_database/usbhwa/visible_categories_title:103
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:103
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:103
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:104
 #: ../templates/_profile/usb/visible_categories_title:103
 #: ../templates/visible_categories_title:105
@@ -3246,6 +3253,10 @@ msgstr "Schlagwort (ext.)"
 #: ../templates/topics_record_html:104
 msgid "EZB"
 msgstr "EZB"
+
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:138
+msgid "Edition / SEG-Eintrag"
+msgstr "Edition / SEG-Eintrag"
 
 #: ../templates/_profile/sammlungen/_database/totenzettel/holding:16
 msgid "Ehepartner"
@@ -3821,7 +3832,9 @@ msgstr "Erweitere Recherchemaske"
 #: ../templates/_profile/sammlungen/_view/artmann/searchforms_record_advanced:38
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:131
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_advanced:38
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:126
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:131
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_advanced:38
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:116
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:131
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_advanced:38
@@ -4331,6 +4344,7 @@ msgstr "Französisch"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:88
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:76
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:76
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:72
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query:76
@@ -4660,7 +4674,7 @@ msgstr ""
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:421
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:124
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:129
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:124
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/pruessen/mainnavigation_html:124
@@ -4686,6 +4700,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:132
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:134
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:146
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:137
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:143
 #: ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query:132
@@ -5031,6 +5046,7 @@ msgstr "Import-Einstellungen"
 #: ../templates/_profile/sammlungen/_view/alekiddr/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
@@ -5519,6 +5535,8 @@ msgid "Interne/Externe Aufrufe"
 msgstr "Interne/Externe Aufrufe"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/holding:17
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/holding:2
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:118
 #: ../templates/_profile/usb/holding:19
 msgid "Inventarnummer"
 msgstr "Inventarnummer"
@@ -5991,6 +6009,7 @@ msgstr "Katalogtitel nach Bibliothekssystematik"
 #: ../templates/_database/wikisource_de/persons_record_html:69
 #: ../templates/_profile/kug/_database/openlibrary/persons_record_html:69
 #: ../templates/_profile/kug/_database/wikisource_de/persons_record_html:69
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:107
 #: ../templates/_view/richter/cartitems_html_simple:42
 #: ../templates/_view/richter/classifications_record_html:67
 #: ../templates/_view/richter/corporatebodies_record_html:66
@@ -6092,6 +6111,7 @@ msgstr "Kompletter Name"
 #: ../templates/_profile/kug/searchforms_record_query:165
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query:114
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:114
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:128
 #: ../templates/_profile/sammlungen/searchforms_record_query:167
 #: ../templates/_profile/usb/searchforms_record_query:114
 #: ../templates/_view/richter/searchforms_record_query:115
@@ -6127,6 +6147,7 @@ msgstr "Konnektoren"
 #: ../templates/_profile/sammlungen/_view/alekiddr/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
@@ -6146,6 +6167,7 @@ msgstr "Kontextsensitive Hilfe"
 msgid "Kurzbeschreibung"
 msgstr "Kurzbeschreibung"
 
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:87
 #: ../templates/_view/richter/cartitems_html_actions:14
 #: ../templates/_view/richter/users_litlists_record_edit:58
 #: ../templates/cartitems_html_actions:15
@@ -6470,6 +6492,9 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_person_html:103
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_subject_html:103
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_year_html:103
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html:103
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_subject_html:103
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_year_html:103
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_corporatebody_html:103
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_subject_html:103
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html:103
@@ -6587,6 +6612,8 @@ msgstr "Literaturliste"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:321
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:76
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:78
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:62
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:64
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:76
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_navigation:55
@@ -6959,8 +6986,8 @@ msgstr "Merken"
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:53
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:56
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:58
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:51
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:53
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:56
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:58
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:56
@@ -7469,6 +7496,8 @@ msgstr "Nutzer suchen"
 #: ../templates/_profile/rheinlandbib/clouds_navigation:66
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:64
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:66
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:50
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:52
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:64
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:66
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_navigation:43
@@ -7624,6 +7653,10 @@ msgstr "Organisationseinheiten dieses Profils"
 #: ../templates/users_preferences_html:86 ../templates/users_roles_edit:76
 msgid "Ort"
 msgstr "Ort"
+
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:97
+msgid "Ort der Inschrift"
+msgstr "Ort der Inschrift"
 
 #: ../templates/visible_categories_person:20
 msgid "P0200"
@@ -8309,10 +8342,15 @@ msgstr "Region/Werkzeug"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:61
 #: ../templates/_profile/sammlungen/_view/einbaende/titles_fields_record_html:64
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/browse_title_html:38
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:36
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:38
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:119
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:132
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:74
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:82
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:93
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:41
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:39
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/titles_fields_record_html:55
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:61
@@ -9070,7 +9108,7 @@ msgstr "Sie sind erfolgreich registriert"
 msgid "Sie sind nicht authentifiziert."
 msgstr "Sie sind nicht authentifiziert."
 
-#: ../modules/OpenBib/Handler/Apache.pm:1455
+#: ../modules/OpenBib/Handler/Apache.pm:1458
 msgid "Sie sind nicht authorisiert"
 msgstr "Sie sind nicht authorisiert"
 
@@ -9446,9 +9484,15 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_profile/sammlungen/_view/einbaende/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_advanced:37
 #: ../templates/_profile/sammlungen/_view/einbaende/titles_fields_record_html:63
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/browse_title_html:37
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html:48
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_databases_record_html:37
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:37
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_subject_html:48
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_abklatsch:36
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_ansprechpartner:36
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:36
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_advanced:37
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/titles_fields_record_html:54
 #: ../templates/_profile/sammlungen/_view/kempis/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/lefort/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_corporatebody_html:48
@@ -9642,6 +9686,9 @@ msgstr "Suchanfrage"
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:83
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:85
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:58
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:69
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:71
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:83
@@ -9715,8 +9762,9 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:132
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:134
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:123
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:124
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:128
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:129
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:146
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:113
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:128
@@ -9779,8 +9827,8 @@ msgstr "Suchhilfe"
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:51
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:53
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:46
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:48
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:51
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:53
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:51
@@ -9969,6 +10017,7 @@ msgstr "Katalognummer"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:85
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:86
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:85
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:85
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:85
@@ -9998,6 +10047,7 @@ msgstr "Sprache"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:89
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:90
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:89
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:89
@@ -10027,6 +10077,7 @@ msgstr "Nebeneintr."
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:47
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:47
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:47
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:46
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:46
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:47
@@ -10057,6 +10108,7 @@ msgstr "Ersch.Land"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:21
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:21
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:21
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:22
@@ -10086,6 +10138,7 @@ msgstr "Bandangabe"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:16
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:16
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:16
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:16
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:16
 #: ../templates/_profile/usb/visible_categories_title:16
 #: ../templates/visible_categories_title:16
@@ -10135,6 +10188,7 @@ msgstr "Autor"
 #: ../templates/_profile/kug/_database/usbhwa/visible_categories_title:17
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:17
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:17
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:17
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:17
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:17
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:19
@@ -10198,6 +10252,7 @@ msgstr "Mutter"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:18
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:18
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:18
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:20
@@ -10247,6 +10302,7 @@ msgid "T0200-einbaende"
 msgstr "Region"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:19
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:19
 msgid "T0200-inst404abklatsch"
 msgstr "Ort der Inschrift"
 
@@ -10287,6 +10343,7 @@ msgstr "Zusammenarbeit"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:20
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:20
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:20
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:21
@@ -10328,6 +10385,7 @@ msgstr "Körperschaft"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:25
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:25
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:25
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:26
@@ -10357,6 +10415,7 @@ msgstr "SammelVermerk"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:23
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:23
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:23
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:24
@@ -10390,6 +10449,7 @@ msgstr "Motiv"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:22
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:22
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:22
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:23
@@ -10444,6 +10504,7 @@ msgid "T0331-einbaende"
 msgstr "Titel"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:24
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:24
 msgid "T0331-inst404abklatsch"
 msgstr "Kurztitel"
 
@@ -10480,6 +10541,7 @@ msgstr "Name"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:29
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:29
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:29
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:29
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:29
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:29
@@ -10509,6 +10571,7 @@ msgstr "Zu ergänzender Urheber"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:51
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:51
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:51
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:51
 #: ../templates/_profile/usb/visible_categories_title:51
@@ -10559,6 +10622,7 @@ msgid "T0335-einbaende"
 msgstr "Untertitel"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:30
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:30
 msgid "T0335-inst404abklatsch"
 msgstr "Edition"
 
@@ -10591,6 +10655,7 @@ msgstr "Titel"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:27
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:28
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:27
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:28
@@ -10644,6 +10709,7 @@ msgstr "Rückseite Beschreibung"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:33
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:33
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:33
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:33
@@ -10681,6 +10747,7 @@ msgstr "Vorlageform"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:34
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:34
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:34
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:34
@@ -10721,6 +10788,7 @@ msgstr "Vorlage Unterreihe"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:31
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:28
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:31
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:31
 #: ../templates/_profile/usb/visible_categories_title:31
@@ -10757,6 +10825,7 @@ msgstr "Einzelbild"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:32
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:32
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:32
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:32
@@ -10793,6 +10862,7 @@ msgstr "Gemeins. Angaben Verfasser"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:26
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:26
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:26
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:26
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:26
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:26
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:27
@@ -10859,6 +10929,7 @@ msgstr "Ausgabe"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:40
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:40
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:40
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:40
@@ -10888,6 +10959,7 @@ msgstr "Erscheinungsverlauf"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:57
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:57
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:57
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:57
@@ -10935,6 +11007,7 @@ msgid "T0410-einbaende"
 msgstr "Erscheinungsort"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:35
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:35
 msgid "T0410-inst404abklatsch"
 msgstr "Aufbewahrungsort"
 
@@ -10973,6 +11046,7 @@ msgstr "Geburtsort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:37
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:37
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:37
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:36
@@ -11005,6 +11079,7 @@ msgstr "Verlag"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:46
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:46
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:46
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:46
@@ -11038,6 +11113,7 @@ msgstr "Drucker"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:39
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:39
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:39
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:39
@@ -11095,6 +11171,7 @@ msgid "T0425-einbaende"
 msgstr "Fertigungsjahr"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:37
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:37
 msgid "T0425-inst404abklatsch"
 msgstr "Datierung"
 
@@ -11144,6 +11221,7 @@ msgid "T0433"
 msgstr "Umfang"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:49
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:49
 msgid "T0433-inst404abklatsch"
 msgstr "Buchstabengröße"
 
@@ -11201,6 +11279,8 @@ msgstr "Beruf"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:58
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:45
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:58
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:44
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:57
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:46
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:59
@@ -11236,6 +11316,7 @@ msgstr "Sonst.Angaben"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:48
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:48
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:48
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:48
@@ -11274,6 +11355,7 @@ msgstr "Durchmesser"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:59
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:59
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:59
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:59
@@ -11304,6 +11386,7 @@ msgstr "Begleitmaterial"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:54
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:54
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:54
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:55
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:54
@@ -11351,6 +11434,7 @@ msgid "T0501-einbaende"
 msgstr "Quellen"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:59
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:59
 msgid "T0501-inst404abklatsch"
 msgstr "Abklatschvermerke"
 
@@ -11396,6 +11480,7 @@ msgstr "EST beig. Werk"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:88
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:89
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:88
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:88
@@ -11425,6 +11510,7 @@ msgstr "Übersetzter Titel"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:61
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:61
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:61
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:62
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:60
@@ -11455,6 +11541,7 @@ msgstr "Paralleltitel/Fußnote"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:62
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:62
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:62
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:61
@@ -11485,6 +11572,7 @@ msgstr "Weiterer Titel/Fußnote"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:63
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:63
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:63
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:62
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:85
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:62
@@ -11515,6 +11603,7 @@ msgstr "Titelangaben"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:49
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:49
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:49
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:49
@@ -11557,6 +11646,7 @@ msgstr "Bibl. Nachweis"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:64
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:64
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:64
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:64
@@ -11594,6 +11684,7 @@ msgstr "Vermerke zur Personenangabe"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:65
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:65
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:65
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:64
@@ -11624,6 +11715,7 @@ msgstr "Ausgabe Fußnote"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:66
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:66
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:66
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:65
@@ -11654,6 +11746,7 @@ msgstr "Erschverm. Fußnote"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:67
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:67
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:67
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:66
@@ -11684,6 +11777,7 @@ msgstr "Koll. Fußnote"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:68
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:68
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:68
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:44
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:67
@@ -11714,6 +11808,7 @@ msgstr "Impress. Änderung"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:69
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:69
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:69
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:68
@@ -11744,6 +11839,7 @@ msgstr "Ergänzt. GesamtTitel"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:86
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:87
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:86
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:85
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:86
@@ -11762,6 +11858,7 @@ msgstr "Sprache"
 #: ../templates/_profile/kug/_database/inst423/visible_categories_title:69
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:71
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:70
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:70
@@ -11791,6 +11888,7 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:81
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:82
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:81
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:82
@@ -11824,6 +11922,7 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:70
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:71
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:70
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:70
@@ -11854,6 +11953,7 @@ msgstr "Teilungsvermerk"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:41
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:41
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:41
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:41
@@ -11883,6 +11983,7 @@ msgstr "Erscheinungsweise"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:71
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:72
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:71
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:71
@@ -11917,6 +12018,7 @@ msgstr "Ortsnamen"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:75
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:76
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:75
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:75
@@ -11947,6 +12049,7 @@ msgstr "Parallele Ausg."
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:76
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:77
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:76
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:76
@@ -11977,6 +12080,7 @@ msgstr "Titel Beilage"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:77
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:78
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:77
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:77
@@ -12007,6 +12111,7 @@ msgstr "Bezugswerk"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:78
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:79
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:78
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:78
@@ -12037,6 +12142,7 @@ msgstr "Frühere Ausg."
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:79
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:80
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:79
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:79
@@ -12067,6 +12173,7 @@ msgstr "Früherer Titel"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:80
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:81
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:80
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:80
@@ -12097,6 +12204,7 @@ msgstr "Spätere Ausg."
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:72
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:73
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:72
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:55
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:72
@@ -12127,6 +12235,7 @@ msgstr "Titelkonk."
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:73
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:74
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:73
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:73
@@ -12157,6 +12266,7 @@ msgstr "Anz. Exemplare"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:74
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:75
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:74
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:57
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:74
@@ -12195,6 +12305,7 @@ msgstr "Angabe Vervielfältigungsart"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:105
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:105
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:105
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:105
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:103
@@ -12224,6 +12335,7 @@ msgstr "ISBN"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:106
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:107
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:106
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:109
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:105
@@ -12242,6 +12354,7 @@ msgstr "ISSN"
 #: ../templates/_profile/kug/_database/inst423/visible_categories_title:104
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:108
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:106
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:104
@@ -12270,6 +12383,7 @@ msgstr "Fingerprint"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:83
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:84
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:83
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:85
 #: ../templates/_profile/usb/visible_categories_title:84
@@ -12299,6 +12413,7 @@ msgstr "Nachweise / Sonstige Nummern"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:55
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:55
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:55
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:62
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:55
@@ -12332,6 +12447,7 @@ msgstr "Veröffentlicht"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:42
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:42
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:42
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:41
@@ -12370,6 +12486,7 @@ msgstr "Ausgabebez. der Quelle"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:43
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:43
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:43
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:44
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:42
@@ -12400,6 +12517,7 @@ msgstr "Ersch.Ort Quelle"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:44
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:44
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:44
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:43
@@ -12458,6 +12576,7 @@ msgid "T0600"
 msgstr "Bemerkung"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:55
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:55
 msgid "T0600-inst404abklatsch"
 msgstr "Schublade"
 
@@ -12482,6 +12601,7 @@ msgstr "Schublade"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:82
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:83
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:82
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:82
@@ -12516,6 +12636,7 @@ msgstr "Links"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:84
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:85
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:84
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:83
@@ -12546,6 +12667,7 @@ msgstr "Filmbesitz"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:52
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:52
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:52
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:52
@@ -12575,6 +12697,7 @@ msgstr "EDV Material"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:53
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:53
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:53
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:52
@@ -12604,6 +12727,7 @@ msgstr "EDV Adress"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:107
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:108
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:107
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:110
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:105
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:32
@@ -12630,6 +12754,7 @@ msgstr "Volltext-Hinweis"
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:27
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:26
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:27
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:27
 #: ../templates/_profile/usb/visible_categories_title:27
@@ -12674,6 +12799,7 @@ msgstr "Abweichende Orthographie"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:104
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:103
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:104
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:105
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:101
@@ -12731,6 +12857,7 @@ msgid "T0710-einbaende"
 msgstr "Jahrhundert"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:91
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:91
 msgid "T0710-inst404abklatsch"
 msgstr "Kategorie"
 
@@ -12767,6 +12894,7 @@ msgstr "Am Umschlag Beteiligte"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:87
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:88
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:87
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:87
@@ -12802,6 +12930,7 @@ msgstr "Beschreibung"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:91
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:91
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:91
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:90
@@ -12847,6 +12976,7 @@ msgstr "Konkordanz"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:93
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:93
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:93
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:94
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:91
@@ -12876,6 +13006,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:94
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:94
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:94
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:92
@@ -12905,6 +13036,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:95
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:95
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:95
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:94
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:93
@@ -12934,6 +13066,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:96
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:96
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:96
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:94
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:94
@@ -12963,6 +13096,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:97
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:97
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:97
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:95
@@ -12992,6 +13126,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:98
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:98
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:98
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:96
@@ -13021,6 +13156,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:99
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:99
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:99
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:97
@@ -13050,6 +13186,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:100
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:100
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:100
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:98
@@ -13079,6 +13216,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:101
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:101
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:101
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:99
@@ -13108,6 +13246,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:102
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:102
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:102
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:100
@@ -13164,6 +13303,7 @@ msgid "T1664"
 msgstr "Provenienz"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:109
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:109
 msgid "T1664-inst404abklatsch"
 msgstr "Ort der Inschrift"
 
@@ -13188,6 +13328,7 @@ msgstr "Ort der Inschrift"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:109
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:110
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:109
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:110
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:112
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:34
@@ -13218,6 +13359,7 @@ msgstr "USB URL"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:110
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:111
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:110
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:111
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:35
@@ -13294,6 +13436,7 @@ msgstr "Typ"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:113
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:114
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:113
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:112
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:38
@@ -13339,6 +13482,7 @@ msgstr "Sammlungs-Portale"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:115
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:115
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:115
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:39
@@ -13370,6 +13514,7 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:116
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:116
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:116
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:118
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:40
@@ -13408,6 +13553,7 @@ msgstr "IDs Bände/Stücke"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:117
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:117
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:117
+#: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:121
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:41
@@ -14561,7 +14707,7 @@ msgstr ""
 "Normdaten aus der Datenbank, die mit dem von Ihnen eingegebenen\n"
 "Begriff beginnen."
 
-#. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('OpenBib','jpg','Academic')
+#. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('KUG','jpg','Academic')
 #: ../templates/info_help:1022
 msgid ""
 "Wenn Sie den Internet-Browser %1 verwenden, dann k&ouml;nnen\n"
@@ -14730,6 +14876,7 @@ msgstr "Wolke"
 
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_person_html:73
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_year_html:73
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_year_html:73
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html:73
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_person_html:73
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_year_html:73
@@ -14743,6 +14890,8 @@ msgstr "Wolke der h&auml;ufigsten Erscheinungsjahre"
 
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_corporatebody_html:73
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_subject_html:73
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html:73
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_subject_html:73
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_corporatebody_html:73
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_subject_html:73
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_corporatebody_html:73
@@ -14765,6 +14914,10 @@ msgstr "Wolke der von Nutzern vergebenen Tags"
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_databases_record_html:38
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_html:38
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_subject_html:49
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html:49
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_databases_record_html:38
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:38
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_subject_html:49
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_corporatebody_html:49
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_databases_record_html:38
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:38
@@ -15663,6 +15816,7 @@ msgstr "privat"
 #: ../templates/_profile/sammlungen/_view/alekiddr/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17

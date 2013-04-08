@@ -59,8 +59,8 @@
 
    <ul>
      <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">Datierung</a></li>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]">Kategorie</a></li>
      <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]">Ort der Inschrift</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]">Kategorie</a></li>
    </ul>
 
         </div>

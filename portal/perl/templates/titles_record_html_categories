@@ -291,10 +291,10 @@ END;
     # in Config.pm fuer die entsprechende Datenbank definiert
     # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
     # kodiert.
-    thiscategory = category ;
-    IF config.get('categorymapping').$database.$category ;
-       thiscategory = "${category}-${normdata.database}" ;
-    END;
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
 
 -%]
 [% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]

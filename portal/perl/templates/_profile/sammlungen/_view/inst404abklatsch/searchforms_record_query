@@ -120,16 +120,6 @@ $(document).ready(function(){
 </div>
 [% END %]
 
-[% IF available_searchfields.titlestring.active %]
-[%- cgiparam = searchfield.titlestring.prefix;
-    this_searchfield = 'titlestring';
- -%]
-<div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Kompletter Titel") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-[% END %]
-
 [% IF available_searchfields.content.active %]
 [%- cgiparam = searchfield.content.prefix;
     this_searchfield = 'content';

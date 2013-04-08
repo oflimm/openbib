@@ -32,15 +32,20 @@
 [% ELSE %]
           <li><a  href="[% path_prefix %]/[% config.get('info_loc') %]/abklatsch.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
 [% END %]
+[% IF active_menu == "project" %]
+         <li class="active"><strong>Projekt</strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]" title="Kontakt">Projekt</a></li>
+[% END %]
 [% IF active_menu == "register" %]
          <li class="active"><strong>[% msg.maketext("Register") %]</strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/inst404abklatsch/title/200.html?page=1;l=[% lang %]" title="Register">[% msg.maketext("Register") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst404abklatsch/[% config.get('titles_loc') %]/fields/id/0200.html?l=[% lang %]" title="[% msg.maketext("Register") %]">[% msg.maketext("Register") %]</a></li>
 [% END %]
 [% IF active_menu == "cloud" %]
          <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/inst404abklatsch.html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst404abklatsch/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
 [% END %]
 [%- IF active_menu == "searchhistory" -%]
          <li class="active"><strong>[% msg.maketext("Suchhistorie") %]</strong></li>

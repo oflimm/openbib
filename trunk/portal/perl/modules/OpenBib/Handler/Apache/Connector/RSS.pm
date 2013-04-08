@@ -111,6 +111,8 @@ sub show {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
+    my $sysprofile= $config->get_profilename_of_view($view);
+
     # Check
     if (! exists $config->{rss_types}{$type} || ! exists $dbinfotable->{dbnames}{$database}{full}){
         OpenBib::Common::Util::print_warning("RSS-Feed ungueltig",$r);
@@ -252,7 +254,12 @@ sub show {
 
             $title = $ast if ($ast);
             
-            my $itemtemplatename = $config->{tt_connector_rss_item_tname};
+            my $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+                view         => $view,
+                profile      => $sysprofile,
+                templatename => $config->{tt_connector_rss_item_tname},
+            });
+
             my $itemtemplate = Template->new({
                 LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                     INCLUDE_PATH   => $config->{tt_include_path},

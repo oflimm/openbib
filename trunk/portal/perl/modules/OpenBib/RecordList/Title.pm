@@ -44,6 +44,7 @@ use Storable;
 use XML::RSS;
 use YAML ();
 
+use OpenBib::Common::Util;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::QueryOptions;
@@ -244,6 +245,7 @@ sub to_rss {
         description   => $channel_description,
     );
 
+    my $sysprofile= $config->get_profilename_of_view($view);
 
     foreach my $record ($self->get_records){
         my $desc  = "";
@@ -261,8 +263,13 @@ sub to_rss {
 
         $title = $ast if ($ast);
 
-        my $itemtemplatename = $config->{tt_connector_rss_item_tname};
-            my $itemtemplate = Template->new({
+        my $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+            view         => $view,
+            profile      => $sysprofile,
+            templatename => $config->{tt_connector_rss_item_tname},
+        });
+
+        my $itemtemplate = Template->new({
                 LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                     INCLUDE_PATH   => $config->{tt_include_path},
                     ABSOLUTE       => 1,

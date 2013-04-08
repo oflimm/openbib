@@ -38,30 +38,30 @@
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("Register") %]</h6>
  <ul>
-[% IF active_submenu == "register_T0200" %]
+[% IF active_submenu == "register_0200" %]
   <li class="active"><strong>Ort der Inschrift</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/inst404abklatsch/title/0200.html?l=[% lang %];page=1">Ort der Inschrift</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst404abklatsch/[% config.get('titles_loc') %]/fields/id/0200.html?l=[% lang %]">Ort der Inschrift</a></li>
 [% END %]
-[% IF active_submenu == "register_T0425" %]
+[% IF active_submenu == "register_0425" %]
   <li class="active"><strong>Datierung der Inschrift</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/inst404abklatsch/title/0425.html?l=[% lang %];page=1">Datierung der Inschrift</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst404abklatsch/[% config.get('titles_loc') %]/fields/id/0425.html?l=[% lang %]">Datierung der Inschrift</a></li>
 [% END %]
-[% IF active_submenu == "register_T0710" %]
+[% IF active_submenu == "register_0710" %]
   <li class="active"><strong>Kategorie</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/inst404abklatsch/title/0710.html?l=[% lang %];page=1">Kategorie</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst404abklatsch/[% config.get('titles_loc') %]/fields/id/0710.html?l=[% lang %]">Kategorie</a></li>
 [% END %]
-[% IF active_submenu == "register_T0410" %]
+[% IF active_submenu == "register_0410" %]
   <li class="active"><strong>Aufbewahrungsort der Inschrift</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/inst404abklatsch/title/0410.html?l=[% lang %];page=1">Aufbewahrungsort der Inschrift</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst404abklatsch/[% config.get('titles_loc') %]/fields/id/0410.html?l=[% lang %]">Aufbewahrungsort der Inschrift</a></li>
 [% END %]
-[% IF active_submenu == "register_T0335" %]
+[% IF active_submenu == "register_0335" %]
   <li class="active"><strong>Edition/SEG-Nummer</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/inst404abklatsch/title/0335.html?l=[% lang %];page=1">Edition/SEG-Nummer</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst404abklatsch/[% config.get('titles_loc') %]/fields/id/0335.html?l=[% lang %]">Edition/SEG-Nummer</a></li>
 [% END %]
  </ul>
 </nav>

@@ -13,6 +13,23 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
+[%- IF field == '0200' ;
+       field_description = 'Ort der Inschrift';
+       searchfield = 't0200' ;
+    ELSIF field == '0425' ;
+       field_description = 'Datierung der Inschrift';
+       searchfield = 't0425' ;
+    ELSIF field == '0410' ;
+       field_description = 'Aufbewahrungsort der Inschrift';
+       searchfield = 't0410' ;
+    ELSIF field == '0335' ;
+       field_description =  'Edition/SEG-Nummer';
+       searchfield = 't0335';
+    ELSIF field == '0710' ;
+       field_description = 'Kategorie';
+       searchfield = 't0710' ;
+    END ; -%]
+
 <body>
 
 <!-- skip link navigation -->
@@ -36,23 +53,7 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="#">[% msg.maketext("Register") %]</a></li>
-         <li><a href="#" class="lastitem">
-[%- IF field == '0200' -%]
-Ort der Inschrift
-[%- END -%]
-[%- IF field == '0425' -%]
-Datierung der Inschrift
-[%- END -%]
-[%- IF field == '0710' -%]
-Kategorie
-[%- END -%]
-[%- IF field == '0410' -%]
-Aufbewahrungsort der Inschrift
-[%- END -%]
-[%- IF field == '0335' -%]
-Edition/SEG-Nummber
-[%- END -%]
-</a></li>
+         <li><a href="#" class="lastitem">[% field_description %]</a></li>
       </ul>
      </div>
    </div>
@@ -60,7 +61,7 @@ Edition/SEG-Nummber
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_submenu="register_T${field}" %]
+[% PROCESS common/subtemplate name="subnavigation" active_submenu="register_${field}" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -79,39 +80,15 @@ Edition/SEG-Nummber
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
-[%- IF field == '0200';
-      searchprefix = config.get('searchfield').corporatebodystring.prefix; 
--%]
-<h2>Ort der Inschrift</h2>
-[%- END -%]
-[%- IF field == '0425' ;
-      searchprefix = config.get('searchfield').yearstring.prefix; 
--%]
-<h2>Datierung der Inschrift</h2>
-[%- END -%]
-[%- IF field == '0710' ;
-      searchprefix = config.get('searchfield').subjectstring.prefix; 
--%]
-<h2>Kategorie</h2>
-[%- END -%]
-[%- IF field == '0410' ;
-      searchprefix = 't0410';
--%]
-<h2>Aufbewahrungsort der Inschrift</h2>
-[%- END -%]
-[%- IF field == '0335' ;
-      searchprefix = 't0335';
--%]
-<h2>Edition/SEG-Nummber</h2>
-[%- END -%]
+<h2>[% field_description %]</h2>
 
-<p />
-
-<table width="100%">
+<table class="ym-full">
 [% FOREACH item IN browselist %]
-<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];page=1;db=inst404abklatsch;[% searchprefix %]=[% uri_escape(item.replace('/','').replace('\(','').replace('\)','').replace('\?','')) %]">[% item %]</a></td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></td></tr>
 [% END %]
 </table>
+
+<p/>
 
   <div class="ob-footer">
 [% PROCESS common/subtemplate name="pagination" %]

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-04-09 10:38+0200\n"
+"PO-Revision-Date: 2013-04-09 10:45+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -750,6 +750,7 @@ msgstr "All types"
 #: ../templates/_profile/kug/_view/vwl/searchforms_record_profile:26
 #: ../templates/_profile/kug/search_radius:34
 #: ../templates/_profile/kug/searchforms_record_profile:43
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:33
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:161
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:251
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:343
@@ -3368,7 +3369,7 @@ msgstr "Preferences"
 msgid "Einstellungen &auml;ndern"
 msgstr "Change"
 
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:32
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:35
 msgid "Einzelne Bibliotheken"
 msgstr "Single libraries"
 
@@ -4328,6 +4329,10 @@ msgstr "Found users"
 #: ../templates/admin_statistics_browser_html:77
 msgid "Genutzte Browser"
 msgstr "Used Browser"
+
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:32
+msgid "Gesamte Rheinlandbib"
+msgstr "Entire Rheinlandbib"
 
 #: ../templates/users_circulations_borrows_html:63
 #: ../templates/users_circulations_borrows_ics:112

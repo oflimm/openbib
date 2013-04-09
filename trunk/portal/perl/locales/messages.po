@@ -355,7 +355,7 @@ msgstr ""
 msgid "Alle Formate"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/abwl/search_radius:20 ../templates/_profile/kug/_view/abwl/searchforms_record_profile:26 ../templates/_profile/kug/_view/altmitneulat/search_radius:20 ../templates/_profile/kug/_view/altmitneulat/searchforms_record_profile:26 ../templates/_profile/kug/_view/engportrom/search_radius:20 ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:26 ../templates/_profile/kug/_view/informatik/search_radius:20 ../templates/_profile/kug/_view/informatik/searchforms_record_profile:26 ../templates/_profile/kug/_view/inst132/search_radius:20 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:26 ../templates/_profile/kug/_view/inst301/search_radius:13 ../templates/_profile/kug/_view/inst301/searchforms_record_profile:19 ../templates/_profile/kug/_view/inst414malai/search_radius:20 ../templates/_profile/kug/_view/inst414malai/searchforms_record_profile:26 ../templates/_profile/kug/_view/inst434/search_radius:20 ../templates/_profile/kug/_view/inst434/searchforms_record_profile:26 ../templates/_profile/kug/_view/marketing/search_radius:20 ../templates/_profile/kug/_view/marketing/searchforms_record_profile:26 ../templates/_profile/kug/_view/philfak_fg4/search_radius:20 ../templates/_profile/kug/_view/philfak_fg4/searchforms_record_profile:26 ../templates/_profile/kug/_view/philfak_fg8/search_radius:20 ../templates/_profile/kug/_view/philfak_fg8/searchforms_record_profile:26 ../templates/_profile/kug/_view/rechtshaus/search_radius:20 ../templates/_profile/kug/_view/rechtshaus/searchforms_record_profile:26 ../templates/_profile/kug/_view/versicherung/search_radius:20 ../templates/_profile/kug/_view/versicherung/searchforms_record_profile:26 ../templates/_profile/kug/_view/vwl/search_radius:20 ../templates/_profile/kug/_view/vwl/searchforms_record_profile:26 ../templates/_profile/kug/search_radius:34 ../templates/_profile/kug/searchforms_record_profile:43 ../templates/_profile/rheinlandbib/searchforms_record_simple:161 ../templates/_profile/rheinlandbib/searchforms_record_simple:251 ../templates/_profile/rheinlandbib/searchforms_record_simple:343 ../templates/_profile/rheinlandbib/searchforms_record_simple:436 ../templates/_profile/usb/searchforms_record_query:154 ../templates/searchforms_record_profile:20 ../templates/searchprofiles_session:77 ../templates/users_searchprofiles_record_edit:88 ../templates/users_searchprofiles_record_html:80
+#: ../templates/_profile/kug/_view/abwl/search_radius:20 ../templates/_profile/kug/_view/abwl/searchforms_record_profile:26 ../templates/_profile/kug/_view/altmitneulat/search_radius:20 ../templates/_profile/kug/_view/altmitneulat/searchforms_record_profile:26 ../templates/_profile/kug/_view/engportrom/search_radius:20 ../templates/_profile/kug/_view/engportrom/searchforms_record_profile:26 ../templates/_profile/kug/_view/informatik/search_radius:20 ../templates/_profile/kug/_view/informatik/searchforms_record_profile:26 ../templates/_profile/kug/_view/inst132/search_radius:20 ../templates/_profile/kug/_view/inst132/searchforms_record_profile:26 ../templates/_profile/kug/_view/inst301/search_radius:13 ../templates/_profile/kug/_view/inst301/searchforms_record_profile:19 ../templates/_profile/kug/_view/inst414malai/search_radius:20 ../templates/_profile/kug/_view/inst414malai/searchforms_record_profile:26 ../templates/_profile/kug/_view/inst434/search_radius:20 ../templates/_profile/kug/_view/inst434/searchforms_record_profile:26 ../templates/_profile/kug/_view/marketing/search_radius:20 ../templates/_profile/kug/_view/marketing/searchforms_record_profile:26 ../templates/_profile/kug/_view/philfak_fg4/search_radius:20 ../templates/_profile/kug/_view/philfak_fg4/searchforms_record_profile:26 ../templates/_profile/kug/_view/philfak_fg8/search_radius:20 ../templates/_profile/kug/_view/philfak_fg8/searchforms_record_profile:26 ../templates/_profile/kug/_view/rechtshaus/search_radius:20 ../templates/_profile/kug/_view/rechtshaus/searchforms_record_profile:26 ../templates/_profile/kug/_view/versicherung/search_radius:20 ../templates/_profile/kug/_view/versicherung/searchforms_record_profile:26 ../templates/_profile/kug/_view/vwl/search_radius:20 ../templates/_profile/kug/_view/vwl/searchforms_record_profile:26 ../templates/_profile/kug/search_radius:34 ../templates/_profile/kug/searchforms_record_profile:43 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:33 ../templates/_profile/rheinlandbib/searchforms_record_simple:161 ../templates/_profile/rheinlandbib/searchforms_record_simple:251 ../templates/_profile/rheinlandbib/searchforms_record_simple:343 ../templates/_profile/rheinlandbib/searchforms_record_simple:436 ../templates/_profile/usb/searchforms_record_query:154 ../templates/searchforms_record_profile:20 ../templates/searchprofiles_session:77 ../templates/users_searchprofiles_record_edit:88 ../templates/users_searchprofiles_record_html:80
 msgid "Alle Kataloge"
 msgstr ""
 
@@ -1898,7 +1898,7 @@ msgstr ""
 msgid "Einstellungen &auml;ndern"
 msgstr ""
 
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:32
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:35
 msgid "Einzelne Bibliotheken"
 msgstr ""
 
@@ -2405,6 +2405,10 @@ msgstr ""
 
 #: ../templates/admin_statistics_browser_html:77
 msgid "Genutzte Browser"
+msgstr ""
+
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:32
+msgid "Gesamte Rheinlandbib"
 msgstr ""
 
 #: ../templates/users_circulations_borrows_html:63 ../templates/users_circulations_borrows_ics:112

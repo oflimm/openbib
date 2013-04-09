@@ -29,6 +29,9 @@
 [%  END %]
 </optgroup>
 [% END %]
+<optgroup label=">[% msg.maketext("Gesamte Rheinlandbib") %]>
+<option value="[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Alle Kataloge") %]</option>
+</optgroup>
 <optgroup label="[% msg.maketext("Einzelne Bibliotheken") %]">
 [%
    dbnames_by_desc = { };

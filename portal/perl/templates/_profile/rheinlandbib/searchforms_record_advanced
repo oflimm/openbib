@@ -26,14 +26,23 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" without_navigation_search=1 %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Erweiterte Suche") %]</a></li>
+      </ul>
+     </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
+      <div class="ym-col1 ob-hidden">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_submenu='search_advanced' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -41,66 +50,11 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% IF user.is_authenticated %]
-[% autocompletion_type = user.get_autocompletion %]
-[% livesearch          = user.get_livesearch %]
-[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-})
-</script>
-[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-})
-</script>
-[%   END %]
-[% END %]
-
-<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]" class="ym-form">
 <input type="hidden" name="num"        value="20" />
 <input type="hidden" name="page"       value="1" />
 
-<input type="hidden" name="srt"        value="person_asc" />
+<input type="hidden" name="srt"        value="relevance_desc" />
 <input type="hidden" name="st"         value="2" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 

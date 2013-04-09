@@ -896,9 +896,7 @@
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_wickrath
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_xanten
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/local_config
-../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_advanced
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile
-../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_query
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation
 ../templates/profiles
 ../templates/_profile/sammlungen/clouds_databases_record_html
@@ -915,6 +913,7 @@
 ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short
 ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/inst404abklatsch/holding
+../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title
 ../templates/_profile/sammlungen/_database/kempis/circulation
 ../templates/_profile/sammlungen/_database/lefort/circulation
@@ -952,6 +951,7 @@
 ../templates/_profile/sammlungen/std_footer_html
 ../templates/_profile/sammlungen/std_header
 ../templates/_profile/sammlungen/std_header_mobile
+../templates/_profile/sammlungen/titles_record_html_categories
 ../templates/_profile/sammlungen/titlist_item_html_short
 ../templates/_profile/sammlungen/users_navigation
 ../templates/_profile/sammlungen/_view/alekiddr/home
@@ -1006,14 +1006,17 @@
 ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation
 ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_subject_html
 ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_year_html
+../templates/_profile/sammlungen/_view/inst404abklatsch/connector_rss_item
 ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner
 ../templates/_profile/sammlungen/_view/inst404abklatsch/home
 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_abklatsch
 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_ansprechpartner
 ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung
 ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation
+../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet
 ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_advanced
 ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query
+../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field
 ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html
 ../templates/_profile/sammlungen/_view/inst404abklatsch/std_header_html
 ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation

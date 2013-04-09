@@ -24,7 +24,7 @@
        searchfield = 't0700' ;
     ELSIF field == '0710' ;
        field_description = msg.maketext("2. Ikonogr. Schlagwort");
-       searchfield = 't0700' ;
+       searchfield = 't0710' ;
      END ; -%]
 
 <body>

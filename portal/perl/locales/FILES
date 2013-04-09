@@ -525,6 +525,8 @@
 ../templates/_database/inst001/holding
 ../templates/_database/inst001/titles_record_html_categories
 ../templates/_database/inst001/visible_categories_title
+../templates/_database/landschaft/titles_record_html_images
+../templates/_database/landschaft/visible_categories_title
 ../templates/_database/openlibrary/persons_record_html
 ../templates/_database/openlibrary/persons_record_html_images
 ../templates/_database/openlibrary/titles_record_html_categories
@@ -547,6 +549,7 @@
 ../templates/databases_rss_record_html
 ../templates/databases_rss_record_json
 ../templates/_database/wikisource_de/persons_record_html
+../templates/_database/wikisource_de/titles_record_html_categories
 ../templates/_database/wikisource_de/visible_categories_title
 ../templates/error
 ../templates/error_html
@@ -877,6 +880,7 @@
 ../templates/_profile/mobile/_view/richtermobile/holding
 ../templates/_profile/mobile/_view/richtermobile/home
 ../templates/_profile/rheinlandbib/clouds_navigation
+../templates/_profile/rheinlandbib/corporate_banner
 ../templates/_profile/rheinlandbib/info_impressum
 ../templates/_profile/rheinlandbib/mainnavigation
 ../templates/_profile/rheinlandbib/searchforms_record_advanced
@@ -884,6 +888,7 @@
 ../templates/_profile/rheinlandbib/searchforms_record_simple
 ../templates/_profile/rheinlandbib/std_footer
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation
+../templates/_profile/rheinlandbib/_view/rheinlandbib/corporate_banner
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/home
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gaesdonck
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gleuel
@@ -916,6 +921,7 @@
 ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title
 ../templates/_profile/sammlungen/_database/kempis/circulation
+../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/lefort/circulation
 ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_images
 ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title
@@ -939,6 +945,7 @@
 ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title
 ../templates/_profile/sammlungen/_database/wallraf/circulation
+../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories
 ../templates/_profile/sammlungen/info_impressum_html
 ../templates/_profile/sammlungen/info_impressum_mobile
 ../templates/_profile/sammlungen/login
@@ -1024,6 +1031,12 @@
 ../templates/_profile/sammlungen/_view/kempis/home
 ../templates/_profile/sammlungen/_view/kempis/info_sammlung
 ../templates/_profile/sammlungen/_view/kempis/std_header_html
+../templates/_profile/sammlungen/_view/landschaft/clouds_navigation
+../templates/_profile/sammlungen/_view/landschaft/home_html
+../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html
+../templates/_profile/sammlungen/_view/landschaft/std_header_html
+../templates/_profile/sammlungen/_view/landschaft/subnavigation
+../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/lefort/corporate_banner
 ../templates/_profile/sammlungen/_view/lefort/home
 ../templates/_profile/sammlungen/_view/lefort/info_sammlung
@@ -1142,6 +1155,10 @@
 ../templates/_profile/sammlungen/_view/wallraf/home
 ../templates/_profile/sammlungen/_view/wallraf/info_sammlung
 ../templates/_profile/sammlungen/_view/wallraf/std_header_html
+../templates/_profile/sammlungen/_view/wikisource/home_html
+../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html
+../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query
+../templates/_profile/sammlungen/_view/wikisource/std_header_html
 ../templates/_profile/sammlungen/_view/zpe/clouds_navigation
 ../templates/_profile/sammlungen/_view/zpe/search_facet
 ../templates/profiles_html

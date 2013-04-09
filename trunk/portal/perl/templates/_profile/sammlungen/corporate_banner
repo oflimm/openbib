@@ -11,6 +11,6 @@
 [% END %]
       </div>
       <div id="logo"><a href="[% path_prefix %]/[% config.get('home_loc') %]?l=[% lang %]" title="Startseite der Sammlung" id="header_logo_image"></a></div>
-      <div id="institution"><a href="[% path_prefix %]/[% config.get('home_loc') %]?l=[% lang %]" title="Startseite der USB Köln" id="header_institution_image"></a></div>
+      <div id="institution"><a href="http://www.ub.uni-koeln.de/" title="Startseite der USB Köln" id="header_institution_image"></a></div>
     </header>
 <!-- End Template: corporate_banner -->

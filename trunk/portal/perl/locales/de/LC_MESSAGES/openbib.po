@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-04-09 10:45+0200\n"
+"PO-Revision-Date: 2013-04-09 15:01+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -42,6 +42,8 @@ msgstr "${category}"
 #: ../templates/_database/openlibrary/titles_record_html_categories:205
 #: ../templates/_database/openlibrary/titles_record_html_categories:255
 #: ../templates/_database/wikisource_de/persons_record_html:112
+#: ../templates/_database/wikisource_de/titles_record_html_categories:253
+#: ../templates/_database/wikisource_de/titles_record_html_categories:284
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:264
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:295
 #: ../templates/_profile/kug/_database/dbis/titles_record_html_categories:155
@@ -96,6 +98,8 @@ msgstr "${category}"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:277
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:308
+#: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:253
+#: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:284
 #: ../templates/_profile/sammlungen/_view/richter/titles_fields_html:61
 #: ../templates/_profile/sammlungen/titles_record_html_categories:269
 #: ../templates/_profile/sammlungen/titles_record_html_categories:300
@@ -281,6 +285,9 @@ msgstr "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:46
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:71
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:21
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:41
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:21
@@ -302,6 +309,8 @@ msgstr "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 #: ../templates/_profile/sammlungen/_view/umschlaege/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:48
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:36
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:21
 #: ../templates/_profile/sammlungen/clouds_navigation:21
 #: ../templates/_profile/sammlungen/mainnavigation_html:36
@@ -350,6 +359,15 @@ msgstr "&ouml;ffentlich"
 msgid "(Notation, Signatur, Titel-String):"
 msgstr "(Notation, Signatur, Titel-String):"
 
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:49
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:51
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:35
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:37
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:40
+#: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:23
+msgid "1. Ikonogr. Schlagwort"
+msgstr "1. Ikonogr. Schlagwort"
+
 #: ../templates/_profile/mobile/_view/richtermobile/home:63
 #: ../templates/_profile/sammlungen/_view/richter/home_mobile:64
 #: ../templates/_view/richter/info_portal:71
@@ -378,6 +396,13 @@ msgid ""
 msgstr ""
 "1943 wurde Richter ins Ghetto Theresienstadt deportiert. Wenige Monate\n"
 "nach der Deportation starb sie am 21. Juni 1943."
+
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:56
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:58
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:42
+#: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:26
+msgid "2. Ikonogr. Schlagwort"
+msgstr "2. Ikonogr. Schlagwort"
 
 #: ../templates/_view/richter/cartitems_html_actions:145
 msgid "<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen"
@@ -588,6 +613,8 @@ msgid "Abgleich zu BibSonomy"
 msgstr "Abgleich zu BibSonomy"
 
 #: ../templates/_profile/kug/corporate_banner:18
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/corporate_banner:7
+#: ../templates/_profile/rheinlandbib/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/dante/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/dirksen/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/lefort/corporate_banner:7
@@ -945,6 +972,7 @@ msgstr "An"
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:143
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:245
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:21
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
@@ -1014,6 +1042,8 @@ msgstr "Anlegen einer neuen Literaturliste: "
 #: ../templates/_profile/kug/corporate_banner:21
 #: ../templates/_profile/kug/login:107 ../templates/_profile/kug/login:143
 #: ../templates/_profile/kug/login:39 ../templates/_profile/kug/login:55
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/corporate_banner:9
+#: ../templates/_profile/rheinlandbib/corporate_banner:9
 #: ../templates/_profile/sammlungen/_view/dante/corporate_banner:9
 #: ../templates/_profile/sammlungen/_view/dirksen/corporate_banner:9
 #: ../templates/_profile/sammlungen/_view/lefort/corporate_banner:9
@@ -1579,6 +1609,7 @@ msgstr "Beginnen Sie eine neue Recherche"
 #: ../templates/_database/inst001/titles_record_html_categories:106
 #: ../templates/_database/openlibrary/titles_record_html_categories:25
 #: ../templates/_database/wikisource_de/persons_record_html:131
+#: ../templates/_database/wikisource_de/titles_record_html_categories:37
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:27
 #: ../templates/_profile/kug/_database/dbis/titles_record_html_categories:26
 #: ../templates/_profile/kug/_database/edz/titles_record_html_categories:27
@@ -1598,6 +1629,7 @@ msgstr "Beginnen Sie eine neue Recherche"
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:27
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:37
+#: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/titles_record_html_categories:37
 #: ../templates/_profile/usb/resource_title_html_categories:20
 #: ../templates/_profile/usb/titles_record_html_categories:20
@@ -1909,6 +1941,7 @@ msgstr "Beschreibung"
 #: ../templates/_database/inst001/holding:17
 #: ../templates/_database/inst001/titles_record_html_categories:355
 #: ../templates/_database/openlibrary/titles_record_html_categories:260
+#: ../templates/_database/wikisource_de/titles_record_html_categories:289
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:300
 #: ../templates/_profile/kug/_database/dbis/titles_record_html_categories:191
 #: ../templates/_profile/kug/_database/edz/circulation:123
@@ -1958,6 +1991,7 @@ msgstr "Beschreibung"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:321
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:313
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:123
+#: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:289
 #: ../templates/_profile/sammlungen/titles_record_html_categories:305
 #: ../templates/_profile/usb/circulation:106
 #: ../templates/_profile/usb/circulation:31
@@ -3128,6 +3162,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:15
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:22
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:22
@@ -3692,6 +3727,8 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:250
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:231
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:228
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:241
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:254
@@ -3806,6 +3843,7 @@ msgstr "Erscheinungsjahre"
 #: ../templates/_database/gutenberg/titles_record_html_categories:295
 #: ../templates/_database/inst001/titles_record_html_categories:359
 #: ../templates/_database/openlibrary/titles_record_html_categories:264
+#: ../templates/_database/wikisource_de/titles_record_html_categories:293
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:304
 #: ../templates/_profile/kug/_database/dbis/titles_record_html_categories:195
 #: ../templates/_profile/kug/_database/edz/titles_record_html_categories:382
@@ -3824,6 +3862,7 @@ msgstr "Erscheinungsjahre"
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:382
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:325
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:317
+#: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:293
 #: ../templates/_profile/sammlungen/titles_record_html_categories:309
 #: ../templates/_view/richter/cartitems_html_as_text:47
 #: ../templates/_view/richter/litlists_record_html_as_text:30
@@ -3856,6 +3895,7 @@ msgstr "Erweitere Recherchemaske"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:131
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_advanced:38
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:68
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:126
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:116
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:131
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_advanced:38
@@ -3866,6 +3906,8 @@ msgstr "Erweitere Recherchemaske"
 #: ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation:126
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:131
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:68
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:121
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/mainnavigation_html:121
 #: ../templates/_profile/sammlungen/searchforms_record_advanced:38
 #: ../templates/_profile/sammlungen/searchforms_record_query:68
@@ -4375,6 +4417,7 @@ msgstr "Französisch"
 #: ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query:76
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:2
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:76
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/searchforms_record_query:77
 #: ../templates/_profile/usb/searchforms_record_query:69
 #: ../templates/_view/richter/searchforms_record_query:70
@@ -4704,12 +4747,14 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:124
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:129
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/pruessen/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/richter/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation:124
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:129
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/mainnavigation_html:119
 #: ../templates/_profile/usb/searchforms_record_query:164
 #: ../templates/_view/richter/mainnavigation:125
@@ -4735,6 +4780,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:143
 #: ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query:132
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:147
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:153
 #: ../templates/_profile/sammlungen/searchforms_record_query:246
 msgid "Hier suchen Sie in der Sammlung"
 msgstr "Hier suchen Sie in der Sammlung"
@@ -5291,6 +5337,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:245
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
@@ -5398,6 +5445,8 @@ msgstr "Info"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:33
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:22
 #: ../templates/_profile/sammlungen/_view/kempis/info_sammlung:37
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:31
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/lefort/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/poetica/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/portrait/info_leer:37
@@ -5430,6 +5479,8 @@ msgstr "Info"
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/wallraf/info_sammlung:37
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:31
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/mainnavigation_html:33
 #: ../templates/_view/richter/mainnavigation:31
@@ -5483,6 +5534,7 @@ msgstr "Inhalt"
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:16
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:23
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:23
@@ -5578,6 +5630,7 @@ msgstr "Inventarnummer"
 #: ../templates/_database/gutenberg/titles_record_html_categories:294
 #: ../templates/_database/inst001/titles_record_html_categories:358
 #: ../templates/_database/openlibrary/titles_record_html_categories:263
+#: ../templates/_database/wikisource_de/titles_record_html_categories:292
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:303
 #: ../templates/_profile/kug/_database/dbis/titles_record_html_categories:194
 #: ../templates/_profile/kug/_database/edz/titles_record_html_categories:381
@@ -5596,6 +5649,7 @@ msgstr "Inventarnummer"
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:381
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:324
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:316
+#: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:292
 #: ../templates/_profile/sammlungen/titles_record_html_categories:308
 #: ../templates/_view/richter/cartitems_html_as_text:46
 #: ../templates/_view/richter/litlists_record_html_as_text:29
@@ -5757,6 +5811,7 @@ msgstr "Ja"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:12
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:25
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:124
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:129
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:30
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:169
@@ -5802,6 +5857,8 @@ msgstr "Jahr von"
 
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_year_html:51
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_year_html:70
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:28
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:30
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html:51
 #: ../templates/cloudss_navigation:15
 msgid "Jahre"
@@ -6153,6 +6210,7 @@ msgstr "Kompletter Name"
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:165
 #: ../templates/_profile/kug/searchforms_record_query:165
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:167
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:118
 #: ../templates/_profile/sammlungen/searchforms_record_query:167
 #: ../templates/_profile/usb/searchforms_record_query:114
 #: ../templates/_view/richter/searchforms_record_query:115
@@ -6234,6 +6292,11 @@ msgstr "Körperschaften"
 msgid "Körperschafts-Information: %1 in Katalog %2"
 msgstr "Körperschafts-Information: %1 in Katalog %2"
 
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:35
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:37
+msgid "Künstler"
+msgstr "Künstler"
+
 #: ../templates/_database/einbaende/titlist_item_html_short:247
 #: ../templates/_database/einbaende/titlist_item_html_short:250
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:239
@@ -6244,6 +6307,8 @@ msgstr "Körperschafts-Information: %1 in Katalog %2"
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:250
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:231
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:228
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:241
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:254
@@ -6662,6 +6727,8 @@ msgstr "Literaturliste"
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:62
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:64
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:76
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:76
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_navigation:55
@@ -6731,6 +6798,7 @@ msgstr "Lokal"
 #: ../templates/_database/gutenberg/titles_record_html_categories:293
 #: ../templates/_database/inst001/titles_record_html_categories:357
 #: ../templates/_database/openlibrary/titles_record_html_categories:262
+#: ../templates/_database/wikisource_de/titles_record_html_categories:291
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:302
 #: ../templates/_profile/kug/_database/dbis/titles_record_html_categories:193
 #: ../templates/_profile/kug/_database/edz/titles_record_html_categories:380
@@ -6749,6 +6817,7 @@ msgstr "Lokal"
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:380
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:323
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:315
+#: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:291
 #: ../templates/_profile/sammlungen/titles_record_html_categories:307
 #: ../templates/_view/richter/cartitems_html_as_text:45
 #: ../templates/_view/richter/litlists_record_html_as_text:28
@@ -7002,6 +7071,8 @@ msgstr "Mein KUG"
 msgid "Mein OpenBib"
 msgstr "Mein OpenBib"
 
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/corporate_banner:6
+#: ../templates/_profile/rheinlandbib/corporate_banner:6
 #: ../templates/_profile/sammlungen/_view/dante/corporate_banner:6
 #: ../templates/_profile/sammlungen/_view/dirksen/corporate_banner:6
 #: ../templates/_profile/sammlungen/_view/lefort/corporate_banner:6
@@ -7028,6 +7099,7 @@ msgstr "Meldung"
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:245
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
@@ -7049,6 +7121,8 @@ msgstr "Merken"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:58
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:56
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:58
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:51
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:56
@@ -7061,6 +7135,8 @@ msgstr "Merken"
 #: ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation:53
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:56
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:58
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:46
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/mainnavigation_html:48
 #: ../templates/_view/richter/cartitems_empty:38
@@ -7561,6 +7637,8 @@ msgstr "Nutzer suchen"
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:66
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:50
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:52
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:64
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:66
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:64
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:66
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_navigation:43
@@ -7919,6 +7997,9 @@ msgstr "Person/Körperschaft"
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:118
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:79
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:81
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:25
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:27
+#: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:86
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:106
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:108
@@ -7931,6 +8012,7 @@ msgstr "Person/Körperschaft"
 #: ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query:92
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:64
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:66
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:97
 #: ../templates/_profile/sammlungen/clouds_navigation:35
 #: ../templates/_profile/sammlungen/clouds_navigation:37
 #: ../templates/_profile/sammlungen/searchforms_record_query:97
@@ -8015,6 +8097,7 @@ msgstr "Popularit&auml;ts-Funktionen"
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:17
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:24
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:24
@@ -8416,6 +8499,10 @@ msgstr "Region/Werkzeug"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:39
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/titles_fields_record_html:55
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:36
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:38
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:22
+#: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:52
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:61
@@ -8633,6 +8720,7 @@ msgstr "Schlagwort-Information: %1 in Katalog %2"
 #: ../templates/_profile/kug/searchforms_record_query:115
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:117
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:108
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/searchforms_record_query:117
 #: ../templates/_profile/usb/searchforms_record_query:89
 #: ../templates/_view/richter/searchforms_record_query:90
@@ -9254,6 +9342,7 @@ msgstr "Sigel"
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:141
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:240
 #: ../templates/_profile/sammlungen/_database/kempis/circulation:33
+#: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:221
 #: ../templates/_profile/sammlungen/_database/lefort/circulation:33
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_database/richter/holding:35
@@ -9372,6 +9461,8 @@ msgstr "Spezialisierte Portale"
 
 #. (l)
 #: ../templates/_profile/kug/corporate_banner:8
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/corporate_banner:4
+#: ../templates/_profile/rheinlandbib/corporate_banner:4
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:507
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:54
 #: ../templates/_profile/sammlungen/_view/dante/corporate_banner:4
@@ -9466,6 +9557,7 @@ msgstr "Standort"
 #: ../templates/_database/gutenberg/titles_record_html_categories:292
 #: ../templates/_database/inst001/titles_record_html_categories:356
 #: ../templates/_database/openlibrary/titles_record_html_categories:261
+#: ../templates/_database/wikisource_de/titles_record_html_categories:290
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:301
 #: ../templates/_profile/kug/_database/dbis/titles_record_html_categories:192
 #: ../templates/_profile/kug/_database/edz/titles_record_html_categories:379
@@ -9484,6 +9576,7 @@ msgstr "Standort"
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:379
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:314
+#: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:290
 #: ../templates/_profile/sammlungen/titles_record_html_categories:306
 #: ../templates/_view/richter/cartitems_html_as_text:44
 #: ../templates/_view/richter/litlists_record_html_as_text:27
@@ -9565,6 +9658,7 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_advanced:37
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/titles_fields_record_html:54
 #: ../templates/_profile/sammlungen/_view/kempis/info_sammlung:36
+#: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:51
 #: ../templates/_profile/sammlungen/_view/lefort/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_corporatebody_html:48
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_databases_record_html:37
@@ -9760,6 +9854,8 @@ msgstr "Suchanfrage"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:69
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:71
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:83
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:85
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:83
@@ -9835,6 +9931,8 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:128
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:136
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:123
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:113
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:128
@@ -9851,6 +9949,9 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:128
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:147
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:118
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:119
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:153
 #: ../templates/_profile/sammlungen/mainnavigation_html:118
 #: ../templates/_profile/sammlungen/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/searchforms_record_query:246
@@ -9898,6 +9999,8 @@ msgstr "Suchhilfe"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:51
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:53
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:46
+#: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:51
@@ -9910,6 +10013,8 @@ msgstr "Suchhilfe"
 #: ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:51
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:53
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:41
+#: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/mainnavigation_html:43
 #: ../templates/_view/richter/mainnavigation:46
@@ -10225,6 +10330,10 @@ msgstr "Person"
 msgid "T0100-inst450"
 msgstr "Autor"
 
+#: ../templates/_database/landschaft/visible_categories_title:17
+msgid "T0100-landschaft"
+msgstr "Künstler"
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:17
 msgid "T0100-portrait"
 msgstr "Maler / Zeichner"
@@ -10242,6 +10351,7 @@ msgid "T0100-umschlaege"
 msgstr "Autor"
 
 #: ../templates/_database/inst001/visible_categories_title:17
+#: ../templates/_database/landschaft/visible_categories_title:18
 #: ../templates/_database/openlibrary/visible_categories_title:17
 #: ../templates/_database/richter/visible_categories_title:17
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:17
@@ -10291,6 +10401,10 @@ msgstr "Vater"
 msgid "T0101-wikisource_de"
 msgstr "Herausgeber"
 
+#: ../templates/_database/landschaft/visible_categories_title:16
+msgid "T0102"
+msgstr "Interpret"
+
 #: ../templates/_database/einbaende/visible_categories_tool:16
 msgid "T0102-einbaende"
 msgstr "Werkstatt/Werkzeug"
@@ -10304,6 +10418,7 @@ msgid "T0102-totenzettel"
 msgstr "Mutter"
 
 #: ../templates/_database/inst001/visible_categories_title:18
+#: ../templates/_database/landschaft/visible_categories_title:19
 #: ../templates/_database/openlibrary/visible_categories_title:18
 #: ../templates/_database/richter/visible_categories_title:18
 #: ../templates/_database/wikisource_de/visible_categories_title:18
@@ -10381,6 +10496,10 @@ msgstr "Ort der Inschrift"
 #: ../templates/_profile/kug/_database/inst450/visible_categories_title:18
 msgid "T0200-inst450"
 msgstr "Behoerden, Betriebe, Institutionen"
+
+#: ../templates/_database/landschaft/visible_categories_title:32
+msgid "T0200-landschaft"
+msgstr "Topogr. Schlagwort"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:17
 msgid "T0200-muenzen"
@@ -10580,6 +10699,10 @@ msgstr "Titel"
 msgid "T0331-inst404abklatsch"
 msgstr "Kurztitel"
 
+#: ../templates/_database/landschaft/visible_categories_title:20
+msgid "T0331-landschaft"
+msgstr "Objekt-Titel"
+
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:21
 msgid "T0331-muenzen"
 msgstr "Rückseite"
@@ -10650,6 +10773,10 @@ msgstr "Zu ergänzender Urheber"
 #: ../templates/visible_categories_title:52
 msgid "T0334"
 msgstr "Material"
+
+#: ../templates/_database/landschaft/visible_categories_title:29
+msgid "T0334-landschaft"
+msgstr "Trägermaterial"
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:80
 msgid "T0334-portrait"
@@ -10761,6 +10888,7 @@ msgid "T0355-muenzen"
 msgstr "Rückseite Beschreibung"
 
 #: ../templates/_database/inst001/visible_categories_title:33
+#: ../templates/_database/landschaft/visible_categories_title:30
 #: ../templates/_database/openlibrary/visible_categories_title:34
 #: ../templates/_database/richter/visible_categories_title:32
 #: ../templates/_database/wikisource_de/visible_categories_title:33
@@ -11040,11 +11168,16 @@ msgstr "Erscheinungsverlauf"
 msgid "T0407"
 msgstr "Maßstab"
 
+#: ../templates/_database/landschaft/visible_categories_title:28
+msgid "T0407-landschaft"
+msgstr "Höhe x Breite"
+
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:31
 msgid "T0407-muenzen"
 msgstr "Stempelstellung"
 
 #: ../templates/_database/inst001/visible_categories_title:36
+#: ../templates/_database/landschaft/visible_categories_title:37
 #: ../templates/_database/openlibrary/visible_categories_title:37
 #: ../templates/_database/richter/visible_categories_title:35
 #: ../templates/_database/wikisource_de/visible_categories_title:36
@@ -11097,6 +11230,7 @@ msgstr "Geburtsort"
 
 #: ../templates/_database/einbaende/visible_categories_title:20
 #: ../templates/_database/inst001/visible_categories_title:37
+#: ../templates/_database/landschaft/visible_categories_title:38
 #: ../templates/_database/openlibrary/visible_categories_title:38
 #: ../templates/_database/richter/visible_categories_title:36
 #: ../templates/_database/wikisource_de/visible_categories_title:37
@@ -11165,6 +11299,7 @@ msgid "T0413-einbaende"
 msgstr "Drucker"
 
 #: ../templates/_database/inst001/visible_categories_title:39
+#: ../templates/_database/landschaft/visible_categories_title:39
 #: ../templates/_database/openlibrary/visible_categories_title:40
 #: ../templates/_database/richter/visible_categories_title:38
 #: ../templates/_database/wikisource_de/visible_categories_title:39
@@ -11247,6 +11382,10 @@ msgstr "Fertigungsjahr"
 msgid "T0425-inst404abklatsch"
 msgstr "Datierung"
 
+#: ../templates/_database/landschaft/visible_categories_title:22
+msgid "T0425-landschaft"
+msgstr "Jahr"
+
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:24
 msgid "T0425-muenzen"
 msgstr "Prägejahr"
@@ -11264,6 +11403,7 @@ msgid "T0427-muenzen"
 msgstr "Datierung bis"
 
 #: ../templates/_database/inst001/visible_categories_title:50
+#: ../templates/_database/landschaft/visible_categories_title:40
 #: ../templates/_database/openlibrary/visible_categories_title:51
 #: ../templates/_database/richter/visible_categories_title:49
 #: ../templates/_database/wikisource_de/visible_categories_title:50
@@ -11311,6 +11451,7 @@ msgstr "Beruf"
 
 #: ../templates/_database/inst001/visible_categories_title:45
 #: ../templates/_database/inst001/visible_categories_title:58
+#: ../templates/_database/landschaft/visible_categories_title:42
 #: ../templates/_database/openlibrary/visible_categories_title:46
 #: ../templates/_database/openlibrary/visible_categories_title:59
 #: ../templates/_database/richter/visible_categories_title:44
@@ -11476,6 +11617,7 @@ msgid "T0451-totenzettel"
 msgstr "Trauernde"
 
 #: ../templates/_database/inst001/visible_categories_title:60
+#: ../templates/_database/landschaft/visible_categories_title:31
 #: ../templates/_database/openlibrary/visible_categories_title:61
 #: ../templates/_database/wikisource_de/visible_categories_title:60
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:59
@@ -11527,6 +11669,7 @@ msgstr "Entwürfe"
 msgid "T0501-richter"
 msgstr "Richterindiz"
 
+#: ../templates/_database/landschaft/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:37
 msgid "T0502"
 msgstr "EST beig. Werk"
@@ -11562,6 +11705,7 @@ msgid "T0503"
 msgstr "Übersetzter Titel"
 
 #: ../templates/_database/inst001/visible_categories_title:61
+#: ../templates/_database/landschaft/visible_categories_title:44
 #: ../templates/_database/openlibrary/visible_categories_title:62
 #: ../templates/_database/richter/visible_categories_title:60
 #: ../templates/_database/wikisource_de/visible_categories_title:61
@@ -11593,6 +11737,7 @@ msgid "T0504"
 msgstr "Paralleltitel/Fußnote"
 
 #: ../templates/_database/inst001/visible_categories_title:62
+#: ../templates/_database/landschaft/visible_categories_title:45
 #: ../templates/_database/openlibrary/visible_categories_title:63
 #: ../templates/_database/richter/visible_categories_title:61
 #: ../templates/_database/wikisource_de/visible_categories_title:62
@@ -11655,6 +11800,7 @@ msgid "T0507"
 msgstr "Titelangaben"
 
 #: ../templates/_database/inst001/visible_categories_title:49
+#: ../templates/_database/landschaft/visible_categories_title:84
 #: ../templates/_database/openlibrary/visible_categories_title:50
 #: ../templates/_database/richter/visible_categories_title:48
 #: ../templates/_database/wikisource_de/visible_categories_title:49
@@ -11698,6 +11844,7 @@ msgid "T0508-portrait"
 msgstr "Bibl. Nachweis"
 
 #: ../templates/_database/inst001/visible_categories_title:64
+#: ../templates/_database/landschaft/visible_categories_title:46
 #: ../templates/_database/openlibrary/visible_categories_title:65
 #: ../templates/_database/richter/visible_categories_title:63
 #: ../templates/_database/wikisource_de/visible_categories_title:64
@@ -11736,6 +11883,7 @@ msgid "T0509-portrait"
 msgstr "Vermerke zur Personenangabe"
 
 #: ../templates/_database/inst001/visible_categories_title:65
+#: ../templates/_database/landschaft/visible_categories_title:47
 #: ../templates/_database/openlibrary/visible_categories_title:66
 #: ../templates/_database/richter/visible_categories_title:64
 #: ../templates/_database/wikisource_de/visible_categories_title:65
@@ -11767,6 +11915,7 @@ msgid "T0510"
 msgstr "Ausgabe Fußnote"
 
 #: ../templates/_database/inst001/visible_categories_title:66
+#: ../templates/_database/landschaft/visible_categories_title:48
 #: ../templates/_database/openlibrary/visible_categories_title:67
 #: ../templates/_database/richter/visible_categories_title:65
 #: ../templates/_database/wikisource_de/visible_categories_title:66
@@ -11798,6 +11947,7 @@ msgid "T0511"
 msgstr "Erschverm. Fußnote"
 
 #: ../templates/_database/inst001/visible_categories_title:67
+#: ../templates/_database/landschaft/visible_categories_title:49
 #: ../templates/_database/openlibrary/visible_categories_title:68
 #: ../templates/_database/richter/visible_categories_title:66
 #: ../templates/_database/wikisource_de/visible_categories_title:67
@@ -11829,6 +11979,7 @@ msgid "T0512"
 msgstr "Koll. Fußnote"
 
 #: ../templates/_database/inst001/visible_categories_title:68
+#: ../templates/_database/landschaft/visible_categories_title:50
 #: ../templates/_database/openlibrary/visible_categories_title:69
 #: ../templates/_database/richter/visible_categories_title:67
 #: ../templates/_database/wikisource_de/visible_categories_title:68
@@ -11860,6 +12011,7 @@ msgid "T0513"
 msgstr "Impress. Änderung"
 
 #: ../templates/_database/inst001/visible_categories_title:69
+#: ../templates/_database/landschaft/visible_categories_title:51
 #: ../templates/_database/openlibrary/visible_categories_title:70
 #: ../templates/_database/richter/visible_categories_title:68
 #: ../templates/_database/wikisource_de/visible_categories_title:69
@@ -11969,11 +12121,13 @@ msgstr "Angaben zum Inhalt"
 msgid "T0519"
 msgstr "Hochschulschrift"
 
+#: ../templates/_database/landschaft/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:46
 msgid "T0521"
 msgstr "Angaben zum Inhalt"
 
 #: ../templates/_database/inst001/visible_categories_title:70
+#: ../templates/_database/landschaft/visible_categories_title:53
 #: ../templates/_database/openlibrary/visible_categories_title:72
 #: ../templates/_database/richter/visible_categories_title:70
 #: ../templates/_database/wikisource_de/visible_categories_title:71
@@ -12035,6 +12189,7 @@ msgid "T0523"
 msgstr "Erscheinungsweise"
 
 #: ../templates/_database/inst001/visible_categories_title:71
+#: ../templates/_database/landschaft/visible_categories_title:54
 #: ../templates/_database/openlibrary/visible_categories_title:73
 #: ../templates/_database/richter/visible_categories_title:71
 #: ../templates/_database/wikisource_de/visible_categories_title:72
@@ -12070,6 +12225,7 @@ msgid "T0525-inst450"
 msgstr "Ortsnamen"
 
 #: ../templates/_database/inst001/visible_categories_title:75
+#: ../templates/_database/landschaft/visible_categories_title:55
 #: ../templates/_database/openlibrary/visible_categories_title:77
 #: ../templates/_database/richter/visible_categories_title:75
 #: ../templates/_database/wikisource_de/visible_categories_title:76
@@ -12101,6 +12257,7 @@ msgid "T0527"
 msgstr "Parallele Ausg."
 
 #: ../templates/_database/inst001/visible_categories_title:76
+#: ../templates/_database/landschaft/visible_categories_title:56
 #: ../templates/_database/openlibrary/visible_categories_title:78
 #: ../templates/_database/richter/visible_categories_title:76
 #: ../templates/_database/wikisource_de/visible_categories_title:77
@@ -12132,6 +12289,7 @@ msgid "T0529"
 msgstr "Titel Beilage"
 
 #: ../templates/_database/inst001/visible_categories_title:77
+#: ../templates/_database/landschaft/visible_categories_title:57
 #: ../templates/_database/openlibrary/visible_categories_title:79
 #: ../templates/_database/richter/visible_categories_title:77
 #: ../templates/_database/wikisource_de/visible_categories_title:78
@@ -12163,6 +12321,7 @@ msgid "T0530"
 msgstr "Bezugswerk"
 
 #: ../templates/_database/inst001/visible_categories_title:78
+#: ../templates/_database/landschaft/visible_categories_title:58
 #: ../templates/_database/openlibrary/visible_categories_title:80
 #: ../templates/_database/richter/visible_categories_title:78
 #: ../templates/_database/wikisource_de/visible_categories_title:79
@@ -12194,6 +12353,7 @@ msgid "T0531"
 msgstr "Frühere Ausg."
 
 #: ../templates/_database/inst001/visible_categories_title:79
+#: ../templates/_database/landschaft/visible_categories_title:59
 #: ../templates/_database/openlibrary/visible_categories_title:81
 #: ../templates/_database/richter/visible_categories_title:79
 #: ../templates/_database/wikisource_de/visible_categories_title:80
@@ -12225,6 +12385,7 @@ msgid "T0532"
 msgstr "Früherer Titel"
 
 #: ../templates/_database/inst001/visible_categories_title:80
+#: ../templates/_database/landschaft/visible_categories_title:60
 #: ../templates/_database/openlibrary/visible_categories_title:82
 #: ../templates/_database/richter/visible_categories_title:80
 #: ../templates/_database/wikisource_de/visible_categories_title:81
@@ -12256,6 +12417,7 @@ msgid "T0533"
 msgstr "Spätere Ausg."
 
 #: ../templates/_database/inst001/visible_categories_title:72
+#: ../templates/_database/landschaft/visible_categories_title:61
 #: ../templates/_database/openlibrary/visible_categories_title:74
 #: ../templates/_database/richter/visible_categories_title:72
 #: ../templates/_database/wikisource_de/visible_categories_title:73
@@ -12287,6 +12449,7 @@ msgid "T0534"
 msgstr "Titelkonk."
 
 #: ../templates/_database/inst001/visible_categories_title:73
+#: ../templates/_database/landschaft/visible_categories_title:62
 #: ../templates/_database/openlibrary/visible_categories_title:75
 #: ../templates/_database/richter/visible_categories_title:73
 #: ../templates/_database/wikisource_de/visible_categories_title:74
@@ -12318,6 +12481,7 @@ msgid "T0535"
 msgstr "Anz. Exemplare"
 
 #: ../templates/_database/inst001/visible_categories_title:74
+#: ../templates/_database/landschaft/visible_categories_title:63
 #: ../templates/_database/openlibrary/visible_categories_title:76
 #: ../templates/_database/richter/visible_categories_title:74
 #: ../templates/_database/wikisource_de/visible_categories_title:75
@@ -12348,10 +12512,12 @@ msgstr "Anz. Exemplare"
 msgid "T0536"
 msgstr "Vorr. Erschtermin"
 
+#: ../templates/_database/landschaft/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:58
 msgid "T0537"
 msgstr "Redaktionelle Bemerkungen"
 
+#: ../templates/_database/landschaft/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:59
 msgid "T0538"
 msgstr "Angabe Vervielfältigungsart"
@@ -12435,11 +12601,13 @@ msgstr "ISSN"
 msgid "T0553"
 msgstr "ISBN"
 
+#: ../templates/_database/landschaft/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:60
 msgid "T0578"
 msgstr "Fingerprint"
 
 #: ../templates/_database/inst001/visible_categories_title:83
+#: ../templates/_database/landschaft/visible_categories_title:67
 #: ../templates/_database/openlibrary/visible_categories_title:85
 #: ../templates/_database/wikisource_de/visible_categories_title:84
 #: ../templates/_profile/kug/_database/edz/visible_categories_title:83
@@ -12464,6 +12632,7 @@ msgid "T0580"
 msgstr "Nachweise / Sonstige Nummern"
 
 #: ../templates/_database/inst001/visible_categories_title:55
+#: ../templates/_database/landschaft/visible_categories_title:68
 #: ../templates/_database/openlibrary/visible_categories_title:56
 #: ../templates/_database/richter/visible_categories_title:54
 #: ../templates/_database/wikisource_de/visible_categories_title:55
@@ -12529,10 +12698,16 @@ msgstr "Veröffentlicht"
 msgid "T0591"
 msgstr "Verfasser Quelle"
 
+#: ../templates/_database/landschaft/visible_categories_title:23
+msgid "T0591-landschaft"
+msgstr "Entstehungsort"
+
+#: ../templates/_database/landschaft/visible_categories_title:24
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:64
 msgid "T0592"
 msgstr "Abteilung Unterreiche der Quelle"
 
+#: ../templates/_database/landschaft/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:65
 msgid "T0593"
 msgstr "Ausgabebez. der Quelle"
@@ -12568,6 +12743,10 @@ msgstr "Ausgabebez. der Quelle"
 msgid "T0594"
 msgstr "Ersch.Ort Quelle"
 
+#: ../templates/_database/landschaft/visible_categories_title:26
+msgid "T0594-landschaft"
+msgstr "Entstehungslandschaft"
+
 #: ../templates/_database/inst001/visible_categories_title:44
 #: ../templates/_database/openlibrary/visible_categories_title:45
 #: ../templates/_database/richter/visible_categories_title:43
@@ -12599,22 +12778,30 @@ msgstr "Ersch.Ort Quelle"
 msgid "T0595"
 msgstr "Ersch.Jahr Quelle"
 
+#: ../templates/_database/landschaft/visible_categories_title:27
+msgid "T0595-landschaft"
+msgstr "Entstehungsland"
+
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:23
 msgid "T0595-totenzettel"
 msgstr "Geburtsdatum"
 
+#: ../templates/_database/landschaft/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:68
 msgid "T0596"
 msgstr "Weitere Angaben zur Quelle"
 
+#: ../templates/_database/landschaft/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:69
 msgid "T0597"
 msgstr "Gesamttitel der Quelle"
 
+#: ../templates/_database/landschaft/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:70
 msgid "T0598"
 msgstr "Fußnote der Quelle"
 
+#: ../templates/_database/landschaft/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:71
 msgid "T0599"
 msgstr "Standardnummer der Quelle"
@@ -12653,6 +12840,7 @@ msgid "T0600-inst404abklatsch"
 msgstr "Schublade"
 
 #: ../templates/_database/inst001/visible_categories_title:82
+#: ../templates/_database/landschaft/visible_categories_title:73
 #: ../templates/_database/openlibrary/visible_categories_title:84
 #: ../templates/_database/richter/visible_categories_title:82
 #: ../templates/_database/wikisource_de/visible_categories_title:83
@@ -12688,6 +12876,7 @@ msgid "T0622-muenzen"
 msgstr "Links"
 
 #: ../templates/_database/inst001/visible_categories_title:84
+#: ../templates/_database/landschaft/visible_categories_title:74
 #: ../templates/_database/openlibrary/visible_categories_title:86
 #: ../templates/_database/richter/visible_categories_title:83
 #: ../templates/_database/wikisource_de/visible_categories_title:85
@@ -12749,6 +12938,7 @@ msgid "T0652"
 msgstr "EDV Material"
 
 #: ../templates/_database/inst001/visible_categories_title:53
+#: ../templates/_database/landschaft/visible_categories_title:75
 #: ../templates/_database/openlibrary/visible_categories_title:54
 #: ../templates/_database/richter/visible_categories_title:52
 #: ../templates/_database/wikisource_de/visible_categories_title:53
@@ -12780,6 +12970,7 @@ msgid "T0655"
 msgstr "EDV Adress"
 
 #: ../templates/_database/inst001/visible_categories_title:106
+#: ../templates/_database/landschaft/visible_categories_title:85
 #: ../templates/_database/openlibrary/visible_categories_title:110
 #: ../templates/_database/richter/visible_categories_title:105
 #: ../templates/_database/wikisource_de/visible_categories_title:108
@@ -12821,6 +13012,7 @@ msgstr "Weitere Infos"
 msgid "T0663-ebooks"
 msgstr "Volltext-Hinweis"
 
+#: ../templates/_database/landschaft/visible_categories_title:76
 #: ../templates/_database/openlibrary/visible_categories_title:26
 #: ../templates/_database/wikisource_de/visible_categories_title:27
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:27
@@ -12834,18 +13026,22 @@ msgstr "Volltext-Hinweis"
 msgid "T0670"
 msgstr "Sachtitel in abweichender Orthographie"
 
+#: ../templates/_database/landschaft/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:76
 msgid "T0672"
 msgstr "Autorenname in normierter Form"
 
+#: ../templates/_database/landschaft/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:77
 msgid "T0673"
 msgstr "Ort in normierter Form"
 
+#: ../templates/_database/landschaft/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:78
 msgid "T0674"
 msgstr "Jahr des Orginals"
 
+#: ../templates/_database/landschaft/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:79
 msgid "T0675"
 msgstr "Abweichende Orthographie"
@@ -12883,6 +13079,10 @@ msgstr "Notation"
 #: ../templates/_database/einbaende/visible_categories_cover:20
 msgid "T0700-einbaende"
 msgstr "Einband"
+
+#: ../templates/_database/landschaft/visible_categories_title:33
+msgid "T0700-landschaft"
+msgstr "1. Ikonogr. Schlagwort"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:19
 msgid "T0700-muenzen"
@@ -12933,6 +13133,10 @@ msgstr "Jahrhundert"
 msgid "T0710-inst404abklatsch"
 msgstr "Kategorie"
 
+#: ../templates/_database/landschaft/visible_categories_title:34
+msgid "T0710-landschaft"
+msgstr "2. Ikonogr. Schlagwort"
+
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:18
 msgid "T0710-muenzen"
 msgstr "Region"
@@ -12980,7 +13184,12 @@ msgstr "Abstract"
 msgid "T0750-einbaende"
 msgstr "Beschreibung"
 
+#: ../templates/_database/landschaft/visible_categories_title:21
+msgid "T0750-landschaft"
+msgstr "Transkription"
+
 #: ../templates/_database/inst001/visible_categories_title:90
+#: ../templates/_database/landschaft/visible_categories_title:81
 #: ../templates/_database/openlibrary/visible_categories_title:92
 #: ../templates/_database/richter/visible_categories_title:89
 #: ../templates/_database/wikisource_de/visible_categories_title:91
@@ -13023,6 +13232,7 @@ msgstr "Material"
 msgid "T0800-portrait"
 msgstr "Medienart"
 
+#: ../templates/_database/landschaft/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:82
 msgid "T0840"
 msgstr "Konkordanz"
@@ -13327,6 +13537,7 @@ msgstr "Schlagwort"
 msgid "T0947"
 msgstr "Schlagwort"
 
+#: ../templates/_database/landschaft/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:83
 msgid "T1202"
 msgstr "Bestand Bemerkung"
@@ -13441,10 +13652,15 @@ msgstr "USB URL"
 msgid "T2663"
 msgstr "USB URL-Info"
 
+#: ../templates/_database/landschaft/visible_categories_title:36
+msgid "T3000"
+msgstr "Besitzer"
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:29
 msgid "T3000-portrait"
 msgstr "Besitzer"
 
+#: ../templates/_database/landschaft/visible_categories_title:35
 #: ../templates/_database/richter/visible_categories_title:109
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:109
 msgid "T3001"
@@ -13975,6 +14191,7 @@ msgstr "Titelliste"
 #: ../templates/_profile/kug/searchforms_record_query:85
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:84
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/searchforms_record_query:87
 #: ../templates/_profile/usb/searchforms_record_query:74
 #: ../templates/_view/richter/searchforms_record_query:75
@@ -13997,6 +14214,14 @@ msgstr "Titelzahl"
 #: ../templates/titles_record_include:725
 msgid "Top 20"
 msgstr "Top 20"
+
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:42
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:44
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:30
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:32
+#: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:20
+msgid "Topogr. Schlagwort"
+msgstr "Topogr. Schlagwort"
 
 #: ../templates/_database/bibsonomy/search_title_item_html:106
 #: ../templates/_database/dbis/search_title_item_html:87
@@ -15075,6 +15300,8 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:135
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:136
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:140
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:141
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:145
 #: ../templates/_profile/sammlungen/searchforms_record_query:234
 #: ../templates/_profile/sammlungen/searchforms_record_query:238
 #: ../templates/_view/richter/searchforms_record_query:145
@@ -15384,6 +15611,7 @@ msgstr "bestellt beim Lieferanten"
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:134
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:135
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:140
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:145
 #: ../templates/_profile/sammlungen/searchforms_record_query:238
 #: ../templates/_view/richter/searchforms_record_query:145
 #: ../templates/searchforms_record_query:177
@@ -15955,6 +16183,7 @@ msgstr "usw. usf."
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:131
 #: ../templates/_profile/sammlungen/_view/richter/titles_fields_record_mobile:36
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:136
+#: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/searchforms_record_query:234
 #: ../templates/_profile/usb/search_title_combined_include:48
 #: ../templates/search_title_combined_html:55

@@ -1242,18 +1242,6 @@ convtab:
       '5051':         # Bibkey Base
         string: 1
   kapsel:
-    inverted_classification:
-      '0800':         # Ansetzung
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
-
-      '0830':         # Verweisform
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
     inverted_title:
       'tag':
         index:
@@ -1701,17 +1689,6 @@ convtab:
         string: 1
       '5051':         # Bibkey Base
         string: 1
-    inverted_subject:
-      '0800':         # Ansetzung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 20
-      '0831':         # Verweisform
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 20
   richter:
     inverted_title:
       'tag':

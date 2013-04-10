@@ -42,7 +42,7 @@ my $pool          = $ARGV[0];
 print "### $pool: Vertauschen von Schlagworten und Notationen\n";
 
 system("mv -f $rootdir/data/$pool/meta.subject $rootdir/data/$pool/meta.subject.tmp");
-system("mv -f $rootdir/data/$pool/meta.classification $rootdir/data/$pool/meta.subject");
+system("$rootdir/filter/$pool/alter840to830.pl < $rootdir/data/$pool/meta.classification > $rootdir/data/$pool/meta.subject");
 system("mv -f $rootdir/data/$pool/meta.subject.tmp $rootdir/data/$pool/meta.classification");
 
 system("$rootdir/filter/$pool/swap710x700.pl < $rootdir/data/$pool/meta.title > $rootdir/data/$pool/meta.title.tmp");

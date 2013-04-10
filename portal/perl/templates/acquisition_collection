@@ -29,7 +29,7 @@
 
 
 <link rel="stylesheet" type="text/css" href="http://unikatalog.ub.uni-koeln.de/css/style.css" />
-<link rel="stylesheet" type="text/css" href="http://kug.ub.uni-koeln.de/styles/openbib_generic.css" />
+<link rel="stylesheet" type="text/css" href="http://kug.ub.uni-koeln.de/css/_profile/kug/openbib.css" />
 
 <!-- BO headScript_Basic -->
 
@@ -176,20 +176,20 @@
 [%# USE dumper;dumper.dump(dbinfo)%]
 
 <!-- Titlelist begins here -->
-<div class="resultlist">
-  <div class="resultheader">
-    <div class="catalogue">
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="ob-catalogue">
 <b>Neuerwerbungen: [% month_string.${month} %] [% year %]</b>
     </div>
-    <div class="hits">
+    <div class="ob-hits">
 [% recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>
-    <div class="navigation">
+    <div class="ob-navigation">
 [% IF type == "00" %]<b>Alle F&auml;cher</b>[% ELSE %]<b>Fach:</b> [% type_desc.${type}.1 %][% END %]
     </div>
   </div>
 
-  <div class="resultitems liststyle">
+  <div class="ob-resultitems liststyle">
 
 [% FOREACH record IN recordlist.get_records %]
   [% PROCESS common/subtemplate name="acquisition_collection_item_short" %]

@@ -39,6 +39,8 @@ msgstr "${category}"
 #: ../templates/_database/gutenberg/titles_record_html_categories:286
 #: ../templates/_database/inst001/titles_record_html_categories:319
 #: ../templates/_database/inst001/titles_record_html_categories:350
+#: ../templates/_database/landschaft/titles_record_html_categories:253
+#: ../templates/_database/landschaft/titles_record_html_categories:284
 #: ../templates/_database/openlibrary/persons_record_html:100
 #: ../templates/_database/openlibrary/titles_record_html_categories:205
 #: ../templates/_database/openlibrary/titles_record_html_categories:255
@@ -93,6 +95,8 @@ msgstr "${category}"
 #: ../templates/_profile/kug/_view/versicherung/home_html_bottom_left:72
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:72
 #: ../templates/_profile/kug/home_html_bottom_left:71
+#: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:253
+#: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:284
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:342
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:373
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:285
@@ -283,6 +287,9 @@ msgstr "Add this title to a new literature list:"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:46
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:71
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:21
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:41
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:43
@@ -359,11 +366,16 @@ msgstr "(classification, location mark, title string)"
 
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_classification_html:51
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_classification_html:70
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_databases_record_html:64
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:49
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:51
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:21
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:30
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:9
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:117
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:35
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:37
-#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:40
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:23
 msgid "1. Ikonogr. Schlagwort"
 msgstr "1st iconogr. subject heading"
@@ -397,13 +409,24 @@ msgstr ""
 "In 1943 she was deported to the Theresienstadt concentration camp on 9 "
 "October 1942. She died there on 21 June 1943."
 
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_databases_record_html:65
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:56
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:58
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_subject_html:51
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_subject_html:70
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:31
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:8
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:127
+#: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:40
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:42
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:26
 msgid "2. Ikonogr. Schlagwort"
+msgstr "2nd iconogr. subject heading"
+
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:20
+#, fuzzy
+msgid "2. Ikonogr.. Schlagwort"
 msgstr "2nd iconogr. subject heading"
 
 #: ../templates/_view/richter/cartitems_html_actions:145
@@ -1581,6 +1604,7 @@ msgstr "Start a new search request"
 #: ../templates/_database/ezb/titles_record_html_categories:25
 #: ../templates/_database/gutenberg/titles_record_html_categories:28
 #: ../templates/_database/inst001/titles_record_html_categories:106
+#: ../templates/_database/landschaft/titles_record_html_categories:37
 #: ../templates/_database/openlibrary/titles_record_html_categories:25
 #: ../templates/_database/wikisource_de/persons_record_html:131
 #: ../templates/_database/wikisource_de/titles_record_html_categories:37
@@ -1600,6 +1624,7 @@ msgstr "Start a new search request"
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:27
 #: ../templates/_profile/kug/_database/wikisource_de/persons_record_html:131
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:27
+#: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:27
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:37
@@ -1907,6 +1932,7 @@ msgstr "Description"
 #: ../templates/_database/inst001/circulation:123
 #: ../templates/_database/inst001/holding:17
 #: ../templates/_database/inst001/titles_record_html_categories:355
+#: ../templates/_database/landschaft/titles_record_html_categories:289
 #: ../templates/_database/openlibrary/titles_record_html_categories:260
 #: ../templates/_database/wikisource_de/titles_record_html_categories:289
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:300
@@ -1951,6 +1977,7 @@ msgstr "Description"
 #: ../templates/_profile/sammlungen/_database/dante/circulation:123
 #: ../templates/_profile/sammlungen/_database/dirksen/circulation:123
 #: ../templates/_profile/sammlungen/_database/kempis/circulation:123
+#: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:289
 #: ../templates/_profile/sammlungen/_database/lefort/circulation:123
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:378
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:123
@@ -1983,6 +2010,7 @@ msgstr "Please confirm your registration"
 
 #: ../templates/_database/einbaende/titles_record_html:257
 #: ../templates/_database/inst001/holding:17
+#: ../templates/_database/kapsel/holding:33
 #: ../templates/_profile/kug/_database/edz/holding:17
 #: ../templates/_profile/kug/_database/inst001/holding:17
 #: ../templates/_profile/kug/_database/islandica/holding:17
@@ -2100,6 +2128,7 @@ msgid "Bibinformationen statt URL"
 msgstr "Information about location instead of URL"
 
 #: ../templates/_database/inst001/circulation:33
+#: ../templates/_database/kapsel/holding:33
 #: ../templates/_profile/kug/_database/edz/circulation:33
 #: ../templates/_profile/kug/_database/inst001/circulation:33
 #: ../templates/_profile/kug/_database/inst302/circulation:29
@@ -2366,6 +2395,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/kapsel/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
@@ -2999,6 +3029,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/kapsel/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
@@ -3733,6 +3764,7 @@ msgstr "Years of publication"
 #: ../templates/_database/ezb/titles_record_html_categories:244
 #: ../templates/_database/gutenberg/titles_record_html_categories:295
 #: ../templates/_database/inst001/titles_record_html_categories:359
+#: ../templates/_database/landschaft/titles_record_html_categories:293
 #: ../templates/_database/openlibrary/titles_record_html_categories:264
 #: ../templates/_database/wikisource_de/titles_record_html_categories:293
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:304
@@ -3750,6 +3782,7 @@ msgstr "Years of publication"
 #: ../templates/_profile/kug/_database/usbhwa/titles_record_html_categories:382
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:382
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:382
+#: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:293
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:382
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:325
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:317
@@ -3786,7 +3819,10 @@ msgstr "Advanced search mask"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:131
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_advanced:38
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:68
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:126
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:126
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:116
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:131
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_advanced:38
@@ -4289,6 +4325,9 @@ msgstr "French"
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:76
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:2
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:77
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:77
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:2
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:72
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query:76
@@ -4612,6 +4651,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:124
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:129
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:129
@@ -4642,6 +4682,8 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:132
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:134
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:136
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:141
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:161
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:137
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:143
 #: ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query:132
@@ -4960,6 +5002,7 @@ msgstr "Import-Settings"
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/kapsel/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
@@ -5262,6 +5305,8 @@ msgstr "Info"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:31
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:33
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:22
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:31
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/kempis/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:33
@@ -5322,6 +5367,7 @@ msgstr "Information about this library"
 #: ../templates/_profile/kug/_database/openlibrary/persons_record_html:69
 #: ../templates/_profile/kug/_database/wikisource_de/persons_record_html:69
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:91
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:5
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:5
 #: ../templates/_view/richter/cartitems_html_simple:42
 #: ../templates/_view/richter/classifications_record_html:67
@@ -5433,6 +5479,7 @@ msgstr "Interactive tutorial"
 msgid "Interne/Externe Aufrufe"
 msgstr "Number of internal/external requests"
 
+#: ../templates/_database/kapsel/holding:33
 #: ../templates/_profile/kug/_database/inst404abklatsch/holding:17
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/holding:2
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:221
@@ -5447,6 +5494,7 @@ msgstr "Inventory number"
 #: ../templates/_database/ezb/titles_record_html_categories:243
 #: ../templates/_database/gutenberg/titles_record_html_categories:294
 #: ../templates/_database/inst001/titles_record_html_categories:358
+#: ../templates/_database/landschaft/titles_record_html_categories:292
 #: ../templates/_database/openlibrary/titles_record_html_categories:263
 #: ../templates/_database/wikisource_de/titles_record_html_categories:292
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:303
@@ -5464,6 +5512,7 @@ msgstr "Inventory number"
 #: ../templates/_profile/kug/_database/usbhwa/titles_record_html_categories:381
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:381
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:381
+#: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:292
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:381
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:324
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:316
@@ -5607,7 +5656,15 @@ msgstr "Yes"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:25
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:74
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:76
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:42
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:44
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:117
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_databases_record_html:61
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:181
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:12
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:25
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:137
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_databases_record_html:61
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:30
@@ -5664,6 +5721,7 @@ msgstr "Year"
 #: ../templates/_database/einbaende/titles_record_html:100
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:100
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:14
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:14
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:14
 #: ../templates/search_title_field:14 ../templates/titles_record_html:100
 msgid "Jahr bis"
@@ -5672,6 +5730,7 @@ msgstr "Year to"
 #: ../templates/_database/einbaende/titles_record_html:99
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:99
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:13
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:13
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:13
 #: ../templates/search_title_field:13 ../templates/titles_record_html:99
 msgid "Jahr von"
@@ -5805,6 +5864,8 @@ msgstr "Digital card catalog (faculty of arts)"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:17
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:4
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:174
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:17
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:4
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:176
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:174
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:174
@@ -6073,6 +6134,7 @@ msgstr "Connectors"
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/kapsel/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
@@ -6118,10 +6180,16 @@ msgstr "Corporate Bodies"
 msgid "Körperschafts-Information: %1 in Katalog %2"
 msgstr "Information about corporate body: %1 in catalog %2"
 
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_databases_record_html:62
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:35
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:37
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_person_html:51
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_person_html:70
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:18
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:28
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:6
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:97
 msgid "Künstler"
 msgstr "Artist"
 
@@ -6532,6 +6600,8 @@ msgstr "Lists sharing titles"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:16
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:27
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:183
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:16
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:27
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:185
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:183
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:183
@@ -6559,6 +6629,8 @@ msgstr "Literature list"
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:62
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:64
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:62
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:64
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:76
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:76
@@ -6629,6 +6701,7 @@ msgstr "Local"
 #: ../templates/_database/ezb/titles_record_html_categories:242
 #: ../templates/_database/gutenberg/titles_record_html_categories:293
 #: ../templates/_database/inst001/titles_record_html_categories:357
+#: ../templates/_database/landschaft/titles_record_html_categories:291
 #: ../templates/_database/openlibrary/titles_record_html_categories:262
 #: ../templates/_database/wikisource_de/titles_record_html_categories:291
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:302
@@ -6646,6 +6719,7 @@ msgstr "Local"
 #: ../templates/_profile/kug/_database/usbhwa/titles_record_html_categories:380
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:380
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:380
+#: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:291
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:380
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:323
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:315
@@ -6760,6 +6834,8 @@ msgstr "Type of media"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:10
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:22
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:179
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:10
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:22
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:181
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:179
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:179
@@ -6965,6 +7041,8 @@ msgstr "Collect"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:58
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:56
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:58
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:51
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:51
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:41
@@ -7473,6 +7551,8 @@ msgstr "Search user"
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:66
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:50
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:52
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:50
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:52
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:64
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:66
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:64
@@ -7832,6 +7912,14 @@ msgstr "Person/Corporate Body"
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:118
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:79
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:81
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_databases_record_html:62
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_html:59
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:35
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:37
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:97
+#: ../templates/_profile/sammlungen/_view/kapsel/subnavigation:30
+#: ../templates/_profile/sammlungen/_view/kapsel/subnavigation:32
+#: ../templates/_profile/sammlungen/_view/kapsel/titles_fields_record_html:17
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:25
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:27
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:17
@@ -8329,6 +8417,10 @@ msgstr "Region/Tool"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:39
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/titles_fields_record_html:55
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:36
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:38
+#: ../templates/_profile/sammlungen/_view/kapsel/subnavigation:22
+#: ../templates/_profile/sammlungen/_view/kapsel/titles_fields_record_html:46
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:22
@@ -8504,6 +8596,9 @@ msgstr "# of titles"
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:128
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:89
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:91
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:28
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:30
+#: ../templates/_profile/sammlungen/_view/kapsel/titles_fields_record_html:20
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:116
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:118
 #: ../templates/_profile/sammlungen/_view/pruessen/subnavigation:67
@@ -8547,6 +8642,11 @@ msgstr "Informatio about subject heading: %1 in catalog %2"
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:115
 #: ../templates/_profile/kug/searchforms_record_query:115
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:117
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_databases_record_html:61
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_html:59
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:107
+#: ../templates/_profile/sammlungen/_view/kapsel/subnavigation:25
+#: ../templates/_profile/sammlungen/_view/kapsel/subnavigation:27
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:108
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/searchforms_record_query:117
@@ -9105,6 +9205,7 @@ msgstr "Library-Code"
 #: ../templates/_database/einbaende/titlist_item_html_short:240
 #: ../templates/_database/inst001/circulation:33
 #: ../templates/_database/inst001/holding:17
+#: ../templates/_database/kapsel/holding:33
 #: ../templates/_database/openlibrary/titlist_item_html_short:227
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:226
 #: ../templates/_profile/kug/_database/edz/circulation:33
@@ -9154,6 +9255,7 @@ msgstr "Library-Code"
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:221
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:125
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:117
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:23
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:114
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:23
 #: ../templates/_profile/sammlungen/searchforms_record_query:157
@@ -9286,6 +9388,8 @@ msgstr "Language icon for %1"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:11
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:24
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:180
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:11
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:24
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:182
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:180
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:180
@@ -9312,6 +9416,7 @@ msgstr "City"
 
 #: ../templates/_database/inst001/circulation:33
 #: ../templates/_database/inst001/holding:17
+#: ../templates/_database/kapsel/holding:33
 #: ../templates/_profile/kug/_database/edz/circulation:33
 #: ../templates/_profile/kug/_database/edz/holding:17
 #: ../templates/_profile/kug/_database/inst001/circulation:33
@@ -9357,6 +9462,7 @@ msgstr "Location"
 #: ../templates/_database/ezb/titles_record_html_categories:241
 #: ../templates/_database/gutenberg/titles_record_html_categories:292
 #: ../templates/_database/inst001/titles_record_html_categories:356
+#: ../templates/_database/landschaft/titles_record_html_categories:290
 #: ../templates/_database/openlibrary/titles_record_html_categories:261
 #: ../templates/_database/wikisource_de/titles_record_html_categories:290
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:301
@@ -9374,6 +9480,7 @@ msgstr "Location"
 #: ../templates/_profile/kug/_database/usbhwa/titles_record_html_categories:379
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:379
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:379
+#: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:290
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:379
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:314
@@ -9458,8 +9565,13 @@ msgstr "Edit information about location"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:36
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_advanced:37
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/titles_fields_record_html:54
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_databases_record_html:37
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_html:37
+#: ../templates/_profile/sammlungen/_view/kapsel/titles_fields_record_html:45
 #: ../templates/_profile/sammlungen/_view/kempis/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_corporatebody_html:48
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_databases_record_html:37
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_html:37
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_subject_html:48
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_year_html:48
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:51
@@ -9658,6 +9770,10 @@ msgstr "Search request"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:69
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:71
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_html:58
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:69
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:71
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:83
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:85
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:58
@@ -9735,8 +9851,12 @@ msgstr "Search for journals"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:128
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:136
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:123
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:124
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:123
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:124
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:161
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:113
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:128
@@ -9803,6 +9923,8 @@ msgstr "Search help"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:51
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:53
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:46
+#: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:36
@@ -10505,6 +10627,7 @@ msgid "T0331-inst404abklatsch"
 msgstr "Short title"
 
 #: ../templates/_database/landschaft/visible_categories_title:20
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:87
 msgid "T0331-landschaft"
 msgstr "Title of object"
 
@@ -13676,6 +13799,8 @@ msgstr "Common numbering"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:15
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:26
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:182
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:15
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:26
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:184
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:182
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:182
@@ -13871,6 +13996,7 @@ msgstr "Hint: Digital Card Catalog"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:89
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:111
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:305
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:3
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:3
 #: ../templates/_profile/usb/litlists_record_include:42
 #: ../templates/_view/richter/cartitems_html_full:26
@@ -14002,6 +14128,7 @@ msgstr "Title list"
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:85
 #: ../templates/_profile/kug/searchforms_record_query:85
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:87
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:84
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/searchforms_record_query:87
@@ -14029,8 +14156,14 @@ msgstr "Top 20"
 
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_corporatebody_html:51
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_corporatebody_html:70
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_databases_record_html:63
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:42
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:44
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:19
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:29
+#: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:7
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:30
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:32
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:20
@@ -14994,7 +15127,11 @@ msgstr "Cloud of most frequently used tags"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_databases_record_html:38
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:38
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_subject_html:49
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_databases_record_html:38
+#: ../templates/_profile/sammlungen/_view/kapsel/clouds_html:38
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_corporatebody_html:49
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_databases_record_html:38
+#: ../templates/_profile/sammlungen/_view/landschaft/clouds_html:38
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_subject_html:49
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_year_html:49
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_corporatebody_html:49
@@ -15062,6 +15199,10 @@ msgstr ""
 #: ../templates/_profile/kug/searchforms_record_query:236
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:220
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:224
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:129
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:133
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:149
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:153
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:134
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:131
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:135
@@ -15374,6 +15515,8 @@ msgstr "ordered from supplier"
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:259
 #: ../templates/_profile/kug/searchforms_record_query:236
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:224
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:133
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:153
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:134
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:135
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:140
@@ -15612,11 +15755,11 @@ msgstr ""
 msgid "mit frei zugänglichen Volltextartikeln"
 msgstr "freely accessible articles"
 
-#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:315
+#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:316
 msgid "nach 1. Ikonogr. Schlagwort"
 msgstr "by 1st iconogr. subject heading"
 
-#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:267
+#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:340
 msgid "nach 2. Ikonogr. Schlagwort"
 msgstr "by 2nd iconogr. subject heading"
 
@@ -15640,7 +15783,7 @@ msgstr "by binding"
 
 #: ../templates/_profile/kug/search_facet:317
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:291
-#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:291
+#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:364
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:293
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:291
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:265
@@ -15669,14 +15812,14 @@ msgstr "by corporate body"
 msgid "nach Katalog"
 msgstr "by catalog"
 
-#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:387
+#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:242
 msgid "nach Künstler"
 msgstr "by artist"
 
 #: ../templates/_profile/kug/search_facet:389
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:363
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:363
-#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:363
+#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:412
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:365
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:328
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:363
@@ -15774,7 +15917,7 @@ msgstr "by tag name"
 #: ../templates/_profile/kug/search_facet:365
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:339
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:339
-#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:339
+#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:388
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:341
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:304
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:339
@@ -15803,13 +15946,13 @@ msgstr "by title"
 msgid "nach Titeln"
 msgstr "by titles"
 
-#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:411
+#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:266
 msgid "nach Topogr. Schlagwort"
 msgstr "by topogr. subject heading"
 
 #: ../templates/_profile/kug/search_facet:269
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:243
-#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:243
+#: ../templates/_profile/sammlungen/_view/landschaft/search_facet:292
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:245
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:208
 #: ../templates/_profile/sammlungen/search_facet:243
@@ -15939,6 +16082,7 @@ msgstr "private"
 #: ../templates/_profile/sammlungen/_view/artmann/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/dante/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/kapsel/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/lefort/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
@@ -15976,6 +16120,8 @@ msgstr "etc."
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:255
 #: ../templates/_profile/kug/searchforms_record_query:232
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:220
+#: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:129
+#: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:149
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:131
 #: ../templates/_profile/sammlungen/_view/richter/titles_fields_record_mobile:36
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:136
@@ -16062,6 +16208,18 @@ msgstr "Overview"
 #: ../templates/users_navigation:93 ../templates/users_navigation:95
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#, fuzzy
+#~ msgid "1. Topogr. Schlagwort"
+#~ msgstr "Topogr. subject heading"
+
+#, fuzzy
+#~ msgid "2. Topogr. Schlagwort"
+#~ msgstr "Topogr. subject heading"
+
+#, fuzzy
+#~ msgid "T0331-kapsel"
+#~ msgstr "Method"
 
 #~ msgid "Meistgenutzte Kataloge"
 #~ msgstr "Most used catalogs"

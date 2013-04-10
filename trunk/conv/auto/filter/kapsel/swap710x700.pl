@@ -1,20 +1,28 @@
 #!/usr/bin/perl
 
+use warnings;
+use strict;
+
 use JSON::XS;
 
 while (<>){
     my $title_ref = decode_json $_;
 
-    my $subject        = $title_ref->{'0710'};
-    my $classification = $title_ref->{'0700'};
+    my $subject        = (defined $title_ref->{'0710'})?$title_ref->{'0710'}:undef;
+    my $classification = (defined $title_ref->{'0700'})?$title_ref->{'0700'}:undef;
 
     if (defined $classification){
         $title_ref->{'0710'} = $classification;
-        $title_ref->{'0700'} = $subject if (defined $subject);
+        if (defined $subject){
+            $title_ref->{'0700'} = $subject;
+        }
+        else {
+            delete $title_ref->{'0700'};
+        }
     }
     elsif (defined $subject){
-        $title_ref->{'0710'} = $classification if (defined $classification);
         $title_ref->{'0700'} = $subject;
+        delete $title_ref->{'0700'};
     }
     print encode_json $title_ref, "\n";
 }

@@ -149,7 +149,7 @@ print_startpage();
 
 print_typepage();
 
-print_yearpage();
+#print_yearpage();
 
 print_collection($month,$year);
 
@@ -409,7 +409,7 @@ SQL1
 #            $recordlist->load_brief_records;
             
 #            $logger->debug("Recordlist ".YAML::Dump($recordlist));
-            $recordlist->sort({ type => "title", order => "up"})  if ($recordlist_all_types->get_size() > 1);
+            $recordlist->sort({ type => "title", order => "asc"})  if ($recordlist_all_types->get_size() > 1);
             
             my $outputpath = $acq_config->{document_root_path}.$acq_config->{this_uri}."/$branch/$type/$year/$month/";
             my $outputbasename = "index.html";

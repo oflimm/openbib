@@ -112,7 +112,7 @@
   >Dieser Katalog</a></li>
 
  <li class="parent_first" >
-   <a style="padding-left:25px;" href="[% acq_config.this_uri %]/[% branch %]" title="F&auml;cher&uuml;bersicht"
+   <a style="padding-left:25px;" href="[% acq_config.this_uri %]/[% branch %]/" title="F&auml;cher&uuml;bersicht"
   >F&auml;cher&uuml;bersicht</a></li>
 
  <li class="parent_first" >

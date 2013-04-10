@@ -166,8 +166,8 @@
 Auf dieser Seite finden Sie die Neuerwerbungslisten als
 
 <ul>
-<li><a href="[% acq_config.this_uri %]/00">nach Fachgebieten aufgeteilte Listen</a></li>
-<li><a href="[% acq_config.this_uri %]/[% branch %]/00">monatliche Gesamtliste aller Neuerwerbungen</a></li>
+<li><a href="[% acq_config.this_uri %]/00/">nach Fachgebieten aufgeteilte Listen</a></li>
+<li><a href="[% acq_config.this_uri %]/[% branch %]/00/">monatliche Gesamtliste aller Neuerwerbungen</a></li>
 </ul>
 
 <p>

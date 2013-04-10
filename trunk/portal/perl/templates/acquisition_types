@@ -180,7 +180,7 @@ a.active_item {
 
 <ul>
 [% FOREACH type IN types_ordered %]
-<li><a href="[% acq_config.this_uri %]/00/[% type %]">[%   type_desc.${type}.1 %]</a></li>
+<li><a href="[% acq_config.this_uri %]/00/[% type %]/">[%   type_desc.${type}.1 %]</a></li>
 [% END %]
 </ul>
 

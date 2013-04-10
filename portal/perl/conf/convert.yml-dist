@@ -190,6 +190,10 @@ convtab:
         index:
           'subject': 1
           'freesearch': 1
+      '0840':         # Verweisform
+        index:
+          'subject': 1
+          'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
         index:
           'subject': 1

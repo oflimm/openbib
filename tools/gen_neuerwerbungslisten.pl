@@ -56,6 +56,7 @@ use DBI;
 use Encode qw/decode_utf8 encode decode/;
 use Log::Log4perl qw(get_logger :levels);
 use Template;
+use URI::Escape;
 use YAML::Syck;
 
 if ($#ARGV < 0){
@@ -192,6 +193,10 @@ sub print_startpage {
     });
     
     my $ttdata = {
+	uri_escape => sub {
+	    my $string = shift;
+	    return uri_escape_utf8($string);
+	},
         branch     => '00',
         dbinfo     => $dbinfotable,
         acq_config => $acq_config,
@@ -242,6 +247,10 @@ sub print_yearpage {
     });
     
     my $ttdata = {
+	uri_escape => sub {
+	    my $string = shift;
+	    return uri_escape_utf8($string);
+	},
         dbinfo     => $dbinfotable,
         acq_config => $acq_config,
         config     => $config,
@@ -291,6 +300,10 @@ sub print_typepage {
     });
     
     my $ttdata = {
+	uri_escape => sub {
+	    my $string = shift;
+	    return uri_escape_utf8($string);
+	},
         type_desc     => $type_desc_ref,
         types_ordered => $types_ordered_ref,
         dbinfo        => $dbinfotable,
@@ -419,6 +432,10 @@ SQL1
             });
 
             my $ttdata = {
+		uri_escape => sub {
+		    my $string = shift;
+		    return uri_escape_utf8($string);
+		},
                 month      => $month,
                 year       => $year,
                 branch     => $branch,
@@ -457,7 +474,7 @@ SQL1
 
 #        $recordlist_all_types->load_brief_records;
         
-        $recordlist_all_types->sort({ type => "title", order => "up"}) if ($recordlist_all_types->get_size() > 1);
+        $recordlist_all_types->sort({ type => "title", order => "asc"}) if ($recordlist_all_types->get_size() > 1);
         
         my $template = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -470,6 +487,10 @@ SQL1
         });
 
         my $ttdata = {
+	    uri_escape => sub {
+		my $string = shift;
+		return uri_escape_utf8($string);
+	    },
             month      => $month,
             year       => $year,
             branch     => $branch,
@@ -555,6 +576,10 @@ sub print_indexpages {
     });
     
     my $ttdata = {
+	uri_escape => sub {
+	    my $string = shift;
+	    return uri_escape_utf8($string);
+	},
         branch     => $branch,
         index_info => $index_info_ref,
         type       => '00',
@@ -612,6 +637,10 @@ sub print_indexpages {
        });
     
        my $ttdata = {
+	   uri_escape => sub {
+	       my $string = shift;
+	       return uri_escape_utf8($string);
+	   },
            branch     => $branch,
            index_info => $index_info_ref,
            type       => $type,

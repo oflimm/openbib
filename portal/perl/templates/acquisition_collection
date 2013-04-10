@@ -29,7 +29,8 @@
 
 
 <link rel="stylesheet" type="text/css" href="http://unikatalog.ub.uni-koeln.de/css/style.css" />
-<link rel="stylesheet" type="text/css" href="http://kug.ub.uni-koeln.de/css/_profile/kug/openbib.css" />
+
+<link rel="stylesheet" type="text/css" href="http://unikatalog.ub.uni-koeln.de/css/style_openbib.css" />
 
 <!-- BO headScript_Basic -->
 
@@ -157,12 +158,12 @@
 %]
 
 <style>
-.resultitems {
+.ob-resultitems {
   width: 99%;
   margin-top: 5px;
 }
 
-.resultheader {
+.ob-resultheader {
   width: 96%;
   margin-top: 5px;
 }
@@ -173,23 +174,23 @@
 <h1>[% dbinfo.dbnames.${acq_config.dbname}.full %]</h1>
 
 <p/>
-[%# USE dumper;dumper.dump(dbinfo)%]
 
+<h3>[% IF type == "00" %]<b>Alle F&auml;cher</b>[% ELSE %]<b>Fach:</b> [% type_desc.${type}.1 %][% END %]</h3>
+
+[%# USE dumper;dumper.dump(dbinfo)%]
+[% start_range = 1 %]
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
   <div class="ob-resultheader">
-    <div class="ob-catalogue">
+    <div class="left">
 <b>Neuerwerbungen: [% month_string.${month} %] [% year %]</b>
     </div>
-    <div class="ob-hits">
+    <div class="right">
 [% recordlist.get_size %] [% msg.maketext("Titel") %]
-    </div>
-    <div class="ob-navigation">
-[% IF type == "00" %]<b>Alle F&auml;cher</b>[% ELSE %]<b>Fach:</b> [% type_desc.${type}.1 %][% END %]
     </div>
   </div>
 
-  <div class="ob-resultitems liststyle">
+  <div class="ob-resultitems">
 
 [% FOREACH record IN recordlist.get_records %]
   [% PROCESS common/subtemplate name="acquisition_collection_item_short" %]

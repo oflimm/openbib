@@ -18,12 +18,17 @@
 #######################################################################
 -%]
 <!-- Anfang einzelner Treffer -->
+<!--
+1 [% database %]<br/>
+2 [% type %]<br/>
+3 [% acq_config.type2database.${type} %]<br/>
+-->
 [%-
 
      database        = record.database ;
 
-     IF acq_config.type2dbname ;
-          database   = acq_config.type2dbname ;
+     IF acq_config.type2database.${type} ;
+          database   = acq_config.type2database.${type} ;
      END ;
 
      path_prefix     = 'http://kug.ub.uni-koeln.de/portal/kug';

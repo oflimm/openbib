@@ -26,6 +26,11 @@
      item   = record.get_fields;
      listid = record.listid;
 
+     # 1. Ueberordnung?
+     IF item.${'T5005'}.first.content;
+        super = from_json(item.${'T5005'}.first.content);
+     END;
+
      # Verfasser konstruieren
      persons = [] ;
 
@@ -133,6 +138,47 @@
        person = "$person [...]" ;
      END ;
 
+     # Keine Person, dann aus Ueberordnung
+     IF super && NOT person ;
+       FOREACH part IN super.${'0100'} ;
+         thislength = part.content.length ;
+         IF (thislength+personslength) < config.get('maxlength_person') ;
+           searchterm    = uri_escape(part.content);
+           searchprefix  = config.get('searchfield').personstring.prefix;
+
+           globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+
+           persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           personslength = personslength+thislength ;
+         ELSE ;
+           truncatepers = 1 ;
+         END ;
+       END ;
+       FOREACH part IN super.${'0101'}  ;
+         thiscontent = part.content;
+         IF part.supplement ;
+            thiscontent = "${thiscontent} ${part.supplement}" ;
+         END ;
+         thislength = part.content.length ;
+         IF (thislength+personslength) < config.get('maxlength_person') ;
+           searchterm    = uri_escape(part.content);
+           searchprefix  = config.get('searchfield').personstring.prefix;
+
+           globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+
+           persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           personslength = personslength+thislength ;
+         ELSE ;
+           truncatepers = 1 ;
+         END ;
+       END ;
+
+       person = persons.join(' ; ') ;
+       IF truncatepers ;
+         person = "$person [...]" ;
+       END ;
+     END ;
+
      # Titel konstruieren
      title = item.${'T0331'}.first.content;
      IF item.${'T0310'}.first.content;
@@ -150,9 +196,9 @@
      END;
 
      # Einbeziehung des ersten Gesamttitels T5005
-     IF title && item.${'T5005'}.first.content;
-        series_title = item.${'T5005'}.first.content;
-        title = "${title} [ ${series_title} ]";
+     IF title && super;
+        super_title = super.${'0331'}.first.content;
+        title = "${super_title} / ${title}";
      END;
 
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?

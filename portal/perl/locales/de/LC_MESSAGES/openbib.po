@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-04-09 15:39+0200\n"
+"PO-Revision-Date: 2013-04-16 16:02+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -105,8 +105,8 @@ msgstr "${category}"
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:253
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:284
 #: ../templates/_profile/sammlungen/_view/richter/titles_fields_html:61
-#: ../templates/_profile/sammlungen/titles_record_html_categories:269
-#: ../templates/_profile/sammlungen/titles_record_html_categories:300
+#: ../templates/_profile/sammlungen/titles_record_html_categories:279
+#: ../templates/_profile/sammlungen/titles_record_html_categories:310
 #: ../templates/_profile/usb/libraries_include:62
 #: ../templates/_profile/usb/resource_title_html_categories:237
 #: ../templates/_profile/usb/titles_record_html_categories:240
@@ -1006,7 +1006,7 @@ msgstr "An"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
-#: ../templates/_profile/sammlungen/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/titlist_item_html_short:280
 #: ../templates/_view/richter/cartitems_html_short:144
 #: ../templates/_view/richter/titlist_item_html_short:233
 #: ../templates/cartitems_html_short:143 ../templates/info_help:969
@@ -1016,7 +1016,7 @@ msgstr "An"
 #: ../templates/titles_record_html_actions:21
 #: ../templates/titles_record_include:350
 #: ../templates/titles_record_include:351
-#: ../templates/titlist_item_html_short:247
+#: ../templates/titlist_item_html_short:253
 msgid "An BibSonomy senden"
 msgstr "An BibSonomy senden"
 
@@ -2025,13 +2025,13 @@ msgstr "Beschreibung"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:313
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:123
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:289
-#: ../templates/_profile/sammlungen/titles_record_html_categories:305
+#: ../templates/_profile/sammlungen/titles_record_html_categories:315
 #: ../templates/_profile/usb/circulation:106
 #: ../templates/_profile/usb/circulation:31
 #: ../templates/_profile/usb/holding:19
 #: ../templates/_view/richter/cartitems_html_as_text:43
 #: ../templates/_view/richter/litlists_record_html_as_text:26
-#: ../templates/cartitems_html_as_text:43 ../templates/circulation:83
+#: ../templates/cartitems_html_as_text:43 ../templates/circulation:85
 #: ../templates/circulation_mobile:76
 #: ../templates/litlists_record_html_as_text:26
 #: ../templates/titles_record_html_categories:305
@@ -3790,8 +3790,8 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:198
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:185
 #: ../templates/_profile/sammlungen/search_facet:198
-#: ../templates/_profile/sammlungen/titlist_item_html_short:228
-#: ../templates/_profile/sammlungen/titlist_item_html_short:231
+#: ../templates/_profile/sammlungen/titlist_item_html_short:282
+#: ../templates/_profile/sammlungen/titlist_item_html_short:285
 #: ../templates/_view/richter/cartitems_html_actions:145
 #: ../templates/_view/richter/cartitems_html_short:145
 #: ../templates/_view/richter/titlist_item_html_short:235
@@ -3801,8 +3801,8 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/titles_popular_by_database_html:298
 #: ../templates/titles_popular_by_database_html:301
 #: ../templates/titles_popular_html:293 ../templates/titles_popular_html:296
-#: ../templates/titlist_item_html_short:249
-#: ../templates/titlist_item_html_short:252
+#: ../templates/titlist_item_html_short:255
+#: ../templates/titlist_item_html_short:258
 #: ../templates/users_litlists_html:110
 #: ../templates/users_searchprofiles_html:93
 msgid "Entfernen"
@@ -3911,7 +3911,7 @@ msgstr "Erscheinungsjahre"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:325
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:317
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:293
-#: ../templates/_profile/sammlungen/titles_record_html_categories:309
+#: ../templates/_profile/sammlungen/titles_record_html_categories:319
 #: ../templates/_view/richter/cartitems_html_as_text:47
 #: ../templates/_view/richter/litlists_record_html_as_text:30
 #: ../templates/cartitems_html_as_text:47
@@ -3998,7 +3998,7 @@ msgstr "Erweiterte Suche"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:123
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:123
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:123
-#: ../templates/_profile/usb/circulation:106 ../templates/circulation:83
+#: ../templates/_profile/usb/circulation:106 ../templates/circulation:85
 #: ../templates/circulation_mobile:76
 msgid "Erwerbungsstatus"
 msgstr "Erwerbungsstatus"
@@ -4163,7 +4163,7 @@ msgstr ""
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
-#: ../modules/OpenBib/Handler/Apache.pm:1031
+#: ../modules/OpenBib/Handler/Apache.pm:1042
 #: ../modules/OpenBib/RecordList/Title.pm:357
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
@@ -5407,7 +5407,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
-#: ../templates/_profile/sammlungen/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/titlist_item_html_short:280
 #: ../templates/_view/richter/titlist_item_html_short:233
 #: ../templates/reviews_edit:199
 #: ../templates/titles_popular_by_database_html:296
@@ -5416,7 +5416,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/titles_record_html_actions:22
 #: ../templates/titles_record_include:352
 #: ../templates/titles_record_include:353
-#: ../templates/titlist_item_html_short:247
+#: ../templates/titlist_item_html_short:253
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
@@ -5720,7 +5720,7 @@ msgstr "Inventarnummer"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:324
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:316
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:292
-#: ../templates/_profile/sammlungen/titles_record_html_categories:308
+#: ../templates/_profile/sammlungen/titles_record_html_categories:318
 #: ../templates/_view/richter/cartitems_html_as_text:46
 #: ../templates/_view/richter/litlists_record_html_as_text:29
 #: ../templates/cartitems_html_as_text:46
@@ -6088,7 +6088,7 @@ msgstr "Kartenkataloge der Philosophischen Fakultät"
 #: ../templates/titles_popular_by_database_html:280
 #: ../templates/titles_popular_html:278
 #: ../templates/titles_popular_include:157 ../templates/titles_record_html:103
-#: ../templates/titles_record_html:90 ../templates/titlist_item_html_short:231
+#: ../templates/titles_record_html:90 ../templates/titlist_item_html_short:237
 #: ../templates/titlist_item_mobile_short:217
 msgid "Katalog"
 msgstr "Katalog"
@@ -6246,7 +6246,7 @@ msgstr "Keine"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:111
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:111
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:111
-#: ../templates/circulation:71 ../templates/circulation_mobile:64
+#: ../templates/circulation:73 ../templates/circulation_mobile:64
 msgid "Keine Aktion m&ouml;glich"
 msgstr "Keine Aktion m&ouml;glich"
 
@@ -6417,12 +6417,12 @@ msgstr "Künstler"
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:240
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:243
-#: ../templates/_profile/sammlungen/titlist_item_html_short:228
-#: ../templates/_profile/sammlungen/titlist_item_html_short:231
+#: ../templates/_profile/sammlungen/titlist_item_html_short:282
+#: ../templates/_profile/sammlungen/titlist_item_html_short:285
 #: ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144
 #: ../templates/titles_record_include:512
-#: ../templates/titlist_item_html_short:249
-#: ../templates/titlist_item_html_short:252
+#: ../templates/titlist_item_html_short:255
+#: ../templates/titlist_item_html_short:258
 msgid "L&ouml;schen"
 msgstr "L&ouml;schen"
 
@@ -6932,7 +6932,7 @@ msgstr "Lokal"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:323
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:315
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:291
-#: ../templates/_profile/sammlungen/titles_record_html_categories:307
+#: ../templates/_profile/sammlungen/titles_record_html_categories:317
 #: ../templates/_view/richter/cartitems_html_as_text:45
 #: ../templates/_view/richter/litlists_record_html_as_text:28
 #: ../templates/cartitems_html_as_text:45
@@ -7232,10 +7232,10 @@ msgstr "Meldung"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
-#: ../templates/_profile/sammlungen/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/titlist_item_html_short:280
 #: ../templates/titles_popular_by_database_html:296
 #: ../templates/titles_popular_html:291
-#: ../templates/titlist_item_html_short:247
+#: ../templates/titlist_item_html_short:253
 msgid "Merken"
 msgstr "Merken"
 
@@ -7650,7 +7650,7 @@ msgstr "Neuer Tagname"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:120
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:120
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:120
-#: ../templates/_profile/usb/circulation:103 ../templates/circulation:80
+#: ../templates/_profile/usb/circulation:103 ../templates/circulation:82
 #: ../templates/circulation_mobile:73
 msgid "Neuerwerbung"
 msgstr "Neuerwerbung"
@@ -9422,7 +9422,7 @@ msgstr "Sie sind erfolgreich registriert"
 msgid "Sie sind nicht authentifiziert."
 msgstr "Sie sind nicht authentifiziert."
 
-#: ../modules/OpenBib/Handler/Apache.pm:1458
+#: ../modules/OpenBib/Handler/Apache.pm:1469
 msgid "Sie sind nicht authorisiert"
 msgstr "Sie sind nicht authorisiert"
 
@@ -9518,7 +9518,7 @@ msgstr "Sigel"
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:114
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:23
 #: ../templates/_profile/sammlungen/searchforms_record_query:157
-#: ../templates/_profile/sammlungen/titlist_item_html_short:221
+#: ../templates/_profile/sammlungen/titlist_item_html_short:275
 #: ../templates/_profile/usb/circulation:31
 #: ../templates/_profile/usb/holding:19
 #: ../templates/_profile/usb/searchforms_record_query:109
@@ -9531,7 +9531,7 @@ msgstr "Sigel"
 #: ../templates/searchforms_record_query:126
 #: ../templates/titles_popular_by_database_html:291
 #: ../templates/titles_popular_html:286
-#: ../templates/titlist_item_html_short:242
+#: ../templates/titlist_item_html_short:248
 #: ../templates/users_circulations_borrows_html:67
 #: ../templates/users_circulations_borrows_ics:117
 #: ../templates/users_circulations_orders_html:63
@@ -9747,7 +9747,7 @@ msgstr "Standort"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:314
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:290
-#: ../templates/_profile/sammlungen/titles_record_html_categories:306
+#: ../templates/_profile/sammlungen/titles_record_html_categories:316
 #: ../templates/_view/richter/cartitems_html_as_text:44
 #: ../templates/_view/richter/litlists_record_html_as_text:27
 #: ../templates/cartitems_html_as_text:44
@@ -13998,7 +13998,7 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:114
 #: ../templates/_profile/usb/visible_categories_title:117
-#: ../templates/visible_categories_title:120
+#: ../templates/visible_categories_title:121
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
@@ -14009,6 +14009,10 @@ msgstr "IDs Gesamttitel"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:120
 msgid "T5004"
 msgstr "IDs Bände/Stücke"
+
+#: ../templates/visible_categories_title:120
+msgid "T5005"
+msgstr "Gesamttitel"
 
 #: ../templates/_database/inst001/visible_categories_title:116
 #: ../templates/_database/openlibrary/visible_categories_title:120
@@ -14037,7 +14041,7 @@ msgstr "IDs Bände/Stücke"
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:115
 #: ../templates/_profile/usb/visible_categories_title:118
-#: ../templates/visible_categories_title:121
+#: ../templates/visible_categories_title:122
 msgid "T5100"
 msgstr "Zählung"
 
@@ -15748,7 +15752,7 @@ msgstr "aufsteigend"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:135
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:135
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:135
-#: ../templates/_profile/usb/circulation:122 ../templates/circulation:95
+#: ../templates/_profile/usb/circulation:122 ../templates/circulation:97
 #: ../templates/circulation_mobile:88
 msgid "ausgeschieden"
 msgstr "ausgeschieden"
@@ -15778,7 +15782,7 @@ msgstr "ausleihbar"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:133
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:133
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:133
-#: ../templates/_profile/usb/circulation:120 ../templates/circulation:93
+#: ../templates/_profile/usb/circulation:120 ../templates/circulation:95
 #: ../templates/circulation_mobile:86
 msgid "beim Lieferanten reklamiert"
 msgstr "beim Lieferanten reklamiert"
@@ -15804,7 +15808,7 @@ msgstr "beim Lieferanten reklamiert"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:131
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:131
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:131
-#: ../templates/_profile/usb/circulation:118 ../templates/circulation:91
+#: ../templates/_profile/usb/circulation:118 ../templates/circulation:93
 #: ../templates/circulation_mobile:84
 msgid "beim Lieferanten storniert"
 msgstr "beim Lieferanten storniert"
@@ -15830,7 +15834,7 @@ msgstr "beim Lieferanten storniert"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:127
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:127
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:127
-#: ../templates/_profile/usb/circulation:114 ../templates/circulation:87
+#: ../templates/_profile/usb/circulation:114 ../templates/circulation:89
 #: ../templates/circulation_mobile:80
 msgid "bestellt beim Lieferanten"
 msgstr "bestellt beim Lieferanten"
@@ -15922,7 +15926,7 @@ msgstr "entliehen"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:129
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:129
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:129
-#: ../templates/_profile/usb/circulation:116 ../templates/circulation:89
+#: ../templates/_profile/usb/circulation:116 ../templates/circulation:91
 #: ../templates/circulation_mobile:82
 msgid "im Gesch&auml;ftsgang"
 msgstr "im Gesch&auml;ftsgang"

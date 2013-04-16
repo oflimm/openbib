@@ -55,12 +55,11 @@ use OpenBib::Record::Subject;
 use OpenBib::Record::Title;
 use OpenBib::Statistics;
 
-my ($database,$reducemem,$addsuperpers,$addsupertitle,$addmediatype,$incremental,$logfile,$loglevel,$count,$help);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile,$loglevel,$count,$help);
 
 &GetOptions(
     "reduce-mem"     => \$reducemem,
     "add-superpers"  => \$addsuperpers,
-    "add-supertitle" => \$addsupertitle,
     "add-mediatype"  => \$addmediatype,
     "incremental"    => \$incremental,
     "database=s"     => \$database,
@@ -104,7 +103,6 @@ my %listitemdata_person_date    = ();
 my %listitemdata_corporatebody  = ();
 my %listitemdata_classification = ();
 my %listitemdata_subject        = ();
-my %listitemdata_title         = ();
 my %listitemdata_holding        = ();
 my %listitemdata_superid        = ();
 my %listitemdata_popularity     = ();
@@ -145,9 +143,6 @@ if ($reducemem) {
  
     tie %listitemdata_subject,        'MLDBM', "./listitemdata_subject.db"
         or die "Could not tie listitemdata_subject.\n";
-
-    tie %listitemdata_title,        'MLDBM', "./listitemdata_title.db"
-        or die "Could not tie listitemdata_title.\n";
 
     tie %listitemdata_holding,        'MLDBM', "./listitemdata_holding.db"
         or die "Could not tie listitemdata_holding.\n";
@@ -416,7 +411,22 @@ foreach my $type (keys %{$stammdateien_ref}) {
     close(IN);
 }
 
+#######################
+
+$stammdateien_ref->{holding} = {
+    infile             => "meta.holding",
+    outfile            => "holding.dump",
+    outfile_fields     => "holding_fields.dump",
+    inverted_ref       => $conv_config->{inverted_holding},
+};
+
+$logger->info("Bearbeite meta.holding");
+
+open(IN ,                   "<:utf8","meta.holding")               || die "IN konnte nicht geoeffnet werden";
+open(OUT,                   ">:utf8","holding.dump")               || die "OUT konnte nicht geoeffnet werden";
+open(OUTFIELDS,             ">:utf8","holding_fields.dump")        || die "OUTFIELDS konnte nicht geoeffnet werden";
 open(OUTTITLETITLE,         ">:utf8","title_title.dump")           || die "OUTTITLETITLE konnte nicht geoeffnet werden";
+open(OUTTITLEHOLDING,       ">:utf8","title_holding.dump")         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
 open(OUTTITLEPERSON,        ">:utf8","title_person.dump")          || die "OUTTITLEPERSON konnte nicht geoeffnet werden";
 open(OUTTITLECORPORATEBODY, ">:utf8","title_corporatebody.dump")   || die "OUTTITLECORPORATEBODY konnte nicht geoeffnet werden";
 open(OUTTITLESUBJECT,       ">:utf8","title_subject.dump")         || die "OUTTITLESUBJECT konnte nicht geoeffnet werden";
@@ -425,6 +435,135 @@ open(OUTTITLECLASSIFICATION,">:utf8","title_classification.dump")  || die "OUTTI
 my $id;
 my ($category,$mult,$content);
 
+$count = 1;
+
+my $atime = new Benchmark;
+
+my $titleid;
+my $thisyear = `date +"%Y"`;
+
+while (my $jsonline=<IN>){
+
+    my $record_ref = decode_json $jsonline;
+
+    my $id = $record_ref->{id};
+    
+    # Primaeren Normdatensatz erstellen und schreiben
+    
+    print OUT "$id\n";
+    
+    # Titelid bestimmen
+    
+    my $titleid;
+    
+    if (exists $record_ref->{'0004'} && exists $record_ref->{'0004'}[0] ) {
+        $titleid = $record_ref->{'0004'}[0]{content};
+    }
+    
+    # Verknupefungen
+    if ($titleid && $id) {
+        print OUTTITLEHOLDING "$titleid$id\n";
+    }
+    
+    foreach my $field (keys %{$record_ref}) {
+        next if ($field eq "id" || defined $stammdateien_ref->{holding}{blacklist_ref}{$field} );
+        
+        foreach my $item_ref (@{$record_ref->{$field}}) {
+            next unless ($item_ref->{content});
+            
+            my $contentnorm   = "";
+            if (defined $field && exists $stammdateien_ref->{holding}{inverted_ref}{$field}) {
+                $contentnorm = OpenBib::Common::Util::normalize({
+                    field    => "X$field",
+                    content  => $item_ref->{content},
+                });
+            }
+            
+            if (exists $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}) {
+                foreach my $searchfield (keys %{$stammdateien_ref->{holding}{inverted_ref}{$field}->{index}}) {
+                    my $weight = $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}{$searchfield};
+                    
+                    my $hash_ref = {};
+                    if (defined $indexed_holding{$titleid}){
+                        $hash_ref = $indexed_holding{$titleid};
+                    }
+                    
+                    push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$item_ref->{content}];
+                    
+                    $indexed_holding{$titleid} = $hash_ref;
+                }
+            }
+            
+            if ($id && $field && $item_ref->{content}){
+                $item_ref->{content} = cleanup_content($item_ref->{content});
+                # Abhaengige Feldspezifische Saetze erstellen und schreiben        
+                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
+            }
+        }
+    }
+        
+    # Signatur fuer Kurztitelliste merken
+    
+    if (exists $record_ref->{'0014'} && $titleid) {
+        my $array_ref= [];
+        if (exists $listitemdata_holding{$titleid}){
+            $array_ref = $listitemdata_holding{$titleid};
+        }
+        push @$array_ref, $record_ref->{'0014'}[0]{content};
+        $listitemdata_holding{$titleid}=$array_ref;
+    }
+    
+    # Bestandsverlauf in Jahreszahlen umwandeln
+    if ((exists $record_ref->{'1204'}) && $titleid) {        
+        my $array_ref=[];
+        if (exists $listitemdata_enriched_years{$titleid}){
+            $array_ref = $listitemdata_enriched_years{$titleid};
+        }
+        
+        foreach my $date (split(";",cleanup_content($record_ref->{'1204'}[0]{content}))) {
+            if ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-\s+.*?(\d\d\d\d)/) {
+                my $startyear = $1;
+                my $endyear   = $2;
+                
+                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                for (my $year=$startyear;$year<=$endyear; $year++) {
+                    $logger->debug("Adding year $year");
+                    push @$array_ref, $year;
+                }
+            }
+            elsif ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-/) {
+                my $startyear = $1;
+                my $endyear   = $thisyear;
+                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                for (my $year=$startyear;$year<=$endyear;$year++) {
+                    $logger->debug("Adding year $year");
+                    push @$array_ref, $year;
+                }                
+            }
+            elsif ($date =~/(\d\d\d\d)/) {
+                $logger->debug("Not expanding $date, just adding year $1");
+                push @$array_ref, $1;
+            }
+        }
+
+        $listitemdata_enriched_years{$titleid}=$array_ref;
+    }
+    
+    if ($count % 1000 == 0) {
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $atime      = new Benchmark;
+        $logger->info("$count Exemplarsaetze in $resulttime bearbeitet");
+    }
+    $count++;
+}
+
+close(OUT);
+close(OUTFIELDS);
+close(IN);
 
 $stammdateien_ref->{title} = {
     infile             => "meta.title",
@@ -434,10 +573,8 @@ $stammdateien_ref->{title} = {
     blacklist_ref      => $conv_config->{blacklist_title},
 };
 
-if ($addsuperpers || $addsupertitle) {
-    $logger->info("Option addsuperpers ist aktiviert") if ($addsuperpers);
-    $logger->info("Option addsupertitle ist aktiviert") if ($addsupertitle);
-    
+if ($addsuperpers) {
+    $logger->info("Option addsuperpers ist aktiviert");
     $logger->info("1. Durchgang: Uebergeordnete Titel-ID's finden");
     open(IN ,           "<:utf8","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
 
@@ -453,7 +590,7 @@ if ($addsuperpers || $addsupertitle) {
     }
     close(IN);
     
-    $logger->info("2. Durchgang: Informationen in uebergeordneten Titeln finden");
+    $logger->info("2. Durchgang: Informationen in uebergeordneten Titeln finden und merken");
     open(IN ,           "<:utf8","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
 
     while (my $jsonline=<IN>) {
@@ -461,38 +598,25 @@ if ($addsuperpers || $addsupertitle) {
 
         my $id = $record_ref->{id};
 
-        next unless (defined $listitemdata_superid{$id} || ref  $listitemdata_superid{$id} ne "HASHREF");
+        next unless (exists $listitemdata_superid{$id} && ref  $listitemdata_superid{$id} eq "HASH");
 
-        my @personids=();
-
-        foreach my $personfield (qw/0100 0101 0102 0103/){
-            if (defined $record_ref->{$personfield}){
-                foreach my $item (@{$record_ref->{$personfield}}){
-#                    print encode_json $item,"\n";
-                                    
-                    my $personid = $item->{id};
-                    push @personids, $personid;
+        # Anreichern mit content;
+        foreach my $field ('0100','0101','0102','0103','1800') {
+            if (defined $record_ref->{$field}) {
+                foreach my $item_ref (@{$record_ref->{$field}}) {
+                    my $personid   = $item_ref->{id};
+                    
+                    if (exists $listitemdata_person{$personid}) {
+                        $item_ref->{content} = $listitemdata_person{$personid};
+                    }
+                    else {
+                        $logger->error("PER ID $personid doesn't exist in TITLE ID $id");
+                    }
                 }
             }
         }
 
-        my $this_listitemdata = $listitemdata_superid{$id};
-
-        my $listitemdata_changed = 0;
-        
-        if ($#personids >= 0) {
-            $this_listitemdata->{personid} = \@personids;
-            $listitemdata_changed = 1;
-        }
-
-        if (defined $record_ref->{'0331'}){
-            $this_listitemdata->{title} = $record_ref->{'0331'};
-        }
-
-        if ($listitemdata_changed){
-            $logger->debug("Got information from super title: ".YAML::Dump($this_listitemdata));
-            $listitemdata_superid{$id} = $this_listitemdata;
-        }
+        $listitemdata_superid{$id} = $record_ref;
     }
 
     close(IN);
@@ -509,7 +633,7 @@ my $locationid = $config->get_locationid_of_database($database);
 
 $count = 1;
 
-my $atime = new Benchmark;
+$atime = new Benchmark;
 
 while (my $jsonline=<IN>){
     
@@ -517,8 +641,6 @@ while (my $jsonline=<IN>){
 
     my $id         = $record_ref->{id};
 
-    $listitemdata_title{$id} = 1;
-    
     my $titlecache_ref   = {}; # Inhalte fuer den Titel-Cache
     my $searchengine_ref = {}; # Inhalte fuer die Suchmaschinen
 
@@ -732,13 +854,12 @@ while (my $jsonline=<IN>){
         $listitemdata_enriched_years{$id}=$array_ref;
     }
 
-    # Verknuepfungskategorien bearbeiten
+    # Verknuepfungskategorien bearbeiten    
     if (defined $record_ref->{'0004'}) {
-        
         foreach my $item_ref (@{$record_ref->{'0004'}}) {
             my $target_titleid   = $item_ref->{content};
-            my $source_titleid   = $id;
             my $mult             = $item_ref->{mult};
+            my $source_titleid   = $id;
             my $supplement       = "";
             my $field            = "0004";
             
@@ -757,24 +878,22 @@ while (my $jsonline=<IN>){
                 print OUTTITLETITLE "$field$source_titleid$target_titleid$supplement\n";
             }
 
-            if (defined $listitemdata_superid{$target_titleid} && defined  $listitemdata_superid{$target_titleid}->{title}){
+
+            if (defined $listitemdata_superid{$target_titleid} && %{$listitemdata_superid{$target_titleid}}){
+                # my $title_super = encode_json($listitemdata_superid{$target_titleid});
+
+                # $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
+                # $title_super = cleanup_content($title_super);
+
+                # Anreicherungen mit 5005 (Titelinformationen der Ueberordnung)
                 push @{$record_ref->{'5005'}}, {
                     mult      => $mult,
                     subfield  => '',
-                    content   => $listitemdata_superid{$target_titleid}->{title}[0]{content},
+                    content   => $listitemdata_superid{$target_titleid},
+                  #  content   => $title_super,
                 };
             }
         }
-
-        # Anreicherungen von 5001, 5003, 5005
-        $record_ref->{'5001'} = [
-            {
-                mult      => 1,
-                subfield  => '',
-                content   => scalar (@{$record_ref->{'0004'}})
-            }
-        ];
-        $record_ref->{'5003'} = $record_ref->{'0004'};
     }
     
     #$logger->info(YAML::Dump($record_ref));
@@ -1103,9 +1222,15 @@ while (my $jsonline=<IN>){
     # Personen der Ueberordnung anreichern (Schiller-Raeuber)
     if ($addsuperpers) {
         foreach my $superid (@superids) {
-            if ($superid && defined $listitemdata_superid{$superid} &&  $listitemdata_superid{$superid}->{personid}) {
-                my @superpersids = @{$listitemdata_superid{$superid}->{personid}};
-                push @person, @superpersids;
+            if ($superid && exists $listitemdata_superid{$superid}) {
+                my $super_ref = $listitemdata_superid{$superid};
+                foreach my $field ('0100','0101','0102','0103','1800') {
+                    if (defined $super_ref->{$field}) {
+                        foreach my $item_ref (@{$super_ref->{$field}}) {
+                            push @person, $item_ref->{id};
+                        }
+                    }
+                }
             }
         }
     }
@@ -1239,7 +1364,9 @@ while (my $jsonline=<IN>){
         # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
         if (defined $conv_config->{listitemcat}{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
-                push @{$titlecache_ref->{"T".$field}}, $item_ref unless ($item_ref->{ignore});
+                unless (defined $item_ref->{ignore}){
+                    push @{$titlecache_ref->{"T".$field}}, $item_ref;
+                }
             }
         }
     }
@@ -1384,7 +1511,11 @@ while (my $jsonline=<IN>){
         foreach my $item_ref (@{$record_ref->{$field}}) {
             next if ($item_ref->{ignore});
 
-            if (! defined $item_ref->{norm} && defined $field && defined $stammdateien_ref->{title}{inverted_ref}->{$field}){
+            if (ref $item_ref->{content} eq "HASH"){
+                my $content = encode_json $item_ref->{content};
+                $item_ref->{content} = cleanup_content($content);
+            }
+            elsif (! defined $item_ref->{norm} && defined $field && defined $stammdateien_ref->{title}{inverted_ref}->{$field}){
                 $item_ref->{norm} = OpenBib::Common::Util::normalize({
                     field    => "T$field",
                     content  => $item_ref->{content},
@@ -1394,6 +1525,11 @@ while (my $jsonline=<IN>){
             $item_ref->{norm} = "" unless ($item_ref->{norm});
             if ($id && $field && $item_ref->{content}){
                 $item_ref->{content} = cleanup_content($item_ref->{content});
+
+#                $logger->error("mult fehlt") if (!defined $item_ref->{mult});
+#                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
+#                $logger->error("norm fehlt") if (!defined $item_ref->{norm});
+                
                 print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$item_ref->{norm}\n";
 		delete $item_ref->{norm};
             }
@@ -1424,154 +1560,6 @@ close(OUT);
 close(OUTFIELDS);
 close(SEARCHENGINE);
 
-close(IN);
-
-#######################
-
-$stammdateien_ref->{holding} = {
-    infile             => "meta.holding",
-    outfile            => "holding.dump",
-    outfile_fields     => "holding_fields.dump",
-    inverted_ref       => $conv_config->{inverted_holding},
-};
-
-$logger->info("Bearbeite meta.holding");
-
-open(IN ,                   "<:utf8","meta.holding")               || die "IN konnte nicht geoeffnet werden";
-open(OUT,                   ">:utf8","holding.dump")               || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,             ">:utf8","holding_fields.dump")        || die "OUTFIELDS konnte nicht geoeffnet werden";
-open(OUTTITLEHOLDING,       ">:utf8","title_holding.dump")         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
-
-$count = 1;
-
-$atime = new Benchmark;
-
-my $titleid;
-my $thisyear = `date +"%Y"`;
-
-while (my $jsonline=<IN>){
-
-    my $record_ref = decode_json $jsonline;
-
-    my $id = $record_ref->{id};
-    
-    # Primaeren Normdatensatz erstellen und schreiben
-    
-    print OUT "$id\n";
-    
-    # Titelid bestimmen
-    
-    my $titleid;
-    
-    if (exists $record_ref->{'0004'} && exists $record_ref->{'0004'}[0] ) {
-        $titleid = $record_ref->{'0004'}[0]{content};
-    }
-
-    next unless ($titleid && $id && defined $listitemdata_title{$titleid});
-
-    # Verknupefungen
-    if ($titleid && $id) {
-        print OUTTITLEHOLDING "$titleid$id\n";
-    }
-    
-    foreach my $field (keys %{$record_ref}) {
-        next if ($field eq "id" || defined $stammdateien_ref->{holding}{blacklist_ref}{$field} );
-        
-        foreach my $item_ref (@{$record_ref->{$field}}) {
-            next unless ($item_ref->{content});
-            
-            my $contentnorm   = "";
-            if (defined $field && exists $stammdateien_ref->{holding}{inverted_ref}{$field}) {
-                $contentnorm = OpenBib::Common::Util::normalize({
-                    field    => "X$field",
-                    content  => $item_ref->{content},
-                });
-            }
-            
-            if (exists $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}) {
-                foreach my $searchfield (keys %{$stammdateien_ref->{holding}{inverted_ref}{$field}->{index}}) {
-                    my $weight = $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}{$searchfield};
-                    
-                    my $hash_ref = {};
-                    if (defined $indexed_holding{$titleid}){
-                        $hash_ref = $indexed_holding{$titleid};
-                    }
-                    
-                    push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$item_ref->{content}];
-                    
-                    $indexed_holding{$titleid} = $hash_ref;
-                }
-            }
-            
-            if ($id && $field && $item_ref->{content}){
-                $item_ref->{content} = cleanup_content($item_ref->{content});
-                # Abhaengige Feldspezifische Saetze erstellen und schreiben        
-                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
-            }
-        }
-    }
-        
-    # Signatur fuer Kurztitelliste merken
-    
-    if (exists $record_ref->{'0014'} && $titleid) {
-        my $array_ref= [];
-        if (exists $listitemdata_holding{$titleid}){
-            $array_ref = $listitemdata_holding{$titleid};
-        }
-        push @$array_ref, $record_ref->{'0014'}[0]{content};
-        $listitemdata_holding{$titleid}=$array_ref;
-    }
-    
-    # Bestandsverlauf in Jahreszahlen umwandeln
-    if ((exists $record_ref->{'1204'}) && $titleid) {        
-        my $array_ref=[];
-        if (exists $listitemdata_enriched_years{$titleid}){
-            $array_ref = $listitemdata_enriched_years{$titleid};
-        }
-        
-        foreach my $date (split(";",cleanup_content($record_ref->{'1204'}[0]{content}))) {
-            if ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-\s+.*?(\d\d\d\d)/) {
-                my $startyear = $1;
-                my $endyear   = $2;
-                
-                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
-                for (my $year=$startyear;$year<=$endyear; $year++) {
-                    $logger->debug("Adding year $year");
-                    push @$array_ref, $year;
-                }
-            }
-            elsif ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-/) {
-                my $startyear = $1;
-                my $endyear   = $thisyear;
-                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
-                for (my $year=$startyear;$year<=$endyear;$year++) {
-                    $logger->debug("Adding year $year");
-                    push @$array_ref, $year;
-                }                
-            }
-            elsif ($date =~/(\d\d\d\d)/) {
-                $logger->debug("Not expanding $date, just adding year $1");
-                push @$array_ref, $1;
-            }
-        }
-
-        $listitemdata_enriched_years{$titleid}=$array_ref;
-    }
-    
-    if ($count % 1000 == 0) {
-        my $btime      = new Benchmark;
-        my $timeall    = timediff($btime,$atime);
-        my $resulttime = timestr($timeall,"nop");
-        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-        
-        $atime      = new Benchmark;
-        $logger->info("$count Exemplarsaetze in $resulttime bearbeitet");
-    }
-    $count++;
-}
-
-close(OUT);
-close(OUTFIELDS);
 close(IN);
 
 

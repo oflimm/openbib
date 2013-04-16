@@ -946,7 +946,18 @@ sub add_default_ttdata {
         my $ref = shift;
         return encode_json $ref;
     };
-    
+
+    $ttdata->{'from_json'}        = sub {
+        my $string = shift;
+        my $json_ref = {};
+
+        eval {
+            $json_ref = decode_json $string;
+        };
+        
+        return $json_ref;
+    };
+
     $ttdata->{'uri_escape'}     = sub {
         my $string = shift;
         return uri_escape_utf8($string);

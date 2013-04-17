@@ -26,7 +26,6 @@
 
 <p />
 
-[% PROCESS common/subtemplate name="search_more_tips" %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

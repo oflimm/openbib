@@ -84,8 +84,15 @@
 </div>
 <p/>
 [% ELSE %]
+<div class="ob-reuse_data">
 <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
+</div>
+
 [% END %]
+<p/>
+
+[% PROCESS common/subtemplate name="search_more_tips" %]
+
     </div>
   </div>
 

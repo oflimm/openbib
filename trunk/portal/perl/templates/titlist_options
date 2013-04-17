@@ -23,4 +23,5 @@
   <option value="mark_asc"[%- IF query.param('srt') == 'mark_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]&nbsp;&uarr;</option>
   <option value="mark_desc"[%- IF query.param('srt') == 'mark_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]&nbsp;&darr;</option>
 </select>
-&nbsp;&nbsp;<input class="ob-nojs_show" type="submit" value="[% msg.maketext("Los") %]" />
+
+<input class="ob-nojs_show" type="submit" value="[% msg.maketext("Los") %]" />

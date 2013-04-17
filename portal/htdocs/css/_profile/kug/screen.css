@@ -100,8 +100,9 @@
   
   .ob-resultheader {
     position: relative;
-    width: 99%;  
+    width: auto;  
     padding: 5px;
+    padding-right: 0px;
     min-height: 10px;
     height: auto;
     /*  height: 35px;
@@ -144,7 +145,7 @@
   }
 
   .ob-resultitems {
-    width: 99%;
+    width: auto;
     margin-top: 5px;
   }
 
@@ -165,6 +166,7 @@
   .ob-item:hover {
     margin-left: -3px;
     border-left-width: 4px;
+    
     border-left-color: #41799e; 
 /*    border-color: #000;*/
 /*    background: #ebeff5;*/
@@ -400,6 +402,19 @@
     padding-top: 5px;
   }
 
+  .ob-search_hints { 
+    background-color: #fff;
+    padding: 10px;
+    padding-top: 5px;
+    border: 1px solid #e3e3e3;
+  }
+
+  .ob-no_hits { 
+    background-color: #fff;
+    padding: 10px;
+  }
+
+  
 /*  .ob-reuse_data h4, .ob-discover_sources h4, .ob-session_history h4 {
     font-family: Arial,Verdana,Helvetica,sans-serif;
     display: block;
@@ -777,4 +792,6 @@
     -webkit-box-shadow: 2px 2px 2px #888;
     box-shadow: 2px 2px 2px #888;           
   }
+
+
 }

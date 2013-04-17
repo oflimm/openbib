@@ -21,7 +21,27 @@
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
 [% ELSE %]
+[%
+   IF NOT viewdbs ;
+       viewdbs = config.get_dbs_of_view(view);
+   END ;
+   IF NOT prevprofile ;
+       prevprofile = session.get_profile ;
+   END ;
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+   END ;
+   IF NOT searchprofileid_of_sysprofile ;
+      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
+   END ;
+
+%]
+
+[%   IF viewdbs.size == 1 %]  
+<div class="ob-facets">
 [% PROCESS common/subtemplate name="search_radius" %]
+</div>
+[%   END %]
 [% END %]
     </div>
   </div>
@@ -84,7 +104,7 @@
 </div>
 <p/>
 [% ELSE %]
-<div class="ob-reuse_data">
+<div class="ob-no_hits">
 <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
 </div>
 

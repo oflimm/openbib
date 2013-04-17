@@ -31,7 +31,7 @@
 <dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]>[% unit.description %]</a></dd>
 [%   END;
     END; %]
-<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]">[% msg.maketext("Alle Kataloge") %]</a></dd>
+<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]>[% msg.maketext("Alle Kataloge") %]</a></dd>
 </dl>
 <!-- End search radius -->
 [% END %]

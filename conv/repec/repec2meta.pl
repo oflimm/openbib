@@ -389,6 +389,13 @@ sub process_file {
             };
         }
 
+	# Alle Texte sind online
+	push @{$title_ref->{'4400'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content  => 'online',
+	};
+
         # Link zum Volltext
         foreach my $item ($node->findnodes ('file/url//text()')) {
             my $content = $item->textContent;

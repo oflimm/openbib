@@ -2524,6 +2524,7 @@ convtab:
       '0335':         # Edition/SEG-Nummer
         index:
           't0335': 1
+          'freesearch': 1
           'content': 1
       '0341':         # PSTVorlage
         index:
@@ -2542,6 +2543,7 @@ convtab:
           'freesearch': 1
       '0410':         # Aufbewahrungsort der Inschrift
         index:
+          'freesearch': 1
           't0410': 1
       '0413':         # Drucker
         string: 1

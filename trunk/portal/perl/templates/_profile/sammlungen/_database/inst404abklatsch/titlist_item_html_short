@@ -164,7 +164,11 @@
      yearofpub = item.${'T0425'}.first.content;
 
      # Edition / SEG-Eintrag
-     edition_segeintrag = item.${'T0335'}.first.content;
+     edition_segeintraege = [];
+     FOREACH part IN item.${'T0335'};
+         edition_segeintraege.push("${part.content}");
+     END;
+     edition_segeintrag = edition_segeintraege.sort.unique.join(' ; ');
 
      # Signaturen konstruieren
      signaturen = [];

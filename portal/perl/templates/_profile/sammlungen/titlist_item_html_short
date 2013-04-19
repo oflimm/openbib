@@ -26,8 +26,8 @@
      item   = record.get_fields;
      listid = record.listid;
 
+     super = "";
      # 1. Ueberordnung?
-
      IF item.${'T5005'}.first.content;
         super = from_json(item.${'T5005'}.first.content);
      END;

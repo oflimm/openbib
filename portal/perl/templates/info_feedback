@@ -55,10 +55,35 @@
 <h3>Artikel und Vortr&auml;ge</h3>
 
 <dl>
+<dt>Oliver Flimm: Neue Zugriffsfacette im KUG</dt>
+<dd>Artikel: OpenBibBlog 20.2.2013. (<a
+href="http://blog.openbib.org/2013/02/20/neue-zugriffsfacette-im-kug/" target="_blank">Blog</a>)</dd>
+
+<dt>Oliver Flimm: Neuer KUG mit OpenBib 3</dt>
+<dd>Artikel: OpenBibBlog 1.2.2013. (<a
+href="http://blog.openbib.org/2013/02/01/neuer-kug-mit-openbib-3/" target="_blank">Blog</a>)</dd>
+
+<dt>Oliver Flimm: Literaturvorschl&auml;ge f&uuml;r den Katalog aus
+der Wikipedia</dt>
+<dd>Artikel: OpenBibBlog 27.12.2011. (<a
+href="http://blog.openbib.org/2011/12/27/literaturvorschlage-fur-den-katalog-aus-der-wikipedia/" target="_blank">Blog</a>)</dd>
+
 <dt>Oliver Flimm: OpenBib und Linked Open Data - Weiterentwicklung
 eines Recherche-Portals</dt>
 <dd>Vortrag: Arbeitstreffen Linked Open Data, hbz K&ouml;ln 13.5.2011. (<a
 href="http://de.slideshare.net/flimm/openbib-und-linked-open-data-weiterentwicklung-eines-rechercheportals" target="_blank">Slideshare</a>)</dd>
+
+<dt>Oliver Flimm: Ausleihkonto als Kalender und QR-Code</dt>
+<dd>Artikel: OpenBibBlog 29.4.2011. (<a
+href="http://blog.openbib.org/2011/04/29/ausleihkonto-als-kalender-und-qr-code/" target="_blank">Blog</a>)</dd>
+
+<dt>Oliver Flimm: QR-Codes im KUG</dt>
+<dd>Artikel: OpenBibBlog 21.4.2011. (<a
+href="http://blog.openbib.org/2011/04/21/qr-codes-im-kug/" target="_blank">Blog</a>)</dd>
+
+<dt>Oliver Flimm: Das Recherche-Portal ist der WebService</dt>
+<dd>Artikel: OpenBibBlog 16.3.2011. (<a
+href="http://blog.openbib.org/2011/03/16/das-recherche-portal-ist-der-webservice/" target="_blank">Blog</a>)</dd>
 
 <dt>Oliver Flimm: Anreicherungen, Mashups und Vernetzungen von Titeln in einem heterogenen Katalogverbund am Beispiel des Kölner UniversitätsGesamtkatalogs KUG</dt>
 <dd>aus: Handbuch Bibliothek 2.0, Hrsg. von Julia Bergman und Patrick
@@ -70,15 +95,39 @@ Danowski, Berlin, New York: De Gruyter Saur, 2010, S. 293-316. (CC-BY)
 Information und Bibliothek 15. - 18.3.2010. (<a href="http://www.ub.uni-koeln.de/e30/e314/e2354/e6733/e12096/e12099/e27483/kug-bibliothekskongress-20100316_ger.odp" target="_blank">ODP</a>, <a
 href="http://www.ub.uni-koeln.de/e30/e314/e2354/e6733/e12096/e12099/e27484/kug-bibliothekskongress-20100316_ger.pdf" target="_blank">PDF</a>)</dd>
 
+<dt>Oliver Flimm: Verweise auf aktuelle Zeitschriftenartikel mit TicTocs im KUG</dt>
+<dd>Artikel: OpenBibBlog 10.12.2009. (<a
+href="http://blog.openbib.org/2009/12/10/verweise-auf-aktuelle-zeitschriftenartikel-mit-tictocs-im-kug/" target="_blank">Blog</a>)</dd>
+
+<dt>Oliver Flimm: Kataloganreicherung mit Schlagworten</dt>
+<dd>Artikel: OpenBibBlog 9.11.2009. (<a
+href="http://blog.openbib.org/2009/11/09/kataloganreicherung-mit-schlagworten/" target="_blank">Blog</a>)</dd>
+
 <dt>Oliver Flimm: Der Kölner UniversitätsGesamtkatalogs - Eine offene und moderne Verbundlösung an der Universtät zu Köln</dt>
 <dd>Vortrag: Fachtagung der Bibliotheken der Deutschen
 Rentenversicherung am 23.9.2009 in Düsseldorf. (<a href="http://www.ub.uni-koeln.de/e30/e314/e2354/e6733/e12096/e12099/e23212/kug-rentenversicherung-20090923_ger.odp" target="_blank">ODP</a>, <a
 href="http://www.ub.uni-koeln.de/e30/e314/e2354/e6733/e12096/e12099/e23214/kug-rentenversicherung-20090923_ger.pdf" target="_blank">PDF</a>)</dd>
 
+<dt>Oliver Flimm: DFG-Viewer f&uuml;r WikiSource im KUG</dt>
+<dd>Artikel: OpenBibBlog 21.8.2009. (<a
+href="http://blog.openbib.org/2009/08/21/dfg-viewer-fur-wikisource-im-kug/" target="_blank">Blog</a>)</dd>
+
+<dt>Oliver Flimm: Integration von WikiSource in den KUG</dt>
+<dd>Artikel: OpenBibBlog 8.8.2009. (<a
+href="http://blog.openbib.org/2009/08/08/integration-von-wikisource-in-den-kug/" target="_blank">Blog</a>)</dd>
+
+<dt>Oliver Flimm: Thematischer Zugang über Systematiken im Katalog 2.0</dt>
+<dd>Artikel: OpenBibBlog 21.7.2009. (<a
+href="http://blog.openbib.org/2009/07/01/thematischer-zugang-uber-systematiken-im-katalog-20/" target="_blank">Blog</a>)</dd>
+
 <dt>Oliver Flimm: Der Kölner UniversitätsGesamtkatalogs - Ein modernes Recherche-Portal an der Universtät zu Köln</dt>
 <dd>Vortrag: Vortragsreihe - IT an der Universität zu Köln
 24.6.2009. (<a href="http://www.ub.uni-koeln.de/e30/e314/e2354/e6733/e12096/e12099/e16701/kug-vortragsreihe-it-20090624_ger.odp" target="_blank">ODP</a>, <a
 href="http://www.ub.uni-koeln.de/e30/e314/e2354/e6733/e12096/e12099/e16700/kug-vortragsreihe-it-20090624_ger.pdf" target="_blank">PDF</a>)</dd>
+
+<dt>Oliver Flimm: 565.000 Digitalisate aus der Open Library im KUG nachgewiesen</dt>
+<dd>Artikel: OpenBibBlog 9.6.2009. (<a
+href="http://blog.openbib.org/2009/06/09/565000-digitalisate-aus-der-open-library-im-kug-nachgewiesen/" target="_blank">Blog</a>)</dd>
 
 <dt>Oliver Flimm: KUG mit OpenBib - Aufbau des Kölner
 UniversitätsGesamtkataloges (KUG) mit Open-Source Komponenten</dt>

@@ -1,0 +1,252 @@
+\documentclass[11pt, twoside, a4paper, BCOR11mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\usepackage{german}
+\usepackage{typearea}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[utf8x]{inputenc}
+
+% Header anpassbar
+\usepackage{fancyhdr}
+
+% Headings umdefinieren
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyhead[LE]{\nouppercase{\leftmark}}
+\fancyfoot[RO, LE]{\thepage}
+
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+%\addtolength{\headwidth}{1.3cm}
+
+% Oberer Rand nach unten
+\voffset0.8cm
+
+\parindent0.0mm
+\parskip0.3cm    
+%\typearea{13}
+
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+\renewcommand{\thechapter}{\Alph{chapter}}
+\renewcommand{\thesubsection}{\Roman{subsection}}
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlepage}
+\thispagestyle{empty}
+
+\vspace*{2cm}
+
+\begin{center}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Elektronische Schriftenreihe\\[0.5cm] der Universit"ats- und Stadtbibliothek K"oln, XXX}
+
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{3cm}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{3cm}
+
+\begin{center}
+\includegraphics[width=12cm]{/usr/share/images/openbib/views/pruessen/Portrait_gross.jpg}
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{3cm}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace{5cm}
+
+\begin{center}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Die Sammlung Eduard Pr"ussen in der\\Universit"ats- und Stadtbibliothek K"oln\\[1cm]The rest of the best}
+
+  \vspace{0.5cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Werkverzeichnis\\\lbrack Band 2\rbrack}
+
+\vspace{1cm}
+
+\includegraphics[width=12cm]{/usr/share/images/openbib/views/pruessen/pruessen-stempel.jpg}
+
+  \vspace*{3cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Universit"ats- und Stadtbibliothek K"oln}
+
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{17cm}
+
+\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{10}{10pt}\selectfont Herausgeber: Der Direktor der Universit"ats- und Stadtbibliothek K"oln\\Prof. Dr. Wolfgang Schmitz\\Anschrift: Universit"atsstr. 33, 50931 K"oln\\Internet: http://www.ub.uni-koeln.de\\Redaktion \& Layout: Christiane Hoffrath, Oliver Flimm\\Druck: USB K"oln\\ \\\copyright 2011 USB K"oln}
+
+\end{titlepage}
+
+%\thispagestyle{empty}
+
+%\begin{verbatim}
+
+
+%Copyright (c) 2005-2011 Oliver Flimm <flimm@openbib.org>
+
+%Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
+%und/oder zu veraendern unter den Bedingungen der GNU Free
+%Documentation License, Version 1.1 oder einer spaeteren, von der Free 
+%Software Foundation veroeffentlichten Version; mit den
+%Unveraenderlichen Abschnitten DEREN TITEL AUFGEZAEHLT sind, mit den 
+%Vorderseitentexten die AUFGEZAEHLT sind, und mit den Rueckseitentexten
+%die AUFGEZAEHLT sind. Eine Kopie dieser Lizenz ist in dem Abschnitt 
+%enthalten, der mit "GNU Free Documentation License"
+%\end{verbatim}
+
+\mainmatter
+
+\tableofcontents
+
+\addchap{Vorwort}
+
+Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+
+Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+
+Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. 
+
+\addchap{Einleitung}
+
+ Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+
+Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+
+Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. 
+
+
+\chapter{Plakate [% plakate_year_min %] - [% plakate_year_max %]}
+
+[% FOREACH year IN plakate_available_years %]
+[% anzahl = plakate_recordlist.${year}.size %]
+\section{Das Jahr [% year %]}
+
+[%    FOREACH record IN plakate_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="plakate" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Werbe-Illustrationen [% werbeillustrationen_year_min %] - [% werbeillustrationen_year_max %]}
+
+[% FOREACH year IN werbeillustrationen_available_years %]
+[% anzahl = werbeillustrationen_recordlist.${year}.size %]
+\section{Das Jahr [% year %]}
+
+[%    FOREACH record IN werbeillustrationen_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="werbeillustrationen" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{ExLibris [% exlibris_year_min %] - [% exlibris_year_max %]}
+
+[% FOREACH year IN exlibris_available_years %]
+[% anzahl = exlibris_recordlist.${year}.size %]
+\section{Das Jahr [% year %]}
+
+[%    FOREACH record IN exlibris_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="exlibris" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Donkeypress etc. [% donkeypress_year_min %] - [% donkeypress_year_max %]}
+
+[% FOREACH year IN donkeypress_available_years %]
+[% anzahl = donkeypress_recordlist.${year}.size %]
+\section{Das Jahr [% year %]}
+
+[%    FOREACH record IN donkeypress_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="donkeypress" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Verschiedenes [% misc_year_min %] - [% misc_year_max %]}
+
+[% FOREACH year IN misc_available_years %]
+[% anzahl = misc_recordlist.${year}.size %]
+\section{Das Jahr [% year %]}
+
+[%    FOREACH record IN misc_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="misc" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Bergisch Gladbach [% gladbach_year_min %] - [% gladbach_year_max %]}
+
+[% FOREACH year IN gladbach_available_years %]
+[% anzahl = gladbach_recordlist.${year}.size %]
+\section{Das Jahr [% year %]}
+
+[%    FOREACH record IN gladbach_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="gladbach" %]
+
+[%    END %]
+
+[% END %]
+
+\end{document}
+

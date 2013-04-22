@@ -105,6 +105,10 @@ IF portals ;
   normset.${"T4600"} = portals;
 END;
 
+IF normdata.${'T4400'}.first.content == 'online' && (NOT normdata.${"T0662"}.first.content || NOT normdata.${"T2662"}.first.content);
+   currently_unavailable = 1;
+END;
+
 FOREACH category IN categories;
     FOREACH item IN normdata.$category;
     content = item.content;
@@ -354,6 +358,9 @@ FOREACH category IN categories;
    END;
 END;
 -%]
+[%- IF currently_unavailable -%]
+<tr><td class="ob-field"><b>Volltext</b></td><td><b>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</b></td></tr>
+[%- END -%]
 [%- IF bibkey -%]
 <tr><td class="ob-field">bibkey</td><td>[% bibkey %]</td></tr>
 [%- END -%]

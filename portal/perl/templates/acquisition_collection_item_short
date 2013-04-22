@@ -226,7 +226,7 @@
     <div class="ob-item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 <script>
 $(document).ready(function(){
-   $.get("/portal/kug/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.id %]/availability?l=[% lang %]",
+   $.get("/portal/kug/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.id %]/availability?l=de",
      function (txt){
         $("#availability_[% database %]_[% uri_escape(record.id) %]").html(txt);
    });

@@ -32,7 +32,7 @@
       searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
    END ;
 
-   IF normdata.${'T4400'}.first.content == 'online' && (NOT normdata.${"T0662"}.first.content || NOT normdata.${"T2662"}.first.content);
+   IF normdata.${'T4400'}.first.content == 'online' && NOT normdata.${"T0662"}.first.content && NOT normdata.${"T2662"}.first.content;
      currently_unavailable = 1;
    END;
 

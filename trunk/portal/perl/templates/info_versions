@@ -124,51 +124,62 @@ weitere Vorteile:</p>
 
 <h2>Einheitliche Recherche über Suchmaschine</h2>
 
+<p>
 Mit einer durchgängigen Verwendung der Xapian Suchmaschine - sowohl in
 der einfachen, wie auch nun in der erweiterten Suche - und der damit
 einhergehenden Entfernung der SQL-Recherche wird für den Nutzer der
 Recherche-Prozess vereinheitlicht.
+</p>
 
 <h2>Zusammenfassung der Recherche-Indizes verschiedener Kataloge</h2>
 
+<p>
 Die separaten Recherche-Indizes verschiedener Kataloge können bei
 einer Recherche zu einem virtuellen Gesamt-Index kombiniert
 werden. Damit erhält der Nutzer eine sortierte Trefferliste aller
 Titel aus allen Katalogen - und nicht wie bisher eine Trefferliste, in
 der die Treffer katalogweise nacheinander dargestellt werden. Für eine
 gezielte Katalogauswahl dient eine weitere Facette mit Katalognamen.
+</p>
 
 <h2>Erweiterung der facettierten Suche</h2>
 
+<p>
 Schränkt ein Nutzer seine ürsprüngliche
 Rechercheanfrage nacheinander über Facetten ein, so kann er jede
 dieser Filterungen getrennt voneinander wieder entfernen.
+</p>
 
 <h2>Einschränkung auf Online-Medien</h2>
 
+<p>
 Über einen vereinheitlichten Medientyp für Online-Medien wie ebooks
 usw. kann nun eine Recherche direkt auf diese einschränken.
+</p>
 
 <h2>Verbesserte Absicherung der Selbst-Registrierung</h2>
 
+<p>
 Bei der Selbst-Registrierung wird dem Nutzer an die von ihm
 eingegebene E-Mail-Adresse eine Mail mit einem Freischalt-URL
 geschickt. Erst wenn er diesen aufruft kann er sich erfolgreich am
 Portal anmelden. Damit wird nach der Verwendung von ReCAPTCHA gegen
 maschinellen Missbrauch nun auch ein individueller Missbrauch durch
 Entnutzer erschwert.
+</p>
 
 <h2>Abstrahierung von Organisationseinheiten</h2>
 
+<p>
 Bisher konnte für alle mit einer OpenBib-Installation verwalteten
 Recherche-Portale lediglich eine einzige Organisationsstruktur
 definiert und verwendet werden. Jetzt kann für jedes Portal-Profil ein
 eigener Satz von Organisationseinheiten definiert und Kataloge
 zugeordnet werden. Damit kann OpenBib nun noch besser als
 "Portal-Baukasten" fungieren.
+</p>
 
 <h2>Interner Umbau</h2>
-
 
 <ul>
 
@@ -213,6 +224,7 @@ werden.</li>
 <p>
 Die Nutzerf&uuml;hrung wurde an verschiedenen Stellen
 verbessert. Einige dieser Verbesserungen sind:
+</p>
 
 <ul>
 <li>In der Einfachen Recherche wie auch den Drilldowns kann eine
@@ -245,8 +257,6 @@ OpenBib-Logo-Bereiches einher.</li>
 Inhaltsverzeichnisse zu den jeweiligen Titeln zugreifen.</li>
 
 </ul>
-
-</p>
 
 <p>Generell wurde das Design zeitgem&auml;&szlig; aufgefrischt und ist
 nun &uuml;ber CSS realisiert. F&uuml;r den Ausdruck speziell von

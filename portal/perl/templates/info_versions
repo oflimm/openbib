@@ -58,8 +58,10 @@
 
 <h2>Generelle Umstrukturierung</h2>
 
+<p>
 Die Architektur der gesamten OpenBib-Anwendung wurde grundlegend
 umstrukturiert und orientiert sich an
+</p>
 
 <ul>
 

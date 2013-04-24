@@ -2,7 +2,7 @@
 {
 
   header {
-    padding-bottom:100px;  
+    padding-bottom:65px;  
   }
 
   header #logo {
@@ -23,12 +23,12 @@
 
 
   #header_logo_image  {
-    background: url(/images/openbib/views/pruessen/logorotkleiner.png) center no-repeat;
+    background: url(/images/openbib/views/pruessen/logo.png) center no-repeat;
     position: absolute;
-    width: 200px;
-    height: 166px;
-    top: 5px;
-    left: 0px;    
+    width: 462px;
+    height: 100px;
+    top:30px;
+    left: 5px;    
   }
 
 
@@ -37,7 +37,7 @@
     width: 190px;
     height: 78px;
     position: absolute;
-    top: 55px;
+    top: 45px;
     right: 10px;
   }
 

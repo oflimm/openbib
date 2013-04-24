@@ -950,11 +950,16 @@ sub add_default_ttdata {
     $ttdata->{'from_json'}        = sub {
         my $string = shift;
         my $json_ref = {};
+        $string=~s/\\"/"/g;
+        my $logger = get_logger();
 
         eval {
             $json_ref = decode_json $string;
         };
-        
+        if ($@){
+            $logger->error($@);
+        }
+            
         return $json_ref;
     };
 

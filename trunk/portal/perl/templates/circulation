@@ -55,7 +55,7 @@ thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.999
 [%      IF thiscirculation.Statuscode != 0 ;
             IF thiscirculation.Gruppe.Name.match("Handapparat") %]
                 keine Vormerkung m&ouml;glich<br/>(in [% thiscirculation.Entleiher.Name %])
-            ELSIF thiscirculation.Gruppe.Name.match("Seminarapparat") %]
+[%          ELSIF thiscirculation.Gruppe.Name.match("Seminarapparat") %]
                 Seminarapparat
 [%          ELSIF thiscirculation.Vormerkbarkeit %]
      <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% thiscirculation.Bibliothek.dbname %]/[% config.get('circulations_loc') %]/id/reservations">

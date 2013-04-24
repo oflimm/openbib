@@ -40,6 +40,8 @@ view_searchprofile  = config.get_searchprofile_of_view(view) ;
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 
+#USE dumper;dumper.dump(normdata);
+
 FOREACH category IN categories;
     FOREACH item IN normdata.$category;
     content = item.content;

@@ -1,0 +1,20 @@
+<div class="ob-search_hints">
+
+<h3>Weitergehende Suchhinweise</h3>
+
+<p>
+Konnten Sie den von Ihnen gesuchten Abklatsch nicht finden?
+</p>
+
+<p>
+<b><span style="font-size:1.2em">[% msg.maketext("Allgemeine Hinweise") %]</span></b>
+</p>
+
+<ul>
+<li>Prüfen Sie die Schreibweise Ihrer Suchbegriffe.</li>
+<li>Suchen Sie mit wenigen pr&auml;gnanten Begriffen.</li>
+<li>Verwenden Sie das Sternchen (*) als Platzhalter.</li>
+</ul>
+
+
+</div>

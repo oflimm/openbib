@@ -39,3 +39,47 @@
 </ul>
 </li>
 </ul>
+
+[% IF browser.firefox %]
+
+    <script type="text/javascript">
+<!--
+function errorMsg(name,ext,cat)
+{
+  alert("Netscape 6 or Mozilla is needed to install a sherlock plugin");
+}
+function addEngine(name,ext,cat)
+{
+  if ((typeof window.sidebar == "object") && (typeof
+  window.sidebar.addSearchEngine == "function"))
+  {
+    //cat="Web";
+    //cat=prompt("In what category should this engine be installed?","Web")
+    window.sidebar.addSearchEngine(
+      "http://kug.ub.uni-koeln.de/plugins/"+name+".src",
+      "http://kug.ub.uni-koeln.de/plugins/"+name+"."+ext,
+      name,
+      cat );
+  }
+  else
+  {
+    errorMsg(name,ext,cat);
+  }
+}
+//-->
+</script>
+
+<h3><img style="vertical-align:bottom" src="[% config.get('firefox_img') %]" alt="Firefox" />&nbsp[% msg.maketext("Firefox Such-Plugin") %]</h3>
+
+<p> [% msg.maketext("Da Sie den Internet-Browser [_1] verwenden, k&ouml;nnen
+    Sie f&uuml;r ihn das
+    [_2]Firefox Such-Plugin f&uuml;r den KUG[_3] installieren (Achtung! Zur Installation muss
+    JavaScript aktiviert sein und Sie m&uuml;ssen Schreibberechtigung
+    im searchplugins-Verzeichnis von Firefox besitzen)","<a
+    href=\"http://www.mozilla.org/products/firefox/\"
+    target=\"_blank\">Mozilla Firefox</a>","<a
+    href=\"javascript:addEngine('KUG','jpg','Academic')\">","</a>") %].
+    </p>
+
+
+[% END %]

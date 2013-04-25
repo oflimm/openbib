@@ -860,6 +860,7 @@ sub add_default_ttdata {
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
+    my $browser        = $self->param('browser');
     my $servername     = $self->param('servername');
     my $dbinfo         = $self->param('dbinfo');
     my $path_prefix    = $self->param('path_prefix');
@@ -938,6 +939,8 @@ sub add_default_ttdata {
     $ttdata->{'url'}            = $url;
     $ttdata->{'location'}       = $location;
     $ttdata->{'authenticator'}  = $authenticator;
+    $ttdata->{'useragent'}      = $useragent;
+    $ttdata->{'browser'}      = $browser;
     $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'container'}      = $container;
     

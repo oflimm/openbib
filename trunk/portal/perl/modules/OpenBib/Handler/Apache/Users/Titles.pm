@@ -527,7 +527,7 @@ sub highlightquery {
     $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
     $logger->debug("Content vor: ".$content);
     
-    $content=~s/\b($terms)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
+    $content=~s/\b($terms)/<span class="ob-highlight_searchterm">$1<\/span>/ig unless ($content=~/http/);
 
     $logger->debug("Content nach: ".$content);
 

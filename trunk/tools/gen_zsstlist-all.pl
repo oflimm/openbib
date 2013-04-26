@@ -72,7 +72,7 @@ my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
 my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=instzs;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
-my $request=$dbh->prepare("select distinct content from mex where category = 3330 order by content") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct content from holding where field = 3330 order by content") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

@@ -82,12 +82,12 @@ my $titleid_b_ref;
 my $subset = new OpenBib::Catalog::Subset("inst108",$pool);
 
 # Basis: Alle Titel bis 1970
-$subset->titleid_by_field_content('title',[ { operator => '<=', field => '0425', content_norm => '1970' } ]);
+$subset->titleid_by_field_content('title',[ { operator => '<=', field => '0425', content => '1970' } ]);
 $titleid_ref = $subset->get_titleid;
 
 # # Titel bis 1980 in Signaturgruppen FPO, QAO, R
 $subset->set_titleid({}); # Flushen
-$subset->titleid_by_field_content('title',[ { operator => '<=', field => '0425', content_norm => '1980' } ]);
+$subset->titleid_by_field_content('title',[ { operator => '<=', field => '0425', content => '1980' } ]);
 $titleid_a_ref = $subset->get_titleid;
 $subset->set_titleid({}); # Flushen
 $subset->titleid_by_field_content('holding',[ { field => '0014', content => '^FP0' },  { field => '0014', content => '^QA0' },  { field => '0014', content => '^R' } ]);
@@ -101,7 +101,7 @@ foreach my $titleid (keys %$titleid_a_ref){
 
 # # Titel bis 1990 in Signaturgruppen L
 $subset->set_titleid({}); # Flushen
-$subset->titleid_by_field_content('title',[ { operator => '<=', field => '0425', content_norm => '1990' } ]);
+$subset->titleid_by_field_content('title',[ { operator => '<=', field => '0425', content => '1990' } ]);
 $titleid_a_ref = $subset->get_titleid;
 $subset->set_titleid({}); # Flushen
 $subset->titleid_by_field_content('holding',[ { field => '0014', content => '^L' } ]);
@@ -115,7 +115,7 @@ foreach my $titleid (keys %$titleid_a_ref){
 
 # # Titel bis 2000 in Signaturgruppen N, T
 $subset->set_titleid({}); # Flushen
-$subset->titleid_by_field_content('title',[ { operator => '<=', field => '0425', content_norm => '2000' } ]);
+$subset->titleid_by_field_content('title',[ { operator => '<=', field => '0425', content => '2000' } ]);
 $titleid_a_ref = $subset->get_titleid;
 $subset->set_titleid({}); # Flushen
 $subset->titleid_by_field_content('holding',[ { field => '0014', content => '^N' },  { field => '0014', content => '^T' } ]);

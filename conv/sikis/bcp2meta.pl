@@ -330,7 +330,7 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
     my @swtkette=();
     foreach my $key (sort {$b cmp $a} keys %record) {
         if ($key =~/^0800/) {
-            $record{$key}=~s/^[a-z]([\p{Lu}0-9¬])/$1/; # Indikator herausfiltern
+            $record{$key}=~s/^\(?[a-z]\)?([\p{Lu}0-9¬])/$1/; # Indikator herausfiltern
             push @swtkette, konv($record{$key});
         }
     }

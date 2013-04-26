@@ -793,5 +793,8 @@
     box-shadow: 2px 2px 2px #888;           
   }
 
+ .ob-highlight_searchterm {
+  color:#990000;
+ }
 
 }

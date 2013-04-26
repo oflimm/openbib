@@ -86,7 +86,7 @@ my %titleids = ();
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-my $request=$dbh->prepare("select distinct id from mex where category=3330 and content=?") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct titleid from holding where category=3330 and content=?") or $logger->error($DBI::errstr);
 
 $request->execute($sigel) or $logger->error($DBI::errstr);;
 

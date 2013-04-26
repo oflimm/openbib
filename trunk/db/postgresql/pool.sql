@@ -19,8 +19,7 @@ create table person_fields (
  field         SMALLINT    NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
- content       TEXT        NOT NULL,
- content_norm  TEXT
+ content       TEXT        NOT NULL
 );
 
 -------------------------------------------------
@@ -40,8 +39,7 @@ create table corporatebody_fields (
  field            SMALLINT    NOT NULL,
  mult             SMALLINT,
  subfield         VARCHAR(2),
- content          TEXT        NOT NULL,
- content_norm     TEXT
+ content          TEXT        NOT NULL
 );
 
 -------------------------------------------------
@@ -61,8 +59,7 @@ create table subject_fields (
  field         SMALLINT   NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
- content       TEXT       NOT NULL,
- content_norm  TEXT
+ content       TEXT       NOT NULL
 );
 
 -------------------------------------------------
@@ -82,8 +79,7 @@ create table classification_fields (
  field             SMALLINT    NOT NULL,
  mult              SMALLINT,
  subfield          VARCHAR(2),
- content           TEXT        NOT NULL,
- content_norm      TEXT
+ content           TEXT        NOT NULL
 );
 
 -------------------------------------------------
@@ -105,8 +101,7 @@ create table title_fields (
  field         SMALLINT  NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
- content       TEXT NOT NULL,
- content_norm  TEXT
+ content       TEXT NOT NULL
 );
 
 -------------------------------------------------
@@ -124,8 +119,7 @@ create table holding_fields (
  field         SMALLINT    NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
- content       TEXT        NOT NULL,
- content_norm  TEXT
+ content       TEXT        NOT NULL
 );
 
 -------Connectoren ---------

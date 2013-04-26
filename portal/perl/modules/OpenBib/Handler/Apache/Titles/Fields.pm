@@ -112,7 +112,7 @@ sub show_collection {
             select => [{ 'distinct' => 'field'}],
             as     => ['thisfield'],
             sort_by => ['field'],
-            group_by => ['field','titleid','mult','subfield','content','content_norm'],
+            group_by => ['field','titleid','mult','subfield','content'],
         }
     );
 

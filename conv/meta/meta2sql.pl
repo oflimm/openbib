@@ -342,16 +342,6 @@ foreach my $type (keys %{$stammdateien_ref}) {
         foreach my $field (keys %{$record_ref}) {
             next if ($field eq "id" || defined $stammdateien_ref->{$type}{blacklist_ref}->{$field} );
             foreach my $item_ref (@{$record_ref->{$field}}) {
-                
-                my $contentnorm   = "";
-                if (defined $field && exists $stammdateien_ref->{$type}{inverted_ref}->{$field}) {
-                    $contentnorm = OpenBib::Common::Util::normalize({
-                        field    => "T$field",
-                        content  => $item_ref->{content},
-                    });
-                }
-                
-                
                 if (exists $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}) {
                     foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$field}->{index}}) {
                         my $weight = $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}{$searchfield};
@@ -398,7 +388,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 if ($id && $field && $item_ref->{content}){
                     $item_ref->{content} = cleanup_content($item_ref->{content});
                     # Abhaengige Feldspezifische Saetze erstellen und schreiben
-                    print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
+                    print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
                 }
             }
         }
@@ -471,14 +461,6 @@ while (my $jsonline=<IN>){
         foreach my $item_ref (@{$record_ref->{$field}}) {
             next unless ($item_ref->{content});
             
-            my $contentnorm   = "";
-            if (defined $field && exists $stammdateien_ref->{holding}{inverted_ref}{$field}) {
-                $contentnorm = OpenBib::Common::Util::normalize({
-                    field    => "X$field",
-                    content  => $item_ref->{content},
-                });
-            }
-            
             if (exists $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}) {
                 foreach my $searchfield (keys %{$stammdateien_ref->{holding}{inverted_ref}{$field}->{index}}) {
                     my $weight = $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}{$searchfield};
@@ -497,7 +479,7 @@ while (my $jsonline=<IN>){
             if ($id && $field && $item_ref->{content}){
                 $item_ref->{content} = cleanup_content($item_ref->{content});
                 # Abhaengige Feldspezifische Saetze erstellen und schreiben        
-                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$contentnorm\n";
+                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
             }
         }
     }
@@ -1110,6 +1092,35 @@ while (my $jsonline=<IN>){
             }
         }
     }
+
+    # Personen der Ueberordnung anreichern (Schiller-Raeuber). Wichtig: Vor der Erzeugung der Suchmaschineneintraege, da sonst nicht ueber
+    # die Personen der Ueberordnung facettiert wird. Das ist wegen der Vereinheitlichung auf Endnutzerebene sinnvoll.
+
+    if ($addsuperpers) {
+        foreach my $superid (@superids) {
+            if ($superid && exists $listitemdata_superid{$superid}) {
+                my $super_ref = $listitemdata_superid{$superid};
+                foreach my $field ('0100','0101','0102','0103','1800') {
+                    if (defined $super_ref->{$field}) {
+                        # Anreichern fuer Facetten
+                        if (defined $stammdateien_ref->{title}{inverted_ref}{$field}->{facet}){
+                            foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{facet}}) {
+                                foreach my $item_ref (@{$super_ref->{$field}}) {
+                                    push @{$searchengine_ref->{"facet_".$searchfield}}, $item_ref->{content};
+                                }
+                            }
+                        }
+
+                        # Anreichern fuer Recherche
+                        foreach my $item_ref (@{$super_ref->{$field}}) {
+                            push @person, $item_ref->{id};
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     
     # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
     {
@@ -1153,33 +1164,28 @@ while (my $jsonline=<IN>){
                         
                         foreach my $item_ref (@{$record_ref->{$field}}){
                             next unless $item_ref->{content};
-                            
-                            $item_ref->{norm} = OpenBib::Common::Util::normalize({
-                                field    => "T$field",
-                                content  => $item_ref->{content},
-                            }) if (!$item_ref->{norm});
 
                             push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$item_ref->{content}];
 
                             # Wird diese Kategorie als isbn verwendet?
                             if ($flag_isbn) {
-                                
                                 # Alternative ISBN zur Rechercheanreicherung erzeugen
                                 my $isbn = Business::ISBN->new($item_ref->{content});
-                                
+
                                 if (defined $isbn && $isbn->is_valid) {
                                     my $isbnXX;
-                                    if (length($item_ref->{norm}) == 10) {
+                                    if (!$isbn->prefix) { # ISBN10 haben kein Prefix
                                         $isbnXX = $isbn->as_isbn13;
                                     } else {
                                         $isbnXX = $isbn->as_isbn10;
                                     }
                                     
                                     if (defined $isbnXX) {
-                                        my $enriched_isbn = OpenBib::Common::Util::normalize({
-                                            field    => "T0540",
-                                            content  => $isbnXX->as_string,
-                                        });                                    
+                                        my $enriched_isbn = $isbnXX->as_string;
+
+                                        $enriched_isbn = lc($enriched_isbn);
+                                        $enriched_isbn=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
+                                        $enriched_isbn=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
                                         
                                         push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$enriched_isbn];
                                     }
@@ -1218,23 +1224,7 @@ while (my $jsonline=<IN>){
             }
         }
     }
-    
-    # Personen der Ueberordnung anreichern (Schiller-Raeuber)
-    if ($addsuperpers) {
-        foreach my $superid (@superids) {
-            if ($superid && exists $listitemdata_superid{$superid}) {
-                my $super_ref = $listitemdata_superid{$superid};
-                foreach my $field ('0100','0101','0102','0103','1800') {
-                    if (defined $super_ref->{$field}) {
-                        foreach my $item_ref (@{$super_ref->{$field}}) {
-                            push @person, $item_ref->{id};
-                        }
-                    }
-                }
-            }
-        }
-    }
-        
+            
     # Indexierte Informationen aus anderen Normdateien fuer Suchmaschine
     {
         # Im Falle einer Personenanreicherung durch Ueberordnungen mit
@@ -1515,23 +1505,14 @@ while (my $jsonline=<IN>){
                 my $content = encode_json $item_ref->{content};
                 $item_ref->{content} = cleanup_content($content);
             }
-            elsif (! defined $item_ref->{norm} && defined $field && defined $stammdateien_ref->{title}{inverted_ref}->{$field}){
-                $item_ref->{norm} = OpenBib::Common::Util::normalize({
-                    field    => "T$field",
-                    content  => $item_ref->{content},
-                });
-            }
-            
-            $item_ref->{norm} = "" unless ($item_ref->{norm});
+
             if ($id && $field && $item_ref->{content}){
                 $item_ref->{content} = cleanup_content($item_ref->{content});
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});
 #                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
-#                $logger->error("norm fehlt") if (!defined $item_ref->{norm});
                 
-                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}$item_ref->{norm}\n";
-		delete $item_ref->{norm};
+                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
             }
         }
     }                

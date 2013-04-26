@@ -731,17 +731,12 @@ sub titleid_by_field_content {
 
     foreach my $criteria_ref (@$arg_ref){
         my $operator = ($criteria_ref->{operator})?$criteria_ref->{operator}:'~';
-        my $content = 'content';
-        
-        if (defined $criteria_ref->{content_norm}){
-            $content = 'content_norm';
-        }
         
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
         my $titles = $self->{schema}->resultset('TitleField')->search_rs(
             {
                 'field'   => $criteria_ref->{field},
-                $content => { $operator => $criteria_ref->{$content} },
+                'content' => { $operator => $criteria_ref->{'content'} },
             },
             {
                 select   => ['titleid'],

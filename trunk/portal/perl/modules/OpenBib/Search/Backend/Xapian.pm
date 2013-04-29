@@ -272,9 +272,18 @@ sub search {
     # Sorting
     if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
         $sortorder = ($sortorder eq "asc")?0:1;
-        $logger->debug("Set Sorting to type ".$config->{xapian_sorttype_value}{$sorttype}." / order ".$sortorder);
 
-        $enq->set_sort_by_value($config->{xapian_sorttype_value}{$sorttype},$sortorder)
+        $logger->debug("Set Sorting to type ".$config->{xapian_sorttype_value}{$sorttype}." / order ".$sortorder);
+        # Sortierung nach Zaehlung: Erst nach Zaehlung, dann Titel
+        if ($sorttype eq "order"){
+            my $sorter = new Search::Xapian::MultiValueSorter;
+            $sorter->add($config->{xapian_sorttype_value}{$sorttype},$sortorder);
+            $sorter->add($config->{xapian_sorttype_value}{title},1);
+            $enq->set_sort_by_key($sorter)
+        }
+        else {
+            $enq->set_sort_by_value($config->{xapian_sorttype_value}{$sorttype},$sortorder);
+        }
     }
     
     my $thisquery = $enq->get_query()->get_description();

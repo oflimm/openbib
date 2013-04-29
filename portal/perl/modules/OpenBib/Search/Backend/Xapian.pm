@@ -278,7 +278,7 @@ sub search {
         if ($sorttype eq "order"){
             my $sorter = new Search::Xapian::MultiValueSorter;
             $sorter->add($config->{xapian_sorttype_value}{$sorttype},$sortorder);
-            $sorter->add($config->{xapian_sorttype_value}{title},1);
+            $sorter->add($config->{xapian_sorttype_value}{title},0);
             $enq->set_sort_by_key($sorter)
         }
         else {

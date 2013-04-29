@@ -791,6 +791,7 @@
 ../templates/_profile/kug/searchforms_record_profile
 ../templates/_profile/kug/searchforms_record_query
 ../templates/_profile/kug/search_radius
+../templates/_profile/kug/search_more_tips
 ../templates/_profile/kug/std_footer_html
 ../templates/_profile/kug/std_header_html
 ../templates/_profile/kug/users_preferences_html

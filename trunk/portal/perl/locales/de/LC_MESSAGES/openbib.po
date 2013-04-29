@@ -109,7 +109,7 @@ msgstr "${category}"
 #: ../templates/_profile/sammlungen/titles_record_html_categories:310
 #: ../templates/_profile/usb/libraries_include:62
 #: ../templates/_profile/usb/resource_title_html_categories:237
-#: ../templates/_profile/usb/titles_record_html_categories:240
+#: ../templates/_profile/usb/titles_record_html_categories:243
 #: ../templates/_view/richter/cartitems_html_as_text:38
 #: ../templates/_view/richter/cartitems_html_full:220
 #: ../templates/_view/richter/classifications_record_html:97
@@ -878,6 +878,7 @@ msgstr "Allgemein"
 msgid "Allgemeine Angaben"
 msgstr "Allgemeine Angaben"
 
+#: ../templates/_profile/kug/search_more_tips:10
 #: ../templates/search_more_tips:10
 msgid "Allgemeine Hinweise"
 msgstr "Allgemeine Hinweise"
@@ -1597,6 +1598,10 @@ msgstr "Autor"
 msgid "Autoren"
 msgstr "Autoren"
 
+#: ../templates/_profile/kug/search_more_tips:21
+msgid "B&uuml;cher"
+msgstr "B&uuml;cher"
+
 #: ../templates/admin_topics_mappings_html:85 ../templates/browse_bks_html:39
 #: ../templates/browse_bks_record_databases_html:39
 #: ../templates/browse_bks_record_html:39 ../templates/topics_mappings_html:83
@@ -1666,7 +1671,7 @@ msgstr "Beginnen Sie eine neue Recherche"
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/titles_record_html_categories:37
 #: ../templates/_profile/usb/resource_title_html_categories:20
-#: ../templates/_profile/usb/titles_record_html_categories:20
+#: ../templates/_profile/usb/titles_record_html_categories:22
 #: ../templates/_view/richter/cartitems_html_full:68
 #: ../templates/_view/richter/corporatebodies_record_html:105
 #: ../templates/_view/richter/litlists_record_html_full:36
@@ -1856,6 +1861,7 @@ msgid "Benutzername"
 msgstr "Benutzername"
 
 #: ../templates/_profile/kug/login:96
+#: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_images:59
 #: ../templates/_profile/sammlungen/login:132
 #: ../templates/_profile/usb/login:71 ../templates/login_circulation:79
 msgid "Benutzernummer"
@@ -2653,6 +2659,14 @@ msgstr ""
 "Dehnen Sie Ihre Recherche nach <i>%1</i> über die\n"
 "%2G%3 lobale Suche auf alle\n"
 "vorhandenen Kataloge aus."
+
+#: ../templates/_profile/kug/search_more_tips:34
+msgid ""
+"Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem "
+"Katalog aufnehmen"
+msgstr ""
+"Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem "
+"Katalog aufnehmen"
 
 #: ../templates/admin_topics_record_html:77
 msgid "Der Basisklassifikation zugeordnete Themengebiete"
@@ -4306,6 +4320,15 @@ msgstr ""
 "usw.) m&uuml;ssen Sie sich an dem Ausleihsystem der besitzenden\n"
 "Bibliothek authentifizieren."
 
+#. ("<a href=\"${path_prefix}/${config.get('redirect_loc')
+#: ../templates/_profile/kug/search_more_tips:26
+msgid ""
+"F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
+"t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
+msgstr ""
+"F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
+"t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
+
 #: ../templates/admin_databases_record_edit:149
 msgid "FTP"
 msgstr "FTP"
@@ -4755,6 +4778,15 @@ msgstr ""
 "        auf das entsprechende RSS-Feed-Icon. Es &ouml;ffnet sich Ihre\n"
 "        Liste. Voraussetzung: Sie haben vorher einen <i>Feedreader</i>\n"
 "        installiert."
+
+#. ("<a href=\"${path_prefix}/${config.get('databases_loc')
+#: ../templates/_profile/kug/search_more_tips:36
+msgid ""
+"Haben Sie sich &uuml;ber unser\n"
+"%1Datenbankangebot%2 informiert? Auch hier finden Sie Volltexte."
+msgstr ""
+"Haben Sie sich &uuml;ber unser\n"
+"%1Datenbankangebot%2 informiert? Auch hier finden Sie Volltexte."
 
 #: ../templates/info_help:481
 msgid ""
@@ -6356,6 +6388,7 @@ msgstr ""
 msgid "Konnektoren"
 msgstr "Konnektoren"
 
+#: ../templates/_profile/kug/search_more_tips:6
 #: ../templates/search_more_tips:6
 msgid ""
 "Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten "
@@ -8085,6 +8118,7 @@ msgstr "Anzahl Titel"
 #: ../templates/_profile/kug/login:100 ../templates/_profile/kug/login:133
 #: ../templates/_profile/kug/users_preferences_html:67
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:553
+#: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_images:63
 #: ../templates/_profile/sammlungen/login:136
 #: ../templates/_profile/sammlungen/login:92
 #: ../templates/_profile/usb/login:103 ../templates/_profile/usb/login:72
@@ -8408,6 +8442,7 @@ msgstr "Provenienz"
 msgid "Prägejahr"
 msgstr "Prägejahr"
 
+#: ../templates/_profile/kug/search_more_tips:14
 #: ../templates/search_more_tips:14
 msgid "Prüfen Sie die Schreibweise Ihrer Suchbegriffe."
 msgstr "Prüfen Sie die Schreibweise Ihrer Suchbegriffe."
@@ -10198,6 +10233,26 @@ msgstr "Suche nach Zeitschriften"
 msgid "Suchen"
 msgstr "Suchen"
 
+#: ../templates/_profile/kug/search_more_tips:25
+msgid ""
+"Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. "
+"Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
+"ber den KUG recherchierbar."
+msgstr ""
+"Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. "
+"Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
+"ber den KUG recherchierbar."
+
+#. ("<a href=\"${path_prefix}/${config.get('databases_loc')
+#: ../templates/_profile/kug/search_more_tips:35
+msgid ""
+"Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
+"Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
+msgstr ""
+"Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
+"Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
+
+#: ../templates/_profile/kug/search_more_tips:16
 #: ../templates/search_more_tips:16
 msgid ""
 "Suchen Sie mit wenigen Begriffen, z.B. mit einem Wort aus dem Titel und dem "
@@ -14928,6 +14983,7 @@ msgstr "Verwandte Schlagworte"
 msgid "Verwandte Themen"
 msgstr "Verwandte Themen"
 
+#: ../templates/_profile/kug/search_more_tips:15
 #: ../templates/search_more_tips:15
 msgid ""
 "Verwenden Sie andere Begriffe mit derselben Bedeutung, falls Sie nach einem "
@@ -14936,6 +14992,7 @@ msgstr ""
 "Verwenden Sie andere Begriffe mit derselben Bedeutung, falls Sie nach einem "
 "bestimmten Thema suchen."
 
+#: ../templates/_profile/kug/search_more_tips:17
 #: ../templates/search_more_tips:17
 msgid "Verwenden Sie das Sternchen (*) als Platzhalter."
 msgstr "Verwenden Sie das Sternchen (*) als Platzhalter."
@@ -15231,6 +15288,7 @@ msgstr "Weitere allgemeine Hinweise zur Suchanfrage"
 msgid "Weitere potentiell interessante Titel (Recommender-Funktion)"
 msgstr "Weitere potentiell interessante Titel (Recommender-Funktion)"
 
+#: ../templates/_profile/kug/search_more_tips:3
 #: ../templates/search_more_tips:3
 msgid "Weitergehende Suchhinweise"
 msgstr "Weitergehende Suchhinweise"
@@ -15660,6 +15718,10 @@ msgstr "Zeitschriften der Bibliothek"
 #: ../templates/searchforms_record_simple:74
 msgid "Zeitschriften/Serien"
 msgstr "Zeitschriften/Serien"
+
+#: ../templates/_profile/kug/search_more_tips:30
+msgid "Zeitschriftenartikel"
+msgstr "Zeitschriftenartikel"
 
 #: ../templates/search_title_combined_html:108
 msgid "Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden."
@@ -16618,51 +16680,6 @@ msgstr "Übersicht"
 #: ../templates/users_navigation:93 ../templates/users_navigation:95
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
-
-#~ msgid "B&uuml;cher"
-#~ msgstr "B&uuml;cher"
-
-#~ msgid ""
-#~ "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in "
-#~ "Ihrem Katalog aufnehmen"
-#~ msgstr ""
-#~ "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in "
-#~ "Ihrem Katalog aufnehmen"
-
-#~ msgid ""
-#~ "F&uuml;r verschiedene Institute und Seminare der Philosophischen "
-#~ "Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem %1Online-"
-#~ "Kartenkatalog%2"
-#~ msgstr ""
-#~ "F&uuml;r verschiedene Institute und Seminare der Philosophischen "
-#~ "Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem %1Online-"
-#~ "Kartenkatalog%2"
-
-#~ msgid ""
-#~ "Haben Sie sich &uuml;ber unser\n"
-#~ "%1Datenbankangebot%2 informiert? Auch hier finden Sie Volltexte."
-#~ msgstr ""
-#~ "Haben Sie sich &uuml;ber unser\n"
-#~ "%1Datenbankangebot%2 informiert? Auch hier finden Sie Volltexte."
-
-#~ msgid ""
-#~ "Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. "
-#~ "Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit "
-#~ "&uuml;ber den KUG recherchierbar."
-#~ msgstr ""
-#~ "Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. "
-#~ "Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit "
-#~ "&uuml;ber den KUG recherchierbar."
-
-#~ msgid ""
-#~ "Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
-#~ "Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
-#~ msgstr ""
-#~ "Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
-#~ "Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
-
-#~ msgid "Zeitschriftenartikel"
-#~ msgstr "Zeitschriftenartikel"
 
 #, fuzzy
 #~ msgid "1. Topogr. Schlagwort"

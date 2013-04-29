@@ -36,22 +36,40 @@
 
 [% END %]
 
-<p style="font-size:0.7em;font-weight:bold;">
-Bestellung in den Lesesaal Historische Sammlungen:
-</p>
 [% signaturen = [] ;
    FOREACH mex IN record.get_holding ;
    signaturen.push(mex.${"X0014"}.content);
    END %]
-<form style="font-size:0.7em" method="post" action="/cgi-bin/portrait_bestellung.pl">
+<form class="ym-form" method="post" action="/cgi-bin/mail-order.pl">
+
 <input type="hidden" name="titel"    value="[% record.get_fields.${"T0331"}.first.content %]"/>
 <input type="hidden" name="signatur" value="[% signaturen.sort.unique.join(' ; ') %]"/>
 <input type="hidden" name="person"   value="[% record.get_fields.${"T0102"}.first.content %]"/>
 <input type="hidden" name="view"     value="[% view %]"/>
-<table>
-<tr><td>Benutzernummer:</td><td><input type="text" name="bnr"/></td></tr>
-<tr><td>Opac-Pin:</td><td><input type="password" name="password"/></td></tr>
-<tr><td colspan="2"><input type="submit" value="Bestellen"/></td></tr>
-</table>
-</p>
+<input type="hidden" name="database" value="[% database %]"/>
+<input type="hidden" name="contact"     value="flimm@ub.uni-koeln.de"/>
+<input type="hidden" name="mailsubject" value="Bestellung eines Portraits in den LS Hist. Sammlungen"/>
+
+<fieldset class="ym-full">
+
+<legend>Bestellung in den Lesesaal Historische Sammlungen
+</legend>
+
+<div class="ym-fbox-text">
+<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<input type="text" name="username" id="username" value="[% username %]" />
+</div>
+<div class="ym-fbox-text">
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
+<input type="password" name="password" id="password" />
+</div>
+
+<p/>
+
+<div class="ym-fbox-button">
+<input type="submit" value="Bestellen" />
+</div>
+
+</fieldset>
+
 </form>

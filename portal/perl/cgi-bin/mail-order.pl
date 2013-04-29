@@ -40,7 +40,6 @@ use CGI qw/:standard/;                        # CGI-Handling (or require)
 use Log::Log4perl qw(get_logger :levels);
 use DBI;
 use Template;
-use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Template::Provider;
 use OpenBib::Common::Util;
 use OpenBib::L10N;
@@ -67,11 +66,13 @@ my $query=new CGI;
 my $view     = ($query->param('view'))?$query->param('view'):'kug';
 my $database = ($query->param('database'))?$query->param('database'):'';
 my $contact  = ($query->param('contact'))?$query->param('contact'):'';
+my $mailsubject = ($query->param('mailsubject'))?decode_utf8($query->param('mailsubject')):'Bestellung';
 
-my $bnr      = ($query->param('bnr'))?$query->param('bnr'):'';
-my $password = ($query->param('password'))?$query->param('password'):'';
+my $username    = ($query->param('username'))?$query->param('username'):'';
+my $password    = ($query->param('password'))?$query->param('password'):'';
 
-$bnr=~s/%23/#/;
+
+$username=~s/%23/#/;
 
 my $titel    = ($query->param('titel'))?decode_utf8($query->param('titel')):'';
 my $person   = ($query->param('person'))?decode_utf8($query->param('person')):'';
@@ -93,7 +94,7 @@ my $signatur = ($query->param('signatur'))?decode_utf8($query->param('signatur')
 my $logfile='/var/log/openbib/mail_bestellung.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=ERROR, LOGFILE
+log4perl.rootLogger=DEBUG, LOGFILE
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -106,9 +107,23 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $config = new OpenBib::Config();
+my $config = OpenBib::Config->instance;
 
-my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+my $databaseinfo = $config->get_databaseinfo->single({ dbname => $database });
+
+my $wsurl ;
+my $wsdbname;
+
+if ($databaseinfo){
+    $logger->debug("Got dbinfo");
+    $wsurl    = $databaseinfo->get_column('circwsurl');
+    $wsdbname = $databaseinfo->get_column('circdb');
+    $logger->debug("WSURL: $wsurl - WSDBNAME: $wsdbname");
+}
+else {
+    $logger->debug("Couldn't get dbinfo");
+}
+
 
 # Message Katalog laden
 my $msg = OpenBib::L10N->get_handle('de') || $logger->error("L10N-Fehler");
@@ -116,7 +131,7 @@ $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
 my $sysprofile = $config->get_profilename_of_view($view);
     
-$logger->debug("Bnr:$bnr - OPAC-Pin:$password - Titel: $titel - Person: $person - Signatur:$signatur");
+$logger->debug("Username:$username - OPAC-Pin:$password - Titel: $titel - Person: $person - Signatur:$signatur");
 # Ueberpruefen, ob der Nutzer korrekt ist
 $logger->debug("Database: $database - View: $view - Kontakt: $contact");
 
@@ -125,13 +140,13 @@ my $result;
 eval {
     my $soap = new SOAP::Lite
         ->default_ns("urn:/Authentication")
-            ->proxy($circinfotable->{$database}{circcheckurl});
+            ->proxy($wsurl);
     
     $result = $soap->authenticate_user(
         SOAP::Data->name(parameters  =>\SOAP::Data->value(
-            SOAP::Data->name(username => $bnr)->type('string'),
+            SOAP::Data->name(username => $username)->type('string'),
             SOAP::Data->name(password => $password)->type('string'),
-            SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string')))
+            SOAP::Data->name(database => $wsdbname)->type('string')))
       );
 };
 
@@ -162,7 +177,7 @@ if ($userinfo{'erfolgreich'} eq "1"){
         msg        => $msg,
         view       => $view,
         sysprofile => $sysprofile,
-        bnr        => $bnr,
+        username        => $username,
         titel      => $titel,
         person     => $person,
         signatur   => $signatur,
@@ -176,7 +191,7 @@ if ($userinfo{'erfolgreich'} eq "1"){
         msg        => $msg,
         view       => $view,
         sysprofile => $sysprofile,
-        bnr        => $bnr,
+        username        => $username,
         titel      => encode_utf8($titel),
         person     => encode_utf8($person),
         signatur   => encode_utf8($signatur),
@@ -191,7 +206,7 @@ if ($userinfo{'erfolgreich'} eq "1"){
         OUTPUT        => $afile,
     });
     
-    $maintemplate->process('mail-bestellung', $mailttdata ) || do {
+    $maintemplate->process('mail-order', $mailttdata ) || do {
         my $resulttemplate = Template->new({ 
             INCLUDE_PATH   => $config->{tt_include_path},
             ABSOLUTE       => 1,
@@ -200,7 +215,7 @@ if ($userinfo{'erfolgreich'} eq "1"){
         # Dann Ausgabe des neuen Headers
         print $query->header('text/html');
         
-        $resulttemplate->process('mail-bestellung_fehler', {
+        $resulttemplate->process('mail-order_error', {
             grund => $maintemplate->error(), database => $database, view => $view, sysprofile => $sysprofile 
         });
 
@@ -209,7 +224,7 @@ if ($userinfo{'erfolgreich'} eq "1"){
     my $mailmsg = MIME::Lite->new(
         From            => $contact,
         To              => $contact,
-        Subject         => 'Bestellung',
+        Subject         => $mailsubject,
         Type            => 'multipart/mixed'
     );
     
@@ -227,10 +242,10 @@ if ($userinfo{'erfolgreich'} eq "1"){
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$contact");
     
     my  $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => 'pruessen',
+        database     => $database,
         view         => $view,
         profile      => $sysprofile,
-        templatename => 'mail-bestellung_erfolg',
+        templatename => 'mail-order_success',
     });
 
     my $resulttemplate2 = Template->new({ 
@@ -257,7 +272,7 @@ else {
         database     => $database,
         view         => $view,
         profile      => $sysprofile,
-        templatename => 'mail-bestellung_fehler',
+        templatename => 'mail-order_error',
     });
 
     my $ttdata =  {

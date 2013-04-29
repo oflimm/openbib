@@ -21,7 +21,7 @@
 <h4>[% msg.maketext("Neuerwerbungslisten") %]</h4>
 
 <p>
-Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://kug.ub.uni-koeln.de/neuerwerbungslisten/inst422/" target="_blank">Neuerwerbungslisten</a> angeboten.
+Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://unikatalog.ub.uni-koeln.de/neuerwerbungslisten/inst422/00/01/" target="_blank">Neuerwerbungslisten</a> angeboten.
 </p>
 
 <h4>[% msg.maketext("Zeitschriften der Bibliothek") %]</h4>

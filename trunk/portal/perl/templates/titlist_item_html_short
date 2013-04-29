@@ -199,7 +199,7 @@
      # Einbeziehung des ersten Gesamttitels T5005
      IF title && super;
         super_title = super.${'0331'}.first.content;
-        title = "${super_title} / ${title}";
+        title = "${title} (${super_title})";
      END;
 
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?

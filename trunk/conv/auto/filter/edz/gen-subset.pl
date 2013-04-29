@@ -2,12 +2,12 @@
 
 #####################################################################
 #
-#  gen-subset-holding.pl
+#  gen-subset.pl
 #
 #  Extrahieren einer Titeluntermenge eines Katalogs anhand der
-#  OLWS fuer die Erzeugung eines separaten neuen Katalogs
+#  mex-Daten fuer die Erzeugung eines separaten neuen Katalogs
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -36,8 +36,6 @@ use strict;
 use warnings;
 
 use Getopt::Long;
-use SOAP::Lite;
-
 use OpenBib::Catalog::Subset;
 
 use Log::Log4perl qw(get_logger :levels);
@@ -77,21 +75,12 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $soap_params = SOAP::Data->name('paramaters'  =>\SOAP::Data->value(
-    SOAP::Data->name('dept'     => "98")->type('string'),
-    SOAP::Data->name('password' => "")->type('string'),
-    SOAP::Data->name('database' => "sisis")->type('string')));
-
 my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
-$subset->identify_by_olws_circulation({
-    'urn'         => "urn:/Circulation",
-    'proxy'       => "http://hardtberg.ub.uni-koeln.de:8888/olws",
-    'soap_params' => $soap_params,
-});
+$subset->identify_by_field_content('title',([ { field => '4715', content => '^edz' } ]));
 $subset->write_set;
 
 sub print_help {
-    print "gen-subset.pl - Erzeugen von Kataloguntermengen\n\n";
+    print "gen-subset.pl - Erzeugen von Teilkatalogen\n\n";
     print "Optionen: \n";
     print "  -help                   : Diese Informationsseite\n\n";
 

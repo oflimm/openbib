@@ -386,7 +386,7 @@ my $atime = new Benchmark;
                         my $content = (exists $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:0;
                         next unless ($content);
 
-                        ($content) = $content=~m/^(\d+)/;
+                        ($content) = $content=~m/^\D*(\d+)/;
                         
                         if ($content){
                             $content = sprintf "%08d",$content;

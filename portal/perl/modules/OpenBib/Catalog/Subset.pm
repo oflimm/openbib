@@ -750,7 +750,7 @@ sub titleid_by_field_content {
             $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
                 {
                     $table_type{$table}{field} => $criteria_ref->{field},
-                    $content => { $operator => $criteria_ref->{$content} },
+                    'content' => { $operator => $criteria_ref->{'content'} },
                 },
                 {
                     select   => ['me.titleid'],

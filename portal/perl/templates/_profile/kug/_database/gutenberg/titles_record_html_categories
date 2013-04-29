@@ -268,7 +268,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${record.id}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}?page=1;num=20;srt=order_asc;profile=${local_searchprofile};${searchprefix}=${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;

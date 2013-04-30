@@ -572,22 +572,23 @@ sub load_full_title_record {
             
             # DBI: "select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
             
-            my $title_holdings = $self->{schema}->resultset('Title')->search(
+            my $title_holdings = $self->{schema}->resultset('TitleHolding')->search(
                 {
-                    'me.id' => $id,
+                    'titleid' => $id,
                 },
                 {
-                    select   => ['title_holdings.holdingid'],
+                    select   => ['holdingid'],
                     as       => ['thisholdingid'],
-                    group_by => ['title_holdings.holdingid'], # = distinct holdingid
-                    join     => ['title_holdings'],
+                    group_by => ['holdingid'], # = distinct holdingid
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
             
-            while (my $item = $title_holdings->next){
+            while (my $item = $title_holdings->next()){
                 my $holdingid =                    $item->{thisholdingid};
-                
+
+                $logger->debug("Got holdingid $holdingid for titleid $id");
+
                 push @$holding_ref, $self->_get_holding({
                     id             => $holdingid,
                 });

@@ -223,7 +223,7 @@ $(document).ready(function(){
        journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
     END ;
 -%]
-[%# USE dumper;dumper.dump(same_records)%]
+[%# USE dumper;dumper.dump(holding)%]
 <ul>
 [%   IF circulation.size > 0 %]
 <li><a href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>

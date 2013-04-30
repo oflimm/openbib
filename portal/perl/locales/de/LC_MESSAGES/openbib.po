@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-04-25 13:35+0200\n"
+"PO-Revision-Date: 2013-04-30 09:21+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -14130,7 +14130,7 @@ msgstr "IDs Bände/Stücke"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:114
 #: ../templates/visible_categories_title:120
 msgid "T5005"
-msgstr "Gesamttitel"
+msgstr "Zum Gesamttitel"
 
 #: ../templates/_database/inst001/visible_categories_title:117
 #: ../templates/_database/openlibrary/visible_categories_title:120

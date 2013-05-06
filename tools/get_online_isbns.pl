@@ -88,7 +88,7 @@ $logger->info("Getting ISBNs from database $database");
 
 my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database});
 
-open(ISBNOUT,">ebook_isbns_$database.txt");
+open(ISBNOUT,">online_isbns_$database.txt");
 
 my $online = $catalog->{schema}->resultset('TitleField')->search(
     {

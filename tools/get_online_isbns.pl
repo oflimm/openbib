@@ -36,25 +36,23 @@ use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
 use DBI;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Getopt::Long;
 use YAML;
 use POSIX qw/strftime/;
 
 use OpenBib::Config;
-use OpenBib::Enrichment;
-use OpenBib::Catalog;
+use OpenBib::Catalog::Factory;
 use OpenBib::Common::Util;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
 my $config     = OpenBib::Config->instance;
-my $enrichment = new OpenBib::Enrichment;
 
-my ($database,$help,$logfile,$incr);
+my ($database,$help,$logfile);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
-            "incr"            => \$incr,
 	    "help"            => \$help
 	    );
 
@@ -62,7 +60,7 @@ if ($help){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/get_usb_ebook_isbns.log';
+$logfile=($logfile)?$logfile:"/var/log/openbib/get_usb_ebook_isbns.log";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=INFO, LOGFILE, Screen
@@ -88,20 +86,19 @@ my $last_insertion_date = 0; # wird fuer inkrementelles Update benoetigt
 
 $logger->info("Getting ISBNs from database $database");
 
-my $catalog = new OpenBib::Catalog($database);
+my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database});
 
-open(ISBNOUT,"ebook_isbns_$database.txt");
+open(ISBNOUT,">ebook_isbns_$database.txt");
 
-my $online = $catalog->{schema}->resultset('Title')->search_rs(
+my $online = $catalog->{schema}->resultset('TitleField')->search(
     {
-        'title_fields.field'   => '4400',
-        'title_fields.content' => 'online',
+        'field'   => '4400',
+        'content' => 'online',
     },
     {
-        select => ['me.id'],
+        select => ['titleid'],
         as     => ['thistitleid'],
-        join   => ['title_fields'],
-        group_by => ['me.id'],
+        group_by => ['titleid'],
     }
 );
 
@@ -109,7 +106,7 @@ my $isbn_insertcount = 0;
 
 my $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
     {
-        id    => { -in => $online->as_query },
+        'me.id'    => { -in => $online->as_query },
         -or   => [
             'title_fields.field' => '0540',
             'title_fields.field' => '0541',
@@ -121,23 +118,25 @@ my $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
         as     => ['thisisbn'],
         group_by => ['title_fields.content'],
         join   => ['title_fields'],
+	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
     }
 );
 
 foreach my $item ($all_isbns->all){
-    my $thisisbn = $item->get_column('thisisbn');
+    my $thisisbn = $item->{'thisisbn'};
 
     print ISBNOUT $thisisbn,"\n";
     
     $isbn_insertcount++;
 }
 
+close(ISBNOUT);
+
 $logger->info("$isbn_insertcount ISBN's found");
 
 sub print_help {
     print << "ENDHELP";
-get_usb_ebook_isbns.pl - Bestimmung der ISBN's zu E-Books der USB
-                           nachgewiesen sind.
+get_usb_ebook_isbns.pl - Bestimmung der ISBN's zu E-Books die im jeweiligen Katalog nachgewiesen sind.
 
 
    Optionen:

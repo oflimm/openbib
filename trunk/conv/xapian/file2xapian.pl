@@ -46,6 +46,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Search::Xapian;
 use YAML::Syck;
 use OpenBib::Config;
+use OpenBib::Index::Factory;
 use OpenBib::Common::Util;
 
 my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath);
@@ -86,335 +87,45 @@ my $logger = get_logger();
 
 my $config = new OpenBib::Config();
 
-$indexpath=($indexpath)?$indexpath:$config->{xapian_index_base_path}."/".$database;
-
 if (!$database){
   $logger->fatal("Kein Pool mit --database= ausgewaehlt");
   exit;
 }
 
+$indexpath=($indexpath)?$indexpath:$config->{xapian_index_base_path}."/".$database;
+
 my $FLINT_BTREE_MAX_KEY_LEN = $config->{xapian_option}{max_key_length};
 
 $logger->info("### POOL $database");
 
-my %xapian_idmapping;
-
-tie %xapian_idmapping, 'DB_File', $config->{'autoconv_dir'}."/pools/$database/xapian_idmapping.db";
-
 open(SEARCHENGINE, "<:utf8","searchengine.json"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
-
-if (! -d "$indexpath"){
-    mkdir "$indexpath";
-}
 
 $logger->info("Loeschung des alten Index fuer Datenbank $database");
 
 system("rm $indexpath/*");
-
-my $locationid = $config->get_locationid_of_database($database);
-my $norm_locationid =  OpenBib::Common::Util::normalize({ content => $locationid});
-$norm_locationid=~s/\W/_/g;
 
 my $atime = new Benchmark;
 
 {
     $logger->info("Aufbau eines neuen temporaeren Index fuer Datenbank $database");
     
-    my $db = Search::Xapian::WritableDatabase->new( $indexpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
-    
-    my $stopword_ref={};
-    
-    if (exists $config->{stopword_filename}){
-        open(SW,$config->{stopword_filename});
-        while (my $stopword=<SW>){
-            chomp $stopword ;
-            $stopword = OpenBib::Common::Util::normalize({
-                content  => $stopword,
-            });
-            
-            $stopword_ref->{$stopword}=1;
-        }
-        close(SW);
-    }
-
-    my $stopwords = join(' ',keys %$stopword_ref);
     
     $logger->info("Migration der Titelsaetze");
     
     my $count = 1;
 
     {
-        my $tg = new Search::Xapian::TermGenerator();
-        $tg->set_stopper(new Search::Xapian::SimpleStopper($stopwords));
+        my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, create_index => 1, index_type => 'readwrite', index_path => $indexpath });
+
+        $indexer->set_stopper;
+        $indexer->set_termgenerator;
         
         my $atime = new Benchmark;
         while (my $searchengine=<SEARCHENGINE>) {
-            my $searchengine_ref = decode_json $searchengine;
+            my $document_ref = decode_json $searchengine;
 
-	    my %normalize_cache = ();
-            
-            my $index_ref  = $searchengine_ref->{index};
-            my $record_ref = $searchengine_ref->{record};
-
-            my $id         = $record_ref->{id};
-            my $thisdbname = $record_ref->{database};
-            
-            my $seen_token_ref = {};
-            
-            my $doc=Search::Xapian::Document->new();
-            $tg->set_document($doc);
-            
-            # ID des Satzes recherchierbar machen
-            $doc->add_term($config->{xapian_search_prefix}{'id'}.$id);
-            
-            # Katalogname des Satzes recherchierbar machen
-            $doc->add_term($config->{xapian_search_prefix}{'fdb'}.$thisdbname);
-            $doc->add_term($config->{xapian_search_prefix}{'floc'}.$norm_locationid);
-            
-            foreach my $searchfield (keys %{$config->{searchfield}}) {
-                
-		my $option_ref = (defined $config->{searchfield}{$searchfield}{option})?$config->{searchfield}{$searchfield}{option}:{};
-
-                # IDs oder Integer
-                if ($config->{searchfield}{$searchfield}{type} eq 'id' || $config->{searchfield}{$searchfield}{type} eq 'integer'){
-                    next if (! exists $index_ref->{$searchfield});
-
-                    $logger->debug("Processing Searchfield $searchfield for id $id and type ".$config->{searchfield}{$searchfield}{type});
-                    
-                    foreach my $weight (keys %{$index_ref->{$searchfield}}){
-                        # Naechstes, wenn keine ID
-                        foreach my $fields_ref (@{$index_ref->{$searchfield}{$weight}}){
-			    my $field   = $fields_ref->[0];
-			    my $content = $fields_ref->[1];
-
-                            next if (!$content);
-
-			    my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$content";
-
-			    my $normcontent = "";
-
-			    if (defined $normalize_cache{$normalize_cache_id}){
-				$normcontent = $normalize_cache{$normalize_cache_id};
-			    }
-			    else {
-				$normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
-				$normalize_cache{$normalize_cache_id} = $normcontent;
-			    }
-                            
-                            next if (!$normcontent);
-                            # IDs haben keine Position
-                            $tg->index_text_without_positions($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
-                        }
-                    }
-                }
-                # Einzelne Worte (Fulltext)
-                elsif ($config->{searchfield}{$searchfield}{type} eq 'ft'){
-                    # Tokenize
-                    next if (! exists $index_ref->{$searchfield});
-
-                    $logger->debug("Processing Searchfield $searchfield for id $id and type ".$config->{searchfield}{$searchfield}{type});
-                    
-                    foreach my $weight (keys %{$index_ref->{$searchfield}}){
-                        # Naechstes, wenn keine ID
-                        foreach my $fields_ref (@{$index_ref->{$searchfield}{$weight}}){
-			    my $field   = $fields_ref->[0];
-			    my $content = $fields_ref->[1];
-			    
-                            next if (!$content);
-
-			    my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$content";
-
-			    my $normcontent = "";
-
-			    if (defined $normalize_cache{$normalize_cache_id}){
-				$normcontent = $normalize_cache{$normalize_cache_id};
-			    }
-			    else {
-				$normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
-				$normalize_cache{$normalize_cache_id} = $normcontent;
-			    }
-
-                            next if (!$normcontent);
-
-                            $logger->debug("Fulltext indexing searchfield $searchfield: $normcontent");
-                            
-                            if ($withpositions){
-                                $tg->index_text($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
-                            }
-                            else {
-                                $tg->index_text_without_positions($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
-                            }
-                        }
-                    }
-                }
-                # Zusammenhaengende Zeichenkette
-                elsif ($config->{searchfield}{$searchfield}{type} eq 'string'){
-                    next if (!exists $index_ref->{$searchfield});
-
-                    $logger->debug("Processing Searchfield $searchfield for id $id and type ".$config->{searchfield}{$searchfield}{type});
-                    
-                    foreach my $weight (keys %{$index_ref->{$searchfield}}){
-                        my %seen_terms = ();
-                        my @unique_terms = @{$index_ref->{$searchfield}{$weight}}; #grep { ! defined $seen_terms{$_->[1]} || ! $seen_terms{$_->[1]} ++ } @{$index_ref->{$searchfield}{$weight}}; 
-                        
-                        
-                        foreach my $unique_term_ref (@unique_terms){
-			    my $field       = $unique_term_ref->[0];
-			    my $unique_term = $unique_term_ref->[1];
-
-                            $logger->debug("Processing string $unique_term in field $searchfield");
-                            
-                            next if (!$unique_term);
-
-			    my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$unique_term";
-
-			    if (defined $normalize_cache{$normalize_cache_id}){
-				$unique_term = $normalize_cache{$normalize_cache_id};
-			    }
-			    else {
-				$unique_term = OpenBib::Common::Util::normalize({ field => $field, content => $unique_term, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
-				$normalize_cache{$normalize_cache_id} = $unique_term;
-			    }
-
-                            next unless ($unique_term);
-                            
-                            $unique_term=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$unique_term;
-                            
-                            # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
-                            my $unique_term_octet = encode_utf8($unique_term); 
-                            $unique_term=(length($unique_term_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($unique_term_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$unique_term;
-
-                            $logger->debug("String indexing searchfield $searchfield: $unique_term");
-                            
-                            $doc->add_term($unique_term);
-                        }
-                    }
-                }
-            }
-            
-            # Facetten
-            foreach my $type (keys %{$config->{xapian_drilldown_value}}){
-                # Datenbankname
-                $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($database)) if ($type eq "database" && $database);
-                $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($locationid)) if ($type eq "location" && $locationid);
-
-                next if (!defined $index_ref->{"facet_".$type});
-                
-                my %seen_terms = ();
-                my @unique_terms = grep { defined $_ && ! $seen_terms{$_} ++ } @{$index_ref->{"facet_".$type}}; 
-                
-                my $multstring = join("\t",@unique_terms);
-                
-                $logger->debug("Adding to $type facet $multstring");
-                $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($multstring)) if ($multstring);
-            }
-            
-            # Sortierung
-            if ($withsorting){
-                my $sorting_ref = [
-                    {
-                        # Verfasser/Koepeschaft
-                        id         => $config->{xapian_sorttype_value}{'person'},
-                        category   => 'PC0001',
-                        type       => 'stringcategory',
-                    },
-                    {
-                        # Titel
-                        id         => $config->{xapian_sorttype_value}{'title'},
-                        category   => 'T0331',
-                        type       => 'stringcategory',
-                        filter     => sub {
-                            my $string=shift;
-                            $string=~s/^¬\w+¬?\s+//; # Mit Nichtsortierzeichen gekennzeichnetes Wort ausfiltern;
-                            return $string;
-                        },
-                    },
-                    {
-                        # Zaehlung
-                        id         => $config->{xapian_sorttype_value}{'order'},
-                        category   => 'T5100',
-                        type       => 'integercategory',
-                    },
-                    {
-                        # Jahr
-                        id         => $config->{xapian_sorttype_value}{'year'},
-                        category   => 'T0425',
-                        type       => 'integercategory',
-                    },
-                    {
-                        # Verlag
-                        id         => $config->{xapian_sorttype_value}{'publisher'},
-                        category   => 'T0412',
-                        type       => 'stringcategory',
-                    },
-                    {
-                        # Signatur
-                        id         => $config->{xapian_sorttype_value}{'mark'},
-                        category   => 'X0014',
-                        type       => 'stringcategory',
-                    },
-                    {
-                        # Popularitaet
-                        id         => $config->{xapian_sorttype_value}{'popularity'},
-                        category   => 'popularity',
-                        type       => 'integervalue',
-                    },
-                    
-                ];
-                
-                foreach my $this_sorting_ref (@{$sorting_ref}){
-                    
-                    if ($this_sorting_ref->{type} eq "stringcategory"){
-                        my $content = (exists $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:"";
-                        next unless ($content);
-
-                        if (defined $this_sorting_ref->{filter}){
-                            $content = &{$this_sorting_ref->{filter}}($content);
-                        }
-                        
-                        $content = OpenBib::Common::Util::normalize({
-                            content   => $content,
-                            type      => 'string',
-                        });
-                        
-                        if ($content){
-                            $logger->debug("Adding $content as sortvalue");
-                            $doc->add_value($this_sorting_ref->{id},$content);
-                        }
-                    }
-                    elsif ($this_sorting_ref->{type} eq "integercategory"){
-                        my $content = (exists $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:0;
-                        next unless ($content);
-
-                        ($content) = $content=~m/^\D*(\d+)/;
-                        
-                        if ($content){
-                            $content = sprintf "%08d",$content;
-                            $logger->debug("Adding $content as sortvalue");
-                            $doc->add_value($this_sorting_ref->{id},$content);
-                        }
-                    }
-                    elsif ($this_sorting_ref->{type} eq "integervalue"){
-                        my $content = 0 ;
-                        if (exists $record_ref->{$this_sorting_ref->{category}}){
-                            ($content) = $record_ref->{$this_sorting_ref->{category}}=~m/^(\d+)/;
-                        }
-                        if ($content){
-                            $content = sprintf "%08d",$content;
-                            $logger->debug("Adding $content as sortvalue");
-                            $doc->add_value($this_sorting_ref->{id},$content);
-                        }
-                    }
-                }
-            }
-
-            my $record = encode_json $record_ref;
-            $doc->set_data($record);
-            
-            my $docid=$db->add_document($doc);
-            
-            # Abspeichern des Mappings der SQL-ID zur Xapian-Doc-ID
-            $xapian_idmapping{$id} = $docid;
+            my $doc = $indexer->create_document({ document => $document_ref, with_sorting => $withsorting, with_positions => $withpositions });
+            $indexer->create_record($doc);
             
             if ($count % 1000 == 0) {
                 my $btime      = new Benchmark;
@@ -432,8 +143,6 @@ my $atime = new Benchmark;
 }
 
 close(SEARCHENGINE);
-
-untie(%xapian_idmapping);
 
 
 my $btime      = new Benchmark;

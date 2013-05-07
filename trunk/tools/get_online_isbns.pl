@@ -110,6 +110,7 @@ my $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
         -or   => [
             'title_fields.field' => '0540',
             'title_fields.field' => '0541',
+            'title_fields.field' => '0553',
             'title_fields.field' => '0634',
         ],
     },

@@ -61,10 +61,15 @@ sub new {
     bless ($self, $class);
 
     # Entweder genau eine Datenbank via database oder (allgemeiner) ein Suchprofil via searchprofile mit einer oder mehr Datenbanken
-    
-    $self->{_searchprofile} = $searchprofile if ($searchprofile);
-    $self->{_database}      = $database if ($database);
 
+    if ($searchprofile){
+        $self->{_searchprofile} = $searchprofile 
+    }
+    
+    if ($database){
+        $self->{_database}      = $database;
+    }
+    
     # Achtung: searchprofile und database werden fuer search direkt aus dem SearchQuery-Objekt verwendet.
 
     # Backend Specific Attributes

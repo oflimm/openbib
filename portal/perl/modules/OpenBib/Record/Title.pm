@@ -51,6 +51,8 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::Conv::Config;
+use OpenBib::Index::Document;
 use OpenBib::Schema::Catalog;
 use OpenBib::Schema::Enrichment;
 use OpenBib::Schema::DBI;
@@ -1920,7 +1922,20 @@ sub enrich_cdm {
     }
 
     return $enrich_data_ref;
+}
+
+sub to_indexable_document {
+    my $self = shift;
+    my $database = shift;
+
+    my $config      = OpenBib::Config->instance;
+    my $conv_config = new OpenBib::Conv::Config({dbname => $database});
+
+    my $doc = new OpenBib::Index::Document({ database => $self->{_database}, id => $self->{_id} });
     
+    my $titlecache_ref   = {}; # Inhalte fuer den Titel-Cache
+    my $searchengine_ref = {}; # Inhalte fuer die Suchmaschinen
+
 }
 
 1;

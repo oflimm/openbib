@@ -48,6 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::Conv::Config;
+use OpenBib::Index::Document;
 use OpenBib::Record::Classification;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Person;
@@ -630,7 +631,7 @@ while (my $jsonline=<IN>){
     my $enrichmnt_issns_ref = [];
 
     # Initialisieren und Basisinformationen setzen
-    my $index_doc = new OpenBib::Index::Document({ database => $database, id => $id, locationid => $locationid });
+    my $index_doc = OpenBib::Index::Document->new({ database => $database, id => $id, locationid => $locationid });
 
     # Popularitaet, Tags und Literaturlisten verarbeiten fuer Index-Data
     {
@@ -1145,7 +1146,7 @@ while (my $jsonline=<IN>){
                     elsif ($field eq "litlist"){
                         if (exists $listitemdata_litlists{$id}) {
                             foreach my $litlist_ref (@{$listitemdata_litlists{$id}}) {
-                                index_doc->add_index($searchfield,$weight, ['litlist',$litlist_ref->{title}]);
+                                $index_doc->add_index($searchfield,$weight, ['litlist',$litlist_ref->{title}]);
                             }
                             
                             $logger->info("Adding Litlists to ID $id");
@@ -1201,7 +1202,7 @@ while (my $jsonline=<IN>){
                     elsif ($field eq "litlist"){
                         if (exists $listitemdata_litlists{$id}) {
                             foreach my $litlist_ref (@{$listitemdata_tags{$id}}) {
-                                $index_doc->add_facet("facet_$searchfield", $listlist_ref->{title});
+                                $index_doc->add_facet("facet_$searchfield", $litlist_ref->{title});
                             }
                         }
                     }            
@@ -1264,7 +1265,7 @@ while (my $jsonline=<IN>){
                 
                 foreach my $searchfield (keys %{$thissubject}) {
                     foreach my $weight (keys %{$thissubject->{$searchfield}}) {
-                        $index_doc->add_index_array($searchfield,$weight}, $thissubject->{$searchfield}{$weight}); # value is arrayref
+                        $index_doc->add_index_array($searchfield,$weight, $thissubject->{$searchfield}{$weight}); # value is arrayref
                     }
                 }
             }
@@ -1453,7 +1454,7 @@ while (my $jsonline=<IN>){
         if (exists $listitemdata_holding{$id}){
             my $thisholdings = $listitemdata_holding{$id};
             foreach my $content (@{$thisholdings}) {
-                $index_doc->add_data('X0014'}, {
+                $index_doc->add_data('X0014', {
                     content => $content,
                 });
             }
@@ -1520,7 +1521,7 @@ while (my $jsonline=<IN>){
     }                
         
     # Suchmaschinen-Daten schreiben
-    my $searchengine = encode_json $index_doc->get_document;
+    my $searchengine = $index_doc->to_json;
 
     print SEARCHENGINE "$searchengine\n";
     

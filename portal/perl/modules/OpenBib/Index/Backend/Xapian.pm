@@ -214,7 +214,7 @@ sub create_document {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $document_ref = exists $arg_ref->{document}
+    my $document    = exists $arg_ref->{document}
         ? $arg_ref->{document}        : undef;
 
     my $withsorting = exists $arg_ref->{with_sorting}
@@ -242,15 +242,15 @@ sub create_document {
 
     my %normalize_cache = ();
     
-    my $index_ref  = $document_ref->{index};
-    my $record_ref = $document_ref->{record};
-    
+    my $index_ref  = $document->get_index;
+    my $record_ref = $document->get_data;
+
     my $id         = $record_ref->{id};
     my $thisdbname = $record_ref->{database};
     
     my $seen_token_ref = {};
     
-    my $doc=Search::Xapian::Document->new();
+    my $doc = Search::Xapian::Document->new();
     
     $self->{_tg}->set_document($doc);
     
@@ -429,6 +429,12 @@ sub create_document {
                 # Jahr
                 id         => $config->{xapian_sorttype_value}{'year'},
                 category   => 'T0425',
+                type       => 'integercategory',
+            },
+            {
+                # Jahr
+                id         => $config->{xapian_sorttype_value}{'year'},
+                category   => 'T0424',
                 type       => 'integercategory',
             },
             {

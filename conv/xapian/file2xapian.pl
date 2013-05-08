@@ -121,10 +121,10 @@ my $atime = new Benchmark;
         $indexer->set_termgenerator;
         
         my $atime = new Benchmark;
-        while (my $searchengine=<SEARCHENGINE>) {
-            my $document_ref = decode_json $searchengine;
+        while (my $searchengine=<SEARCHENGINE>) {            
+            my $document = OpenBib::Index::Document->new()->from_json($searchengine);
 
-            my $doc = $indexer->create_document({ document => $document_ref, with_sorting => $withsorting, with_positions => $withpositions });
+            my $doc = $indexer->create_document({ document => $document, with_sorting => $withsorting, with_positions => $withpositions });
             $indexer->create_record($doc);
             
             if ($count % 1000 == 0) {

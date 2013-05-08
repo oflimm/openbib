@@ -25,10 +25,13 @@
 #
 #####################################################################
 
-package OpenBib::Index;
+package OpenBib::Index::Document;
+
 use warnings;
 no warnings 'redefine';
 use utf8;
+
+use JSON::XS;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -52,20 +55,21 @@ sub new {
     $self->{_index} = {};
 
     if ($database){
-        $self->{_database}               = $database;
-        $self->{_index}->{database} = $database;
+        $self->{_database}          = $database;
+#        $self->{_index}{database} = $database;
+        $self->{_data}{database}  = $database;
         push @{$self->{_index}{dbstring}{1}}, ['database',$database];
         push @{$self->{_index}{facet_database}}, $database;
     }
 
     if ($locationid){
-        push @{$self->{_index}{locationstring}}, $locationid;
+        push @{$self->{_index}{locationstring}{1}}, ['location',$locationid];
         push @{$self->{_index}{facet_location}}, $locationid;
     }
     
     if ($id){
         $self->{_id}               = $id;
-        $self->{_index}{id} = $id;
+        $self->{_data}{id}         = $id;
         push @{$self->{_index}{id}{1}}, ['id',$id];
     }
 
@@ -89,6 +93,47 @@ sub get_document {
     my $self = shift;
     
     return { record => $self->{_data}, index => $self->{_index} };
+}
+
+sub to_json ($) {
+    my $self = shift;
+
+    my $doc_ref = $self->get_document;
+
+    my $doc_as_json;
+
+    eval {
+         $doc_as_json = encode_json $doc_ref;
+    };
+    
+    return $doc_as_json;
+}
+
+sub from_json ($) {
+    my ($self,$json) = @_;
+
+    eval {
+         $doc_ref = decode_json $json;
+         $self->{_data}  = $doc_ref->{record};
+         $self->{_index} = $doc_ref->{index};
+         
+    };
+    
+    return $self;
+}
+
+sub data_to_json {
+    my $self = shift;
+
+    my $data_ref = $self->get_data;
+
+    my $data_as_json;
+
+    eval {
+         $data_as_json = encode_json $data_ref;
+    };
+    
+    return $data_as_json;
 }
 
 sub set_data {
@@ -132,7 +177,7 @@ sub add_index_array {
 }
 
 sub set_facet {
-    my ($self,$weight,$value) = @_;
+    my ($self,$key,$value) = @_;
 
     $self->{_index}{$key} = $value;
 

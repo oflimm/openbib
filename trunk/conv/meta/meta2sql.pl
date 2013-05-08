@@ -628,38 +628,30 @@ while (my $jsonline=<IN>){
 
     my $enrichmnt_isbns_ref = [];
     my $enrichmnt_issns_ref = [];
-    
-    # Basisinformationen setzen
-    {
-        push @{$searchengine_ref->{id}{1}}, ['id',$id];
-        push @{$searchengine_ref->{dbstring}{1}}, ['database',$database];
-        push @{$searchengine_ref->{locationstring}{1}}, ['location',$locationid];
-        push @{$searchengine_ref->{facet_database}}, $database;
-        push @{$searchengine_ref->{facet_location}}, $locationid;
-        
-        $titlecache_ref->{id}       = $id;
-        $titlecache_ref->{database} = $database;
-    }
-    
-    # Popularitaet, Tags und Literaturlisten verarbeiten fuer titlecache
+
+    # Initialisieren und Basisinformationen setzen
+    my $index_doc = new OpenBib::Index::Document({ database => $database, id => $id, locationid => $locationid });
+
+    # Popularitaet, Tags und Literaturlisten verarbeiten fuer Index-Data
     {
         if (exists $listitemdata_popularity{$id}) {
             if (exists $conv_config->{'listitemcat'}{popularity}) {
-                $titlecache_ref->{popularity} = $listitemdata_popularity{$id};
+                $index_doc->set_data('popularity',$listitemdata_popularity{$id});
             }
+
             
-            push @{$searchengine_ref->{popularity}{1}}, $listitemdata_popularity{$id};
+            $index_doc->add_index('popularity',1, $listitemdata_popularity{$id});
         }
         
         if (exists $listitemdata_tags{$id}) {
             if (exists $conv_config->{'listitemcat'}{tags}) {
-                $titlecache_ref->{tag} = $listitemdata_tags{$id};
+                $index_doc->set_data('tag',$listitemdata_tags{$id});
             }
         }
         
         if (exists $listitemdata_litlists{$id}) {
             if (exists $conv_config->{'listitemcat'}{litlists}) {
-                $titlecache_ref->{litlist} = $listitemdata_litlists{$id};
+                $index_doc->set_data('litlist',$listitemdata_litlists{$id});
             }
         }        
     }
@@ -848,8 +840,8 @@ while (my $jsonline=<IN>){
             if (defined $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {
                 foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{index}}) {
                     my $weight = $stammdateien_ref->{title}{inverted_ref}{$field}->{index}{$searchfield};
-                    
-                    push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$target_titleid];
+
+                    $index_doc->add_index($searchfield, $weight, ["T$field",$target_titleid]);
                 }
             }
             
@@ -910,13 +902,13 @@ while (my $jsonline=<IN>){
                     
                     # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
-                    
-                    push @{$titlecache_ref->{"P$field"}}, {
+
+                    $index_doc->add_data("P$field",{
                         id      => $personid,
                         type    => 'person',
                         content => $mainentry,
                         supplement => $supplement,
-                    } if (exists $conv_config->{listitemcat}{$field});
+                    }) if (exists $conv_config->{listitemcat}{$field});
                     
                     push @personcorporatebody, $mainentry;
                     
@@ -971,13 +963,13 @@ while (my $jsonline=<IN>){
 
                     # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
-                    
-                    push @{$titlecache_ref->{"C$field"}}, {
+
+                    $index_doc->set_data("C$field", {
                         id      => $corporatebodyid,
                         type    => 'corporatebody',
                         content => $mainentry,
                         supplement => $supplement,
-                    } if (exists $conv_config->{listitemcat}{$field});
+                    }) if (exists $conv_config->{listitemcat}{$field});
                     
                     push @personcorporatebody, $mainentry;
                     
@@ -1031,12 +1023,12 @@ while (my $jsonline=<IN>){
                     # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
                     
-                    push @{$titlecache_ref->{"N$field"}}, {
+                    $index_doc->add_data("N$field", {
                         id      => $classificationid,
                         type    => 'classification',
                         content => $mainentry,
                         supplement => $supplement,
-                    } if (exists $conv_config->{listitemcat}{$field});
+                    }) if (exists $conv_config->{listitemcat}{$field});
                     
 #                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {                    
                         push @classification, $classificationid;
@@ -1075,12 +1067,12 @@ while (my $jsonline=<IN>){
                     # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
                     
-                    push @{$titlecache_ref->{"S$field"}}, {
+                    $index_doc->add_data("S$field", {
                         id      => $subjectid,
                         type    => 'subject',
                         content => $mainentry,
                         supplement => $supplement,
-                    } if (exists $conv_config->{listitemcat}{$field});
+                    }) if (exists $conv_config->{listitemcat}{$field});
                     
 #                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {                    
                         push @subject, $subjectid;
@@ -1106,7 +1098,7 @@ while (my $jsonline=<IN>){
                         if (defined $stammdateien_ref->{title}{inverted_ref}{$field}->{facet}){
                             foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{facet}}) {
                                 foreach my $item_ref (@{$super_ref->{$field}}) {
-                                    push @{$searchengine_ref->{"facet_".$searchfield}}, $item_ref->{content};
+                                    $index_doc->add_facet("facet_".$searchfield, $item_ref->{content});
                                 }
                             }
                         }
@@ -1142,7 +1134,7 @@ while (my $jsonline=<IN>){
                         if (exists $listitemdata_tags{$id}) {
                             
                             foreach my $tag_ref (@{$listitemdata_tags{$id}}) {
-                                push @{$searchengine_ref->{$searchfield}{$weight}}, ['tag',$tag_ref->{tag}];
+                                $index_doc->add_index($searchfield,$weight, ['tag',$tag_ref->{tag}]);
                             }
                             
                             
@@ -1153,7 +1145,7 @@ while (my $jsonline=<IN>){
                     elsif ($field eq "litlist"){
                         if (exists $listitemdata_litlists{$id}) {
                             foreach my $litlist_ref (@{$listitemdata_litlists{$id}}) {
-                                push @{$searchengine_ref->{$searchfield}{$weight}}, ['litlist',$litlist_ref->{title}];
+                                index_doc->add_index($searchfield,$weight, ['litlist',$litlist_ref->{title}]);
                             }
                             
                             $logger->info("Adding Litlists to ID $id");
@@ -1165,7 +1157,7 @@ while (my $jsonline=<IN>){
                         foreach my $item_ref (@{$record_ref->{$field}}){
                             next unless $item_ref->{content};
 
-                            push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$item_ref->{content}];
+                            $index_doc->add_index($searchfield,$weight, ["T$field",$item_ref->{content}]);
 
                             # Wird diese Kategorie als isbn verwendet?
                             if ($flag_isbn) {
@@ -1187,7 +1179,7 @@ while (my $jsonline=<IN>){
                                         $enriched_isbn=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
                                         $enriched_isbn=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
                                         
-                                        push @{$searchengine_ref->{$searchfield}{$weight}}, ["T$field",$enriched_isbn];
+                                        $index_doc->add_index($searchfield,$weight, ["T$field",$enriched_isbn]);
                                     }
                                 }
                             }
@@ -1202,14 +1194,14 @@ while (my $jsonline=<IN>){
                     if ($field eq "tag"){
                         if (exists $listitemdata_tags{$id}) {
                             foreach my $tag_ref (@{$listitemdata_tags{$id}}) {
-                                push @{$searchengine_ref->{"facet_$searchfield"}}, $tag_ref->{tag};
+                                $index_doc->add_facet("facet_$searchfield", $tag_ref->{tag});
                             }
                         }
                     }
                     elsif ($field eq "litlist"){
                         if (exists $listitemdata_litlists{$id}) {
                             foreach my $litlist_ref (@{$listitemdata_tags{$id}}) {
-                                push @{$searchengine_ref->{"facet_$searchfield"}}, $litlist_ref->{title};
+                                $index_doc->add_facet("facet_$searchfield", $listlist_ref->{title});
                             }
                         }
                     }            
@@ -1217,7 +1209,7 @@ while (my $jsonline=<IN>){
                         next unless (defined $record_ref->{$field});
                         
                         foreach my $item_ref (@{$record_ref->{$field}}) {
-                            push @{$searchengine_ref->{"facet_".$searchfield}}, $item_ref->{content};
+                            $index_doc->add_facet("facet_$searchfield", $item_ref->{content});        
                         }
                     }
                 }
@@ -1234,13 +1226,13 @@ while (my $jsonline=<IN>){
             next if (exists $seen_person{$item});
             
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'personid'}{1}}, ['id',$item];
+            $index_doc->add_index('personid',1, ['id',$item]);
             
             if (exists $indexed_person{$item}) {
                 my $thisperson = $indexed_person{$item};
                 foreach my $searchfield (keys %{$thisperson}) {		    
                     foreach my $weight (keys %{$thisperson->{$searchfield}}) {                        
-                        push @{$searchengine_ref->{$searchfield}{$weight}}, @{$thisperson->{$searchfield}{$weight}};
+                        $index_doc->add_index_array($searchfield,$weight, $thisperson->{$searchfield}{$weight}); # value is arrayref
                     }
                 }
             }
@@ -1250,14 +1242,14 @@ while (my $jsonline=<IN>){
         
         foreach my $item (@corporatebody) {
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'corporatebodyid'}{1}}, ['id',$item];
+            $index_doc->add_index('corporatebodyid',1, ['id',$item]);
             
             if (exists $indexed_corporatebody{$item}) {
                 my $thiscorporatebody = $indexed_corporatebody{$item};
                 
                 foreach my $searchfield (keys %{$thiscorporatebody}) {
                     foreach my $weight (keys %{$thiscorporatebody->{$searchfield}}) {
-                        push @{$searchengine_ref->{$searchfield}{$weight}}, @{$thiscorporatebody->{$searchfield}{$weight}};
+                        $index_doc->add_index_array($searchfield,$weight, $thiscorporatebody->{$searchfield}{$weight}); # value is arrayref
                     }
                 }
             }
@@ -1265,14 +1257,14 @@ while (my $jsonline=<IN>){
         
         foreach my $item (@subject) {
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'subjectid'}{1}}, ['id',$item];
+            $index_doc->add_index('subjectid',1, ['id',$item]);
             
             if (exists $indexed_subject{$item}) {
                 my $thissubject = $indexed_subject{$item};
                 
                 foreach my $searchfield (keys %{$thissubject}) {
                     foreach my $weight (keys %{$thissubject->{$searchfield}}) {
-                        push @{$searchengine_ref->{$searchfield}{$weight}}, @{$thissubject->{$searchfield}{$weight}};
+                        $index_doc->add_index_array($searchfield,$weight}, $thissubject->{$searchfield}{$weight}); # value is arrayref
                     }
                 }
             }
@@ -1280,14 +1272,14 @@ while (my $jsonline=<IN>){
         
         foreach my $item (@classification) {
             # ID-Merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'classificationid'}{1}}, ['id',$item];
+            $index_doc->add_index('classificationid',1, ['id',$item]);
             
             if (exists $indexed_classification{$item}) {
                 my $thisclassification = $indexed_classification{$item};
                 
                 foreach my $searchfield (keys %{$thisclassification}) {
                     foreach my $weight (keys %{$thisclassification->{$searchfield}}) {
-                        push @{$searchengine_ref->{$searchfield}{$weight}}, @{$thisclassification->{$searchfield}{$weight}};
+                        $index_doc->add_index_array($searchfield,$weight, $thisclassification->{$searchfield}{$weight}); # value is arrayref
                     }
                 }
             }
@@ -1300,7 +1292,7 @@ while (my $jsonline=<IN>){
         
         foreach my $searchfield (keys %{$thisholding}) {
             foreach my $weight (keys %{$thisholding->{$searchfield}}) {
-                push @{$searchengine_ref->{$searchfield}{$weight}}, @{$thisholding->{$searchfield}{$weight}};
+                $index_doc->add_index_array($searchfield,$weight, $thisholding->{$searchfield}{$weight}); # value is arrayref
             }
         }
     }
@@ -1333,8 +1325,8 @@ while (my $jsonline=<IN>){
             };
             
             # Bibkey merken fuer Recherche ueber Suchmaschine
-            push @{$searchengine_ref->{'bkey'}{1}}, ['T5050',$bibkey];
-            push @{$searchengine_ref->{'bkey'}{1}}, ['T5051',$bibkey];
+            $index_doc->add_index('bkey',1, ['T5050',$bibkey]);
+            $index_doc->add_index('bkey',1, ['T5051',$bibkey_base]);
         }
     }
     
@@ -1343,25 +1335,25 @@ while (my $jsonline=<IN>){
         if (exists $listitemdata_enriched_years{$id}) {
             foreach my $year (@{$listitemdata_enriched_years{$id}}) {
                 $logger->debug("Enriching year $year to Title-ID $id");
-                push @{$searchengine_ref->{year}{1}}, ['T0425',$year];
-                push @{$searchengine_ref->{freesearch}{1}}, ['T0425',$year];
+                $index_doc->add_index('year',1, ['T0425',$year]);
+                $index_doc->add_index('freesearch',1, ['T0425',$year]);
             }
         }
     }
     
-    # Titlecache mit Titelfeldern fuellen
+    # Index-Data mit Titelfeldern fuellen
     foreach my $field (keys %{$record_ref}) {            
         # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
         if (defined $conv_config->{listitemcat}{$field}) {
             foreach my $item_ref (@{$record_ref->{$field}}) {
                 unless (defined $item_ref->{ignore}){
-                    push @{$titlecache_ref->{"T".$field}}, $item_ref;
+                    $index_doc->add_data("T".$field, $item_ref);
                 }
             }
         }
     }
         
-    # Potentiell fehlender Titel fuer titlecache zusammensetzen
+    # Potentiell fehlender Titel fuer Index-Data zusammensetzen
     {
         # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
         # der Kurztitelliste:
@@ -1398,22 +1390,32 @@ while (my $jsonline=<IN>){
         if (!defined $record_ref->{'0331'}) {
             # UnterFall 2.1:
             if (defined $record_ref->{'0089'}) {
-                $titlecache_ref->{T0331}[0]{content}=$record_ref->{'0089'}[0]{content};
+                $index_doc->add_data('T0331',{
+                    content => $record_ref->{'0089'}[0]{content}
+                });
             }
             # Unterfall 2.2:
             elsif (defined $record_ref->{'0455'}) {
-                $titlecache_ref->{T0331}[0]{content}=$record_ref->{'0455'}[0]{content};
+                $index_doc->add_data('T0331',{
+                    content => $record_ref->{'0455'}[0]{content}
+                });
             }
             # Unterfall 2.3:
             elsif (defined $record_ref->{'0451'}) {
-                $titlecache_ref->{T0331}[0]{content}=$record_ref->{'0451'}[0]{content};
+                $index_doc->add_data('T0331',{
+                    content => $record_ref->{'0451'}[0]{content}
+                });
             }
             # Unterfall 2.4:
             elsif (defined $record_ref->{'1203'}) {
-                $titlecache_ref->{T0331}[0]{content}=$record_ref->{'1203'}[0]{content};
+                $index_doc->add_data('T0331',{
+                    content => $record_ref->{'1203'}[0]{content}
+                });
             }
             else {
-                $titlecache_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
+                $index_doc->add_data('T0331',{
+                    content => "Kein HST/AST vorhanden",
+                });
             }
         }
         
@@ -1430,19 +1432,19 @@ while (my $jsonline=<IN>){
         
         # Fall 1:
         if (defined $record_ref->{'0089'}) {
-            $titlecache_ref->{'T5100'}= [
+            $index_doc->set_data('T5100', [
                 {
                     content => $record_ref->{'0089'}[0]{content}
                 }
-            ];
+            ]);
         }
         # Fall 2:
         elsif (defined $record_ref->{'0455'}) {
-            $titlecache_ref->{'T5100'}= [
+            $index_doc->set_data('T5100', [
                 {
                     content => $record_ref->{'0455'}[0]{content}
                 }
-            ];
+            ]);
         }
         
         # Exemplardaten-Hash zu listitem-Hash hinzufuegen
@@ -1451,20 +1453,20 @@ while (my $jsonline=<IN>){
         if (exists $listitemdata_holding{$id}){
             my $thisholdings = $listitemdata_holding{$id};
             foreach my $content (@{$thisholdings}) {
-                push @{$titlecache_ref->{'X0014'}}, {
+                $index_doc->add_data('X0014'}, {
                     content => $content,
-                };
+                });
             }
         }
         
         # Kombinierte Verfasser/Koerperschaft hinzufuegen fuer Sortierung
-        push @{$titlecache_ref->{'PC0001'}}, {
+        $index_doc->add_data('PC0001', {
             content   => join(" ; ",@personcorporatebody),
-        };
+        });
     }
     
     
-    my $titlecache = encode_json $titlecache_ref;
+    my $titlecache = encode_json $index_doc->get_data;
     
    # $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
     $titlecache = cleanup_content($titlecache);
@@ -1518,7 +1520,7 @@ while (my $jsonline=<IN>){
     }                
         
     # Suchmaschinen-Daten schreiben
-    my $searchengine = encode_json { record => $titlecache_ref, index => $searchengine_ref };
+    my $searchengine = encode_json $index_doc->get_document;
 
     print SEARCHENGINE "$searchengine\n";
     

@@ -17,6 +17,7 @@ uniqueidfield: 'upi'
 
 category_split_chars:
   'title': ';'
+  'person': ';'
 
 # Personen
 person:

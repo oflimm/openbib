@@ -586,6 +586,7 @@
 ../templates/info_credits_mobile
 ../templates/info_feedback
 ../templates/info_help
+../templates/_profile/kug/info_help
 ../templates/info_impressum
 ../templates/info_impressum_html
 ../templates/info_impressum_mobile

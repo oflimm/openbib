@@ -1671,7 +1671,7 @@ sub get_private_tagged_titles {
             'userid.username' => $username,
         },
         {
-            group_by => ['me.tagid'],
+            group_by => ['me.tagid','me.titleid','me.dbname','me.type','tagid.name'],
             order_by => ['tagid.name'],
             join     => ['tagid','userid'],
             select   => ['tagid.name','me.titleid','me.dbname','me.type'],

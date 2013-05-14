@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-05-13 16:46+0200\n"
+"PO-Revision-Date: 2013-05-14 14:22+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -14988,7 +14988,6 @@ msgid "Ungültige Session"
 msgstr "Invalid session"
 
 #: ../templates/_profile/kug/info_help:372
-#, fuzzy
 msgid ""
 "Unter <b>Sortierung nach</b> erfolgt die Einstellung der\n"
 "        Sortierung nach Person/K&ouml;rperschaft, Titel, Z&auml;hlung,\n"
@@ -14996,8 +14995,7 @@ msgid ""
 msgstr ""
 "With the option <b>sort by</b> you can rearrange your search results by   "
 "person/institution, title, numbering, year, publisher, location mark and   "
-"popularity (in ascending or descending order), sorted by catalog or   "
-"globally."
+"popularity."
 
 #: ../templates/info_help:445
 msgid ""
@@ -15101,11 +15099,10 @@ msgstr ""
 "the boxes: notation, location mark, complete title)"
 
 #: ../templates/_profile/kug/info_help:191
-#, fuzzy
 msgid ""
 "Verkn&uuml;pfungen innerhalb eines\n"
 "      Suchfeldes."
-msgstr "AND-relation in a search field"
+msgstr "Search-relations in a search field"
 
 #: ../templates/_profile/kug/info_help:184 ../templates/info_help:189
 msgid "Verkn&uuml;pfungen mehrerer Suchfelder"
@@ -15125,9 +15122,8 @@ msgstr "Publisher"
 
 #: ../templates/_profile/kug/info_help:101
 #: ../templates/_profile/kug/info_help:881
-#, fuzzy
 msgid "Verlinkung und Lastverteilung im KUG"
-msgstr "Load Sharing in OpenBib"
+msgstr "Load Sharing in KUG"
 
 #: ../templates/info_help:979
 msgid "Verlinkung und Lastverteilung in OpenBib"
@@ -15562,7 +15558,6 @@ msgstr ""
 
 #. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('KUG','jpg','Academic')
 #: ../templates/_profile/kug/info_help:922
-#, fuzzy
 msgid ""
 "Wenn Sie den Internet-Browser %1 verwenden, dann k&ouml;nnen\n"
 "    Sie f&uuml;r ihn von %2hier%3 das\n"
@@ -15570,7 +15565,7 @@ msgid ""
 "    JavaScript aktiviert sein und Sie m&uuml;ssen Schreibberechtigung\n"
 "    im searchplugins-Verzeichnis von Firefox besitzen)"
 msgstr ""
-"If you are using the Internet browser %1, you can add the OpenBib Search "
+"If you are using the Internet browser %1, you can add the KUG Search "
 "Plug-in by clicking %2here%3 (Please note: to install this plug-in, "
 "JavaScript must be active and you will need administrator access rights for "
 "the searchplugins-file in Firefox)."
@@ -15622,7 +15617,6 @@ msgstr ""
 "a search field</b> - at least one search term has to exist in the title."
 
 #: ../templates/_profile/kug/info_help:504
-#, fuzzy
 msgid ""
 "Wenn Sie sich eine <b>Merkliste</b> zusammenstellen m&ouml;chten,\n"
 "      klicken Sie auf das <i>Bleistift</i>-Icon. Dieses ist sowohl von der\n"
@@ -15697,18 +15691,16 @@ msgstr ""
 
 #. ("")
 #: ../templates/_profile/kug/info_help:436
-#, fuzzy
 msgid ""
 "Wenn Sie sich mit Ihrem USB-Ausweis anmelden, können Sie aus dem KUG heraus\n"
 "eine <b>Fernleihe</b> %1 starten, ohne sich zuvor nochmals authentifizieren "
 "zu müssen."
 msgstr ""
-"If you are logged in under your USB user number, you can initiate an "
-"<b>interlibrary loan</b> %1 from the OpenBib system without having to enter "
+"If you are logged in with your USB user number, you can initiate an "
+"<b>interlibrary loan</b> %1 from the KUG system without having to enter "
 "your   password again."
 
 #: ../templates/_profile/kug/info_help:772
-#, fuzzy
 msgid ""
 "Wenn Titel im KUG getaggt werden, können diese Titel\n"
 "      inkl. Tags und Sichtbarkeitsinformationen (privat/öffentlich)\n"
@@ -15718,9 +15710,9 @@ msgid ""
 "      findet diese dann aber auch in BibSonomy wieder und kann damit\n"
 "      die dort vorhandenen weitergehenden Möglichkeiten nutzen"
 msgstr ""
-"When tagging titles in OpenBib they can be automatically uploaded/mirrored "
+"When tagging titles in KUG they can be automatically uploaded/mirrored "
 "to BibSonomy including tags and visibility information (private/public). The "
-"user works and tags in the OpenBib interface, but finds them in BibSonomy "
+"user works and tags in the KUG interface, but finds them in BibSonomy "
 "too and can use its additional services."
 
 #: ../templates/info_help:870
@@ -15739,7 +15731,6 @@ msgstr ""
 "too and can use its additional services."
 
 #: ../templates/_profile/kug/info_help:762
-#, fuzzy
 msgid ""
 "Wenn man in der Rubrik <i>BibSonomy Tags</i> der\n"
 "      Einzeltrefferanzeige auf ein angebotenes Tag / Schlagwort\n"
@@ -15752,7 +15743,7 @@ msgstr ""
 "When you click on the subject headings/tag in the tab <i>BibSonomy Tags</i> "
 "of the title entry you get a list of all titles that are tagged "
 "correspondingly in BibSonomy by all its users. In this list you get instant "
-"feedback on the local availability of the resource in OpenBib."
+"feedback on the local availability of the resource in KUG."
 
 #: ../templates/info_help:856
 msgid ""
@@ -15884,7 +15875,6 @@ msgid "Wolken"
 msgstr "Clouds"
 
 #: ../templates/_profile/kug/info_help:355
-#, fuzzy
 msgid ""
 "Wollen Sie die Suche mit einem Erscheinungsjahr kombinieren, f&uuml;llen\n"
 "        Sie bitte zus&auml;tzlich das Feld <i>Jahr</i>\n"
@@ -15892,9 +15882,9 @@ msgid ""
 "<i>Zeitraum\n"
 "bis</i> durch Eingabe entsprechender Jahreszahlen recherchiert werden."
 msgstr ""
-"To restrict your search to a certain year of publication, please fill   out "
-"the search field 'year' (exact/before/after). It is not possible to   search "
-"exclusively by year."
+"To restrict your search to a certain year of publication, please use "
+"the search field 'year' (exact/before/after). To search corresponding year "
+"ranges you can use 'timespan from' and 'timespan to'."
 
 #: ../templates/info_help:429
 msgid ""

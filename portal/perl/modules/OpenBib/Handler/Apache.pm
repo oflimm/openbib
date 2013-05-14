@@ -1464,7 +1464,9 @@ sub dispatch_to_representation {
 sub print_authorization_error {
     my $self = shift;
 
-    my $r   = $self->param('r');
+    my $r           = $self->param('r');
+    my $path_prefix = $self->param('path_prefix');
+    my $config      = $self->param('config');
     my $msg = $self->param('msg');
 
     # Log4perl logger erzeugen
@@ -1473,9 +1475,15 @@ sub print_authorization_error {
     if ($self->param('representation') ne "html"){
         $r->status(Apache2::Const::FORBIDDEN);
     }
+    else {
+        # Aufruf-URL
+        my $return_uri  = uri_escape($r->parsed_uri->path);
+        
+        # Return-URL in der Session abspeichern
+        
+        return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",'303 See Other');
+    }        
 
-    $self->print_warning($msg->maketext("Sie sind nicht authorisiert"));
-    
     return;
 }
 

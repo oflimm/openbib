@@ -66,7 +66,7 @@ sub setup {
         'update_searchfields'                  => 'update_searchfields',
         'update_searchform'                    => 'update_searchform',
         'update_bibsonomy'                     => 'update_bibsonomy',
-        'update_bibsonomy_sync'                => 'update_bibsonomy_sync',
+        'update_bibsonomysync'                 => 'update_bibsonomysync',
         'update_spelling'                      => 'update_spelling',
         'update_livesearch'                    => 'update_livesearch',
         'update_autocompletion'                => 'update_autocompletion',
@@ -250,7 +250,7 @@ sub update_bibsonomy {
     return;
 }
 
-sub update_bibsonomy_sync {
+sub update_bibsonomysync {
     my $self = shift;
 
     # Log4perl logger erzeugen

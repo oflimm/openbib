@@ -692,14 +692,14 @@ sub is_authenticated {
     $logger->debug("Args: Role: $role UserID: $userid");
     $logger->debug("Session-UserID: ".$user->{ID});
     
-    if (! $user->{ID} && $self->param('represenation') eq "html"){
-        # Aufruf-URL
-        my $return_uri  = uri_escape($r->parsed_uri->path);
+#     if (! $user->{ID} && $self->param('represenation') eq "html"){
+#         # Aufruf-URL
+#         my $return_uri  = uri_escape($r->parsed_uri->path);
         
-        # Return-URL in der Session abspeichern
+#         # Return-URL in der Session abspeichern
         
-        return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",'303 See Other');
-    }
+#         return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",'303 See Other');
+#     }
 
     if ($role eq "admin" && $user->is_admin){
         return 1;
@@ -1467,12 +1467,13 @@ sub print_authorization_error {
     my $r           = $self->param('r');
     my $path_prefix = $self->param('path_prefix');
     my $config      = $self->param('config');
-    my $msg = $self->param('msg');
+    my $msg         = $self->param('msg');
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     if ($self->param('representation') ne "html"){
+        $logger->debug("Authorization error");
         $r->status(Apache2::Const::FORBIDDEN);
     }
     else {
@@ -1480,6 +1481,8 @@ sub print_authorization_error {
         my $return_uri  = uri_escape($r->parsed_uri->path);
         
         # Return-URL in der Session abspeichern
+
+        $logger->debug("Authorization error: Redirecting to $return_uri");
         
         return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",'303 See Other');
     }        

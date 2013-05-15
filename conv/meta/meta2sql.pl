@@ -497,7 +497,7 @@ while (my $jsonline=<IN>){
     }
     
     # Bestandsverlauf in Jahreszahlen umwandeln
-    if ((exists $record_ref->{'1204'}) && $titleid) {        
+    if ((defined $record_ref->{'1204'}) && $titleid) {        
         my $array_ref=[];
         if (exists $listitemdata_enriched_years{$titleid}){
             $array_ref = $listitemdata_enriched_years{$titleid};
@@ -914,7 +914,7 @@ while (my $jsonline=<IN>){
                     push @personcorporatebody, $mainentry;
                     
 #                    if (exists $stammdateien_ref->{title}{inverted_ref}{$field}->{index}) {
-                        push @person, $personid;
+                    push @person, $personid;
 #                    }
                 }
                 else {
@@ -1114,7 +1114,44 @@ while (my $jsonline=<IN>){
         }
     }
 
-    
+
+    # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
+    if ((defined $record_ref->{'0100'} || defined $record_ref->{'0101'}) && defined $record_ref->{'0331'} && (defined $record_ref->{'0424'} || defined $record_ref->{'0425'})){
+
+        my $bibkey_record_ref = {
+            'T0100' => $record_ref->{'0100'},
+            'T0101' => $record_ref->{'0101'},
+            'T0331' => $record_ref->{'0331'},
+            'T0425' => $record_ref->{'0425'},
+        };
+
+        if ($record_ref->{'0424'} && !$record_ref->{'0425'}){
+            $bibkey_record_ref->{'T0425'} = $record_ref->{'0424'};
+        }
+
+        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ fields => $bibkey_record_ref});
+
+        my $bibkey      = ($bibkey_base)?OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base }):"";
+        
+        if ($bibkey) {
+            push @{$record_ref->{'5050'}}, {
+                mult      => 1,
+                content   => $bibkey,
+                subfield  => '',
+            };
+                
+            push @{$record_ref->{'5051'}}, {
+                mult      => 1,
+                content   => $bibkey_base,
+                subfield   => '',
+            };
+
+            # Bibkey merken fuer Recherche ueber Suchmaschine
+#            $index_doc->add_index('bkey',1, ['T5050',$bibkey]);
+#            $index_doc->add_index('bkey',1, ['T5051',$bibkey_base]);
+        }
+    }
+
     # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
     {
         foreach my $field (keys %{$stammdateien_ref->{title}{inverted_ref}}){
@@ -1295,39 +1332,6 @@ while (my $jsonline=<IN>){
             foreach my $weight (keys %{$thisholding->{$searchfield}}) {
                 $index_doc->add_index_array($searchfield,$weight, $thisholding->{$searchfield}{$weight}); # value is arrayref
             }
-        }
-    }
-
-    # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
-    if ((defined $record_ref->{'0100'} || defined $record_ref->{'0101'}) && defined $record_ref->{'0331'} && defined $record_ref->{'0425'}){
-
-        my $bibkey_record_ref = {
-            'T0100' => $record_ref->{'0100'},
-            'T0101' => $record_ref->{'0101'},
-            'T0331' => $record_ref->{'0331'},
-            'T0425' => $record_ref->{'0425'},
-        };
-
-        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ fields => $bibkey_record_ref});
-
-        my $bibkey      = ($bibkey_base)?OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base }):"";
-        
-        if ($bibkey) {
-            push @{$record_ref->{'5050'}}, {
-                mult      => 1,
-                content   => $bibkey,
-                subfield  => '',
-            };
-                
-            push @{$record_ref->{'5051'}}, {
-                mult      => 1,
-                content   => $bibkey_base,
-                subfield   => '',
-            };
-            
-            # Bibkey merken fuer Recherche ueber Suchmaschine
-            $index_doc->add_index('bkey',1, ['T5050',$bibkey]);
-            $index_doc->add_index('bkey',1, ['T5051',$bibkey_base]);
         }
     }
     

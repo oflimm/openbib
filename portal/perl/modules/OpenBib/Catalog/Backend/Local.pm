@@ -35,14 +35,22 @@ use base qw(OpenBib::Catalog);
 use Business::ISBN;
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
+use JSON::XS;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 
+use OpenBib::Conv::Config;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::Catalog;
 use OpenBib::Record::Title;
+use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Classification;
+use OpenBib::Record::Subject;
 use OpenBib::RecordList::Title;
+use OpenBib::User;
+use OpenBib::Statistics;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -661,6 +669,517 @@ sub load_brief_title_record {
     }
     
     return $title_record;
+}
+
+sub load_conv_config {
+    my $self = shift;
+
+    if ($self->{database}){
+        $self->{_conv_config} = new OpenBib::Conv::Config({dbname => $self->{database}});
+    }
+
+    return $self;
+}
+
+sub get_conv_config {
+    my $self = shift;
+
+    return $self->{_conv_config};
+}
+
+sub create_index_document {
+    my ($self,$titleid) = @_;
+
+    return $self unless ($self->{database} && $titleid);
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $index_doc = OpenBib::Index::Document->new({ database => $self->{database}, id => $titleid });
+
+    my $thisyear = `date +"%Y"`;
+
+    my $record = $self->load_full_title_record({ id => $titleid });
+
+    my $conv_config = $self->get_conv_config;
+    
+    # 1) Data bestimmen und setzen
+    
+    my $statistics = new OpenBib::Statistics;
+    my $user       = new OpenBib::User;
+
+    my $popularity = $statistics->{schema}->resultset('Titleusage')->search(
+        {
+            dbname  => $self->{database},
+            origin  => 1,
+            id      => $titleid,
+        }
+    )->count;
+    
+    if (exists $self->{_conv_config}->{'listitemcat'}{popularity}) {
+
+    }
+    
+    $index_doc->add_index('popularity',1, $popularity);
+    
+    my $tags_ref = [];
+    {
+        my $tags = $user->{schema}->resultset('TitTag')->search(
+            {
+                'me.dbname' => $self->{database},
+                'me.titleid' => $titleid,
+            },
+            {
+                select => ['tagid.name','tagid.id'],
+                as     => ['thistagname','thistagid'],
+                join => ['tagid'],
+            }
+        );
+
+        foreach my $tag ($tags->all){
+            my $tagname = $tag->get_column('thistagname');
+            my $tagid   = $tag->get_column('thistagid');
+
+            push @$tags_ref, { tag => $tagname, id => $tagid };
+        }
+        
+        if (exists $self->{_conv_config}->{'listitemcat'}{tags}) {
+
+        }
+    }
+
+    my $litlists_ref = [];
+    
+    {
+        my $litlists = $user->{schema}->resultset('Litlist')->search(
+            {
+                'litlistitems.dbname' => $self->{database},
+                'litlistitems.titleid' => $titleid,
+            },
+            {
+                select => ['me.title','me.id'],
+                as     => ['thislitlisttitle','thislitlistid'],
+                join => ['litlistitems'],
+            }
+        );
+        
+        foreach my $litlist ($litlists->all){
+            my $litlisttitle = $litlist->get_column('thislitlisttitle');
+            my $litlistid    = $litlist->get_column('thislitlistid');
+            
+            push @{$litlists_ref}, { title => $litlisttitle, id => $litlistid };
+            
+        }
+    }
+
+    foreach my $field (keys %{$self->{_conv_config}->{'listitemcat'}}){
+        if ($field eq "popularity" && $popularity){
+            $index_doc->set_data('popularity',$popularity) if ($popularity);
+        }
+        elsif ($field eq "tags"){
+            $index_doc->add_data('tag',$tags_ref);
+        }
+        elsif ($field eq "litlists"){
+            $index_doc->add_data('litlist',$litlists_ref);
+        }
+        elsif ($record->has_field("T".$field)){
+            foreach my $item_ref (@{$record->get_field({field => "T".$field})}){
+                $index_doc->add_data("T".$field, $item_ref);
+            }
+        }
+    }
+
+    # Inhalte aus Normdaten (Personen, Schlagworte, usw.) hinzufuegen
+    {
+        # Verfasser/Personen
+        foreach my $field ('0100','0101','0102','0103','1800') {
+            # Anreicherung mit Informationen der Ueberordnung
+
+            if ($record->has_field("T5005")) {
+                eval {
+                    foreach my $super (@{$record->get_field({field => "T5005"})}){
+                        my $super_ref = decode_json $super->{content};
+
+                        if (defined $super_ref->{$field}) {
+                            # Anreichern der Titelinformationen
+                            foreach my $item_ref (@{$super_ref->{$field}}) {
+                                $record->set_field({field => "T$field", content => $item_ref->{content}, id => $item_ref->{id}});
+                            }
+                        }
+
+                    }
+                };
+
+                if ($@){
+                    $logger->error($@);
+                }
+            }
+            
+            if ($record->has_field("T".$field)) {
+                foreach my $item_ref (@{$record->get_field({ field => "T".$field })}) {
+                    if ($item_ref->{id}){
+                        my $person = new OpenBib::Record::Person({ database => $self->{database}, id => $item_ref->{id} })->load_full_record;
+
+                        $index_doc->add_index('personid',1, ['id',$item_ref->{id}]);
+
+                        foreach my $normdata_field (keys %{$person->get_fields}){
+                            $normdata_field=~s/^.//;
+                            foreach my $normdataitem_ref (@{$person->get_field({ field => "P".$normdata_field})}) {
+                                if (exists $conv_config->{inverted_person}{$normdata_field}->{index}) {
+                                    foreach my $searchfield (keys %{$conv_config->{inverted_person}{$normdata_field}->{index}}) {
+                                        my $weight = $conv_config->{inverted_person}{$normdata_field}->{index}{$searchfield};
+                                        $index_doc->add_index($searchfield,$weight, ["P$normdata_field",$normdataitem_ref->{content}]);
+                                    }
+                                }
+                            }
+                        }       
+                    }
+                    else {
+                    }
+                    
+                }
+            }
+        }
+
+        #Koerperschaften/Urheber
+        foreach my $field ('0200','0201','1802') {
+            if ($record->has_field("T".$field)) {
+                foreach my $item_ref (@{$record->get_field({ field => "T".$field })}) {
+                    if ($item_ref->{id}){
+                        my $corporatebody = new OpenBib::Record::CorporateBody({ database => $self->{database}, id => $item_ref->{id} })->load_full_record;
+
+                        $index_doc->add_index('corporatebodyid',1, ['id',$item_ref->{id}]);
+                        
+                        foreach my $normdata_field (keys %{$corporatebody->get_fields}){
+                            $normdata_field=~s/^.//;
+                            foreach my $normdataitem_ref (@{$corporatebody->get_field({ field => "C".$normdata_field})}) {
+                                if (exists $conv_config->{inverted_corporatebody}{$normdata_field}->{index}) {
+                                    foreach my $searchfield (keys %{$conv_config->{inverted_corporatebody}{$normdata_field}->{index}}) {
+                                        my $weight = $conv_config->{inverted_corporatebody}{$normdata_field}->{index}{$searchfield};
+                                        $index_doc->add_index($searchfield,$weight, ["C$normdata_field",$normdataitem_ref->{content}]);
+                                    }
+                                }
+                            }
+                        }       
+                    }
+                    else {
+                    }
+                    
+                }
+            }
+        }
+
+        # Klassifikation
+        foreach my $field ('0700') {
+            if ($record->has_field("T".$field)) {
+                foreach my $item_ref (@{$record->get_field({ field => "T".$field })}) {
+                    if ($item_ref->{id}){
+                        my $classification = new OpenBib::Record::Classification({ database => $self->{database}, id => $item_ref->{id} })->load_full_record;
+
+                        $index_doc->add_index('classificationid',1, ['id',$item_ref->{id}]);
+                        
+                        foreach my $normdata_field (keys %{$classification->get_fields}){
+                            $normdata_field=~s/^.//;
+                            foreach my $normdataitem_ref (@{$classification->get_field({ field => "N".$normdata_field})}) {
+                                if (exists $conv_config->{inverted_classification}{$normdata_field}->{index}) {
+                                    foreach my $searchfield (keys %{$conv_config->{inverted_classification}{$normdata_field}->{index}}) {
+                                        my $weight = $conv_config->{inverted_classification}{$normdata_field}->{index}{$searchfield};
+                                        $index_doc->add_index($searchfield,$weight, ["N$normdata_field",$normdataitem_ref->{content}]);
+                                    }
+                                }
+                            }
+                        }       
+                    }
+                    else {
+                    }
+                    
+                }
+            }
+        }
+
+        # Schlagworte
+        foreach my $field ('0710','0902','0907','0912','0917','0922','0927','0932','0937','0942','0947') {
+            if ($record->has_field("T".$field)) {
+                foreach my $item_ref (@{$record->get_field({ field => "T".$field })}) {
+                    if ($item_ref->{id}){
+                        my $subject = new OpenBib::Record::Subject({ database => $self->{database}, id => $item_ref->{id} })->load_full_record;
+
+                        $index_doc->add_index('subjectid',1, ['id',$item_ref->{id}]);
+                        
+                        foreach my $normdata_field (keys %{$subject->get_fields}){
+                            $normdata_field=~s/^.//;
+                            foreach my $normdataitem_ref (@{$subject->get_field({ field => "S".$normdata_field})}) {
+                                if (exists $conv_config->{inverted_subject}{$normdata_field}->{index}) {
+                                    foreach my $searchfield (keys %{$conv_config->{inverted_subject}{$normdata_field}->{index}}) {
+                                        my $weight = $conv_config->{inverted_subject}{$normdata_field}->{index}{$searchfield};
+                                        $index_doc->add_index($searchfield,$weight, ["S$normdata_field",$normdataitem_ref->{content}]);
+                                    }
+                                }
+                            }
+                        }       
+                    }
+                    else {
+                    }
+                    
+                }
+            }
+        }
+
+
+        # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
+        foreach my $field (keys %{$conv_config->{inverted_title}}){
+            # a) Indexierung in der Suchmaschine
+            if (exists $conv_config->{inverted_title}{$field}->{index}){
+                
+                my $flag_isbn = 0;
+                # Wird dieses Feld als ISBN genutzt, dann zusaetzlicher Inhalt
+                foreach my $searchfield (keys %{$conv_config->{inverted_title}{$field}->{index}}) {
+                    if ($searchfield eq "isbn"){
+                        $flag_isbn=1;
+                    }
+                }
+                
+                foreach my $searchfield (keys %{$conv_config->{inverted_title}{$field}->{index}}) {
+                    my $weight = $conv_config->{inverted_title}{$field}->{index}{$searchfield};
+                    next unless ($record->has_field("T".$field));
+
+                    foreach my $item_ref (@{$record->get_field({ field => "T".$field })}) {
+                        next unless $item_ref->{content};
+                        
+                        $index_doc->add_index($searchfield,$weight, ["T$field",$item_ref->{content}]);
+                        
+                        # Wird diese Kategorie als isbn verwendet?
+                        if ($flag_isbn) {
+                            # Alternative ISBN zur Rechercheanreicherung erzeugen
+                            my $isbn = Business::ISBN->new($item_ref->{content});
+                            
+                            if (defined $isbn && $isbn->is_valid) {
+                                my $isbnXX;
+                                if (!$isbn->prefix) { # ISBN10 haben kein Prefix
+                                    $isbnXX = $isbn->as_isbn13;
+                                } else {
+                                    $isbnXX = $isbn->as_isbn10;
+                                }
+                                
+                                if (defined $isbnXX) {
+                                    my $enriched_isbn = $isbnXX->as_string;
+                                    
+                                    $enriched_isbn = lc($enriched_isbn);
+                                    $enriched_isbn=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
+                                    $enriched_isbn=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
+                                    
+                                    $index_doc->add_index($searchfield,$weight, ["T$field",$enriched_isbn]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            # b) Facetten in der Suchmaschine
+            if (exists $conv_config->{inverted_title}{$field}->{facet}){
+                foreach my $searchfield (keys %{$conv_config->{inverted_title}{$field}->{facet}}) {
+                    if ($field eq "tag"){
+                        foreach my $tag_ref (@$tags_ref){
+                            $index_doc->add_facet("facet_$searchfield", $tag_ref->{tag});
+                        }
+                    }
+                    elsif ($field eq "litlist"){
+                        foreach my $litlist_ref (@$litlists_ref){
+                            $index_doc->add_facet("facet_$searchfield", $litlist_ref->{title});
+                        }
+                    }            
+                    else {
+                        next unless ($record->has_field("T".$field));
+
+                        foreach my $item_ref (@{$record->get_field({ field => "T".$field })}) {
+                            $index_doc->add_facet("facet_$searchfield", $item_ref->{content}); 
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    {
+        foreach my $holding_ref (@{$record->get_holding}){
+            foreach my $field (keys %{$holding_ref}) {
+                next if ($field eq "id" || defined $conv_config->{blacklist_holding}{$field} );
+
+                next unless ($holding_ref->{$field}{content});
+
+                $field=~s/^.//;
+                
+                if (exists $conv_config->{inverted_holding}{$field}->{index}) {
+                    foreach my $searchfield (keys %{$conv_config->{inverted_holding}{$field}->{index}}) {
+                        my $weight = $conv_config->{inverted_holding}{$field}->{index}{$searchfield};
+                        
+                        $index_doc->add_index($searchfield, $weight, ["X$field",$holding_ref->{"X".$field}{content}]); # value is arrayref
+                    }
+                }
+            }
+        }
+    }
+
+    {
+        # Jahreszahlen umwandeln
+        if ($record->has_field('0425')) {
+            foreach my $item_ref (@{$record->get_field({ field => '0425'})}){
+                my $date = $item_ref->{content};
+                
+                if ($date =~/^(\d\d\d\d)\s*-\s*(\d\d\d\d)/) {
+                    my $startyear = $1;
+                    my $endyear   = $2;
+                    
+                    $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                    for (my $year=$startyear;$year<=$endyear; $year++) {
+                        $logger->debug("Enriching year $year");
+                        $index_doc->add_index('year',1, ['T0425',$year]);
+                        $index_doc->add_index('freesearch',1, ['T0425',$year]);
+                    }
+                }
+            }
+        }
+        
+        # Bestandsverlauf in Jahreszahlen umwandeln
+        foreach my $holding_ref (@{$record->get_holding}){
+            if ((defined $holding_ref->{'1204'})) {        
+                
+                foreach my $date (split(";",$holding_ref->{'1204'}[0]{content})) {
+                    if ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-\s+.*?(\d\d\d\d)/) {
+                        my $startyear = $1;
+                        my $endyear   = $2;
+                        
+                        $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                        for (my $year=$startyear;$year<=$endyear; $year++) {
+                            $logger->debug("Enriching year $year");
+                            $index_doc->add_index('year',1, ['T0425',$year]);
+                            $index_doc->add_index('freesearch',1, ['T0425',$year]);
+                        }
+                    }
+                    elsif ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-/) {
+                        my $startyear = $1;
+                        my $endyear   = $thisyear;
+                        $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                        for (my $year=$startyear;$year<=$endyear;$year++) {
+                            $logger->debug("Enriching year $year");
+                            $index_doc->add_index('year',1, ['T0425',$year]);
+                            $index_doc->add_index('freesearch',1, ['T0425',$year]);
+                        }                
+                    }
+                    elsif ($date =~/(\d\d\d\d)/) {
+                        $logger->debug("Not expanding $date, just adding year $1");
+                        $logger->debug("Enriching year $1");
+                        $index_doc->add_index('year',1, ['T0425',$1]);
+                        $index_doc->add_index('freesearch',1, ['T0425',$1]);
+                    }
+                }
+            }
+        }
+    }
+    # Potentiell fehlender Titel fuer Index-Data zusammensetzen
+    {
+        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+        # der Kurztitelliste:
+        #
+        # 1. Fall: Es existiert ein HST
+        #
+        # Dann:
+        #
+        # Ist nichts zu tun
+        #
+        # 2. Fall: Es existiert kein HST(331)
+        #
+        # Dann:
+        #
+        # Unterfall 2.1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.3: Es existieren keine Bandzahlen, aber ein (erster)
+        #                Gesamttitel(451)
+        #
+        # Dann: Verwende diesen GT
+        #
+        # Unterfall 2.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
+        #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
+        #
+        # Dann: Verwende diese Zeitschriftensignatur
+        #
+        if (!$record->has_field('T0331')) {
+            # UnterFall 2.1:
+            if ($record->has_field('T0089')) {
+                $index_doc->add_data('T0331',{
+                    content => $record->get_field({ field => 'T0089' })->[0]{content}
+                });
+            }
+            # Unterfall 2.2:
+            elsif ($record->has_field('0455')) {
+                $index_doc->add_data('T0331',{
+                    content => $record->get_field({ field => 'T0455' })->[0]{content}
+                });
+            }
+            # Unterfall 2.3:
+            elsif ($record->has_field('0451')) {
+                $index_doc->add_data('T0331',{
+                    content => $record->get_field({ field => 'T0451' })->[0]{content}
+                });
+            }
+            # Unterfall 2.4:
+            elsif ($record->has_field('1203')) {
+                $index_doc->add_data('T0331',{
+                    content => $record->get_field({ field => 'T1203' })->[0]{content}
+                });
+            }
+            else {
+                $index_doc->add_data('T0331',{
+                    content => "Kein Titel vorhanden"
+                });
+            }
+        }
+        
+        # Bestimmung der Zaehlung
+        
+        # Fall 1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Setze diese Bandzahl
+        #
+        # Fall 2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Setze diese Bandzahl
+        
+        # Fall 1:
+        if ($record->has_field('0089')) {
+            $index_doc->set_data('T5100', [
+                {
+                    content => $record->get_field({ field => 'T0089' })->[0]{content}
+                }
+            ]);
+        }
+        # Fall 2:
+        elsif ($record->has_field('0455')) {
+            $index_doc->set_data('T5100', [
+                {
+                    content => $record->get_field({ field => 'T0455' })->[0]{content}
+                }
+            ]);
+        }
+    }
+    
+    # Exemplardaten (X0014) immer!
+    foreach my $holding_ref (@{$record->get_holding}){
+        $index_doc->add_data('X0014', {
+            content => $holding_ref->{"X0014"}{content},
+        });
+    }
+    
+    return $index_doc;
 }
 
 sub _get_holding {

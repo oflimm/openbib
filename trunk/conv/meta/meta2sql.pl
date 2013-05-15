@@ -965,7 +965,7 @@ while (my $jsonline=<IN>){
                     # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
 
-                    $index_doc->set_data("C$field", {
+                    $index_doc->add_data("C$field", {
                         id      => $corporatebodyid,
                         type    => 'corporatebody',
                         content => $mainentry,

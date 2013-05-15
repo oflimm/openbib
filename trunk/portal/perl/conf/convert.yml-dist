@@ -646,6 +646,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
@@ -1247,6 +1250,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
   kapsel:
     inverted_title:
@@ -1695,6 +1701,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
   richter:
     inverted_title:
@@ -1937,6 +1946,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
       '0501':         # Richterindiz
         index:
@@ -2187,6 +2199,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
       '0501':         # Richterindiz
         index:
@@ -2425,6 +2440,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
@@ -2673,6 +2691,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
     listitemcat:
       'tag': 1
@@ -2956,6 +2977,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
   landschaft:
     inverted_title:
@@ -3181,6 +3205,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
   totenzettel:
     inverted_classification:
@@ -3645,6 +3672,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1
     listitemcat:
       'tag': 1
@@ -4103,6 +4133,9 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1  
   portrait:
     inverted_title:
@@ -4554,4 +4587,7 @@ convtab:
           'freesearch': 1
         string: 1
       '5051':         # Bibkey Base
+        index:
+          'bkey': 1
+          'freesearch': 1
         string: 1

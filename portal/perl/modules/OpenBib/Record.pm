@@ -111,6 +111,40 @@ sub get_generic_attributes {
     return $self->{generic_attributes};
 }
 
+sub get_fields {
+    my ($self)=@_;
+
+    return $self->{_fields}
+}
+
+sub get_field {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $field            = exists $arg_ref->{field}
+        ? $arg_ref->{field}               : undef;
+
+    my $mult             = exists $arg_ref->{mult}
+        ? $arg_ref->{mult}                : undef;
+
+    if (defined $mult && $mult){
+        foreach my $field_ref (@{$self->{_fields}->{$field}}){
+            if ($field_ref->{mult} == $mult){
+                return $field_ref->{content};
+            }
+        }
+    }
+    else {
+        return $self->{_fields}->{$field};
+    }
+}
+
+sub has_field {
+    my ($self,$field) = @_;
+
+    return (defined $self->{_fields}->{$field})?1:0;
+}
+
 sub set_field {
     my ($self,$arg_ref) = @_;
 

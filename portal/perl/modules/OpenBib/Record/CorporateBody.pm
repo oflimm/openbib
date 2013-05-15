@@ -93,8 +93,8 @@ sub load_full_record {
     my $fields_ref={};
 
     $self->{id      }        = $id;
-    $fields_ref->{id      } = $id;
-    $fields_ref->{database} = $self->{database};
+#    $fields_ref->{id      } = $id;
+#    $fields_ref->{database} = $self->{database};
 
     my ($atime,$btime,$timeall);
 

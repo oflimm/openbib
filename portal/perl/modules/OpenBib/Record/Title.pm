@@ -397,7 +397,7 @@ sub enrich_content {
                 }
             );
             
-#            $logger->debug("Found ".($same_titles->count)." records");
+            #            $logger->debug("Found ".($same_titles->count)." records");
             
             while (my $item = $same_titles->next) {
                 my $id         = $item->{titleid};
@@ -405,9 +405,9 @@ sub enrich_content {
                 
                 $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
             }
-
+            
             $same_recordlist->load_brief_records;
-
+            
             $self->set_same_records($same_recordlist);
         }
         
@@ -444,7 +444,7 @@ sub enrich_content {
                     group_by => ['isbn'],
                 }
             );
-
+            
             my $where_ref = {
                 isbn    => { -in => $similar_isbns->as_query },
             };

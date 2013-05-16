@@ -311,7 +311,7 @@ sub create_document {
                     my $content = $fields_ref->[1];
                     
                     next if (!$content);
-                    
+                                        
                     my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$content";
                     
                     my $normcontent = "";
@@ -334,6 +334,38 @@ sub create_document {
                     else {
                         $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
                     }
+
+                    my $additionalcontent = "";
+                    
+                    if ($content=~m/(\w)-(\w)/){
+                        $additionalcontent = $content;
+                        $additionalcontent=~s/(\w)-(\w)/$1$2/g;
+                    }
+                    
+                    if ($additionalcontent){
+                        my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$additionalcontent";
+                        
+                        my $normcontent = "";
+                        
+                        if (defined $normalize_cache{$normalize_cache_id}){
+                            $normcontent = $normalize_cache{$normalize_cache_id};
+                        }
+                        else {
+                            $normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $additionalcontent, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
+                            $normalize_cache{$normalize_cache_id} = $normcontent;
+                        }
+                        
+                        next if (!$normcontent);
+                        
+                        $logger->debug("Fulltext indexing searchfield $searchfield: $normcontent");
+                        
+                        if ($withpositions){
+                            $self->{_tg}->index_text($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
+                        }
+                        else {
+                            $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
+                        }
+                    }
                 }
             }
         }
@@ -350,33 +382,68 @@ sub create_document {
                 
                 foreach my $unique_term_ref (@unique_terms){
                     my $field       = $unique_term_ref->[0];
-                    my $unique_term = $unique_term_ref->[1];
+                    my $content     = $unique_term_ref->[1];
                     
-                    $logger->debug("Processing string $unique_term in field $searchfield");
+                    $logger->debug("Processing string $content in field $searchfield");
                     
-                    next if (!$unique_term);
+                    next if (!$content);
                     
-                    my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$unique_term";
+                    my $normcontent = "";
+
+                    my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$content";
                     
                     if (defined $normalize_cache{$normalize_cache_id}){
-                        $unique_term = $normalize_cache{$normalize_cache_id};
+                        $normcontent = $normalize_cache{$normalize_cache_id};
                     }
                     else {
-                        $unique_term = OpenBib::Common::Util::normalize({ field => $field, content => $unique_term, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
-                        $normalize_cache{$normalize_cache_id} = $unique_term;
+                        $normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
+                        $normalize_cache{$normalize_cache_id} = $normcontent;
                     }
                     
-                    next unless ($unique_term);
+                    next unless ($normcontent);
                     
-                    $unique_term=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$unique_term;
+                    $normcontent=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$normcontent;
                     
                     # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
-                    my $unique_term_octet = encode_utf8($unique_term); 
-                    $unique_term=(length($unique_term_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($unique_term_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$unique_term;
+                    my $normcontent_octet = encode_utf8($normcontent); 
+                    $normcontent=(length($normcontent_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($normcontent_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$normcontent;
                     
-                    $logger->debug("String indexing searchfield $searchfield: $unique_term");
+                    $logger->debug("String indexing searchfield $searchfield: $normcontent");
                     
-                    $doc->add_term($unique_term);
+                    $doc->add_term($normcontent);
+
+                    my $additionalcontent = "";
+                    
+                    if ($content=~m/(\w)-(\w)/){
+                        $additionalcontent = $content;
+                        $additionalcontent=~s/(\w)-(\w)/$1$2/g;
+                    }
+                    
+                    if ($additionalcontent){
+                        my $normcontent = "";
+                        
+                        my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$additionalcontent";
+                        
+                        if (defined $normalize_cache{$normalize_cache_id}){
+                            $normcontent = $normalize_cache{$normalize_cache_id};
+                        }
+                        else {
+                            $normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $additionalcontent, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
+                            $normalize_cache{$normalize_cache_id} = $normcontent;
+                        }
+                        
+                        next unless ($normcontent);
+                        
+                        $normcontent=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$normcontent;
+                        
+                        # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
+                        my $normcontent_octet = encode_utf8($normcontent); 
+                        $normcontent=(length($normcontent_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($normcontent_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$normcontent;
+                        
+                        $logger->debug("String indexing searchfield $searchfield: $normcontent");
+                        
+                        $doc->add_term($normcontent);
+                    }
                 }
             }
         }

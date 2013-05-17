@@ -17,9 +17,9 @@
               rel = 'self'
               href = location
            }
-           id = authenticator.id
-           description = authenticator.description
-           type = authenticator.type
+           id = authenticator_record.id
+           description = authenticator_record.description
+           type = authenticator_record.type
      };
 
      to_json(this_json_output);

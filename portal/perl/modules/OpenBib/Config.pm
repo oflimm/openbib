@@ -2796,13 +2796,13 @@ sub get_authenticator_by_id {
     
     if ($authenticator){
         $authenticator_ref = {
-            id          => $authenticator->id,
-            hostname    => $authenticator->hostname,
-            port        => $authenticator->port,
-            remoteuser  => $authenticator->remoteuser,
-            dbname      => $authenticator->dbname,
-            description => $authenticator->description,
-            type        => $authenticator->type,
+            id          => $authenticator->get_column('id'),
+            hostname    => $authenticator->get_column('hostname'),
+            port        => $authenticator->get_column('port'),
+            remoteuser  => $authenticator->get_column('remoteuser'),
+            dbname      => $authenticator->get_column('dbname'),
+            description => $authenticator->get_column('description'),
+            type        => $authenticator->get_column('type'),
         };
     }
 

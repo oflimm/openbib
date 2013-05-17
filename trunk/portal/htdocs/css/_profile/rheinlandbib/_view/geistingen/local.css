@@ -23,7 +23,7 @@
 
 
   #header_logo_image  {
-    background: url(/images/openbib/views/rheinlandbib/logo.jpg) center no-repeat;
+    background: url(/images/openbib/views/geistingen/logo.png) center no-repeat;
     position: absolute;
     width: 1000px;
     height: 98px;
@@ -33,11 +33,11 @@
 
 
   #header_institution_image {
-    background: url(/images/openbib/usblogotrans190.png) center no-repeat;
+    background: url(/images/openbib/views/geistingen/Redemptoristen-Logo4_ger.jpg) center no-repeat;
     width: 190px;
-    height: 78px;
+    height: 98px;
     position: absolute;
-    top: 50px;
+    top: 35px;
     right: 10px;
   }
 

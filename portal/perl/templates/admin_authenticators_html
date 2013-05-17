@@ -79,8 +79,8 @@
 </div>
 
 <div class="ym-fbox-text">
-<label for="remotedb">[% msg.maketext("DB-Name") %]</label>
-<input type="text" name="remotedb" id="remotedb" value="[% authenticator.remotedb %]"/>
+<label for="dbname">[% msg.maketext("DB-Name") %]</label>
+<input type="text" name="dbname" id="dbname" value="[% authenticator.dbname %]"/>
 </div>
 
 <div class="ym-fbox-text">
@@ -120,7 +120,7 @@
 </thead>
 <tbody>
 [% FOREACH target IN authenticators %]
-<tr><td>[% target.id %]</td><td>[% target.hostname %]</td><td>[% target.port %]</td><td>[% target.remoteuser %]</td><td>[% target.remotedb %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %]/edit">[% target.description %]</a></td><td>[% target.type %]</td></tr>
+<tr><td>[% target.id %]</td><td>[% target.hostname %]</td><td>[% target.port %]</td><td>[% target.remoteuser %]</td><td>[% target.dbname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %]/edit">[% target.description %]</a></td><td>[% target.type %]</td></tr>
 [% END %]
 </tbody>
 </table>

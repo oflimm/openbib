@@ -1,5 +1,13 @@
 @media all
 {
+  .ym-wrapper {
+    text-align:left;
+    width: 1000px;
+    margin: 0 auto;
+
+     width-min: 1000px;
+     width-max: 1000px;
+  }
 
   header {
     padding-bottom:65px;
@@ -10,7 +18,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 60%;
+    width: 100%;
   }
 
   header #institution {
@@ -24,7 +32,7 @@
   #header_logo_image {
     background: url(/images/openbib/views/alekiddr/logo.png) center no-repeat;
     position: absolute;
-    width: 453px;
+    width: 1000px;
     height: 100px;    
     left: 0px;
     top: 30px;

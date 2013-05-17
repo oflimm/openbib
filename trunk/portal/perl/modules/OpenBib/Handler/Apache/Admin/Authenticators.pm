@@ -155,7 +155,7 @@ sub show_record_form {
 
     # Dispatched Args
     my $view             = $self->param('view')                   || '';
-    my $authenticatorid = $self->param('authenticatorid')       || '';
+    my $authenticatorid   = $self->param('authenticatorid')       || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -179,7 +179,7 @@ sub show_record_form {
     my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
     
     my $ttdata={
-        authenticator => $authenticator_ref,
+        authenticator_record => $authenticator_ref,
     };
     
     $self->print_page($config->{tt_admin_authenticators_record_edit_tname},$ttdata);

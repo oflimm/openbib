@@ -425,7 +425,7 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
-        remotedb => {
+        dbname => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

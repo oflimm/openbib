@@ -63,7 +63,7 @@
 <tr><td><b>[% msg.maketext("Hostname") %]</b></td><td>[% authenticator.hostname %]</td></tr>
 <tr><td><b>[% msg.maketext("Port") %]</b></td><td>[% authenticator.port %]"</td></tr>
 <tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td>[% authenticator.remoteuser %]</td></tr>
-<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% authenticator.remotedb %]</td></tr>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% authenticator.dbname %]</td></tr>
 <tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% authenticator.description %]</td></tr>
 <tr><td><b>[% msg.maketext("Typ") %]</b></td><td>[% authenticator.type %]</td></tr>
 </table>

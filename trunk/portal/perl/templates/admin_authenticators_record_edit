@@ -79,8 +79,8 @@
 </div>
 
 <div class="ym-fbox-text">
-<label for="remotedb">[% msg.maketext("DB-Name") %]</label>
-<input type="text" name="remotedb" id="remotedb" value="[% authenticator.remotedb %]"/>
+<label for="dbname">[% msg.maketext("DB-Name") %]</label>
+<input type="text" name="dbname" id="dbname" value="[% authenticator.dbname %]"/>
 </div>
 
 <div class="ym-fbox-text">

@@ -271,6 +271,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
 
     my ($category,$mult,$content);
 
+    my $serialid = 1;
+    
     while (my $jsonline=<IN>){
 
         my $record_ref = decode_json $jsonline;
@@ -389,7 +391,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 if ($id && $field && $item_ref->{content}){
                     $item_ref->{content} = cleanup_content($item_ref->{content});
                     # Abhaengige Feldspezifische Saetze erstellen und schreiben
-                    print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
+                    print OUTFIELDS "$serialid$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
+                    $serialid++;
                 }
             }
         }
@@ -433,6 +436,15 @@ my $atime = new Benchmark;
 my $titleid;
 my $thisyear = `date +"%Y"`;
 
+my $serialid = 1;
+
+my $title_person_serialid = 1;
+my $title_corporatebody_serialid = 1;
+my $title_subject_serialid = 1;
+my $title_classification_serialid = 1;
+my $title_holding_serialid = 1;
+my $title_title_serialid = 1;
+
 while (my $jsonline=<IN>){
 
     my $record_ref = decode_json $jsonline;
@@ -446,14 +458,15 @@ while (my $jsonline=<IN>){
     # Titelid bestimmen
     
     my $titleid;
-    
+
     if (exists $record_ref->{'0004'} && exists $record_ref->{'0004'}[0] ) {
         $titleid = $record_ref->{'0004'}[0]{content};
     }
     
     # Verknupefungen
     if ($titleid && $id) {
-        print OUTTITLEHOLDING "$titleid$id\n";
+        print OUTTITLEHOLDING "$title_holding_serialid$titleid$id\n";
+        $title_holding_serialid++;
     }
     
     foreach my $field (keys %{$record_ref}) {
@@ -480,7 +493,8 @@ while (my $jsonline=<IN>){
             if ($id && $field && $item_ref->{content}){
                 $item_ref->{content} = cleanup_content($item_ref->{content});
                 # Abhaengige Feldspezifische Saetze erstellen und schreiben        
-                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
+                print OUTFIELDS "$serialid$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
+                $serialid++;
             }
         }
     }
@@ -618,6 +632,8 @@ $count = 1;
 
 $atime = new Benchmark;
 
+$serialid = 1;
+    
 while (my $jsonline=<IN>){
     
     my $record_ref = decode_json $jsonline;
@@ -850,7 +866,8 @@ while (my $jsonline=<IN>){
             
             if (defined $listitemdata_superid{$target_titleid} && $source_titleid && $target_titleid){
                 $supplement = cleanup_content($supplement);
-                print OUTTITLETITLE "$field$source_titleid$target_titleid$supplement\n";
+                print OUTTITLETITLE "$title_title_serialid$field$source_titleid$target_titleid$supplement\n";
+                $title_title_serialid++;
             }
 
 
@@ -893,7 +910,8 @@ while (my $jsonline=<IN>){
                 
                 if (defined $listitemdata_person{$personid}){
                     $supplement = cleanup_content($supplement);
-                    print OUTTITLEPERSON "$field$id$personid$supplement\n";
+                    print OUTTITLEPERSON "$title_person_serialid$field$id$personid$supplement\n";
+                    $title_person_serialid++;
                 }
                 
                 # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -953,7 +971,8 @@ while (my $jsonline=<IN>){
                 
                 if (defined $listitemdata_corporatebody{$corporatebodyid}){
                     $supplement = cleanup_content($supplement);
-                    print OUTTITLECORPORATEBODY "$field$id$corporatebodyid$supplement\n";
+                    print OUTTITLECORPORATEBODY "$title_corporatebody_serialid$field$id$corporatebodyid$supplement\n";
+                    $title_corporatebody_serialid++;
                 }
                 
                 # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1013,7 +1032,8 @@ while (my $jsonline=<IN>){
                 next unless $classificationid;
                 
                 if (defined $listitemdata_classification{$classificationid}){
-                    print OUTTITLECLASSIFICATION "$field$id$classificationid$supplement\n";
+                    print OUTTITLECLASSIFICATION "$title_classification_serialid$field$id$classificationid$supplement\n";
+                    $title_classification_serialid++;
                 }
                 
                 # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1057,7 +1077,8 @@ while (my $jsonline=<IN>){
                 
                 if (defined $listitemdata_subject{$subjectid}){
                     $supplement = cleanup_content($supplement);
-                    print OUTTITLESUBJECT "$field$id$subjectid$supplement\n";
+                    print OUTTITLESUBJECT "$title_subject_serialid$field$id$subjectid$supplement\n";
+                    $title_subject_serialid++;
                 }
                 
                 # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
@@ -1519,7 +1540,8 @@ while (my $jsonline=<IN>){
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});
 #                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
                 
-                print OUTFIELDS "$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
+                print OUTFIELDS "$serialid$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
+                $serialid++;
             }
         }
     }                

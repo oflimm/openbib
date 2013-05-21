@@ -95,7 +95,7 @@ sub new {
                 $self->{_index}     = Search::Xapian::WritableDatabase->new( $indexpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
             }
             elsif ($indextype eq "readwrite"){
-                $self->{_index}     = Search::Xapian::WritableDatabase->new( $indexpath ) || die "Couldn't open Xapian DB $!\n";
+                $self->{_index}     = Search::Xapian::WritableDatabase->new( $indexpath, Search::Xapian::DB_CREATE_OR_OPEN ) || die "Couldn't open Xapian DB $!\n";
             }
             elsif ($indextype eq "readonly"){
                 $self->{_index}     = Search::Xapian::Database->new( $indexpath ) || die "Couldn't open Xapian DB $!\n";
@@ -218,10 +218,10 @@ sub create_document {
         ? $arg_ref->{document}        : undef;
 
     my $withsorting = exists $arg_ref->{with_sorting}
-        ? $arg_ref->{with_sorting}        : undef;
+        ? $arg_ref->{with_sorting}        : 1;
 
     my $withpositions = exists $arg_ref->{with_positions}
-        ? $arg_ref->{with_positions}        : undef;
+        ? $arg_ref->{with_positions}        : 1;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -586,15 +586,19 @@ sub create_record {
 }
 
 sub update_record {
-    my ($self,$key,$new_doc) = @_;
+    my ($self,$id,$new_doc) = @_;
 
-    $self->get_index->replace_document($key, $new_doc) ;
+    my $config = OpenBib::Config->instance;
+
+    my $key = $config->{xapian_search_prefix}{id}.$id;
+
+    $self->get_index->replace_document_by_term($key, $new_doc) ;
 }
 
 sub delete_record {
     my ($self,$key) = @_;
 
-    $self->get_index->delete_document($key) ;
+    $self->get_index->delete_document_by_term($key) ;
 }
 
 

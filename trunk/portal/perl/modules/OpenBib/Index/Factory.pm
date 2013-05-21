@@ -41,9 +41,6 @@ sub create_indexer {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $database           = exists $arg_ref->{database}
-        ? $arg_ref->{database}        : undef;
-
     my $sb                 = exists $arg_ref->{sb}
         ? $arg_ref->{sb}              : undef;
 
@@ -52,13 +49,7 @@ sub create_indexer {
 
     my $config = OpenBib::Config->instance;
 
-    $logger->debug("Trying to dispatch database $database");
-    
-    if (!defined $database && !defined $sb){
-        $sb = $config->{local_search_backend};
-    }
-    
-    elsif (defined $database && !defined $sb){
+    if (!defined $sb){
         $sb = $config->{local_search_backend};
     }
 

@@ -71,7 +71,7 @@ sub new {
         $logger->debug("Setting CorporateBody id: $id");
     }
 
-    $logger->debug("CorporateBody-Record-Object created with id $id in database $database");
+    $logger->debug("CorporateBody-Record-Object created");
 
     return $self;
 }

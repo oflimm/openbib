@@ -3112,6 +3112,40 @@ sub get_searchprofile_of_database {
     return $self->get_searchprofile_or_create([ $database ]);
 }
 
+sub get_searchprofiles_with_database {
+    my ($self,$database)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting searchprofiles with database $database");
+
+    my @searchprofileids = ();
+
+    my $searchprofiles = $self->{schema}->resultset('SearchprofileDb')->search_rs(
+        {
+            'dbid.dbname'               => $database,
+            'dbid.active'               => 1,
+            'searchprofileid.own_index' => 1,
+        },
+        {
+            join     => ['dbid','searchprofileid'],
+            select   => ['searchprofileid.id'],
+            as       => ['thissearchprofileid'],
+            group_by => ['searchprofileid.id'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    my @databases = ();
+    
+    while (my $searchprofile = $searchprofiles->next()){
+        push @searchprofileids, $searchprofile->{thissearchprofileid};
+    }
+    
+    return @searchprofileids;
+}
+
 sub get_searchprofile_of_view {
     my ($self,$viewname)=@_;
 

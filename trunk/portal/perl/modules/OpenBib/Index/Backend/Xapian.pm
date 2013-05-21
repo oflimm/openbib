@@ -57,6 +57,9 @@ sub new {
     my $database         = exists $arg_ref->{database}
         ? $arg_ref->{database}                      : undef;
 
+    my $searchprofile    = exists $arg_ref->{searchprofile}
+        ? $arg_ref->{searchprofile}                 : undef;
+
     my $indextype        = exists $arg_ref->{index_type}
         ? $arg_ref->{index_type}                    : 'readonly';
 
@@ -75,6 +78,11 @@ sub new {
 
     my $config = OpenBib::Config->instance;
 
+    unless ($database || $searchprofile){
+        $logger->error("No database or searchprofile argument given");
+        return $self;
+    }
+    
     if ($database){
         $self->{_database}      = $database;
 
@@ -85,31 +93,34 @@ sub new {
             $self->{_locationid}      = $locationid;
             $self->{_locationid_norm} = $locationid_norm;
         }
-
-        $indexpath=($indexpath)?$indexpath:$config->{xapian_index_base_path}."/".$database;
-        
-        $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
-
-        eval {
-            if ($indextype eq "readwrite" && $createindex){
-                $self->{_index}     = Search::Xapian::WritableDatabase->new( $indexpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
-            }
-            elsif ($indextype eq "readwrite"){
-                $self->{_index}     = Search::Xapian::WritableDatabase->new( $indexpath, Search::Xapian::DB_CREATE_OR_OPEN ) || die "Couldn't open Xapian DB $!\n";
-            }
-            elsif ($indextype eq "readonly"){
-                $self->{_index}     = Search::Xapian::Database->new( $indexpath ) || die "Couldn't open Xapian DB $!\n";
-            }
-        };
-        
-        if ($@) {
-            $logger->error("Database: $self->{_database} - :".$@);
-            return;
-        }        
     }
-    else {
-        $logger->error("No database argument given");
-    }
+
+    if ($searchprofile){
+        $self->{_searchprofile}      = $searchprofile;
+    }   
+
+    $indexpath=($indexpath)?$indexpath:
+    ($database)?$config->{xapian_index_base_path}."/".$database:
+    ($searchprofile)?$config->{xapian_index_base_path}."/_searchprofile/".$searchprofile:'';
+        
+    $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
+    
+    eval {
+        if ($indextype eq "readwrite" && $createindex){
+            $self->{_index}     = Search::Xapian::WritableDatabase->new( $indexpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
+        }
+        elsif ($indextype eq "readwrite"){
+            $self->{_index}     = Search::Xapian::WritableDatabase->new( $indexpath, Search::Xapian::DB_CREATE_OR_OPEN ) || die "Couldn't open Xapian DB $!\n";
+        }
+        elsif ($indextype eq "readonly"){
+            $self->{_index}     = Search::Xapian::Database->new( $indexpath ) || die "Couldn't open Xapian DB $!\n";
+        }
+    };
+    
+    if ($@) {
+        $logger->error("Database: $self->{_database} - :".$@);
+        return $self;
+    }        
         
     # Backend Specific Attributes
     

@@ -355,26 +355,28 @@ sub load_full_title_record {
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
-            
-            my $mult = 1;
-            while (my $item = $title_persons->next){
-                my $field      = "T".sprintf "%04d",$item->{thisfield};
-                my $personid   =                    $item->{thispersonid};
-                my $supplement =                    $item->{thissupplement};
-                
-                my $record = OpenBib::Record::Person->new({database=>$self->{database}});
-                $record->load_name({id=>$personid});
-                my $content = $record->name_as_string;
-                
-                $title_record->set_field({                
-                    field      => $field,
-                    id         => $personid,
-                    content    => $content,
-                    supplement => $supplement,
-                    mult       => $mult,
-                });
-                
-                $mult++;
+
+            if ($title_persons){
+                my $mult = 1;
+                while (my $item = $title_persons->next){
+                    my $field      = "T".sprintf "%04d",$item->{thisfield};
+                    my $personid   =                    $item->{thispersonid};
+                    my $supplement =                    $item->{thissupplement};
+                    
+                    my $record = OpenBib::Record::Person->new({database=>$self->{database}});
+                    $record->load_name({id=>$personid});
+                    my $content = $record->name_as_string;
+                    
+                    $title_record->set_field({                
+                        field      => $field,
+                        id         => $personid,
+                        content    => $content,
+                        supplement => $supplement,
+                        mult       => $mult,
+                    });
+                    
+                    $mult++;
+                }
             }
             
             # Koerperschaften
@@ -390,26 +392,28 @@ sub load_full_title_record {
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
-            
-            $mult = 1;        
-            while (my $item = $title_corporatebodies->next){
-                my $field             = "T".sprintf "%04d",$item->{thisfield};
-                my $corporatebodyid   =                    $item->{thiscorporatebodyid};
-                my $supplement        =                    $item->{thissupplement};
-                
-                my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}});
-                $record->load_name({id=>$corporatebodyid});
-                my $content = $record->name_as_string;
-                
-                $title_record->set_field({                
-                    field      => $field,
-                    id         => $corporatebodyid,
-                    content    => $content,
-                    supplement => $supplement,
-                    mult       => $mult,
-                });
-                
-                $mult++;
+
+            if ($title_corporatebodies){
+                my $mult = 1;        
+                while (my $item = $title_corporatebodies->next){
+                    my $field             = "T".sprintf "%04d",$item->{thisfield};
+                    my $corporatebodyid   =                    $item->{thiscorporatebodyid};
+                    my $supplement        =                    $item->{thissupplement};
+                    
+                    my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}});
+                    $record->load_name({id=>$corporatebodyid});
+                    my $content = $record->name_as_string;
+                    
+                    $title_record->set_field({                
+                        field      => $field,
+                        id         => $corporatebodyid,
+                        content    => $content,
+                        supplement => $supplement,
+                        mult       => $mult,
+                    });
+                    
+                    $mult++;
+                }
             }
             
             # Schlagworte
@@ -425,26 +429,28 @@ sub load_full_title_record {
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
-            
-            $mult = 1;
-            while (my $item = $title_subjects->next){
-                my $field             = "T".sprintf "%04d",$item->{thisfield};
-                my $subjectid         =                    $item->{thissubjectid};
-                my $supplement        =                    $item->{thissupplement};
-                
-                my $record = OpenBib::Record::Subject->new({database=>$self->{database}});
-                $record->load_name({id=>$subjectid});
-                my $content = $record->name_as_string;
-                
-                $title_record->set_field({                
-                    field      => $field,
-                    id         => $subjectid,
-                    content    => $content,
-                    supplement => $supplement,
-                    mult       => $mult,
-                });
-                
-                $mult++;
+
+            if ($title_subjects){
+                my $mult = 1;
+                while (my $item = $title_subjects->next){
+                    my $field             = "T".sprintf "%04d",$item->{thisfield};
+                    my $subjectid         =                    $item->{thissubjectid};
+                    my $supplement        =                    $item->{thissupplement};
+                    
+                    my $record = OpenBib::Record::Subject->new({database=>$self->{database}});
+                    $record->load_name({id=>$subjectid});
+                    my $content = $record->name_as_string;
+                    
+                    $title_record->set_field({                
+                        field      => $field,
+                        id         => $subjectid,
+                        content    => $content,
+                        supplement => $supplement,
+                        mult       => $mult,
+                    });
+                    
+                    $mult++;
+                }
             }
             
             # Klassifikationen
@@ -460,32 +466,34 @@ sub load_full_title_record {
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
-            
-            $mult = 1;
-            while (my $item = $title_classifications->next){
-                my $field             = "T".sprintf "%04d",$item->{thisfield};
-                my $classificationid  =                    $item->{thisclassificationid};
-                my $supplement        =                    $item->{thissupplement};
+
+            if ($title_classifications){
+                my $mult = 1;
+                while (my $item = $title_classifications->next){
+                    my $field             = "T".sprintf "%04d",$item->{thisfield};
+                    my $classificationid  =                    $item->{thisclassificationid};
+                    my $supplement        =                    $item->{thissupplement};
+                    
+                    my $record = OpenBib::Record::Classification->new({database=>$self->{database}});
+                    $record->load_name({id=>$classificationid});
+                    my $content = $record->name_as_string;
+                    
+                    $title_record->set_field({                
+                        field      => $field,
+                        id         => $classificationid,
+                        content    => $content,
+                        supplement => $supplement,
+                        mult       => $mult,
+                    });
+                    
+                    $mult++;
+                }
                 
-                my $record = OpenBib::Record::Classification->new({database=>$self->{database}});
-                $record->load_name({id=>$classificationid});
-                my $content = $record->name_as_string;
-                
-                $title_record->set_field({                
-                    field      => $field,
-                    id         => $classificationid,
-                    content    => $content,
-                    supplement => $supplement,
-                    mult       => $mult,
-                });
-                
-                $mult++;
-            }
-            
-            if ($config->{benchmark}) {
-                $btime=new Benchmark;
-                $timeall=timediff($btime,$atime);
-                $logger->info("Zeit fuer Bestimmung der verknuepften Normdaten : ist ".timestr($timeall));
+                if ($config->{benchmark}) {
+                    $btime=new Benchmark;
+                    $timeall=timediff($btime,$atime);
+                    $logger->info("Zeit fuer Bestimmung der verknuepften Normdaten : ist ".timestr($timeall));
+                }
             }
         }
         
@@ -789,6 +797,8 @@ sub create_index_document {
         }
     }
 
+    my @personcorporatebody = ();
+    
     # Inhalte aus Normdaten (Personen, Schlagworte, usw.) hinzufuegen
     {
         # Verfasser/Personen
@@ -817,6 +827,8 @@ sub create_index_document {
             
             if ($record->has_field("T".$field)) {
                 foreach my $item_ref (@{$record->get_field({ field => "T".$field })}) {
+                    push @personcorporatebody, $item_ref->{content};
+
                     if ($item_ref->{id}){
                         my $person = new OpenBib::Record::Person({ database => $self->{database}, id => $item_ref->{id} })->load_full_record;
 
@@ -845,6 +857,8 @@ sub create_index_document {
         foreach my $field ('0200','0201','1802') {
             if ($record->has_field("T".$field)) {
                 foreach my $item_ref (@{$record->get_field({ field => "T".$field })}) {
+                    push @personcorporatebody, $item_ref->{content};
+                    
                     if ($item_ref->{id}){
                         my $corporatebody = new OpenBib::Record::CorporateBody({ database => $self->{database}, id => $item_ref->{id} })->load_full_record;
 
@@ -925,6 +939,10 @@ sub create_index_document {
             }
         }
 
+        # Kombinierte Verfasser/Koerperschaft hinzufuegen fuer Sortierung
+        $index_doc->add_data('PC0001', {
+            content   => join(" ; ",@personcorporatebody),
+        });        
 
         # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
         foreach my $field (keys %{$conv_config->{inverted_title}}){

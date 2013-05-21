@@ -330,15 +330,30 @@ sub update_status_index_from_db {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $indexer     = OpenBib::Index::Factory->create_indexer({ database => $database, index_type => 'readwrite' }); # no create_index !!!
-
+    my $config = OpenBib::Config->instance;
+    
     $catalog->load_conv_config;
-    
+
     my $document    = $catalog->create_index_document($titleid);
+
+    $logger->info("Updating Index for database $database");
     
+    my $indexer     = OpenBib::Index::Factory->create_indexer({ database => $database, index_type => 'readwrite' }); # no create_index !!!
     my $indexer_doc = $indexer->create_document({ document => $document });
-    
     $indexer->update_record($titleid,$indexer_doc);
+    
+    foreach my $searchprofileid ($config->get_searchprofiles_with_database($database)){
+        my $index_path = $config->{xapian_index_base_path}."/_searchprofile/".$searchprofileid;
+        
+        next unless (-d $index_path);
+        
+        $logger->info("Updating Index for searchprofile $searchprofileid");
+        my $indexer     = OpenBib::Index::Factory->create_indexer({ searchprofile => $searchprofileid, index_type => 'readwrite' }); # no create_index !!!
+        my $indexer_doc = $indexer->create_document({ document => $document });
+        $indexer->update_record($titleid,$indexer_doc);
+    }
+    
+
     
     return;
 }

@@ -189,6 +189,8 @@ sub print_help {
 sub filterchars {
   my ($content)=@_;
 
+  $content=~s/<br.*?>/ /g;
+
   $content=~s/\$/\\\$/g;
   $content=~s/\&gt\;/\$>\$/g;
   $content=~s/\&lt\;/\$<\$/g;
@@ -231,7 +233,8 @@ sub filterchars {
   $content=~s/\x{cc}\x{84}//g;
   $content=~s/\x{cc}\x{85}//g;
   $content=~s/\x{cc}\x{86}//g;
-  $content=~s/\x{cc}\x{87}//g;  
+  $content=~s/\x{cc}\x{87}//g;
+  $content=~s/\x{cc}\x{88}/l/g;  
   $content=~s/\x{cc}\x{a7}//g;
   $content=~s/\x{cc}\x{95}//g;
   

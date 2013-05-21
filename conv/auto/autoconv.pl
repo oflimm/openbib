@@ -305,7 +305,11 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         $logger->info("### $database: Verwende Plugin post_index_on.pl");
         system("$config->{autoconv_dir}/filter/$database/post_index_on.pl $databasetmp");
     }
-    
+
+    # Index setzen
+    $logger->info("### $database: Sequenzen aktualisieren");    
+    system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool_update_sequences.sql' $databasetmp");
+
     # Tabellen Packen
     if (-e "$config->{autoconv_dir}/filter/common/pack_data.pl"){
         system("$config->{autoconv_dir}/filter/common/pack_data.pl $databasetmp");

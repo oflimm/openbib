@@ -44,6 +44,7 @@ use OpenBib::Record::Classification;
 use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::Template::Provider;
+use OpenBib::Catalog::Subset;
 
 use DBI;
 use Encode qw/decode_utf8 encode decode/;
@@ -80,32 +81,10 @@ if ($mode ne "tex" && $mode ne "pdf"){
 my $config      = OpenBib::Config->instance;
 my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=instzs;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
+my $subset = new OpenBib::Catalog::Subset("instzs","who_cares");
+$subset->identify_by_field_content('holding',[{ field => 3330, content => $sigel }]);
 
-my %titleids = ();
-
-# IDN's der Exemplardaten und daran haengender Titel bestimmen
-
-my $request=$dbh->prepare("select distinct titleid from holding where category=3330 and content=?") or $logger->error($DBI::errstr);
-
-$request->execute($sigel) or $logger->error($DBI::errstr);;
-
-while (my $result=$request->fetchrow_hashref()){
-    $mexidns{$result->{'id'}}=1;
-}
-
-{
-    foreach my $mexid (keys %mexidns){
-        my $reqstring="select distinct sourceid from conn where targetid= ? and sourcetype=1 and targettype=6";
-        my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($mexid) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-        
-        while (my $result=$request->fetchrow_hashref()){
-            $titleids{$result->{'sourceid'}}=1;
-        }
-        $request->finish();
-    }
-}
+my %titleids = %{$subset->get_titleid};
 
 my $externzahl=0;
 
@@ -114,7 +93,7 @@ my @recordlist = ();
 foreach $titleid (keys %titleids){
     my $record = new OpenBib::Record::Title({database => 'instzs', id => $titleid})->load_full_record();
 
-    my $mexnormdata_ref = $record->get_mexdata;
+    my $mexnormdata_ref = $record->get_holding;
 
     # print YAML::Dump($record);
     # Titel auch in anderen Bibliotheken?
@@ -189,6 +168,8 @@ sub print_help {
 sub filterchars {
   my ($content)=@_;
 
+  $content=~s/<br.*?>/ /g;
+
   $content=~s/\$/\\\$/g;
   $content=~s/\&gt\;/\$>\$/g;
   $content=~s/\&lt\;/\$<\$/g;
@@ -232,6 +213,7 @@ sub filterchars {
   $content=~s/\x{cc}\x{85}//g;
   $content=~s/\x{cc}\x{86}//g;
   $content=~s/\x{cc}\x{87}//g;  
+  $content=~s/\x{cc}\x{88}/l/g;
   $content=~s/\x{cc}\x{a7}//g;
   $content=~s/\x{c4}\x{99}/e/g;
   $content=~s/\x{c4}\x{90}/D/g;

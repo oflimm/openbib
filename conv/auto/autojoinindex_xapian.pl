@@ -129,8 +129,9 @@ foreach my $searchprofile (@searchprofiles){
     my $thisindex         = "_searchprofile/$searchprofile";
     my $thistmpindex      = $thisindex.".tmp";
 
-    my $thisindex_path    = "$xapian_base/$thisindex";
-    my $thistmpindex_path = $thisindex_path.".tmp";
+    my $thisindex_path     = "$xapian_base/$thisindex";
+    my $thistmpindex_path  = $thisindex_path.".tmp";
+    my $thistmp2index_path = $thisindex_path.".tmp2";
 
     
     push @databases, $thistmpindex;
@@ -145,7 +146,7 @@ foreach my $searchprofile (@searchprofiles){
 
     $logger->info("### Replacing index");
 
-    system("rm -f $thisindex_path/* ; rmdir $thisindex_path ; mv $thistmpindex_path $thisindex_path");
+    system("rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ; mv $thisindex_path $thistmp2index_path ; mv $thistmpindex_path $thisindex_path ; rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ");
     
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

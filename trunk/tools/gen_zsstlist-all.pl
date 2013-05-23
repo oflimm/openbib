@@ -7,7 +7,7 @@
 #  Extrahieren der Zeitschriftenliste eines Instituts anhand aller
 #  im Katalog instzs gefundenen lokalen Sigeln
 #
-#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -72,14 +72,17 @@ my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
 my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=instzs;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
-my $request=$dbh->prepare("select distinct content from holding where field = 3330 order by content") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct content from holding_fields where field = 3330 order by content") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 
 while (my $result=$request->fetchrow_hashref()){
     my $sigel=$result->{content};
-    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel --mode=pdf");
-    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --mode=pdf");
+    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel --mode=tex");
+    system("pdflatex /var/www/zsstlisten/zsstlist-$sigel.tex");
+    
+    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --mode=tex");
+    system("pdflatex /var/www/zsstlisten/zsstlist-$sigel-all.tex");
 }
 
 sub print_help {

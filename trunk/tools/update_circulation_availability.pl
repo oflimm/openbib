@@ -55,13 +55,14 @@ if ($#ARGV < 0){
     print_help();
 }
 
-our ($help,$configfile,$database,$logfile,$month,$year);
+our ($help,$configfile,$withsearchprofiles,$database,$logfile,$month,$year);
 
 &GetOptions(
-            "help"         => \$help,
-            "database=s"   => \$database,
-            "configfile=s" => \$configfile,
-            "logfile=s"    => \$logfile,
+            "help"                => \$help,
+            "database=s"          => \$database,
+            "configfile=s"        => \$configfile,
+            "logfile=s"           => \$logfile,
+            "with-searchprofiles" => \$withsearchprofiles,
             );
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/update_circulation_availability.log";
@@ -341,18 +342,19 @@ sub update_status_index_from_db {
     my $indexer     = OpenBib::Index::Factory->create_indexer({ database => $database, index_type => 'readwrite' }); # no create_index !!!
     my $indexer_doc = $indexer->create_document({ document => $document });
     $indexer->update_record($titleid,$indexer_doc);
-    
-    foreach my $searchprofileid ($config->get_searchprofiles_with_database($database)){
-        my $index_path = $config->{xapian_index_base_path}."/_searchprofile/".$searchprofileid;
-        
-        next unless (-d $index_path);
-        
-        $logger->info("Updating Index for searchprofile $searchprofileid");
-        my $indexer     = OpenBib::Index::Factory->create_indexer({ searchprofile => $searchprofileid, index_type => 'readwrite' }); # no create_index !!!
-        my $indexer_doc = $indexer->create_document({ document => $document });
-        $indexer->update_record($titleid,$indexer_doc);
+
+    if ($withsearchprofiles){
+        foreach my $searchprofileid ($config->get_searchprofiles_with_database($database)){
+            my $index_path = $config->{xapian_index_base_path}."/_searchprofile/".$searchprofileid;
+            
+            next unless (-d $index_path);
+            
+            $logger->info("Updating Index for searchprofile $searchprofileid");
+            my $indexer     = OpenBib::Index::Factory->create_indexer({ searchprofile => $searchprofileid, index_type => 'readwrite' }); # no create_index !!!
+            my $indexer_doc = $indexer->create_document({ document => $document });
+            $indexer->update_record($titleid,$indexer_doc);
+        }
     }
-    
 
     
     return;

@@ -34,38 +34,11 @@
 
 use utf8;
 
-use Getopt::Long;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 
 use DBI;
 use YAML;
-
-if ($#ARGV < 0){
-    print_help();
-}
-
-my ($help,$sigel,$showall,$mode);
-
-&GetOptions(
-	    "help"    => \$help,
-	    "sigel=s" => \$sigel,
-	    "mode=s"  => \$mode,
-	    "showall" => \$showall,
-	    );
-
-if ($help){
-    print_help();
-}
-
-if (!$mode){
-  $mode="tex";
-}
-
-
-if ($mode ne "tex" && $mode ne "pdf"){
-  print "Mode muss enweder tex oder pdf sein.\n";
-  exit;
-}
 
 my $config      = OpenBib::Config->instance;
 my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -79,11 +52,13 @@ $request->execute() or $logger->error($DBI::errstr);;
 while (my $result=$request->fetchrow_hashref()){
     my $sigel=$result->{content};
     system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel --mode=tex");
-    system("pdflatex /var/www/zsstlisten/zsstlist-$sigel.tex");
+    system("cd /var/www/zeitschriftenlisten ; pdflatex /var/www/zeitschriftenlisten/zeitschriften-$sigel.tex");
     
     system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --mode=tex");
-    system("pdflatex /var/www/zsstlisten/zsstlist-$sigel-all.tex");
+    system("cd /var/www/zeitschriftenlisten ; pdflatex /var/www/zeitschriftenlisten/zeitschriften-$sigel-all.tex");
 }
+
+system("cd /var/www/zeitschriftenlisten ; rm *.tex *.aux *.loc *.out");
 
 sub print_help {
     print "gen-zsstlist-all.pl - Erzeugen von Zeitschiftenlisten fuer alle Sigel\n\n";

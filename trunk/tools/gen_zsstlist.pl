@@ -121,7 +121,7 @@ foreach $titleid (keys %titleids){
 
 my @sortedrecordlist = sort by_title @recordlist;
 
-my $outputbasename="zsstlist-$sigel";
+my $outputbasename="zeitschriften-$sigel";
 
 if ($showall){
     $outputbasename.="-all";
@@ -134,7 +134,7 @@ my $template = Template->new({
     }) ],
     #        INCLUDE_PATH   => $config->{tt_include_path},
     #        ABSOLUTE       => 1,
-    OUTPUT_PATH   => '/var/www/zsstlisten',
+    OUTPUT_PATH   => '/var/www/zeitschriftenlisten',
     OUTPUT        => "$outputbasename.$mode",
 });
 

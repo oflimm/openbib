@@ -1,37 +1,37 @@
 <style type="text/css">
-.cloud {
+.ob-cloud {
   margin:0;
   padding:0;
 }
-.cloud li {
+.ob-cloud li {
   margin:0;
   padding:0;
   display: inline;
 }
-.cloud span {
+.ob-cloud span {
   position: absolute;
   left: -999px;
   width: 990px;
 }
-.cloud .fast-nicht-genutzt {
+.ob-cloud .fast-nicht-genutzt {
   font-size: 0.9em;
 }
-.cloud .nicht-sehr-genutzt {
+.ob-cloud .nicht-sehr-genutzt {
   font-size: 1.2em;
 }
-.cloud .etwas-genutzt {
+.ob-cloud .etwas-genutzt {
   font-size: 1.3em;
 }
-.cloud .genutzt {
+.ob-cloud .genutzt {
   font-size: 1.6em;
 }
-.cloud .sehr-viel-genutzt {
+.ob-cloud .sehr-viel-genutzt {
   font-size: 1.9m;
 }
-.cloud .ultra-genutzt {
+.ob-cloud .ultra-genutzt {
   font-size: 2.5em;
 }
-.cloud .am-meisten-genutzt {
+.ob-cloud .am-meisten-genutzt {
   font-size: 3em;
 }
 </style>

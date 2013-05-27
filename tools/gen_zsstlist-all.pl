@@ -52,10 +52,10 @@ $request->execute() or $logger->error($DBI::errstr);;
 while (my $result=$request->fetchrow_hashref()){
     my $sigel=$result->{content};
     system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel --mode=tex");
-    system("cd /var/www/zeitschriftenlisten ; pdflatex /var/www/zeitschriftenlisten/zeitschriften-$sigel.tex");
+    system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel.tex");
     
     system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --mode=tex");
-    system("cd /var/www/zeitschriftenlisten ; pdflatex /var/www/zeitschriftenlisten/zeitschriften-$sigel-all.tex");
+    system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all.tex");
 }
 
 system("cd /var/www/zeitschriftenlisten ; rm *.tex *.aux *.loc *.out");

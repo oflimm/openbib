@@ -149,9 +149,9 @@ sub show_collection_recent {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI-Parameter
-    my $count  = $query->param('count') || 20;
+    my $num  = $query->param('num') || 20;
 
-    my $recent_tags_ref = $user->get_recent_tags_by_name({count => $count});
+    my $recent_tags_ref = $user->get_recent_tags_by_name({count => $num});
 
     # TT-Data erzeugen
     my $ttdata={

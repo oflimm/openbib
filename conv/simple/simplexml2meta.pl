@@ -77,6 +77,7 @@ my $twig= XML::Twig::XPath->new(
  );
 
 our $counter = 0;
+our $mexidn  = 1;
 
 $twig->safe_parsefile($inputfile);
 
@@ -408,6 +409,76 @@ sub parse_record {
     }
     # Schlagworte abarbeiten Ende
 
+    my %mex = ();
+    
+    # Exemplare abarbeiten Anfang
+    foreach my $kateg (keys %{$convconfig->{holding}}){
+        my @elements = $titset->get_xpath($kateg);
+        
+        my @parts = ();
+        
+        foreach my $element (@elements){
+            next unless (defined $element->first_child());
+            my $content = konv($element->first_child()->text());
+            
+            if ($convconfig->{filter}{$kateg}{filter_junk}){
+                $content = filter_junk($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_newline2br}){
+                $content = filter_newline2br($content);
+            }
+            
+            if ($convconfig->{filter}{$kateg}{filter_match}){
+                $content = filter_match($content,$convconfig->{filter}{$kateg}{filter_match});
+            }
+            
+            if ($content){
+                $content=decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
+                
+                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
+                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                }
+                else {
+                    push @parts, $content;
+                }
+            }
+        }
+
+        my $multiple = 1;
+
+        foreach my $part (@parts){
+            $mex{$multiple}{$convconfig->{holding}{$kateg}} = $part; 
+        }
+
+    }
+
+    foreach my $part (keys %mex){
+        my $item_ref = {};
+        $item_ref->{id} = $mexidn;
+        push @{$item_ref->{'0004'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $title_ref->{id},
+        };
+
+        foreach my $category (keys %{$mex{$part}}){
+            push @{$item_ref->{$category}}, {
+                mult     => 1,
+                subfield => '',
+                content  => $mex{$part}{$category},
+            };
+        }
+        
+        $mexidn++;
+        
+        print HOLDING encode_json $item_ref, "\n";
+    }
+
+
+    # Exemplare abarbeiten Ende
+
+    
     if ($convconfig->{defaultmediatype}){
         push @{$title_ref->{'4410'}}, {
             mult     => 1,

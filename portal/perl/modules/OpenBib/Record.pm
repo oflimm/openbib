@@ -114,7 +114,8 @@ sub get_generic_attributes {
 sub get_fields {
     my ($self)=@_;
 
-    return $self->{_fields}
+    
+    return (defined $self->{_fields})?$self->{_fields}:{};
 }
 
 sub get_field {

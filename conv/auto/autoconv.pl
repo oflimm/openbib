@@ -488,12 +488,16 @@ if ($updatemaster){
     system("$config->{'base_dir'}/bin/updatetitcount.pl --database=$database");
 }
 
-# ISBNs etc. zentral merken
+# ISBNs etc. zentral merken bei zentraler Anreicherungs-Datenbank
 
-if ($updatemaster){
-    $logger->info("### $database: Updating All-ISBN table");    
-    system("$config->{'base_dir'}/bin/update_all_isbn_table.pl --database=$database");
-}
+#if ($updatemaster){
+#    $logger->info("### $database: Updating All-ISBN table");    
+#    system("$config->{'base_dir'}/bin/update_all_isbn_table.pl --database=$database");
+#}
+
+# Ansonsten bei jedem Node 
+$logger->info("### $database: Updating All-ISBN table");
+system("$config->{'base_dir'}/bin/update_all_isbn_table.pl --database=$database");
 
 CLEANUP:
 

@@ -60,6 +60,7 @@ sub setup {
 
     $self->start_mode('show_record');
     $self->run_modes(
+        'show_collection'         => 'show_collection',        
         'show_record'             => 'show_record',
         'show_popular'            => 'show_popular',
         'show_recent'             => 'show_recent',
@@ -165,6 +166,55 @@ sub show_recent {
     $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;
+}
+
+sub show_collection {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+    my $database       = $self->param('database');
+    my $titleid        = $self->strip_suffix($self->param('titleid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    my $representation = $self->param('represenation');
+    my $dbinfotable    = $self->param('dbinfo');
+
+    # CGI Args
+    my $sb        = $query->param('sb')        || $config->{local_search_backend};
+
+    my $search_args_ref = OpenBib::Common::Util::query2hashref($query);
+    $search_args_ref->{database} = $database if (defined $database);
+
+    # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
+    # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
+    # und OpenBib::QueryOptions - alle weiteren benoetigten Parameter individuell
+    # heraussuchen.
+    # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
+    
+    my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
+
+    # Recherche starten
+    $searcher->search;
+
+
+    
+    return Apache2::Const::OK;    
 }
 
 sub show_record {

@@ -340,7 +340,7 @@ sub get_posts {
                     bibkey    => $generic_attributes_ref->{bibkey},
                 },
                 {                        
-                    group_by => ['titleid','dbname','bibkey','tstamp'],
+                    group_by => ['titleid','dbname','bibkey','tstamp','titlecache'],
                 }
             );
 

@@ -148,8 +148,8 @@ foreach my $database (@databases){
                 ],
             },
             {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
-                as     => ['thistitleid', 'thisisbn', 'thisdate'],
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+                as     => ['thistitleid', 'thisisbn', 'thisdate','thistitlecache'],
                 join =>   ['title_fields'],
             }
         );
@@ -163,8 +163,8 @@ foreach my $database (@databases){
                 ],
             },
             {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
-                as     => ['thistitleid', 'thisisbn','thisdate'],
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+                as     => ['thistitleid', 'thisisbn','thisdate','thistitlecache'],
                 join   => ['title_fields'],
             }
         );
@@ -175,8 +175,9 @@ foreach my $database (@databases){
     
     foreach my $item ($all_isbns->all){
         my $thistitleid       = $item->get_column('thistitleid');
-        my $thisisbn = $item->get_column('thisisbn');
-        my $thisdate = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
+        my $thisisbn          = $item->get_column('thisisbn');
+        my $thistitlecache    = $item->get_column('thistitlecache');
+        my $thisdate          = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
         
         $logger->debug("Got Title with id $thistitleid and ISBN $thisisbn");
         
@@ -198,10 +199,11 @@ foreach my $database (@databases){
         });
 
         push @$alltitlebyisbn_ref, {
-            isbn    => $thisisbn,
-            titleid => $thistitleid,
-            dbname  => $database,
-            tstamp  => $thisdate,
+            isbn       => $thisisbn,
+            titleid    => $thistitleid,
+            dbname     => $database,
+            tstamp     => $thisdate,
+            titlecache => $thistitlecache,
         };        
 
         $isbn_insertcount++;
@@ -222,8 +224,8 @@ foreach my $database (@databases){
                 'title_fields.field' => '5050',
             },
             {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
-                as     => ['thistitleid', 'thisbibkey', 'thisdate'],
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+                as     => ['thistitleid', 'thisbibkey', 'thisdate','thistitlecache'],
                 join =>   ['title_fields'],
             }
         );
@@ -234,8 +236,8 @@ foreach my $database (@databases){
                 'title_fields.field' => '5050',
             },
             {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
-                as     => ['thistitleid', 'thisbibkey','thisdate'],
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+                as     => ['thistitleid', 'thisbibkey','thisdate','thistitlecache'],
                 join   => ['title_fields'],
             }
         );
@@ -245,17 +247,19 @@ foreach my $database (@databases){
     my $alltitlebybibkey_ref = [];
     foreach my $item ($all_isbns->all){
         my $thistitleid         = $item->get_column('thistitleid');
-        my $thisbibkey = $item->get_column('thisbibkey');
-        my $thisdate   = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
+        my $thisbibkey     = $item->get_column('thisbibkey');
+        my $thistitlecache = $item->get_column('thistitlecache');
+        my $thisdate       = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
         
         if ($thisbibkey){
             $logger->debug("Got Title with id $thistitleid and bibkey $thisbibkey");
 
             push @$alltitlebybibkey_ref, {
-                bibkey  => $thisbibkey,
-                titleid => $thistitleid,
-                dbname  => $database,
-                tstamp  => $thisdate,
+                bibkey     => $thisbibkey,
+                titleid    => $thistitleid,
+                dbname     => $database,
+                tstamp     => $thisdate,
+                titlecache => $thistitlecache,
             };
             $bibkey_insertcount++;
         }
@@ -276,8 +280,8 @@ foreach my $database (@databases){
                 'title_fields.field' => '0543',
             },
             {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
-                as     => ['thistitleid', 'thisissn', 'thisdate'],
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+                as     => ['thistitleid', 'thisissn', 'thisdate','thistitlecache'],
                 join =>   ['title_fields'],
             }
         );
@@ -288,8 +292,8 @@ foreach my $database (@databases){
                 'title_fields.field' => '0543',
             },
             {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create'],
-                as     => ['thistitleid', 'thisissn','thisdate'],
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+                as     => ['thistitleid', 'thisissn','thisdate','thistitlecache'],
                 join   => ['title_fields'],
             }
         );
@@ -299,9 +303,10 @@ foreach my $database (@databases){
     my $alltitlebyissn_ref = [];
     
     foreach my $item ($all_isbns->all){
-        my $thistitleid = $item->get_column('thistitleid');
-        my $thisissn    = $item->get_column('thisissn');
-        my $thisdate    = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
+        my $thistitleid    = $item->get_column('thistitleid');
+        my $thistitlecache = $item->get_column('thistitlecache');
+        my $thisissn       = $item->get_column('thisissn');
+        my $thisdate       = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
         
 
         if ($thisissn){
@@ -316,10 +321,11 @@ foreach my $database (@databases){
             $logger->debug("Got Title with id $thistitleid and ISSN $thisissn");
 
             push @$alltitlebyissn_ref, {
-                issn    => $thisissn,
-                titleid => $thistitleid,
-                dbname  => $database,
-                tstamp  => $thisdate,
+                issn       => $thisissn,
+                titleid    => $thistitleid,
+                dbname     => $database,
+                tstamp     => $thisdate,
+                titlecache => $thistitlecache,
             };
             
             $issn_insertcount++;

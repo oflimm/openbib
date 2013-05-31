@@ -392,7 +392,7 @@ sub enrich_content {
             my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
                 $where_ref,
                 {
-                    group_by => ['titleid','dbname','isbn','tstamp'],
+                    group_by => ['titleid','dbname','isbn','tstamp','titlecache'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
@@ -402,12 +402,22 @@ sub enrich_content {
             while (my $item = $same_titles->next) {
                 my $id         = $item->{titleid};
                 my $database   = $item->{dbname};
+                my $titlecache = $item->{titlecache};
                 
-                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                if ($titlecache){
+                    $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+                }
+                else {
+                    $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+                }
             }
-            
-            $same_recordlist->load_brief_records;
-            
+
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles w/o load_brief_records ist ".timestr($timeall));
+            }
+
             $self->set_same_records($same_recordlist);
         }
         
@@ -459,7 +469,7 @@ sub enrich_content {
             my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
                 $where_ref,
                 {
-                    group_by => ['dbname','isbn','tstamp','titleid'],
+                    group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
@@ -467,14 +477,24 @@ sub enrich_content {
             while (my $titleitem = $titles->next) {
                 my $id         = $titleitem->{titleid};
                 my $database   = $titleitem->{dbname};
+                my $titlecache = $titleitem->{titlecache};
                 
                 $logger->debug("Found Title with id $id in database $database");
-                
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+
+                if ($titlecache){
+                    $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+                }
+                else {
+                    $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+                }
             }
 
-            $similar_recordlist->load_brief_records;
-            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles w/o load_brief_records ist ".timestr($timeall));
+            }
+
             $self->set_similar_records($similar_recordlist);
         }
         
@@ -537,7 +557,7 @@ sub enrich_content {
             my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
                 $where_ref,
                 {
-                    group_by => ['dbname','isbn','tstamp','titleid'],
+                    group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                     rows => 20,
                 }
@@ -546,19 +566,40 @@ sub enrich_content {
             while (my $titleitem = $titles->next) {
                 my $id         = $titleitem->{titleid};
                 my $database   = $titleitem->{dbname};
+                my $titlecache = $titleitem->{titlecache};
                 
                 next if (defined $titles_found_ref->{"$database:$id"});
-                $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+
+                my $ctime;
+                my $dtime;
+                if ($config->{benchmark}) {
+                    $ctime=new Benchmark;
+                }
+
+                if ($titlecache){
+                    $logger->debug("Record from cache");
+                    $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+                }
+                else {
+                    $logger->debug("Record from database");
+                    $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+                }
+
+                if ($config->{benchmark}) {
+                    $dtime=new Benchmark;
+                    $timeall=timediff($dtime,$ctime);
+                    $logger->info("Zeit fuer : Bestimmung von Kurztitel-Information des Titels ist ".timestr($timeall));
+                }
+
                 $titles_found_ref->{"$database:$id"} = 1;
             }
 
             if ($config->{benchmark}) {
-                $dtime=new Benchmark;
-                $timeall=timediff($dtime,$ctime);
-                $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen related_recordlist ist ".timestr($timeall));
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles/Related Titles w/o load_brief_records ist ".timestr($timeall));
             }
 
-            $related_recordlist->load_brief_records;
             $related_recordlist->sort({order => 'up', type => 'title'});
             
             $self->set_related_records($related_recordlist);

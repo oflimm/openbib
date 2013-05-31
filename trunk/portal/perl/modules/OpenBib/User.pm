@@ -686,7 +686,9 @@ sub get_number_of_tagged_titles {
 
     # DBI: "select count(distinct(titleid)) as rowcount from tittag"
     my $numoftitles = $self->{schema}->resultset('TitTag')->search(
-        undef,
+        {
+            id => { '>' => 0 }, # force Index-Scan
+        },
         {
             group_by => ['titleid'],
         }
@@ -703,7 +705,9 @@ sub get_number_of_tagging_users {
 
     # DBI: "select count(distinct(username)) as rowcount from tittag"
     my $numofusers = $self->{schema}->resultset('TitTag')->search(
-        undef,
+        {
+            id => { '>' => 0 }, # force Index-Scan
+        },
         {
             group_by => ['userid'],
         }
@@ -720,7 +724,9 @@ sub get_number_of_tags {
 
     # DBI: "select count(distinct(tagid)) as rowcount from tittag"
     my $numoftags = $self->{schema}->resultset('TitTag')->search(
-        undef,
+        {
+            id => { '>' => 0 }, # force Index-Scan
+        },
         {
             group_by => ['tagid'],
         }
@@ -876,7 +882,9 @@ sub get_number_of_users {
 
     # DBI: "select count(userid) as rowcount from userinfo"
     my $numofusers = $self->{schema}->resultset('Userinfo')->search_rs(
-        undef,
+        {
+            id => { '>' => 0 }, # force Index-Scan
+        }
     )->count;
 
     return $numofusers;
@@ -890,7 +898,9 @@ sub get_number_of_dbprofiles {
 
     # DBI "select count(profilid) as rowcount from user_profile"
     my $numofprofiles = $self->{schema}->resultset('UserSearchprofile')->search_rs(
-        undef,
+        {
+            id => { '>' => 0 }, # force Index-Scan
+        }
     )->count;
 
     return $numofprofiles;
@@ -904,7 +914,9 @@ sub get_number_of_collections {
 
     # DBI: "select count(distinct(userid)) as rowcount from collection"
     my $numofcollections = $self->{schema}->resultset('UserCartitem')->search_rs(
-        undef,
+        {
+            id => { '>' => 0 }, # force Index-Scan
+        },
         {
             group_by => ['userid'], # distinct
         }
@@ -921,7 +933,9 @@ sub get_number_of_collection_entries {
 
     # DBI: "select count(userid) as rowcount from collection"
     my $numofentries = $self->{schema}->resultset('UserCartitem')->search_rs(
-        undef,
+        {
+            id => { '>' => 0 }, # force Index-Scan
+        },
     )->count;
 
     return $numofentries;

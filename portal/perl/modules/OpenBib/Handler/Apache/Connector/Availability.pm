@@ -196,15 +196,20 @@ sub show_collection_by_isbn {
     while (my $title = $alltitles->next){
         my $id         = $title->titleid;
         my $database   = $title->dbname;
+        my $titlecache = $title->titlecache;
         
         # Verfuegbarkeit ist immer im Kontext des Views zu sehen!
         if ($viewdb_lookup_ref->{$database}){
             $logger->debug("Adding Title with ID $id in DB $database");
-            $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+
+            if ($titlecache){
+                $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+            }
+            else {
+                $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+            }
         }
     }
-    
-    $recordlist->load_brief_records;
     
     my $ttdata = {
         dbinfo               => $dbinfotable,

@@ -436,7 +436,7 @@ if (-e $titlefile){
             }
 
             if ($category =~ /^020a$/ || $category =~ /^026 $/){
-                $content=~s/[^-0-9]//g;
+                $content=~s/[^-0-9xX]//g;
             }
             
             if ($category =~ /^542a$/){

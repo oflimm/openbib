@@ -1855,6 +1855,17 @@ sub connectMemcached {
     return;
 }
 
+sub DESTROY {
+    my $self = shift;
+
+    if (defined $self->{schema}){
+        $self->{schema}->storage->dbh->disconnect;
+    }
+
+    
+    return;
+}
+
 1;
 __END__
 

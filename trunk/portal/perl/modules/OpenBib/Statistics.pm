@@ -969,11 +969,19 @@ sub connectDB {
 sub DESTROY {
     my $self = shift;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     if (defined $self->{schema}){
-        $self->{schema}->storage->dbh->disconnect;
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
     }
 
-    
     return;
 }
 

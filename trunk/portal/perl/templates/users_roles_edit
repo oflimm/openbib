@@ -90,7 +90,7 @@
 </td></tr>
 </table>
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/role" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/[% config.get('roles_loc') %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
 <fieldset class="ym-columnar">

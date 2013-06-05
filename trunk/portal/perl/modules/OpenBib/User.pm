@@ -5277,6 +5277,71 @@ sub search {
     return $userlist_ref;
 }
 
+sub migrate_ugc {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $olduserid             = exists $arg_ref->{olduserid}
+        ? $arg_ref->{olduserid}              : undef;
+    my $newuserid             = exists $arg_ref->{newuserid}
+        ? $arg_ref->{newuserid}              : undef;
+    my $migrate_collections    = exists $arg_ref->{migrate_collections}
+        ? $arg_ref->{migrate_collections}  : undef;
+    my $migrate_litlists       = exists $arg_ref->{migrate_litlists}
+        ? $arg_ref->{migrate_litlists}     : undef;
+    my $migrate_tags           = exists $arg_ref->{migrate_tags}
+        ? $arg_ref->{migrate_tags}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($migrate_collections){
+        my $collectionentries = $self->{schema}->resultset('UserCartitem')->search(
+            {
+                userid => $olduserid,
+            }
+        );
+        
+        while (my $collectionentry = $collectionentries->next()){
+            $logger->debug("Migrating user collections id ".$collectionentry->get_column('id'));
+            
+            $collectionentry->update({ userid => $newuserid });
+        }
+    }
+
+    
+    if ($migrate_litlists){
+        my $litlists = $self->{schema}->resultset('Litlist')->search(
+            {
+                userid => $olduserid,
+            }
+        );
+
+        while (my $litlist = $litlists->next()){
+            $logger->debug("Migrating litlist id ".$litlist->get_column('id'));
+            $litlist->update({ userid => $newuserid });
+        }
+
+    }
+
+    if ($migrate_tags){
+        my $tags = $self->{schema}->resultset('TitTag')->search(
+            {
+                userid => $olduserid,
+            }
+        );
+
+        while (my $tag = $tags->next()){
+            $logger->debug("Migrating tag id ".$tag->get_column('id'));
+            $tag->update({ userid => $newuserid });
+        }
+    }
+    
+    $logger->debug(YAML::Dump($arg_ref));
+
+    return;
+}
+
 sub connectDB {
     my $self = shift;
 

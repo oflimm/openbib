@@ -174,14 +174,13 @@ sub migrate_ugc {
     
     $user->migrate_ugc($input_data_ref);
 
-    $self->print_info($msg->maketext("Die Daten wurden erfolgreich transferiert."));
+    # TT-Data erzeugen
+    my $ttdata={
+    };
+    
+    $self->print_page($config->{tt_admin_users_migration_success_tname},$ttdata);
 
     return;
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{users_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
-
 }
 
 sub get_input_definition {

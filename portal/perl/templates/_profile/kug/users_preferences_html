@@ -240,7 +240,9 @@
 </div>
 </div><!-- End grid -->
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
 
 </fieldset>
 </form>
@@ -259,7 +261,10 @@
 </select>
 </div>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
+
 </fieldset>
 </form>
 
@@ -309,7 +314,10 @@
 </div>
 </fieldset>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
+
 </fieldset>
 </form>
 
@@ -329,7 +337,9 @@
 <label for="spelling_resultlist">[% msg.maketext("In der Trefferliste") %]</label>
 </div>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
 
 </fieldset>
 </form>
@@ -355,7 +365,10 @@
 <input type="text" name="bibsonomy_key" id="bibsonomy_key" value="[% bibsonomy.key %]"/>
 </div>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
+
 </fieldset>
 </form>
 
@@ -366,10 +379,64 @@
 <fieldset>
 <legend>[% msg.maketext("Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen") %]</legend>
 
+<div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Los") %]" />
+</div>
+
 </fieldset>
 </form>
 [%- END -%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/migration" enctype="application/x-www-form-urlencoded" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset>
+<legend>Migration von Inhalten einer anderen Kennung</legend>
+
+<p style="padding: 5px; padding-left: 10px;">Haben Sie Ihren Bibliotheksausweis verloren und eine neue
+Benutzernummer bekommen? Oder haben Sie keinen Bibliotheksausweis mehr
+und wollen den KUG weiter mit Ihrer registrierten E-Mail-Adresse
+verwenden? Dann können Sie hier Ihre unter der alten
+Kennung angelegten Merklisteneinträge, Literaturlisten und Tags
+zu dieser Kennung verschieben.
+</p>
+
+<p style="padding: 5px; padding-left:10px;">
+Geben Sie bitte die Authentifizierungsinformationen für die alte Kennung
+ein, von der Inhalte zu dieser hin verschoben werden sollen.
+</p>
+
+<div class="ym-fbox-text">
+<label for="username">Alte Benutzernummer/E-Mail-Adresse</label>
+<input type="text" name="username" id="username" value="[% username %]" />
+</div>
+<div class="ym-fbox-text">
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
+<input type="password" name="password" id="password" />
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="migration_collections" id="migration_collections" value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
+<label for="migration_collections">[% msg.maketext("Merkliste") %]</label>
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="migration_litlists" id="migration_litlists" value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
+<label for="migration_litlists">[% msg.maketext("Literaturlisten") %]</label>
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="migration_tags" id="migration_tags" value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
+<label for="migration_tags">[% msg.maketext("Tags") %]</label>
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="Zur aktuellen Kennung verschieben" />
+</div>
+
+</fieldset>
+
+</form>
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

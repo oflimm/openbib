@@ -65,6 +65,13 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
 [% END %]
+
+[% IF active_submenu == "migration" %]
+  <li class="active"><strong>[% msg.maketext("Konto-Migration") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
+[% END %]
+
  </ul>
 </nav>
 

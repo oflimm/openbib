@@ -737,7 +737,8 @@ sub print_warning {
 
 sub print_info {
     my $self = shift;
-    my $info = shift;
+    my $info   = shift;
+    my $infonr = shift || 1;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -747,6 +748,7 @@ sub print_info {
 
     my $ttdata = {
         info_msg => $info,
+        info_nr  => $infonr,
     };
 
     $self->print_page($config->{tt_info_message_tname},$ttdata);

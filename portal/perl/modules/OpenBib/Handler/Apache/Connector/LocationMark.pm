@@ -108,22 +108,49 @@ sub show {
 
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
-    
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
+
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database});
     
     if ($base && $location){
         $logger->debug("Bestimme Titel zur Grundsignatur '$base' und Standort '$location'");
 
-        my $sql = "select distinct c.sourceid, m1.content from conn as c, mex as m1 left join mex as m2 on m1.id=m2.id where m1.category=14 and m1.content like ? and m1.content != 'bestellt' and m1.content != 'vergriffen' and m1.content != 'storniert' and m2.category = 16 and m2.content = ? and c.targettype=6 and c.targetid=m1.id and c.sourcetype=1";
-        my $request=$dbh->prepare($sql); # "select distinct conn.sourceid from mex, conn where mex.category=14 and mex.content like ? and mex.content != 'bestellt' and mex.content != 'vergriffen' and mex.content != 'storniert' and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex.id and mex.id in (select distinct id from mex where category = 16 and content = ? )");
-        $request->execute("$base%",$location);
+        # my $sql = "select distinct c.sourceid, m1.content from conn as c, mex as m1 left join mex as m2 on m1.id=m2.id where m1.category=14 and m1.content like ? and m1.content != 'bestellt' and m1.content != 'vergriffen' and m1.content != 'storniert' and m2.category = 16 and m2.content = ? and c.targettype=6 and c.targetid=m1.id and c.sourcetype=1";
+
+        my $locationholdings = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+            {
+                'holding_fields.field' => 16,
+                'holding_fields.content' => { '~' => $location },
+            },
+            {
+                select   => ['holdingid.id'],
+                as       => ['thisholdingid'],
+                join     => ['titleid','holdingid', {'holdingid' => 'holding_fields' }],
+                group_by => ['holdingid.id'],
+            }
+        );
+
+        my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+            {
+                'holdingid.id' => { -in => $locationholdings->as_query },
+
+                'holding_fields.field' => 14,
+                'holding_fields.content' => { '~' => "^$base" },
+            },
+            {
+                select   => ['titleid.id','holding_fields.content'],
+                as       => ['thistitleid','thislocmark'],
+                join     => ['titleid','holdingid', {'holdingid' => 'holding_fields' }],
+                group_by => ['titleid.id','holding_fields.content'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+
 
         my @filtered_titleids = ();
-        while (my $result=$request->fetchrow_hashref){
-            my $titleid   = $result->{sourceid};
-            my $locmark = $result->{content};
+        
+        while (my $item = $titles->next){
+            my $titleid = $item->{thistitleid};
+            my $locmark = $item->{thislocmark};
 
             $logger->debug("Found titleid $titleid with location mark $locmark");
             
@@ -166,7 +193,7 @@ sub show {
         foreach my $titleid_ref (@sortedtitleids) {
             my $id = $titleid_ref->{id};
 
-            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database})->load_brief_record({ dbh => $dbh })->get_fields;
+            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database})->load_brief_record->get_fields;
             
             # Bereinigung der Signaturen. Alle Signaturen, die nicht zur Grundsignatur gehoeren,
             # werden entfernt.

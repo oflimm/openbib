@@ -13,6 +13,9 @@
 -%]
 <?xml version="1.0"?>
 <availability_response key="[% key %]">
+[% IF error %]
+  <error>[% error %]</error>
+[% ELSE  %]
 [%- normset = "" -%]
 [%-
    num_of_available_records = available_recordlist.get_size;
@@ -68,5 +71,5 @@
 </catalogue>
 [% END %]
 </availability>
-
+[% END %]
 </availability_response>

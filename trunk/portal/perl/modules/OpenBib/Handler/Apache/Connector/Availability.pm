@@ -118,6 +118,9 @@ sub show_collection {
     elsif ($id_type eq "bibkey"){
         $self->show_collection_by_bibkey;
     }
+    else {
+        $self->show_collection_by_isbn;
+    }        
 
     return;
 }
@@ -162,56 +165,61 @@ sub show_collection_by_isbn {
     
     # Normierung auf ISBN13
     my $isbnXX     = Business::ISBN->new($id);
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    my $error = "";
     
     if (defined $isbnXX && $isbnXX->is_valid){
         $id = $isbnXX->as_isbn13->as_string;
+    
+        my $isbn = OpenBib::Common::Util::normalize({
+            field    => 'T0540',
+            content  => $id,
+        });
+        
+        my $enrichment = new OpenBib::Enrichment;
+    
+        # 1.) Ist dieser Titel im KUG vorhanden? ja/nein
+        # 2.) Wo ist er vorhanden (Katalogname/ID/PermaLink)
+        
+        
+        # DBI: "select distinct id,dbname from all_isbn where isbn=?";
+        my $alltitles = $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
+            {
+                isbn => $isbn,
+            },
+            {
+                group_by => ['tstamp','isbn','dbname','titleid','titlecache'],
+            }
+                
+        );
+        
+        while (my $title = $alltitles->next){
+            my $id         = $title->titleid;
+            my $database   = $title->dbname;
+            my $titlecache = $title->titlecache;
+            
+            # Verfuegbarkeit ist immer im Kontext des Views zu sehen!
+            if ($viewdb_lookup_ref->{$database}){
+                $logger->debug("Adding Title with ID $id in DB $database");
+                
+                if ($titlecache){
+                    $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+                }
+                else {
+                    $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+                }
+            }
+        }
+        
     }
     else {
-        return Apache2::Const::OK;
+        $error = "ISBN not valid";
     }
-    
-    my $isbn = OpenBib::Common::Util::normalize({
-        field    => 'T0540',
-        content  => $id,
-    });
 
-    my $enrichment = new OpenBib::Enrichment;
-    
-    # 1.) Ist dieser Titel im KUG vorhanden? ja/nein
-    # 2.) Wo ist er vorhanden (Katalogname/ID/PermaLink)
-    
-    my $recordlist = new OpenBib::RecordList::Title();
-
-    # DBI: "select distinct id,dbname from all_isbn where isbn=?";
-    my $alltitles = $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
-        {
-            isbn => $isbn,
-        },
-        {
-            group_by => ['tstamp','isbn','dbname','titleid','titlecache'],
-        }
-            
-    );
-
-    while (my $title = $alltitles->next){
-        my $id         = $title->titleid;
-        my $database   = $title->dbname;
-        my $titlecache = $title->titlecache;
-        
-        # Verfuegbarkeit ist immer im Kontext des Views zu sehen!
-        if ($viewdb_lookup_ref->{$database}){
-            $logger->debug("Adding Title with ID $id in DB $database");
-
-            if ($titlecache){
-                $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
-            }
-            else {
-                $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
-            }
-        }
-    }
-    
     my $ttdata = {
+        error                => $error,
         dbinfo               => $dbinfotable,
         key                  => $id,
         available_recordlist => $recordlist,

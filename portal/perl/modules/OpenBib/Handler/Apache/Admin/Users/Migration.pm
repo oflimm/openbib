@@ -62,7 +62,7 @@ use OpenBib::User;
 
 use CGI::Application::Plugin::Redirect;
 
-use base 'OpenBib::Handler::Apache::Users';
+use base 'OpenBib::Handler::Apache::Admin';
 
 # Run at startup
 sub setup {

@@ -71,12 +71,12 @@ ein, von der Inhalte zu dieser hin verschoben werden sollen.") %]
 </p>
 
 <div class="ym-fbox-text">
-<label for="username">[% msg.maketext("Alte Benutzernummer bzw. E-Mail-Adresse") %]</label>
-<input type="text" name="username" id="username" value="[% username %]" />
+<label for="oldusername">[% msg.maketext("Alte Benutzernummer bzw. E-Mail-Adresse") %]</label>
+<input type="text" name="oldusername" id="oldusername" />
 </div>
 <div class="ym-fbox-text">
-<label for="password"/>[% msg.maketext("Altes Passwort") %]</label>
-<input type="password" name="password" id="password" />
+<label for="oldpassword"/>[% msg.maketext("Altes Passwort") %]</label>
+<input type="password" name="oldpassword" id="oldpassword" />
 </div>
 
 <div class="ym-fbox-check">

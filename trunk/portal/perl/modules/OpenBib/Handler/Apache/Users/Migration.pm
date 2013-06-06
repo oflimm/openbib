@@ -155,7 +155,7 @@ sub migrate_ugc {
         return;
     }
 
-    my $olduserid = $user->authenticate_self_user({ username => $input_data_ref->{username}, password => $input_data_ref->{password} });
+    my $olduserid = $user->authenticate_self_user({ username => $input_data_ref->{oldusername}, password => $input_data_ref->{oldpassword} });
 
     if ($olduserid < 0){
         $self->print_warning($msg->maketext("Falsches Password. Bitte geben Sie die korrekte Kennung und das zugehörige Passwort ein."));
@@ -179,12 +179,12 @@ sub get_input_definition {
     my $self=shift;
     
     return {
-        username => {
+        oldusername => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
         },
-        password => {
+        oldpassword => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',

@@ -172,12 +172,13 @@ if ($userinfo{'erfolgreich'} eq "1"){
 
     # Web
     my $mainttdata = {
+        contact    => $contact,
         database   => $database,
         config     => $config,
         msg        => $msg,
         view       => $view,
         sysprofile => $sysprofile,
-        username        => $username,
+        username   => $username,
         titel      => $titel,
         person     => $person,
         signatur   => $signatur,
@@ -186,6 +187,7 @@ if ($userinfo{'erfolgreich'} eq "1"){
 
     # Mail
     my $mailttdata = {
+        contact    => $contact,
         database   => $database,
         config     => $config,
         msg        => $msg,
@@ -205,8 +207,15 @@ if ($userinfo{'erfolgreich'} eq "1"){
         OUTPUT_PATH   => '/tmp',
         OUTPUT        => $afile,
     });
-    
-    $maintemplate->process('mail-order', $mailttdata ) || do {
+
+    my  $mailtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => $database,
+        view         => $view,
+        profile      => $sysprofile,
+        templatename => 'mail-order',
+    });
+
+    $maintemplate->process($mailtemplatename, $mailttdata ) || do {
         my $resulttemplate = Template->new({ 
             INCLUDE_PATH   => $config->{tt_include_path},
             ABSOLUTE       => 1,

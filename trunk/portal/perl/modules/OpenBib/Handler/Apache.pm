@@ -1540,13 +1540,16 @@ sub check_http_basic_authentication {
         
         my $userid   = $user->authenticate_self_user({ username => $http_user, password => $password });
         
-        my $targetid = $config->get_authenticator_self();
+        my $authenticator   = $config->get_authenticator_self();
+        my $authenticatorid = $authenticator->{id};
 
-        if ($userid > 0){
+        $logger->debug("authenticatortarget: $authenticatorid");
+        
+        if ($userid > 0 && $authenticatorid){
             $user->connect_session({
-                sessionID => $session->{ID},
-                userid    => $userid,
-                targetid  => $targetid,
+                sessionID       => $session->{ID},
+                userid          => $userid,
+                authenticatorid => $authenticatorid,
             });
             $user->{ID} = $userid;
         }

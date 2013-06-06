@@ -14,7 +14,9 @@
 <?xml version="1.0"?>
 <availability_response key="[% key %]">
 [% IF error %]
-  <error>[% error %]</error>
+  <error>
+     <message>[% error %]</message>
+  </error>
 [% ELSE  %]
 [%- normset = "" -%]
 [%-

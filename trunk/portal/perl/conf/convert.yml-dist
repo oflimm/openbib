@@ -3255,6 +3255,9 @@ convtab:
           'freesearch': 1
         facet:
           'language': 1
+      '0026':
+        index:
+          'freesearch': 1
       '0089':
         index:
           'source': 1

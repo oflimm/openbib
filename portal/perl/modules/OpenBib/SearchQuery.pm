@@ -776,8 +776,8 @@ sub get_dbis_recommendations {
     my $root   = $tree->getDocumentElement;
 
     foreach my $cluster_node ($root->findnodes('/ListRecords/Cluster')) {
-        my $frequency = $cluster_node->findvalue('freq');
-        my $rank      = $cluster_node->findvalue('rank');
+        my $frequency = $cluster_node->findvalue('@freq');
+        my $rank      = $cluster_node->findvalue('@rank');
         my $dbrtopic  = $cluster_node->textContent;
 
         $logger->debug("$dbrtopic - $rank - $frequency");

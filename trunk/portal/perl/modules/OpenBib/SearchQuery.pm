@@ -721,6 +721,26 @@ sub get_searchterms {
     return $term_ref;
 }
 
+sub get_searchtermstring {
+    my ($self) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $term_ref = [];
+
+    $logger->debug("_searchquery is: ".YAML::Dump($self->{_searchquery}));
+    
+    return $term_ref unless (defined $self->{_searchquery} && exists $self->{_searchquery});
+
+    my @allterms = ();
+    foreach my $cat (keys %{$self->{_searchquery}}){
+        push @allterms, $self->{_searchquery}->{$cat}->{val} if (ref $self->{_searchquery}->{$cat} eq "HASH" && $self->{_searchquery}->{$cat}->{val});
+    }
+    
+    return join (" ",@allterms);
+}
+
 sub get_dbis_recommendations {
     my ($self) = @_;
 
@@ -728,6 +748,12 @@ sub get_dbis_recommendations {
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
     
     my @allterms = ();
     foreach my $cat (keys %{$self->{_searchquery}}){
@@ -766,6 +792,13 @@ sub get_dbis_recommendations {
             };
         }
     }
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    
+    $logger->info("elib database recommendation took $resulttime seconds");
 
     return $dbr_ref;
 }

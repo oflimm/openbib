@@ -63,6 +63,7 @@ sub setup {
         'show_collection'         => 'show_collection',        
         'show_record'             => 'show_record',
         'show_popular'            => 'show_popular',
+        'show_dbis_recommendations' => 'show_dbis_recommendations',
         'show_recent'             => 'show_recent',
         'show_availability'       => 'show_availability',
         'redirect_to_bibsonomy'   => 'redirect_to_bibsonomy',
@@ -112,6 +113,40 @@ sub show_popular {
     };
 
     my $templatename = "tt_titles_popular".(($database)?'_by_database':'')."_tname";
+    $self->print_page($config->{$templatename},$ttdata);
+
+    return Apache2::Const::OK;
+}
+
+sub show_dbis_recommendations {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $dbinfotable    = $self->param('dbinfo');
+
+    my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
+
+    # TT-Data erzeugen
+    my $ttdata={
+        searchquery => $searchquery,
+    };
+
+    my $templatename = "tt_titles_dbis_recommendations_tname";
     $self->print_page($config->{$templatename},$ttdata);
 
     return Apache2::Const::OK;

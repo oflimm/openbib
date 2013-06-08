@@ -1,0 +1,34 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% dbr = searchquery.get_dbis_recommendations %]
+[% IF dbr.size > 0 %]
+
+
+<p>
+Für weitere Recherchen empfehlen wir Ihnen folgende Fachdatenbanken.
+</p>
+
+[% FOREACH item IN dbr %]
+<dl class="ob-items">
+<dt class="ob-headline">[% item.dbrtopic %] [% item.rank %]</dt>
+[%  FOREACH dbisdb IN item.databases %]
+<dd><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/id/[% dbisdb.id%].html?l=[% lang %]">[% dbisdb.description %]</a></dd>
+[%  END %]
+</dl>
+[% END %]
+
+[% ELSE %]
+Leider konnten zu Ihrer Suchanfrage keine geeigneten Fachdatenbanken
+gefunden werden.
+[% END %]

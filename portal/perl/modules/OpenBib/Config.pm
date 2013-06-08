@@ -3275,6 +3275,53 @@ sub delete_stale_searchprofile_indexes {
     return;
 }
 
+sub get_dbisdbs_of_dbrtopic {
+    my ($self,$dbrtopic) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $dbs = $self->{schema}->resultset('Dbistopic')->search(
+        {
+            'dbrtopicid.topic' => $dbrtopic,
+        },
+        {
+            group_by => ['dbisdbid.id','dbisdbid.description'],
+            select => ['dbisdbid.id','dbisdbid.description'],
+            as     => ['thisid','thisdescription'],
+            join   => ['dbistopic_dbisdbs', 'dbrtopic_dbistopics', { 'dbistopic_dbisdbs' => 'dbisdbid' }, { 'dbrtopic_dbistopics' => 'dbrtopicid' } ],
+        }
+    );
+
+    my $databases_ref = [];
+    while (my $db = $dbs->next()){
+        push @$databases_ref, {
+            id          => $db->get_column('thisid'),
+            description => $db->get_column('thisdescription'),
+        };
+    }
+    return $databases_ref;
+}
+
+sub get_description_of_dbrtopic {
+    my ($self,$dbrtopic) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $topic = $self->{schema}->resultset('Dbrtopic')->single(
+        {
+            'topic' => $dbrtopic,
+        },
+    );
+
+    if ($topic){
+        return $topic->description;
+    }
+
+    return '';
+}
+
 sub DESTROY {
     my $self = shift;
 

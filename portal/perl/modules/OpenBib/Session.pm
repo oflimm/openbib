@@ -1795,7 +1795,7 @@ sub get_authenticator {
             join   => ['user_sessions',{ 'user_sessions' => 'sid' }],
         }
             
-    )->single;
+    )->first;
 
     return $authenticator;
 }

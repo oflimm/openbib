@@ -44,8 +44,9 @@ use String::Tokenizer;
 use Text::Aspell;
 use Search::Xapian;
 use YAML;
+use LWP::UserAgent;
 use URI::Escape;
-
+use XML::LibXML;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Schema::DBI;
@@ -718,6 +719,55 @@ sub get_searchterms {
     }
 
     return $term_ref;
+}
+
+sub get_dbis_recommendations {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    my @allterms = ();
+    foreach my $cat (keys %{$self->{_searchquery}}){
+        push @allterms, $self->{_searchquery}->{$cat}->{val} if (ref $self->{_searchquery}->{$cat} eq "HASH" && $self->{_searchquery}->{$cat}->{val});
+    }
+    my $alltermsstring = join (" ",@allterms);
+
+    $logger->debug("Terms: $alltermsstring");
+    my $url="http://suche.suub.uni-bremen.de/cgi-bin/CiXbase/brewis/CiXbase_search?act=search&LAN=DE&CLUSTER=3&index=L&n_dtyp=1L&n_rtyp=ceEdX&PRECISION=220&RELEVANCE=45&dtyp=ab&term=$alltermsstring";
+    
+    my $response = LWP::UserAgent->new->get($url)->decoded_content(charset => 'utf8');
+
+    $logger->debug("Response: $response");
+
+    my $dbr_ref = [];
+    
+
+    my $parser = XML::LibXML->new();
+    my $tree   = $parser->parse_string($response);
+    my $root   = $tree->getDocumentElement;
+
+    foreach my $cluster_node ($root->findnodes('/ListRecords/Cluster')) {
+        my $frequency = $cluster_node->findvalue('freq');
+        my $rank      = $cluster_node->findvalue('rank');
+        my $dbrtopic  = $cluster_node->textContent;
+
+        $logger->debug("$dbrtopic - $rank - $frequency");
+
+
+        if ($dbrtopic){
+            push @$dbr_ref, {
+                dbrtopic  => $config->get_description_of_dbrtopic($dbrtopic),
+                rank      => $rank,
+                frequency => $frequency,
+                databases => $config->get_dbisdbs_of_dbrtopic($dbrtopic),
+            };
+        }
+    }
+
+    return $dbr_ref;
 }
 
 sub get_spelling_suggestion {

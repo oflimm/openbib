@@ -555,3 +555,27 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 
 [% END %]
 </div>
+
+
+[% dbr = searchquery.get_dbis_recommendations %]
+[% IF dbr.size > 0 %]
+
+<p/>
+
+<div class="ob-facets">
+<div class="ob-category_header">Datenbank-Empfehlungen</div>
+
+<p>
+Für weitere Recherchen empfehlen wir Ihnen folgende Fachdatenbanken.
+</p>
+
+[% FOREACH item IN dbr %]
+<dl class="ob-items">
+<dt class="ob-headline">[% item.dbrtopic %] [% item.rank %]</dt>
+[%  FOREACH dbisdb IN item.databases %]
+<dd><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/id/[% dbisdb.id%].html?l=[% lang %]">[% dbisdb.description %]</a></dd>
+[%  END %]
+[% END %]
+</div>
+
+[% END %]

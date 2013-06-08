@@ -504,3 +504,38 @@ CREATE TABLE topicclassification (
  type           TEXT    NOT NULL
 );
 
+DROP TABLE IF EXISTS dbrtopic;
+CREATE TABLE dbrtopic (
+ id           SERIAL NOT NULL,
+ topic        TEXT   NOT NULL,
+ description  TEXT   NOT NULL
+);
+
+DROP TABLE IF EXISTS dbistopic;
+CREATE TABLE dbistopic (
+ id           SERIAL NOT NULL,
+ topic        TEXT   NOT NULL,
+ description  TEXT   NOT NULL
+);
+
+DROP TABLE IF EXISTS dbrtopic_dbistopic;
+CREATE TABLE dbrtopic_dbistopic (
+ id               SERIAL    NOT NULL,
+ dbrtopicid        BIGINT    NOT NULL,
+ dbistopicid       BIGINT    NOT NULL
+);
+
+DROP TABLE IF EXISTS dbisdb;
+CREATE TABLE dbisdb (
+ id           BIGINT    NOT NULL,
+ description  TEXT      NOT NULL,
+ url          TEXT      NOT NULL
+);
+
+DROP TABLE IF EXISTS dbistopic_dbisdb;
+CREATE TABLE dbistopic_dbisdb (
+ id           SERIAL    NOT NULL,
+ dbistopicid  BIGINT    NOT NULL,
+ dbisdbid     BIGINT    NOT NULL,
+ rank         INT
+);

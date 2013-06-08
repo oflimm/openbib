@@ -232,3 +232,23 @@ CREATE INDEX topicclassification_topicid ON topicclassification (topicid);
 CREATE INDEX topicclassification_type ON topicclassification (type);
 CREATE INDEX topicclassification_classification ON topicclassification (classification);
 
+ALTER TABLE dbrtopic ADD PRIMARY KEY (id);
+CREATE INDEX dbrtopic_topic ON dbrtopic (topic);
+
+ALTER TABLE dbistopic ADD PRIMARY KEY (id);
+CREATE INDEX dbistopic_topic ON dbistopic (topic);
+
+ALTER TABLE dbisdb ADD PRIMARY KEY (id);
+
+ALTER TABLE dbrtopic_dbistopic ADD PRIMARY KEY (id);
+ALTER TABLE dbrtopic_dbistopic ADD CONSTRAINT fk_dbrtopicdbistopic_dbrtopic FOREIGN KEY (dbrtopicid) REFERENCES dbrtopic (id);
+ALTER TABLE dbrtopic_dbistopic ADD CONSTRAINT fk_dbrtopicdbistopic_dbistopic FOREIGN KEY (dbistopicid) REFERENCES dbistopic (id);
+CREATE INDEX dbrtopicdbistopic_dbistopic ON dbrtopic_dbistopic (dbistopicid);
+CREATE INDEX dbrtopicdbistopic_dbrtopic ON dbrtopic_dbistopic (dbrtopicid);
+
+ALTER TABLE dbistopic_dbisdb ADD PRIMARY KEY (id);
+ALTER TABLE dbistopic_dbisdb ADD CONSTRAINT fk_dbistopic_dbisdb_dbistopic FOREIGN KEY (dbistopicid) REFERENCES dbistopic (id);
+ALTER TABLE dbistopic_dbisdb ADD CONSTRAINT fk_dbistopic_dbisdb_dbisdb FOREIGN KEY (dbisdbid) REFERENCES dbisdb (id);
+CREATE INDEX dbistopicdbisdb_dbistopic ON dbistopic_dbisdb (dbistopicid);
+CREATE INDEX dbistopicdbisdb_dbisdb ON dbistopic_dbisdb (dbisdbid);
+

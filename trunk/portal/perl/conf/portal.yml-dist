@@ -3466,7 +3466,7 @@ default_searchfields:
   'publisher':
     'active': 1
 
-search_defaultparams: 'page=1;num=20;srt=person;srto=asc;'
+search_defaultparams: 'page=1;num=20;srt=relevance_desc;'
 
 # Stopwort-Liste
 stopword_filename: /opt/openbib/ft/stopwords.txt

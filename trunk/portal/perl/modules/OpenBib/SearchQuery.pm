@@ -792,13 +792,15 @@ sub get_dbis_recommendations {
             };
         }
     }
-
-    my $btime      = new Benchmark;
-    my $timeall    = timediff($btime,$atime);
-    my $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
     
-    $logger->info("elib database recommendation took $resulttime seconds");
+    if ($config->{benchmark}){
+       my $btime      = new Benchmark;
+       my $timeall    = timediff($btime,$atime);
+       my $resulttime = timestr($timeall,"nop");
+       $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    
+       $logger->info("elib database recommendation took $resulttime seconds");
+    }
 
     return $dbr_ref;
 }

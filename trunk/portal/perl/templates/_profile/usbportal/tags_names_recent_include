@@ -11,12 +11,12 @@
 #
 #######################################################################
 -%]
-<h1>Die zuletzt angelegten Tags</h1>
+<b>Die zuletzt angelegten Tags</b><p/>
 
 
 [%# USE dumper;dumper.dump(recent_tags)%]
 <ul class="topiclist">
 [%- FOREACH thistag IN recent_tags -%]
-<li><a href="[% path_prefix %]/[% config.get('tags_loc') %]/name/id/[% thistag.tagname %].html">[% thistag.tagname %]</a> ([% thistag.itemcount %])</li>
+<li><a href="http://kug.ub.uni-koeln.de/portal/kug/[% config.get('tags_loc') %]/name/id/[% thistag.tagname %].html">[% thistag.tagname %]</a> ([% thistag.itemcount %])</li>
 [% END %]
 </ul>

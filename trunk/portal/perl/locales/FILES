@@ -183,6 +183,11 @@
 ../modules/OpenBib/Schema/System/Result/Cartitem.pm
 ../modules/OpenBib/Schema/System/Result/Clusterinfo.pm
 ../modules/OpenBib/Schema/System/Result/Databaseinfo.pm
+../modules/OpenBib/Schema/System/Result/Dbisdb.pm
+../modules/OpenBib/Schema/System/Result/DbistopicDbisdb.pm
+../modules/OpenBib/Schema/System/Result/Dbistopic.pm
+../modules/OpenBib/Schema/System/Result/DbrtopicDbistopic.pm
+../modules/OpenBib/Schema/System/Result/Dbrtopic.pm
 ../modules/OpenBib/Schema/System/Result/Eventlogjson.pm
 ../modules/OpenBib/Schema/System/Result/Eventlog.pm
 ../modules/OpenBib/Schema/System/Result/Litlistitem.pm
@@ -1361,6 +1366,10 @@
 ../templates/tags_names_record_json
 ../templates/tags_navigation
 ../templates/testsystem_info
+../templates/titles_dbis_recommendations
+../templates/titles_dbis_recommendations_html
+../templates/titles_dbis_recommendations_include
+../templates/titles_dbis_recommendations_json
 ../templates/titles_fields
 ../templates/titles_fields_html
 ../templates/titles_fields_record

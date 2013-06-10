@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-06-10 09:00+0200\n"
+"PO-Revision-Date: 2013-06-10 10:35+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -4979,6 +4979,10 @@ msgstr "Gefundene Nutzer"
 msgid "Genutzte Browser"
 msgstr "Genutzte Browser"
 
+#: ../templates/titles_dbis_recommendations_include:24
+msgid "Geringe Relevanz"
+msgstr "Geringe Relevanz"
+
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:32
 msgid "Gesamte Rheinlandbib"
 msgstr "Gesamte Rheinlandbib"
@@ -5337,6 +5341,10 @@ msgstr ""
 #: ../templates/titles_record_include:437
 msgid "Hinzuf&uuml;gen"
 msgstr "Hinzuf&uuml;gen"
+
+#: ../templates/titles_dbis_recommendations_include:24
+msgid "Hohe Relevanz"
+msgstr "Hohe Relevanz"
 
 #: ../templates/_profile/kug/info_impressum_mobile:20
 #: ../templates/_profile/mobile/_view/richtermobile/browse_title_html:21
@@ -8006,6 +8014,10 @@ msgid ""
 msgstr ""
 "Migration von nutzergenerierten Inhalte (Literaturlisten, Tags, Merkliste) "
 "einer anderen Kennung"
+
+#: ../templates/titles_dbis_recommendations_include:24
+msgid "Mittlere Relevanz"
+msgstr "Mittlere Relevanz"
 
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:92
 msgid "Motiv"

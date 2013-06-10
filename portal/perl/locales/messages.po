@@ -2639,6 +2639,10 @@ msgstr ""
 msgid "Genutzte Browser"
 msgstr ""
 
+#: ../templates/titles_dbis_recommendations_include:24
+msgid "Geringe Relevanz"
+msgstr ""
+
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile:32
 msgid "Gesamte Rheinlandbib"
 msgstr ""
@@ -2799,6 +2803,10 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:138 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:240 ../templates/_view/richter/cartitems_html_actions:100 ../templates/cartitems_html_actions:113 ../templates/titles_record_html_actions:138 ../templates/titles_record_html_actions:240 ../templates/titles_record_include:437
 msgid "Hinzuf&uuml;gen"
+msgstr ""
+
+#: ../templates/titles_dbis_recommendations_include:24
+msgid "Hohe Relevanz"
 msgstr ""
 
 #: ../templates/_profile/kug/info_impressum_mobile:20 ../templates/_profile/mobile/_view/richtermobile/browse_title_html:21 ../templates/_profile/sammlungen/_view/richter/info_elise_richter_mobile:20 ../templates/_profile/sammlungen/_view/richter/info_helene_richter_mobile:20 ../templates/_profile/sammlungen/_view/richter/titles_fields_record_mobile:29 ../templates/_profile/sammlungen/info_impressum_mobile:20 ../templates/clouds_year_mobile:70 ../templates/info_credits_mobile:20 ../templates/info_impressum_mobile:20 ../templates/search_title_combined_mobile:29 ../templates/titles_record_mobile:43
@@ -3828,6 +3836,10 @@ msgstr ""
 
 #: ../templates/admin_users_migration_html:59 ../templates/users_migration_html:58
 msgid "Migration von nutzergenerierten Inhalte (Literaturlisten, Tags, Merkliste) einer anderen Kennung"
+msgstr ""
+
+#: ../templates/titles_dbis_recommendations_include:24
+msgid "Mittlere Relevanz"
 msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:92

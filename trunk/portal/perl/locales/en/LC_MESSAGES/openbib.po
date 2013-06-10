@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-06-05 14:45+0200\n"
+"PO-Revision-Date: 2013-06-10 09:00+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2748,6 +2748,10 @@ msgstr "The big W"
 msgid "Datenbank Informationssystem (DBIS)"
 msgstr "DataBaseInformationSystem (DBIS)"
 
+#: ../templates/_profile/kug/search_facet:564
+msgid "Datenbank-Empfehlungen"
+msgstr "Database recommendations"
+
 #: ../templates/admin_profiles_html:100 ../templates/admin_views_html:117
 #: ../templates/profiles_html:62 ../templates/views_html:61
 msgid "Datenbanken"
@@ -3016,7 +3020,7 @@ msgstr "This resource was not properly referenced by database."
 #: ../modules/OpenBib/Handler/Apache/CorporateBodies.pm:126
 #: ../modules/OpenBib/Handler/Apache/Persons.pm:126
 #: ../modules/OpenBib/Handler/Apache/Subjects.pm:128
-#: ../modules/OpenBib/Handler/Apache/Titles.pm:413
+#: ../modules/OpenBib/Handler/Apache/Titles.pm:448
 #: ../modules/OpenBib/Handler/Apache/Users/Titles.pm:418
 msgid "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 msgstr "This resource was not properly referenced by database/id."
@@ -3418,6 +3422,7 @@ msgstr ""
 #: ../templates/litlists_record_include:14 ../templates/reviews_edit:47
 #: ../templates/tags_html:15 ../templates/tags_include:14
 #: ../templates/tags_names_record_html:15
+#: ../templates/titles_dbis_recommendations_html:16
 #: ../templates/titles_popular_by_database_html:20
 #: ../templates/titles_popular_by_database_include.ob:18
 #: ../templates/titles_popular_by_database_include:18
@@ -4725,6 +4730,11 @@ msgstr ""
 "common ones. The more entries are linked to a certain tag, the larger it "
 "will appear in the cloud."
 
+#: ../templates/titles_dbis_recommendations_html:65
+#: ../templates/titles_dbis_recommendations_include:19
+msgid "Für weitere Recherchen empfehlen wir Ihnen folgende Fachdatenbanken."
+msgstr "For further searches we recommend the following databases."
+
 #: ../templates/users_migration_html:69
 msgid ""
 "Geben Sie bitte die Authentifizierungsinformationen für die alte Kennung\n"
@@ -4934,8 +4944,8 @@ msgid ""
 "zu dieser Kennung verschieben."
 msgstr ""
 "You have lost your library card and got a new login? Or you returned your "
-"library card and want to use KUG with your  e-mail address? Then you can move "
-"your user generated content of the old login to this login."
+"library card and want to use KUG with your  e-mail address? Then you can "
+"move your user generated content of the old login to this login."
 
 #: ../templates/_profile/kug/info_help:702
 msgid ""
@@ -5967,6 +5977,7 @@ msgstr "Move user generated content to new login"
 #: ../templates/litlists_record_include:15 ../templates/reviews_edit:48
 #: ../templates/tags_html:16 ../templates/tags_include:15
 #: ../templates/tags_names_record_html:16
+#: ../templates/titles_dbis_recommendations_html:17
 #: ../templates/titles_popular_by_database_html:21
 #: ../templates/titles_popular_by_database_include.ob:19
 #: ../templates/titles_popular_by_database_include:19
@@ -6527,6 +6538,7 @@ msgstr "Choice of catalogs for this view"
 #: ../templates/databases_rss_record_html:55 ../templates/orgunits_html:66
 #: ../templates/profiles_record_html:75
 #: ../templates/searchprofiles_record_html:63
+#: ../templates/titles_dbis_recommendations_html:40
 #: ../templates/titles_popular_by_database_html:44
 #: ../templates/titles_popular_html:44 ../templates/usage_navigation:10
 #: ../templates/usage_navigation:12
@@ -7165,6 +7177,13 @@ msgstr ""
 "Unfortunately we cannot present a cloud of the mot frequently used "
 "literature lists."
 
+#: ../templates/titles_dbis_recommendations_include:32
+msgid ""
+"Leider konnten zu Ihrer Suchanfrage keine geeigneten Fachdatenbanken\n"
+"gefunden werden."
+msgstr ""
+"We couldn't recommend any other database considering your search terms."
+
 #: ../templates/users_circulations_reminders_html:82
 msgid "Leihfristende"
 msgstr "End of loan period"
@@ -7477,7 +7496,7 @@ msgstr "Type of media"
 #: ../templates/_profile/kug/_view/inst414malai/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/inst434/home_html_bottom_left:77
-#: ../templates/_profile/kug/_view/kug/newsflash:45
+#: ../templates/_profile/kug/_view/kug/newsflash:60
 #: ../templates/_profile/kug/_view/marketing/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/philfak_fg4/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/philfak_fg8/home_html_bottom_left:77
@@ -8708,6 +8727,7 @@ msgstr "Popularity-Functions"
 #: ../templates/litlists_record_include:16 ../templates/reviews_edit:49
 #: ../templates/tags_html:17 ../templates/tags_include:16
 #: ../templates/tags_names_record_html:17
+#: ../templates/titles_dbis_recommendations_html:18
 #: ../templates/titles_popular_by_database_html:22
 #: ../templates/titles_popular_by_database_include.ob:20
 #: ../templates/titles_popular_by_database_include:20
@@ -13599,6 +13619,7 @@ msgstr "Title source"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:57
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:55
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:56
 #: ../templates/_profile/usbportal/visible_categories_title:56
 #: ../templates/visible_categories_title:57
@@ -14577,7 +14598,7 @@ msgstr "Separate collection portal"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:113
-#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:39
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:113
 #: ../templates/_profile/usbportal/visible_categories_title:116
 #: ../templates/visible_categories_title:119
@@ -14610,7 +14631,7 @@ msgstr "# of superordinate titles"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:119
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:115
-#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:40
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:114
 #: ../templates/_profile/usbportal/visible_categories_title:117
 #: ../templates/visible_categories_title:121
@@ -14674,7 +14695,7 @@ msgstr "Go to superordinate title"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:122
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:116
-#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:41
+#: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:115
 #: ../templates/_profile/usbportal/visible_categories_title:118
 #: ../templates/visible_categories_title:122
@@ -15722,6 +15743,10 @@ msgstr "WebOPAC-URL"
 #: ../templates/circulation_mobile:53
 msgid "Weiter"
 msgstr "Next"
+
+#: ../templates/_profile/kug/search_facet:580
+msgid "Weiter zu den Datenbank-Empfehlungen"
+msgstr "Go to database recommendations"
 
 #: ../templates/_profile/kug/info_help:589 ../templates/info_help:683
 msgid "Weitere Anreicherung sind:"

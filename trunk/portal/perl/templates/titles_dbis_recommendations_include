@@ -16,7 +16,7 @@
 
 
 <p>
-Für weitere Recherchen empfehlen wir Ihnen folgende Fachdatenbanken.
+[% msg.maketext("Für weitere Recherchen empfehlen wir Ihnen folgende Fachdatenbanken.") %]
 </p>
 
 [% FOREACH item IN dbr %]
@@ -29,6 +29,6 @@ Für weitere Recherchen empfehlen wir Ihnen folgende Fachdatenbanken.
 [% END %]
 
 [% ELSE %]
-Leider konnten zu Ihrer Suchanfrage keine geeigneten Fachdatenbanken
-gefunden werden.
+[% msg.maketext("Leider konnten zu Ihrer Suchanfrage keine geeigneten Fachdatenbanken
+gefunden werden.") %]
 [% END %]

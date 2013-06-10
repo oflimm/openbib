@@ -749,7 +749,7 @@ sub get_dbis_recommendations {
 
     my $config = OpenBib::Config->instance;
 
-    my ($atime,$btime,$timeall)=(0,0,0);
+    my $atime;
     
     if ($config->{benchmark}) {
         $atime=new Benchmark;
@@ -767,6 +767,15 @@ sub get_dbis_recommendations {
     my $response = LWP::UserAgent->new->get($url)->decoded_content(charset => 'utf8');
 
     $logger->debug("Response: $response");
+
+    if ($config->{benchmark}){
+       my $btime      = new Benchmark;
+       my $timeall    = timediff($btime,$atime);
+       my $resulttime = timestr($timeall,"nop");
+       $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    
+       $logger->info("Request to elib took $resulttime seconds");
+    }
 
     my $dbr_ref = [];
     

@@ -11,9 +11,7 @@
 #
 #######################################################################
 -%]
-<h1>Die zuletzt angelegten Literaturlisten</h1>
-
-[% IF topicid %]<h2>[% FOREACH topic IN topics %][% IF topic.id == topicid %][% topic.name%][% END %][% END %]</h2>[% END %]
+[% IF topicid %]<h3>[% FOREACH topic IN topics %][% IF topic.id == topicid %][% topic.name%][% END %][% END %]</h3>[% END %]
 
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul class="topiclist">

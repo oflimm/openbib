@@ -11,9 +11,6 @@
 #
 #######################################################################
 -%]
-<b>Die zuletzt angelegten Tags</b><p/>
-
-
 [%# USE dumper;dumper.dump(recent_tags)%]
 <ul class="topiclist">
 [%- FOREACH thistag IN recent_tags -%]

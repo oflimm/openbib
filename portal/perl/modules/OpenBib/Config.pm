@@ -34,6 +34,7 @@ use base qw(Apache::Singleton::Process);
 
 use Apache2::Reload;
 use Apache2::Const -compile => qw(:common);
+use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
 use Cache::Memcached;
 use Encode 'decode_utf8';
@@ -3281,6 +3282,14 @@ sub get_dbisdbs_of_dbrtopic {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
+    my $atime;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
     my $dbs = $self->{schema}->resultset('Dbistopic')->search(
         {
             'dbrtopicid.topic' => $dbrtopic,
@@ -3300,6 +3309,16 @@ sub get_dbisdbs_of_dbrtopic {
             description => $db->get_column('thisdescription'),
         };
     }
+
+    if ($config->{benchmark}){
+       my $btime      = new Benchmark;
+       my $timeall    = timediff($btime,$atime);
+       my $resulttime = timestr($timeall,"nop");
+       $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    
+       $logger->info("Determining databases for elib took $resulttime seconds");
+    }
+
     return $databases_ref;
 }
 

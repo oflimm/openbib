@@ -2,7 +2,7 @@
 {
 
   header {
-    padding-bottom:60px;  
+    padding-bottom:90px;  
   }
 
   header #logo {
@@ -10,7 +10,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 60%;
+    width: 70%;
   }
 
   header #institution {
@@ -18,17 +18,17 @@
     position: absolute;
     top: 0px;
     right: 0px;
-    with: 30%;
+    with: 20%;
   }
 
 
   #header_logo_image  {
     background: url(/images/openbib/views/totenzettel/logo.png) center no-repeat;
     position: absolute;
-    width: 260px;
-    height: 100px;
+    width: 600px;
+    height: 130px;
     top: 25px;
-    left: 10px;    
+    left: 5px;    
   }
 
 
@@ -37,7 +37,7 @@
     width: 190px;
     height: 78px;
     position: absolute;
-    top: 40px;
+    top: 60px;
     right: 10px;
   }
 

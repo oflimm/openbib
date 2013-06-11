@@ -412,7 +412,7 @@ if (-e $titlefile){
         foreach my $category_ref (@{$rec->_struct->[1]}){
             my $category  = $category_ref->[0];
             my $indicator = $category_ref->[1];
-            my $content   = konv($category_ref->[2]);
+            my $content   = $category_ref->[2];
             
             # print "$category - $indicator - $content\n";
 
@@ -483,6 +483,8 @@ if (-e $titlefile){
             elsif (exists $convconfig->{title}{$category}{type}){
                 my $type = $convconfig->{title}{$category}{type};
 
+                $content = konv($content);
+                
                 if ($type eq "person"){
                     my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($content);
                     
@@ -633,6 +635,8 @@ if (-e $titlefile){
             }
             # Ansonsten normale Umwandlung
             else {
+                $content = konv($content);
+                
                 if ($convconfig->{filter}{$category}{filter_generic}){
                     foreach my $filter (@{$convconfig->{filter}{$category}{filter_generic}}){
                         my $from = $filter->{from};

@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title="Ehemaliges Redemptoristenkloster Hennef-Geistingen - Virtuelle Bibliothek Historische Bestände im Rheinland" %]
+[% PROCESS common/subtemplate name="std_header" %]
   <body>
 
 <!-- skip link navigation -->

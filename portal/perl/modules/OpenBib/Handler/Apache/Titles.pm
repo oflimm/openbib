@@ -47,9 +47,11 @@ use Encode 'decode_utf8';
 
 use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
+use OpenBib::Search::Factory;
 use OpenBib::Search::Backend::Xapian;
 use OpenBib::Search::Util;
 use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::Template::Utilities;
 
 use base 'OpenBib::Handler::Apache';
@@ -213,7 +215,6 @@ sub show_collection {
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
     my $database       = $self->param('database');
-    my $titleid        = $self->strip_suffix($self->param('titleid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -233,8 +234,6 @@ sub show_collection {
     # CGI Args
     my $sb        = $query->param('sb')        || $config->{local_search_backend};
 
-    my $search_args_ref = OpenBib::Common::Util::query2hashref($query);
-    $search_args_ref->{database} = $database if (defined $database);
 
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
     # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
@@ -242,14 +241,49 @@ sub show_collection {
     # heraussuchen.
     # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
     
-    my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
+    my $searcher = OpenBib::Search::Factory->create_searcher({database => $database, sb => $sb });
 
-    # Recherche starten
-    $searcher->search;
+    # Browsing starten
+    $searcher->browse;
 
-
+    my $nav;
+    my $recordlist = OpenBib::RecordList::Title->new;
     
-    return Apache2::Const::OK;    
+    if ($searcher->have_results) {
+
+        $logger->debug("Results found #".$searcher->get_resultcount);
+        
+        $nav = Data::Pageset->new({
+            'total_entries'    => $searcher->get_resultcount,
+            'entries_per_page' => $queryoptions->get_option('num'),
+            'current_page'     => $queryoptions->get_option('page'),
+            'mode'             => 'slide',
+        });
+        
+        $recordlist = $searcher->get_records();
+    }
+    else {
+        $logger->debug("No results found #".$searcher->get_resultcount);
+    }
+    
+    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
+    # den einzeltreffern
+
+    $self->param('nav',$nav);
+    $self->param('recordlist',$recordlist);
+    $self->param('hits',$searcher->get_resultcount);
+    $self->param('total_hits',$self->param('total_hits')+$searcher->get_resultcount);
+
+    my $ttdata = {
+        database    => $database,
+        recordlist  => $recordlist,
+        hits        => $self->param('hits'),
+        nav         => $self->param('nav'),
+    };
+    
+    $self->print_page($config->{tt_titles_tname},$ttdata);
+    
+    return Apache2::Const::OK;
 }
 
 sub show_record {

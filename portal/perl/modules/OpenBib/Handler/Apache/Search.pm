@@ -223,8 +223,9 @@ sub show_search {
 
 
     if (!$searchquery->have_searchterms) {
-        $self->print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."));
-        return Apache2::Const::OK;
+#        $searchquery->set_searchfield('freesearch','*','AND');
+#        $self->print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."));
+#        return Apache2::Const::OK;
     }
 
     my %trefferpage  = ();

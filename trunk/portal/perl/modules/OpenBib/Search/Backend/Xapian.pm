@@ -372,6 +372,143 @@ sub search {
     return;
 }
 
+sub browse {
+    my ($self) = @_;
+
+    # Set defaults search parameters
+#    my $serien            = exists $arg_ref->{serien}
+#        ? $arg_ref->{serien}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config       = OpenBib::Config->instance;
+    my $queryoptions = OpenBib::QueryOptions->instance;
+
+    # Used Parameters
+    my $sorttype          = $queryoptions->get_option('srt');
+    my $sortorder         = $queryoptions->get_option('srto');
+    my $defaultop         = $queryoptions->get_option('dop');
+    my $drilldown         = 1;
+
+    # Pagination parameters
+    my $page              = $queryoptions->get_option('page');
+    my $num               = $queryoptions->get_option('num');
+    
+    my ($atime,$btime,$timeall);
+  
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $dbh;
+
+    $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
+    
+    eval {
+        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$self->{_database}) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+    };
+    
+    if ($@) {
+        $logger->error("Database: $self->{_database} - :".$@);
+        return;
+    }
+
+    $self->{qp} = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+
+    unless ($dbh){
+        $logger->fatal("No searchindex for database $self->{_database}");
+        return;
+    }
+
+    # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
+    # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
+    eval {
+        $self->{qp}->set_database($dbh);
+    };
+
+    if ($@){
+        $logger->error("Error setting dbh $dbh :".$@);
+        return [];
+    }
+
+    my $category_map_ref = {};
+
+    my $matchall = Search::Xapian::Query->new("");
+    $logger->debug("Matchall Query ".$matchall->get_description);
+    
+    my $enq       = $dbh->enquire($matchall);
+
+    # Sorting
+    if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
+        $sortorder = ($sortorder eq "asc")?0:1;
+
+        $logger->debug("Set Sorting to type ".$config->{xapian_sorttype_value}{$sorttype}." / order ".$sortorder);
+        # Sortierung nach Zaehlung: Erst nach Zaehlung, dann Titel
+        if ($sorttype eq "order"){
+            my $sorter = new Search::Xapian::MultiValueSorter;
+            $sorter->add($config->{xapian_sorttype_value}{$sorttype},$sortorder);
+            $sorter->add($config->{xapian_sorttype_value}{title},0);
+            $enq->set_sort_by_key($sorter)
+        }
+        else {
+            $enq->set_sort_by_value($config->{xapian_sorttype_value}{$sorttype},$sortorder);
+        }
+    }
+    
+    my $thisquery = $enq->get_query()->get_description();
+        
+    $logger->debug("Internal Xapian Query: $thisquery");
+    
+    my %decider_map   = ();
+    my @decider_types = ();
+
+    foreach my $drilldown_value (keys %{$config->{xapian_drilldown_value}}){
+        push @decider_types, $config->{xapian_drilldown_value}{$drilldown_value};
+    }
+
+    my $decider_ref = sub {
+      foreach my $value (@decider_types){
+	my $mvalues = $_[0]->get_value($value);
+	foreach my $mvalue (split("\t",$mvalues)){
+	  $decider_map{$value}{$mvalue}+=1;
+	}
+      }
+      return 1;
+    };
+
+    my $maxmatch=$config->{xapian_option}{maxmatch};
+
+    my $offset = $page*$num-$num;
+
+    $logger->debug("Offset: $offset");
+    
+    my $mset = $enq->get_mset($offset,$num,$maxmatch);
+
+    $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
+    
+    $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
+
+    $self->{_enq}         = $enq;
+
+    $self->{resultcount} = $mset->get_matches_estimated;
+
+    my @matches = ();
+    foreach my $match ($mset->items()) {
+        push @matches, $match;
+    }
+    
+#    my @this_matches      = splice(@matches,$offset,$num);
+    $self->{_matches}     = \@matches;
+
+    $self->{categories} = {};
+
+
+    $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
+    return;
+}
+
+
 sub get_records {
     my $self=shift;
 

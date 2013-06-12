@@ -3276,6 +3276,42 @@ sub delete_stale_searchprofile_indexes {
     return;
 }
 
+sub get_dbistopic_of_dbrtopic {
+    my ($self,$dbrtopic) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    my $atime;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $topic = $self->{schema}->resultset('DbrtopicDbistopic')->search(
+        {
+            'dbrtopicid.topic' => $dbrtopic,
+        },
+        {
+            group_by => ['dbistopicid.topic','dbistopicid.description'],
+            select => ['dbistopicid.topic','dbistopicid.description'],
+            as     => ['thistopic','thisdescription'],
+            join   => ['dbistopicid', 'dbrtopicid' ],
+        }
+    )->first;
+
+    if ($topic){
+        return {
+            topic       => $topic->get_column('thistopic'),
+            description => $topic->get_column('thisdescription'),
+        };
+    }
+
+    return {};
+}
+
 sub get_dbisdbs_of_dbrtopic {
     my ($self,$dbrtopic) = @_;
 

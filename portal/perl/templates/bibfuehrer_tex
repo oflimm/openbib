@@ -8,8 +8,6 @@
 \usepackage{url}
 \usepackage[utf8]{inputenc}
 
-% Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
-\usepackage{picins}
 
 % Header anpassbar
 \usepackage{fancyhdr}
@@ -410,16 +408,16 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
   biblanz          = 0;
 
   FOREACH database IN zentrale_pools ;
-     onlinetitcount = config.get_number_of_titles(database => database);
-     locationinfo        = config.get_locationinfo_by_database(database);
+     onlinetitcount = config.get_number_of_titles({ database => database });
+     locationinfo        = config.get_locationinfo_fields_of_database(database);
 
      monoanz          = monoanz + locationinfo.${"L0120"}.first.content.replace('\D','');
      zeitanz          = zeitanz + locationinfo.${"L0130"}.first.content.replace('\D','');
      lfdzeitanz       = lfdzeitanz + locationinfo.${"L0140"}.first.content.replace('\D','');
-     onlineanz        = onlineanz + onlinetitcount.all;
+     onlineanz        = onlineanz + onlinetitcount.allcount;
      biblanz          = biblanz + 1;
 -%]
-% [% database %] - Monos [% locationinfo.${"L0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.all %]
+% [% database %] - Monos [% locationinfo.${"L0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.allcount %]
 [%
 
   END;
@@ -433,8 +431,9 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 
 \vspace{1cm}
 
+
 \begin{center}
-\begin{shadowenv}
+\fbox{ \begin{minipage}{\textwidth}
 \begin{tabular}{ll}
 \textbf{Anzahl Bibliotheken} & [% biblanz %]\\
 &\\
@@ -444,7 +443,9 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 \emph{Lfd. Zeitschriften} & [% lfdzeitanz.chunk(-3).join('.') %]\\
 \textbf{Anzahl online recherchierbare Titel} & [% onlineanz.chunk(-3).join('.') %]\\
 \end{tabular}
-\end{shadowenv}
+
+\end{minipage} }
+
 \end{center}
 
 \newpage
@@ -453,8 +454,8 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 
 [%   NEXT IF NOT config.have_locationinfo(database) %]
 
-[% dbinfo  = config.get_dbinfo(database) %]
-[% locationinfo = config.get_locationinfo_by_database(database) %]
+[% dbinfo  = config.get_databaseinfo.search({ dbname => database}).first %]
+[% locationinfo = config.get_locationinfo_fields_of_database(database) %]
 [% truncdesc = locationinfo.${"L0010"}.first.content | truncate(65) %]
 
 %\subsection{[% filterchars(locationinfo.${"L0010"}.first.content) %]}
@@ -488,11 +489,13 @@ f"ur alle zusammen sowie nach Fakult"at ausgegeben.
 [% IF locationinfo.${"L0280"}.first.content %]
 \subsubsection*{Lageplan der Bibliothek}
 
-\begin{shadowenv}
+\fbox{ \begin{minipage}{\textwidth}
+
 \begin{center}
 \includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% locationinfo.${"L0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
-\end{shadowenv}
+
+\end{minipage} }
 
 \newpage
 [% END %]
@@ -518,21 +521,21 @@ FOREACH orgunit IN dez_orgunits ;
   biblanz          = 0;
 
   FOREACH database IN dez_orgunit_pools.${orgunit.id} ;
-     onlinetitcount = config.get_number_of_titles(database => database);
-     locationinfo        = config.get_locationinfo_by_database(database);
+     onlinetitcount = config.get_number_of_titles({ database => database });
+     locationinfo        = config.get_locationinfo_fields_of_database(database);
 
      monoanz          = monoanz + locationinfo.${"L0120"}.first.content.replace('\D','');
      zeitanz          = zeitanz + locationinfo.${"L0130"}.first.content.replace('\D','');
      lfdzeitanz       = lfdzeitanz + locationinfo.${"L0140"}.first.content.replace('\D','');
-     onlineanz        = onlineanz + onlinetitcount.all;
+     onlineanz        = onlineanz + onlinetitcount.allcount;
      biblanz          = biblanz + 1;
 
      all_dezmonoanz    = all_dezmonoanz + locationinfo.${"L0120"}.first.content.replace('\D','');
      all_dezzeitanz    = all_dezzeitanz + locationinfo.${"L0130"}.first.content.replace('\D','');
      all_dezlfdzeitanz = all_dezlfdzeitanz + locationinfo.${"L0140"}.first.content.replace('\D','');
-     all_dezonlineanz  = all_dezonlineanz + onlinetitcount.all;
+     all_dezonlineanz  = all_dezonlineanz + onlinetitcount.allcount;
 -%]
-% [% database %] - Monos [% locationinfo.${"L0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.all %]
+% [% database %] - Monos [% locationinfo.${"L0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.allcount %]
 [%
 
   END;
@@ -551,7 +554,8 @@ END;
 
 [%# USE dumper; dumper.dump(anzahl)%]
 \begin{center}
-\begin{shadowenv}
+\fbox{ \begin{minipage}{\textwidth}
+
 \begin{tabular}{ll}
 \textbf{Anzahl Bibliotheken} & [% all_dezbiblanz %]\\
 &\\
@@ -561,7 +565,8 @@ END;
 \emph{Lfd. Zeitschriften} & [% all_dezlfdzeitanz.chunk(-3).join('.') %]\\
 \textbf{Anzahl online recherchierbare Titel} & [% all_dezonlineanz.chunk(-3).join('.') %]\\
 \end{tabular}
-\end{shadowenv}
+\end{minipage} }
+
 \end{center}
 
 \newpage
@@ -581,7 +586,8 @@ END;
 [% END %]
 
 \begin{center}
-\begin{shadowenv}
+\fbox{ \begin{minipage}{\textwidth}
+
 \begin{tabular}{ll}
 \textbf{Anzahl Bibliotheken} & [% anzahl.${orgunit.id}.bibl %]\\
 &\\
@@ -591,15 +597,16 @@ END;
 \emph{Lfd. Zeitschriften} & [% anzahl.${orgunit.id}.lfdzeit.chunk(-3).join('.') %]\\
 \textbf{Anzahl online recherchierbare Titel} & [% anzahl.${orgunit.id}.online.chunk(-3).join('.') %]\\
 \end{tabular}
-\end{shadowenv}
+\end{minipage} }
+
 \end{center}
 
 \newpage
 
 [%   FOREACH database IN dez_orgunit_pools.${orgunit.id} %]
 
-[% dbinfo  = config.get_dbinfo(database) %]
-[% locationinfo = config.get_locationinfo_by_database(database) %]
+[% dbinfo  = config.get_databaseinfo.search({ dbname => database}).first %]
+[% locationinfo = config.get_locationinfo_fields_of_database(database) %]
 [% truncdesc = locationinfo.${"L0010"}.first.content | truncate(65) %]
 
 [%   NEXT IF NOT config.have_locationinfo(database) %]
@@ -640,11 +647,12 @@ END;
 [% IF locationinfo.${"L0280"}.first.content %]
 \subsubsection*{Lageplan der Bibliothek}
 
-\begin{shadowenv}
+\fbox{ \begin{minipage}{\textwidth}
+
 \begin{center}
 \includegraphics[width=15cm]{[% config.get('image_root_path') %]/openbib/geo/[% locationinfo.${"L0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png}
 \end{center}
-\end{shadowenv}
+\end{minipage} }
 
 \newpage
 [% END %]

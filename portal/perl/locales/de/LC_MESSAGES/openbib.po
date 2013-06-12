@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-06-10 10:35+0200\n"
+"PO-Revision-Date: 2013-06-12 10:59+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -174,8 +174,7 @@ msgid "%1 Listen"
 msgstr "%1 Listen"
 
 #. (thisitem.itemcount)
-#: ../templates/_profile/usbportal/litlists_collection_by_single_subject_recent_include:17
-#: ../templates/_profile/usbportal/litlists_collection_by_single_topic_include:16
+#: ../templates/_profile/usbportal/litlists_by_single_topic_recent_include:19
 #: ../templates/browse_topics_record_html:142
 #: ../templates/browse_topics_record_html:144
 #: ../templates/litlists_by_single_topic_html:75
@@ -290,10 +289,32 @@ msgstr "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 #: ../templates/_profile/kug/info_help:96
 #: ../templates/_profile/kug/mainnavigation_mobile:14
 #: ../templates/_profile/kug/mainnavigation_mobile:16
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:38
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:38
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:36
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:38
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:38
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:38
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:38
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:38
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:38
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:38
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:21
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:103
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:38
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:38
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:36
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:38
 #: ../templates/_profile/rheinlandbib/clouds_navigation:21
 #: ../templates/_profile/rheinlandbib/mainnavigation:36
 #: ../templates/_profile/rheinlandbib/mainnavigation:38
@@ -920,6 +941,10 @@ msgstr "Alle Tags"
 #: ../templates/tags_navigation:24
 msgid "Alle Tags nach Namen"
 msgstr "Alle Tags nach Namen"
+
+#: ../templates/titles_navigation:19 ../templates/titles_navigation:21
+msgid "Alle Titel"
+msgstr "Alle Titel"
 
 #: ../templates/_view/richter/resultlists_choice:110
 msgid "Alle Treffer"
@@ -2875,8 +2900,8 @@ msgstr ""
 msgid "Der Basisklassifikation zugeordnete Themengebiete"
 msgstr "Der Basisklassifikation zugeordnete Themengebiete"
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1116
-#: ../modules/OpenBib/Handler/Apache/Search.pm:501
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1117
+#: ../modules/OpenBib/Handler/Apache/Search.pm:502
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
@@ -3104,7 +3129,7 @@ msgstr "Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."
 #: ../modules/OpenBib/Handler/Apache/CorporateBodies.pm:126
 #: ../modules/OpenBib/Handler/Apache/Persons.pm:126
 #: ../modules/OpenBib/Handler/Apache/Subjects.pm:128
-#: ../modules/OpenBib/Handler/Apache/Titles.pm:448
+#: ../modules/OpenBib/Handler/Apache/Titles.pm:482
 #: ../modules/OpenBib/Handler/Apache/Users/Titles.pm:418
 msgid "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 msgstr "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
@@ -3545,7 +3570,7 @@ msgstr ""
 #: ../templates/tags_html:15 ../templates/tags_include:14
 #: ../templates/tags_names_record_html:15
 #: ../templates/titles_dbis_recommendations_html:16
-#: ../templates/titles_popular_by_database_html:20
+#: ../templates/titles_html:17 ../templates/titles_popular_by_database_html:20
 #: ../templates/titles_popular_by_database_include.ob:18
 #: ../templates/titles_popular_by_database_include:18
 #: ../templates/titles_popular_html:20 ../templates/titles_popular_include:20
@@ -4266,7 +4291,18 @@ msgstr "Erweitere Recherchemaske"
 #: ../templates/_profile/kug/mainnavigation_html:114
 #: ../templates/_profile/kug/searchforms_record_advanced:38
 #: ../templates/_profile/kug/searchforms_record_query:66
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:122
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:122
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:122
 #: ../templates/_profile/rheinlandbib/mainnavigation:122
 #: ../templates/_profile/rheinlandbib/searchforms_record_advanced:38
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:68
@@ -4498,7 +4534,7 @@ msgid ""
 msgstr ""
 "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:226
+#: ../modules/OpenBib/Handler/Apache/Search.pm:227
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
@@ -4610,8 +4646,8 @@ msgstr ""
 "      Zeichen <b>^</b> voran (z.B. ^frauenbildung*). Mit * k&ouml;nnen\n"
 "      Sie wie gewohnt den entsprechenden Begriff trunkieren."
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1109
-#: ../modules/OpenBib/Handler/Apache/Search.pm:496
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1110
+#: ../modules/OpenBib/Handler/Apache/Search.pm:497
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -4979,6 +5015,7 @@ msgstr "Gefundene Nutzer"
 msgid "Genutzte Browser"
 msgstr "Genutzte Browser"
 
+#: ../templates/titles_dbis_recommendations_html:70
 #: ../templates/titles_dbis_recommendations_include:24
 msgid "Geringe Relevanz"
 msgstr "Geringe Relevanz"
@@ -5251,7 +5288,18 @@ msgstr ""
 
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:272
 #: ../templates/_profile/kug/searchforms_record_query:249
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:120
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:120
 #: ../templates/_profile/rheinlandbib/mainnavigation:120
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:146
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:236
@@ -5342,6 +5390,7 @@ msgstr ""
 msgid "Hinzuf&uuml;gen"
 msgstr "Hinzuf&uuml;gen"
 
+#: ../templates/titles_dbis_recommendations_html:70
 #: ../templates/titles_dbis_recommendations_include:24
 msgid "Hohe Relevanz"
 msgstr "Hohe Relevanz"
@@ -6112,9 +6161,31 @@ msgstr "Index-Suche"
 msgid "Info"
 msgstr "Info"
 
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:33
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:33
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:31
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:33
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:33
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:33
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:33
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:33
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:33
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:33
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:22
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:33
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:33
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:31
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:33
 #: ../templates/_profile/rheinlandbib/mainnavigation:31
 #: ../templates/_profile/rheinlandbib/mainnavigation:33
 #: ../templates/_profile/sammlungen/_view/alekiddr/info_sammlung:37
@@ -6254,7 +6325,7 @@ msgstr "Inhalte zu neuer Kennung verschieben"
 #: ../templates/tags_html:16 ../templates/tags_include:15
 #: ../templates/tags_names_record_html:16
 #: ../templates/titles_dbis_recommendations_html:17
-#: ../templates/titles_popular_by_database_html:21
+#: ../templates/titles_html:18 ../templates/titles_popular_by_database_html:21
 #: ../templates/titles_popular_by_database_include.ob:19
 #: ../templates/titles_popular_by_database_include:19
 #: ../templates/titles_popular_html:21 ../templates/titles_popular_include:21
@@ -6817,7 +6888,7 @@ msgstr "Katalogauswahl zu diesem View"
 #: ../templates/profiles_record_html:75
 #: ../templates/searchprofiles_record_html:63
 #: ../templates/titles_dbis_recommendations_html:40
-#: ../templates/titles_popular_by_database_html:44
+#: ../templates/titles_html:41 ../templates/titles_popular_by_database_html:44
 #: ../templates/titles_popular_html:44 ../templates/usage_navigation:10
 #: ../templates/usage_navigation:12
 msgid "Kataloge"
@@ -7962,8 +8033,30 @@ msgstr "Merken"
 #: ../templates/_profile/kug/corporate_banner:11
 #: ../templates/_profile/kug/corporate_banner:13
 #: ../templates/_profile/kug/users_preferences_html:419
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:48
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:46
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:48
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:46
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:48
 #: ../templates/_profile/rheinlandbib/mainnavigation:46
 #: ../templates/_profile/rheinlandbib/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:51
@@ -8015,6 +8108,7 @@ msgstr ""
 "Migration von nutzergenerierten Inhalte (Literaturlisten, Tags, Merkliste) "
 "einer anderen Kennung"
 
+#: ../templates/titles_dbis_recommendations_html:70
 #: ../templates/titles_dbis_recommendations_include:24
 msgid "Mittlere Relevanz"
 msgstr "Mittlere Relevanz"
@@ -8605,8 +8699,7 @@ msgstr "Offene Geb&uuml;hren"
 msgid "Offiziell"
 msgstr "Offiziell"
 
-#: ../templates/_profile/usbportal/litlists_collection_by_single_subject_recent_include:17
-#: ../templates/_profile/usbportal/litlists_collection_by_single_topic_include:16
+#: ../templates/_profile/usbportal/litlists_by_single_topic_recent_include:19
 #: ../templates/_view/richter/litlists_record_html:54
 #: ../templates/_view/richter/users_litlists_record_edit:39
 #: ../templates/browse_topics_record_html:142
@@ -9036,7 +9129,7 @@ msgstr "Popularit&auml;ts-Funktionen"
 #: ../templates/tags_html:17 ../templates/tags_include:16
 #: ../templates/tags_names_record_html:17
 #: ../templates/titles_dbis_recommendations_html:18
-#: ../templates/titles_popular_by_database_html:22
+#: ../templates/titles_html:19 ../templates/titles_popular_by_database_html:22
 #: ../templates/titles_popular_by_database_include.ob:20
 #: ../templates/titles_popular_by_database_include:20
 #: ../templates/titles_popular_html:22 ../templates/titles_popular_include:22
@@ -9048,6 +9141,10 @@ msgstr "Popularit&auml;ts-Funktionen"
 #: ../templates/users_tags_names_record_html:17
 msgid "Popularität"
 msgstr "Popularität"
+
+#: ../templates/titles_navigation:24 ../templates/titles_navigation:26
+msgid "Populäre Titel"
+msgstr "Populäre Titel"
 
 #: ../templates/admin_authenticators_html:119
 #: ../templates/admin_authenticators_html:72
@@ -9780,7 +9877,7 @@ msgstr "Seite:"
 #: ../templates/search_person:57 ../templates/search_subject:57
 #: ../templates/search_title_combined_html:98
 #: ../templates/search_title_combined_include:46
-#: ../templates/search_title_item_html:69
+#: ../templates/search_title_item_html:69 ../templates/titles_html:100
 msgid "Sekunden"
 msgstr "Sekunden"
 
@@ -10939,8 +11036,30 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:272
 #: ../templates/_profile/kug/mainnavigation_html:111
 #: ../templates/_profile/kug/searchforms_record_query:249
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:120
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:119
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:120
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:119
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:120
 #: ../templates/_profile/rheinlandbib/mainnavigation:119
 #: ../templates/_profile/rheinlandbib/mainnavigation:120
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:239
@@ -11049,8 +11168,30 @@ msgid "Suchhilfe"
 msgstr "Suchhilfe"
 
 #: ../templates/_profile/kug/mainnavigation_html:114
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:43
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:41
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:43
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:41
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:43
 #: ../templates/_profile/rheinlandbib/mainnavigation:41
 #: ../templates/_profile/rheinlandbib/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:46
@@ -15452,7 +15593,7 @@ msgstr "Topogr. Schlagwort"
 #: ../templates/search_title_combined_include:32
 #: ../templates/search_title_combined_mobile:31
 #: ../templates/search_title_item_html:53 ../templates/select_queries:65
-#: ../templates/users_tags_names_record_html:94
+#: ../templates/titles_html:77 ../templates/users_tags_names_record_html:94
 msgid "Treffer"
 msgstr "Treffer"
 
@@ -16913,7 +17054,18 @@ msgstr ""
 msgid "absteigend"
 msgstr "absteigend"
 
+#: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:50
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/gleuel/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/grevenbroich/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/hennef/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/kevelaer/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/koenigswinter/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:50
+#: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:50
 #: ../templates/_profile/rheinlandbib/mainnavigation:50
 #: ../templates/_view/richter/mainnavigation:55
 #: ../templates/admin_users_html:80 ../templates/admin_users_search_form:74
@@ -17657,7 +17809,7 @@ msgstr "usw. usf."
 #: ../templates/search_title_combined_html:75
 #: ../templates/search_title_combined_include:32
 #: ../templates/search_title_combined_mobile:31
-#: ../templates/search_title_item_html:53
+#: ../templates/search_title_item_html:53 ../templates/titles_html:77
 msgid "von"
 msgstr "von"
 

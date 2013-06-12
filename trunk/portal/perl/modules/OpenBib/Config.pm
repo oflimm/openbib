@@ -933,14 +933,23 @@ sub get_locationinfo_of_database {
     my $self   = shift;
     my $dbname = shift;
 
-    my $databaseinfo = $self->{schema}->resultset('Databaseinfo')->single(
-        {
-            'dbname' => $dbname,
-        },
-    );
+    my $locationid = $self->get_locationid_of_database($dbname);
 
-    if ($databaseinfo && $databaseinfo->locationid){
-        return $self->get_locationinfo_fields($databaseinfo->locationid->identifier);
+    if ($locationid){
+        return $self->get_locationinfo_by_id($locationid);
+    }
+
+    return {};
+}
+
+sub get_locationinfo_fields_of_database {
+    my $self   = shift;
+    my $dbname = shift;
+
+    my $locationid = $self->get_locationid_of_database($dbname);
+
+    if ($locationid){
+        return $self->get_locationinfo_fields($locationid);
     }
 
     return {};

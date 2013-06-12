@@ -7,7 +7,7 @@
 #  Aufbau eines elektronischen Bibliotheksfuehrers im pdf-Format
 #  aus den Informationen in der OpenBib Config-Datenbank
 #
-#  Dieses File ist (C) 2010 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Diese Datei ist abgeleitet aus der Datei gen_zsstlist.pl
 #
@@ -116,8 +116,9 @@ if (! -e $img_base_path){
     mkdir $img_base_path, '755';
 }
 
-foreach my $database (keys %{$dbinfotable->{use_libinfo}}){
-    my $libinfo = $config->get_locationinfo_by_database($database);
+foreach my $database (keys %{$dbinfotable->{locationid}}){
+    my $libinfo = $config->get_locationinfo_fields_of_database($database);
+
     my $coordinates = $libinfo->{"L0280"}->[0]->{content};
     my ($lat,$long) = split("\\s*,\\s*",$coordinates);
 

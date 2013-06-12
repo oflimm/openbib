@@ -784,6 +784,8 @@ sub get_dbis_recommendations {
     my $tree   = $parser->parse_string($response);
     my $root   = $tree->getDocumentElement;
 
+    my $have_topic_ref = {};
+    
     foreach my $cluster_node ($root->findnodes('/ListRecords/Cluster')) {
         my $frequency = $cluster_node->findvalue('@freq');
         my $rank      = $cluster_node->findvalue('@rank');
@@ -791,15 +793,20 @@ sub get_dbis_recommendations {
 
         $logger->debug("$dbrtopic - $rank - $frequency");
 
+        my $databases_ref = $config->get_dbisdbs_of_dbrtopic($dbrtopic);
 
-        if ($dbrtopic){
+        my $dbistopic     = $config->get_dbistopic_of_dbrtopic($dbrtopic);
+        
+        if (defined $dbistopic->{topic} && @$databases_ref && !defined $have_topic_ref->{$dbistopic->{topic}}){
             push @$dbr_ref, {
-                dbrtopic  => $config->get_description_of_dbrtopic($dbrtopic),
-                rank      => $rank,
-                frequency => $frequency,
-                databases => $config->get_dbisdbs_of_dbrtopic($dbrtopic),
+                dbistopic  => $dbistopic->{description},
+                rank       => $rank,
+                frequency  => $frequency,
+                databases  => $databases_ref,
             };
         }
+        
+        $have_topic_ref->{$dbistopic->{topic}} = 1;
     }
     
     if ($config->{benchmark}){

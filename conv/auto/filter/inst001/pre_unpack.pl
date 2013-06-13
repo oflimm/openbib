@@ -53,6 +53,6 @@ print "### $pool: Erweiterung um Zugriffsinformation online und Typ Digital\n";
 
 system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/add-fields.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");
 
-print "### $pool: Entfernung kuenstlicher ZDB Signaturprefixe\n";
+#print "### $pool: Entfernung kuenstlicher ZDB Signaturprefixe\n";
 
-system("cd $pooldir/$pool ; zcat meta.holding.gz| $rootdir/filter/$pool/fix-zdb-mark.pl | gzip > meta.holding.gz.tmp ; mv -f meta.holding.gz.tmp meta.holding.gz");
+#system("cd $pooldir/$pool ; zcat meta.holding.gz| $rootdir/filter/$pool/fix-zdb-mark.pl | gzip > meta.holding.gz.tmp ; mv -f meta.holding.gz.tmp meta.holding.gz");

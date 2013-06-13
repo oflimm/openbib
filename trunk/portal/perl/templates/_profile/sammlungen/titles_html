@@ -38,8 +38,8 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="#">[% msg.maketext("Titel") %]</a></li>
          <li><a href="#" class="lastitem">[% dbinfo.dbnames.${database}.short %]</a></li>
+         <li><a href="#">[% msg.maketext("Titel") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">

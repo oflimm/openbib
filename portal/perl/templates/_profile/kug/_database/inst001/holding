@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [% IF circulation.size <= 0 %]
-[% USE dumper;dumper.dump(holding)%]
+[%# USE dumper;dumper.dump(holding)%]
 <table class="ym-full">
 <thead>
 <tr align="center"><th>[% msg.maketext("Besitzende Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Bestand") %]</th></tr>

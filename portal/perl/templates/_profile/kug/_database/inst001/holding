@@ -12,6 +12,7 @@
 #######################################################################
 -%]
 [% IF circulation.size <= 0 %]
+[% USE dumper;dumper.dump(holding)%]
 <table class="ym-full">
 <thead>
 <tr align="center"><th>[% msg.maketext("Besitzende Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Bestand") %]</th></tr>
@@ -74,6 +75,8 @@
     standort = "Zeitungsbestand. USB-Magazin (ausleihbar nach Bestellung mit konventionellem Bestellschein der Auskunft o. Lesesaal-Theke im 1.OG)";
   ELSIF thisholding.${"X0014"}.content.match('^P ') ;
     standort = "Zeitschriftenlesesaal (1.OG) (sofort einsehbar)";
+  ELSIF thisholding.${"X3330"}.content == '101' ;
+    standort = "-";
   ELSIF NOT thisholding.${"X0014"}.content.match('^-') && thisholding.${"X0016"}.content.match('^-') ;
     standort = "USB Magazin (ausleihbar nach Bestellung, siehe Bände)";
   END;

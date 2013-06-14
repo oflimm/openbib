@@ -18,6 +18,7 @@
 </thead>
 <tbody>
 [% FOREACH thisholding IN holding %]
+[%   NEXT IF thisholding.${"X0014"}.content == '-' && thisholding.${"X0016"}.content == '-' && thisholding.${"X1204"}.content == '-' %]
 <tr align="center"><td><strong>
 [%- IF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
 [%-   thisdbname = thisholding.${"X4000"}.content.dbname -%]

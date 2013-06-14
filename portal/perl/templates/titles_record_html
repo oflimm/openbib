@@ -224,8 +224,15 @@ $(document).ready(function(){
     END ;
 -%]
 [%# USE dumper;dumper.dump(holding)%]
+[%
+ FOREACH thiscirculation IN circulation ;
+    IF thiscirculation.AquisitionStatuscode >= 1 ;
+      circulation = [];
+    END ;
+ END ;
+%]
 <ul>
-[%   IF circulation.size > 0 %]
+[%  IF circulation.size > 0 %]
 <li><a href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
 [%   ELSE %]
 [%     IF holding.size > 0 %]

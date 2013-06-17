@@ -16,8 +16,8 @@ while (<>){
     my $id    = $record_ref->{id};
     my $zdbid = 0;
 
-    if (defined $record_ref->{'0572'}){
-        foreach my $item_ref (@{$record_ref->{'0572'}}){
+    if (defined $record_ref->{fields}{'0572'}){
+        foreach my $item_ref (@{$record_ref->{fields}{'0572'}}){
             $zdbid = $item_ref->{content};
         }
         

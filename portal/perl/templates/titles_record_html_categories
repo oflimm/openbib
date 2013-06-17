@@ -263,7 +263,7 @@ FOREACH category IN categories;
          searchterm    = super.id;
          searchprefix  = config.get('searchfield').id.prefix;
 
-         super_title   = super.${'0331'}.first.content
+         super_title   = super.fields.${'0331'}.first.content
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
          content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
 

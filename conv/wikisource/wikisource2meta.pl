@@ -113,12 +113,12 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-open (TIT,     ">:utf8","meta.title");
-open (AUT,     ">:utf8","meta.person");
-open (KOR,     ">:utf8","meta.corporatebody");
-open (NOTATION,">:utf8","meta.classification");
-open (SWT,     ">:utf8","meta.subject");
-open (MEX,     ">:utf8","meta.holding");
+open (TIT,     ">:raw","meta.title");
+open (AUT,     ">:raw","meta.person");
+open (KOR,     ">:raw","meta.corporatebody");
+open (NOTATION,">:raw","meta.classification");
+open (SWT,     ">:raw","meta.subject");
+open (MEX,     ">:raw","meta.holding");
 
 my $twig1stpass= XML::Twig->new(
     TwigHandlers => {
@@ -194,7 +194,9 @@ sub parse_titset {
 
     return if (!$textdaten);
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
 
     $title_ref->{id} = $id;
 
@@ -270,9 +272,11 @@ sub parse_titset {
                 my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
                 
                 if ($new){
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $person_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $part,
@@ -283,7 +287,7 @@ sub parse_titset {
 
                 my $new_category = $convconfig->{perstit}{$category};
 
-                push @{$title_ref->{$new_category}}, {
+                push @{$title_ref->{fields}{$new_category}}, {
                     mult       => $mult,
                     subfield   => '',
                     id         => $person_id,
@@ -329,7 +333,7 @@ sub parse_titset {
 
                 my $new_category = $convconfig->{title}{$category};
 
-                push @{$title_ref->{$new_category}}, {
+                push @{$title_ref->{fields}{$new_category}}, {
                     mult       => $mult,
                     subfield   => '',
                     content    => $part,
@@ -351,9 +355,11 @@ sub parse_titset {
         my ($subject_id,$new)=OpenBib::Conv::Common::Util::get_subject_id($schlagwort);
         
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $subject_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $schlagwort,
@@ -362,7 +368,7 @@ sub parse_titset {
             print SWT encode_json $item_ref, "\n";
         }
 
-        push @{$title_ref->{'0710'}}, {
+        push @{$title_ref->{fields}{'0710'}}, {
             mult       => $mult,
             subfield   => '',
             id         => $subject_id,
@@ -373,14 +379,14 @@ sub parse_titset {
     }
     # Kategorien als Schlagworte abarbeiten Ende
 
-    push @{$title_ref->{'0662'}}, {
+    push @{$title_ref->{fields}{'0662'}}, {
         mult     => 1,
         subfield => '',
         content  => $convconfig->{baseurl}.$titel,
     };
 
     if ($indexseite){
-        push @{$title_ref->{'4120'}}, {
+        push @{$title_ref->{fields}{'4120'}}, {
             mult     => 1,
             subfield => '',
             content  => $convconfig->{baseurl}.$convconfig->{index_prefix}.$indexseite,
@@ -391,28 +397,28 @@ sub parse_titset {
         (exists $metsbuf{$titel})?%{$metsbuf{$titel}}:();
 
     if ($mets{autor}){
-        push @{$title_ref->{'6000'}}, {
+        push @{$title_ref->{fields}{'6000'}}, {
             mult     => 1,
             subfield => '',
             content  => $mets{author},
         };
     }
     if ($mets{titel}){
-        push @{$title_ref->{'6001'}}, {
+        push @{$title_ref->{fields}{'6001'}}, {
             mult     => 1,
             subfield => '',
             content  => $mets{titel},
         };
     }   
     if ($mets{year}){
-        push @{$title_ref->{'6002'}}, {
+        push @{$title_ref->{fields}{'6002'}}, {
             mult     => 1,
             subfield => '',
             content  => $mets{year},
         };
     }   
     if ($mets{location}){
-        push @{$title_ref->{'6003'}}, {
+        push @{$title_ref->{fields}{'6003'}}, {
             mult     => 1,
             subfield => '',
             content  => $mets{location},
@@ -420,21 +426,21 @@ sub parse_titset {
     }   
 
     if ($owner){
-        push @{$title_ref->{'6040'}}, {
+        push @{$title_ref->{fields}{'6040'}}, {
             mult     => 1,
             subfield => '',
             content  => $owner,
         };
     }   
     if ($ownerlogo){
-        push @{$title_ref->{'6041'}}, {
+        push @{$title_ref->{fields}{'6041'}}, {
             mult     => 1,
             subfield => '',
             content  => $ownerlogo,
         };
     }   
     if ($ownersiteurl){
-        push @{$title_ref->{'6042'}}, {
+        push @{$title_ref->{fields}{'6042'}}, {
             mult     => 1,
             subfield => '',
             content  => $ownersiteurl,
@@ -444,25 +450,25 @@ sub parse_titset {
     my $i = 1;
 
     foreach my $item_ref (@{$mets{items}}){
-        push @{$title_ref->{'6050'}}, {
+        push @{$title_ref->{fields}{'6050'}}, {
             mult     => $i,
             subfield => '',
             content  => $item_ref->{label},
         } if (exists $item_ref->{label});
 
-        push @{$title_ref->{'6051'}}, {
+        push @{$title_ref->{fields}{'6051'}}, {
             mult     => $i,
             subfield => '',
             content  => $item_ref->{url},
         } if (exists $item_ref->{url});
         
-        push @{$title_ref->{'6052'}}, {
+        push @{$title_ref->{fields}{'6052'}}, {
             mult     => $i,
             subfield => '',
             content  => $item_ref->{thumburl},
         } if (exists $item_ref->{thumburl});
         
-        push @{$title_ref->{'6053'}}, {
+        push @{$title_ref->{fields}{'6053'}}, {
             mult     => $i,
             subfield => '',
             content  => $item_ref->{page},
@@ -472,7 +478,7 @@ sub parse_titset {
     }   
 
     # Jeder Titel ist Digital
-    push @{$title_ref->{'4410'}}, {
+    push @{$title_ref->{fields}{'4410'}}, {
         mult     => 1,
         subfield => '',
         content  => 'Digital',
@@ -513,9 +519,11 @@ sub generate_aut {
     $personendaten=~s/<ref>.*?<\/ref>/$1/g;
     
     if ($new){
-        my $item_ref = {};
+        my $item_ref = {
+            'fields' => {},
+        };
         $item_ref->{id} = $person_id;
-        push @{$item_ref->{'0800'}}, {
+        push @{$item_ref->{fields}{'0800'}}, {
             mult     => 1,
             subfield => '',
             content  => $titel,
@@ -570,7 +578,7 @@ sub generate_aut {
                     
                     $part=konv($part);
 
-                    push @{$item_ref->{$convconfig->{pers}{$category}}}, {
+                    push @{$item_ref->{fields}{$convconfig->{pers}{$category}}}, {
                         mult     => $mult,
                         subfield => '',
                         content  => $part,

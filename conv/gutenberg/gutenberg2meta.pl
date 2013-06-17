@@ -58,12 +58,12 @@ HELP
 exit;
 }
 
-open (TIT,     ">:utf8","meta.title");
-open (AUT,     ">:utf8","meta.person");
-open (KOR,     ">:utf8","meta.corporatebody");
-open (NOTATION,">:utf8","meta.classification");
-open (SWT,     ">:utf8","meta.subject");
-open (MEX,     ">:utf8","meta.holding");
+open (TIT,     ">:raw","meta.title");
+open (AUT,     ">:raw","meta.person");
+open (KOR,     ">:raw","meta.corporatebody");
+open (NOTATION,">:raw","meta.classification");
+open (SWT,     ">:raw","meta.subject");
+open (MEX,     ">:raw","meta.holding");
 
 my $parser = XML::LibXML->new();
 $parser->keep_blanks(0);
@@ -78,14 +78,16 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     
     next unless ($etext_number);
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
 
     $title_ref->{id} = $etext_number;
     
     # Neuaufnahmedatum
     foreach my $item ($etext_node->findnodes ('dc:created//text()')) {
         my ($year,$month,$day)=split("-",$item->textContent);
-        push @{$title_ref->{'0002'}}, {
+        push @{$title_ref->{fields}{'0002'}}, {
             mult     => 1,
             subfield => '',
             content  => "$year$month$day",
@@ -96,7 +98,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     # Sprache
     my $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:language//text()')) {
-        push @{$title_ref->{'0015'}}, {
+        push @{$title_ref->{fields}{'0015'}}, {
             mult     => $mult,
             subfield => '',
             content  => konv($item->textContent),
@@ -112,9 +114,11 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
         my ($person_id,$new)  = OpenBib::Conv::Common::Util::get_person_id($content);
         
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $person_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $content,
@@ -123,7 +127,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
             print AUT encode_json $item_ref, "\n";
         }
 
-        push @{$title_ref->{'0100'}}, {
+        push @{$title_ref->{fields}{'0100'}}, {
             mult       => $mult,
             subfield   => '',
             id         => $person_id,
@@ -139,9 +143,11 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
         my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
         
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $person_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $content,
@@ -150,7 +156,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
             print AUT encode_json $item_ref, "\n";
         }
         
-        push @{$title_ref->{'0101'}}, {
+        push @{$title_ref->{fields}{'0101'}}, {
             mult       => $mult,
             subfield   => '',
             id         => $person_id,
@@ -168,7 +174,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
         $content=~s/</&lt;/g;
         $content=~s/\n/ - /g;
 
-        push @{$title_ref->{'0331'}}, {
+        push @{$title_ref->{fields}{'0331'}}, {
             mult     => $mult,
             subfield => '',
             content  => $content,
@@ -179,7 +185,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     $mult=1;
     foreach my $item ($etext_node->findnodes ('pgterms:friendlytitle//text()')) {
         my $content = konv($item->textContent);
-        push @{$title_ref->{'0370'}}, {
+        push @{$title_ref->{fields}{'0370'}}, {
             mult     => $mult,
             subfield => '',
             content  => $content,
@@ -188,14 +194,14 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     }
     
     # Verlag
-    push @{$title_ref->{'0412'}}, {
+    push @{$title_ref->{fields}{'0412'}}, {
         mult     => 1,
         subfield => '',
         content  => 'Project Gutenberg',
     };
     
     # E-Text-URL
-    push @{$title_ref->{'0662'}}, {
+    push @{$title_ref->{fields}{'0662'}}, {
         mult     => 1,
         subfield => '',
         content  => "http://www.gutenberg.org/etext/$etext_number",
@@ -205,7 +211,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:description//text()')) {
         my $content = konv($item->textContent);
-        push @{$title_ref->{'0501'}}, {
+        push @{$title_ref->{fields}{'0501'}}, {
             mult     => $mult,
             subfield => '',
             content  => $content,
@@ -214,7 +220,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     }
     
     # Medientyp
-    push @{$title_ref->{'4410'}}, {
+    push @{$title_ref->{fields}{'4410'}}, {
         mult     => 1,
         subfield => '',
         content  => 'Digital',
@@ -223,7 +229,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:type//text()')) {
         my $content = konv($item->textContent);
-        push @{$title_ref->{'0800'}}, {
+        push @{$title_ref->{fields}{'0800'}}, {
             mult     => $mult,
             subfield => '',
             content  => $content,
@@ -238,9 +244,11 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
         my ($subject_id,$new)  = OpenBib::Conv::Common::Util::get_subject_id($content);
         
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $subject_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $content,
@@ -249,7 +257,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
             print SWT encode_json $item_ref, "\n";
         }
 
-        push @{$title_ref->{'0710'}}, {
+        push @{$title_ref->{fields}{'0710'}}, {
             mult       => $mult,
             subfield   => '',
             id         => $subject_id,
@@ -266,9 +274,11 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
         my ($classification_id,$new)  = OpenBib::Conv::Common::Util::get_classification_id($content);
         
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $classification_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $content,
@@ -277,7 +287,7 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
             print NOTATION encode_json $item_ref, "\n";
         }
 
-        push @{$title_ref->{'0700'}}, {
+        push @{$title_ref->{fields}{'0700'}}, {
             mult       => $mult,
             subfield   => '',
             id         => $classification_id,

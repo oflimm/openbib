@@ -66,12 +66,12 @@ exit;
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
-open (TITLE,         ">:utf8","meta.title");
-open (PERSON,        ">:utf8","meta.person");
-open (CORPORATEBODY, ">:utf8","meta.corporatebody");
-open (CLASSIFICATION,">:utf8","meta.classification");
-open (SUBJECT,       ">:utf8","meta.subject");
-open (HOLDING,       ">:utf8","meta.holding");
+open (TITLE,         ">:raw","meta.title");
+open (PERSON,        ">:raw","meta.person");
+open (CORPORATEBODY, ">:raw","meta.corporatebody");
+open (CLASSIFICATION,">:raw","meta.classification");
+open (SUBJECT,       ">:raw","meta.subject");
+open (HOLDING,       ">:raw","meta.holding");
 
 my $twig= XML::Twig->new(
    TwigHandlers => {
@@ -92,7 +92,9 @@ close(HOLDING);
 sub parse_titset {
     my($t, $titset)= @_;
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
 
     $title_ref->{id} = $titset->first_child($convconfig->{uniqueidfield})->text();
 
@@ -104,7 +106,7 @@ sub parse_titset {
     if(defined $titset->first_child('cdmcreated') && $titset->first_child('cdmcreated')->text()){
         my ($year,$month,$day)=split("-",$titset->first_child('cdmcreated')->text());
 
-        push @{$title_ref->{'0002'}}, {
+        push @{$title_ref->{fields}{'0002'}}, {
             content  => "$day.$month.$year",
             subfield => '',
             mult     => 1,
@@ -115,7 +117,7 @@ sub parse_titset {
     if(defined $titset->first_child('cdmmodified') && $titset->first_child('cdmmodified')->text()){
         my ($year,$month,$day)=split("-",$titset->first_child('cdmmodified')->text());
 
-        push @{$title_ref->{'0003'}}, {
+        push @{$title_ref->{fields}{'0003'}}, {
             content  => "$day.$month.$year",
             subfield => '',
             mult     => 1,
@@ -143,7 +145,7 @@ sub parse_titset {
 
             if ($convconfig->{filter}{$kateg}{filter_add_year}){
                 my $new_content = filter_match($content,$convconfig->{filter}{$kateg}{filter_add_year}{regexp});
-                push @{$title_ref->{$convconfig->{filter}{$kateg}{filter_add_year}{category}}}, {
+                push @{$title_ref->{fields}{$convconfig->{filter}{$kateg}{filter_add_year}{category}}}, {
                     content  => $new_content,
                     subfield => '',
                     mult     => $mult,
@@ -160,7 +162,7 @@ sub parse_titset {
                 }
 
                 foreach my $part (@parts){
-                    push @{$title_ref->{$convconfig->{title}{$kateg}}}, {
+                    push @{$title_ref->{fields}{$convconfig->{title}{$kateg}}}, {
                         content  => $part,
                         subfield => '',
                         mult     => $mult,
@@ -191,9 +193,11 @@ sub parse_titset {
                     my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
                     
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $person_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $part,
@@ -204,7 +208,7 @@ sub parse_titset {
 
                     my $new_category = $convconfig->{pers}{$kateg};
                     
-                    push @{$title_ref->{$new_category}}, {
+                    push @{$title_ref->{fields}{$new_category}}, {
                         mult       => $mult,
                         subfield   => '',
                         id         => $person_id,
@@ -238,9 +242,11 @@ sub parse_titset {
                     my ($corporatebody_id,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($part);
                     
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $corporatebody_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $part,
@@ -251,7 +257,7 @@ sub parse_titset {
                     
                     my $new_category = $convconfig->{corp}{$kateg};
                     
-                    push @{$title_ref->{$new_category}}, {
+                    push @{$title_ref->{fields}{$new_category}}, {
                         mult       => $mult,
                         subfield   => '',
                         id         => $corporatebody_id,
@@ -285,9 +291,11 @@ sub parse_titset {
                     my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($part);
                 
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $classification_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $part,
@@ -298,7 +306,7 @@ sub parse_titset {
 
                     my $new_category = $convconfig->{sys}{$kateg};
                     
-                    push @{$title_ref->{$new_category}}, {
+                    push @{$title_ref->{fields}{$new_category}}, {
                         mult       => $mult,
                         subfield   => '',
                         id         => $classification_id,
@@ -332,9 +340,11 @@ sub parse_titset {
                     my ($subject_id,$new)=OpenBib::Conv::Common::Util::get_subject_id($part);
                     
                     if ($new){	  
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $subject_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $part,
@@ -345,7 +355,7 @@ sub parse_titset {
 
                     my $new_category = $convconfig->{subj}{$kateg};
                     
-                    push @{$title_ref->{$new_category}}, {
+                    push @{$title_ref->{fields}{$new_category}}, {
                         mult       => $mult,
                         subfield   => '',
                         id         => $subject_id,
@@ -374,7 +384,7 @@ sub parse_titset {
             my $mult = 1;
             
             foreach my $page_ref (@{$structure_ref->{page}}){
-                push @{$title_ref->{'6050'}}, {
+                push @{$title_ref->{fields}{'6050'}}, {
                     mult       => $mult,
                     subfield   => '',
                     content    => $page_ref->{pagetitle},
@@ -382,7 +392,7 @@ sub parse_titset {
 
                 foreach my $pagefile_ref (@{$page_ref->{pagefile}}){
                     if ($pagefile_ref->{pagefiletype} eq "access"){
-                        push @{$title_ref->{'6051'}}, {
+                        push @{$title_ref->{fields}{'6051'}}, {
                             mult       => $mult,
                             subfield   => '',
                             content    => $pagefile_ref->{pagefilelocation},
@@ -391,20 +401,20 @@ sub parse_titset {
                     
                     
                     if ($pagefile_ref->{pagefiletype} eq "thumbnail"){
-                        push @{$title_ref->{'6052'}}, {
+                        push @{$title_ref->{fields}{'6052'}}, {
                             mult       => $mult,
                             subfield   => '',
                             content    => $pagefile_ref->{pagefilelocation},
                         } if (defined $pagefile_ref->{pagefilelocation});
                     }
                 }
-                push @{$title_ref->{'6053'}}, {
+                push @{$title_ref->{fields}{'6053'}}, {
                     mult       => $mult,
                     subfield   => '',
                     content    => $page_ref->{pagetext},
                 } if (defined $page_ref->{pagetext});
 
-                push @{$title_ref->{'6054'}}, {
+                push @{$title_ref->{fields}{'6054'}}, {
                     mult       => $mult,
                     subfield   => '',
                     content    => $page_ref->{pageptr},
@@ -419,7 +429,7 @@ sub parse_titset {
                 my $i = 1;
             
                 foreach my $page_ref (@{$node_ref->{page}}){
-                    push @{$title_ref->{'6050'}}, {
+                    push @{$title_ref->{fields}{'6050'}}, {
                         mult       => $mult,
                         subfield   => '',
                         content    => $page_ref->{pagetitle},
@@ -427,7 +437,7 @@ sub parse_titset {
                     
                     foreach my $pagefile_ref (@{$page_ref->{pagefile}}){
                         if ($pagefile_ref->{pagefiletype} eq "access"){
-                            push @{$title_ref->{'6051'}}, {
+                            push @{$title_ref->{fields}{'6051'}}, {
                                 mult       => $mult,
                                 subfield   => '',
                                 content    => $pagefile_ref->{pagefilelocation},
@@ -436,7 +446,7 @@ sub parse_titset {
                         
                         
                         if ($pagefile_ref->{pagefiletype} eq "thumbnail"){
-                            push @{$title_ref->{'6052'}}, {
+                            push @{$title_ref->{fields}{'6052'}}, {
                                 mult       => $mult,
                                 subfield   => '',
                                 content    => $pagefile_ref->{pagefilelocation},
@@ -444,13 +454,13 @@ sub parse_titset {
                         }
                     }
                     
-                    push @{$title_ref->{'6053'}}, {
+                    push @{$title_ref->{fields}{'6053'}}, {
                         mult       => $mult,
                         subfield   => '',
                         content    => $page_ref->{pagetext},
                     } if (defined $page_ref->{pagetext});
                     
-                    push @{$title_ref->{'6054'}}, {
+                    push @{$title_ref->{fields}{'6054'}}, {
                         mult       => $mult,
                         subfield   => '',
                         content    => $page_ref->{pageptr},
@@ -519,16 +529,18 @@ sub parse_titset {
     }
 
     foreach my $idx (keys %$mexdaten_ref){
-        my $item_ref = {};
+        my $item_ref = {
+            'fields' => {},
+        };
         $item_ref->{id} = $mexidn;
-        push @{$item_ref->{'0004'}}, {
+        push @{$item_ref->{fields}{'0004'}}, {
             mult     => 1,
             subfield => '',
             content  => $titset->first_child($convconfig->{uniqueidfield})->text(),
         };
 
         foreach my $new_category (keys %{$mexdaten_ref->{$idx}}){
-            push @{$item_ref->{$new_category}}, {
+            push @{$item_ref->{fields}{$new_category}}, {
                 mult     => $idx,
                 subfield => '',
                 content  => $mexdaten_ref->{$idx}->{$new_category},

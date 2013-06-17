@@ -265,7 +265,7 @@ my $stammdateien_ref = {
 foreach my $type (keys %{$stammdateien_ref}) {
     $logger->info("Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
     
-    open(IN ,           "<:utf8",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
+    open(IN ,           "<:raw",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
     open(OUT,           ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
     open(OUTFIELDS,     ">:utf8",$stammdateien_ref->{$type}{outfile_fields})     || die "OUTFIELDS konnte nicht geoeffnet werden";
 
@@ -277,14 +277,15 @@ foreach my $type (keys %{$stammdateien_ref}) {
 
         my $record_ref = decode_json $jsonline;
 
-        my $id = $record_ref->{id};
+        my $id         = $record_ref->{id};
+        my $fields_ref = $record_ref->{fields};
         
         # Primaeren Normdatensatz erstellen und schreiben
         
         my $create_tstamp = "1970-01-01 12:00:00";
         
-        if (defined $record_ref->{'0002'} && defined $record_ref->{'0002'}[0]) {
-            $create_tstamp = $record_ref->{'0002'}[0]{content};
+        if (defined $fields_ref->{'0002'} && defined $fields_ref->{'0002'}[0]) {
+            $create_tstamp = $fields_ref->{'0002'}[0]{content};
             if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
                 $create_tstamp=$3."-".$2."-".$1." 12:00:00";
             }
@@ -292,8 +293,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         my $update_tstamp = "1970-01-01 12:00:00";
         
-        if (exists $record_ref->{'0003'} && exists $record_ref->{'0003'}[0]) {
-            $update_tstamp = $record_ref->{'0003'}[0]{content};
+        if (exists $fields_ref->{'0003'} && exists $fields_ref->{'0003'}[0]) {
+            $update_tstamp = $fields_ref->{'0003'}[0]{content};
             if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
                 $update_tstamp=$3."-".$2."-".$1." 12:00:00";
             }            
@@ -305,8 +306,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         my $mainentry;
         
-        if (exists $record_ref->{'0800'} && exists $record_ref->{'0800'}[0] ) {
-            $mainentry = $record_ref->{'0800'}[0]{content};
+        if (exists $fields_ref->{'0800'} && exists $fields_ref->{'0800'}[0] ) {
+            $mainentry = $fields_ref->{'0800'}[0]{content};
         }
         
         if ($mainentry) {
@@ -320,17 +321,17 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 $listitemdata_classification{$id}=$mainentry;
             }
             elsif ($type eq "subject") {
-                if (defined $record_ref->{'0800'}[1]){
+                if (defined $fields_ref->{'0800'}[1]){
                     # Schlagwortketten zusammensetzen
                     my @mainentries = ();
                     foreach my $item (map { $_->[0] }
                                           sort { $a->[1] <=> $b->[1] }
-                                              map { [$_, $_->{mult}] } @{$record_ref->{'0800'}}){
+                                              map { [$_, $_->{mult}] } @{$fields_ref->{'0800'}}){
                         push @mainentries, $item->{content};
                         $mainentry = join (' / ',@mainentries);
                     }
 
-                    $record_ref->{'0800'} = [
+                    $fields_ref->{'0800'} = [
                         {
                             content  => $mainentry,
                             mult     => 1,
@@ -342,9 +343,9 @@ foreach my $type (keys %{$stammdateien_ref}) {
             }
         }
 
-        foreach my $field (keys %{$record_ref}) {
+        foreach my $field (keys %{$fields_ref}) {
             next if ($field eq "id" || defined $stammdateien_ref->{$type}{blacklist_ref}->{$field} );
-            foreach my $item_ref (@{$record_ref->{$field}}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
                 if (exists $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}) {
                     foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$field}->{index}}) {
                         my $weight = $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}{$searchfield};
@@ -416,7 +417,7 @@ $stammdateien_ref->{holding} = {
 
 $logger->info("Bearbeite meta.holding");
 
-open(IN ,                   "<:utf8","meta.holding")               || die "IN konnte nicht geoeffnet werden";
+open(IN ,                   "<:raw","meta.holding")               || die "IN konnte nicht geoeffnet werden";
 open(OUT,                   ">:utf8","holding.dump")               || die "OUT konnte nicht geoeffnet werden";
 open(OUTFIELDS,             ">:utf8","holding_fields.dump")        || die "OUTFIELDS konnte nicht geoeffnet werden";
 open(OUTTITLETITLE,         ">:utf8","title_title.dump")           || die "OUTTITLETITLE konnte nicht geoeffnet werden";
@@ -449,7 +450,8 @@ while (my $jsonline=<IN>){
 
     my $record_ref = decode_json $jsonline;
 
-    my $id = $record_ref->{id};
+    my $id         = $record_ref->{id};
+    my $fields_ref = $record_ref->{fields};
     
     # Primaeren Normdatensatz erstellen und schreiben
     
@@ -459,8 +461,8 @@ while (my $jsonline=<IN>){
     
     my $titleid;
 
-    if (exists $record_ref->{'0004'} && exists $record_ref->{'0004'}[0] ) {
-        $titleid = $record_ref->{'0004'}[0]{content};
+    if (exists $fields_ref->{'0004'} && exists $fields_ref->{'0004'}[0] ) {
+        $titleid = $fields_ref->{'0004'}[0]{content};
     }
     
     # Verknupefungen
@@ -469,10 +471,10 @@ while (my $jsonline=<IN>){
         $title_holding_serialid++;
     }
     
-    foreach my $field (keys %{$record_ref}) {
+    foreach my $field (keys %{$fields_ref}) {
         next if ($field eq "id" || defined $stammdateien_ref->{holding}{blacklist_ref}{$field} );
         
-        foreach my $item_ref (@{$record_ref->{$field}}) {
+        foreach my $item_ref (@{$fields_ref->{$field}}) {
             next unless ($item_ref->{content});
             
             if (exists $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}) {
@@ -501,23 +503,23 @@ while (my $jsonline=<IN>){
         
     # Signatur fuer Kurztitelliste merken
     
-    if (exists $record_ref->{'0014'} && $titleid) {
+    if (exists $fields_ref->{'0014'} && $titleid) {
         my $array_ref= [];
         if (exists $listitemdata_holding{$titleid}){
             $array_ref = $listitemdata_holding{$titleid};
         }
-        push @$array_ref, $record_ref->{'0014'}[0]{content};
+        push @$array_ref, $fields_ref->{'0014'}[0]{content};
         $listitemdata_holding{$titleid}=$array_ref;
     }
     
     # Bestandsverlauf in Jahreszahlen umwandeln
-    if ((defined $record_ref->{'1204'}) && $titleid) {        
+    if ((defined $fields_ref->{'1204'}) && $titleid) {        
         my $array_ref=[];
         if (exists $listitemdata_enriched_years{$titleid}){
             $array_ref = $listitemdata_enriched_years{$titleid};
         }
         
-        foreach my $date (split(";",cleanup_content($record_ref->{'1204'}[0]{content}))) {
+        foreach my $date (split(";",cleanup_content($fields_ref->{'1204'}[0]{content}))) {
             if ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-\s+.*?(\d\d\d\d)/) {
                 my $startyear = $1;
                 my $endyear   = $2;
@@ -573,13 +575,13 @@ $stammdateien_ref->{title} = {
 if ($addsuperpers) {
     $logger->info("Option addsuperpers ist aktiviert");
     $logger->info("1. Durchgang: Uebergeordnete Titel-ID's finden");
-    open(IN ,           "<:utf8","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
+    open(IN ,           "<:raw","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
 
     while (my $jsonline=<IN>) {
         my $record_ref = decode_json $jsonline;
         
-        if (exists $record_ref->{'0004'}){
-            foreach my $item (@{$record_ref->{'0004'}}){
+        if (exists $record_ref->{fields}{'0004'}){
+            foreach my $item (@{$record_ref->{fields}{'0004'}}){
                 my $superid = $item->{content};
                 $listitemdata_superid{$superid}={};
             }
@@ -588,7 +590,7 @@ if ($addsuperpers) {
     close(IN);
     
     $logger->info("2. Durchgang: Informationen in uebergeordneten Titeln finden und merken");
-    open(IN ,           "<:utf8","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
+    open(IN ,           "<:raw","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
 
     while (my $jsonline=<IN>) {
         my $record_ref = decode_json $jsonline;
@@ -599,8 +601,8 @@ if ($addsuperpers) {
 
         # Anreichern mit content;
         foreach my $field ('0100','0101','0102','0103','1800') {
-            if (defined $record_ref->{$field}) {
-                foreach my $item_ref (@{$record_ref->{$field}}) {
+            if (defined $record_ref->{fields}{$field}) {
+                foreach my $item_ref (@{$record_ref->{fields}{$field}}) {
                     my $personid   = $item_ref->{id};
                     
                     if (exists $listitemdata_person{$personid}) {
@@ -621,10 +623,10 @@ if ($addsuperpers) {
 
 $logger->info("Bearbeite meta.title");
 
-open(IN ,           "<:utf8","meta.title"         )     || die "IN konnte nicht geoeffnet werden";
+open(IN ,           "<:raw" ,"meta.title"         )     || die "IN konnte nicht geoeffnet werden";
 open(OUT,           ">:utf8","title.dump"        )      || die "OUT konnte nicht geoeffnet werden";
 open(OUTFIELDS,     ">:utf8","title_fields.dump"     )  || die "OUTFIELDS konnte nicht geoeffnet werden";
-open(SEARCHENGINE,  ">:utf8","searchengine.json" )       || die "SEARCHENGINE konnte nicht goeffnet werden";
+open(SEARCHENGINE,  ">:raw" ,"searchengine.json" )       || die "SEARCHENGINE konnte nicht goeffnet werden";
 
 my $locationid = $config->get_locationid_of_database($database);
 
@@ -639,7 +641,8 @@ while (my $jsonline=<IN>){
     my $record_ref = decode_json $jsonline;
 
     my $id         = $record_ref->{id};
-
+    my $fields_ref = $record_ref->{fields};
+    
     my $titlecache_ref   = {}; # Inhalte fuer den Titel-Cache
     my $searchengine_ref = {}; # Inhalte fuer die Suchmaschinen
 
@@ -687,8 +690,8 @@ while (my $jsonline=<IN>){
 
     # ISBN
     foreach my $field ('0540','0553') {
-        if (defined $record_ref->{$field}) {
-            foreach my $item_ref (@{$record_ref->{$field}}) {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
 
                 # Alternative ISBN zur Rechercheanreicherung erzeugen
                 my $isbn = Business::ISBN->new($item_ref->{content});
@@ -708,8 +711,8 @@ while (my $jsonline=<IN>){
 
     # ISSN
     foreach my $field ('0543') {
-        if (defined $record_ref->{$field}) {
-            foreach my $item_ref (@{$record_ref->{$field}}) {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
                 push @{$enrichmnt_issns_ref}, OpenBib::Common::Util::normalize({
                     field    => "T0543",
                     content  => $item_ref->{content},
@@ -756,7 +759,7 @@ while (my $jsonline=<IN>){
                     
                     $logger->debug("Id: $id - Adding $field -> $content");
 
-                    push @{$record_ref->{$field}}, {
+                    push @{$fields_ref->{$field}}, {
                         mult      => $mult,
                         content   => $content,
                         subfield  => '',
@@ -771,22 +774,22 @@ while (my $jsonline=<IN>){
     # Medientypen erkennen und anreichern
     if ($addmediatype) {
         my $type_mult = 1;
-        foreach my $item_ref (@{$record_ref->{'4410'}}) {
+        foreach my $item_ref (@{$fields_ref->{'4410'}}) {
             $type_mult++;
         }
 
         # Zeitschriften/Serien:
         # ISSN und/oder ZDB-ID besetzt
-        if (defined $record_ref->{'0572'} || defined $record_ref->{'0543'}) {
+        if (defined $fields_ref->{'0572'} || defined $fields_ref->{'0543'}) {
             my $have_journal = 0;
 
-            foreach my $item_ref (@{$record_ref->{'4410'}}) {
+            foreach my $item_ref (@{$fields_ref->{'4410'}}) {
                 if ($item_ref->{'0800'} eq "Zeitschrift/Serie"){
                     $have_journal = 1;
                 }
             }
 
-            push @{$record_ref->{'4410'}}, {
+            push @{$fields_ref->{'4410'}}, {
                 mult      => $type_mult++,
                 content   => 'Zeitschrift/Serie',
                 subfield  => '',
@@ -795,16 +798,16 @@ while (my $jsonline=<IN>){
                 
         # Aufsatz
         # HSTQuelle besetzt
-        if ($record_ref->{'0590'}) {
+        if ($fields_ref->{'0590'}) {
             my $have_article = 0;
             
-            foreach my $item_ref (@{$record_ref->{'4410'}}) {
+            foreach my $item_ref (@{$fields_ref->{'4410'}}) {
                 if ($item_ref->{'0800'} eq "Aufsatz"){
                     $have_article = 1;
                 }
             }
             
-            push @{$record_ref->{'4410'}}, {
+            push @{$fields_ref->{'4410'}}, {
                 mult      => $type_mult,
                 content   => 'Aufsatz',
                 subfield  => '',
@@ -816,14 +819,14 @@ while (my $jsonline=<IN>){
     } 
 
     # Jahreszahlen umwandeln
-    if (defined $record_ref->{'0425'}) {        
+    if (defined $fields_ref->{'0425'}) {        
         my $array_ref=[];
 
         if (exists $listitemdata_enriched_years{$id}){
             $array_ref = $listitemdata_enriched_years{$id};
         }
 
-        foreach my $item_ref (@{$record_ref->{'0425'}}){
+        foreach my $item_ref (@{$fields_ref->{'0425'}}){
             my $date = $item_ref->{content};
             
             if ($date =~/^(\d\d\d\d)\s*-\s*(\d\d\d\d)/) {
@@ -846,8 +849,8 @@ while (my $jsonline=<IN>){
     }
 
     # Verknuepfungskategorien bearbeiten    
-    if (defined $record_ref->{'0004'}) {
-        foreach my $item_ref (@{$record_ref->{'0004'}}) {
+    if (defined $fields_ref->{'0004'}) {
+        foreach my $item_ref (@{$fields_ref->{'0004'}}) {
             my $target_titleid   = $item_ref->{content};
             my $mult             = $item_ref->{mult};
             my $source_titleid   = $id;
@@ -878,7 +881,7 @@ while (my $jsonline=<IN>){
                 # $title_super = cleanup_content($title_super);
 
                 # Anreicherungen mit 5005 (Titelinformationen der Ueberordnung)
-                push @{$record_ref->{'5005'}}, {
+                push @{$fields_ref->{'5005'}}, {
                     mult      => $mult,
                     subfield  => '',
                     content   => $listitemdata_superid{$target_titleid},
@@ -892,8 +895,8 @@ while (my $jsonline=<IN>){
 
     # Verfasser/Personen
     foreach my $field ('0100','0101','0102','0103','1800') {
-        if (defined $record_ref->{$field}) {
-            foreach my $item_ref (@{$record_ref->{$field}}) {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
 	        $item_ref->{ignore} = 1;
                 
@@ -943,8 +946,8 @@ while (my $jsonline=<IN>){
     }
     
     # Bei 1800 ohne Normdatenverknuepfung muss der Inhalt analog verarbeitet werden
-    if (defined $record_ref->{'1800'}) {
-        foreach my $item_ref (@{$record_ref->{'1800'}}) {
+    if (defined $fields_ref->{'1800'}) {
+        foreach my $item_ref (@{$fields_ref->{'1800'}}) {
             unless (defined $item_ref->{id}) {
                 push @personcorporatebody, $item_ref->{content};
             }
@@ -953,8 +956,8 @@ while (my $jsonline=<IN>){
     
     #Koerperschaften/Urheber
     foreach my $field ('0200','0201','1802') {
-        if (defined $record_ref->{$field}) {
-            foreach my $item_ref (@{$record_ref->{$field}}) {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
                 $item_ref->{ignore} = 1;
                 
@@ -1005,8 +1008,8 @@ while (my $jsonline=<IN>){
     }
     
     # Bei 1802 ohne Normdatenverknuepfung muss der Inhalt analog verarbeitet werden
-    if (defined $record_ref->{'1802'}) {
-        foreach my $item_ref (@{$record_ref->{'1802'}}) {
+    if (defined $fields_ref->{'1802'}) {
+        foreach my $item_ref (@{$fields_ref->{'1802'}}) {
             # Verknuepfungsfelder werden ignoriert
             $item_ref->{ignore} = 1;
             
@@ -1020,8 +1023,8 @@ while (my $jsonline=<IN>){
     
     # Klassifikation
     foreach my $field ('0700') {
-        if (defined $record_ref->{$field}) {
-            foreach my $item_ref (@{$record_ref->{$field}}) {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
                 $item_ref->{ignore} = 1;
                 
@@ -1064,8 +1067,8 @@ while (my $jsonline=<IN>){
     
     # Schlagworte
     foreach my $field ('0710','0902','0907','0912','0917','0922','0927','0932','0937','0942','0947') {
-        if (defined $record_ref->{$field}) {
-            foreach my $item_ref (@{$record_ref->{$field}}) {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
                 $item_ref->{ignore} = 1;
                 
@@ -1115,18 +1118,18 @@ while (my $jsonline=<IN>){
             if ($superid && exists $listitemdata_superid{$superid}) {
                 my $super_ref = $listitemdata_superid{$superid};
                 foreach my $field ('0100','0101','0102','0103','1800') {
-                    if (defined $super_ref->{$field}) {
+                    if (defined $super_ref->{fields}{$field}) {
                         # Anreichern fuer Facetten
                         if (defined $stammdateien_ref->{title}{inverted_ref}{$field}->{facet}){
                             foreach my $searchfield (keys %{$stammdateien_ref->{title}{inverted_ref}{$field}->{facet}}) {
-                                foreach my $item_ref (@{$super_ref->{$field}}) {
+                                foreach my $item_ref (@{$super_ref->{fields}{$field}}) {
                                     $index_doc->add_facet("facet_".$searchfield, $item_ref->{content});
                                 }
                             }
                         }
 
                         # Anreichern fuer Recherche
-                        foreach my $item_ref (@{$super_ref->{$field}}) {
+                        foreach my $item_ref (@{$super_ref->{fields}{$field}}) {
                             push @person, $item_ref->{id};
                         }
                     }
@@ -1137,17 +1140,17 @@ while (my $jsonline=<IN>){
 
 
     # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
-    if ((defined $record_ref->{'0100'} || defined $record_ref->{'0101'}) && defined $record_ref->{'0331'} && (defined $record_ref->{'0424'} || defined $record_ref->{'0425'})){
+    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0101'}) && defined $fields_ref->{'0331'} && (defined $fields_ref->{'0424'} || defined $fields_ref->{'0425'})){
 
         my $bibkey_record_ref = {
-            'T0100' => $record_ref->{'0100'},
-            'T0101' => $record_ref->{'0101'},
-            'T0331' => $record_ref->{'0331'},
-            'T0425' => $record_ref->{'0425'},
+            'T0100' => $fields_ref->{'0100'},
+            'T0101' => $fields_ref->{'0101'},
+            'T0331' => $fields_ref->{'0331'},
+            'T0425' => $fields_ref->{'0425'},
         };
 
-        if ($record_ref->{'0424'} && !$record_ref->{'0425'}){
-            $bibkey_record_ref->{'T0425'} = $record_ref->{'0424'};
+        if ($fields_ref->{'0424'} && !$fields_ref->{'0425'}){
+            $bibkey_record_ref->{'T0425'} = $fields_ref->{'0424'};
         }
 
         my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ fields => $bibkey_record_ref});
@@ -1155,13 +1158,13 @@ while (my $jsonline=<IN>){
         my $bibkey      = ($bibkey_base)?OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base }):"";
         
         if ($bibkey) {
-            push @{$record_ref->{'5050'}}, {
+            push @{$fields_ref->{'5050'}}, {
                 mult      => 1,
                 content   => $bibkey,
                 subfield  => '',
             };
                 
-            push @{$record_ref->{'5051'}}, {
+            push @{$fields_ref->{'5051'}}, {
                 mult      => 1,
                 content   => $bibkey_base,
                 subfield   => '',
@@ -1211,9 +1214,9 @@ while (my $jsonline=<IN>){
                         }
                     }
                     else {
-                        next unless (defined $record_ref->{$field});
+                        next unless (defined $fields_ref->{$field});
                         
-                        foreach my $item_ref (@{$record_ref->{$field}}){
+                        foreach my $item_ref (@{$fields_ref->{$field}}){
                             next unless $item_ref->{content};
 
                             $index_doc->add_index($searchfield,$weight, ["T$field",$item_ref->{content}]);
@@ -1265,9 +1268,9 @@ while (my $jsonline=<IN>){
                         }
                     }            
                     else {
-                        next unless (defined $record_ref->{$field});
+                        next unless (defined $fields_ref->{$field});
                         
-                        foreach my $item_ref (@{$record_ref->{$field}}) {
+                        foreach my $item_ref (@{$fields_ref->{$field}}) {
                             $index_doc->add_facet("facet_$searchfield", $item_ref->{content});        
                         }
                     }
@@ -1368,10 +1371,10 @@ while (my $jsonline=<IN>){
     }
     
     # Index-Data mit Titelfeldern fuellen
-    foreach my $field (keys %{$record_ref}) {            
+    foreach my $field (keys %{$fields_ref}) {            
         # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
         if (defined $conv_config->{listitemcat}{$field}) {
-            foreach my $item_ref (@{$record_ref->{$field}}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
                 unless (defined $item_ref->{ignore}){
                     $index_doc->add_data("T".$field, $item_ref);
                 }
@@ -1413,29 +1416,29 @@ while (my $jsonline=<IN>){
         #
         # Dann: Verwende diese Zeitschriftensignatur
         #
-        if (!defined $record_ref->{'0331'}) {
+        if (!defined $fields_ref->{'0331'}) {
             # UnterFall 2.1:
-            if (defined $record_ref->{'0089'}) {
+            if (defined $fields_ref->{'0089'}) {
                 $index_doc->add_data('T0331',{
-                    content => $record_ref->{'0089'}[0]{content}
+                    content => $fields_ref->{'0089'}[0]{content}
                 });
             }
             # Unterfall 2.2:
-            elsif (defined $record_ref->{'0455'}) {
+            elsif (defined $fields_ref->{'0455'}) {
                 $index_doc->add_data('T0331',{
-                    content => $record_ref->{'0455'}[0]{content}
+                    content => $fields_ref->{'0455'}[0]{content}
                 });
             }
             # Unterfall 2.3:
-            elsif (defined $record_ref->{'0451'}) {
+            elsif (defined $fields_ref->{'0451'}) {
                 $index_doc->add_data('T0331',{
-                    content => $record_ref->{'0451'}[0]{content}
+                    content => $fields_ref->{'0451'}[0]{content}
                 });
             }
             # Unterfall 2.4:
-            elsif (defined $record_ref->{'1203'}) {
+            elsif (defined $fields_ref->{'1203'}) {
                 $index_doc->add_data('T0331',{
-                    content => $record_ref->{'1203'}[0]{content}
+                    content => $fields_ref->{'1203'}[0]{content}
                 });
             }
             else {
@@ -1457,18 +1460,18 @@ while (my $jsonline=<IN>){
         # Dann: Setze diese Bandzahl
         
         # Fall 1:
-        if (defined $record_ref->{'0089'}) {
+        if (defined $fields_ref->{'0089'}) {
             $index_doc->set_data('T5100', [
                 {
-                    content => $record_ref->{'0089'}[0]{content}
+                    content => $fields_ref->{'0089'}[0]{content}
                 }
             ]);
         }
         # Fall 2:
-        elsif (defined $record_ref->{'0455'}) {
+        elsif (defined $fields_ref->{'0455'}) {
             $index_doc->set_data('T5100', [
                 {
-                    content => $record_ref->{'0455'}[0]{content}
+                    content => $fields_ref->{'0455'}[0]{content}
                 }
             ]);
         }
@@ -1499,8 +1502,8 @@ while (my $jsonline=<IN>){
     
     my $create_tstamp = "1970-01-01 12:00:00";
     
-    if (defined $record_ref->{'0002'} && defined $record_ref->{'0002'}[0]) {
-        $create_tstamp = $record_ref->{'0002'}[0]{content};
+    if (defined $fields_ref->{'0002'} && defined $fields_ref->{'0002'}[0]) {
+        $create_tstamp = $fields_ref->{'0002'}[0]{content};
         if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
             $create_tstamp=$3."-".$2."-".$1." 12:00:00";
         }
@@ -1508,8 +1511,8 @@ while (my $jsonline=<IN>){
     
     my $update_tstamp = "1970-01-01 12:00:00";
     
-    if (defined $record_ref->{'0003'} && defined $record_ref->{'0003'}[0]) {
-        $update_tstamp = $record_ref->{'0003'}[0]{content};
+    if (defined $fields_ref->{'0003'} && defined $fields_ref->{'0003'}[0]) {
+        $update_tstamp = $fields_ref->{'0003'}[0]{content};
         if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
             $update_tstamp=$3."-".$2."-".$1." 12:00:00";
         }
@@ -1523,10 +1526,10 @@ while (my $jsonline=<IN>){
     
     # Abhaengige Feldspezifische Saetze erstellen und schreiben
     
-    foreach my $field (keys %{$record_ref}) {
+    foreach my $field (keys %{$fields_ref}) {
         next if ($field eq "id" || defined $stammdateien_ref->{title}{blacklist_ref}->{$field});
         
-        foreach my $item_ref (@{$record_ref->{$field}}) {
+        foreach my $item_ref (@{$fields_ref->{$field}}) {
             next if ($item_ref->{ignore});
 
             if (ref $item_ref->{content} eq "HASH"){

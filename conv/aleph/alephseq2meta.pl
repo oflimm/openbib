@@ -85,12 +85,12 @@ our @buffer = ();
 
 our $holding_id=1;
 
-open (TITLE,         ">:utf8","meta.title");
-open (PERSON,        ">:utf8","meta.person");
-open (CORPORATEBODY, ">:utf8","meta.corporatebody");
-open (CLASSIFICATION,">:utf8","meta.classification");
-open (SUBJECT,       ">:utf8","meta.subject");
-open (HOLDING,       ">:utf8","meta.holding");
+open (TITLE,         ">:raw","meta.title");
+open (PERSON,        ">:raw","meta.person");
+open (CORPORATEBODY, ">:raw","meta.corporatebody");
+open (CLASSIFICATION,">:raw","meta.classification");
+open (SUBJECT,       ">:raw","meta.subject");
+open (HOLDING,       ">:raw","meta.holding");
 
 open(DAT,"<","$inputfile");
 while (<DAT>){
@@ -132,7 +132,9 @@ sub convert_buffer {
     #######################################################################
     # Umwandeln
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
     
     # Titel ID und Existenz Lokaldaten bestimmen
     foreach my $line (@buffer){
@@ -179,7 +181,7 @@ sub convert_buffer {
                 if (defined $ht2id_ref->{$content_ref->{"4531a"}} && $ht2id_ref->{$content_ref->{"4531a"}}){
                     my $multcount=++$multcount_ref->{'0004'};
 
-                    push @{$title_ref->{'0004'}}, {
+                    push @{$title_ref->{fields}{'0004'}}, {
                         content  => $ht2id_ref->{$content_ref->{"4531a"}},
                         subfield => '',
                         mult     => $multcount,
@@ -188,7 +190,7 @@ sub convert_buffer {
                 if (defined $ht2id_ref->{$content_ref->{"4631a"}} && $ht2id_ref->{$content_ref->{"4631a"}}){
                     my $multcount=++$multcount_ref->{'0004'};
 
-                    push @{$title_ref->{'0004'}}, {
+                    push @{$title_ref->{fields}{'0004'}}, {
                         content  => $ht2id_ref->{$content_ref->{"4631a"}},
                         subfield => '',
                         mult     => $multcount,
@@ -197,7 +199,7 @@ sub convert_buffer {
                 if (defined $ht2id_ref->{$content_ref->{"4731a"}} && $ht2id_ref->{$content_ref->{"4731a"}}){
                     my $multcount=++$multcount_ref->{'0004'};
 
-                    push @{$title_ref->{'0004'}}, {
+                    push @{$title_ref->{fields}{'0004'}}, {
                         content  => $ht2id_ref->{$content_ref->{"4731a"}},
                         subfield => '',
                         mult     => $multcount,
@@ -209,7 +211,7 @@ sub convert_buffer {
                 my $new_category = $convconfig->{'title'}{$kategind};
                 my $multcount=++$multcount_ref->{$new_category};
                 
-                push @{$title_ref->{$new_category}}, {
+                push @{$title_ref->{fields}{$new_category}}, {
                     content  => $content_ref->{$kategind},
                     subfield => '',
                     mult     => $multcount,
@@ -229,9 +231,11 @@ sub convert_buffer {
                 my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                 
                 if ($new){
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $person_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content,
@@ -247,7 +251,7 @@ sub convert_buffer {
                     $supplement=" ; $supplement";
                 }
 
-                push @{$title_ref->{$new_category}}, {
+                push @{$title_ref->{fields}{$new_category}}, {
                     mult       => $multcount,
                     subfield   => '',
                     id         => $person_id,
@@ -264,9 +268,11 @@ sub convert_buffer {
                 my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
                 
                 if ($new){
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $corporatebody_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content,
@@ -278,7 +284,7 @@ sub convert_buffer {
                 my $new_category = $convconfig->{corp}{$kategind};
                 my $multcount=++$multcount_ref->{$new_category};
 
-                push @{$title_ref->{$new_category}}, {
+                push @{$title_ref->{fields}{$new_category}}, {
                     mult       => $multcount,
                     subfield   => '',
                     id         => $corporatebody_id,
@@ -295,9 +301,11 @@ sub convert_buffer {
                 my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
                 
                 if ($new){
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $classification_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content,
@@ -309,7 +317,7 @@ sub convert_buffer {
                 my $new_category = $convconfig->{sys}{$kategind};
                 my $multcount=++$multcount_ref->{$new_category};
 
-                push @{$title_ref->{$new_category}}, {
+                push @{$title_ref->{fields}{$new_category}}, {
                     mult       => $multcount,
                     subfield   => '',
                     id         => $classification_id,
@@ -325,9 +333,11 @@ sub convert_buffer {
                 my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
                 
                 if ($new){
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $subject_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content,
@@ -339,7 +349,7 @@ sub convert_buffer {
                 my $new_category = $convconfig->{subj}{$kategind};
                 my $multcount=++$multcount_ref->{$new_category};
 
-                push @{$title_ref->{$new_category}}, {
+                push @{$title_ref->{fields}{$new_category}}, {
                     mult       => $multcount,
                     subfield   => '',
                     id         => $subject_id,
@@ -352,11 +362,13 @@ sub convert_buffer {
 
         # Exemplare abarbeiten Anfang
         if ($kateg eq $convconfig->{'mex-selector'}){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
 
             $item_ref->{id} = $holding_id++;
             
-            push @{$item_ref->{'0004'}}, {
+            push @{$item_ref->{fields}{'0004'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $titleid,
@@ -364,7 +376,7 @@ sub convert_buffer {
             
             foreach my $kategind (keys %$content_ref){
                 if (defined $convconfig->{'mex'}{$kategind}){
-                    push @{$item_ref->{$convconfig->{'mex'}{$kategind}}}, {
+                    push @{$item_ref->{fields}{$convconfig->{'mex'}{$kategind}}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content_ref->{$kategind},

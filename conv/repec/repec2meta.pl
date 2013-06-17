@@ -81,12 +81,12 @@ open (CLASSIFICATION ,"|buffer | gzip > meta.classification.gz");
 open (SUBJECT,     ,"|buffer | gzip > meta.subject.gz");
 open (HOLDING,     ,"|buffer | gzip > meta.holding.gz");
 
-binmode(TITLE,     ":utf8");
-binmode(PERSON,     ":utf8");
-binmode(CORPORATEBODY,     ":utf8");
-binmode(CLASSIFICATION,":utf8");
-binmode(SUBJECT,     ":utf8");
-binmode(HOLDING,     ":utf8");
+binmode(TITLE);
+binmode(PERSON);
+binmode(CORPORATEBODY);
+binmode(CLASSIFICATION);
+binmode(SUBJECT);
+binmode(HOLDING);
 
 our $parser = XML::LibXML->new();
 #    $parser->keep_blanks(0);
@@ -96,7 +96,10 @@ our $parser = XML::LibXML->new();
 sub process_file {
     return unless ($File::Find::name=~/.amf.xml$/);
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
+    
     my $multcount_ref = {};
     
 #    print "Processing ".$File::Find::name."\n";
@@ -142,10 +145,12 @@ sub process_file {
             my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                     
             if ($new) {
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $person_id;
 
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $content,
@@ -157,7 +162,7 @@ sub process_file {
             
             my $mult = ++$multcount_ref->{'0101'};
 
-            push @{$title_ref->{'0101'}}, {
+            push @{$title_ref->{fields}{'0101'}}, {
                 mult       => $mult,
                 subfield   => '',
                 id         => $person_id,
@@ -172,7 +177,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0331'};
 
-            push @{$title_ref->{'0331'}}, {
+            push @{$title_ref->{fields}{'0331'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -185,7 +190,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0750'};
 
-            push @{$title_ref->{'0750'}}, {
+            push @{$title_ref->{fields}{'0750'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -200,7 +205,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0004'};
 
-            push @{$title_ref->{'0004'}}, {
+            push @{$title_ref->{fields}{'0004'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $id,
@@ -213,7 +218,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0412'};
 
-            push @{$title_ref->{'0412'}}, {
+            push @{$title_ref->{fields}{'0412'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -227,7 +232,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0800'};
 
-            push @{$title_ref->{'0800'}}, {
+            push @{$title_ref->{fields}{'0800'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -240,7 +245,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0662'};
 
-            push @{$title_ref->{'0662'}}, {
+            push @{$title_ref->{fields}{'0662'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -271,10 +276,12 @@ sub process_file {
             my ($person_id,$new)  = OpenBib::Conv::Common::Util::get_person_id($content);
                     
             if ($new) {
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $person_id;
 
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $content,
@@ -285,7 +292,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0100'};
 
-            push @{$title_ref->{'0100'}}, {
+            push @{$title_ref->{fields}{'0100'}}, {
                 mult       => $mult,
                 subfield   => '',
                 id         => $person_id,
@@ -299,10 +306,12 @@ sub process_file {
             my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                     
             if ($new) {
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $person_id;
 
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $content,
@@ -313,7 +322,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0101'};
 
-            push @{$title_ref->{'0101'}}, {
+            push @{$title_ref->{fields}{'0101'}}, {
                 mult       => $mult,
                 subfield   => '',
                 id         => $person_id,
@@ -327,7 +336,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0331'};
 
-            push @{$title_ref->{'0331'}}, {
+            push @{$title_ref->{fields}{'0331'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -340,7 +349,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0750'};
 
-            push @{$title_ref->{'0750'}}, {
+            push @{$title_ref->{fields}{'0750'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -355,7 +364,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0004'};
 
-            push @{$title_ref->{'0004'}}, {
+            push @{$title_ref->{fields}{'0004'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $id,
@@ -368,7 +377,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0412'};
 
-            push @{$title_ref->{'0412'}}, {
+            push @{$title_ref->{fields}{'0412'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -382,7 +391,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0800'};
 
-            push @{$title_ref->{'0800'}}, {
+            push @{$title_ref->{fields}{'0800'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -390,7 +399,7 @@ sub process_file {
         }
 
 	# Alle Texte sind online
-	push @{$title_ref->{'4400'}}, {
+	push @{$title_ref->{fields}{'4400'}}, {
 	    mult     => 1,
 	    subfield => '',
 	    content  => 'online',
@@ -402,7 +411,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0662'};
             
-            push @{$title_ref->{'0662'}}, {
+            push @{$title_ref->{fields}{'0662'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -414,7 +423,7 @@ sub process_file {
             my $content = $item->textContent;
             my $mult = ++$multcount_ref->{'0663'};
             
-            push @{$title_ref->{'0663'}}, {
+            push @{$title_ref->{fields}{'0663'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -426,7 +435,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0425'};
             
-            push @{$title_ref->{'0425'}}, {
+            push @{$title_ref->{fields}{'0425'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $date,
@@ -449,7 +458,7 @@ sub process_file {
 
             my $mult = ++$multcount_ref->{'0425'};
             
-            push @{$title_ref->{'0425'}}, {
+            push @{$title_ref->{fields}{'0425'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $issuedate,
@@ -474,7 +483,7 @@ sub process_file {
 
             my $content = $journaltitle.(($volume)?" Volume $volume ":"").(($issue)?" Issue $issue ":"").(($issuedate)?" ($issuedate) ":"").(($startpage && $endpage)?" Pages $startpage - $endpage":"");
 
-            push @{$title_ref->{'0590'}}, {
+            push @{$title_ref->{fields}{'0590'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $content,
@@ -500,10 +509,12 @@ sub process_file {
                     my ($subject_id,$new)  = OpenBib::Conv::Common::Util::get_subject_id($part);
                     
                     if ($new) {
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $subject_id;
                         
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $part,
@@ -514,7 +525,7 @@ sub process_file {
 
                     my $mult = ++$multcount_ref->{'0710'};
 
-                    push @{$title_ref->{'0710'}}, {
+                    push @{$title_ref->{fields}{'0710'}}, {
                         mult       => $mult,
                         subfield   => '',
                         id         => $subject_id,
@@ -541,10 +552,12 @@ sub process_file {
                     my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($part);
                     
                     if ($new) {
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $classification_id;
                         
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $part,
@@ -555,7 +568,7 @@ sub process_file {
                     
                     my $mult = ++$multcount_ref->{'0700'};
                     
-                    push @{$title_ref->{'0700'}}, {
+                    push @{$title_ref->{fields}{'0700'}}, {
                         mult       => $mult,
                         subfield   => '',
                         id         => $classification_id,

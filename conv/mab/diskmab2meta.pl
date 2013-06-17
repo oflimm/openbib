@@ -51,6 +51,10 @@ HELP
 exit;
 }
 
+print STDERR "This file generates an obsolete metadataformat and needs updating\n";
+
+exit;
+
 $autidn=1;
 $autidx=0;
 

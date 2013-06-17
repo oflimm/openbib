@@ -86,12 +86,12 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-open (TITLE,         ">:utf8","meta.title");
-open (PERSON,        ">:utf8","meta.person");
-open (CORPORATEBODY, ">:utf8","meta.corporatebody");
-open (CLASSIFICATION,">:utf8","meta.classification");
-open (SUBJECT,       ">:utf8","meta.subject");
-open (HOLDING,       ">:utf8","meta.holding");
+open (TITLE,         ">:raw","meta.title");
+open (PERSON,        ">:raw","meta.person");
+open (CORPORATEBODY, ">:raw","meta.corporatebody");
+open (CLASSIFICATION,">:raw","meta.classification");
+open (SUBJECT,       ">:raw","meta.subject");
+open (HOLDING,       ">:raw","meta.holding");
 
 my $twig= XML::Twig->new(
    TwigHandlers => {
@@ -122,7 +122,9 @@ sub parse_metadata {
 sub parse_titset {
     my($t, $titset)= @_;
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
     
     my $id=$titset->{'att'}->{'RECORDID'};
 
@@ -178,9 +180,11 @@ sub parse_titset {
         my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($singleverf);
 	
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $person_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $singleverf,
@@ -189,7 +193,7 @@ sub parse_titset {
             print PERSON encode_json $item_ref, "\n";
         }
 
-        push @{$title_ref->{'0100'}}, {
+        push @{$title_ref->{fields}{'0100'}}, {
             mult       => $person_mult,
             subfield   => '',
             id         => $person_id,
@@ -212,9 +216,11 @@ sub parse_titset {
                 my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($swtans);
                 
                 if ($new){
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $subject_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $swtans,
@@ -223,7 +229,7 @@ sub parse_titset {
                     print SUBJECT encode_json $item_ref, "\n";
                 }
                 
-                push @{$title_ref->{'0710'}}, {
+                push @{$title_ref->{fields}{'0710'}}, {
                     mult       => $subject_mult,
                     subfield   => '',
                     id         => $subject_id,
@@ -248,7 +254,7 @@ sub parse_titset {
         push @titel, $cols[$metadata{'TitelJap'}]->first_child('DATA')->text();
     }
     if (@titel){
-        push @{$title_ref->{'0331'}}, {
+        push @{$title_ref->{fields}{'0331'}}, {
             content  => join(' / ',@titel),
             subfield => '',
             mult     => 1,
@@ -257,7 +263,7 @@ sub parse_titset {
 
     # Ausgabe
     if(exists $metadata{'Ausgabe'} && $cols[$metadata{'Ausgabe'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0403'}}, {
+        push @{$title_ref->{fields}{'0403'}}, {
             content  => $cols[$metadata{'Ausgabe'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -275,7 +281,7 @@ sub parse_titset {
     }
 
     if (@verlag){
-        push @{$title_ref->{'0412'}}, {
+        push @{$title_ref->{fields}{'0412'}}, {
             content  => join(' / ',@verlag),
             subfield => '',
             mult     => 1,
@@ -291,7 +297,7 @@ sub parse_titset {
         push @verlagsorte, $cols[$metadata{'OrtJap'}]->first_child('DATA')->text();
     }
     if (@verlagsorte){
-        push @{$title_ref->{'0410'}}, {
+        push @{$title_ref->{fields}{'0410'}}, {
             content  => join(' / ',@verlagsorte),
             subfield => '',
             mult     => 1,
@@ -300,7 +306,7 @@ sub parse_titset {
 
     # Umfang/Format
     if(exists $metadata{'Kollation'} && $cols[$metadata{'Kollation'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0433'}}, {
+        push @{$title_ref->{fields}{'0433'}}, {
             content  => $cols[$metadata{'Kollation'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -309,7 +315,7 @@ sub parse_titset {
 
     # Jahr
     if(exists $metadata{'Jahr'} && $cols[$metadata{'Jahr'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0425'}}, {
+        push @{$title_ref->{fields}{'0425'}}, {
             content  => $cols[$metadata{'Jahr'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -331,7 +337,7 @@ sub parse_titset {
         push @gesamttitel, $cols[$metadata{'ReiheJap'}]->first_child('DATA')->text();
     }
     if (@gesamttitel){
-        push @{$title_ref->{'0451'}}, {
+        push @{$title_ref->{fields}{'0451'}}, {
             content  => join(' / ',@gesamttitel),
             subfield => '',
             mult     => 1,
@@ -339,7 +345,7 @@ sub parse_titset {
     }
     
     if(exists $metadata{'Sprache'} && $cols[$metadata{'Sprache'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0015'}}, {
+        push @{$title_ref->{fields}{'0015'}}, {
             content  => $cols[$metadata{'Sprache'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -347,7 +353,7 @@ sub parse_titset {
     }
 
     if(exists $metadata{'Fußnote'} && $cols[$metadata{'Fußnote'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0501'}}, {
+        push @{$title_ref->{fields}{'0501'}}, {
             content  => $cols[$metadata{'Fußnote'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -355,7 +361,7 @@ sub parse_titset {
     }
 
     if(exists $metadata{'Inventar'} && $cols[$metadata{'Inventar'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0005'}}, {
+        push @{$title_ref->{fields}{'0005'}}, {
             content  => $cols[$metadata{'Inventar'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -364,7 +370,7 @@ sub parse_titset {
 
     # Quelle
     if(exists $metadata{'Jg,Heft,Bd'} && $cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0590'}}, {
+        push @{$title_ref->{fields}{'0590'}}, {
             content  => $cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -375,7 +381,7 @@ sub parse_titset {
     my $isbn_mult = 1;
     if(exists $metadata{'ISBN'} && $cols[$metadata{'ISBN'}]->first_child('DATA')->text()){
         foreach my $isbn (split /\n/, $cols[$metadata{'ISBN'}]->first_child('DATA')->text()){
-            push @{$title_ref->{'0540'}}, { 
+            push @{$title_ref->{fields}{'0540'}}, { 
                 content  => $isbn, 
                 subfield => '',
                 mult     => $isbn_mult++,
@@ -385,7 +391,7 @@ sub parse_titset {
 
     # Datum
     if(exists $metadata{'Datum'} && $cols[$metadata{'Datum'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0002'}}, {
+        push @{$title_ref->{fields}{'0002'}}, {
             content  => $cols[$metadata{'Datum'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -393,7 +399,7 @@ sub parse_titset {
     }
 
     if(exists $metadata{'Standort'} && $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0016'}}, {
+        push @{$title_ref->{fields}{'0016'}}, {
             content  => $cols[$metadata{'Standort'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -401,7 +407,7 @@ sub parse_titset {
     }
 
     if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
-        push @{$title_ref->{'0014'}}, {
+        push @{$title_ref->{fields}{'0014'}}, {
             content  => $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
@@ -413,16 +419,18 @@ sub parse_titset {
     # Exemplardaten
     if ((exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()) || $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
 
-        my $item_ref = {};
+        my $item_ref = {
+            'fields' => {},
+        };
         $item_ref->{id} = $mexidn;
-        push @{$item_ref->{'0004'}}, {
+        push @{$item_ref->{fields}{'0004'}}, {
             mult     => 1,
             subfield => '',
             content  => $id,
         };
 
         if(exists $metadata{'Standort'} && $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
-            push @{$item_ref->{'0016'}}, {
+            push @{$item_ref->{fields}{'0016'}}, {
                 content  => $cols[$metadata{'Standort'}]->first_child('DATA')->text(),
                 subfield => '',
                 mult     => 1,
@@ -430,7 +438,7 @@ sub parse_titset {
         }
         
         if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
-            push @{$item_ref->{'0014'}}, {
+            push @{$item_ref->{fields}{'0014'}}, {
                 content  => $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text(),
                 subfield => '',
                 mult     => 1,

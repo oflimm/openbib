@@ -88,11 +88,11 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-open (TIT,     ">:utf8","meta.title");
-open (AUT,     ">:utf8","meta.person");
-open (KOR,     ">:utf8","meta.corporatebody");
-open (NOTATION,">:utf8","meta.classification");
-open (SWT,     ">:utf8","meta.subject");
+open (TIT,     ">:raw","meta.title");
+open (AUT,     ">:raw","meta.person");
+open (KOR,     ">:raw","meta.corporatebody");
+open (NOTATION,">:raw","meta.classification");
+open (SWT,     ">:raw","meta.subject");
 
 my %have_author = ();
 my %have_work   = ();
@@ -180,9 +180,11 @@ while (<OL>){
         if ($name){
             $name = konv($name);
             
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $key;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $name,
@@ -192,7 +194,7 @@ while (<OL>){
                 my $mult = 1;
                 foreach my $alt_name (@{$recordset->{alternate_names}}){
                     next unless ($alt_name);
-                    push @{$item_ref->{'0830'}}, {
+                    push @{$item_ref->{fields}{'0830'}}, {
                         mult     => $mult,
                         subfield => '',
                         content  => $alt_name,
@@ -214,7 +216,7 @@ while (<OL>){
                 $bio =~s{}{}g;
                 
                 if ($bio){
-                    push @{$item_ref->{'0302'}}, {
+                    push @{$item_ref->{fields}{'0302'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $bio,
@@ -222,14 +224,14 @@ while (<OL>){
                 }
             }
 
-            push @{$item_ref->{'0304'}}, {
+            push @{$item_ref->{fields}{'0304'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $recordset->{birth_date},
             } if ($recordset->{birth_date});
 
             
-            push @{$item_ref->{'0306'}}, {
+            push @{$item_ref->{fields}{'0306'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $recordset->{death_date},
@@ -239,7 +241,7 @@ while (<OL>){
                 my $mult = 1;
                 foreach my $photo_id (@{$recordset->{photos}}){
                     next unless ($photo_id > 0);
-                    push @{$item_ref->{'0308'}}, {
+                    push @{$item_ref->{fields}{'0308'}}, {
                         mult     => $mult,
                         subfield => '',
                         content  => $photo_id,
@@ -248,20 +250,20 @@ while (<OL>){
                 }
             }
 
-            push @{$item_ref->{'0309'}}, {
+            push @{$item_ref->{fields}{'0309'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $recordset->{wikipedia},
             } if ($recordset->{wikipedia});
 
-            push @{$item_ref->{'0313'}}, {
+            push @{$item_ref->{fields}{'0313'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $recordset->{website},
             } if ($recordset->{website});
 
 
-            push @{$item_ref->{'0314'}}, {
+            push @{$item_ref->{fields}{'0314'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $recordset->{location},
@@ -349,7 +351,9 @@ while (<OL>){
     my $key = $recordset->{key} ;
     $key =~s{^/books/}{};
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
     
     $logger->debug(YAML::Dump($recordset));
 
@@ -397,7 +401,7 @@ while (<OL>){
             my $lang = $item_ref->{key};
             $lang =~s{^/languages/}{};
 
-            push @{$title_ref->{'0015'}}, {
+            push @{$title_ref->{fields}{'0015'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $lang,
@@ -412,7 +416,7 @@ while (<OL>){
             $title=konv($recordset->{title_prefix})." $title";
         }
 
-        push @{$title_ref->{'0331'}}, {
+        push @{$title_ref->{fields}{'0331'}}, {
             mult     => 1,
             subfield => '',
             content  => $title,
@@ -420,7 +424,7 @@ while (<OL>){
     }
 
     if (exists $recordset->{subtitle}){
-        push @{$title_ref->{'0335'}}, {
+        push @{$title_ref->{fields}{'0335'}}, {
             mult     => 1,
             subfield => '',
             content  => konv($recordset->{subtitle}),
@@ -430,7 +434,7 @@ while (<OL>){
     if (exists $recordset->{other_titles}){
         my $mult=1;
         foreach my $item (@{$recordset->{other_titles}}){
-            push @{$title_ref->{'0370'}}, {
+            push @{$title_ref->{fields}{'0370'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => konv($item),
@@ -440,7 +444,7 @@ while (<OL>){
     }
 
     if (exists $recordset->{by_statement}){
-        push @{$title_ref->{'0359'}}, {
+        push @{$title_ref->{fields}{'0359'}}, {
             mult     => 1,
             subfield => '',
             content  => konv($recordset->{by_statement}),
@@ -450,7 +454,7 @@ while (<OL>){
     if (exists $recordset->{publishing_places}){
         my $mult=1;
         foreach my $item (@{$recordset->{publishing_places}}){
-            push @{$title_ref->{'0410'}}, {
+            push @{$title_ref->{fields}{'0410'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => konv($item),
@@ -462,7 +466,7 @@ while (<OL>){
     if (exists $recordset->{series}){
         my $mult=1;
         foreach my $item (@{$recordset->{series}}){
-            push @{$title_ref->{'0451'}}, {
+            push @{$title_ref->{fields}{'0451'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => konv($item),
@@ -474,7 +478,7 @@ while (<OL>){
     if (exists $recordset->{publishers}){
         my $mult=1;
         foreach my $item (@{$recordset->{publishers}}){
-            push @{$title_ref->{'0412'}}, {
+            push @{$title_ref->{fields}{'0412'}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => konv($item),
@@ -484,7 +488,7 @@ while (<OL>){
     }
 
     if (exists $recordset->{edition_name}){
-        push @{$title_ref->{'0403'}}, {
+        push @{$title_ref->{fields}{'0403'}}, {
             mult     => 1,
             subfield => '',
             content  => konv($recordset->{edition_name}),
@@ -492,7 +496,7 @@ while (<OL>){
     }
 
     if (exists $recordset->{publish_date}){
-        push @{$title_ref->{'0425'}}, {
+        push @{$title_ref->{fields}{'0425'}}, {
             mult     => 1,
             subfield => '',
             content  => konv($recordset->{publish_date}),
@@ -500,7 +504,7 @@ while (<OL>){
     }
 
     if (exists $recordset->{pagination}){
-        push @{$title_ref->{'0433'}}, {
+        push @{$title_ref->{fields}{'0433'}}, {
             mult     => 1,
             subfield => '',
             content  => konv($recordset->{pagination}),
@@ -508,19 +512,19 @@ while (<OL>){
     }
 
     if (exists $recordset->{ocaid}){
-        push @{$title_ref->{'0662'}}, {
+        push @{$title_ref->{fields}{'0662'}}, {
             mult     => 1,
             subfield => '',
             content  => 'http://archive.org/details/'.$recordset->{ocaid},
         };
-        push @{$title_ref->{'2662'}}, {
+        push @{$title_ref->{fields}{'2662'}}, {
             mult     => 1,
             subfield => '',
             content  => $recordset->{ocaid},
         };
     }
 
-    push @{$title_ref->{'4410'}}, {
+    push @{$title_ref->{fields}{'4410'}}, {
         mult     => 1,
         subfield => '',
         content  => 'Digital',
@@ -534,7 +538,7 @@ while (<OL>){
             my $key     = $author_ref->{key};
             $key =~s{/authors/}{};
 
-            push @{$title_ref->{'0100'}}, {
+            push @{$title_ref->{fields}{'0100'}}, {
                 mult       => $mult,
                 subfield   => '',
                 id         => $key,
@@ -561,9 +565,11 @@ while (<OL>){
                 my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                 
                 if ($new){
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $person_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content,
@@ -572,7 +578,7 @@ while (<OL>){
                     print AUT encode_json $item_ref, "\n";
                 }
                 
-                push @{$title_ref->{'0101'}}, {
+                push @{$title_ref->{fields}{'0101'}}, {
                     mult       => $mult,
                     subfield   => '',
                     id         => $person_id,
@@ -596,9 +602,11 @@ while (<OL>){
                 my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
                 
                 if ($new){
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $classification_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content,
@@ -607,7 +615,7 @@ while (<OL>){
                     print NOTATION encode_json $item_ref, "\n";
                 }
 
-                push @{$title_ref->{'0700'}}, {
+                push @{$title_ref->{fields}{'0700'}}, {
                     mult       => $classification_mult,
                     subfield   => '',
                     id         => $classification_id,
@@ -627,9 +635,11 @@ while (<OL>){
                 my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_classification_id($content);
                 
                 if ($new){
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $classification_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content,
@@ -638,7 +648,7 @@ while (<OL>){
                     print NOTATION encode_json $item_ref, "\n";
                 }
                 
-                push @{$title_ref->{'0700'}}, {
+                push @{$title_ref->{fields}{'0700'}}, {
                     mult       => $classification_mult,
                     subfield   => '',
                     id         => $classification_id,
@@ -669,9 +679,11 @@ while (<OL>){
                     my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
                     
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $subject_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $content,
@@ -680,7 +692,7 @@ while (<OL>){
                         print SWT encode_json $item_ref, "\n";
                     }
                     
-                    push @{$title_ref->{'0710'}}, {
+                    push @{$title_ref->{fields}{'0710'}}, {
                         mult       => $subject_mult,
                         subfield   => '',
                         id         => $subject_id,
@@ -708,9 +720,11 @@ while (<OL>){
                     my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
                     
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $subject_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $content,
@@ -719,7 +733,7 @@ while (<OL>){
                         print SWT encode_json $item_ref, "\n";
                     }
                     
-                    push @{$title_ref->{'0710'}}, {
+                    push @{$title_ref->{fields}{'0710'}}, {
                         mult       => $subject_mult,
                         subfield   => '',
                         id         => $subject_id,

@@ -90,11 +90,11 @@ my $dbh=DBI->connect("DBI:$dbimodule:dbname=$dbname;host=$dbhost;port=$port", $d
 my $result=$dbh->prepare("select pid,cnt,lng from dc_tit") or die "Error -- $DBI::errstr";
 $result->execute();
 
-open (TITLE,     ">:utf8","meta.title");
-open (PERSON,     ">:utf8","meta.person");
-open (CORPORATEBODY,     ">:utf8","meta.corporatebody");
-open (NOTATION,">:utf8","meta.classification");
-open (SUBJECT,     ">:utf8","meta.subject");
+open (TITLE,         ">:raw","meta.title");
+open (PERSON,        ">:raw","meta.person");
+open (CORPORATEBODY, ">:raw","meta.corporatebody");
+open (NOTATION,      ">:raw","meta.classification");
+open (SUBJECT,       ">:raw","meta.subject");
 
 my $titlecount = 1;
 while (my $res=$result->fetchrow_hashref){
@@ -107,7 +107,9 @@ while (my $res=$result->fetchrow_hashref){
 
     $logger->debug("ID: $pid - HST: $hst - LANG: $lang");
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
 
     $title_ref->{id} = $pid;
     
@@ -133,9 +135,11 @@ while (my $res=$result->fetchrow_hashref){
         my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($urh);
 	
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $person_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $urh,
@@ -144,7 +148,7 @@ while (my $res=$result->fetchrow_hashref){
             print PERSON encode_json $item_ref, "\n";
         }
 
-        push @{$title_ref->{'0100'}}, {
+        push @{$title_ref->{fields}{'0100'}}, {
             mult       => $person_mult,
             subfield   => '',
             id         => $person_id,
@@ -165,9 +169,11 @@ while (my $res=$result->fetchrow_hashref){
         my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($urh);
 	
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $person_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $urh,
@@ -176,7 +182,7 @@ while (my $res=$result->fetchrow_hashref){
             print PERSON encode_json $item_ref, "\n";
         }
 
-        push @{$title_ref->{'0100'}}, {
+        push @{$title_ref->{fields}{'0100'}}, {
             mult       => $person_mult,
             subfield   => '',
             id         => $person_id,
@@ -200,9 +206,11 @@ while (my $res=$result->fetchrow_hashref){
         my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($kor);
 	
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $corporatebody_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $kor,
@@ -211,7 +219,7 @@ while (my $res=$result->fetchrow_hashref){
             print CORPORATEBODY encode_json $item_ref, "\n";
         }
 
-        push @{$title_ref->{'0201'}}, {
+        push @{$title_ref->{fields}{'0201'}}, {
             mult       => $corporatebody_mult,
             subfield   => '',
             id         => $corporatebody_id,
@@ -232,9 +240,11 @@ while (my $res=$result->fetchrow_hashref){
         my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($kor);
 	
         if ($new){
-            my $item_ref = {};
+            my $item_ref = {
+                'fields' => {},
+            };
             $item_ref->{id} = $corporatebody_id;
-            push @{$item_ref->{'0800'}}, {
+            push @{$item_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $kor,
@@ -243,7 +253,7 @@ while (my $res=$result->fetchrow_hashref){
             print CORPORATEBODY encode_json $item_ref, "\n";
         }
 
-        push @{$title_ref->{'0201'}}, {
+        push @{$title_ref->{fields}{'0201'}}, {
             mult       => $corporatebody_mult,
             subfield   => '',
             id         => $corporatebody_id,
@@ -257,7 +267,7 @@ while (my $res=$result->fetchrow_hashref){
 
     $hst=stripjunk($hst);
 
-    push @{$title_ref->{'0331'}}, {
+    push @{$title_ref->{fields}{'0331'}}, {
         content  => $hst,
         subfield => '',
         mult     => 1,
@@ -279,9 +289,11 @@ while (my $res=$result->fetchrow_hashref){
             my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($swtg);
             
             if ($new){
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $subject_id;
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $swtg,
@@ -290,7 +302,7 @@ while (my $res=$result->fetchrow_hashref){
                 print SUBJECT encode_json $item_ref, "\n";
             }
 
-            push @{$title_ref->{'0710'}}, {
+            push @{$title_ref->{fields}{'0710'}}, {
                 mult       => $subject_mult,
                 subfield   => '',
                 id         => $subject_id,
@@ -304,9 +316,11 @@ while (my $res=$result->fetchrow_hashref){
             my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($swte);
 
             if ($new){
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $subject_id;
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $swte,
@@ -315,7 +329,7 @@ while (my $res=$result->fetchrow_hashref){
                 print SUBJECT encode_json $item_ref, "\n";
             }
 
-            push @{$title_ref->{'0710'}}, {
+            push @{$title_ref->{fields}{'0710'}}, {
                 mult       => $subject_mult,
                 subfield   => '',
                 id         => $subject_id,
@@ -339,7 +353,7 @@ while (my $res=$result->fetchrow_hashref){
         chomp($abs);
         $abs=stripjunk($abs);
         if ($abs){
-            push @{$title_ref->{'0750'}}, {
+            push @{$title_ref->{fields}{'0750'}}, {
                 content  => $abs,
                 subfield => '',
                 mult     => $abstract_mult++,
@@ -362,7 +376,7 @@ while (my $res=$result->fetchrow_hashref){
         $content=stripjunk($content);
 
         if ($formattab{$content}){
-            push @{$title_ref->{'0435'}}, {
+            push @{$title_ref->{fields}{'0435'}}, {
                 content  => $formattab{$content},
                 subfield => '',
                 mult     => $media_mult++,
@@ -384,7 +398,7 @@ while (my $res=$result->fetchrow_hashref){
         $content=stripjunk($content);
 
         if ($content){
-            push @{$title_ref->{'0433'}}, {
+            push @{$title_ref->{fields}{'0433'}}, {
                 content  => "$content S.",
                 subfield => '',
                 mult     => $coll_mult++,
@@ -394,7 +408,7 @@ while (my $res=$result->fetchrow_hashref){
     
     $result1->finish();
 
-#    push @{$title_ref->{'0662'}}, {
+#    push @{$title_ref->{fields}{'0662'}}, {
 #        content  => "http://www.econbiz.de/admin/onteam/einzelansicht.shtml?pid=$pid",
 #        subfield => '',
 #        mult     => 1,
@@ -411,7 +425,7 @@ while (my $res=$result->fetchrow_hashref){
         $content=stripjunk($content);
 
         if ($content){
-            push @{$title_ref->{'0662'}}, {
+            push @{$title_ref->{fields}{'0662'}}, {
                 content  => $content,
                 subfield => '',
                 mult     => $url_mult++,
@@ -433,7 +447,7 @@ while (my $res=$result->fetchrow_hashref){
         $content=stripjunk($content);
 
         if ($content){
-            push @{$title_ref->{'0800'}}, {
+            push @{$title_ref->{fields}{'0800'}}, {
                 content  => $content,
                 subfield => '',
                 mult     => $type_mult++,

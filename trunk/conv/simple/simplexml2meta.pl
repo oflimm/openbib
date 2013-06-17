@@ -63,12 +63,12 @@ exit;
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
-open (TITLE,         ">:utf8","meta.title");
-open (PERSON,        ">:utf8","meta.person");
-open (CORPORATEBODY, ">:utf8","meta.corporatebody");
-open (CLASSIFICATION,">:utf8","meta.classification");
-open (SUBJECT,       ">:utf8","meta.subject");
-open (HOLDING,       ">:utf8","meta.holding");
+open (TITLE,         ">:raw","meta.title");
+open (PERSON,        ">:raw","meta.person");
+open (CORPORATEBODY, ">:raw","meta.corporatebody");
+open (CLASSIFICATION,">:raw","meta.classification");
+open (SUBJECT,       ">:raw","meta.subject");
+open (HOLDING,       ">:raw","meta.holding");
 
 my $twig= XML::Twig::XPath->new(
    TwigHandlers => {
@@ -93,7 +93,9 @@ close(HOLDING);
 sub parse_record {
     my($t, $titset)= @_;
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
 
     my @ids= $titset->get_xpath($convconfig->{uniqueidfield});
 
@@ -124,7 +126,7 @@ sub parse_record {
             if ($convconfig->{filter}{$kateg}{filter_add_year}){
                 my $new_content = filter_match($content,$convconfig->{filter}{$kateg}{filter_add_year}{regexp});
 
-                push @{$title_ref->{$convconfig->{filter}{$kateg}{filter_add_year}{category}}}, {
+                push @{$title_ref->{fields}{$convconfig->{filter}{$kateg}{filter_add_year}{category}}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $new_content,
@@ -145,7 +147,7 @@ sub parse_record {
 
         my $mult = 1;
         foreach my $part (@parts){
-            push @{$title_ref->{$convconfig->{title}{$kateg}}}, {
+            push @{$title_ref->{fields}{$convconfig->{title}{$kateg}}}, {
                 mult     => $mult,
                 subfield => '',
                 content  => $part,
@@ -192,9 +194,11 @@ sub parse_record {
             my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($part);
             
             if ($new){
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $person_id;
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $part,
@@ -205,7 +209,7 @@ sub parse_record {
             
             my $new_category = $convconfig->{person}{$kateg};
 
-            push @{$title_ref->{$new_category}}, {
+            push @{$title_ref->{fields}{$new_category}}, {
                 mult       => $mult,
                 subfield   => '',
                 id         => $person_id,
@@ -256,9 +260,11 @@ sub parse_record {
             my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
             
             if ($new){
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $corporatebody_id;
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $part,
@@ -269,7 +275,7 @@ sub parse_record {
             
             my $new_category = $convconfig->{corporatebody}{$kateg};
 
-            push @{$title_ref->{$new_category}}, {
+            push @{$title_ref->{fields}{$new_category}}, {
                 mult       => $mult,
                 subfield   => '',
                 id         => $corporatebody_id,
@@ -320,9 +326,11 @@ sub parse_record {
             my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
             
             if ($new){
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $classification_id;
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $part,
@@ -333,7 +341,7 @@ sub parse_record {
             
             my $new_category = $convconfig->{classification}{$kateg};
 
-            push @{$title_ref->{$new_category}}, {
+            push @{$title_ref->{fields}{$new_category}}, {
                 mult       => $mult,
                 subfield   => '',
                 id         => $classification_id,
@@ -384,9 +392,11 @@ sub parse_record {
             my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
             
             if ($new){
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $subject_id;
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $part,
@@ -397,7 +407,7 @@ sub parse_record {
             
             my $new_category = $convconfig->{subject}{$kateg};
 
-            push @{$title_ref->{$new_category}}, {
+            push @{$title_ref->{fields}{$new_category}}, {
                 mult       => $mult,
                 subfield   => '',
                 id         => $subject_id,
@@ -454,16 +464,18 @@ sub parse_record {
     }
 
     foreach my $part (keys %mex){
-        my $item_ref = {};
+        my $item_ref = {
+            'fields' => {},
+        };
         $item_ref->{id} = $mexidn;
-        push @{$item_ref->{'0004'}}, {
+        push @{$item_ref->{fields}{'0004'}}, {
             mult     => 1,
             subfield => '',
             content  => $title_ref->{id},
         };
 
         foreach my $category (keys %{$mex{$part}}){
-            push @{$item_ref->{$category}}, {
+            push @{$item_ref->{fields}{$category}}, {
                 mult     => 1,
                 subfield => '',
                 content  => $mex{$part}{$category},
@@ -480,7 +492,7 @@ sub parse_record {
 
     
     if ($convconfig->{defaultmediatype}){
-        push @{$title_ref->{'4410'}}, {
+        push @{$title_ref->{fields}{'4410'}}, {
             mult     => 1,
             subfield => '',
             content  => $convconfig->{defaultmediatype},

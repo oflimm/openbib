@@ -70,12 +70,14 @@ my $convconfig = YAML::Syck::LoadFile($configfile);
 print "Bearbeite Personen\n";
 
 if (-e $personfile){
-    open(PEROUT,'>:utf8','meta.person');
+    open(PEROUT,'>:raw','meta.person');
     
     tie @mab2perdata, 'Tie::MAB2::Recno', file => $personfile;
     
     foreach my $rawrec (@mab2perdata){
-        my $item_ref = {};
+        my $item_ref = {
+            'fields' => {},
+        };
         
         my $rec = MAB2::Record::Base->new($rawrec);
         #    print $rec->readable."\n----------------------\n";    
@@ -119,14 +121,14 @@ if (-e $personfile){
 
             if ($newcategory && $convconfig->{person}{$category}{mult} && $content){
                 my $multcount=++$multcount_ref->{$newcategory};
-                push @{$item_ref->{$newcategory}},{
+                push @{$item_ref->{fields}{$newcategory}},{
                     mult     => $multcount,
                     content  => $content,
                     subfield => '',
                 };
             }
             elsif ($newcategory && $content){
-                push @{$item_ref->{$newcategory}},{
+                push @{$item_ref->{fields}{$newcategory}},{
                     mult     => 1,
                     content  => $content,
                     subfield => '',
@@ -148,12 +150,14 @@ else {
 print "Bearbeite Koerperschaften\n";
 
 if (-e $corporatebodyfile){
-    open(KOROUT,'>:utf8','meta.corporatebody');
+    open(KOROUT,'>:raw','meta.corporatebody');
     
     tie @mab2kordata, 'Tie::MAB2::Recno', file => $corporatebodyfile;
     
     foreach my $rawrec (@mab2kordata){
-        my $item_ref = {};
+        my $item_ref = {
+            'fields' => {},
+        };
 
         my $rec = MAB2::Record::Base->new($rawrec);
         #    print $rec->readable."\n----------------------\n";    
@@ -196,14 +200,14 @@ if (-e $corporatebodyfile){
             
             if ($newcategory && $convconfig->{corporatebody}{$category}{mult} && $content){
                 my $multcount=++$multcount_ref->{$newcategory};
-                push @{$item_ref->{$newcategory}},{
+                push @{$item_ref->{fields}{$newcategory}},{
                     mult     => $multcount,
                     content  => $content,
                     subfield => '',
                 };
             }
             elsif ($newcategory && $content){
-                push @{$item_ref->{$newcategory}},{
+                push @{$item_ref->{fields}{$newcategory}},{
                     mult     => 1,
                     content  => $content,
                     subfield => '',
@@ -225,12 +229,14 @@ else {
 print "Bearbeite Schlagworte\n";
 
 if (-e $subjectfile){
-    open(SWTOUT,'>:utf8','meta.subject');
+    open(SWTOUT,'>:raw','meta.subject');
     
     tie @mab2swtdata, 'Tie::MAB2::Recno', file => $subjectfile;
     
   SWTLOOP: foreach my $rawrec (@mab2swtdata){
-        my $item_ref = {};
+        my $item_ref = {
+            'fields' => {},
+        };
 
         my $rec = MAB2::Record::Base->new($rawrec);
         #    print $rec->readable."\n----------------------\n";    
@@ -275,14 +281,14 @@ if (-e $subjectfile){
             
             if ($newcategory && $convconfig->{subject}{$category}{mult} && $content){
                 my $multcount=++$multcount_ref->{$newcategory};
-                push @{$item_ref->{$newcategory}},{
+                push @{$item_ref->{fields}{$newcategory}},{
                     mult     => $multcount,
                     content  => $content,
                     subfield => '',
                 };
             }
             elsif ($newcategory && $content){
-                push @{$item_ref->{$newcategory}},{
+                push @{$item_ref->{fields}{$newcategory}},{
                     mult     => 1,
                     content  => $content,
                     subfield => '',
@@ -305,12 +311,14 @@ else {
 print "Bearbeite Systematik\n";
 
 if (-e $classificationfile){
-    open(NOTOUT,'>:utf8','meta.classification');
+    open(NOTOUT,'>:raw','meta.classification');
 
     tie @mab2notdata, 'Tie::MAB2::Recno', file => $classificationfile;
     
     foreach my $rawrec (@mab2notdata){
-        my $item_ref = {};
+        my $item_ref = {
+            'fields' => {},
+        };
                 
         my $rec = MAB2::Record::Base->new($rawrec);
         print $rec->readable."\n----------------------\n";    
@@ -353,14 +361,14 @@ if (-e $classificationfile){
             
             if ($newcategory && $convconfig->{classification}{$category}{mult} && $content){
                 my $multcount=++$multcount_ref->{$newcategory};
-                push @{$item_ref->{$newcategory}},{
+                push @{$item_ref->{fields}{$newcategory}},{
                     mult     => $multcount,
                     content  => $content,
                     subfield => '',
                 };
             }
             elsif ($newcategory && $content){
-                push @{$item_ref->{$newcategory}},{
+                push @{$item_ref->{fields}{$newcategory}},{
                     mult     => 1,
                     content  => $content,
                     subfield => '',
@@ -382,28 +390,30 @@ else {
 print "Bearbeite Titel\n";
 
 if (-e $titlefile){
-    open(TITOUT,'>:utf8','meta.title');
+    open(TITOUT,'>:raw','meta.title');
 
     if (!$personfile){
-        open(PEROUT,'>:utf8','meta.person');
+        open(PEROUT,'>:raw','meta.person');
     }
     if (!$corporatebodyfile){
-        open(KOROUT,'>:utf8','meta.corporatebody');
+        open(KOROUT,'>:raw','meta.corporatebody');
     }
     if (!$subjectfile){
-        open(SWTOUT,'>:utf8','meta.subject');
+        open(SWTOUT,'>:raw','meta.subject');
     }
     if (!$classificationfile){
-        open(NOTOUT,'>:utf8','meta.classification');
+        open(NOTOUT,'>:raw','meta.classification');
     }
     if (!$holdingfile){
-        open(MEXOUT,'>:utf8','meta.holding');
+        open(MEXOUT,'>:raw','meta.holding');
     }
     
     tie @mab2titdata, 'Tie::MAB2::Recno', file => $titlefile;
     
     foreach my $rawrec (@mab2titdata){
-        my $title_ref = {};
+        my $title_ref = {
+            'fields' => {},
+        };
 
         my $rec = MAB2::Record::Base->new($rawrec);
 #        print $rec->readable."\n----------------------\n";    
@@ -471,7 +481,7 @@ if (-e $titlefile){
                     ($content)=$tmpcontent=~m/(\d+-.)/;
                 }
 
-                push @{$title_ref->{$newcategory}}, {
+                push @{$title_ref->{fields}{$newcategory}}, {
                     mult       => $multcount,
                     subfield   => '',
                     id         => $content,
@@ -489,9 +499,11 @@ if (-e $titlefile){
                     my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($content);
                     
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $person_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $content,
@@ -502,7 +514,7 @@ if (-e $titlefile){
 
                     my $multcount=++$multcount_ref->{$newcategory};
 
-                    push @{$title_ref->{$newcategory}}, {
+                    push @{$title_ref->{fields}{$newcategory}}, {
                         mult       => $multcount,
                         subfield   => '',
                         id         => $person_id,
@@ -513,9 +525,11 @@ if (-e $titlefile){
                     my ($corporatebody_id,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($content);
                     
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $corporatebody_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => $multcount,
                             subfield => '',
                             content  => $content,
@@ -526,7 +540,7 @@ if (-e $titlefile){
 
                     my $multcount=++$multcount_ref->{$newcategory};
 
-                    push @{$title_ref->{$newcategory}}, {
+                    push @{$title_ref->{fields}{$newcategory}}, {
                         mult       => $multcount,
                         subfield   => '',
                         id         => $corporatebody_id,
@@ -537,9 +551,11 @@ if (-e $titlefile){
                     my ($subject_id,$new)=OpenBib::Conv::Common::Util::get_subject_id($content);
                     
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $subject_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $content,
@@ -549,7 +565,7 @@ if (-e $titlefile){
 
                     my $multcount=++$multcount_ref->{$newcategory};
 
-                    push @{$title_ref->{$newcategory}}, {
+                    push @{$title_ref->{fields}{$newcategory}}, {
                         mult       => $multcount,
                         subfield   => '',
                         id         => $subject_id,
@@ -560,9 +576,11 @@ if (-e $titlefile){
                     my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($content);
                     
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $classification_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $content,
@@ -573,7 +591,7 @@ if (-e $titlefile){
 
                     my $multcount=++$multcount_ref->{$newcategory};
 
-                    push @{$title_ref->{$newcategory}}, {
+                    push @{$title_ref->{fields}{$newcategory}}, {
                         mult       => $multcount,
                         subfield   => '',
                         id         => $classification_id,
@@ -617,14 +635,14 @@ if (-e $titlefile){
 
                         if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
                             my $multcount=++$multcount_ref->{$newcategory};
-                            push @{$title_ref->{$newcategory}},{
+                            push @{$title_ref->{fields}{$newcategory}},{
                                 mult     => $multcount,
                                 content  => $thiscontent,
                                 subfield => $subfield,
                             };
                         }
                         elsif ($newcategory && $content){
-                            push @{$title_ref->{$newcategory}},{
+                            push @{$title_ref->{fields}{$newcategory}},{
                                 mult     => 1,
                                 content  => $thiscontent,
                                 subfield => $subfield,
@@ -659,14 +677,14 @@ if (-e $titlefile){
                 
                 if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
                     my $multcount=++$multcount_ref->{$newcategory};
-                    push @{$title_ref->{$newcategory}},{
+                    push @{$title_ref->{fields}{$newcategory}},{
                         mult     => $multcount,
                         content  => $content,
                         subfield => '',
                     };
                 }
                 elsif ($newcategory && $content){
-                    push @{$title_ref->{$newcategory}},{
+                    push @{$title_ref->{fields}{$newcategory}},{
                         mult     => 1,
                         content  => $content,
                         subfield => '',
@@ -706,12 +724,14 @@ else {
 print "Bearbeite Exemplare\n";
 
 if (-e $holdingfile){
-    open(MEXOUT,'>:utf8','meta.holding');
+    open(MEXOUT,'>:raw','meta.holding');
 
     tie @mab2mexdata, 'Tie::MAB2::Recno', file => $holdingfile;
     
     foreach my $rawrec (@mab2mexdata){
-        my $item_ref = {};
+        my $item_ref = {
+            'fields' => {},
+        };
 
         my $rec = MAB2::Record::Base->new($rawrec);
         #print $rec->readable."\n----------------------\n";    
@@ -765,14 +785,14 @@ if (-e $holdingfile){
                         
                         if ($newcategory && $convconfig->{holding}{$category}{mult} && $content){
                             my $multcount=++$multcount_ref->{$newcategory};
-                            push @{$item_ref->{$newcategory}},{
+                            push @{$item_ref->{fields}{$newcategory}},{
                                 mult     => $multcount,
                                 content  => $thiscontent,
                                 subfield => $subfield,
                             };
                         }
                         elsif ($newcategory && $content){
-                            push @{$item_ref->{$newcategory}},{
+                            push @{$item_ref->{fields}{$newcategory}},{
                                 mult     => 1,
                                 content  => $thiscontent,
                                 subfield => $subfield,
@@ -794,14 +814,14 @@ if (-e $holdingfile){
                 
                 if ($newcategory && $convconfig->{holding}{$category}{mult} && $content){
                     my $multcount=++$multcount_ref->{$newcategory};
-                    push @{$item_ref->{$newcategory}},{
+                    push @{$item_ref->{fields}{$newcategory}},{
                         mult     => $multcount,
                         content  => $content,
                         subfield => '',
                     };
                 }
                 elsif ($newcategory && $content){
-                    push @{$item_ref->{$newcategory}},{
+                    push @{$item_ref->{fields}{$newcategory}},{
                         mult     => 1,
                         content  => $content,
                         subfield => '',

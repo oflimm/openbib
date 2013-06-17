@@ -124,7 +124,7 @@ open(PER,"cat $bcppath/per_daten.bcp |");
 #open(PERSIK,"|gzip > ./unload.PER.gz");
 open(PERSIKJSON,"|gzip > ./meta.person.gz");
 #binmode(PERSIK,     ":utf8");
-binmode(PERSIKJSON, ":utf8");
+binmode(PERSIKJSON);
 
 while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
     next if ($aktion);
@@ -134,7 +134,8 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
 #    printf PERSIK "0000:%0d\n", $katkey;
 
     my $person_ref = {
-        id => $katkey,
+        id     => $katkey,
+        fields => {},
     };
 
     foreach my $key (sort keys %record) {
@@ -176,7 +177,7 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
             
 #        print PERSIK $thiskey.":".$content."\n" if ($record{$key} !~ /idn:/);
 
-        push @{$person_ref->{$field}}, {
+        push @{$person_ref->{fields}{$field}}, {
             mult      => $mult,
             subfield  => '',
             content   => $content,
@@ -203,7 +204,7 @@ open(KOE,"cat $bcppath/koe_daten.bcp |");
 #open(KOESIK,"| gzip >./unload.KOE.gz");
 open(KOESIKJSON,"|gzip > ./meta.corporatebody.gz");
 #binmode(KOESIK,     ":utf8");
-binmode(KOESIKJSON, ":utf8");
+binmode(KOESIKJSON);
 
 while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)) {
     next if ($aktion);
@@ -213,7 +214,8 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)) {
 #    printf KOESIK "0000:%0d\n", $katkey;
 
     my $corporatebody_ref = {
-        id => $katkey,
+        id     => $katkey,
+        fields => {},
     };
 
     foreach my $key (sort {$b cmp $a} keys %record) {
@@ -229,7 +231,7 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)) {
 
 #        print KOESIK $key.":".$content."\n" if ($record{$key} !~ /idn:/);
 
-        push @{$corporatebody_ref->{$field}}, {
+        push @{$corporatebody_ref->{fields}{$field}}, {
             mult      => $mult,
             subfield  => '',
             content   => $content,
@@ -257,7 +259,7 @@ open(SYS,"cat $bcppath/sys_daten.bcp |");
 #open(SYSSIK,"| gzip >./unload.SYS.gz");
 open(SYSSIKJSON,"| gzip >./meta.classification.gz");
 #binmode(SYSSIK,     ":utf8");
-binmode(SYSSIKJSON, ":utf8");
+binmode(SYSSIKJSON);
 
 while (my ($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)) {
     next if ($aktion);
@@ -267,7 +269,8 @@ while (my ($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)) {
 #    printf SYSSIK "0000:%0d\n", $katkey;
 
     my $classification_ref = {
-        id => $katkey,
+        id     => $katkey,
+        fields => {},
     };
 
     foreach my $key (sort keys %record) {
@@ -283,7 +286,7 @@ while (my ($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)) {
 
 #        print SYSSIK $key.":".$content."\n" if ($record{$key} !~ /idn:/);
 
-        push @{$classification_ref->{$field}}, {
+        push @{$classification_ref->{fields}{$field}}, {
             mult      => $mult,
             subfield  => '',
             content   => $content,
@@ -311,7 +314,7 @@ open(SWD,       "cat $bcppath/swd_daten.bcp |");
 #open(SWDSIK,    "| gzip >./unload.SWD.gz");
 open(SWDSIKJSON,"| gzip >./meta.subject.gz");
 #binmode(SWDSIK,     ":utf8");
-binmode(SWDSIKJSON, ":utf8");
+binmode(SWDSIKJSON);
 
 while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
     next if ($aktion);
@@ -321,7 +324,8 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
 #    printf SWDSIK "0000:%0d\n", $katkey;
 
     my $subject_ref = {
-        id => $katkey,
+        id     => $katkey,
+        fields => {},
     };
 
     # Schlagwortkettensonderbehandlung SIKIS
@@ -369,7 +373,7 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
 
 #        print SWDSIK $key.":".$content."\n" if ($record{$key} !~ /idn:/ && $key !~/^0800/);
     
-        push @{$subject_ref->{$field}}, {
+        push @{$subject_ref->{fields}{$field}}, {
             mult      => $mult,
             subfield  => $subfield,
             content   => $content,
@@ -493,8 +497,8 @@ close(TEXCL);
 open(TITEL,"cat $bcppath/titel_daten.bcp |");
 open(TITSIKJSON,"| gzip >./meta.title.gz");
 open(MEXSIKJSON,"| gzip >./meta.holding.gz");
-binmode(TITSIKJSON, ":utf8");
-binmode(MEXSIKJSON, ":utf8");
+binmode(TITSIKJSON);
+binmode(MEXSIKJSON);
 
 my $mexid           = 1;
 
@@ -523,7 +527,8 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
 #    printf TITSIK "0000:%0d\n", $katkey;
 
     my $title_ref = {
-        id => $katkey,
+        id     => $katkey,
+        fields => {},
     };
 
     foreach my $key (sort keys %record) {
@@ -549,7 +554,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                     $supplement = $1;
                 }
 
-                push @{$title_ref->{$field}}, {
+                push @{$title_ref->{fields}{$field}}, {
                     mult       => $mult,
                     subfield   => '',
                     id         => $id,
@@ -558,7 +563,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
             }
             else {
 
-                push @{$title_ref->{$field}}, {
+                push @{$title_ref->{fields}{$field}}, {
                     mult       => $mult,
                     subfield   => '',
                     content    => $content,
@@ -693,17 +698,19 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 
                 my $holding_ref = {
                     'id'     => $mexid,
-                    '0004'   => [
-                        {
-                            mult     => 1,
-                            subfield => '',
-                            content  => $katkey,
-                        },
-                    ],
+                    'fields' => {
+                        '0004'   => [
+                            {
+                                mult     => 1,
+                                subfield => '',
+                                content  => $katkey,
+                            },
+                         ],
+                    },                    
                 };
 
                 if ($inventar) {
-                    push @{$holding_ref->{'0005'}}, {
+                    push @{$holding_ref->{fields}{'0005'}}, {
                         content  => $inventar,
                         mult     => 1,
                         subfield => '',
@@ -711,7 +718,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
                             
                 if ($signatur) {
-                    push @{$holding_ref->{'0014'}}, {
+                    push @{$holding_ref->{fields}{'0014'}}, {
                         content  => $signatur,
                         mult     => 1,
                         subfield => '',
@@ -719,7 +726,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
 
                 if ($standort) {
-                    push @{$holding_ref->{'0016'}}, {
+                    push @{$holding_ref->{fields}{'0016'}}, {
                         content  => $standort,
                         mult     => 1,
                         subfield => '',
@@ -727,7 +734,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
               
                 if ($bemerk1) {
-                    push @{$holding_ref->{'1200'}}, {
+                    push @{$holding_ref->{fields}{'1200'}}, {
                         content  => $bemerk1,
                         mult     => 1,
                         subfield => '',
@@ -735,7 +742,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
               
                 if ($bemerk2) {
-                    push @{$holding_ref->{'1203'}}, {
+                    push @{$holding_ref->{fields}{'1203'}}, {
                         content  => $signatur,
                         mult     => 1,
                         subfield => '',
@@ -743,7 +750,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
               
                 if ($erschverl) {
-                    push @{$holding_ref->{'1204'}}, {
+                    push @{$holding_ref->{fields}{'1204'}}, {
                         content  => $erschverl,
                         mult     => 1,
                         subfield => '',
@@ -751,7 +758,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
               
                 if ($sigel) {
-                    push @{$holding_ref->{'3330'}}, {
+                    push @{$holding_ref->{fields}{'3330'}}, {
                         content  => $sigel,
                         mult     => 1,
                         subfield => '',
@@ -770,8 +777,9 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 my $erschverl=$erschverlbuf{$multkey};
 
                 my $holding_ref = {
-                    id     => $mexid,
-                    '0004' =>
+                    id      => $mexid,
+                    'fields' => {
+                       '0004' =>
                         [
                             {
                                 mult     => 1,
@@ -779,10 +787,11 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                                 content  => $katkey,
                             },
                         ],
+                     },
                 };
 
                 if ($inventar) {
-                    push @{$holding_ref->{'0005'}}, {
+                    push @{$holding_ref->{fields}{'0005'}}, {
                         content  => $inventar,
                         mult     => 1,
                         subfield => '',
@@ -790,7 +799,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
               
                 if ($signatur) {
-                    push @{$holding_ref->{'0014'}}, {
+                    push @{$holding_ref->{fields}{'0014'}}, {
                         content  => $signatur,
                         mult     => 1,
                         subfield => '',
@@ -798,7 +807,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
 
                 if ($standort) {
-                    push @{$holding_ref->{'0016'}}, {
+                    push @{$holding_ref->{fields}{'0016'}}, {
                         content  => $standort,
                         mult     => 1,
                         subfield => '',
@@ -806,7 +815,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
               
                 if ($erschverl) {
-                    push @{$holding_ref->{'1204'}}, {
+                    push @{$holding_ref->{fields}{'1204'}}, {
                         content  => $erschverl,
                         mult     => 1,
                         subfield => '',
@@ -814,7 +823,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                 }
               
                 if ($sigel) {
-                    push @{$holding_ref->{'3330'}}, {
+                    push @{$holding_ref->{fields}{'3330'}}, {
                         content  => $sigel,
                         mult     => 1,
                         subfield => '',
@@ -835,7 +844,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
         }
 
         if ($usestatus){
-            push @{$title_ref->{'4400'}}, {
+            push @{$title_ref->{fields}{'4400'}}, {
                 mult       => 1,
                 subfield   => '',
                 content    => 'presence',
@@ -884,8 +893,9 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
             chomp($standort);
 	  
             my $holding_ref = {
-                id     => $mexid,
-                '0004' =>
+                'id'     => $mexid,
+                'fields' => {
+                  '0004' =>
                     [
                         {
                             mult     => 1,
@@ -893,10 +903,11 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
                             content  => $katkey,
                         },
                     ],
+                },
             };
           
             if ($signatur) {
-                push @{$holding_ref->{'0014'}}, {
+                push @{$holding_ref->{fields}{'0014'}}, {
                     content  => $signatur,
                     mult     => 1,
                     subfield => '',
@@ -904,7 +915,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
             }
           
             if ($standort) {
-                push @{$holding_ref->{'0016'}}, {
+                push @{$holding_ref->{fields}{'0016'}}, {
                     content  => $standort,
                     mult     => 1,
                     subfield => '',
@@ -925,7 +936,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
         if ($usestatus){
             my $mult = 1;
             foreach my $thisstatus (keys %{$overall_mediastatus_ref}){
-                push @{$title_ref->{'4400'}}, {
+                push @{$title_ref->{fields}{'4400'}}, {
                     mult       => $mult++,
                     subfield   => '',
                     content    => $thisstatus,

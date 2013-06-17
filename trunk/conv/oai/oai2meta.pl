@@ -67,12 +67,12 @@ open (NOTATION ,"|buffer | gzip > meta.classification.gz");
 open (SWT,     ,"|buffer | gzip > meta.subject.gz");
 open (MEX,     ,"|buffer | gzip > meta.holding.gz");
 
-binmode(TIT,     ":utf8");
-binmode(AUT,     ":utf8");
-binmode(KOR,     ":utf8");
-binmode(NOTATION,":utf8");
-binmode(SWT,     ":utf8");
-binmode(MEX,     ":utf8");
+binmode(TIT);
+binmode(AUT);
+binmode(KOR);
+binmode(NOTATION);
+binmode(SWT);
+binmode(MEX);
 
 my $twig= XML::Twig->new(
     TwigHandlers => {
@@ -86,7 +86,9 @@ $twig->parsefile($inputfile);
 sub parse_titset {
     my($t, $titset)= @_;
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
     
     # Id
     foreach my $desk ($titset->children('id')){
@@ -106,9 +108,11 @@ sub parse_titset {
                 my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
                 
                 if ($new) {
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $person_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content,
@@ -117,7 +121,7 @@ sub parse_titset {
                     print AUT encode_json $item_ref, "\n";
                 }
 
-                push @{$title_ref->{'0100'}}, {
+                push @{$title_ref->{fields}{'0100'}}, {
                     mult       => $mult,
                     subfield   => '',
                     id         => $person_id,
@@ -134,9 +138,11 @@ sub parse_titset {
                 my ($corporatebody_id,$new)  = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
 
                 if ($new) {
-                    my $item_ref = {};
+                    my $item_ref = {
+                        'fields' => {},
+                    };
                     $item_ref->{id} = $corporatebody_id;
-                    push @{$item_ref->{'0800'}}, {
+                    push @{$item_ref->{fields}{'0800'}}, {
                         mult     => 1,
                         subfield => '',
                         content  => $content,
@@ -145,7 +151,7 @@ sub parse_titset {
                     print KOR encode_json $item_ref, "\n";
                 }
 
-                push @{$title_ref->{'0201'}}, {
+                push @{$title_ref->{fields}{'0201'}}, {
                     mult       => $mult,
                     subfield   => '',
                     id         => $corporatebody_id,
@@ -174,9 +180,11 @@ sub parse_titset {
                         my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($part);
 
                         if ($new) {
-                            my $item_ref = {};
+                            my $item_ref = {
+                                'fields' => {},
+                            };
                             $item_ref->{id} = $subject_id;
-                            push @{$item_ref->{'0800'}}, {
+                            push @{$item_ref->{fields}{'0800'}}, {
                                 mult     => 1,
                                 subfield => '',
                                 content  => $part,
@@ -185,7 +193,7 @@ sub parse_titset {
                             print SWT encode_json $item_ref, "\n";
                         }
                         
-                        push @{$title_ref->{'0710'}}, {
+                        push @{$title_ref->{fields}{'0710'}}, {
                             mult       => $mult,
                             subfield   => '',
                             id         => $subject_id,
@@ -200,7 +208,7 @@ sub parse_titset {
             
             # Titel
             if(defined $oainode->first_child('dc:title') && $oainode->first_child('dc:title')->text()){
-                push @{$title_ref->{'0331'}}, {
+                push @{$title_ref->{fields}{'0331'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $oainode->first_child('dc:title')->text(),
@@ -226,7 +234,7 @@ sub parse_titset {
                     $type="Dissertations-Abstract";
                 }
 
-                push @{$title_ref->{'0519'}}, {
+                push @{$title_ref->{fields}{'0519'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $type,
@@ -245,7 +253,7 @@ sub parse_titset {
                 $abstract=~s/^Summary<br>//g;
                 $abstract=~s/\|/&#124;/g;
 
-                push @{$title_ref->{'0750'}}, {
+                push @{$title_ref->{fields}{'0750'}}, {
                     mult     => $mult,
                     subfield => '',
                     content  => $abstract,
@@ -259,7 +267,7 @@ sub parse_titset {
                 my $url=$desk->text();
 
                 if ($url=~/http/){
-                    push @{$title_ref->{'0662'}}, {
+                    push @{$title_ref->{fields}{'0662'}}, {
                         mult     => $mult,
                         subfield => '',
                         content  => $url,
@@ -273,7 +281,7 @@ sub parse_titset {
             foreach my $desk ($oainode->children('dc:format')) {
                 my $format=$desk->text();
 
-                push @{$title_ref->{'0435'}}, {
+                push @{$title_ref->{fields}{'0435'}}, {
                     mult     => $mult,
                     subfield => '',
                     content  => $format,
@@ -286,7 +294,7 @@ sub parse_titset {
             foreach my $desk ($oainode->children('dc:language')) {
                 my $lang=$desk->text();
 
-                push @{$title_ref->{'0516'}}, {
+                push @{$title_ref->{fields}{'0516'}}, {
                     mult     => $mult,
                     subfield => '',
                     content  => $lang,
@@ -297,7 +305,7 @@ sub parse_titset {
     
             # Jahr
             if (defined $oainode->first_child('dc:date') && $oainode->first_child('dc:date')->text()) {
-                push @{$title_ref->{'0425'}}, {
+                push @{$title_ref->{fields}{'0425'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $oainode->first_child('dc:date')->text(),
@@ -305,7 +313,7 @@ sub parse_titset {
             }
 
             # Medientyp Digital
-            push @{$title_ref->{'4410'}}, {
+            push @{$title_ref->{fields}{'4410'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => "Digital",

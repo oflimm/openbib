@@ -5,7 +5,7 @@ use JSON::XS;
 while (<>){
     my $title_ref = decode_json $_;
 
-    $title_ref->{'4400'} = [
+    $title_ref->{fields}{'4400'} = [
         {
             mult     => 1,
             subfield => '',
@@ -13,7 +13,7 @@ while (<>){
         },
     ];
 
-    $title_ref->{'4410'} = [
+    $title_ref->{fields}{'4410'} = [
         {
             mult     => 1,
             subfield => '',

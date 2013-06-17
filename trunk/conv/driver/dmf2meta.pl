@@ -83,12 +83,12 @@ open (CLASSIFICATION ,"|buffer | gzip > meta.classification.gz");
 open (SUBJECT,       ,"|buffer | gzip > meta.subject.gz");
 open (HOLDING,       ,"|buffer | gzip > meta.holding.gz");
 
-binmode(TITLE,         ":utf8");
-binmode(PERSON,        ":utf8");
-binmode(CORPORATEBODY, ":utf8");
-binmode(CLASSIFICATION,":utf8");
-binmode(SUBJECT,       ":utf8");
-binmode(HOLDING,       ":utf8");
+binmode(TITLE);
+binmode(PERSON);
+binmode(CORPORATEBODY);
+binmode(CLASSIFICATION);
+binmode(SUBJECT);
+binmode(HOLDING);
 
 our $parser = XML::LibXML->new();
 #    $parser->keep_blanks(0);
@@ -155,7 +155,9 @@ sub process_file {
 
     return unless ($id);
 
-    my $title_ref = {};
+    my $title_ref = {
+        'fields' => {},
+    };
 
     $title_ref->{id} = $id;
     
@@ -170,9 +172,11 @@ sub process_file {
             my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
             
             if ($new){
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $person_id;
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $content,
@@ -181,7 +185,7 @@ sub process_file {
                 print PERSON encode_json $item_ref, "\n";
             }
             
-            push @{$title_ref->{'0100'}}, {
+            push @{$title_ref->{fields}{'0100'}}, {
                 mult       => $person_mult,
                 subfield   => '',
                 id         => $person_id,
@@ -198,9 +202,11 @@ sub process_file {
             my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
             
             if ($new){
-                my $item_ref = {};
+                my $item_ref = {
+                    'fields' => {},
+                };
                 $item_ref->{id} = $person_id;
-                push @{$item_ref->{'0800'}}, {
+                push @{$item_ref->{fields}{'0800'}}, {
                     mult     => 1,
                     subfield => '',
                     content  => $content,
@@ -209,7 +215,7 @@ sub process_file {
                 print PERSON encode_json $item_ref, "\n";
             }
             
-            push @{$title_ref->{'0101'}}, {
+            push @{$title_ref->{fields}{'0101'}}, {
                 mult       => $person_mult,
                 subfield   => '',
                 id         => $person_id,
@@ -223,7 +229,7 @@ sub process_file {
         my $title_mult = 1;
         foreach my $item ($node->findnodes ('dc:title//text()')) {
             my $content = $item->textContent;
-            push @{$title_ref->{'0331'}}, {
+            push @{$title_ref->{fields}{'0331'}}, {
                 content  => $content,
                 subfield => '',
                 mult     => $title_mult++,
@@ -234,7 +240,7 @@ sub process_file {
         my $abstract_mult = 1;
         foreach my $item ($node->findnodes ('dc:description//text()')) {
             my $content = $item->textContent;
-            push @{$title_ref->{'0750'}}, {
+            push @{$title_ref->{fields}{'0750'}}, {
                 content  => $content,
                 subfield => '',
                 mult     => $abstract_mult++,
@@ -245,7 +251,7 @@ sub process_file {
         my $source_mult = 1;
         foreach my $item ($node->findnodes ('dc:source//text()')) {
             my $content = $item->textContent;
-            push @{$title_ref->{'0590'}}, {
+            push @{$title_ref->{fields}{'0590'}}, {
                 content  => $content,
                 subfield => '',
                 mult     => $source_mult++,
@@ -256,7 +262,7 @@ sub process_file {
         my $publ_mult = 1;
         foreach my $item ($node->findnodes ('dc:publisher//text()')) {
             my $content = $item->textContent;
-            push @{$title_ref->{'0412'}}, {
+            push @{$title_ref->{fields}{'0412'}}, {
                 content  => $content,
                 subfield => '',
                 mult     => $publ_mult++,
@@ -267,7 +273,7 @@ sub process_file {
         my $lang_mult = 1;
         foreach my $item ($node->findnodes ('dc:language//text()')) {
             my $content = $item->textContent;
-            push @{$title_ref->{'0015'}}, {
+            push @{$title_ref->{fields}{'0015'}}, {
                 content  => $content,
                 subfield => '',
                 mult     => $lang_mult++,
@@ -278,7 +284,7 @@ sub process_file {
         # Link zum Volltext
         foreach my $item ($node->findnodes ('dc:identifier//text()')) {
             my $content = $item->textContent;
-            push @{$title_ref->{'0662'}}, {
+            push @{$title_ref->{fields}{'0662'}}, {
                 content  => $content,
                 subfield => '',
                 mult     => $url_mult++,
@@ -288,7 +294,7 @@ sub process_file {
         my $date_mult = 1;
         foreach my $item ($node->findnodes ('dc:date//text()')) {
             my ($date) = $item->textContent =~/^(\d\d\d\d)-\d\d-\d\d/;
-            push @{$title_ref->{'0425'}}, {
+            push @{$title_ref->{fields}{'0425'}}, {
                 content  => $date,
                 subfield => '',
                 mult     => $url_mult++,
@@ -316,9 +322,11 @@ sub process_file {
                     my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($part);
                     
                     if ($new){
-                        my $item_ref = {};
+                        my $item_ref = {
+                            'fields' => {},
+                        };
                         $item_ref->{id} = $subject_id;
-                        push @{$item_ref->{'0800'}}, {
+                        push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
                             content  => $part,
@@ -327,7 +335,7 @@ sub process_file {
                         print SUBJECT encode_json $item_ref, "\n";
                     }
                     
-                    push @{$title_ref->{'0710'}}, {
+                    push @{$title_ref->{fields}{'0710'}}, {
                         mult       => $subject_mult,
                         subfield   => '',
                         id         => $subject_id,

@@ -142,7 +142,7 @@
 
      # Keine Person, dann aus Ueberordnung
      IF super && NOT person ;
-       FOREACH part IN super.${'0100'} ;
+       FOREACH part IN super.fields.${'0100'} ;
          thislength = part.content.length ;
          IF (thislength+personslength) < config.get('maxlength_person') ;
            searchterm    = uri_escape(part.content);
@@ -156,7 +156,7 @@
            truncatepers = 1 ;
          END ;
        END ;
-       FOREACH part IN super.${'0101'}  ;
+       FOREACH part IN super.fields.${'0101'}  ;
          thiscontent = part.content;
          IF part.supplement ;
             thiscontent = "${thiscontent} ${part.supplement}" ;
@@ -199,7 +199,7 @@
 
      # Einbeziehung des ersten Gesamttitels T5005
      IF title && super;
-        super_title = super.${'0331'}.first.content;
+        super_title = super.fields.${'0331'}.first.content;
         title = "${title} (${super_title})";
      END;
 

@@ -1533,7 +1533,7 @@ while (my $jsonline=<IN>){
             next if ($item_ref->{ignore});
 
             if (ref $item_ref->{content} eq "HASH"){
-                my $content = encode_json $item_ref->{content};
+                my $content = decode_utf8(encode_json ($item_ref->{content})); # decode_utf8, um doppeltes Encoding durch encode_json und binmode(:utf8) zu vermeiden
                 $item_ref->{content} = cleanup_content($content);
             }
 

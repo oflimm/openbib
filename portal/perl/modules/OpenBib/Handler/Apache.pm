@@ -959,7 +959,7 @@ sub add_default_ttdata {
         my $logger = get_logger();
 
         eval {
-            $json_ref = decode_json $string;
+            $json_ref = decode_json encode_utf8($string);
         };
         if ($@){
             $logger->error($@);

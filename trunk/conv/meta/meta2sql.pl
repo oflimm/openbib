@@ -160,7 +160,7 @@ if ($reducemem) {
     tie %listitemdata_enriched_years,      'MLDBM', "./listitemdata_enriched_years.db"
         or die "Could not tie listitemdata_enriched_years.\n";
 
-    tie %listitemdata_superid,    "DB_File", "./listitemdata_superid.db"
+    tie %listitemdata_superid,    "MLDBM", "./listitemdata_superid.db"
         or die "Could not tie listitemdata_superid.\n";
 }
 
@@ -169,7 +169,7 @@ my $statisticsdbh
     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
     or $logger->error($DBI::errstr);
 
-$logger->info("Popularitaet fuer Titel dieses Kataloges bestimmen");
+$logger->info("### $database: Popularitaet fuer Titel dieses Kataloges bestimmen");
 
 # Popularitaet
 my $request=$statisticsdbh->prepare("select id, count(id) as idcount from titleusage where origin=1 and dbname=? group by id");
@@ -187,7 +187,7 @@ my $userdbh
     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
     or $logger->error($DBI::errstr);
 
-$logger->info("Tags fuer Titel dieses Kataloges bestimmen");
+$logger->info("### $database: Tags fuer Titel dieses Kataloges bestimmen");
 
 # Tags
 $request=$userdbh->prepare("select t.name, tt.titleid, t.id from tag as t, tit_tag as tt where tt.dbname=? and tt.tagid=t.id and tt.type=1");
@@ -201,7 +201,7 @@ while (my $res    = $request->fetchrow_hashref) {
 }
 $request->finish();
 
-$logger->info("Literaturlisten fuer Titel dieses Kataloges bestimmen");
+$logger->info("### $database: Literaturlisten fuer Titel dieses Kataloges bestimmen");
 
 # Titel von Literaturlisten
 $request=$userdbh->prepare("select l.title, i.titleid, l.id from litlist as l, litlistitem as i where i.dbname=? and i.litlistid=l.id and l.type=1");
@@ -224,7 +224,7 @@ if (exists $conv_config->{local_enrichmnt} && -e "$enrichmntdumpdir/enrichmntdat
 
     $local_enrichmnt = 1;
 
-    $logger->info("Lokale Einspielung mit zentralen Anreicherungsdaten aktiviert");
+    $logger->info("### $database: Lokale Einspielung mit zentralen Anreicherungsdaten aktiviert");
 }
 
 my $stammdateien_ref = {
@@ -263,7 +263,7 @@ my $stammdateien_ref = {
 };
 
 foreach my $type (keys %{$stammdateien_ref}) {
-    $logger->info("Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
+    $logger->info("### $database: Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
     
     open(IN ,           "<:raw",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
     open(OUT,           ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
@@ -415,7 +415,7 @@ $stammdateien_ref->{holding} = {
     inverted_ref       => $conv_config->{inverted_holding},
 };
 
-$logger->info("Bearbeite meta.holding");
+$logger->info("### $database: Bearbeite meta.holding");
 
 open(IN ,                   "<:raw","meta.holding")               || die "IN konnte nicht geoeffnet werden";
 open(OUT,                   ">:utf8","holding.dump")               || die "OUT konnte nicht geoeffnet werden";
@@ -555,7 +555,7 @@ while (my $jsonline=<IN>){
         $resulttime    =~s/(\d+\.\d+) .*/$1/;
         
         $atime      = new Benchmark;
-        $logger->info("$count Exemplarsaetze in $resulttime bearbeitet");
+        $logger->info("### $database: $count Exemplarsaetze in $resulttime bearbeitet");
     }
     $count++;
 }
@@ -573,9 +573,11 @@ $stammdateien_ref->{title} = {
 };
 
 if ($addsuperpers) {
-    $logger->info("Option addsuperpers ist aktiviert");
-    $logger->info("1. Durchgang: Uebergeordnete Titel-ID's finden");
+    $logger->info("### $database: Option addsuperpers ist aktiviert");
+    $logger->info("### $database: 1. Durchgang: Uebergeordnete Titel-ID's finden");
     open(IN ,           "<:raw","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
+
+    $count = 1;
 
     while (my $jsonline=<IN>) {
         my $record_ref = decode_json $jsonline;
@@ -586,11 +588,19 @@ if ($addsuperpers) {
                 $listitemdata_superid{$superid}={};
             }
         }
+
+       if ($count % 100000 == 0){
+            $logger->info("### $database: $count Titel");
+        }
+
+        $count++;
     }
     close(IN);
     
-    $logger->info("2. Durchgang: Informationen in uebergeordneten Titeln finden und merken");
+    $logger->info("### $database: 2. Durchgang: Informationen in uebergeordneten Titeln finden und merken");
     open(IN ,           "<:raw","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
+
+    $count = 1;
 
     while (my $jsonline=<IN>) {
         my $record_ref = decode_json $jsonline;
@@ -616,12 +626,18 @@ if ($addsuperpers) {
         }
 
         $listitemdata_superid{$id} = $record_ref;
+
+       if ($count % 100000 == 0){
+            $logger->info("### $database: $count Titel");
+        }
+
+        $count++;	
     }
 
     close(IN);
 }
 
-$logger->info("Bearbeite meta.title");
+$logger->info("### $database: Bearbeite meta.title");
 
 open(IN ,           "<:raw" ,"meta.title"         )     || die "IN konnte nicht geoeffnet werden";
 open(OUT,           ">:utf8","title.dump"        )      || die "OUT konnte nicht geoeffnet werden";
@@ -1200,7 +1216,7 @@ while (my $jsonline=<IN>){
                             }
                             
                             
-                            $logger->info("Adding Tags to ID $id");
+                            $logger->info("### $database: Adding Tags to ID $id");
                         }
                         
                     }
@@ -1210,7 +1226,7 @@ while (my $jsonline=<IN>){
                                 $index_doc->add_index($searchfield,$weight, ['litlist',$litlist_ref->{title}]);
                             }
                             
-                            $logger->info("Adding Litlists to ID $id");
+                            $logger->info("### $database: Adding Litlists to ID $id");
                         }
                     }
                     else {
@@ -1561,13 +1577,13 @@ while (my $jsonline=<IN>){
         $resulttime    =~s/(\d+\.\d+) .*/$1/;
         
         $atime      = new Benchmark;
-        $logger->info("$count Titelsaetze in $resulttime bearbeitet");
+        $logger->info("### $database: $count Titelsaetze in $resulttime bearbeitet");
     } 
 
     $count++;
 }
 
-$logger->info("$count Titelsaetze bearbeitet");
+$logger->info("### $database: $count Titelsaetze bearbeitet");
 
 close(OUT);
 close(OUTFIELDS);

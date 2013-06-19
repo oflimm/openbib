@@ -61,7 +61,7 @@ gemeinsam recherchiert werden.
 
 <p>
 Zum gegenw&auml;rtigen Zeitpunkt umfasst dieser virtuelle Katalog die
-Best&auml;nde von <a href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]" >10 Bibliotheken</a>.
+Best&auml;nde von <a href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]" >13 Bibliotheken</a>.
 </p>
 
 <p> Neben den rheinischen Bibliotheken ist auch der Bestand der <a

@@ -12,7 +12,7 @@ while (<>){
     $item_ref->{fields} = {};
 
     foreach my $field (keys %$item_ref){
-	next if $field eq "id";
+	next if ($field eq "id" || $field eq "fields");
 
 	$item_ref->{fields}{$field} = $item_ref->{$field};
 	delete $item_ref->{$field};

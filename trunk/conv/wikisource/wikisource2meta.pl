@@ -484,6 +484,13 @@ sub parse_titset {
         content  => 'Digital',
     };
 
+    # .. und online verfuegbar
+    push @{$title_ref->{fields}{'4400'}}, {
+        mult     => 1,
+        subfield => '',
+        content  => 'online',
+    };
+
     print TIT encode_json $title_ref, "\n";
     
     # Release memory of processed tree

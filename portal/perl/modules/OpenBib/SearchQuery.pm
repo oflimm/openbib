@@ -205,7 +205,7 @@ sub set_from_apache_request {
             my $prefix = $thissearchfield->{prefix};
             my $name   = $thissearchfield->{name};
             my ($thissearchfield_content, $thissearchfield_norm_content,$thissearchfield_bool_op);
-            $thissearchfield_content = $thissearchfield_norm_content = decode_utf8(uri_unescape($query->param("$prefix"))) || uri_unescape($query->param("$prefix"))      || '';
+            $thissearchfield_content = $thissearchfield_norm_content = decode_utf8(uri_unescape($query->param("$prefix"))) || '';
             $thissearchfield_bool_op = (defined $query && $query->param("b\[$prefix\]"))?$query->param("b\[$prefix\]"):
                 (defined $legacy_bool_op_ref->{"b\[$prefix\]"} && $query->param($legacy_bool_op_ref->{"b\[$prefix\]"}))?$query->param($legacy_bool_op_ref->{"b\[$prefix\]"}):"AND";
             
@@ -502,6 +502,9 @@ sub to_cgi_params {
     my $exclude_filter_array_ref = exists $arg_ref->{exclude_filter}
         ? $arg_ref->{exclude_filter}  : [];
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $exclude_ref        = {};
     my $exclude_filter_ref = {};
 
@@ -538,6 +541,9 @@ sub to_cgi_params {
                 param  => "b".$base_prefix.$param_suffix,
                 val    => $self->{_searchquery}->{$param}{bool}
             };
+
+            $logger->debug("Unescaped: ".$self->{_searchquery}->{$param}{val});
+            $logger->debug("Escaped: ".uri_escape($self->{_searchquery}->{$param}{val}));
             push @cgiparams, {
                 param  => $base_prefix.$param_suffix,
                 val    => uri_escape_utf8($self->{_searchquery}->{$param}{val}),
@@ -588,7 +594,7 @@ sub to_cgi_hidden_input {
     my @cgiparams = ();
 
     foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
-        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"$arg_ref->{val}\" />";
+        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".decode_utf8(uri_unescape($arg_ref->{val}))."\" />";
     }   
 
     return join("\n",@cgiparams);

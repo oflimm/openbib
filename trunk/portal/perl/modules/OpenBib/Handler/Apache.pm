@@ -1231,7 +1231,7 @@ sub to_cgi_params {
         $exclude_ref->{$param} = 1;
     }
 
-#    $logger->debug("Args".YAML::Dump($arg_ref));
+    $logger->debug("Args".YAML::Dump($arg_ref));
 
     my @cgiparams = ();
 
@@ -1242,7 +1242,7 @@ sub to_cgi_params {
             if (exists $arg_ref->{change}->{$param}){
                 push @cgiparams, {
                     param => $param,
-                    val   => $arg_ref->{change}->{$param},
+                    val   => decode_utf8(uri_unescape($arg_ref->{change}->{$param})),
                 };
             }
             elsif (! exists $exclude_ref->{$param}){
@@ -1251,20 +1251,22 @@ sub to_cgi_params {
                     foreach my $value (@values){
                         push @cgiparams, {
                             param => $param,
-                            val   => $value
+                            val   => decode_utf8(uri_unescape($value)),
                         };
                     }
                 }
                 else {
                     push @cgiparams, {
                         param => $param,
-                        val => $self->query->param($param)
+                        val => decode_utf8(uri_unescape($self->query->param($param))),
                     };
                 }
             }
         }
     }
-    
+
+    $logger->debug("Got cgiparams ".YAML::Dump(\@cgiparams));
+
     return @cgiparams;
 }
 
@@ -1312,7 +1314,7 @@ sub to_cgi_hidden_input {
     my @cgiparams = ();
 
     foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
-        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"$arg_ref->{val}\" />";
+        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".decode_utf8(uri_unescape($arg_ref->{val}))."\" />";
     }   
 
     return join("\n",@cgiparams);

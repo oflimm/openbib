@@ -280,6 +280,15 @@ sub process_file {
             };
         }
 
+        # Zugriff online
+        $title_ref->{fields}{'4400'} = [
+            {
+                mult     => 1,
+                subfield => '',
+                content  => "online",
+            },
+        ];
+
         my $url_mult=1;
         # Link zum Volltext
         foreach my $item ($node->findnodes ('dc:identifier//text()')) {

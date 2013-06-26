@@ -14,6 +14,7 @@ my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' 
 my $dbistopics = $config->{schema}->resultset('Dbistopic');
 
 # Zuerst loeschen
+$config->{schema}->resultset('DbistopicDbisdb')->delete;
 $config->{schema}->resultset('Dbisdb')->delete;
 
 foreach my $thisdbistopic ($dbistopics->all){

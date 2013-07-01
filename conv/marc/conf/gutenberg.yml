@@ -4,22 +4,19 @@ encoding: utf8
 # Tracelevel
 tracelevel:
 
-# Feld der eindeutigen Titel-ID
-uniqueidfield: 'ID'
-
 # Personen
-pers:
+person:
   '100': '0100:'        # 1. Verfasser
   '700': '0100:'        # 2. und weitere Verfasser
 
 # Koerperschaften
-corp:
+corporatebody:
 
 # Systematik
-sys: 
+classification: 
 
 # Schlagworte
-subj:
+subject:
 
 # Titel
 title:

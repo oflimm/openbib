@@ -110,7 +110,7 @@ FOREACH category IN categories;
 -%]
 <div class="ym-fbox-text">
 <label for="[% category %]">[% msg.maketext("${thiscategory}") %]</label>
-<input type="text" name="fields_[% category %]_[% subfield %]_[% mult %]" id="[% category %]" value="[% content | replace('"','%22') %]" size="100"/>
+<input type="text" name="fields_[% category %]_[% subfield %]_[% mult %]" id="[% category %]" value="[% content | html %]" size="100"/>
 </div>
 [%-   END ;
      ELSE ;

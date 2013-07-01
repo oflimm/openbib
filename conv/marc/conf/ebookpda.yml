@@ -1,0 +1,46 @@
+# Encoding der Daten
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# Personen
+person:
+  '1001 a': '0100'        # 1. Verfasser
+  '7001 a': '0100'         # 2. und weitere Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification:
+  '08204a': '0700' # DDC
+
+# Schlagworte
+subject:
+  '650 0a': '0710' # Schlagwort
+  '650 0x': '0710' # Schlagwort
+  '651 0a': '0710' # Schlagwort
+
+# Titel
+title:
+  '250  a': '0403' # Auflage
+  '260  b': '0412' # Verlag
+  '260  a': '0410' # Verlagsort
+  '260  c': '0425' # Jahr
+  '24500a': '0331' # HST
+  '24510a': '0331' # HST
+  '24500d': '0359' # Vorl. Verf Koerpersch
+  '300  a': '0433' # Kollation
+  '85640u': '0662' # URL eBook
+  '85640z': '0663' # URL Description
+  '830 0a': '0451' # GT
+  '020  a': '0540' # ISBN
+
+  '040': '0015:' # Sprache
+  '506': '0663:' # Lizenzinformation
+  '500': '0501:' # Fussnote
+  '516': '0435:' # Format
+  '740': '0370:' # WST
+
+

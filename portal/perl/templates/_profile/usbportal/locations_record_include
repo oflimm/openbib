@@ -1,0 +1,60 @@
+<table class="ZMSTable" >
+<caption align="top"></caption>
+<colgroup>
+  <col width="16%">
+  <col width="83%">
+</colgroup>
+<tbody>
+[%-
+
+PROCESS common/subtemplate name="visible_categories_location";
+
+trclass = "even" ;
+
+FOREACH category IN categories;
+    IF category == 'Bestand';
+       contentarray = [];
+       IF locationinfo.fields.${"L0120"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0120"}.first.content;
+          contentarray.push("Monographien: ${thiscontent}");
+       END;
+       IF locationinfo.fields.${"L0130"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0130"}.first.content;
+          contentarray.push("Zeitschriften: ${thiscontent}");
+       END;
+       IF locationinfo.fields.${"L0140"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0140"}.first.content;
+          contentarray.push("Lfd. Zeitschriften: ${thiscontent}");
+       END;
+       IF contentarray.size > 0;
+          content = contentarray.join(" / ");
+          locationinfo.fields.${"Bestand"} = [ { content = content } ];
+       ELSE ;
+         NEXT;
+       END;
+    END;
+
+    IF locationinfo.fields.${category} ;
+      FOREACH item IN locationinfo.fields.$category;
+        content  = item.content;
+        mult     = item.mult;
+        subfield = item.subfield;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${locationinfo.databaseinfos.dbname}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr class="[% trclass %]"><td><p>[% msg.maketext("${thiscategory}") %]</p></td><td><p>[% content %]</p></td></tr>
+[%-   END ;
+      IF trclass == "even" ;
+        trclass = "odd";
+      END;
+   END ;
+END ;-%]
+</tbody>
+</table>

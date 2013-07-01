@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-06-12 10:59+0200\n"
+"PO-Revision-Date: 2013-07-01 14:52+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -6957,7 +6957,7 @@ msgstr "Name of institution"
 #: ../templates/_profile/kug/home_html_bottom_left:24
 #: ../templates/bibfuehrer_tex:286 ../templates/visible_categories_location:18
 msgid "L0020"
-msgstr "Street"
+msgstr "Address"
 
 #: ../templates/_profile/kug/_view/abwl/home_html_bottom_left:26
 #: ../templates/_profile/kug/_view/altmitneulat/home_html_bottom_left:26

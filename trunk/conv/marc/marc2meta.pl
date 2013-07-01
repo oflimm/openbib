@@ -33,24 +33,48 @@
 
 use utf8;
 
-use Encode 'decode';
+use warnings;
+use strict;
+
+use Encode 'decode_utf8';
 use Getopt::Long;
 use DBI;
 use MARC::Batch;
+use MARC::Charset 'marc8_to_utf8';
 use YAML::Syck;
+use JSON::XS qw(encode_json);
+use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 
-$mexidn  =  1;
+my $logfile = '/var/log/openbib/marc2meta.log';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
 
 my $config = OpenBib::Config->instance;
 
-my ($inputfile,$configfile);
+my ($inputfile,$configfile,$missinglinkmurksid);
 
 &GetOptions(
 	    "inputfile=s"          => \$inputfile,
             "configfile=s"         => \$configfile,
+            "missinglinkmurksid"   => \$missinglinkmurksid,
 	    );
 
 if (!$inputfile && !$configfile){
@@ -69,14 +93,12 @@ my $convconfig = YAML::Syck::LoadFile($configfile);
 
 open(DAT,"$inputfile");
 
-open (TITLE,         ">:utf8","meta.title");
-open (PERSON,        ">:utf8","meta.person");
-open (CORPORATEBODY, ">:utf8","meta.corporatebody");
-open (CLASSIFICATION,">:utf8","meta.classification");
-open (SUBJECT,       ">:utf8","meta.subject");
-open (HOLDING,       ">:utf8","meta.holding");
-
-my $titleid = 1;
+open (TITLE,         ">:raw","meta.title");
+open (PERSON,        ">:raw","meta.person");
+open (CORPORATEBODY, ">:raw","meta.corporatebody");
+open (CLASSIFICATION,">:raw","meta.classification");
+open (SUBJECT,       ">:raw","meta.subject");
+open (HOLDING,       ">:raw","meta.holding");
 
 my $multcount_ref = {};
 
@@ -86,195 +108,241 @@ my $batch = MARC::Batch->new('USMARC', $inputfile);
 $batch->strict_off();
 $batch->warnings_off();
 
+my $have_title_ref = {};
 
-my @buffer = ();
 while (my $record = $batch->next()){
+    
+    my $title_ref = {
+        'fields' => {},
+    };
 
-    my $title_ref  = {};
     $multcount_ref = {};
 
-    my $idfield = $record->field('000');
+    my $encoding = $record->encoding();
 
-    $title_ref->{id} = $idfield->as_string();
+    $logger->debug("Encoding:$encoding:");
 
+    if ($missinglinkmurksid){
+        my $field = $record->field('037');
+
+        if ($field->as_string('b') eq "MIL"){
+            $title_ref->{id} = $field->as_string('a');
+        }
+#         foreach my $field ($record->field('856')){
+#             my $content = $field->as_string("u");
+#             if ($content =~m/id=(\d+)/){
+
+#                 last;
+#             }
+#         }
+    }
+    else {
+        my $idfield = $record->field('001');
+        
+        $title_ref->{id} = (defined $idfield)?$idfield->as_string():undef;
+    }
+
+    unless (defined $title_ref->{id}){
+        $logger->info("Keine ID vorhanden");
+        next;
+    }
+    
+    if (defined $have_title_ref->{$title_ref->{id}}){
+        $logger->info("Doppelte ID ".$title_ref->{id});
+        next;
+    }
+
+    $have_title_ref->{$title_ref->{id}} = 1;
+    
     foreach my $field ($record->fields()){
-        my $kateg   = $field->tag(),defined $field->indicator(1)?$field->indicator(1):"",$field->indicator(2)?$field->indicator(2):"";
-        my $content = decode($convconfig->{encoding},$field->as_string()) || $field->as_string();
+        my $tag        = $field->tag();
+        my $indicator1 = defined $field->indicator(1)?$field->indicator(1):"";
+        my $indicator2 = defined $field->indicator(2)?$field->indicator(2):"";
 
-        print ":$kateg:",$field->as_string(),"\n";
-        if (exists $convconfig->{title}{$kateg}){
-            # Filter
+        foreach my $subfield_ref ($field->subfields()){
+            my $subfield = $subfield_ref->[0];
+            
+            my $kateg   = $tag.$indicator1.$indicator2.$subfield;
+            #my $content = decode($config->{encoding},$field->as_string($subfield)) || $field->as_string($subfield);
 
-            if ($kateg eq "040"){
-                $content=~s/PGUSA //;
-            }
+                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($subfield)):decode_utf8($field->as_string($subfield));
 
-            if ($kateg eq "245"){
-                my ($vorlverf) = $content=~m/\s+\/\s+(.*?)$/;
-
-                push @{$title_ref->{'0359'}}, {
-                    mult       => 1,
-                    subfield   => '',
-                    content    => $vorlverf,
-                } if ($vorlverf);
-
-                $content=~s/\s+\/\s+(.*?)$//;
-                $content=~s/\s+\[electronic resource\]//;
-            }
-
-            if ($kateg eq "260"){
-                my ($ejahr) = $content=~m/,\s+(\d\d\d\d)$/;
-
-                push @{$title_ref->{'0425'}}, {
-                    mult       => 1,
-                    subfield   => '',
-                    content    => $ejahr,
-                } if ($ejahr);
-
-                $content=~s/,\s+\d\d\d\d$//;
-            }
-
-            if ($kateg eq "856"){
-                if ($content =~/http:\/\/www.gutenberg.org\/license/){
-                    next;
+            $content = konv($content);
+            
+            $logger->debug(":$kateg:",$field->as_string($subfield));
+            
+            if (exists $convconfig->{title}{$kateg}){
+                my $newcategory = $convconfig->{title}{$kateg};
+                
+                # Filter
+                
+#                 if ($kateg =~m/^040/){
+#                     $content=~s/PGUSA //;
+#                 }
+                
+#                 if ($kateg =~m/^245/){
+#                     ($content) = $content=~m/\s+\/\s+(.*?)$/;
+                    
+#                     $content=~s/\s+\/\s+(.*?)$//;
+#                     $content=~s/\s+\[electronic resource\]//;
+#                 }
+                
+#                 if ($kateg =~/^260/){
+#                     ($content) = $content=~m/,\s+(\d\d\d\d)$/;
+                    
+#                 }
+                
+#                 if ($kateg =~m/^856/){
+#                     if ($content =~/http:\/\/www.gutenberg.org\/license/){
+#                         next;
+#                     }
+                    
+#                 }
+            
+                if ($content){
+                    my $multcount=++$multcount_ref->{$newcategory};
+                    
+                    push @{$title_ref->{fields}{$newcategory}}, {
+                        content  => $content,
+                        subfield => '',
+                        mult     => $multcount,
+                    };
                 }
             }
             
-            if ($content){
-                print TIT $convconfig->{title}{$kateg}.$content."\n";
-            }
-        }
         
         # Autoren abarbeiten Anfang
-        elsif (exists $convconfig->{pers}{$kateg} && $content){
-            my @parts = ();
-            if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-            }
-            else {
-                push @parts, $content;
+        elsif (exists $convconfig->{person}{$kateg} && $content){
+            my $newcategory = $convconfig->{person}{$kateg};
+            
+            my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content);
+            
+            if ($new){
+                my $item_ref = {
+                    'fields' => {},
+                };
+                $item_ref->{id} = $person_id;
+
+                push @{$item_ref->{fields}{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $content,
+                };
+                
+                print PERSON encode_json $item_ref, "\n";
             }
             
-            foreach my $part (@parts){
-                my $autidn=get_autidn($part);
-                
-                if ($autidn > 0){
-                    print AUT "0000:$autidn\n";
-                    print AUT "0001:$part\n";
-                    print AUT "9999:\n";
-                    
-                }
-                else {
-                    $autidn=(-1)*$autidn;
-                }
-                
-                print TIT $convconfig->{pers}{$kateg}."IDN: $autidn\n";
-            }
-        }       
+            my $multcount=++$multcount_ref->{$newcategory};
+            
+            push @{$title_ref->{fields}{$newcategory}}, {
+                mult       => $multcount,
+                subfield   => '',
+                id         => $person_id,
+                supplement => '',
+            };
+        }
         # Autoren abarbeiten Ende
         
         # Koerperschaften abarbeiten Anfang
-        elsif (exists $convconfig->{corp}{$kateg} && $content){
-            my @parts = ();
-            if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-            }
-            else {
-                push @parts, $content;
-            }
+        elsif (exists $convconfig->{corporatebody}{$kateg} && $content){
+            my $newcategory = $convconfig->{corporatebody}{$kateg};
             
-            foreach my $part (@parts){
+            my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
+            
+            if ($new){
+                my $item_ref = {
+                    'fields' => {},
+                };
+                $item_ref->{id} = $corporatebody_id;
+                push @{$item_ref->{fields}{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $content,
+                };
                 
-                my $koridn=get_koridn($part);
-                
-                if ($koridn > 0){
-                    print KOR "0000:$koridn\n";
-                    print KOR "0001:$part\n";
-                    print KOR "9999:\n";
-                    
-                }
-                else {
-                    $koridn=(-1)*$koridn;
-                }
-                
-                print TIT $convconfig->{corp}{$kateg}."IDN: $koridn\n";
+                print CORPORATEBODY encode_json $item_ref, "\n";
             }
+
+            my $multcount=++$multcount_ref->{$newcategory};
+            
+            push @{$title_ref->{fields}{$newcategory}}, {
+                mult       => $multcount,
+                subfield   => '',
+                id         => $corporatebody_id,
+                supplement => '',
+            };
         }
         # Koerperschaften abarbeiten Ende
         
         # Notationen abarbeiten Anfang
-        elsif (exists $convconfig->{sys}{$kateg} && $content){
-            my @parts = ();
-            if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-            }
-            else {
-                push @parts, $content;
+        elsif (exists $convconfig->{classification}{$kateg} && $content){
+            my $newcategory = $convconfig->{classification}{$kateg};
+
+            my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($content);
+            
+            if ($new){
+                my $item_ref = {
+                    'fields' => {},
+                };
+                $item_ref->{id} = $classification_id;
+                push @{$item_ref->{fields}{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $content,
+                };
+                
+                print CLASSIFICATION encode_json $item_ref, "\n";
             }
             
-            foreach my $part (@parts){
-                my $notidn=get_notidn($part);
-                
-                if ($notidn > 0){	  
-                    print NOTATION "0000:$notidn\n";
-                    print NOTATION "0001:$part\n";
-                    print NOTATION "9999:\n";
-                }
-                else {
-                    $notidn=(-1)*$notidn;
-                }
-                print TIT $convconfig->{sys}{$kateg}."IDN: $swtidn\n";
-            }
+            my $multcount=++$multcount_ref->{$newcategory};
+            
+            push @{$title_ref->{fields}{$newcategory}}, {
+                mult       => $multcount,
+                subfield   => '',
+                id         => $classification_id,
+                supplement => '',
+            };
         }
         # Schlagworte abarbeiten Ende
         
         
         # Schlagworte abarbeiten Anfang
-        elsif (exists $convconfig->{subj}{$kateg} && $content){
-            my @parts = ();
-            if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-            }
-            else {
-                push @parts, $content;
+        elsif (exists $convconfig->{subject}{$kateg} && $content){
+            my $newcategory = $convconfig->{subject}{$kateg};
+            
+            my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
+            
+            if ($new){
+                my $item_ref = {
+                    'fields' => {},
+                };
+                $item_ref->{id} = $subject_id;
+                push @{$item_ref->{fields}{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $content,
+                };
+                
+                print SUBJECT encode_json $item_ref, "\n";
             }
             
-            foreach my $part (@parts){
-                my $swtidn=get_swtidn($part);
-                
-                if ($swtidn > 0){	  
-                    print SWT "0000:$swtidn\n";
-                    print SWT "0001:$part\n";
-                    print SWT "9999:\n";
-                }
-                else {
-                    $swtidn=(-1)*$swtidn;
-                }
-                print TIT $convconfig->{subj}{$kateg}."IDN: $swtidn\n";
-            }
+            my $multcount=++$multcount_ref->{$newcategory};
+            
+            push @{$title_ref->{fields}{$newcategory}}, {
+                mult       => $multcount,
+                subfield   => '',
+                id         => $subject_id,
+                supplement => '',
+            };
         }
         # Schlagworte abarbeiten Ende
-        
-        elsif (exists $convconfig->{exempl}{$kateg} && $content){
-            my @parts = ();
-            if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
-                @parts = split($convconfig->{category_split_chars}{$kateg},$content);
-            }
-            else {
-                push @parts, $content;
-            }
-            
-            foreach my $part (@parts){
-                print MEX "0000:$mexidn\n";
-                print MEX "0004:$titleid\n";
-                print MEX $convconfig->{exempl}{$kateg}.$part."\n";
-                print MEX "9999:\n";
-                $mexidn++;
-            }
-        }
     }
-    print TIT "9999:\n";
-    $titleid++;
+}    
+    print TITLE encode_json $title_ref, "\n";
+    
+    $logger->debug(encode_json $title_ref);
+        
+
 }
 
 close(TITLE);
@@ -285,3 +353,11 @@ close(SUBJECT);
 close(HOLDING);
 
 close(DAT);
+
+sub konv {
+    my $content = shift;
+
+    $content=~s/\s*[.,:]\s*$//g;
+    
+    return $content;
+}

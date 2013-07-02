@@ -1034,6 +1034,7 @@
 ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title
 ../templates/_profile/sammlungen/_database/wallraf/circulation
 ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories
+../templates/_profile/sammlungen/_database/zpe/visible_categories_title
 ../templates/_profile/sammlungen/info_impressum_html
 ../templates/_profile/sammlungen/info_impressum_mobile
 ../templates/_profile/sammlungen/login
@@ -1292,6 +1293,7 @@
 ../templates/_profile/usbportal/litlists_by_single_topic_recent_include
 ../templates/_profile/usbportal/litlists_record_include
 ../templates/_profile/usbportal/local_config
+../templates/_profile/usbportal/locations_record_include
 ../templates/_profile/usbportal/login
 ../templates/_profile/usbportal/resource_title_html_categories
 ../templates/_profile/usbportal/searchforms_record_query
@@ -1302,6 +1304,7 @@
 ../templates/_profile/usbportal/titles_record_html_categories
 ../templates/_profile/usbportal/titles_record_include
 ../templates/_profile/usbportal/titlist_item_html_short
+../templates/_profile/usbportal/visible_categories_location
 ../templates/_profile/usbportal/visible_categories_title
 ../templates/pruessen-bestellung
 ../templates/pruessen-bestellung_erfolg

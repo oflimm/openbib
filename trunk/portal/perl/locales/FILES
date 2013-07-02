@@ -962,16 +962,20 @@
 ../templates/_profile/rheinlandbib/_view/moenchengladbach/std_header_html
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/home
+../templates/_profile/rheinlandbib/_view/rheinlandbib/info_bruehl
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gaesdonck
+../templates/_profile/rheinlandbib/_view/rheinlandbib/info_geistingen
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gleuel
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_grevenbroich
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_hennef
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_kempen
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_kevelaer
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_koenigswinter
+../templates/_profile/rheinlandbib/_view/rheinlandbib/info_moenchengladbach
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_rheinischeabteilung
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_wickrath
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_xanten
+../templates/_profile/rheinlandbib/_view/rheinlandbib/info_zuelpich
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/local_config
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/searchforms_record_profile
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/std_header_html
@@ -1042,6 +1046,8 @@
 ../templates/_profile/sammlungen/std_footer_html
 ../templates/_profile/sammlungen/std_header
 ../templates/_profile/sammlungen/std_header_mobile
+../templates/_profile/sammlungen/titles_html
+../templates/_profile/sammlungen/titles_navigation
 ../templates/_profile/sammlungen/titles_record_html_categories
 ../templates/_profile/sammlungen/titlist_item_html_short
 ../templates/_profile/sammlungen/users_navigation
@@ -1053,6 +1059,7 @@
 ../templates/_profile/sammlungen/_view/alekiddr/std_footer_html
 ../templates/_profile/sammlungen/_view/alekiddr/std_header_html
 ../templates/_profile/sammlungen/_view/alekiddr/subnavigation
+../templates/_profile/sammlungen/_view/alekiddr/titles_navigation
 ../templates/_profile/sammlungen/_view/artmann/home
 ../templates/_profile/sammlungen/_view/artmann/info_sammlung
 ../templates/_profile/sammlungen/_view/artmann/searchforms_record_advanced

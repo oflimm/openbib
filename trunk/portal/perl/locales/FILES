@@ -1012,6 +1012,7 @@
 ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/lefort/circulation
 ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_images
+../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title
 ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories
 ../templates/_profile/sammlungen/_database/portrait/titles_record_html_images
@@ -1163,6 +1164,7 @@
 ../templates/_profile/sammlungen/_view/muenzen/clouds_databases_record_html
 ../templates/_profile/sammlungen/_view/muenzen/clouds_html
 ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation
+../templates/_profile/sammlungen/_view/muenzen/clouds_person_html
 ../templates/_profile/sammlungen/_view/muenzen/clouds_subject_html
 ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html
 ../templates/_profile/sammlungen/_view/muenzen/home

@@ -14,25 +14,19 @@
 #
 #######################################################################
 -%]
-[% 
-   cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fmuenzen&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${record.id}";
-
-   cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
+<!-- Anfang Umschlagbilder -->
+[% IF normdata.${"T6054"} ;
+     FOREACH item IN normdata.${"T6054"} ;
+       cdm_ptr = item.content ;
+       thismult = item.mult ;
+       FOREACH thisitem IN normdata.${"T6050"} ;
+           IF thisitem.mult == thismult ;
+              description = thisitem.content ;
+           END ;
+       END ;
 %]
-[% IF cdm.total > 0 ;
-   FOREACH cdmrecord IN cdm.records ;
-     cdm_url       = "http://www.ub.uni-koeln.de/cdm4/item_viewer.php?CISOROOT=/muenzen&CISOPTR=${cdmrecord.pointer}&CISOBOX=1&REC=1";
-     cdm_imgurl    = "http://www.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=180";
-     cdm_webimgurl = "http://www.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=800";
-%]
-<center>
-<a class="invisible cloud-zoom" rel="zoomWidth:400, zoomHeight:400, position:'left'" href="[% cdm_webimgurl %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
-
-<p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=534;url=[% uri_escape(cdm_url) %]" target="_blank">Zum Digitalisat in ContentDM</a>
-</p>
-</center>
-  [% END %]
-
+<center style="padding:10px;"><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% cdm_ptr %]&DMSCALE=25.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="200"/></a><br/><i>[% description %]</i></center>
+[%   END %]
 [% END %]
+<!-- Ende Umschlagbilder -->
 

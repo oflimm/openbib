@@ -13,9 +13,9 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
-[%- IF field == '0100' ;
-       field_description = 'Band';
-       searchfield = 'personstring' ;
+[%- IF field == '0800' ;
+       field_description = 'Material';
+       searchfield = 'mediatypestring' ;
     END ; -%]
 
 <body>

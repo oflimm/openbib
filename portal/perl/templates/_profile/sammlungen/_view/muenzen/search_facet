@@ -160,11 +160,11 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 [%
     filter_prefix_map = {
           ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
-          ${config.get('searchfield').personstring.prefix} = "Band"
+          ${config.get('searchfield').personstring.prefix} = "Regent"
           ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
-          ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
-          ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
-          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
+          ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Region")
+          ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Stadt")
+          ${config.get('searchfield').mediatypestring.prefix} = "Material"
           ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
           ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
           ${config.get('searchfield').tagstring.prefix} = msg.maketext("Tag")
@@ -214,7 +214,7 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && category_map.4.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Medienart") %]</dt>
+<dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Material") %]</dt>
 [%             FOREACH termitem IN category_map.4 ;
                   LAST IF loop.count > 25 ;
  %]
@@ -358,7 +358,7 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 <!-- Begin person facet -->
 [%         IF config.get('facets').person && category_map.3.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_person_[% database %]_anchor">nach Band</dt>
+<dt class="ob-headline" id="dd_person_[% database %]_anchor">nach Regent</dt>
 [%             FOREACH termitem IN category_map.3 ;
                   LAST IF loop.count > 25 ;
 %]

@@ -268,18 +268,15 @@
       <div class="ob-thumbnail">
 <!-- Anfang Umschlagbilder -->
 [%# USE dumper;dumper.dump(item)%]
-[% IF item.${"T6054"} ;
-       part = item.${"T6054"}.first ;
-       cdm_ptr = part.content ;
-       thisindicator = part.indicator ;
-       FOREACH thisitem IN item.${"T6050"} ;
-           IF item.indicator == thisindicator ;
-              description = item.content ;
-           END ;
-       END ;
-       
-%]
-<img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% cdm_ptr %]&DMSCALE=15.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="120"/>
+[% IF item.${"T6052"}.0 %]
+<div style="position:absolute; left: 5px;">
+<a  class="invisible cloud-zoom" rel="zoomWidth:500, zoomHeight:400, adjustX:200, adjustY: -150, position:'right'" href="[% item.${"T6051"}.0.content %]"><img src="[% item.${"T6052"}.0.content %]" alt="Vorderseite"/></a>
+</div>
+[% END %]
+[% IF item.${"T6052"}.1 %]
+<div style="position:absolute; left: 160px;" >
+<a  class="invisible cloud-zoom" rel="zoomWidth:500, zoomHeight:400, adjustX: 50, adjustY: -150, position:'right'" href="[% item.${"T6051"}.1.content %]"><img src="[% item.${"T6052"}.1.content %]" alt="Rückseite"/></a>
+</div>
 [% END %]
 <!-- Ende Umschlagbilder -->
       </div>

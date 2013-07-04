@@ -27,7 +27,7 @@
                 'T0425', # msg.maketext("T0425-muenzen") Praegejahr
                 'T0426', # msg.maketext("T0426-muenzen") Datierung von
                 'T0427', # msg.maketext("T0427-muenzen") Datierung bis
-                'T0335', # msg.maketext("T0335-muenzen") Nominal
+                'T0337', # msg.maketext("T0337-muenzen") Nominal
                 'T0800', # msg.maketext("T0800-muenzen") Material
                 'T0435', # msg.maketext("T0435-muenzen") Durchmesser 
                 'T0433', # msg.maketext("T0433-muenzen") Gewicht 

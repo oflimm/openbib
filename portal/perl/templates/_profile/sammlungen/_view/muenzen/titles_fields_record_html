@@ -16,6 +16,9 @@
 [%- IF field == '0800' ;
        field_description = 'Material';
        searchfield = 'mediatypestring' ;
+    ELSIF field == '0410' ;
+       field_description = 'Bereich';
+       searchfield = 't0410' ;
     END ; -%]
 
 <body>

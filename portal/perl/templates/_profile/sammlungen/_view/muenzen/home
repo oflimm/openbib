@@ -34,9 +34,9 @@
           <div class="ym-g33 ym-gl">
            <div class="ym-gbox" class="ym-clearfix">
 
- <center style="padding-top: 5em;"> <img src="/images/openbib/views/inst404abklatsch/abklatschabnahme.jpg"
-alt="Abklatschabnahme" /><br /><br /><i
-style="font-size:0.8em">Anfertigung eines Abklatsches</i></center>
+ <center style="padding-top: 5em;"> <img src="/images/openbib/views/muenzen/muenze-schiff.jpeg"
+alt="Münze mit Schiff" /><br /><br /><i
+style="font-size:0.8em">Münze mit Schiff</i></center>
 
           </div>
          </div>
@@ -82,11 +82,11 @@ esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.
 </p>
 
 
-
+<!--
 <p>
 <a href="[% path_prefix %]/[% config.get('info_loc') %]/abklatsch.html?l=[% lang %]">[Weitere Informationen]</a>
 </p>
-
+-->
           </div>
          </div>
       </div>

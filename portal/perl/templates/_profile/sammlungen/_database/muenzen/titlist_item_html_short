@@ -270,12 +270,12 @@
 [%# USE dumper;dumper.dump(item)%]
 [% IF item.${"T6052"}.0 %]
 <div style="position:absolute; left: 5px;">
-<a  class="invisible cloud-zoom" rel="zoomWidth:500, zoomHeight:400, adjustX:200, adjustY: -150, position:'right'" href="[% item.${"T6051"}.0.content %]"><img src="[% item.${"T6052"}.0.content %]" alt="Vorderseite"/></a>
+<a  class="invisible cloud-zoom" rel="zoomWidth:650, zoomHeight:350, adjustX:190, adjustY: -120, position:'right'" href="[% item.${"T6051"}.0.content %]"><img src="[% item.${"T6052"}.0.content %]" alt="Vorderseite"/></a>
 </div>
 [% END %]
 [% IF item.${"T6052"}.1 %]
 <div style="position:absolute; left: 160px;" >
-<a  class="invisible cloud-zoom" rel="zoomWidth:500, zoomHeight:400, adjustX: 50, adjustY: -150, position:'right'" href="[% item.${"T6051"}.1.content %]"><img src="[% item.${"T6052"}.1.content %]" alt="Rückseite"/></a>
+<a  class="invisible cloud-zoom" rel="zoomWidth:650, zoomHeight:350, adjustX: 30, adjustY: -120, position:'right'" href="[% item.${"T6051"}.1.content %]"><img src="[% item.${"T6052"}.1.content %]" alt="Rückseite"/></a>
 </div>
 [% END %]
 <!-- Ende Umschlagbilder -->

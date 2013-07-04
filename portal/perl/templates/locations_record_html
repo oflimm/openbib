@@ -87,7 +87,7 @@
 </p>
 
 [% END %]
-[% USE dumper;dumper.dump(locationinfo)%]
+[%# USE dumper;dumper.dump(locationinfo)%]
 <table class="ym-full">
 [%-
 FOREACH category IN categories;

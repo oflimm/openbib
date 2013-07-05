@@ -3936,6 +3936,14 @@ convtab:
         index:
           'content': 1
           'freesearch': 1
+      '0800':         # Medienart
+        string: 1
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
+          'freesearch': 1
+        facet:
+          'mediatype': 1
       '0902':
 #        index:
 #          'freesearch': 1
@@ -4140,6 +4148,34 @@ convtab:
           'bkey': 1
           'freesearch': 1
         string: 1  
+    listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
+      '0100': 1
+      '0101': 1
+      '0102': 1
+      '0103': 1
+      '0200': 1
+      '0201': 1
+      '0310': 1
+      '0331': 1
+      '0403': 1
+      '0412': 1
+      '0424': 1
+      '0425': 1
+      '0451': 1
+      '0453': 1
+      '0540': 1
+      '0662': 1
+      '2662': 1
+      '1203': 1
+      '4110': 1
+      '4120': 1
+      '4400': 1
+      '5005': 1
+      '6051': 1
+      '6052': 1
   portrait:
     inverted_title:
       'tag':

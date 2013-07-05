@@ -98,6 +98,8 @@ sub parse_titset {
 
     $title_ref->{id} = $titset->first_child($convconfig->{uniqueidfield})->text();
 
+    next unless ($title_ref->{id});
+    
     next if (exists $have_title{$title_ref->{id}});
 
     $have_title{$title_ref->{id}} = 1;

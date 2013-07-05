@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-07-01 14:52+0200\n"
+"PO-Revision-Date: 2013-07-02 15:57+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -112,10 +112,13 @@ msgstr "${category}"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:308
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:253
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:284
+#: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:279
+#: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:310
 #: ../templates/_profile/sammlungen/_view/richter/titles_fields_html:61
 #: ../templates/_profile/sammlungen/titles_record_html_categories:279
 #: ../templates/_profile/sammlungen/titles_record_html_categories:310
 #: ../templates/_profile/usbportal/libraries_include:62
+#: ../templates/_profile/usbportal/locations_record_include:52
 #: ../templates/_profile/usbportal/resource_title_html_categories:237
 #: ../templates/_profile/usbportal/titles_record_html_categories:243
 #: ../templates/_view/richter/cartitems_html_as_text:38
@@ -130,8 +133,8 @@ msgstr "${category}"
 #: ../templates/admin_locations_record_edit:123
 #: ../templates/admin_locations_record_html:110
 #: ../templates/admin_locations_record_html:118
-#: ../templates/bibfuehrer_tex:480 ../templates/bibfuehrer_tex:481
-#: ../templates/bibfuehrer_tex:632 ../templates/bibfuehrer_tex:633
+#: ../templates/bibfuehrer_tex:481 ../templates/bibfuehrer_tex:482
+#: ../templates/bibfuehrer_tex:639 ../templates/bibfuehrer_tex:640
 #: ../templates/cartitems_html_as_text:38 ../templates/cartitems_html_full:220
 #: ../templates/classifications_record_html:99
 #: ../templates/corporatebodies_record_html:97 ../templates/libraries_html:101
@@ -155,7 +158,7 @@ msgstr "${thiscategory}"
 #: ../templates/_database/einbaende/titles_record_html:366
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:331
-#: ../templates/titles_record_html:341 ../templates/titles_record_include:242
+#: ../templates/titles_record_html:348 ../templates/titles_record_include:242
 msgid ""
 "%1\n"
 "von %2 Nutzer fanden die folgende Rezension hilfreich:"
@@ -306,7 +309,7 @@ msgstr "Add this title to a new literature list:"
 #: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:36
 #: ../templates/_profile/rheinlandbib/_view/moenchengladbach/mainnavigation:38
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:21
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:103
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:123
 #: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:36
 #: ../templates/_profile/rheinlandbib/_view/wickrath/mainnavigation:38
 #: ../templates/_profile/rheinlandbib/_view/xanten/mainnavigation:36
@@ -333,6 +336,10 @@ msgstr "Add this title to a new literature list:"
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:43
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:21
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:41
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:43
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:63
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:21
@@ -357,6 +364,9 @@ msgstr "Add this title to a new literature list:"
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:21
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:46
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:48
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:58
 #: ../templates/_profile/sammlungen/clouds_navigation:21
 #: ../templates/_profile/sammlungen/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/mainnavigation_html:38
@@ -713,6 +723,7 @@ msgstr "Mirror to BibSonomy"
 #: ../templates/_profile/sammlungen/_view/dirksen/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/lefort/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/portrait/corporate_banner:7
+#: ../templates/_profile/sammlungen/_view/zpe/corporate_banner:7
 #: ../templates/_profile/sammlungen/corporate_banner:7
 #: ../templates/_view/richter/corporate_banner:6
 #: ../templates/corporate_banner:9
@@ -785,6 +796,7 @@ msgstr "Active"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:171
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:171
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:171
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:159
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:173
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:171
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:171
@@ -1113,6 +1125,7 @@ msgstr "On"
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:245
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:234
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:293
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:21
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
@@ -1136,7 +1149,7 @@ msgstr "Send to BibSonomy"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:242
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:232
 #: ../templates/_profile/usbportal/titles_record_include:130
-#: ../templates/titles_record_html:242 ../templates/titles_record_include:135
+#: ../templates/titles_record_html:249 ../templates/titles_record_include:135
 #: ../templates/titles_record_include:284
 msgid "Andere Ausgaben"
 msgstr "Other editions"
@@ -1190,6 +1203,7 @@ msgstr "Create a new literature list: "
 #: ../templates/_profile/sammlungen/_view/dirksen/corporate_banner:9
 #: ../templates/_profile/sammlungen/_view/lefort/corporate_banner:9
 #: ../templates/_profile/sammlungen/_view/portrait/corporate_banner:9
+#: ../templates/_profile/sammlungen/_view/zpe/corporate_banner:9
 #: ../templates/_profile/sammlungen/corporate_banner:9
 #: ../templates/_profile/sammlungen/login:102
 #: ../templates/_profile/sammlungen/login:143
@@ -1463,6 +1477,7 @@ msgstr "View:"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:482
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:482
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:482
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:456
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:484
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:447
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:482
@@ -1508,7 +1523,7 @@ msgstr ""
 #: ../templates/_database/einbaende/titles_record_html:346
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:311
-#: ../templates/titles_record_html:321 ../templates/titles_record_include:220
+#: ../templates/titles_record_html:328 ../templates/titles_record_include:220
 msgid "Aufnehmen"
 msgstr "Save"
 
@@ -1591,7 +1606,7 @@ msgstr "Circulation options"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:219
 #: ../templates/_profile/usbportal/titles_record_include:70
 #: ../templates/_view/richter/cartitems_html_simple:62
-#: ../templates/cartitems_html_simple:59 ../templates/titles_record_html:229
+#: ../templates/cartitems_html_simple:59 ../templates/titles_record_html:236
 #: ../templates/titles_record_include:122
 #: ../templates/titles_record_include:144
 msgid "Ausleihe/Exemplare"
@@ -1791,6 +1806,7 @@ msgstr "Start a new search request"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:37
+#: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/titles_record_html_categories:37
 #: ../templates/_profile/usbportal/resource_title_html_categories:20
 #: ../templates/_profile/usbportal/titles_record_html_categories:22
@@ -2114,7 +2130,7 @@ msgstr "Description"
 #: ../templates/_profile/kug/_database/gesiskoeln/titles_record_html_categories:299
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:324
 #: ../templates/_profile/kug/_database/inst001/circulation:123
-#: ../templates/_profile/kug/_database/inst001/holding:17
+#: ../templates/_profile/kug/_database/inst001/holding:18
 #: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:395
 #: ../templates/_profile/kug/_database/inst302/circulation:83
 #: ../templates/_profile/kug/_database/islandica/circulation:123
@@ -2158,13 +2174,14 @@ msgstr "Description"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:313
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:123
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:289
+#: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:315
 #: ../templates/_profile/sammlungen/titles_record_html_categories:315
 #: ../templates/_profile/usbportal/circulation:106
 #: ../templates/_profile/usbportal/circulation:31
 #: ../templates/_profile/usbportal/holding:19
 #: ../templates/_view/richter/cartitems_html_as_text:43
 #: ../templates/_view/richter/litlists_record_html_as_text:26
-#: ../templates/cartitems_html_as_text:43 ../templates/circulation:85
+#: ../templates/cartitems_html_as_text:43 ../templates/circulation:87
 #: ../templates/circulation_mobile:76
 #: ../templates/litlists_record_html_as_text:26
 #: ../templates/titles_record_html_categories:323
@@ -2185,7 +2202,7 @@ msgstr "Please confirm your registration"
 #: ../templates/_database/inst137/holding:33
 #: ../templates/_database/kapsel/holding:33
 #: ../templates/_profile/kug/_database/edz/holding:17
-#: ../templates/_profile/kug/_database/inst001/holding:17
+#: ../templates/_profile/kug/_database/inst001/holding:18
 #: ../templates/_profile/kug/_database/inst137/holding:33
 #: ../templates/_profile/kug/_database/islandica/holding:17
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/holding:17
@@ -2202,7 +2219,7 @@ msgstr "Please confirm your registration"
 #: ../templates/_profile/usbportal/titles_record_include:77
 #: ../templates/_view/richter/cartitems_html_simple:70
 #: ../templates/cartitems_html_simple:67 ../templates/holding:33
-#: ../templates/holding_mobile:17 ../templates/titles_record_html:232
+#: ../templates/holding_mobile:17 ../templates/titles_record_html:239
 #: ../templates/titles_record_include:125
 #: ../templates/titles_record_include:151
 msgid "Bestand"
@@ -2246,14 +2263,14 @@ msgstr "Subject"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:301
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:291
 #: ../templates/reviews_edit:216 ../templates/reviews_record_html:69
-#: ../templates/titles_record_html:301 ../templates/titles_record_include:200
+#: ../templates/titles_record_html:308 ../templates/titles_record_include:200
 msgid "Bewertung"
 msgstr "Rating"
 
 #: ../templates/_database/einbaende/titles_record_html:270
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:245
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:235
-#: ../templates/titles_record_html:245 ../templates/titles_record_include:138
+#: ../templates/titles_record_html:252 ../templates/titles_record_include:138
 #: ../templates/titles_record_include:178
 msgid "Bewertungen/Rezensionen"
 msgstr "Ratings/reviews"
@@ -2261,7 +2278,7 @@ msgstr "Ratings/reviews"
 #: ../templates/_database/einbaende/titles_record_html:360
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:335
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:325
-#: ../templates/titles_record_html:335 ../templates/titles_record_include:236
+#: ../templates/titles_record_html:342 ../templates/titles_record_include:236
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Ratings/reviews from users"
 
@@ -2477,6 +2494,7 @@ msgstr "C5000"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:481
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:481
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:481
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:455
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:483
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:446
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:481
@@ -2912,6 +2930,9 @@ msgstr "The following external services  are currently being offered:"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:450
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:451
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:452
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:424
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:425
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:426
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:452
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:453
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:454
@@ -3104,6 +3125,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:517
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:517
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:517
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:488
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:519
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:482
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:517
@@ -3427,10 +3449,12 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:22
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:22
+#: ../templates/_profile/sammlungen/titles_html:17
 #: ../templates/_profile/sammlungen/titlist_item_html_short:22
 #: ../templates/_profile/usbportal/litlists_record_include:14
 #: ../templates/_profile/usbportal/tags_include:14
@@ -3594,14 +3618,14 @@ msgstr "Your tags"
 #: ../templates/_database/einbaende/titles_record_html:371
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:346
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:336
-#: ../templates/titles_record_html:346 ../templates/titles_record_include:247
+#: ../templates/titles_record_html:353 ../templates/titles_record_include:247
 msgid "Eigenen Review bearbeiten"
 msgstr "Edit your review"
 
 #: ../templates/_database/einbaende/titles_record_html:372
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:347
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:337
-#: ../templates/titles_record_html:347 ../templates/titles_record_include:248
+#: ../templates/titles_record_html:354 ../templates/titles_record_include:248
 msgid "Eigenen Review l&ouml;schen"
 msgstr "Remove your review"
 
@@ -3917,6 +3941,9 @@ msgstr "End"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:453
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:454
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:455
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:427
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:428
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:429
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:455
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:456
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:457
@@ -3984,6 +4011,8 @@ msgstr "Discover other titles using:"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:239
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:231
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:295
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:298
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:241
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:254
@@ -3993,6 +4022,7 @@ msgstr "Discover other titles using:"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:198
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:198
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:198
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:185
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:200
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:198
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:240
@@ -4122,6 +4152,7 @@ msgstr "Years of publication"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:325
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:317
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:293
+#: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:319
 #: ../templates/_profile/sammlungen/titles_record_html_categories:319
 #: ../templates/_view/richter/cartitems_html_as_text:47
 #: ../templates/_view/richter/litlists_record_html_as_text:30
@@ -4170,6 +4201,7 @@ msgstr "Advanced search mask"
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:126
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:68
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:126
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:116
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:131
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_advanced:38
@@ -4182,6 +4214,7 @@ msgstr "Advanced search mask"
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:121
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:68
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:131
 #: ../templates/_profile/sammlungen/mainnavigation_html:121
 #: ../templates/_profile/sammlungen/searchforms_record_advanced:38
 #: ../templates/_profile/sammlungen/searchforms_record_query:68
@@ -4222,7 +4255,7 @@ msgstr "Advanced search"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:123
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:123
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:123
-#: ../templates/_profile/usbportal/circulation:106 ../templates/circulation:85
+#: ../templates/_profile/usbportal/circulation:106 ../templates/circulation:87
 #: ../templates/circulation_mobile:76
 msgid "Erwerbungsstatus"
 msgstr "Acquisition status"
@@ -4495,7 +4528,7 @@ msgstr "To use the index you have to enter a suitable term"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:275
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:265
 #: ../templates/_profile/usbportal/titles_record_include:99
-#: ../templates/titles_record_html:275 ../templates/titles_record_include:173
+#: ../templates/titles_record_html:282 ../templates/titles_record_include:173
 msgid ""
 "F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel "
 "bieten wir eine eine %1&Uuml;bersicht%2 an."
@@ -4637,6 +4670,7 @@ msgstr "Filter"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:480
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:480
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:480
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:454
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:482
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:445
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:480
@@ -4678,6 +4712,9 @@ msgstr "French Wikipedia"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:456
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:457
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:458
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:430
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:431
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:432
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:458
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:459
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:460
@@ -4935,6 +4972,8 @@ msgstr "Browse all available %1free and licensed journals%2 by subject."
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:462
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:461
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:462
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:435
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:436
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:463
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:464
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:426
@@ -5117,6 +5156,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:124
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:124
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/pruessen/mainnavigation_html:124
@@ -5124,6 +5164,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation:124
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:119
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:129
 #: ../templates/_profile/sammlungen/mainnavigation_html:119
 #: ../templates/_profile/usbportal/searchforms_record_query:164
 #: ../templates/_view/richter/mainnavigation:125
@@ -5167,6 +5208,7 @@ msgstr "Help"
 #: ../templates/_database/wikisource_de/persons_record_html:137
 #: ../templates/_profile/kug/_database/inst302/circulation:74
 #: ../templates/_profile/kug/_database/wikisource_de/persons_record_html:137
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:485
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:485
 #: ../templates/_view/richter/corporatebodies_record_html:111
 #: ../templates/_view/richter/persons_record_html:135
@@ -5654,7 +5696,7 @@ msgstr "OpenBib currently offers the following types of RSS-Feeds:"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:239
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:229
 #: ../templates/_profile/usbportal/titles_record_include:104
-#: ../templates/titles_record_html:239 ../templates/titles_record_include:132
+#: ../templates/titles_record_html:246 ../templates/titles_record_include:132
 #: ../templates/titles_record_include:269
 msgid "In anderen Katalogen"
 msgstr "In other catalogs"
@@ -5793,6 +5835,7 @@ msgstr "In simple search or free search field"
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:245
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:234
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:293
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
@@ -5942,6 +5985,9 @@ msgstr "Info"
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/lefort/info_sammlung:37
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:31
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:33
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:22
 #: ../templates/_profile/sammlungen/_view/poetica/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/portrait/info_leer:37
 #: ../templates/_profile/sammlungen/_view/portrait/info_quellen:37
@@ -5975,6 +6021,9 @@ msgstr "Info"
 #: ../templates/_profile/sammlungen/_view/wallraf/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:33
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:31
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:33
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:22
 #: ../templates/_profile/sammlungen/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/mainnavigation_html:33
 #: ../templates/_view/richter/mainnavigation:31
@@ -6036,10 +6085,12 @@ msgstr "Move user generated content to new login"
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:23
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:23
+#: ../templates/_profile/sammlungen/titles_html:18
 #: ../templates/_profile/sammlungen/titlist_item_html_short:23
 #: ../templates/_profile/usbportal/litlists_record_include:15
 #: ../templates/_profile/usbportal/tags_include:15
@@ -6167,6 +6218,7 @@ msgstr "Inventory number"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:324
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:316
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:292
+#: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:318
 #: ../templates/_profile/sammlungen/titles_record_html_categories:318
 #: ../templates/_view/richter/cartitems_html_as_text:46
 #: ../templates/_view/richter/litlists_record_html_as_text:29
@@ -6181,6 +6233,7 @@ msgstr "Inventory number     "
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:479
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:479
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:479
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:453
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:481
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:444
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:479
@@ -6198,6 +6251,8 @@ msgstr "Icelandic"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:467
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:466
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:467
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:440
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:441
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:468
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:469
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:431
@@ -6269,7 +6324,7 @@ msgstr "JSON cannot be parsed"
 #: ../templates/databases_rss_record_html:97
 #: ../templates/litlists_record_include:75
 #: ../templates/searchforms_record_options:4 ../templates/servers_html:82
-#: ../templates/servers_record_html:77 ../templates/titles_record_html:350
+#: ../templates/servers_record_html:77 ../templates/titles_record_html:357
 #: ../templates/titles_record_include:251
 #: ../templates/users_litlists_record_delete_confirm:54
 #: ../templates/users_litlists_record_edit:93
@@ -6285,8 +6340,8 @@ msgstr "Yes"
 #: ../templates/_profile/kug/searchforms_record_query:220
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:33
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:35
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:106
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:108
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:126
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:128
 #: ../templates/_profile/rheinlandbib/clouds_databases_record_html:61
 #: ../templates/_profile/rheinlandbib/clouds_navigation:28
 #: ../templates/_profile/rheinlandbib/clouds_navigation:30
@@ -6316,6 +6371,9 @@ msgstr "Yes"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:12
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:25
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:137
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:169
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:66
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:68
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_databases_record_html:61
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:30
@@ -6345,6 +6403,8 @@ msgstr "Yes"
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:30
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:169
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:61
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:63
 #: ../templates/_profile/sammlungen/clouds_databases_record_html:61
 #: ../templates/_profile/sammlungen/clouds_navigation:28
 #: ../templates/_profile/sammlungen/clouds_navigation:30
@@ -6393,7 +6453,8 @@ msgstr "Year from"
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:30
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_year_html:51
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_year_html:70
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html:51
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_year_html:51
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_year_html:70
 #: ../templates/cloudss_navigation:15
 msgid "Jahre"
 msgstr "Years"
@@ -6415,6 +6476,7 @@ msgstr "Century"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:472
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:472
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:472
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:446
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:474
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:437
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:472
@@ -6432,6 +6494,7 @@ msgstr "Japanese"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:176
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:176
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:176
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:164
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:178
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:176
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:164
@@ -6449,8 +6512,8 @@ msgstr "Corporate body"
 
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:47
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:49
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:116
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:118
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:136
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:138
 #: ../templates/_profile/rheinlandbib/clouds_navigation:42
 #: ../templates/_profile/rheinlandbib/clouds_navigation:44
 #: ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:64
@@ -6459,6 +6522,8 @@ msgstr "Corporate body"
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:123
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:84
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:86
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:76
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:78
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:111
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:113
 #: ../templates/_profile/sammlungen/_view/pruessen/subnavigation:62
@@ -6469,6 +6534,8 @@ msgstr "Corporate body"
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:71
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:42
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:44
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:71
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:73
 #: ../templates/_profile/sammlungen/clouds_navigation:42
 #: ../templates/_profile/sammlungen/clouds_navigation:44
 #: ../templates/_view/richter/clouds_navigation:42
@@ -6522,6 +6589,7 @@ msgstr "Digital card catalog (faculty of arts)"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:174
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:17
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:4
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:162
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:176
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:174
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:174
@@ -6703,7 +6771,7 @@ msgstr "None"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:111
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:111
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:111
-#: ../templates/circulation:73 ../templates/circulation_mobile:64
+#: ../templates/circulation:75 ../templates/circulation_mobile:64
 msgid "Keine Aktion m&ouml;glich"
 msgstr "No action available"
 
@@ -6900,6 +6968,8 @@ msgstr "Artist"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:239
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:231
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:295
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:298
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:241
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:254
@@ -6934,7 +7004,8 @@ msgstr "Remove"
 #: ../templates/_profile/kug/_view/versicherung/home_html_bottom_left:24
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:24
 #: ../templates/_profile/kug/home_html_bottom_left:23
-#: ../templates/bibfuehrer_tex:285 ../templates/visible_categories_location:17
+#: ../templates/_profile/usbportal/visible_categories_location:17
+#: ../templates/bibfuehrer_tex:283 ../templates/visible_categories_location:17
 msgid "L0010"
 msgstr "Name of institution"
 
@@ -6955,7 +7026,8 @@ msgstr "Name of institution"
 #: ../templates/_profile/kug/_view/versicherung/home_html_bottom_left:25
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:25
 #: ../templates/_profile/kug/home_html_bottom_left:24
-#: ../templates/bibfuehrer_tex:286 ../templates/visible_categories_location:18
+#: ../templates/_profile/usbportal/visible_categories_location:18
+#: ../templates/bibfuehrer_tex:284 ../templates/visible_categories_location:18
 msgid "L0020"
 msgstr "Address"
 
@@ -6976,35 +7048,43 @@ msgstr "Address"
 #: ../templates/_profile/kug/_view/versicherung/home_html_bottom_left:26
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:26
 #: ../templates/_profile/kug/home_html_bottom_left:25
-#: ../templates/bibfuehrer_tex:287 ../templates/visible_categories_location:19
+#: ../templates/_profile/usbportal/visible_categories_location:20
+#: ../templates/bibfuehrer_tex:285 ../templates/visible_categories_location:19
 msgid "L0030"
 msgstr "Building"
 
-#: ../templates/bibfuehrer_tex:288 ../templates/visible_categories_location:20
+#: ../templates/_profile/usbportal/visible_categories_location:21
+#: ../templates/bibfuehrer_tex:286 ../templates/visible_categories_location:20
 msgid "L0040"
 msgstr "Interactive university map"
 
-#: ../templates/bibfuehrer_tex:289 ../templates/visible_categories_location:21
+#: ../templates/_profile/usbportal/visible_categories_location:22
+#: ../templates/bibfuehrer_tex:287 ../templates/visible_categories_location:21
 msgid "L0050"
 msgstr "Joint library"
 
-#: ../templates/bibfuehrer_tex:290 ../templates/visible_categories_location:22
+#: ../templates/_profile/usbportal/visible_categories_location:23
+#: ../templates/bibfuehrer_tex:288 ../templates/visible_categories_location:22
 msgid "L0060"
 msgstr "Phone"
 
-#: ../templates/bibfuehrer_tex:291 ../templates/visible_categories_location:23
+#: ../templates/_profile/usbportal/visible_categories_location:24
+#: ../templates/bibfuehrer_tex:289 ../templates/visible_categories_location:23
 msgid "L0070"
 msgstr "Fax"
 
-#: ../templates/bibfuehrer_tex:292 ../templates/visible_categories_location:24
+#: ../templates/_profile/usbportal/visible_categories_location:25
+#: ../templates/bibfuehrer_tex:290 ../templates/visible_categories_location:24
 msgid "L0080"
 msgstr "E-Mail"
 
-#: ../templates/bibfuehrer_tex:293 ../templates/visible_categories_location:25
+#: ../templates/_profile/usbportal/visible_categories_location:26
+#: ../templates/bibfuehrer_tex:291 ../templates/visible_categories_location:25
 msgid "L0090"
 msgstr "Internet"
 
-#: ../templates/bibfuehrer_tex:294 ../templates/visible_categories_location:26
+#: ../templates/_profile/usbportal/visible_categories_location:27
+#: ../templates/bibfuehrer_tex:292 ../templates/visible_categories_location:26
 msgid "L0100"
 msgstr "Help desk / librarian"
 
@@ -7025,31 +7105,38 @@ msgstr "Help desk / librarian"
 #: ../templates/_profile/kug/_view/versicherung/home_html_bottom_left:27
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:27
 #: ../templates/_profile/kug/home_html_bottom_left:26
-#: ../templates/bibfuehrer_tex:295 ../templates/visible_categories_location:27
+#: ../templates/_profile/usbportal/visible_categories_location:19
+#: ../templates/bibfuehrer_tex:293 ../templates/visible_categories_location:27
 msgid "L0110"
 msgstr "Business hours"
 
-#: ../templates/bibfuehrer_tex:296 ../templates/visible_categories_location:28
+#: ../templates/_profile/usbportal/visible_categories_location:30
+#: ../templates/bibfuehrer_tex:294 ../templates/visible_categories_location:28
 msgid "L0120"
 msgstr "Holdings of books"
 
-#: ../templates/bibfuehrer_tex:297 ../templates/visible_categories_location:29
+#: ../templates/_profile/usbportal/visible_categories_location:31
+#: ../templates/bibfuehrer_tex:295 ../templates/visible_categories_location:29
 msgid "L0130"
 msgstr "Holdings of journals"
 
-#: ../templates/bibfuehrer_tex:298 ../templates/visible_categories_location:30
+#: ../templates/_profile/usbportal/visible_categories_location:32
+#: ../templates/bibfuehrer_tex:296 ../templates/visible_categories_location:30
 msgid "L0140"
 msgstr "Number of ongoing journals"
 
-#: ../templates/bibfuehrer_tex:299 ../templates/visible_categories_location:31
+#: ../templates/_profile/usbportal/visible_categories_location:33
+#: ../templates/bibfuehrer_tex:297 ../templates/visible_categories_location:31
 msgid "L0150"
 msgstr "Holdings of CDs / digital media"
 
-#: ../templates/bibfuehrer_tex:300 ../templates/visible_categories_location:32
+#: ../templates/_profile/usbportal/visible_categories_location:34
+#: ../templates/bibfuehrer_tex:298 ../templates/visible_categories_location:32
 msgid "L0160"
 msgstr "Other holding information"
 
-#: ../templates/bibfuehrer_tex:301 ../templates/visible_categories_location:33
+#: ../templates/_profile/usbportal/visible_categories_location:35
+#: ../templates/bibfuehrer_tex:299 ../templates/visible_categories_location:33
 msgid "L0170"
 msgstr "Special collecting fields"
 
@@ -7070,23 +7157,28 @@ msgstr "Special collecting fields"
 #: ../templates/_profile/kug/_view/versicherung/home_html_bottom_left:28
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:28
 #: ../templates/_profile/kug/home_html_bottom_left:27
-#: ../templates/bibfuehrer_tex:302 ../templates/visible_categories_location:34
+#: ../templates/_profile/usbportal/visible_categories_location:36
+#: ../templates/bibfuehrer_tex:300 ../templates/visible_categories_location:34
 msgid "L0180"
 msgstr "Type of library"
 
-#: ../templates/bibfuehrer_tex:303 ../templates/visible_categories_location:35
+#: ../templates/_profile/usbportal/visible_categories_location:37
+#: ../templates/bibfuehrer_tex:301 ../templates/visible_categories_location:35
 msgid "L0190"
 msgstr "Lists of new acquisitions"
 
-#: ../templates/bibfuehrer_tex:304 ../templates/visible_categories_location:36
+#: ../templates/_profile/usbportal/visible_categories_location:38
+#: ../templates/bibfuehrer_tex:302 ../templates/visible_categories_location:36
 msgid "L0200"
 msgstr "Copier / technical equipment"
 
-#: ../templates/bibfuehrer_tex:306 ../templates/visible_categories_location:38
+#: ../templates/_profile/usbportal/visible_categories_location:40
+#: ../templates/bibfuehrer_tex:304 ../templates/visible_categories_location:38
 msgid "L0210"
 msgstr "IT equipment"
 
-#: ../templates/bibfuehrer_tex:307 ../templates/visible_categories_location:39
+#: ../templates/_profile/usbportal/visible_categories_location:41
+#: ../templates/bibfuehrer_tex:305 ../templates/visible_categories_location:39
 msgid "L0220"
 msgstr "Type of library system"
 
@@ -7107,7 +7199,8 @@ msgstr "Type of library system"
 #: ../templates/_profile/kug/_view/versicherung/home_html_bottom_left:29
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:29
 #: ../templates/_profile/kug/home_html_bottom_left:28
-#: ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:40
+#: ../templates/_profile/usbportal/visible_categories_location:42
+#: ../templates/bibfuehrer_tex:306 ../templates/visible_categories_location:40
 msgid "L0230"
 msgstr "Online cataloging"
 
@@ -7128,23 +7221,28 @@ msgstr "Online cataloging"
 #: ../templates/_profile/kug/_view/versicherung/home_html_bottom_left:30
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:30
 #: ../templates/_profile/kug/home_html_bottom_left:29
-#: ../templates/bibfuehrer_tex:309 ../templates/visible_categories_location:41
+#: ../templates/_profile/usbportal/visible_categories_location:43
+#: ../templates/bibfuehrer_tex:307 ../templates/visible_categories_location:41
 msgid "L0235"
 msgstr "Online cataloging since year of acquisition"
 
-#: ../templates/bibfuehrer_tex:310 ../templates/visible_categories_location:42
+#: ../templates/_profile/usbportal/visible_categories_location:44
+#: ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:42
 msgid "L0240"
 msgstr "KUG cooperation"
 
-#: ../templates/bibfuehrer_tex:311 ../templates/visible_categories_location:43
+#: ../templates/_profile/usbportal/visible_categories_location:45
+#: ../templates/bibfuehrer_tex:309 ../templates/visible_categories_location:43
 msgid "L0250"
 msgstr "Sign in ZDB"
 
-#: ../templates/bibfuehrer_tex:305 ../templates/visible_categories_location:37
+#: ../templates/_profile/usbportal/visible_categories_location:39
+#: ../templates/bibfuehrer_tex:303 ../templates/visible_categories_location:37
 msgid "L0260"
 msgstr "Type of network"
 
-#: ../templates/bibfuehrer_tex:312 ../templates/visible_categories_location:44
+#: ../templates/_profile/usbportal/visible_categories_location:46
+#: ../templates/bibfuehrer_tex:310 ../templates/visible_categories_location:44
 msgid "L0280"
 msgstr "Geographic coordinates"
 
@@ -7156,6 +7254,8 @@ msgstr "Geographic coordinates"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:460
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:459
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:460
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:433
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:434
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:461
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:462
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:424
@@ -7210,12 +7310,15 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_person_html:103
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_subject_html:103
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_corporatebody_html:103
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_person_html:103
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_subject_html:103
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html:103
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_corporatebody_html:103
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_person_html:103
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_subject_html:103
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_year_html:103
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_person_html:103
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_year_html:103
 #: ../templates/_profile/usbportal/clouds_corporatebody_include:51
 #: ../templates/_profile/usbportal/clouds_person_include:38
 #: ../templates/_profile/usbportal/clouds_subject_include:51
@@ -7275,7 +7378,7 @@ msgstr "Newest 50 catalog entries"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:236
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:226
 #: ../templates/_profile/usbportal/titles_record_include:96
-#: ../templates/titles_record_html:236 ../templates/titles_record_include:129
+#: ../templates/titles_record_html:243 ../templates/titles_record_include:129
 #: ../templates/titles_record_include:170
 msgid "Letzte Artikel"
 msgstr "Most recent articles"
@@ -7311,6 +7414,7 @@ msgstr "Lists sharing titles"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:183
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:16
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:27
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:171
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:185
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:183
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:183
@@ -7343,6 +7447,8 @@ msgstr "Literature list"
 #: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:64
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:76
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:78
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:76
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:76
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_navigation:55
@@ -7439,6 +7545,7 @@ msgstr "Local"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:323
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:315
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:291
+#: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:317
 #: ../templates/_profile/sammlungen/titles_record_html_categories:317
 #: ../templates/_view/richter/cartitems_html_as_text:45
 #: ../templates/_view/richter/litlists_record_html_as_text:28
@@ -7485,7 +7592,7 @@ msgstr "Go"
 #: ../templates/admin_topics_record_edit:96
 #: ../templates/admin_views_record_edit:129
 #: ../templates/cartitems_html_actions:160
-#: ../templates/cartitems_html_short:144 ../templates/titles_record_html:321
+#: ../templates/cartitems_html_short:144 ../templates/titles_record_html:328
 #: ../templates/titles_record_include:220
 #: ../templates/topics_record_mapping_html:95
 #: ../templates/users_litlists_html:110
@@ -7629,6 +7736,16 @@ msgstr "Type of media"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:69
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:80
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:91
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:102
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:114
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:126
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:138
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:36
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:47
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:58
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:69
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:80
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:91
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:102
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:114
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:126
@@ -7716,6 +7833,7 @@ msgstr "My OpenBib"
 #: ../templates/_profile/sammlungen/_view/dirksen/corporate_banner:6
 #: ../templates/_profile/sammlungen/_view/lefort/corporate_banner:6
 #: ../templates/_profile/sammlungen/_view/portrait/corporate_banner:6
+#: ../templates/_profile/sammlungen/_view/zpe/corporate_banner:6
 #: ../templates/_profile/sammlungen/corporate_banner:6
 msgid "Meine Sammlung"
 msgstr "My collection"
@@ -7740,6 +7858,7 @@ msgstr "Message"
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:245
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:234
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:293
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
@@ -7790,6 +7909,8 @@ msgstr "Collect"
 #: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:51
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:53
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:51
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:53
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:56
@@ -7804,6 +7925,8 @@ msgstr "Collect"
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:58
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:48
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:56
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:58
 #: ../templates/_profile/sammlungen/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/mainnavigation_html:48
 #: ../templates/_view/richter/cartitems_empty:38
@@ -8038,7 +8161,7 @@ msgstr ""
 #: ../templates/databases_rss_record_html:98
 #: ../templates/litlists_record_include:75
 #: ../templates/searchforms_record_options:4 ../templates/servers_html:82
-#: ../templates/servers_record_html:78 ../templates/titles_record_html:351
+#: ../templates/servers_record_html:78 ../templates/titles_record_html:358
 #: ../templates/titles_record_include:252
 #: ../templates/users_litlists_record_delete_confirm:60
 #: ../templates/users_litlists_record_edit:93
@@ -8068,6 +8191,7 @@ msgstr "New"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:463
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:463
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:463
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:437
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:465
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:428
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:463
@@ -8129,7 +8253,7 @@ msgstr "New login"
 #: ../templates/_database/einbaende/titles_record_html:323
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:298
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:288
-#: ../templates/titles_record_html:298 ../templates/titles_record_include:197
+#: ../templates/titles_record_html:305 ../templates/titles_record_include:197
 msgid "Neue Bewertung/Rezension"
 msgstr "New rating/review"
 
@@ -8211,7 +8335,7 @@ msgstr "New tag name"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:120
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:120
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:120
-#: ../templates/_profile/usbportal/circulation:103 ../templates/circulation:82
+#: ../templates/_profile/usbportal/circulation:103 ../templates/circulation:84
 #: ../templates/circulation_mobile:73
 msgid "Neuerwerbung"
 msgstr "New aquisition"
@@ -8268,6 +8392,8 @@ msgstr "Non-commercial nature of this web site"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:478
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:477
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:478
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:451
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:452
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:479
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:480
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:442
@@ -8336,6 +8462,8 @@ msgstr "Search user"
 #: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:52
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:64
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:66
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:64
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:66
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:64
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:66
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_navigation:43
@@ -8688,8 +8816,8 @@ msgstr "Person/Corporate Body"
 #: ../templates/_profile/kug/searchforms_record_query:95
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:40
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:42
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:111
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:113
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:131
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:133
 #: ../templates/_profile/rheinlandbib/clouds_navigation:35
 #: ../templates/_profile/rheinlandbib/clouds_navigation:37
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:97
@@ -8710,6 +8838,8 @@ msgstr "Person/Corporate Body"
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:25
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:27
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:17
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:71
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:73
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:86
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:106
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:108
@@ -8723,6 +8853,8 @@ msgstr "Person/Corporate Body"
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:64
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:66
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:97
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:66
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:68
 #: ../templates/_profile/sammlungen/clouds_navigation:35
 #: ../templates/_profile/sammlungen/clouds_navigation:37
 #: ../templates/_profile/sammlungen/searchforms_record_query:97
@@ -8782,6 +8914,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:476
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:476
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:476
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:450
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:478
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:441
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:476
@@ -8812,10 +8945,12 @@ msgstr "Popularity-Functions"
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:24
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:24
+#: ../templates/_profile/sammlungen/titles_html:19
 #: ../templates/_profile/sammlungen/titlist_item_html_short:24
 #: ../templates/_profile/usbportal/litlists_record_include:16
 #: ../templates/_profile/usbportal/tags_include:16
@@ -8846,6 +8981,8 @@ msgstr "Popularity-Functions"
 msgid "Popularität"
 msgstr "Popularity"
 
+#: ../templates/_profile/sammlungen/_view/alekiddr/titles_navigation:27
+#: ../templates/_profile/sammlungen/titles_navigation:27
 #: ../templates/titles_navigation:24 ../templates/titles_navigation:26
 msgid "Populäre Titel"
 msgstr "Popular titles"
@@ -8900,6 +9037,7 @@ msgstr "Profile"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:39
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:34
 #: ../templates/_profile/sammlungen/_view/portrait/info_ansprechpartner:37
 #: ../templates/_profile/sammlungen/_view/portrait/info_ausstellung:37
 #: ../templates/_profile/sammlungen/_view/portrait/info_faq:37
@@ -8921,6 +9059,9 @@ msgstr "Profile"
 #: ../templates/_profile/sammlungen/_view/umschlaege/info_redaktion:37
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:38
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:36
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:38
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:34
 #: ../templates/info_navigation:10 ../templates/info_navigation:12
 #: ../templates/info_project:37
 msgid "Projekt"
@@ -8945,10 +9086,23 @@ msgstr "Protocol"
 msgid "Provenienz"
 msgstr "Provenance"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:42
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:44
+#, fuzzy
+msgid "Provenienzen"
+msgstr "Provenance"
+
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_databases_record_html:61
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:59
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html:70
 msgid "Prägejahr"
+msgstr "Year of coinage"
+
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:30
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html:51
+#, fuzzy
+msgid "Prägejahre"
 msgstr "Year of coinage"
 
 #: ../templates/_profile/kug/search_more_tips:14
@@ -8959,7 +9113,7 @@ msgstr "Examine the spelling of your search terms."
 #: ../templates/_database/einbaende/titles_record_html:339
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:314
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:304
-#: ../templates/reviews_edit:230 ../templates/titles_record_html:314
+#: ../templates/reviews_edit:230 ../templates/titles_record_html:321
 #: ../templates/titles_record_include:213
 msgid "Pseudonym"
 msgstr "Pseudonym"
@@ -9048,7 +9202,7 @@ msgid "ReadMe"
 msgstr "ReadMe"
 
 #: ../templates/_database/einbaende/titles_record_html:126
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:79
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:99
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:124
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:99
 #: ../templates/_profile/sammlungen/_view/richter/subnavigation:53
@@ -9172,6 +9326,14 @@ msgstr "Search for %1 journals/series in %2 catalogs"
 msgid "Rechtschreibvorschläge"
 msgstr "Spelling suggestions"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:35
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:37
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_person_html:51
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_person_html:70
+#, fuzzy
+msgid "Regenten"
+msgstr "Clients"
+
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_corporatebody_html:51
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_corporatebody_html:70
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_databases_record_html:65
@@ -9187,6 +9349,7 @@ msgstr "Spelling suggestions"
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_subject_html:51
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_subject_html:70
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:165
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_databases_record_html:63
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:49
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:51
@@ -9206,9 +9369,15 @@ msgstr "Region, Provenance, Painter/Drawer, Profession/world-view, year"
 msgid "Region/Werkzeug"
 msgstr "Region/Tool"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:49
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:51
+#, fuzzy
+msgid "Regionen"
+msgstr "Region"
+
 #: ../templates/_profile/kug/mainnavigation_mobile:11
 #: ../templates/_profile/kug/mainnavigation_mobile:9
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:91
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:111
 #: ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:34
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:43
@@ -9231,6 +9400,10 @@ msgstr "Region/Tool"
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:22
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:52
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:36
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:38
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:46
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_fields_record_html:46
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:61
@@ -9253,6 +9426,10 @@ msgstr "Region/Tool"
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:92
 #: ../templates/_profile/sammlungen/_view/umschlaege/subnavigation:22
 #: ../templates/_profile/sammlungen/_view/umschlaege/titles_fields_record_html:55
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:41
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:43
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:46
+#: ../templates/_profile/sammlungen/_view/zpe/titles_fields_record_html:43
 #: ../templates/_view/richter/browse_title_html:38
 #: ../templates/_view/richter/mainnavigation:36
 #: ../templates/_view/richter/mainnavigation:38 ../templates/subnavigation:39
@@ -9284,7 +9461,7 @@ msgstr "relevance"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:312
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:302
 #: ../templates/reviews_edit:228 ../templates/reviews_record_html:70
-#: ../templates/titles_record_html:312 ../templates/titles_record_include:211
+#: ../templates/titles_record_html:319 ../templates/titles_record_include:211
 msgid "Rezension"
 msgstr "Review"
 
@@ -9328,6 +9505,8 @@ msgstr "Roles"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:471
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:470
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:471
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:444
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:445
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:472
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:473
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:435
@@ -9393,8 +9572,8 @@ msgstr "# of titles"
 #: ../templates/_profile/kug/users_preferences_html:188
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:54
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:56
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:121
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:123
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:141
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:143
 #: ../templates/_profile/rheinlandbib/clouds_databases_record_html:63
 #: ../templates/_profile/rheinlandbib/clouds_navigation:49
 #: ../templates/_profile/rheinlandbib/clouds_navigation:51
@@ -9407,6 +9586,8 @@ msgstr "# of titles"
 #: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:30
 #: ../templates/_profile/sammlungen/_view/kapsel/titles_fields_record_html:20
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:81
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:83
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:116
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:118
 #: ../templates/_profile/sammlungen/_view/pruessen/subnavigation:67
@@ -9417,6 +9598,8 @@ msgstr "# of titles"
 #: ../templates/_profile/sammlungen/_view/totenzettel/subnavigation:76
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:49
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:51
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:76
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:78
 #: ../templates/_profile/sammlungen/clouds_databases_record_html:63
 #: ../templates/_profile/sammlungen/clouds_navigation:49
 #: ../templates/_profile/sammlungen/clouds_navigation:51
@@ -9478,6 +9661,7 @@ msgstr "Subjects in displayed titles"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:473
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:473
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:473
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:447
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:475
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:438
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:473
@@ -9565,9 +9749,10 @@ msgstr "Page:"
 #: ../templates/_profile/kug/_database/bibsonomy/search_title_item_html:117
 #: ../templates/_profile/kug/_database/dbis/search_title_item_html:133
 #: ../templates/_profile/kug/_database/ezb/search_title_item_html:132
+#: ../templates/_profile/sammlungen/titles_html:100
 #: ../templates/search_classification:57 ../templates/search_corporatebody:57
 #: ../templates/search_person:57 ../templates/search_subject:57
-#: ../templates/search_title_combined_html:98
+#: ../templates/search_title_combined_html:95
 #: ../templates/search_title_combined_include:46
 #: ../templates/search_title_item_html:69 ../templates/titles_html:100
 msgid "Sekunden"
@@ -10049,7 +10234,7 @@ msgstr "Library-Code"
 #: ../templates/_profile/kug/_database/edz/circulation:33
 #: ../templates/_profile/kug/_database/edz/holding:17
 #: ../templates/_profile/kug/_database/inst001/circulation:33
-#: ../templates/_profile/kug/_database/inst001/holding:17
+#: ../templates/_profile/kug/_database/inst001/holding:18
 #: ../templates/_profile/kug/_database/inst137/holding:33
 #: ../templates/_profile/kug/_database/inst302/circulation:29
 #: ../templates/_profile/kug/_database/islandica/circulation:33
@@ -10085,6 +10270,7 @@ msgstr "Library-Code"
 #: ../templates/_profile/sammlungen/_database/kempis/circulation:33
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:221
 #: ../templates/_profile/sammlungen/_database/lefort/circulation:33
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:288
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_database/richter/holding:35
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:33
@@ -10179,6 +10365,8 @@ msgstr "Order by"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:469
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:468
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:469
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:442
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:443
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:470
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:471
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:433
@@ -10221,6 +10409,7 @@ msgstr "Specialized portals"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/corporate_banner:4
 #: ../templates/_profile/sammlungen/_view/lefort/corporate_banner:4
 #: ../templates/_profile/sammlungen/_view/portrait/corporate_banner:4
+#: ../templates/_profile/sammlungen/_view/zpe/corporate_banner:4
 #: ../templates/_profile/sammlungen/corporate_banner:4
 #: ../templates/_view/richter/corporate_banner:4
 #: ../templates/corporate_banner:4 ../templates/info_journaltocs:43
@@ -10239,6 +10428,7 @@ msgstr "Language icon for %1"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:180
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:11
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:24
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:168
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:182
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:180
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:180
@@ -10260,6 +10450,7 @@ msgstr "Jump to external search resources"
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_classification_html:70
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_databases_record_html:63
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:59
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:166
 msgid "Stadt"
 msgstr "City"
 
@@ -10271,7 +10462,7 @@ msgstr "City"
 #: ../templates/_profile/kug/_database/edz/circulation:33
 #: ../templates/_profile/kug/_database/edz/holding:17
 #: ../templates/_profile/kug/_database/inst001/circulation:33
-#: ../templates/_profile/kug/_database/inst001/holding:17
+#: ../templates/_profile/kug/_database/inst001/holding:18
 #: ../templates/_profile/kug/_database/inst137/holding:33
 #: ../templates/_profile/kug/_database/inst302/circulation:29
 #: ../templates/_profile/kug/_database/islandica/circulation:33
@@ -10340,6 +10531,7 @@ msgstr "Location"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:314
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:290
+#: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:316
 #: ../templates/_profile/sammlungen/titles_record_html_categories:316
 #: ../templates/_view/richter/cartitems_html_as_text:44
 #: ../templates/_view/richter/litlists_record_html_as_text:27
@@ -10381,16 +10573,20 @@ msgstr "Edit information about location"
 #: ../templates/_profile/kug/_database/ezb/classifications_html:36
 #: ../templates/_profile/kug/info_help:37 ../templates/_profile/kug/login:38
 #: ../templates/_profile/kug/searchforms_record_advanced:37
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_bruehl:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gaesdonck:36
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_geistingen:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gleuel:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_grevenbroich:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_hennef:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_kempen:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_kevelaer:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_koenigswinter:36
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_moenchengladbach:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_rheinischeabteilung:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_wickrath:36
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_xanten:36
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_zuelpich:36
 #: ../templates/_profile/rheinlandbib/clouds_databases_record_html:37
 #: ../templates/_profile/rheinlandbib/clouds_html:37
 #: ../templates/_profile/rheinlandbib/searchforms_record_advanced:37
@@ -10438,6 +10634,7 @@ msgstr "Edit information about location"
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_databases_record_html:37
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:37
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_subject_html:48
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_fields_record_html:45
 #: ../templates/_profile/sammlungen/_view/poetica/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_corporatebody_html:48
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_databases_record_html:37
@@ -10481,6 +10678,9 @@ msgstr "Edit information about location"
 #: ../templates/_profile/sammlungen/_view/umschlaege/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/umschlaege/titles_fields_record_html:54
 #: ../templates/_profile/sammlungen/_view/wallraf/info_sammlung:36
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_databases_record_html:37
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_html:37
+#: ../templates/_profile/sammlungen/_view/zpe/titles_fields_record_html:42
 #: ../templates/_profile/sammlungen/clouds_databases_record_html:37
 #: ../templates/_profile/sammlungen/clouds_html:37
 #: ../templates/_profile/sammlungen/login:38
@@ -10610,6 +10810,11 @@ msgstr "Street"
 msgid "Struktur des Katalogbestandes als Wortwolken"
 msgstr "Catalogs structure as tag clouds"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:56
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:58
+msgid "Städte"
+msgstr ""
+
 #: ../templates/_profile/kug/info_help:72 ../templates/info_help:273
 #: ../templates/info_help:72
 msgid "Such-Index"
@@ -10638,6 +10843,8 @@ msgstr "Search request"
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:83
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:85
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:58
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:83
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:85
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:83
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:85
@@ -10647,6 +10854,7 @@ msgstr "Search request"
 #: ../templates/_profile/sammlungen/_view/umschlaege/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/umschlaege/clouds_navigation:76
 #: ../templates/_profile/sammlungen/_view/umschlaege/clouds_navigation:78
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:83
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:85
 #: ../templates/_profile/sammlungen/clouds_html:58
@@ -10742,6 +10950,8 @@ msgstr "Search for journals"
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:123
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:161
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:123
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:124
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:113
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:128
@@ -10761,6 +10971,8 @@ msgstr "Search for journals"
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:118
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:153
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:128
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:129
 #: ../templates/_profile/sammlungen/mainnavigation_html:118
 #: ../templates/_profile/sammlungen/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/searchforms_record_query:246
@@ -10862,6 +11074,8 @@ msgstr "Search help"
 #: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:48
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:46
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:51
@@ -10876,6 +11090,8 @@ msgstr "Search help"
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:43
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:51
+#: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:53
 #: ../templates/_profile/sammlungen/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/mainnavigation_html:43
 #: ../templates/_view/richter/mainnavigation:46
@@ -10968,8 +11184,8 @@ msgstr "System"
 #: ../templates/_profile/kug/search_facet:180
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:61
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:63
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:126
-#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:128
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:146
+#: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:148
 #: ../templates/_profile/rheinlandbib/clouds_navigation:56
 #: ../templates/_profile/rheinlandbib/clouds_navigation:58
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:107
@@ -10985,6 +11201,8 @@ msgstr "System"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:94
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:96
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:178
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:86
+#: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:88
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:180
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:121
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:123
@@ -11001,6 +11219,8 @@ msgstr "System"
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:56
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:58
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:166
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:81
+#: ../templates/_profile/sammlungen/_view/zpe/subnavigation:83
 #: ../templates/_profile/sammlungen/clouds_navigation:56
 #: ../templates/_profile/sammlungen/clouds_navigation:58
 #: ../templates/_profile/sammlungen/search_facet:178
@@ -11207,6 +11427,11 @@ msgstr "Author"
 msgid "T0100-landschaft"
 msgstr "Artist"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:23
+#, fuzzy
+msgid "T0100-muenzen"
+msgstr "Catalog number"
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:17
 msgid "T0100-portrait"
 msgstr "Painter, drawer"
@@ -11222,6 +11447,14 @@ msgstr "Name"
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:18
 msgid "T0100-umschlaege"
 msgstr "Author"
+
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:17
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_databases_record_html:62
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_html:59
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_person_html:51
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_person_html:70
+msgid "T0100-zpe"
+msgstr "Volume"
 
 #: ../templates/_database/inst001/visible_categories_title:17
 #: ../templates/_database/kapsel/visible_categories_title:17
@@ -11377,10 +11610,6 @@ msgstr "Agency, corporation, institution"
 msgid "T0200-landschaft"
 msgstr "Topogr. subject heading"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:17
-msgid "T0200-muenzen"
-msgstr ""
-
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:84
 msgid "T0200-portrait"
 msgstr "Provenance"
@@ -11533,10 +11762,6 @@ msgstr "Supplied title"
 msgid "T0310-einbaende"
 msgstr "Title"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:20
-msgid "T0310-muenzen"
-msgstr ""
-
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:19
 msgid "T0310-totenzettel"
 msgstr "Name of order"
@@ -11566,6 +11791,7 @@ msgstr "Name of order"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:24
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:24
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:25
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:16
 #: ../templates/_profile/usbportal/visible_categories_title:24
 #: ../templates/visible_categories_title:24
 msgid "T0331"
@@ -11585,7 +11811,7 @@ msgstr "Short title"
 msgid "T0331-landschaft"
 msgstr "Title of object"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:21
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:17
 msgid "T0331-muenzen"
 msgstr ""
 
@@ -11596,6 +11822,11 @@ msgstr "Image title"
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:17
 msgid "T0331-totenzettel"
 msgstr "Name"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:18
+#, fuzzy
+msgid "T0332-muenzen"
+msgstr "Catalog number"
 
 #: ../templates/_database/inst001/visible_categories_title:29
 #: ../templates/_database/kapsel/visible_categories_title:28
@@ -11627,6 +11858,11 @@ msgstr "Name"
 #: ../templates/visible_categories_title:28
 msgid "T0333"
 msgstr "Title"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:19
+#, fuzzy
+msgid "T0333-muenzen"
+msgstr "Catalog number"
 
 #: ../templates/_database/inst001/visible_categories_title:51
 #: ../templates/_database/kapsel/visible_categories_title:52
@@ -11661,6 +11897,11 @@ msgstr "Material type"
 #: ../templates/_database/landschaft/visible_categories_title:29
 msgid "T0334-landschaft"
 msgstr "Carrier material"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:20
+#, fuzzy
+msgid "T0334-muenzen"
+msgstr "Catalog number"
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:80
 msgid "T0334-portrait"
@@ -11710,13 +11951,27 @@ msgstr "Description of motive"
 msgid "T0335-inst404abklatsch"
 msgstr "Edition"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:27
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:21
 msgid "T0335-muenzen"
 msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:20
 msgid "T0335-totenzettel"
 msgstr "Title"
+
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:18
+msgid "T0335-zpe"
+msgstr "Table"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:22
+#, fuzzy
+msgid "T0336-muenzen"
+msgstr "Catalog number"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:30
+#, fuzzy
+msgid "T0337-muenzen"
+msgstr "Catalog number"
 
 #: ../templates/_database/inst001/visible_categories_title:27
 #: ../templates/_database/kapsel/visible_categories_title:27
@@ -11749,30 +12004,6 @@ msgstr "Title"
 msgid "T0341"
 msgstr "Parallel title"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:32
-msgid "T0350-muenzen"
-msgstr ""
-
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:33
-msgid "T0351-muenzen"
-msgstr ""
-
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:34
-msgid "T0352-muenzen"
-msgstr ""
-
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:35
-msgid "T0353-muenzen"
-msgstr ""
-
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:36
-msgid "T0354-muenzen"
-msgstr ""
-
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:37
-msgid "T0355-muenzen"
-msgstr ""
-
 #: ../templates/_database/inst001/visible_categories_title:33
 #: ../templates/_database/kapsel/visible_categories_title:34
 #: ../templates/_database/landschaft/visible_categories_title:30
@@ -11804,10 +12035,6 @@ msgstr ""
 #: ../templates/visible_categories_title:34
 msgid "T0359"
 msgstr "Author/corp. body statement"
-
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:22
-msgid "T0359-muenzen"
-msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:22
 msgid "T0359-portrait"
@@ -11971,6 +12198,10 @@ msgstr "Provenance"
 msgid "T0370-totenzettel"
 msgstr "Maiden name"
 
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:23
+msgid "T0370-zpe"
+msgstr "Remark"
+
 #: ../templates/_database/inst001/visible_categories_title:35
 #: ../templates/_database/kapsel/visible_categories_title:36
 #: ../templates/_database/openlibrary/visible_categories_title:36
@@ -12067,7 +12298,7 @@ msgstr "Measure"
 msgid "T0407-landschaft"
 msgstr "Height x width"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:31
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:34
 msgid "T0407-muenzen"
 msgstr ""
 
@@ -12112,13 +12343,17 @@ msgstr "Place of publication"
 msgid "T0410-inst404abklatsch"
 msgstr "Place of storage"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:23
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:26
 msgid "T0410-muenzen"
 msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:24
 msgid "T0410-totenzettel"
 msgstr "Place of death"
+
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:24
+msgid "T0410-zpe"
+msgstr "Place of deposit"
 
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:22
 msgid "T0411-totenzettel"
@@ -12161,6 +12396,10 @@ msgstr "Place of birth"
 msgid "T0412"
 msgstr "Publisher"
 
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:21
+msgid "T0412-zpe"
+msgstr "Origin"
+
 #: ../templates/_database/inst001/visible_categories_title:46
 #: ../templates/_database/kapsel/visible_categories_title:47
 #: ../templates/_database/openlibrary/visible_categories_title:47
@@ -12195,6 +12434,10 @@ msgstr "Printer"
 #: ../templates/_database/einbaende/visible_categories_title:21
 msgid "T0413-einbaende"
 msgstr "Printer"
+
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:22
+msgid "T0413-zpe"
+msgstr "Dating"
 
 #: ../templates/_database/inst001/visible_categories_title:39
 #: ../templates/_database/kapsel/visible_categories_title:40
@@ -12286,7 +12529,7 @@ msgstr "Dating"
 msgid "T0425-landschaft"
 msgstr "Year"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:24
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:27
 msgid "T0425-muenzen"
 msgstr ""
 
@@ -12294,11 +12537,17 @@ msgstr ""
 msgid "T0425-portrait"
 msgstr "Year of publication"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:25
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:20
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_databases_record_html:61
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_html:59
+msgid "T0425-zpe"
+msgstr "Year"
+
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:28
 msgid "T0426-muenzen"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:26
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:29
 msgid "T0427-muenzen"
 msgstr ""
 
@@ -12338,7 +12587,7 @@ msgstr "Extent of item"
 msgid "T0433-inst404abklatsch"
 msgstr "Size of letters"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:30
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:33
 msgid "T0433-muenzen"
 msgstr ""
 
@@ -12447,7 +12696,7 @@ msgstr "Dimensions"
 msgid "T0435-einbaende"
 msgstr "Dimensions"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:29
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:32
 msgid "T0435-muenzen"
 msgstr ""
 
@@ -12514,7 +12763,7 @@ msgstr "Accompanying material"
 msgid "T0451"
 msgstr "Series title"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:40
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:38
 msgid "T0451-muenzen"
 msgstr ""
 
@@ -12575,6 +12824,10 @@ msgstr "Draft"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:59
 msgid "T0501-richter"
 msgstr "Richter evidence"
+
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:19
+msgid "T0501-zpe"
+msgstr "Page"
 
 #: ../templates/_database/landschaft/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:37
@@ -12747,7 +13000,7 @@ msgstr "Source"
 msgid "T0508-einbaende"
 msgstr "Bibliographic evidence"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:38
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:36
 msgid "T0508-muenzen"
 msgstr ""
 
@@ -13817,7 +14070,7 @@ msgstr "Drawer"
 msgid "T0619"
 msgstr "Year of publication"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:39
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:37
 msgid "T0622-muenzen"
 msgstr ""
 
@@ -13958,6 +14211,10 @@ msgstr "Fulltext URL"
 msgid "T0662-portrait"
 msgstr "More information"
 
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:25
+msgid "T0662-zpe"
+msgstr "JSTOR URL"
+
 #: ../templates/_profile/kug/_database/ebooks/visible_categories_title:107
 msgid "T0663-ebooks"
 msgstr "Fulltext information"
@@ -14040,7 +14297,7 @@ msgstr "Binding"
 msgid "T0700-landschaft"
 msgstr "1st iconogr. subject heading"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:19
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:25
 msgid "T0700-muenzen"
 msgstr ""
 
@@ -14094,7 +14351,7 @@ msgstr "Category"
 msgid "T0710-landschaft"
 msgstr "2nd iconogr. subject heading"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:18
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:24
 msgid "T0710-muenzen"
 msgstr ""
 
@@ -14183,7 +14440,7 @@ msgstr "Type of publication"
 msgid "T0800-einbaende"
 msgstr "Type"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:28
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:31
 msgid "T0800-muenzen"
 msgstr ""
 
@@ -14547,6 +14804,7 @@ msgstr "Remark"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:108
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:109
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:108
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:111
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:33
@@ -14592,6 +14850,10 @@ msgstr "Place of inscription"
 #: ../templates/visible_categories_title:113
 msgid "T2662"
 msgstr "USB URL"
+
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:26
+msgid "T2662-zpe"
+msgstr "External URL"
 
 #: ../templates/_database/inst001/visible_categories_title:109
 #: ../templates/_database/kapsel/visible_categories_title:114
@@ -14753,6 +15015,7 @@ msgstr "Separate collection portal"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:113
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:27
 #: ../templates/_profile/usbportal/visible_categories_title:116
 #: ../templates/visible_categories_title:119
 msgid "T5001"
@@ -14786,6 +15049,7 @@ msgstr "# of superordinate titles"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:114
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:28
 #: ../templates/_profile/usbportal/visible_categories_title:117
 #: ../templates/visible_categories_title:121
 msgid "T5002"
@@ -14850,6 +15114,7 @@ msgstr "Go to superordinate title"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:115
+#: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:29
 #: ../templates/_profile/usbportal/visible_categories_title:118
 #: ../templates/visible_categories_title:122
 msgid "T5100"
@@ -14867,6 +15132,7 @@ msgstr "Common numbering"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:182
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:15
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:26
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:170
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:184
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:182
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:182
@@ -14944,7 +15210,7 @@ msgstr "Development system - Not intended for regular use"
 #: ../templates/_database/einbaende/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306
-#: ../templates/titles_record_html:316 ../templates/titles_record_include:215
+#: ../templates/titles_record_html:323 ../templates/titles_record_include:215
 msgid "Text"
 msgstr "Text"
 
@@ -15067,6 +15333,7 @@ msgstr "Hint: Digital Card Catalog"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:305
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:3
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:3
+#: ../templates/_profile/sammlungen/titles_html:42
 #: ../templates/_profile/usbportal/litlists_record_include:42
 #: ../templates/_view/richter/cartitems_html_full:26
 #: ../templates/_view/richter/litlists_record_html:87
@@ -15082,7 +15349,7 @@ msgstr "Hint: Digital Card Catalog"
 #: ../templates/titles_popular_by_database_html:46
 #: ../templates/titles_popular_by_database_html:64
 #: ../templates/titles_popular_html:45 ../templates/titles_record_html:136
-#: ../templates/titles_record_html:315 ../templates/titles_record_html:89
+#: ../templates/titles_record_html:322 ../templates/titles_record_html:89
 #: ../templates/titles_record_include:214 ../templates/usage_navigation:5
 #: ../templates/usage_navigation:7
 #: ../templates/users_circulations_make_order:82
@@ -15119,7 +15386,7 @@ msgstr "Titles with this ISBN are also available in the following KUG-catalogs"
 #: ../templates/_database/einbaende/titles_record_html:394
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:369
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:359
-#: ../templates/titles_record_html:369 ../templates/titles_record_include:272
+#: ../templates/titles_record_html:376 ../templates/titles_record_include:272
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen "
 "vorhanden"
@@ -15246,6 +15513,7 @@ msgstr "Topogr. subject heading"
 #: ../templates/_profile/kug/_database/bibsonomy/search_title_item_html:106
 #: ../templates/_profile/kug/_database/dbis/search_title_item_html:122
 #: ../templates/_profile/kug/_database/ezb/search_title_item_html:121
+#: ../templates/_profile/sammlungen/titles_html:77
 #: ../templates/_profile/usbportal/search_title_combined_include:48
 #: ../templates/_view/richter/resultlists_choice:109
 #: ../templates/search_classification:44 ../templates/search_corporatebody:44
@@ -15276,6 +15544,7 @@ msgstr "Resultlist"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:514
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:165
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:514
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:153
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:167
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:516
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:165
@@ -15322,6 +15591,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:475
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:475
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:475
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:449
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:477
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:440
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:475
@@ -15370,6 +15640,7 @@ msgstr "Type:"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:474
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:474
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:474
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:448
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:476
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:439
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:474
@@ -15452,6 +15723,8 @@ msgstr "AND-relation in a search field"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:465
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:464
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:465
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:438
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:439
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:466
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:467
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:429
@@ -15644,6 +15917,7 @@ msgstr "Subject headings of this title in other catalogs"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:523
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:523
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:523
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:494
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:525
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:488
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:523
@@ -15855,7 +16129,7 @@ msgstr "When"
 #: ../templates/_database/einbaende/titles_record_html:375
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:350
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:340
-#: ../templates/titles_record_html:350 ../templates/titles_record_include:251
+#: ../templates/titles_record_html:357 ../templates/titles_record_include:251
 msgid "War diese Rezension hilfreich?"
 msgstr "Was this review helpful?"
 
@@ -15892,7 +16166,7 @@ msgstr "WebOPAC-URL"
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:100
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:100
 #: ../templates/_profile/usbportal/circulation:126
-#: ../templates/_profile/usbportal/circulation:90 ../templates/circulation:53
+#: ../templates/_profile/usbportal/circulation:90 ../templates/circulation:55
 #: ../templates/circulation_mobile:53
 msgid "Weiter"
 msgstr "Next"
@@ -16294,9 +16568,12 @@ msgstr "Cloud"
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_year_html:73
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_year_html:73
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_person_html:73
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_person_html:73
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html:73
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_person_html:73
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_year_html:73
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_person_html:73
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_year_html:73
 #: ../templates/clouds_person_html:73
 msgid "Wolke der h&auml;ufigsten Begriffe"
 msgstr "Cloud of relevant terms"
@@ -16364,6 +16641,8 @@ msgstr "Cloud of most frequently used tags"
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_html:38
 #: ../templates/_profile/sammlungen/_view/umschlaege/clouds_databases_record_html:38
 #: ../templates/_profile/sammlungen/_view/umschlaege/clouds_html:38
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_databases_record_html:38
+#: ../templates/_profile/sammlungen/_view/zpe/clouds_html:38
 #: ../templates/_profile/sammlungen/clouds_databases_record_html:38
 #: ../templates/_profile/sammlungen/clouds_html:38
 #: ../templates/clouds_corporatebody_html:49
@@ -16486,7 +16765,7 @@ msgstr "Journals/Series"
 msgid "Zeitschriftenartikel"
 msgstr "Journal article"
 
-#: ../templates/search_title_combined_html:108
+#: ../templates/search_title_combined_html:105
 msgid "Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden."
 msgstr "No titles available for your search request"
 
@@ -16501,7 +16780,7 @@ msgstr ""
 #: ../templates/_database/einbaende/titles_record_html:408
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:383
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:373
-#: ../templates/titles_record_html:383 ../templates/titles_record_include:287
+#: ../templates/titles_record_html:390 ../templates/titles_record_include:287
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
 "Auflage usw.) in den Katalogen"
@@ -16676,7 +16955,7 @@ msgstr "ascending"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:135
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:135
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:135
-#: ../templates/_profile/usbportal/circulation:122 ../templates/circulation:97
+#: ../templates/_profile/usbportal/circulation:122 ../templates/circulation:99
 #: ../templates/circulation_mobile:88
 msgid "ausgeschieden"
 msgstr "eliminated"
@@ -16707,7 +16986,7 @@ msgstr "lendable"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:133
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:133
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:133
-#: ../templates/_profile/usbportal/circulation:120 ../templates/circulation:95
+#: ../templates/_profile/usbportal/circulation:120 ../templates/circulation:97
 #: ../templates/circulation_mobile:86
 msgid "beim Lieferanten reklamiert"
 msgstr "complained to supplier"
@@ -16734,7 +17013,7 @@ msgstr "complained to supplier"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:131
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:131
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:131
-#: ../templates/_profile/usbportal/circulation:118 ../templates/circulation:93
+#: ../templates/_profile/usbportal/circulation:118 ../templates/circulation:95
 #: ../templates/circulation_mobile:84
 msgid "beim Lieferanten storniert"
 msgstr "order to supplier cancelled"
@@ -16761,7 +17040,7 @@ msgstr "order to supplier cancelled"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:127
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:127
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:127
-#: ../templates/_profile/usbportal/circulation:114 ../templates/circulation:89
+#: ../templates/_profile/usbportal/circulation:114 ../templates/circulation:91
 #: ../templates/circulation_mobile:80
 msgid "bestellt beim Lieferanten"
 msgstr "ordered from supplier"
@@ -16855,7 +17134,7 @@ msgstr "borrowed"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:129
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:129
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:129
-#: ../templates/_profile/usbportal/circulation:116 ../templates/circulation:91
+#: ../templates/_profile/usbportal/circulation:116 ../templates/circulation:93
 #: ../templates/circulation_mobile:82
 msgid "im Gesch&auml;ftsgang"
 msgstr "in internal course of business"
@@ -17062,6 +17341,7 @@ msgid "nach K&ouml;perschaften"
 msgstr "by corporate body"
 
 #: ../templates/_profile/kug/search_facet:208
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:193
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:193
 #: ../templates/search_facet:206
 msgid "nach Katalog"
@@ -17075,6 +17355,7 @@ msgstr "by artist"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:363
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:363
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:412
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:337
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:365
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:328
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:363
@@ -17087,6 +17368,11 @@ msgstr "by literature list"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:389
 msgid "nach Maler / Zeichner"
 msgstr "by painter/drawer"
+
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:217
+#, fuzzy
+msgid "nach Material"
+msgstr "by catalog"
 
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:217
 msgid "nach Medienart"
@@ -17115,12 +17401,19 @@ msgstr "by person"
 msgid "nach Popularit&auml;t"
 msgstr "by popularity"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:385
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:413
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:280
 msgid "nach Provenienz"
 msgstr "by provenance"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:265
+#, fuzzy
+msgid "nach Prägejahr"
+msgstr "Year of coinage"
+
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:411
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:241
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:269
 msgid "nach Region"
 msgstr "by region"
@@ -17140,6 +17433,7 @@ msgstr "by location mark"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:436
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:436
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:436
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:410
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:438
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:401
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:436
@@ -17148,6 +17442,11 @@ msgstr "by location mark"
 #: ../templates/search_facet:460
 msgid "nach Sprache"
 msgstr "by language"
+
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:289
+#, fuzzy
+msgid "nach Stadt"
+msgstr "by classification"
 
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:256
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:18
@@ -17173,6 +17472,7 @@ msgstr "by tag name"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:339
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:339
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:388
+#: ../templates/_profile/sammlungen/_view/muenzen/search_facet:313
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:341
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:304
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:339
@@ -17351,7 +17651,7 @@ msgstr "powered by"
 #: ../templates/_database/einbaende/titles_record_html:328
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:303
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:293
-#: ../templates/reviews_edit:218 ../templates/titles_record_html:303
+#: ../templates/reviews_edit:218 ../templates/titles_record_html:310
 #: ../templates/titles_record_include:202
 msgid "schlecht"
 msgstr "bad"
@@ -17359,7 +17659,7 @@ msgstr "bad"
 #: ../templates/_database/einbaende/titles_record_html:334
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:309
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:299
-#: ../templates/reviews_edit:224 ../templates/titles_record_html:309
+#: ../templates/reviews_edit:224 ../templates/titles_record_html:316
 #: ../templates/titles_record_include:208
 msgid "sehr gut"
 msgstr "very good"
@@ -17382,6 +17682,7 @@ msgstr "etc."
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:136
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/searchforms_record_query:234
+#: ../templates/_profile/sammlungen/titles_html:77
 #: ../templates/_profile/usbportal/search_title_combined_include:48
 #: ../templates/search_title_combined_html:75
 #: ../templates/search_title_combined_include:32

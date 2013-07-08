@@ -25,9 +25,9 @@
     <ul>
 [% IF statistics.result_exists({ id => database, type => 9 }) %]
 [%   IF active_submenu == "clouds_year" %]
-  <li class="active"><strong>[% msg.maketext("Prägejahr") %]</strong></li>
+  <li class="active"><strong>[% msg.maketext("Datierung") %]</strong></li>
 [%   ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("Prägejahre") %]">[% msg.maketext("Prägejahre") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("Datierung") %]">[% msg.maketext("Datierung") %]</a></li>
 [%   END %]
 [% END %]
 [% IF statistics.result_exists({ id => database, type => 6 }) %]

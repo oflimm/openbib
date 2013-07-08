@@ -56,7 +56,7 @@
 
 <ul>
 <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/id/searchterm.html?l=[% lang %]">[% msg.maketext("Suchbegriffe") %]</a></li>
-<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Prägejahr") %], [% msg.maketext("Region") %], [% msg.maketext("Stadt") %], [% msg.maketext("Provenienz") %], [% msg.maketext("Region") %]</li>
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Datierung") %], [% msg.maketext("Region") %], [% msg.maketext("Stadt") %], [% msg.maketext("Provenienz") %], [% msg.maketext("Region") %]</li>
 </a></li>
 </ul>
 

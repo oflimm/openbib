@@ -58,10 +58,9 @@
 
 
    <ul>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Prägejahr") %]</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Datierung") %]</a></li>
      <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]">[% msg.maketext("Region") %]</a></li>
      <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]">[% msg.maketext("Stadt") %]</a></li>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]">[% msg.maketext("Provenienz") %]</a></li>
    </ul>
 
         </div>

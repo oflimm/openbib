@@ -67,7 +67,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>[% msg.maketext("Prägejahr") %]</h1>
+<h1>[% msg.maketext("Datierung") %]</h1>
 
 <table width="100%">
 <tr><th>[% msg.maketext("Wolke der h&auml;ufigsten Begriffe") %]</th></tr>

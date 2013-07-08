@@ -155,16 +155,16 @@
   .ob-item .ob-thumbnail {
     position: relative;
     top: 0px;
-    left: 35px;
-    width: 160px;
+    left: 25px;
+    width: 340px;
     height: 120px;
     background: none repeat scroll 0 0;
   }
 
   .ob-item .ob-brieftitle {
     position: absolute;
-    top: 26px;
-    left:210px;
+    top: 40px;
+    left:320px;
     width: auto;
   }
 

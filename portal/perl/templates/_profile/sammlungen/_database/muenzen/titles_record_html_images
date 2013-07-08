@@ -25,7 +25,7 @@
            END ;
        END ;
 %]
-<center style="padding:10px;"><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% cdm_ptr %]&DMSCALE=14.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" /></a><br/><i><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank">[% description %]</a></i></center>
+<center style="padding:10px;"><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% cdm_ptr %]&DMSCALE=10.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" /></a><br/><i><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank">[% description %]</a></i></center>
 [%   END %]
 [% END %]
 <!-- Ende Umschlagbilder -->

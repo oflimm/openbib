@@ -14,11 +14,14 @@
 [% PROCESS common/subtemplate name="std_header" %]
 
 [%- IF field == '0800' ;
-       field_description = 'Material';
+       field_description = msg.maketext("Material");
        searchfield = 'mediatypestring' ;
     ELSIF field == '0410' ;
-       field_description = 'Bereich';
+       field_description = msg.maketext("Bereich");
        searchfield = 't0410' ;
+    ELSIF field == '0338' ;
+       field_description = msg.maketext("Nominal");
+       searchfield = 't0338' ;
     END ; -%]
 
 <body>

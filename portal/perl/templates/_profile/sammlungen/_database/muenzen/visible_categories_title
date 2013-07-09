@@ -14,20 +14,21 @@
 [%-# Ausgabekategorien -%]
 [%- categories = [
                 'T0010', # msg.maketext("T0010-muenzen") Katalognummer
-                'T0331', # msg.maketext("T0331-muenzen") Vorderseite Legende
-                'T0332', # msg.maketext("T0332-muenzen") Vorderseite Referenz
-                'T0333', # msg.maketext("T0333-muenzen") Vorderseite Beschreibung
-                'T0334', # msg.maketext("T0334-muenzen") Rueckseite Legende
-                'T0335', # msg.maketext("T0335-muenzen") Rueckseite Referenz
-                'T0336', # msg.maketext("T0336-muenzen") Rueckseite Beschreibung
+                'T0332', # msg.maketext("T0332-muenzen") Vorderseite Legende
+                'T0333', # msg.maketext("T0333-muenzen") Vorderseite Referenz
+                'T0334', # msg.maketext("T0334-muenzen") Vorderseite Beschreibung
+                'T0335', # msg.maketext("T0335-muenzen") Rueckseite Legende
+                'T0336', # msg.maketext("T0336-muenzen") Rueckseite Referenz
+                'T0337', # msg.maketext("T0337-muenzen") Rueckseite Beschreibung
                 'T0100', # msg.maketext("T0100-muenzen") Regent
                 'T0710', # msg.maketext("T0710-muenzen") Region
                 'T0700', # msg.maketext("T0700-muenzen") Stadt
                 'T0410', # msg.maketext("T0410-muenzen") Bereich
-                'T0425', # msg.maketext("T0425-muenzen") Praegejahr
+#                'T0425', # msg.maketext("T0425-muenzen") Datierung
+                'T0619', # msg.maketext("T0619-muenzen") Praegejahr
                 'T0426', # msg.maketext("T0426-muenzen") Datierung von
                 'T0427', # msg.maketext("T0427-muenzen") Datierung bis
-                'T0337', # msg.maketext("T0337-muenzen") Nominal
+                'T0338', # msg.maketext("T0338-muenzen") Nominal
                 'T0800', # msg.maketext("T0800-muenzen") Material
                 'T0435', # msg.maketext("T0435-muenzen") Durchmesser 
                 'T0433', # msg.maketext("T0433-muenzen") Gewicht 

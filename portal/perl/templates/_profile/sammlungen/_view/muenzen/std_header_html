@@ -73,7 +73,7 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
 
 
-    <title>[% IF page_title %][% page_title %][% ELSE %]Die digitale Münzen-Sammlung des Instituts für Altertumskunde[% END %]</title>
+    <title>[% IF page_title %][% page_title %][% ELSE %]Die digitale Münzsammlung des Instituts für Altertumskunde[% END %]</title>
 
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="/js/pngfix.js"></script>

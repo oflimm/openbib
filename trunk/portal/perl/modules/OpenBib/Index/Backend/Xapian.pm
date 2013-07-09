@@ -264,13 +264,10 @@ sub create_document {
     my $doc = Search::Xapian::Document->new();
     
     $self->{_tg}->set_document($doc);
-    
-    # ID des Satzes recherchierbar machen
-    $doc->add_term($config->{xapian_search_prefix}{'id'}.$id);
-    
+        
     # Katalogname des Satzes recherchierbar machen
-    $doc->add_term($config->{xapian_search_prefix}{'fdb'}.$thisdbname);
-    $doc->add_term($config->{xapian_search_prefix}{'floc'}.$self->{_locationid_norm});
+    $doc->add_term($config->{xapian_search}{'fdb'}{prefix}.$thisdbname);
+    $doc->add_term($config->{xapian_search}{'floc'}{prefix}.$self->{_locationid_norm});
     
     foreach my $searchfield (keys %{$config->{searchfield}}) {
         
@@ -304,8 +301,10 @@ sub create_document {
                     
                     next if (!$normcontent);
                     # IDs haben keine Position
-                    $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
-                        }
+                    $doc->add_term($config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix}.$normcontent);
+                    
+                    # $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
+                }
             }
         }
         # Einzelne Worte (Fulltext)
@@ -340,10 +339,10 @@ sub create_document {
                     $logger->debug("Fulltext indexing searchfield $searchfield: $normcontent");
                     
                     if ($withpositions){
-                        $self->{_tg}->index_text($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
+                        $self->{_tg}->index_text($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
                     }
                     else {
-                        $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
+                        $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
                     }
 
                     my $additionalcontent = "";
@@ -371,10 +370,10 @@ sub create_document {
                         $logger->debug("Fulltext indexing searchfield $searchfield: $normcontent");
                         
                         if ($withpositions){
-                            $self->{_tg}->index_text($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
+                            $self->{_tg}->index_text($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
                         }
                         else {
-                            $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}})
+                            $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
                         }
                     }
                 }
@@ -413,7 +412,7 @@ sub create_document {
                     
                     next unless ($normcontent);
                     
-                    $normcontent=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$normcontent;
+                    $normcontent=$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix}.$normcontent;
                     
                     # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
                     my $normcontent_octet = encode_utf8($normcontent); 
@@ -445,7 +444,7 @@ sub create_document {
                         
                         next unless ($normcontent);
                         
-                        $normcontent=$config->{xapian_search_prefix}{$config->{searchfield}{$searchfield}{prefix}}.$normcontent;
+                        $normcontent=$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix}.$normcontent;
                         
                         # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
                         my $normcontent_octet = encode_utf8($normcontent); 
@@ -560,23 +559,23 @@ sub create_document {
                 my $content = (exists $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:0;
                         next unless ($content);
                 
-                ($content) = $content=~m/^\D*(\d+)/;
+                ($content) = $content=~m/^\D*(-?\d+)/;
                 
                 if ($content){
-                    $content = sprintf "%08d",$content;
+#                    $content = sprintf "%08d",$content;
                     $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($this_sorting_ref->{id},$content);
+                    $doc->add_value($this_sorting_ref->{id},Search::Xapian::sortable_serialise($content));
                 }
             }
             elsif ($this_sorting_ref->{type} eq "integervalue"){
                 my $content = 0 ;
                 if (exists $record_ref->{$this_sorting_ref->{category}}){
-                    ($content) = $record_ref->{$this_sorting_ref->{category}}=~m/^(\d+)/;
+                    ($content) = $record_ref->{$this_sorting_ref->{category}}=~m/^(-?\d+)/;
                 }
                 if ($content){
-                    $content = sprintf "%08d",$content;
+ #                   $content = sprintf "%08d",$content;
                     $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($this_sorting_ref->{id},$content);
+                    $doc->add_value($this_sorting_ref->{id},Search::Xapian::sortable_serialise($content));
                 }
             }
         }
@@ -601,7 +600,7 @@ sub update_record {
 
     my $config = OpenBib::Config->instance;
 
-    my $key = $config->{xapian_search_prefix}{id}.$id;
+    my $key = $config->{xapian_search}{id}{prefix}.$id;
 
     $self->get_index->replace_document_by_term($key, $new_doc) ;
 }

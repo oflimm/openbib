@@ -310,8 +310,10 @@ sub normalize {
     if ($type eq "integer"){
         $logger->debug("Processing Type $type");
                 
-        $content =~s/\D//g;
+        $content =~s/[^0-9-]//g;
 
+        $logger->debug("OUT: $content / Type $type");
+        
         return $content;
     }
     
@@ -390,6 +392,10 @@ sub normalize {
             # * wird fuer die Recherche als Wildcard nicht angefasst
             $content=~s/[^\p{Alphabetic}0-9*]/_/g;
         }
+        elsif ($type eq 'id'){
+            $logger->debug("Processing Type $type");
+            $content=~s/ //g;
+        }
         else {
             # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
             $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: '()"^*_]//g;
@@ -416,6 +422,10 @@ sub normalize {
             # * wird fuer die Indexierung auf _ normiert
             $content=~s/[^\p{Alphabetic}0-9]/_/g;
         }
+        elsif ($type eq 'id'){
+            $logger->debug("Processing Type $type");
+            $content=~s/ //g;
+        }
         else {
             # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
             $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/:* ']//g;
@@ -441,6 +451,8 @@ sub normalize {
 
     $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
 
+    $logger->debug("OUT: $content / Type $type");
+    
     return $content;
 }
 

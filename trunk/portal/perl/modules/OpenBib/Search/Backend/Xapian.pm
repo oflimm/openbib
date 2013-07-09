@@ -36,7 +36,7 @@ use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use Search::Xapian;
+use Search::Xapian qw(:qpflags);
 use Storable;
 use String::Tokenizer;
 use YAML ();
@@ -262,12 +262,18 @@ sub search {
         $logger->debug("Got default op ".$self->{qp}->get_default_op);
     }
     
-    foreach my $prefix (keys %{$config->{xapian_search_prefix}}){
-        $self->{qp}->add_prefix($prefix,$config->{xapian_search_prefix}{$prefix});
+    foreach my $searchfield (keys %{$config->{xapian_search}}){
+        if ($config->{xapian_search}{$searchfield}{type} eq "boolean"){
+            $self->{qp}->add_boolean_prefix($searchfield,$config->{xapian_search}{$searchfield}{prefix});
+        }
+        else {
+            $self->{qp}->add_prefix($searchfield,$config->{xapian_search}{$searchfield}{prefix});
+        }
     }
     
     my $category_map_ref = {};
     my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
+#    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,FLAG_WILDCARD|FLAG_BOOLEAN|FLAG_PHRASE));
 
     # Sorting
     if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
@@ -701,7 +707,12 @@ sub parse_query {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config       = OpenBib::Config->instance;
+    my $queryoptions = OpenBib::QueryOptions->instance;
+
+    # Used Parameters
+    # Keinen Value range Prozessor?
+    my $novrp = $queryoptions->get_option('novrp');
 
     # Aufbau des xapianquerystrings
     my @xapianquerystrings = ();
@@ -778,18 +789,32 @@ sub parse_query {
         my $slot = $config->{xapian_sorttype_value}{$field};
         
         if ($searchtermstring_from || $searchtermstring_to) {
-            $searchtermstring_from = ($searchtermstring_from)?$searchtermstring_from:0;
+            $searchtermstring_from = ($searchtermstring_from)?$searchtermstring_from:-9999;
             $searchtermstring_to   = ($searchtermstring_to)?$searchtermstring_to:9999;
 
-            $searchtermstring_from = sprintf "%08d", $searchtermstring_from;
-            $searchtermstring_to   = sprintf "%08d", $searchtermstring_to;
+            # push @xapianquerystrings, $searchtermstring_from."..".$searchtermstring_to;
 
-            
-            $logger->debug("Adding Value range processor $searchtermstring_from .. $searchtermstring_to");
-            
-            my $vrp = new Search::Xapian::StringValueRangeProcessor($slot);
-            $self->{qp}->add_valuerangeprocessor($vrp);
-            push @xapianquerystrings, $searchtermstring_from."..".$searchtermstring_to;
+            if ($novrp){
+                $logger->debug("From $searchtermstring_from to $searchtermstring_to");
+                my $idx=$searchtermstring_from;
+                while ($idx<=$searchtermstring_to){
+                    $logger->debug("Adding $idx");
+                    push @xapianquerystrings, "+".$config->{searchfield}{$field}{prefix}.":$idx";
+                    $idx++;
+                }
+            }
+            else {
+                #$searchtermstring_from = sprintf "%08d", $searchtermstring_from;
+                #$searchtermstring_to   = sprintf "%08d", $searchtermstring_to;
+
+                $logger->debug("Adding Value range processor $searchtermstring_from .. $searchtermstring_to");
+                
+                my $vrp = new Search::Xapian::NumberValueRangeProcessor($slot);
+                $self->{qp}->add_valuerangeprocessor($vrp);
+                push @xapianquerystrings, $searchtermstring_from."..".$searchtermstring_to;
+            }
+
+
         }
     }
 

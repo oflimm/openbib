@@ -3806,37 +3806,36 @@ convtab:
           'title': 50
           'titlestring': 50
           'freesearch': 50
-      '0335':         # Zusatz zum HST
+      '0332':         # HST
         index:
-          't0335': 1
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0340':         # PSTAnsetzung
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0333':         # HST
         index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0341':         # PSTVorlage
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0334':         # HST
         index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0361':       # Vorlage beigefuegtes Werk
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0335':         # HST
         index:
-          'title': 40
-          'titlestring': 40
-          'freesearch': 40
-      '0370':         # WST
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0336':         # HST
         index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0375':         # ZSTnorm
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0337':         # HST
         index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
       '0410':         # Auflage
         string: 1
         index:
@@ -3850,11 +3849,6 @@ convtab:
         string: 1
         index:
           'person': 1
-      '0424':
-        index:
-          'year': 1
-          'yearstring': 1
-          'freesearch': 1
       '0425':
         index:
           'year': 1
@@ -3905,6 +3899,10 @@ convtab:
         index:
           'source': 1
           'freesearch': 1
+      '0338':         # Nominal
+        string: 1
+        index:
+          't0338': 1
       '0634':         # ISBN sekundaerform
         string: 1
         index:

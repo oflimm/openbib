@@ -26,22 +26,22 @@ subj:
 title:
   'katalognummer': '0010'
   'bereich': '0410' # Verlagsort
-  'praegejahr': '0425'
+  'praegejahr': '0619'
 #  'vorderseite': '0331'
 #  'rueckseite': '0332'
   'datierung-von': '0426'
   'datierung-bis': '0427'
-  'nominal': '0337'
+  'nominal': '0338'
   'material': '0800'        # Medienart
   'durchmesser': '0435'     # Format
   'gewicht': '0433'         # Kollation
   'stempelstellung': '0407' # Massstab
-  'vorderseite-legende': '0331'
-  'vorderseite-referenz': '0332'
-  'vorderseite-beschreibung': '0333'
-  'rueckseite-legende': '0334'
-  'rueckseite-referenz': '0335'    
-  'rueckseite-beschreibung': '0336'
+  'vorderseite-legende': '0332'
+  'vorderseite-referenz': '0333'
+  'vorderseite-beschreibung': '0334'
+  'rueckseite-legende': '0335'
+  'rueckseite-referenz': '0336'    
+  'rueckseite-beschreibung': '0337'
   'referenz': '0508' # Quelle
   'links': '0662'
   'forschungsliteratur': '0451'

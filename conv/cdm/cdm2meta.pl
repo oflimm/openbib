@@ -211,6 +211,7 @@ sub parse_titset {
                     my $new_category = $convconfig->{pers}{$kateg};
                     
                     push @{$title_ref->{fields}{$new_category}}, {
+                        content    => $part,
                         mult       => $mult,
                         subfield   => '',
                         id         => $person_id,
@@ -260,6 +261,7 @@ sub parse_titset {
                     my $new_category = $convconfig->{corp}{$kateg};
                     
                     push @{$title_ref->{fields}{$new_category}}, {
+                        content    => $part,
                         mult       => $mult,
                         subfield   => '',
                         id         => $corporatebody_id,
@@ -309,6 +311,7 @@ sub parse_titset {
                     my $new_category = $convconfig->{sys}{$kateg};
                     
                     push @{$title_ref->{fields}{$new_category}}, {
+                        content    => $part,
                         mult       => $mult,
                         subfield   => '',
                         id         => $classification_id,
@@ -358,6 +361,7 @@ sub parse_titset {
                     my $new_category = $convconfig->{subj}{$kateg};
                     
                     push @{$title_ref->{fields}{$new_category}}, {
+                        content    => $part,
                         mult       => $mult,
                         subfield   => '',
                         id         => $subject_id,

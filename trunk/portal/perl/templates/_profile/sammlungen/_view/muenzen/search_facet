@@ -188,7 +188,7 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 [%  END %]
 [%         END %]
 <!-- Begin database facet -->
-[%         IF category_map.8.size > 0 %]
+[%         IF 0 == 1 && category_map.8.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_databases_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
 [%             FOREACH termitem IN category_map.8 ;
@@ -358,7 +358,7 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 <!-- Begin person facet -->
 [%         IF config.get('facets').person && category_map.3.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_person_[% database %]_anchor">nach Regent</dt>
+<dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Regent") %]</dt>
 [%             FOREACH termitem IN category_map.3 ;
                   LAST IF loop.count > 25 ;
 %]

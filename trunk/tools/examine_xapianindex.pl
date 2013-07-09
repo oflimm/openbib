@@ -40,7 +40,7 @@ use Log::Log4perl qw(get_logger :levels);
 use YAML;
 
 use OpenBib::Config;
-use OpenBib::Search::Local::Xapian;
+use OpenBib::Search::Backend::Xapian;
 
 my ($database,$help,$titleid);
 
@@ -74,13 +74,13 @@ if (!$database || !$titleid){
 
 $logger->info("### POOL $database");
 
-my $terms_ref = OpenBib::Search::Local::Xapian->get_indexterms({ database => $database, id => $titleid });
+my $terms_ref = OpenBib::Search::Backend::Xapian->get_indexterms({ database => $database, id => $titleid });
 
 $logger->info("### Termlist");
 
 $logger->info(join(' ',@$terms_ref));
 
-my $values_ref = OpenBib::Search::Local::Xapian->get_values({ database => $database, id => $titleid });
+my $values_ref = OpenBib::Search::Backend::Xapian->get_values({ database => $database, id => $titleid });
 
 $logger->info("### Values");
 $logger->info(YAML::Dump($values_ref));

@@ -25,6 +25,7 @@
           "yearstring" = msg.maketext("Datierung")
           "tagstring" = msg.maketext("Tag")
           "litliststring" = msg.maketext("Literaturliste")
+          "t0338" = msg.maketext("Nominal")
           "t0410" = msg.maketext("Bereich")
           "t0700" = msg.maketext("Stadt")
           "t0710" = msg.maketext("Region")

@@ -845,7 +845,7 @@ while (my $jsonline=<IN>){
         foreach my $item_ref (@{$fields_ref->{'0425'}}){
             my $date = $item_ref->{content};
             
-            if ($date =~/^(\d\d\d\d)\s*-\s*(\d\d\d\d)/) {
+            if ($date =~/^(-?\d+)\s*-\s*(-?\d+)/) {
                 my $startyear = $1;
                 my $endyear   = $2;
                 

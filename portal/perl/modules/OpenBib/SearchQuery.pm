@@ -543,7 +543,7 @@ sub to_cgi_params {
             };
 
             $logger->debug("Unescaped: ".$self->{_searchquery}->{$param}{val});
-            $logger->debug("Escaped: ".uri_escape($self->{_searchquery}->{$param}{val}));
+            $logger->debug("Escaped: ".uri_escape_utf8($self->{_searchquery}->{$param}{val}));
             push @cgiparams, {
                 param  => $base_prefix.$param_suffix,
                 val    => uri_escape_utf8($self->{_searchquery}->{$param}{val}),

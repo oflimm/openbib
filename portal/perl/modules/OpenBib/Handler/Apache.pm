@@ -1288,7 +1288,7 @@ sub to_cgi_querystring {
     my @cgiparams = ();
     
     foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
-        push @cgiparams, "$arg_ref->{param}=".uri_escape($arg_ref->{val});
+        push @cgiparams, "$arg_ref->{param}=".uri_escape_utf8($arg_ref->{val});
     }   
         
     return join(';',@cgiparams);

@@ -16,6 +16,7 @@
 [% categories = [
 #                'L0010', # msg.maketext("L0010") # Institutsname
                 'L0020', # msg.maketext("L0020") # Adresse
+                'L0180', # msg.maketext("L0180") # Art der Bibliothek
                 'L0110', # msg.maketext("L0110") # Öffnungszeiten
 #                'L0030', # msg.maketext("L0030") # Gebäude
 #                'L0040', # msg.maketext("L0040") # Interaktiver Lageplan der Universität
@@ -33,7 +34,6 @@
 #                'L0150', # msg.maketext("L0150") # Bestand CD's / Digitale Medien
                 'L0160', # msg.maketext("L0160") # Sonstige Bestandsangaben
                 'L0170', # msg.maketext("L0170") # Besondere Sammelgebiete
-                'L0180', # msg.maketext("L0180") # Art der Bibliothek
 #                'L0190', # msg.maketext("L0190") # Neuerwerbungslisten
 #                'L0200', # msg.maketext("L0200") # Kopierer / Technische Ausstattung
 #                'L0260', # msg.maketext("L0260") # Art der Vernetzung

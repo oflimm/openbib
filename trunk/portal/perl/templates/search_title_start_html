@@ -61,9 +61,9 @@
 <img src="http://dbspixel.hbz-nrw.de/count?id=AB038&amp;page=4" width="1" height="1" />
 [% END %]
     [% IF NOT qopts.get_option('sm') %]
-<a href="[% path_prefix %]/[% config.get('search_loc') %].rdf?[% cgi_querystring %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('search_loc') %].json?[% cgi_querystring %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('search_loc') %].rss?[% cgi_querystring %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+<a class="ob-representation_rdf" href="[% path_prefix %]/[% config.get('search_loc') %].rdf?[% cgi_querystring %]"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+<a class="ob-representation_json" href="[% path_prefix %]/[% config.get('search_loc') %].json?[% cgi_querystring %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a class="ob-representation_rss" href="[% path_prefix %]/[% config.get('search_loc') %].rss?[% cgi_querystring %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
     [% END %]
     </div>
    </div> 

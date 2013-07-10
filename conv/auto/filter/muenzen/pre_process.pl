@@ -34,6 +34,22 @@ while (<>){
         subfield => "",
         mult => 1,
     };
-   
+
+    # Interne Verlinkungen
+    if (defined $title_ref->{fields}{'0333'}){
+        foreach my $item_ref (@{$title_ref->{fields}{'0333'}}){
+            if ($item_ref->{content} =~m/^(\w+)\s+\[\[(\w+)\]\]/){
+                $item_ref->{content} = "<a href=\"/portal/muenzen/databases/id/muenzen/titles/id/$2\">$1</a>";
+            }
+        }
+    }
+    if (defined $title_ref->{fields}{'0336'}){
+        foreach my $item_ref (@{$title_ref->{fields}{'0336'}}){
+            if ($item_ref->{content} =~m/^(\w+)\s+\[\[(\w+)\]\]/){
+                $item_ref->{content} = "<a href=\"/portal/muenzen/databases/id/muenzen/titles/id/$2\">$1</a>";
+            }
+        }
+    }
+    
     print encode_json $title_ref, "\n";
 }

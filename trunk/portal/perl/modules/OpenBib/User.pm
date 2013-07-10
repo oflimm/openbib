@@ -2827,6 +2827,9 @@ sub get_recent_litlists {
     my $topicid      = exists $arg_ref->{topicid}
         ? $arg_ref->{topicid}           : undef;
 
+    my $database     = exists $arg_ref->{database}
+        ? $arg_ref->{database}          : undef;
+
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
@@ -2859,6 +2862,22 @@ sub get_recent_litlists {
                 order_by => [ 'litlistid.id DESC' ],
                 rows     => $count,
                 join     => [ 'litlistid', 'topicid' ],
+            }
+        );
+    }
+    elsif ($database){
+        $litlists = $self->{schema}->resultset('Litlist')->search(
+            {
+                'type' => 1,
+                'litlistitems.dbname' => $database,
+            },
+            {
+                select   => [ 'me.id' ],
+                as       => ['thislitlistid'],
+                group_by => ['me.id'],
+                order_by => [ 'me.id DESC' ],
+                rows     => $count,
+                join     => [ 'litlistitems'],
             }
         );
     }

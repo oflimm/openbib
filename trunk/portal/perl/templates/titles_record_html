@@ -84,34 +84,8 @@ $(document).ready(function(){
     <!-- begin: main content area #main -->
     <div id="main">
 
-[%    field_map = {
-          "freesearch" = msg.maketext("Freie Suche")
-          "title"      = msg.maketext("Titel")
-          "database"   = msg.maketext("Katalog")
-          "content" = msg.maketext("Inhalt")
-          "person" = msg.maketext("Person")
-          "corporatebody" = msg.maketext("K&ouml;perschaft")
-          "subject" = msg.maketext("Thema")
-          "classification" = msg.maketext("Systematik")
-          "mediatype" = msg.maketext("Medientyp")
-          "language" = msg.maketext("Sprache")
-          "year" = msg.maketext("Jahr")
-          "year_from" = msg.maketext("Jahr von")
-          "year_to" = msg.maketext("Jahr bis")
-          "tag" = msg.maketext("Tag")
-          "litlist" = msg.maketext("Literaturliste")
-          "dbstring" = msg.maketext("Katalog")
-          "personstring" = msg.maketext("Person")
-          "corporatebodystring" = msg.maketext("K&ouml;perschaft")
-          "subjectstring" = msg.maketext("Thema")
-          "classificationstring" = msg.maketext("Systematik")
-          "mediatypestring" = msg.maketext("Medientyp")
-          "languagestring" = msg.maketext("Sprache")
-          "yearstring" = msg.maketext("Jahr")
-          "tagstring" = msg.maketext("Tag")
-          "litliststring" = msg.maketext("Literaturliste")
-};
-
+[% PROCESS common/subtemplate name="search_title_field" %]
+[%-
     used_fields = [] ;
     searchquery = session.get_all_searchqueries.first ;
 -%]

@@ -1,3 +1,13 @@
+<script>
+$(document).ready(function(){
+// Begin Verwandte Personen
+  $.get("[% path_prefix %]/[% config.get('litlists_loc') %]/journaltocs?id=[% normdata.${"E4115"}.first.content %];format=ajax",
+         function (txt){
+           $("#ob-journaltocs").html(txt); 
+  });
+});
+</script>
+
 <table class="ZMSTable" >
 <caption align="top"></caption>
 <colgroup>
@@ -8,6 +18,42 @@
 [%-
 
 PROCESS common/subtemplate name="visible_categories_location";
+
+thisdbname = config.get_databases_of_isil(locationinfo.identifier).first;
+
+sigel = locationinfo.identifier.replace('DE-38-','');
+
+recent_litlists = user.get_recent_litlists({database = thisdbname});
+
+litlist_content = [];
+
+IF recent_litlists.size > 0;
+  litlist_content.push("<ul>");
+  FOREACH litlist IN recent_litlists;
+    litlist_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/litlists/id/${litlist.id}.html?l=de\">${litlist.title}</a> (${litlist.itemcount} Titel)</li>");
+  END;
+  litlist_content.push("</ul>");
+ELSE;
+  litlist_content.push("Es wurden noch Literaturlisten mit Titel dieses Kataloges angelegt.");
+END;
+
+recent_tags = user.get_recent_tags({database = thisdbname});
+
+tags_content = [];
+
+IF recent_tags.size > 0;
+  tags_content.push("<ul>");
+  FOREACH tag IN recent_tags;
+    tags_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/tags/names/id/${tag.tag}.html?l=de\">${tag.tag}</a> (${tag.itemcount} Titel)</li>");
+  END;
+  tags_content.push("</ul>");
+ELSE;
+  tags_content.push("F&uuml; Titel in diesem Katalog wurden noch keine Tags vergeben");
+END;
+
+locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriften dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];
+locationinfo.fields.${"Die 5 zuletzt angelegten Literaturlisten"} = [ { content = litlist_content.join("\n") } ];
+locationinfo.fields.${"Die 5 zuletzt vergebenen Tags"} = [ { content = tags_content.join("\n") } ];
 
 trclass = "even" ;
 
@@ -40,6 +86,16 @@ FOREACH category IN categories;
         mult     = item.mult;
         subfield = item.subfield;
 
+       SWITCH category;
+
+          CASE [ "L0180" ];
+            IF locationinfo.fields.${"L0230"};
+               kuginfo = locationinfo.fields.${"L0230"}.first.content;
+               content = "${content} (${kuginfo})";
+            END;
+
+       END ;
+
         # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
         # in Config.pm fuer die entsprechende Datenbank definiert
         # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
@@ -53,6 +109,8 @@ FOREACH category IN categories;
 [%-   END ;
       IF trclass == "even" ;
         trclass = "odd";
+      ELSE;
+        trclass = "even";
       END;
    END ;
 END ;-%]

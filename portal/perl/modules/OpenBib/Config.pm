@@ -3080,6 +3080,29 @@ sub get_searchprofiles {
     return @searchprofiles;
 }
 
+sub get_databases_of_isil {
+    my ($self,$isil) = @_;
+    
+    my $databaseinfo = $self->{schema}->resultset('Locationinfo')->search(
+        {
+            'identifier' => $isil,
+            'type' => 'ISIL',
+        },
+        {
+            select => ['databaseinfos.dbname'],
+            as     => ['thisdbname'],
+            join   => ['databaseinfos'],
+        }
+    );
+
+    my @dbnames = ();
+    while (my $thisdbname = $databaseinfo->next){
+        push @dbnames, $thisdbname->get_column('thisdbname');
+    }
+
+    return @dbnames;
+}
+
 sub get_databases_of_searchprofile {
     my ($self,$searchprofileid)=@_;
 

@@ -44,7 +44,7 @@ tags_content = [];
 IF recent_tags.size > 0;
   tags_content.push("<ul>");
   FOREACH tag IN recent_tags;
-    tags_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/tags/names/id/${tag.tag}.html?l=de\">${tag.tag}</a> (${tag.itemcount} Titel)</li>");
+    tags_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/tags/names/id/${tag.tag}.html?l=de\">${tag.tag}</a></li>");
   END;
   tags_content.push("</ul>");
 ELSE;

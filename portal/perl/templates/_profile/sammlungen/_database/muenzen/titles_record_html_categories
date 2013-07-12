@@ -93,6 +93,14 @@ FOREACH category IN categories;
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
+    CASE "T0407";
+         searchterm    = uri_escape(item.content);
+         searchprefix  = config.get('searchfield').t0407.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         content   = "${highlightquery(searchquery,content)}";
+         content   = "<a href=\"${localurl}\">${content}</a>";
+
     CASE "T0410";
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').t0410.prefix;

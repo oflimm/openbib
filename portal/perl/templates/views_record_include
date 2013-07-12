@@ -15,7 +15,7 @@
    viewsdesc = [];
    FOREACH singledb IN viewdbs ;
      desc = dbinfo.get('dbnames').${singledb}.short;
-     viewsdesc.push("${singledb} : ${desc}");
+     viewsdesc.push("${desc}");
    END;
    
 %]

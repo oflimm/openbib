@@ -208,11 +208,21 @@ FOREACH category IN categories;
                linktext = "Inhaltsverzeichnis";
             END;
 
+            IF thiscontent.match('Interna: Verlagsdaten') ;
+               linktext = "Verlagsdaten";
+            ELSIF thiscontent.match('Interna: Verlag') ;
+               linktext = "Verlagsinformation";
+            END;
+
+            IF thiscontent.match('Interna: Langzeitarchivierung Nationalbibliothek') ;
+               linktext = "Langzeitarchivierung Nationalbibliothek";
+            END;
+
             IF thiscontent.match('Interna: EZB') ;
                linktext = "Zeitschrift in der Elektronischen Zeitschriftenbibliothek EZB";
             END;
 
-            IF thiscontent.match('Interna: Digitalisierung') ;
+            IF thiscontent.match('Interna: Digitalisierung') || thiscontent.match('Interna: Resolving-System'); ;
                FOREACH mtyp IN normdata.${'T4410'};
                   IF mtyp.content == 'Zeitschrift/Serie';
                      is_journal = 1;

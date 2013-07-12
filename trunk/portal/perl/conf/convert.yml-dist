@@ -3836,6 +3836,9 @@ convtab:
           'title': 50
           'titlestring': 50
           'freesearch': 50
+      '0407':         # Stempelstellung
+        index:
+          't0407': 1
       '0410':         # Auflage
         string: 1
         index:

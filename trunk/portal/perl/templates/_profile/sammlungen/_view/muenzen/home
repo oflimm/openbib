@@ -36,7 +36,7 @@
 
  <center style="padding-top: 5em;"> <img src="/images/openbib/views/muenzen/muenze-schiff.jpeg"
 alt="Münze mit Schiff" /><br /><br /><i
-style="font-size:0.8em">Münze mit Schiff</i></center>
+style="font-size:0.8em"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('titles_loc') %]/id/AL_0184">Schiff des Kaisers Nero unter Segel, datiert 66-67 n. Chr.</a></i></center>
 
           </div>
          </div>

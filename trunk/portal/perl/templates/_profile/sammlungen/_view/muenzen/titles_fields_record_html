@@ -16,6 +16,15 @@
 [%- IF field == '0800' ;
        field_description = msg.maketext("Material");
        searchfield = 'mediatypestring' ;
+    ELSIF field == '0100' ;
+       field_description = msg.maketext("Regent");
+       searchfield = 'personstring' ;
+    ELSIF field == '0700' ;
+       field_description = msg.maketext("Stadt");
+       searchfield = 'classificationstring' ;
+    ELSIF field == '0710' ;
+       field_description = msg.maketext("Region");
+       searchfield = 'subjectstring' ;
     ELSIF field == '0410' ;
        field_description = msg.maketext("Bereich");
        searchfield = 't0410' ;

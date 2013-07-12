@@ -206,23 +206,19 @@ FOREACH category IN categories;
          IF thiscontent ;
             IF thiscontent.match('Interna: Inhaltsverzeichnis') ;
                linktext = "Inhaltsverzeichnis";
-            END;
-
-            IF thiscontent.match('Interna: Verlagsdaten') ;
+            ELSIF thiscontent.match('Interna: Rezension') ;
+               linktext = thiscontent.replace("Interna: ","");
+            ELSIF thiscontent.match('Interna: Aggregator') ;
+               linktext = "Aggregator";
+            ELSIF thiscontent.match('Interna: Verlagsdaten') ;
                linktext = "Verlagsdaten";
             ELSIF thiscontent.match('Interna: Verlag') ;
                linktext = "Verlagsinformation";
-            END;
-
-            IF thiscontent.match('Interna: Langzeitarchivierung Nationalbibliothek') ;
+            ELSIF thiscontent.match('Interna: Langzeitarchivierung Nationalbibliothek') ;
                linktext = "Langzeitarchivierung Nationalbibliothek";
-            END;
-
-            IF thiscontent.match('Interna: EZB') ;
+            ELSIF thiscontent.match('Interna: EZB') ;
                linktext = "Zeitschrift in der Elektronischen Zeitschriftenbibliothek EZB";
-            END;
-
-            IF thiscontent.match('Interna: Digitalisierung') || thiscontent.match('Interna: Resolving-System'); ;
+            ELSIF thiscontent.match('Interna: Digitalisierung') || thiscontent.match('Interna: Resolving-System'); ;
                FOREACH mtyp IN normdata.${'T4410'};
                   IF mtyp.content == 'Zeitschrift/Serie';
                      is_journal = 1;
@@ -241,10 +237,10 @@ FOREACH category IN categories;
                ELSIF thiscontent.match('Deutschlandweit zugaenglich');
                   linktext = "${linktext}&nbsp;&nbsp;<img src=\"${config.get('dbis_de_img')}\" />";
                END;
-
-            END;
-            IF thiscontent.match('Interna: Zusätzliche Angaben') ;
+            ELSIF thiscontent.match('Interna: Zusätzliche Angaben') ;
                linktext = "Zusätzliche Angaben";
+            ELSE;
+               linktext = thiscontent.replace("Interna: ","");
             END;
 
             content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,linktext)}</a>";

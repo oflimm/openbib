@@ -109,7 +109,7 @@ convtab:
       '3000': 1        # Erwerbung Intern
       '3002': 1        # ZDB TitelID alt
       '3003': 1        # ZDB lokaleID alt
-      '3004': 1        # Kommentar MAB2
+     #'3004': 1        # Kommentar MAB2
       '3005': 1        # IntNotEx
       '3006': 1        # IntNotLok (z.B. retro)
       '3007': 1        # Unbekannt (Standort?)

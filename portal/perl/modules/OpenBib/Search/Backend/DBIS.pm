@@ -83,7 +83,7 @@ sub new {
     $logger->debug("Initializing with colors = ".(defined $colors || '')." and lang = ".(defined $lang || ''));
 
     $self->{bibid}      = (defined $bibid)?$bibid:(defined $config->{ezb_bibid})?$config->{ezb_bibid}:undef;
-    $self->{colors}     = (defined $colors)?$colors:(defined $config->{ezb_colors})?$config->{ezb_colors}:undef;
+    $self->{colors}     = (defined $colors)?$colors:(defined $config->{dbis_colors})?$config->{dbis_colors}:undef;
     $self->{ocolors}    = (defined $ocolors)?$ocolors:(defined $config->{dbis_ocolors})?$config->{dbis_ocolors}:undef;
     $self->{client_ip}  = (defined $client_ip )?$client_ip:undef;
     $self->{lang}       = (defined $lang )?$lang:undef;

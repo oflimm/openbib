@@ -227,7 +227,7 @@ sub load_full_title_record {
             $mult++;
         }
     }
-
+    
     $mult=1;
     foreach my $subject (@$subjects_ref){
         $record->set_field({field => 'T0700', subfield => '', mult => $mult, content => $subject});
@@ -241,7 +241,14 @@ sub load_full_title_record {
     }
     
     $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $content}) if ($content);
-    $record->set_field({field => 'T0501', subfield => '', mult => 1, content => $instructions}) if ($instructions);
+
+    $mult=1;
+    if ($access_info_ref->{desc_short}){
+        $record->set_field({field => 'T0501', subfield => '', mult => $mult, content => $access_info_ref->{desc_short}});
+        $mult++;
+    }
+
+    $record->set_field({field => 'T0501', subfield => '', mult => $mult, content => $instructions}) if ($instructions);
 
     $record->set_holding([]);
     $record->set_circulation([]);

@@ -46,6 +46,7 @@ use JSON::XS qw(encode_json);
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
+use OpenBib::Enrichment;
 use OpenBib::Conv::Common::Util;
 
 my $logfile = '/var/log/openbib/marc2meta.log';
@@ -68,11 +69,13 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $config = OpenBib::Config->instance;
+my $enrichmnt = new OpenBib::Enrichment;
 
-my ($inputfile,$use_milid);
+my ($inputfile,$configfile,$use_milid);
 
 &GetOptions(
 	    "inputfile=s"     => \$inputfile,
+            "configfile=s"    => \$configfile,
             "use-milid"       => \$use_milid,
 	    );
 
@@ -80,10 +83,13 @@ if (!$inputfile){
     print << "HELP";
 marc2meta.pl - Aufrufsyntax
 
-    marc2meta.pl --inputfile=xxx
+    marc2meta.pl --inputfile=xxx --configfile=yyy
 HELP
 exit;
 }
+
+# Ininitalisierung mit Config-Parametern
+my $convconfig = YAML::Syck::LoadFile($configfile) if ($configfile);
 
 # Einlesen und Reorganisieren
 
@@ -97,6 +103,8 @@ open (SUBJECT,       ">:raw","meta.subject");
 open (HOLDING,       ">:raw","meta.holding");
 
 my $multcount_ref = {};
+
+my $excluded_titles = 0;
 
 my $batch = MARC::Batch->new('USMARC', $inputfile);
 
@@ -346,6 +354,9 @@ while (my $record = $batch->next()){
 
         # HST
         foreach my $field ($record->field('245')){
+            # Subfield h entfernen
+            $field->delete_subfield(code => 'h');
+                
             my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
 
             if ($content){
@@ -564,13 +575,32 @@ while (my $record = $batch->next()){
         }
 
     }
-    
+
+    if ($configfile && $convconfig->{exclude}{by_availability}){
+        my $key_field = $convconfig->{exclude}{by_availability}{field};
+        
+        my @keys = ();
+        foreach my $item_ref (@{$title_ref->{fields}{'0540'}}){
+            push @keys, $item_ref->{content};
+        }
+        
+        my $databases_ref = $convconfig->{exclude}{by_availability}{databases};
+        
+        if ($enrichmnt->check_availability_by_isbn({isbn => \@keys, databases => $databases_ref })){
+            $logger->info("Titel mit ISBNs ".join(' ',@keys)." bereits in Datenbanken ".join(' ',@$databases_ref)." vorhanden!");
+            $excluded_titles++;
+            next;
+        }        
+    }
+
     print TITLE encode_json $title_ref, "\n";
     
     $logger->debug(encode_json $title_ref);
         
 
 }
+
+$logger->info("Excluded titles: $excluded_titles");
 
 close(TITLE);
 close(PERSON);

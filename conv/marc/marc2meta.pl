@@ -324,8 +324,10 @@ while (my $record = $batch->next()){
         # ISBN
         foreach my $field ($record->field('020')){
             my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
 
             $content_a=~s/\s+\(.+?\)\s*$//;
+            $content_z=~s/\s+\(.+?\)\s*$//;
             
             if ($content_a){
                 my $multcount=++$multcount_ref->{'0540'};
@@ -336,6 +338,47 @@ while (my $record = $batch->next()){
                     mult     => $multcount,
                 };
             }
+
+            if ($content_z){
+                my $multcount=++$multcount_ref->{'0541'};
+                
+                push @{$title_ref->{fields}{'0541'}}, {
+                    content  => konv($content_z),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+        }
+
+        # ISSN
+        foreach my $field ($record->field('022')){
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
+
+            $content_a=~s/\s+\(.+?\)\s*$//;
+            $content_z=~s/\s+\(.+?\)\s*$//;
+            
+            if ($content_a){
+                my $multcount=++$multcount_ref->{'0543'};
+                
+                push @{$title_ref->{fields}{'0543'}}, {
+                    content  => konv($content_a),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+            if ($content_z){
+                my $multcount=++$multcount_ref->{'0544'};
+                
+                push @{$title_ref->{fields}{'0544'}}, {
+                    content  => konv($content_z),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
         }
         
         foreach my $field ($record->field('040')){
@@ -346,6 +389,54 @@ while (my $record = $batch->next()){
                 
                 push @{$title_ref->{fields}{'0015'}}, {
                     content  => konv($content_a),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
+
+        # EST
+        foreach my $field ($record->field('240')){
+                
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+
+            if ($content){
+                my $multcount=++$multcount_ref->{'0304'};
+                
+                push @{$title_ref->{fields}{'0304'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
+        
+        # Uebers. HST (Translation)
+        foreach my $field ($record->field('242')){
+                
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+
+            if ($content){
+                my $multcount=++$multcount_ref->{'0503'};
+                
+                push @{$title_ref->{fields}{'0503'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
+        
+        # Sammlungsvermerk (Collective uniform title)
+        foreach my $field ($record->field('243')){
+                
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+
+            if ($content){
+                my $multcount=++$multcount_ref->{'0300'};
+                
+                push @{$title_ref->{fields}{'0300'}}, {
+                    content  => konv($content),
                     subfield => '',
                     mult     => $multcount,
                 };
@@ -436,6 +527,22 @@ while (my $record = $batch->next()){
             }
         }
     }
+
+        # Frueherer Titel
+        foreach my $field ($record->field('247')){
+                
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+
+            if ($content){
+                my $multcount=++$multcount_ref->{'0532'};
+                
+                push @{$title_ref->{fields}{'0532'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
         
         # Auflage
         foreach my $field ($record->field('250')){
@@ -452,12 +559,30 @@ while (my $record = $batch->next()){
             }
         }
 
+        # Massstab
+        foreach my $field ($record->field('255')){
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+
+            if ($content_a){
+                my $multcount=++$multcount_ref->{'0407'};
+                
+                push @{$title_ref->{fields}{'0407'}}, {
+                    content  => konv($content_a),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
+        
         # Verlag/Verlagsort/Jahr
         foreach my $field ($record->field('260')){
             my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
             my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
             my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
+            my $content_e = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('e')):decode_utf8($field->as_string('e'));
+            my $content_f = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('f')):decode_utf8($field->as_string('f'));
 
+            # Verlagsort
             if ($content_a){
                 my $multcount=++$multcount_ref->{'0410'};
                 
@@ -468,6 +593,7 @@ while (my $record = $batch->next()){
                 };
             }
 
+            # Verlag
             if ($content_b){
                 my $multcount=++$multcount_ref->{'0412'};
                 
@@ -477,7 +603,8 @@ while (my $record = $batch->next()){
                     mult     => $multcount,
                 };
             }
-            
+
+            # Jahr
             if ($content_c){
                 my $multcount=++$multcount_ref->{'0425'};
                 
@@ -487,12 +614,37 @@ while (my $record = $batch->next()){
                     mult     => $multcount,
                 };
             }
+
+            # Druckort
+            if ($content_e){
+                my $multcount=++$multcount_ref->{'0440'};
+                
+                push @{$title_ref->{fields}{'0440'}}, {
+                    content  => konv($content_e),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+            # Drucker
+            if ($content_f){
+                my $multcount=++$multcount_ref->{'0413'};
+                
+                push @{$title_ref->{fields}{'0413'}}, {
+                    content  => konv($content_f),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
         }
 
-        # Kollation
-        foreach my $field ($record->field('400')){
+        # 
+        foreach my $field ($record->field('300')){
             my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
+            my $content_e = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('e')):decode_utf8($field->as_string('e'));
 
+            # Kollation
             if ($content_a){
                 my $multcount=++$multcount_ref->{'0433'};
                 
@@ -502,6 +654,65 @@ while (my $record = $batch->next()){
                     mult     => $multcount,
                 };
             }
+
+            # Sonst Angaben
+            if ($content_b){
+                my $multcount=++$multcount_ref->{'0434'};
+                
+                push @{$title_ref->{fields}{'0434'}}, {
+                    content  => konv($content_b),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+
+            # Begleitmaterial
+            if ($content_e){
+                my $multcount=++$multcount_ref->{'0437'};
+                
+                push @{$title_ref->{fields}{'0437'}}, {
+                    content  => konv($content_e),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
+        
+        # Serie
+        foreach my $field ($record->field('490')){
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+            my $content_v = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('v')):decode_utf8($field->as_string('v'));
+
+            if ($content){
+                my $multcount=++$multcount_ref->{'0451'};
+                
+                push @{$title_ref->{fields}{'0451'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+            if ($content_v){
+                my $multcount=++$multcount_ref->{'0089'};
+                
+                push @{$title_ref->{fields}{'0089'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+
+                $multcount=++$multcount_ref->{'0455'};
+                
+                push @{$title_ref->{fields}{'0455'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+
+            }
+
         }
 
 
@@ -520,6 +731,36 @@ while (my $record = $batch->next()){
             }
         }
 
+        # HSSVermerk
+        foreach my $field ($record->field('502')){
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+
+            if ($content){
+                my $multcount=++$multcount_ref->{'0519'};
+                
+                push @{$title_ref->{fields}{'0519'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
+
+        # Angaben zum Inhalt
+        foreach my $field ($record->field('505')){
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+
+            if ($content){
+                my $multcount=++$multcount_ref->{'0517'};
+                
+                push @{$title_ref->{fields}{'0517'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
+        
         # Format
         foreach my $field ($record->field('516')){
             my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
@@ -534,7 +775,37 @@ while (my $record = $batch->next()){
                 };
             }
         }
-        
+
+        # Angaben zum Inhalt
+        foreach my $field ($record->field('520')){
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+
+            if ($content){
+                my $multcount=++$multcount_ref->{'0517'};
+                
+                push @{$title_ref->{fields}{'0517'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
+
+        # Angaben zum Inhalt
+        foreach my $field ($record->field('520')){
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+
+            if ($content){
+                my $multcount=++$multcount_ref->{'0517'};
+                
+                push @{$title_ref->{fields}{'0517'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
+
         # WST
         foreach my $field ($record->field('700')){
             my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
@@ -597,7 +868,9 @@ while (my $record = $batch->next()){
     
     $logger->debug(encode_json $title_ref);
         
-
+    if ( my @warnings = $batch->warnings() ) {
+        $logger->error(join(' ; ',@warnings));
+    }
 }
 
 $logger->info("Excluded titles: $excluded_titles");

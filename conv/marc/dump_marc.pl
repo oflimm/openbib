@@ -88,6 +88,8 @@ exit;
 
 open(DAT,"$inputfile");
 
+binmode(STDOUT, 'utf8');
+
 my $batch = MARC::Batch->new('USMARC', $inputfile);
 
 # Recover from errors
@@ -100,9 +102,9 @@ while (my $record = $batch->next()){
 
     print "Encoding:$encoding:\n";
 
-    my $idfield = $record->field('001')->as_string;
+#    my $idfield = $record->field('001');
 
-    print "ID: $idfield\n";
+#    print "ID: ",$idfield->as_string(),"\n";
 
     foreach my $field ($record->fields()){
         my $tag        = $field->tag();
@@ -115,7 +117,7 @@ while (my $record = $batch->next()){
             my $kateg   = $tag.$indicator1.$indicator2.$subfield;
             my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($subfield)):decode_utf8($field->as_string($subfield));
             
-            print ":$kateg:",$field->as_string($subfield),"\n";
+            print ":$kateg:",$content,"\n";
         }
 
     }

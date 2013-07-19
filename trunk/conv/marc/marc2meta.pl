@@ -52,7 +52,7 @@ use OpenBib::Conv::Common::Util;
 my $logfile = '/var/log/openbib/marc2meta.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=INFO, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -382,13 +382,13 @@ while (my $record = $batch->next()){
         }
         
         foreach my $field ($record->field('040')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
 
-            if ($content_a){
+            if ($content_b){
                 my $multcount=++$multcount_ref->{'0015'};
                 
                 push @{$title_ref->{fields}{'0015'}}, {
-                    content  => konv($content_a),
+                    content  => konv($content_b),
                     subfield => '',
                     mult     => $multcount,
                 };
@@ -444,12 +444,18 @@ while (my $record = $batch->next()){
         }
 
         # HST
-        foreach my $field ($record->field('245')){
-            # Subfield h entfernen
+        foreach my $field ($record->field('245')){                      
+            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
+            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
+            my $content_h = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('h')):decode_utf8($field->as_string('h'));
+            
+            # Subfields entfernen
+            $field->delete_subfield(code => 'b');
+            $field->delete_subfield(code => 'c');
             $field->delete_subfield(code => 'h');
-                
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
 
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+            
             if ($content){
                 my $multcount=++$multcount_ref->{'0331'};
                 
@@ -459,6 +465,29 @@ while (my $record = $batch->next()){
                     mult     => $multcount,
                 };
             }
+
+            # Zusatz zum HST
+            if ($content_b){
+                my $multcount=++$multcount_ref->{'0335'};
+                
+                push @{$title_ref->{fields}{'0335'}}, {
+                    content  => konv($content_b),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+            
+            # Vorl. Verfasser/Koerperschaft
+            if ($content_c){
+                my $multcount=++$multcount_ref->{'0359'};
+                
+                push @{$title_ref->{fields}{'0359'}}, {
+                    content  => konv($content_c),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
         }
 
         # HST/GT
@@ -698,7 +727,7 @@ while (my $record = $batch->next()){
                 my $multcount=++$multcount_ref->{'0089'};
                 
                 push @{$title_ref->{fields}{'0089'}}, {
-                    content  => konv($content),
+                    content  => konv($content_v),
                     subfield => '',
                     mult     => $multcount,
                 };
@@ -706,7 +735,7 @@ while (my $record = $batch->next()){
                 $multcount=++$multcount_ref->{'0455'};
                 
                 push @{$title_ref->{fields}{'0455'}}, {
-                    content  => konv($content),
+                    content  => konv($content_v),
                     subfield => '',
                     mult     => $multcount,
                 };
@@ -791,33 +820,20 @@ while (my $record = $batch->next()){
             }
         }
 
-        # Angaben zum Inhalt
-        foreach my $field ($record->field('520')){
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
-
-            if ($content){
-                my $multcount=++$multcount_ref->{'0517'};
-                
-                push @{$title_ref->{fields}{'0517'}}, {
-                    content  => konv($content),
-                    subfield => '',
-                    mult     => $multcount,
-                };
-            }
-        }
-
         # WST
-        foreach my $field ($record->field('700')){
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
-
-            if ($content){
-                my $multcount=++$multcount_ref->{'0370'};
+        foreach my $fieldno ('720','730','740'){
+            foreach my $field ($record->field($fieldno)){
+                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
                 
-                push @{$title_ref->{fields}{'0370'}}, {
-                    content  => konv($content),
-                    subfield => '',
-                    mult     => $multcount,
-                };
+                if ($content){
+                    my $multcount=++$multcount_ref->{'0370'};
+                    
+                    push @{$title_ref->{fields}{'0370'}}, {
+                        content  => konv($content),
+                        subfield => '',
+                        mult     => $multcount,
+                    };
+                }
             }
         }
 
@@ -891,6 +907,13 @@ sub konv {
     $content=~s/&/&amp;/g;
     $content=~s/</&lt;/g;
     $content=~s/>/&gt;/g;
+    # Buchstabenersetzungen Grundbuchstabe plus Diaeresis
+    $content=~s/u\x{0308}/ü/g;
+    $content=~s/a\x{0308}/ä/g;
+    $content=~s/o\x{0308}/ö/g;
+    $content=~s/U\x{0308}/Ü/g;
+    $content=~s/A\x{0308}/Ä/g;
+    $content=~s/O\x{0308}/Ö/g;
 
     return $content;
 }

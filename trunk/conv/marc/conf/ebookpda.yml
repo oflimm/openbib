@@ -3,6 +3,7 @@ exclude:
      field: '0540'
      databases:
         - inst001
+        - tmpebooks
         - ebooks
         - freebooks
         - zbmed

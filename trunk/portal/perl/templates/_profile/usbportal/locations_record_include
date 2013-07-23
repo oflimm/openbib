@@ -48,7 +48,7 @@ IF recent_tags.size > 0;
   END;
   tags_content.push("</ul>");
 ELSE;
-  tags_content.push("F&uuml; Titel in diesem Katalog wurden noch keine Tags vergeben");
+  tags_content.push("F&uuml;r Titel in diesem Katalog wurden noch keine Tags vergeben");
 END;
 
 locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriften dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];

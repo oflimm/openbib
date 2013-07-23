@@ -21,7 +21,7 @@
 <p>
 [% msg.maketext("Dieses E-Book ist Teil eines nur zeitlich begrenzt
 lizensierten E-Book-Pakets. Daher kann diese Titelaufnahme nicht
-sinnvol gebookmarkt werden oder in Merklisten, Literaturlisten oder
+sinnvoll gebookmarkt werden oder in Merklisten, Literaturlisten oder
 mit Tags weiterverarbeitet werden.") %]
 </p>
 

@@ -1,0 +1,253 @@
+<div class="ob-reuse_data"><!-- Begin Reuse -->
+
+<style>
+.ob-cloud {
+  font-size: 150%;
+}
+
+</style>
+
+
+[%
+  private_tags_of_tit = [];
+  IF user.ID ;
+    private_tags        = user.get_private_tags_by_name({ userid => user.ID  });
+    private_tags_of_tit = user.get_private_tags_of_tit({ titleid => record.id, dbname => record.database, username => username  });
+  END ;
+%]
+
+<div class="ob-category_header">[% msg.maketext("E-Book nicht permanent verf&uuml;gbar") %]</div><p/>
+
+<p>
+[% msg.maketext("Dieses E-Book ist Teil eines nur zeitlich begrenzt
+lizensierten E-Book-Pakets. Daher kann diese Titelaufnahme nicht
+sinnvol gebookmarkt werden oder in Merklisten, Literaturlisten oder
+mit Tags weiterverarbeitet werden.") %]
+</p>
+
+<p />
+
+<img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/mail.html?l=[% lang %];format=full" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
+<img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/save.html?l=[% lang %];format=full" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
+<img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/print.html?l=[% lang %];format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
+
+<p />
+<div class="ob-formats"><!-- Begin Formats -->
+<div class="ob-headline"><span id="ob-formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-formats_do"><!-- Begin formats do -->
+<p>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=full" [%- IF format == 'full' || format == '' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
+</p>
+</div>
+<p/>
+</div>
+
+
+</div><!-- End Reuse -->
+
+<p />
+
+<div class="ob-discover_sources"><!-- Begin Discover-Sources -->
+<div class="ob-category_header">[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</div><p/>
+
+
+<!-- Anfang Empfehlungen -->
+[% IF normdata.exists('E4000') %]
+<div class="ob-recommendation"><!-- Begin Empfehlungen -->
+<div class="ob-headline">[% msg.maketext("Empfehlungen") %]</div>
+
+<table>
+[%-   isbnitems = normdata.${"E4000"} -%]
+[%-   hstitems  = normdata.${"E4001"} -%]
+[%- FOREACH isbnitem IN isbnitems -%]
+[%-   isbnidx = loop.index -%]
+[%-   hstitem = hstitems.${isbnidx} -%]
+[%-   globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base};isbn=${isbnitem.content}" -%]
+[%-   IF hstitem.content.defined -%]
+<tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
+[%-   END -%]
+[%- END -%]
+</table>
+<p/>
+</div>
+[% END %]
+<!-- Ende Empfehlungen -->
+
+<!-- Anfang Thematisch relevante Titel (Wikipedia) -->
+[% IF related_records.get_size > 0 %]
+<div class="ob-related"><!-- Begin thematisch Relevant -->
+<div class="ob-headline">Literaturanalyse in der Wikipedia</div>
+
+<ul>
+[% FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records %]
+[% item = related_record.get_fields %]
+[% related_url = "${path_prefix}/${config.get('databases_loc')}/id/${related_record.database}/${config.get('titles_loc')}/id/${related_record.id}.html?l=${lang}" %]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Edition konstruieren %]
+[%- edition   = item.${'T0403'}.first.content -%]
+<li><a href="[% related_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfo.get('dbnames').${related_record.database}.short %]</li>
+[% END %]
+</ul>
+<p/>
+</div>
+[% END %]
+<!-- Ende Empfehlungen -->
+
+[%# USE dumper;dumper.dump(normdata) %]
+<!-- Anfang Verschlagwortung in anderen Katalogen -->
+[% more_subjects = [] ;
+   subject_done  = {};
+
+   FOREACH category IN ["T0710","T0902","T0907","T0912","T0917","T0922","T0927","T0932","T0937","T0942","T0947"];
+     FOREACH item IN normdata.$category;
+       subject_done.${item.content} = 1;
+     END;
+   END ;
+
+   FOREACH item IN normdata.${"T4300"};
+      NEXT IF subject_done.${item.content} == 1;
+      more_subjects.push(item.content);
+      subject_done.${item.content} = 1;
+   END;
+%]
+
+[%# USE dumper;dumper.dump(more_subjects)%]
+[% IF more_subjects.size > 0 %]
+<div class="available_subjects"><!-- Begin Vorhandene Schlagworte -->
+<div class="ob-headline">[% msg.maketext("Verschlagwortung dieses Titels in anderen Katalogen") %]</div>
+<p/>
+<ul>
+[% FOREACH thiscontent IN more_subjects.sort;
+
+      localurl    = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};profile=${searchprofileid_of_view};t4300=${uri_escape(thiscontent)}";
+      content     = "<a href=\"${localurl}\">${thiscontent}</a>";
+%]
+<li>[% content %]</li>
+[%- END -%]
+</ul>
+<p/>
+</div>
+[% END %]
+<!-- Ende Verschlagwortung in anderen Katalogen -->
+
+    <script>
+$(document).ready(function(){
+
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].include?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags %]",
+          function (txt){
+            $("#ob-bibsonomy_tags").html(txt); 
+    });
+
+});
+
+    </script>
+
+<!-- Anfang BibSonomy-Tags -->
+<div class="ob-bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
+<div class="ob-headline"><span id="ob-bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
+<span id="ob-bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
+</div>
+<p/>
+</div>
+<!-- Ende BibSonomy-Tags -->
+
+<!-- Anfang Verwandte Verfasser -->
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function(){
+// Begin Verwandte Personen
+  $.get("[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].include?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]",
+         function (txt){
+           $("#ob-similar_persons").html(txt); 
+  });
+});
+</script>
+
+<div class="ob-similar_persons"><!-- Begin Verwandte Personen -->
+<div class="ob-headline"><span id="ob-similar_persons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-similar_persons_do"><!-- Begin similarpersons do -->
+<span id="ob-similar_persons"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
+</div>
+<p/>
+</div>
+<!-- Ende Verwandte Verfasser -->
+
+<!-- Anfang Verwandte Themen -->
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function(){
+// Begin Verwandte Themen
+  $.get("[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].include?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]",
+         function (txt){
+           $("#ob-similar_subjects").html(txt); 
+  });
+});
+</script>
+<div class="ob-similar_subjects"><!-- Begin Verwandte Themen -->
+<div class="ob-headline"><span id="ob-similar_subjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-similar_subjects_do"><!-- Begin similarsubjects do -->
+<span id="ob-similar_subjects"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
+</div>
+<p/>
+</div>
+<!-- Ende Verwandte Themen -->
+
+<p/>
+</div><!-- End Discover-Sources -->
+
+<p/>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+// Begin Togglen / Einzeltreffer-Historie
+$("#history_toggle").html("<b>[<a href=\"#history_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#history").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#history_toggle").click(function(){
+ $("#history").toggle();
+ $("#history_toggle").html("");
+});
+});
+</script>
+
+[% recent_titles = session.get_recently_selected_titles.load_brief_records %]
+[% IF recent_titles.get_size > 0 %]
+<div class="ob-session_history"><!-- Begin Historie -->
+
+<div class="ob-category_header" id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</div><p/>
+
+[% FOREACH recent_record IN recent_titles.get_records %]
+[%- item = recent_record.get_fields -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+
+[% IF recent_titles.get_size > 5 && loop.count == 5 %]
+<span id="history_toggle"></span>
+<div id="history">
+[% END %]
+<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.database %]/[% config.get('titles_loc') %]/id/[% item.id %].html"><strong><span class="ob-title">[%
+title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span></p>
+[% END %]
+[% IF recent_titles.get_size > 5 %]
+</div>
+[% END %]
+
+<p/>
+</div><!-- End Session-Historie -->
+[% END %]
+
+

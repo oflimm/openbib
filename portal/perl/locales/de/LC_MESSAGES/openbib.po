@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-07-15 08:58+0200\n"
+"PO-Revision-Date: 2013-07-23 16:53+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -763,6 +763,7 @@ msgstr "Abmelden"
 msgid "Abschicken"
 msgstr "Abschicken"
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:31
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:24
 #: ../templates/_view/richter/cartitems_html_actions:5
 #: ../templates/cartitems_html_actions:6
@@ -1100,6 +1101,7 @@ msgstr ""
 "b>\n"
 "      recherchieren."
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:30
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:23
 #: ../templates/_view/richter/cartitems_html_actions:7
 #: ../templates/cartitems_html_actions:8
@@ -1152,7 +1154,7 @@ msgstr "An"
 #: ../templates/_database/kapsel/titlist_item_html_short:226
 #: ../templates/_database/openlibrary/titlist_item_html_short:232
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:231
-#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:238
+#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:239
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:238
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:232
 #: ../templates/_profile/kug/info_help:871
@@ -1191,6 +1193,7 @@ msgstr "An BibSonomy senden"
 msgid "Andere Ausgaben"
 msgstr "Andere Ausgaben"
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:36
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:29
 #: ../templates/_view/richter/cartitems_html_actions:11
 #: ../templates/_view/richter/users_litlists_record_edit:55
@@ -1613,6 +1616,7 @@ msgstr "Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten"
 msgid "Aus"
 msgstr "Aus"
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:32
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:25
 #: ../templates/_view/richter/cartitems_html_actions:6
 #: ../templates/cartitems_html_actions:7
@@ -2359,6 +2363,7 @@ msgstr "Bewertungen/Rezensionen von Nutzern"
 msgid "BibSonomy"
 msgstr "BibSonomy"
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:153
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:399
 #: ../templates/titles_record_html_actions:399
 #: ../templates/titles_record_include:673
@@ -2903,8 +2908,8 @@ msgstr "Datenquelle"
 
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_databases_record_html:61
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:59
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:28
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:30
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:56
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:58
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html:70
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:12
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:25
@@ -3404,6 +3409,7 @@ msgstr "Diese Registrierungs-ID existiert nicht."
 msgid "Diese Session existiert nicht."
 msgstr "Diese Session existiert nicht."
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:224
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:510
 #: ../templates/titles_record_html_actions:479
 #: ../templates/titles_record_include:753
@@ -3473,6 +3479,18 @@ msgstr "Dieser Nutzer ist nicht registriert."
 #: ../templates/titles_record_html:165 ../templates/titles_record_include:91
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
+
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:22
+msgid ""
+"Dieses E-Book ist Teil eines nur zeitlich begrenzt\n"
+"lizensierten E-Book-Pakets. Daher kann diese Titelaufnahme nicht\n"
+"sinnvoll gebookmarkt werden oder in Merklisten, Literaturlisten oder\n"
+"mit Tags weiterverarbeitet werden."
+msgstr ""
+"Dieses E-Book ist Teil eines nur zeitlich begrenzt\n"
+"lizensierten E-Book-Pakets. Daher kann diese Titelaufnahme nicht\n"
+"sinnvoll gebookmarkt werden oder in Merklisten, Literaturlisten oder\n"
+"mit Tags weiterverarbeitet werden."
 
 #: ../templates/users_circulations_make_order:62
 #: ../templates/users_circulations_make_reservation:74
@@ -3608,6 +3626,7 @@ msgstr ""
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:24
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:24
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:18
+#: ../templates/_profile/kug/_database/tmpebooks/titlist_item_html_short:22
 #: ../templates/_profile/rheinlandbib/titles_html:17
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:22
@@ -3650,6 +3669,10 @@ msgstr ""
 #: ../templates/users_tags_names_record_html:15
 msgid "E-Book"
 msgstr "E-Book"
+
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:19
+msgid "E-Book nicht permanent verf&uuml;gbar"
+msgstr "E-Book nicht permanent verf&uuml;gbar"
 
 #: ../templates/_profile/kug/users_preferences_html:92
 #: ../templates/users_preferences_html:92 ../templates/users_roles_edit:82
@@ -4114,6 +4137,7 @@ msgstr ""
 "habilitierten Romanisten außer der schon 61-jährigen Elise Richter,\n"
 "die aufgrund ihres Alters nicht infrage kam."
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:57
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:273
 #: ../templates/titles_record_html_actions:273
 #: ../templates/titles_record_include:591
@@ -4171,6 +4195,7 @@ msgstr "Englisch"
 msgid "Englische Wikipedia"
 msgstr "Englische Wikipedia"
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:51
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:267
 #: ../templates/titles_record_html_actions:267
 #: ../templates/titles_record_include:585
@@ -4188,12 +4213,14 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/_database/openlibrary/titlist_item_html_short:237
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:233
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:236
-#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:240
-#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:243
+#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:241
+#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:244
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:240
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:243
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:234
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:237
+#: ../templates/_profile/kug/_database/tmpebooks/titlist_item_html_short:302
+#: ../templates/_profile/kug/_database/tmpebooks/titlist_item_html_short:305
 #: ../templates/_profile/kug/search_facet:200
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:239
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:242
@@ -6145,7 +6172,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/_database/kapsel/titlist_item_html_short:226
 #: ../templates/_database/openlibrary/titlist_item_html_short:232
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:231
-#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:238
+#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:239
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:238
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:232
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:237
@@ -6404,6 +6431,7 @@ msgstr "Inhalte zu neuer Kennung verschieben"
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:25
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:25
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:19
+#: ../templates/_profile/kug/_database/tmpebooks/titlist_item_html_short:23
 #: ../templates/_profile/kug/info_help:62
 #: ../templates/_profile/rheinlandbib/titles_html:18
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:23
@@ -6902,9 +6930,10 @@ msgstr "Kartenkataloge der Philosophischen Fakultät"
 #: ../templates/_database/einbaende/titles_record_html:90
 #: ../templates/_database/einbaende/titlist_item_html_short:229
 #: ../templates/_database/openlibrary/titlist_item_html_short:216
-#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:222
+#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:223
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:222
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:216
+#: ../templates/_profile/kug/_database/tmpebooks/titlist_item_html_short:284
 #: ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left:21
 #: ../templates/_profile/kug/search_facet:176
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:133
@@ -7111,7 +7140,8 @@ msgid "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 msgstr "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 
 #. ("<a href=\"${path_prefix}/${config.get('databases_loc')
-#: ../templates/titles_dbis_recommendations_include:36
+#: ../templates/titles_dbis_recommendations_html:83
+#: ../templates/titles_dbis_recommendations_include:37
 msgid ""
 "Keine geeignete Fachdatenbank dabei? Eine thematisch\n"
 "gegliederte Übersicht <b>%1aller Fachdatenbanken%2</b> kann Ihnen "
@@ -7304,6 +7334,8 @@ msgstr "Künstler"
 #: ../templates/_database/einbaende/titlist_item_html_short:250
 #: ../templates/_database/kapsel/titlist_item_html_short:228
 #: ../templates/_database/kapsel/titlist_item_html_short:231
+#: ../templates/_profile/kug/_database/tmpebooks/titlist_item_html_short:302
+#: ../templates/_profile/kug/_database/tmpebooks/titlist_item_html_short:305
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:239
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:242
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:238
@@ -8034,6 +8066,7 @@ msgstr "Medienart"
 msgid "Medientyp"
 msgstr "Medientyp"
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:209
 #: ../templates/_profile/kug/_view/abwl/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/altmitneulat/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/engportrom/home_html_bottom_left:77
@@ -8212,7 +8245,7 @@ msgstr "Meldung"
 #: ../templates/_database/kapsel/titlist_item_html_short:226
 #: ../templates/_database/openlibrary/titlist_item_html_short:232
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:231
-#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:238
+#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:239
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:238
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:232
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:237
@@ -9326,6 +9359,7 @@ msgstr "Popularit&auml;ts-Funktionen"
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:26
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:26
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:20
+#: ../templates/_profile/kug/_database/tmpebooks/titlist_item_html_short:24
 #: ../templates/_profile/rheinlandbib/titles_html:19
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:24
@@ -9473,8 +9507,8 @@ msgstr "Protokoll"
 msgid "Provenienz"
 msgstr "Provenienz"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:42
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:44
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:35
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:37
 msgid "Provenienzen"
 msgstr "Provenienzen"
 
@@ -9575,9 +9609,9 @@ msgstr ""
 "Plattformen (Windows, Linux, Mac) zur Verf&uuml;gung, deren\n"
 "Funktionsumfang weit &uuml;ber die einfache Anzeige hinausgeht."
 
-#: ../templates/_database/dbis/titlist_item_html_short:59
+#: ../templates/_database/dbis/titlist_item_html_short:60
 #: ../templates/_database/ezb/titlist_item_html_short:59
-#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:233
+#: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:234
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:233
 msgid "ReadMe"
 msgstr "ReadMe"
@@ -9717,8 +9751,8 @@ msgstr "Rechtschreibvorschläge"
 msgid "Regent"
 msgstr "Regent"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:35
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:37
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:28
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:30
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_person_html:51
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_person_html:70
 msgid "Regenten"
@@ -9765,8 +9799,8 @@ msgstr "Region, Provenienz, Maler/Zeichner, Beruf/Weltanschauung, Jahr"
 msgid "Region/Werkzeug"
 msgstr "Region/Werkzeug"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:49
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:51
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:42
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:44
 msgid "Regionen"
 msgstr "Regionen"
 
@@ -10678,6 +10712,7 @@ msgstr "Sigel"
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:227
 #: ../templates/_profile/kug/_database/rheinabt/circulation:33
 #: ../templates/_profile/kug/_database/rheinabt/holding:17
+#: ../templates/_profile/kug/_database/tmpebooks/titlist_item_html_short:295
 #: ../templates/_profile/kug/_database/usbhwa/circulation:33
 #: ../templates/_profile/kug/_database/usbhwa/holding:17
 #: ../templates/_profile/kug/_database/usbsab/circulation:33
@@ -11255,8 +11290,8 @@ msgstr "Strasse"
 msgid "Struktur des Katalogbestandes als Wortwolken"
 msgstr "Struktur des Katalogbestandes als Wortwolken"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:56
-#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:58
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:49
+#: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:51
 msgid "Städte"
 msgstr "Städte"
 
@@ -16490,6 +16525,7 @@ msgstr "Verschiedenes"
 msgid "Verschlagwortung anderer Kataloge"
 msgstr "Verschlagwortung aus anderen Katalogen"
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:123
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:353
 #: ../templates/titles_record_html_actions:353
 msgid "Verschlagwortung dieses Titels in anderen Katalogen"
@@ -16517,6 +16553,7 @@ msgstr ""
 "weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)\n"
 "durch zus&auml;tzliche Worte weiter eingrenzen."
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:173
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:419
 #: ../templates/connector_similarpersons_html:40
 #: ../templates/titles_record_html_actions:419
@@ -16528,6 +16565,7 @@ msgstr "Verwandte Personen"
 msgid "Verwandte Schlagworte"
 msgstr "Verwandte Schlagworte"
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:192
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:438
 #: ../templates/titles_record_html_actions:438
 #: ../templates/titles_record_include:712
@@ -16604,6 +16642,7 @@ msgstr "Virtueller Verfasserindex"
 msgid "Volltext"
 msgstr "Volltext"
 
+#: ../templates/_profile/kug/_database/tmpebooks/titles_record_html_actions:39
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:32
 #: ../templates/_view/richter/cartitems_html_actions:14
 #: ../templates/_view/richter/users_litlists_record_edit:58

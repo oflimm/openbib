@@ -760,7 +760,7 @@ sub parse_query {
             }
             # Sonst Operator und Prefix hinzufuegen
             elsif ($searchtermstring) {
-                if ($config->{searchfield}{$field}{type} eq "ft"){
+                if ($config->{searchfield}{$field}{type} eq "ft" && $searchtermstring =~m/\s+/){
                     $searchtermstring = "($searchtermstring)";
                 }
                 

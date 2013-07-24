@@ -107,6 +107,145 @@ my $catalog = OpenBib::Catalog::Factory->create_catalog({database => 'pruessen' 
 
 # IDN's der Exemplardaten und daran haengender Titel anhand von Signaturanfaengen bestimmen
 
+# Teilbestand Buchillustrationen
+
+my $buchillustrationen_recordlist_by_year_ref = ();
+my @buchillustrationen_available_years           = ();
+my $buchillustrationen_year_max               = 0;
+my $buchillustrationen_year_min               = 9999;
+
+{
+    my %buchillustrationen_available_years_map        = ();
+    my %buchillustrationen_titidns = ();
+    
+    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+        {
+            'holding_fields.field' => 14,
+            'holding_fields.content' => { '~' => '^PrüssenB-' },
+        },
+        {
+            select   => ['titleid.id'],
+            as       => ['thistitleid'],
+            join     => ['titleid','holdingid', {'holdingid' => 'holding_fields' }],
+            group_by => ['titleid.id'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+    
+    
+    while (my $item = $titles->next){
+        my $titleid = $item->{thistitleid};
+        $buchillustrationen_titidns{$titleid}=1;    
+    }
+    
+    foreach my $titidn (keys %buchillustrationen_titidns){
+        my $record = new OpenBib::Record::Title({database => 'pruessen', id => $titidn})->load_full_record();
+        
+        my $normset = $record->get_fields;
+        
+        my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
+        
+        next if ($normset->{T5001}[0]{content});
+        
+        #    print STDERR "Jahr: $year\n";
+        #    print STDERR YAML::Dump($record),"\n";
+        
+        if ($year && $year > $buchillustrationen_year_max){
+            $buchillustrationen_year_max = $year;
+        }
+        
+        if ($year && $year < $buchillustrationen_year_min){
+            $buchillustrationen_year_min = $year;
+        }
+        
+        $buchillustrationen_available_years_map{$year} = 1;
+        
+        push @{$buchillustrationen_recordlist_by_year_ref->{$year}}, $record;
+    }
+    
+    #print STDERR YAML::Dump($buchillustrationen_recordlist_by_year_ref),"\n";
+    
+    # Sortierung nach Titel innerhalb eines Jahres
+    
+    foreach my $year (sort keys %buchillustrationen_available_years_map){
+        push @buchillustrationen_available_years, $year;
+
+        my @recordlist = @{$buchillustrationen_recordlist_by_year_ref->{$year}};
+        my @sorted_recordlist = sort by_title @recordlist;    
+        $buchillustrationen_recordlist_by_year_ref->{$year} = \@sorted_recordlist;
+    }
+}
+
+# Teilbestand Presseillustrationen
+
+my $presseillustrationen_recordlist_by_year_ref = ();
+my @presseillustrationen_available_years           = ();
+my $presseillustrationen_year_max               = 0;
+my $presseillustrationen_year_min               = 9999;
+
+{
+    my %presseillustrationen_available_years_map        = ();
+    my %presseillustrationen_titidns = ();
+    
+    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+        {
+            'holding_fields.field' => 14,
+            'holding_fields.content' => { '~' => '^PrüssenZ' },
+        },
+        {
+            select   => ['titleid.id'],
+            as       => ['thistitleid'],
+            join     => ['titleid','holdingid', {'holdingid' => 'holding_fields' }],
+            group_by => ['titleid.id'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+    
+    
+    while (my $item = $titles->next){
+        my $titleid = $item->{thistitleid};
+        $presseillustrationen_titidns{$titleid}=1;    
+    }
+    
+    foreach my $titidn (keys %presseillustrationen_titidns){
+        my $record = new OpenBib::Record::Title({database => 'pruessen', id => $titidn})->load_full_record();
+        
+        my $normset = $record->get_fields;
+        
+        my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
+        
+        next if ($normset->{T5001}[0]{content});
+        
+        #    print STDERR "Jahr: $year\n";
+        #    print STDERR YAML::Dump($record),"\n";
+        
+        if ($year && $year > $presseillustrationen_year_max){
+            $presseillustrationen_year_max = $year;
+        }
+        
+        if ($year && $year < $presseillustrationen_year_min){
+            $presseillustrationen_year_min = $year;
+        }
+        
+        $presseillustrationen_available_years_map{$year} = 1;
+        
+        push @{$presseillustrationen_recordlist_by_year_ref->{$year}}, $record;
+    }
+    
+    #print STDERR YAML::Dump($presseillustrationen_recordlist_by_year_ref),"\n";
+    
+    # Sortierung nach Titel innerhalb eines Jahres
+    
+    foreach my $year (sort keys %presseillustrationen_available_years_map){
+        push @presseillustrationen_available_years, $year;
+
+        my @recordlist = @{$presseillustrationen_recordlist_by_year_ref->{$year}};
+        my @sorted_recordlist = sort by_title @recordlist;    
+        $presseillustrationen_recordlist_by_year_ref->{$year} = \@sorted_recordlist;
+    }
+}
+
+
 # Teilbestand Plakate
 
 my $plakate_recordlist_by_year_ref = ();
@@ -150,11 +289,11 @@ my $plakate_year_min               = 9999;
         #    print STDERR "Jahr: $year\n";
         #    print STDERR YAML::Dump($record),"\n";
         
-        if ($year > $plakate_year_max){
+        if ($year && $year > $plakate_year_max){
             $plakate_year_max = $year;
         }
         
-        if ($year < $plakate_year_min){
+        if ($year && $year < $plakate_year_min){
             $plakate_year_min = $year;
         }
         
@@ -217,11 +356,11 @@ my $werbeillustrationen_year_min = 9999;
         
         my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
         
-        if ($year > $werbeillustrationen_year_max){
+        if ($year && $year > $werbeillustrationen_year_max){
             $werbeillustrationen_year_max = $year
         }
         
-        if ($year < $werbeillustrationen_year_min){
+        if ($year && $year < $werbeillustrationen_year_min){
             $werbeillustrationen_year_min = $year
         }
         
@@ -285,11 +424,11 @@ my $exlibris_year_min = 9999;
         
         my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
         
-        if ($year > $exlibris_year_max){
+        if ($year && $year > $exlibris_year_max){
             $exlibris_year_max = $year
         }
         
-        if ($year < $exlibris_year_min){
+        if ($year && $year < $exlibris_year_min){
             $exlibris_year_min = $year
         }
         
@@ -353,11 +492,11 @@ my $donkeypress_year_min = 9999;
         
         my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
         
-        if ($year > $donkeypress_year_max){
+        if ($year && $year > $donkeypress_year_max){
             $donkeypress_year_max = $year
         }
         
-        if ($year < $donkeypress_year_min){
+        if ($year && $year < $donkeypress_year_min){
             $donkeypress_year_min = $year
         }
         
@@ -378,6 +517,74 @@ my $donkeypress_year_min = 9999;
         
         my @sorted_recordlist = sort by_title @recordlist;    
         $donkeypress_recordlist_by_year_ref->{$year} = \@sorted_recordlist;
+    }
+}
+
+# Teilbestand Bergisch Gladbach
+
+my $gladbach_recordlist_by_year_ref = {};
+my @gladbach_available_years = ();
+my $gladbach_year_max = 0;
+my $gladbach_year_min = 9999;
+
+{
+    my %gladbach_available_years_map = ();
+    my %gladbach_titidns = ();
+    
+    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+        {
+            'holding_fields.field' => 14,
+            'holding_fields.content' => { '~' => '^PrüssenBG-' },
+        },
+        {
+            select   => ['titleid.id'],
+            as       => ['thistitleid'],
+            join     => ['titleid','holdingid', {'holdingid' => 'holding_fields' }],
+            group_by => ['titleid.id'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+    
+    
+    while (my $item = $titles->next){
+        my $titleid = $item->{thistitleid};
+        $gladbach_titidns{$titleid}=1;    
+    }
+    
+    foreach my $titidn (keys %gladbach_titidns){
+        my $record = new OpenBib::Record::Title({database => 'pruessen', id => $titidn})->load_full_record();
+        
+        my $normset = $record->get_fields;
+        
+        next if ($normset->{T5001}[0]{content});
+        
+        my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
+        
+        if ($year && $year > $gladbach_year_max){
+            $gladbach_year_max = $year
+        }
+        
+        if ($year && $year < $gladbach_year_min){
+            $gladbach_year_min = $year
+        }
+        
+        $gladbach_available_years_map{$year} = 1;
+        
+        push @{$gladbach_recordlist_by_year_ref->{$year}}, $record;
+    }
+    
+    # Sortierung nach Titel innerhalb eines Jahres
+    
+    foreach my $year (sort keys %gladbach_available_years_map){
+        push @gladbach_available_years, $year;
+
+        my @recordlist = @{$gladbach_recordlist_by_year_ref->{$year}};
+        
+        #    print STDERR YAML::Dump($plakate_recordlist_by_year_ref->{$year}),"\n";
+        #    print STDERR YAML::Dump(\@recordlist),"\n";
+        
+        my @sorted_recordlist = sort by_title @recordlist;    
+        $gladbach_recordlist_by_year_ref->{$year} = \@sorted_recordlist;
     }
 }
 
@@ -421,11 +628,11 @@ my $misc_year_min = 9999;
         
         my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
         
-        if ($year > $misc_year_max){
+        if ($year && $year > $misc_year_max){
             $misc_year_max = $year
         }
         
-        if ($year < $misc_year_min){
+        if ($year && $year < $misc_year_min){
             $misc_year_min = $year
         }
         
@@ -449,74 +656,6 @@ my $misc_year_min = 9999;
     }    
 }
 
-# Teilbestand Bergisch Gladbach
-
-my $gladbach_recordlist_by_year_ref = {};
-my @gladbach_available_years = ();
-my $gladbach_year_max = 0;
-my $gladbach_year_min = 9999;
-
-{
-    my %gladbach_available_years_map = ();
-    my %gladbach_titidns = ();
-    
-    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
-        {
-            'holding_fields.field' => 14,
-            'holding_fields.content' => { '~' => '^PrüssenBG-' },
-        },
-        {
-            select   => ['titleid.id'],
-            as       => ['thistitleid'],
-            join     => ['titleid','holdingid', {'holdingid' => 'holding_fields' }],
-            group_by => ['titleid.id'],
-            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-        }
-    );
-    
-    
-    while (my $item = $titles->next){
-        my $titleid = $item->{thistitleid};
-        $gladbach_titidns{$titleid}=1;    
-    }
-    
-    foreach my $titidn (keys %gladbach_titidns){
-        my $record = new OpenBib::Record::Title({database => 'pruessen', id => $titidn})->load_full_record();
-        
-        my $normset = $record->get_fields;
-        
-        next if ($normset->{T5001}[0]{content});
-        
-        my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
-        
-        if ($year > $gladbach_year_max){
-            $gladbach_year_max = $year
-        }
-        
-        if ($year < $gladbach_year_min){
-            $gladbach_year_min = $year
-        }
-        
-        $gladbach_available_years_map{$year} = 1;
-        
-        push @{$gladbach_recordlist_by_year_ref->{$year}}, $record;
-    }
-    
-    # Sortierung nach Titel innerhalb eines Jahres
-    
-    foreach my $year (sort keys %gladbach_available_years_map){
-        push @gladbach_available_years, $year;
-
-        my @recordlist = @{$gladbach_recordlist_by_year_ref->{$year}};
-        
-        #    print STDERR YAML::Dump($plakate_recordlist_by_year_ref->{$year}),"\n";
-        #    print STDERR YAML::Dump(\@recordlist),"\n";
-        
-        my @sorted_recordlist = sort by_title @recordlist;    
-        $gladbach_recordlist_by_year_ref->{$year} = \@sorted_recordlist;
-    }
-}
-
 my $outputbasename="pruessen-werkverzeichnis-bd2";
 
 my $template = Template->new({
@@ -534,6 +673,16 @@ my $template = Template->new({
 #print STDERR YAML::Dump($plakate_recordlist_by_year_ref),"\n";
 
 my $ttdata = {
+    buchillustrationen_recordlist        => $buchillustrationen_recordlist_by_year_ref,
+    buchillustrationen_available_years   => \@buchillustrationen_available_years,
+    buchillustrationen_year_max          => $buchillustrationen_year_max,
+    buchillustrationen_year_min          => $buchillustrationen_year_min,
+
+    presseillustrationen_recordlist        => $presseillustrationen_recordlist_by_year_ref,
+    presseillustrationen_available_years   => \@presseillustrationen_available_years,
+    presseillustrationen_year_max          => $presseillustrationen_year_max,
+    presseillustrationen_year_min          => $presseillustrationen_year_min,
+    
     plakate_recordlist        => $plakate_recordlist_by_year_ref,
     plakate_available_years   => \@plakate_available_years,
     plakate_year_max          => $plakate_year_max,
@@ -590,6 +739,7 @@ sub print_help {
 sub filterchars {
   my ($content)=@_;
 
+  $content=~s///g;
   $content=~s/\$/\\\$/g;
   $content=~s/\&gt\;/\$>\$/g;
   $content=~s/\&lt\;/\$<\$/g;

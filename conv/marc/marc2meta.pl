@@ -41,6 +41,7 @@ use Getopt::Long;
 use DBI;
 use MARC::Batch;
 use MARC::Charset 'marc8_to_utf8';
+use MARC::File::XML;
 use YAML::Syck;
 use JSON::XS qw(encode_json);
 use Log::Log4perl qw(get_logger :levels);
@@ -49,10 +50,23 @@ use OpenBib::Config;
 use OpenBib::Enrichment;
 use OpenBib::Conv::Common::Util;
 
+my ($inputfile,$configfile,$use_milid,$use_xml,$format,$loglevel);
+
+&GetOptions(
+            "format=s"        => \$format,
+	    "inputfile=s"     => \$inputfile,
+            "configfile=s"    => \$configfile,
+            "loglevel=s"      => \$loglevel,
+            "use-milid"       => \$use_milid,
+            "use-xml"         => \$use_xml,
+	    );
+
 my $logfile = '/var/log/openbib/marc2meta.log';
 
+$loglevel=($loglevel)?$loglevel:'INFO';
+
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -70,14 +84,6 @@ my $logger = get_logger();
 
 my $config = OpenBib::Config->instance;
 my $enrichmnt = new OpenBib::Enrichment;
-
-my ($inputfile,$configfile,$use_milid);
-
-&GetOptions(
-	    "inputfile=s"     => \$inputfile,
-            "configfile=s"    => \$configfile,
-            "use-milid"       => \$use_milid,
-	    );
 
 if (!$inputfile){
     print << "HELP";
@@ -106,7 +112,23 @@ my $multcount_ref = {};
 
 my $excluded_titles = 0;
 
-my $batch = MARC::Batch->new('USMARC', $inputfile);
+$format=($format)?$format:'USMARC';
+
+$logger->debug("Using format $format");
+
+my $batch;
+
+if ($use_xml){
+    $logger->debug("Using MARC-XML");
+    
+    MARC::File::XML->default_record_format($format);
+    
+    $batch = MARC::Batch->new('XML', $inputfile);    
+}
+else {
+    $logger->debug("Using native MARC");
+    $batch = MARC::Batch->new($format, $inputfile);
+}
 
 # Recover from errors
 $batch->strict_off();
@@ -114,8 +136,11 @@ $batch->warnings_off();
 
 my $have_title_ref = {};
 
-while (my $record = $batch->next()){
-    
+my $count=1;
+
+# Ignore 4 consecutive errors
+while (my $record = $batch->next() || $batch->next || $batch->next || $batch->next ){
+
     my $title_ref = {
         'fields' => {},
     };
@@ -887,6 +912,14 @@ while (my $record = $batch->next()){
     if ( my @warnings = $batch->warnings() ) {
         $logger->error(join(' ; ',@warnings));
     }
+
+    if ($count % 10000 == 0){
+        $logger->info("$count titles done");
+    }
+
+    
+    $count++;
+    
 }
 
 $logger->info("Excluded titles: $excluded_titles");

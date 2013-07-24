@@ -54,6 +54,14 @@ my %char_replacements = (
     # $logger->debug("Checkpoint 3: $content");
 
     # Buchstabenersetzungen
+    # Buchstabenersetzungen
+    "u\x{0308}" => "ue",
+    "a\x{0308}" => "ae",
+    "o\x{0308}" => "oe",
+    "U\x{0308}" => "Ue",
+    "O\x{0308}" => "Oe",
+    "A\x{0308}" => "Ae",
+
     "ü" => "ue",
     "ä" => "ae",
     "ö" => "oe",
@@ -316,6 +324,8 @@ sub normalize {
         
         return $content;
     }
+
+    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
     
     # Normalisierung auf Kleinschreibung
     $content = lc($content);
@@ -448,8 +458,6 @@ sub normalize {
     # Leerzeichen bei CJK einfuegen
 
     # $content=~s/(\p{InKatakana}|\p{InHiragana}|\p{InCJKCompatibility}|\p{InCJKCompatibilityForms}|\p{InCJKCompatibilityIdeographs}|\p{InCJKCompatibilityIdeographsSupplement}|\p{InCJKRadicalsSupplement}|\p{InCJKStrokes}|\p{InCJKSymbolsAndPunctuation}|\p{InCJKUnifiedIdeographs}|\p{InCJKUnifiedIdeographsExtensionA}|\p{InCJKUnifiedIdeographsExtensionB}|\p{InEnclosedCJKLettersAndMonths})/$1 /g;
-
-    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
 
     $logger->debug("OUT: $content / Type $type");
     

@@ -1,4 +1,6 @@
 \subsection{[% filterchars(thistitset.${"T0331"}.first.content) %]}
+ID:[% record.id %]\newline
+
 [%-
 
 weitere_titel = [];
@@ -56,7 +58,8 @@ Signatur: \textbf{[% filterchars(thismexset.first.${"X0014"}.content) %]}
 [%-   IF thistitset.${"T5002"}.first.content || thistitset.${"T0530"}.first.content || thistitset.${"T0590"}.first.content %]
 \minisec{Entworfen f"ur:}
 \begin{itemize}
-[%-      IF thistitset.${"T5002"}.first.content -%]
+
+[%-     IF thistitset.${"T5002"}.first.content -%]
 [%-          FOREACH item IN thistitset.${"T5004"} ;
     sub_record = new_record('pruessen', item.content) ;
     sub_record = sub_record.load_full_record ;
@@ -93,8 +96,10 @@ Signatur: \textbf{[% filterchars(thismexset.first.${"X0014"}.content) %]}
 [% ELSIF illu == "presse" %]
 [%-   IF thistitset.${"T0530"}.first.content || thistitset.${"T0525"}.first.content || thistitset.${"T0590"}.first.content %]
 \minisec{Entworfen f"ur:}
+[%# USE dumper;dumper.dump(thistitset)%]
 \begin{itemize}
-[%-     IF thistitset.${"T0590"}.first.content -%]
+
+[%      IF thistitset.${"T0590"}.first.content -%]
 [%        FOREACH item IN thistitset.${"T0590"} -%]
   \item [% filterchars(item.content) %][% IF NOT item.content.match('\.$') %].[% END %]
 [%-       END %]
@@ -103,7 +108,7 @@ Signatur: \textbf{[% filterchars(thismexset.first.${"X0014"}.content) %]}
   \item [% filterchars(item.content) %][% IF NOT item.content.match('\.$') %].[% END %]
 [%-       END %]
 [%-     ELSIF thistitset.${"T0525"}.first.content %]
-[%        FOREACH item IN thistitset.${"T0530"} -%]
+[%        FOREACH item IN thistitset.${"T0525"} -%]
   \item [% filterchars(item.content) %][% IF NOT item.content.match('\.$') %].[% END %]
 [%-       END %]
 [%      END %]

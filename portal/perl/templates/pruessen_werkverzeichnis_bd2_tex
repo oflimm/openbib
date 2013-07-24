@@ -361,8 +361,11 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN buchillustrationen_available_years %]
 [% anzahl = buchillustrationen_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
-
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 [%    FOREACH record IN buchillustrationen_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
 [%       thismexset = record.get_holding %]
@@ -377,7 +380,11 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN presseillustrationen_available_years %]
 [% anzahl = buchillustrationen_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 
 [%    FOREACH record IN presseillustrationen_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
@@ -393,7 +400,11 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN plakate_available_years %]
 [% anzahl = plakate_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 
 [%    FOREACH record IN plakate_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
@@ -410,7 +421,11 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN werbeillustrationen_available_years %]
 [% anzahl = werbeillustrationen_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 
 [%    FOREACH record IN werbeillustrationen_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
@@ -427,7 +442,11 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN exlibris_available_years %]
 [% anzahl = exlibris_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 
 [%    FOREACH record IN exlibris_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
@@ -444,7 +463,11 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN donkeypress_available_years %]
 [% anzahl = donkeypress_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 
 [%    FOREACH record IN donkeypress_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
@@ -461,7 +484,11 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN misc_available_years %]
 [% anzahl = misc_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 
 [%    FOREACH record IN misc_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
@@ -478,7 +505,11 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN gladbach_available_years %]
 [% anzahl = gladbach_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 
 [%    FOREACH record IN gladbach_recordlist.${year} %]
 [%       thistitset = record.get_fields %]

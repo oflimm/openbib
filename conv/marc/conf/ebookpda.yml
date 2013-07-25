@@ -2,6 +2,6 @@ exclude:
   'by_availability':
      field: '0540'
      databases:
-        - inst001
+        - usbebooks
         - tmpebooks
         - freebooks

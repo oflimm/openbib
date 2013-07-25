@@ -53,7 +53,7 @@ ist eine der bedeutendsten Sammlungen für dieses Themengebiet. Hinzu
 kommen 225 Prägungen aus der Zeit der Ptolemäer (323-31 v. Chr.) und
 1756 Münzen aus den griechischen Städten Kleinasiens.  </p>
 
-<p> Es wird eine Präsentation der Bestände angestrebt, die es den an
+<p> Es wird eine Präsentation der <a href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">Bestände</a> angestrebt, die es den an
 der Numismatik partizipierenden Disziplinen leicht erlaubt, das
 Material über eine Internetdatenbank auf komplexe Fragestellungen hin
 auszuwerten. Der Schwerpunkt des in Gemeinschaft mit der IT-Abteilung

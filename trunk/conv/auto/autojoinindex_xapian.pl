@@ -113,8 +113,6 @@ while (my $file = readdir(DIR)) {
 
 closedir(DIR);
 
-exit;
-
 foreach my $searchprofile (@searchprofiles){
     $logger->fatal("Bearbeite Suchprofil $searchprofile");
 

@@ -88,11 +88,32 @@ else {
     push @searchprofiles, $config->get_searchprofiles_with_own_index;
 }
 
-if (! -d "$xapian_base/_searchprofile"){
-    $logger->info("Profil-Verzeichnis wurde angelegt");
+my $searchprofiledir = "$xapian_base/_searchprofile";
+
+if (! -d $searchprofiledir){
+    $logger->info("Profil-Verzeichnis $searchprofiledir wurde angelegt");
     
-    mkdir "$xapian_base/_searchprofile";
+    mkdir $searchprofiledir;
 }
+
+# Bestehende Profile entfernen
+
+opendir(DIR, $searchprofiledir);
+
+$logger->info("Profil-Verzeichnis von alten Profilen reinigen");
+
+while (my $file = readdir(DIR)) {
+    next if ($file=~/^\./);
+
+    $logger->info("Profil $file entfernt");
+    
+    system("rm $searchprofiledir/$file/*");
+    system("rmdir $searchprofiledir/$file");    
+}
+
+closedir(DIR);
+
+exit;
 
 foreach my $searchprofile (@searchprofiles){
     $logger->fatal("Bearbeite Suchprofil $searchprofile");

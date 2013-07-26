@@ -10,7 +10,7 @@ csv:
   'eol': "\n"
   'sep_char': ','
   'quote_char': '"'
-  'escape_char': '\'
+  'escape_char': '"'
 
 # Feld der eindeutigen Titel-ID
 uniqueidfield: 'upi'

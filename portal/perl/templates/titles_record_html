@@ -197,6 +197,7 @@ $(document).ready(function(){
 [% END %]
 </div>
 
+[% IF record_exists %]
 <p class="ob-background">&nbsp;</p>
 
 [% IF circulation.size > 0 || holding.size >= 0 || same_records.get_size
@@ -392,6 +393,7 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 </div><!-- End: Additional Title Info -->
 [% END %]
 
+[% END # record_exists %]
 </div><!-- End: Bottom Info -->
 
 </div><!-- End Fulltitle -->

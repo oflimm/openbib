@@ -266,7 +266,7 @@ sub enrich_content {
     push @isbn_refs, @{$self->get_field({field => 'T0540'})} if ($self->has_field('T0540'));
     push @isbn_refs, @{$self->get_field({field => 'T0553'})} if ($self->has_field('T0553'));
     
-    my $bibkey    = $self->get_field({field => 'T5050', mult => 1});
+    my $bibkey    = $self->get_field({field => 'T5050', mult => 1})  if ($self->has_field('T5050'));
     
     my @issn_refs = ();
     push @issn_refs, @{$self->get_field({field => 'T0543'})} if ($self->has_field('T0543'));                                           

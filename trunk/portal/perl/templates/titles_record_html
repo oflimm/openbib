@@ -21,6 +21,10 @@
   similar_records = record.get_similar_records;
   related_records = record.get_related_records;
 
+  IF record.record_exists;
+    record_exists = 1;
+  END;
+
   bibkey = record.to_bibkey ;
   isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
   IF NOT isbn ;
@@ -110,17 +114,21 @@ $(document).ready(function(){
         <li><a href="#" class="lastitem">[% msg.maketext("Titel") %]</a></li>
       </ul>
     </div>
+[% IF record_exists %]
     <div class="ob-representation">
 <a class="ob-representation_rdf" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
 <a class="ob-representation_json" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
     </div>
+[% END %]
    </div>
 
     <!-- grid -->
     <div class="ym-grid linearize-level-1">
       <div class="ym-g33 ym-gr">
         <div class="ym-gbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="titles_record_html_actions" %]
+[% IF record_exists %]
+[%   PROCESS common/subtemplate name="titles_record_html_actions" %]
+[% END %]
         </div><!-- End User-Specific -->
       </div>
 
@@ -145,10 +153,14 @@ $(document).ready(function(){
 
   <div class="ym-gbox-left ob-title_record">
 
-[% PROCESS common/subtemplate name="visible_categories_title" %]
+[% IF record_exists %]
+[%   PROCESS common/subtemplate name="visible_categories_title" %]
 
 
-[% PROCESS common/subtemplate name="titles_record_html_categories" %]
+[%   PROCESS common/subtemplate name="titles_record_html_categories" %]
+[% ELSE %]
+<h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
+[% END %]
 
 [% IF config.get('unAPI') %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>

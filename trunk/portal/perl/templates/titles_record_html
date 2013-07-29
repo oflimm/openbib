@@ -199,7 +199,7 @@ $(document).ready(function(){
 
 <p class="ob-background">&nbsp;</p>
 
-[% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
+[% IF circulation.size > 0 || holding.size >= 0 || same_records.get_size
 > 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
 
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
@@ -217,13 +217,12 @@ $(document).ready(function(){
     END ;
  END ;
 %]
+
 <ul>
-[%  IF circulation.size > 0 %]
+[%   IF circulation.size > 0 %]
 <li><a href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
 [%   ELSE %]
-[%     IF holding.size > 0 %]
 <li><a href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
-[%     END %]
 [%   END %]
 [%   IF journaltocs_feed %]
 <li><a href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
@@ -240,17 +239,13 @@ $(document).ready(function(){
 </ul>
 
 [% IF circulation.size > 0 %]
-
 <div id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
-[%   IF holding.size > 0 %]
-
 <div id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
-[%   END %]
 [% END %]
 
 [% IF journaltocs_feed %]

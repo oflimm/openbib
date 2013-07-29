@@ -62,7 +62,7 @@
 [% END %]
 </tbody>
 </table>
-[% ELSE %]
+[% ELSIF record_exists %]
 <table class="ym-full">
 <thead>
 <tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th></tr>

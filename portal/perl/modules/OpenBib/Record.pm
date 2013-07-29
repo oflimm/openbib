@@ -128,6 +128,10 @@ sub get_field {
     my $mult             = exists $arg_ref->{mult}
         ? $arg_ref->{mult}                : undef;
 
+    if (!defined $self->{_fields} && !defined $self->{_fields}->{$field}){
+        return;
+    }
+    
     if (defined $mult && $mult){
         foreach my $field_ref (@{$self->{_fields}->{$field}}){
             if ($field_ref->{mult} == $mult){

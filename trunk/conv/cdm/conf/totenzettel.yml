@@ -11,7 +11,7 @@ pers:
   'name': '0100'      # Verfasser
   'vater': '0101'     # Vater
   'mutter': '0102'    # Mutter
-  'kinder': '0103:' # Trauernde mit / getrennt
+  'kinder': '0103'    # Trauernde mit / getrennt
 
 # Koerperschaften
 corp:

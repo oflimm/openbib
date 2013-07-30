@@ -37,8 +37,9 @@ __PACKAGE__->table("enriched_content_by_bibkey");
 
 =head2 subfield
 
-  data_type: 'smallint'
+  data_type: 'varchar'
   is_nullable: 1
+  size: 2
 
 =head2 content
 
@@ -55,7 +56,7 @@ __PACKAGE__->add_columns(
   "field",
   { data_type => "smallint", is_nullable => 0 },
   "subfield",
-  { data_type => "smallint", is_nullable => 1 },
+  { data_type => "varchar", is_nullable => 1, size => 2 },
   "content",
   { data_type => "text", is_nullable => 0 },
 );

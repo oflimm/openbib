@@ -304,7 +304,7 @@ bvb_subjects2enrich.pl - Anreicherung mit Schlagwort-Informationen aus den offen
    --inputfile=...       : Name der Einladedatein im MARC-Format
    --jsonfile=...        : Name der JSON-Einlade-/ausgabe-Datei
 
-     -json-import        : Importiere Daten aus der JSON-Einlade-Datei
+     -import-json        : Importiere Daten aus der JSON-Einlade-Datei
 
    --logfile=...         : Name der Log-Datei
    --loglevel=...        : Loglevel (default: INFO)

@@ -51,7 +51,7 @@ use OpenBib::Catalog::Factory;
 # Autoflush
 $|=1;
 
-my ($help,$format,$use_xml,$importjson,$init,$jsonfile,$inputfile,$logfile,$loglevel,$filename);
+my ($help,$format,$use_xml,$importjson,$init,$jsonfile,$inputfile,$logfile,$loglevel);
 
 &GetOptions("help"         => \$help,
             "init"         => \$init,
@@ -60,7 +60,6 @@ my ($help,$format,$use_xml,$importjson,$init,$jsonfile,$inputfile,$logfile,$logl
             "use-xml"         => \$use_xml,
             "format=s"        => \$format,
             "import-json"  => \$importjson,
-            "filename=s"   => \$filename,
             "logfile=s"    => \$logfile,
             "loglevel=s"    => \$loglevel,
 	    );
@@ -251,8 +250,9 @@ else {
         # Dublette Schlagworte's entfernen
         my %seen_terms  = ();
         my @unique_subjects = grep { ! $seen_terms{$_->{content}} ++ } @subjects; 
+        my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
         
-        foreach my $isbn (@isbns){
+        foreach my $isbn (@unique_isbns){
             foreach my $subject (@unique_subjects){
                 $logger->debug("Found $isbn -> $subject");
                 my $subject_ref = {
@@ -299,11 +299,15 @@ bvb_subjects2enrich.pl - Anreicherung mit Schlagwort-Informationen aus den offen
 
    -init                 : Zuerst Eintraege fuer dieses Feld und Origin aus Anreicherungsdatenbank loeschen
    -use-xml              : MARCXML-Format verwenden
-   -format=...           : Format z.B. UNIMARC (default: USBMARC)
+   -format=...           : Format z.B. UNIMARC (default: USMARC)
 
    --inputfile=...       : Name der Einladedatein im MARC-Format
+   --jsonfile=...        : Name der JSON-Einlade-/ausgabe-Datei
+
+     -json-import        : Importiere Daten aus der JSON-Einlade-Datei
 
    --logfile=...         : Name der Log-Datei
+   --loglevel=...        : Loglevel (default: INFO)
 
 ENDHELP
     exit;

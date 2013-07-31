@@ -144,7 +144,7 @@ if ($importjson){
     $logger->info("Einlesen und -laden der neuen Daten");
 
     while (<JSON>){
-        my $subject_ref = json_decode($_);
+        my $subject_ref = decode_json($_);
 
         push @{$enrich_data_ref}, $subject_ref;
         $subject_tuple_count++;

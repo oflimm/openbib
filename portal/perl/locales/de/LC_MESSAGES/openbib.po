@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-07-29 11:45+0200\n"
+"PO-Revision-Date: 2013-08-01 09:57+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -159,7 +159,7 @@ msgstr "${thiscategory}"
 #: ../templates/_database/einbaende/titles_record_html:366
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:331
-#: ../templates/titles_record_html:334 ../templates/titles_record_include:242
+#: ../templates/titles_record_html:330 ../templates/titles_record_include:242
 msgid ""
 "%1\n"
 "von %2 Nutzer fanden die folgende Rezension hilfreich:"
@@ -1570,7 +1570,7 @@ msgstr ""
 #: ../templates/_database/einbaende/titles_record_html:346
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:311
-#: ../templates/titles_record_html:314 ../templates/titles_record_include:220
+#: ../templates/titles_record_html:310 ../templates/titles_record_include:220
 msgid "Aufnehmen"
 msgstr "Aufnehmen"
 
@@ -1653,7 +1653,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:219
 #: ../templates/_profile/usbportal/titles_record_include:70
 #: ../templates/_view/richter/cartitems_html_simple:62
-#: ../templates/cartitems_html_simple:59 ../templates/titles_record_html:222
+#: ../templates/cartitems_html_simple:59 ../templates/titles_record_html:224
 #: ../templates/titles_record_include:122
 #: ../templates/titles_record_include:144
 msgid "Ausleihe/Exemplare"
@@ -2267,7 +2267,7 @@ msgstr "Bestaetigen Sie Ihre Registrierung"
 #: ../templates/_database/kapsel/holding:33
 #: ../templates/_profile/kug/_database/edz/holding:17
 #: ../templates/_profile/kug/_database/inst001/holding:18
-#: ../templates/_profile/kug/_database/inst137/holding:33
+#: ../templates/_profile/kug/_database/inst137/holding:34
 #: ../templates/_profile/kug/_database/islandica/holding:17
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/holding:17
 #: ../templates/_profile/kug/_database/lesesaal/holding:17
@@ -2283,8 +2283,8 @@ msgstr "Bestaetigen Sie Ihre Registrierung"
 #: ../templates/_profile/usbportal/titles_record_include:77
 #: ../templates/_profile/usbportal/visible_categories_location:30
 #: ../templates/_view/richter/cartitems_html_simple:70
-#: ../templates/cartitems_html_simple:67 ../templates/holding:33
-#: ../templates/holding_mobile:17 ../templates/titles_record_html:225
+#: ../templates/cartitems_html_simple:67 ../templates/holding:34
+#: ../templates/holding_mobile:17 ../templates/titles_record_html:226
 #: ../templates/titles_record_include:125
 #: ../templates/titles_record_include:151
 msgid "Bestand"
@@ -2328,7 +2328,7 @@ msgstr "Betreff"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:301
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:291
 #: ../templates/reviews_edit:216 ../templates/reviews_record_html:69
-#: ../templates/titles_record_html:294 ../templates/titles_record_include:200
+#: ../templates/titles_record_html:290 ../templates/titles_record_include:200
 msgid "Bewertung"
 msgstr "Bewertung"
 
@@ -2343,7 +2343,7 @@ msgstr "Bewertungen/Rezensionen"
 #: ../templates/_database/einbaende/titles_record_html:360
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:335
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:325
-#: ../templates/titles_record_html:328 ../templates/titles_record_include:236
+#: ../templates/titles_record_html:324 ../templates/titles_record_include:236
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Bewertungen/Rezensionen von Nutzern"
 
@@ -2389,7 +2389,8 @@ msgstr "Bibinformationen statt URL"
 #: ../templates/_database/kapsel/holding:33
 #: ../templates/_profile/kug/_database/edz/circulation:33
 #: ../templates/_profile/kug/_database/inst001/circulation:33
-#: ../templates/_profile/kug/_database/inst137/holding:33
+#: ../templates/_profile/kug/_database/inst137/holding:34
+#: ../templates/_profile/kug/_database/inst137/holding:68
 #: ../templates/_profile/kug/_database/inst302/circulation:29
 #: ../templates/_profile/kug/_database/islandica/circulation:33
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:33
@@ -2410,7 +2411,8 @@ msgstr "Bibinformationen statt URL"
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:33
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:33
 #: ../templates/circulation:29 ../templates/circulation_mobile:29
-#: ../templates/holding:33 ../templates/holding_mobile:17
+#: ../templates/holding:34 ../templates/holding:68
+#: ../templates/holding_mobile:17
 msgid "Bibliothek"
 msgstr "Bibliothek"
 
@@ -3693,7 +3695,6 @@ msgstr "E-Mail-Adresse"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:102
 #: ../templates/_profile/usbportal/visible_categories_title:105
-#: ../templates/search_title_field:31
 #: ../templates/visible_categories_title:107
 msgid "E4100"
 msgstr "Basis-Klassifikation"
@@ -3788,14 +3789,14 @@ msgstr "Eigene Tags"
 #: ../templates/_database/einbaende/titles_record_html:371
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:346
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:336
-#: ../templates/titles_record_html:339 ../templates/titles_record_include:247
+#: ../templates/titles_record_html:335 ../templates/titles_record_include:247
 msgid "Eigenen Review bearbeiten"
 msgstr "Eigenen Review bearbeiten"
 
 #: ../templates/_database/einbaende/titles_record_html:372
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:347
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:337
-#: ../templates/titles_record_html:340 ../templates/titles_record_include:248
+#: ../templates/titles_record_html:336 ../templates/titles_record_include:248
 msgid "Eigenen Review l&ouml;schen"
 msgstr "Eigenen Review l&ouml;schen"
 
@@ -4674,6 +4675,10 @@ msgstr "Externer Connector (DigiBib/uk-online/Citavi)"
 msgid "Externer Suchschlitz"
 msgstr "Externer Suchschlitz"
 
+#: ../templates/search_title_field:31
+msgid "Externes Schlagwort"
+msgstr "Externes Schlagwort"
+
 #. ("<a      href=\"https://addons.mozilla.org/en-US/firefox/addon/445\"      target=\"_blank\">Link</a>","<img src=\"${config.get('rssfeed_img')
 #: ../templates/_profile/kug/info_help:717
 msgid ""
@@ -4748,7 +4753,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:275
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:265
 #: ../templates/_profile/usbportal/titles_record_include:99
-#: ../templates/titles_record_html:268 ../templates/titles_record_include:173
+#: ../templates/titles_record_html:264 ../templates/titles_record_include:173
 msgid ""
 "F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel "
 "bieten wir eine eine %1&Uuml;bersicht%2 an."
@@ -6658,7 +6663,7 @@ msgstr "JSON konnte nicht geparst werden"
 #: ../templates/databases_rss_record_html:97
 #: ../templates/litlists_record_include:75
 #: ../templates/searchforms_record_options:4 ../templates/servers_html:82
-#: ../templates/servers_record_html:77 ../templates/titles_record_html:343
+#: ../templates/servers_record_html:77 ../templates/titles_record_html:339
 #: ../templates/titles_record_include:251
 #: ../templates/users_litlists_record_delete_confirm:54
 #: ../templates/users_litlists_record_edit:93
@@ -7951,7 +7956,7 @@ msgstr "Los"
 #: ../templates/admin_topics_record_edit:96
 #: ../templates/admin_views_record_edit:129
 #: ../templates/cartitems_html_actions:160
-#: ../templates/cartitems_html_short:144 ../templates/titles_record_html:314
+#: ../templates/cartitems_html_short:144 ../templates/titles_record_html:310
 #: ../templates/titles_record_include:220
 #: ../templates/topics_record_mapping_html:95
 #: ../templates/users_litlists_html:110
@@ -8545,7 +8550,7 @@ msgstr ""
 #: ../templates/databases_rss_record_html:98
 #: ../templates/litlists_record_include:75
 #: ../templates/searchforms_record_options:4 ../templates/servers_html:82
-#: ../templates/servers_record_html:78 ../templates/titles_record_html:344
+#: ../templates/servers_record_html:78 ../templates/titles_record_html:340
 #: ../templates/titles_record_include:252
 #: ../templates/users_litlists_record_delete_confirm:60
 #: ../templates/users_litlists_record_edit:93
@@ -8637,7 +8642,7 @@ msgstr "Neue Benutzernummer bzw. E-Mail-Adresse"
 #: ../templates/_database/einbaende/titles_record_html:323
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:298
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:288
-#: ../templates/titles_record_html:291 ../templates/titles_record_include:197
+#: ../templates/titles_record_html:287 ../templates/titles_record_include:197
 msgid "Neue Bewertung/Rezension"
 msgstr "Neue Bewertung/Rezension"
 
@@ -9495,7 +9500,7 @@ msgstr "Prüfen Sie die Schreibweise Ihrer Suchbegriffe."
 #: ../templates/_database/einbaende/titles_record_html:339
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:314
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:304
-#: ../templates/reviews_edit:230 ../templates/titles_record_html:307
+#: ../templates/reviews_edit:230 ../templates/titles_record_html:303
 #: ../templates/titles_record_include:213
 msgid "Pseudonym"
 msgstr "Pseudonym"
@@ -9861,7 +9866,7 @@ msgstr "Relevanz"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:312
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:302
 #: ../templates/reviews_edit:228 ../templates/reviews_record_html:70
-#: ../templates/titles_record_html:305 ../templates/titles_record_include:211
+#: ../templates/titles_record_html:301 ../templates/titles_record_include:211
 msgid "Rezension"
 msgstr "Rezension"
 
@@ -10670,7 +10675,7 @@ msgstr "Sigel"
 #: ../templates/_profile/kug/_database/edz/holding:17
 #: ../templates/_profile/kug/_database/inst001/circulation:33
 #: ../templates/_profile/kug/_database/inst001/holding:18
-#: ../templates/_profile/kug/_database/inst137/holding:33
+#: ../templates/_profile/kug/_database/inst137/holding:34
 #: ../templates/_profile/kug/_database/inst302/circulation:29
 #: ../templates/_profile/kug/_database/islandica/circulation:33
 #: ../templates/_profile/kug/_database/islandica/holding:17
@@ -10729,7 +10734,7 @@ msgstr "Sigel"
 #: ../templates/acquisition_collection_item_short:255
 #: ../templates/admin_statistics_query_html:99
 #: ../templates/cartitems_html_short:141 ../templates/circulation:29
-#: ../templates/circulation_mobile:29 ../templates/holding:33
+#: ../templates/circulation_mobile:29 ../templates/holding:34
 #: ../templates/holding_mobile:17 ../templates/search_title_field:25
 #: ../templates/searchforms_record_query:126
 #: ../templates/titles_popular_by_database_html:291
@@ -10912,7 +10917,7 @@ msgstr "Stadt"
 #: ../templates/_profile/kug/_database/edz/holding:17
 #: ../templates/_profile/kug/_database/inst001/circulation:33
 #: ../templates/_profile/kug/_database/inst001/holding:18
-#: ../templates/_profile/kug/_database/inst137/holding:33
+#: ../templates/_profile/kug/_database/inst137/holding:34
 #: ../templates/_profile/kug/_database/inst302/circulation:29
 #: ../templates/_profile/kug/_database/islandica/circulation:33
 #: ../templates/_profile/kug/_database/islandica/holding:17
@@ -10944,7 +10949,7 @@ msgstr "Stadt"
 #: ../templates/_profile/usbportal/circulation:31
 #: ../templates/_profile/usbportal/holding:19 ../templates/circulation:29
 #: ../templates/circulation_mobile:29 ../templates/databases_record_html:67
-#: ../templates/holding:33 ../templates/holding_mobile:17
+#: ../templates/holding:34 ../templates/holding_mobile:17
 msgid "Standort"
 msgstr "Standort"
 
@@ -15768,7 +15773,7 @@ msgstr "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 #: ../templates/_database/einbaende/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306
-#: ../templates/titles_record_html:309 ../templates/titles_record_include:215
+#: ../templates/titles_record_html:305 ../templates/titles_record_include:215
 msgid "Text"
 msgstr "Text"
 
@@ -15910,7 +15915,7 @@ msgstr "Tip: Digitaler Kartenkatalog"
 #: ../templates/titles_popular_by_database_html:46
 #: ../templates/titles_popular_by_database_html:64
 #: ../templates/titles_popular_html:45 ../templates/titles_record_html:114
-#: ../templates/titles_record_html:308 ../templates/titles_record_include:214
+#: ../templates/titles_record_html:304 ../templates/titles_record_include:214
 #: ../templates/usage_navigation:5 ../templates/usage_navigation:7
 #: ../templates/users_circulations_make_order:82
 #: ../templates/users_litlists_record_edit:134
@@ -15948,7 +15953,7 @@ msgstr ""
 #: ../templates/_database/einbaende/titles_record_html:394
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:369
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:359
-#: ../templates/titles_record_html:362 ../templates/titles_record_include:272
+#: ../templates/titles_record_html:358 ../templates/titles_record_include:272
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen "
 "vorhanden"
@@ -16729,7 +16734,7 @@ msgstr "Wann"
 #: ../templates/_database/einbaende/titles_record_html:375
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:350
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:340
-#: ../templates/titles_record_html:343 ../templates/titles_record_include:251
+#: ../templates/titles_record_html:339 ../templates/titles_record_include:251
 msgid "War diese Rezension hilfreich?"
 msgstr "War diese Rezension hilfreich?"
 
@@ -17435,7 +17440,7 @@ msgstr ""
 #: ../templates/_database/einbaende/titles_record_html:408
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:383
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:373
-#: ../templates/titles_record_html:376 ../templates/titles_record_include:287
+#: ../templates/titles_record_html:372 ../templates/titles_record_include:287
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
 "Auflage usw.) in den Katalogen"
@@ -18316,7 +18321,7 @@ msgstr "realisiert mit"
 #: ../templates/_database/einbaende/titles_record_html:328
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:303
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:293
-#: ../templates/reviews_edit:218 ../templates/titles_record_html:296
+#: ../templates/reviews_edit:218 ../templates/titles_record_html:292
 #: ../templates/titles_record_include:202
 msgid "schlecht"
 msgstr "schlecht"
@@ -18324,7 +18329,7 @@ msgstr "schlecht"
 #: ../templates/_database/einbaende/titles_record_html:334
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:309
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:299
-#: ../templates/reviews_edit:224 ../templates/titles_record_html:302
+#: ../templates/reviews_edit:224 ../templates/titles_record_html:298
 #: ../templates/titles_record_include:208
 msgid "sehr gut"
 msgstr "sehr gut"

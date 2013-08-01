@@ -14,7 +14,7 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
-<li><b>1.8.2013</b>: Mehr finden im KUG mit offenen Katalogdaten. Ab
+<li><b>1.8.2013</b>: Mehr im KUG finden mit offenen Katalogdaten. Ab
 sofort werden Titel im KUG für die Recherche mit Schlagworten
 verschiedener Verbundkataloge (BVB/KOBV) angereichert und können so
 besser gefunden werden. Weitergehende Informationen in diesem

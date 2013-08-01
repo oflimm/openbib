@@ -30,6 +30,7 @@
 
 use warnings;
 use strict;
+use utf8;
 
 use YAML;
 
@@ -51,17 +52,18 @@ use OpenBib::Catalog::Factory;
 # Autoflush
 $|=1;
 
-my ($help,$format,$use_xml,$importjson,$init,$jsonfile,$inputfile,$logfile,$loglevel);
+my ($help,$format,$use_xml,$importjson,$import,$init,$jsonfile,$inputfile,$logfile,$loglevel);
 
 &GetOptions("help"         => \$help,
             "init"         => \$init,
+            "import"       => \$import,
             "inputfile=s"  => \$inputfile,
             "jsonfile=s"   => \$jsonfile,
-            "use-xml"         => \$use_xml,
-            "format=s"        => \$format,
+            "use-xml"      => \$use_xml,
+            "format=s"     => \$format,
             "import-json"  => \$importjson,
             "logfile=s"    => \$logfile,
-            "loglevel=s"    => \$loglevel,
+            "loglevel=s"   => \$loglevel,
 	    );
 
 if ($help){
@@ -144,7 +146,7 @@ if ($importjson){
     $logger->info("Einlesen und -laden der neuen Daten");
 
     while (<JSON>){
-        my $subject_ref = decode_json($_);
+        my $subject_ref = json_decode($_);
 
         push @{$enrich_data_ref}, $subject_ref;
         $subject_tuple_count++;
@@ -228,19 +230,19 @@ else {
                     my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
 
                     push @subjects, {
-                        content  => $content_a,
+                        content  => konv($content_a),
                         subfield => 'a'
                     } if ($content_a);
                     push @subjects, {
-                        content  => $content_x,
+                        content  => konv($content_x),
                         subfield => 'x'
                     } if ($content_x);
                     push @subjects, {
-                        content  => $content_y,
+                        content  => konv($content_y),
                         subfield => 'y'
                     } if ($content_y);
                     push @subjects, {
-                        content  => $content_z,
+                        content  => konv($content_z),
                         subfield => 'z'
                     } if ($content_z);
                 }
@@ -271,14 +273,14 @@ else {
         }
         
         if ($count % 1000 == 0){
-            $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+            $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref) if ($import);
             $enrich_data_ref = [];
         }
         $count++;
         
     }
     
-    if (@$enrich_data_ref){
+    if (@$enrich_data_ref && $import){
         $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
     }
     
@@ -298,13 +300,14 @@ bvb_subjects2enrich.pl - Anreicherung mit Schlagwort-Informationen aus den offen
    -help                 : Diese Informationsseite
 
    -init                 : Zuerst Eintraege fuer dieses Feld und Origin aus Anreicherungsdatenbank loeschen
+   -import               : Einladen der verarbeiteten Daten
    -use-xml              : MARCXML-Format verwenden
    -format=...           : Format z.B. UNIMARC (default: USMARC)
 
-   --inputfile=...       : Name der Einladedatein im MARC-Format
+   --inputfile=...       : Name der Einladedatei im MARC-Format
    --jsonfile=...        : Name der JSON-Einlade-/ausgabe-Datei
 
-     -import-json        : Importiere Daten aus der JSON-Einlade-Datei
+     -import-json        : Einladen der Daten aus der JSON-Einlade-Datei
 
    --logfile=...         : Name der Log-Datei
    --loglevel=...        : Loglevel (default: INFO)
@@ -313,3 +316,20 @@ ENDHELP
     exit;
 }
 
+sub konv {
+    my $content = shift;
+
+    $content=~s/\s*[.,:]\s*$//g;
+    $content=~s/&/&amp;/g;
+    $content=~s/</&lt;/g;
+    $content=~s/>/&gt;/g;
+    # Buchstabenersetzungen Grundbuchstabe plus Diaeresis
+    $content=~s/u\x{0308}/ü/g;
+    $content=~s/a\x{0308}/ä/g;
+    $content=~s/o\x{0308}/ö/g;
+    $content=~s/U\x{0308}/Ü/g;
+    $content=~s/A\x{0308}/Ä/g;
+    $content=~s/O\x{0308}/Ö/g;
+
+    return $content;
+}

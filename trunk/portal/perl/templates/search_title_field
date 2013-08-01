@@ -28,6 +28,6 @@
           "tagstring" = msg.maketext("Tag")
           "litliststring" = msg.maketext("Literaturliste")
           "t0720" = msg.maketext("Provenienz")
-          "t4100" = msg.maketext("E4100")
+          "t4100" = msg.maketext("Externes Schlagwort")
 };
 %]

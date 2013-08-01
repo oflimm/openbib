@@ -14,6 +14,14 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
+<li><b>1.8.2013</b>: Mehr finden im KUG mit offenen Katalogdaten. Ab
+sofort werden Titel im KUG für die Recherche mit Schlagworten
+verschiedener Verbundkataloge (BVB/KOBV) angereichert und können so
+besser gefunden werden. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2013/08/01/mehr-finden-mit-offenen-katalogdaten/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
 <li><b>9.6.2013</b>: Empfehlungen von Fachdatenbanken im KUG. Ab
 sofort bietet der KUG passend zu den eingegebenen Suchbegriffen die
 relevantesten Fachdatenbanken thematisch gruppiert rechts in den

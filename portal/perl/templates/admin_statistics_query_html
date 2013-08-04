@@ -60,7 +60,7 @@
 
 <div class="ob-listoptions">
 <b>Jahr:</b>&nbsp;
-[%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');
+[%- ret       = statistics.get_tstamp_range_of_events({ format => '%Y' });
     i         = ret.min ;
 
     IF NOT year ;
@@ -80,7 +80,6 @@
 <tr><th>[% msg.maketext("Einfache Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 1, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
 <tr><th>[% msg.maketext("Komplexe Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 2, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
 <tr><th>[% msg.maketext("Externer Suchschlitz") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 3, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Externer Connector (DigiBib/uk-online/Citavi)") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 22, content => 1, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
 </table>
 
 <p />

@@ -56,9 +56,7 @@
 <p>
 Die generierten Datensätz sind für die weitere Bearbeitung und spätere Handhabung im Internet unter IDs nach
 folgenden Provenienzkürzeln, zu denen eine durchlaufende Nummer hinzutritt, referenzierbar; bei dieser Dis-
-ponierung wurden urspüngliche Inventar-Komplexe, soweit es sinnvoll bzw. notwendig war, beibehalten. In we-
-nigen Fällen wurde die Datenstruktur parallel mitsamt der realen Sortierung der Sammlungsbestände im Sinne
-einer Präzisierung verändert (KYM, ERY, ATR, KIL [= im Antrag "Ionien und Verstreutes"])
+ponierung wurden urspüngliche Inventar-Komplexe, soweit es sinnvoll bzw. notwendig war, beibehalten.
 </p>
 
 <table class="ym-full">
@@ -71,7 +69,7 @@ einer Präzisierung verändert (KYM, ERY, ATR, KIL [= im Antrag "Ionien und Vers
 <tr><td>Nachträge: AL_N0001-AL_N0146</td><td>146</td></tr>
 <tr><th>PT = Ptolemäische Münzen</th><td></td></tr>
 <tr><td>Katalog Weiser: PT_0001-0188 [+ A-O]</td><td>203</td></tr>
-<tr><td>Nachträge: PT_N0189-PT_N0210</td><td>225</td></tr>
+<tr><td>Nachträge: PT_N0189-PT_N0210</td><td>22</td></tr>
 <tr><th>BI = Bithynien</th><td>219</td></tr>
 <tr><th>NI = Nikaia</th><td>263</td></tr>
 <tr><th>HYP = Hypaipa</th><td>194</td></tr>

@@ -206,24 +206,24 @@ sub show_active_record {
     foreach my $event ($thissession->eventlogjsons->all){
         my $type        = $event->type;
         my $tstamp      = $event->tstamp;
-        my $content     = $event->content;
+        my $content     = encode_utf8($event->content);
         
         my $sort = substr($tstamp,0,22);
         $sort=~s/\D//g;
 
-        next if (!$content || $type == 1);
+        next if (!$content);
 
         my $json_ref;
 
-        eval {
-            $json_ref = decode_json $content;
-        };
+	eval {
+	    $json_ref = decode_json $content;
+	};
+	
+	if ($@){
+	    $logger->error("Error decoding JSON ".$@);
+	    next;
+	}
 
-        if ($@){
-            $logger->error("Error decoding JSON ".$@);
-            next;
-        }
-            
         push @events, {
             sort       => $sort,
             type       => $type,

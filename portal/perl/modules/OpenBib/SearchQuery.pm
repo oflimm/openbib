@@ -474,11 +474,11 @@ sub get_searchquery {
     return $self->{_searchquery};
 }
 
-sub get_searchfield {
-    my ($self,$field)=@_;
+# sub get_searchfield {
+#     my ($self,$field)=@_;
 
-    return $self->{_searchquery}->{$field};
-}
+#     return $self->{_searchquery}->{$field};
+# }
 
 sub get_searchtype {
     my ($self)=@_;

@@ -75,6 +75,8 @@
 </td></tr>
 </table>
 
+[% PROCESS common/subtemplate name="search_title_field" %] 
+
 <h3>Einzelne Session [% sid %]</h3>
 
 [%# USE dumper;dumper.dump(events)%]
@@ -86,46 +88,24 @@
 [% FOREACH event IN events %]
 [%  SWITCH event.type %]
 [%    CASE 1 %]
-[%       searchquery = event.content %]
+[%       thissearchquery = event.content %]
 <tr><td>[% event.tstamp %]</td><td>Recherche</td><td>
-[%- IF searchquery.freesearch.val -%]&nbsp;FS: [% searchquery.freesearch.val %] 
-[%- END -%]
-[%- IF searchquery.person.val -%]
-&nbsp;[% searchquery.person.bool %]&nbsp;PER: [% searchquery.person.val %]
-[%- END -%]
-[%- IF searchquery.title.val -%]
-&nbsp;[% searchquery.title.bool %]&nbsp;TIT: [% searchquery.title.val %]
-[%- END -%]
-[%- IF searchquery.subject.val -%]
-&nbsp;[% searchquery.subject.bool %]&nbsp;SUBJ: [% searchquery.subject.val %]
-[%- END -%]
-[%- IF searchquery.corporatebody.val -%]
-&nbsp;[% searchquery.corporatebody.bool %]&nbsp;CORP: [% searchquery.corporatebody.val %]
-[%- END -%]
-[%- IF searchquery.classification.val -%]
-&nbsp;[% searchquery.classification.bool %]&nbsp;NOT: [% searchquery.classification.val %] 
-[%- END -%]
-[%- IF searchquery.mark.val -%]
-&nbsp;[% searchquery.mark.bool %]&nbsp;SIG: [% searchquery.mark.val %]
-[%- END -%]
-[%- IF searchquery.year.val -%]
-&nbsp;[% searchquery.year.bool %]&nbsp;EJAHR: [% searchquery.year.val %]
-[%- END -%]
-[%- IF searchquery.isbn.val -%]
-&nbsp;[% searchquery.isbn.bool %]&nbsp;ISBN: [% searchquery.isbn.val %]
-[%- END -%]
-[%- IF searchquery.issn.val -%]
-&nbsp;[% searchquery.issn.bool %]&nbsp;ISSN: [% searchquery.issn.val %]
-[%- END -%]
-[%- IF searchquery.mediatype.val -%]
-&nbsp;[% searchquery.mediatype.bool %]&nbsp;MART: [% searchquery.mediatype.val %]
-[%- END -%]
-[%- IF searchquery.titlestring.val -%]
-&nbsp;[% searchquery.titlestring.bool %]&nbsp;HSTR: [% searchquery.titlestring.val %] 
-[%- END -%]
-</td><td align="center">(Treffer: [% searchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchquery.searchprofile %]">[% searchquery.searchprofile %]</a>)</td></tr>
+[%- used_fields = [] ;
+    FOREACH field IN thissearchquery.keys ;
+       fieldname    = field_map.${field};
+       fieldcontent = thissearchquery.${field}.val;
+       NEXT IF NOT fieldcontent ;
+       used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
+     END;
+-%]
+<em>[% used_fields.join(' ; ') %]</em></a>
+</td><td align="center">(Treffer: [% thissearchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% thissearchquery.searchprofile %]">[% thissearchquery.searchprofile %]</a>)</td></tr>
 [%    CASE 10 %]
 <tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
+[%    CASE 21 %]
+<tr><td>[% event.tstamp %]</td><td>Such-Backend</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE 23 %]
+<tr><td>[% event.tstamp %]</td><td>Suchprofil</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 100 %]
 <tr><td>[% event.tstamp %]</td><td>View</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 101 %]

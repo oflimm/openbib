@@ -107,7 +107,7 @@ $(document).ready(function(){
 [%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
 <!-- [% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %] -->
 <div class="ob-searchfield ob-clear_floats">
-<input id="to_focus" class="ym-searchfield" type="search" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" />
+<input id="to_focus" class="ym-searchfield" type="search" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" size="50" maxlength="200" />
 <button type="submit">[% msg.maketext("Suchen") %]</button>
 &nbsp;<br/>
 <div class="ob-searchfield_supplement">

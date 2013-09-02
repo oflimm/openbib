@@ -102,7 +102,7 @@ else {
 my $last_insertion_date = 0; # wird fuer inkrementelles Update benoetigt
 
 foreach my $database (@databases){
-    $logger->info("Getting ISBNs from database $database and adding to enrichmntdb");
+    $logger->info("### $database: Getting ISBNs from database $database and adding to enrichmntdb");
 
     my $catalog = new OpenBib::Catalog($database);
     
@@ -115,7 +115,7 @@ foreach my $database (@databases){
         next;
     }
     else {
-        $logger->info("Bisherige Daten entfernen");
+        $logger->info("### $database: Bisherige Daten entfernen");
         
         $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
             {
@@ -213,9 +213,9 @@ foreach my $database (@databases){
         $enrichment->{schema}->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
     }
     
-    $logger->info("$isbn_insertcount ISBN's inserted");
+    $logger->info("### $database: $isbn_insertcount ISBN's inserted");
 
-    $logger->info("Getting Bibkeys from database $database and adding to enrichmntdb");
+    $logger->info("### $database: Getting Bibkeys from database $database and adding to enrichmntdb");
     
     if ($incr){
         $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
@@ -269,9 +269,9 @@ foreach my $database (@databases){
         $enrichment->{schema}->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
     }
     
-    $logger->info("$bibkey_insertcount Bibkeys inserted");
+    $logger->info("### $database: $bibkey_insertcount Bibkeys inserted");
 
-    $logger->info("Getting ISSNs from database $database and adding to enrichmntdb");
+    $logger->info("### $database: Getting ISSNs from database $database and adding to enrichmntdb");
 
     if ($incr){
         $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
@@ -336,7 +336,7 @@ foreach my $database (@databases){
         $enrichment->{schema}->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
     }
     
-    $logger->info("$issn_insertcount ISSNs inserted");
+    $logger->info("### $database: $issn_insertcount ISSNs inserted");
     
 }
 

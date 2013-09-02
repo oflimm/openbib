@@ -198,8 +198,14 @@
 
      # Einbeziehung des ersten Gesamttitels T5005
      IF title && super;
-        super_title = super.fields.${'0331'}.first.content;
-        title = "${title} (${super_title})";
+        super_title = super.fields.${'0451'}.first.content;
+        IF super.fields.${'0331'} ;
+           super_title   = super.fields.${'0331'}.first.content;
+        END ;
+
+        IF super_title ;
+           title = "${title} (${super_title})";
+        END;
      END;
 
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?

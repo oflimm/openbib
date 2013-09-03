@@ -14,8 +14,8 @@
 @import url("screen.css");
 @import url("forms.css");
 @import url("buttons.css"); 
-@import url("print.css");
 @import url("jquery-ui-1.8.14.custom.css");
 
 /* import specific classes */
 @import url("local.css");
+@import url("print.css");

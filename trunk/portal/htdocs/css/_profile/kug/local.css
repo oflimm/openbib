@@ -246,6 +246,7 @@
 
   
   .ob-searchfield_supplement {
+    padding-top: 30px;
     text-align: center;
     font-size: 100%;
   }
@@ -283,7 +284,7 @@
 /*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
   }
   
-  .ob-searchfield input {
+  .ob-searchfield input[type="text"] {
     width: 735px;
     height: 40px;
     padding: 0px;
@@ -299,27 +300,27 @@
     border-radius: 3px 0 0 3px;     
   }
   
-  .ob-searchfield input:focus {
+  .ob-searchfield input[type="text"]:focus {
     outline: 0;
     background: #fff;
     box-shadow: 0 0 2px rgba(0,0,0,.8) inset;
   }
   
-  .ob-searchfield input::-webkit-input-placeholder {
+  .ob-searchfield input[type="text"]:-webkit-input-placeholder {
     padding-left: 5px;
     color: #999;
     font-weight: normal;
     font-style: italic;
   }
   
-  .ob-searchfield input:-moz-placeholder {
+  .ob-searchfield input[type="text"]:-moz-placeholder {
     padding-left: 5px;
     color: #999;
     font-weight: normal;
     font-style: italic;
   }
   
-  .ob-searchfield input:-ms-input-placeholder {
+  .ob-searchfield input[type="text"]:-ms-input-placeholder {
     padding-left: 0px;
     color: #999;
     font-weight: normal;
@@ -327,10 +328,11 @@
   }   
   
   /* Form submit button */
-  .ob-searchfield button {
+  .ob-searchfield button {    
     overflow: visible;
     position: relative;
     float: right;
+    top: -22px;
     border: 0;
     padding: 0;
     cursor: pointer;
@@ -354,7 +356,35 @@
     outline: 0;  
   }
 
+  input[type="reset"]{
+    visibility: hidden;
+  }
   
+  input[type="text"]:valid + input[type="reset"]{
+    visibility: visible!important;
+   } 
+
+
+  .ob-searchfield input[type="reset"]
+  {
+    background-image: url( /images/openbib/fileclose.png );
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 22px;
+    width: 22px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    top: 10px;
+    left: -25px;
+  }
+  
+  input[type="text"]::-webkit-clear {
+    width : 0;
+    height: 0;
+  }
+    
 /*  .ob-searchfield button:before { /* left arrow */ /*
     content: '';
     position: absolute;
@@ -365,6 +395,7 @@
     left: -6px;
   }
   */
+    
   .ob-searchfield button:hover:before{
     border-right-color: #e54040;
   }

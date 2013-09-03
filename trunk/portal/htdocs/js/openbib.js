@@ -73,7 +73,12 @@ $(function(){
 
  imagePreview();
  qrcodeShow();
- 
+
+
+ $('input[type="reset"]').click(function(e) {
+    $("#to_focus").focus();
+  });
+
  // Focus auf erstes Eingabefeld
   $(":input:visible:enabled:first").focus();
   //$("input[@id='to_focus']").focus();

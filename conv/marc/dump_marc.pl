@@ -41,6 +41,7 @@ use Getopt::Long;
 use DBI;
 use MARC::Batch;
 use MARC::Charset 'marc8_to_utf8';
+use MARC::File::XML;
 use YAML::Syck;
 use JSON::XS qw(encode_json);
 use Log::Log4perl qw(get_logger :levels);
@@ -69,10 +70,12 @@ my $logger = get_logger();
 
 my $config = OpenBib::Config->instance;
 
-my ($inputfile);
+my ($inputfile,$format,$use_xml);
 
 &GetOptions(
 	    "inputfile=s"     => \$inputfile,
+            "format=s"        => \$format,
+            "use-xml"         => \$use_xml,
 	    );
 
 if (!$inputfile){
@@ -90,7 +93,21 @@ open(DAT,"$inputfile");
 
 binmode(STDOUT, 'utf8');
 
-my $batch = MARC::Batch->new('USMARC', $inputfile);
+$format=($format)?$format:'USMARC';
+
+my $batch;
+
+if ($use_xml){
+    $logger->debug("Using MARC-XML");
+    
+    MARC::File::XML->default_record_format($format);
+    
+    $batch = MARC::Batch->new('XML', $inputfile);    
+}
+else {
+    $logger->debug("Using native MARC");
+    $batch = MARC::Batch->new($format, $inputfile);
+}
 
 # Recover from errors
 $batch->strict_off();

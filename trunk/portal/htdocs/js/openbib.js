@@ -75,9 +75,9 @@ $(function(){
  qrcodeShow();
 
 
- $('input[type="reset"]').click(function(e) {
-    $("#to_focus").focus();
-  });
+ $('#ob-simplesearch_reset').click(function() {
+                                     $('#to_focus').focus();
+                                   });
 
  // Focus auf erstes Eingabefeld
   $(":input:visible:enabled:first").focus();

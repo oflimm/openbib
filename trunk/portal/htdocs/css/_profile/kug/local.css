@@ -246,8 +246,9 @@
 
   
   .ob-searchfield_supplement {
+    width: 100%;
     padding-top: 30px;
-    text-align: center;
+/*    text-align: center;*/
     font-size: 100%;
   }
 

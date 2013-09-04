@@ -62,17 +62,12 @@
 <input type="hidden" name="do_editsession" value="1" />
 
 
-<table width="100%">
-<tr><th>[% msg.maketext("Allgemeine Informationen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>[% msg.maketext("Allgemeine Informationen") %]</h3>
 
 <table cellpadding="3">
 <tr><td><b>[% msg.maketext("Session") %]</b></td><td>[% thissession.id %]</td></tr>
 <tr><td><b>[% msg.maketext("Seit") %]</b></td><td>[% thissession.createtime %]</td></tr>
 <tr><td><b>[% msg.maketext("Anzahl Recherchen") %]</b></td><td>[% queries.size %]</td></tr>
-</table>
-
-</td></tr>
 </table>
 
 [% PROCESS common/subtemplate name="search_title_field" %] 

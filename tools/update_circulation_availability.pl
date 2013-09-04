@@ -316,6 +316,9 @@ sub update_status_db {
             });
             $change_count++;
         }
+	else {
+            $logger->info("Unbekannt fuer Id $titleid: availability:$availability->count / new_status:$new_status");
+	}
     };
 
     if ($@){

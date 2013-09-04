@@ -2,6 +2,7 @@ exclude:
   'by_availability':
      field: '0540'
      databases:
+        - doab
         - usbebooks
         - tmpebooks
         - freebooks

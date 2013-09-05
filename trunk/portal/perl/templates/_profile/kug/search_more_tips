@@ -18,6 +18,16 @@
 </ul>
 
 <p>
+<b><span style="font-size:1.2em">[% msg.maketext("Recherche in beliebigen Katalogen") %]</span></b>
+</p>
+
+<ul>
+<li>[% msg.maketext("Melden Sie sich im KUG an und [_1]erstellen Sie für
+beliebige Katalogkombinationen ein Katalogprofil[_2], dass Sie dann bei jeder
+Recherche auswählen können.","<a href=\"${path_prefix}/${config.get('users_loc')}/${config.get('searchprofiles_loc')}\">","</a>") %]</li>
+</ul>
+
+<p>
 <b><span style="font-size:1.2em">[% msg.maketext("B&uuml;cher") %]</span></b>
 </p>
 

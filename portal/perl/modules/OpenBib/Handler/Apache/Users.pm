@@ -176,7 +176,7 @@ sub authorization_successful {
 
     $logger->debug("Basic http auth failure: $basic_auth_failure / Userid: $userid ");
 
-    if ($basic_auth_failure || ($userid && !$self->is_authenticated('user',$userid))){
+    if ($basic_auth_failure || !$userid || !$self->is_authenticated('user',$userid)){
         return 0;
     }
 

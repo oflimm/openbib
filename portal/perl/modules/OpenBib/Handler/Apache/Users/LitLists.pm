@@ -80,6 +80,7 @@ sub setup {
         'delete_record'                            => 'delete_record',
         'confirm_delete_record'     => 'confirm_delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
+        'dispatch_to_user'          => 'dispatch_to_user',
 #        'show_collection_by_topic'           => 'show_collection_by_topic',
 #        'show_record_by_topic'               => 'show_record_by_topic',
     );
@@ -87,6 +88,39 @@ sub setup {
     # Use current path as template path,
     # i.e. the template is in the same directory as this script
 #    $self->tmpl_path('./');
+}
+
+sub dispatch_to_user {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatches Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    if (! $user->{ID}){
+        return $self->tunnel_through_authenticator;            
+    }
+    else {
+        my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{litlists_loc}";
+        
+        return $self->redirect($new_location,'303 See Other');
+    }
+
+    return;
 }
 
 # Alle oeffentlichen Literaturlisten

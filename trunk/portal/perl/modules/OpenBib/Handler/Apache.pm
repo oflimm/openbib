@@ -128,7 +128,7 @@ sub cgiapp_init {
     }
     
     # Bestimmung diverser Parameter aus dem URI
-    # Setzt: location,path,path_prefix,uri
+    # Setzt: location,path,path_prefix,uri,scheme
     $self->process_uri;
 
     if ($config->{benchmark}) {
@@ -423,10 +423,9 @@ sub process_uri {
     # Letztes Pfad-Element bestimmen
     my $uri    = $r->parsed_uri;
     my $path   = $uri->path;
-    my $scheme = $uri->scheme || 'http';
+    my $scheme = $r->headers_in->get('X-Forwarded-Proto') || $uri->scheme || 'http';
     my $args   = $r->args;
 
-    
     my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
     
     $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$self->query->args());
@@ -442,6 +441,7 @@ sub process_uri {
     my $regexp = "^(.+?)\.($suffixes)\$";
     
     $logger->debug("Suffixes: $suffixes");
+    $logger->debug("Scheme: $scheme");
     
 #    my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
     my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;

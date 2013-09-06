@@ -96,6 +96,8 @@ sub show_form {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $scheme         = $self->param('scheme');
+    my $servername     = $self->param('servername');
 
     # CGI Args
     my $action      = ($query->param('action'))?$query->param('action'):'none';
@@ -111,8 +113,14 @@ sub show_form {
     # in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
+        my $redirecturl = "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences.html?l=$lang";
+        
+        if ($scheme eq "https"){
+            $redirecturl ="https://$servername$redirecturl";
+        }
+
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences.html?l=$lang");
+        $self->query->headers_out->add(Location => $redirecturl);
         $self->query->status(Apache2::Const::REDIRECT);
         
         return;
@@ -151,6 +159,7 @@ sub authenticate {
     my $config         = $self->param('config');    
     my $session        = $self->param('session');
     my $user           = $self->param('user');
+    my $lang           = $self->param('lang');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');    
@@ -172,7 +181,7 @@ sub authenticate {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        my $redirecturl = "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences";
+        my $redirecturl = "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences.html?l=$lang";
         
         if ($scheme eq "https"){
             $redirecturl ="https://$servername$redirecturl";
@@ -319,7 +328,7 @@ sub authenticate {
         $session->set_mask($masktype);
         
         $redirecturl
-            = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html";
+            = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html?l=$lang";
 
         if ($scheme eq "https"){
             $redirecturl ="https://$servername$redirecturl";

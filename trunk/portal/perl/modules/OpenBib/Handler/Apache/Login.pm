@@ -172,8 +172,14 @@ sub authenticate {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
+        my $redirecturl = "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences";
+        
+        if ($scheme eq "https"){
+            $redirecturl ="https://$servername$redirecturl";
+        }
+
         $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences");
+        $self->query->headers_out->add(Location => $redirecturl);
         $self->query->status(Apache2::Const::REDIRECT);
 
         return;

@@ -51,7 +51,7 @@
 
   <center>
     <p>
-      <a style="font-size:2.5em" href="[% path_prefix %]/[% config.get('home_loc') %]">[% msg.maketext("Zur Hauptseite") %]</a>
+      <a style="font-size:2.5em" href="http://[% servername %][% path_prefix %]/[% config.get('home_loc') %]">[% msg.maketext("Zur Hauptseite") %]</a>
     </p>
   </center>
 <br />

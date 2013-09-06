@@ -156,6 +156,8 @@ sub authenticate {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $scheme         = $self->param('scheme');
+    my $servername     = $self->param('servername');
     
     # CGI Args
     my $code        = ($query->param('code'))?$query->param('code'):'1';
@@ -312,7 +314,10 @@ sub authenticate {
         
         $redirecturl
             = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html";
-        
+
+        if ($scheme eq "https"){
+            $redirecturl ="https://$servername$redirecturl";
+        }
     }
     
     # Wenn Return_url existiert, dann wird dorthin gesprungen

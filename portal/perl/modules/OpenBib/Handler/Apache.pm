@@ -429,7 +429,11 @@ sub process_uri {
     my $forwarded_proto = $r->headers_in->get('X-Forwarded-Proto');
 
     $logger->debug("X-Forwarded-Proto: $forwarded_proto");
-    
+
+    if ($forwarded_proto=~/^https/){
+	$scheme = "https";
+    }
+
     my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
     
     $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$self->query->args());

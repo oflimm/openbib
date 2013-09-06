@@ -423,9 +423,13 @@ sub process_uri {
     # Letztes Pfad-Element bestimmen
     my $uri    = $r->parsed_uri;
     my $path   = $uri->path;
-    my $scheme = $r->headers_in->get('X-Forwarded-Proto') || $uri->scheme || 'http';
+    my $scheme = $uri->scheme || 'http';
     my $args   = $r->args;
 
+    my $forwarded_proto = $r->headers_in->get('X-Forwarded-Proto');
+
+    $logger->debug("X-Forwarded-Proto: $forwarded_proto");
+    
     my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
     
     $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$self->query->args());

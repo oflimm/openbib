@@ -147,7 +147,7 @@ else {
 
             if ($category =~ /^540$/){
                 $content=~s/^ISBN //;
-                $content=~s/^(\S+)(\s.+?)/\1/;
+                $content=~s/^(\S+)(\s.+?)/$1/;
                 push @{$thisisbn_ref}, $content;
             }
 

@@ -758,9 +758,9 @@ sub mail_collection_send {
     # CGI Args
     my $email     = ($query->param('email'))?$query->param('email'):'';
     my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';
-    my $id        = $query->param('id');
+    $id        = $query->param('id');
     my $mail      = $query->param('mail');
-    my $database  = $query->param('db');
+    $database  = $query->param('db');
     my $format    = $query->param('format')||'full';
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn

@@ -111,7 +111,7 @@ sub show_collection {
     }
     
     my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
+    $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 

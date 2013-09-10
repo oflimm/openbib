@@ -65,7 +65,7 @@ sub new {
 }
 
 sub load {
-    my ($self)=@_;
+    my ($self,$arg_ref)=@_;
 
     # Set defaults
     my $id                = exists $arg_ref->{id}
@@ -177,7 +177,7 @@ sub add_record {
     return if (!$record->{id} || !$record->{database} || !$self->{id} );
 
     my $request=$dbh->prepare("delete from litlistitems where litlistid=? and titleid=? and dbname=?") or $logger->error($DBI::errstr);
-    $request->execute($self->{id},$titleid,$dbname) or $logger->error($DBI::errstr);
+    $request->execute($self->{id},$record->{id},$record->{database}) or $logger->error($DBI::errstr);
 
     $request=$dbh->prepare("insert into litlistitems (litlistid,titleid,dbname) values (?,?,?)") or $logger->error($DBI::errstr);
     $request->execute($self->{id},$record->{id},$record->{database}) or $logger->error($DBI::errstr);
@@ -230,7 +230,7 @@ sub _get_records {
     return if (!$self->{id});
 
     my $request=$dbh->prepare("select titleid,dbname,tstamp from litlistitems where litlistid=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
+    $request->execute($self->{id}) or $logger->error($DBI::errstr);
 
     while (my $result=$request->fetchrow_hashref){
       my $titelidn  = decode_utf8($result->{titleid});
@@ -257,7 +257,7 @@ sub _get_records {
       $dbh->disconnect();
     }
     
-    return $litlistitems_ref;
+    return $self->{_litlist};
 }
 
 #sub get_number_of_litlistentries {
@@ -280,7 +280,7 @@ sub size {
     return if (!$self->{id});
 
     my $request=$dbh->prepare("select count(litlistid) as numofentries from litlistitems where litlistid=?") or $logger->error($DBI::errstr);
-    $request->execute($litlistid) or $logger->error($DBI::errstr);
+    $request->execute($self->{id}) or $logger->error($DBI::errstr);
 
     my $result=$request->fetchrow_hashref;
 
@@ -314,11 +314,11 @@ sub load_properties {
 
     my $result=$request->fetchrow_hashref;
 
-    my $self->{title}  = decode_utf8($result->{title});
-    my $self->{type}   = $result->{type};
-    my $self->{tstamp} = $result->{tstamp};
-    my $self->{userid} = $result->{userid};
-    my $self->{_size}  = $self->size;
+    $self->{title}  = decode_utf8($result->{title});
+    $self->{type}   = $result->{type};
+    $self->{tstamp} = $result->{tstamp};
+    $self->{userid} = $result->{userid};
+    $self->{_size}  = $self->size;
 
     return;
 }

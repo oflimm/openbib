@@ -131,6 +131,8 @@ sub get_classifications {
 
     # Retrieve classifications
 
+	my $mincount = 0;
+	my $maxcount = 9999;
     # add Cloud-Information
     $classifications_ref = OpenBib::Common::Util::gen_cloud_class({
         items => $classifications_ref, 

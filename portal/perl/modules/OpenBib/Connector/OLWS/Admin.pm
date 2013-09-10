@@ -36,7 +36,6 @@ no warnings 'redefine';
 use Benchmark ':hireswallclock';
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::Admin;
 use OpenBib::Config;
 
 sub create_db {

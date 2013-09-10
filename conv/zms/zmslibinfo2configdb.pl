@@ -140,8 +140,8 @@ foreach my $dbinfo ($config->get_dbinfo_overview->all){
         if ($@){
             $content = $inhalt[$i+1];
         }
-        my $field = $inhalt[$i];
-        my $content  = $inhalt[$i+1];
+        $field = $inhalt[$i];
+        $content  = $inhalt[$i+1];
         
         #        print "Content pre:$content:\n";
         $field =~s{\</*p\>}{}g;

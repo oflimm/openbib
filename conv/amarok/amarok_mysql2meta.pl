@@ -154,6 +154,8 @@ my $dbh=DBI->connect("DBI:mysql:dbname=$dbname;host=$dbhost;port=$port", $dbuser
     $result->execute();
     
     while (my $res=$result->fetchrow_hashref){
+    	my $month;
+    	my $day;
         my $id         = $res->{'id'};
         my $artistid   = $res->{'artist'};
         my $albumid    = $res->{'album'};
@@ -169,7 +171,7 @@ my $dbh=DBI->connect("DBI:mysql:dbname=$dbname;host=$dbhost;port=$port", $dbuser
 
         next unless ($rpath=~m/\/[es]c\d+\// || $rpath=~m/\/ia\d+\// || $rpath=~m/\/km\d+\// || $rpath=~m/\/em\d+\//);
         
-        my ($year,$month,$day) = $createdate =~m/^(\d\d\d\d)-(\d\d)-(\d\d)/;
+        ($year,$month,$day) = $createdate =~m/^(\d\d\d\d)-(\d\d)-(\d\d)/;
 
         my $tstamp_create = "$day.$month.$year";
 

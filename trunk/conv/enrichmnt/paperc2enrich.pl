@@ -151,7 +151,6 @@ $logger->info("Einladen der neuen Daten");
 
 my $isbncount = 0;
 
-my $populate_ref =
 foreach my $thisisbn (keys %{$isbn_ref}){
 
     my $indicator = 1;

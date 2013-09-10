@@ -168,7 +168,7 @@ sub update_record {
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    my $reviewid       = $query->param('reviewid')    || '';
+    $reviewid       = $query->param('reviewid')    || '';
     my $titleid          = $query->param('titleid')       || '';
     my $dbname          = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';

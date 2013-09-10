@@ -415,7 +415,7 @@ while (my $res=$result->fetchrow_hashref){
 #    };
     
     # Dokument-URL
-    my $result1=$dbh->prepare("select cnt from dc_ide where pid=?");
+    $result1=$dbh->prepare("select cnt from dc_ide where pid=?");
     $result1->execute($pid);
 
     my $url_mult = 1;
@@ -437,7 +437,7 @@ while (my $res=$result->fetchrow_hashref){
 
 
     # Dokumententyp/Medienart
-    my $result1=$dbh->prepare("select cntg from stlv, dc_typ where dc_typ.pid=? and dc_typ.cnt=stlv.nr");
+    $result1=$dbh->prepare("select cntg from stlv, dc_typ where dc_typ.pid=? and dc_typ.cnt=stlv.nr");
     $result1->execute($pid);
 
     my $type_mult = 1;
@@ -468,8 +468,6 @@ while (my $res=$result->fetchrow_hashref){
 $result->finish();
 
 $dbh->disconnect();
-
-close(DAT);
 
 close(TITLE);
 close(PERSON);

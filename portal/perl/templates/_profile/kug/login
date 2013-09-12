@@ -85,6 +85,7 @@ $(document).ready(function(){
 <label for="authenticator">[% msg.maketext("mit") %]:</label>
 <select name="authenticatorid">
 [%- FOREACH authenticator IN authenticators -%]
+[%-  NEXT IF authenticator.description.match("Ausweis:USB") -%]
 [%-   IF authenticator.type != 'self' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
 [%-   END -%]

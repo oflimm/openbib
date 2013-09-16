@@ -25,15 +25,28 @@
 
 	/* title */
 	.ym-vtitle {
+
 		font-family:Arial, Helvetica, sans-serif;
 		font-weight:bold;
 		font-size:100%;
 		width:90%;
 		padding:3px 0px 3px 10%; /* LTR */
 		margin:0;
-		color:#444;
+
+/*    margin: 5px 10px -5px -5px; */
+                    background: url(/images/openbib/navigation_arrow_white.png) no-repeat scroll 0.7em 0.8em #41799e;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: bold;
+    -moz-box-shadow: 2px 2px 2px #888;
+    -webkit-box-shadow: 2px 2px 2px #888;
+    box-shadow: 2px 2px 2px #888;
+
+/*		color:#444;
 		background-color:#fff;
-		border-top:2px #ddd solid;
+		border-top:2px #ddd solid; */
+    
 	}
 
 	.ym-vlist ul {
@@ -42,12 +55,12 @@
 		padding:0;
 		width:100%;
 		overflow:hidden;
-		border-top:2px #ddd solid;
-		border-bottom:2px #ddd solid;
+/*		border-top:2px #ddd solid;
+		border-bottom:2px #ddd solid; */
 	}
 
 	.ym-vtitle + ul {
-		border-top:4px #888 solid;
+/*		border-top:4px #888 solid;*/
 	}
 
 	.ym-vlist ul ul {
@@ -80,18 +93,29 @@
 		display:block;
 		font-weight:bold;
 		border-bottom:1px #ddd solid;
+                        
 	}
 
 	/* active list element */
 	.ym-vlist li.active {
-		color:#fff;
-		background-color:#444;
+                background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.7em #fff;    
+		color:#41799e;
+/*		background-color:#444;*/
 	}
 
 	.ym-vlist li.active strong {
+               background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 0.7em 0.8em #fff;
 		font-weight:bold;
 	}
 
+        .ym-vlist ul li span {
+               background: url(/images/openbib/navigation_arrow_blue.png) no-repeat scroll 0.9em 0.8em #fff;
+        }
+    
+	.ym-vlist ul li.active strong {
+               background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.8em #fff;
+		font-weight:bold;
+	}
 	/* Level 1 */
 	.ym-vlist li a,
 	.ym-vlist li strong,
@@ -99,7 +123,7 @@
 
 	.ym-vlist li a:focus,
 	.ym-vlist li a:hover,
-	.ym-vlist li a:active { background-color:#888; color:#fff; outline: 0 none; }
+	.ym-vlist li a:active { background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.7em #ebebeb; color:#000; outline: 0 none; }
 
 	/* Level 2 */
 	.ym-vlist li ul li a,
@@ -110,7 +134,7 @@
 	.ym-vlist li ul li a:visited { background-color:#f8f8f8; color:#333; }
 	.ym-vlist li ul li a:focus,
 	.ym-vlist li ul li a:hover,
-	.ym-vlist li ul li a:active { background-color:#888; color:#fff; }
+	.ym-vlist li ul li a:active { background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.7em #ebebeb; color:#000; }
 
 	/* Level 3 */
 	.ym-vlist li ul li ul li a,
@@ -121,7 +145,7 @@
 	.ym-vlist li ul li ul li a:visited{ background-color:#f0f0f0; color:#222; }
 	.ym-vlist li ul li ul li a:focus,
 	.ym-vlist li ul li ul li a:hover,
-	.ym-vlist li ul li ul li a:active { background-color:#888; color:#fff; }
+	.ym-vlist li ul li ul li a:active { background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.7em #ebebeb; color:#000; }
 
 	/* Level 4 */
 	.ym-vlist li ul li ul li ul li a,
@@ -132,5 +156,5 @@
 	.ym-vlist li ul li ul li ul li a:visited { background-color:#e8e8e8; color:#111; }
 	.ym-vlist li ul li ul li ul li a:focus,
 	.ym-vlist li ul li ul li ul li a:hover,
-	.ym-vlist li ul li ul li ul li a:active { background-color:#888; color:#fff; }
+	.ym-vlist li ul li ul li ul li a:active { background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.7em #ebebeb; color:#000; }
 }

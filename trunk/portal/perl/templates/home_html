@@ -1,18 +1,28 @@
 [%#-
 #######################################################################
 #
-# Templatename: info_portal
+# Templatename: searchform_simple
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe der Bibliotheksinformationen
+# Ausgabe der einfachen Suchmaske
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
   <body>
+
+               <script type="text/javascript">
+                        $(function(){
+
+                                // Tabs
+                                $('#tabs_types').tabs();
+                                        
+                        });
+                </script>
 
 <!-- skip link navigation -->
 <ul class="ym-skiplinks">
@@ -23,36 +33,18 @@
 <div class="ym-wrapper">
   <div class="ym-wbox">
 
-[% PROCESS common/subtemplate name="corporate_banner" %] 
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %]
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1 ob-hidden">
-        <div class="ym-cbox" class="ym-clearfix">
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
+    <div class="ym-grid">
+      <!-- begin: full static column -->
+      <div class="ym-gl" style="width:100%;">
+        <div class="ym-gbox" class="ym-clearfix">
 
-<h2>Ein neues OpenBib-Rechercheportal</h2>
-
-<p> An dieser Stelle entsteht ein neues Recherche-Portal. Auf dieser
-Seite im Template <i>home</i> k&ouml;nnen Inhalte - &uuml;blicherweise
-Texte - f&uuml;r eine Startseites des Portals hinterlegt werden.  </p>
-
-<p> Charakteristisch f&uuml; ein typisches Recherche-Portal - anders
-als z.B. bei Sammlungs-Portalen - ist es jedoch, direkt eine
-Recherchemaske zu pr&auml;sentieren. Eine automatische interne
-Weiterleitung kann in der Web-Administration sehr einfach in den
-Einstellungen der Sicht vorgenommen werden. Dort wird dann im
-Eingabefeld <i>Anderer Start-URI-Pfad</i> einfach der Pfad zur
-(einfachen) Recherchemaske eingegeben, also
-z.B. <i>/portal/openbib/searchforms/id/simple.html</i>.  <p>
+[% PROCESS common/subtemplate name="home_html_bottom" %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

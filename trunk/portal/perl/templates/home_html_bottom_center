@@ -1,0 +1,85 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_center
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Mitte
+#
+#######################################################################
+-%]
+
+<div class="ob-category_header">[% msg.maketext("Mehr entdecken") %]</div>
+
+<h3><img style="vertical-align:bottom" src="[% config.get('persons_img') %]" alt="User generated content" />&nbsp[% msg.maketext("Nutzergenerierte Inhalte") %]</h3>
+
+<ul>
+<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %][% IF view_config.${view}.topicid %]/[% config.get('topics_loc') %]/id/[% view_config.${view}.topicid %].html[% ELSE %].html[%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>
+<!--<li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/id/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li> -->
+<li><a href="[% path_prefix %]/[% config.get('tags_loc') %]/names.html?l=[% lang %]" title="[% msg.maketext("Tags") %]">[% msg.maketext("Tags") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %][%- IF viewdbs.size == 1 -%]/id/[% viewdbs.first %][%- END -%]/[% config.get('titles_loc') %]/popular.html" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a></li>
+</ul>
+
+<h3><img style="vertical-align:bottom" src="[% config.get('books_img') %]" alt="Books" />&nbsp[% msg.maketext("Kataloge, Standorte und Bestand") %]</h3>
+
+<ul>
+<li><a href="[% path_prefix %]/[%- IF viewdbs.size == 1 -%][% config.get('databases_loc') %]/id/[% viewdbs.first %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %][% ELSE %][% config.get('databases_loc') %]/[% config.get('clouds_loc') %].html?l=[% lang %][% END %]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Struktur des Katalogbestandes als Wortwolken") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Informationen zu den Katalogen") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">[% msg.maketext("Standorte der Bibliotheken") %]</a></li>
+<li>[% msg.maketext("Allgemeine Suchprofile")%]
+<ul>
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
+      searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
+%]
+<li><a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofileid_of_orgunit %].html?l=[% lang %]">[% unit.description %]</a></li>
+[% END%]
+</ul>
+</li>
+</ul>
+
+[% IF browser.firefox %]
+
+    <script type="text/javascript">
+<!--
+function errorMsg(name,ext,cat)
+{
+  alert("Netscape 6 or Mozilla is needed to install a sherlock plugin");
+}
+function addEngine(name,ext,cat)
+{
+  if ((typeof window.sidebar == "object") && (typeof
+  window.sidebar.addSearchEngine == "function"))
+  {
+    //cat="Web";
+    //cat=prompt("In what category should this engine be installed?","Web")
+    window.sidebar.addSearchEngine(
+      "http://kug.ub.uni-koeln.de/plugins/"+name+".src",
+      "http://kug.ub.uni-koeln.de/plugins/"+name+"."+ext,
+      name,
+      cat );
+  }
+  else
+  {
+    errorMsg(name,ext,cat);
+  }
+}
+//-->
+</script>
+
+<h3><img style="vertical-align:bottom" src="[% config.get('firefox_img') %]" alt="Firefox" />&nbsp[% msg.maketext("Firefox Such-Plugin") %]</h3>
+
+<p> [% msg.maketext("Da Sie den Internet-Browser [_1] verwenden, k&ouml;nnen
+    Sie f&uuml;r ihn das
+    [_2]Firefox Such-Plugin f&uuml;r den KUG[_3] installieren (Achtung! Zur Installation muss
+    JavaScript aktiviert sein und Sie m&uuml;ssen Schreibberechtigung
+    im searchplugins-Verzeichnis von Firefox besitzen)","<a
+    href=\"http://www.mozilla.org/products/firefox/\"
+    target=\"_blank\">Mozilla Firefox</a>","<a
+    href=\"javascript:addEngine('KUG','jpg','Academic')\">","</a>") %].
+    </p>
+
+
+[% END %]

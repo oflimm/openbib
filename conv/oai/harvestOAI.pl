@@ -35,14 +35,14 @@ use utf8;
 
 use Getopt::Long;
 
-use OAI2::Harvester;
+use HTTP::OAI;
 
 binmode STDOUT, ':utf8';
 
 &GetOptions("oaiurl=s" => \$oaiurl,
 	    );
 
-my $h = new OAI2::Harvester(-baseURL=>$oaiurl);
+my $h = new HTTP::OAI::Harvester(baseURL=>$oaiurl);
 
 my $response = $h->repository($h->Identify);
 if( $response->is_error ) {
@@ -52,7 +52,7 @@ if( $response->is_error ) {
 }
 
 $response = $h->ListIdentifiers(
-				-metadataPrefix=>'oai_dc',
+				metadataPrefix=>'oai_dc',
 				#-from=>'2001-01-29T15:27:51Z',
 				#-until=>'2003-01-29T15:27:51Z'
 			       );
@@ -61,7 +61,7 @@ if( $response->is_error ) {
   die("Error harvesting: " . $response->message . "\n");
 }
 
-$response = $h->ListRecords(-metadataPrefix=>'oai_dc');
+$response = $h->ListRecords(metadataPrefix=>'oai_dc');
 if( $response->is_error ) {
   print "Error: ", $response->code,
     " (", $response->message, ")\n";
@@ -76,7 +76,13 @@ while( my $rec = $response->next ) {
     if( $rec->is_error ) {
         die $rec->message;
     }
-    print $rec->metadata, "\n";
+
+    eval {
+        my $metadata_string = $rec->metadata->dom->toString;
+        $metadata_string=~s/^<\?xml.*?>//;
+        print $metadata_string,"\n";
+    };
+    
     print "</record>\n";
 }
 print "</oairesponse>\n";

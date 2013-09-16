@@ -58,6 +58,31 @@
 
 [% PROCESS common/subtemplate name="visible_categories_location" %]
 
+<script>
+function add_field(this) {
+    var parentid = this.parent.id;
+    alert(parentid);
+    var oldid    = this.id;
+    alert(oldid);
+    var newparts  = oldid.split('_');
+    var oldmult = newparts[newparts.length - 1];
+    newparts[newparts.length -1] = oldmult+1;
+    var newid    = newparts.join('_');
+    alert(newid);
+    var clone = $("#fields_"+oldid).clone().attr('id', "fields_"+newid);
+    clone.find('label').attr('for', "field_"+newid);
+    clone.find('input').attr('id', "field_"+newid);
+    clone.find('input').attr('name', "fields_"+newid);
+    
+    clone.find('[type=text]').val('');
+    clone.find('#add_fields_'+oldid).hide();
+    clone.find('#add_fields_'+newid).show();
+    /* clone.find('li.delete').show(); */
+    $('#fields_'+parentid).append(clone);
+    $("#add_fields"+oldid).hide();
+}
+</script>
+
 <form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
@@ -108,9 +133,11 @@ FOREACH category IN categories;
           thiscategory = "${category}-${record.database}" ;
         END;
 -%]
-<div class="ym-fbox-text">
-<label for="[% category %]">[% msg.maketext("${thiscategory}") %]</label>
-<input type="text" name="fields_[% category %]_[% subfield %]_[% mult %]" id="[% category %]" value="[% content | html %]" size="100"/>
+<div class="ym-fbox-text" id="fields_[% category %]">
+  <div id="fields_[% category %]_[% subfield %]_[% mult %]">
+    <label for="field_[% category %]_[% subfield %]_[% mult %]">[% msg.maketext("${thiscategory}") %] <a href="#" id="add_fields_[% category %]_[% subfield %]_[% mult %]" onClick="add_field();return false;">[% msg.maketext("Neu") %]</a></label>
+    <input type="text" name="fields_[% category %]_[% subfield %]_[% mult %]" id="field_[% category %]_[% subfield %]_[% mult %]" value="[% content | html %]" size="100"/>
+  </div>
 </div>
 [%-   END ;
      ELSE ;
@@ -119,7 +146,7 @@ FOREACH category IN categories;
           thiscategory = "${category}-${record.database}" ;
         END;
 %]
-<div class="ym-fbox-text">
+<div class="ym-fbox-text" id="fields_[% category %]">
 <label for="[% category %]">[% msg.maketext("${thiscategory}") %]</label>
 <input type="text" name="fields_[% category %]_a_1" id="[% category %]" value="" size="100"/>
 </div>

@@ -14,14 +14,10 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
-<li><b>12.9. - 17.9.2013</b>: Aufgrund der Aktualisierung der
-Bibliothekssoftware der USB K&ouml;ln sind in deren Katalog bis auf
-die Recherche keine weiteren Funktionen m&ouml;glich (keine Ausleihe,
-keine Bestellungen, keine Vormerkungen, keine Anmeldung an
-KUG/USB-Portal usw.). Weitergehende Informationen in dieser
-<a
-href="http://www.ub.uni-koeln.de/res/aktuell/serverausfall/index_ger.html"
-target="_blank" class="ext">Meldung</a>
+<li><b>17.9.2013</b>: Die Aktualisierung der
+Bibliothekssoftware der USB K&ouml;ln wurde erfolgreich
+durchgef&uuml;hrt und alle Funktionen stehen im KUG und USB-Portal
+wieder zur Verf&uuml;gung.
 </li>
 <li><b>1.8.2013</b>: Mehr im KUG finden mit offenen Katalogdaten. Ab
 sofort werden Titel im KUG für die Recherche mit Schlagworten

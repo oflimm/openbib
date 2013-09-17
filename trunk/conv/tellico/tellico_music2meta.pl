@@ -33,34 +33,19 @@ use 5.008001;
 use utf8;
 
 use XML::Twig;
+use JSON::XS;
 
-use vars qw(@autbuffer @autdubbuf);
-use vars qw(@korbuffer @kordubbuf);
-use vars qw(@swtbuffer @swtdubbuf);
-use vars qw(@titbuffer @titdubbuf);
-use vars qw($id);
+use OpenBib::Config;
+use OpenBib::Conv::Common::Util;
+
 my $inputfile=$ARGV[0];
 
-$autdublastidx=1;
-$autidx=0;
-
-$kordublastidx=1;
-$koridx=0;
-
-$swtdublastidx=1;
-$swtidx=0;
-
-$titdublastidx=1;
-$titleidx=0;
-
-@autbuffer=();
-@autdubbuf=();
-@korbuffer=();
-@kordubbuf=();
-@swtbuffer=();
-@swtdubbuf=();
-@titbuffer=();
-@titdubbuf=();
+open (TITLE,         ">:raw","meta.title");
+open (PERSON,        ">:raw","meta.person");
+open (CORPORATEBODY, ">:raw","meta.corporatebody");
+open (CLASSIFICATION,">:raw","meta.classification");
+open (SUBJECT,       ">:raw","meta.subject");
+open (HOLDING,       ">:raw","meta.holding");
 
 my $twig= XML::Twig->new(
    TwigHandlers => {
@@ -69,12 +54,14 @@ my $twig= XML::Twig->new(
  );
 
 
-$twig->parsefile($inputfile);
+$twig->safe_parsefile($inputfile);
 
-ausgabeautfile();
-ausgabekorfile();
-ausgabeswtfile();
-ausgabetitfile();
+close(TITLE);
+close(PERSON);
+close(CORPORATEBODY);
+close(CLASSIFICATION);
+close(SUBJECT);
+close(HOLDING);
 
 sub parse_titset {
     my($t, $titset)= @_;
@@ -91,25 +78,46 @@ sub parse_titset {
     #   <besitzer>Oliver Flimm</besitzer>
     #  </entry>
 
+    my $title_ref = {
+        'fields' => {},
+    };
+    
     my $id = int($titset->{'att'}->{'id'});
-        
-    $titbuffer[$titleidx++]="0000:".$id;
+
+    $title_ref->{id} = $id;
                
     # Verfasser/Personen
+    my $mult = 1;
+    
     foreach my $desk ($titset->children('artists')){
         my $ans=$desk->text();
         if ($ans){
-            my $idn=get_autidn($ans);
-            if ($idn > 0){
-                $autbuffer[$autidx++]="0000:".$idn;
-                $autbuffer[$autidx++]="0001:".$ans;
-                $autbuffer[$autidx++]="9999:";
+            my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($ans);
+            
+            if ($new){
+                my $item_ref = {
+                    'fields' => {},
+                };
+                $item_ref->{id} = $person_id;
+                push @{$item_ref->{fields}{'0800'}}, {
+                    mult     => 1,
+                    subfield => '',
+                    content  => $ans,
+                };
+                
+                print PERSON encode_json $item_ref, "\n";
             }
-            else {
-                $idn=(-1)*$idn;
-            }
+            
+            my $new_category = "0100";
 
-            $titbuffer[$titleidx++]="0100:IDN: ".$idn;
+            push @{$title_ref->{fields}{$new_category}}, {
+                mult       => $mult,
+                subfield   => '',
+                id         => $person_id,
+                supplement => '',
+            };
+
+            $mult++;
         }
     }
 
@@ -117,157 +125,53 @@ sub parse_titset {
 
     # Titel
     if(defined $titset->first_child('title')){
-        $titbuffer[$titleidx++]="0331:".$titset->first_child('title')->text();
+        push @{$title_ref->{fields}{'0331'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $titset->first_child('title')->text(),
+        };
     }
 
 
     # Anzahl Titel
     if(defined $titset->first_child('anzahl-titel')){
-        $titbuffer[$titleidx++]="0433:".$titset->first_child('anzahl-titel')->text();
+        push @{$title_ref->{fields}{'0433'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $titset->first_child('anzahl-titel')->text(),
+        };
     }
 
     # Anzahl Medien
     if(defined $titset->first_child('anzahl-medien')){
-        $titbuffer[$titleidx++]="0512:".$titset->first_child('anzahl-medien')->text()." Medien";
+        push @{$title_ref->{fields}{'0512'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $titset->first_child('anzahl-medien')->text(),
+        };
     }
 
     # Medienart
     if(defined $titset->first_child('medium')){
-        $titbuffer[$titleidx++]="0800:".$titset->first_child('medium')->text();
+        push @{$title_ref->{fields}{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $titset->first_child('medium')->text(),
+        };
     }
     
     # Jahr
     if(defined $titset->first_child('year')){
-        $titbuffer[$titleidx++]="0425:".$titset->first_child('year')->text();
+        push @{$title_ref->{fields}{'0425'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $titset->first_child('year')->text(),
+        };
     }
 
-    $titbuffer[$titleidx++]="9999:";
+    print TITLE encode_json $title_ref, "\n";
     
     # Release memory of processed tree
     # up to here
     $t->purge();
 }
-                                   
-                                   
-sub get_autidn {
-    ($autans)=@_;
-    
-    $autdubidx=1;
-    $autdubidn=0;
-                                   
-    while ($autdubidx < $autdublastidx){
-        if ($autans eq $autdubbuf[$autdubidx]){
-            $autdubidn=(-1)*$autdubidx;      
-            
-            # print STDERR "AutIDN schon vorhanden: $autdubidn\n";
-        }
-        $autdubidx++;
-    }
-    if (!$autdubidn){
-        $autdubbuf[$autdublastidx]=$autans;
-        $autdubidn=$autdublastidx;
-        #print STDERR "AutIDN noch nicht vorhanden: $autdubidn\n";
-        $autdublastidx++;
-        
-    }
-    return $autdubidn;
-}
-                                   
-sub get_swtidn {
-    ($swtans)=@_;
-    
-    $swtdubidx=1;
-    $swtdubidn=0;
-    #  print "Swtans: $swtans\n";
-    
-    while ($swtdubidx < $swtdublastidx){
-        if ($swtans eq $swtdubbuf[$swtdubidx]){
-            $swtdubidn=(-1)*$swtdubidx;      
-            
-            #            print "SwtIDN schon vorhanden: $swtdubidn, $swtdublastidx\n";
-        }
-        $swtdubidx++;
-    }
-    if (!$swtdubidn){
-        $swtdubbuf[$swtdublastidx]=$swtans;
-        $swtdubidn=$swtdublastidx;
-        #        print "SwtIDN noch nicht vorhanden: $swtdubidn, $swtdubidx, $swtdublastidx\n";
-        $swtdublastidx++;
-        
-    }
-    return $swtdubidn;
-}
-                                   
-sub get_koridn {
-    ($korans)=@_;
-    
-    $kordubidx=1;
-    $kordubidn=0;
-    #  print "Korans: $korans\n";
-    
-    while ($kordubidx < $kordublastidx){
-        if ($korans eq $kordubbuf[$kordubidx]){
-            $kordubidn=(-1)*$kordubidx;
-        }
-        $kordubidx++;
-    }
-    if (!$kordubidn){
-        $kordubbuf[$kordublastidx]=$korans;
-        $kordubidn=$kordublastidx;
-        #    print "KorIDN noch nicht vorhanden: $kordubidn\n";
-        $kordublastidx++;
-    }
-    return $kordubidn;
-}
-
-sub ausgabeautfile {
-    open(AUT,">:utf8","unload.PER");
-    $i=0;
-    while ($i < $autidx){
-        print AUT $autbuffer[$i],"\n";
-        $i++;
-    }
-    close(AUT);
-}
-
-sub ausgabetitfile
-{
-    open (TIT,">:utf8","unload.TIT");
-    $i=0;
-    while ($i < $titleidx){
-	print TIT $titbuffer[$i],"\n";
-	$i++;
-    }
-    close(TIT);
-}
-
-sub ausgabemexfile {
-    open(MEX,">:utf8","mex.exp");
-    $i=0;
-    while ($i < $mexidx){
-	print MEX $mexbuffer[$i],"\n";
-	$i++;
-    }
-    close(MEX);
-}
-
-sub ausgabeswtfile {
-  open(SWT,">:utf8","unload.SWD");
-  $i=0;
-  while ($i < $swtidx) {
-      print SWT $swtbuffer[$i],"\n";
-      $i++;
-  }
-  close(SWT);
-}
-
-sub ausgabekorfile {
-    open(KOR,">:utf8","unload.KOE");
-    $i=0;
-    while ($i < $koridx){
-	print KOR $korbuffer[$i],"\n";
-	$i++;
-    }
-    close(KOR);
-}
-

@@ -77,7 +77,7 @@ $(document).ready(function(){
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 
 [%- FOREACH authenticator IN authenticators -%]
-[%-  NEXT IF authenticator.description.match("Ausweis:USB") -%]
+[%#-  NEXT IF authenticator.description.match("Ausweis:USB") -%]
 [%-   IF authenticator.type == 'self' -%]
 <input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
 [%-   END -%]

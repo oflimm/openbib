@@ -32,7 +32,8 @@
 \setcounter{secnumdepth}{3}
 
 \renewcommand{\thechapter}{\Alph{chapter}}
-\renewcommand{\thesubsection}{\Roman{subsection}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
 
 \begin{document}
 
@@ -369,6 +370,7 @@ Eduard Pr"ussen, Juli 2011
 [%    FOREACH record IN buchillustrationen_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
 [%       thismexset = record.get_holding %]
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
 
 [% PROCESS pruessen_werkverzeichnis_einzeltitel illu="buch" %]
 
@@ -389,6 +391,8 @@ Eduard Pr"ussen, Juli 2011
 [%    FOREACH record IN presseillustrationen_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
 [%       thismexset = record.get_holding %]
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
 [% NEXT IF thistitset.${"T5001"}.first.content %]
 [% PROCESS pruessen_werkverzeichnis_einzeltitel illu="presse" %]
 
@@ -411,6 +415,8 @@ Eduard Pr"ussen, Juli 2011
 [%       thismexset = record.get_holding %]
 [%# NEXT IF thistitset.${"T5001"}.first.content %]
 
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
 [% PROCESS pruessen_werkverzeichnis_einzeltitel illu="plakate" %]
 
 [%    END %]
@@ -431,6 +437,8 @@ Eduard Pr"ussen, Juli 2011
 [%       thistitset = record.get_fields %]
 [%       thismexset = record.get_holding %]
 [%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
 
 [% PROCESS pruessen_werkverzeichnis_einzeltitel illu="werbeillustrationen" %]
 
@@ -453,13 +461,15 @@ Eduard Pr"ussen, Juli 2011
 [%       thismexset = record.get_holding %]
 [%# NEXT IF thistitset.${"T5001"}.first.content %]
 
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
 [% PROCESS pruessen_werkverzeichnis_einzeltitel illu="exlibris" %]
 
 [%    END %]
 
 [% END %]
 
-\chapter{Donkeypress etc. [% donkeypress_year_min %] - [% donkeypress_year_max %]}
+\chapter{Donkey Press [% donkeypress_year_min %] - [% donkeypress_year_max %]}
 
 [% FOREACH year IN donkeypress_available_years %]
 [% anzahl = donkeypress_recordlist.${year}.size %]
@@ -474,28 +484,9 @@ Eduard Pr"ussen, Juli 2011
 [%       thismexset = record.get_holding %]
 [%# NEXT IF thistitset.${"T5001"}.first.content %]
 
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
 [% PROCESS pruessen_werkverzeichnis_einzeltitel illu="donkeypress" %]
-
-[%    END %]
-
-[% END %]
-
-\chapter{Verschiedenes [% misc_year_min %] - [% misc_year_max %]}
-
-[% FOREACH year IN misc_available_years %]
-[% anzahl = misc_recordlist.${year}.size %]
-[% IF year %]
-\section{Das Jahr [% year %]}
-[% ELSE %]
-\section{Nicht datiert}
-[% END%]
-
-[%    FOREACH record IN misc_recordlist.${year} %]
-[%       thistitset = record.get_fields %]
-[%       thismexset = record.get_holding %]
-[%# NEXT IF thistitset.${"T5001"}.first.content %]
-
-[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="misc" %]
 
 [%    END %]
 
@@ -516,11 +507,74 @@ Eduard Pr"ussen, Juli 2011
 [%       thismexset = record.get_holding %]
 [%# NEXT IF thistitset.${"T5001"}.first.content %]
 
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
 [% PROCESS pruessen_werkverzeichnis_einzeltitel illu="gladbach" %]
 
 [%    END %]
 
 [% END %]
+
+\chapter{Verschiedenes [% misc_year_min %] - [% misc_year_max %]}
+
+[% FOREACH year IN misc_available_years %]
+[% anzahl = misc_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN misc_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="misc" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Eduard Pr"ussens Donkey Press-Serien}
+
+\section{Schmunzel-Postille}
+
+eine bescheidene, aber höchst eigennützige Empfehlung, den - mir
+wohlgesonnenen - Verlegern, Büchermachern und Sammlern überreichte
+Original-Graphik als Präsent und zur gefälligen Erinnerung an den
+Herausgeber und Illustrator. 11 Ausgaben.1966-1967.
+
+\section{Donkey-Post}
+
+eine Hauszeitschrift für Freunde und Interessenten meiner
+Arbeiten. 1962-1993, 1967-1978 u.d.T.: Früchte mit Maden: satirische
+Skizzen.
+
+\section{Bibliokomik}
+
+Thematische Einladungen zur Frankfurter Buchmesse. 27
+Ausgaben. 1987-2008.
+
+\section{Kleine Reihe}
+
+Broschur mit einem Gedicht und vier Radierungen, (Plattenformat 6 x 6
+cm), 10 einseitig bedruckte Blätter, 11,5 x 14,8 cm,
+Büttenumschlag. 20 Ausgaben. 1993-2007.
+
+\section{origill}
+
+Original-Illustrationen von Eduard Prüssen. Im Verlagsauftrag
+entstandene Illustrationsfolgen, (Linolschnitte), ohne Text, 22 x 31
+cm, farbiger Büttenumschlag, Blockbuchbindung. 17 Ausgaben in 40
+nummerierten und signierten Exemplaren. 1972-1989.
+
+\section{Neujahrsgraphiken}
+
+Linolschnitte / Farblinolschnitte auf geräuschlos Bütten, (zumeist 30
+x 40 cm). Seit 1961.
 
 \end{document}
 

@@ -32,7 +32,8 @@
 \setcounter{secnumdepth}{3}
 
 \renewcommand{\thechapter}{\Alph{chapter}}
-\renewcommand{\thesubsection}{\Roman{subsection}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
 
 \begin{document}
 
@@ -45,7 +46,7 @@
 
 \begin{center}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Elektronische Schriftenreihe\\[0.5cm] der Universit"ats- und Stadtbibliothek K"oln, 4}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Elektronische Schriftenreihe\\[0.5cm] der Universit"ats- und Stadtbibliothek K"oln, 6}
 
 \end{center}
 
@@ -75,11 +76,11 @@
 
 \begin{center}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Die Sammlung Eduard Pr"ussen in der\\Universit"ats- und Stadtbibliothek K"oln\\[1cm]Buch- und Presse-Illustrationen}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Die Sammlung Eduard Pr"ussen in der\\Universit"ats- und Stadtbibliothek K"oln\\[1cm]Gesamtverzeichnis}
 
   \vspace{0.5cm}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Werkverzeichnis\\\lbrack Hauptband\rbrack}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Juli 2013}
 
 \vspace{1cm}
 
@@ -96,7 +97,7 @@
 
 \vspace*{17cm}
 
-\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{10}{10pt}\selectfont Herausgeber: Der Direktor der Universit"ats- und Stadtbibliothek K"oln\\Prof. Dr. Wolfgang Schmitz\\Anschrift: Universit"atsstr. 33, 50931 K"oln\\Internet: http://www.ub.uni-koeln.de\\Redaktion \& Layout: Christiane Hoffrath, Oliver Flimm\\Druck: USB K"oln\\ \\\copyright 2011 USB K"oln}
+\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{10}{10pt}\selectfont Herausgeber: Der Direktor der Universit"ats- und Stadtbibliothek K"oln\\Prof. Dr. Wolfgang Schmitz\\Anschrift: Universit"atsstr. 33, 50931 K"oln\\Internet: http://www.ub.uni-koeln.de\\Redaktion \& Layout: Christiane Hoffrath, Oliver Flimm\\Druck: USB K"oln\\ \\\copyright 2011-2013 USB K"oln}
 
 \end{titlepage}
 
@@ -122,6 +123,18 @@
 \tableofcontents
 
 \addchap{Vorwort}
+
+Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+
+Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+
+Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. 
+
+\addchap{Vorwort zur 1. Auflage}
 
 Die Hauptaufgabe der Universit"ats- und Stadtbibliothek K"oln ist es,
 ihrer Universit"at als zentrale Informationsbibliothek f"ur Forschung
@@ -349,11 +362,15 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN buchillustrationen_available_years %]
 [% anzahl = buchillustrationen_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
-
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 [%    FOREACH record IN buchillustrationen_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
 [%       thismexset = record.get_holding %]
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
 
 [% PROCESS pruessen_werkverzeichnis_einzeltitel illu="buch" %]
 
@@ -365,17 +382,199 @@ Eduard Pr"ussen, Juli 2011
 
 [% FOREACH year IN presseillustrationen_available_years %]
 [% anzahl = buchillustrationen_recordlist.${year}.size %]
+[% IF year %]
 \section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
 
 [%    FOREACH record IN presseillustrationen_recordlist.${year} %]
 [%       thistitset = record.get_fields %]
 [%       thismexset = record.get_holding %]
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
 [% NEXT IF thistitset.${"T5001"}.first.content %]
 [% PROCESS pruessen_werkverzeichnis_einzeltitel illu="presse" %]
 
 [%    END %]
 
 [% END %]
+
+\chapter{Plakate [% plakate_year_min %] - [% plakate_year_max %]}
+
+[% FOREACH year IN plakate_available_years %]
+[% anzahl = plakate_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN plakate_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="plakate" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Werbe-Illustrationen [% werbeillustrationen_year_min %] - [% werbeillustrationen_year_max %]}
+
+[% FOREACH year IN werbeillustrationen_available_years %]
+[% anzahl = werbeillustrationen_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN werbeillustrationen_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="werbeillustrationen" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{ExLibris [% exlibris_year_min %] - [% exlibris_year_max %]}
+
+[% FOREACH year IN exlibris_available_years %]
+[% anzahl = exlibris_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN exlibris_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="exlibris" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Donkey Press [% donkeypress_year_min %] - [% donkeypress_year_max %]}
+
+[% FOREACH year IN donkeypress_available_years %]
+[% anzahl = donkeypress_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN donkeypress_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="donkeypress" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Bergisch Gladbach [% gladbach_year_min %] - [% gladbach_year_max %]}
+
+[% FOREACH year IN gladbach_available_years %]
+[% anzahl = gladbach_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN gladbach_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="gladbach" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Verschiedenes [% misc_year_min %] - [% misc_year_max %]}
+
+[% FOREACH year IN misc_available_years %]
+[% anzahl = misc_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN misc_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="misc" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Eduard Pr"ussens Donkey Press-Serien}
+
+\section{Schmunzel-Postille}
+
+eine bescheidene, aber höchst eigennützige Empfehlung, den - mir
+wohlgesonnenen - Verlegern, Büchermachern und Sammlern überreichte
+Original-Graphik als Präsent und zur gefälligen Erinnerung an den
+Herausgeber und Illustrator. 11 Ausgaben.1966-1967.
+
+\section{Donkey-Post}
+
+eine Hauszeitschrift für Freunde und Interessenten meiner
+Arbeiten. 1962-1993, 1967-1978 u.d.T.: Früchte mit Maden: satirische
+Skizzen.
+
+\section{Bibliokomik}
+
+Thematische Einladungen zur Frankfurter Buchmesse. 27
+Ausgaben. 1987-2008.
+
+\section{Kleine Reihe}
+
+Broschur mit einem Gedicht und vier Radierungen, (Plattenformat 6 x 6
+cm), 10 einseitig bedruckte Blätter, 11,5 x 14,8 cm,
+Büttenumschlag. 20 Ausgaben. 1993-2007.
+
+\section{origill}
+
+Original-Illustrationen von Eduard Prüssen. Im Verlagsauftrag
+entstandene Illustrationsfolgen, (Linolschnitte), ohne Text, 22 x 31
+cm, farbiger Büttenumschlag, Blockbuchbindung. 17 Ausgaben in 40
+nummerierten und signierten Exemplaren. 1972-1989.
+
+\section{Neujahrsgraphiken}
+
+Linolschnitte / Farblinolschnitte auf geräuschlos Bütten, (zumeist 30
+x 40 cm). Seit 1961.
 
 \end{document}
 

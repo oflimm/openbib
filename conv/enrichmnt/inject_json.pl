@@ -131,14 +131,18 @@ $logger->info("Einlesen und -laden der neuen Daten");
 while (<JSON>){
     my $thisdata_ref = decode_json($_);
 
-    if (length($thisdata_ref->{content}) > 2711 ){
-        $thisdata_ref->{content} = substr($thisdata_ref->{content},0,2711);
+    my $content = $thisdata_ref->{content};
+    
+    foreach my $chunk (unpack( "(a2000)*", $content )) {
+#        print length($chunk)." Chunk: $chunk\n";
+        $thisdata_ref->{content} = $chunk;
+        push @{$enrich_data_ref}, $thisdata_ref;
     }
     
-    push @{$enrich_data_ref}, $thisdata_ref;
     $data_tuple_count++;
-    
+
     if ($count % 1000 == 0){
+        $logger->info("$count Tupel eingeladen");
         $enrichment->{schema}->resultset($resultset)->populate($enrich_data_ref);
         $enrich_data_ref = [];
     }

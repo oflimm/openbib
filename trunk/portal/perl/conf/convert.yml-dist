@@ -6,6 +6,7 @@ convtab:
     local_enrichmnt:
       '4100': 1        # BK
       '4110': 1        # TOC-URL
+      '4111': 1        # TOC-Text
       '4120': 1        # eBook-URL
       '4201': 1        # Wikipedia
       '4202': 1        # Wikipedia
@@ -607,6 +608,9 @@ convtab:
           'classificationstring': 1
         facet:
           'classification': 1
+      '4111':         # TOC
+        index:
+          'toc': 1
       '4201':         # Wikipedia
         index:
           'content': 1

@@ -4578,6 +4578,8 @@ sub set_searchfields {
         ? $arg_ref->{source}               : undef;
     my $publisher      = exists $arg_ref->{publisher}
         ? $arg_ref->{publisher}            : undef;
+    my $toc            = exists $arg_ref->{toc}
+        ? $arg_ref->{toc}                  : undef;
 
     # Log4perl logger erzeugen
   
@@ -4666,6 +4668,11 @@ sub set_searchfields {
                 userid      => $self->{ID},
                 searchfield => 'publisher',
                 active      => $publisher,
+            },
+            {
+                userid      => $self->{ID},
+                searchfield => 'toc',
+                active      => $toc,
             },
         ]);
     

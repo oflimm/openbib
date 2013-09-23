@@ -212,7 +212,8 @@ sub update_searchfields {
     my $mediatype      = ($query->param('mediatype'))?$query->param('mediatype'):'0';
     my $year           = ($query->param('year'))?$query->param('year'):'0';
     my $publisher      = ($query->param('publisher'))?$query->param('publisher'):'0';
-
+    my $toc            = ($query->param('toc'))?$query->param('toc'):'0';
+    
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
@@ -234,6 +235,7 @@ sub update_searchfields {
         content        => $content,
         source         => $source,
         publisher      => $publisher,
+        toc            => $toc,
     });
 
     $self->return_baseurl;

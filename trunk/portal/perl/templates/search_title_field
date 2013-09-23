@@ -15,6 +15,7 @@
           "year_from" = msg.maketext("Jahr von")
           "year_to" = msg.maketext("Jahr bis")
           "tag" = msg.maketext("Tag")
+          "toc" = msg.maketext("Inhaltsverzeichnis")
           "litlist" = msg.maketext("Literaturliste")
           "dbstring" = msg.maketext("Katalog")
           "personstring" = msg.maketext("Person")

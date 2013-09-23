@@ -145,6 +145,20 @@ foreach my $database (@databases){
                 -or => [
                     'title_fields.field' => '0540',
                     'title_fields.field' => '0553',
+                    'title_fields.field' => '0541',
+                    'title_fields.field' => '0541', # Testweise ff: ISBN_falsch
+                    'title_fields.field' => '0547', # ISMN
+                    'title_fields.field' => '0634', # ISBN Sekundaerform
+                    'title_fields.field' => '1586', # ISBN_dat/www/mnt/_o/r/f
+                    'title_fields.field' => '1587',
+                    'title_fields.field' => '1588',
+                    'title_fields.field' => '1589',
+                    'title_fields.field' => '1590',
+                    'title_fields.field' => '1591',
+                    'title_fields.field' => '1592',
+                    'title_fields.field' => '1593',
+                    'title_fields.field' => '1594',
+                    
                 ],
             },
             {
@@ -160,6 +174,18 @@ foreach my $database (@databases){
                 -or => [
                     'title_fields.field' => '0540',
                     'title_fields.field' => '0553',
+                    'title_fields.field' => '0541', # Testweise ff: ISBN_falsch
+                    'title_fields.field' => '0547', # ISMN
+                    'title_fields.field' => '0634', # ISBN Sekundaerform
+                    'title_fields.field' => '1586', # ISBN_dat/www/mnt/_o/r/f
+                    'title_fields.field' => '1587',
+                    'title_fields.field' => '1588',
+                    'title_fields.field' => '1589',
+                    'title_fields.field' => '1590',
+                    'title_fields.field' => '1591',
+                    'title_fields.field' => '1592',
+                    'title_fields.field' => '1593',
+                    'title_fields.field' => '1594',
                 ],
             },
             {

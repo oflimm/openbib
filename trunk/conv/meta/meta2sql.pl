@@ -404,6 +404,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
     close(OUTFIELDS);
 
     close(IN);
+
+    unlink $stammdateien_ref->{$type}{infile};
 }
 
 #######################
@@ -563,6 +565,8 @@ while (my $jsonline=<IN>){
 close(OUT);
 close(OUTFIELDS);
 close(IN);
+
+unlink "meta.holding";
 
 $stammdateien_ref->{title} = {
     infile             => "meta.title",

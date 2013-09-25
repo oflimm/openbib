@@ -810,9 +810,9 @@
 ../templates/_profile/kug/_database/zbmed/circulation
 ../templates/_profile/kug/home_html
 ../templates/_profile/kug/home_html_bottom
-../templates/_profile/kug/home_html_bottom_center
+../templates/home_html_bottom_center
 ../templates/_profile/kug/home_html_bottom_left
-../templates/_profile/kug/home_html_bottom_right
+../templates/home_html_bottom_right
 ../templates/_profile/kug/home_mobile
 ../templates/_profile/kug/info_help
 ../templates/_profile/kug/info_impressum_html
@@ -1339,7 +1339,7 @@
 ../templates/pruessen-bestellung
 ../templates/pruessen-bestellung_erfolg
 ../templates/pruessen-bestellung_fehler
-../templates/pruessen_werkverzeichnis_bd2_tex
+../templates/pruessen_werkverzeichnis_tex
 ../templates/pruessen_werkverzeichnis_einzeltitel
 ../templates/pruessen_werkverzeichnis_tex
 ../templates/resultlists_empty

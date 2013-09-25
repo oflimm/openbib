@@ -28,6 +28,17 @@
     END ;
   END ;
 
+  rvks         = config.load_rvk;
+
+  rvklist = [];
+  FOREACH rvk IN rvks;
+      thisrvk = {
+        classification   => rvk.key,
+        desc             => rvk.value,
+      };
+      rvklist.push(thisrvk);
+  END ;
+
 %]
 
 <!-- skip link navigation -->
@@ -104,7 +115,7 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/bk" class="ym-form">
 
-<fieldset class="ym-columnar">
+<fieldset class="ym-full">
 
 <legend>[% msg.maketext("Themengebiet(e) der Basisklassifikation zuordnen") %]</legend>
 
@@ -137,7 +148,7 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/ezb" class="ym-form">
 
-<fieldset class="ym-columnar">
+<fieldset class="ym-full">
 
 <legend>[% msg.maketext("Themengebiet(e) der EZB zuordnen") %]</legend>
 
@@ -169,7 +180,7 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/dbis" class="ym-form">
 
-<fieldset class="ym-columnar">
+<fieldset class="ym-full">
 
 <legend>[% msg.maketext("Themengebiet(e) von DBIS zuordnen") %]</legend>
 
@@ -189,6 +200,39 @@
 
 </div>
 
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
+
+</div>
+
+</fieldset>
+</form>
+
+<p/>
+
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/rvk" class="ym-form">
+
+<fieldset class="ym-full">
+
+<legend>[% msg.maketext("Themengebiet(e) der Regensburger Verbundklassifikation zuordnen") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select name="classifications" id="classifications" multiple="multiple" size="10">
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'rvk', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[% FOREACH rvk IN rvklist %]
+<option value="[% rvk.classification %]" [% IF classification_selected.${rvk.classification}  %]selected="selected"[% END %]>[% rvk.classification %] [% rvk.desc %]</option>
+[% END %]
+</select>
+
+</div>
+
+[%# USE dumper;dumper.dump(classification_selected)%]
 <div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Ändern") %]" />
 

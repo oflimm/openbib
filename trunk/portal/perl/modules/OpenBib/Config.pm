@@ -1723,6 +1723,15 @@ sub load_bk {
     return YAML::Syck::LoadFile("/opt/openbib/conf/bk.yml");
 }
 
+sub load_rvk {
+    my ($self) = @_;
+
+    $YAML::Syck::ImplicitTyping  = 1;
+    $YAML::Syck::ImplicitUnicode = 1;
+
+    return YAML::Syck::LoadFile("/opt/openbib/conf/rvk.yml");
+}
+
 sub load_lcc {
     my ($self) = @_;
 

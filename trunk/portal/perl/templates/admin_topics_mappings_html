@@ -132,6 +132,23 @@
 </ul>
 
 
+<p/>
+
+<h3>[% msg.maketext("Zuordnung") %]: RVK</h3>
+
+<ul>
+[%
+   mapping = cgiapp.get_mapping_by_id("rvk");
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => "rvk", topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH thisclassification IN mapping.get_classifications %]
+[%   IF classification_selected.${thisclassification.name}  %]<li>[% thisclassification.name %] [% thisclassification.desc %]</li>[% END %]
+[%  END %]
+</ul>
+
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

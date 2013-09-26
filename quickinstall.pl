@@ -152,6 +152,8 @@ my %svn_links = (
     "$repositoryroot/portal/htdocs/css"                  => "$documentroot/css",
     "$repositoryroot/portal/htdocs/images"               => "$documentroot/images",
     "$repositoryroot/portal/perl/conf/bk.yml"            => "/opt/openbib/conf/bk.yml",
+    "$repositoryroot/portal/perl/conf/lcc.yml"           => "/opt/openbib/conf/lcc.yml",
+    "$repositoryroot/portal/perl/conf/rvk.yml"           => "/opt/openbib/conf/rvk.yml",
 
 );
 

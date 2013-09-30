@@ -376,7 +376,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End year facet -->
 <!-- Begin classification facet -->
-[%         IF  0 == 1 && config.get('facets').classification && category_map.2.size > 0 %]
+[%         IF config.get('facets').classification && category_map.2.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</dt>
 [%             FOREACH termitem IN category_map.2 ;

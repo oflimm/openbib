@@ -107,6 +107,22 @@ $(document).ready(function(){
 </div>
 [% END %]
 
+[%# IF available_searchfields.topic.active %]
+[%- cgiparam = searchfield.topic.prefix;
+    this_searchfield = 'topic';
+ -%]
+<div class="ym-fbox-select">
+<label for="[% cgiparam %]">[% msg.maketext("Themengebiet") %]</label>
+<select id="[% cgiparam %]" name="[% cgiparam %]">
+<option value="" selected="selected">Keines ausgewählt</option>
+[% FOREACH topic IN user.get_topics %]
+<option value="[% topic.id %]">[% topic.name %]</option>
+[% END %]
+</select>
+</div>
+[%# END %]
+
+
 [% IF available_searchfields.subject.active %]
 [%- cgiparam = searchfield.subject.prefix;
     this_searchfield = 'subject';

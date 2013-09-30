@@ -3452,7 +3452,7 @@ sub get_number_of_litlists_by_topic {
         ? $arg_ref->{topicid}           : undef;
 
     my $type               = exists $arg_ref->{type}
-        ? $arg_ref->{type}              : undef;
+        ? $arg_ref->{type}              : 1;
 
     # Log4perl logger erzeugen
   

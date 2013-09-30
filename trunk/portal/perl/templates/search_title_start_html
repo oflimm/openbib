@@ -35,7 +35,13 @@
 [% PROCESS common/subtemplate name="search_title_field" %] 
 
 [% 
-          cgi_querystring     = cgiapp.to_cgi_querystring;
+   cgi_querystring     = cgiapp.to_cgi_querystring;
+
+   topic_map = {};
+   FOREACH topic IN user.get_topics;
+      topic_map.${topic.id} = topic.name;
+   END;
+
 %]
 
    <div class="ob-functional_nav">
@@ -47,6 +53,9 @@
     FOREACH field IN searchquery.get_searchquery.keys ;
        fieldname    = field_map.${field};
        fieldcontent = searchquery.get_searchquery.${field}.val;
+       IF topic_map.${fieldcontent} ;
+          fieldcontent = topic_map.${fieldcontent} ;
+       END ;       
        NEXT IF NOT fieldcontent ;
        used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
      END;

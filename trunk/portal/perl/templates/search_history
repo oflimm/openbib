@@ -69,6 +69,10 @@
           END ;
     END;
 
+   topic_map = {};
+   FOREACH topic IN user.get_topics;
+      topic_map.${topic.id} = topic.name;
+   END;
 
 %]
 [% count = 1 %]
@@ -92,6 +96,10 @@
 [%-
     fieldname    = field_map.${field};
     fieldcontent = query.get_searchquery.${field}.val;
+
+    IF topic_map.${fieldcontent} ;
+       fieldcontent = topic_map.${fieldcontent} ;
+    END ;
     NEXT IF NOT fieldcontent ;    
 -%]
 [% used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" ) %]
@@ -105,6 +113,11 @@
 [%- FOREACH filter IN query.get_filter  -%]
 [%-
     filtername = field_prefix_map.${filter.field};
+
+    IF topic_map.${filter.term} ;
+       filter.term = topic_map.${filter.term} ;
+    END ;
+
 -%]
 [% used_filters.push( "<b>${filtername}</b>:${filter.term}" ) %]
 [%- END -%]

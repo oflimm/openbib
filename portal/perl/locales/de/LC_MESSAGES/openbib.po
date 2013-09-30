@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-09-25 15:56+0200\n"
+"PO-Revision-Date: 2013-09-27 10:37+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -819,7 +819,7 @@ msgstr "Administration"
 msgid "Aktiv"
 msgstr "Aktiv"
 
-#: ../templates/_profile/kug/search_facet:173
+#: ../templates/_profile/kug/search_facet:188
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:171
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:171
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:171
@@ -1516,7 +1516,7 @@ msgstr "Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog"
 msgid "Anzeige:"
 msgstr "Anzeige:"
 
-#: ../templates/_profile/kug/search_facet:508
+#: ../templates/_profile/kug/search_facet:548
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:482
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:482
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:482
@@ -2557,7 +2557,7 @@ msgstr "Abkürzung der Ansetzung"
 msgid "C5000"
 msgstr "Anzahl Titel"
 
-#: ../templates/_profile/kug/search_facet:507
+#: ../templates/_profile/kug/search_facet:547
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:481
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:481
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:481
@@ -2879,7 +2879,7 @@ msgstr "Das große W"
 msgid "Datenbank Informationssystem (DBIS)"
 msgstr "Datenbank Informationssystem (DBIS)"
 
-#: ../templates/_profile/kug/search_facet:564
+#: ../templates/_profile/kug/search_facet:604
 msgid "Datenbank-Empfehlungen"
 msgstr "Datenbank-Empfehlungen"
 
@@ -3031,9 +3031,9 @@ msgstr "Derzeit ist Ihre Merkliste leer"
 msgid "Derzeit werden folgende externe Recherchequellen angeboten:"
 msgstr "Derzeit werden folgende externe Recherchequellen angeboten:"
 
-#: ../templates/_profile/kug/search_facet:476
-#: ../templates/_profile/kug/search_facet:477
-#: ../templates/_profile/kug/search_facet:478
+#: ../templates/_profile/kug/search_facet:516
+#: ../templates/_profile/kug/search_facet:517
+#: ../templates/_profile/kug/search_facet:518
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:450
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:451
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:452
@@ -3250,7 +3250,7 @@ msgstr ""
 "wurden von dort in das Ghetto Theresienstadt deportiert, wo sie\n"
 "wahrscheinlich am 8. November 1942 starb."
 
-#: ../templates/_profile/kug/search_facet:543
+#: ../templates/_profile/kug/search_facet:583
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:517
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:517
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:517
@@ -4128,9 +4128,9 @@ msgstr "Empfehlungen"
 msgid "Ende"
 msgstr "Ende"
 
-#: ../templates/_profile/kug/search_facet:479
-#: ../templates/_profile/kug/search_facet:480
-#: ../templates/_profile/kug/search_facet:481
+#: ../templates/_profile/kug/search_facet:519
+#: ../templates/_profile/kug/search_facet:520
+#: ../templates/_profile/kug/search_facet:521
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:453
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:454
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:455
@@ -4198,7 +4198,7 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:243
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:234
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:237
-#: ../templates/_profile/kug/search_facet:200
+#: ../templates/_profile/kug/search_facet:216
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:239
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:242
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:238
@@ -4893,7 +4893,7 @@ msgstr "Film ohne Ton"
 msgid "Filter"
 msgstr "Filter"
 
-#: ../templates/_profile/kug/search_facet:506
+#: ../templates/_profile/kug/search_facet:546
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:480
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:480
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:480
@@ -4927,9 +4927,9 @@ msgstr "Fragen und Anmerkungen richten Sie bitte an:"
 msgid "Franz&ouml;sische Wikipedia"
 msgstr "Franz&ouml;sische Wikipedia"
 
-#: ../templates/_profile/kug/search_facet:482
-#: ../templates/_profile/kug/search_facet:483
-#: ../templates/_profile/kug/search_facet:484
+#: ../templates/_profile/kug/search_facet:522
+#: ../templates/_profile/kug/search_facet:523
+#: ../templates/_profile/kug/search_facet:524
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:456
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:457
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:458
@@ -5202,8 +5202,8 @@ msgstr ""
 "Greifen Sie fachspezifisch auf alle %1freien und lizenzierten Zeitschriften"
 "%2 zu"
 
-#: ../templates/_profile/kug/search_facet:487
-#: ../templates/_profile/kug/search_facet:488
+#: ../templates/_profile/kug/search_facet:527
+#: ../templates/_profile/kug/search_facet:528
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:461
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:462
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:461
@@ -6565,7 +6565,7 @@ msgstr "Inventarnummer"
 msgid "Inventarnummer       "
 msgstr "Inventarnummer       "
 
-#: ../templates/_profile/kug/search_facet:505
+#: ../templates/_profile/kug/search_facet:545
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:479
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:479
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:479
@@ -6579,8 +6579,8 @@ msgstr "Inventarnummer       "
 msgid "Isländisch"
 msgstr "Isländisch"
 
-#: ../templates/_profile/kug/search_facet:492
-#: ../templates/_profile/kug/search_facet:493
+#: ../templates/_profile/kug/search_facet:532
+#: ../templates/_profile/kug/search_facet:533
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:466
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:467
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:466
@@ -6672,7 +6672,7 @@ msgstr "Ja"
 #: ../templates/_database/einbaende/titles_record_html:112
 #: ../templates/_database/einbaende/titles_record_html:98
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:243
-#: ../templates/_profile/kug/search_facet:183
+#: ../templates/_profile/kug/search_facet:199
 #: ../templates/_profile/kug/searchforms_record_query:230
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:33
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:35
@@ -6808,7 +6808,7 @@ msgstr "Jahre"
 msgid "Jahrhundert"
 msgstr "Jahrhundert"
 
-#: ../templates/_profile/kug/search_facet:498
+#: ../templates/_profile/kug/search_facet:538
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:472
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:472
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:472
@@ -6824,7 +6824,7 @@ msgstr "Japanisch"
 
 #: ../templates/_database/einbaende/titles_record_html:105
 #: ../templates/_database/einbaende/titles_record_html:93
-#: ../templates/_profile/kug/search_facet:178
+#: ../templates/_profile/kug/search_facet:193
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:105
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:93
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:176
@@ -6912,7 +6912,7 @@ msgstr "Kartenkataloge der Philosophischen Fakultät"
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:222
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:216
 #: ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left:21
-#: ../templates/_profile/kug/search_facet:176
+#: ../templates/_profile/kug/search_facet:191
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:133
 #: ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:229
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:103
@@ -7598,8 +7598,8 @@ msgstr "Art der Vernetzung"
 msgid "L0280"
 msgstr "Geo-Koordinaten"
 
-#: ../templates/_profile/kug/search_facet:485
-#: ../templates/_profile/kug/search_facet:486
+#: ../templates/_profile/kug/search_facet:525
+#: ../templates/_profile/kug/search_facet:526
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:459
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:460
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:459
@@ -7760,7 +7760,7 @@ msgstr "Listen mit gemeinsamen Titeln"
 
 #: ../templates/_database/einbaende/titles_record_html:102
 #: ../templates/_database/einbaende/titles_record_html:114
-#: ../templates/_profile/kug/search_facet:185
+#: ../templates/_profile/kug/search_facet:201
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:40
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:102
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:112
@@ -8018,7 +8018,7 @@ msgstr "Medienart"
 
 #: ../templates/_database/einbaende/titles_record_html:110
 #: ../templates/_database/einbaende/titles_record_html:96
-#: ../templates/_profile/kug/search_facet:181
+#: ../templates/_profile/kug/search_facet:197
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:108
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:96
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:179
@@ -8058,17 +8058,18 @@ msgstr "Medientyp"
 #: ../templates/_profile/kug/_view/versicherung/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:77
 #: ../templates/_profile/kug/home_html_bottom_left:76
-#: ../templates/_profile/kug/search_facet:102
-#: ../templates/_profile/kug/search_facet:114
-#: ../templates/_profile/kug/search_facet:126
-#: ../templates/_profile/kug/search_facet:138
-#: ../templates/_profile/kug/search_facet:150
-#: ../templates/_profile/kug/search_facet:36
-#: ../templates/_profile/kug/search_facet:47
-#: ../templates/_profile/kug/search_facet:58
-#: ../templates/_profile/kug/search_facet:69
-#: ../templates/_profile/kug/search_facet:80
-#: ../templates/_profile/kug/search_facet:91
+#: ../templates/_profile/kug/search_facet:106
+#: ../templates/_profile/kug/search_facet:117
+#: ../templates/_profile/kug/search_facet:129
+#: ../templates/_profile/kug/search_facet:141
+#: ../templates/_profile/kug/search_facet:153
+#: ../templates/_profile/kug/search_facet:165
+#: ../templates/_profile/kug/search_facet:40
+#: ../templates/_profile/kug/search_facet:51
+#: ../templates/_profile/kug/search_facet:62
+#: ../templates/_profile/kug/search_facet:73
+#: ../templates/_profile/kug/search_facet:84
+#: ../templates/_profile/kug/search_facet:95
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:495
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:102
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:114
@@ -8584,7 +8585,7 @@ msgstr "Nein"
 msgid "Neu"
 msgstr "Neu"
 
-#: ../templates/_profile/kug/search_facet:489
+#: ../templates/_profile/kug/search_facet:529
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:463
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:463
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:463
@@ -8781,8 +8782,8 @@ msgstr "Neues Themengebiet anlegen"
 msgid "Nichtkommerzielle Natur dieser Webseite"
 msgstr "Nichtkommerzielle Natur dieser Webseite"
 
-#: ../templates/_profile/kug/search_facet:503
-#: ../templates/_profile/kug/search_facet:504
+#: ../templates/_profile/kug/search_facet:543
+#: ../templates/_profile/kug/search_facet:544
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:477
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:478
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:477
@@ -9194,7 +9195,7 @@ msgstr "Permanenter Link zu diesem Titel"
 
 #: ../templates/_database/einbaende/titles_record_html:104
 #: ../templates/_database/einbaende/titles_record_html:92
-#: ../templates/_profile/kug/search_facet:177
+#: ../templates/_profile/kug/search_facet:192
 #: ../templates/_profile/rheinlandbib/clouds_databases_record_html:62
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:104
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:92
@@ -9315,7 +9316,7 @@ msgstr ""
 "Reihenfolge enthalten sein)<br />\n"
 "           z.B: %3kernighan, brian%4 (alle Titel von Brian Kernighan)"
 
-#: ../templates/_profile/kug/search_facet:502
+#: ../templates/_profile/kug/search_facet:542
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:476
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:476
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:476
@@ -9919,8 +9920,8 @@ msgstr "Rolle zuordnen"
 msgid "Rollen"
 msgstr "Rollen"
 
-#: ../templates/_profile/kug/search_facet:496
-#: ../templates/_profile/kug/search_facet:497
+#: ../templates/_profile/kug/search_facet:536
+#: ../templates/_profile/kug/search_facet:537
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:470
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:471
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:470
@@ -10079,7 +10080,7 @@ msgstr "Schlagworte"
 msgid "Schlagworte in den angezeigten Titeln"
 msgstr "Schlagworte in den angezeigten Titeln"
 
-#: ../templates/_profile/kug/search_facet:499
+#: ../templates/_profile/kug/search_facet:539
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:473
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:473
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:473
@@ -10816,8 +10817,8 @@ msgstr "Sortierung"
 msgid "Sortierung nach"
 msgstr "Sortierung nach"
 
-#: ../templates/_profile/kug/search_facet:494
-#: ../templates/_profile/kug/search_facet:495
+#: ../templates/_profile/kug/search_facet:534
+#: ../templates/_profile/kug/search_facet:535
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:468
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:469
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:468
@@ -10878,7 +10879,7 @@ msgstr "Sprach-Icon für %1"
 
 #: ../templates/_database/einbaende/titles_record_html:111
 #: ../templates/_database/einbaende/titles_record_html:97
-#: ../templates/_profile/kug/search_facet:182
+#: ../templates/_profile/kug/search_facet:198
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:109
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:97
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:180
@@ -11653,7 +11654,7 @@ msgstr "System"
 
 #: ../templates/_database/einbaende/titles_record_html:109
 #: ../templates/_database/einbaende/titles_record_html:95
-#: ../templates/_profile/kug/search_facet:180
+#: ../templates/_profile/kug/search_facet:195
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:61
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:63
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:151
@@ -15694,7 +15695,7 @@ msgstr "Zählung"
 
 #: ../templates/_database/einbaende/titles_record_html:101
 #: ../templates/_database/einbaende/titles_record_html:113
-#: ../templates/_profile/kug/search_facet:184
+#: ../templates/_profile/kug/search_facet:200
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:101
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:111
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:182
@@ -15788,7 +15789,7 @@ msgstr "Text"
 
 #: ../templates/_database/einbaende/titles_record_html:108
 #: ../templates/_database/einbaende/titles_record_html:94
-#: ../templates/_profile/kug/search_facet:179
+#: ../templates/_profile/kug/search_facet:194
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:106
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:94
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:177
@@ -15815,6 +15816,7 @@ msgstr ""
 msgid "Thematische Integration weiterer Quellen"
 msgstr "Thematische Integration weiterer Quellen"
 
+#: ../templates/_profile/kug/search_facet:196
 #: ../templates/admin_topics_html:69 ../templates/admin_topics_html:99
 #: ../templates/admin_topics_mappings_html:77
 #: ../templates/admin_topics_mappings_record_html:76
@@ -16122,8 +16124,8 @@ msgstr "Treffer-, Merk- und Literaturlisten"
 msgid "Treffermenge"
 msgstr "Treffermenge"
 
-#: ../templates/_profile/kug/search_facet:167
-#: ../templates/_profile/kug/search_facet:540
+#: ../templates/_profile/kug/search_facet:182
+#: ../templates/_profile/kug/search_facet:580
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:165
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:514
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:165
@@ -16175,7 +16177,7 @@ msgstr ""
 "           z.B: <b>program*</b> (alle Titel, die mit program beginnen und "
 "beliebig enden, wie programming, programme, programm usw.)"
 
-#: ../templates/_profile/kug/search_facet:501
+#: ../templates/_profile/kug/search_facet:541
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:475
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:475
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:475
@@ -16224,7 +16226,7 @@ msgstr "Typ %1 ist nicht definiert"
 msgid "Typ:"
 msgstr "Typ:"
 
-#: ../templates/_profile/kug/search_facet:500
+#: ../templates/_profile/kug/search_facet:540
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:474
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:474
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:474
@@ -16311,8 +16313,8 @@ msgstr ""
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr "Und-Verknüpfung innerhalb eines Suchfeldes"
 
-#: ../templates/_profile/kug/search_facet:490
-#: ../templates/_profile/kug/search_facet:491
+#: ../templates/_profile/kug/search_facet:530
+#: ../templates/_profile/kug/search_facet:531
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:464
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:465
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:464
@@ -16446,7 +16448,7 @@ msgstr "Ursprung"
 msgid "Verfasser"
 msgstr "Verfasser"
 
-#: ../templates/_profile/kug/search_facet:186
+#: ../templates/_profile/kug/search_facet:202
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:184
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:184
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:184
@@ -16520,7 +16522,7 @@ msgstr "Verschlagwortung aus anderen Katalogen"
 msgid "Verschlagwortung dieses Titels in anderen Katalogen"
 msgstr "Verschlagwortung dieses Titels in anderen Katalogen"
 
-#: ../templates/_profile/kug/search_facet:549
+#: ../templates/_profile/kug/search_facet:589
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:523
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:523
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:523
@@ -16791,7 +16793,7 @@ msgstr "WebOPAC-URL"
 msgid "Weiter"
 msgstr "Weiter"
 
-#: ../templates/_profile/kug/search_facet:580
+#: ../templates/_profile/kug/search_facet:620
 msgid "Weiter zu den Datenbank-Empfehlungen"
 msgstr "Weiter zu den Datenbank-Empfehlungen"
 
@@ -17859,7 +17861,7 @@ msgstr "ja, seit"
 msgid "lecturer"
 msgstr "Dozent"
 
-#: ../templates/_profile/kug/search_facet:236
+#: ../templates/_profile/kug/search_facet:252
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:210
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:210
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:210
@@ -17870,7 +17872,7 @@ msgstr "Dozent"
 msgid "lendable"
 msgstr "ausleihbar"
 
-#: ../templates/_profile/kug/search_facet:237
+#: ../templates/_profile/kug/search_facet:253
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:211
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:211
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:211
@@ -17881,7 +17883,7 @@ msgstr "ausleihbar"
 msgid "lendable_immediate"
 msgstr "ausleihbar / sofort"
 
-#: ../templates/_profile/kug/search_facet:238
+#: ../templates/_profile/kug/search_facet:254
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:212
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:212
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:212
@@ -17892,7 +17894,7 @@ msgstr "ausleihbar / sofort"
 msgid "lendable_order"
 msgstr "ausleihbar / nach Bestellung"
 
-#: ../templates/_profile/kug/search_facet:239
+#: ../templates/_profile/kug/search_facet:255
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:213
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:213
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:213
@@ -17998,7 +18000,7 @@ msgstr "nach Datierung"
 msgid "nach Einband"
 msgstr "nach Einband"
 
-#: ../templates/_profile/kug/search_facet:317
+#: ../templates/_profile/kug/search_facet:357
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:291
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:364
 #: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:18
@@ -18017,7 +18019,7 @@ msgstr "nach Jahr"
 msgid "nach Jahrhundert"
 msgstr "nach Jahrhundert"
 
-#: ../templates/_profile/kug/search_facet:437
+#: ../templates/_profile/kug/search_facet:477
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:376
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:385
 #: ../templates/_profile/sammlungen/search_facet:411
@@ -18025,7 +18027,7 @@ msgstr "nach Jahrhundert"
 msgid "nach K&ouml;perschaften"
 msgstr "nach K&ouml;perschaften"
 
-#: ../templates/_profile/kug/search_facet:208
+#: ../templates/_profile/kug/search_facet:224
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:193
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:193
 #: ../templates/search_facet:206
@@ -18036,7 +18038,7 @@ msgstr "nach Katalog"
 msgid "nach Künstler"
 msgstr "nach Künstler"
 
-#: ../templates/_profile/kug/search_facet:389
+#: ../templates/_profile/kug/search_facet:429
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:363
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:363
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:412
@@ -18071,7 +18073,7 @@ msgstr "nach Person"
 msgid "nach Person / Werkstatt(Werkzeug)"
 msgstr "nach Person / Werkstatt(Werkzeug)"
 
-#: ../templates/_profile/kug/search_facet:413
+#: ../templates/_profile/kug/search_facet:453
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:387
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:352
 #: ../templates/_profile/sammlungen/search_facet:387
@@ -18115,7 +18117,7 @@ msgstr "nach Relevanz"
 msgid "nach Signatur"
 msgstr "nach Signatur"
 
-#: ../templates/_profile/kug/search_facet:462
+#: ../templates/_profile/kug/search_facet:502
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:436
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:436
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:436
@@ -18139,7 +18141,7 @@ msgstr "nach Stadt"
 msgid "nach Sterbejahr"
 msgstr "nach Sterbejahr"
 
-#: ../templates/_profile/kug/search_facet:341
+#: ../templates/_profile/kug/search_facet:381
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:315
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:289
 #: ../templates/_profile/sammlungen/search_facet:315
@@ -18153,7 +18155,7 @@ msgstr "nach Systematik"
 msgid "nach Tagnamen"
 msgstr "nach Tagnamen"
 
-#: ../templates/_profile/kug/search_facet:365
+#: ../templates/_profile/kug/search_facet:405
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:339
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:339
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:388
@@ -18167,13 +18169,17 @@ msgstr "nach Tagnamen"
 msgid "nach Tags"
 msgstr "nach Tags"
 
-#: ../templates/_profile/kug/search_facet:293
+#: ../templates/_profile/kug/search_facet:333
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:232
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:241
 #: ../templates/_profile/sammlungen/search_facet:267
 #: ../templates/search_facet:291
 msgid "nach Themen"
 msgstr "nach Themen"
+
+#: ../templates/_profile/kug/search_facet:309
+msgid "nach Themengebieten"
+msgstr "nach Themengebieten"
 
 #: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:21
 #: ../templates/_profile/usbportal/search_title_combined_include:63
@@ -18191,7 +18197,7 @@ msgstr "nach Titeln"
 msgid "nach Topogr. Schlagwort"
 msgstr "nach Topogr. Schlagwort"
 
-#: ../templates/_profile/kug/search_facet:269
+#: ../templates/_profile/kug/search_facet:285
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:243
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:292
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:245
@@ -18214,7 +18220,7 @@ msgstr "nach Verstorbenen"
 msgid "nach Z&auml;hlung"
 msgstr "nach Z&auml;hlung"
 
-#: ../templates/_profile/kug/search_facet:244
+#: ../templates/_profile/kug/search_facet:260
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:218
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:218
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:218
@@ -18253,7 +18259,7 @@ msgstr ""
 "ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in "
 "der Regel frei zugänglich)"
 
-#: ../templates/_profile/kug/search_facet:235
+#: ../templates/_profile/kug/search_facet:251
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:209
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:209
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:209
@@ -18264,7 +18270,7 @@ msgstr ""
 msgid "online"
 msgstr "online verfügbar"
 
-#: ../templates/_profile/kug/search_facet:240
+#: ../templates/_profile/kug/search_facet:256
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:214
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:214
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:214
@@ -18275,7 +18281,7 @@ msgstr "online verfügbar"
 msgid "presence"
 msgstr "nur einsehbar"
 
-#: ../templates/_profile/kug/search_facet:241
+#: ../templates/_profile/kug/search_facet:257
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:215
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:215
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:215
@@ -18286,7 +18292,7 @@ msgstr "nur einsehbar"
 msgid "presence_immediate"
 msgstr "nur einsehbar / sofort"
 
-#: ../templates/_profile/kug/search_facet:242
+#: ../templates/_profile/kug/search_facet:258
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:216
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:216
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:216
@@ -18453,6 +18459,9 @@ msgstr "Übersicht"
 #: ../templates/users_navigation:100 ../templates/users_navigation:102
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "nach Gebieten"
+#~ msgstr "nach Gebieten"
 
 #~ msgid "Externer Connector (DigiBib/uk-online/Citavi)"
 #~ msgstr "Externer Connector (DigiBib/uk-online/Citavi)"

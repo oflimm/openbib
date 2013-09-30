@@ -22,6 +22,10 @@
           have_filter.${"${filter.field}:${filter.term}"} = 1;
    END ;
 
+   topic_map = {};
+   FOREACH topic IN user.get_topics;
+      topic_map.${topic.id} = topic.name;
+   END;
 %]
 
 [% cgiapp.to_cgi_hidden_input({ change = {'page' = 1 }, exclude = exclude_args }) %]
@@ -73,6 +77,17 @@ $("#dd_classification_[% database %]").hide();
 $("#dd_classification_[% database %]_toggle").click(function(){
  $("#dd_classification_[% database %]").toggle();
  $("#dd_classification_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Topics
+// Bild setzen
+$("#dd_topic_[% database %]_toggle").html("<b>[<a href=\"#dd_topic_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_topic_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_topic_[% database %]_toggle").click(function(){
+ $("#dd_topic_[% database %]").toggle();
+ $("#dd_topic_[% database %]_toggle").html("");
 });
 
 // Begin Togglen / Facets Jahr
@@ -178,6 +193,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
           ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
           ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
           ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
+          ${config.get('searchfield').topic.prefix} = msg.maketext("Themengebiet")
           ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
           ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
           ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
@@ -287,6 +303,30 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 </dl>
 [%         END %]
 <!-- End mediatype facet -->
+<!-- Begin topic facet -->
+[%         IF config.get('facets').topic && category_map.13.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_topic_[% database %]_anchor">[% msg.maketext("nach Themengebieten") %]</dt>
+[%             FOREACH termitem IN category_map.13 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.13.size > 5 && loop.count == 5 %]
+<span id="dd_topic_[% database %]_toggle"></span>
+<div id="dd_topic_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').topic.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% topic_map.${termitem.0} %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF category_map.13.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End topic facet -->
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && category_map.1.size > 0 %]
 <dl class="ob-items">

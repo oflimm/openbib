@@ -1221,6 +1221,11 @@ convtab:
         index:
           't4100': 1
         string: 1
+      '4102':         # Topic
+        index:
+          'topic': 1
+        facet:
+          'topic': 1
       '4201':         # Wikipedia
         index:
           'content': 1

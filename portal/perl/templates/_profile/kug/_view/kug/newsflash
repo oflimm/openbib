@@ -14,6 +14,14 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
+<li><b>1.10.2013</b>: Recherche-Eingrenzung in Themengebiete. Die
+Ergebnisse einer Recherche können jetzt auf ein KUG Themengebiet
+eingegrenzt werden. Diese Eingrenzung kann auch direkt in der
+erweiterten Recherchemaske vorgenommen werden. Weitergehende Informationen in diesem
+<a
+href=http://blog.openbib.org/2013/10/01/mehr-finden-mit-offenen-katalogdaten-2/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
 <li><b>23.9.2013</b>: Die Suche mit Begriffen aus
 Inhaltsverzeichnissen ist jetzt im KUG &uuml;ber die erweiterte Recherchemaske m&ouml;glich. Weitergehende Informationen in diesem
 <a

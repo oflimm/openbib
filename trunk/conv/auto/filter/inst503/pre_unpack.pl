@@ -2,22 +2,22 @@
 
 #####################################################################
 #
-#  alt_remote.pl
+#  pre_unpack.pl
 #
-#  Konvertieren in das Meta-Format
+#  Bearbeitung der Titeldaten
 #
-#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
-#  Dieses Programm ist freie Software. Sie koennen es unter
+#  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
 #  Free Software Foundation herausgegeben, weitergeben und/oder
 #  modifizieren, entweder unter Version 2 der Lizenz oder (wenn
-#  Sie es wuenschen) jeder spaeteren Version.
+#  Sie es w"unschen) jeder sp"ateren Version.
 #
-#  Die Veroeffentlichung dieses Programms erfolgt in der
-#  Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE JEDE
-#  GEWAEHRLEISTUNG - sogar ohne die implizite Gewaehrleistung
-#  der MARKTREIFE oder der EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
+#  Die Ver"offentlichung dieses Programms erfolgt in der
+#  Hoffnung, da"s es Ihnen von Nutzen sein wird, aber OHNE JEDE
+#  GEW"AHRLEISTUNG - sogar ohne die implizite Gew"ahrleistung
+#  der MARKTREIFE oder der EIGNUNG F"UR EINEN BESTIMMTEN ZWECK.
 #  Details finden Sie in der GNU General Public License.
 #
 #  Sie sollten eine Kopie der GNU General Public License zusammen
@@ -31,23 +31,25 @@
 # Einladen der benoetigten Perl-Module 
 #####################################################################
 
-use DBI;
 use OpenBib::Config;
 
-my $config = new OpenBib::Config();
+my $pool          = $ARGV[0];
+
+my $config        = new OpenBib::Config;
+
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+
+my $baseurl       = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath;
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
-my $confdir       = $config->{'base_dir'}."/conf";
+
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $simplecsv2metaexe   = "$konvdir/simplecsv2meta.pl";
+my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
-my $pool          = $ARGV[0];
 
-my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+print "### $pool: Erweiterung um Themengebiet \n";
 
-my $filename      = $dbinfo->titlefile;
-print "### $pool: Konvertierung von $filename\n";
-system("cd $pooldir/$pool ; rm meta.*");
-system("cd $pooldir/$pool; $simplecsv2metaexe --database=$pool -persistent-normdata-ids --inputfile=$filename --configfile=$confdir/$pool.yml; gzip meta.*");
+system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/gen_local_topic.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");
+

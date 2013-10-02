@@ -49,9 +49,9 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 
-print "### $pool: Erweiterung um Zugriffsinformation online und Typ Digital\n";
+print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
 
-system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/add-fields.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");
+system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/gen_local_topic.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");
 
 #print "### $pool: Entfernung kuenstlicher ZDB Signaturprefixe\n";
 

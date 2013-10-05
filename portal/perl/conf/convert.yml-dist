@@ -1226,6 +1226,9 @@ convtab:
           'topic': 1
         facet:
           'topic': 1
+      '4111':         # TOC
+        index:
+          'toc': 1
       '4201':         # Wikipedia
         index:
           'content': 1

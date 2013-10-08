@@ -14,14 +14,6 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
-<li><b>8.10.2013</b>: Am Dienstag, den 8. Oktober 2013, stehen wegen
-Wartungsarbeiten des RRZK an der Netzversorgung der USB bis voraussichtlich 11
-Uhr alle rechnergest&uuml;tzten Services der USB, wie z.B. der KUG, nicht zur
-Verf&uuml;gung. Mehr 
-<a
-href="http://www.ub.uni-koeln.de/res/aktuell/serviceeinschraenkungen/index_ger.html"
-target="_blank" class="ext">Informationen.</a>
-</li>
 <li><b>1.10.2013</b>: Recherche-Eingrenzung in Themengebiete. Die
 Ergebnisse einer Recherche können jetzt auf ein KUG Themengebiet
 eingegrenzt werden. Diese Eingrenzung kann auch direkt in der

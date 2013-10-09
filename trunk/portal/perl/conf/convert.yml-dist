@@ -219,8 +219,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -349,16 +347,13 @@ convtab:
           'titlestring': 1
           'freesearch': 1
       '0410':         # Auflage
-        string: 1
         index:
           't0410': 1
       '0412':         # Verlag
-        string: 1
         index:
           'publisher': 1
           'publisherstring': 1
       '0413':         # Drucker
-        string: 1
         index:
           'person': 1
       '0424':
@@ -381,12 +376,10 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0541':         # ISBN falsch
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -399,12 +392,10 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0547':         # ISMN ala ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -417,7 +408,6 @@ convtab:
           'source': 1
           'freesearch': 1
       '0634':         # ISBN sekundaerform
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -641,7 +631,6 @@ convtab:
         facet:
           'availability' : 1
       '4410':         # Medientyp
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -652,12 +641,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
       'tag': 1
@@ -847,8 +834,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -965,12 +950,10 @@ convtab:
           'titlestring': 1
           'freesearch': 1
       '0412':         # Verlag
-        string: 1
         index:
           'publisher': 1
           'publisherstring': 1
       '0413':         # Drucker
-        string: 1
         index:
           'person': 1
       '0424':
@@ -993,12 +976,10 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0541':         # ISBN falsch
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -1011,12 +992,10 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0547':         # ISMN ala ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -1032,7 +1011,6 @@ convtab:
           'source': 1
           'freesearch': 1
       '0634':         # ISBN sekundaerform
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -1220,7 +1198,6 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-        string: 1
       '4102':         # Topic
         index:
           'topic': 1
@@ -1253,7 +1230,6 @@ convtab:
         facet:
           'availability' : 1
       '4410':         # Medientyp
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -1264,12 +1240,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
   kapsel:
     inverted_title:
       'tag':
@@ -1286,8 +1260,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -1417,16 +1389,13 @@ convtab:
           'titlestring': 1
           'freesearch': 1
       '0410':         # Auflage
-        string: 1
         index:
           't0410': 1
       '0412':         # Verlag
-        string: 1
         index:
           'publisher': 1
           'publisherstring': 1
       '0413':         # Drucker
-        string: 1
         index:
           'person': 1
       '0424':
@@ -1449,12 +1418,10 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0541':         # ISBN falsch
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -1467,12 +1434,10 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0547':         # ISMN ala ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -1485,7 +1450,6 @@ convtab:
           'source': 1
           'freesearch': 1
       '0634':         # ISBN sekundaerform
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -1704,7 +1668,6 @@ convtab:
         facet:
           'availability' : 1
       '4410':         # Medientyp
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -1715,12 +1678,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
   richter:
     inverted_title:
       'tag':
@@ -1737,8 +1698,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -1821,8 +1780,6 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
-      '0413':         # Drucker
-        string: 1
       '0424':
         index:
           'year': 1
@@ -1840,7 +1797,6 @@ convtab:
           'source': 1
           'freesearch': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -1849,7 +1805,6 @@ convtab:
           'isbn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -1871,13 +1826,11 @@ convtab:
         index:
            'freesearch': 1
            't0720': 1
-        string: 1
       '0750':         # Abstract
         index:
           'content': 1
           'freesearch': 1
       '0800':         # Medienart
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -1937,7 +1890,6 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-        string: 1
       '4201':         # Wikipedia
         index:
           'content': 1
@@ -1960,12 +1912,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '0501':         # Richterindiz
         index:
            'freesearch': 1
@@ -1988,8 +1938,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -2074,8 +2022,6 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
-      '0413':         # Drucker
-        string: 1
       '0424':
         index:
           'year': 1
@@ -2093,7 +2039,6 @@ convtab:
           'source': 1
           'freesearch': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -2102,7 +2047,6 @@ convtab:
           'isbn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -2124,13 +2068,11 @@ convtab:
         index:
            'freesearch': 1
            't0720': 1
-        string: 1
       '0750':         # Abstract
         index:
           'content': 1
           'freesearch': 1
       '0800':         # Medienart
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -2190,7 +2132,6 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-        string: 1
       '4201':         # Wikipedia
         index:
           'content': 1
@@ -2213,12 +2154,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '0501':         # Richterindiz
         index:
            'freesearch': 1
@@ -2241,8 +2180,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -2332,7 +2269,6 @@ convtab:
           'titlestring': 1
           'freesearch': 1
       '0413':         # Drucker
-        string: 1
         index:
           't0413': 1
           'person': 1
@@ -2356,7 +2292,6 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -2365,7 +2300,6 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -2388,7 +2322,6 @@ convtab:
           'content': 1
           'freesearch': 1
       '0800':         # Medienart
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -2431,7 +2364,6 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-        string: 1
       '4201':         # Wikipedia
         index:
           'content': 1
@@ -2454,12 +2386,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
       'tag': 1
@@ -2504,8 +2434,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -2582,7 +2510,6 @@ convtab:
           'freesearch': 1
           't0410': 1
       '0413':         # Drucker
-        string: 1
         index:
           't0413': 1
           'person': 1
@@ -2607,7 +2534,6 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -2616,7 +2542,6 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -2639,7 +2564,6 @@ convtab:
           'content': 1
           'freesearch': 1
       '0800':         # Medienart
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -2682,7 +2606,6 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-        string: 1
       '4201':         # Wikipedia
         index:
           'content': 1
@@ -2705,12 +2628,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
     listitemcat:
       'tag': 1
       'litlist': 1
@@ -2779,8 +2700,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -2866,12 +2785,10 @@ convtab:
           'titlestring': 1
           'freesearch': 1
       '0412':         # Hier: Verlag recherchierbar via source
-        string: 1
         index:
           't0412': 1
           'source': 1
       '0413':         # Drucker
-        string: 1
         index:
           'person': 1
       '0424':
@@ -2895,7 +2812,6 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -2904,7 +2820,6 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -2960,7 +2875,6 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-        string: 1
       '4201':         # Wikipedia
         index:
           'content': 1
@@ -2980,7 +2894,6 @@ convtab:
           'freesearch': 20
           't4300': 1
       '4410':         # Medientyp
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -2991,12 +2904,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
   landschaft:
     inverted_title:
       'tag':
@@ -3013,8 +2924,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -3093,11 +3002,9 @@ convtab:
           'titlestring': 1
           'freesearch': 1
       '0412':         # Hier: Verlag recherchierbar via source
-        string: 1
         index:
           'source': 1
       '0413':         # Drucker
-        string: 1
         index:
           'person': 1
       '0424':
@@ -3121,7 +3028,6 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -3130,7 +3036,6 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -3188,7 +3093,6 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-        string: 1
       '4201':         # Wikipedia
         index:
           'content': 1
@@ -3208,7 +3112,6 @@ convtab:
           'freesearch': 20
           't4300': 1
       '4410':         # Medientyp
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -3219,12 +3122,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
   totenzettel:
     inverted_classification:
       '0800':         # Ansetzung
@@ -3255,8 +3156,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -3388,20 +3287,17 @@ convtab:
           'titlestring': 1
           'freesearch': 1
       '0410':         # Sterbeorte
-        string: 1
         index:
           't0410': 1
       '0411':         # Geburtsorte
-        string: 1
         index:
+          'freesearch': 1
           't0411': 1
       '0412':         # Verlag
-        string: 1
         index:
           'publisher': 1
           'publisherstring': 1
       '0413':         # Drucker
-        string: 1
         index:
           'person': 1
       '0424':
@@ -3417,6 +3313,9 @@ convtab:
           'freesearch': 1
         facet:
           'year': 1
+      '0433':         # Beruf
+        index:
+          'freesearch': 1
       '0451':
         index:
           'source': 1
@@ -3425,12 +3324,10 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0541':         # ISBN falsch
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -3443,12 +3340,10 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0547':         # ISMN ala ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -3461,7 +3356,6 @@ convtab:
           'source': 1
           'freesearch': 1
       '0634':         # ISBN sekundaerform
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -3678,7 +3572,6 @@ convtab:
         facet:
           'availability' : 1
       '4410':         # Medientyp
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -3689,12 +3582,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
     listitemcat:
       'tag': 1
       'litlist': 1
@@ -3724,8 +3615,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -3856,16 +3745,13 @@ convtab:
         index:
           't0407': 1
       '0410':         # Auflage
-        string: 1
         index:
           't0410': 1
       '0412':         # Verlag
-        string: 1
         index:
           'publisher': 1
           'publisherstring': 1
       '0413':         # Drucker
-        string: 1
         index:
           'person': 1
       '0425':
@@ -3883,12 +3769,10 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0541':         # ISBN falsch
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -3901,12 +3785,10 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0547':         # ISMN ala ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -3919,11 +3801,9 @@ convtab:
           'source': 1
           'freesearch': 1
       '0338':         # Nominal
-        string: 1
         index:
           't0338': 1
       '0634':         # ISBN sekundaerform
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -3954,7 +3834,6 @@ convtab:
           'content': 1
           'freesearch': 1
       '0800':         # Medienart
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -4148,7 +4027,6 @@ convtab:
         facet:
           'availability' : 1
       '4410':         # Medientyp
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -4159,12 +4037,10 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1  
     listitemcat:
       'tag': 1
       'litlist': 1
@@ -4209,8 +4085,6 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
-      '0002':         # Aufnahmedatum
-        string: 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -4345,16 +4219,13 @@ convtab:
           'titlestring': 1
           'freesearch': 1
       '0410':         # Auflage
-        string: 1
         index:
           't0410': 1
       '0412':         # Verlag
-        string: 1
         index:
           'publisher': 1
           'publisherstring': 1
       '0413':         # Drucker
-        string: 1
         index:
           'person': 1
       '0424':
@@ -4377,12 +4248,10 @@ convtab:
         index:
           'source': 1
       '0540':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0541':         # ISBN falsch
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -4395,12 +4264,10 @@ convtab:
           'issn': 1
           'freesearch': 1
       '0547':         # ISMN ala ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
       '0553':         # ISBN
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -4413,7 +4280,6 @@ convtab:
           'source': 1
           'freesearch': 1
       '0634':         # ISBN sekundaerform
-        string: 1
         index:
           'isbn': 1
           'freesearch': 1
@@ -4630,7 +4496,6 @@ convtab:
         facet:
           'availability' : 1
       '4410':         # Medientyp
-        string: 1
         index:
           'mediatype': 1
           'mediatypestring': 1
@@ -4641,9 +4506,7 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
           'freesearch': 1
-        string: 1

@@ -37,7 +37,7 @@
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "http://wwwtest.ub.uni-koeln.de/bibliotheken/526/search/index_ger.html?num=10;page=1;${searchprefix}=${searchterm}";
+         globalurl = "http://www.ub.uni-koeln.de/bibliotheken/526/search/index_ger.html?num=10;page=1;${searchprefix}=${searchterm}";
 
 #         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          persons.push("${part.content}");

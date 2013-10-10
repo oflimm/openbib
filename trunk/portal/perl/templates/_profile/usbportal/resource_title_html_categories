@@ -34,7 +34,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.2 ;
-             rssfeed = "<a href=\"http://wwwtest.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://www.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;
@@ -55,7 +55,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.3 ;
-             rssfeed = "<a href=\"http://wwwtest.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://www.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;
@@ -163,7 +163,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.4 ;
-             rssfeed = "<a href=\"http://wwwtest.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://www.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;
@@ -184,7 +184,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.5 ;
-             rssfeed = "<a href=\"http://wwwtest.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://www.ub.uni-koeln.de${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
 
          searchterm    = item.content;

@@ -253,7 +253,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin year facet -->
 [%         IF config.get('facets').year && category_map.5.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Sterbejahr") %]</dt>
+<dt class="ob-headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</dt>
 [%             FOREACH termitem IN category_map.5 ;
                   LAST IF loop.count > 25 ;
  %]

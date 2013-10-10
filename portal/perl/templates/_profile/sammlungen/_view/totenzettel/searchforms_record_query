@@ -77,14 +77,6 @@ $(document).ready(function(){
 <input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
-[%- cgiparam = searchfield.title.prefix;
-    this_searchfield = 'title';
- -%]
-<div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Name") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-
 [%- cgiparam = searchfield.person.prefix;
     this_searchfield = 'person';
  -%]
@@ -102,19 +94,11 @@ $(document).ready(function(){
 </div>
 
 
-[%- cgiparam = searchfield.titlestring.prefix;
-    this_searchfield = 'titlestring';
- -%]
-<div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Kompletter Name") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-
 [%- cgiparam = searchfield.content.prefix;
     this_searchfield = 'content';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Geburts-/Sterbeorte") %]</label>
+<label for="[% cgiparam %]">Orte</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
@@ -122,8 +106,16 @@ $(document).ready(function(){
     this_searchfield = 'yearstring';
  -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Sterbejahr") %]</label>
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Jahr") %]</label>
 <input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.publisher.prefix;
+    this_searchfield = 'publisher';
+ -%]
+<div class="ym-fbox-text">
+<label for="[% cgiparam %]">Beruf / Stand</label>
+<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 <p/>

@@ -15,7 +15,7 @@
 
 [%- IF field == '0425' ;
        field_description = msg.maketext("Sterbejahre");
-       searchfield = 'yearstring' ;
+       searchfield = 't0425' ;
     ELSIF field == '0426' ;
        field_description = "Geburtsjahre";
        searchfield = 't0426' ;

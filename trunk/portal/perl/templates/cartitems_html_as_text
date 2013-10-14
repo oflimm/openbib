@@ -25,6 +25,13 @@ FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
 
+    SWITCH category;
+
+    CASE "T5005";
+         NEXT;
+
+    END;
+
     # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
     # in Config.pm fuer die entsprechende Datenbank definiert
     # und werden im Message-Katalog als <Kategorie>-<Datenbankname>

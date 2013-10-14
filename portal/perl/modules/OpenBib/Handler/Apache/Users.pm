@@ -170,9 +170,10 @@ sub authorization_successful {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    my $user               = $self->param('user');    
     my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
-    my $userid             = $self->param('userid')             || '';
+    my $userid             = $self->param('userid')             || $user->{ID} || '';
 
     $logger->debug("Basic http auth failure: $basic_auth_failure / Userid: $userid ");
 

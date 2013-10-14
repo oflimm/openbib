@@ -196,6 +196,8 @@ sub create_record {
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
+
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST',$authenticatorid);            
         }

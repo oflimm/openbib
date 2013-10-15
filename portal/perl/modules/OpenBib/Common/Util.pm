@@ -38,7 +38,7 @@ use Encode qw/decode_utf8 encode_utf8/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX();
 use String::Tokenizer;
-use YAML ();
+#use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Common::Stopwords;
@@ -489,7 +489,7 @@ sub get_loadbalanced_servername {
         push @servertab, $item->host;
     }
 
-    $logger->debug("Got Servers ".YAML::Dump(\@servertab));
+#    $logger->debug("Got Servers ".YAML::Dump(\@servertab));
     
     if (!@servertab){
         push @servertab, $config->{servername};
@@ -790,7 +790,7 @@ sub gen_bibkey_base {
 
     return "" unless (defined $fields_ref);
 
-    $logger->debug("Trying to generate bibkey with fields: ".YAML::Dump($fields_ref));
+#    $logger->debug("Trying to generate bibkey with fields: ".YAML::Dump($fields_ref));
     
     # Nur Bibkeys mit allen relevanten Informationen sinnvoll!
     
@@ -994,7 +994,7 @@ sub gen_cloud_class {
 	  $thresholds[$i] = 100 * log(($mincount + $i * $delta) + 2);
 	}
 
-        $logger->debug(YAML::Dump(\@thresholds)." - $delta");
+#        $logger->debug(YAML::Dump(\@thresholds)." - $delta");
 
 	foreach my $item_ref (@$items_ref){
 	  my $done = 0;
@@ -1017,7 +1017,7 @@ sub gen_cloud_class {
       }
     }
 
-    $logger->debug(YAML::Dump($items_ref));
+#    $logger->debug(YAML::Dump($items_ref));
     return $items_ref;
 }
 
@@ -1060,7 +1060,7 @@ sub dispatch_to_content_type {
         $logger->debug("Information Resource Type: $information_type");
     }
     
-    $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accept_types));
+#    $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accept_types));
 
     return Apache2::Const::HTTP_SEE_OTHER;
 }

@@ -318,7 +318,9 @@ sub get_classifications {
         max   => $maxcount, 
         type  => 'log'});
 
-    $logger->debug(YAML::Dump($classifications_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($classifications_ref));
+    }
 
     return $classifications_ref;
 }

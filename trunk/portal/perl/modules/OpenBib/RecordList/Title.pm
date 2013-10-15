@@ -70,7 +70,10 @@ sub new {
     $self->{recordlist}     = [];
     $self->{_size}          = 0;
 
-    $logger->debug("Title-RecordList-Object created: ".YAML::Dump($self));
+    if ($logger->is_debug){
+        $logger->debug("Title-RecordList-Object created: ".YAML::Dump($self));
+    }
+    
     return $self;
 }
 
@@ -509,7 +512,9 @@ sub set_from_storable {
         $self->{_size}      = $storable_ref->{_size};
     }
 
-    $logger->debug(YAML::Dump($self));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($self));
+    }
 
     return $self;
 }
@@ -560,7 +565,9 @@ sub filter_by_profile {
         $db_in_profile_ref->{$dbname} = 1;
     }
 
-    $logger->debug("Databases: ".YAML::Dump($db_in_profile_ref));
+    if ($logger->is_debug){
+        $logger->debug("Databases: ".YAML::Dump($db_in_profile_ref));
+    }
     
     my $newrecords_ref = [];
 

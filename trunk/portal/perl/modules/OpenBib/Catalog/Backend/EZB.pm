@@ -341,7 +341,10 @@ sub _get_readme {
             $this_period_ref->{warpto_link}="http://rzblx1.uni-regensburg.de/ezeit/$this_period_ref->{readme_link}";
         }
 
-        $logger->debug(YAML::Dump($this_period_ref));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($this_period_ref));
+        }
+        
         push @{$periods_ref}, $this_period_ref;
     }
 
@@ -400,8 +403,10 @@ sub get_classifications {
         max   => $maxcount, 
         type  => 'log'});
     
-    $logger->debug(YAML::Dump($classifications_ref));
-
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($classifications_ref));
+    }
+    
     return $classifications_ref;
 }
 

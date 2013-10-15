@@ -448,7 +448,9 @@ sub get_title_hierarchy {
 
         $level++;
         
-        $logger->debug("Verbliebene TitelID's: ".join(',',keys %tmp_titleid_super));
+        if ($logger->is_debug){
+            $logger->debug("Verbliebene TitelID's: ".join(',',keys %tmp_titleid_super));
+        }
     } 
 
     return $self;

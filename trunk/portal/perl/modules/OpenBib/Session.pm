@@ -344,8 +344,10 @@ sub _init_new_session {
         }
     }
 
-    $logger->debug("Request Object: ".YAML::Dump($r));
-
+    if ($logger->is_debug){
+        $logger->debug("Request Object: ".YAML::Dump($r));
+    }
+    
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
@@ -558,7 +560,10 @@ sub get_resultlists_offsets {
         };
     }
 
-    $logger->debug("Offsets:\n".YAML::Dump(\@offsets));
+    if ($logger->is_debug){
+        $logger->debug("Offsets:\n".YAML::Dump(\@offsets));
+    }
+    
     return @offsets;
 }
 
@@ -639,7 +644,9 @@ sub get_dbchoice {
 
         @dbchoice = reverse $config->get_databases_of_searchprofile($searchprofileid);
             
-        $logger->debug("DB-Choice:\n".YAML::Dump(\@dbchoice));
+        if ($logger->is_debug){
+            $logger->debug("DB-Choice:\n".YAML::Dump(\@dbchoice));
+        }
     }
 
         
@@ -1443,7 +1450,9 @@ sub set_all_searchresults {
             }
         );
 
-        $logger->debug("YAML-Dumped: ".YAML::Dump($res));
+        if ($logger->is_debug){
+            $logger->debug("YAML-Dumped: ".YAML::Dump($res));
+        }
     }
 
     return;
@@ -1488,7 +1497,10 @@ sub set_searchresult {
 
     my $storableres=unpack "H*",Storable::freeze($recordlist);
     
-    $logger->debug("YAML-Dumped: ".YAML::Dump($recordlist));
+    if ($logger->is_debug){
+        $logger->debug("YAML-Dumped: ".YAML::Dump($recordlist));
+    }
+    
     my $num=$recordlist->get_size();
 
     # DBI: "insert into searchresults values (?,?,?,?,?,?,?)"
@@ -1546,7 +1558,9 @@ sub get_searchresult {
         $recordlist=Storable::thaw(pack "H*", $searchresult);
     }
 
-    $logger->debug("Suchergebnis: ".YAML::Dump($recordlist));
+    if ($logger->is_debug){
+        $logger->debug("Suchergebnis: ".YAML::Dump($recordlist));
+    }
 
     return $recordlist;
 }

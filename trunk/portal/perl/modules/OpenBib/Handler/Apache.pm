@@ -611,8 +611,11 @@ sub negotiate_type {
     }
 
     if ($content_type){
-        $logger->debug("Content-Type: |$content_type|");
-        $logger->debug(YAML::Dump($config->{content_type_map}));
+        if ($logger->is_debug){
+            $logger->debug("Content-Type: |$content_type|");
+            $logger->debug(YAML::Dump($config->{content_type_map}));
+        }
+        
         if ($config->{content_type_map}{$content_type}){
             $self->param('content_type',$content_type);
             $self->param('representation',$config->{content_type_map}->{$content_type});
@@ -620,7 +623,9 @@ sub negotiate_type {
         $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation'));
     }
     elsif (@accepted_types){
-        $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
+        if ($logger->is_debug){
+            $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
+        }
     
         foreach my $information_type (@accepted_types){
             if ($config->{content_type_map}{$information_type}){
@@ -661,7 +666,9 @@ sub negotiate_language {
     my $lang         = $r->headers_in->{'Accept-Language'} || '';
     my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
     
-    $logger->debug("Accept-Language: $lang - Languages: ".YAML::Dump(\@accepted_languages));
+    if ($logger->is_debug){
+        $logger->debug("Accept-Language: $lang - Languages: ".YAML::Dump(\@accepted_languages));
+    }
     
     foreach my $language (@{$config->{lang}}){
         if (any { $_ eq $language } @accepted_languages) {
@@ -1239,7 +1246,9 @@ sub to_cgi_params {
         $exclude_ref->{$param} = 1;
     }
 
-    $logger->debug("Args".YAML::Dump($arg_ref));
+    if ($logger->is_debug){
+        $logger->debug("Args".YAML::Dump($arg_ref));
+    }
 
     my @cgiparams = ();
 
@@ -1273,7 +1282,9 @@ sub to_cgi_params {
         }
     }
 
-    $logger->debug("Got cgiparams ".YAML::Dump(\@cgiparams));
+    if ($logger->is_debug){
+        $logger->debug("Got cgiparams ".YAML::Dump(\@cgiparams));
+    }
 
     return @cgiparams;
 }
@@ -1317,7 +1328,9 @@ sub to_cgi_hidden_input {
 
     $logger->debug("Modify Querystring as hidden input");
     
-#    $logger->debug("Args".YAML::Dump($arg_ref));
+    if ($logger->is_debug){
+        $logger->debug("Args".YAML::Dump($arg_ref));
+    }
 
     my @cgiparams = ();
 

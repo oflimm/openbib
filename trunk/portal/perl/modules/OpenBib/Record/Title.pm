@@ -165,7 +165,9 @@ sub load_full_record {
     
     my $record = $catalog->load_full_title_record({id => $id});
     
-    $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
+    if ($logger->is_debug){
+        $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
+    }
     
     $self->set_fields($record->get_fields);
     $self->set_holding($record->get_holding);
@@ -230,7 +232,9 @@ sub load_brief_record {
         $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
     }
 
-    $logger->debug(YAML::Dump($fields_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($fields_ref));
+    }
 
     ($self->{_fields},$self->{_exists},$self->{_type})=($fields_ref,$record_exists,'brief');
 
@@ -271,8 +275,10 @@ sub enrich_content {
     my @issn_refs = ();
     push @issn_refs, @{$self->get_field({field => 'T0543'})} if ($self->has_field('T0543'));                                           
     
-    $logger->debug("Enrichment ISBN's ".YAML::Dump(\@isbn_refs));
-    $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
+    if ($logger->is_debug){
+        $logger->debug("Enrichment ISBN's ".YAML::Dump(\@isbn_refs));
+        $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
+    }
     
     my %seen_content = ();            
     
@@ -290,7 +296,9 @@ sub enrich_content {
             $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
         }
 
-        $logger->debug("Filtern Profile: $profilename / View: $viewname nach Datenbanken ".YAML::Dump(\@filter_databases));
+        if ($logger->is_debug){
+            $logger->debug("Filtern Profile: $profilename / View: $viewname nach Datenbanken ".YAML::Dump(\@filter_databases));
+        }
         
         my @isbn_refs_tmp = ();
         
@@ -317,7 +325,9 @@ sub enrich_content {
         
         @isbn_refs = grep { ! $seen_isbns{$_} ++ } @isbn_refs_tmp;
         
-        $logger->debug("Relevante ISBNs des Titels fuer die Anreicherung: ".YAML::Dump(\@isbn_refs));
+        if ($logger->is_debug){
+            $logger->debug("Relevante ISBNs des Titels fuer die Anreicherung: ".YAML::Dump(\@isbn_refs));
+        }       
 
         # Anreicherung der Normdaten
         {
@@ -365,7 +375,9 @@ sub enrich_content {
             # Same Records via Backend sind Grundlage.               
             my $same_recordlist = $self->get_same_records;
             
-            $logger->debug("Same records via backend ".YAML::Dump($same_recordlist));
+            if ($logger->is_debug){
+                $logger->debug("Same records via backend ".YAML::Dump($same_recordlist));
+            }
 
             my $where_ref = {
                 isbn    => \@isbn_refs,
@@ -431,7 +443,9 @@ sub enrich_content {
         {
             my $similar_recordlist = $self->get_similar_records;
             
-            $logger->debug("Similar records via backend ".YAML::Dump($similar_recordlist));
+            if ($logger->is_debug){
+                $logger->debug("Similar records via backend ".YAML::Dump($similar_recordlist));
+            }   
             
             # Alle Werke zu gegebenen ISBNs bestimmen
             my $works = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
@@ -514,7 +528,9 @@ sub enrich_content {
 
             my $related_recordlist = $self->get_related_records;
             
-            $logger->debug("Related records via backend ".YAML::Dump($related_recordlist));
+            if ($logger->is_debug){
+                $logger->debug("Related records via backend ".YAML::Dump($related_recordlist));
+            }
             
             my $titles_found_ref = {}; # Ein Titel kann ueber verschiedenen ISBNs erreicht werden. Das laesst sich nicht trivial via SQL loesen, daher haendisch                    
             
@@ -660,7 +676,9 @@ sub enrich_content {
         
         @issn_refs = grep { ! $seen_issns{$_} ++ } @issn_refs_tmp;
         
-        $logger->debug("ISSN: ".YAML::Dump(\@issn_refs));
+        if ($logger->is_debug){
+            $logger->debug("ISSN: ".YAML::Dump(\@issn_refs));
+        }
         
         # DBI "select category,content from normdata where isbn=? order by category,indicator"
         my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByIssn')->search_rs(
@@ -950,7 +968,10 @@ sub set_fields_from_storable {
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
 
-    $logger->debug("Got :".YAML::Dump($storable_ref));
+    if ($logger->is_debug){
+        $logger->debug("Got :".YAML::Dump($storable_ref));
+    }
+    
     $self->{_fields} = $storable_ref;
     $self->{_type} = 'brief';
     
@@ -1697,7 +1718,10 @@ sub set_from_apache_request {
         } 
     } 
 
-    $logger->debug(YAML::Dump($self->{_fields}));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($self->{_fields}));
+    }
+    
     return $self;
 }
 

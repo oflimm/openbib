@@ -106,7 +106,9 @@ sub get_generic_attributes {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Got: ".YAML::Dump($self->{generic_attributes}));
+    if ($logger->is_debug){
+        $logger->debug("Got: ".YAML::Dump($self->{generic_attributes}));
+    }   
     
     return $self->{generic_attributes};
 }

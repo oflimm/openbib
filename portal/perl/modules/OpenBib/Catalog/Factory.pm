@@ -52,7 +52,9 @@ sub create_catalog {
 
     my $system = $config->get_system_of_db($database);
 
-    $logger->debug("Factory for database $database with system $system");
+    if ($logger->is_debug){
+        $logger->debug("Factory for database $database with system $system");
+    }
 
     return new OpenBib::Catalog::Backend::BibSonomy($arg_ref)  if ($system eq "Backend: BibSonomy");
     return new OpenBib::Catalog::Backend::EZB($arg_ref)  if ($system eq "Backend: EZB");

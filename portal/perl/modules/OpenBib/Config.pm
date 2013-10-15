@@ -529,8 +529,10 @@ sub get_dbs_of_view {
         push @dblist, $item->{thisdbname};
     }
 
-    $logger->debug("View-Databases:\n".YAML::Dump(\@dblist));
-
+    if ($logger->is_debug){
+        $logger->debug("View-Databases:\n".YAML::Dump(\@dblist));
+    }
+    
     return @dblist;
 }
 
@@ -1322,7 +1324,10 @@ sub get_profiledbs {
         
     }
 
-    $logger->debug("Profile $profilename: ".YAML::Dump(\@profiledbs));
+    if ($logger->is_debug){    
+        $logger->debug("Profile $profilename: ".YAML::Dump(\@profiledbs));
+    }
+    
     return @profiledbs;
 }
 
@@ -2097,8 +2102,10 @@ sub update_locationinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug(YAML::Dump($locationinfo_ref));
-
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($locationinfo_ref));
+    }
+    
     my $update_args = {};
 
     if ($locationinfo_ref->{type}){
@@ -2311,7 +2318,9 @@ sub new_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Argumente".YAML::Dump($arg_ref));
+    if ($logger->is_debug){
+        $logger->debug("Argumente".YAML::Dump($arg_ref));
+    }
     
     my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
     
@@ -2340,7 +2349,9 @@ sub new_view {
         $profile_lookup_ref->{$profiledb} = 1;
     }
 
-    $logger->debug("Valide Kataloge".YAML::Dump($profile_lookup_ref));
+    if ($logger->is_debug){
+        $logger->debug("Valide Kataloge".YAML::Dump($profile_lookup_ref));
+    }
     
     if (@$databases_ref){
         my $this_db_ref = [];
@@ -2498,8 +2509,10 @@ sub update_orgunit {
     # DBI: "insert into orgunit_db values (?,?,?)"
     if (@$databases_ref){
 
-        $logger->debug("Datenbanken ".YAML::Dump($databases_ref));
-
+        if ($logger->is_debug){
+            $logger->debug("Datenbanken ".YAML::Dump($databases_ref));
+        }
+        
         my $this_db_ref = [];
         foreach my $dbname (@$databases_ref){
             my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });
@@ -2548,7 +2561,9 @@ sub new_orgunit {
     # DBI: "insert into orgunit_db values (?,?,?)"
     if (@$databases_ref){
 
-        $logger->debug("Datenbanken ".YAML::Dump($databases_ref));
+        if ($logger->is_debug){
+            $logger->debug("Datenbanken ".YAML::Dump($databases_ref));
+        }
         
         my $this_db_ref = [];
         foreach my $dbname (@$databases_ref){
@@ -2626,7 +2641,9 @@ sub update_server {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Updating ID $id".YAML::Dump($update_args));
+    if ($logger->is_debug){
+        $logger->debug("Updating ID $id".YAML::Dump($update_args));
+    }
     
     # DBI: "update serverinfo set active = ? where id = ?"
     $self->{schema}->resultset('Serverinfo')->search_rs({ id => $id })->update($update_args);
@@ -2825,7 +2842,10 @@ sub get_authenticator_by_id {
         };
     }
 
-    $logger->debug("Getting Info for Targetid: $targetid -> Got: ".YAML::Dump($authenticator_ref));
+    if ($logger->is_debug){
+        $logger->debug("Getting Info for Targetid: $targetid -> Got: ".YAML::Dump($authenticator_ref));
+    }
+    
     return $authenticator_ref;
 }
 
@@ -2856,7 +2876,10 @@ sub get_authenticator_by_dbname {
         };
     }
 
-    $logger->debug("Getting Info for dbname: $dbname -> Got: ".YAML::Dump($authenticator_ref));
+    if ($logger->is_debug){
+        $logger->debug("Getting Info for dbname: $dbname -> Got: ".YAML::Dump($authenticator_ref));
+    }
+    
     return $authenticator_ref;
 }
 
@@ -2888,7 +2911,10 @@ sub get_authenticator_self {
         };
     }
 
-    $logger->debug("Getting Info for Type self:  -> Got: ".YAML::Dump($authenticator_ref));
+    if ($logger->is_debug){
+        $logger->debug("Getting Info for Type self:  -> Got: ".YAML::Dump($authenticator_ref));
+    }
+    
     return $authenticator_ref;
 }
 
@@ -2955,7 +2981,10 @@ sub new_authenticator {
   
     my $logger = get_logger();
 
-    $logger->debug(YAML::Dump($arg_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($arg_ref));
+    }
+    
     # DBI: "insert into authenticator (hostname,port,user,db,description,type) values (?,?,?,?,?,?)"
     my $new_authenticator = $self->{schema}->resultset('Authenticator')->create(
         $arg_ref,

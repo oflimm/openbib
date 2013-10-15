@@ -101,7 +101,9 @@ sub get_recent_titles {
         );
         
         while (my $title = $titles->next){
-            $logger->debug("Adding Title ".$title->id);
+            if ($logger->is_debug){
+                $logger->debug("Adding Title ".$title->id);
+            }
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
     };
@@ -141,7 +143,9 @@ sub get_recent_titles_of_person {
         );
 
         while (my $title = $titles->next){
-            $logger->debug("Adding Title ".$title->id);
+            if ($logger->is_debug){
+                $logger->debug("Adding Title ".$title->id);
+            }   
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
     };
@@ -181,7 +185,9 @@ sub get_recent_titles_of_corporatebody {
         );
         
         while (my $title = $titles->next){
-            $logger->debug("Adding Title ".$title->id);
+            if ($logger->is_debug){
+                $logger->debug("Adding Title ".$title->id);
+            }
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
     };
@@ -221,7 +227,9 @@ sub get_recent_titles_of_classification {
         );
         
         while (my $title = $titles->next){
-            $logger->debug("Adding Title ".$title->id);
+            if ($logger->is_debug){
+                $logger->debug("Adding Title ".$title->id);
+            }
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
     };
@@ -261,7 +269,9 @@ sub get_recent_titles_of_subject {
         );
         
         while (my $title = $titles->next){
-            $logger->debug("Adding Title ".$title->id);
+            if ($logger->is_debug){
+                $logger->debug("Adding Title ".$title->id);
+            }
             $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
         }
     };
@@ -611,7 +621,10 @@ sub load_full_title_record {
             }
         }
         
-        $logger->debug(YAML::Dump($title_record->get_fields));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($title_record->get_fields));
+        }
+        
         $title_record->set_holding($holding_ref);
     };
 
@@ -1299,7 +1312,9 @@ sub _get_holding {
         $fields_ref->{X4001}{content}=$dbinfotable->{bibinfo}{$sigel};
     }
 
-    $logger->debug(YAML::Dump($fields_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($fields_ref));
+    }
     
     return $fields_ref;
 }
@@ -1426,7 +1441,9 @@ sub get_connected_titles {
         push @titles, $item->{thistitleid};
     }
 
-    $logger->debug("Related title id's for type $type and id $id :".YAML::Dump(@titles));
+    if ($logger->is_debug){
+        $logger->debug("Related title id's for type $type and id $id :".YAML::Dump(@titles));
+    }
     
     return @titles;
 }

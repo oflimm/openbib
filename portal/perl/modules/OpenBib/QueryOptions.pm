@@ -96,8 +96,9 @@ sub _new_instance {
         $logger->debug("srt Option split: srt = $1, srto = $2");
     }
 
-    
-    $logger->debug("QueryOptions-Object created with options ".YAML::Syck::Dump($self->{option}));
+    if ($logger->is_debug){
+        $logger->debug("QueryOptions-Object created with options ".YAML::Syck::Dump($self->{option}));
+    }
 
     return $self;
 }

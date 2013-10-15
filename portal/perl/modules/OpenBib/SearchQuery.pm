@@ -187,7 +187,10 @@ sub set_from_apache_request {
     $logger->debug("Paramstring: ".$self->{r}->args);
 
     my @param_names = $query->param;
-    $logger->debug("CGI-Parameters: ".YAML::Dump(@param_names));
+
+    if ($logger->is_debug){
+        $logger->debug("CGI-Parameters: ".YAML::Dump(@param_names));
+    }
     
     # Suchfelder einlesen
     foreach my $searchfield (keys %{$config->{searchfield}}){
@@ -287,7 +290,9 @@ sub set_from_apache_request {
         my ($field) = $filter =~m/^f\[(.+)\]/;
         my @terms   = ($query->param($filter))? $query->param($filter) : ();
 
-        $logger->debug("Filter: $filter with terms ".YAML::Dump(\@terms));
+        if ($logger->is_debug){
+            $logger->debug("Filter: $filter with terms ".YAML::Dump(\@terms));
+        }
         
         foreach my $term (@terms){
             $term = decode_utf8(uri_unescape($term));
@@ -346,7 +351,10 @@ sub set_from_apache_request {
     
     $self->{_searchprofile}  = $self->_get_searchprofile;
 
-    $logger->debug("Searchquery-Terms: ".YAML::Dump($self->get_searchquery));
+    if ($logger->is_debug){
+        $logger->debug("Searchquery-Terms: ".YAML::Dump($self->get_searchquery));
+    }
+    
     return $self;
 }
 
@@ -589,7 +597,9 @@ sub to_cgi_hidden_input {
 
     $logger->debug("Querystring as hidden input");
     
-    $logger->debug("Args".YAML::Dump($arg_ref));
+    if ($logger->is_debug){
+        $logger->debug("Args".YAML::Dump($arg_ref));
+    }
 
     my @cgiparams = ();
 
@@ -701,7 +711,9 @@ sub get_searchterms {
 
     my $term_ref = [];
 
-    $logger->debug("_searchquery is: ".YAML::Dump($self->{_searchquery}));
+    if ($logger->is_debug){
+        $logger->debug("_searchquery is: ".YAML::Dump($self->{_searchquery}));
+    }
     
     return $term_ref unless (defined $self->{_searchquery} && exists $self->{_searchquery});
 
@@ -735,7 +747,9 @@ sub get_searchtermstring {
 
     my $term_ref = [];
 
-    $logger->debug("_searchquery is: ".YAML::Dump($self->{_searchquery}));
+    if ($logger->is_debug){
+        $logger->debug("_searchquery is: ".YAML::Dump($self->{_searchquery}));
+    }
     
     return $term_ref unless (defined $self->{_searchquery} && exists $self->{_searchquery});
 
@@ -882,7 +896,9 @@ sub get_spelling_suggestion {
         # Nur Vorschlaege sammeln, wenn der Begriff nicht im Woerterbuch vorkommt
         my @aspell_suggestions = ($speller->check($term))?():$speller->suggest( $term );
 
-        $logger->debug("Aspell suggestions".YAML::Dump(\@aspell_suggestions));
+        if ($logger->is_debug){
+            $logger->debug("Aspell suggestions".YAML::Dump(\@aspell_suggestions));
+        }
 
         my $valid_suggestions_ref  = [];
         my $sorted_suggestions_ref = [];
@@ -912,7 +928,9 @@ sub get_spelling_suggestion {
                 } if ($termfreq > $this_termfreq);                
             }
             
-            $logger->info(YAML::Dump($valid_suggestions_ref));
+            if ($logger->is_debug){
+                $logger->info(YAML::Dump($valid_suggestions_ref));
+            }
             
              @{$sorted_suggestions_ref} =
                  map { $_->[0] }
@@ -1061,8 +1079,11 @@ sub _get_searchprofile {
 
     my $searchprofile = ($profile)?$profile:$config->get_searchprofile_or_create(\@databases);
     
-    $logger->debug("Database List: ".YAML::Dump(\@databases));
-    $logger->debug("Searchprofie : $searchprofile");
+    if ($logger->is_debug){
+        $logger->debug("Database List: ".YAML::Dump(\@databases));
+        $logger->debug("Searchprofie : $searchprofile");
+    }
+    
     return $searchprofile;
 }
 

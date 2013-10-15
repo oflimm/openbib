@@ -1172,8 +1172,11 @@ sub add_tags {
     # 3) nein, dann mit Tags neu anlegen
     else {
         if (@$tags_ref){
-            $logger->debug("Syncing Record $dbname:$titleid");
-            $logger->debug("Tags".YAML::Dump($tags_ref));
+            if ($logger->is_debug){            
+                $logger->debug("Syncing Record $dbname:$titleid");
+                $logger->debug("Tags".YAML::Dump($tags_ref));
+            }
+            
             $bibsonomy->new_post({ tags => $tags_ref, record => $record, visibility => $visibility });
         }
     }
@@ -1662,7 +1665,10 @@ sub get_private_tags_by_name {
         }
     }
 
-    $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
+    if ($logger->is_debug){
+        $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
+    }
+    
     return $taglist_ref;
 }
 
@@ -1710,7 +1716,10 @@ sub get_private_tagged_titles {
         push @{$taglist_ref->{$database}{$id}{tags}}, $tag;
     }
 
-    $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
+    if ($logger->is_debug){
+        $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
+    }
+    
     return $taglist_ref;
 }
 
@@ -2114,8 +2123,10 @@ sub get_review_properties {
             rating           => $rating,
         };
 
-        $logger->debug("Review Properties: ".YAML::Dump($review_ref));
-
+        if ($logger->is_debug){
+            $logger->debug("Review Properties: ".YAML::Dump($review_ref));
+        }
+        
         return $review_ref;
     }
     else {
@@ -2369,7 +2380,9 @@ sub get_review_of_user {
         };
     }
 
-    $logger->debug("Got Review: ".YAML::Dump($review_ref));
+    if ($logger->is_debug){
+        $logger->debug("Got Review: ".YAML::Dump($review_ref));
+    }
 
     return $review_ref;
 }
@@ -3392,7 +3405,9 @@ sub get_classifications_of_topic {
         push @{$classifications_ref}, $classification->classification;
     }
 
-    $logger->debug("Got classifications ".YAML::Dump($classifications_ref));
+    if ($logger->is_debug){
+        $logger->debug("Got classifications ".YAML::Dump($classifications_ref));
+    }
 
     return $classifications_ref;
 }
@@ -3414,7 +3429,9 @@ sub set_classifications_of_topic {
   
     my $logger = get_logger();
 
-    $logger->debug("Classifications4 ".YAML::Dump($classifications_ref));
+    if ($logger->is_debug){
+        $logger->debug("Classifications4 ".YAML::Dump($classifications_ref));
+    }
 
     unless (ref($classifications_ref) eq 'ARRAY') {
         $classifications_ref = [ $classifications_ref ];
@@ -4375,7 +4392,9 @@ sub get_all_roles {
         };
     }
 
-    $logger->debug("Available roles ".YAML::Dump($roles_ref));
+    if ($logger->is_debug){
+        $logger->debug("Available roles ".YAML::Dump($roles_ref));
+    }
     
     return $roles_ref;
 }
@@ -4406,7 +4425,9 @@ sub get_roles_of_user {
         $role_ref->{$userrole->get_column('thisrolename')}=1;
     }
 
-    $logger->debug("Available roles ".YAML::Dump($role_ref));
+    if ($logger->is_debug){
+        $logger->debug("Available roles ".YAML::Dump($role_ref));
+    }
     
     return $role_ref;
 }
@@ -4999,8 +5020,11 @@ sub sync_all_to_bibsonomy {
             # 3) nein, dann mit Tags neu anlegen
             else {
                 if (@$tags_ref){
-                    $logger->debug("Syncing Record $database:$id");
-                    $logger->debug("Tags".YAML::Dump($tags_ref));
+                    if ($logger->is_debug){
+                        $logger->debug("Syncing Record $database:$id");
+                        $logger->debug("Tags".YAML::Dump($tags_ref));
+                    }
+                    
                     $bibsonomy->new_post({ tags => $tags_ref, record => $record, visibility => $visibility });
                 }
             }
@@ -5182,8 +5206,10 @@ sub update_topic_mapping {
 
     # Angabe von type bedingt update der entsprechenden Klassifikationen
     if ($type){       
-        $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
-
+        if ($logger->is_debug){
+            $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
+        }
+        
         $self->set_classifications_of_topic({
             topicid         => $id,
             classifications => $classifications_ref,
@@ -5363,8 +5389,10 @@ sub migrate_ugc {
         }
     }
     
-    $logger->debug(YAML::Dump($arg_ref));
-
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($arg_ref));
+    }
+    
     return;
 }
 

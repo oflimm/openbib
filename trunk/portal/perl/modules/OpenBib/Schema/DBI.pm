@@ -57,9 +57,10 @@ sub connect {
     
     $dbh_pool{$args_key} = DBI->connect(@args);
 
-    $logger->debug("Neuen dbh erzeugt");
-
-    $logger->debug("Alle dbh's: ".YAML::Dump(\%dbh_pool));
+    if ($logger->is_debug){
+        $logger->debug("Neuen dbh erzeugt");
+        $logger->debug("Alle dbh's: ".YAML::Dump(\%dbh_pool));
+    }
     
     return $dbh_pool{$args_key};
 }

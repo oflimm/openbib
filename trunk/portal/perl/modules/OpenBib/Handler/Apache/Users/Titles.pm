@@ -518,18 +518,24 @@ sub highlightquery {
 
     return $content if (scalar(@$term_ref) <= 0);
 
-    $logger->debug("Terms: ".YAML::Dump($term_ref));
+    if ($logger->is_debug){
+        $logger->debug("Terms: ".YAML::Dump($term_ref));
+    }
 
     my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
 
     return $content if (!$terms);
     
-    $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
-    $logger->debug("Content vor: ".$content);
+    if ($logger->is_debug){
+        $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
+        $logger->debug("Content vor: ".$content);
+    }
     
     $content=~s/\b($terms)/<span class="ob-highlight_searchterm">$1<\/span>/ig unless ($content=~/http/);
 
-    $logger->debug("Content nach: ".$content);
+    if ($logger->is_debug){
+        $logger->debug("Content nach: ".$content);
+    }
 
     return $content;
 }

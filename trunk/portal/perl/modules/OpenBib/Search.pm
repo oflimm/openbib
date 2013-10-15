@@ -103,7 +103,9 @@ sub get_records {
     my @matches = $self->matches;
     
     foreach my $match_ref (@matches) {        
-        $logger->debug("Record: ".$match_ref );
+        if ($logger->is_debug){
+            $logger->debug("Record: ".$match_ref );
+        }
 
         # Create and populate record
 
@@ -119,7 +121,10 @@ sub matches {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug(YAML::Dump($self->{_matches}));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($self->{_matches}));
+    }
+    
     return @{$self->{_matches}};
 }
 

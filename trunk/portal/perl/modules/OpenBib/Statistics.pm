@@ -158,9 +158,11 @@ sub cache_data {
         $logger->error("Couldn't delete item(s)");
     }
 
-    $logger->debug("Storing:\n".YAML::Dump($data_ref));
-    $logger->debug(ref $data_ref);
-
+    if ($logger->is_debug){
+        $logger->debug("Storing:\n".YAML::Dump($data_ref));
+        $logger->debug(ref $data_ref);
+    }
+    
     if (ref $data_ref eq "ARRAY" && !@$data_ref){
         $logger->debug("Aborting: No Data");
         return;
@@ -224,12 +226,16 @@ sub get_result {
         $data_ref     = decode_json $datastring;
     }
 
-    $logger->debug(YAML::Dump($data_ref));
-
-    $logger->debug("Ref: ".(ref $data_ref));
-
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($data_ref));        
+        $logger->debug("Ref: ".(ref $data_ref));
+    }
+    
     if (ref $data_ref eq "HASH" && $hashkey){
-        $logger->debug("Returning Ref: ".(ref $data_ref));
+        if ($logger->is_debug){
+            $logger->debug("Returning Ref: ".(ref $data_ref));
+        }
+        
         return $data_ref->{$hashkey};
     }
     
@@ -441,7 +447,9 @@ sub get_number_of_event {
         $where_ref->{content}= { $op => $content }; 
     } 
 
-    $logger->debug(YAML::Dump($where_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($where_ref));
+    }
 
     if (exists $config->{eventlogjson_type}{$type}){
         my $count = $self->{schema}->resultset('Eventlogjson')->search_rs($where_ref)->count;
@@ -625,7 +633,9 @@ sub get_ranking_of_event {
         $attribute_ref->{rows} = $limit;
     }
     
-    $logger->debug(YAML::Dump($where_ref)." - ".YAML::Dump($attribute_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($where_ref)." - ".YAML::Dump($attribute_ref));
+    }   
 
     my @ranking=();
 
@@ -651,7 +661,9 @@ sub get_ranking_of_event {
         @sortedranking = sort {$a->{number} cmp $b->{number}} @ranking;
     }
     
-    $logger->debug(YAML::Dump(\@sortedranking));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump(\@sortedranking));
+    }
 
     return @sortedranking;
 }
@@ -935,7 +947,9 @@ sub get_sequencestat_of_event {
     my $values_ref = { x_values => \@x_values,
 		       y_values => \@y_values};
 
-    $logger->debug(YAML::Dump($values_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($values_ref));
+    }
 
     return $values_ref;
 }

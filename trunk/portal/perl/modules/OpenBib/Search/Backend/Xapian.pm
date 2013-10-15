@@ -69,7 +69,9 @@ sub get_relevant_terms {
     my $fulltermsem_ref={};
     my $fullterm_ref=[];
 
-    $logger->debug(YAML::Dump($relevanttokens_ref->{$type}));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($relevanttokens_ref->{$type}));
+    }
 
     my $atime=new Benchmark;
     
@@ -109,9 +111,15 @@ sub get_relevant_terms {
 
     my $btime       = new Benchmark;
     my $timeall     = timediff($btime,$atime);
-    $logger->debug("Time: ".timestr($timeall,"nop"));
 
-    $logger->debug(YAML::Dump($fullterm_ref));
+    if ($logger->is_debug){
+        $logger->debug("Time: ".timestr($timeall,"nop"));
+    }
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($fullterm_ref));
+    }
+    
     return $fullterm_ref;
 }
 
@@ -257,9 +265,11 @@ sub search {
     }
 
     if ($defaultop ne "or"){
-        $logger->debug("Setting default op to ".$default_op_ref->{$defaultop});
         $self->{qp}->set_default_op($default_op_ref->{$defaultop});
-        $logger->debug("Got default op ".$self->{qp}->get_default_op);
+        if ($logger->is_debug){
+            $logger->debug("Setting default op to ".$default_op_ref->{$defaultop});
+            $logger->debug("Got default op ".$self->{qp}->get_default_op);
+        }
     }
     
     foreach my $searchfield (keys %{$config->{xapian_search}}){
@@ -343,9 +353,13 @@ sub search {
     
     my $mset = ($drilldown)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
 
-    $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
+    if ($logger->is_debug){
+        $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
+    }
     
-    $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
+    if ($logger->is_debug){
+        $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
+    }
 
     $self->{_enq}         = $enq;
 
@@ -364,7 +378,10 @@ sub search {
 #    my @this_matches      = splice(@matches,$offset,$num);
     $self->{_matches}     = \@matches;
 
-    $logger->debug(YAML::Dump(\%decider_map));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump(\%decider_map));
+    }
+    
     if ($singletermcount > $maxmatch){
       $self->{categories} = {};
     }
@@ -441,7 +458,10 @@ sub browse {
     my $category_map_ref = {};
 
     my $matchall = Search::Xapian::Query->new("");
-    $logger->debug("Matchall Query ".$matchall->get_description);
+
+    if ($logger->is_debug){
+        $logger->debug("Matchall Query ".$matchall->get_description);
+    }
     
     my $enq       = $dbh->enquire($matchall);
 
@@ -493,7 +513,9 @@ sub browse {
 
     $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
     
-    $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
+    if ($logger->is_debug){
+        $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
+    }
 
     $self->{_enq}         = $enq;
 
@@ -565,7 +587,9 @@ sub get_facets {
             ];
         }
         
-        $logger->debug(YAML::Dump($contents_ref));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($contents_ref));
+        }
         
         # Schwartz'ian Transform
         
@@ -622,7 +646,9 @@ sub get_indexterms {
 
     my @matches = $enq->matches(0,10);
 
-    $logger->debug(YAML::Dump(\@matches));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump(\@matches));
+    }
     
     my $indexterms_ref = [];
     

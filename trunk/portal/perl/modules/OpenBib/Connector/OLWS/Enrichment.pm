@@ -70,7 +70,10 @@ sub get_enriched_content {
             push @enrich_content_items, SOAP::Data->name(Content => $item)->type('string');
         }
 
-        $logger->debug(YAML::Dump(\@enrich_content_items));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump(\@enrich_content_items));
+        }
+        
         push @enrich_category_items, SOAP::Data->name($category => \SOAP::Data->value(@enrich_content_items));
     }
 
@@ -100,7 +103,9 @@ sub get_similar_isbns {
 
     my $similar_isbn_ref = $enrichmnt->get_similar_isbns({ isbn => $isbn});
 
-    $logger->debug(YAML::Dump($similar_isbn_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($similar_isbn_ref));
+    }
 
     my @similar_isbns = ();
     foreach my $similar_isbn (keys %$similar_isbn_ref){

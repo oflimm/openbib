@@ -162,7 +162,9 @@ sub show_record {
                 fields      => $config->get_locationinfo_fields($locationid),
             };
 
-            $logger->debug("Found record:".YAML::Dump($locationinfo_ref));
+            if ($logger->is_debug){
+                $logger->debug("Found record:".YAML::Dump($locationinfo_ref));
+            }
 
         }
         else {

@@ -233,7 +233,9 @@ sub get_records {
 
     my @matches = $self->matches;
 
-    $logger->debug("Getting Matches ".YAML::Dump(\@matches));
+    if ($logger->is_debug){
+        $logger->debug("Getting Matches ".YAML::Dump(\@matches));
+    }
     
     foreach my $match_ref (@matches) {        
         $logger->debug("Record: ".$match_ref );
@@ -257,7 +259,10 @@ sub get_records {
             }
         }
         
-        $logger->debug("Adding Record with ".YAML::Dump($record->get_fields));
+        if ($logger->is_debug){
+            $logger->debug("Adding Record with ".YAML::Dump($record->get_fields));
+        }
+        
         $recordlist->add($record);
     }
 

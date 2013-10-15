@@ -211,7 +211,9 @@ sub show_record {
         content   => $tag,
     });
 
-    $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+    if ($logger->is_debug){
+        $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+    }
 
     $recordlist->load_brief_records;
 

@@ -282,7 +282,9 @@ sub show_record {
         content   => $tagname,
     });
 
-    $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+    if ($logger->is_debug){
+        $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+    }
 
     $recordlist->load_brief_records;
 
@@ -900,7 +902,9 @@ sub showyyy {
 
         }
 
-        $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+        if ($logger->is_debug){
+            $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+        }
         
         $recordlist->print_to_handler({
             database         => $database,
@@ -1141,7 +1145,9 @@ sub showzzz {
 
         }
 
-        $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+        if ($logger->is_debug){
+            $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+        }
         
         $recordlist->print_to_handler({
             database         => $database,

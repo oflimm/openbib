@@ -165,7 +165,9 @@ sub get_index {
         }
         $request->finish();
 
-        $logger->debug("Index-Worte: ".YAML::Dump(\@contents))
+        if ($logger->is_debug){
+            $logger->debug("Index-Worte: ".YAML::Dump(\@contents))
+        }
     }
 
     if ($config->{benchmark}) {
@@ -177,7 +179,9 @@ sub get_index {
         undef $timeall;
     }
 
-    $logger->debug("INDEX-Contents (".($#contents+1)." Begriffe): ".YAML::Dump(\@contents));
+    if ($logger->is_debug){
+        $logger->debug("INDEX-Contents (".($#contents+1)." Begriffe): ".YAML::Dump(\@contents));
+    }
 
 
     if ($config->{benchmark}) {

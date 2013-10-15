@@ -165,7 +165,9 @@ sub show_search {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
 
-    $logger->debug("SearchQuery Terms:".YAML::Dump($searchquery->get_searchquery));
+    if ($logger->is_debug){
+        $logger->debug("SearchQuery Terms:".YAML::Dump($searchquery->get_searchquery));
+    }
     
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
@@ -381,7 +383,9 @@ sub show_search {
     # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
 
     if ($gesamttreffer > 0) {
-        $logger->debug("Resultset wird geschrieben: ".YAML::Dump(\@resultset));
+        if ($logger->is_debug){
+            $logger->debug("Resultset wird geschrieben: ".YAML::Dump(\@resultset));
+        }
         $session->updatelastresultset(\@resultset);
     }
     
@@ -521,7 +525,9 @@ sub show_index {
             dbh        => $dbh,
         });
         
-        $logger->debug("Index Ursprung ($database)".YAML::Dump($thisindex_ref));
+        if ($logger->is_debug){
+            $logger->debug("Index Ursprung ($database)".YAML::Dump($thisindex_ref));
+        }
         
         # Umorganisierung der Daten Teil 1
         #
@@ -549,7 +555,9 @@ sub show_index {
         $dbh->disconnect;
     }
     
-    $logger->debug("Index 1".YAML::Dump(\%index));
+    if ($logger->is_debug){
+        $logger->debug("Index 1".YAML::Dump(\%index));
+    }
     
     # Umorganisierung der Daten Teil 2
     #
@@ -567,7 +575,9 @@ sub show_index {
                          };
     }
     
-    $logger->debug("Index 2".YAML::Dump(\@sortedindex));
+    if ($logger->is_debug){
+        $logger->debug("Index 2".YAML::Dump(\@sortedindex));
+    }
     
     my $hits=$#sortedindex+1;
     
@@ -1137,7 +1147,9 @@ sub search_index {
             dbh        => $dbh,
         });
         
-        $logger->debug("Index Ursprung ($database)".YAML::Dump($thisindex_ref));
+        if ($logger->is_debug){
+            $logger->debug("Index Ursprung ($database)".YAML::Dump($thisindex_ref));
+        }
         
         # Umorganisierung der Daten Teil 1
         #
@@ -1165,7 +1177,9 @@ sub search_index {
         $dbh->disconnect;
     }
     
-    $logger->debug("Index 1".YAML::Dump(\%index));
+    if ($logger->is_debug){
+        $logger->debug("Index 1".YAML::Dump(\%index));
+    }
     
     # Umorganisierung der Daten Teil 2
     #
@@ -1183,7 +1197,9 @@ sub search_index {
                          };
     }
     
-    $logger->debug("Index 2".YAML::Dump(\@sortedindex));
+    if ($logger->is_debug){
+        $logger->debug("Index 2".YAML::Dump(\@sortedindex));
+    }
     
     my $hits=$#sortedindex+1;
     

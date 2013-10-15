@@ -53,7 +53,9 @@ sub authenticate_olws_user {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Entered authenticate_olws_user circcheckurl: $circcheckurl circdb: $circdb");
+    if ($logger->is_debug){
+        $logger->debug("Entered authenticate_olws_user circcheckurl: $circcheckurl circdb: $circdb");
+    }
 
     my %userinfo=();
 
@@ -69,7 +71,9 @@ sub authenticate_olws_user {
                 SOAP::Data->name(database => $circdb)->type('string')))
           );
         
-        $logger->debug("Result: ".YAML::Dump($result->result));
+        if ($logger->is_debug){
+            $logger->debug("Result: ".YAML::Dump($result->result));
+        }
         
         unless ($result->fault) {
             if (defined $result->result) {
@@ -90,7 +94,10 @@ sub authenticate_olws_user {
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
     
-    $logger->debug("Userinfo: ".YAML::Dump(\%userinfo));
+    if ($logger->is_debug){
+        $logger->debug("Userinfo: ".YAML::Dump(\%userinfo));
+    }
+    
     return \%userinfo;
 }
 

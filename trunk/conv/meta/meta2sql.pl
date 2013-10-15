@@ -42,7 +42,6 @@ use Log::Log4perl qw(get_logger :levels);
 use MIME::Base64 ();
 use MLDBM qw(DB_File Storable);
 use Storable ();
-use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
@@ -55,6 +54,21 @@ use OpenBib::Record::Person;
 use OpenBib::Record::Subject;
 use OpenBib::Record::Title;
 use OpenBib::Statistics;
+
+my %char_replacements = (
+    
+    # Zeichenersetzungen
+    "\n"     => "<br\/>",
+    "\\"     => "\\\\",
+    "\r"     => "\\r",
+    ""     => "",
+    "\x{00}" => "",
+);
+
+my $chars_to_replace = join '|',
+    keys %char_replacements;
+
+$chars_to_replace = qr/$chars_to_replace/;
 
 my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile,$loglevel,$count,$help);
 
@@ -752,7 +766,6 @@ while (my $jsonline=<IN>){
             if (@{$enrichmnt_isbns_ref}) {
                 foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
                     my $lookup_ref = $enrichmntdata{$isbn13};
-                    $logger->debug("Enrichmnt_data for isbn $isbn13 ".YAML::Dump($lookup_ref));
                     $logger->debug("Testing ISBN $isbn13 for field $field");
                     foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
                         $logger->debug("Enrich field $field for ISBN $isbn13 with $enrich_content");
@@ -911,7 +924,6 @@ while (my $jsonline=<IN>){
         }
     }
     
-    #$logger->info(YAML::Dump($record_ref));
 
     # Verfasser/Personen
     foreach my $field ('0100','0101','0102','0103','1800') {
@@ -1641,8 +1653,6 @@ close(CONTROL);
 close(CONTROLINDEXOFF);
 close(CONTROLINDEXON);
 
-exit;
-
 # if ($reducemem){
 #     untie %listitemdata_person;
 #     untie %listitemdata_corporatebody;
@@ -1655,12 +1665,8 @@ exit;
 sub cleanup_content {
     my $content = shift;
 
-    # Make PostgreSQL Happy
-    $content =~s/\n/<br\/>/g;
-    $content =~s/\\/\\\\/g; # Escape Literal Backslash
-    $content =~s/\r/\\r/g;
-    $content =~s///g;
-    $content =~s/\x{00}//g;
+    # Make PostgreSQL Happy    
+    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
             
     return $content;
 }

@@ -39,6 +39,7 @@ use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
 use MLDBM qw(DB_File Storable);
+use YAML::Syck;
 
 use OpenBib::Config;
 use OpenBib::Schema::Enrichment::Singleton;
@@ -161,7 +162,9 @@ sub get_enriched_content {
         push @{$normset_ref->{$field}}, $content;
     }
 
-    $logger->debug(YAML::Dump($normset_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($normset_ref));
+    }
 
     return $normset_ref;
 
@@ -298,6 +301,27 @@ sub enriched_content_to_bdb {
 
     my $config = OpenBib::Config->instance;
 
+    # Ininitalisierung mit Default Config-Parametern
+
+    $YAML::Syck::ImplicitTyping  = 1;
+    $YAML::Syck::ImplicitUnicode = 1;
+    
+    # Ininitalisierung mit Config-Parametern
+    my $conv_config = YAML::Syck::LoadFile("/opt/openbib/conf/convert.yml");
+
+    my $local_fields_ref = {};
+
+    foreach my $thisconfig (keys %$conv_config){
+        if (defined $conv_config->{$thisconfig}{local_enrichmnt}){
+            foreach my $field (keys %{$conv_config->{$thisconfig}{local_enrichmnt}}){
+                $local_fields_ref->{$field} = 1;
+            }
+        }
+    }
+
+    my $in_string = join "','", keys %{$local_fields_ref};
+
+        
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
@@ -314,6 +338,8 @@ sub enriched_content_to_bdb {
 
     my $sql_request = "select * from enriched_content_by_isbn";
 
+    $sql_request.=" where field in ('$in_string')" if ($in_string);
+    
     my $request = $dbh->prepare($sql_request);
     $request->execute();
 
@@ -452,7 +478,10 @@ sub get_common_holdings {
         $this_item_ref->{persons}    = $persons;
         $this_item_ref->{title}      = $title;
 
-        $logger->debug(YAML::Dump($this_item_ref));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($this_item_ref));
+        }
+        
         push @{$common_holdings_ref}, $this_item_ref;
     }
 

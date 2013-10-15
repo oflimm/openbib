@@ -109,7 +109,9 @@ sub load_full_title_record {
     my @records = $recordlist->get_records;
     my $record = $records[0];
     
-    $logger->debug("Adding Record with ".YAML::Dump($record->get_fields));
+    if ($logger->is_debug){
+        $logger->debug("Adding Record with ".YAML::Dump($record->get_fields));
+    }
     
     return $record;
 }
@@ -154,7 +156,9 @@ sub get_subjects {
     
     my @tags = split('\s+',$tags);
 
-    $logger->debug("Tags to lookup ".YAML::Dump(\@tags));
+    if ($logger->is_debug){
+        $logger->debug("Tags to lookup ".YAML::Dump(\@tags));
+    }
     
     if (defined $bibkey && $bibkey=~/^[1-3][0-9a-f]{32}$/){
 #        substr($bibkey,0,1)=""; # Remove leading 1

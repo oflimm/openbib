@@ -150,7 +150,9 @@ sub get_resultlist {
         $resultlist->add($self->to_openbib_list($rrec));
     }
 
-    $logger->debug(YAML::Dump($resultlist->to_list));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($resultlist->to_list));
+    }
 
     return $resultlist;
 }

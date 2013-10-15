@@ -70,7 +70,9 @@ sub get_relevant_terms {
     my $fulltermsem_ref={};
     my $fullterm_ref=[];
 
-    $logger->debug(YAML::Dump($relevanttokens_ref->{$type}));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($relevanttokens_ref->{$type}));
+    }
 
     my $atime=new Benchmark;
     
@@ -112,7 +114,10 @@ sub get_relevant_terms {
     my $timeall     = timediff($btime,$atime);
     $logger->debug("Time: ".timestr($timeall,"nop"));
 
-    $logger->debug(YAML::Dump($fullterm_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($fullterm_ref));
+    }
+    
     return $fullterm_ref;
 }
 
@@ -188,8 +193,10 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    $logger->debug("Query:  ".YAML::Dump($self->{_query}));
-    $logger->debug("Filter: ".YAML::Dump($self->{_filter}));
+    if ($logger->is_debug){
+        $logger->debug("Query:  ".YAML::Dump($self->{_query}));
+        $logger->debug("Filter: ".YAML::Dump($self->{_filter}));
+    }
 
     my $facets_ref = {};
 
@@ -255,7 +262,9 @@ sub search {
     # Facets
     $self->{categories} = $results->{facets};
 
-    $logger->debug("Results: ".YAML::Dump($results));
+    if ($logger->is_debug){
+        $logger->debug("Results: ".YAML::Dump($results));
+    }
     
 
     $self->{resultcount} = $results->{hits}->{total};
@@ -263,7 +272,9 @@ sub search {
     $self->{_matches}     = \@matches;
 
 
-    $logger->info("Running query ".YAML::Dump($self->{_querystring})." with filters ".YAML::Dump($self->{_filter}));
+    if ($logger->is_debug){
+        $logger->info("Running query ".YAML::Dump($self->{_querystring})." with filters ".YAML::Dump($self->{_filter}));
+    }
 
 #    $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
     return;
@@ -281,7 +292,9 @@ sub get_records {
 
     my @matches = $self->matches;
 
-    $logger->debug(YAML::Dump(\@matches));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump(\@matches));
+    }
 
     foreach my $match (@matches) {
     
@@ -333,7 +346,9 @@ sub get_facets {
             ];
         }
         
-        $logger->debug(YAML::Dump($contents_ref));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($contents_ref));
+        }
         
         # Schwartz'ian Transform
         
@@ -552,7 +567,10 @@ sub parse_query {
 
     my $filter_ref;
 
-    $logger->debug("All filters: ".YAML::Dump($searchquery->get_filter));
+    if ($logger->is_debug){
+        $logger->debug("All filters: ".YAML::Dump($searchquery->get_filter));
+    }
+    
     if (@{$searchquery->get_filter}){
         $filter_ref = { };
         foreach my $thisfilter_ref (@{$searchquery->get_filter}){
@@ -578,8 +596,10 @@ sub parse_query {
         }
     }
 
-    $logger->debug("Query: ".YAML::Dump($query_ref));
-    $logger->debug("Filter: ".YAML::Dump($filter_ref));
+    if ($logger->is_debug){
+        $logger->debug("Query: ".YAML::Dump($query_ref));
+        $logger->debug("Filter: ".YAML::Dump($filter_ref));
+    }
 
     $self->{_query}  = $query_ref;
     $self->{_filter} = $filter_ref;

@@ -117,7 +117,9 @@ sub show_collection {
         $checkeddb_ref->{$dbname}=1;
     }
 
-    $logger->debug("Ausgewaehlte Datenbanken".YAML::Dump($checkeddb_ref));
+    if ($logger->is_debug){
+        $logger->debug("Ausgewaehlte Datenbanken".YAML::Dump($checkeddb_ref));
+    }
     
     my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref, view => $view });
     

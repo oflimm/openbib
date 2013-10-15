@@ -169,7 +169,10 @@ sub show_collection_by_field {
             
             if ($olws_action eq "browse"){
 
-                $logger->debug("Endpoint: ".$circinfotable->{$database}{circcheckurl});
+                if ($logger->is_debug){
+                    $logger->debug("Endpoint: ".$circinfotable->{$database}{circcheckurl});
+                }
+                
                 my $soapresult;
                 eval {
                     my $soap = SOAP::Lite
@@ -194,7 +197,9 @@ sub show_collection_by_field {
                     $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
                 }
 
-                $logger->debug("OLWS".YAML::Dump($soapresult));
+                if ($logger->is_debug){
+                    $logger->debug("OLWS".YAML::Dump($soapresult));
+                }
 
                 # TT-Data erzeugen
                 my $ttdata={
@@ -264,7 +269,9 @@ sub show_collection_by_field {
 
         # Wenn verknuepfte Normdatei
         if ($table){
-            $logger->debug("Searching title field via connected normdata");
+            if ($logger->is_debug){
+                $logger->debug("Searching title field via connected normdata");
+            }
 
             my %table_type = (
                 'person'         => {

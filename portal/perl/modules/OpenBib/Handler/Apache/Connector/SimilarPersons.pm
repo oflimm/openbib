@@ -177,7 +177,10 @@ sub show {
             push @autids, $result->{id};
         }
 
-        $logger->debug("Gefundene Personen-ID's: ".YAML::Dump(\@autids));
+        if ($logger->is_debug){
+            $logger->debug("Gefundene Personen-ID's: ".YAML::Dump(\@autids));
+        }
+        
         my %similar_done = ();
         foreach my $autid (@autids){
 
@@ -256,8 +259,9 @@ sub show {
                 map { [$_, $_->{item}] }
                     @{$similar_persons_ref};
 
-    $logger->debug("Verwandte Personen: ".YAML::Dump($sorted_similar_persons_ref));
-    
+    if ($logger->is_debug){
+        $logger->debug("Verwandte Personen: ".YAML::Dump($sorted_similar_persons_ref));
+    }    
     
     my $ttdata = {
         record          => OpenBib::Record::Title->new,

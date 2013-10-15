@@ -194,7 +194,9 @@ sub show_record {
                     $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
                 }
 
-                $logger->debug("OLWS".YAML::Dump($soapresult));
+                if ($logger->is_debug){
+                    $logger->debug("OLWS".YAML::Dump($soapresult));
+                }
 
                 # TT-Data erzeugen
                 my $ttdata={

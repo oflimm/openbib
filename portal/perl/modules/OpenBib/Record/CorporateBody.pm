@@ -156,7 +156,9 @@ sub load_full_record {
 	undef $timeall;
     }
 
-    $logger->debug(YAML::Dump($fields_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($fields_ref));
+    }
     
     $self->{_fields}=$fields_ref;
 

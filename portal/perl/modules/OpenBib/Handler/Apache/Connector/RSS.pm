@@ -243,7 +243,9 @@ sub show {
         }
 
 
-        $logger->debug("Titel-ID's".YAML::Dump($recordlist));
+        if ($logger->is_debug){
+            $logger->debug("Titel-ID's".YAML::Dump($recordlist));
+        }       
         
         foreach my $record ($recordlist->get_records){
             $record->load_brief_record;

@@ -181,7 +181,10 @@ sub mab2openbib_list {
         };
     }
     
-    $logger->debug("Item ".YAML::Dump($listitem_ref));
+    if ($logger->is_debug){
+        $logger->debug("Item ".YAML::Dump($listitem_ref));
+    }
+    
     return $listitem_ref;
 }
 
@@ -322,7 +325,10 @@ sub mab2openbib_full {
         };
     }
     
-    $logger->debug("Item ".YAML::Dump($listitem_ref));
+    if ($logger->is_debug){
+        $logger->debug("Item ".YAML::Dump($listitem_ref));
+    }
+    
     return ($listitem_ref,$mexlistitem_ref);
 }
 

@@ -169,7 +169,10 @@ sub parse_query {
         $searchquery->set_searchfield('mediatype','publication');
     }
     
-    $logger->debug("Bibsonomy-Querystring: ".YAML::Dump($query_string_ref));
+    if ($logger->is_debug){
+        $logger->debug("Bibsonomy-Querystring: ".YAML::Dump($query_string_ref));
+    }
+    
     $self->{_querystring} = $query_string_ref;
 
     return $self;

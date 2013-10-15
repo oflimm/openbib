@@ -209,7 +209,10 @@ sub show {
         statistics    => $statistics,
     };
 
-    $logger->debug("TT-Data: ".YAML::Dump($ttdata));
+    if ($logger->is_debug){
+        $logger->debug("TT-Data: ".YAML::Dump($ttdata));
+    }
+    
     my $templatename = "tt_searchforms_record_".$type."_tname";
 
     $self->print_page($config->{$templatename},$ttdata);

@@ -105,7 +105,9 @@ sub process_gbs {
 
     my $isbn = $self->id2isbnX($id);
 
-    $logger->debug("ISBN von ID $id: ".YAML::Dump($isbn));
+    if ($logger->is_debug){
+        $logger->debug("ISBN von ID $id: ".YAML::Dump($isbn));
+    }
 
     my $redirect_url = "/images/openbib/no_img.png";
     
@@ -135,7 +137,9 @@ sub process_gbs {
                 $gbs_result = decode_json($json_result);
             };
             
-            $logger->debug("GBS".YAML::Dump($gbs_result));
+            if ($logger->is_debug){
+                $logger->debug("GBS".YAML::Dump($gbs_result));
+            }
             
             my $type = $gbs_result->{"ISBN$isbn->{isbn13}"}{preview} || $gbs_result->{"ISBN$isbn->{isbn10}"}{preview} || '';
             
@@ -335,13 +339,18 @@ sub process_ol {
             $ol_result = decode_json($json_result);
         };
         
-        $logger->debug("OL".YAML::Dump($ol_result));
+        if ($logger->is_debug){
+            $logger->debug("OL".YAML::Dump($ol_result));
+        }
         
         my $status  = $ol_result->{status} || '';
         my $ids_ref = $ol_result->{result} || ();
         
         
-        $logger->debug("Lookup ID ".YAML::Dump($ids_ref));
+        if ($logger->is_debug){
+            $logger->debug("Lookup ID ".YAML::Dump($ids_ref));
+        }
+        
         my $url      ="http://openlibrary.org/api/get?key=$ids_ref->[0]";
         
         $logger->debug("URI: $url");
@@ -359,7 +368,10 @@ sub process_ol {
             eval {
                 $ol_result = decode_json($json_result);
             };
-            $logger->debug("OL OBJ Data".YAML::Dump($ol_result));
+            
+            if ($logger->is_debug){
+                $logger->debug("OL OBJ Data".YAML::Dump($ol_result));
+            }
         }
         $redirect_url = "/images/openbib/no_img.png";
     }

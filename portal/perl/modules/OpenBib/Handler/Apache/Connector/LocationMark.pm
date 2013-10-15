@@ -186,7 +186,9 @@ sub show {
 
         my @sortedtitleids = sort by_signature @filtered_titleids;
 
-        $logger->debug("Gefundene Titelids: ".YAML::Dump(\@sortedtitleids));
+        if ($logger->is_debug){
+            $logger->debug("Gefundene Titelids: ".YAML::Dump(\@sortedtitleids));
+        }
         
         my @outputbuffer = ();
 
@@ -207,7 +209,9 @@ sub show {
             push @outputbuffer, $listitem_ref;
         }
 
-        $logger->debug("Vollstaendige Titel: ".YAML::Dump(\@outputbuffer));
+        if ($logger->is_debug){
+            $logger->debug("Vollstaendige Titel: ".YAML::Dump(\@outputbuffer));
+        }
 
         # TT-Data erzeugen
         my $ttdata={

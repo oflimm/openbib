@@ -226,7 +226,9 @@ sub get_posts {
             push @{$generic_attributes_ref->{subjects}}, $tag_node->getAttribute('name');
         }
 
-        $logger->debug("Creating title record with generic attributes ".YAML::Dump($generic_attributes_ref));
+        if ($logger->is_debug){
+            $logger->debug("Creating title record with generic attributes ".YAML::Dump($generic_attributes_ref));
+        }
         
         my $record = new OpenBib::Record::Title({ database => 'bibsonomy', id => $id, generic_attributes => $generic_attributes_ref });
 
@@ -414,7 +416,9 @@ sub get_tags {
             }
             
             
-            $logger->debug("Response / Posts: ".YAML::Dump(\@tags));
+            if ($logger->is_debug){
+                $logger->debug("Response / Posts: ".YAML::Dump(\@tags));
+            }
         }
     }
     

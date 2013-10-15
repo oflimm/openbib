@@ -168,11 +168,15 @@ sub show_collection {
 
         my $catalog = OpenBib::Catalog::Factory->create_catalog($catalog_args_ref);
 
-        $logger->debug("Passing Args: ".YAML::Dump($catalog_args_ref));
+        if ($logger->is_debug){
+            $logger->debug("Passing Args: ".YAML::Dump($catalog_args_ref));
+        }
         
         my $subjects_ref = $catalog->get_subjects($catalog_args_ref);
         
-        $logger->debug(YAML::Dump($subjects_ref));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($subjects_ref));
+        }
         
         # TT-Data erzeugen
         my $ttdata={

@@ -69,7 +69,9 @@ sub handler : method {
     # set method for http-tunnel based on _method-CGI-Parameter
     if ($query->param('_method')){
         $r->method($query->param('_method'));
-        $logger->debug("Changed method to tunneled ".$query->param('_method'));
+        if ($logger->is_debug){
+            $logger->debug("Changed method to tunneled ".$query->param('_method'));
+        }
     }
     
     # setup our args to dispatch()
@@ -108,7 +110,9 @@ sub handler : method {
         $logger->info("Total time for dispatching ".$r->uri()." is ".timestr($timeall));
     }
     
-    $logger->debug("Dispatching done with status ".$r->status);
+    if ($logger->is_debug){
+        $logger->debug("Dispatching done with status ".$r->status);
+    }
 
     if($r->status == 404) {
         return Apache2::Const::NOT_FOUND;
@@ -187,7 +191,9 @@ sub dispatch_args {
         }
     }
 
-    # $logger->debug("Dispatch-table: ".YAML::Dump($table_ref));
+    if ($logger->is_debug){
+        $logger->debug("Dispatch-table: ".YAML::Dump($table_ref));
+    }
     
     return {
         #debug => 1,

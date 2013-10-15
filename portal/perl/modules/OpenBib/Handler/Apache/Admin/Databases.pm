@@ -268,7 +268,9 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
     $input_data_ref->{dbname} = $dbname; # dbname wird durch Resourcenbestandteil ueberschrieben
     
-    $logger->debug("Info: ".YAML::Dump($input_data_ref));
+    if ($logger->is_debug){
+        $logger->debug("Info: ".YAML::Dump($input_data_ref));
+    }
 
     if (!$config->db_exists($dbname)) {        
         $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));

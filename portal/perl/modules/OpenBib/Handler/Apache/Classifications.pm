@@ -174,7 +174,9 @@ sub show_collection {
 
         my $classifications_ref = $catalog->get_classifications;
         
-        $logger->debug(YAML::Dump($classifications_ref));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($classifications_ref));
+        }
         
         # TT-Data erzeugen
         my $ttdata={
@@ -254,7 +256,9 @@ sub show_collection_ezb {
     
     my $subjects_ref = $ezb->get_subjects();
     
-    $logger->debug(YAML::Dump($subjects_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($subjects_ref));
+    }
     
     # TT-Data erzeugen
     my $ttdata={
@@ -334,7 +338,9 @@ sub show_collectionxxx {
     
     my $subjects_ref = $ezb->get_subjects();
     
-    $logger->debug(YAML::Dump($subjects_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($subjects_ref));
+    }
     
     # TT-Data erzeugen
     my $ttdata={
@@ -424,7 +430,9 @@ sub show_collection_dbis {
 
     my $subjects_ref = $dbis->get_subjects();
     
-    $logger->debug(YAML::Dump($subjects_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($subjects_ref));
+    }
     
     # TT-Data erzeugen
     my $ttdata={

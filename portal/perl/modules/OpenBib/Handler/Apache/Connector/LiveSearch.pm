@@ -126,7 +126,10 @@ sub show {
         push @sql_args, $type;
     }
 
-    $logger->debug("Request: $sql_request / Args: ".YAML::Dump(\@sql_args));
+    if ($logger->is_debug){
+        $logger->debug("Request: $sql_request / Args: ".YAML::Dump(\@sql_args));
+    }
+    
     my $request=$enrichdbh->prepare($sql_request);
 
     $request->execute(@sql_args);

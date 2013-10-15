@@ -202,13 +202,17 @@ sub authenticate {
     
     my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
 
-    $logger->debug(YAML::Dump($authenticator_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($authenticator_ref));
+    }
     
     ## Ausleihkonfiguration fuer den Katalog einlesen
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     
     if ($authenticator_ref->{type} eq "olws") {
-        $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($circinfotable));
+        if ($logger->is_debug){
+            $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($circinfotable));
+        }
         
         my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
             username      => $username,
@@ -309,10 +313,14 @@ sub authenticate {
         
         my $recordlist_existing_collection = $session->get_items_in_collection();
         
-        $logger->debug("Items in Session: ".YAML::Dump($recordlist_existing_collection));
+        if ($logger->is_debug){
+            $logger->debug("Items in Session: ".YAML::Dump($recordlist_existing_collection));
+        }
         
         foreach my $record (@{$recordlist_existing_collection->to_list}){
-            $logger->debug("Adding item to personal collection of user $userid: ".YAML::Dump($record));
+            if ($logger->is_debug){
+                $logger->debug("Adding item to personal collection of user $userid: ".YAML::Dump($record));
+            }
             
             $user->move_cartitem_to_user({
                 userid => $userid,

@@ -501,8 +501,10 @@ sub process_raw_title {
         
     }   
 
-    $logger->debug("Mexall",YAML::Dump(\%listitemdata_mex));
-
+    if ($logger->is_debug){
+        $logger->debug("Mexall",YAML::Dump(\%listitemdata_mex));
+    }
+    
     if (exists $listitemdata_mex{$titleid} && exists $listitemdata_mex{$titleid}{set}){
         my $listitemdata_mex_ref= process_raw_mex({
             dbh                => $dbh,
@@ -676,8 +678,10 @@ sub process_raw_title {
         $listitem = unpack "H*",Storable::freeze($listitem_ref);
     }
     
-    $logger->debug("Writing Listitem:".YAML::Dump($listitem_ref));
-
+    if ($logger->is_debug){
+        $logger->debug("Writing Listitem:".YAML::Dump($listitem_ref));
+    }
+    
     # Listitem loeschen und schreiben
 
     $dbh->do("delete from titlistitem where id=?",undef,
@@ -796,8 +800,10 @@ sub process_raw_aut {
 
     }        
 
-    $logger->debug("Got Aut");
-    $logger->debug(YAML::Dump($raw_aut_ref));
+    if ($logger->is_debug){
+        $logger->debug("Got Aut");
+        $logger->debug(YAML::Dump($raw_aut_ref));
+    }
     
     return $listitemdata_aut_ref;
 }
@@ -908,9 +914,11 @@ sub process_raw_kor {
         }
     }        
     
-    $logger->debug("Got Kor");
-    $logger->debug(YAML::Dump($raw_kor_ref));
-
+    if ($logger->is_debug){
+        $logger->debug("Got Kor");
+        $logger->debug(YAML::Dump($raw_kor_ref));
+    }
+    
     return $listitemdata_kor_ref;
 }
 
@@ -1017,9 +1025,11 @@ sub process_raw_sys {
         }
     }        
     
-    $logger->debug("Got Sys");
-    $logger->debug(YAML::Dump($raw_sys_ref));
-
+    if ($logger->is_debug){
+        $logger->debug("Got Sys");
+        $logger->debug(YAML::Dump($raw_sys_ref));
+    }
+    
     return $listitemdata_not_ref;
 }
 
@@ -1130,8 +1140,10 @@ sub process_raw_swt {
         }
     }        
 
-    $logger->debug("Got Swt");
-    $logger->debug(YAML::Dump($raw_swt_ref));
+    if ($logger->is_debug){
+        $logger->debug("Got Swt");
+        $logger->debug(YAML::Dump($raw_swt_ref));
+    }
     
     return $listitemdata_swt_ref;
 }
@@ -1156,16 +1168,19 @@ sub process_raw_mex {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Entering process_mex");
-
-    $logger->debug("Mex: ".YAML::Dump($listitemdata_mex_ref));
-    $logger->debug("Titid: $titleid ".YAML::Dump($listitemdata_mex_ref->{$titleid}));
-
+    if ($logger->is_debug){
+        $logger->debug("Entering process_mex");
+        $logger->debug("Mex: ".YAML::Dump($listitemdata_mex_ref));
+        $logger->debug("Titid: $titleid ".YAML::Dump($listitemdata_mex_ref->{$titleid}));
+    }
+    
     # Loop ueber Exemplare (entsprechend Indicator)
     foreach my $mexsetkey (sort keys %{$listitemdata_mex_ref->{$titleid}{set}}){
         my $mexset_ref=$listitemdata_mex_ref->{$titleid}{set}{$mexsetkey};
 
-        $logger->debug("Mex: Key: $mexsetkey - ".YAML::Dump($mexset_ref));
+        if ($logger->is_debug){
+            $logger->debug("Mex: Key: $mexsetkey - ".YAML::Dump($mexset_ref));
+        }
         
         my $request=$dbh->prepare("select max(id) as maxid from mex");
         $request->execute();
@@ -1184,8 +1199,10 @@ sub process_raw_mex {
         # Loop ueber Kategorien
         foreach my $item_ref (@{$mexset_ref}){
 
-            $logger->debug(YAML::Dump($item_ref));
-
+            if ($logger->is_debug){
+                $logger->debug(YAML::Dump($item_ref));
+            }
+            
             my $contentnorm   = "";
             my $contentnormft = "";
             

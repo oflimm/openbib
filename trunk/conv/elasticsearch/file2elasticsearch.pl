@@ -177,8 +177,10 @@ my $atime = new Benchmark;
                 }
             }
             
-            $logger->debug(YAML::Dump($searchcontent_ref));
-
+            if ($logger->is_debug){
+                $logger->debug(YAML::Dump($searchcontent_ref));
+            }
+            
             # Gewichtungen aus Suchfeldern entfernen
 
             foreach my $searchfield (keys %{$config->{searchfield}}){

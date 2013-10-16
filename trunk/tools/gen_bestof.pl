@@ -679,7 +679,9 @@ if ($type == 8){
 	  $bestof_ref->{$category}=$sortedbestof_ref;
       }
         
-        $logger->debug(YAML::Dump($bestof_ref));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($bestof_ref));
+        }
         
         $statistics->cache_data({
             type => 8,
@@ -810,8 +812,10 @@ if ($type == 10){
             $bk_ref->{$bk}          = $bkcount;
         }
         
-        $logger->debug(YAML::Dump($bk_ref));
-
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($bk_ref));
+        }
+        
         $statistics->cache_data({
             type => 10,
             id   => $view,
@@ -874,7 +878,9 @@ if ($type == 11){
                 data   => $bk_ref->{$bk},
             });
             
-            $logger->debug(YAML::Dump($bk_ref->{$bk}));
+            if ($logger->is_debug){
+                $logger->debug(YAML::Dump($bk_ref->{$bk}));
+            }
         }
 
     }
@@ -908,7 +914,9 @@ if ($type == 12){
             $mincount = $count;
         }
 
-        $logger->debug(YAML::Dump($properties_ref));
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($properties_ref));
+        }
 
         # Nur oeffentliche Literaturlisten verwenden
         push @$bestof_ref, {
@@ -1027,7 +1035,9 @@ sub gen_cloud_class {
 	  $thresholds[$i] = 100 * log(($mincount + $i * $delta) + 2);
 	}
 
-        $logger->debug(YAML::Dump(\@thresholds)." - $delta");
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump(\@thresholds)." - $delta");
+        }
 
 	foreach my $item_ref (@$items_ref){
 	  my $done = 0;
@@ -1050,7 +1060,10 @@ sub gen_cloud_class {
       }
     }
 
-    $logger->debug(YAML::Dump($items_ref));
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($items_ref));
+    }
+    
     return $items_ref;
 }
 

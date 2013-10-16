@@ -188,9 +188,10 @@ foreach my $item ($isbns->all){
         $isbnhist{$titleisbn}{count}=$isbnhist{$titleisbn}{count}+1;
     }
 
-    $logger->debug("Collected Titles ".YAML::Dump(\%isbnhist));
-    
-    $logger->debug("Generating histogram");
+    if ($logger->is_debug){
+        $logger->debug("Collected Titles ".YAML::Dump(\%isbnhist));
+        $logger->debug("Generating histogram");
+    }
     
     my @histo=();
     foreach my $thisisbn (keys %isbnhist){
@@ -201,7 +202,9 @@ foreach my $item ($isbns->all){
         };
     }
 
-    $logger->debug("Histogram: ".YAML::Dump(\@histo));
+    if ($logger->is_debug){
+        $logger->debug("Histogram: ".YAML::Dump(\@histo));
+    }
     
     if ($#histo >= 3){
         my $i=$#histo;
@@ -275,8 +278,10 @@ foreach my $item ($isbns->all){
                 last if ($count > 5);
             }
             
-            $logger->debug("Adding enriched content for isbn $processed_isbn");
-            $logger->debug(YAML::Dump($enriched_content_ref));
+            if ($logger->is_debug){
+                $logger->debug("Adding enriched content for isbn $processed_isbn");
+                $logger->debug(YAML::Dump($enriched_content_ref));
+            }
             
             $enrichmnt->{schema}->resultset('EnrichedContentByIsbn')->populate($enriched_content_ref);
 

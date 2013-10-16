@@ -355,8 +355,10 @@ while (<OL>){
         'fields' => {},
     };
     
-    $logger->debug(YAML::Dump($recordset));
-
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($recordset));
+    }
+    
     # Einschraenkung auf Titelaufnahmen mit Digitalisaten
     if (!exists $recordset->{ocaid}){
         next;
@@ -382,7 +384,9 @@ while (<OL>){
     }
     
     if (!$key){
-        $logger->error("Keine ID ".YAML::Dump($recordset));
+        if ($logger->is_debug){
+            $logger->error("Keine ID ".YAML::Dump($recordset));
+        }
         next;
     }
 

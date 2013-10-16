@@ -206,10 +206,11 @@ $logger->info("Einladen der neuen Daten in die Datenbank");
 foreach my $thisisbn (keys %isbndata){
     next if (!$thisisbn);
 
-    $logger->debug("ISBN: $thisisbn");
-
-    $logger->debug("YAML: ".YAML::Dump($isbndata{$thisisbn}));
-
+    if ($logger->is_debug){
+        $logger->debug("ISBN: $thisisbn");
+        $logger->debug("YAML: ".YAML::Dump($isbndata{$thisisbn}));
+    }
+    
     # Dublette Inhalte entfernen
     my $toc_indicator=1;
 
@@ -217,7 +218,9 @@ foreach my $thisisbn (keys %isbndata){
         my $id     = $item->{id};
         my @enrich = @{$item->{enrich}};
         foreach my $thisitem_ref (@enrich){
-            $logger->debug("ITEM: ".YAML::Dump($thisitem_ref));
+            if ($logger->is_debug){
+                $logger->debug("ITEM: ".YAML::Dump($thisitem_ref));
+            }
             if ($thisitem_ref->{type} eq "Inhaltsverzeichnis"){        
                $enrichrequest->execute($thisisbn,$toc_indicator,$thisitem_ref->{url});
                $logger->debug("TOC-URL: $thisitem_ref->{url}");

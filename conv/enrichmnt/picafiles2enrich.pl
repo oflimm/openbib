@@ -129,10 +129,12 @@ sub process_file {
     push @bks, map { ($_)=$_=~m/(\d\d\.\d\d)/ } $record->subfield('045Q/..$8');
     push @bks, map { ($_)=$_=~m/(\d\d\.\d\d)/ } $record->subfield('045Q/..$a');
 
-    $logger->debug("ISBN ".YAML::Dump(\@isbns));
-    $logger->debug("ISSN ".YAML::Dump(\@issns));
-    $logger->debug("BK ".YAML::Dump(\@bks));
-
+    if ($logger->is_debug){
+        $logger->debug("ISBN ".YAML::Dump(\@isbns));
+        $logger->debug("ISSN ".YAML::Dump(\@issns));
+        $logger->debug("BK ".YAML::Dump(\@bks));
+    }
+    
     my $isbn_ref = {};
     my $issn_ref = {};
     

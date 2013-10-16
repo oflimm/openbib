@@ -41,22 +41,25 @@ use Log::Log4perl qw(get_logger :levels);
 use Text::CSV_XS;
 use JSON::XS;
 use YAML::Syck;
+use DBIx::Class::ResultClass::HashRefInflator;
 
 use OpenBib::Config;
 use OpenBib::Enrichment;
 use OpenBib::Conv::Common::Util;
-
+use OpenBib::Catalog::Factory;
 
 my $config    = new OpenBib::Config;
 my $enrichmnt = new OpenBib::Enrichment;
 
-my ($inputfile,$configfile,$logfile,$loglevel);
+my ($database,$inputfile,$configfile,$logfile,$loglevel,$persistentnormdataids);
 
 &GetOptions(
-	    "inputfile=s"          => \$inputfile,
-            "configfile=s"         => \$configfile,
-            "logfile=s"            => \$logfile,
-            "loglevel=s"           => \$loglevel,
+    	    "database=s"              => \$database,
+	    "inputfile=s"             => \$inputfile,
+            "configfile=s"            => \$configfile,
+            "persistent-normdata-ids" => \$persistentnormdataids,
+            "logfile=s"               => \$logfile,
+            "loglevel=s"              => \$loglevel,
 	    );
 
 if (!$inputfile && !$configfile){
@@ -64,12 +67,21 @@ if (!$inputfile && !$configfile){
 simplecsv2meta.pl - Aufrufsyntax
 
     simplecsv2meta.pl --inputfile=xxx --configfile=yyy.yml
+
+      --inputfile=                 : Name der Eingabedatei
+      --configfile=                : Name der Parametrisierungsdaei
+
+      --database=                  : Name der Katalogdatenbank
+      -persistent-normdata-ids     : Persistente Normdaten-IDs im Katalog
+
+      --logfile=                   : Name der Logdatei
+      --loglevel=                  : Loglevel
 HELP
 exit;
 }
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/simplecsv2meta.log';
-$loglevel=($loglevel)?$loglevel:'ERROR';
+$loglevel=($loglevel)?$loglevel:'INFO';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -114,6 +126,143 @@ open (CLASSIFICATION,">:raw","meta.classification");
 open (SUBJECT,       ">:raw","meta.subject");
 open (HOLDING,       ">:raw","meta.holding");
 
+if ($persistentnormdataids){
+
+    unless ($database){
+        $logger->error("### Datenbankname fuer Persistente Normdaten-IDs notwendig. Abbruch.");
+        exit;
+    }
+
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database});
+    
+    $logger->info("### Persistente Normdaten-IDs");
+
+    my $persons = $catalog->{schema}->resultset("PersonField")->search(
+        {
+            field => 800,
+        },
+        {
+            columns => [qw/ personid content /],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    my $count=1;
+    foreach my $person ($persons->all){
+        OpenBib::Conv::Common::Util::set_person_id($person->{personid},$person->{content});
+
+        my $item_ref = {
+            'fields' => {},
+        };
+        $item_ref->{id} = $person->{personid};
+        push @{$item_ref->{fields}{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $person->{content},
+        };
+        
+        print PERSON encode_json $item_ref, "\n";
+        
+        $count++;
+    }
+
+    $logger->info("### Persistente Normdaten-IDs: $count Personen eingelesen");
+
+    my $corporatebodies = $catalog->{schema}->resultset("CorporatebodyField")->search(
+        {
+            field => 800,
+        },
+        {
+            columns => [qw/ corporatebodyid content /],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    $count=1;
+    foreach my $corporatebody ($corporatebodies->all){
+        OpenBib::Conv::Common::Util::set_corporatebody_id($corporatebody->{corporatebodyid},$corporatebody->{content});        
+
+        my $item_ref = {
+            'fields' => {},
+        };
+        $item_ref->{id} = $corporatebody->{corporatebodyid};
+        push @{$item_ref->{fields}{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $corporatebody->{content},
+        };
+        
+        print CORPORATEBODY encode_json $item_ref, "\n";
+
+        $count++;
+    }
+
+    $logger->info("### Persistente Normdaten-IDs: $count Koerperschaften eingelesen");
+
+    my $classifications = $catalog->{schema}->resultset("ClassificationField")->search(
+        {
+            field => 800,
+        },
+        {
+            columns => [qw/ classificationid content /],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    $count=1;
+    foreach my $classification ($classifications->all){
+        OpenBib::Conv::Common::Util::set_classification_id($classification->{classificationid},$classification->{content});        
+
+        my $item_ref = {
+            'fields' => {},
+        };
+        $item_ref->{id} = $classification->{classificationid};
+        push @{$item_ref->{fields}{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $classification->{content},
+        };
+        
+        print CLASSIFICATION encode_json $item_ref, "\n";
+
+        $count++;
+    }
+
+    $logger->info("### Persistente Normdaten-IDs: $count Klassifikationen eingelesen");
+    
+    my $subjects = $catalog->{schema}->resultset("SubjectField")->search(
+        {
+            field => 800,
+        },
+        {
+            columns => [qw/ subjectid content /],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    $count=1;
+    foreach my $subject ($subjects->all){
+        OpenBib::Conv::Common::Util::set_subject_id($subject->{subjectid},$subject->{content});        
+
+        my $item_ref = {
+            'fields' => {},
+        };
+        $item_ref->{id} = $subject->{subjectid};
+        push @{$item_ref->{fields}{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => $subject->{content},
+        };
+        
+        print SUBJECT encode_json $item_ref, "\n";
+
+        $count++;
+    }
+
+    $logger->info("### Persistente Normdaten-IDs: $count Schlagworte eingelesen");
+    
+}
+
 my $titleid = 1;
 my $have_titleid_ref = {};
 
@@ -124,8 +273,10 @@ my $row = {};
 $csv->bind_columns (\@{$row}{@cols});
 
 while ($csv->getline ($in)){
-    $logger->debug(YAML::Dump($row));
-
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($row));
+    }
+    
     my $title_ref = {
         'fields' => {},
     };

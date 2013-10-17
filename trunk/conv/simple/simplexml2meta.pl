@@ -36,6 +36,7 @@ use warnings;
 
 use Encode 'decode';
 use Getopt::Long;
+use Log::Log4perl qw(get_logger :levels);
 use XML::Twig::XPath;
 use XML::Simple;
 use JSON::XS;
@@ -46,13 +47,15 @@ use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 use OpenBib::Catalog::Factory;
 
-my ($database,$inputfile,$configfile,$persistentnormdataids);
+my ($logfile,$loglevel,$database,$inputfile,$configfile,$persistentnormdataids);
 
 &GetOptions(
     	    "database=s"              => \$database,
             "persistent-normdata-ids" => \$persistentnormdataids,
 	    "inputfile=s"          => \$inputfile,
             "configfile=s"         => \$configfile,
+            "logfile=s"               => \$logfile,
+            "loglevel=s"              => \$loglevel,
 	    );
 
 if (!$inputfile || !$configfile){
@@ -70,6 +73,26 @@ simplexml2meta.pl - Aufrufsyntax
 HELP
 exit;
 }
+
+$logfile=($logfile)?$logfile:'/var/log/openbib/simplexml2meta.log';
+$loglevel=($loglevel)?$loglevel:'INFO';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
 
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);

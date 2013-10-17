@@ -26,7 +26,7 @@
 [%- username = user.get_username -%]
 <script>
 $(document).ready(function(){
-  $('#to_focus').val('[% searchquery.get_searchfield('freesearch').val | html %]');
+  $('#to_focus').val('[% searchquery.get_searchfield('freesearch').val.replace("'","\\'") %]');
 });
 </script>
 

@@ -53,15 +53,27 @@
 \newpage
 \thispagestyle{empty}
 
-\vspace*{3cm}
+\vspace*{1cm}
+
+\begin{center}
+\includegraphics[width=11cm]{/usr/share/images/openbib/views/pruessen/Portrait_Illa_Pruessen_gross.jpg}
+\end{center}
+
+\begin{center}
+\includegraphics[width=11cm]{/usr/share/images/openbib/views/pruessen/pruessen_dank_gross.jpg}
+\end{center}
 
 \newpage
 \thispagestyle{empty}
 
-\vspace*{3cm}
+\vspace*{1cm}
 
 \begin{center}
-\includegraphics[width=12cm]{/usr/share/images/openbib/views/pruessen/Portrait_gross.jpg}
+\includegraphics[width=12.5cm]{/usr/share/images/openbib/views/pruessen/Portrait2_gross.jpg}
+\end{center}
+
+\begin{center}
+\includegraphics[width=5cm]{/usr/share/images/openbib/views/pruessen/pruessen_unterschrift_gross.jpg}
 \end{center}
 
 \newpage
@@ -95,9 +107,9 @@
 \newpage
 \thispagestyle{empty}
 
-\vspace*{17cm}
+\vspace*{16.5cm}
 
-\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{10}{10pt}\selectfont Herausgeber: Der Direktor der Universit"ats- und Stadtbibliothek K"oln\\Prof. Dr. Wolfgang Schmitz\\Anschrift: Universit"atsstr. 33, 50931 K"oln\\Internet: http://www.ub.uni-koeln.de\\Redaktion \& Layout: Christiane Hoffrath, Oliver Flimm\\Druck: USB K"oln\\ \\\copyright 2011-2013 USB K"oln}
+\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{10}{10pt}\selectfont Herausgeber: Der Direktor der Universit"ats- und Stadtbibliothek K"oln\\Prof. Dr. Wolfgang Schmitz\\Anschrift: Universit"atsstr. 33, 50931 K"oln\\Internet: http://www.ub.uni-koeln.de\\Erfassung: Ernst Stinner\\Redaktion \& Layout: Christiane Hoffrath, Oliver Flimm\\Druck: USB K"oln\\ISBN: 978-3-931596-76-7\\ \\\copyright 2011-2013 USB K"oln}
 
 \end{titlepage}
 
@@ -124,18 +136,6 @@
 
 \addchap{Vorwort}
 
-Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-
-Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-
-Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-
-Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. 
-
-\addchap{Vorwort zur 1. Auflage}
-
 Die Hauptaufgabe der Universit"ats- und Stadtbibliothek K"oln ist es,
 ihrer Universit"at als zentrale Informationsbibliothek f"ur Forschung
 und Lehre zu dienen. Als H"uterin des alten st"adtischen
@@ -151,10 +151,8 @@ bestimmten leitenden Aspekt zusammenzustellen. Dabei muss der
 Sammelschwerpunkt nicht nur auf das Buch als klassisches
 Bibliotheksgut ausgerichtet sein. Als Beispiele seien die bereits im
 Jahr 2008 in einer begleitenden Ausstellung pr"asentierte
-"Portraitsammlung" oder die "Sammlung Lesen" in der USB K"oln
-genannt.
-
-F"ur solcherart Bestandserweiterungen, wie sie auch die
+"`Portraitsammlung"' oder die "`Sammlung Lesen"' in der USB K"oln
+genannt. F"ur solcherart Bestandserweiterungen, wie sie auch die
 Sammlung von Eduard Pr"ussen darstellt, ist die USB auf die
 Unterst"utzung von Freunden und F"orderern des Hauses angewiesen. Mit
 der Aufbereitung einer Sammlung "ubernimmt die Bibliothek gegen"uber den
@@ -236,17 +234,18 @@ Dipl.-Bibl. Christiane Hoffrath ist dabei f"ur ihre unerm"udliche
 Unterst"utzung (z.B. die IT-Betreuung), aber auch ihre Begeisterung zu
 danken, mit der sie das Projekt vorantrieb.
 
-Der Katalog bildet gleicherma"sen das Fundament f"ur diesen ersten
-Teilband eines klassischen Werkverzeichnisses. Der hiermit vorgelegte
-Hauptband "`Buch- und Presse-\-Illustra\-tionen"' beschreibt in
-chronologischer Reihenfolge diese beiden wichtigen S"aulen der
-Pr"us\-sen\-schen Produktion. Mindestens ein weiterer Teilband wird folgen,
-der Werbe-Illustra\-tionen, Plakate, Exlibris und viele weitere
-Publikationsformen des K"unstlers beinhaltet. Ein Abschluss dieser
-kleinen Reihe "`Werkverzeichnisse"' ist nicht abzusehen, da der K"unstler
-weiterhin aktiv ist und wir zugegebenerma"sen recht eigenn"utzig hoffen,
-dass ein oder andere heute noch nicht existente St"uck ebenfalls in die
-Sammlung einf"ugen zu d"urfen.
+2011 ver"offentlichte die USB bereits ein Werkverzeichnis der Buch-und
+Presse-Illustrationen. Dieser Katalog hat Aufnahme in das vorliegende
+Gesamtverzeichnis gefunden. In chronologischer Reihenfolge sind neben
+den beiden genannten wichtigen S"aulen der Pr"ussenschen Produktion nun
+auch die Werbe-Illustrationen, Plakate, Exlibris und viele weitere
+Publikationsformen des K"unstlers verzeichnet.
+
+Ein Abschluss dieser kleinen Reihe "`Werkverzeichnisse"' ist nicht
+abzusehen, da der K"unstler weiterhin aktiv ist und wir
+zugegebenerma"sen recht eigenn"utzig hoffen, dass ein oder andere heute
+noch nicht existente St"uck ebenfalls in die Sammlung einf"ugen zu
+d"urfen.
 
 Eduard Pr"ussen hat f"ur seine Sammlung ein Selbstportr"at gefertigt, das
 sowohl das Onlinesammlungs-Portal als auch diese Werkverzeichnis
@@ -258,7 +257,7 @@ M"oglichkeit zu einer intensiven Besch"aftigung mit dem Werk des
 K"unstlers.
 
 
-Prof. Dr. Wolfgang Schmitz\newline
+Prof. Dr. Wolfgang Schmitz\\
 Direktor der Universit"ats- und Stadtbibliothek K"oln
 
 \addchap{Einleitung}
@@ -542,15 +541,15 @@ Eduard Pr"ussen, Juli 2011
 
 \section{Schmunzel-Postille}
 
-eine bescheidene, aber höchst eigennützige Empfehlung, den - mir
-wohlgesonnenen - Verlegern, Büchermachern und Sammlern überreichte
-Original-Graphik als Präsent und zur gefälligen Erinnerung an den
+eine bescheidene, aber h"ochst eigenn"utzige Empfehlung, den - mir
+wohlgesonnenen - Verlegern, B"uchermachern und Sammlern "uberreichte
+Original-Graphik als Pr"asent und zur gef"alligen Erinnerung an den
 Herausgeber und Illustrator. 11 Ausgaben.1966-1967.
 
 \section{Donkey-Post}
 
-eine Hauszeitschrift für Freunde und Interessenten meiner
-Arbeiten. 1962-1993, 1967-1978 u.d.T.: Früchte mit Maden: satirische
+eine Hauszeitschrift f"ur Freunde und Interessenten meiner
+Arbeiten. 1962-1993, 1967-1978 u.d.T.: Fr"uchte mit Maden: satirische
 Skizzen.
 
 \section{Bibliokomik}
@@ -561,19 +560,19 @@ Ausgaben. 1987-2008.
 \section{Kleine Reihe}
 
 Broschur mit einem Gedicht und vier Radierungen, (Plattenformat 6 x 6
-cm), 10 einseitig bedruckte Blätter, 11,5 x 14,8 cm,
-Büttenumschlag. 20 Ausgaben. 1993-2007.
+cm), 10 einseitig bedruckte Bl"atter, 11,5 x 14,8 cm,
+B"uttenumschlag. 20 Ausgaben. 1993-2007.
 
 \section{origill}
 
-Original-Illustrationen von Eduard Prüssen. Im Verlagsauftrag
+Original-Illustrationen von Eduard Pr"ussen. Im Verlagsauftrag
 entstandene Illustrationsfolgen, (Linolschnitte), ohne Text, 22 x 31
-cm, farbiger Büttenumschlag, Blockbuchbindung. 17 Ausgaben in 40
+cm, farbiger B"uttenumschlag, Blockbuchbindung. 17 Ausgaben in 40
 nummerierten und signierten Exemplaren. 1972-1989.
 
 \section{Neujahrsgraphiken}
 
-Linolschnitte / Farblinolschnitte auf geräuschlos Bütten, (zumeist 30
+Linolschnitte / Farblinolschnitte auf ger"auschlos B"utten, (zumeist 30
 x 40 cm). Seit 1961.
 
 \end{document}

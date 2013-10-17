@@ -13,6 +13,10 @@ recordselector: /FAUST_Datenbank/*
 # Feld der eindeutigen Titel-ID
 uniqueidfield: 'Objektnummer'
 
+category_split_chars:
+  'Schlagworte': '\s*;\s*'
+  'ISBN': '\s*;\s*'
+
 # Personen
 person:
   'Verf': '0100'        # Verfasser

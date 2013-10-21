@@ -412,7 +412,10 @@ my $loading_error = 0;
         my $count_in_db = $catalog->{schema}->resultset($resultset)->count;
         my ($count_in_file) = `wc -l $dumpfilename` =~m/(\d+)\s+/;
 
-        $loading_error = 1 unless ($count_in_db == $count_in_file);
+        if ($count_in_db != $count_in_file){
+            $logger->fatal("Problem mit $resultset: $count_in_file in Datei / $count_in_db in Datenbank");
+            $loading_error = 1;
+        }
     }
 
     

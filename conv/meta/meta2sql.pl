@@ -59,7 +59,6 @@ my %char_replacements = (
     
     # Zeichenersetzungen
     "\n"     => "<br\/>",
-    "\\$"     => "",
     "\\"     => "\\\\",
     "\r"     => "\\r",
     ""     => "",

@@ -406,6 +406,7 @@ sub load_full_title_record {
             if ($title_corporatebodies){
                 my $mult = 1;        
                 while (my $item = $title_corporatebodies->next){
+                    next unless (defined $item->{thisfield});
                     my $field             = "T".sprintf "%04d",$item->{thisfield};
                     my $corporatebodyid   =                    $item->{thiscorporatebodyid};
                     my $supplement        =                    $item->{thissupplement};
@@ -443,6 +444,7 @@ sub load_full_title_record {
             if ($title_subjects){
                 my $mult = 1;
                 while (my $item = $title_subjects->next){
+                    next unless (defined $item->{thisfield});
                     my $field             = "T".sprintf "%04d",$item->{thisfield};
                     my $subjectid         =                    $item->{thissubjectid};
                     my $supplement        =                    $item->{thissupplement};
@@ -480,6 +482,7 @@ sub load_full_title_record {
             if ($title_classifications){
                 my $mult = 1;
                 while (my $item = $title_classifications->next){
+                    next unless (defined $item->{thisfield});
                     my $field             = "T".sprintf "%04d",$item->{thisfield};
                     my $classificationid  =                    $item->{thisclassificationid};
                     my $supplement        =                    $item->{thissupplement};
@@ -518,39 +521,39 @@ sub load_full_title_record {
             # Super wird durch meta2sql.pl im Kontext der Anreicherung mit
             # Informationen der uebergeordneten Titelaufnahme erzeugt.
 
-#             if ($config->{benchmark}) {
-#                 $atime=new Benchmark;
-#             }
+            if ($config->{benchmark}) {
+                $atime=new Benchmark;
+            }
             
-#             my @sub = $self->get_connected_titles({ type => 'sub', id => $id });
+            my @sub = $self->get_connected_titles({ type => 'sub', id => $id });
             
-#             if (@sub){
+            if (@sub){
                 
-#                 $title_record->set_field({                
-#                     field      => 'T5001',
-#                     content    => scalar(@sub),
-#                     subfield   => '',
-#                     mult       => 1,
-#                 });
+                $title_record->set_field({                
+                    field      => 'T5001',
+                    content    => scalar(@sub),
+                    subfield   => '',
+                    mult       => 1,
+                });
                 
-#                 my $mult = 1;
-#                 foreach my $id (@sub){
-#                     $title_record->set_field({
-#                         field      => 'T5003',
-#                         content    => $id,
-#                         subfield   => '',
-#                         mult       => $mult,
-#                     });
+                my $mult = 1;
+                foreach my $id (@sub){
+                    $title_record->set_field({
+                        field      => 'T5003',
+                        content    => $id,
+                        subfield   => '',
+                        mult       => $mult,
+                    });
                     
-#                     $mult++;
-#                 }
-#             }
+                    $mult++;
+                }
+            }
             
-#             if ($config->{benchmark}) {
-#                 $btime=new Benchmark;
-#                 $timeall=timediff($btime,$atime);
-#                 $logger->info("Zeit fuer  ist ".timestr($timeall));
-#             }
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer  ist ".timestr($timeall));
+            }
             
             # Ueberordnungen
             # Super wird durch meta2sql.pl im Kontext der Anreicherung mit

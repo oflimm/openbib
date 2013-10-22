@@ -21,15 +21,15 @@
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("Recherche") %]</h6>
  <ul>
-[% IF active_submenu == "searchform_simple" %]
-  <li class="active"><strong>Einfache Recherche</strong></li>
-[% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/simple.html?l=[% lang %]">Einfache Recherche</a></li>
-[% END %]
 [% IF active_submenu == "searchform_advanced" %]
   <li class="active"><strong>Erweiterte Recherche</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">Erweiterte Recherche</a></li>
+[% END %]
+[% IF active_submenu == "searchform_authority" %]
+  <li class="active"><strong>Normdaten</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/authority.html?l=[% lang %]">Normdaten</a></li>
 [% END %]
 </ul>
 </nav>

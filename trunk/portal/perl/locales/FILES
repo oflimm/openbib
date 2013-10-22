@@ -39,6 +39,7 @@
 ../modules/OpenBib/Handler/Apache/Admin/Views/RSS.pm
 ../modules/OpenBib/Handler/Apache/Authentication.pm
 ../modules/OpenBib/Handler/Apache/Authenticators.pm
+../modules/OpenBib/Handler/Apache/Authority/Search.pm
 ../modules/OpenBib/Handler/Apache/Browse/BK.pm
 ../modules/OpenBib/Handler/Apache/Browse.pm
 ../modules/OpenBib/Handler/Apache/Browse/Topics.pm
@@ -1619,3 +1620,15 @@
 ../templates/visible_categories_subject
 ../templates/visible_categories_title
 ../templates/zsstlist_tex
+../templates/authority_search_facet
+../templates/authority_search_start_html
+../templates/authority_search_end_html
+../templates/authority_search_combined_html
+../templates/authority_search_start
+../templates/authlist_item_html_short
+../templates/authlist_options
+../templates/authority_search_combined_json
+../templates/authority_search_end
+../templates/_profile/kug/authority_search_facet
+../templates/_profile/kug/authority_search_radius
+../templates/authority_search_combined

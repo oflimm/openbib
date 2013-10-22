@@ -825,6 +825,7 @@
 ../templates/_profile/kug/newsflash
 ../templates/_profile/kug/search_facet
 ../templates/_profile/kug/searchforms_record_advanced
+../templates/searchforms_record_authority
 ../templates/_profile/kug/searchforms_record_profile
 ../templates/_profile/kug/searchforms_record_query
 ../templates/_profile/kug/search_more_tips

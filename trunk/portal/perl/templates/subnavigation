@@ -22,14 +22,14 @@
 <h6 class="ym-vtitle">[% msg.maketext("Recherche") %]</h6>
  <ul>
 [% IF active_submenu == "searchform_advanced" %]
-  <li class="active"><strong>Erweiterte Recherche</strong></li>
+  <li class="active"><strong>[% msg.maketext("Erweiterte Suche") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">Erweiterte Recherche</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a></li>
 [% END %]
 [% IF active_submenu == "searchform_authority" %]
-  <li class="active"><strong>Normdaten</strong></li>
+  <li class="active"><strong>[% msg.maketext("Normdaten") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/authority.html?l=[% lang %]">Normdaten</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/authority.html?l=[% lang %]">[% msg.maketext("Normdaten") %]</a></li>
 [% END %]
 </ul>
 </nav>

@@ -22,7 +22,6 @@
                 'T0424', # msg.maketext("T0424-einbaende") E-Jahr
                 'T0361', # msg.maketext("T0361-einbaende") Beibände
                 'T0370', # msg.maketext("T0370-einbaende") Provenienz
-                'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 ]

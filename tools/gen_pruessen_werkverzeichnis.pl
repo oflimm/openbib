@@ -2,9 +2,9 @@
 
 #####################################################################
 #
-#  gen_pruessen_werkverzeichnis_bd2.pl
+#  gen_pruessen_werkverzeichnis.pl
 #
-#  Generierung Band 2 des Werkverzeichnisses der Sammlung Pruessen in der USB
+#  Generierung des Werkverzeichnisses der Sammlung Pruessen in der USB
 #
 #  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
 #
@@ -81,7 +81,7 @@ if ($mode ne "tex" && $mode ne "pdf"){
   exit;
 }
 
-my $logfile='/var/log/openbib/gen_pruessen_werkverzeichnis_bd2.log';
+my $logfile='/var/log/openbib/gen_pruessen_werkverzeichnis.log';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=ERROR, LOGFILE, Screen
@@ -656,7 +656,7 @@ my $misc_year_min = 9999;
     }    
 }
 
-my $outputbasename="pruessen-werkverzeichnis-bd2";
+my $outputbasename="pruessen-werkverzeichnis";
 
 my $template = Template->new({
     LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -723,12 +723,12 @@ my $ttdata = {
     filterchars  => \&filterchars,
 };
 
-$template->process("pruessen_werkverzeichnis_bd2_$mode", $ttdata) || do { 
+$template->process("pruessen_werkverzeichnis_$mode", $ttdata) || do { 
     print $template->error();
 };
 
 sub print_help {
-    print "gen_pruessen_werkverzeichnis_bd2.pl - Generierung Band 2 des Werkverzeichnisses der Sammlung Pruessen in der USB\n";
+    print "gen_pruessen_werkverzeichnis.pl - Generierung Band 2 des Werkverzeichnisses der Sammlung Pruessen in der USB\n";
     print "Optionen: \n";
     print "  -help                   : Diese Informationsseite\n";
     print "  --mode=[pdf|tex]        : Typ des Ausgabedokumentes\n";

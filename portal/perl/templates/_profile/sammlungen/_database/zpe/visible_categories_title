@@ -24,7 +24,6 @@
                 'T0410', # msg.maketext("T0410-zpe") Verwahrort
                 'T0662', # msg.maketext("T0662-zpe") JSTOR-URL
                 'T2662', # msg.maketext("T2662-zpe") Externer URL
-                'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 ]

@@ -57,7 +57,7 @@ FOREACH category IN categories;
 
     SWITCH category;
 
-    CASE [ "T0100" "T0101" "T0103" ];
+    CASE [ "T0100" "T0101" "T0103" "T1800" ];
          thisid     = item.id;
 
          wikicontent = content.split(', ').reverse.join(' ');
@@ -84,7 +84,7 @@ FOREACH category IN categories;
          icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${rssfeed}&nbsp;${normdataicon}</div>";
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
-    CASE [ "T0200" "T0201" ];
+    CASE [ "T0200" "T0201" "T1802" ];
          thisid     = item.id;
 
 

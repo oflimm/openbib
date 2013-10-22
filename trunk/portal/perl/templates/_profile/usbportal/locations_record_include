@@ -34,7 +34,7 @@ IF recent_litlists.size > 0;
   END;
   litlist_content.push("</ul>");
 ELSE;
-  litlist_content.push("Es wurden noch Literaturlisten mit Titel dieses Kataloges angelegt.");
+  litlist_content.push("Es wurden noch keine Literaturlisten mit Titel dieses Kataloges angelegt.");
 END;
 
 recent_tags = user.get_recent_tags({database = thisdbname});

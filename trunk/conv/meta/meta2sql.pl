@@ -59,7 +59,6 @@ my %char_replacements = (
     
     # Zeichenersetzungen
     "\n"     => "<br\/>",
-    "\\"     => "\\\\",
     "\r"     => "\\r",
     ""     => "",
     "\x{00}" => "",
@@ -1668,6 +1667,7 @@ sub cleanup_content {
     my $content = shift;
 
     # Make PostgreSQL Happy    
+    $content =~ s/\\/\\\\/g;
     $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
             
     return $content;

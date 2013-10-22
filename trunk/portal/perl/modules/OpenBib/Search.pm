@@ -56,6 +56,9 @@ sub new {
     my $database        = exists $arg_ref->{database}
         ? $arg_ref->{database}                : undef;
 
+    my $authority          = exists $arg_ref->{authority}
+        ? $arg_ref->{authority}       : undef;
+    
     my $self = { };
 
     bless ($self, $class);
@@ -69,12 +72,22 @@ sub new {
     if ($database){
         $self->{_database}      = $database;
     }
+
+    if ($authority){
+        $self->{_authority}     = $authority;
+    }
     
     # Achtung: searchprofile und database werden fuer search direkt aus dem SearchQuery-Objekt verwendet.
 
     # Backend Specific Attributes
     
     return $self;
+}
+
+sub is_authority {
+    my $self = shift;
+
+    return $self->{_authority};
 }
 
 sub search {

@@ -193,37 +193,14 @@ sub show_search {
 
     $session->set_profile($searchquery->get_searchprofile);
     
-    # BEGIN Index
-    ####################################################################
-    # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
-    ####################################################################
-
-    if ($searchquery->is_indexsearch){
-        $self->search_index;
-    }
-
-    ####################################################################
-    # ENDE Indizes
-    #
-
     #############################################################
 
-    if ($searchquery->get_searchfield('ejahr')->{norm}) {
-        my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
-        if (!$ejtest) {
-            $self->print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."));
-            return Apache2::Const::OK;
-        }
+    my $returncode = $self->enforce_year_restrictions($searchquery);
+
+    if ($returncode){
+        return $returncode;
     }
-
-    if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
-        if ($searchquery->get_searchfield('ejahr')->{norm}) {
-            $self->print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."));
-            return Apache2::Const::OK;
-        }
-    }
-
-
+    
     if (!$searchquery->have_searchterms) {
 #        $searchquery->set_searchfield('freesearch','*','AND');
 #        $self->print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."));
@@ -250,11 +227,10 @@ sub show_search {
     my $gesamttreffer = 0;
 
     my $atime=new Benchmark;
-
-    my $starttemplatename=$config->{tt_search_title_start_tname};
-
-        # TT-Data erzeugen
     
+    my $starttemplatename=$self->get_start_templatename();
+
+    # TT-Data erzeugen    
     my $startttdata={
         password       => $password,
         searchquery    => $searchquery,
@@ -355,7 +331,7 @@ sub show_search {
     $endttdata = $self->add_default_ttdata($endttdata);
 
     # Ausgabe des letzten HTML-Bereichs
-    my $endtemplatename=$config->{tt_search_title_end_tname};
+    my $endtemplatename=$self->get_end_templatename();
     
     $endtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
         database     => '', # Template ist nicht datenbankabhaengig
@@ -806,8 +782,10 @@ sub joined_search {
     $logger->debug("Starting joined search");
 
     $self->search;
+    
+    my $templatename = $self->get_templatename_of_joined_search();
 
-    $self->print_resultitem({templatename => $config->{tt_search_title_combined_tname}});
+    $self->print_resultitem({templatename => $templatename});
 
     # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
     foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
@@ -861,6 +839,9 @@ sub search {
 
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}            : undef;
+
+    my $authority          = exists $arg_ref->{authority}
+        ? $arg_ref->{authority}           : undef;
     
     my $query        = $self->query();
     my $config       = $self->param('config');
@@ -876,6 +857,7 @@ sub search {
 
     my $search_args_ref = OpenBib::Common::Util::query2hashref($query);
     $search_args_ref->{database} = $database if (defined $database);
+    $search_args_ref->{authority} = $authority if (defined $authority);
 
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
     # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
@@ -1023,227 +1005,6 @@ sub print_resultitem {
     };
 }
 
-sub search_index {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-        # Dispatched Args
-    my $view           = $self->param('view');
-
-    # Shared Args
-    my $r              = $self->param('r');
-    my $query          = $self->query();
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $lang           = $self->param('lang');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $servername     = $self->param('servername');
-    my $path_prefix    = $self->param('path_prefix');
-    my $path           = $self->param('path');
-    my $representation = $self->param('representation');
-    my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
-
-    my $profile       = $query->param('profile')       || '';
-
-    # Index zusammen mit Eingabefelder 
-    my $verfindex     = $query->param('verfindex')     || '';
-    my $korindex      = $query->param('korindex')      || '';
-    my $swtindex      = $query->param('swtindex')      || '';
-    my $notindex      = $query->param('notindex')      || '';
-
-    # oder Index als separate Funktion
-    my $indextype    = $query->param('indextype')     || ''; # (verfindex, korindex, swtindex oder notindex)
-    my $indexterm    = $query->param('indexterm')     || '';
-    my $searchindex  = $query->param('searchindex')     || '';
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    my $searchquery = OpenBib::SearchQuery->instance;
-
-    my $searchprofile = $self->get_searchprofile();
-
-    
-    my $contentreq =
-        ($searchindex)?$searchquery->get_searchfield('indexterm' )->{norm}:
-            
-            ($verfindex)?$searchquery->get_searchfield('verf'         )->{norm}:
-                ($korindex )?$searchquery->get_searchfield('kor'          )->{norm}:
-                    ($swtindex )?$searchquery->get_searchfield('swt'          )->{norm}:
-                        ($notindex )?$searchquery->get_searchfield('notation'     )->{norm}:undef;
-    
-    my $type =
-        ($indextype)?$indextype:
-        ($verfindex)?'aut':
-            ($korindex )?'kor':
-                ($swtindex )?'swt':
-                    ($notindex )?'notation':undef;
-    
-    my $urlpart =
-        ($type eq "aut"      )?"verf=$contentreq;verfindex=Index":
-            ($type eq "kor"      )?"kor=$contentreq;korindex=Index":
-                ($type eq "swt"      )?"swt=$contentreq;swtindex=Index":
-                    ($type eq "notation" )?"notation=$contentreq;notindex=Index":undef;
-    
-    my $template =
-        ($type eq "aut"      )?$config->{"tt_search_person_tname"}:
-            ($type eq "kor"      )?$config->{"tt_search_corporatebody_tname"}:
-                ($type eq "swt"      )?$config->{"tt_search_subject_tname"}:
-                    ($type eq "notation" )?$config->{"tt_search_classification_tname"}:undef;
-    
-    $contentreq=~s/\+//g;
-    $contentreq=~s/%2B//g;
-    $contentreq=~s/%//g;
-    
-    if (!$contentreq) {
-        $self->print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"));
-        return Apache2::Const::OK;
-    }
-    
-    if (length($contentreq) < 3) {
-        my @databases = $config->get_databases_of_searchprofile($searchprofile);
-        if ($#databases > 0){
-            $self->print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."));
-            return Apache2::Const::OK;
-        }
-    }
-    
-    my %index=();
-    
-    my @sortedindex=();
-    
-    my $atime=new Benchmark;
-    
-    foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
-        
-        my $thisindex_ref=OpenBib::Search::Util::get_index({
-            type       => $type,
-            category   => 1,
-            contentreq => $contentreq,
-            dbh        => $dbh,
-        });
-        
-        if ($logger->is_debug){
-            $logger->debug("Index Ursprung ($database)".YAML::Dump($thisindex_ref));
-        }
-        
-        # Umorganisierung der Daten Teil 1
-        #
-        # Hier werden die fuer eine Datenbank mit get_index ermittelten
-        # Index-Items (AoH content,id,titcount) in einen Gesamt-Index
-        # uebertragen (HoHoAoH) mit folgenden Schluesseln pro 'Ebene'
-        # (1) <Indexbegriff>
-        # {2} databases(Array), titcount(Skalar)
-        # (3) dbname,dbdesc,id,titcount in Array databases
-        foreach my $item_ref (@$thisindex_ref) {
-            # Korrekte Initialisierung mit 0
-            if (! exists $index{$item_ref->{content}}{titcount}) {
-                $index{$item_ref->{content}}{titcount}=0;
-            }
-            
-            push @{$index{$item_ref->{content}}{databases}}, {
-                'dbname'   => $database,
-                'dbdesc'   => $dbinfotable->{dbnames}{$database},
-                'id'       => $item_ref->{id},
-                'titcount' => $item_ref->{titcount},
-            };
-            
-            $index{$item_ref->{content}}{titcount}=$index{$item_ref->{content}}{titcount}+$item_ref->{titcount};
-        }
-        $dbh->disconnect;
-    }
-    
-    if ($logger->is_debug){
-        $logger->debug("Index 1".YAML::Dump(\%index));
-    }
-    
-    # Umorganisierung der Daten Teil 2
-    #
-    # Um die Begriffe sortieren zu koennen muss der HoHoAoH in ein
-    # AoHoAoH umgewandelt werden.
-    # Es werden folgende Schluessel pro 'Ebene' verwendet
-    # {1} content(Skalar), databases(Array), titcount(Skalar)
-    # (2) dbname,dbdesc,id,titcount in Array databases
-    #
-    # Ueber die Reihenfolge des ersten Arrays erfolgt die Sortierung
-    foreach my $singlecontent (sort { uc($a) cmp uc($b) } keys %index) {
-        push @sortedindex, { content   => $singlecontent,
-                             titcount  => $index{$singlecontent}{titcount},
-                             databases => $index{$singlecontent}{databases},
-                         };
-    }
-    
-    if ($logger->is_debug){
-        $logger->debug("Index 2".YAML::Dump(\@sortedindex));
-    }
-    
-    my $hits=$#sortedindex+1;
-    
-    my $databasestring="";
-    foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
-        $databasestring.=";database=$database";
-    }
-    
-    my $baseurl="$path_prefix/$config->{search_loc}?$urlpart;profile=$profile;hitrange=$queryoptions->get_option('num');sorttype=$queryoptions->get_option('srt');sortorder=$queryoptions->get_option('srto')$databasestring";
-    
-    my @nav=();
-    
-    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
-    
-    if ($queryoptions->get_option('num') > 0) {
-        $logger->debug("Navigation wird erzeugt: Hitrange: $queryoptions->get_option('num') Hits: $hits");
-        
-        for (my $i=0; $i <= $hits-1; $i+=$queryoptions->get_option('num')) {
-            my $active=0;
-            
-            if ($i == $offset) {
-                $active=1;
-            }
-            
-            my $item={
-                start  => $i+1,
-                end    => ($i+$queryoptions->get_option('num')>$hits)?$hits:$i+$queryoptions->get_option('num'),
-                url    => $baseurl.";hitrange=$queryoptions->get_option('num');offset=$i",
-                active => $active,
-            };
-            push @nav,$item;
-        }
-    }
-    
-    
-    my $btime      = new Benchmark;
-    my $timeall    = timediff($btime,$atime);
-    my $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        servername   => $servername,
-        lang         => $lang,
-        qopts        => $queryoptions->get_options,
-        queryoptions => $queryoptions,
-        
-        resulttime => $resulttime,
-        contentreq => $contentreq,
-        index      => \@sortedindex,
-        nav        => \@nav,
-        offset     => $offset,
-        baseurl    => $baseurl,
-    };
-
-    $ttdata = $self->add_default_ttdata($ttdata);
-    
-    $self->print_page($template,$ttdata,$r);
-    
-    return Apache2::Const::OK;
-}
 
 sub dec2bin {
     my $str = unpack("B32", pack("N", shift));
@@ -1252,6 +1013,53 @@ sub dec2bin {
 }
 sub bin2dec {
     return unpack("N", pack("B32", substr("0" x 32 . shift, -32)));
+}
+
+sub enforce_year_restrictions {
+    my $self = shift;
+    my $searchquery = shift;
+
+    my $config         = $self->param('config');
+    my $msg            = $self->param('msg');
+
+    if ($searchquery->get_searchfield('ejahr')->{norm}) {
+        my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
+        if (!$ejtest) {
+            $self->print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."));
+            return Apache2::Const::OK;
+        }
+    }
+    
+    if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
+        if ($searchquery->get_searchfield('ejahr')->{norm}) {
+            $self->print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."));
+            return Apache2::Const::OK;
+        }
+    }
+}
+
+sub get_start_templatename {
+    my $self = shift;
+    
+    my $config = $self->param('config');
+    
+    return $config->{tt_search_title_start_tname};
+}
+
+sub get_end_templatename {
+    my $self = shift;
+    
+    my $config = $self->param('config');
+    
+    return $config->{tt_search_title_end_tname};
+}
+
+sub get_templatename_of_joined_search {
+    my $self = shift;
+
+    my $config         = $self->param('config');
+    
+    return $config->{tt_search_title_combined_tname};
 }
 
 1;

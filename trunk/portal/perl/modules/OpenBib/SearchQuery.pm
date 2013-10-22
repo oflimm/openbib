@@ -320,6 +320,7 @@ sub set_from_apache_request {
     $self->{drilldown}           = $query->param('dd')                  || 1;     # Drilldown ?
 
     # Index zusammen mit Eingabefelder
+    $self->{authority}           = $query->param('authority')           || '';
     $self->{personindex}         = $query->param('personindex')         || '';
     $self->{corporatebodyindex}  = $query->param('corporatebodyindex')  || '';
     $self->{subjectindex}        = $query->param('subjectindex')        || '';
@@ -347,7 +348,7 @@ sub set_from_apache_request {
         $self->{indextype} = $indextype;
     }
 
-    $self->{_is_indexsearch} =($self->{_searchquery}->{searchindex} || $self->{_searchquery}->{personindex} || $self->{_searchquery}->{corporatebodyindex} || $self->{_searchquery}->{subjectindex} || $self->{_searchquery}->{classificationindex})?1:0;
+    $self->{_is_authority} =(defined $self->{authority})?1:0;
     
     $self->{_searchprofile}  = $self->_get_searchprofile;
 
@@ -464,10 +465,10 @@ sub save  {
     return $self;
 }
 
-sub is_indexsearch {
+sub is_authority {
     my ($self)=@_;
 
-    return $self->{_is_indexsearch};
+    return $self->{_is_authority};
 }
 
 sub get_queryid {
@@ -632,6 +633,18 @@ sub set_hits {
     my ($self,$hits)=@_;
 
     $self->{_hits} = $hits;
+}
+
+sub get_type {
+    my ($self)=@_;
+
+    return $self->{_type};
+}
+
+sub set_type {
+    my ($self,$type)=@_;
+
+    $self->{_type} = $type;
 }
 
 sub get_id {

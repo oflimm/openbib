@@ -480,6 +480,30 @@ sub create_document {
     if ($withsorting){
         my $sorting_ref = [
             {
+                # Normdaten-Ansetzungsform Person
+                id         => $config->{xapian_sorttype_value}{'authority'},
+                category   => 'P0800',
+                type       => 'stringcategory',
+            },
+            {
+                # Normdaten-Ansetzungsform Koerperschaft
+                id         => $config->{xapian_sorttype_value}{'authority'},
+                category   => 'C0800',
+                type       => 'stringcategory',
+            },
+            {
+                # Normdaten-Ansetzungsform Schlagwort
+                id         => $config->{xapian_sorttype_value}{'authority'},
+                category   => 'S0800',
+                type       => 'stringcategory',
+            },
+            {
+                # Normdaten-Ansetzungsform Person
+                id         => $config->{xapian_sorttype_value}{'authority'},
+                category   => 'P0800',
+                type       => 'stringcategory',
+            },
+            {
                 # Verfasser/Koepeschaft
                 id         => $config->{xapian_sorttype_value}{'person'},
                 category   => 'PC0001',
@@ -536,9 +560,10 @@ sub create_document {
         ];
         
         foreach my $this_sorting_ref (@{$sorting_ref}){
+            next unless (defined $record_ref->{$this_sorting_ref->{category}});
             
             if ($this_sorting_ref->{type} eq "stringcategory"){
-                my $content = (exists $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:"";
+                my $content = (defined $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:"";
                 next unless ($content);
                 
                 if (defined $this_sorting_ref->{filter}){
@@ -556,7 +581,7 @@ sub create_document {
                 }
             }
             elsif ($this_sorting_ref->{type} eq "integercategory"){
-                my $content = (exists $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:0;
+                my $content = (defined $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:0;
                         next unless ($content);
                 
                 ($content) = $content=~m/^\D*(-?\d+)/;
@@ -569,7 +594,7 @@ sub create_document {
             }
             elsif ($this_sorting_ref->{type} eq "integervalue"){
                 my $content = 0 ;
-                if (exists $record_ref->{$this_sorting_ref->{category}}){
+                if (defined $record_ref->{$this_sorting_ref->{category}}){
                     ($content) = $record_ref->{$this_sorting_ref->{category}}=~m/^(-?\d+)/;
                 }
                 if ($content){

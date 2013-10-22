@@ -63,6 +63,8 @@ my %char_replacements = (
     "\r"     => "\\r",
     ""     => "",
     "\x{00}" => "",
+    "\x{80}" => "",
+    "\x{87}" => "",
 );
 
 my $chars_to_replace = join '|',

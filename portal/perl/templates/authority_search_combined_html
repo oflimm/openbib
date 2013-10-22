@@ -75,7 +75,7 @@
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
     <div class="right">
-<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
 <input type="hidden" name="page" value="1" />
 
 [% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto']}) %]

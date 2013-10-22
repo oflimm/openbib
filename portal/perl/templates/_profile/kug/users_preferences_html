@@ -242,6 +242,11 @@
 <label for="year">[% msg.maketext("Erscheinungsjahr") %]</label>
 </div>
 
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="publisher"     value="1" [% IF searchfields.publisher.active %]checked="checked"[% END %]/>
+<label for="year">[% msg.maketext("Verlag") %]</label>
+</div>
+
 </div>
 </div><!-- End grid -->
 

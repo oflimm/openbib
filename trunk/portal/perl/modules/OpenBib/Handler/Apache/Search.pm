@@ -803,25 +803,8 @@ sub joined_search {
     my $config      = OpenBib::Config->instance;
     my $searchquery = OpenBib::SearchQuery->instance;
 
-    my $query        = $self->query();
-
-    my $recordlist;
-
     $logger->debug("Starting joined search");
 
-    my $search_args_ref = OpenBib::Common::Util::query2hashref($query);
-
-    # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
-    # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
-    # und OpenBib::QueryOptions - alle weiteren benoetigten Parameter individuell
-    # heraussuchen.
-    # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
-    
-    my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
-
-    # Recherche starten
-    $searcher->search;
-    
     $self->search;
 
     $self->print_resultitem({templatename => $config->{tt_search_title_combined_tname}});

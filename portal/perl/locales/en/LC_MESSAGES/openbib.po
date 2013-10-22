@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-10-22 11:33+0200\n"
+"PO-Revision-Date: 2013-10-22 14:13+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -239,11 +239,11 @@ msgstr ""
 "The KUG's popularity function is very similar to the recommended entries "
 "function. It comprises:"
 
-#: ../templates/_profile/kug/users_preferences_html:249
-#: ../templates/_profile/kug/users_preferences_html:270
-#: ../templates/_profile/kug/users_preferences_html:323
-#: ../templates/_profile/kug/users_preferences_html:346
-#: ../templates/_profile/kug/users_preferences_html:374
+#: ../templates/_profile/kug/users_preferences_html:254
+#: ../templates/_profile/kug/users_preferences_html:275
+#: ../templates/_profile/kug/users_preferences_html:328
+#: ../templates/_profile/kug/users_preferences_html:351
+#: ../templates/_profile/kug/users_preferences_html:379
 #: ../templates/_view/richter/users_litlists_record_edit:93
 #: ../templates/litlists_record_include:92 ../templates/reviews_edit:238
 #: ../templates/titles_record_include:512
@@ -713,7 +713,7 @@ msgstr "API"
 msgid "Abbruch"
 msgstr "Cancel"
 
-#: ../templates/_profile/kug/users_preferences_html:360
+#: ../templates/_profile/kug/users_preferences_html:365
 #: ../templates/users_preferences_html:367
 msgid "Abgleich zu BibSonomy"
 msgstr "Mirror to BibSonomy"
@@ -762,9 +762,9 @@ msgstr "Abstract/Content"
 msgid "Administration"
 msgstr "Administration"
 
-#: ../templates/_profile/kug/users_preferences_html:286
-#: ../templates/_profile/kug/users_preferences_html:300
-#: ../templates/_profile/kug/users_preferences_html:313
+#: ../templates/_profile/kug/users_preferences_html:291
+#: ../templates/_profile/kug/users_preferences_html:305
+#: ../templates/_profile/kug/users_preferences_html:318
 #: ../templates/admin_clusters_html:107 ../templates/admin_clusters_html:81
 #: ../templates/admin_clusters_record_edit:87
 #: ../templates/admin_databases_html:99
@@ -943,7 +943,7 @@ msgstr "All titles"
 msgid "Alle Treffer"
 msgstr "All hits"
 
-#: ../templates/_profile/kug/users_preferences_html:385
+#: ../templates/_profile/kug/users_preferences_html:390
 #: ../templates/users_preferences_html:389
 msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr "Mirror all tagged titles to BibSonomy"
@@ -1714,7 +1714,7 @@ msgid ""
 "Automatische Spiegelung von Titeln beim Tagging in OpenBib nach BibSonomy"
 msgstr "Automatic mirroring of tagged titles to BibSonomy"
 
-#: ../templates/_profile/kug/users_preferences_html:259
+#: ../templates/_profile/kug/users_preferences_html:264
 #: ../templates/users_preferences_html:273
 msgid "Automatische Vorschl&auml;ge zur Suchanfrage"
 msgstr "Automatic suggestions for your search query"
@@ -1874,12 +1874,12 @@ msgstr ""
 "To search for any of the following symbols please use the appropriate   base "
 "letter:"
 
-#: ../templates/_profile/kug/users_preferences_html:296
+#: ../templates/_profile/kug/users_preferences_html:301
 #: ../templates/users_preferences_html:307
 msgid "Bei der Eingabe von Personen"
 msgstr "As you enter persons"
 
-#: ../templates/_profile/kug/users_preferences_html:310
+#: ../templates/_profile/kug/users_preferences_html:315
 #: ../templates/users_preferences_html:321
 msgid "Bei der Eingabe von Schlagworten"
 msgstr "As you enter subjects"
@@ -2301,7 +2301,7 @@ msgstr "Ratings/reviews from users"
 
 #: ../templates/_database/openlibrary/titles_record_html_images:32
 #: ../templates/_profile/kug/_database/openlibrary/titles_record_html_images:32
-#: ../templates/_profile/kug/users_preferences_html:355
+#: ../templates/_profile/kug/users_preferences_html:360
 #: ../templates/_view/richter/cartitems_html_full:56
 #: ../templates/_view/richter/litlists_record_html_full:24
 #: ../templates/cartitems_html_full:56
@@ -2317,12 +2317,12 @@ msgstr "BibSonomy"
 msgid "BibSonomy Tags"
 msgstr "BibSonomy Tags"
 
-#: ../templates/_profile/kug/users_preferences_html:369
+#: ../templates/_profile/kug/users_preferences_html:374
 #: ../templates/users_preferences_html:376
 msgid "BibSonomy-API-Key"
 msgstr "BibSonomy API-Key"
 
-#: ../templates/_profile/kug/users_preferences_html:364
+#: ../templates/_profile/kug/users_preferences_html:369
 #: ../templates/users_preferences_html:371
 msgid "BibSonomy-API-User"
 msgstr "BibSonomy API-User"
@@ -4843,6 +4843,7 @@ msgstr "French"
 #: ../templates/_view/richter/searchforms_record_query:70
 #: ../templates/admin_statistics_query_html:90
 #: ../templates/authority_search_facet:606 ../templates/search_title_field:2
+#: ../templates/searchforms_record_authority:126
 #: ../templates/searchforms_record_query:70
 #: ../templates/users_preferences_html:184
 msgid "Freie Suche"
@@ -5261,6 +5262,7 @@ msgstr ""
 #: ../templates/_view/richter/searchforms_record_simple:242
 #: ../templates/_view/richter/searchforms_record_simple:286
 #: ../templates/authority_search_facet:642
+#: ../templates/searchforms_record_authority:162
 #: ../templates/searchforms_record_query:182
 #: ../templates/searchforms_record_simple:151
 #: ../templates/searchforms_record_simple:193
@@ -5862,7 +5864,7 @@ msgstr ""
 "on the icon. %1 is a free social bookmarking service specialized on managing "
 "and sharing bibliography lists."
 
-#: ../templates/_profile/kug/users_preferences_html:337
+#: ../templates/_profile/kug/users_preferences_html:342
 #: ../templates/users_preferences_html:345
 msgid "In der Recherchemaske"
 msgstr "In the search mask"
@@ -5901,12 +5903,12 @@ msgstr ""
 "directly to the external search results page. Both your search query and,if "
 "available, your OpenBib login data will be transmitted."
 
-#: ../templates/_profile/kug/users_preferences_html:342
+#: ../templates/_profile/kug/users_preferences_html:347
 #: ../templates/users_preferences_html:350
 msgid "In der Trefferliste"
 msgstr "In the result list"
 
-#: ../templates/_profile/kug/users_preferences_html:282
+#: ../templates/_profile/kug/users_preferences_html:287
 #: ../templates/users_preferences_html:293
 msgid "In der einfachen Recherche bzw. dem freien Suchfeld"
 msgstr "In simple search or free search field"
@@ -6241,6 +6243,7 @@ msgstr "Institute"
 #: ../templates/authority_search_facet:622
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
 #: ../templates/search_person:75 ../templates/search_subject:75
+#: ../templates/searchforms_record_authority:142
 #: ../templates/searchforms_record_query:91
 msgid "Institutionen"
 msgstr "Institutions"
@@ -6850,7 +6853,7 @@ msgstr "Catalog title according to library classification"
 msgid "Kategorie"
 msgstr "Category"
 
-#: ../templates/_profile/kug/users_preferences_html:263
+#: ../templates/_profile/kug/users_preferences_html:268
 #: ../templates/_view/richter/litlists_record_html:61
 #: ../templates/_view/richter/users_litlists_record_edit:46
 #: ../templates/admin_databases_record_edit:103
@@ -7558,7 +7561,7 @@ msgid "Literaturliste"
 msgstr "Literature list"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:55
-#: ../templates/_profile/kug/users_preferences_html:429
+#: ../templates/_profile/kug/users_preferences_html:434
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:81
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:83
 #: ../templates/_profile/rheinlandbib/clouds_navigation:76
@@ -7611,8 +7614,8 @@ msgstr "Literature list"
 msgid "Literaturlisten"
 msgstr "Literature lists"
 
-#: ../templates/_profile/kug/users_preferences_html:264
-#: ../templates/_profile/kug/users_preferences_html:279
+#: ../templates/_profile/kug/users_preferences_html:269
+#: ../templates/_profile/kug/users_preferences_html:284
 #: ../templates/users_preferences_html:278
 #: ../templates/users_preferences_html:290
 msgid "LiveSearch"
@@ -7683,7 +7686,7 @@ msgstr "Local"
 msgid "Lokale Signatur      "
 msgstr "Local location mark  "
 
-#: ../templates/_profile/kug/users_preferences_html:388
+#: ../templates/_profile/kug/users_preferences_html:393
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:59
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:85
 #: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:24
@@ -8045,7 +8048,7 @@ msgstr "Collect"
 
 #: ../templates/_profile/kug/corporate_banner:11
 #: ../templates/_profile/kug/corporate_banner:13
-#: ../templates/_profile/kug/users_preferences_html:424
+#: ../templates/_profile/kug/users_preferences_html:429
 #: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:46
 #: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:48
 #: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:46
@@ -8595,7 +8598,12 @@ msgstr "Dutch"
 msgid "Nominal"
 msgstr "Nominal"
 
+#: ../templates/searchforms_record_authority:118
+msgid "Normdaten"
+msgstr "Authory data"
+
 #: ../templates/authority_search_start_html:51
+#: ../templates/searchforms_record_authority:38
 msgid "Normdaten-Recherche"
 msgstr "Authority search"
 
@@ -8931,7 +8939,7 @@ msgid "P5000"
 msgstr "# of titles"
 
 #: ../templates/_profile/kug/login:101 ../templates/_profile/kug/login:134
-#: ../templates/_profile/kug/users_preferences_html:418
+#: ../templates/_profile/kug/users_preferences_html:423
 #: ../templates/_profile/kug/users_preferences_html:67
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:553
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_images:63
@@ -9064,8 +9072,10 @@ msgstr "Person/Corporate Body"
 #: ../templates/clouds_person_html:51 ../templates/clouds_person_html:70
 #: ../templates/cloudss_navigation:19 ../templates/search_classification:75
 #: ../templates/search_corporatebody:75 ../templates/search_person:75
-#: ../templates/search_subject:75 ../templates/searchforms_record_query:84
-#: ../templates/subnavigation:60 ../templates/subnavigation:62
+#: ../templates/search_subject:75
+#: ../templates/searchforms_record_authority:134
+#: ../templates/searchforms_record_query:84 ../templates/subnavigation:60
+#: ../templates/subnavigation:62
 msgid "Personen"
 msgstr "Persons"
 
@@ -9510,8 +9520,8 @@ msgstr "Search for %1 electronically available media in %2 catalogs"
 msgid "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
 msgstr "Search for %1 journals/series in %2 catalogs"
 
-#: ../templates/_profile/kug/users_preferences_html:265
-#: ../templates/_profile/kug/users_preferences_html:333
+#: ../templates/_profile/kug/users_preferences_html:270
+#: ../templates/_profile/kug/users_preferences_html:338
 #: ../templates/users_preferences_html:279
 #: ../templates/users_preferences_html:341
 msgid "Rechtschreibvorschläge"
@@ -9857,7 +9867,9 @@ msgstr "Informatio about subject heading: %1 in catalog %2"
 #: ../templates/clouds_subject_html:51 ../templates/clouds_subject_html:70
 #: ../templates/cloudss_navigation:16 ../templates/search_classification:75
 #: ../templates/search_corporatebody:75 ../templates/search_person:75
-#: ../templates/search_subject:75 ../templates/searchforms_record_query:98
+#: ../templates/search_subject:75
+#: ../templates/searchforms_record_authority:150
+#: ../templates/searchforms_record_query:98
 msgid "Schlagworte"
 msgstr "Subject headings"
 
@@ -10949,6 +10961,7 @@ msgstr "Edit information about location"
 #: ../templates/login:38 ../templates/persons_record_html:47
 #: ../templates/reviews_record_html:37 ../templates/search_history:37
 #: ../templates/searchforms_record_advanced:37
+#: ../templates/searchforms_record_authority:37
 #: ../templates/searchprofiles_session:51 ../templates/subjects_record_html:47
 #: ../templates/tags_html:40 ../templates/tags_names_html:37
 #: ../templates/tags_names_recent_html:37
@@ -11219,7 +11232,9 @@ msgstr "Search for journals"
 #: ../templates/authority_search_facet:642
 #: ../templates/mainnavigation_html:107 ../templates/search_classification:75
 #: ../templates/search_corporatebody:75 ../templates/search_person:75
-#: ../templates/search_subject:75 ../templates/searchforms_record_query:182
+#: ../templates/search_subject:75
+#: ../templates/searchforms_record_authority:162
+#: ../templates/searchforms_record_query:182
 #: ../templates/searchforms_record_simple:151
 #: ../templates/searchforms_record_simple:193
 #: ../templates/searchforms_record_simple:236
@@ -15481,7 +15496,7 @@ msgstr "Tagging"
 msgid "Tagging"
 msgstr "Tagging"
 
-#: ../templates/_profile/kug/users_preferences_html:434
+#: ../templates/_profile/kug/users_preferences_html:439
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:125
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:226
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:372
@@ -16219,6 +16234,7 @@ msgstr "Operators with multiple search boxes"
 
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:185
 #: ../templates/_profile/kug/searchforms_record_query:201
+#: ../templates/_profile/kug/users_preferences_html:247
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:187
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:116
 #: ../templates/_profile/sammlungen/_view/umschlaege/subnavigation:40
@@ -17517,6 +17533,7 @@ msgstr "in internal course of business"
 #: ../templates/_view/richter/searchforms_record_simple:287
 #: ../templates/authority_search_facet:635
 #: ../templates/mainnavigation_html:111
+#: ../templates/searchforms_record_authority:155
 #: ../templates/searchforms_record_query:180
 #: ../templates/searchforms_record_simple:152
 #: ../templates/searchforms_record_simple:194

@@ -101,6 +101,8 @@ if (!$database){
 }
 
 my $databasetmp=$database."tmp";
+my $authority = $database."_authority";
+my $authoritytmp=$authority."tmp";
 
 if (!$config->db_exists($database)){
   $logger->fatal("Pool $database existiert nicht");
@@ -323,7 +325,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
-# Suchmaschinen-Index aufbauen
+# Suchmaschinen-Index fuer Titel aufbauen
 
 {
     my $atime = new Benchmark;
@@ -331,6 +333,23 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
     $logger->info("### $database: Importing data into searchengine");   
     system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp");
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
+}
+
+# Suchmaschinen-Index fuer Normdaten aufbauen
+
+{
+    my $atime = new Benchmark;
+
+    my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
+    $logger->info("### $database: Importing authority data into searchengine");   
+    system("$config->{'base_dir'}/conv/authority2xapian.pl -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
@@ -472,6 +491,18 @@ else {
         system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
     }
 
+    $logger->info("### $database: Temporaeren Normdaten-Suchindex aktivieren");
+
+    if (-d "$config->{xapian_index_base_path}/$authority"){
+        system("mv $config->{xapian_index_base_path}/$authority $config->{xapian_index_base_path}/${authority}tmp2");
+    }
+
+    system("mv $config->{xapian_index_base_path}/$authoritytmp $config->{xapian_index_base_path}/$authority");
+
+    if (-d "$config->{xapian_index_base_path}/${authority}tmp2"){
+        system("rm $config->{xapian_index_base_path}/${authority}tmp2/* ; rmdir $config->{xapian_index_base_path}/${authority}tmp2");
+    }
+    
     if ($old_database_exists){
 	$postgresdbh->do("drop database ${database}tmp2");
     }

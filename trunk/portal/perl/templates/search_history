@@ -79,7 +79,9 @@
 <table class="ym-full">
 <tr><th>[% msg.maketext("Wann") %]</th><th>[% msg.maketext("Suchanfrage") %]</th><th>[% msg.maketext("Filter") %]</th><th>[% msg.maketext("Suchprofil") %]</th><th>[% msg.maketext("Treffer") %]</th></tr>
 [% FOREACH query IN queries ;
+#    USE dumper;dumper.dump(query);
     searchprofileid = query.get_searchprofile;
+    searchtype      = query.get_type;
     databases = config.get_databases_of_searchprofile(searchprofileid);
     add_option = '';
     IF databases.size == 1 ;
@@ -90,7 +92,7 @@
     END;
 %]	  
 <tr><td>[% query.get_tstamp.substr(0,19) %]</td><td>
-<a href="[% path_prefix%]/[% config.get('search_loc')%].html?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb'] }) %];page=1;[% query.to_cgi_querystring %][% IF add_option %];[% add_option %][% END %]"><img style="vertical-align: bottom;" src="[% config.get('search_small_img') %]" alt="Search Icon"/>&nbsp;
+<a href="[% path_prefix%]/[% IF searchtype == 'authority' %][% config.get('authority_loc') %]/[% END %][% config.get('search_loc')%].html?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb'] }) %];page=1;[% query.to_cgi_querystring %][% IF add_option %];[% add_option %][% END %]"><img style="vertical-align: bottom;" src="[% config.get('search_small_img') %]" alt="Search Icon"/>&nbsp;
 [% used_fields = [] %]
 [%- FOREACH field IN query.get_searchquery.keys  -%]
 [%-
@@ -104,7 +106,7 @@
 -%]
 [% used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" ) %]
 [%- END -%]
-[% used_fields.join(' ; ') %] 
+[% IF searchtype == 'authority' %]Normdaten: [% END %][% used_fields.join(' ; ') %] 
 [%# USE dumper;dumper.dump(databaseinfo.system);%]
 </a>
 </td>

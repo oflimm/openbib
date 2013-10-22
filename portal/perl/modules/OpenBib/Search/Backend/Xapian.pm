@@ -130,6 +130,7 @@ sub search {
 #    my $serien            = exists $arg_ref->{serien}
 #        ? $arg_ref->{serien}        : undef;
 
+        
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -157,8 +158,14 @@ sub search {
 
     my $searchprofile = $searchquery->get_searchprofile;
 
+    $logger->debug("Performing Authority Search") if ($self->{_authority});
+    
     if ($searchprofile){
         my $profileindex_path = $config->{xapian_index_base_path}."/_searchprofile/".$searchprofile;
+
+        if ($self->{_authority}){
+            $profileindex_path .="_authority";
+        }
         
         if (-d $profileindex_path){
             $logger->debug("Adding Xapian DB-Object for profile $searchprofile with path $profileindex_path");
@@ -180,9 +187,17 @@ sub search {
                     # Erstes Objekt erzeugen,
                     
                     $logger->debug("Creating Xapian DB-Object for database $database");                
-                
+
+                    my $databaseindex_path = $config->{xapian_index_base_path}."/".$database;
+                    
+                    if ($self->{_authority}){
+                        $databaseindex_path .="_authority";
+                    }
+
+                    $logger->debug("Initializing Xapian Index using path $databaseindex_path");
+                    
                     eval {
-                        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+                        $dbh = new Search::Xapian::Database ( $databaseindex_path) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
                     };
                     
                     if ($@){
@@ -191,9 +206,17 @@ sub search {
                 }
                 else {
                     $logger->debug("Adding searchindex $database");
+
+                    my $databaseindex_path = $config->{xapian_index_base_path}."/".$database;
+                    
+                    if ($self->{_authority}){
+                        $databaseindex_path .="_authority";
+                    }
+
+                    $logger->debug("Adding Xapian Index using path $databaseindex_path");
                     
                     eval {
-                        $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
+                        $dbh->add_database(new Search::Xapian::Database( $databaseindex_path));
                     };
                     
                     if ($@){
@@ -205,9 +228,17 @@ sub search {
     }
     elsif ($self->{_database}){
         $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
+
+        my $databaseindex_path = $config->{xapian_index_base_path}."/".$self->{_database};
+        
+        if ($self->{_authority}){
+            $databaseindex_path .="_authority";
+        }
+
+        $logger->debug("Using Xapian Index using path $databaseindex_path");
         
         eval {
-            $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$self->{_database}) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+            $dbh = new Search::Xapian::Database ( $databaseindex_path) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
         };
         
         if ($@) {

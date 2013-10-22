@@ -126,6 +126,16 @@ convtab:
 # Unter index werden die Recherchefelder aufgefuehrt, in dem der Inhalt der
 # Katagorie gesammelt wird, der Hashwert des Recherchefeldes
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
+    inverted_authority_person:
+      '0800':         # Ansetzung
+        index:
+          'person': 1
+          'personstring': 1
+          'freesearch': 1
+      '0830':         # Verweisform
+        index:
+          'person': 1
+          'freesearch': 1
     inverted_person:
       '0800':         # Ansetzung
         index:
@@ -137,6 +147,28 @@ convtab:
           'person': 1
           'freesearch': 1
     inverted_corporatebody:
+      '0800':         # Ansetzung
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0810':         # Verweisform
+        index:
+          'corporatebody': 1
+          'freesearch': 1
+      '0812':         # Abkuerzung der Verweisform
+        index:
+          'corporatebody': 1
+          'freesearch': 1
+      '0881':         # Abkuerzung der Ansetzung
+        index:
+          'corporatebody': 1
+          'freesearch': 1
+      '0850':         # Frueherer/Spaeterer Name
+        index:
+          'corporatebody': 1
+          'freesearch': 1
+    inverted_authority_corporatebody:
       '0800':         # Ansetzung
         index:
           'corporatebody': 1
@@ -183,6 +215,28 @@ convtab:
           'classification': 1
           'freesearch': 1
     inverted_subject:
+      '0800':         # Ansetzung
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 20
+      '0830':         # Verweisform
+        index:
+          'subject': 1
+          'freesearch': 1
+      '0840':         # Verweisform
+        index:
+          'subject': 1
+          'freesearch': 1
+      '0850':         # Uebergeordnete Bezeichnung
+        index:
+          'subject': 1
+          'freesearch': 1
+      '0870':         # Frueher
+        index:
+          'subject': 1
+          'freesearch': 1
+    inverted_authority_subject:
       '0800':         # Ansetzung
         index:
           'subject': 1

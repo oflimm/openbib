@@ -743,7 +743,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
               
                 if ($bemerk2) {
                     push @{$holding_ref->{fields}{'1203'}}, {
-                        content  => $signatur,
+                        content  => $bemerk2,
                         mult     => 1,
                         subfield => '',
                     };

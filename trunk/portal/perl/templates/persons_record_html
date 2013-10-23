@@ -74,9 +74,11 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
 
 <div class="categories ym-g50 ym-gl"><!-- Begin Categories -->
 
+<div class="ob-category_header">[% dbinfo.dbnames.${database}.short %]</div>
+
   <div class="ym-gbox-left">
 <table cellpadding="2">
-<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+<tr><td>id</td><td>[% record.id %]</td></tr>
 
 [% PROCESS common/subtemplate name="visible_categories_person" %]
 
@@ -93,8 +95,11 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').personid.prefix;
 
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
-
-         content   = "<a href=\"${localurl}\">${content}</a>";
+         desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");
+         IF content > 1 ;
+             desc      = msg.maketext("Titel sind in diesem Katalog mit der Person verknüpft");
+         END;
+         content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
     END;
 
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
@@ -112,6 +117,7 @@ FOREACH category IN categories;
    END;
 END;
 -%]
+
 </table>
 
   </div> <!-- End grid -->

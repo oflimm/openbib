@@ -498,12 +498,6 @@ sub create_document {
                 type       => 'stringcategory',
             },
             {
-                # Normdaten-Ansetzungsform Person
-                id         => $config->{xapian_sorttype_value}{'authority'},
-                category   => 'P0800',
-                type       => 'stringcategory',
-            },
-            {
                 # Verfasser/Koepeschaft
                 id         => $config->{xapian_sorttype_value}{'person'},
                 category   => 'PC0001',

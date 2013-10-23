@@ -597,6 +597,13 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 
 <form class="ym-form" method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html">
 
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="authority_asc" />
+<input type="hidden" name="st"         value="3" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
 <fieldset class="ym-full">
 
 [%- cgiparam = config.searchfield.freesearch.prefix ;

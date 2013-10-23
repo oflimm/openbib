@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-10-22 15:38+0200\n"
+"PO-Revision-Date: 2013-10-23 10:51+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -137,16 +137,16 @@ msgstr "${category}"
 #: ../templates/bibfuehrer_tex:481 ../templates/bibfuehrer_tex:482
 #: ../templates/bibfuehrer_tex:639 ../templates/bibfuehrer_tex:640
 #: ../templates/cartitems_html_as_text:45 ../templates/cartitems_html_full:220
-#: ../templates/classifications_record_html:99
-#: ../templates/corporatebodies_record_html:97 ../templates/libraries_html:101
-#: ../templates/libraries_include:59
+#: ../templates/classifications_record_html:114
+#: ../templates/corporatebodies_record_html:114
+#: ../templates/libraries_html:101 ../templates/libraries_include:59
 #: ../templates/litlists_record_html_as_text:21
 #: ../templates/litlists_record_html_full:221
 #: ../templates/locations_record_html:110
 #: ../templates/locations_record_mobile:101
-#: ../templates/persons_record_html:110 ../templates/persons_record_include:53
+#: ../templates/persons_record_html:115 ../templates/persons_record_include:53
 #: ../templates/searchforms_record_bottom_left:67
-#: ../templates/subjects_record_html:100 ../templates/titles_fields_html:58
+#: ../templates/subjects_record_html:116 ../templates/titles_fields_html:58
 #: ../templates/titles_form:69 ../templates/titles_form:78
 #: ../templates/titles_record_html_categories:308
 #: ../templates/titles_record_html_categories:342
@@ -1178,7 +1178,7 @@ msgstr "An"
 #: ../templates/titles_record_html_actions:21
 #: ../templates/titles_record_include:350
 #: ../templates/titles_record_include:351
-#: ../templates/titlist_item_html_short:306
+#: ../templates/titlist_item_html_short:324
 msgid "An BibSonomy senden"
 msgstr "An BibSonomy senden"
 
@@ -4261,8 +4261,8 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/titles_popular_by_database_html:298
 #: ../templates/titles_popular_by_database_html:301
 #: ../templates/titles_popular_html:293 ../templates/titles_popular_html:296
-#: ../templates/titlist_item_html_short:308
-#: ../templates/titlist_item_html_short:311
+#: ../templates/titlist_item_html_short:326
+#: ../templates/titlist_item_html_short:329
 #: ../templates/users_litlists_html:110
 #: ../templates/users_searchprofiles_html:93
 msgid "Entfernen"
@@ -6204,7 +6204,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/titles_record_html_actions:22
 #: ../templates/titles_record_include:352
 #: ../templates/titles_record_include:353
-#: ../templates/titlist_item_html_short:306
+#: ../templates/titlist_item_html_short:324
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
@@ -6420,10 +6420,7 @@ msgstr "Informationen zu dieser Bibliothek"
 #: ../templates/admin_sessions_active_record_html:80
 #: ../templates/admin_sessions_archived_record_html:67
 #: ../templates/cartitems_html_simple:39
-#: ../templates/classifications_record_html:69
-#: ../templates/corporatebodies_record_html:67
-#: ../templates/persons_record_html:79 ../templates/persons_record_include:22
-#: ../templates/search_title_field:7 ../templates/subjects_record_html:70
+#: ../templates/persons_record_include:22 ../templates/search_title_field:7
 msgid "Inhalt"
 msgstr "Inhalt"
 
@@ -6997,7 +6994,7 @@ msgstr "Kartenkataloge der Philosophischen Fakultät"
 #: ../templates/titles_popular_by_database_html:280
 #: ../templates/titles_popular_html:278
 #: ../templates/titles_popular_include:157
-#: ../templates/titlist_item_html_short:290
+#: ../templates/titlist_item_html_short:308
 #: ../templates/titlist_item_mobile_short:217
 msgid "Katalog"
 msgstr "Katalog"
@@ -7117,10 +7114,7 @@ msgstr "Katalogtitel nach Bibliothekssystematik"
 #: ../templates/_view/richter/persons_record_html:79
 #: ../templates/_view/richter/subjects_record_html:68
 #: ../templates/cartitems_html_simple:39
-#: ../templates/classifications_record_html:69
-#: ../templates/corporatebodies_record_html:67
-#: ../templates/persons_record_html:79 ../templates/persons_record_include:22
-#: ../templates/subjects_record_html:70
+#: ../templates/persons_record_include:22
 msgid "Kategorie"
 msgstr "Kategorie"
 
@@ -7380,8 +7374,8 @@ msgstr "Künstler"
 #: ../templates/_profile/sammlungen/titlist_item_html_short:285
 #: ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144
 #: ../templates/titles_record_include:512
-#: ../templates/titlist_item_html_short:308
-#: ../templates/titlist_item_html_short:311
+#: ../templates/titlist_item_html_short:326
+#: ../templates/titlist_item_html_short:329
 msgid "L&ouml;schen"
 msgstr "L&ouml;schen"
 
@@ -7976,7 +7970,7 @@ msgstr "Lokale Signatur      "
 #: ../templates/_view/richter/cartitems_html_actions:46
 #: ../templates/_view/richter/cartitems_html_actions:67
 #: ../templates/admin_users_html:71 ../templates/admin_users_search_form:65
-#: ../templates/authlist_options:21 ../templates/cartitems_html_actions:53
+#: ../templates/authlist_options:20 ../templates/cartitems_html_actions:53
 #: ../templates/cartitems_html_actions:76
 #: ../templates/titles_record_html_actions:59
 #: ../templates/titles_record_html_actions:85
@@ -8324,7 +8318,7 @@ msgstr "Meldung"
 #: ../templates/_profile/sammlungen/titlist_item_html_short:280
 #: ../templates/titles_popular_by_database_html:296
 #: ../templates/titles_popular_html:291
-#: ../templates/titlist_item_html_short:306
+#: ../templates/titlist_item_html_short:324
 msgid "Merken"
 msgstr "Merken"
 
@@ -10863,7 +10857,7 @@ msgstr "Sigel"
 #: ../templates/searchforms_record_query:126
 #: ../templates/titles_popular_by_database_html:291
 #: ../templates/titles_popular_html:286
-#: ../templates/titlist_item_html_short:301
+#: ../templates/titlist_item_html_short:319
 #: ../templates/users_circulations_borrows_html:67
 #: ../templates/users_circulations_borrows_ics:117
 #: ../templates/users_circulations_orders_html:63
@@ -16086,6 +16080,22 @@ msgstr "Titel der Literaturliste"
 msgid "Titel in die Merkliste eintragen"
 msgstr "Titel in die Merkliste eintragen"
 
+#: ../templates/subjects_record_html:97
+msgid "Titel ist in diesem Katalog mit dem Schlagwort verknüpft"
+msgstr "Titel ist in diesem Katalog mit dem Schlagwort verknüpft"
+
+#: ../templates/classifications_record_html:96
+msgid "Titel ist in diesem Katalog mit der Klassifikation verknüpft"
+msgstr "Titel ist in diesem Katalog mit der Klassifikation verknüpft"
+
+#: ../templates/corporatebodies_record_html:95
+msgid "Titel ist in diesem Katalog mit der Körperschaft verknüpft"
+msgstr "Titel ist in diesem Katalog mit der Körperschaft verknüpft"
+
+#: ../templates/persons_record_html:98
+msgid "Titel ist in diesem Katalog mit der Person verknüpft"
+msgstr "Titel ist in diesem Katalog mit der Person verknüpft"
+
 #: ../templates/_profile/usbportal/titles_record_include:107
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-"
@@ -18127,7 +18137,7 @@ msgstr "nach 1. Ikonogr. Schlagwort"
 msgid "nach 2. Ikonogr. Schlagwort"
 msgstr "nach 2. Ikonogr. Schlagwort"
 
-#: ../templates/authlist_options:17 ../templates/authlist_options:18
+#: ../templates/authlist_options:16 ../templates/authlist_options:17
 msgid "nach Ansetzung"
 msgstr "nach Ansetzung"
 
@@ -18267,7 +18277,7 @@ msgstr "nach Region"
 #: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:16
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:16
 #: ../templates/_profile/usbportal/search_title_combined_include:61
-#: ../templates/authlist_options:16 ../templates/titlist_options:16
+#: ../templates/titlist_options:16
 msgid "nach Relevanz"
 msgstr "nach Relevanz"
 
@@ -18919,9 +18929,6 @@ msgstr "Überziehungen / Gebühren"
 
 #~ msgid "Keine gültige Aktion"
 #~ msgstr "Keine gültige Aktion"
-
-#~ msgid "Dieser Titel ist in den Katalogen des Portals verf&uuml;gbar"
-#~ msgstr "Dieser Titel ist in den Katalogen des Portals verf&uuml;gbar"
 
 #~ msgid ""
 #~ "Dieser Titel konnte nicht in den Katalogen des Portals gefunden werden. "

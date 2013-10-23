@@ -63,10 +63,21 @@ title      = msg.maketext("Systematik-Information: [_1] in Katalog [_2]",recordn
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<div class="ob-authority_record">
+<div class="details ym-grid ob-authority_record"><!-- Begin Details -->
+<!-- Person begins here -->
+<div class="images ym-g50 ym-gr"><!-- Begin Images -->
+  <div class="ym-gbox-right">
+<!-- Images in here -->
+  </div>
+</div><!-- End Images -->
 
+<div class="categories ym-g50 ym-gl"><!-- Begin Categories -->
+
+<div class="ob-category_header">[% dbinfo.dbnames.${database}.short %]</div>
+
+  <div class="ym-gbox-left">
 <table cellpadding="2">
-<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+<tr><td>id</td><td>[% record.id %]</td></tr>
 
 [% PROCESS common/subtemplate name="visible_categories_classification" %]
 
@@ -82,8 +93,12 @@ FOREACH category IN categories;
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').classificationid.prefix;
 
+         desc      = msg.maketext("Titel ist in diesem Katalog mit der Klassifikation verknüpft");
+         IF content > 1 ;
+             desc      = msg.maketext("Titel sind in diesem Katalog mit der Klassifikation verknüpft");
+         END;
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
-         content   = "<a href=\"${localurl}\">${content}</a>";
+         content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
     END;
 
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
@@ -103,7 +118,9 @@ END;
 -%]
 </table>
 
-</div>
+  </div> <!-- End grid -->
+</div><!-- End Categories -->
+</div><!-- End Details -->
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

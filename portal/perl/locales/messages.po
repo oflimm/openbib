@@ -6571,6 +6571,22 @@ msgstr ""
 msgid "Titel pro Katalog"
 msgstr ""
 
+#: ../templates/subjects_record_html:99
+msgid "Titel sind in diesem Katalog mit dem Schlagwort verknüpft"
+msgstr ""
+
+#: ../templates/classifications_record_html:98
+msgid "Titel sind in diesem Katalog mit der Klassifikation verknüpft"
+msgstr ""
+
+#: ../templates/corporatebodies_record_html:97
+msgid "Titel sind in diesem Katalog mit der Körperschaft verknüpft"
+msgstr ""
+
+#: ../templates/persons_record_html:100
+msgid "Titel sind in diesem Katalog mit der Person verknüpft"
+msgstr ""
+
 #: ../templates/_profile/kug/info_help:868 ../templates/info_help:966
 msgid "Titel(liste) abspeichern"
 msgstr ""

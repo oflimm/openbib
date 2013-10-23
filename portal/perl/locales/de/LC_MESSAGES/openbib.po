@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2013-10-23 10:51+0200\n"
+"PO-Revision-Date: 2013-10-23 11:03+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2558,7 +2558,7 @@ msgstr "Abkürzung der Ansetzung"
 
 #: ../templates/visible_categories_corporatebody:21
 msgid "C5000"
-msgstr "Anzahl Titel"
+msgstr "Titel"
 
 #: ../templates/_profile/kug/authority_search_facet:547
 #: ../templates/_profile/kug/search_facet:547
@@ -8449,7 +8449,7 @@ msgstr "Verweisform"
 
 #: ../templates/visible_categories_classification:20
 msgid "N5000"
-msgstr "Anzahl Titel"
+msgstr "Titel"
 
 #: ../templates/_profile/kug/info_help:469 ../templates/info_help:546
 msgid ""
@@ -9230,7 +9230,7 @@ msgstr "Verweisung"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_person:36
 #: ../templates/visible_categories_person:40
 msgid "P5000"
-msgstr "Anzahl Titel"
+msgstr "Titel"
 
 #: ../templates/_profile/kug/login:101 ../templates/_profile/kug/login:134
 #: ../templates/_profile/kug/users_preferences_html:423
@@ -10088,7 +10088,7 @@ msgstr "Später"
 
 #: ../templates/visible_categories_subject:27
 msgid "S5000"
-msgstr "Anzahl Titel"
+msgstr "Titel"
 
 #: ../templates/_profile/kug/users_preferences_html:188
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:54
@@ -16118,6 +16118,22 @@ msgstr ""
 #: ../templates/browse_bks_record_databases_html:59
 msgid "Titel pro Katalog"
 msgstr "Titel pro Katalog"
+
+#: ../templates/subjects_record_html:99
+msgid "Titel sind in diesem Katalog mit dem Schlagwort verknüpft"
+msgstr "Titel sind in diesem Katalog mit dem Schlagwort verknüpft"
+
+#: ../templates/classifications_record_html:98
+msgid "Titel sind in diesem Katalog mit der Klassifikation verknüpft"
+msgstr "Titel sind in diesem Katalog mit der Klassifikation verknüpft"
+
+#: ../templates/corporatebodies_record_html:97
+msgid "Titel sind in diesem Katalog mit der Körperschaft verknüpft"
+msgstr "Titel sind in diesem Katalog mit der Körperschaft verknüpft"
+
+#: ../templates/persons_record_html:100
+msgid "Titel sind in diesem Katalog mit der Person verknüpft"
+msgstr "Titel sind in diesem Katalog mit der Person verknüpft"
 
 #: ../templates/_profile/kug/info_help:868 ../templates/info_help:966
 msgid "Titel(liste) abspeichern"

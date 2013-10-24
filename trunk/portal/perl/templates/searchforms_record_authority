@@ -197,7 +197,7 @@ function update_fs (){
     this_searchfield = 'corporatebody';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
 <input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 

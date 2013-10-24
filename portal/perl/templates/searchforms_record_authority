@@ -105,6 +105,64 @@ $(document).ready(function(){
 </script>
 [%   END %]
 [% END %]
+<script type="text/javascript">
+function update_per (){
+  if ($("#autocomplete_per").val().length > 0){
+     $("#autocomplete_subj").prop('disabled', true);;
+     $("#autocomplete_corp").prop('disabled', true);
+     $("#autocomplete_fs").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_subj").prop('disabled',false);;
+     $("#autocomplete_corp").prop('disabled',false);
+     $("#autocomplete_fs").prop('disabled',false);
+  }
+};
+
+function update_subj (){
+  if ($("#autocomplete_subj").val().length > 0){
+     $("#autocomplete_per").prop('disabled', true);;
+     $("#autocomplete_corp").prop('disabled', true);
+     $("#autocomplete_fs").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_per").prop('disabled',false);;
+     $("#autocomplete_corp").prop('disabled',false);
+     $("#autocomplete_fs").prop('disabled',false);
+  }
+};
+
+function update_corp (){
+  if ($("#autocomplete_corp").val().length > 0){
+     $("#autocomplete_subj").prop('disabled', true);;
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_fs").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_subj").prop('disabled',false);;
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_fs").prop('disabled',false);
+  }
+
+
+};
+
+function update_fs (){
+  if ($("#autocomplete_fs").val().length > 0){
+     $("#autocomplete_subj").prop('disabled', true);;
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_subj").prop('disabled',false);;
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+  }
+
+
+};
+
+</script>
 
 <form class="ym-form" method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
 <input type="hidden" name="num"        value="20" />
@@ -124,7 +182,7 @@ $(document).ready(function(){
 -%]
 <div class="ym-fbox-text">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = config.searchfield.person.prefix;
@@ -132,7 +190,7 @@ $(document).ready(function(){
  -%]
 <div class="ym-fbox-text">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = config.searchfield.corporatebody.prefix;
@@ -140,7 +198,7 @@ $(document).ready(function(){
  -%]
 <div class="ym-fbox-text">
 <label for="[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = config.searchfield.subject.prefix;
@@ -148,7 +206,7 @@ $(document).ready(function(){
  -%]
 <div class="ym-fbox-text">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 <div class="ym-fbox-select">

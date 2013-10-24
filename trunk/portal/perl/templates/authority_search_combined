@@ -21,6 +21,8 @@
 [%- PROCESS common/subtemplate name="authority_search_combined_rdf" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="authority_search_combined_json" -%]
+[%- ELSIF representation == 'txt' -%]
+[%- PROCESS common/subtemplate name="authority_search_combined_txt" -%]
 [%- ELSIF representation == 'rss' -%]
 [%- PROCESS common/subtemplate name="authority_search_combined_rss" -%]
 [%- ELSIF representation == 'include' -%]

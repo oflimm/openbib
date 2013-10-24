@@ -3,6 +3,7 @@
 [%- ELSIF representation == 'mobile' -%]
 [%- PROCESS common/subtemplate name="authority_search_start_mobile" -%]
 [%- ELSIF representation == 'json' -%]
+[%- ELSIF representation == 'txt' -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- ELSIF representation == 'rss' -%]
 [%- ELSE -%]

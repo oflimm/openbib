@@ -147,6 +147,7 @@ sub search {
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');
     my $num               = $queryoptions->get_option('num');
+    my $collapse          = $queryoptions->get_option('clp');
     
     my ($atime,$btime,$timeall);
   
@@ -331,6 +332,11 @@ sub search {
         else {
             $enq->set_sort_by_value($config->{xapian_sorttype_value}{$sorttype},$sortorder);
         }
+    }
+
+    # Collapsing
+    if ($collapse){
+        $enq->set_collapse_key($config->{xapian_sorttype_value}{$collapse});
     }
     
     my $thisquery = $enq->get_query()->get_description();

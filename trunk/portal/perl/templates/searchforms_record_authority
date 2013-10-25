@@ -26,8 +26,6 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" without_navigation_search=1 %] 
-
     <!-- begin: main content area #main -->
     <div id="main">
 
@@ -43,7 +41,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_submenu='searchform_authority' %]
+[% PROCESS common/subtemplate name="subnavigation" active_menu='searchform' active_submenu='searchform_authority' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -51,71 +49,19 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% IF user.is_authenticated %]
-[% autocompletion_type = user.get_autocompletion %]
-[% livesearch          = user.get_livesearch %]
-[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-})
-</script>
-[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-})
-</script>
-[%   END %]
-[% END %]
+[% PROCESS common/subtemplate name="searchforms_suggestions" %]
+
 <script type="text/javascript">
 function update_per (){
   if ($("#autocomplete_per").val().length > 0){
      $("#autocomplete_subj").prop('disabled', true);;
      $("#autocomplete_corp").prop('disabled', true);
-     $("#autocomplete_fs").prop('disabled', true);
+     $("#to_focus").prop('disabled', true);
   }
   else {
      $("#autocomplete_subj").prop('disabled',false);;
      $("#autocomplete_corp").prop('disabled',false);
-     $("#autocomplete_fs").prop('disabled',false);
+     $("#to_focus").prop('disabled',false);
   }
 };
 
@@ -123,12 +69,12 @@ function update_subj (){
   if ($("#autocomplete_subj").val().length > 0){
      $("#autocomplete_per").prop('disabled', true);;
      $("#autocomplete_corp").prop('disabled', true);
-     $("#autocomplete_fs").prop('disabled', true);
+     $("#to_focus").prop('disabled', true);
   }
   else {
      $("#autocomplete_per").prop('disabled',false);;
      $("#autocomplete_corp").prop('disabled',false);
-     $("#autocomplete_fs").prop('disabled',false);
+     $("#to_focus").prop('disabled',false);
   }
 };
 
@@ -136,19 +82,19 @@ function update_corp (){
   if ($("#autocomplete_corp").val().length > 0){
      $("#autocomplete_subj").prop('disabled', true);;
      $("#autocomplete_per").prop('disabled', true);
-     $("#autocomplete_fs").prop('disabled', true);
+     $("#to_focus").prop('disabled', true);
   }
   else {
      $("#autocomplete_subj").prop('disabled',false);;
      $("#autocomplete_per").prop('disabled',false);
-     $("#autocomplete_fs").prop('disabled',false);
+     $("#to_focus").prop('disabled',false);
   }
 
 
 };
 
 function update_fs (){
-  if ($("#autocomplete_fs").val().length > 0){
+  if ($("#to_focus").val().length > 0){
      $("#autocomplete_subj").prop('disabled', true);;
      $("#autocomplete_per").prop('disabled', true);
      $("#autocomplete_corp").prop('disabled', true);
@@ -181,8 +127,8 @@ function update_fs (){
     this_searchfield = 'freesearch';
 -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
-<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
+<input onkeypress="update_[% cgiparam %]()" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = config.searchfield.person.prefix;

@@ -1,66 +1,4 @@
 [%- searchfield = config.get('searchfield') -%]
-[% IF user.is_authenticated %]
-[% autocompletion_type = user.get_autocompletion %]
-[% livesearch = user.get_livesearch %]
-[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
-<script type="text/javascript">
-$(document).ready(function(){
-[%   IF available_searchfields.freesearch.active %]
-  $("#autocomplete_[% searchfield.freesearch.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-[%   END %]
-[%   IF available_searchfields.person.active %]
-  $("#autocomplete_[% searchfield.person.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-[%   END %]
-[%   IF available_searchfields.subject.active %]
-  $("#autocomplete_[% searchfield.subject.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-[%   END %]
-})
-</script>
-[% ELSIF autocompletion_type == "livesearch" && (livesearch.freesearch.active || livesearch.person.active || livesearch.subject.active) %]
-<script type="text/javascript">
-$(document).ready(function(){
-[%   IF available_searchfields.freesearch.active %]
-  $("#autocomplete_[% searchfield.freesearch.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-[%   END %]
-[%   IF available_searchfields.person.active %]
-  $("#autocomplete_[% searchfield.person.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]",
-                  type: "2" }});
-[%   END %]
-[%   IF available_searchfields.subject.active %]
-  $("#autocomplete_[% searchfield.subject.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  type: "4" }});
-[%   END %]
-})
-</script>
-[%   END %]
-[% END %]
 
 <fieldset class="ym-columnar">
 <legend>[% msg.maketext("Erweiterte Suche") %]</legend>
@@ -72,8 +10,8 @@ $(document).ready(function(){
     this_searchfield = 'freesearch';
 -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
+<input id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 [% END %]
 

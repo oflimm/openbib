@@ -68,7 +68,7 @@
     <script type="text/javascript" src="/js/jquery-ui-1.8.24.min.js"></script>
 
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.js"></script>
 
 
     <title>[% IF page_title %][% page_title %][% ELSE %]KUG - Kölner UniversitätsGesamtkatalog[% END %]</title>

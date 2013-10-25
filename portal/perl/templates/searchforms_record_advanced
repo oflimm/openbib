@@ -51,60 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% IF user.is_authenticated %]
-[% autocompletion_type = user.get_autocompletion %]
-[% livesearch          = user.get_livesearch %]
-[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-})
-</script>
-[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-})
-</script>
-[%   END %]
-[% END %]
+[% PROCESS common/subtemplate name="searchforms_suggestions" %]
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 <input type="hidden" name="num"        value="20" />

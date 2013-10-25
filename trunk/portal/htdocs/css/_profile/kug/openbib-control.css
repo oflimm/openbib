@@ -15,6 +15,7 @@
 @import url("forms.css");
 @import url("buttons.css"); 
 @import url("jquery-ui-1.8.14.custom.css");
+@import url("jquery.autocomplete.css");
 
 /* import specific classes */
 @import url("local.css");

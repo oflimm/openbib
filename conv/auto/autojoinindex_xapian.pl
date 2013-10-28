@@ -107,10 +107,24 @@ $logger->info("Profil-Verzeichnis von alten Profilen reinigen");
 while (my $file = readdir(DIR)) {
     next if ($file=~/^\./);
 
-    $logger->info("Profil $file entfernt");
+    my $is_authority = 0;
+
+    if ($file=~/_authority/){
+	$is_authority = 1;
+    }
     
-    system("rm $searchprofiledir/$file/*");
-    system("rmdir $searchprofiledir/$file");    
+    if (!$onlyauthorities && !$is_authority){
+	$logger->info("Profil $file entfernt");
+	
+	system("rm $searchprofiledir/$file/*");
+	system("rmdir $searchprofiledir/$file");    
+    }
+    elsif (!$onlytitles && $is_authority){
+	$logger->info("Authority Profil $file entfernt");
+	
+	system("rm $searchprofiledir/$file/*");
+	system("rmdir $searchprofiledir/$file");    
+    }	
 }
 
 closedir(DIR);
@@ -165,7 +179,7 @@ foreach my $searchprofile (@searchprofiles){
     my $thisauthoritytmpindex = $thisauthorityindex.".tmp";
 
     my $thisindex_path              = "$xapian_base/$thisindex";
-    my $thisauthorityindex_path     = "$xapian_base/$thisindex";
+    my $thisauthorityindex_path     = "$xapian_base/$thisauthorityindex";
     my $thistmpindex_path           = $thisindex_path.".tmp";
     my $thisauthoritytmpindex_path  = $thisauthorityindex_path.".tmp";
     my $thistmp2index_path          = $thisindex_path.".tmp2";
@@ -183,7 +197,7 @@ foreach my $searchprofile (@searchprofiles){
         system("$cmd");
     }
     
-    my $authority_string = join " ", map { $_="$xapian_base/$_"."_authority" } @authoritydatabases;
+    my $authority_string = join " ", map { $_="$xapian_base/$_" } @authoritydatabases;
     $cmd = "$xapian_cmd $args $authority_string";
     
     if (!$onlytitles){

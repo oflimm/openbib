@@ -49,6 +49,7 @@ exclude:
      field: 'identifier'
      databases:
         - inst001
+        - ebookpda
         - ebooks
         - freebooks
         - zbmed

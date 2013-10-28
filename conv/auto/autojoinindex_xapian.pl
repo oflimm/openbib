@@ -6,7 +6,7 @@
 #
 #  Automatische Verschmelzung von Indizes durch einem neuen Index
 #
-#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,9 +42,11 @@ use Search::Xapian;
 
 use OpenBib::Config;
 
-my ($searchprofileid,$help,$logfile,$loglevel);
+my ($searchprofileid,$help,$logfile,$loglevel,$onlyauthorities,$onlytitles);
 
 &GetOptions("searchprofileid=s" => \$searchprofileid,
+            "only-authorities"  => \$onlyauthorities,
+            "only-titles"       => \$onlytitles,
             "logfile=s"         => \$logfile,
             "loglevel=s"        => \$loglevel,
 	    "help"              => \$help
@@ -123,6 +125,7 @@ foreach my $searchprofile (@searchprofiles){
     # Check, welche Indizes irregulaer sind
 
     my $sane_index = 1;
+    my $sane_authority_index = 1;
     foreach my $database (@databases){
         my $dbh;
         eval {
@@ -130,13 +133,22 @@ foreach my $searchprofile (@searchprofiles){
         };
         
         if ($@) {
-            $logger->error("Database: $database - :".$@);
+            $logger->error("Database Index: $database - :".$@);
             $sane_index = 0;
         }
+
+        eval {
+            $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database."_authority") || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+        };
         
+        if ($@) {
+            $logger->error("Authority Index: ${database}_authority - :".$@);
+            $sane_authority_index = 0;
+        }
+
     }
 
-    if (!$sane_index){
+    if (!$sane_index || !$sane_authority_index){
         $logger->info("Mindestens ein Index korrupt");
         exit;
     }
@@ -145,27 +157,51 @@ foreach my $searchprofile (@searchprofiles){
         push @xapian_args, "--multipass";
     }
 
-    my $thisindex         = "_searchprofile/$searchprofile";
-    my $thistmpindex      = $thisindex.".tmp";
-
-    my $thisindex_path     = "$xapian_base/$thisindex";
-    my $thistmpindex_path  = $thisindex_path.".tmp";
-    my $thistmp2index_path = $thisindex_path.".tmp2";
-
+    my @authoritydatabases    = @databases;
     
+    my $thisindex             = "_searchprofile/$searchprofile";
+    my $thisauthorityindex    = "_searchprofile/$searchprofile"."_authority";
+    my $thistmpindex          = $thisindex.".tmp";
+    my $thisauthoritytmpindex = $thisauthorityindex.".tmp";
+
+    my $thisindex_path              = "$xapian_base/$thisindex";
+    my $thisauthorityindex_path     = "$xapian_base/$thisindex";
+    my $thistmpindex_path           = $thisindex_path.".tmp";
+    my $thisauthoritytmpindex_path  = $thisauthorityindex_path.".tmp";
+    my $thistmp2index_path          = $thisindex_path.".tmp2";
+    my $thisauthoritytmp2index_path = $thisauthorityindex_path.".tmp2";
+
     push @databases, $thistmpindex;
+    push @authoritydatabases, $thisauthoritytmpindex;
 
     my $database_string = join " ", map { $_="$xapian_base/$_" } @databases;
     my $args = join " ",@xapian_args;
     my $cmd = "$xapian_cmd $args $database_string";
 
-    $logger->info("### Compacting with $cmd to temp index");
+    if (!$onlyauthorities){
+        $logger->info("### Compacting with $cmd to temp index");        
+        system("$cmd");
+    }
+    
+    my $authority_string = join " ", map { $_="$xapian_base/$_"."_authority" } @authoritydatabases;
+    $cmd = "$xapian_cmd $args $authority_string";
+    
+    if (!$onlytitles){
+        $logger->info("### Compacting authorities with $cmd to temp index");
+        system("$cmd");
+    }
 
-    system("$cmd");
+    if (!$onlyauthorities){
+        $logger->info("### Replacing index");
+        
+        system("rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ; mv $thisindex_path $thistmp2index_path ; mv $thistmpindex_path $thisindex_path ; rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ");
+    }
 
-    $logger->info("### Replacing index");
-
-    system("rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ; mv $thisindex_path $thistmp2index_path ; mv $thistmpindex_path $thisindex_path ; rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ");
+    if (!$onlytitles){
+        $logger->info("### Replacing authority index");
+        
+        system("rm -f $thisauthoritytmp2index_path/* ; rmdir $thisauthoritytmp2index_path ; mv $thisauthorityindex_path $thisauthoritytmp2index_path ; mv $thisauthoritytmpindex_path $thisauthorityindex_path ; rm -f $thisauthoritytmp2index_path/* ; rmdir $thisauthoritytmp2index_path ");
+    }
     
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

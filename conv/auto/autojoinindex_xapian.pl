@@ -171,7 +171,7 @@ foreach my $searchprofile (@searchprofiles){
         push @xapian_args, "--multipass";
     }
 
-    my @authoritydatabases    = @databases;
+    my @authoritydatabases    = map { $_.="_authority" } @databases;
     
     my $thisindex             = "_searchprofile/$searchprofile";
     my $thisauthorityindex    = "_searchprofile/$searchprofile"."_authority";

@@ -80,5 +80,5 @@
       <!-- begin: static full column -->
       <div class="ym-full ob-search_result" >
         <div class="ym-clearfix">
-
+[%# USE dumper;dumper.dump(dbinfo)%]
 [%- END -%]

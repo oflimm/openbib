@@ -28,7 +28,7 @@ convtab:
     blacklist_title:
      #'0002': 1        # Aufnahmedatum
      #'0003': 1        # Aenderungsdatum        
-      '0005': 1        # Inventarnummer (in holding vorhanden)
+     #'0005': 1        # Inventarnummer (in holding vorhanden)
       '0009': 1        # Herkunft
      #'0010': 1        # Fremdnummer
       '0011': 1        # Lokale ID

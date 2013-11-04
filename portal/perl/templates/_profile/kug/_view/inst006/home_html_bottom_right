@@ -28,7 +28,7 @@ Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://u
 
 <p>
 [% msg.maketext("Eine Aufstellung der Zeitschriften in dieser Bibliothek stellen wir
-f&uuml;r Sie als [_1]E-Book[_2] bereit.","<a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zsstlist-${viewdbs.first.replace('inst','')}-all.pdf\" target=\"_blank\">","</a>") %]
+f&uuml;r Sie als [_1]E-Book[_2] bereit.","<a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${viewdbs.first.replace('inst','')}-all.pdf\" target=\"_blank\">","</a>") %]
 </p>
 [% END %]
 

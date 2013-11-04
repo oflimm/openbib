@@ -1,8 +1,19 @@
 <div class="ob-facets">
 [% IF hits <= config.get('xapian_option').maxmatch;
 
-      bklookup    = config.load_bk; %]
+      bklookup    = config.load_bk;
 
+      # USB Spezifika
+      bklookup.${"11.98"} = "Theologie, Religionswissenschaft: Unspezifiziert";
+      bklookup.${"17.98"} = "Sprach- und Literaturwissenschaft: Unspezifiziert";
+      bklookup.${"21.98"} = "Einzelne Kunstformen: Unspezifiziert";
+      bklookup.${"24.98"} = "Theater, Film, Musik: Unspezifiziert";
+      bklookup.${"44.98"} = "Medizin: Unspezifiziert";
+      bklookup.${"71.98"} = "Soziologie: Unspezifiziert";
+      bklookup.${"83.98"} = "Volkswirtschaft: Unspezifiziert";
+      bklookup.${"85.98"} = "Betriebswirtschaft: Unspezifiziert";
+      bklookup.${"86.98"} = "Recht: Unspezifiziert";
+ %]
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 [%
 

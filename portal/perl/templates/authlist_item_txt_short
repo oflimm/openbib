@@ -34,4 +34,4 @@
      END ;
 
 -%]
-[% main_entry %]
+[% main_entry.replace('&gt;','>').replace('&lt;','<').replace('&amp;','&') %]

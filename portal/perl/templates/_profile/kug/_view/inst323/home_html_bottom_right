@@ -20,21 +20,24 @@
 
 <h4>Elektronische Bibliothek</h4>
 <p>
-Greifen Sie auf <a href="http://www.aleki.uni-koeln.de/ebib/" target="_blank">digitalisierte historische Kinder- und Jugendliteratur</a> in der Elektronischen Bibliothek der ALEKI in Zusammenarbeit mit dem Bilderbuchmuseum Burg Wissem zu
+Greifen Sie auf <a
+href="http://www.aleki.uni-koeln.de/schatzbehalter/index.shtml"
+target="_blank">digitalisierte historische Kinder- und
+Jugendliteratur</a> im "Schatzbehalter" der ALEKI in Zusammenarbeit mit dem Bilderbuchmuseum Burg Wissem zu
 </p>
 
 <h4>Sammlungsportal DDR-Kinderbuch der ALEKI</h4>
 <p>
-Greifen Sie auf <a href="http://ddr-kinderbuch.aleki.uni-koeln.de/"
-target="_blank">Sammlungsportal der ALEKI in Zusammenarbeit mit der
-USB K&ouml;n zu
+Greifen Sie auf das <a href="http://ddr-kinderbuch.aleki.uni-koeln.de/"
+target="_blank">Sammlungsportal DDR-Kinderbuch</a> der ALEKI in Zusammenarbeit mit der
+USB K&ouml;ln zu
 </p>
 
 <h4>[% msg.maketext("Zeitschriften der Bibliothek") %]</h4>
 
 <p>
 [% msg.maketext("Eine Aufstellung der Zeitschriften in dieser Bibliothek stellen wir
-f&uuml;r Sie als [_1]E-Book[_2] bereit.","<a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zsstlist-${viewdbs.first.replace('inst','')}-all.pdf\" target=\"_blank\">","</a>") %]
+f&uuml;r Sie als [_1]E-Book[_2] bereit.","<a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${viewdbs.first.replace('inst','')}-all.pdf\" target=\"_blank\">","</a>") %]
 </p>
 [% END %]
 

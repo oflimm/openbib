@@ -1,5 +1,7 @@
 <div class="ob-facets">
-[% IF hits <= config.get('xapian_option').maxmatch %]
+[% IF hits <= config.get('xapian_option').maxmatch;
+
+      bklookup    = config.load_bk; %]
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 [%
@@ -391,7 +393,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
     searchprefix  = config.get('searchfield').classificationstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF searchterm.match('^\d\d.\d\d') %] [% bklookup.${searchterm} %][% END %]&nbsp;([% termitem.1 %])</dd>
 [%             END %]
 [% IF category_map.2.size > 5 %]
 </div>

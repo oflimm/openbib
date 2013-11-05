@@ -2,7 +2,7 @@
 
 #####################################################################
 #
-#  pre_unpack.pl
+#  post_unpack.pl
 #
 #  Bearbeitung der Titeldaten
 #
@@ -43,6 +43,7 @@ my $baseurl       = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepat
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
+my $datadir       = $rootdir."/data";
 my $konvdir       = $config->{'conv_dir'};
 
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
@@ -51,8 +52,8 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
 
-system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/gen_local_topic.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");
+system("cd $datadir/$pool ; cat meta.title| $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/gen_local_topic.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 #print "### $pool: Entfernung kuenstlicher ZDB Signaturprefixe\n";
 
-#system("cd $pooldir/$pool ; zcat meta.holding.gz| $rootdir/filter/$pool/fix-zdb-mark.pl | gzip > meta.holding.gz.tmp ; mv -f meta.holding.gz.tmp meta.holding.gz");
+#system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/$pool/fix-zdb-mark.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");

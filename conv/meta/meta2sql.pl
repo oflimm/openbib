@@ -675,8 +675,13 @@ while (my $jsonline=<IN>){
     
     my $record_ref = decode_json $jsonline;
 
-    my $id         = $record_ref->{id};
-    my $fields_ref = $record_ref->{fields};
+    my $id            = $record_ref->{id};
+    my $fields_ref    = $record_ref->{fields};
+    my $locations_ref = $record_ref->{locations};
+
+    if (!defined $locations_ref){
+        push @{$locations_ref}, $locationid;
+    }
     
     my $titlecache_ref   = {}; # Inhalte fuer den Titel-Cache
     my $searchengine_ref = {}; # Inhalte fuer die Suchmaschinen
@@ -685,7 +690,7 @@ while (my $jsonline=<IN>){
     my $enrichmnt_issns_ref = [];
 
     # Initialisieren und Basisinformationen setzen
-    my $index_doc = OpenBib::Index::Document->new({ database => $database, id => $id, locationid => $locationid });
+    my $index_doc = OpenBib::Index::Document->new({ database => $database, id => $id, locations => $locations_ref });
 
     # Popularitaet, Tags und Literaturlisten verarbeiten fuer Index-Data
     {

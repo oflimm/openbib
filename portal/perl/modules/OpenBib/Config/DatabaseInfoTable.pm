@@ -112,7 +112,7 @@ sub _new_instance {
 
         $self->{urls}->{$dbname}        = $url;
 
-        if (defined $locationtype && defined $locationid && $locationtype eq "ISIL"){
+        if (defined $locationtype && defined $locationid){
             $self->{locationid}->{$dbname}  = $locationid;
         }
     }

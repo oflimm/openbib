@@ -20,13 +20,13 @@ while (<HOLDING>){
 
     foreach my $location_ref (@{$holding_ref->{fields}{'0016'}}){
         if ($location_ref->{content} =~m/Fachbibliothek Chemie/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-FBChemie";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-507";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek Versicherungswiss/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-FBVers";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-123";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek VWL/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-FBVWL";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-101";
         }
         elsif ($location_ref->{content} =~m/^Humanwiss. Abteilung/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-HWA";

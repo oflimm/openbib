@@ -11,6 +11,7 @@
 ../modules/OpenBib/Common/Util.pm
 ../modules/OpenBib/Config/CirculationInfoTable.pm
 ../modules/OpenBib/Config/DatabaseInfoTable.pm
+../modules/OpenBib/Config/LocationInfoTable.pm
 ../modules/OpenBib/Config.pm
 ../modules/OpenBib/Connector/OLWS/Admin.pm
 ../modules/OpenBib/Connector/OLWS/Enrichment.pm
@@ -408,6 +409,18 @@
 ../templates/authenticators_record
 ../templates/authenticators_record_html
 ../templates/authenticators_record_json
+../templates/authlist_item_html_short
+../templates/authlist_item_txt_short
+../templates/authlist_options
+../templates/authority_search_combined
+../templates/authority_search_combined_html
+../templates/authority_search_combined_json
+../templates/authority_search_combined_txt
+../templates/authority_search_end
+../templates/authority_search_end_html
+../templates/authority_search_facet
+../templates/authority_search_start
+../templates/authority_search_start_html
 ../templates/bib
 ../templates/bibfuehrer_tex
 ../templates/browse
@@ -550,6 +563,11 @@
 ../templates/_database/inst001/visible_categories_title
 ../templates/_database/inst137/holding
 ../templates/_database/inst411/circulation
+../templates/_database/inst431/acquisition
+../templates/_database/inst431/acquisition_collection
+../templates/_database/inst431/acquisition_index
+../templates/_database/inst431/acquisition_types
+../templates/_database/instzs/holding
 ../templates/_database/kapsel/holding
 ../templates/_database/kapsel/titles_record_html_images
 ../templates/_database/kapsel/titlist_item_html_short
@@ -601,6 +619,10 @@
 ../templates/holding_mobile
 ../templates/home
 ../templates/home_html
+../templates/home_html_bottom
+../templates/home_html_bottom_center
+../templates/home_html_bottom_left
+../templates/home_html_bottom_right
 ../templates/indexes_classification
 ../templates/indexes_corporatebody
 ../templates/indexes_person
@@ -707,6 +729,8 @@
 ../templates/portrait-bestellung
 ../templates/portrait-bestellung_erfolg
 ../templates/portrait-bestellung_fehler
+../templates/_profile/kug/authority_search_facet
+../templates/_profile/kug/authority_search_radius
 ../templates/_profile/kug/cartitems_mail_message
 ../templates/_profile/kug/corporate_banner
 ../templates/_profile/kug/_database/bibsonomy/search_title_item_html
@@ -775,7 +799,6 @@
 ../templates/_profile/kug/_database/mikrofilm/holding
 ../templates/_profile/kug/_database/mikrofilm/titles_record_html_categories
 ../templates/_profile/kug/_database/mikrofilm/visible_categories_title
-../templates/_profile/kug/_database/openlibrary/persons_record_html
 ../templates/_profile/kug/_database/openlibrary/persons_record_html_images
 ../templates/_profile/kug/_database/openlibrary/titles_record_html_categories
 ../templates/_profile/kug/_database/openlibrary/titles_record_html_images
@@ -811,9 +834,7 @@
 ../templates/_profile/kug/_database/zbmed/circulation
 ../templates/_profile/kug/home_html
 ../templates/_profile/kug/home_html_bottom
-../templates/home_html_bottom_center
 ../templates/_profile/kug/home_html_bottom_left
-../templates/home_html_bottom_right
 ../templates/_profile/kug/home_mobile
 ../templates/_profile/kug/info_help
 ../templates/_profile/kug/info_impressum_html
@@ -825,7 +846,6 @@
 ../templates/_profile/kug/newsflash
 ../templates/_profile/kug/search_facet
 ../templates/_profile/kug/searchforms_record_advanced
-../templates/searchforms_record_authority
 ../templates/_profile/kug/searchforms_record_profile
 ../templates/_profile/kug/searchforms_record_query
 ../templates/_profile/kug/search_more_tips
@@ -898,6 +918,7 @@
 ../templates/_profile/kug/_view/marketing/search_radius
 ../templates/_profile/kug/_view/nationallizenzen/home_html_bottom_left
 ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left
+../templates/_profile/kug/_view/ostasiatica/home_html_bottom_left
 ../templates/_profile/kug/_view/philfak_fg4/home_html_bottom_left
 ../templates/_profile/kug/_view/philfak_fg4/home_html_bottom_right
 ../templates/_profile/kug/_view/philfak_fg4/searchforms_record_profile
@@ -922,6 +943,9 @@
 ../templates/_profile/kug/_view/vwl/home_html_bottom_right
 ../templates/_profile/kug/_view/vwl/searchforms_record_profile
 ../templates/_profile/kug/_view/vwl/search_radius
+../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left
+../templates/_profile/kug/_view/wisostatistik/searchforms_record_profile
+../templates/_profile/kug/_view/wisostatistik/search_radius
 ../templates/_profile/mobile/_view/richtermobile/browse_title_html
 ../templates/_profile/mobile/_view/richtermobile/holding
 ../templates/_profile/mobile/_view/richtermobile/home
@@ -975,6 +999,7 @@
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_gleuel
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_grevenbroich
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_hennef
+../templates/_profile/rheinlandbib/_view/rheinlandbib/info_herzogenrath
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_kempen
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_kevelaer
 ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_koenigswinter
@@ -1054,6 +1079,7 @@
 ../templates/_profile/sammlungen/search_facet
 ../templates/_profile/sammlungen/searchforms_record_advanced
 ../templates/_profile/sammlungen/searchforms_record_query
+../templates/_profile/sammlungen/search_history
 ../templates/_profile/sammlungen/std_footer
 ../templates/_profile/sammlungen/std_footer_html
 ../templates/_profile/sammlungen/std_header
@@ -1177,13 +1203,17 @@
 ../templates/_profile/sammlungen/_view/muenzen/clouds_year_html
 ../templates/_profile/sammlungen/_view/muenzen/corporate_banner
 ../templates/_profile/sammlungen/_view/muenzen/home
+../templates/_profile/sammlungen/_view/muenzen/info_bestand
 ../templates/_profile/sammlungen/_view/muenzen/mainnavigation
 ../templates/_profile/sammlungen/_view/muenzen/search_facet
 ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query
+../templates/_profile/sammlungen/_view/muenzen/search_history
 ../templates/_profile/sammlungen/_view/muenzen/search_title_field
+../templates/_profile/sammlungen/_view/muenzen/std_footer_html
 ../templates/_profile/sammlungen/_view/muenzen/std_header_html
 ../templates/_profile/sammlungen/_view/muenzen/subnavigation
 ../templates/_profile/sammlungen/_view/muenzen/titles_fields_record_html
+../templates/_profile/sammlungen/_view/muenzen/titles_record_html_actions
 ../templates/_profile/sammlungen/_view/muenzen/titlist_options
 ../templates/_profile/sammlungen/_view/poetica/home_html
 ../templates/_profile/sammlungen/_view/poetica/info_sammlung
@@ -1266,7 +1296,9 @@
 ../templates/_profile/sammlungen/_view/totenzettel/info_sammlung
 ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation
 ../templates/_profile/sammlungen/_view/totenzettel/search_facet
+../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_advanced
 ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query
+../templates/_profile/sammlungen/_view/totenzettel/search_title_field
 ../templates/_profile/sammlungen/_view/totenzettel/std_header_html
 ../templates/_profile/sammlungen/_view/totenzettel/subnavigation
 ../templates/_profile/sammlungen/_view/totenzettel/titles_fields_record_html
@@ -1341,7 +1373,6 @@
 ../templates/pruessen-bestellung
 ../templates/pruessen-bestellung_erfolg
 ../templates/pruessen-bestellung_fehler
-../templates/pruessen_werkverzeichnis_tex
 ../templates/pruessen_werkverzeichnis_einzeltitel
 ../templates/pruessen_werkverzeichnis_tex
 ../templates/resultlists_empty
@@ -1361,6 +1392,7 @@
 ../templates/search_corporatebody_item
 ../templates/search_facet
 ../templates/searchforms_record_advanced
+../templates/searchforms_record_authority
 ../templates/searchforms_record_bottom
 ../templates/searchforms_record_bottom_center
 ../templates/searchforms_record_bottom_left
@@ -1369,6 +1401,7 @@
 ../templates/searchforms_record_profile
 ../templates/searchforms_record_query
 ../templates/searchforms_record_simple
+../templates/searchforms_suggestions
 ../templates/search_history
 ../templates/search_info
 ../templates/search_more_tips
@@ -1610,6 +1643,7 @@
 ../templates/views_json
 ../templates/views_record
 ../templates/views_record_html
+../templates/views_record_include
 ../templates/views_record_json
 ../templates/views_rss_record
 ../templates/views_rss_record_html
@@ -1621,15 +1655,3 @@
 ../templates/visible_categories_subject
 ../templates/visible_categories_title
 ../templates/zsstlist_tex
-../templates/authority_search_facet
-../templates/authority_search_start_html
-../templates/authority_search_end_html
-../templates/authority_search_combined_html
-../templates/authority_search_start
-../templates/authlist_item_html_short
-../templates/authlist_options
-../templates/authority_search_combined_json
-../templates/authority_search_end
-../templates/_profile/kug/authority_search_facet
-../templates/_profile/kug/authority_search_radius
-../templates/authority_search_combined

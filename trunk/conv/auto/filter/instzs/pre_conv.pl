@@ -40,8 +40,10 @@ my $konvdir       = $config->{'conv_dir'};
 my $pool          = $ARGV[0];
 
 print "### $pool: ZDBID wird zur ID\n";
-
+system("ls -l $rootdir/data/$pool/");
 system("$rootdir/filter/$pool/zdbid2id.pl < $rootdir/data/$pool/meta.title > $rootdir/data/$pool/meta.title.tmp");
 system("mv -f $rootdir/data/$pool/meta.title.tmp $rootdir/data/$pool/meta.title");
 system("$rootdir/filter/$pool/zdbid2id-mex.pl < $rootdir/data/$pool/meta.holding | $rootdir/filter/$pool/join-journalholdings.pl > $rootdir/data/$pool/meta.holding.tmp");
 system("mv -f $rootdir/data/$pool/meta.holding.tmp $rootdir/data/$pool/meta.holding");
+system("cd $rootdir/data/$pool/ ; $rootdir/filter/$pool/add-locationid.pl < $rootdir/data/$pool/meta.title > $rootdir/data/$pool/meta.title.tmp");
+system("mv -f $rootdir/data/$pool/meta.title.tmp $rootdir/data/$pool/meta.title");

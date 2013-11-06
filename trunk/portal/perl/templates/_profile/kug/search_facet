@@ -23,6 +23,14 @@
      exclude_args.push(thisprefix);
      exclude_args.push("b${thisprefix}");
      exclude_args.push("f\[${thisprefix}\]");
+     IF config.searchfield.${field}.type == 'integer';
+       exclude_args.push("${thisprefix}_from");
+       exclude_args.push("b${thisprefix}_from");
+       exclude_args.push("f\[${thisprefix}_from\]");
+       exclude_args.push("${thisprefix}_to");
+       exclude_args.push("b${thisprefix}_to");
+       exclude_args.push("f\[${thisprefix}_to\]");
+     END;
    END;
    exclude_args.push("profile");
 
@@ -40,10 +48,13 @@
       topic_map.${topic.id} = topic.name;
    END;
 %]
-
+<!-- Generel Query Args -->
 [% cgiapp.to_cgi_hidden_input({ change = {'page' = 1 }, exclude = exclude_args }) %]
+<!-- End -->
 
-[% searchquery.to_cgi_hidden_input({ exclude_filter = [ 'all' ] }) %]
+<!-- Searchquery Args -->
+[% searchquery.to_cgi_hidden_input({ exclude_filter = [ 'all' ], exclude = [ 'year_from','year_to' ] }) %]
+<!-- End -->
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -101,6 +112,17 @@ $("#dd_topic_[% database %]").hide();
 $("#dd_topic_[% database %]_toggle").click(function(){
  $("#dd_topic_[% database %]").toggle();
  $("#dd_topic_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Locations
+// Bild setzen
+$("#dd_location_[% database %]_toggle").html("<b>[<a href=\"#dd_location_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_location_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_location_[% database %]_toggle").click(function(){
+ $("#dd_location_[% database %]").toggle();
+ $("#dd_location_[% database %]_toggle").html("");
 });
 
 // Begin Togglen / Facets Jahr
@@ -207,6 +229,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
           ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
           ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
           ${config.get('searchfield').topic.prefix} = msg.maketext("Themengebiet")
+          ${config.get('searchfield').location.prefix} = msg.maketext("Standort")
           ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
           ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
           ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
@@ -255,6 +278,31 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 </dl>
 [%         END %]
 <!-- End database facet -->
+
+<!-- Begin location facet -->
+[%         IF config.get('facets').location && category_map.11.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_location_[% database %]_anchor">[% msg.maketext("nach Standort") %]</dt>
+[%             FOREACH termitem IN category_map.11 ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF category_map.11.size > 5 && loop.count == 5 %]
+<span id="dd_location_[% database %]_toggle"></span>
+<div id="dd_location_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').locationstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.identifier.${termitem.0}.description %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF category_map.11.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End location facet -->
 
 <!-- Begin availability facet -->
 [%         IF category_map.12.size > 0 %]
@@ -386,6 +434,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 </div>
 [% END %]
 </dl>
+<p/>
+
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" style="width:40px;" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" name="year_to" [% searchquery.get_searchfield("year_to").val %] style="width:40px;"/>&nbsp;&nbsp;<input type="submit" value=">>"/></dd>
+
 [%         END %]
 <!-- End year facet -->
 <!-- Begin classification facet -->

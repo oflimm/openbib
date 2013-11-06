@@ -52,7 +52,7 @@ foreach my $topic_ref (@{$user->get_topics}){
 
 my %classificationid2topicid = ();
 
-open(CLASSIFICATION,"zcat meta.classification.gz|");
+open(CLASSIFICATION,"meta.classification");
 
 while (<CLASSIFICATION>){
     my $classification_ref = decode_json $_;

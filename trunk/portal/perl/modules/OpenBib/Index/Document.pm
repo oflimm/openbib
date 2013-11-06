@@ -44,8 +44,8 @@ sub new {
     my $id              = exists $arg_ref->{id}
         ? $arg_ref->{id}                      : undef;
 
-    my $locationid      = exists $arg_ref->{locationid}
-        ? $arg_ref->{locationid}              : undef;
+    my $locations_ref   = exists $arg_ref->{locations}
+        ? $arg_ref->{locations}               : [];
 
     my $self = { };
 
@@ -62,7 +62,7 @@ sub new {
         push @{$self->{_index}{facet_database}}, $database;
     }
 
-    if ($locationid){
+    foreach my $locationid (@$locations_ref){
         push @{$self->{_index}{locationstring}{1}}, ['location',$locationid];
         push @{$self->{_index}{facet_location}}, $locationid;
     }

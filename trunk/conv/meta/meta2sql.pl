@@ -852,7 +852,17 @@ while (my $jsonline=<IN>){
                 subfield  => '',
             } if ($have_article);
         }   
-        
+
+        # Hochschulschrift
+        # HSSvermerk besetzt
+        if ($fields_ref->{'0519'}) {
+            push @{$fields_ref->{'4410'}}, {
+                mult      => $type_mult,
+                content   => 'Hochschulschrift',
+                subfield  => '',
+            };
+        }   
+
         # Elektronisches Medium mit Online-Zugriff
         # werden vorher katalogspezifisch per pre_unpack.pl angereichert
     } 

@@ -138,6 +138,8 @@ my $have_title_ref = {};
 
 my $count=1;
 
+my $mexid = 1;
+
 # Ignore 4 consecutive errors
 while (my $record = $batch->next() || $batch->next || $batch->next || $batch->next ){
 
@@ -886,6 +888,41 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
             }
         }
 
+    }
+
+    { # Exemplardaten
+        foreach my $field ($record->field('852')){
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+            my $content_i = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('i')):decode_utf8($field->as_string('i'));
+
+            my $holding_ref = {
+                'id'     => $mexid++,
+                'fields' => {
+                    '0004' =>
+                        [
+                            {
+                                mult     => 1,
+                                subfield => '',
+                                content  => $title_ref->{id},
+                        },
+                    ],
+                },
+            };
+
+            push @{$holding_ref->{fields}{'0016'}}, {
+                content  => konv($content_a),
+                subfield => '',
+                mult     => 1,
+            };
+
+            push @{$holding_ref->{fields}{'0014'}}, {
+                content  => konv($content_i),
+                subfield => '',
+                mult     => 1,
+            };
+
+            print HOLDING encode_json $holding_ref,"\n";
+        }
     }
 
     if ($configfile && $convconfig->{exclude}{by_availability}){

@@ -26,7 +26,13 @@ while (<HOLDING>){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-123";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek VWL/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-101";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-105";
+        }
+        elsif ($location_ref->{content} =~m/^Theaterwissenschaftliche Sammlung/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-429";
+        }
+        elsif ($location_ref->{content} =~m/^Inst.*?Medienkultur u. Theater/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-428";
         }
         elsif ($location_ref->{content} =~m/^Humanwiss. Abteilung/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-HWA";

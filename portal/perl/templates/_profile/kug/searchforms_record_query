@@ -72,8 +72,8 @@
 [% END %]
 
 [% IF available_searchfields.classification.active %]
-[%- cgiparam = searchfield.classification.prefix;
-    this_searchfield = 'classification';
+[%- cgiparam = searchfield.classificationstring.prefix;
+    this_searchfield = 'classificationstring';
  -%]
 <div class="ym-fbox-text">
 <label for="[% cgiparam %]">[% msg.maketext("Notation") %]</label>

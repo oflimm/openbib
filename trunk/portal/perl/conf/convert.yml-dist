@@ -280,7 +280,7 @@ convtab:
 #        index:
 #          'mark': 1
 #          'markstring': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -901,7 +901,7 @@ convtab:
           'mark': 1
           'markstring': 1
           'freesearch': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -1323,7 +1323,7 @@ convtab:
 #        index:
 #          'mark': 1
 #          'markstring': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -1761,7 +1761,7 @@ convtab:
         index:
           'source': 1
           'freesearch': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -2001,7 +2001,7 @@ convtab:
         index:
           'source': 1
           'freesearch': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -2242,7 +2242,7 @@ convtab:
       '0014':         # Signatur, wenn nicht in den Exemplardaten
         index:
           'mark': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -2496,7 +2496,7 @@ convtab:
       '0014':         # Signatur, wenn nicht in den Exemplardaten
         index:
           'mark': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -2762,7 +2762,7 @@ convtab:
       '0014':         # Signatur, wenn nicht in den Exemplardaten
         index:
           'mark': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -2986,7 +2986,7 @@ convtab:
       '0014':         # Signatur, wenn nicht in den Exemplardaten
         index:
           'mark': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -3346,7 +3346,7 @@ convtab:
 #        index:
 #          'mark': 1
 #          'markstring': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1
@@ -3816,7 +3816,7 @@ convtab:
 #        index:
 #          'mark': 1
 #          'markstring': 1
-      '0015':
+      '4301':
         index:
           'language': 1
           'languagestring': 1

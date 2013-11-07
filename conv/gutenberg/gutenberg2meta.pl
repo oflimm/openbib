@@ -41,6 +41,7 @@ use YAML::Syck;
 use JSON::XS;
 
 use OpenBib::Config;
+use OpenBib::Common::Util;
 use OpenBib::Conv::Common::Util;
 
 my ($inputfile);
@@ -98,12 +99,16 @@ foreach my $etext_node ($root->findnodes('/rdf:RDF/pgterms:etext')){
     # Sprache
     my $mult=1;
     foreach my $item ($etext_node->findnodes ('dc:language//text()')) {
-        push @{$title_ref->{fields}{'0015'}}, {
-            mult     => $mult,
-            subfield => '',
-            content  => konv($item->textContent),
-        };
-        $mult++;
+        my $valid_lang = OpenBib::Common::Util::normalize_lang($item->textContent);
+
+        if (defined $valid_lang){
+            push @{$title_ref->{fields}{'0015'}}, {
+                mult     => $mult,
+                subfield => '',
+                content  => $valid_lang,
+            };
+            $mult++;
+        }
     }
     
     # Verfasser, Personen

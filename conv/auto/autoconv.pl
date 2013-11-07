@@ -249,7 +249,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         system("$config->{autoconv_dir}/filter/$database/alt_conv.pl $database");
     }
     else {
-        system("cd $rootdir/data/$database ; $meta2sqlexe --loglevel=$loglevel -add-superpers -add-mediatype --database=$database");
+        system("cd $rootdir/data/$database ; $meta2sqlexe --loglevel=$loglevel -add-superpers -add-mediatype --add-language --database=$database");
     }
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_conv.pl"){

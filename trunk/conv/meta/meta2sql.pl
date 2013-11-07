@@ -38,6 +38,7 @@ use DB_File;
 use Encode qw/decode_utf8/;
 use Getopt::Long;
 use JSON::XS;
+use Lingua::Identify::CLD;
 use Log::Log4perl qw(get_logger :levels);
 use MIME::Base64 ();
 use MLDBM qw(DB_File Storable);
@@ -71,12 +72,13 @@ my $chars_to_replace = join '|',
 
 $chars_to_replace = qr/$chars_to_replace/;
 
-my ($database,$reducemem,$addsuperpers,$addmediatype,$incremental,$logfile,$loglevel,$count,$help);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$addlanguage,$incremental,$logfile,$loglevel,$count,$help);
 
 &GetOptions(
     "reduce-mem"     => \$reducemem,
     "add-superpers"  => \$addsuperpers,
     "add-mediatype"  => \$addmediatype,
+    "add-language"  => \$addlanguage,
     "incremental"    => \$incremental,
     "database=s"     => \$database,
     "logfile=s"      => \$logfile,
@@ -110,6 +112,8 @@ Log::Log4perl::init(\$log4Perl_config);
 
 # Log4perl logger erzeugen
 my $logger = get_logger();
+
+my $cld = Lingua::Identify::CLD->new();
 
 my $dir=`pwd`;
 chop $dir;
@@ -278,149 +282,147 @@ my $stammdateien_ref = {
 };
 
 foreach my $type (keys %{$stammdateien_ref}) {
-    $logger->info("### $database: Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
-    
-    open(IN ,           "<:raw",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
-    open(OUT,           ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
-    open(OUTFIELDS,     ">:utf8",$stammdateien_ref->{$type}{outfile_fields})     || die "OUTFIELDS konnte nicht geoeffnet werden";
+    if (-f $stammdateien_ref->{$type}{infile}){
+        $logger->info("### $database: Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
 
-    my ($category,$mult,$content);
-
-    my $serialid = 1;
-    
-    while (my $jsonline=<IN>){
-
-        my $record_ref = decode_json $jsonline;
-
-        my $id         = $record_ref->{id};
-        my $fields_ref = $record_ref->{fields};
+        open(IN ,           "<:raw",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
+        open(OUT,           ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
+        open(OUTFIELDS,     ">:utf8",$stammdateien_ref->{$type}{outfile_fields})     || die "OUTFIELDS konnte nicht geoeffnet werden";
         
-        # Primaeren Normdatensatz erstellen und schreiben
+        my ($category,$mult,$content);
         
-        my $create_tstamp = "1970-01-01 12:00:00";
+        my $serialid = 1;
         
-        if (defined $fields_ref->{'0002'} && defined $fields_ref->{'0002'}[0]) {
-            $create_tstamp = $fields_ref->{'0002'}[0]{content};
-            if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-                $create_tstamp=$3."-".$2."-".$1." 12:00:00";
-            }
-        }
-        
-        my $update_tstamp = "1970-01-01 12:00:00";
-        
-        if (exists $fields_ref->{'0003'} && exists $fields_ref->{'0003'}[0]) {
-            $update_tstamp = $fields_ref->{'0003'}[0]{content};
-            if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-                $update_tstamp=$3."-".$2."-".$1." 12:00:00";
-            }            
-        }
-        
-        print OUT "$id$create_tstamp$update_tstamp\n";
-
-        # Ansetzungsformen fuer Kurztitelliste merken
-        
-        my $mainentry;
-        
-        if (exists $fields_ref->{'0800'} && exists $fields_ref->{'0800'}[0] ) {
-            $mainentry = $fields_ref->{'0800'}[0]{content};
-        }
-        
-        if ($mainentry) {
-            if ($type eq "person") {
-                $listitemdata_person{$id}=$mainentry;
-            }
-            elsif ($type eq "corporatebody") {
-                $listitemdata_corporatebody{$id}=$mainentry;
-            }
-            elsif ($type eq "classification") {
-                $listitemdata_classification{$id}=$mainentry;
-            }
-            elsif ($type eq "subject") {
-                if (defined $fields_ref->{'0800'}[1]){
-                    # Schlagwortketten zusammensetzen
-                    my @mainentries = ();
-                    foreach my $item (map { $_->[0] }
-                                          sort { $a->[1] <=> $b->[1] }
-                                              map { [$_, $_->{mult}] } @{$fields_ref->{'0800'}}){
-                        push @mainentries, $item->{content};
-                        $mainentry = join (' / ',@mainentries);
-                    }
-
-                    $fields_ref->{'0800'} = [
-                        {
-                            content  => $mainentry,
-                            mult     => 1,
-                            subfield => '',
-                        }
-                    ];
+        while (my $jsonline=<IN>) {
+            
+            my $record_ref = decode_json $jsonline;
+            
+            my $id         = $record_ref->{id};
+            my $fields_ref = $record_ref->{fields};
+            
+            # Primaeren Normdatensatz erstellen und schreiben
+            
+            my $create_tstamp = "1970-01-01 12:00:00";
+            
+            if (defined $fields_ref->{'0002'} && defined $fields_ref->{'0002'}[0]) {
+                $create_tstamp = $fields_ref->{'0002'}[0]{content};
+                if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
+                    $create_tstamp=$3."-".$2."-".$1." 12:00:00";
                 }
-                $listitemdata_subject{$id}=$mainentry;
             }
-        }
+        
+            my $update_tstamp = "1970-01-01 12:00:00";
+        
+            if (exists $fields_ref->{'0003'} && exists $fields_ref->{'0003'}[0]) {
+                $update_tstamp = $fields_ref->{'0003'}[0]{content};
+                if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
+                    $update_tstamp=$3."-".$2."-".$1." 12:00:00";
+                }            
+            }
+        
+            print OUT "$id$create_tstamp$update_tstamp\n";
 
-        foreach my $field (keys %{$fields_ref}) {
-            next if ($field eq "id" || defined $stammdateien_ref->{$type}{blacklist_ref}->{$field} );
-            foreach my $item_ref (@{$fields_ref->{$field}}) {
-                if (exists $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}) {
-                    foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$field}->{index}}) {
-                        my $weight = $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}{$searchfield};
+            # Ansetzungsformen fuer Kurztitelliste merken
+        
+            my $mainentry;
+        
+            if (exists $fields_ref->{'0800'} && exists $fields_ref->{'0800'}[0] ) {
+                $mainentry = $fields_ref->{'0800'}[0]{content};
+            }
+        
+            if ($mainentry) {
+                if ($type eq "person") {
+                    $listitemdata_person{$id}=$mainentry;
+                } elsif ($type eq "corporatebody") {
+                    $listitemdata_corporatebody{$id}=$mainentry;
+                } elsif ($type eq "classification") {
+                    $listitemdata_classification{$id}=$mainentry;
+                } elsif ($type eq "subject") {
+                    if (defined $fields_ref->{'0800'}[1]) {
+                        # Schlagwortketten zusammensetzen
+                        my @mainentries = ();
+                        foreach my $item (map { $_->[0] }
+                                              sort { $a->[1] <=> $b->[1] }
+                                                  map { [$_, $_->{mult}] } @{$fields_ref->{'0800'}}) {
+                            push @mainentries, $item->{content};
+                            $mainentry = join (' / ',@mainentries);
+                        }
+
+                        $fields_ref->{'0800'} = [
+                            {
+                                content  => $mainentry,
+                                mult     => 1,
+                                subfield => '',
+                            }
+                        ];
+                    }
+                    $listitemdata_subject{$id}=$mainentry;
+                }
+            }
+
+            foreach my $field (keys %{$fields_ref}) {
+                next if ($field eq "id" || defined $stammdateien_ref->{$type}{blacklist_ref}->{$field} );
+                foreach my $item_ref (@{$fields_ref->{$field}}) {
+                    if (exists $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}) {
+                        foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$field}->{index}}) {
+                            my $weight = $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}{$searchfield};
                         
-                        if ($type eq "person"){
-                            my $hash_ref = {};
-                            if (exists $indexed_person{$id}){
-                                $hash_ref = $indexed_person{$id};
+                            if ($type eq "person") {
+                                my $hash_ref = {};
+                                if (exists $indexed_person{$id}) {
+                                    $hash_ref = $indexed_person{$id};
+                                }
+                                push @{$hash_ref->{$searchfield}{$weight}}, ["P$field",$item_ref->{content}];
+                            
+                                $indexed_person{$id} = $hash_ref;
+                            } elsif ($type eq "corporatebody") {
+                                my $hash_ref = {};
+                                if (exists $indexed_corporatebody{$id}) {
+                                    $hash_ref = $indexed_corporatebody{$id};
+                                }
+                                push @{$hash_ref->{$searchfield}{$weight}}, ["C$field",$item_ref->{content}];
+                            
+                                $indexed_corporatebody{$id} = $hash_ref;
+                            } elsif ($type eq "subject") {
+                                my $hash_ref = {};
+                                if (exists $indexed_subject{$id}) {
+                                    $hash_ref = $indexed_subject{$id};
+                                }
+                                push @{$hash_ref->{$searchfield}{$weight}}, ["S$field",$item_ref->{content}];
+                            
+                                $indexed_subject{$id} = $hash_ref;
+                            } elsif ($type eq "classification") {
+                                my $hash_ref = {};
+                                if (exists $indexed_classification{$id}) {
+                                    $hash_ref = $indexed_classification{$id};
+                                }                        
+                                push @{$hash_ref->{$searchfield}{$weight}}, ["N$field",$item_ref->{content}];
+                            
+                                $indexed_classification{$id} = $hash_ref;
                             }
-                            push @{$hash_ref->{$searchfield}{$weight}}, ["P$field",$item_ref->{content}];
-                            
-                            $indexed_person{$id} = $hash_ref;
-                        }
-                        elsif ($type eq "corporatebody"){
-                            my $hash_ref = {};
-                            if (exists $indexed_corporatebody{$id}){
-                                $hash_ref = $indexed_corporatebody{$id};
-                            }
-                            push @{$hash_ref->{$searchfield}{$weight}}, ["C$field",$item_ref->{content}];
-                            
-                            $indexed_corporatebody{$id} = $hash_ref;
-                        }
-                        elsif ($type eq "subject"){
-                            my $hash_ref = {};
-                            if (exists $indexed_subject{$id}){
-                                $hash_ref = $indexed_subject{$id};
-                            }
-                            push @{$hash_ref->{$searchfield}{$weight}}, ["S$field",$item_ref->{content}];
-                            
-                            $indexed_subject{$id} = $hash_ref;
-                        }
-                        elsif ($type eq "classification"){
-                            my $hash_ref = {};
-                            if (exists $indexed_classification{$id}){
-                                $hash_ref = $indexed_classification{$id};
-                            }                        
-                            push @{$hash_ref->{$searchfield}{$weight}}, ["N$field",$item_ref->{content}];
-                            
-                            $indexed_classification{$id} = $hash_ref;
                         }
                     }
-                }
                 
-                if ($id && $field && $item_ref->{content}){
-                    $item_ref->{content} = cleanup_content($item_ref->{content});
-                    # Abhaengige Feldspezifische Saetze erstellen und schreiben
-                    print OUTFIELDS "$serialid$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
-                    $serialid++;
+                    if ($id && $field && $item_ref->{content}) {
+                        $item_ref->{content} = cleanup_content($item_ref->{content});
+                        # Abhaengige Feldspezifische Saetze erstellen und schreiben
+                        print OUTFIELDS "$serialid$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
+                        $serialid++;
+                    }
                 }
             }
-        }
         
+        }
+
+        close(OUT);
+        close(OUTFIELDS);
+
+        close(IN);
+
+        unlink $stammdateien_ref->{$type}{infile};
+    } else {
+        $logger->error("### $database: $stammdateien_ref->{$type}{infile} nicht vorhanden!");
     }
-
-    close(OUT);
-    close(OUTFIELDS);
-
-    close(IN);
-
-    unlink $stammdateien_ref->{$type}{infile};
 }
 
 #######################
@@ -432,156 +434,164 @@ $stammdateien_ref->{holding} = {
     inverted_ref       => $conv_config->{inverted_holding},
 };
 
-$logger->info("### $database: Bearbeite meta.holding");
+if (-f "meta.holding"){
+    $logger->info("### $database: Bearbeite meta.holding");
 
-open(IN ,                   "<:raw","meta.holding")               || die "IN konnte nicht geoeffnet werden";
-open(OUT,                   ">:utf8","holding.dump")               || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,             ">:utf8","holding_fields.dump")        || die "OUTFIELDS konnte nicht geoeffnet werden";
+    open(IN ,                   "<:raw","meta.holding")               || die "IN konnte nicht geoeffnet werden";
+    open(OUT,                   ">:utf8","holding.dump")               || die "OUT konnte nicht geoeffnet werden";
+    open(OUTFIELDS,             ">:utf8","holding_fields.dump")        || die "OUTFIELDS konnte nicht geoeffnet werden";
+    open(OUTTITLEHOLDING,       ">:utf8","title_holding.dump")         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
+
+    my $id;
+    my ($category,$mult,$content);
+
+    $count = 1;
+
+    my $atime = new Benchmark;
+
+    my $titleid;
+    my $thisyear = `date +"%Y"`;
+
+    my $serialid = 1;
+
+    my $title_holding_serialid = 1;
+
+    while (my $jsonline=<IN>) {
+
+        my $record_ref = decode_json $jsonline;
+
+        my $id         = $record_ref->{id};
+        my $fields_ref = $record_ref->{fields};
+    
+        # Primaeren Normdatensatz erstellen und schreiben
+    
+        print OUT "$id\n";
+    
+        # Titelid bestimmen
+    
+        my $titleid;
+
+        if (exists $fields_ref->{'0004'} && exists $fields_ref->{'0004'}[0] ) {
+            $titleid = $fields_ref->{'0004'}[0]{content};
+        }
+    
+        # Verknupefungen
+        if ($titleid && $id) {
+            print OUTTITLEHOLDING "$title_holding_serialid$titleid$id\n";
+            $title_holding_serialid++;
+        }
+    
+        foreach my $field (keys %{$fields_ref}) {
+            next if ($field eq "id" || defined $stammdateien_ref->{holding}{blacklist_ref}{$field} );
+        
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
+                next unless ($item_ref->{content});
+            
+                if (exists $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}) {
+                    foreach my $searchfield (keys %{$stammdateien_ref->{holding}{inverted_ref}{$field}->{index}}) {
+                        my $weight = $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}{$searchfield};
+                    
+                        my $hash_ref = {};
+                        if (defined $indexed_holding{$titleid}) {
+                            $hash_ref = $indexed_holding{$titleid};
+                        }
+                    
+                        push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$item_ref->{content}];
+                    
+                        $indexed_holding{$titleid} = $hash_ref;
+                    }
+                }
+            
+                if ($id && $field && $item_ref->{content}) {
+                    $item_ref->{content} = cleanup_content($item_ref->{content});
+                    # Abhaengige Feldspezifische Saetze erstellen und schreiben        
+                    print OUTFIELDS "$serialid$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
+                    $serialid++;
+                }
+            }
+        }
+        
+        # Signatur fuer Kurztitelliste merken
+    
+        if (exists $fields_ref->{'0014'} && $titleid) {
+            my $array_ref= [];
+            if (exists $listitemdata_holding{$titleid}) {
+                $array_ref = $listitemdata_holding{$titleid};
+            }
+            push @$array_ref, $fields_ref->{'0014'}[0]{content};
+            $listitemdata_holding{$titleid}=$array_ref;
+        }
+    
+        # Bestandsverlauf in Jahreszahlen umwandeln
+        if ((defined $fields_ref->{'1204'}) && $titleid) {        
+            my $array_ref=[];
+            if (exists $listitemdata_enriched_years{$titleid}) {
+                $array_ref = $listitemdata_enriched_years{$titleid};
+            }
+        
+            foreach my $date (split(";",cleanup_content($fields_ref->{'1204'}[0]{content}))) {
+                if ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-\s+.*?(\d\d\d\d)/) {
+                    my $startyear = $1;
+                    my $endyear   = $2;
+                
+                    $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                    for (my $year=$startyear;$year<=$endyear; $year++) {
+                        $logger->debug("Adding year $year");
+                        push @$array_ref, $year;
+                    }
+                } elsif ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-/) {
+                    my $startyear = $1;
+                    my $endyear   = $thisyear;
+                    $logger->debug("Expanding yearstring $date from $startyear to $endyear");
+                    for (my $year=$startyear;$year<=$endyear;$year++) {
+                        $logger->debug("Adding year $year");
+                        push @$array_ref, $year;
+                    }                
+                } elsif ($date =~/(\d\d\d\d)/) {
+                    $logger->debug("Not expanding $date, just adding year $1");
+                    push @$array_ref, $1;
+                }
+            }
+
+            $listitemdata_enriched_years{$titleid}=$array_ref;
+        }
+    
+        if ($count % 1000 == 0) {
+            my $btime      = new Benchmark;
+            my $timeall    = timediff($btime,$atime);
+            my $resulttime = timestr($timeall,"nop");
+            $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+            $atime      = new Benchmark;
+            $logger->info("### $database: $count Exemplarsaetze in $resulttime bearbeitet");
+        }
+        $count++;
+    }
+
+    close(OUT);
+    close(OUTFIELDS);
+    close(OUTTITLEHOLDING);
+    close(IN);
+
+    unlink "meta.holding";
+} else {
+    $logger->error("### $database: meta.holding nicht vorhanden!");
+}
+
 open(OUTTITLETITLE,         ">:utf8","title_title.dump")           || die "OUTTITLETITLE konnte nicht geoeffnet werden";
-open(OUTTITLEHOLDING,       ">:utf8","title_holding.dump")         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
 open(OUTTITLEPERSON,        ">:utf8","title_person.dump")          || die "OUTTITLEPERSON konnte nicht geoeffnet werden";
 open(OUTTITLECORPORATEBODY, ">:utf8","title_corporatebody.dump")   || die "OUTTITLECORPORATEBODY konnte nicht geoeffnet werden";
 open(OUTTITLESUBJECT,       ">:utf8","title_subject.dump")         || die "OUTTITLESUBJECT konnte nicht geoeffnet werden";
 open(OUTTITLECLASSIFICATION,">:utf8","title_classification.dump")  || die "OUTTITLECLASSIFICATION konnte nicht geoeffnet werden";
 
-my $id;
-my ($category,$mult,$content);
+my $stats_enriched_language = 0;
 
-$count = 1;
-
-my $atime = new Benchmark;
-
-my $titleid;
-my $thisyear = `date +"%Y"`;
-
-my $serialid = 1;
 
 my $title_person_serialid = 1;
 my $title_corporatebody_serialid = 1;
 my $title_subject_serialid = 1;
 my $title_classification_serialid = 1;
-my $title_holding_serialid = 1;
 my $title_title_serialid = 1;
-
-while (my $jsonline=<IN>){
-
-    my $record_ref = decode_json $jsonline;
-
-    my $id         = $record_ref->{id};
-    my $fields_ref = $record_ref->{fields};
-    
-    # Primaeren Normdatensatz erstellen und schreiben
-    
-    print OUT "$id\n";
-    
-    # Titelid bestimmen
-    
-    my $titleid;
-
-    if (exists $fields_ref->{'0004'} && exists $fields_ref->{'0004'}[0] ) {
-        $titleid = $fields_ref->{'0004'}[0]{content};
-    }
-    
-    # Verknupefungen
-    if ($titleid && $id) {
-        print OUTTITLEHOLDING "$title_holding_serialid$titleid$id\n";
-        $title_holding_serialid++;
-    }
-    
-    foreach my $field (keys %{$fields_ref}) {
-        next if ($field eq "id" || defined $stammdateien_ref->{holding}{blacklist_ref}{$field} );
-        
-        foreach my $item_ref (@{$fields_ref->{$field}}) {
-            next unless ($item_ref->{content});
-            
-            if (exists $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}) {
-                foreach my $searchfield (keys %{$stammdateien_ref->{holding}{inverted_ref}{$field}->{index}}) {
-                    my $weight = $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}{$searchfield};
-                    
-                    my $hash_ref = {};
-                    if (defined $indexed_holding{$titleid}){
-                        $hash_ref = $indexed_holding{$titleid};
-                    }
-                    
-                    push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$item_ref->{content}];
-                    
-                    $indexed_holding{$titleid} = $hash_ref;
-                }
-            }
-            
-            if ($id && $field && $item_ref->{content}){
-                $item_ref->{content} = cleanup_content($item_ref->{content});
-                # Abhaengige Feldspezifische Saetze erstellen und schreiben        
-                print OUTFIELDS "$serialid$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
-                $serialid++;
-            }
-        }
-    }
-        
-    # Signatur fuer Kurztitelliste merken
-    
-    if (exists $fields_ref->{'0014'} && $titleid) {
-        my $array_ref= [];
-        if (exists $listitemdata_holding{$titleid}){
-            $array_ref = $listitemdata_holding{$titleid};
-        }
-        push @$array_ref, $fields_ref->{'0014'}[0]{content};
-        $listitemdata_holding{$titleid}=$array_ref;
-    }
-    
-    # Bestandsverlauf in Jahreszahlen umwandeln
-    if ((defined $fields_ref->{'1204'}) && $titleid) {        
-        my $array_ref=[];
-        if (exists $listitemdata_enriched_years{$titleid}){
-            $array_ref = $listitemdata_enriched_years{$titleid};
-        }
-        
-        foreach my $date (split(";",cleanup_content($fields_ref->{'1204'}[0]{content}))) {
-            if ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-\s+.*?(\d\d\d\d)/) {
-                my $startyear = $1;
-                my $endyear   = $2;
-                
-                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
-                for (my $year=$startyear;$year<=$endyear; $year++) {
-                    $logger->debug("Adding year $year");
-                    push @$array_ref, $year;
-                }
-            }
-            elsif ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-/) {
-                my $startyear = $1;
-                my $endyear   = $thisyear;
-                $logger->debug("Expanding yearstring $date from $startyear to $endyear");
-                for (my $year=$startyear;$year<=$endyear;$year++) {
-                    $logger->debug("Adding year $year");
-                    push @$array_ref, $year;
-                }                
-            }
-            elsif ($date =~/(\d\d\d\d)/) {
-                $logger->debug("Not expanding $date, just adding year $1");
-                push @$array_ref, $1;
-            }
-        }
-
-        $listitemdata_enriched_years{$titleid}=$array_ref;
-    }
-    
-    if ($count % 1000 == 0) {
-        my $btime      = new Benchmark;
-        my $timeall    = timediff($btime,$atime);
-        my $resulttime = timestr($timeall,"nop");
-        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-        
-        $atime      = new Benchmark;
-        $logger->info("### $database: $count Exemplarsaetze in $resulttime bearbeitet");
-    }
-    $count++;
-}
-
-close(OUT);
-close(OUTFIELDS);
-close(IN);
-
-unlink "meta.holding";
 
 $stammdateien_ref->{title} = {
     infile             => "meta.title",
@@ -667,9 +677,9 @@ my $locationid = $config->get_locationid_of_database($database);
 
 $count = 1;
 
-$atime = new Benchmark;
+my $atime = new Benchmark;
 
-$serialid = 1;
+my $serialid = 1;
     
 while (my $jsonline=<IN>){
     
@@ -810,6 +820,73 @@ while (my $jsonline=<IN>){
         }
     }
 
+    my $valid_language_available=0;
+    my $mult_lang = 1;
+    
+    if (defined $fields_ref->{'0015'}){
+        foreach my $item_ref (@{$fields_ref->{'0015'}}){
+            my $valid_lang = OpenBib::Common::Util::normalize_lang($item_ref->{content});
+            if (defined $valid_lang){
+                $valid_language_available = 1;
+                push @{$fields_ref->{'4301'}}, {
+                    mult      => $mult_lang++,
+                    content   => $valid_lang,
+                    subfield  => 'a', # erfasst
+                };
+
+            }
+        }
+    }
+    
+    # Sprachcode erkennen und anreichern
+    if ($addlanguage && !$valid_language_available) {
+        my @langtexts = ();
+        if (defined $fields_ref->{'0331'}){
+            foreach my $item_ref (@{$fields_ref->{'0331'}}) {
+                push @langtexts, $item_ref->{content};
+            }            
+        }
+        if (defined $fields_ref->{'0451'}){
+            foreach my $item_ref (@{$fields_ref->{'0451'}}) {
+                push @langtexts, $item_ref->{content};
+            }            
+        }
+        if (defined $fields_ref->{'0335'}){
+            foreach my $item_ref (@{$fields_ref->{'0335'}}) {
+                push @langtexts, $item_ref->{content};
+            }            
+        }
+
+        my $langtext = join(" ",@langtexts);
+        $langtext =~s/\W/ /g;
+        $langtext =~s/\s+/ /g;
+
+        my @lang = $cld->identify($langtext);
+
+        if ($logger->is_debug){
+            $logger->debug("Sprachanreicherung fuer $langtext");
+            $logger->debug("Sprachname  : $lang[0]");
+            $logger->debug("Sprachid    : $lang[1]");
+            $logger->debug("Sicherheit  : $lang[2]");
+            $logger->debug("Zuverlaessig: $lang[3]");
+        }
+
+        if ($lang[3]){ # reliable!
+
+            my $langcode = OpenBib::Common::Util::normalize_lang($lang[1]);
+
+            if (defined $langcode){
+                push @{$fields_ref->{'4301'}}, {
+                    mult      => $mult_lang++,
+                    content   => $langcode,
+                    subfield  => 'e', # enriched
+                };
+
+                $stats_enriched_language++;
+            }
+        }
+    }
+    
     # Medientypen erkennen und anreichern
     if ($addmediatype) {
         my $type_mult = 1;
@@ -1616,6 +1693,7 @@ while (my $jsonline=<IN>){
 }
 
 $logger->info("### $database: $count Titelsaetze bearbeitet");
+$logger->info("### $database: $stats_enriched_language Titelsaetze mit Sprachcode angereichert");
 
 close(OUT);
 close(OUTFIELDS);

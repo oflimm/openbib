@@ -261,7 +261,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%             FOREACH termitem IN category_map.8 ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF category_map.8.size > 5 && loop.count == 5 %]
+[% IF category_map.8.size > 1 && loop.count == 5 %]
 <span id="dd_databases_[% database %]_toggle"></span>
 <div id="dd_databases_[% database %]">
 [% END %]
@@ -272,7 +272,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.dbnames.${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
-[% IF category_map.8.size > 5 %]
+[% IF category_map.8.size > 1 %]
 </div>
 [% END %]
 </dl>

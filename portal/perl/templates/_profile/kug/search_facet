@@ -261,7 +261,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%             FOREACH termitem IN category_map.8 ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF category_map.8.size > 1 && loop.count == 5 %]
+[% IF category_map.8.size > 1 && loop.count == 1 %]
 <span id="dd_databases_[% database %]_toggle"></span>
 <div id="dd_databases_[% database %]">
 [% END %]

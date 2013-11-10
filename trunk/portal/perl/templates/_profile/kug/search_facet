@@ -280,7 +280,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End database facet -->
 
 <!-- Begin location facet -->
-[%         IF 0 == 1 && config.get('facets').location && category_map.11.size > 0 %]
+[%         IF config.get('facets').location && category_map.11.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_location_[% database %]_anchor">[% msg.maketext("nach Standort") %]</dt>
 [%             FOREACH termitem IN category_map.11 ;

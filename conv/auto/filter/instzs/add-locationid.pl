@@ -19,7 +19,12 @@ while (<HOLDING>){
     next unless ($titleid);
 
     foreach my $location_ref (@{$holding_ref->{fields}{'3330'}}){
-        push @{$title_locationid_ref->{$titleid}}, "DE-38-".$location_ref->{content};
+        if ($location_ref->{content} eq "587"){
+            push @{$title_locationid_ref->{$titleid}}, "DE-587";
+        }
+        else {
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-".$location_ref->{content};
+        }
     }
 }
 

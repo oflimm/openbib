@@ -50,7 +50,7 @@ my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 my $url    = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
 print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm *");
+system("cd $pooldir/$pool ; rm data.csv");
 system("cd $pooldir/$pool ; $wgetexe -O data.csv '$url' # > /dev/null 2>&1 ");
 
 print "### $pool: Konvertierung von data.csv\n";

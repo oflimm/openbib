@@ -50,7 +50,7 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->titlefile;
 
 print "### $pool: Datenabzug via OAI von $oaiurl\n";
-system("cd $pooldir/$pool ; rm *");
+system("cd $pooldir/$pool ; rm pool.*");
 system("$harvestoaiexe --oaiurl=\"$oaiurl\" | /bin/gzip -c > $pooldir/$pool/pool.dat.gz");
 
 system("/bin/gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");

@@ -46,6 +46,7 @@
      facets = {
          availability   = category_map.12
          databases      = category_map.8
+         location       = category_map.11
          persons        = category_map.3
          corporatebody  = category_map.7
          classification = category_map.2

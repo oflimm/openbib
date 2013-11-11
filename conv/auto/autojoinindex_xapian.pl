@@ -107,6 +107,10 @@ $logger->info("Profil-Verzeichnis von alten Profilen reinigen");
 while (my $file = readdir(DIR)) {
     next if ($file=~/^\./);
 
+    if ($searchprofileid && !$file eq $searchprofileid && !$file eq $searchprofileid."_authority" ){
+        next;
+    }
+    
     my $is_authority = 0;
 
     if ($file=~/_authority/){

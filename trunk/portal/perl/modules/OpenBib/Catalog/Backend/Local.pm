@@ -609,6 +609,7 @@ sub load_full_title_record {
                     select   => ['holdingid'],
                     as       => ['thisholdingid'],
                     group_by => ['holdingid'], # = distinct holdingid
+                    order_by => { -asc => 'holdingid' },
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );

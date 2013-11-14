@@ -43,6 +43,14 @@ FOREACH item IN thistitset.${"T0335"} ;
   hst_zusatz.push(content);
 END ;
 
+signaturen = [];
+FOREACH item IN thismexset ;
+  content = item.${"X0014"}.content ;
+  IF content ;
+     signaturen.push(content);
+  END ;
+END ;
+
 -%]
 Titel: \emph{[% filterchars(thistitset.${"T0331"}.first.content) %]}[% IF thistitset.${"T0335"}.first.content %]: [% filterchars(thistitset.${"T0335"}.first.content) %][% END %]. [% IF thistitset.${"T0410"}.first.content %][% filterchars(thistitset.${"T0410"}.first.content) %][% END %][% IF thistitset.${"T0412"}.first.content %][% IF thistitset.${"T0410"}.first.content %]: [% END %][% filterchars(thistitset.${"T0412"}.first.content) %][% END %][% IF thistitset.${"T0424"}.first.content %][% IF thistitset.${"T0410"}.first.content || thistitset.${"T0412"}.first.content %], [% END %][% filterchars(thistitset.${"T0424"}.first.content) %].[% ELSIF thistitset.${"T0425"}.first.content %][% IF thistitset.${"T0410"}.first.content || thistitset.${"T0412"}.first.content %], [% END %][% filterchars(thistitset.${"T0425"}.first.content) %].[% END %]\newline 
 [%- IF weitere_titel.size > 0 || parallele_ausgaben.size > 0 %][% IF weitere_titel.size > 0 %]Weitere Titel: [% weitere_titel.join(', ') %][% END %][% IF weitere_titel.size > 0 && parallele_ausgaben.size > 0%], [% END %][% IF parallele_ausgaben.size > 0 %]Parallele Ausgabe(n): [% parallele_ausgaben.join(', ') %][% END %]\newline [% END %]
@@ -50,7 +58,7 @@ Titel: \emph{[% filterchars(thistitset.${"T0331"}.first.content) %]}[% IF thisti
 [%- IF umfang_originale.size > 0 %]Umfang: [% umfang_originale.join(', ') %]\newline [% END %]
 [%- IF entwuerfe.size > 0 %]Entw"urfe: [% entwuerfe.join(', ') %]\newline [% END %]
 [%- IF techniken.size > 0 %]Technik(en): [% techniken.join(', ') %]\newline [% END %]
-Signatur: \textbf{[% filterchars(thismexset.first.${"X0014"}.content) %]}
+Signatur: \textbf{[% filterchars(signaturen.join(', ')) %]}
 [%- IF thistitset.${"T0361"}.first.content %]
 \minisec{Einzelbilder:}
 \begin{itemize}
@@ -85,8 +93,16 @@ Signatur: \textbf{[% filterchars(thismexset.first.${"X0014"}.content) %]}
                  END ;
               END ;
 
+              sub_signaturen = [];
+              FOREACH this_item IN sub_record.get_holding ;
+                 content = filterchars(this_item.${"X0014"}.content) ;
+                 IF content ;
+                    sub_signaturen.push(content);
+                 END ;
+              END ;
+
 -%]
-  \item [% IF sub_personen.size > 0 %][% sub_personen.join(', ') %]: [% END %][% filterchars(sub_normdata.${"T0331"}.first.content) %][% IF sub_normdata.${"T0335"}.first.content %]: [% filterchars(sub_normdata.${"T0335"}.first.content) %][% END %]. [% IF sub_normdata.${"T0410"}.first.content %][% filterchars(sub_normdata.${"T0410"}.first.content) %]: [% END %][% IF sub_normdata.${"T0412"}.first.content %][% filterchars(sub_normdata.${"T0412"}.first.content) %], [% END %][% IF sub_normdata.${"T0425"}.first.content %][% filterchars(sub_normdata.${"T0425"}.first.content) %].[% ELSIF sub_normdata.${"T0424"}.first.content %][% filterchars(sub_normdata.${"T0424"}.first.content) %].[% END %]\newline Signatur: [% filterchars(sub_record.get_holding.first.${"X0014"}.content) %]
+  \item [% IF sub_personen.size > 0 %][% sub_personen.join(', ') %]: [% END %][% filterchars(sub_normdata.${"T0331"}.first.content) %][% IF sub_normdata.${"T0335"}.first.content %]: [% filterchars(sub_normdata.${"T0335"}.first.content) %][% END %]. [% IF sub_normdata.${"T0410"}.first.content %][% filterchars(sub_normdata.${"T0410"}.first.content) %]: [% END %][% IF sub_normdata.${"T0412"}.first.content %][% filterchars(sub_normdata.${"T0412"}.first.content) %], [% END %][% IF sub_normdata.${"T0425"}.first.content %][% filterchars(sub_normdata.${"T0425"}.first.content) %].[% ELSIF sub_normdata.${"T0424"}.first.content %][% filterchars(sub_normdata.${"T0424"}.first.content) %].[% END %]\newline Signatur: [% sub_signaturen.join(', ') %]
 [%-    END %]
 [%-  ELSIF thistitset.${"T0590"}.first.content -%]
 [%     FOREACH item IN thistitset.${"T0590"} -%]

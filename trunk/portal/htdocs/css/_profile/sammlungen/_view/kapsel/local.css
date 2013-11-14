@@ -2,7 +2,7 @@
 {
 
   header {
-    padding-bottom:50px;  
+    padding-bottom:90px;  
   }
 
   header #logo {
@@ -25,8 +25,8 @@
   #header_logo_image  {
     background: url(/images/openbib/views/kapsel/logo.png) center no-repeat;
     position: absolute;
-    width: 643px;
-    height: 90px;
+    width: 600px;
+    height: 130px;
     top: 25px;
     left: 5px;    
   }
@@ -37,7 +37,7 @@
     width: 190px;
     height: 78px;
     position: absolute;
-    top: 35px;
+    top: 55px;
     right: 10px;
   }
 

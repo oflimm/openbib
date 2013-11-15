@@ -26,6 +26,7 @@ systemdbport: 5432
 systemdbname: openbib_system
 systemdbuser: root
 systemdbpasswd: StrengGeheim
+systemdbsingleton: 0
 
 # Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
 enrichmntdbimodule: Pg
@@ -63,7 +64,7 @@ local_search_backend: xapian
 
 # Benutzer, Passwort und Default view fuer die Administration
 adminuser: admin
-adminpasswd: StrengGeheim
+adminpasswd: StrengGeheim 
 
 defaultview: openbib
 
@@ -106,6 +107,7 @@ base_loc: /portal
 ## Systmweite Resourcen, Aenderbar fuer Web-Administration
 admin_loc: admin
 authenticators_loc: authenticators
+authority_loc: authority
 databases_loc: databases
 views_loc: views
 locations_loc: locations
@@ -169,6 +171,7 @@ info_loc: info
 login_loc: login
 logout_loc: logout
 mailcollection_loc: mailcollection
+migration_loc: migration
 passwords_loc: passwords
 redirect_loc: redirect
 registrations_loc: registrations
@@ -212,6 +215,17 @@ dispatch_rules:
        - mobile
      runmode: 'show_search'
   - # Resource: search_loc
+     module: 'OpenBib::Handler::Apache::Authority::Search'
+     rule: '/portal/:view/authority/search[get]'
+     representations:
+       - none
+       - html
+       - json
+       - txt
+       - rss
+       - mobile
+     runmode: 'show_search'
+  - # Resource: search_loc
      module: 'OpenBib::Handler::Apache::Search::History'
      rule: '/portal/:view/search/history[get]'
      representations:
@@ -223,6 +237,16 @@ dispatch_rules:
 # Titel-Resource/Repraesentation
   - # users/titles_loc: only public
      module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+       - include
+       - rdf
+  - # users/titles_loc: only public
+     module: 'OpenBib::Handler::Apache::Titles'
      rule: '/portal/:view/databases/titles/popular[get]'
      runmode: 'show_popular'
      representations:
@@ -231,6 +255,15 @@ dispatch_rules:
        - json
        - include
        - rdf
+  - # users/titles_loc: only public
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/dbis/titles/recommendations[get]'
+     runmode: 'show_dbis_recommendations'
+     representations:
+       - none
+       - html
+       - json
+       - include
   - # users/titles_loc: only public
      module: 'OpenBib::Handler::Apache::Titles'
      rule: '/portal/:view/databases/id/:database/titles/popular[get]'
@@ -300,6 +333,7 @@ dispatch_rules:
        - html
      args:
         users_loc: 'databases'
+
   - # users_loc/titles_loc: Record show
      module: 'OpenBib::Handler::Apache::Titles'
      rule: '/portal/:view/databases/id/:database/titles/id/:titleid/availability[get]'
@@ -547,13 +581,17 @@ dispatch_rules:
      args:
         disable_content_negotiation: 1
   - # connector_locationmark_loc:
-     module: 'OpenBib::Handler::Apache::Connector:LocationMark'
+     module: 'OpenBib::Handler::Apache::Connector::LocationMark'
      rule: '/portal/:view/connector/locationmark'
      runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   - # connector_locationmark_loc:
-     module: 'OpenBib::Handler::Apache::Connector:LocationMark'
-     rule: '/portal/:view/connector/locationmark.html'
+     module: 'OpenBib::Handler::Apache::Connector::LocationMark'
+     rule: '/portal/:view/connector/sykasignatur'
      runmode: 'show'
+     args:
+        disable_content_negotiation: 1
   # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
   # Die Rueckwaertskompatabilitaet wird durch URL-Rewriting und 301er
   # Redirects direkt im Apache gewaehrleistet
@@ -765,6 +803,13 @@ dispatch_rules:
 
 # Anzeige privater Listen ueber separaten user_loc
 
+  - # Resource: users/litlists_loc: Resource-Finder-URL
+     module: 'OpenBib::Handler::Apache::Users::LitLists'
+     rule: '/portal/:view/users/me/litlists[get]'
+     runmode: 'dispatch_to_user'
+     args:
+        disable_content_negotiation: 1
+
   - # Resource: users_loc/litlists_loc: Anzeige aller eigenen Literaturlisten
      module: 'OpenBib::Handler::Apache::Users::LitLists'
      rule: '/portal/:view/users/id/:userid/litlists[get]'
@@ -859,6 +904,13 @@ dispatch_rules:
 
 # Anzeige privater Listen ueber separaten user_loc
 
+  - # users/tags_loc: Resource-Finder-URL
+     module: 'OpenBib::Handler::Apache::Users::Tags'
+     rule: '/portal/:view/users/me/tags[get]'
+     runmode: 'dispatch_to_user'
+     args:
+        disable_content_negotiation: 1
+
   - # Resource: users_loc/tags_loc: Anzeige aller eigenen Tags
      module: 'OpenBib::Handler::Apache::Users::Tags'
      rule: '/portal/:view/users/id/:userid/tags[get]'
@@ -872,6 +924,14 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Users::Tags'
      rule: '/portal/:view/users/id/:userid/tags/id/:tagid[get]'
      runmode: 'show_record'
+
+  - # users/tags_names_loc: Resource-Finder-URL
+     module: 'OpenBib::Handler::Apache::Users::Tags::Names'
+     rule: '/portal/:view/users/me/tags/names[get]'
+     runmode: 'dispatch_to_user'
+     args:
+        disable_content_negotiation: 1
+
   - # Resource: users_loc/tags_loc: Anzeige aller eigenen Tags nach Tagnamen
      module: 'OpenBib::Handler::Apache::Users::Tags::Names'
      rule: '/portal/:view/users/id/:userid/tags/names[get]'
@@ -1231,7 +1291,7 @@ dispatch_rules:
        - none
        - html
        - json
-       - rdf
+       - csv
 
 #####################################################################
 # Standortgruppierung/Locations-Resource/Repraesentation
@@ -1642,6 +1702,26 @@ dispatch_rules:
        - json
        - rdf
      runmode: 'show_search'
+
+#####################################################################
+# Admin User-Migrations-Resource/Repraesentation
+
+  - # admin_loc/users_loc/migration_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Users::Migration'
+     rule: '/portal/:view/admin/users/migration[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Users::Migration'
+     rule: '/portal/:view/admin/users/migration[post]'
+     runmode: 'migrate_ugc'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Admin::Users::Migration'
+     rule: '/portal/:view/admin/users/migration[put]'
+     runmode: 'migrate_ugc'
 
 #####################################################################
 # Authenticators-Resource/Repraesentation
@@ -2185,9 +2265,16 @@ dispatch_rules:
      rule: '/portal/:view/searchprofiles/session[post]'
      runmode: 'update_collection'
 
+  - # users/searchprofiles_loc: Resource-Finder-URL
+     module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
+     rule: '/portal/:view/users/me/searchprofiles[get]'
+     runmode: 'dispatch_to_user'
+     args:
+        disable_content_negotiation: 1
+
   - # users/searchprofiles_loc:
      module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:id/searchprofiles[get]'
+     rule: '/portal/:view/users/id/:userid/searchprofiles[get]'
      runmode: 'show_collection'
      representations:
        - none
@@ -2196,11 +2283,11 @@ dispatch_rules:
        - rdf
   - # users_loc/searchprofiles_loc: Record show
      module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:id/searchprofiles/id/:searchprofileid[get]'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid[get]'
      runmode: 'show_record'
   - # users_loc/searchprofiles_loc: Record show form
      module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:id/searchprofiles/id/:searchprofileid/edit[get]'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid/edit[get]'
      runmode: 'show_record_form'
      representations:
        - none
@@ -2211,7 +2298,7 @@ dispatch_rules:
      runmode: 'create_record'
   - # users_loc/searchprofiles_loc: Update Record
      module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
-     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:serachprofileid[post]'
+     rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid[post]'
      runmode: 'update_record'
   - # users_loc/searchprofiles_loc: Update Record
      module: 'OpenBib::Handler::Apache::Users::Searchprofiles'
@@ -2224,6 +2311,14 @@ dispatch_rules:
 
 #####################################################################
 # UserPreferences-Resource/Repraesentation
+
+  - # users/preferences_loc: Resource-Finder-URL
+     module: 'OpenBib::Handler::Apache::Users::Preferences'
+     rule: '/portal/:view/users/me/preferences[get]'
+     runmode: 'dispatch_to_user'
+     args:
+        disable_content_negotiation: 1
+
   - # users/preferences_loc:
      module: 'OpenBib::Handler::Apache::Users::Preferences'
      rule: '/portal/:view/users/id/:userid/preferences[get]'
@@ -2297,6 +2392,26 @@ dispatch_rules:
      module: 'OpenBib::Handler::Apache::Users::Preferences'
      rule: '/portal/:view/users/id/:userid/preferences/autocompletion[put]'
      runmode: 'update_autocompletion'
+
+#####################################################################
+# User Migration-Resource/Repraesentation
+
+  - # users/migration_loc:
+     module: 'OpenBib::Handler::Apache::Users::Migration'
+     rule: '/portal/:view/users/id/:userid/migration[get]'
+     runmode: 'show_collection'
+     representations:
+       - none
+       - html
+       - json
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Users::Migration'
+     rule: '/portal/:view/users/id/:userid/migration[post]'
+     runmode: 'migrate_ugc'
+  - # user_loc:
+     module: 'OpenBib::Handler::Apache::Users::Migration'
+     rule: '/portal/:view/users/id/:userid/migration[put]'
+     runmode: 'migrate_ugc'
 
 #####################################################################
 # User Circulation-Resource/Repraesentation
@@ -2392,7 +2507,7 @@ dispatch_rules:
   - # users_loc/roles_loc: Update
      module: 'OpenBib::Handler::Apache::Users::Roles'
      rule: '/portal/:view/users/id/:userid/roles[put]'
-     runmode: 'update_searchfields'
+     runmode: 'update_record'
 
 #####################################################################
 # User (Account)-Resource/Repraesentation
@@ -2536,6 +2651,8 @@ tt_admin_topics_mappings_record_tname: admin_topics_mappings_record
 tt_admin_topics_mappings_tname: admin_topics_mappings
 tt_admin_topics_record_tname: admin_topics_record
 tt_admin_topics_tname: admin_topics
+tt_admin_users_migration_tname: admin_users_migration
+tt_admin_users_migration_success_tname: admin_users_migration_success
 tt_admin_users_search_form_tname: admin_users_search_form
 tt_admin_users_search_tname: admin_users_search
 tt_admin_users_tname: admin_users
@@ -2575,6 +2692,8 @@ tt_topics_record_tname: topics_record
 tt_topics_mappings_record_tname: topics_mappings_record
 tt_topics_mappings_tname: topics_mappings
 tt_users_tname: users 
+tt_users_migration_tname: users_migration
+tt_users_migration_success_tname: users_migration_success
 tt_users_record_tname: users_record
 tt_views_tname: views 
 tt_views_record_tname: views_record
@@ -2728,6 +2847,10 @@ tt_reviews_record_tname: reviews_record
 
 tt_rssfeeds_tname: rssfeeds
 
+tt_authority_search_combined_tname: authority_search_combined
+tt_authority_search_end_tname: authority_search_end
+tt_authority_search_start_tname: authority_search_start
+
 tt_search_classification_tname: search_classification
 tt_search_corporatebody_tname: search_corporatebody
 tt_search_history_tname: search_history
@@ -2738,6 +2861,7 @@ tt_search_title_end_tname: search_title_end
 tt_search_title_item_tname: search_title_item
 tt_search_title_start_tname: search_title_start
 
+tt_searchforms_record_authority_tname: searchforms_record_authority
 tt_searchforms_record_advanced_tname: searchforms_record_advanced
 tt_searchforms_record_simple_tname: searchforms_record_simple
 
@@ -2753,9 +2877,11 @@ tt_tags_names_recent_tname: tags_names_recent
 tt_tags_names_tname: tags_names
 tt_tags_names_record_tname: tags_names_record
 
+tt_titles_tname: titles
 tt_titles_form_tname: titles_form
 tt_titles_popular_by_database_tname: titles_popular_by_database
 tt_titles_popular_tname: titles_popular
+tt_titles_dbis_recommendations_tname: titles_dbis_recommendations
 tt_titles_fields_tname: titles_fields
 tt_titles_fields_record_tname: titles_fields_record
 tt_titles_recent_by_database_tname: titles_recent_by_database
@@ -2790,11 +2916,22 @@ tt_users_tags_record_edit_tname: users_tags_record_edit
 tt_users_tags_record_tname: users_tags_record
 tt_users_tags_names_record_tname: users_tags_names_record
 
+# Neuerwerbungslisten
+tt_acquisition_tname: acquisition
+tt_acquisition_types_tname: acquisition_types
+tt_acquisition_collection_tname: acquisition_collection
+tt_acquisition_index_tname: acquisition_index
+
 # Aleki DDR
 tt_info_sammlung_tname: info_sammlung
 # Abklatschsammlung
 tt_info_abklatsch_tname: info_abklatsch
 tt_info_datenerfassung_tname: info_datenerfassung
+# Einbandsammlung
+tt_info_redaktion_tname: info_redaktion
+tt_info_dokumentation_tname: info_dokumentation
+tt_info_bibliographie_tname: info_bibliographie
+tt_info_buchpaten_tname: info_buchpaten
 # Richter-Bibliothek
 tt_info_richterbibliothek_heute_tname: info_richterbibliothek_heute
 tt_info_externe_nachweise_tname: info_externe_nachweise
@@ -2807,16 +2944,32 @@ tt_info_elise_richter_tname: info_elise_richter
 tt_info_helene_richter_tname: info_helene_richter
 tt_info_portal_tname: info_portal
 # Rheinlandbib
+tt_info_bruehl_tname: info_bruehl
 tt_info_gaesdonck_tname: info_gaesdonck
 tt_info_koenigswinter_tname: info_koenigswinter
+tt_info_geistingen_tname: info_geistingen
 tt_info_gleuel_tname: info_gleuel
 tt_info_kempen_tname: info_kempen
 tt_info_xanten_tname: info_xanten
+tt_info_zuelpich_tname: info_zuelpich
+tt_info_moenchengladbach_tname: info_moenchengladbach
 tt_info_kevelaer_tname: info_kevelaer
 tt_info_grevenbroich_tname: info_grevenbroich
 tt_info_wickrath_tname: info_wickrath
 tt_info_hennef_tname: info_hennef
+tt_info_herzogenrath_tname: info_herzogenrath
 tt_info_rheinischeabteilung_tname: info_rheinischeabteilung
+# Muenzsammlung
+tt_info_bestand_tname: info_bestand
+# Pruessen
+tt_info_pruessen_tname: info_pruessen
+tt_info_erschliessung_tname: info_erschliessung
+tt_info_ausstellungen_tname: info_ausstellungen
+# Portraitsammlung
+tt_info_quellen_tname: info_quellen
+tt_info_unbekannte_portraits_tname: info_unbekannte_portraits
+tt_info_ausstellung_tname: info_ausstellung
+tt_info_faq_tname: info_faq
 
 css_loc: /css
 
@@ -2824,8 +2977,8 @@ css_loc: /css
 mail_prog: /usr/bin/mailx
 
 # Email-Adressen fuer den Admin und generellen Kontakt
-admin_email: admin@openbib.org
-contact_email: contact@openbib.org
+admin_email: foo@bar
+contact_email: foo@bar
 
 # Externe Links zum direkten Einsprung in die Digitale
 # Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
@@ -2889,8 +3042,10 @@ content_type_map:
 # 'application/xml': 'rss'
  'text/rdf+n3': 'n3'
  'text/html': 'html'
+ 'text/plain': 'txt'
  'application/json': 'json'
  'text/calendar' : 'ics'
+ 'text/csv' : 'csv'
 
 content_type_map_rev:
  'rdf': 'application/rdf+xml'
@@ -2901,6 +3056,8 @@ content_type_map_rev:
  'include': 'text/html'
  'json': 'application/json'
  'mobile': 'text/html'
+ 'txt': 'text/plain'
+ 'csv': 'text/csv'
 
 # Suchprefixe in der Rercherche fuer die internen Felder person, title usw.
 # Zuordnung: Interner Bezeichnung -> Suchprefix
@@ -2966,6 +3123,9 @@ searchfield:
   'mediatype':
      'prefix': 'typ'
      'type': 'ft'
+  'authoritytype':
+     'prefix': 'auth'
+     'type': 'ft'
   'content': 
      'prefix': 'cnt'
      'type': 'ft'
@@ -2974,6 +3134,9 @@ searchfield:
      'type': 'ft'
   'tag': # 
      'prefix': 'tag'
+     'type': 'ft'
+  'toc': # 
+     'prefix': 'toc'
      'type': 'ft'
   'user': # for BibSonomy 
      'prefix': 'user'
@@ -2984,6 +3147,9 @@ searchfield:
   'subid':
      'prefix': 'fsub'
      'type': 'id'
+  'topic': 
+     'prefix': 'topic'
+     'type': 'string'
   'titlestring':
      'prefix': 'ftit'
      'type': 'string'
@@ -3061,17 +3227,26 @@ searchfield:
   't0335':
      'prefix': 't0335'
      'type': 'string'
+  't0338':
+     'prefix': 't0338'
+     'type': 'string'
   't0410':
      'prefix': 't0410'
      'type': 'string'
   't0411':
      'prefix': 't0411'
      'type': 'string'
+  't0412':
+     'prefix': 't0412'
+     'type': 'string'
   't0413':
      'prefix': 't0413'
      'type': 'string'
   't0425':
      'prefix': 't0425'
+     'type': 'string'
+  't0426':
+     'prefix': 't0426'
      'type': 'string'
   't0531':
      'prefix': 't0531'
@@ -3342,73 +3517,203 @@ xapian_option:
 # Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
 # entsprechend searchfield_prefix
 # Zuordnung: Suchprefix ->  Xapian-Term/Posting-Prefix
-xapian_search_prefix:
-  'id': 'Q'
-  'bkey': 'B'
+xapian_search:
+  'id':
+     'prefix': 'Q'
+     'type': 'standard'
+  'bkey':
+     'prefix': 'B'
+     'type': 'boolean'
+  'perid':
+     'prefix': 'I1'
+     'type': 'boolean'
+  'corpid':
+     'prefix': 'I2'
+     'type': 'boolean'
+  'subjid':
+     'prefix': 'I3'
+     'type': 'boolean'
+  'clnid':
+     'prefix': 'I4'
+     'type': 'boolean'
+  'hbzid':
+     'prefix': 'I5'
+     'type': 'boolean'
+  'zdbid':
+     'prefix': 'I6'
+     'type': 'boolean'
 
-  'perid': 'I1'
-  'corpid': 'I2'
-  'subjid': 'I3'
-  'clnid': 'I4'
-  'hbzid': 'I5'
-  'zdbid': 'I6'
-
-  'fs': ''
+  'fs':
+     'prefix': ''
+     'type': 'default'
 
 # Volltext
-  'per': 'X1'
-  'tit': 'X2'
-  'corp': 'X3'
-  'subj': 'X4'
-  'cln': 'X5'
-  'mark': 'X6'
-  'year': 'X7'
-  'isbn': 'X8'
-  'issn': 'X9'
-  'typ': 'Y1'
-  'cnt': 'Y2'
-  'src': 'Y3'
-  'tag': 'Y4'
-  'publ': 'Y5'
+  'per':
+     'prefix': 'X1'
+     'type': 'default'
+  'tit':
+     'prefix': 'X2'
+     'type': 'default'
+  'corp':
+     'prefix': 'X3'
+     'type': 'default'
+  'subj':
+     'prefix': 'X4'
+     'type': 'default'
+  'cln':
+     'prefix': 'X5'
+     'type': 'default'
+  'mark':
+     'prefix': 'X6'
+     'type': 'default'
+  'year':
+     'prefix': 'X7'
+     'type': 'boolean'
+  'isbn':
+     'prefix': 'X8'
+     'type': 'boolean'
+  'issn':
+     'prefix': 'X9'
+     'type': 'boolean'
+  'typ':
+     'prefix': 'Y1'
+     'type': 'boolean'
+  'cnt':
+     'prefix': 'Y2'
+     'type': 'default'
+  'src':
+     'prefix': 'Y3'
+     'type': 'default'
+  'tag':
+     'prefix': 'Y4'
+     'type': 'boolean'
+  'publ':
+     'prefix': 'Y5'
+     'type': 'default'
+  'toc':
+     'prefix': 'Y6'
+     'type': 'default'
+  'topic':
+     'prefix': 'Y7'
+     'type': 'default'
+  'auth':
+     'prefix': 'Y8'
+     'type': 'default'
 
   # String / Drilldowns
-  'fsubj': 'D1'
-  'fcln': 'D2'
-  'fper': 'D3'
-  'ftyp' : 'D4'
-  'fyear': 'D5'
-  'flang': 'D6'
-  'fcorp': 'D7'
-  'fdb': 'D8'
-  'ftit': 'D9'
-  'fmark': 'E1'
-  'fsub': 'E2'
-  'ftag': 'E3'
-  'flitlist': 'E4'
-  'fpubl': 'E5'
-  'floc': 'E6'
-  'favail': 'E7'
+  'fsubj':
+     'prefix': 'D1'
+     'type': 'default'
+  'fcln':
+     'prefix': 'D2'
+     'type': 'default'
+  'fper':
+     'prefix': 'D3'
+     'type': 'default'
+  'ftyp' :
+     'prefix': 'D4'
+     'type': 'default'
+  'fyear':
+     'prefix': 'D5'
+     'type': 'default'
+  'flang':
+     'prefix': 'D6'
+     'type': 'default'
+  'fcorp':
+     'prefix': 'D7'
+     'type': 'default'
+  'fdb':
+     'prefix': 'D8'
+     'type': 'default'
+  'ftit':
+     'prefix': 'D9'
+     'type': 'default'
+  'fmark':
+     'prefix': 'E1'
+     'type': 'default'
+  'fsub':
+     'prefix': 'E2'
+     'type': 'default'
+  'ftag':
+     'prefix': 'E3'
+     'type': 'default'
+  'flitlist':
+     'prefix': 'E4'
+     'type': 'default'
+  'fpubl':
+     'prefix': 'E5'
+     'type': 'default'
+  'floc':
+     'prefix': 'E6'
+     'type': 'default'
+  'favail':
+     'prefix': 'E7'
+     'type': 'default'
 
   # Einzelne Kategorieinhalte
-  't0100': 'T0100'
-  't0101': 'T0101'
-  't0102': 'T0102'
-  't0103': 'T0103'
-  't0200': 'T0200'
-  't0201': 'T0201'
-  't0304': 'T0304'
-  't0335': 'T0335'
-  't0410': 'T0410'
-  't0411': 'T0411'
-  't0413': 'T0413'
-  't0425': 'T0425'
-  't0531': 'T0531'
-  't0533': 'T0533'
-  't0700': 'T0700'
-  't0710': 'T0710'
-  't0720': 'T0720'
-  't4100': 'T4100'
-  't4300': 'T4300'
+  't0100':
+     'prefix': 'T0100'
+     'type': 'default'
+  't0101':
+     'prefix': 'T0101'
+     'type': 'default'
+  't0102':
+     'prefix': 'T0102'
+     'type': 'default'
+  't0103':
+     'prefix': 'T0103'
+     'type': 'default'
+  't0200':
+     'prefix': 'T0200'
+     'type': 'default'
+  't0201':
+     'prefix': 'T0201'
+     'type': 'default'
+  't0304':
+     'prefix': 'T0304'
+     'type': 'default'
+  't0335':
+     'prefix': 'T0335'
+     'type': 'default'
+  't0338':
+     'prefix': 'T0338'
+     'type': 'default'
+  't0410':
+     'prefix': 'T0410'
+     'type': 'default'
+  't0411':
+     'prefix': 'T0411'
+     'type': 'default'
+  't0412':
+     'prefix': 'T0412'
+     'type': 'default'
+  't0413':
+     'prefix': 'T0413'
+     'type': 'default'
+  't0425':
+     'prefix': 'T0425'
+     'type': 'default'
+  't0426':
+     'prefix': 'T0426'
+     'type': 'default'
+  't0531':
+     'prefix': 'T0531'
+     'type': 'default'
+  't0533':
+     'prefix': 'T0533'
+     'type': 'default'
+  't0710':
+     'prefix': 'T0710'
+     'type': 'default'
+  't0720':
+     'prefix': 'T0720'
+     'type': 'default'
+  't4100':
+     'prefix': 'T4100'
+     'type': 'default'
+  't4300':
+     'prefix': 'T4300'
+     'type': 'default'
 
 xapian_drilldown_value:
   subject: 1
@@ -3421,8 +3726,9 @@ xapian_drilldown_value:
   database: 8
   tag: 9
   litlist: 10
-#  location: 11
+  location: 11
   availability: 12
+  topic: 13
 
 xapian_sorttype_value:
   'person': 20
@@ -3432,6 +3738,7 @@ xapian_sorttype_value:
   'publisher': 24
   'mark': 25
   'popularity': 26
+  'authority': 27
 
 # Standard-Eingabefelder fuer die Recherche
 default_searchfields:
@@ -3450,6 +3757,10 @@ default_searchfields:
   'isbn':
     'active': 1
   'issn':
+    'active': 1
+  'toc':
+    'active': 1
+  'topic':
     'active': 1
   'mediatype':
     'active': 0
@@ -3479,6 +3790,7 @@ image_root_path: /usr/share/images
 books_img: /images/openbib/bookcase.png
 chart_img: /images/openbib/kchart.png
 courses_img: /images/openbib/courses.png
+csv_img: /images/openbib/csv.png
 dbis_green_img: /images/openbib/dbis/z0.gif
 dbis_yellow_img: /images/openbib/dbis/z2.gif
 dbis_red_img: /images/openbib/dbis/z-ppu.gif
@@ -3487,6 +3799,7 @@ dbis_de_img: /images/openbib/dbis/z-de.gif
 delete_img: /images/openbib/cancel.png
 delete_small_img: /images/openbib/cancel-16px.png
 follow_img: /images/openbib/solidrightarrow.png
+firefox_img: /images/openbib/firefox.png
 infotopic_img: /images/openbib/info.png
 info_img: /images/openbib/info_small.png
 global_img: /images/openbib/globus.png
@@ -3522,10 +3835,14 @@ search_img: /images/openbib/search.png
 search_small_img: /images/openbib/search_small.png
 share_img: /images/openbib/share.png
 share_small_img: /images/openbib/share-16px.png
+star_img: /images/openbib/star.png
+2stars_img: /images/openbib/2stars.png
+3stars_img: /images/openbib/3stars.png
 top20_img: /images/openbib/top20-12px.png
 thumbnail_img: /images/openbib/thumbnail.png
 tutorial_img: /images/openbib/tutorial.png
 toggle_show_img: /images/openbib/plus.png
+tool_img: /images/openbib/kcontrol.png
 wikipedia_img:  /images/openbib/wikipedia.png
 university_img:  /images/openbib/university.png
 
@@ -3547,7 +3864,7 @@ bibsonomy_api_user: ''
 librarything_api_key: ''
 
 # Zugriffsinformationen fuer ReCaptcha
-recaptcha_user: 'kug'
+recaptcha_user: ''
 recaptcha_public_key: ''
 recaptcha_private_key: ''
 
@@ -3590,8 +3907,9 @@ facets:
   database: 8
   tag: 9
   litlist: 10
-#  location: 11
+  location: 11
   availability: 12
+  topic: 13
 
 # Repraesentationen
 
@@ -3604,9 +3922,14 @@ representation:
    'mobile': 'text/html'
    'html': 'text/html'
    'ics': 'text/calendar'
+   'csv': 'text/csv'
+   'txt': 'text/plain'
 
 # Default Query-Options (Session)
 queryoptions:
+  clp: # Collapse via sorttype_value (title,authority,...)
+    value: ''
+    storage: none
   num:
     value: 20
     storage: session
@@ -3621,6 +3944,9 @@ queryoptions:
     storage: none
   profil:
     value: ''
+    storage: none
+  novrp:
+    value: 0
     storage: none
   dop:
     value: 'AND'
@@ -3688,8 +4014,8 @@ coverscans:
 enable_mobile:
   'richter': 1
 
-# BIX
-bix: 0
+# Deutsche Bibliotheksstatistik
+deutsche_bibliotheksstatistik: 1
 
 # unAPI
 unAPI: 1
@@ -3731,14 +4057,13 @@ categorymapping:
     T0750: 1
     T0800: 1
   inst404abklatsch:
+    T0200: 1
     T0331: 1
-    T0403: 1
+    T0335: 1
     T0410: 1
     T0425: 1
-    T0501: 1
     T0710: 1
     T1664: 1
-    T0433: 1
   inst450:
     T0100: 1
     T0101: 1
@@ -3763,6 +4088,30 @@ categorymapping:
     T0700: 1
     T0710: 1
     T0750: 1
+  muenzen:
+    T0100: 1
+    T0700: 1
+    T0710: 1
+    T0359: 1
+    T0010: 1
+    T0410: 1
+    T0425: 1
+    T0426: 1
+    T0427: 1
+    T0800: 1
+    T0435: 1
+    T0433: 1
+    T0407: 1
+    T0332: 1
+    T0333: 1
+    T0334: 1
+    T0335: 1
+    T0336: 1
+    T0337: 1
+    T0338: 1
+    T0508: 1
+    T0662: 1
+    T0451: 1
   nationallizenzen:
     T0662: 1
     T0663: 1
@@ -3810,4 +4159,16 @@ categorymapping:
     T0710: 1
   wikisource_de:
     T0101: 1
+  zpe:
+    T0100: 1
+    T0335: 1
+    T0501: 1
+    T0370: 1
+    T0410: 1
+    T0662: 1
+    T2662: 1
+    T0412: 1
+    T0413: 1
+    T0425: 1
+
 

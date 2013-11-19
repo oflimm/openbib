@@ -109,7 +109,7 @@
 
 \vspace*{16.5cm}
 
-\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{10}{10pt}\selectfont Herausgeber: Der Direktor der Universit"ats- und Stadtbibliothek K"oln\\Prof. Dr. Wolfgang Schmitz\\Anschrift: Universit"atsstr. 33, 50931 K"oln\\Internet: http://www.ub.uni-koeln.de\\Erfassung: Ernst Stinner\\Redaktion \& Layout: Christiane Hoffrath, Oliver Flimm\\Druck: USB K"oln\\ISBN: 978-3-931596-76-7\\ \\\copyright 2011-2013 USB K"oln}
+\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{10}{10pt}\selectfont Herausgeber: Der Direktor der Universit"ats- und Stadtbibliothek K"oln\\Prof. Dr. Wolfgang Schmitz\\Anschrift: Universit"atsstr. 33, 50931 K"oln\\Internet: http://www.ub.uni-koeln.de\\Erfassung: Ernst Stinner\\Redaktion \& Layout: Christiane Hoffrath, Oliver Flimm\\Druck und Bindung: USB K"oln\\ISBN: 978-3-931596-76-7\\ \\\copyright 2011-2013 USB K"oln}
 
 \end{titlepage}
 
@@ -468,7 +468,7 @@ Eduard Pr"ussen, Juli 2011
 
 [% END %]
 
-\chapter{Donkey Press [% donkeypress_year_min %] - [% donkeypress_year_max %]}
+\chapter{Donkey-Press [% donkeypress_year_min %] - [% donkeypress_year_max %]}
 
 [% FOREACH year IN donkeypress_available_years %]
 [% anzahl = donkeypress_recordlist.${year}.size %]
@@ -537,7 +537,7 @@ Eduard Pr"ussen, Juli 2011
 
 [% END %]
 
-\chapter{Eduard Pr"ussens Donkey Press-Serien}
+\chapter{Eduard Pr"ussens Donkey-Press-Serien}
 
 \section{Schmunzel-Postille}
 
@@ -563,7 +563,7 @@ Broschur mit einem Gedicht und vier Radierungen, (Plattenformat 6 x 6
 cm), 10 einseitig bedruckte Bl"atter, 11,5 x 14,8 cm,
 B"uttenumschlag. 20 Ausgaben. 1993-2007.
 
-\section{origill}
+\section{Origill}
 
 Original-Illustrationen von Eduard Pr"ussen. Im Verlagsauftrag
 entstandene Illustrationsfolgen, (Linolschnitte), ohne Text, 22 x 31

@@ -203,13 +203,13 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 
 <!-- Begin mediatype facet -->
-[%         IF config.get('facets').mediatype && category_map.4.size > 0 %]
+[%         IF config.get('facets').mediatype && facets.mediatype.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Typ") %]</dt>
-[%             FOREACH termitem IN category_map.4 ;
+[%             FOREACH termitem IN facets.mediatype ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF category_map.4.size > 5 && loop.count == 5 %]
+[% IF facets.mediatype.size > 5 && loop.count == 5 %]
 <span id="dd_mediatype_[% database %]_toggle"></span>
 <div id="dd_mediatype_[% database %]">
 [% END %]
@@ -220,20 +220,20 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
-[% IF category_map.4.size > 5 %]
+[% IF facets.mediatype.size > 5 %]
 </div>
 [% END %]
 </dl>
 [%         END %]
 <!-- End mediatype facet -->
 <!-- Begin subject facet -->
-[%         IF config.get('facets').subject && category_map.1.size > 0 %]
+[%         IF config.get('facets').subject && facets.subject.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_subjects_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
-[%             FOREACH termitem IN category_map.1 ;
+[%             FOREACH termitem IN facets.subject ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF category_map.1.size > 5 && loop.count == 5 %]
+[% IF facets.subject.size > 5 && loop.count == 5 %]
 <span id="dd_subjects_[% database %]_toggle"></span>
 <div id="dd_subjects_[% database %]">
 [% END %]
@@ -244,20 +244,20 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
-[% IF category_map.1.size > 5 %]
+[% IF facets.subject.size > 5 %]
 </div>
 [% END %]
 </dl>
 [%         END %]
 <!-- End subject facet -->
 <!-- Begin year facet -->
-[%         IF config.get('facets').year && category_map.5.size > 0 %]
+[%         IF config.get('facets').year && facets.year.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</dt>
-[%             FOREACH termitem IN category_map.5 ;
+[%             FOREACH termitem IN facets.year ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF category_map.5.size > 5 && loop.count == 5 %]
+[% IF facets.year.size > 5 && loop.count == 5 %]
 <span id="dd_year_[% database %]_toggle"></span>
 <div id="dd_year_[% database %]">
 [% END %]
@@ -268,20 +268,20 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])</dd>
 [%             END %]
-[% IF category_map.5.size > 5 %]
+[% IF facets.year.size > 5 %]
 </div>
 [% END %]
 </dl>
 [%         END %]
 <!-- End year facet -->
 <!-- Begin classification facet -->
-[%         IF config.get('facets').classification && category_map.2.size > 0 %]
+[%         IF config.get('facets').classification && facets.classification.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Provenienz") %]</dt>
-[%             FOREACH termitem IN category_map.2 ;
+[%             FOREACH termitem IN facets.classification ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF category_map.2.size > 5 && loop.count == 5 %]
+[% IF facets.classification.size > 5 && loop.count == 5 %]
 <span id="dd_classification_[% database %]_toggle"></span>
 <div id="dd_classification_[% database %]">
 [% END %]
@@ -292,20 +292,20 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
-[% IF category_map.2.size > 5 %]
+[% IF facets.classification.size > 5 %]
 </div>
 [% END %]
 </dl>
 [%         END %]
 <!-- End classification facet -->
 <!-- Begin tag facet -->
-[%         IF config.get('facets').tag && category_map.9.size > 0 %]
+[%         IF config.get('facets').tag && facets.tag.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_tags_[% database %]_anchor">[% msg.maketext("nach Tags") %]</dt>
-[%             FOREACH termitem IN category_map.9 ;
+[%             FOREACH termitem IN facets.tag ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF category_map.9.size > 5 && loop.count == 5 %]
+[% IF facets.tag.size > 5 && loop.count == 5 %]
 <span id="dd_tags_[% database %]_toggle"></span>
 <div id="dd_tags_[% database %]">
 [% END %]
@@ -316,20 +316,20 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
-[% IF category_map.9.size > 5 %]
+[% IF facets.tag.size > 5 %]
 </div>
 [% END %]
 </dl>
 [%         END %]
 <!-- End tag facet -->
 <!-- Begin litlist facet -->
-[%         IF config.get('facets').litlist && category_map.10.size > 0 %]
+[%         IF config.get('facets').litlist && facets.litlist.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_litlists_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</dt>
-[%             FOREACH termitem IN category_map.10 ;
+[%             FOREACH termitem IN facets.litlist ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF category_map.10.size > 5 && loop.count == 5 %]
+[% IF facets.litlist.size > 5 && loop.count == 5 %]
 <span id="dd_litlists_[% database %]_toggle"></span>
 <div id="dd_litlists_[% database %]">
 [% END %]
@@ -340,20 +340,20 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% searchterm |uri %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
-[% IF category_map.10.size > 5 %]
+[% IF facets.litlist.size > 5 %]
 </div>
 [% END %]
 </dl>
 [%         END %]
 <!-- End litlist facet -->
 <!-- Begin person facet -->
-[%         IF config.get('facets').person && category_map.3.size > 0 %]
+[%         IF config.get('facets').person && facets.person.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Personen") %]</dt>
-[%             FOREACH termitem IN category_map.3 ;
+[%             FOREACH termitem IN facets.person ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF category_map.3.size > 5 && loop.count == 5 %]
+[% IF facets.person.size > 5 && loop.count == 5 %]
 <span id="dd_person_[% database %]_toggle"></span>
 <div id="dd_person_[% database %]">
 [% END %]
@@ -364,21 +364,21 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
-[% IF category_map.3.size > 5 %]
+[% IF facets.person.size > 5 %]
 </div>
 [% END %]
 </dl>
 [%         END %]
 <!-- End person facet -->
 <!-- Begin corporatebody facet -->
-[%         IF config.get('facets').corporatebody && category_map.7.size > 0 %]
+[%         IF config.get('facets').corporatebody && facets.corporatebody.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
 <tr><td>
-[%             FOREACH termitem IN category_map.7 ;
+[%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF category_map.7.size > 5 && loop.count == 5 %]
+[% IF facets.corporatebody.size > 5 && loop.count == 5 %]
 <span id="dd_corporatebody_[% database %]_toggle"></span>
 <div id="dd_corporatebody_[% database %]">
 [% END %]
@@ -389,20 +389,20 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
-[% IF category_map.7.size > 5 %]
+[% IF facets.corporatebody.size > 5 %]
 </div>
 [% END %]
 </dl>
 [%         END %]
 <!-- End corporatebody facet -->
 <!-- Begin language facet -->
-[%         IF config.get('facets').language && category_map.6.size > 0 %]
+[%         IF config.get('facets').language && facets.language.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_language_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</dt>
-[%             FOREACH termitem IN category_map.6 ;
+[%             FOREACH termitem IN facets.language ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF category_map.6.size > 5 && loop.count == 5 %]
+[% IF facets.language.size > 5 && loop.count == 5 %]
 <span id="dd_language_[% database %]_toggle"></span>
 <div id="dd_language_[% database %]">
 [% END %]
@@ -464,7 +464,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 -%]
 <dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
-[% IF category_map.6.size > 5 %]
+[% IF facets.language.size > 5 %]
 </div>
 [% END %]
 </dl>

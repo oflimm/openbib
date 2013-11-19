@@ -44,7 +44,7 @@
      records = records
 
      facets = {
-         databases      = category_map.8
+         databases      = facets.database
      }
 
      filter = searchquery.get_filter

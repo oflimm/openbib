@@ -520,6 +520,12 @@ else {
 if ($updatemaster){
     $logger->info("### $database: Updating Titcount");    
     system("$config->{'base_dir'}/bin/updatetitcount.pl --database=$database");
+
+    $logger->info("### $database: Updating clouds");
+
+    foreach my $thistype (qw/1 3 4 5 6 7 9/){
+        system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype --database=$database");
+    }
 }
 
 # ISBNs etc. zentral merken bei zentraler Anreicherungs-Datenbank

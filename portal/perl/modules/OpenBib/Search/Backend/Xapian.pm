@@ -142,8 +142,10 @@ sub search {
     my $sorttype          = $queryoptions->get_option('srt');
     my $sortorder         = $queryoptions->get_option('srto');
     my $defaultop         = $queryoptions->get_option('dop');
-    my $drilldown         = 1;
+    my $facets            = $queryoptions->get_option('facets');
+    my $gen_facets        = ($facets eq "none")?0:1;
 
+    
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');
     my $num               = $queryoptions->get_option('num');
@@ -155,6 +157,19 @@ sub search {
         $atime=new Benchmark;
     }
 
+    # Defaults from portal.yml
+    my $current_facets_ref = $config->{facets};
+
+    if ($facets){
+        $current_facets_ref = {};
+        map { $current_facets_ref->{$_} = 1 } split(',',$facets);
+    }
+
+    if ($logger->is_debug){
+        $logger->debug("Facets CGI Parameter: $facets");
+        $logger->debug("Generate Facets: ".YAML::Dump($current_facets_ref));
+    }
+    
     my $dbh;
 
     my $searchprofile = $searchquery->get_searchprofile;
@@ -346,8 +361,10 @@ sub search {
     my %decider_map   = ();
     my @decider_types = ();
 
-    foreach my $drilldown_value (keys %{$config->{xapian_drilldown_value}}){
-        push @decider_types, $config->{xapian_drilldown_value}{$drilldown_value};
+    foreach my $single_facet (keys %{$config->{xapian_facet_value}}){
+        if (defined $current_facets_ref->{$single_facet} && $current_facets_ref->{$single_facet}){
+            push @decider_types, $config->{xapian_facet_value}{$single_facet};
+        }
     }
 
     my $decider_ref = sub {
@@ -367,7 +384,7 @@ sub search {
     # Hier wird direkt die Begriffsfrequenz bestimmt.
     # Wenn diese die maximale Treffermengengroesse (maxmatch)
     # uebersteigt, dann werden
-    # - drilldowns deaktiviert, da diese bei so unspezifischen
+    # - facets deaktiviert, da diese bei so unspezifischen
     #   Recherchen keine Hilfe bieten
     # - aber die korrekte Treffermengenzahl zurueck gegeben
     # Generell gilt aber auch hier: Es sind maximal maxmatch
@@ -378,7 +395,7 @@ sub search {
       $singletermcount = $dbh->get_termfreq($is_singleterm);
 
       if ($singletermcount > $maxmatch){
-	$drilldown = "";
+	$gen_facets = 0;
       }
     }
 
@@ -386,9 +403,9 @@ sub search {
 
     my $offset = $page*$num-$num;
 
-    $logger->debug("Drilldown: $drilldown - Offset: $offset");
+    $logger->debug("Facets: $gen_facets - Offset: $offset");
     
-    my $mset = ($drilldown)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
+    my $mset = ($gen_facets)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
 
     if ($logger->is_debug){
         $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
@@ -417,7 +434,7 @@ sub search {
 
     if ($logger->is_debug){
         $logger->debug(YAML::Dump(\%decider_map));
-    }
+    }    
     
     if ($singletermcount > $maxmatch){
       $self->{categories} = {};
@@ -449,7 +466,8 @@ sub browse {
     my $sorttype          = $queryoptions->get_option('srt');
     my $sortorder         = $queryoptions->get_option('srto');
     my $defaultop         = $queryoptions->get_option('dop');
-    my $drilldown         = 1;
+    my $facets            = $queryoptions->get_option('facets');
+    my $gen_facets        = ($facets eq "none")?0:1;
 
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');
@@ -461,6 +479,14 @@ sub browse {
         $atime=new Benchmark;
     }
 
+    # Defaults from portal.yml
+    my $current_facets_ref = $config->{facets};
+
+    if ($facets){
+        $current_facets_ref = {};
+        map { $current_facets_ref->{$_} = 1 } split(',',$facets);
+    }
+    
     my $dbh;
 
     $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
@@ -526,8 +552,10 @@ sub browse {
     my %decider_map   = ();
     my @decider_types = ();
 
-    foreach my $drilldown_value (keys %{$config->{xapian_drilldown_value}}){
-        push @decider_types, $config->{xapian_drilldown_value}{$drilldown_value};
+    foreach my $single_facet (keys %{$config->{xapian_facet_value}}){
+        if (defined $current_facets_ref->{$single_facet} && $current_facets_ref->{$single_facet}){
+            push @decider_types, $config->{xapian_facet_value}{$single_facet};
+        }
     }
 
     my $decider_ref = sub {
@@ -607,14 +635,22 @@ sub get_facets {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
     
     my $ddatime   = new Benchmark;
     
     # Transformation Hash->Array zur Sortierung
 
-    my $category_map_ref     = ();
+    my $facets_ref     = ();
     my $tmp_category_map_ref = $self->{categories};
-                                
+
+    my %facet_rev_map = ();
+
+    foreach my $facet (keys $config->{xapian_facet_value}){
+        $facet_rev_map{$config->{xapian_facet_value}{$facet}} = $facet;
+    }
+    
     foreach my $type (keys %{$tmp_category_map_ref}) {
         my $contents_ref = [] ;
         foreach my $content (keys %{$tmp_category_map_ref->{$type}}) {
@@ -630,7 +666,7 @@ sub get_facets {
         
         # Schwartz'ian Transform
         
-        @{$category_map_ref->{$type}} = map { $_->[0] }
+        @{$facets_ref->{$facet_rev_map{$type}}} = map { $_->[0] }
             sort { $b->[1] <=> $a->[1] }
                 map { [$_, $_->[1]] }
                     @{$contents_ref};
@@ -638,12 +674,16 @@ sub get_facets {
 
     my $ddbtime       = new Benchmark;
     my $ddtimeall     = timediff($ddbtime,$ddatime);
-    my $drilldowntime    = timestr($ddtimeall,"nop");
-    $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
-    
-    $logger->debug("Zeit fuer categorized drilldowns $drilldowntime");
+    my $facettime    = timestr($ddtimeall,"nop");
+    $facettime    =~s/(\d+\.\d+) .*/$1/;
 
-    return $category_map_ref;
+    if ($logger->is_debug){
+        $logger->debug("Facets: ".YAML::Dump($facets_ref));
+        $logger->debug("Zeit fuer faceting $facettime");
+    }
+
+    
+    return $facets_ref;
 }
 
 sub get_indexterms {

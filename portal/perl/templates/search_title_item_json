@@ -44,16 +44,16 @@
      records = records
 
      facets = {
-         databases      = category_map.8
-         persons        = category_map.3
-         corporatebody  = category_map.7
-         classification = category_map.2
-         subject        = category_map.1
-         year           = category_map.5
-         mediatype      = category_map.4
-         language       = category_map.6
-         tag            = category_map.9
-         litlist        = category_map.10
+         databases      = facets.database
+         persons        = facets.person
+         corporatebody  = facets.corporatebody
+         classification = facets.classification
+         subject        = facets.subject
+         year           = facets.year
+         mediatype      = facets.mediatype
+         language       = facets.language
+         tag            = facets.tag
+         litlist        = facets.litlist
      }
 
      filter = searchquery.get_filter

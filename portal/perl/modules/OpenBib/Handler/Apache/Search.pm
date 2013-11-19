@@ -960,7 +960,7 @@ sub print_resultitem {
         
         hits            => $self->param('hits'),
         
-        category_map    => $self->param('facets'),
+        facets          => $self->param('facets'),
         
         total_hits      => $self->param('total_hits'),
         recordlist      => $self->param('recordlist'),

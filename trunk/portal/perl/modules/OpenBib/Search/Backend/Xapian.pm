@@ -143,7 +143,7 @@ sub search {
     my $sortorder         = $queryoptions->get_option('srto');
     my $defaultop         = $queryoptions->get_option('dop');
     my $facets            = $queryoptions->get_option('facets');
-    my $gen_facets        = ($facets eq "none")?0:1;
+    my $gen_facets        = 1; #($facets eq "none")?0:1;
 
     
     # Pagination parameters
@@ -467,7 +467,7 @@ sub browse {
     my $sortorder         = $queryoptions->get_option('srto');
     my $defaultop         = $queryoptions->get_option('dop');
     my $facets            = $queryoptions->get_option('facets');
-    my $gen_facets        = ($facets eq "none")?0:1;
+    my $gen_facets        = 1; #($facets eq "none")?0:1;
 
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');

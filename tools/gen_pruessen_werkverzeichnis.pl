@@ -488,7 +488,7 @@ my $donkeypress_year_min = 9999;
         
         my $normset = $record->get_fields;
         
-        next if ($normset->{T5001}[0]{content});
+        #next if ($normset->{T5001}[0]{content});
         
         my ($year) = $normset->{T0425}[0]{content} =~m/(\d\d\d\d)/;
         
@@ -746,7 +746,6 @@ sub filterchars {
   $content=~s/\{/\\\{/g;
   $content=~s/\}/\\\}/g;
   $content=~s/#/\\\#/g;
-
   # Entfernen
   $content=~s/đ//g;
   $content=~s/±//g;
@@ -773,6 +772,9 @@ sub filterchars {
   $content=~s/\x{02bc}//g;      #
   $content=~s/\x{0332}//g;      #
   $content=~s/\x{02b9}//g;      #
+
+  # Trennvorschlag
+  $content=~s/Übertragung/Über\\-tragung/g;
 
   $content = encode("utf8",$content);
 

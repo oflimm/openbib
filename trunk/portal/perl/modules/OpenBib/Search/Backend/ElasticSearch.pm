@@ -200,7 +200,7 @@ sub search {
 
     my $facets_ref = {};
 
-    foreach my $facet (keys %{$config->{xapian_drilldown_value}}){
+    foreach my $facet (keys %{$config->{facets}}){
         $facets_ref->{$facet} = {
             terms => {
                 field => "facet_$facet",

@@ -3600,7 +3600,7 @@ xapian_search:
      'prefix': 'Y8'
      'type': 'default'
 
-  # String / Drilldowns
+  # String / Facets
   'fsubj':
      'prefix': 'D1'
      'type': 'default'
@@ -3715,7 +3715,7 @@ xapian_search:
      'prefix': 'T4300'
      'type': 'default'
 
-xapian_drilldown_value:
+xapian_facet_value:
   subject: 1
   classification: 2
   person: 3

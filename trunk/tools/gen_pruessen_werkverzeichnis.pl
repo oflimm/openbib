@@ -775,6 +775,7 @@ sub filterchars {
 
   # Trennvorschlag
   $content=~s/Übertragung/Über\\-tragung/g;
+  $content=~s/Farbradierung/Farb\\-radierung/g;
 
   $content = encode("utf8",$content);
 

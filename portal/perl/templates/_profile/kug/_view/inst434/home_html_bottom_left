@@ -15,7 +15,7 @@
 
 [% PROCESS common/subtemplate name="newsflash" %]
 
-[% FOREACH thisviewdb IN [ "inst434" ] %]
+[% FOREACH thisviewdb IN [ "inst434" "inst468" ] %]
 
 [% locationid = config.get_databaseinfo.single({dbname = thisviewdb}).locationid.identifier %]
 [%- locationinfo = config.get_locationinfo_fields(locationid); -%]

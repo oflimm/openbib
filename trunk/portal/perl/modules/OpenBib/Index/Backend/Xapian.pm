@@ -460,10 +460,10 @@ sub create_document {
     }
     
     # Facetten
-    foreach my $type (keys %{$config->{xapian_drilldown_value}}){
+    foreach my $type (keys %{$config->{xapian_facet_value}}){
         # Datenbankname
-        $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($self->{_database})) if ($type eq "database" && $self->{_database});
-        $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($self->{_locationid})) if ($type eq "location" && $self->{_locationid});
+        $doc->add_value($config->{xapian_facet_value}{$type},encode_utf8($self->{_database})) if ($type eq "database" && $self->{_database});
+        $doc->add_value($config->{xapian_facet_value}{$type},encode_utf8($self->{_locationid})) if ($type eq "location" && $self->{_locationid});
         
         next if (!defined $index_ref->{"facet_".$type});
         
@@ -473,7 +473,7 @@ sub create_document {
         my $multstring = join("\t",@unique_terms);
         
         $logger->debug("Adding to $type facet $multstring");
-        $doc->add_value($config->{xapian_drilldown_value}{$type},encode_utf8($multstring)) if ($multstring);
+        $doc->add_value($config->{xapian_facet_value}{$type},encode_utf8($multstring)) if ($multstring);
     }
     
     # Sortierung

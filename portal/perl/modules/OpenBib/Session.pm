@@ -1195,7 +1195,6 @@ sub save_eventlog_to_statisticsdb {
 
         next if ($@);
 
-        my $sid           = $self->{sid};
         my $isbn          = $content_ref->{isbn};
         my $dbname        = $content_ref->{database};
         my $id            = $content_ref->{id};
@@ -1204,7 +1203,7 @@ sub save_eventlog_to_statisticsdb {
 
         $statistics->store_titleusage({
             tstamp   => $tstamp,
-            sid      => $sid,
+            sid      => $new_sid,
             viewname => $view,
             isbn     => $isbn,
             dbname   => $dbname,

@@ -82,7 +82,7 @@
 
 <table class="ym-full">
 <tr><td>Typ</td><td>Slot</td><td>Kategorie</td><td>Inhalt</td></tr>
-[% facets    = config.get('xapian_drilldown_value');
+[% facets    = config.get('xapian_facet_value');
    sorttypes = config.get('xapian_sorttype_value');
 
    FOREACH category IN facets.keys.sort %]

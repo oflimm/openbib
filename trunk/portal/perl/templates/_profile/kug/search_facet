@@ -261,7 +261,7 @@ nutzbar</p>
 [% END %]
 
 <!-- Begin database facet -->
-[%         IF facets.database.size > 0 %]
+[%         IF 1 == 0 && facets.database.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_databases_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
 [%             FOREACH termitem IN facets.database ;
@@ -286,7 +286,7 @@ nutzbar</p>
 <!-- End database facet -->
 
 <!-- Begin location facet -->
-[%         IF 0 == 1 && config.get('facets').location && facets.location.size > 0 %]
+[%         IF config.get('facets').location && facets.location.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_location_[% database %]_anchor">[% msg.maketext("nach Standort") %]</dt>
 [%             FOREACH termitem IN facets.location ;

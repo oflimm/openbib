@@ -160,6 +160,18 @@ $("#dd_language_[% database %]_toggle").click(function(){
 });
 // Ende Togglen / Facets Sprache
 
+// Begin Togglen / Facets Katalog
+// Bild setzen
+$("#dd_databases_[% database %]_toggle").html("<b>[<a href=\"#dd_databases_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_databases_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_databases_[% database %]_toggle").click(function(){
+ $("#dd_databases_[% database %]").toggle();
+ $("#dd_databases_[% database %]_toggle").html("");
+});
+// Ende Togglen / Facets Katalog
+
 
 // Begin Togglen / Facets Tags
 // Bild setzen
@@ -245,8 +257,33 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%        END %]
 [% END %]
 
+<!-- Begin database facet -->
+[%         IF facets.database.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_databases_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
+[%             FOREACH termitem IN facets.database ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.database.size > 5 && loop.count == 5 %]
+<span id="dd_databases_[% database %]_toggle"></span>
+<div id="dd_databases_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').dbstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.dbnames.${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.database.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End database facet -->
+
 <!-- Begin location facet -->
-[%         IF config.get('facets').location && facets.location.size > 0 %]
+[%         IF 0 == 1 && config.get('facets').location && facets.location.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_location_[% database %]_anchor">[% msg.maketext("nach Standort") %]</dt>
 [%             FOREACH termitem IN facets.location ;

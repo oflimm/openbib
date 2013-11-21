@@ -37,6 +37,8 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Enrichment;
+use OpenBib::Catalog::Factory;
 
 # Autoflush
 $|=1;
@@ -58,7 +60,7 @@ my $config = OpenBib::Config->instance;
 $logfile=($logfile)?$logfile:"/var/log/openbib/usb_bk-enrichmnt.log";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=INFO, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -74,14 +76,10 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-# Verbindung zur SQL-Datenbank herstellen
-my $enrichdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
-    or $logger->error_die($DBI::errstr);
+my $enrichment = new OpenBib::Enrichment;
 
 # 20 = USB
-my $deleterequest = $enrichdbh->prepare("delete from enriched_content_by_isbn where field=4100 and origin=20");
-my $enrichrequest = $enrichdbh->prepare("insert into enriched_content_by_isbn values(?,20,4100,?,?)");
+my $origin = 20;
 
 my $isbn_ref = {};
 
@@ -125,23 +123,44 @@ else {
 }
 
 $logger->info("Loeschen der bisherigen Daten");
-$deleterequest->execute();
+    
+$enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => '4100', origin => $origin })->delete;
 
 $logger->info("Einladen der neuen Daten");
 
-foreach my $thisisbn (keys %{$isbn_ref}){
+my $count = 1;
 
-    my $indicator = 1;
+my $enrich_data_ref = [];
+
+foreach my $thisisbn (keys %{$isbn_ref}){
 
     # Dublette BK's entfernen
     my %seen_terms = ();
     my @unique_bk = grep { ! $seen_terms{$_} ++ } @{$isbn_ref->{$thisisbn}}; 
 
     foreach my $thisbk (@unique_bk){
-        $enrichrequest->execute($thisisbn,$indicator,$thisbk);
+        $logger->debug("Found $isbn -> $thisbk");
+        my $bk_ref = {
+            isbn     => $thisisbn,
+            origin   => $origin,
+            field    => '4100',
+            subfield => '',
+            content  => $thisbk,
+        };
         
-        $indicator++;
+        push @{$enrich_data_ref}, $bk_ref;
+        
     }
+
+    if ($count % 10000 == 0){
+        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);
+        $enrich_data_ref = [];
+    }
+    $count++;    
+}
+
+if (@$enrich_data_ref){
+    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
 }
 
 sub print_help {

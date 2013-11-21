@@ -15,7 +15,7 @@
 </optgroup>
 [% END %]
 <optgroup label="[% msg.maketext("Suchradius") %]">
-<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>Petrarca-Institut</option>
+<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>Petrarca-Institut und Europäische Rechtslinguistik</option>
 [%  FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
      IF unit.orgunitname == orgunitname ;
       searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;

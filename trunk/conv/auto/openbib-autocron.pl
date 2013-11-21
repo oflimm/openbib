@@ -38,10 +38,12 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 
-my ($logfile,$loglevel,$cluster,$updatemaster);
+our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster);
 
 &GetOptions(
     "cluster"       => \$cluster,
+    "test"          => \$test,
+    "maintenance"   => \$maintenance,
     "logfile=s"     => \$logfile,
     "loglevel=s"    => \$loglevel,
     "update-master" => \$updatemaster,
@@ -126,8 +128,13 @@ if ($cluster){
 
 my @threads;
 
-push @threads, threads->new(\&update_single,'Einzelne Kataloge');
-push @threads, threads->new(\&update_dependent,'Abhaengige Kataloge');
+if ($test){
+    push @threads, threads->new(\&threadTest,'Testkatalog');
+}
+else {
+    push @threads, threads->new(\&threadA,'Einzelne Kataloge');
+    push @threads, threads->new(\&threadB,'Abhaengige Kataloge');
+}
 
 foreach my $thread (@threads) {
     my $thread_description = $thread->join;
@@ -145,7 +152,31 @@ if ($cluster){
 
 $logger->info("###### Updating done");
 
-sub update_single {
+if ($updatemaster && $maintenance){
+    $logger->info("### Updating clouds");
+    
+    foreach my $thistype (qw/2 8 10 11 12 13/){
+        system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype");
+    }
+}
+                                    
+if ($maintenance){
+    $logger->info("### Enriching PaperC E-Books");
+    
+    system("$config->{'base_dir'}/conv/paperc2enrich.pl");
+
+    $logger->info("### Enriching USB BK's");
+    
+    system("$config->{'base_dir'}/conv/usb_bk2enrich.pl");
+
+    $logger->info("### Dumping Enrichment-DB");
+    
+    system("$config->{'base_dir'}/bin/dump_enrichmnt.pl");
+    
+    $logger->info("###### Maintenance done");
+}
+
+sub threadA {
     my $thread_description = shift;
 
     $logger->info("### -> Aufgesplittete Kataloge");
@@ -163,7 +194,7 @@ sub update_single {
     return $thread_description;
 }
 
-sub update_dependent {
+sub threadB {
     my $thread_description = shift;
     
     $logger->info("### -> Abhaengige Kataloge");
@@ -222,6 +253,18 @@ sub update_dependent {
     
     ##############################
     
+
+    return $thread_description;
+}
+
+sub threadTest {
+    my $thread_description = shift;
+
+    $logger->info("### -> Testkatalog");
+
+    $logger->info("### Openbib");
+
+    autoconvert({ updatemaster => $updatemaster, databases => ['openbib'] });
 
     return $thread_description;
 }
@@ -291,5 +334,13 @@ sub autoconvert {
         $logger->info("Konvertierung von $database");
         $logger->info("Ausfuehrung von $this_cmd");
         system($this_cmd);
+
+        if ($maintenance){
+            $logger->info("### Enriching subject headings for all institutes");
+            
+            foreach my $database ($config->get_active_databases()){
+                system("$config->{'base_dir'}/conv/swt2enrich.pl --database=$database");
+            }
+        }
     }
 }

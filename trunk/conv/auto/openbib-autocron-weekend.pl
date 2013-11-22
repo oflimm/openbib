@@ -373,9 +373,7 @@ sub autoconvert {
         if ($maintenance){
             $logger->info("### Enriching subject headings for all institutes");
             
-            foreach my $database ($config->get_active_databases()){
-                system("$config->{'base_dir'}/conv/swt2enrich.pl --database=$database");
-            }
+            system("$config->{'base_dir'}/conv/swt2enrich.pl --database=$database");
         }
     }
 }

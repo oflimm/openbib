@@ -65,7 +65,7 @@ my $config = OpenBib::Config->instance;
 $logfile=($logfile)?$logfile:"/var/log/openbib/swt-enrichmnt.log";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=INFO, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append

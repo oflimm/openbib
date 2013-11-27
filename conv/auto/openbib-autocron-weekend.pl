@@ -72,21 +72,12 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $blacklist_ref = {
-    'usbebooks' => 1,
-    'ebookpda' => 1,
-    'vubpda' => 1,
     'alekiddr' => 1,
-    'edz' => 1,
-    'lehrbuchsmlg' => 1,
-    'rheinabt' => 1,
-    'inst001' => 1,
-    'lesesaal' => 1,
-    'rheinabt' => 1,
-    'usbhwa' => 1,
-    'usbsab' => 1,
-    'wiso' => 1,
-    'inst137' => 1,
+    'ebookpda' => 1,
     'econbiz' => 1,
+    'edz' => 1,
+    'inst001' => 1,
+    'inst137' => 1,
     'inst301' => 1,
     'inst303' => 1,
     'inst304' => 1,
@@ -110,12 +101,24 @@ my $blacklist_ref = {
     'inst323' => 1,
     'inst324' => 1,
     'inst325' => 1,
-    'inst420master' => 1,
     'inst420' => 1,
+    'inst420master' => 1,
     'inst421' => 1,
     'inst422' => 1,
     'inst423' => 1,
+    'lehrbuchsmlg' => 1,
+    'lesesaal' => 1,
     'openlibrary' => 1,
+    'rheinabt' => 1,
+    'rheinabt' => 1,
+    'kups'     => 1,
+    'tmpebooks' => 1,
+    'totenzettel' => 1,
+    'usbebooks' => 1,
+    'usbhwa' => 1,
+    'usbsab' => 1,
+    'vubpda' => 1,
+    'wiso' => 1,
 };
 
 $logger->info("###### Starting automatic update");
@@ -208,8 +211,11 @@ sub threadA {
 
     $logger->info("### Standard-Institutskataloge");
 
-    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
+    #autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
 
+    # Interimsloesung: Kataloge von aperol werden vorher im Bulk geholt
+    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, autoconv => 1});
+    
     ##############################
 
     $logger->info("### Master: inst301");

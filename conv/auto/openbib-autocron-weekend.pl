@@ -220,7 +220,7 @@ sub threadA {
 
     $logger->info("### Master: inst301");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst301'] });
+    autoconvert({ updatemaster => $updatemaster, databases => ['inst301'] });
     
     ##############################
     
@@ -232,7 +232,7 @@ sub threadA {
 
     $logger->info("### Master: inst420master");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst420master'] });
+    autoconvert({ updatemaster => $updatemaster, databases => ['inst420master'] });
 
     ##############################
     
@@ -244,7 +244,7 @@ sub threadA {
 
     $logger->info("### Master: inst323, inst137");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst323','inst137'] });
+    autoconvert({ updatemaster => $updatemaster, databases => ['inst323','inst137'] });
 
     ##############################
     
@@ -273,7 +273,8 @@ sub threadA {
 
     $logger->info("### Sammlungen aus dem Universitaet");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst404abklatsch','inst526earchive','kups'] });
+    autoconvert({ updatemaster => $updatemaster, databases => ['inst404abklatsch'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst526earchive','kups'] });
 
     return $thread_description;
 }

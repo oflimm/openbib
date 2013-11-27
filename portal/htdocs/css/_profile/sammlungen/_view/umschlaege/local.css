@@ -15,7 +15,7 @@
   }
 
   header {
-    padding-bottom:55px;  
+    padding-bottom:85px;  
   }
 
   header #logo {
@@ -36,12 +36,12 @@
 
 
   #header_logo_image  {
-    background: url(/images/openbib/views/umschlaege/umschlaglogo.png) center no-repeat;
+    background: url(/images/openbib/views/umschlaege/logo.png) center no-repeat;
     position: absolute;
-    width: 620px;
-    height: 100px;
+    width: 600px;
+    height: 130px;
     top: 20px;
-    left: -20px;    
+    left: 0px;    
   }
 
 
@@ -50,7 +50,7 @@
     width: 190px;
     height: 78px;
     position: absolute;
-    top: 35px;
+    top: 50px;
     right: 10px;
   }
 

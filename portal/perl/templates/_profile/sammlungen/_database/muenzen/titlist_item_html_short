@@ -210,7 +210,7 @@
 
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
      IF NOT title ;
-       title = "Bitte melden Sie uns die <b>ID ${record.id}</b> und die Datenbank <b>${record.database}</b> dieses Titels als fehlerhaft zur Korrektur!";
+       title = "Zu dieser Münze wurden noch keine Daten erfasst.";
      END;
  
      # Auflage konstruieren
@@ -286,7 +286,7 @@
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]
-         <span class="ob-person">[% person %]</span><br />[% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%],[% IF nominal %]<br/>[% nominal %][% END %][% IF item.${'T0425'}.first.content %]<br/>Datiert: <span class="ob-yearofpub">[% yearofpub %]</span>[% END %]   
+         <span class="ob-person">[% person %]</span><br />[% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF nominal %]<br/>[% nominal %][% END %][% IF item.${'T0425'}.first.content %]<br/>Datiert: <span class="ob-yearofpub">[% yearofpub %]</span>[% END %]   
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
       </div>
       <div class="ob-titlemark">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]</div>

@@ -108,7 +108,7 @@ open (CLASSIFICATION,">:raw","meta.classification");
 open (SUBJECT,       ">:raw","meta.subject");
 open (HOLDING,       ">:raw","meta.holding");
 
-my $multcount_ref = {};
+our $multcount_ref = {};
 
 my $excluded_titles = 0;
 
@@ -184,57 +184,33 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # Verfasser
         foreach my $fieldno ('100','700'){
             foreach my $field ($record->field($fieldno)){
+                my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):decode_utf8($field->as_string('6'));
+                
+                my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
+
+                $field->delete_subfield(code => '6'); # Linkage
                 my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
                 my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
                 my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('d')):decode_utf8($field->as_string('d'));
 
+                my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
+
                 if ($content_a){
-                    my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content_a);
-                    
-                    if ($new){
-                        my $item_ref = {
-                            'fields' => {},
-                        };
-                        $item_ref->{id} = $person_id;
-                        
-                        push @{$item_ref->{fields}{'0800'}}, {
-                            mult     => 1,
-                            subfield => '',
-                            content  => konv($content_a),
-                        };
-
-                        # Beruf
-                        if ($content_c){
-                            push @{$item_ref->{fields}{'0201'}}, {
-                                mult     => 1,
-                                subfield => '',
-                                content  => konv($content_c),
-                            };
-                        }
-
-                        
-                        # Lebensjahre
-                        if ($content_d){
-                            push @{$item_ref->{fields}{'0200'}}, {
-                                mult     => 1,
-                                subfield => '',
-                                content  => konv($content_d),
-                            };
-                        }
-                        
-                        
-                        print PERSON encode_json $item_ref, "\n";
-                    }
-                    
-                    my $multcount=++$multcount_ref->{'0100'};
-                    
-                    push @{$title_ref->{fields}{'0100'}}, {
-                        mult       => $multcount,
-                        subfield   => '',
-                        id         => $person_id,
-                        supplement => '',
-                    };
+                    $title_ref = add_person($content_a,$content_c,$content_d,$title_ref);
                 }
+
+                foreach my $linkage_field (@$linkage_fields_ref){
+                    $linkage_field->delete_subfield(code => '6'); # Linkage
+
+                    my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('a')):decode_utf8($linkage_field->as_string('a'));
+                    my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('c')):decode_utf8($linkage_field->as_string('c'));
+                    my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('d')):decode_utf8($linkage_field->as_string('d'));
+
+                    if ($content_a){
+                        $title_ref = add_person($content_a,$content_c,$content_d,$title_ref);
+                    }
+                }
+                
             }
         }
     }
@@ -315,32 +291,26 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # Schlagwort
         foreach my $fieldno ('650','651'){
             foreach my $field ($record->field($fieldno)){
-                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($field)):decode_utf8($field->as_string($field));
+                my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):decode_utf8($field->as_string('6'));
                 
-                my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
+                my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
+
+                $field->delete_subfield(code => '6'); # Linkage
                 
-                if ($new){
-                    my $item_ref = {
-                        'fields' => {},
-                    };
-                    $item_ref->{id} = $subject_id;
-                    push @{$item_ref->{fields}{'0800'}}, {
-                        mult     => 1,
-                        subfield => '',
-                        content  => konv($content),
-                    };
-                    
-                    print SUBJECT encode_json $item_ref, "\n";
+                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+
+                if ($content){
+                    $title_ref = add_subject($content,$title_ref);
                 }
                 
-                my $multcount=++$multcount_ref->{'0710'};
-                
-                push @{$title_ref->{fields}{'0710'}}, {
-                    mult       => $multcount,
-                    subfield   => '',
-                    id         => $subject_id,
-                    supplement => '',
-                };
+                foreach my $linkage_field (@$linkage_fields_ref){
+                    $linkage_field->delete_subfield(code => '6'); # Linkage
+
+                    my $content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('a')):decode_utf8($linkage_field->as_string('a'));
+
+                    $title_ref = add_subject($content,$title_ref);
+                }
+
             }
         }
     }
@@ -475,24 +445,17 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
             my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
             my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
             my $content_h = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('h')):decode_utf8($field->as_string('h'));
+            my $linkage   = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):decode_utf8($field->as_string('6'));
             
             # Subfields entfernen
             $field->delete_subfield(code => 'b');
             $field->delete_subfield(code => 'c');
             $field->delete_subfield(code => 'h');
+            $field->delete_subfield(code => '6'); # Linkage
 
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+
+            my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => '245', linkage => $linkage});
             
-            if ($content){
-                my $multcount=++$multcount_ref->{'0331'};
-                
-                push @{$title_ref->{fields}{'0331'}}, {
-                    content  => konv($content),
-                    subfield => '',
-                    mult     => $multcount,
-                };
-            }
-
             # Zusatz zum HST
             if ($content_b){
                 my $multcount=++$multcount_ref->{'0335'};
@@ -502,6 +465,22 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                     subfield => '',
                     mult     => $multcount,
                 };
+
+                foreach my $linkage_field (@$linkage_fields_ref){
+                    my $linkage_content_b = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('b')):decode_utf8($linkage_field->as_string('b'));
+                    
+                    if ($linkage_content_b){
+                        push @{$title_ref->{fields}{'0335'}}, {
+                            content  => konv($linkage_content_b),
+                            subfield => '6',
+                            mult     => $multcount,
+                        };
+                        
+                        # Subfields entfernen
+                        $linkage_field->delete_subfield(code => 'b');
+                    }
+                }
+                
             }
             
             # Vorl. Verfasser/Koerperschaft
@@ -513,6 +492,53 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                     subfield => '',
                     mult     => $multcount,
                 };
+                
+                foreach my $linkage_field (@$linkage_fields_ref){
+                    my $linkage_content_c = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('c')):decode_utf8($linkage_field->as_string('c'));
+                    
+                    if ($linkage_content_c){
+                        push @{$title_ref->{fields}{'0359'}}, {
+                            content  => konv($linkage_content_c),
+                            subfield => '6',
+                            mult     => $multcount,
+                        };
+
+                        # Subfields entfernen
+                        $linkage_field->delete_subfield(code => 'c');
+                    }
+                }
+
+            }
+
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+
+            foreach my $linkage_field (@$linkage_fields_ref){
+                # Subfields entfernen
+                $linkage_field->delete_subfield(code => 'h');
+                $linkage_field->delete_subfield(code => '6');
+            }
+            
+            if ($content){
+                my $multcount=++$multcount_ref->{'0331'};
+                
+                push @{$title_ref->{fields}{'0331'}}, {
+                    content  => konv($content),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+
+                foreach my $linkage_field (@$linkage_fields_ref){
+                    my $linkage_content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string()):decode_utf8($linkage_field->as_string());
+                    
+                    if ($linkage_content){
+                        push @{$title_ref->{fields}{'0331'}}, {
+                            content  => konv($linkage_content),
+                            subfield => '6',
+                            mult     => $multcount,
+                        };
+                        
+                    }
+                }
             }
 
         }
@@ -680,6 +706,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                     subfield => '',
                     mult     => $multcount,
                 };
+
             }
 
             # Drucker
@@ -703,6 +730,8 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
             # Kollation
             if ($content_a){
                 my $multcount=++$multcount_ref->{'0433'};
+
+                $content_a =~s/\s+;\s*$//;
                 
                 push @{$title_ref->{fields}{'0433'}}, {
                     content  => konv($content_a),
@@ -736,41 +765,90 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         }
         
         # Serie
-        foreach my $field ($record->field('490')){
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
-            my $content_v = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('v')):decode_utf8($field->as_string('v'));
-
-            if ($content){
-                my $multcount=++$multcount_ref->{'0451'};
+        foreach my $fieldno ('440','490'){
+            foreach my $field ($record->field($fieldno)){
+                my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):decode_utf8($field->as_string('6'));
                 
-                push @{$title_ref->{fields}{'0451'}}, {
-                    content  => konv($content),
-                    subfield => '',
-                    mult     => $multcount,
-                };
-            }
+                my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
 
-            if ($content_v){
-                my $multcount=++$multcount_ref->{'0089'};
+                $field->delete_subfield(code => '6'); # Linkage
                 
-                push @{$title_ref->{fields}{'0089'}}, {
-                    content  => konv($content_v),
-                    subfield => '',
-                    mult     => $multcount,
-                };
-
-                $multcount=++$multcount_ref->{'0455'};
+                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+                my $content_v = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('v')):decode_utf8($field->as_string('v'));
                 
-                push @{$title_ref->{fields}{'0455'}}, {
-                    content  => konv($content_v),
-                    subfield => '',
-                    mult     => $multcount,
-                };
+                if ($content){
+                    my $multcount=++$multcount_ref->{'0451'};
+                    
+                    push @{$title_ref->{fields}{'0451'}}, {
+                        content  => konv($content),
+                        subfield => '',
+                        mult     => $multcount,
+                    };
+                }
 
-            }
+                foreach my $linkage_field (@$linkage_fields_ref){
+                    $linkage_field->delete_subfield(code => '6'); # Linkage
+                    
+                    my $content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string()):decode_utf8($linkage_field->as_string());
+                    
+                    if ($content){
+                        my $multcount=++$multcount_ref->{'0451'};
+                        
+                        push @{$title_ref->{fields}{'0451'}}, {
+                            content  => konv($content),
+                            subfield => '',
+                            mult     => $multcount,
+                        };
+                    }
+                }
+                
+                
+                if ($content_v){
+                    my $multcount=++$multcount_ref->{'0089'};
+                    
+                    push @{$title_ref->{fields}{'0089'}}, {
+                        content  => konv($content_v),
+                        subfield => '',
+                        mult     => $multcount,
+                    };
+                    
+                    $multcount=++$multcount_ref->{'0455'};
+                    
+                    push @{$title_ref->{fields}{'0455'}}, {
+                        content  => konv($content_v),
+                        subfield => '',
+                        mult     => $multcount,
+                    };
+                    
+                }
 
+                foreach my $linkage_field (@$linkage_fields_ref){
+                    $linkage_field->delete_subfield(code => '6'); # Linkage
+
+                    my $content_v = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('v')):decode_utf8($linkage_field->as_string('v'));
+
+                    if ($content_v){
+                        my $multcount=++$multcount_ref->{'0089'};
+                        
+                        push @{$title_ref->{fields}{'0089'}}, {
+                            content  => konv($content_v),
+                            subfield => '',
+                            mult     => $multcount,
+                        };
+                        
+                        $multcount=++$multcount_ref->{'0455'};
+                        
+                        push @{$title_ref->{fields}{'0455'}}, {
+                            content  => konv($content_v),
+                            subfield => '',
+                            mult     => $multcount,
+                        };
+                        
+                    }
+                    
+                }
+            }   
         }
-
 
         # Fussnote
         foreach my $field ($record->field('500')){
@@ -986,4 +1064,120 @@ sub konv {
     $content=~s/O\x{0308}/Ö/g;
 
     return $content;
+}
+
+sub get_linkage_fields {
+    my $arg_ref = shift;
+
+    my $fieldnumber = exists $arg_ref->{fieldnumber}
+        ? $arg_ref->{fieldnumber}             : undef;
+
+    my $record      = exists $arg_ref->{record}
+        ? $arg_ref->{record}                  : undef;
+
+    my $linkage     = exists $arg_ref->{linkage}
+        ? $arg_ref->{linkage}                 : undef;
+
+
+    my $encoding = $record->encoding();
+    
+    my $linkage_fields_ref = [];
+    
+    my ($linkage_fieldnumber,$linkage_count) = $linkage =~m/^(\d\d\d)-(\d+)/;
+
+    foreach my $thislinkage_field ($record->field($linkage_fieldnumber)){
+        my $thiscontent_6 = ($encoding eq "MARC-8")?marc8_to_utf8($thislinkage_field->as_string('6')):decode_utf8($thislinkage_field->as_string('6'));            
+        
+        my ($thislinkage_fieldnumber,$thislinkage_count) = $thiscontent_6 =~m/^(\d\d\d)-(\d+)/;
+        
+        if ($thislinkage_fieldnumber == $fieldnumber && $thislinkage_count == $linkage_count){
+            push @{$linkage_fields_ref}, $thislinkage_field;
+        }
+    }
+
+    return $linkage_fields_ref;
+}
+
+sub add_subject {
+    my $content = shift;
+    my $title_ref = shift;
+    
+    my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
+    
+    if ($new){
+        my $item_ref = {
+            'fields' => {},
+        };
+        $item_ref->{id} = $subject_id;
+        push @{$item_ref->{fields}{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => konv($content),
+        };
+        
+        print SUBJECT encode_json $item_ref, "\n";
+    }
+    
+    my $multcount=++$multcount_ref->{'0710'};
+    
+    push @{$title_ref->{fields}{'0710'}}, {
+        mult       => $multcount,
+        subfield   => '',
+        id         => $subject_id,
+        supplement => '',
+    };
+
+    return $title_ref;
+}
+
+sub add_person {
+    my ($content_a,$content_c,$content_d,$title_ref) = @_;
+    
+    my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content_a);
+    
+    if ($new){
+        my $item_ref = {
+            'fields' => {},
+                        };
+                        $item_ref->{id} = $person_id;
+        
+        push @{$item_ref->{fields}{'0800'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => konv($content_a),
+        };
+        
+        # Beruf
+        if ($content_c){
+            push @{$item_ref->{fields}{'0201'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => konv($content_c),
+            };
+        }
+        
+        
+        # Lebensjahre
+        if ($content_d){
+            push @{$item_ref->{fields}{'0200'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => konv($content_d),
+            };
+        }
+        
+        
+        print PERSON encode_json $item_ref, "\n";
+    }
+    
+    my $multcount=++$multcount_ref->{'0100'};
+    
+    push @{$title_ref->{fields}{'0100'}}, {
+        mult       => $multcount,
+        subfield   => '',
+        id         => $person_id,
+        supplement => '',
+    };
+    
+    return $title_ref;
 }

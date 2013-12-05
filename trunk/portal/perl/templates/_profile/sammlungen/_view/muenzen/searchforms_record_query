@@ -135,10 +135,13 @@ $(document).ready(function(){
 <div class="ym-fbox-select">
 <label for="[% cgiparam %]">[% msg.maketext("T0800-muenzen") %]</label>
 <select id="[% cgiparam %]" name="[% cgiparam %]">
-<option value="" selected="selected">Keiner ausgewählt</option>
-<option value="Aufsatz">Aufsatz</option>
-<option value="Digital">Digital</option>
-<option value="Zeitschrift/Serie">Zeitschrift/Serie</option>
+<option value="" selected="selected">Keines ausgewählt</option>
+<option value="AE">AE</option>
+<option value="Argentum">Argentum</option>
+<option value="Billon">Billon</option>
+<option value="Bronze">Bronze</option>
+<option value="Orichalcum">Orichalcum</option>
+<option value="Silber">Silber</option>
 </select>
 </div>
 [% END %]

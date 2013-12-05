@@ -118,5 +118,5 @@ END ;-%]
 </table>
 
 <p>
-<img src="http://search.ub.uni-koeln.de/images/openbib/geo/[% locationinfo.fields.${"L0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png" />
+<img src="http://ojw.dev.openstreetmap.org/StaticMap/?lat=[% locationinfo.fields.${"L0280"}.first.content.split(',').first %]&lon=[% locationinfo.fields.${"L0280"}.first.content.split(',').1 %]&z=15&w=600&h=600&mlat0=50.915218&mlon0=6.942151&fmt=png&show=1" />
 </p>

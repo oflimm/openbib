@@ -569,6 +569,7 @@
 ../templates/_database/inst431/acquisition_types
 ../templates/_database/instzs/holding
 ../templates/_database/kapsel/holding
+../templates/_database/kapsel/titles_record_html_categories
 ../templates/_database/kapsel/titles_record_html_images
 ../templates/_database/kapsel/titlist_item_html_short
 ../templates/_database/kapsel/visible_categories_title
@@ -781,6 +782,8 @@
 ../templates/_profile/kug/_database/islandica/holding
 ../templates/_profile/kug/_database/islandica/titles_record_html_categories
 ../templates/_profile/kug/_database/islandica/visible_categories_title
+../templates/_profile/kug/_database/jki/titles_record_html_categories
+../templates/_profile/kug/_database/jki/titlist_item_html_short
 ../templates/_profile/kug/_database/lehrbuchsmlg/circulation
 ../templates/_profile/kug/_database/lehrbuchsmlg/connector_digibib_circset
 ../templates/_profile/kug/_database/lehrbuchsmlg/connector_digibib_mexset

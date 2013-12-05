@@ -226,7 +226,7 @@ sub threadA {
     
     $logger->info("### Aufgesplittete Kataloge inst301");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst319','inst320','inst321','inst324','inst325'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst317','inst318','inst319','inst320','inst321','inst324','inst325'] });
 
     ##############################
 

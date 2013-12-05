@@ -1244,6 +1244,8 @@ sub get_orgunitinfo_overview {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Profilename: $profilename");
+    
     my $object = $self->get_orgunitinfo->search_rs(
         {
             'profileid.profilename' => $profilename,

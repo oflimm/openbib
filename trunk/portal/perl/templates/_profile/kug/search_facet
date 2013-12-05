@@ -604,6 +604,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         "rus"      => msg.maketext("Russisch"),
         "russ."    => msg.maketext("Russisch"),
         "jpn"      => msg.maketext("Japanisch"),
+        "cze"      => msg.maketext("Tschechisch"),
         "swe"      => msg.maketext("Schwedisch"),
         "tur"      => msg.maketext("Türkisch"),
         "tschech." => msg.maketext("Tschechisch"),

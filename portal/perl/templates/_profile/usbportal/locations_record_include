@@ -118,5 +118,5 @@ END ;-%]
 </table>
 
 <p>
-<img src="http://ojw.dev.openstreetmap.org/StaticMap/?lat=[% locationinfo.fields.${"L0280"}.first.content.split(',').first %]&lon=[% locationinfo.fields.${"L0280"}.first.content.split(',').1 %]&z=15&w=600&h=600&mlat0=[% locationinfo.fields.${"L0280"}.first.content.split(',').first %]&mlon0=[% locationinfo.fields.${"L0280"}.first.content.split(',').1 %]&fmt=png&show=1" />
+<img src="http://staticmap.openstreetmap.de/staticmap.php?center=[% locationinfo.fields.${"L0280"}.first.content %]&zoom=15&size=600x600&maptype=mapnik&markers=[% locationinfo.fields.${"L0280"}.first.content %],red-pushpin" />
 </p>

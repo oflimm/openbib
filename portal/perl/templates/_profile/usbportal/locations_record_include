@@ -116,3 +116,7 @@ FOREACH category IN categories;
 END ;-%]
 </tbody>
 </table>
+
+<p>
+<img src="/images/openbib/geo/[% locationinfo.fields.${"L0280"}.first.content.replace('\s*,\s*','-').replace('\.','_') %]_map.png" />
+</p>

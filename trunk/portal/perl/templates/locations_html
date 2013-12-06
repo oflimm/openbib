@@ -90,7 +90,11 @@
             map.getProjectionObject() // to Spherical Mercator Projection
           );
 
-    marker[% location.id %] = new OpenLayers.Marker(lonLat[% location.id %]); 
+    var size[% location.id %] = new OpenLayers.Size(32,32);
+    var offset[% location.id %] = new OpenLayers.Pixel(-(size[% location.id %].w/2), -size[% location.id %].h);
+    var icon[% location.id %] = new OpenLayers.Icon('http://kug.ub.uni-koeln.de/images/openbib/blue-marker.png',size[% location.id %],offset[% location.id %]);
+
+    var marker[% location.id %] = new OpenLayers.Marker(lonLat[% location.id %],icon[% location.id %]); 
     markers.addMarker(marker[% location.id %]);
     marker[% location.id %].icon.imageDiv.title = "[% location.description.replace('"','\'') %]";
 [%  END %]

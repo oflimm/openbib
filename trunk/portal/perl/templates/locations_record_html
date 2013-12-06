@@ -82,10 +82,13 @@
     var markers = new OpenLayers.Layer.Markers( "Markers" );
     map.addLayer(markers);
 
-    var marker = new OpenLayers.Marker(lonLat);
+    var size = new OpenLayers.Size(32,32);
+    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+    var icon = new OpenLayers.Icon('http://kug.ub.uni-koeln.de/images/openbib/blue-marker.png',size,offset);
+    var marker = new OpenLayers.Marker(lonLat,icon);
     markers.addMarker(marker);
-    marker.icon.imageDiv.title = "[% locationinfo.description.replace('"','\'') %]";
 
+    marker.icon.imageDiv.title = "[% locationinfo.description.replace('"','\'') %]";
     map.setCenter (lonLat, zoom);
 </script>
 

@@ -62,40 +62,42 @@
 
 <h3>[% msg.maketext("Standorte") %]</h3>
 
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
-
-<script type="text/javascript">
-  function initialize_google_maps() {
-    var latlng = new google.maps.LatLng(50.925755,6.928751);
-
-    var myOptions = {
-      zoom: 14,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-
-    var map = new google.maps.Map(document.getElementById("map_canvas"),
-        myOptions);
-
-[% FOREACH location IN locations %]
-[%  coordinates = location.fields.${"L0280"}.first.content %]
-[%  IF coordinates %]
-    var latlng[% location.id %] = new google.maps.LatLng([% coordinates %]);
-
-    var marker[% location.id %] = new google.maps.Marker({
-      position: latlng[% location.id %], 
-      map: map,
-      title: "[% location.description.replace('"','%22') %]"
-    });
-[%  END %]
-[% END %]
-  };
-</script>
-
 <p>
-<div id="map_canvas" style="width: 100%; height: 500px"></div>
+<div id="map_canvas" style="width: 100%; height: 300px"></div>
 </p>
 
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+
+<script type="text/javascript">
+    var map = new OpenLayers.Map("map_canvas");
+    map.addLayer(new OpenLayers.Layer.OSM());
+
+    var lonLatCenter = new OpenLayers.LonLat( 6.928751,50.925755[% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %] ).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    var zoom=14;
+
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+
+[% FOREACH location IN locations %]
+[%  coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',') %]
+[%  IF coordinates %]
+    var lonLat[% location.id %] = new OpenLayers.LonLat( [% coordinates %] ).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    marker[% location.id %] = new OpenLayers.Marker(lonLat[% location.id %]); 
+    markers.addMarker(marker[% location.id %]);
+    marker[% location.id %].icon.imageDiv.title = "[% location.description.replace('"','\'') %]";
+[%  END %]
+[% END %]
+
+    map.setCenter (lonLatCenter, zoom);
+</script>
 
 [%# USE dumper;dumper.dump(locations)%]
 <table>

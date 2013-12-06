@@ -61,30 +61,34 @@
 <h3>[% IF locationinfo.type == 'ISIL' %][% msg.maketext("Bibliotheksinformationen") %]: [% END %][% locationinfo.description %]</h3>
 
 [%- IF locationinfo.fields.${"L0280"}.first.content -%]
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
-
-<script type="text/javascript">
-  function initialize_google_maps() {
-    var latlng = new google.maps.LatLng([% locationinfo.fields.${"L0280"}.first.content %]);
-    var myOptions = {
-      zoom: 15,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),
-        myOptions);
-
-    var marker = new google.maps.Marker({
-      position: latlng, 
-      map: map, 
-      title:"[% locationinfo.description %]"
-  });   
-  }
-</script>
 
 <p>
 <div id="map_canvas" style="width: 100%; height: 300px"></div>
 </p>
+
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+
+<script type="text/javascript">
+    map = new OpenLayers.Map("map_canvas");
+    map.addLayer(new OpenLayers.Layer.OSM());
+
+    var lonLat = new OpenLayers.LonLat( [% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %] ).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    var zoom=16;
+
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+
+    var marker = new OpenLayers.Marker(lonLat);
+    markers.addMarker(marker);
+    marker.icon.imageDiv.title = "[% locationinfo.description.replace('"','\'') %]";
+
+    map.setCenter (lonLat, zoom);
+</script>
+
 
 [% END %]
 [%# USE dumper;dumper.dump(locationinfo)%]

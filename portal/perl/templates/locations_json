@@ -12,9 +12,9 @@ FOREACH thislocation IN locations ;
     type        = thislocation.type
     identifier  = thislocation.identifier
   };
-  IF thislocation.type == 'ISIL' ;
-    all_locationinfo.push(this_locationinfo);
-  END ;
+
+  all_locationinfo.push(this_locationinfo);
+
 END;
 
 this_json_output = {

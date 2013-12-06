@@ -16,7 +16,7 @@
 <ul class="news">
 <li><b>6.12.2013</b>: OpenStreetMap statt Google Maps. Die
 <a href="[% path_prefix %]/[% config.get('locations_loc') %]">Standortkarten</a> werden nicht mehr von Google Maps, sondern von
-OpenStreetView mittels der JavaScript-Bibliothek <a
+OpenStreetMap mittels der JavaScript-Bibliothek <a
 href="http://www.openlayers.org/">OpenLayers</a> geliefert.
 </li>
 <li><b>11.11.2013</b>: Überarbeitung der Rechercheeingrenzungen für Standorte und Sprachen. Weitergehende Informationen in diesem

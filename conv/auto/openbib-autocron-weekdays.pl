@@ -113,7 +113,6 @@ my $blacklist_ref = {
     'rheinabt' => 1,
     'kups'     => 1,
     'tmpebooks' => 1,
-    'totenzettel' => 1,
     'usbebooks' => 1,
     'usbhwa' => 1,
     'usbsab' => 1,

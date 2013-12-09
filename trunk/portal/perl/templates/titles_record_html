@@ -200,7 +200,15 @@ $(document).ready(function(){
 [% IF record_exists %]
 <p class="ob-background">&nbsp;</p>
 
-[% IF circulation.size > 0 || holding.size >= 0 || same_records.get_size
+[%
+ FOREACH thiscirculation IN circulation ;
+    IF thiscirculation.AquisitionStatuscode >= 1 ;
+      circulation = [];
+    END ;
+ END ;
+%]
+
+[% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
 > 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
 
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
@@ -211,13 +219,6 @@ $(document).ready(function(){
     END ;
 -%]
 [%# USE dumper;dumper.dump(holding)%]
-[%
- FOREACH thiscirculation IN circulation ;
-    IF thiscirculation.AquisitionStatuscode >= 1 ;
-      circulation = [];
-    END ;
- END ;
-%]
 
 <ul>
 [%   IF circulation.size > 0 %]

@@ -1,4 +1,5 @@
 [%    field_map = {
+          "id" = msg.maketext("Id")
           "freesearch" = msg.maketext("Freie Suche")
           "title"      = msg.maketext("Titel")
           "isbn"      = msg.maketext("ISBN")

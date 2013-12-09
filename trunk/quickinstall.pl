@@ -110,6 +110,7 @@ my %svn_links = (
     "$repositoryroot/conv/econbiz/econbiz2meta.pl"       => "/opt/openbib/conv/econbiz2meta.pl",
     "$repositoryroot/conv/enrichmnt/natliz_eb2enrich.pl" => "/opt/openbib/conv/natliz_eb2enrich.pl",
     "$repositoryroot/conv/enrichmnt/picafiles2enrich.pl" => "/opt/openbib/conv/picafiles2enrich.pl",
+    "$repositoryroot/conv/enrichmnt/paperc2enrich.pl"    => "/opt/openbib/conv/paperc2enrich.pl",
     "$repositoryroot/conv/enrichmnt/swt2enrich.pl"       => "/opt/openbib/conv/swt2enrich.pl",
     "$repositoryroot/conv/enrichmnt/usb_bk2enrich.pl"    => "/opt/openbib/conv/usb_bk2enrich.pl",
     "$repositoryroot/conv/enrichmnt/usb_eb2enrich.pl"    => "/opt/openbib/conv/usb_eb2enrich.pl",

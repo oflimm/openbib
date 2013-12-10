@@ -6,7 +6,7 @@
 #
 #  Abzug eines OAI-Repositories
 #
-#  Dieses File ist (C) 2003-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2013 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -31,18 +31,56 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
+use warnings;
+use strict;
+
 use utf8;
 
 use Getopt::Long;
-
 use HTTP::OAI;
 
-binmode STDOUT, ':utf8';
+my ($url,$format,$from,$until);
 
-&GetOptions("oaiurl=s" => \$oaiurl,
-	    );
+&GetOptions(
+    "format=s"   => \$format,
+    "url=s"      => \$url,
+    "from=s"     => \$from,
+    "until=s"    => \$until,
+);
 
-my $h = new HTTP::OAI::Harvester(baseURL=>$oaiurl);
+
+if (!$from){
+    # Scannen der bisher geharvesteten Dateien
+
+    foreach my $this_filename (<pool-*.xml>) {
+        my ($this_format,$this_from,$this_to)=$this_filename=~m/^pool-(.*?)-(\d\d\d\d.+?Z)_to_(\d\d\d\d.+?Z).xml$/;
+        $format=$this_format;
+        $from = $this_to;
+    }
+    
+    if (!$from){
+        $from = "1970-01-01T12:00:00Z";
+    }
+}
+
+my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst) = localtime();
+$mon += 1;
+$year += 1900;
+
+if (!$until){
+    $until = sprintf "%4d-%02d-%02dT%02d:%02d:%02dZ",$year,$mon,$mday,$hour,$min,$sec;
+}
+
+if (!$format){
+    $format = "oai_dc";
+}
+
+my $filename = "pool-${format}-${from}_to_${until}.xml";
+$filename=~s/\s+/_/g;
+
+open(OUT,">:raw",$filename);
+
+my $h = new HTTP::OAI::Harvester(baseURL=>$iurl);
 
 my $response = $h->repository($h->Identify);
 if( $response->is_error ) {
@@ -52,38 +90,34 @@ if( $response->is_error ) {
 }
 
 $response = $h->ListIdentifiers(
-				metadataPrefix=>'oai_dc',
-				#-from=>'2001-01-29T15:27:51Z',
-				#-until=>'2003-01-29T15:27:51Z'
+				metadataP => $format,
+    from          => $from, # '2001-01-29T15:27:51Z',
+    until         => $until, #til=>'2003-01-29T15:27:51Z'
 			       );
 
 if( $response->is_error ) {
   die("Error harvesting: " . $response->message . "\n");
 }
 
-$response = $h->ListRecords(metadataPrefix=>'oai_dc');
-if( $response->is_error ) {
-  print "Error: ", $response->code,
-    " (", $response->message, ")\n";
-  exit();
+$response =while( my $rec = $response->next ) {
+    print OUT "<record>\n";
+    print OUTit();
 }
 
 print "<?xml version = '1.0' encoding = 'UTF-8'?>\n";
 print "<oairesponse>\n";
-while( my $rec = $response->next ) {
-    print "<record>\n";
-    print " <id>".$rec->identifier."</id>\n";
-    if( $rec->is_error ) {
-        die $rec->message;
+while( my $recif ($rec->is_deleted){
+        print OUT " <is_deleted>1</is_deleted>\n";
     }
-
-    eval {
-        my $metadata_string = $rec->metadata->dom->toString;
-        $metadata_string=~s/^<\?xml.*?>//;
-        print $metadata_string,"\n";
-    };
+    else {
+        eval {
+            my $metadata_string = $rec->metadata->dom->toString;
+            $metadata_string=~s/^<\?xml.*?>//;
+            print OUT $metadata_string,"\n";
+        };
+    }
     
-    print "</record>\n";
+    print OUT "</record>\n";
 }
-print "</oairesponse>\n";
 
+close(OUT);

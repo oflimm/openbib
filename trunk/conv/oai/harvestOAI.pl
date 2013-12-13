@@ -39,13 +39,14 @@ use utf8;
 use Getopt::Long;
 use HTTP::OAI;
 
-my ($url,$format,$from,$until);
+my ($url,$format,$from,$until,$set);
 
 &GetOptions(
     "format=s"   => \$format,
     "url=s"      => \$url,
     "from=s"     => \$from,
     "until=s"    => \$until,
+    "set=s"      => \$set,
 );
 
 
@@ -54,7 +55,7 @@ if (!$from){
 
     foreach my $this_filename (<pool-*.xml>) {
         my ($this_format,$this_from,$this_to)=$this_filename=~m/^pool-(.*?)-(\d\d\d\d.+?Z)_to_(\d\d\d\d.+?Z).xml$/;
-        $format=$this_format;
+        $format=$this_format unless ($format);
         $from = $this_to;
     }
     
@@ -88,11 +89,21 @@ if( $response->is_error ) {
     $response->code . " " . $response->message, "\n";
   exit;
 }
-
-$response = $h->ListIdentifiers(
-				metadataP => $format,
-    from          => $from, # '2001-01-29T15:27:51Z',
-    until         => $until, #til=>'2003-01-29T15:27:51Z'
+if ($set){
+    $response = $h->ListRecords(
+        metadataPrefix => $format,
+        from           => $from, # '2001-01-29T15:27:51Z',
+        until          => $until, #'2003-01-29T15:27:51Z',
+        set            => $set
+    );
+}
+else {
+    $response = $h->ListRecords(
+        metadataPrefix => $format,
+        from           => $from, # '2001-01-29T15:27:51Z',
+        until          => $until, #'2003-01-29T15:27:51Z',
+    );
+}Z'
 			       );
 
 if( $response->is_error ) {

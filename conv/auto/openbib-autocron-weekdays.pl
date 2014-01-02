@@ -113,6 +113,7 @@ my $blacklist_ref = {
     'rheinabt' => 1,
     'kups'     => 1,
     'tmpebooks' => 1,
+    'totenzettel' => 1,
     'usbebooks' => 1,
     'usbhwa' => 1,
     'usbsab' => 1,
@@ -216,6 +217,10 @@ sub threadA {
     autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, autoconv => 1});
     
     ##############################
+
+    # Wegen Interimsloesung: Andere Kataloge, die nicht von aperol geholt werden
+
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe'] });
 
     $logger->info("### Master: inst301");
     

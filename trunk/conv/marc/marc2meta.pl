@@ -465,21 +465,6 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                     subfield => '',
                     mult     => $multcount,
                 };
-
-                foreach my $linkage_field (@$linkage_fields_ref){
-                    my $linkage_content_b = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('b')):decode_utf8($linkage_field->as_string('b'));
-                    
-                    if ($linkage_content_b){
-                        push @{$title_ref->{fields}{'0335'}}, {
-                            content  => konv($linkage_content_b),
-                            subfield => '6',
-                            mult     => $multcount,
-                        };
-                        
-                        # Subfields entfernen
-                        $linkage_field->delete_subfield(code => 'b');
-                    }
-                }
                 
             }
             
@@ -491,23 +476,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                     content  => konv($content_c),
                     subfield => '',
                     mult     => $multcount,
-                };
-                
-                foreach my $linkage_field (@$linkage_fields_ref){
-                    my $linkage_content_c = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('c')):decode_utf8($linkage_field->as_string('c'));
-                    
-                    if ($linkage_content_c){
-                        push @{$title_ref->{fields}{'0359'}}, {
-                            content  => konv($linkage_content_c),
-                            subfield => '6',
-                            mult     => $multcount,
-                        };
-
-                        # Subfields entfernen
-                        $linkage_field->delete_subfield(code => 'c');
-                    }
-                }
-
+                };                
             }
 
             my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
@@ -528,6 +497,33 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 };
 
                 foreach my $linkage_field (@$linkage_fields_ref){
+                    my $linkage_content_c = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('c')):decode_utf8($linkage_field->as_string('c'));
+                    
+                    if ($linkage_content_c){
+                        push @{$title_ref->{fields}{'0359'}}, {
+                            content  => konv($linkage_content_c),
+                            subfield => '6',
+                            mult     => $multcount,
+                        };
+                        
+                        # Subfields entfernen
+                        $linkage_field->delete_subfield(code => 'c');
+                    }                
+
+
+                    my $linkage_content_b = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('b')):decode_utf8($linkage_field->as_string('b'));
+                    
+                    if ($linkage_content_b){
+                        push @{$title_ref->{fields}{'0335'}}, {
+                            content  => konv($linkage_content_b),
+                            subfield => '6',
+                            mult     => $multcount,
+                        };
+                        
+                        # Subfields entfernen
+                        $linkage_field->delete_subfield(code => 'b');
+                    }
+                    
                     my $linkage_content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string()):decode_utf8($linkage_field->as_string());
                     
                     if ($linkage_content){
@@ -1051,7 +1047,7 @@ close(DAT);
 sub konv {
     my $content = shift;
 
-    $content=~s/\s*[.,:]\s*$//g;
+    $content=~s/\s*[.,:\/]\s*$//g;
     $content=~s/&/&amp;/g;
     $content=~s/</&lt;/g;
     $content=~s/>/&gt;/g;
@@ -1089,6 +1085,8 @@ sub get_linkage_fields {
         my $thiscontent_6 = ($encoding eq "MARC-8")?marc8_to_utf8($thislinkage_field->as_string('6')):decode_utf8($thislinkage_field->as_string('6'));            
         
         my ($thislinkage_fieldnumber,$thislinkage_count) = $thiscontent_6 =~m/^(\d\d\d)-(\d+)/;
+
+        next unless (defined $thislinkage_fieldnumber);
         
         if ($thislinkage_fieldnumber == $fieldnumber && $thislinkage_count == $linkage_count){
             push @{$linkage_fields_ref}, $thislinkage_field;

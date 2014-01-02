@@ -89,7 +89,7 @@ if (!$inputfile){
     print << "HELP";
 marc2meta.pl - Aufrufsyntax
 
-    marc2meta.pl --inputfile=xxx --configfile=yyy
+    marc2meta.pl --inputfile=xxx
 HELP
 exit;
 }

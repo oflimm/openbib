@@ -38,17 +38,43 @@ use utf8;
 
 use Getopt::Long;
 use HTTP::OAI;
+use YAML;
+use Log::Log4perl qw(get_logger :levels);
 
-my ($url,$format,$from,$until,$set);
+my ($url,$format,$from,$until,$set,$loglevel,$all);
 
 &GetOptions(
     "format=s"   => \$format,
     "url=s"      => \$url,
+    "all"        => \$all,
     "from=s"     => \$from,
     "until=s"    => \$until,
     "set=s"      => \$set,
+    "loglevel=s" => \$loglevel,
 );
 
+my $logfile = '/var/log/openbib/harvestoai.log';
+
+$loglevel=($loglevel)?$loglevel:'INFO';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
+
+$logger->info("Starting harvesting from url $url");
 
 if (!$from){
     # Scannen der bisher geharvesteten Dateien
@@ -72,9 +98,18 @@ if (!$until){
     $until = sprintf "%4d-%02d-%02dT%02d:%02d:%02dZ",$year,$mon,$mday,$hour,$min,$sec;
 }
 
+if ($all){
+    $logger->info("Harvesting all");
+}
+else {
+    $logger->info("Timespan from $from until $until");
+}
+
 if (!$format){
     $format = "oai_dc";
 }
+
+$logger->info("Using format: $format");
 
 my $filename = "pool-${format}-${from}_to_${until}.xml";
 $filename=~s/\s+/_/g;
@@ -90,34 +125,59 @@ if( $response->is_error ) {
   exit;
 }
 if ($set){
-    $response = $h->ListRecords(
-        metadataPrefix => $format,
-        from           => $from, # '2001-01-29T15:27:51Z',
-        until          => $until, #'2003-01-29T15:27:51Z',
-        set            => $set
-    );
+    $logger->info("Using set: $set");
+
+    if ($all){
+        $response = $h->ListRecords(
+            metadataPrefix => $format,
+            set            => $set
+        );
+    }
+    else {
+        $response = $h->ListRecords(
+            metadataPrefix => $format,
+            from           => $from, # '2001-01-29T15:27:51Z',
+            until          => $until, #'2003-01-29T15:27:51Z',
+            set            => $set
+        );
+    }
+    
 }
 else {
-    $response = $h->ListRecords(
-        metadataPrefix => $format,
-        from           => $from, # '2001-01-29T15:27:51Z',
-        until          => $until, #'2003-01-29T15:27:51Z',
-    );
-}Z'
-			       );
+    if ($all){        
+        $response = $h->ListRecords(
+            metadataPrefix => $format
+        );
+    }
+    else {
+        $response = $h->ListRecords(
+            metadataPrefix => $format,
+            from           => $from, # '2001-01-29T15:27:51Z',
+            until          => $until, #'2003-01-29T15:27:51Z',
+        );
+    }
+}
 
 if( $response->is_error ) {
-  die("Error harvesting: " . $response->message . "\n");
+    $logger->error_die("Error: ", $response->code,
+                       " (", $response->message, ")");
 }
 
-$response =while( my $rec = $response->next ) {
+while( my $rec = $response->next ) {
+    if( $rec->is_error ) {
+        $logger->error($rec->message);
+        next;
+    }
+
     print OUT "<record>\n";
-    print OUTit();
-}
 
-print "<?xml version = '1.0' encoding = 'UTF-8'?>\n";
-print "<oairesponse>\n";
-while( my $recif ($rec->is_deleted){
+    eval {
+        my $header_string = $rec->header->dom->toString;
+        $header_string=~s/^<\?xml.*?>//;
+
+        print OUT " $header_string \n";
+    };
+        y $recif ($rec->is_deleted){
         print OUT " <is_deleted>1</is_deleted>\n";
     }
     else {
@@ -127,7 +187,16 @@ while( my $recif ($rec->is_deleted){
             print OUT $metadata_string,"\n";
         };
     }
+
+    my $about_string = $rec->{about}[0]->dom->toString;
     
+    if ($about_string){
+        $about_string=~s/^<\?xml.*?>//;
+        
+        print OUT " $about_string \n";
+    }
+
+
     print OUT "</record>\n";
 }
 

@@ -270,7 +270,11 @@ sub parse_record {
 
     my @ids= $titset->findnodes($convconfig->{uniqueidfield});
 
-    $title_ref->{id} = $ids[0]->first_child()->text();
+    my $titleid = $ids[0]->first_child()->text();
+
+    $titleid=~s/\//_/g;
+    
+    $title_ref->{id} = $titleid; 
 
     foreach my $kateg (keys %{$convconfig->{title}}){
 

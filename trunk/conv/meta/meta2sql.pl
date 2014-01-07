@@ -900,7 +900,7 @@ while (my $jsonline=<IN>){
             my $have_journal = 0;
 
             foreach my $item_ref (@{$fields_ref->{'4410'}}) {
-                if ($item_ref->{'0800'} eq "Zeitschrift/Serie"){
+                if ($item_ref->{'content'} eq "Zeitschrift/Serie"){
                     $have_journal = 1;
                 }
             }
@@ -918,26 +918,34 @@ while (my $jsonline=<IN>){
             my $have_article = 0;
             
             foreach my $item_ref (@{$fields_ref->{'4410'}}) {
-                if ($item_ref->{'0800'} eq "Aufsatz"){
+                if ($item_ref->{'content'} eq "Aufsatz"){
                     $have_article = 1;
                 }
             }
             
             push @{$fields_ref->{'4410'}}, {
-                mult      => $type_mult,
+                mult      => $type_mult++,
                 content   => 'Aufsatz',
                 subfield  => '',
-            } if ($have_article);
+            } unless ($have_article);
         }   
 
         # Hochschulschrift
         # HSSvermerk besetzt
         if ($fields_ref->{'0519'}) {
+            my $have_hss = 0;
+            
+            foreach my $item_ref (@{$fields_ref->{'4410'}}) {
+                if ($item_ref->{'content'} eq "Hochschulschrift"){
+                    $have_hss = 1;
+                }
+            }
+            
             push @{$fields_ref->{'4410'}}, {
-                mult      => $type_mult,
+                mult      => $type_mult++,
                 content   => 'Hochschulschrift',
                 subfield  => '',
-            };
+            } unless ($have_hss);
         }   
 
         # Elektronisches Medium mit Online-Zugriff

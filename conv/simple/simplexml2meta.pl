@@ -268,13 +268,13 @@ sub parse_record {
         'fields' => {},
     };
 
-    my @ids= $titset->get_xpath($convconfig->{uniqueidfield});
+    my @ids= $titset->findnodes($convconfig->{uniqueidfield});
 
     $title_ref->{id} = $ids[0]->first_child()->text();
 
     foreach my $kateg (keys %{$convconfig->{title}}){
 
-        my @elements = $titset->get_xpath($kateg);
+        my @elements = $titset->findnodes($kateg);
 
         my @parts = ();
         
@@ -328,7 +328,7 @@ sub parse_record {
     
     # Autoren abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{person}}){
-        my @elements = $titset->get_xpath($kateg);
+        my @elements = $titset->findnodes($kateg);
 
         my @parts = ();
         
@@ -394,7 +394,7 @@ sub parse_record {
 
     # Koerperschaften abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{corporatebody}}){
-        my @elements = $titset->get_xpath($kateg);
+        my @elements = $titset->findnodes($kateg);
         
         my @parts = ();
 
@@ -460,7 +460,7 @@ sub parse_record {
 
     # Notationen abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{classification}}){
-        my @elements = $titset->get_xpath($kateg);
+        my @elements = $titset->findnodes($kateg);
         
         my @parts = ();
         
@@ -526,7 +526,7 @@ sub parse_record {
         
     # Schlagworte abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{subject}}){
-        my @elements = $titset->get_xpath($kateg);
+        my @elements = $titset->findnodes($kateg);
 
         my @parts = ();
         
@@ -594,7 +594,7 @@ sub parse_record {
     
     # Exemplare abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{holding}}){
-        my @elements = $titset->get_xpath($kateg);
+        my @elements = $titset->findnodes($kateg);
         
         my @parts = ();
         

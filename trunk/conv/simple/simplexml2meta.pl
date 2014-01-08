@@ -97,6 +97,8 @@ my $logger = get_logger();
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
+our $have_titleid_ref = {};
+
 open (TITLE,         ">:raw","meta.title");
 open (PERSON,        ">:raw","meta.person");
 open (CORPORATEBODY, ">:raw","meta.corporatebody");
@@ -273,7 +275,14 @@ sub parse_record {
     my $titleid = $ids[0]->first_child()->text();
 
     $titleid=~s/\//_/g;
-    
+
+    if ($have_titleid_ref->{$titleid}){
+        $logger->error("Doppelte ID: $titleid");
+        next;
+    }
+
+    $have_titleid_ref->{$titleid} = 1;
+
     $title_ref->{id} = $titleid; 
 
     foreach my $kateg (keys %{$convconfig->{title}}){

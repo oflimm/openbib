@@ -278,7 +278,7 @@ sub parse_record {
 
     if ($have_titleid_ref->{$titleid}){
         $logger->error("Doppelte ID: $titleid");
-        next;
+        return;
     }
 
     $have_titleid_ref->{$titleid} = 1;

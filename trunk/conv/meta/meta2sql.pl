@@ -295,7 +295,16 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         while (my $jsonline=<IN>) {
             
-            my $record_ref = decode_json $jsonline;
+            my $record_ref ;
+            
+            eval {
+                $record_ref = decode_json $jsonline;
+            };
+            
+            if ($@){
+                $logger->error("Skipping record: $@");
+                next;
+            }
             
             my $id         = $record_ref->{id};
             my $fields_ref = $record_ref->{fields};
@@ -458,7 +467,16 @@ if (-f "meta.holding"){
 
     while (my $jsonline=<IN>) {
 
-        my $record_ref = decode_json $jsonline;
+        my $record_ref ;
+        
+        eval {
+            $record_ref = decode_json $jsonline;
+        };
+        
+        if ($@){
+            $logger->error("Skipping record: $@");
+            next;
+        }
 
         my $id         = $record_ref->{id};
         my $fields_ref = $record_ref->{fields};
@@ -609,8 +627,17 @@ if ($addsuperpers) {
     $count = 1;
 
     while (my $jsonline=<IN>) {
-        my $record_ref = decode_json $jsonline;
+        my $record_ref ;
         
+        eval {
+            $record_ref = decode_json $jsonline;
+        };
+
+        if ($@){
+            $logger->error("Skipping record: $@");
+            next;
+        }
+            
         if (exists $record_ref->{fields}{'0004'}){
             foreach my $item (@{$record_ref->{fields}{'0004'}}){
                 my $superid = $item->{content};
@@ -632,7 +659,16 @@ if ($addsuperpers) {
     $count = 1;
 
     while (my $jsonline=<IN>) {
-        my $record_ref = decode_json $jsonline;
+        my $record_ref ;
+        
+        eval {
+            $record_ref = decode_json $jsonline;
+        };
+
+        if ($@){
+            $logger->error("Skipping record: $@");
+            next;
+        }
 
         my $id = $record_ref->{id};
 
@@ -683,7 +719,16 @@ my $serialid = 1;
     
 while (my $jsonline=<IN>){
     
-    my $record_ref = decode_json $jsonline;
+    my $record_ref ;
+    
+    eval {
+        $record_ref = decode_json $jsonline;
+    };
+    
+    if ($@){
+        $logger->error("Skipping record: $@");
+        next;
+    }
 
     my $id            = $record_ref->{id};
     my $fields_ref    = $record_ref->{fields};

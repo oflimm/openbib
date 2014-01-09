@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+use utf8;
+
 use JSON::XS;
 
 while (<>){

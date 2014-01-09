@@ -220,7 +220,7 @@ sub threadA {
 
     # Wegen Interimsloesung: Andere Kataloge, die nicht von aperol geholt werden
 
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe','kups','gdea','inst526earchive'] });
 
     $logger->info("### Master: inst301");
     

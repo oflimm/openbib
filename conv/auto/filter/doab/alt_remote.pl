@@ -40,19 +40,20 @@ my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 
-my $harvestoaiexe = "$config->{'conv_dir'}/harvestOAI.pl";
-my $oai2metaexe   = "$config->{'conv_dir'}/oai2meta.pl";
+my $harvestoaiexe     = "$config->{'conv_dir'}/harvestOAI.pl";
+my $simplexml2metaexe = "$config->{'conv_dir'}/simplexml2meta.pl";
 
 my $pool          = $ARGV[0];
 
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->titlefile;
+my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
 print "### $pool: Datenabzug via OAI von $oaiurl\n";
-system("cd $pooldir/$pool ; rm pool.*");
-system("$harvestoaiexe --oaiurl=\"$oaiurl\" | /bin/gzip -c > $pooldir/$pool/pool.dat.gz");
+system("cd $pooldir/$pool ; rm meta.* ; rm pool*");
+system("cd $pooldir/$pool ; $harvestoaiexe -all --set=$pool --url=\"$oaiurl\" ");
 
-system("/bin/gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");
-system("cd $pooldir/$pool; $oai2metaexe --inputfile=pool.dat ; gzip unload.*");
+system("cd $pooldir/$pool ; echo '<recordlist>' > $pooldir/$pool/pool.dat ; cat pool-*.xml >> $pooldir/$pool/pool.dat ; echo '</recordlist>' >> $pooldir/$pool/pool.dat");
+
+system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
 system("rm $pooldir/$pool/pool.dat");

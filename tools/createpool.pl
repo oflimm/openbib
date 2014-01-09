@@ -50,6 +50,3 @@ system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'}
 system("/usr/bin/psql -U $config->{'dbuser'} -f '$config->{'dbdesc_dir'}/postgresql/pool.sql' $pool");
 system("/usr/bin/psql -U $config->{'dbuser'} -f '$config->{'dbdesc_dir'}/postgresql/pool_create_index.sql' $pool");
 
-# Anlegen des Verzeichnisses zur lokalen Speicherung der Daten
-
-system("mkdir -p $config->{'autoconv_dir'}/pools/$pool");

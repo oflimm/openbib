@@ -6,7 +6,7 @@
 #
 #  Holen via oai und konvertieren in das Meta-Format
 #
-#  Dieses File ist (C) 2003-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,8 +40,8 @@ my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 
-my $harvestoaiexe = "$config->{'conv_dir'}/harvestOAI.pl";
-my $oai2metaexe   = "$config->{'conv_dir'}/oai2meta.pl";
+my $harvestoaiexe     = "$config->{'conv_dir'}/harvestOAI.pl";
+my $simplexml2metaexe = "$config->{'conv_dir'}/simplexml2meta.pl";
 
 my $pool          = $ARGV[0];
 
@@ -50,9 +50,10 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
 print "### $pool: Datenabzug via OAI von $oaiurl\n";
-system("cd $pooldir/$pool ; rm pool.dat*");
-system("$harvestoaiexe --oaiurl=\"$oaiurl\" | /bin/gzip -c > $pooldir/$pool/pool.dat.gz");
+system("cd $pooldir/$pool ; rm meta.* ; rm pool*");
+system("cd $pooldir/$pool ; $harvestoaiexe -all --set=$pool --url=\"$oaiurl\" ");
 
-system("/bin/gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");
-system("cd $pooldir/$pool; $oai2metaexe --inputfile=pool.dat ; gzip meta.*");
+system("cd $pooldir/$pool ; echo '<recordlist>' > $pooldir/$pool/pool.dat ; cat pool-*.xml >> $pooldir/$pool/pool.dat ; echo '</recordlist>' >> $pooldir/$pool/pool.dat");
+
+system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
 system("rm $pooldir/$pool/pool.dat");

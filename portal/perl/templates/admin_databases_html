@@ -79,7 +79,7 @@
 <div class="ym-fbox-select">
 <label for="system">[% msg.maketext("System") %]</label>
   <select name="system" id="system">
-[% FOREACH source_system IN config.get('source_systems') %]
+[% FOREACH source_system IN config.get('source_systems').keys.sort %]
        <option value="[% source_system %]">[% source_system %]</option>
 [% END %]
    </select>

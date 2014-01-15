@@ -21,6 +21,7 @@
       topic_map.${topic.id} = topic.name;
    END;
 
+   catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
 -%]
 [% IF format == "full" %]
 
@@ -71,17 +72,17 @@ FOREACH category IN categories;
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
-         IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         IF activefeed.2 && catalog_has_authorities ;
+             rssfeed = "&nbsp;<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>" ;
          END ;
 
          normdataicon = "";
 
-         IF thisid ;
+         IF thisid && catalog_has_authorities ;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
          END;
 
-         icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${rssfeed}&nbsp;${normdataicon}</div>";
+         icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>${rssfeed}${normdataicon}</div>";
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
@@ -95,13 +96,13 @@ FOREACH category IN categories;
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
-         IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         IF activefeed.3 && catalog_has_authorities ;
+             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>" ;
          END ;
 
          normdataicon = "";
 
-         IF thisid ;
+         IF thisid && catalog_has_authorities ;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
          END;
 
@@ -207,13 +208,13 @@ FOREACH category IN categories;
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
-         IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         IF activefeed.4 && catalog_has_authorities ;
+             rssfeed = "&nbsp;<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>" ;
          END ;
 
          normdataicon = "";
 
-         IF thisid ;
+         IF thisid && catalog_has_authorities;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
          END;
 
@@ -232,13 +233,13 @@ FOREACH category IN categories;
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
-         IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         IF activefeed.5 && catalog_has_authorities ;
+             rssfeed = "&nbsp;<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>" ;
          END ;
 
          normdataicon = "";
 
-         IF thisid ;
+         IF thisid && catalog_has_authorities ;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
          END;
 

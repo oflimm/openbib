@@ -82,17 +82,30 @@ location_types:
   - Generic
 
 source_systems:
-  - Sisis
-  - Aleph
-  - Allegro
-  - Lars
-  - OAI
-  - MAB
-  - 'Backend: BibSonomy'
-  - 'Backend: Z3950'
-  - 'Backend: EZB'
-  - 'Backend: DBIS'
-  - Anderes
+  Sisis:
+     has_authorities: 1
+  Aleph:
+     has_authorities: 0
+  Allegro:
+     has_authorities: 0
+  Aleph:
+     has_authorities: 0
+  Lars:
+     has_authorities: 0
+  OAI:
+     has_authorities: 0
+  MAB:
+     has_authorities: 0
+  'Backend: Z3950':
+     has_authorities: 0
+  'Backend: EZB':
+     has_authorities: 0
+  'Backend: DBIS':
+     has_authorities: 0
+  'Backend: BibSonomy':
+     has_authorities: 0
+  Anderes:
+     has_authorities: 0
 
 # Spracheinstellungen
 lang:

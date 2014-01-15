@@ -40,6 +40,7 @@ title:
   "metadata/dc/dc:identifier[starts-with(.,'http')]": '0662'
   "metadata/dc/dc:relation[starts-with(.,'http')]": '0662'
   "metadata/dc/dc:identifier[starts-with(.,'doi')]": '0501'
+  "metadata/dc/dc:identifier[starts-with(.,'zvdd')]": '0501'
   "metadata/dc/dc:identifier[not (starts-with(.,'doi')) and not (starts-with(.,'http'))]": '010'
 
 defaultmediatype: 'Digital'

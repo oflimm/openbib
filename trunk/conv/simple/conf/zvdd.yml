@@ -1,0 +1,53 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+# encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# XPath-Parameter
+
+# Record-Selector
+recordselector: /recordlist/record
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: '//oaiProvenance:identifier'
+
+# Personen
+person:
+  'metadata/dc/dc:creator': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+  'metadata/dc/dc:publisher': '0201'      # Herausgeber
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+  'metadata/dc/dc:subject': '0710'        # Schlagwort
+
+# Titel
+title:
+  'metadata/dc/dc:title': '0331'
+  'metadata/dc/dc:type': '0800'
+  'metadata/dc/dc:description': '0710'
+  'metadata/dc/dc:format': '0435'
+  'metadata/dc/dc:language': '0516'
+  'metadata/dc/dc:source': '0508'
+  'metadata/dc/dc:date': '0425'
+  "metadata/dc/dc:identifier[starts-with(.,'http')]": '0662'
+  "metadata/dc/dc:relation[starts-with(.,'http')]": '0662'
+  "metadata/dc/dc:identifier[starts-with(.,'doi')]": '0501'
+  "metadata/dc/dc:identifier[not (starts-with(.,'doi')) and not (starts-with(.,'http'))]": '010'
+
+defaultmediatype: 'Digital'
+
+filter:
+  'metadata/dc/dc:date':
+     filter_match: "^(\d\d\d\d)"
+  'metadata/dc/dc:description':
+     filter_newline2br: 1
+  'metadata/dc/dc:title':
+     filter_newline2br: 1

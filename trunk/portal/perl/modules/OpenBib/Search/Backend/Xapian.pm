@@ -338,7 +338,7 @@ sub search {
 
         $logger->debug("Set Sorting to type ".$config->{xapian_sorttype_value}{$sorttype}." / order ".$sortorder);
         # Sortierung nach Zaehlung: Erst nach Zaehlung, dann Titel
-        if ($sorttype eq "order"){
+        if ($sorttype ne "title"){
             my $sorter = new Search::Xapian::MultiValueSorter;
             $sorter->add($config->{xapian_sorttype_value}{$sorttype},$sortorder);
             $sorter->add($config->{xapian_sorttype_value}{title},0);

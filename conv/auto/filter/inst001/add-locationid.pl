@@ -74,6 +74,22 @@ while (<>){
         }
     }
 
+    # Online-Medien werden allen Standorten zugewiesen
+    if (defined $title_ref->{fields}{'4400'}){
+        foreach my $item (@{$title_ref->{fields}{'4400'}}){
+            if ($item->{content} eq "online"){
+                push @{$title_ref->{'locationid'}}, "DE-38";
+                push @{$title_ref->{'locationid'}}, "DE-38-101";
+                push @{$title_ref->{'locationid'}}, "DE-38-123";
+                push @{$title_ref->{'locationid'}}, "DE-38-428";
+                push @{$title_ref->{'locationid'}}, "DE-38-429";
+                push @{$title_ref->{'locationid'}}, "DE-38-507";
+                push @{$title_ref->{'locationid'}}, "DE-38-EDZ";
+                push @{$title_ref->{'locationid'}}, "DE-38-HWA";
+            }
+        }
+    }
+
     my %have_locationid = ();
 
     foreach my $locationid (@{$title_locationid_ref->{$titleid}}){

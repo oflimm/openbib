@@ -22,6 +22,14 @@ while (<HOLDING>){
         if ($location_ref->{content} eq "587"){
             push @{$title_locationid_ref->{$titleid}}, "DE-587";
         }
+        elsif ($location_ref->{content} eq "429"){
+            push @{$title_locationid_ref->{$titleid}}, "DE-429";
+            push @{$title_locationid_ref->{$titleid}}, "DE-MEKUTH";
+        }
+        elsif ($location_ref->{content} eq "448"){
+            push @{$title_locationid_ref->{$titleid}}, "DE-448";
+            push @{$title_locationid_ref->{$titleid}}, "DE-MEKUTH";
+        }
         else {
             push @{$title_locationid_ref->{$titleid}}, "DE-38-".$location_ref->{content};
         }

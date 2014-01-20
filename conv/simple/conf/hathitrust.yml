@@ -35,7 +35,6 @@ title:
   'metadata/dc/dc:description': '0710'
   'metadata/dc/dc:format': '0435'
   'metadata/dc/dc:language': '0516'
-  'metadata/dc/dc:source': '0508'
   'metadata/dc/dc:date': '0425'
   "metadata/dc/dc:identifier[starts-with(.,'http')]": '0662'
   "metadata/dc/dc:relation[starts-with(.,'http')]": '0662'

@@ -255,6 +255,7 @@ FOREACH category IN categories;
    END;
 END;
 -%]
+<tr><td class="ob-field">[% msg.maketext("T4210") %]</td><td>Kein Urheberrechtsschutz</td></tr>
 [%- IF bibkey -%]
 <tr><td class="ob-field">bibkey</td><td>[% bibkey %]</td></tr>
 [%- END -%]

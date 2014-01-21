@@ -119,7 +119,7 @@
                 #'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
-                'T5050', # msg.maketext("T5050") Copyright-Information
+                'T4210', # msg.maketext("T4210") Copyright-Information
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 ]
 

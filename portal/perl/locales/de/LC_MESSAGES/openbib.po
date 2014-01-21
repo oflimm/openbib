@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-01-21 10:58+0100\n"
+"PO-Revision-Date: 2014-01-21 11:12+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -15760,6 +15760,10 @@ msgstr "Basis-Klassifikation"
 msgid "T4200"
 msgstr "Nutzername"
 
+#: ../templates/visible_categories_title:122
+msgid "T4210"
+msgstr "Rechte-Information"
+
 #: ../templates/_database/kapsel/visible_categories_title:92
 #: ../templates/_profile/kug/_database/edz/visible_categories_title:92
 #: ../templates/_profile/kug/_database/inst001/visible_categories_title:92
@@ -15897,10 +15901,6 @@ msgstr "IDs Bände/Stücke"
 #: ../templates/visible_categories_title:120
 msgid "T5005"
 msgstr "Zum Gesamttitel"
-
-#: ../templates/visible_categories_title:122
-msgid "T5050"
-msgstr "Rechte-Information"
 
 #: ../templates/_database/inst001/visible_categories_title:116
 #: ../templates/_database/kapsel/visible_categories_title:122
@@ -18822,6 +18822,9 @@ msgstr "Übersicht"
 #: ../templates/users_navigation:100 ../templates/users_navigation:102
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "T5050"
+#~ msgstr "Rechte-Information"
 
 #~ msgid "Geburts-/Sterbeorte"
 #~ msgstr "Geburts-/Sterbeorte"

@@ -13,41 +13,46 @@ recordselector: /recordlist/record
 # Feld der eindeutigen Titel-ID
 uniqueidfield: '//oaiProvenance:identifier'
 
+category_split_chars:
+  'metadata/oai_dc:dc/dc:subject': '--'
+
 # Personen
 person:
-  'metadata/dc/dc:creator': '0100'        # Verfasser
+  'metadata/oai_dc:dc/dc:creator': '0100'        # Verfasser
+  'metadata/oai_dc:dc/dc:contributor': '0101'
 
 # Koerperschaften
 corporatebody:
-  'metadata/dc/dc:publisher': '0201'      # Herausgeber
 
 # Systematik
 classification: 
+  'metadata/oai_dc:dc/dc:coverage': '0700'
 
 # Schlagworte
 subject:
-  'metadata/dc/dc:subject': '0710'        # Schlagwort
+  'metadata/oai_dc:dc/dc:subject': '0710'        # Schlagwort
 
 # Titel
 title:
-  'metadata/dc/dc:title': '0331'
-  'metadata/dc/dc:type': '0800'
-  'metadata/dc/dc:description': '0710'
-  'metadata/dc/dc:format': '0435'
-  'metadata/dc/dc:language': '0516'
-  'metadata/dc/dc:source': '0508'
-  'metadata/dc/dc:date': '0425'
-  "metadata/dc/dc:identifier[starts-with(.,'http')]": '0662'
-  "metadata/dc/dc:relation[starts-with(.,'http')]": '0662'
-  "metadata/dc/dc:identifier[starts-with(.,'doi')]": '0501'
-  "metadata/dc/dc:identifier[not (starts-with(.,'doi')) and not (starts-with(.,'http'))]": '010'
+  'metadata/oai_dc:dc/dc:title': '0331'
+  'metadata/oai_dc:dc/dc:type': '0800'
+  'metadata/oai_dc:dc/dc:description': '0434'  # Sonstige Angaben
+  'metadata/oai_dc:dc/dc:format': '0433'
+  'metadata/oai_dc:dc/dc:rights': '5050'
+  'metadata/oai_dc:dc/dc:source': '0508'
+  'metadata/oai_dc:dc/dc:language': '0015'
+  'metadata/oai_dc:dc/dc:publisher': '0412'      # Verlag
+  'metadata/oai_dc:dc/dc:date': '0425'
+  "metadata/oai_dc:dc/dc:identifier[starts-with(.,'http')]": '0662'
+  "metadata/oai_dc:dc/dc:relation[starts-with(.,'http')]": '0662'
+  "metadata/oai_dc:dc/dc:relation[not (starts-with(.,'http'))]': '0501'
 
 defaultmediatype: 'Digital'
 
 filter:
-  'metadata/dc/dc:date':
+  'metadata/oai_dc:dc/dc:date':
      filter_match: "^(\d\d\d\d)"
-  'metadata/dc/dc:description':
+  'metadata/oai_dc:dc/dc:description':
      filter_newline2br: 1
-  'metadata/dc/dc:title':
+  'metadata/oai_dc:dc/dc:title':
      filter_newline2br: 1

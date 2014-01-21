@@ -59,4 +59,4 @@ if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotep
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm meta.* ; rm $titlefile");
 system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; zcat $titlefile > pool.dat ; $aleph2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/spoho.yml; gzip meta.*");
+system("cd $pooldir/$pool; zcat $titlefile > pool.dat ; $aleph2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/spoho.yml; gzip meta.* ; rm pool.dat");

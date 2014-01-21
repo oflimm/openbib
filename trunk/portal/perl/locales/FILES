@@ -1360,7 +1360,6 @@
 ../templates/_profile/usbportal/litlists_by_single_topic_recent_include
 ../templates/_profile/usbportal/litlists_record_include
 ../templates/_profile/usbportal/local_config
-../templates/_profile/usbportal/locations_record_include
 ../templates/_profile/usbportal/login
 ../templates/_profile/usbportal/resource_title_html_categories
 ../templates/_profile/usbportal/searchforms_record_query

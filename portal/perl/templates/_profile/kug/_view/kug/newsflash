@@ -14,6 +14,11 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
+<li><b>23.1.2014</b>: Digitalisate aus OAI-Datenquellen. Durch die Integration von online frei verfügbaren Digitalisaten aus OAI-Datenquellen konnten fast 4 Millionen neue Nachweise dem KUG hinzugefügt werden. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2014/01/10/integration-von-oai-quellen-mit-repox/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
 <li><b>6.12.2013</b>: OpenStreetMap statt Google Maps. Die
 <a href="[% path_prefix %]/[% config.get('locations_loc') %]">Standortkarten</a> werden nicht mehr von Google Maps, sondern von
 OpenStreetMap mittels der JavaScript-Bibliothek <a

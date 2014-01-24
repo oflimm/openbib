@@ -90,13 +90,28 @@ while (<>){
         }
     }
 
+    if (defined $title_ref->{'fields'}{'1701'}){
+        foreach my $item_ref (@{$title_ref->{'fields'}{'1701'}}){
+            my $classification = $item_ref->{content};
+
+            if ($classification =~/^([A-Z][A-Z]) \d+/){ # RVK
+                my $rvk = $1;
+                if (defined $rvk_topic_mapping_ref->{$rvk}){
+                    push @topicids, $rvk_topic_mapping_ref->{$rvk};
+                }
+            }
+        }
+    }
+    
     my $mult = 1;
-    foreach my $topicid (@topicids){
+    my $topics_seen_ref = {};
+    foreach my $topicid (@topicids){        
         push @{$title_ref->{'fields'}{'4102'}}, {
             subfield => '',
             content  => $topicid,
             mult     => $mult++,
-        }
+        } unless (defined $topics_seen_ref->{$topicid});
+        $topics_seen_ref->{$topicid} = 1;
     }
 
     print encode_json $title_ref, "\n";

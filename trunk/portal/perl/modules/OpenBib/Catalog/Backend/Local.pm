@@ -675,9 +675,10 @@ sub load_brief_title_record {
         );
         
         my $record_exists = 0;
-        
+
         if ($record){
-            $title_record->set_fields_from_json($record->titlecache);
+            my $titlecache = encode_utf8($record->titlecache);
+            $title_record->set_fields_from_json($titlecache);
             $record_exists = 1;
         }
         

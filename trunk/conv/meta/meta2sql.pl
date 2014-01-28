@@ -705,7 +705,7 @@ if ($addsuperpers) {
 $logger->info("### $database: Bearbeite meta.title");
 
 open(IN ,           "<:raw" ,"meta.title"         )     || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:raw" ,"title.dump"        )      || die "OUT konnte nicht geoeffnet werden";
+open(OUT,           ">:utf8" ,"title.dump"        )      || die "OUT konnte nicht geoeffnet werden";
 open(OUTFIELDS,     ">:utf8","title_fields.dump"     )  || die "OUTFIELDS konnte nicht geoeffnet werden";
 open(SEARCHENGINE,  ">:raw" ,"searchengine.json" )       || die "SEARCHENGINE konnte nicht goeffnet werden";
 

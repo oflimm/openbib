@@ -30,7 +30,7 @@
 
       <div id="uniTitle">
          <a href="http://www.uni-koeln.de" target="_blank">Universität zu Köln</a>
-         <div id="usbTitle"><a href="[% path_prefix %]/[% config.get('home_loc') %]" target="_parent">[% config.get_viewdesc_from_viewname(viewname) %]</a></div>
+         <div id="usbTitle"><a href="[% path_prefix %]/[% config.get('home_loc') %]" target="_parent">[% config.get_viewdesc_from_viewname(view) %]</a></div>
       </div>
 
       <div class="clearing"></div>

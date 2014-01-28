@@ -15,7 +15,7 @@
 
 <p/>
 
-[% PROCESS common/subtemplate name="newsflash" %]
+[%# PROCESS common/subtemplate name="newsflash" %]
 
 [% titlecount = config.get_number_of_titles({profile = sysprofile}) %]
 

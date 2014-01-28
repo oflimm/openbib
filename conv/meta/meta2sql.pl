@@ -62,9 +62,9 @@ my %char_replacements = (
     "\n"     => "<br\/>",
     "\r"     => "\\r",
     ""     => "",
-    "\x{00}" => "",
-    "\x{80}" => "",
-    "\x{87}" => "",
+#    "\x{00}" => "",
+#    "\x{80}" => "",
+#    "\x{87}" => "",
 );
 
 my $chars_to_replace = join '|',
@@ -705,7 +705,7 @@ if ($addsuperpers) {
 $logger->info("### $database: Bearbeite meta.title");
 
 open(IN ,           "<:raw" ,"meta.title"         )     || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","title.dump"        )      || die "OUT konnte nicht geoeffnet werden";
+open(OUT,           ">:raw" ,"title.dump"        )      || die "OUT konnte nicht geoeffnet werden";
 open(OUTFIELDS,     ">:utf8","title_fields.dump"     )  || die "OUTFIELDS konnte nicht geoeffnet werden";
 open(SEARCHENGINE,  ">:raw" ,"searchengine.json" )       || die "SEARCHENGINE konnte nicht goeffnet werden";
 
@@ -1677,6 +1677,8 @@ while (my $jsonline=<IN>){
     
    # $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
     $titlecache = cleanup_content($titlecache);
+
+   # $titlecache = decode_utf8($titlecache); # UTF8 anstelle Octets(durch encode_json).
     
     my $create_tstamp = "1970-01-01 12:00:00";
     

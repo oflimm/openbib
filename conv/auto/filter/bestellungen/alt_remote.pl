@@ -52,9 +52,9 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 print "### $pool: Hole Exportdateien mit wget von $baseurl\n";
 
 system("cd $pooldir/$pool ; rm meta.* pool-*");
-system("$wgetexe -P $pooldir/$pool/ 'http://www.vub.de/search/stockdl/usb?user=externsearch\@ub.uni-koeln.de&password=lit_proc' -O pool-vub.csv");
+system("$wgetexe 'http://www.vub.de/search/stockdl/usb?user=externsearch\@ub.uni-koeln.de&password=lit_proc' -O $pooldir/$pool/pool-vub.csv");
 
-system("cd $pooldir/$pool/ ; echo \"ID,Date,A,B,Price,Currency,ISBN,Verlag,Autor,Titel,Jahr,C,Source\" > pool.dat ; cat pool-*.csv >> pool.dat");
+system("cd $pooldir/$pool/ ; echo \"ID,Date,A,B,Price,Currency,ISBN,Verlag,Autor,Titel,Jahr,C,Source\" > pool.dat ; cat pool-* >> pool.dat");
 
 system("cd $pooldir/$pool ; /opt/openbib/conv/simplecsv2meta.pl --inputfile=pool.dat --configfile=/opt/openbib/conf/bestellungen.yml ; gzip meta.*");
 #system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/filter-rswk.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");

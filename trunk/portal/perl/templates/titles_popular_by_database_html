@@ -52,8 +52,9 @@
    </div>
 
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1 ob-hidden">
+      <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="titles_navigation" active_submenu = "popular" %]
         </div>
       </div>
       <!-- end: #col1 -->

@@ -168,6 +168,12 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['vubpda'] 
 
 ##############################
 
+$logger->info("### Offene Bestellungen");
+
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
+
+##############################
+
 
 $logger->info("### Generating joined searchindexes");
 

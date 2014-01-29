@@ -305,6 +305,9 @@ while ($csv->getline ($in)){
 
     if ($convconfig->{uniqueidfield}){
         my $id = $row->{$convconfig->{uniqueidfield}};
+
+        $id=~s/\//_/g;
+
         if ($convconfig->{uniqueidmatch}){
             my $uniquematchregexp = $convconfig->{uniqueidmatch};
             ($id)=$id=~m/$uniquematchregexp/;

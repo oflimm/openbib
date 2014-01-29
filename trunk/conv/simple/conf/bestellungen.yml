@@ -1,0 +1,43 @@
+# Encoding der Daten
+encoding: iso-8859-1
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': ","
+  'quote_char': '"'
+  'escape_char': '"'
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'ID'
+
+category_split_chars:
+
+# Personen
+person:
+  'Autor': '0100'
+
+# Koerperschaften
+corporatebody:
+  'Source': '0700'
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+
+# Titel
+title:
+  'Titel': '0331'
+  'ISBN': '0540'
+  'Verlag': '0412'
+  'Jahr': '0425'
+  'Preis': '0434'
+  'Date': '0002'
+
+# Exemplare
+holding:

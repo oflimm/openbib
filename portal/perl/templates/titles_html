@@ -39,7 +39,8 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
-         <li><a href="#" class="lastitem">[% dbinfo.dbnames.${database}.short %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %].html?l=[% lang %]">[% dbinfo.dbnames.${database}.short %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Alle Titel") %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">

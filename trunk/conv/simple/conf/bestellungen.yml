@@ -41,3 +41,9 @@ title:
 
 # Exemplare
 holding:
+
+exclude:
+  'by_availability':
+     field: 'ISBN'
+     databases:
+        - inst001

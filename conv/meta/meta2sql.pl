@@ -735,7 +735,9 @@ while (my $jsonline=<IN>){
     my $locations_ref; 
 
     if (defined $record_ref->{locations}){
-        push @{$locations_ref}, $record_ref->{locations};
+	foreach my $locationid (@{$record_ref->{locations}}){
+	    push @{$locations_ref}, $locationid;
+	}
     }
     else {
         push @{$locations_ref}, $locationid;

@@ -732,9 +732,12 @@ while (my $jsonline=<IN>){
 
     my $id            = $record_ref->{id};
     my $fields_ref    = $record_ref->{fields};
-    my $locations_ref = $record_ref->{locations};
+    my $locations_ref; 
 
-    if (!defined $locations_ref){
+    if (defined $record_ref->{locations}){
+        push @{$locations_ref}, $record_ref->{locations};
+    }
+    else {
         push @{$locations_ref}, $locationid;
     }
     

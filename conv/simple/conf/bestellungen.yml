@@ -12,32 +12,38 @@ csv:
   'escape_char': '"'
 
 # Feld der eindeutigen Titel-ID
-uniqueidfield: 'ID'
+uniqueidfield: 'id'
 
 category_split_chars:
 
 # Personen
 person:
-  'Autor': '0100'
+  'person': '0100'
 
 # Koerperschaften
 corporatebody:
-  'Source': '0700'
 
 # Systematik
 classification: 
+  'bestellzeichen': '0700'
+
 
 # Schlagworte
 subject:
+  'lieferant': '0710'
 
 # Titel
 title:
-  'Titel': '0331'
-  'ISBN': '0540'
-  'Verlag': '0412'
-  'Jahr': '0425'
-  'Preis': '0434'
-  'Date': '0002'
+  'titel': '0331'
+  'isbn': '0540'
+  'verlag': '0412'
+  'jahr': '0425'
+  'preis': '0434'
+  'datum': '0002'
+  'exemplar': '0535'
+  'auflage': '0403'
+  'preis': '4211'
+  'waehrung': '4212'
 
 # Exemplare
 holding:

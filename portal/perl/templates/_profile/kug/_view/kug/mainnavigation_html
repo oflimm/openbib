@@ -64,20 +64,5 @@ $(document).ready(function(){
 </form>
 </nav>
 
-[% IF NOT without_navigation_search %]
-<p>
-<center  style="color: red;">
-Diese Recherche-Portal wird am 28.2.2014 deaktiviert. Bitte nutzen
-Sie stattdessen schon jetzt die
-[% IF viewdbs.size == 1 %]
-<a href="[% config.get_databaseinfo.search({ dbname = viewdbs.first }).first.url %]" target="_blank">
-[% ELSIF view == 'vwl' %]
-<a href="http://www.ub.uni-koeln.de/bibliotheken/38_101/" target="_blank">
-[% ELSE %]
-<a href="http://www.ub.uni-koeln.de/bibliotheken/az/index_ger.html" target="_blank">
-[% END %]
-Instituts-Recherche innerhalb des USB-Portals
-</center>
-</p>
-[% END %]
+[% IF NOT without_navigation_search %]<p/>[% END %]
     <!-- end: main navigation -->

@@ -76,7 +76,9 @@ Sie stattdessen schon jetzt die
 [% ELSE %]
 <a href="http://www.ub.uni-koeln.de/bibliotheken/az/index_ger.html" target="_blank">
 [% END %]
-Instituts-Recherche innerhalb des USB-Portals
+Instituts-Recherche innerhalb des USB-Portals</a>. Für die Bearbeitung
+Ihrer Literaturlisten, Tags und Merklisten können Sie weiterhin auf das
+<a href="http://kug.ub.uni-koeln.de/" target="_blank">zentrale KUG-Portal</a> mit allen Katalogen zurückgreifen.
 </center>
 </p>
 [% END %]

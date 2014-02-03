@@ -67,7 +67,7 @@ $(document).ready(function(){
 [% IF NOT without_navigation_search %]
 <p>
 <center  style="color: red;">
-Diese Recherche-Portal wird am 28.2.2014 deaktiviert. Bitte nutzen
+Dieses Recherche-Portal wird am 28.2.2014 deaktiviert. Bitte nutzen
 Sie stattdessen schon jetzt die
 [% IF viewdbs.size == 1 %]
 <a href="[% config.get_databaseinfo.search({ dbname = viewdbs.first }).first.url %]" target="_blank">

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-01-31 08:30+0100\n"
+"PO-Revision-Date: 2014-02-04 09:40+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -7256,27 +7256,27 @@ msgid "L0050"
 msgstr "Joint library"
 
 #: ../templates/_profile/usbportal/visible_categories_location:24
-#: ../templates/bibfuehrer_tex:288 ../templates/visible_categories_location:22
+#: ../templates/bibfuehrer_tex:288 ../templates/visible_categories_location:23
 msgid "L0060"
 msgstr "Phone"
 
 #: ../templates/_profile/usbportal/visible_categories_location:25
-#: ../templates/bibfuehrer_tex:289 ../templates/visible_categories_location:23
+#: ../templates/bibfuehrer_tex:289 ../templates/visible_categories_location:24
 msgid "L0070"
 msgstr "Fax"
 
 #: ../templates/_profile/usbportal/visible_categories_location:26
-#: ../templates/bibfuehrer_tex:290 ../templates/visible_categories_location:24
+#: ../templates/bibfuehrer_tex:290 ../templates/visible_categories_location:25
 msgid "L0080"
 msgstr "E-Mail"
 
 #: ../templates/_profile/usbportal/visible_categories_location:27
-#: ../templates/bibfuehrer_tex:291 ../templates/visible_categories_location:25
+#: ../templates/bibfuehrer_tex:291 ../templates/visible_categories_location:26
 msgid "L0090"
 msgstr "Internet"
 
 #: ../templates/_profile/usbportal/visible_categories_location:28
-#: ../templates/bibfuehrer_tex:292 ../templates/visible_categories_location:26
+#: ../templates/bibfuehrer_tex:292 ../templates/visible_categories_location:27
 msgid "L0100"
 msgstr "Help desk / librarian"
 
@@ -7300,37 +7300,37 @@ msgstr "Help desk / librarian"
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:27
 #: ../templates/_profile/kug/home_html_bottom_left:26
 #: ../templates/_profile/usbportal/visible_categories_location:21
-#: ../templates/bibfuehrer_tex:293 ../templates/visible_categories_location:27
+#: ../templates/bibfuehrer_tex:293 ../templates/visible_categories_location:28
 msgid "L0110"
 msgstr "Business hours"
 
 #: ../templates/_profile/usbportal/visible_categories_location:31
-#: ../templates/bibfuehrer_tex:294 ../templates/visible_categories_location:28
+#: ../templates/bibfuehrer_tex:294 ../templates/visible_categories_location:29
 msgid "L0120"
 msgstr "Holdings of books"
 
 #: ../templates/_profile/usbportal/visible_categories_location:32
-#: ../templates/bibfuehrer_tex:295 ../templates/visible_categories_location:29
+#: ../templates/bibfuehrer_tex:295 ../templates/visible_categories_location:30
 msgid "L0130"
 msgstr "Holdings of journals"
 
 #: ../templates/_profile/usbportal/visible_categories_location:33
-#: ../templates/bibfuehrer_tex:296 ../templates/visible_categories_location:30
+#: ../templates/bibfuehrer_tex:296 ../templates/visible_categories_location:31
 msgid "L0140"
 msgstr "Number of ongoing journals"
 
 #: ../templates/_profile/usbportal/visible_categories_location:34
-#: ../templates/bibfuehrer_tex:297 ../templates/visible_categories_location:31
+#: ../templates/bibfuehrer_tex:297 ../templates/visible_categories_location:32
 msgid "L0150"
 msgstr "Holdings of CDs / digital media"
 
 #: ../templates/_profile/usbportal/visible_categories_location:35
-#: ../templates/bibfuehrer_tex:298 ../templates/visible_categories_location:32
+#: ../templates/bibfuehrer_tex:298 ../templates/visible_categories_location:33
 msgid "L0160"
 msgstr "Other holding information"
 
 #: ../templates/_profile/usbportal/visible_categories_location:36
-#: ../templates/bibfuehrer_tex:299 ../templates/visible_categories_location:33
+#: ../templates/bibfuehrer_tex:299 ../templates/visible_categories_location:34
 msgid "L0170"
 msgstr "Special collecting fields"
 
@@ -7354,27 +7354,27 @@ msgstr "Special collecting fields"
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:28
 #: ../templates/_profile/kug/home_html_bottom_left:27
 #: ../templates/_profile/usbportal/visible_categories_location:20
-#: ../templates/bibfuehrer_tex:300 ../templates/visible_categories_location:34
+#: ../templates/bibfuehrer_tex:300 ../templates/visible_categories_location:35
 msgid "L0180"
 msgstr "Type of library"
 
 #: ../templates/_profile/usbportal/visible_categories_location:38
-#: ../templates/bibfuehrer_tex:301 ../templates/visible_categories_location:35
+#: ../templates/bibfuehrer_tex:301 ../templates/visible_categories_location:36
 msgid "L0190"
 msgstr "Lists of new acquisitions"
 
 #: ../templates/_profile/usbportal/visible_categories_location:39
-#: ../templates/bibfuehrer_tex:302 ../templates/visible_categories_location:36
+#: ../templates/bibfuehrer_tex:302 ../templates/visible_categories_location:37
 msgid "L0200"
 msgstr "Copier / technical equipment"
 
 #: ../templates/_profile/usbportal/visible_categories_location:41
-#: ../templates/bibfuehrer_tex:304 ../templates/visible_categories_location:38
+#: ../templates/bibfuehrer_tex:304 ../templates/visible_categories_location:39
 msgid "L0210"
 msgstr "IT equipment"
 
 #: ../templates/_profile/usbportal/visible_categories_location:42
-#: ../templates/bibfuehrer_tex:305 ../templates/visible_categories_location:39
+#: ../templates/bibfuehrer_tex:305 ../templates/visible_categories_location:40
 msgid "L0220"
 msgstr "Type of library system"
 
@@ -7398,7 +7398,7 @@ msgstr "Type of library system"
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:29
 #: ../templates/_profile/kug/home_html_bottom_left:28
 #: ../templates/_profile/usbportal/visible_categories_location:43
-#: ../templates/bibfuehrer_tex:306 ../templates/visible_categories_location:40
+#: ../templates/bibfuehrer_tex:306 ../templates/visible_categories_location:41
 msgid "L0230"
 msgstr "Online cataloging"
 
@@ -7422,29 +7422,33 @@ msgstr "Online cataloging"
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:30
 #: ../templates/_profile/kug/home_html_bottom_left:29
 #: ../templates/_profile/usbportal/visible_categories_location:44
-#: ../templates/bibfuehrer_tex:307 ../templates/visible_categories_location:41
+#: ../templates/bibfuehrer_tex:307 ../templates/visible_categories_location:42
 msgid "L0235"
 msgstr "Online cataloging since year of acquisition"
 
 #: ../templates/_profile/usbportal/visible_categories_location:45
-#: ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:42
+#: ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:43
 msgid "L0240"
 msgstr "KUG cooperation"
 
 #: ../templates/_profile/usbportal/visible_categories_location:46
-#: ../templates/bibfuehrer_tex:309 ../templates/visible_categories_location:43
+#: ../templates/bibfuehrer_tex:309 ../templates/visible_categories_location:44
 msgid "L0250"
 msgstr "Sign in ZDB"
 
 #: ../templates/_profile/usbportal/visible_categories_location:40
-#: ../templates/bibfuehrer_tex:303 ../templates/visible_categories_location:37
+#: ../templates/bibfuehrer_tex:303 ../templates/visible_categories_location:38
 msgid "L0260"
 msgstr "Type of network"
 
 #: ../templates/_profile/usbportal/visible_categories_location:47
-#: ../templates/bibfuehrer_tex:310 ../templates/visible_categories_location:44
+#: ../templates/bibfuehrer_tex:310 ../templates/visible_categories_location:45
 msgid "L0280"
 msgstr "Geographic coordinates"
+
+#: ../templates/visible_categories_location:22
+msgid "L0290"
+msgstr "Other catalogs"
 
 #: ../templates/_profile/kug/authority_search_facet:525
 #: ../templates/_profile/kug/authority_search_facet:526
@@ -7907,7 +7911,7 @@ msgstr "Type of media"
 #: ../templates/_profile/kug/_view/inst414malai/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/inst420/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/inst434/home_html_bottom_left:77
-#: ../templates/_profile/kug/_view/kug/newsflash:109
+#: ../templates/_profile/kug/_view/kug/newsflash:116
 #: ../templates/_profile/kug/_view/marketing/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/ostasiatica/home_html_bottom_left:75
 #: ../templates/_profile/kug/_view/philfak_fg4/home_html_bottom_left:77

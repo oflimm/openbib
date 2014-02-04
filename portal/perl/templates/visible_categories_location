@@ -19,6 +19,7 @@
                 'L0030', # msg.maketext("L0030") # Gebäude
                 'L0040', # msg.maketext("L0040") # Interaktiver Lageplan der Universität
                 'L0050', # msg.maketext("L0050") # Gemeinsame Bibliothek
+                'L0290', # msg.maketext("L0290") # Weitere Kataloge
                 'L0060', # msg.maketext("L0060") # Telefon
                 'L0070', # msg.maketext("L0070") # Fax
                 'L0080', # msg.maketext("L0080") # E-Mail

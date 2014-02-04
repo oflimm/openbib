@@ -26,9 +26,9 @@ zugeh&ouml;rigen digitalisierten Karten-Katalogen:
 </p>
 
 <ul>
-<li><a href="[% config.get('redirect_loc') %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430n" target="_blank">Musikwissenschaftliches Institut / Notenkatalog</a>. </li>
-<li><a href="[% config.get('redirect_loc') %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430s" target="_blank">Musikwissenschaftliches Institut / Schriftenkatalog</a>. </li>
-<li><a href="[% config.get('redirect_loc') %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430t" target="_blank">Musikwissenschaftliches Institut / Tontr&auml;gerkatalog</a>. </li>
+<li><a href="[% config.get('redirect_loc') %]?type=532&[% uri_escape("http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430n") %]" target="_blank">Musikwissenschaftliches Institut / Notenkatalog</a>. </li>
+<li><a href="[% config.get('redirect_loc') %]?type=532&[% uri_escape("http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430s") %]" target="_blank">Musikwissenschaftliches Institut / Schriftenkatalog</a>. </li>
+<li><a href="[% config.get('redirect_loc') %]?type=532&[% uri_escape("http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430t") %]" target="_blank">Musikwissenschaftliches Institut / Tontr&auml;gerkatalog</a>. </li>
 </ul>
 
 <h4>[% msg.maketext("Zeitschriften der Bibliothek") %]</h4>

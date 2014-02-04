@@ -22,7 +22,7 @@
 
 <p>
 Sie finden weitere Best&auml;nde dieses Katalogs in dem
-zugeh&ouml;rigen digitalisierten Karten-Katalog <a href="[% config.get('redirect_loc') %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=423f" target="_blank">Historisches Seminar / Abteilung f&uuml;r iberische und lateinamerikanische Geschichte / Erwin-Walter-Palm-Bibliothek</a>.
+zugeh&ouml;rigen digitalisierten Karten-Katalog <a href="[% config.get('redirect_loc') %]?type=532&[% uri_escape("http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=423f") %]" target="_blank">Historisches Seminar / Abteilung f&uuml;r iberische und lateinamerikanische Geschichte / Erwin-Walter-Palm-Bibliothek</a>.
 </p>
 
 <h4>[% msg.maketext("Zeitschriften der Bibliothek") %]</h4>

@@ -26,8 +26,8 @@ zugeh&ouml;rigen digitalisierten Karten-Katalogen:
 </p>
 
 <ul>
-<li><a href="[% config.get('redirect_loc') %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=420a" target="_blank">Historisches Seminar</a>. </li>
-<li><a href="[% config.get('redirect_loc') %]/[% sessionID %]/532/http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=424e" target="_blank">Historisches Seminar / Arbeitskreis Nationalismusforschung</a>. </li>
+<li><a href="[% config.get('redirect_loc') %]?type=532&[% uri_escape("http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=420a") %]" target="_blank">Historisches Seminar</a>. </li>
+<li><a href="[% config.get('redirect_loc') %]?type=532&[% uri_escape("http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=424e") %]" target="_blank">Historisches Seminar / Arbeitskreis Nationalismusforschung</a>. </li>
 </ul>
 
 <h4>[% msg.maketext("Neuerwerbungslisten") %]</h4>

@@ -33,7 +33,7 @@ IF recent_litlists.size > 0;
     lecturestring = "" ;
     IF litlist.lecture ;
        lectureinfo   = msg.maketext("Offizielle Literaturliste des Instituts/Seminars");
-       lecturestring = "&nbsp;<img src=\"${config.get('university_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
+       lecturestring = "&nbsp;<img src=\"http://search.ub.uni-koeln.de${config.get('university_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
     END ;
     litlist_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/litlists/id/${litlist.id}.html?l=de\">${litlist.title}</a> (${litlist.itemcount} Titel)</li>${lecturestring}");
   END;

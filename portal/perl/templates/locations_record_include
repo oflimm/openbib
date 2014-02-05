@@ -91,15 +91,6 @@ FOREACH category IN categories;
         mult     = item.mult;
         subfield = item.subfield;
 
-       SWITCH category;
-
-          CASE [ "L0180" ];
-            IF locationinfo.fields.${"L0230"};
-               kuginfo = locationinfo.fields.${"L0230"}.first.content;
-               content = "${content} (${kuginfo})";
-            END;
-
-       END ;
 
         # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
         # in Config.pm fuer die entsprechende Datenbank definiert

@@ -81,7 +81,7 @@ while (<>){
     if (defined $title_ref->{fields}{'4715'}){
         foreach my $item (@{$title_ref->{fields}{'4715'}}){
             if ($item->{content} eq "edz"){
-                push @{$title_ref->{'locationid'}}, "DE-38-EDZ";
+                push @{$title_ref->{'locations'}}, "DE-38-EDZ";
             }
         }
     }
@@ -90,14 +90,16 @@ while (<>){
     if (defined $title_ref->{fields}{'4400'}){
         foreach my $item (@{$title_ref->{fields}{'4400'}}){
             if ($item->{content} eq "online"){
-                push @{$title_ref->{'locationid'}}, "DE-38";
-                push @{$title_ref->{'locationid'}}, "DE-38-101";
-                push @{$title_ref->{'locationid'}}, "DE-38-123";
-                push @{$title_ref->{'locationid'}}, "DE-38-448";
-                push @{$title_ref->{'locationid'}}, "DE-38-429";
-                push @{$title_ref->{'locationid'}}, "DE-38-507";
-                push @{$title_ref->{'locationid'}}, "DE-38-EDZ";
-                push @{$title_ref->{'locationid'}}, "DE-38-HWA";
+                push @{$title_ref->{'locations'}}, "DE-38";
+                push @{$title_ref->{'locations'}}, "DE-38-101";
+                push @{$title_ref->{'locations'}}, "DE-38-123";
+                push @{$title_ref->{'locations'}}, "DE-38-448";
+                push @{$title_ref->{'locations'}}, "DE-38-429";
+                push @{$title_ref->{'locations'}}, "DE-38-507";
+                push @{$title_ref->{'locations'}}, "DE-38-EDZ";
+                push @{$title_ref->{'locations'}}, "DE-38-HWA";
+                push @{$title_ref->{'locations'}}, "DE-38-ASIEN";
+                push @{$title_ref->{'locations'}}, "DE-38-MEKUTH";
             }
         }
     }

@@ -24,6 +24,7 @@ while (<HOLDING>){
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek Versicherungswiss/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-123";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-VERS";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek VWL/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-101";

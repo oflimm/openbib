@@ -51,7 +51,7 @@
    </div>
 <p/>
 
-<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div> <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
+<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- ELSE -%]&nbsp;<img src="[% config.get('persons_img') %]" title="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" alt="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" style="vertical-align:bottom"/>[%- END -%]</div> <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.topics.size -%]
 [%- FOREACH topic IN litlist.properties.topics-%]
 <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a>&nbsp;&nbsp;

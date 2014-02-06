@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-02-04 09:40+0100\n"
+"PO-Revision-Date: 2014-02-06 16:26+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2313,7 +2313,7 @@ msgstr "Bestaetigen Sie Ihre Registrierung"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:222
 #: ../templates/_profile/usbportal/holding:19
 #: ../templates/_profile/usbportal/titles_record_include:77
-#: ../templates/_profile/usbportal/visible_categories_location:30
+#: ../templates/_profile/usbportal/visible_categories_location:32
 #: ../templates/_view/richter/cartitems_html_simple:70
 #: ../templates/cartitems_html_simple:67 ../templates/holding:34
 #: ../templates/holding_mobile:17 ../templates/titles_record_html:227
@@ -3130,12 +3130,12 @@ msgstr "Die 20 meist aufgerufenen Titel in den letzten 6 Monaten"
 msgid "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
 msgstr "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
 
-#: ../templates/_profile/usbportal/visible_categories_location:48
+#: ../templates/_profile/usbportal/visible_categories_location:49
 #: ../templates/searchforms_record_bottom_right:16
 msgid "Die 5 zuletzt angelegten Literaturlisten"
 msgstr "Die 5 zuletzt angelegten Literaturlisten"
 
-#: ../templates/_profile/usbportal/visible_categories_location:49
+#: ../templates/_profile/usbportal/visible_categories_location:50
 #: ../templates/searchforms_record_bottom_right:39
 msgid "Die 5 zuletzt vergebenen Tags"
 msgstr "Die 5 zuletzt vergebenen Tags"
@@ -7520,37 +7520,37 @@ msgstr "Adresse"
 msgid "L0030"
 msgstr "Gebäude"
 
-#: ../templates/_profile/usbportal/visible_categories_location:22
+#: ../templates/_profile/usbportal/visible_categories_location:25
 #: ../templates/bibfuehrer_tex:286 ../templates/visible_categories_location:20
 msgid "L0040"
 msgstr "Interaktiver Lageplan der Universität"
 
-#: ../templates/_profile/usbportal/visible_categories_location:23
+#: ../templates/_profile/usbportal/visible_categories_location:26
 #: ../templates/bibfuehrer_tex:287 ../templates/visible_categories_location:21
 msgid "L0050"
 msgstr "Gemeinsame Bibliothek"
 
-#: ../templates/_profile/usbportal/visible_categories_location:24
+#: ../templates/_profile/usbportal/visible_categories_location:27
 #: ../templates/bibfuehrer_tex:288 ../templates/visible_categories_location:23
 msgid "L0060"
 msgstr "Telefon"
 
-#: ../templates/_profile/usbportal/visible_categories_location:25
+#: ../templates/_profile/usbportal/visible_categories_location:28
 #: ../templates/bibfuehrer_tex:289 ../templates/visible_categories_location:24
 msgid "L0070"
 msgstr "Fax"
 
-#: ../templates/_profile/usbportal/visible_categories_location:26
+#: ../templates/_profile/usbportal/visible_categories_location:29
 #: ../templates/bibfuehrer_tex:290 ../templates/visible_categories_location:25
 msgid "L0080"
 msgstr "E-Mail"
 
-#: ../templates/_profile/usbportal/visible_categories_location:27
+#: ../templates/_profile/usbportal/visible_categories_location:30
 #: ../templates/bibfuehrer_tex:291 ../templates/visible_categories_location:26
 msgid "L0090"
 msgstr "Internet"
 
-#: ../templates/_profile/usbportal/visible_categories_location:28
+#: ../templates/_profile/usbportal/visible_categories_location:24
 #: ../templates/bibfuehrer_tex:292 ../templates/visible_categories_location:27
 msgid "L0100"
 msgstr "Auskunft / Bibliothekar(in)"
@@ -7579,32 +7579,32 @@ msgstr "Auskunft / Bibliothekar(in)"
 msgid "L0110"
 msgstr "Öffnungszeiten"
 
-#: ../templates/_profile/usbportal/visible_categories_location:31
+#: ../templates/_profile/usbportal/visible_categories_location:33
 #: ../templates/bibfuehrer_tex:294 ../templates/visible_categories_location:29
 msgid "L0120"
 msgstr "Bestand Monographien"
 
-#: ../templates/_profile/usbportal/visible_categories_location:32
+#: ../templates/_profile/usbportal/visible_categories_location:34
 #: ../templates/bibfuehrer_tex:295 ../templates/visible_categories_location:30
 msgid "L0130"
 msgstr "Bestand Zeitschriften"
 
-#: ../templates/_profile/usbportal/visible_categories_location:33
+#: ../templates/_profile/usbportal/visible_categories_location:35
 #: ../templates/bibfuehrer_tex:296 ../templates/visible_categories_location:31
 msgid "L0140"
 msgstr "Anzahl laufender Zeitschriften"
 
-#: ../templates/_profile/usbportal/visible_categories_location:34
+#: ../templates/_profile/usbportal/visible_categories_location:36
 #: ../templates/bibfuehrer_tex:297 ../templates/visible_categories_location:32
 msgid "L0150"
 msgstr "Bestand CD's / Digitale Medien"
 
-#: ../templates/_profile/usbportal/visible_categories_location:35
+#: ../templates/_profile/usbportal/visible_categories_location:37
 #: ../templates/bibfuehrer_tex:298 ../templates/visible_categories_location:33
 msgid "L0160"
 msgstr "Sonstige Bestandsangaben"
 
-#: ../templates/_profile/usbportal/visible_categories_location:36
+#: ../templates/_profile/usbportal/visible_categories_location:38
 #: ../templates/bibfuehrer_tex:299 ../templates/visible_categories_location:34
 msgid "L0170"
 msgstr "Besondere Sammelgebiete"
@@ -7633,22 +7633,22 @@ msgstr "Besondere Sammelgebiete"
 msgid "L0180"
 msgstr "Art der Bibliothek"
 
-#: ../templates/_profile/usbportal/visible_categories_location:38
+#: ../templates/_profile/usbportal/visible_categories_location:40
 #: ../templates/bibfuehrer_tex:301 ../templates/visible_categories_location:36
 msgid "L0190"
 msgstr "Neuerwerbungslisten"
 
-#: ../templates/_profile/usbportal/visible_categories_location:39
+#: ../templates/_profile/usbportal/visible_categories_location:41
 #: ../templates/bibfuehrer_tex:302 ../templates/visible_categories_location:37
 msgid "L0200"
 msgstr "Kopierer / Technische Ausstattung"
 
-#: ../templates/_profile/usbportal/visible_categories_location:41
+#: ../templates/_profile/usbportal/visible_categories_location:43
 #: ../templates/bibfuehrer_tex:304 ../templates/visible_categories_location:39
 msgid "L0210"
 msgstr "DV-Ausstattung"
 
-#: ../templates/_profile/usbportal/visible_categories_location:42
+#: ../templates/_profile/usbportal/visible_categories_location:44
 #: ../templates/bibfuehrer_tex:305 ../templates/visible_categories_location:40
 msgid "L0220"
 msgstr "Art des Systems"
@@ -7672,7 +7672,7 @@ msgstr "Art des Systems"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:29
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:29
 #: ../templates/_profile/kug/home_html_bottom_left:28
-#: ../templates/_profile/usbportal/visible_categories_location:43
+#: ../templates/_profile/usbportal/visible_categories_location:22
 #: ../templates/bibfuehrer_tex:306 ../templates/visible_categories_location:41
 msgid "L0230"
 msgstr "Online-Katalogisierung"
@@ -7696,31 +7696,32 @@ msgstr "Online-Katalogisierung"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:30
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:30
 #: ../templates/_profile/kug/home_html_bottom_left:29
-#: ../templates/_profile/usbportal/visible_categories_location:44
+#: ../templates/_profile/usbportal/visible_categories_location:45
 #: ../templates/bibfuehrer_tex:307 ../templates/visible_categories_location:42
 msgid "L0235"
 msgstr "Online-Katalogisierung seit Erwerbungsjahr"
 
-#: ../templates/_profile/usbportal/visible_categories_location:45
+#: ../templates/_profile/usbportal/visible_categories_location:46
 #: ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:43
 msgid "L0240"
 msgstr "Mitarbeit am KUG"
 
-#: ../templates/_profile/usbportal/visible_categories_location:46
+#: ../templates/_profile/usbportal/visible_categories_location:47
 #: ../templates/bibfuehrer_tex:309 ../templates/visible_categories_location:44
 msgid "L0250"
 msgstr "Sigel in ZDB"
 
-#: ../templates/_profile/usbportal/visible_categories_location:40
+#: ../templates/_profile/usbportal/visible_categories_location:42
 #: ../templates/bibfuehrer_tex:303 ../templates/visible_categories_location:38
 msgid "L0260"
 msgstr "Art der Vernetzung"
 
-#: ../templates/_profile/usbportal/visible_categories_location:47
+#: ../templates/_profile/usbportal/visible_categories_location:48
 #: ../templates/bibfuehrer_tex:310 ../templates/visible_categories_location:45
 msgid "L0280"
 msgstr "Geo-Koordinaten"
 
+#: ../templates/_profile/usbportal/visible_categories_location:23
 #: ../templates/visible_categories_location:22
 msgid "L0290"
 msgstr "Weitere Kataloge"
@@ -17734,7 +17735,7 @@ msgstr ""
 msgid "Zeitraum"
 msgstr "Zeitraum"
 
-#: ../templates/_profile/usbportal/visible_categories_location:37
+#: ../templates/_profile/usbportal/visible_categories_location:39
 msgid "Zeitschriften"
 msgstr "Zeitschriften"
 
@@ -18801,6 +18802,13 @@ msgstr "wiederholt"
 #: ../templates/users_searchprofiles_record_edit:141
 msgid "Ändern"
 msgstr "Ändern"
+
+#: ../templates/litlists_by_single_topic_html:75
+#: ../templates/litlists_by_single_topic_recent_html:77
+#: ../templates/litlists_html:64 ../templates/litlists_recent_html:64
+#: ../templates/litlists_record_html:54
+msgid "Öffentliche Literaturliste von Nutzern"
+msgstr "Öffentliche Literaturliste von Nutzern"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:14
 msgid "Über den KUG"

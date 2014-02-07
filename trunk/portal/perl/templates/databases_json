@@ -5,9 +5,9 @@ FOREACH database IN databases.all ;
   this_databaseinfo = {
     link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('databases_loc')}/id/${database.id}.json?l=${lang}"
+          href = "${path_prefix}/${config.get('databases_loc')}/id/${database.dbname}.json?l=${lang}"
     }
-    id          = database.id
+    id          = database.dbname
     description = database.description
     active      = database.active
     dbname      = database.dbname

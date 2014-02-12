@@ -242,6 +242,18 @@ msgid ""
 "         z.B.: <b>kernighan ritchie</b> (von beiden Autoren verfasste Titel werden angezeigt)"
 msgstr ""
 
+#. ("<a href=\"https://support.mozilla.org/de/kb/Wie-beeinflussen-Inhalte-die-nicht-sicher-sind-meine-Sicherheit\" target=\"_blank\">","</a>")
+#: ../templates/users_registrations:55
+msgid ""
+"<p>Falls Sie kein CAPTCHA angezeigt bekommen, dann liegt\n"
+"das Problem liegt in den Sicherheitseinstellungen Ihres Browsers\n"
+"begründet. Um Cross-Site-Scripting-Attacken zu verhindern, unterdrückt\n"
+"z.B. der Browser Firefox entsprechend eingebettete Inhalte von fremden\n"
+"Webseiten, siehe %1hier%2.</p>\n"
+"<p>Leider ist der ReCaptcha Dienst gerade ein legitimer Inhalt der\n"
+"ebenso unterdrückt wird. Im Firefox müssen Sie bei dieser Seite links oben auf das 'Schildsymbol' vor dem URL klicken und dort 'Schutz für diese Seite deaktivieren' auswählen</p>"
+msgstr ""
+
 #. ("\"","\"")
 #: ../templates/_profile/kug/info_help:256 ../templates/info_help:319
 msgid "<tt>%1Goethe-Jahrbuch%2</tt> oder"
@@ -1618,10 +1630,6 @@ msgstr ""
 msgid "Die 20 meist aufgerufenen Titel in den letzten 6 Monaten"
 msgstr ""
 
-#: ../templates/databases_popular:61
-msgid "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
-msgstr ""
-
 #: ../templates/_profile/usbportal/visible_categories_location:49 ../templates/searchforms_record_bottom_right:16
 msgid "Die 5 zuletzt angelegten Literaturlisten"
 msgstr ""
@@ -1959,7 +1967,7 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ../templates/_profile/kug/login:130 ../templates/_profile/sammlungen/login:89 ../templates/_profile/usbportal/login:102 ../templates/_view/richter/login:72 ../templates/_view/richter/users_passwords:59 ../templates/_view/richter/users_registrations:70 ../templates/cartitems_mail:60 ../templates/login:72 ../templates/users_passwords:69 ../templates/users_registrations:69
+#: ../templates/_profile/kug/login:130 ../templates/_profile/sammlungen/login:89 ../templates/_profile/usbportal/login:102 ../templates/_view/richter/login:72 ../templates/_view/richter/users_passwords:59 ../templates/_view/richter/users_registrations:70 ../templates/cartitems_mail:60 ../templates/login:72 ../templates/users_passwords:69 ../templates/users_registrations:77
 msgid "E-Mail-Adresse"
 msgstr ""
 
@@ -3415,7 +3423,7 @@ msgstr ""
 msgid "Katalogauswahl zu diesem View"
 msgstr ""
 
-#: ../templates/_profile/kug/_database/dbis/classifications_html:37 ../templates/_profile/kug/_database/ezb/classifications_html:37 ../templates/_profile/kug/_view/kug/home_html_bottom_left:31 ../templates/admin_databases_html:42 ../templates/admin_databases_record_delete_confirm:39 ../templates/admin_databases_record_edit:39 ../templates/admin_databases_rss_html:40 ../templates/admin_databases_rss_record_delete_confirm:39 ../templates/admin_databases_rss_record_edit:56 ../templates/admin_databases_updates_html:39 ../templates/admin_navigation:44 ../templates/admin_navigation:46 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:92 ../templates/admin_profiles_record_edit:124 ../templates/admin_searchprofiles_record_edit:81 ../templates/admin_searchprofiles_record_html:63 ../templates/databases_html:41 ../templates/databases_html:89 ../templates/databases_popular:41 ../templates/databases_record_html:38 ../templates/databases_rss_html:39 ../templates/databases_rss_record_html:55 ../templates/home_html_bottom_left:47 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/searchprofiles_record_html:63 ../templates/titles_dbis_recommendations_html:40 ../templates/titles_html:41 ../templates/titles_popular_by_database_html:44 ../templates/titles_popular_html:44 ../templates/usage_navigation:10 ../templates/usage_navigation:12
+#: ../templates/_profile/kug/_database/dbis/classifications_html:37 ../templates/_profile/kug/_database/ezb/classifications_html:37 ../templates/_profile/kug/_view/kug/home_html_bottom_left:31 ../templates/admin_databases_html:42 ../templates/admin_databases_record_delete_confirm:39 ../templates/admin_databases_record_edit:39 ../templates/admin_databases_rss_html:40 ../templates/admin_databases_rss_record_delete_confirm:39 ../templates/admin_databases_rss_record_edit:56 ../templates/admin_databases_updates_html:39 ../templates/admin_navigation:44 ../templates/admin_navigation:46 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:92 ../templates/admin_profiles_record_edit:124 ../templates/admin_searchprofiles_record_edit:81 ../templates/admin_searchprofiles_record_html:63 ../templates/databases_html:41 ../templates/databases_html:89 ../templates/databases_record_html:38 ../templates/databases_rss_html:39 ../templates/databases_rss_record_html:55 ../templates/home_html_bottom_left:47 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/searchprofiles_record_html:63 ../templates/titles_dbis_recommendations_html:40 ../templates/titles_html:41 ../templates/titles_popular_by_database_html:44 ../templates/titles_popular_html:44 ../templates/usage_navigation:10 ../templates/usage_navigation:12
 msgid "Kataloge"
 msgstr ""
 
@@ -4350,7 +4358,7 @@ msgstr ""
 msgid "P5000"
 msgstr ""
 
-#: ../templates/_profile/kug/login:101 ../templates/_profile/kug/login:134 ../templates/_profile/kug/users_preferences_html:423 ../templates/_profile/kug/users_preferences_html:67 ../templates/_profile/rheinlandbib/searchforms_record_simple:553 ../templates/_profile/sammlungen/_database/portrait/titles_record_html_images:63 ../templates/_profile/sammlungen/login:137 ../templates/_profile/sammlungen/login:93 ../templates/_profile/usbportal/login:103 ../templates/_profile/usbportal/login:72 ../templates/_view/richter/login:76 ../templates/_view/richter/users_registrations:74 ../templates/login:76 ../templates/login_circulation:80 ../templates/users_preferences_html:67 ../templates/users_registrations:73
+#: ../templates/_profile/kug/login:101 ../templates/_profile/kug/login:134 ../templates/_profile/kug/users_preferences_html:423 ../templates/_profile/kug/users_preferences_html:67 ../templates/_profile/rheinlandbib/searchforms_record_simple:553 ../templates/_profile/sammlungen/_database/portrait/titles_record_html_images:63 ../templates/_profile/sammlungen/login:137 ../templates/_profile/sammlungen/login:93 ../templates/_profile/usbportal/login:103 ../templates/_profile/usbportal/login:72 ../templates/_view/richter/login:76 ../templates/_view/richter/users_registrations:74 ../templates/login:76 ../templates/login_circulation:80 ../templates/users_preferences_html:67 ../templates/users_registrations:81
 msgid "Passwort"
 msgstr ""
 
@@ -4358,7 +4366,7 @@ msgstr ""
 msgid "Passwort &auml;ndern"
 msgstr ""
 
-#: ../templates/_view/richter/users_registrations:78 ../templates/users_registrations:77
+#: ../templates/_view/richter/users_registrations:78 ../templates/users_registrations:85
 msgid "Passwort (wiederholt)"
 msgstr ""
 
@@ -4638,7 +4646,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: ../templates/_profile/kug/login:138 ../templates/_profile/rheinlandbib/searchforms_record_simple:557 ../templates/_profile/sammlungen/login:97 ../templates/_profile/usbportal/login:107 ../templates/_profile/usbportal/login:76 ../templates/_view/richter/login:80 ../templates/_view/richter/users_registrations:38 ../templates/_view/richter/users_registrations:94 ../templates/login:80 ../templates/users_registrations:38 ../templates/users_registrations:66 ../templates/users_registrations:90
+#: ../templates/_profile/kug/login:138 ../templates/_profile/rheinlandbib/searchforms_record_simple:557 ../templates/_profile/sammlungen/login:97 ../templates/_profile/usbportal/login:107 ../templates/_profile/usbportal/login:76 ../templates/_view/richter/login:80 ../templates/_view/richter/users_registrations:38 ../templates/_view/richter/users_registrations:94 ../templates/login:80 ../templates/users_registrations:38 ../templates/users_registrations:74 ../templates/users_registrations:98
 msgid "Registrieren"
 msgstr ""
 
@@ -6664,7 +6672,7 @@ msgstr ""
 msgid "Titelzahl"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:451 ../templates/_profile/sammlungen/_view/muenzen/titles_record_html_actions:458 ../templates/databases_popular:42 ../templates/info_11:34 ../templates/info_tutorials:73 ../templates/titles_popular_by_database_html:46 ../templates/titles_popular_by_database_html:65 ../templates/titles_popular_html:45 ../templates/titles_popular_include:31 ../templates/titles_record_html_actions:451 ../templates/titles_record_include:725
+#: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:451 ../templates/_profile/sammlungen/_view/muenzen/titles_record_html_actions:458 ../templates/info_11:34 ../templates/info_tutorials:73 ../templates/titles_popular_by_database_html:46 ../templates/titles_popular_by_database_html:65 ../templates/titles_popular_html:45 ../templates/titles_popular_include:31 ../templates/titles_record_html_actions:451 ../templates/titles_record_include:725
 msgid "Top 20"
 msgstr ""
 

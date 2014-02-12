@@ -5,7 +5,7 @@ FOREACH database IN databases.all ;
   this_databaseinfo = {
     link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('databases_loc')}/id/${database.dbname}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database.dbname}.json?l=${lang}"
     }
     id          = database.dbname
     description = database.description
@@ -26,7 +26,7 @@ END;
  this_json_output = {
      link = {
           rel = 'self'
-          href = "${scheme}://${servername}/${path_prefix}/${config.get('databases_loc')}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}.json?l=${lang}"
      }
      databases = all_databases
  };

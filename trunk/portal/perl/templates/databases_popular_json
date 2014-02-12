@@ -11,7 +11,7 @@ FOREACH thisitem IN resultlist ;
   this_databaseinfo = {
     link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('databases_loc')}/id/${database}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}.json?l=${lang}"
     }
     description = dbinfo.dbnames.${item}.short
     count       = count
@@ -22,7 +22,7 @@ END;
  this_json_output = {
      link = {
           rel = 'self'
-          href = "${scheme}://${servername}/${path_prefix}/${config.get('databases_loc')}/popular.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/popular.json?l=${lang}"
      }
      databases = all_databases
  };

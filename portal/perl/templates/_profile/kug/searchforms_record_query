@@ -171,6 +171,7 @@
 <option value="" selected="selected">Keiner ausgewählt</option>
 <option value="Aufsatz">Aufsatz</option>
 <option value="Digital">Digital</option>
+<option value="Hochschulschrift">Hochschulschrift</option>
 <option value="Zeitschrift/Serie">Zeitschrift/Serie</option>
 </select>
 </div>

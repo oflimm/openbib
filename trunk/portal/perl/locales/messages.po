@@ -246,11 +246,11 @@ msgstr ""
 #: ../templates/users_registrations:55
 msgid ""
 "<p>Falls Sie kein CAPTCHA angezeigt bekommen, dann liegt\n"
-"das Problem liegt in den Sicherheitseinstellungen Ihres Browsers\n"
+"das Problem in den Sicherheitseinstellungen Ihres Browsers\n"
 "begründet. Um Cross-Site-Scripting-Attacken zu verhindern, unterdrückt\n"
 "z.B. der Browser Firefox entsprechend eingebettete Inhalte von fremden\n"
 "Webseiten, siehe %1hier%2.</p>\n"
-"<p>Leider ist der ReCaptcha Dienst gerade ein legitimer Inhalt der\n"
+"<p>Leider ist der ReCaptcha Dienst gerade ein legitimer Inhalt, der\n"
 "ebenso unterdrückt wird. Im Firefox müssen Sie bei dieser Seite links oben auf das 'Schildsymbol' vor dem URL klicken und dort 'Schutz für diese Seite deaktivieren' auswählen</p>"
 msgstr ""
 

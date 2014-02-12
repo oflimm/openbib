@@ -20,6 +20,11 @@ FOREACH singlefeed IN viewrssfeed.keys;
 END;
 
 thisviewrssinfo = {
+ link = {
+           rel = 'self'
+           href = "${scheme}://${servername}${path_prefix}/[% config.get('views_loc')}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
+        }
+
   rssfeeds = rssfeeds,
   primrssfeed = viewinfo.rssid.id
 };

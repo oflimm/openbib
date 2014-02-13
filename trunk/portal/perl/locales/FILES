@@ -299,6 +299,7 @@
 ../templates/admin_locations_record_delete_confirm
 ../templates/admin_locations_record_edit
 ../templates/admin_locations_record_html
+../templates/admin_locations_record_include
 ../templates/admin_locations_record_json
 ../templates/admin_navigation
 ../templates/admin_orgunits
@@ -591,6 +592,8 @@
 ../templates/databases_html
 ../templates/databases_json
 ../templates/databases_popular
+../templates/databases_popular_html
+../templates/databases_popular_json
 ../templates/databases_record
 ../templates/databases_record_html
 ../templates/databases_record_json
@@ -701,6 +704,7 @@
 ../templates/locations_json
 ../templates/locations_record
 ../templates/locations_record_html
+../templates/locations_record_include
 ../templates/locations_record_json
 ../templates/locations_record_mobile
 ../templates/login
@@ -900,12 +904,14 @@
 ../templates/_profile/kug/_view/inst423/home_html_bottom_right
 ../templates/_profile/kug/_view/inst425/home_html_bottom_right
 ../templates/_profile/kug/_view/inst426/home_html_bottom_right
+../templates/_profile/kug/_view/inst429/home_html_bottom_left
 ../templates/_profile/kug/_view/inst430/home_html_bottom_right
 ../templates/_profile/kug/_view/inst431/home_html_bottom_right
 ../templates/_profile/kug/_view/inst434/home_html_bottom_left
 ../templates/_profile/kug/_view/inst434/home_html_bottom_right
 ../templates/_profile/kug/_view/inst434/searchforms_record_profile
 ../templates/_profile/kug/_view/inst434/search_radius
+../templates/_profile/kug/_view/inst448/home_html_bottom_left
 ../templates/_profile/kug/_view/inst450/home_html_bottom_right
 ../templates/_profile/kug/_view/inst460/home_html_bottom_right
 ../templates/_profile/kug/_view/inst468/home_html_bottom_right
@@ -914,6 +920,7 @@
 ../templates/_profile/kug/_view/inst526/home_html_bottom_right
 ../templates/_profile/kug/_view/kug/home_html_bottom_left
 ../templates/_profile/kug/_view/kug/home_html_bottom_right
+../templates/_profile/kug/_view/kug/mainnavigation_html
 ../templates/_profile/kug/_view/kug/newsflash
 ../templates/_profile/kug/_view/marketing/home_html_bottom_left
 ../templates/_profile/kug/_view/marketing/home_html_bottom_right
@@ -1347,6 +1354,10 @@
 ../templates/profiles_record
 ../templates/profiles_record_html
 ../templates/profiles_record_json
+../templates/_profile/usbintern/corporate_banner
+../templates/_profile/usbintern/home_html_bottom_left
+../templates/_profile/usbintern/std_footer_html
+../templates/_profile/usbintern/std_header_html
 ../templates/_profile/usbportal/circulation
 ../templates/_profile/usbportal/clouds_classification_include
 ../templates/_profile/usbportal/clouds_corporatebody_include
@@ -1586,6 +1597,8 @@
 ../templates/users_titles_record_searchindex
 ../templates/users_titles_record_searchindex_html
 ../templates/users_titles_record_searchindex_json
+../templates/_view/filme/corporate_banner
+../templates/_view/filme/searchforms_record_query
 ../templates/_view/richter/browse_title
 ../templates/_view/richter/browse_title_html
 ../templates/_view/richter/browse_title_json

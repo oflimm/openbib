@@ -17,9 +17,11 @@ category_split_chars:
 
 # Personen
 person:
+  '//cast/column': '0101'
 
 # Koerperschaften
 corporatebody:
+  '//director': '0200'
 
 # Systematik
 classification: 

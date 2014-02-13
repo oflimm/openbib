@@ -42,7 +42,7 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $tellico2metaexe  = "$konvdir/tellico_music2meta.pl";
+my $simplexml2metaexe  = "$konvdir/simplexml2meta.pl";
 
 my $pool          = $ARGV[0];
 my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;

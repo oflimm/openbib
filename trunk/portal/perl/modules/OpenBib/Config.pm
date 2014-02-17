@@ -1739,6 +1739,15 @@ sub load_rvk {
     return YAML::Syck::LoadFile("/opt/openbib/conf/rvk.yml");
 }
 
+sub load_ddc {
+    my ($self) = @_;
+
+    $YAML::Syck::ImplicitTyping  = 1;
+    $YAML::Syck::ImplicitUnicode = 1;
+
+    return YAML::Syck::LoadFile("/opt/openbib/conf/ddc.yml");
+}
+
 sub load_lcc {
     my ($self) = @_;
 

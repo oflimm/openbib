@@ -39,6 +39,32 @@
       rvklist.push(thisrvk);
   END ;
 
+  ddcs        = config.load_ddc;
+
+  ddclist = [];
+  FOREACH ddc IN ddcs;
+    IF ddc.key.length == 3;
+      thisddc = {
+        classification   => ddc.key,
+        desc             => ddc.value,
+      };
+      ddclist.push(thisddc);
+    END ;
+  END ;
+
+  lccs        = config.load_lcc;
+
+  lcclist = [];
+  FOREACH lcc IN lccs;
+    IF lcc.key.length == 3;
+      thislcc = {
+        classification   => lcc.key,
+        desc             => lcc.value,
+      };
+      lcclist.push(thislcc);
+    END ;
+  END ;
+
 %]
 
 <!-- skip link navigation -->
@@ -227,6 +253,72 @@
 %]
 [% FOREACH rvk IN rvklist %]
 <option value="[% rvk.classification %]" [% IF classification_selected.${rvk.classification}  %]selected="selected"[% END %]>[% rvk.classification %] [% rvk.desc %]</option>
+[% END %]
+</select>
+
+</div>
+
+[%# USE dumper;dumper.dump(classification_selected)%]
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
+
+</div>
+
+</fieldset>
+</form>
+
+<p/>
+
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/ddc" class="ym-form">
+
+<fieldset class="ym-full">
+
+<legend>[% msg.maketext("Themengebiet(e) der DDC zuordnen") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select name="classifications" id="classifications" multiple="multiple" size="10">
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'ddc', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[% FOREACH ddc IN ddclist %]
+<option value="[% ddc.classification %]" [% IF classification_selected.${ddc.classification}  %]selected="selected"[% END %]>[% ddc.classification %]</option>
+[% END %]
+</select>
+
+</div>
+
+[%# USE dumper;dumper.dump(classification_selected)%]
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
+
+</div>
+
+</fieldset>
+</form>
+
+<p/>
+
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/lcc" class="ym-form">
+
+<fieldset class="ym-full">
+
+<legend>[% msg.maketext("Themengebiet(e) der LoC Classification zuordnen") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select name="classifications" id="classifications" multiple="multiple" size="10">
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'lcc', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[% FOREACH lcc IN lcclist %]
+<option value="[% lcc.classification %]" [% IF classification_selected.${lcc.classification}  %]selected="selected"[% END %]>[% lcc.classification %] [% lcc.desc %]</option>
 [% END %]
 </select>
 

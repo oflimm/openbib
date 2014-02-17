@@ -316,7 +316,7 @@
    END;
 %]
 [% FOREACH lcc IN lcclist %]
-<option value="[% lcc.classification %]" [% IF classification_selected.${lcc.classification}  %]selected="selected"[% END %]>[% IF lcc.classification.length == 2 %]<b>[% lcc.classification %] [% lcc.desc %]</b>[% ELSE %][% lcc.classification %] [% lcc.desc %][% END %]</option>
+<option value="[% lcc.classification %]" [% IF classification_selected.${lcc.classification}  %]selected="selected"[% END %]>[% IF lcc.classification.length < 2 %]<b>[% lcc.classification %] [% lcc.desc %]</b>[% ELSE %][% lcc.classification %] [% lcc.desc %][% END %]</option>
 [% END %]
 </select>
 

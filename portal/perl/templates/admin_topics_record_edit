@@ -56,13 +56,11 @@
 
   lcclist = [];
   FOREACH lcc IN lccs;
-    IF lcc.key.length == 3;
-      thislcc = {
-        classification   => lcc.key,
-        desc             => lcc.value,
-      };
-      lcclist.push(thislcc);
-    END ;
+    thislcc = {
+      classification   => lcc.key,
+      desc             => lcc.value,
+    };
+    lcclist.push(thislcc);
   END ;
 
 %]

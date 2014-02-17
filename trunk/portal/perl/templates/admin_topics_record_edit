@@ -316,8 +316,14 @@
    END;
 %]
 [% FOREACH lcc IN lcclist %]
-<option value="[% lcc.classification %]" [% IF classification_selected.${lcc.classification}  %]selected="selected"[% END %]>[% IF lcc.classification.length < 2 %]<b>[% lcc.classification %] [% lcc.desc %]</b>[% ELSE %][% lcc.classification %] [% lcc.desc %][% END %]</option>
+
+[%  IF lcc.classification.length > 1 %]
+<option value="[% lcc.classification %]" [% IF classification_selected.${lcc.classification}  %]selected="selected"[% END %]>[% lcc.classification %] [% lcc.desc %]</option>
+[%  ELSE %]
+<optgroup label="[% lcc.classification %] [% lcc.desc %]">
+[%  END %]
 [% END %]
+</optgroup>
 </select>
 
 </div>

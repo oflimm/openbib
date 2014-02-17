@@ -317,13 +317,9 @@
 %]
 [% FOREACH lcc IN lcclist %]
 
-[%  IF lcc.classification.length > 1 %]
 <option value="[% lcc.classification %]" [% IF classification_selected.${lcc.classification}  %]selected="selected"[% END %]>[% lcc.classification %] [% lcc.desc %]</option>
-[%  ELSE %]
-<optgroup label="[% lcc.classification %] [% lcc.desc %]">
-[%  END %]
+
 [% END %]
-</optgroup>
 </select>
 
 </div>

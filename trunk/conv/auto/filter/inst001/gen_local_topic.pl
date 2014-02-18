@@ -40,6 +40,7 @@ my $user = OpenBib::User->new;
 
 my $rvk_topic_mapping_ref = {};
 my $bk_topic_mapping_ref  = {};
+my $ddc_topic_mapping_ref  = {};
 
 foreach my $topic_ref (@{$user->get_topics}){
     foreach my $classification (@{$user->get_classifications_of_topic({ topicid => $topic_ref->{id}, type => 'rvk'})}){
@@ -47,6 +48,9 @@ foreach my $topic_ref (@{$user->get_topics}){
     }
     foreach my $classification (@{$user->get_classifications_of_topic({ topicid => $topic_ref->{id}, type => 'bk'})}){
         $bk_topic_mapping_ref->{$classification} = $topic_ref->{id};
+    }
+    foreach my $classification (@{$user->get_classifications_of_topic({ topicid => $topic_ref->{id}, type => 'ddc'})}){
+        $ddc_topic_mapping_ref->{$classification} = $topic_ref->{id};
     }
 }
 
@@ -75,6 +79,24 @@ while (<CLASSIFICATION>){
 
 close(CLASSIFICATION);
 
+my %subjectid2topicid = ();
+
+open(SUBJECT,"meta.subject");
+
+while (<SUBJECT>){
+    my $subject_ref = decode_json $_;
+    
+    foreach my $thissubject (@{$subject_ref->{'fields'}{'0042'}}){
+        if ($thissubject->{content} =~/^(\d\d\d)/){ # DDC
+            if (defined $ddc_topic_mapping_ref->{$1}){
+                $subjectid2topicid{$subject_ref->{id}} = $ddc_topic_mapping_ref->{$1};
+            }
+        }
+    }
+}
+
+close(SUBJECT);
+
 while (<>){
     my $title_ref = decode_json $_;
 
@@ -84,16 +106,41 @@ while (<>){
         foreach my $classification_ref (@{$title_ref->{'fields'}{'0700'}}){
             my $classificationid = $classification_ref->{id};
 
-            if ($classificationid2topicid{$classification_ref->{id}}){
-                push @topicids, $classificationid2topicid{$classification_ref->{id}};
+            if ($classificationid2topicid{$classificationid}){
+                push @topicids, $classificationid2topicid{$classificationid};
             }
         }
     }
 
+    if (defined $title_ref->{'fields'}{'0702'}){
+        foreach my $item_ref (@{$title_ref->{'fields'}{'0702'}}){
+            my $classification = $item_ref->{content};
+
+            if ($classification =~/^(\d\d\d)/){ # DDC
+                my $ddc = $1;
+                if (defined $ddc_topic_mapping_ref->{$ddc}){
+                    push @topicids, $ddc_topic_mapping_ref->{$ddc};
+                }
+            }
+        }
+    }
+
+    foreach my $field ('0902','0907','0912','0917','0922','0927','0932','0937','0942','0947'){
+        if (defined $title_ref->{'fields'}{$field}){
+            foreach my $subject_ref (@{$title_ref->{'fields'}{$field}}){
+                my $subjectid = $subject_ref->{id};
+                
+                if ($subjectid2topicid{$subjectid}){
+                    push @topicids, $subjectid2topicid{$subjectid};
+                }
+            }
+        }
+    }
+    
     if (defined $title_ref->{'fields'}{'1701'}){
         foreach my $item_ref (@{$title_ref->{'fields'}{'1701'}}){
             my $classification = $item_ref->{content};
-
+            
             if ($classification =~/^([A-Z][A-Z]) \d+/){ # RVK
                 my $rvk = $1;
                 if (defined $rvk_topic_mapping_ref->{$rvk}){

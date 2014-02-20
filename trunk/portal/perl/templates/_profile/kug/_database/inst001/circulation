@@ -39,7 +39,7 @@
 
      IF     thiscirculation.Zweigstelle == 0 ;
 
-        IF thiscirculation.Signatur.match('^2[3-9]A') || thiscirculation.Signatur.match('[3-9][0-9]A') ;
+        IF thiscirculation.Signatur.match('^2[4-9]A') || thiscirculation.Signatur.match('[3-9][0-9]A') ;
            IF thiscirculation.Status == "bestellbar" ;
               thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
            ELSIF thiscirculation.Status == "entliehen" ;

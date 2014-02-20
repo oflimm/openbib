@@ -39,7 +39,7 @@
 
      IF     thiscirculation.Zweigstelle == 0 ;
 
-        IF thiscirculation.Signatur.match('^2[3-9]A') || thiscirculation.Signatur.match('[3-9][0-9]A') ;
+        IF thiscirculation.Signatur.match('^2[4-9]A') || thiscirculation.Signatur.match('[3-9][0-9]A') ;
            IF thiscirculation.Status == "bestellbar" ;
               thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
            ELSIF thiscirculation.Status == "entliehen" ;
@@ -90,7 +90,13 @@
 [%-   END -%]
 <strong>[% thiscirculation.Bibliothek.full %]</strong></a></td>
 <td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thiscirculation.Bibliothek.short | uri %] :: [% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') | uri %][% ELSE %][% thiscirculation.Standort | uri %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote | uri %])[%- END -%] :: [% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur | uri %][% thiscirculation.Exemplar | uri %][% ELSE %][% thiscirculation.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
-<td>[% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') %][% ELSE %][% thiscirculation.Standort %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote %])[%- END -%]<br/><a href="http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a></td>
+<td>[% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') %][% ELSE %][% thiscirculation.Standort %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote %])[%- END -%]<br/>
+[% IF thiscirculation.Standort.match('Fachbibliothek VWL') %]
+<a href="http://www.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/105/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
+[% ELSE %]
+<a href="http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
+[% END %]
+</td>
 <td><strong>[% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur %][% thiscirculation.Exemplar %][% ELSE %][% thiscirculation.Signatur %][% END %]</strong></td>
 <td><strong>[%- IF thiscirculation.Status == 'bestellbar' -%]ausleihbar[% ELSIF
 thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.Status %][%- END -%]</strong></td>

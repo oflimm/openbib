@@ -10,35 +10,6 @@
      width-max: 1000px;
   }
 
-  footer {
-    margin: 0.2em 0 0 0;
-    height: 50px;
-/*    background: #e8fca4;
-    color: #444; */
-    padding: 0em;
-    vertical-align: baseline;
-    background: #c8c8c8;
-    
-    background: -webkit-gradient(linear, left top, left bottom, from(#c8c8c8), to(#f3f3f3));
-    background: -moz-linear-gradient(top,  #c8c8c8,  #f3f3f3);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#c8c8c8', endColorstr='#f3f3f3');
-    
-    
-    border: 1px #c8c8c8 solid;
-  }
-
-  footer .ob-sponsored {
-    float: right;
-    margin:0 0 0 0
-  }
-
-  footer .ob-footertext {
-    position: absolute;
-    margin-top: 0;    
-    padding-top: 18px;
-    padding-left: 5px;
-  }
-    
   header {
     padding-bottom:58px;  
   }

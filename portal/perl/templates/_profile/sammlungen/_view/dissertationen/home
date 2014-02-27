@@ -30,7 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:40px;padding-top:30px;padding-bottom:20px;">
+ <div class="float-left" style="padding:40px;padding-top:10px;padding-bottom:10px;">
 
 <center> <img src="/images/openbib/views/dissertationen/siegel_blau.png"
 alt="Universität zu Köln" /><br /><i

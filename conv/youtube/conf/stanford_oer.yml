@@ -1,0 +1,5 @@
+channels:
+ -
+   name: StanfordUniversity
+   description: 'Stanford University'
+   title_selector: '^Course'

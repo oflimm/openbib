@@ -1,0 +1,43 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': "\t"
+  'quote_char': "'"
+  'escape_char': "'"
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'URL Hash'
+
+category_split_chars:
+  'Tags': '\s*[,/]\s+'
+
+# Personen
+person:
+  'Author': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+  'Tags': '0710'
+
+# Titel
+title:
+  'Title': '0331'
+  'Description': '0750'
+  'Link': '0662'
+  'Provider': '0412'
+  'Language': '0015'
+
+defaultmediatype: 'Online-Kurs'

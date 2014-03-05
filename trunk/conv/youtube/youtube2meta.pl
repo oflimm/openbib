@@ -413,7 +413,15 @@ foreach my $channel_ref (@{$convconfig->{channels}}){
                                 content  => $ts->pretty,
                             };
                         }
-                        
+
+                        $title_ref->{fields}{'4400'} = [
+                            {
+                                mult     => 1,
+                                subfield => '',
+                                content  => "online",
+                            },
+                        ];
+ 
                         push @{$title_ref->{fields}{'4410'}}, {
                             mult     => 1,
                             subfield => '',

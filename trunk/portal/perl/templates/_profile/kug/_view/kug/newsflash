@@ -14,6 +14,13 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
+<li><b>5.6.2014</b>: OER im KUG - In den
+KUG sind jetzt auch offene Lehr- und Lernmaterialien (Open Educational
+Resources, OER), wie z.B. Vorlesungs-Videos, integriert. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2014/03/05/open-educational-resources-oer-in-bibliotheken/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
 <li><b>3.2.2014</b>: KUG und USB-Portal - Aus zwei wird eins: Die
 Verschmelzung der beiden Portale hin zu einer einheitlichen
 Recherche-Lösung für die Universität hat den zweiten Meilenstein erreicht. Weitergehende Informationen in diesem

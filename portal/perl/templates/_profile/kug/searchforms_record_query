@@ -172,6 +172,7 @@
 <option value="Aufsatz">Aufsatz</option>
 <option value="Digital">Digital</option>
 <option value="Hochschulschrift">Hochschulschrift</option>
+<option value="Online Kurs-Video">Online Kurs-Video</option>
 <option value="Zeitschrift/Serie">Zeitschrift/Serie</option>
 </select>
 </div>

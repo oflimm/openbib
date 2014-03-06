@@ -302,7 +302,7 @@ $(document).ready(function(){
 
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && thumbnail_url %]<img src="[% thumbnail_url %]" title="Thumbnail" width="70" style="padding-top:5px;"/></a>[% ELSE %]&nbsp;[% END %]
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && thumbnail_url %]<img src="[% thumbnail_url %]" title="Thumbnail" width="70" style="padding-top:5px;"/>[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(dbinfo) %]

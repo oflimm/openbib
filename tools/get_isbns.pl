@@ -91,7 +91,6 @@ foreach my $database (@databases){
 
     my $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
         {
-            'me.dbname'    => $database,
             -or   => [
                 'title_fields.field' => '0540',
                 'title_fields.field' => '0541',

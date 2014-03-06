@@ -13,7 +13,7 @@
 #######################################################################
 
 # Thumbnail-URL
-  thumbnail_url = item.${'T4111'}.first.content ;
+  thumbnail_url = normdata.${'T4111'}.first.content ;
 
 -%]
 % IF thumbnail_url %]

@@ -1,0 +1,38 @@
+[%# USE dumper; dumper.dump(dbchoice)%]
+<select name="profile" class="ob-selectbox">
+[% searchprofileid_of_view = config.get_searchprofile_of_view(view) ; checked_profile = 0 %]
+[%- IF dbchoice.id -%]
+<option value="[% dbchoice.id %]"[%- IF prevprofile == dbchoice.id && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% IF dbchoice.databases.size == 1 %][% dbinfo.dbnames.${dbchoice.databases.first}.short %][% ELSE %]Aktuelle Katalogauswahl ([% dbchoice.databases.size %] Datenbank(en))[% END %]</option>
+[% END %]
+[% IF userprofile.size > 0 %]
+<optgroup label="Eigene Suchprofile">
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="[% pid %]"[%- IF prevprofile == '${pid}'  && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
+[%  END %]
+</optgroup>
+[% END %]
+<option value="[% searchprofileid_of_view %]"
+[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option><option value=""></option>
+<optgroup label="[% msg.maketext("Profile") %]">
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
+     searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
+%]
+<option value="[% searchprofileid_of_orgunit %]"
+[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>- [% unit.description %]</option>
+[% END %]
+[% searchprofile_of_bestellungen = config.get_searchprofile_of_database('bestellungen') %]
+<option value="[% searchprofileid_of_bestellungen %]"
+[%- IF prevprofile == searchprofileid_of_bestellungen && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>- Offene Bestellungen</option>
+</optgroup>
+</select>

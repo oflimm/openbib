@@ -92,7 +92,7 @@
 <td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thiscirculation.Bibliothek.short | uri %] :: [% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') | uri %][% ELSE %][% thiscirculation.Standort | uri %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote | uri %])[%- END -%] :: [% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur | uri %][% thiscirculation.Exemplar | uri %][% ELSE %][% thiscirculation.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
 <td>[% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') %][% ELSE %][% thiscirculation.Standort %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote %])[%- END -%]<br/>
 [% IF thiscirculation.Standort.match('Fachbibliothek VWL') %]
-<a href="http://www.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/105/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
+<a href="http://www.ub.uni-koeln.de/bibliotheken/38_101/" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% ELSE %]
 <a href="http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% END %]

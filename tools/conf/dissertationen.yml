@@ -1,0 +1,23 @@
+# Encoding der Daten
+#encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': ";"
+  'quote_char': "\""
+  'escape_char': "\""
+
+# Personen
+searchfield:
+  'Nachname': 'per'
+  'Vorname': 'per'
+  'PromJahr': 'year'
+
+searchurl_base: "http://dissertationen.ub.uni-koeln.de/portal/search.json"
+
+recordurl_base: "http://dissertationen.ub.uni-koeln.de/portal/databases/id/dissertationen/titles/id/"

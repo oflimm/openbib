@@ -429,6 +429,9 @@ convtab:
       '0508':
         index:
           'source': 1
+      '0519':
+        index:
+          'hss': 1
       '0540':         # ISBN
         index:
           'isbn': 1
@@ -1032,6 +1035,9 @@ convtab:
       '0508':
         index:
           'source': 1
+      '0519':
+        index:
+          'hss': 1
       '0540':         # ISBN
         index:
           'isbn': 1

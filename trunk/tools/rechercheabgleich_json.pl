@@ -43,10 +43,11 @@ use Text::CSV_XS;
 use JSON::XS;
 use YAML::Syck;
 
-my ($database,$help,$logfile,$configfile,$inputfile,$outputfile);
+my ($database,$help,$logfile,$loglevel,$configfile,$inputfile,$outputfile);
 
 &GetOptions("database=s"       => \$database,
             "logfile=s"        => \$logfile,
+            "loglevel=s"       => \$loglevel,
             "configfile=s"     => \$configfile,
             "inputfilen=s"     => \$inputfile,
             "outputfile=s"     => \$outputfile,
@@ -58,9 +59,10 @@ if ($help || !$database || !$inputfile || !$outputfile){
 }
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/rechercheabgleich.log';
+$loglevel=($loglevel)?$loglevel:'INFO';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -77,7 +79,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 # Ininitalisierung mit Config-Parametern
-my $convconfig = YAML::Syck::LoadFile($configfile);
+our $convconfig = YAML::Syck::LoadFile($configfile);
 
 my $client  = LWP::UserAgent->new;            # HTTP client
 
@@ -138,6 +140,8 @@ while ($inputcsv->getline ($in)){
 
     my $url = $convconfig->{searchurl_base}."?".$url_args;
 
+    $logger->debug("$url");
+    
     my $request = HTTP::Request->new(GET => $url);
     $request->content_type('application/json');
     
@@ -246,8 +250,15 @@ sub searchfields2args {
     my @url_args = ();
 
     foreach my $searchfield (keys %$searchfields_ref){
-        next unless ($searchfield);
-        push @url_args, $searchfield."=".join(" ",@{$searchfields_ref->{$searchfield}});
+        next unless ($searchfield);        
+
+        if (defined $convconfig->{filter}{$searchfield}{year_as_range}){
+            push @url_args, $searchfield."_from=".($searchfields_ref->{$searchfield}[0] -  $convconfig->{filter}{year}{year_as_range}{range_before});
+            push @url_args, $searchfield."_to=".($searchfields_ref->{$searchfield}[0] +  $convconfig->{filter}{year}{year_as_range}{range_after});
+        }
+        else {
+            push @url_args, $searchfield."=".join(" ",@{$searchfields_ref->{$searchfield}});
+        }
     }
         
     return join(";", @url_args);

@@ -21,3 +21,10 @@ searchfield:
 searchurl_base: "http://dissertationen.ub.uni-koeln.de/portal/search.json"
 
 recordurl_base: "http://dissertationen.ub.uni-koeln.de/portal/databases/id/dissertationen/titles/id/"
+
+filter:
+  year:
+    year_as_range:
+      range_before: 2
+      range_after: 3
+   

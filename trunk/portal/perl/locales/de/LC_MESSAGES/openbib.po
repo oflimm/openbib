@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-02-17 11:18+0100\n"
+"PO-Revision-Date: 2014-03-12 09:13+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -340,6 +340,8 @@ msgstr "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/alekiddr/subnavigation:51
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:36
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:48
@@ -982,6 +984,7 @@ msgstr "Alle Formate"
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:251
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:343
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:436
+#: ../templates/_profile/usbintern/searchforms_record_profile:20
 #: ../templates/_profile/usbportal/searchforms_record_query:154
 #: ../templates/searchforms_record_profile:20
 #: ../templates/searchprofiles_session:77
@@ -1201,8 +1204,18 @@ msgstr "An"
 #: ../templates/_database/bibsonomy/titlist_item_html_short:226
 #: ../templates/_database/einbaende/cartitems_html_short:143
 #: ../templates/_database/einbaende/titlist_item_html_short:245
+#: ../templates/_database/gresham_oer/titlist_item_html_short:327
 #: ../templates/_database/kapsel/titlist_item_html_short:226
+#: ../templates/_database/khanacademy/titlist_item_html_short:327
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:327
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:327
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:327
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:327
 #: ../templates/_database/openlibrary/titlist_item_html_short:232
+#: ../templates/_database/stanford_oer/titlist_item_html_short:327
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:327
+#: ../templates/_database/ucla_oer/titlist_item_html_short:327
+#: ../templates/_database/yale_oer/titlist_item_html_short:327
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:231
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:239
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:238
@@ -2103,6 +2116,7 @@ msgstr "Benutzer"
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:245
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:337
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:430
+#: ../templates/_profile/usbintern/searchforms_record_profile:12
 #: ../templates/_profile/usbportal/searchforms_record_query:148
 #: ../templates/searchforms_record_profile:12
 msgid "Benutzerdefiniert"
@@ -2217,7 +2231,7 @@ msgstr "Beruf/Weltanschauung"
 #: ../templates/admin_topics_html:99
 #: ../templates/admin_topics_mappings_html:79
 #: ../templates/admin_topics_mappings_record_html:77
-#: ../templates/admin_topics_record_edit:124 ../templates/admin_views_html:117
+#: ../templates/admin_topics_record_edit:122 ../templates/admin_views_html:117
 #: ../templates/admin_views_html:73 ../templates/admin_views_record_edit:72
 #: ../templates/admin_views_rss_record_html:52
 #: ../templates/authenticators_html:62
@@ -2253,7 +2267,7 @@ msgstr "Beschreibung"
 #: ../templates/_database/wikisource_de/titles_record_html_categories:289
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html_categories:300
 #: ../templates/_profile/kug/_database/dbis/titles_record_html_categories:191
-#: ../templates/_profile/kug/_database/edz/circulation:123
+#: ../templates/_profile/kug/_database/edz/circulation:129
 #: ../templates/_profile/kug/_database/edz/holding:17
 #: ../templates/_profile/kug/_database/edz/titles_record_html_categories:437
 #: ../templates/_profile/kug/_database/ezb/titles_record_html_categories:240
@@ -2267,26 +2281,26 @@ msgstr "Beschreibung"
 #: ../templates/_profile/kug/_database/islandica/holding:17
 #: ../templates/_profile/kug/_database/islandica/titles_record_html_categories:437
 #: ../templates/_profile/kug/_database/jki/titles_record_html_categories:324
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:123
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:129
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/holding:17
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/titles_record_html_categories:437
-#: ../templates/_profile/kug/_database/lesesaal/circulation:123
+#: ../templates/_profile/kug/_database/lesesaal/circulation:129
 #: ../templates/_profile/kug/_database/lesesaal/holding:17
 #: ../templates/_profile/kug/_database/lesesaal/titles_record_html_categories:437
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:123
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:129
 #: ../templates/_profile/kug/_database/mikrofilm/holding:17
 #: ../templates/_profile/kug/_database/mikrofilm/titles_record_html_categories:437
 #: ../templates/_profile/kug/_database/openlibrary/titles_record_html_categories:292
-#: ../templates/_profile/kug/_database/rheinabt/circulation:123
+#: ../templates/_profile/kug/_database/rheinabt/circulation:129
 #: ../templates/_profile/kug/_database/rheinabt/holding:17
 #: ../templates/_profile/kug/_database/rheinabt/titles_record_html_categories:437
-#: ../templates/_profile/kug/_database/usbhwa/circulation:123
+#: ../templates/_profile/kug/_database/usbhwa/circulation:129
 #: ../templates/_profile/kug/_database/usbhwa/holding:17
 #: ../templates/_profile/kug/_database/usbhwa/titles_record_html_categories:437
-#: ../templates/_profile/kug/_database/usbsab/circulation:123
+#: ../templates/_profile/kug/_database/usbsab/circulation:129
 #: ../templates/_profile/kug/_database/usbsab/holding:17
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:437
-#: ../templates/_profile/kug/_database/wiso/circulation:123
+#: ../templates/_profile/kug/_database/wiso/circulation:129
 #: ../templates/_profile/kug/_database/wiso/holding:17
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:437
 #: ../templates/_profile/kug/_database/zbmed/circulation:76
@@ -3685,8 +3699,18 @@ msgstr ""
 #: ../templates/_database/bibsonomy/titlist_item_html_short:22
 #: ../templates/_database/einbaende/cartitems_html_short:15
 #: ../templates/_database/einbaende/titlist_item_html_short:22
+#: ../templates/_database/gresham_oer/titlist_item_html_short:22
 #: ../templates/_database/kapsel/titlist_item_html_short:22
+#: ../templates/_database/khanacademy/titlist_item_html_short:22
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:22
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:22
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:22
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:22
 #: ../templates/_database/openlibrary/titlist_item_html_short:18
+#: ../templates/_database/stanford_oer/titlist_item_html_short:22
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:22
+#: ../templates/_database/ucla_oer/titlist_item_html_short:22
+#: ../templates/_database/yale_oer/titlist_item_html_short:22
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:24
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:24
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:24
@@ -3752,6 +3776,7 @@ msgstr "E-Mail"
 msgid "E-Mail-Adresse"
 msgstr "E-Mail-Adresse"
 
+#: ../templates/_database/bestellungen/visible_categories_title:108
 #: ../templates/_database/inst001/visible_categories_title:111
 #: ../templates/_database/kapsel/visible_categories_title:107
 #: ../templates/_database/openlibrary/visible_categories_title:106
@@ -3783,10 +3808,12 @@ msgstr "E-Mail-Adresse"
 msgid "E4100"
 msgstr "Basis-Klassifikation"
 
+#: ../templates/_database/bestellungen/visible_categories_title:109
 #: ../templates/visible_categories_title:108
 msgid "E4102"
 msgstr "Themengebiet"
 
+#: ../templates/_database/bestellungen/visible_categories_title:118
 #: ../templates/_database/kapsel/visible_categories_title:116
 #: ../templates/_database/openlibrary/visible_categories_title:115
 #: ../templates/_database/wikisource_de/visible_categories_title:112
@@ -3807,6 +3834,7 @@ msgstr "Themengebiet"
 msgid "E4110"
 msgstr "Inhaltsverzeichnis"
 
+#: ../templates/_database/bestellungen/visible_categories_title:119
 #: ../templates/_database/kapsel/visible_categories_title:117
 #: ../templates/_database/openlibrary/visible_categories_title:116
 #: ../templates/_database/wikisource_de/visible_categories_title:113
@@ -3827,6 +3855,7 @@ msgstr "Inhaltsverzeichnis"
 msgid "E4120"
 msgstr "Volltext-URL"
 
+#: ../templates/_database/bestellungen/visible_categories_title:106
 #: ../templates/_database/inst001/visible_categories_title:102
 #: ../templates/_database/kapsel/visible_categories_title:105
 #: ../templates/_database/openlibrary/visible_categories_title:104
@@ -4044,7 +4073,7 @@ msgid "Eingrenzen"
 msgstr "Eingrenzen"
 
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:263
-#: ../templates/_profile/kug/searchforms_record_query:205
+#: ../templates/_profile/kug/searchforms_record_query:206
 #: ../templates/_profile/usbportal/searchforms_record_query:138
 #: ../templates/_view/filme/searchforms_record_query:165
 #: ../templates/searchforms_record_query:179
@@ -4285,10 +4314,30 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/_database/einbaende/cartitems_html_short:144
 #: ../templates/_database/einbaende/titlist_item_html_short:247
 #: ../templates/_database/einbaende/titlist_item_html_short:250
+#: ../templates/_database/gresham_oer/titlist_item_html_short:329
+#: ../templates/_database/gresham_oer/titlist_item_html_short:332
 #: ../templates/_database/kapsel/titlist_item_html_short:228
 #: ../templates/_database/kapsel/titlist_item_html_short:231
+#: ../templates/_database/khanacademy/titlist_item_html_short:329
+#: ../templates/_database/khanacademy/titlist_item_html_short:332
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:329
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:332
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:329
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:332
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:329
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:332
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:329
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:332
 #: ../templates/_database/openlibrary/titlist_item_html_short:234
 #: ../templates/_database/openlibrary/titlist_item_html_short:237
+#: ../templates/_database/stanford_oer/titlist_item_html_short:329
+#: ../templates/_database/stanford_oer/titlist_item_html_short:332
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:329
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:332
+#: ../templates/_database/ucla_oer/titlist_item_html_short:329
+#: ../templates/_database/ucla_oer/titlist_item_html_short:332
+#: ../templates/_database/yale_oer/titlist_item_html_short:329
+#: ../templates/_database/yale_oer/titlist_item_html_short:332
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:233
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:236
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:241
@@ -4503,6 +4552,7 @@ msgstr "Erweitere Recherchemaske"
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:448
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:126
 #: ../templates/_profile/sammlungen/_view/artmann/searchforms_record_advanced:38
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:121
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:131
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_advanced:38
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:131
@@ -4549,17 +4599,17 @@ msgstr "Erweiterte Suche"
 
 #: ../templates/_database/inst001/circulation:123
 #: ../templates/_database/inst411/circulation:74
-#: ../templates/_profile/kug/_database/edz/circulation:123
+#: ../templates/_profile/kug/_database/edz/circulation:129
 #: ../templates/_profile/kug/_database/inst001/circulation:129
 #: ../templates/_profile/kug/_database/inst302/circulation:83
 #: ../templates/_profile/kug/_database/islandica/circulation:123
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:123
-#: ../templates/_profile/kug/_database/lesesaal/circulation:123
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:123
-#: ../templates/_profile/kug/_database/rheinabt/circulation:123
-#: ../templates/_profile/kug/_database/usbhwa/circulation:123
-#: ../templates/_profile/kug/_database/usbsab/circulation:123
-#: ../templates/_profile/kug/_database/wiso/circulation:123
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:129
+#: ../templates/_profile/kug/_database/lesesaal/circulation:129
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:129
+#: ../templates/_profile/kug/_database/rheinabt/circulation:129
+#: ../templates/_profile/kug/_database/usbhwa/circulation:129
+#: ../templates/_profile/kug/_database/usbsab/circulation:129
+#: ../templates/_profile/kug/_database/wiso/circulation:129
 #: ../templates/_profile/kug/_database/zbmed/circulation:76
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:123
 #: ../templates/_profile/sammlungen/_database/dante/circulation:123
@@ -5505,7 +5555,7 @@ msgstr ""
 
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:272
 #: ../templates/_profile/kug/authority_search_facet:703
-#: ../templates/_profile/kug/searchforms_record_query:214
+#: ../templates/_profile/kug/searchforms_record_query:215
 #: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:120
 #: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:120
 #: ../templates/_profile/rheinlandbib/_view/geistingen/mainnavigation:120
@@ -5525,6 +5575,7 @@ msgstr ""
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:328
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:421
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:124
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:124
@@ -6280,8 +6331,18 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 
 #: ../templates/_database/bibsonomy/titlist_item_html_short:226
 #: ../templates/_database/einbaende/titlist_item_html_short:245
+#: ../templates/_database/gresham_oer/titlist_item_html_short:327
 #: ../templates/_database/kapsel/titlist_item_html_short:226
+#: ../templates/_database/khanacademy/titlist_item_html_short:327
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:327
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:327
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:327
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:327
 #: ../templates/_database/openlibrary/titlist_item_html_short:232
+#: ../templates/_database/stanford_oer/titlist_item_html_short:327
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:327
+#: ../templates/_database/ucla_oer/titlist_item_html_short:327
+#: ../templates/_database/yale_oer/titlist_item_html_short:327
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:231
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:239
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:238
@@ -6436,6 +6497,8 @@ msgstr "Info"
 #: ../templates/_profile/sammlungen/_view/artmann/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/dante/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/dirksen/info_sammlung:37
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:31
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/einbaende/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:33
@@ -6534,8 +6597,18 @@ msgstr "Inhalte zu neuer Kennung verschieben"
 #: ../templates/_database/bibsonomy/titlist_item_html_short:23
 #: ../templates/_database/einbaende/cartitems_html_short:16
 #: ../templates/_database/einbaende/titlist_item_html_short:23
+#: ../templates/_database/gresham_oer/titlist_item_html_short:23
 #: ../templates/_database/kapsel/titlist_item_html_short:23
+#: ../templates/_database/khanacademy/titlist_item_html_short:23
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:23
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:23
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:23
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:23
 #: ../templates/_database/openlibrary/titlist_item_html_short:19
+#: ../templates/_database/stanford_oer/titlist_item_html_short:23
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:23
+#: ../templates/_database/ucla_oer/titlist_item_html_short:23
+#: ../templates/_database/yale_oer/titlist_item_html_short:23
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:25
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:25
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:25
@@ -6821,7 +6894,7 @@ msgstr "Ja"
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:243
 #: ../templates/_profile/kug/authority_search_facet:199
 #: ../templates/_profile/kug/search_facet:237
-#: ../templates/_profile/kug/searchforms_record_query:185
+#: ../templates/_profile/kug/searchforms_record_query:186
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:33
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:35
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/subnavigation:131
@@ -7064,7 +7137,17 @@ msgstr "Kartenkataloge der Philosophischen Fakultät"
 #: ../templates/_database/einbaende/titles_record_html:103
 #: ../templates/_database/einbaende/titles_record_html:90
 #: ../templates/_database/einbaende/titlist_item_html_short:229
+#: ../templates/_database/gresham_oer/titlist_item_html_short:311
+#: ../templates/_database/khanacademy/titlist_item_html_short:311
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:311
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:311
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:311
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:311
 #: ../templates/_database/openlibrary/titlist_item_html_short:216
+#: ../templates/_database/stanford_oer/titlist_item_html_short:311
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:311
+#: ../templates/_database/ucla_oer/titlist_item_html_short:311
+#: ../templates/_database/yale_oer/titlist_item_html_short:311
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:223
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:222
 #: ../templates/_profile/kug/_database/jki/titlist_item_html_short:315
@@ -7246,17 +7329,17 @@ msgstr "Keine"
 
 #: ../templates/_database/inst001/circulation:111
 #: ../templates/_database/inst411/circulation:62
-#: ../templates/_profile/kug/_database/edz/circulation:111
+#: ../templates/_profile/kug/_database/edz/circulation:117
 #: ../templates/_profile/kug/_database/inst001/circulation:117
 #: ../templates/_profile/kug/_database/inst302/circulation:65
 #: ../templates/_profile/kug/_database/islandica/circulation:111
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:111
-#: ../templates/_profile/kug/_database/lesesaal/circulation:111
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:111
-#: ../templates/_profile/kug/_database/rheinabt/circulation:111
-#: ../templates/_profile/kug/_database/usbhwa/circulation:111
-#: ../templates/_profile/kug/_database/usbsab/circulation:111
-#: ../templates/_profile/kug/_database/wiso/circulation:111
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:117
+#: ../templates/_profile/kug/_database/lesesaal/circulation:117
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:117
+#: ../templates/_profile/kug/_database/rheinabt/circulation:117
+#: ../templates/_profile/kug/_database/usbhwa/circulation:117
+#: ../templates/_profile/kug/_database/usbsab/circulation:117
+#: ../templates/_profile/kug/_database/wiso/circulation:117
 #: ../templates/_profile/kug/_database/zbmed/circulation:64
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:111
 #: ../templates/_profile/sammlungen/_database/dante/circulation:111
@@ -7468,8 +7551,28 @@ msgstr "Künstler"
 
 #: ../templates/_database/einbaende/titlist_item_html_short:247
 #: ../templates/_database/einbaende/titlist_item_html_short:250
+#: ../templates/_database/gresham_oer/titlist_item_html_short:329
+#: ../templates/_database/gresham_oer/titlist_item_html_short:332
 #: ../templates/_database/kapsel/titlist_item_html_short:228
 #: ../templates/_database/kapsel/titlist_item_html_short:231
+#: ../templates/_database/khanacademy/titlist_item_html_short:329
+#: ../templates/_database/khanacademy/titlist_item_html_short:332
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:329
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:332
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:329
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:332
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:329
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:332
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:329
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:332
+#: ../templates/_database/stanford_oer/titlist_item_html_short:329
+#: ../templates/_database/stanford_oer/titlist_item_html_short:332
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:329
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:332
+#: ../templates/_database/ucla_oer/titlist_item_html_short:329
+#: ../templates/_database/ucla_oer/titlist_item_html_short:332
+#: ../templates/_database/yale_oer/titlist_item_html_short:329
+#: ../templates/_database/yale_oer/titlist_item_html_short:332
 #: ../templates/_profile/kug/_database/jki/titlist_item_html_short:333
 #: ../templates/_profile/kug/_database/jki/titlist_item_html_short:336
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:239
@@ -8159,7 +8262,7 @@ msgstr "Los"
 #: ../templates/admin_orgunits_record_edit:107
 #: ../templates/admin_profiles_record_edit:83
 #: ../templates/admin_servers_record_edit:114
-#: ../templates/admin_topics_record_edit:133
+#: ../templates/admin_topics_record_edit:131
 #: ../templates/admin_views_record_edit:129
 #: ../templates/cartitems_html_actions:160
 #: ../templates/cartitems_html_short:144 ../templates/titles_record_html:311
@@ -8263,7 +8366,7 @@ msgstr "Medientyp"
 #: ../templates/_profile/kug/_view/inst429/home_html_bottom_left:75
 #: ../templates/_profile/kug/_view/inst434/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/inst448/home_html_bottom_left:75
-#: ../templates/_profile/kug/_view/kug/newsflash:116
+#: ../templates/_profile/kug/_view/kug/newsflash:123
 #: ../templates/_profile/kug/_view/marketing/home_html_bottom_left:77
 #: ../templates/_profile/kug/_view/ostasiatica/home_html_bottom_left:75
 #: ../templates/_profile/kug/_view/philfak_fg4/home_html_bottom_left:77
@@ -8471,8 +8574,18 @@ msgid "Meldung"
 msgstr "Meldung"
 
 #: ../templates/_database/einbaende/titlist_item_html_short:245
+#: ../templates/_database/gresham_oer/titlist_item_html_short:327
 #: ../templates/_database/kapsel/titlist_item_html_short:226
+#: ../templates/_database/khanacademy/titlist_item_html_short:327
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:327
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:327
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:327
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:327
 #: ../templates/_database/openlibrary/titlist_item_html_short:232
+#: ../templates/_database/stanford_oer/titlist_item_html_short:327
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:327
+#: ../templates/_database/ucla_oer/titlist_item_html_short:327
+#: ../templates/_database/yale_oer/titlist_item_html_short:327
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:231
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:239
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:238
@@ -8528,6 +8641,8 @@ msgstr "Merken"
 #: ../templates/_profile/rheinlandbib/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:51
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:53
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:46
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:56
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:58
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:56
@@ -8966,17 +9081,17 @@ msgstr "Neuer Tagname"
 
 #: ../templates/_database/inst001/circulation:120
 #: ../templates/_database/inst411/circulation:71
-#: ../templates/_profile/kug/_database/edz/circulation:120
+#: ../templates/_profile/kug/_database/edz/circulation:126
 #: ../templates/_profile/kug/_database/inst001/circulation:126
 #: ../templates/_profile/kug/_database/inst302/circulation:80
 #: ../templates/_profile/kug/_database/islandica/circulation:120
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:120
-#: ../templates/_profile/kug/_database/lesesaal/circulation:120
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:120
-#: ../templates/_profile/kug/_database/rheinabt/circulation:120
-#: ../templates/_profile/kug/_database/usbhwa/circulation:120
-#: ../templates/_profile/kug/_database/usbsab/circulation:120
-#: ../templates/_profile/kug/_database/wiso/circulation:120
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:126
+#: ../templates/_profile/kug/_database/lesesaal/circulation:126
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:126
+#: ../templates/_profile/kug/_database/rheinabt/circulation:126
+#: ../templates/_profile/kug/_database/usbhwa/circulation:126
+#: ../templates/_profile/kug/_database/usbsab/circulation:126
+#: ../templates/_profile/kug/_database/wiso/circulation:126
 #: ../templates/_profile/kug/_database/zbmed/circulation:73
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:120
 #: ../templates/_profile/sammlungen/_database/dante/circulation:120
@@ -9615,8 +9730,18 @@ msgstr "Popularit&auml;ts-Funktionen"
 #: ../templates/_database/bibsonomy/titlist_item_html_short:24
 #: ../templates/_database/einbaende/cartitems_html_short:17
 #: ../templates/_database/einbaende/titlist_item_html_short:24
+#: ../templates/_database/gresham_oer/titlist_item_html_short:24
 #: ../templates/_database/kapsel/titlist_item_html_short:24
+#: ../templates/_database/khanacademy/titlist_item_html_short:24
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:24
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:24
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:24
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:24
 #: ../templates/_database/openlibrary/titlist_item_html_short:20
+#: ../templates/_database/stanford_oer/titlist_item_html_short:24
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:24
+#: ../templates/_database/ucla_oer/titlist_item_html_short:24
+#: ../templates/_database/yale_oer/titlist_item_html_short:24
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:26
 #: ../templates/_profile/kug/_database/dbis/titlist_item_html_short:26
 #: ../templates/_profile/kug/_database/ezb/titlist_item_html_short:26
@@ -9707,6 +9832,7 @@ msgid "Profil-Name"
 msgstr "Profil-Name"
 
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:162
+#: ../templates/_profile/usbintern/searchforms_record_profile:21
 #: ../templates/searchforms_record_profile:21
 msgid "Profile"
 msgstr "Profile"
@@ -10979,6 +11105,7 @@ msgstr "Sigel"
 #: ../templates/_database/bibsonomy/titlist_item_html_short:224
 #: ../templates/_database/einbaende/cartitems_html_short:141
 #: ../templates/_database/einbaende/titlist_item_html_short:240
+#: ../templates/_database/gresham_oer/titlist_item_html_short:322
 #: ../templates/_database/inst001/circulation:33
 #: ../templates/_database/inst001/holding:17
 #: ../templates/_database/inst137/holding:33
@@ -10986,7 +11113,16 @@ msgstr "Sigel"
 #: ../templates/_database/instzs/holding:34
 #: ../templates/_database/kapsel/holding:33
 #: ../templates/_database/kapsel/titlist_item_html_short:221
+#: ../templates/_database/khanacademy/titlist_item_html_short:322
+#: ../templates/_database/khanacademy_de/titlist_item_html_short:322
+#: ../templates/_database/loviscach_oer/titlist_item_html_short:322
+#: ../templates/_database/mitocw_oer/titlist_item_html_short:322
+#: ../templates/_database/nptelhrd_oer/titlist_item_html_short:322
 #: ../templates/_database/openlibrary/titlist_item_html_short:227
+#: ../templates/_database/stanford_oer/titlist_item_html_short:322
+#: ../templates/_database/ucberkeley_oer/titlist_item_html_short:322
+#: ../templates/_database/ucla_oer/titlist_item_html_short:322
+#: ../templates/_database/yale_oer/titlist_item_html_short:322
 #: ../templates/_profile/kug/_database/bibsonomy/titlist_item_html_short:226
 #: ../templates/_profile/kug/_database/edz/circulation:33
 #: ../templates/_profile/kug/_database/edz/holding:17
@@ -11701,7 +11837,7 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/kug/_view/kug/mainnavigation_html:55
 #: ../templates/_profile/kug/authority_search_facet:703
 #: ../templates/_profile/kug/mainnavigation_html:55
-#: ../templates/_profile/kug/searchforms_record_query:214
+#: ../templates/_profile/kug/searchforms_record_query:215
 #: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:119
 #: ../templates/_profile/rheinlandbib/_view/bruehl/mainnavigation:120
 #: ../templates/_profile/rheinlandbib/_view/gaesdonck/mainnavigation:119
@@ -11737,6 +11873,8 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:421
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:123
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:124
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:118
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:128
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:132
@@ -11873,6 +12011,8 @@ msgstr "Suchhilfe"
 #: ../templates/_profile/rheinlandbib/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:46
 #: ../templates/_profile/sammlungen/_view/alekiddr/mainnavigation:48
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:41
+#: ../templates/_profile/sammlungen/_view/dissertationen/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:51
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:51
@@ -12070,10 +12210,15 @@ msgstr "Systematiken/Notationen"
 msgid "Systematisches Bl&auml;ttern"
 msgstr "Systematisches Bl&auml;ttern"
 
+#: ../templates/_database/bestellungen/visible_categories_title:16
+msgid "T0002-bestellungen"
+msgstr "Bestelldatum"
+
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:16
 msgid "T0010-muenzen"
 msgstr "Katalognummer"
 
+#: ../templates/_database/bestellungen/visible_categories_title:88
 #: ../templates/_database/filme/visible_categories_title:22
 #: ../templates/_database/inst001/visible_categories_title:85
 #: ../templates/_database/kapsel/visible_categories_title:87
@@ -12108,6 +12253,7 @@ msgstr "Katalognummer"
 msgid "T0015"
 msgstr "Sprache"
 
+#: ../templates/_database/bestellungen/visible_categories_title:92
 #: ../templates/_database/inst001/visible_categories_title:89
 #: ../templates/_database/kapsel/visible_categories_title:91
 #: ../templates/_database/openlibrary/visible_categories_title:91
@@ -12140,6 +12286,7 @@ msgstr "Sprache"
 msgid "T0026"
 msgstr "Nebeneintr."
 
+#: ../templates/_database/bestellungen/visible_categories_title:49
 #: ../templates/_database/inst001/visible_categories_title:47
 #: ../templates/_database/kapsel/visible_categories_title:48
 #: ../templates/_database/openlibrary/visible_categories_title:48
@@ -12172,6 +12319,7 @@ msgstr "Nebeneintr."
 msgid "T0035"
 msgstr "Ersch.Land"
 
+#: ../templates/_database/bestellungen/visible_categories_title:22
 #: ../templates/_database/inst001/visible_categories_title:21
 #: ../templates/_database/kapsel/visible_categories_title:21
 #: ../templates/_database/openlibrary/visible_categories_title:21
@@ -12205,6 +12353,7 @@ msgstr "Ersch.Land"
 msgid "T0089"
 msgstr "Bandangabe"
 
+#: ../templates/_database/bestellungen/visible_categories_title:17
 #: ../templates/_database/inst001/visible_categories_title:16
 #: ../templates/_database/kapsel/visible_categories_title:16
 #: ../templates/_database/openlibrary/visible_categories_title:16
@@ -12276,6 +12425,7 @@ msgstr "Autor"
 msgid "T0100-zpe"
 msgstr "Band"
 
+#: ../templates/_database/bestellungen/visible_categories_title:18
 #: ../templates/_database/inst001/visible_categories_title:17
 #: ../templates/_database/kapsel/visible_categories_title:17
 #: ../templates/_database/landschaft/visible_categories_title:18
@@ -12349,6 +12499,7 @@ msgstr "Dargestellte Person"
 msgid "T0102-totenzettel"
 msgstr "Mutter"
 
+#: ../templates/_database/bestellungen/visible_categories_title:19
 #: ../templates/_database/inst001/visible_categories_title:18
 #: ../templates/_database/kapsel/visible_categories_title:18
 #: ../templates/_database/landschaft/visible_categories_title:19
@@ -12390,6 +12541,7 @@ msgstr "Weitere Person"
 msgid "T0103-totenzettel"
 msgstr "Kinder"
 
+#: ../templates/_database/bestellungen/visible_categories_title:20
 #: ../templates/_database/inst001/visible_categories_title:19
 #: ../templates/_database/kapsel/visible_categories_title:19
 #: ../templates/_database/openlibrary/visible_categories_title:19
@@ -12449,6 +12601,7 @@ msgstr "Provenienz"
 msgid "T0200-umschlaege"
 msgstr "Zusammenarbeit"
 
+#: ../templates/_database/bestellungen/visible_categories_title:21
 #: ../templates/_database/filme/visible_categories_title:18
 #: ../templates/_database/inst001/visible_categories_title:20
 #: ../templates/_database/kapsel/visible_categories_title:20
@@ -12494,6 +12647,7 @@ msgstr "Herausgebende Institution"
 msgid "T0201-portrait"
 msgstr "Körperschaft"
 
+#: ../templates/_database/bestellungen/visible_categories_title:31
 #: ../templates/_database/inst001/visible_categories_title:25
 #: ../templates/_database/kapsel/visible_categories_title:30
 #: ../templates/_database/openlibrary/visible_categories_title:30
@@ -12526,6 +12680,7 @@ msgstr "Körperschaft"
 msgid "T0300"
 msgstr "SammelVermerk"
 
+#: ../templates/_database/bestellungen/visible_categories_title:24
 #: ../templates/_database/inst001/visible_categories_title:23
 #: ../templates/_database/kapsel/visible_categories_title:23
 #: ../templates/_database/openlibrary/visible_categories_title:23
@@ -12562,6 +12717,7 @@ msgstr "Einheitstitel"
 msgid "T0304-einbaende"
 msgstr "Motiv"
 
+#: ../templates/_database/bestellungen/visible_categories_title:23
 #: ../templates/_database/inst001/visible_categories_title:22
 #: ../templates/_database/kapsel/visible_categories_title:22
 #: ../templates/_database/openlibrary/visible_categories_title:22
@@ -12602,6 +12758,7 @@ msgstr "Titel"
 msgid "T0310-totenzettel"
 msgstr "Ordensname"
 
+#: ../templates/_database/bestellungen/visible_categories_title:25
 #: ../templates/_database/filme/visible_categories_title:19
 #: ../templates/_database/inst001/visible_categories_title:24
 #: ../templates/_database/kapsel/visible_categories_title:24
@@ -12661,6 +12818,7 @@ msgstr "Name"
 msgid "T0332-muenzen"
 msgstr "Vorderseite / Legende"
 
+#: ../templates/_database/bestellungen/visible_categories_title:29
 #: ../templates/_database/inst001/visible_categories_title:29
 #: ../templates/_database/kapsel/visible_categories_title:28
 #: ../templates/_database/openlibrary/visible_categories_title:28
@@ -12697,6 +12855,7 @@ msgstr "Zu ergänzender Urheber"
 msgid "T0333-muenzen"
 msgstr "Vorderseite / Referenz"
 
+#: ../templates/_database/bestellungen/visible_categories_title:53
 #: ../templates/_database/inst001/visible_categories_title:51
 #: ../templates/_database/kapsel/visible_categories_title:52
 #: ../templates/_database/openlibrary/visible_categories_title:52
@@ -12744,6 +12903,7 @@ msgstr "Material"
 msgid "T0334-pruessen"
 msgstr "Technik"
 
+#: ../templates/_database/bestellungen/visible_categories_title:30
 #: ../templates/_database/inst001/visible_categories_title:30
 #: ../templates/_database/kapsel/visible_categories_title:29
 #: ../templates/_database/openlibrary/visible_categories_title:29
@@ -12809,6 +12969,7 @@ msgstr "Rückseite / Beschreibung"
 msgid "T0338-muenzen"
 msgstr "Nominal"
 
+#: ../templates/_database/bestellungen/visible_categories_title:28
 #: ../templates/_database/inst001/visible_categories_title:27
 #: ../templates/_database/kapsel/visible_categories_title:27
 #: ../templates/_database/openlibrary/visible_categories_title:27
@@ -12841,6 +13002,7 @@ msgstr "Nominal"
 msgid "T0341"
 msgstr "Paralleltitel"
 
+#: ../templates/_database/bestellungen/visible_categories_title:35
 #: ../templates/_database/inst001/visible_categories_title:33
 #: ../templates/_database/kapsel/visible_categories_title:34
 #: ../templates/_database/landschaft/visible_categories_title:30
@@ -12878,6 +13040,7 @@ msgstr "Vorlageform Verfasser"
 msgid "T0359-portrait"
 msgstr "Vorlageform"
 
+#: ../templates/_database/bestellungen/visible_categories_title:36
 #: ../templates/_database/inst001/visible_categories_title:34
 #: ../templates/_database/kapsel/visible_categories_title:35
 #: ../templates/_database/openlibrary/visible_categories_title:35
@@ -12910,6 +13073,7 @@ msgstr "Vorlageform"
 msgid "T0360"
 msgstr "Vorlage Unterreihe"
 
+#: ../templates/_database/bestellungen/visible_categories_title:32
 #: ../templates/_database/inst001/visible_categories_title:28
 #: ../templates/_database/inst001/visible_categories_title:31
 #: ../templates/_database/kapsel/visible_categories_title:31
@@ -12960,6 +13124,7 @@ msgstr "Beibände"
 msgid "T0361-pruessen"
 msgstr "Einzelbild"
 
+#: ../templates/_database/bestellungen/visible_categories_title:33
 #: ../templates/_database/inst001/visible_categories_title:32
 #: ../templates/_database/kapsel/visible_categories_title:32
 #: ../templates/_database/openlibrary/visible_categories_title:32
@@ -12992,6 +13157,7 @@ msgstr "Einzelbild"
 msgid "T0365"
 msgstr "Gemeinsame Angaben"
 
+#: ../templates/_database/bestellungen/visible_categories_title:34
 #: ../templates/_database/kapsel/visible_categories_title:33
 #: ../templates/_database/openlibrary/visible_categories_title:33
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:33
@@ -13001,6 +13167,7 @@ msgstr "Gemeinsame Angaben"
 msgid "T0369"
 msgstr "Gemeins. Angaben Verfasser"
 
+#: ../templates/_database/bestellungen/visible_categories_title:26
 #: ../templates/_database/inst001/visible_categories_title:26
 #: ../templates/_database/kapsel/visible_categories_title:25
 #: ../templates/_database/openlibrary/visible_categories_title:25
@@ -13045,6 +13212,7 @@ msgstr "Vorname"
 msgid "T0370-zpe"
 msgstr "Bemerkung"
 
+#: ../templates/_database/bestellungen/visible_categories_title:37
 #: ../templates/_database/inst001/visible_categories_title:35
 #: ../templates/_database/kapsel/visible_categories_title:36
 #: ../templates/_database/openlibrary/visible_categories_title:36
@@ -13076,6 +13244,7 @@ msgstr "Bemerkung"
 msgid "T0403"
 msgstr "Ausgabe"
 
+#: ../templates/_database/bestellungen/visible_categories_title:42
 #: ../templates/_database/inst001/visible_categories_title:40
 #: ../templates/_database/kapsel/visible_categories_title:41
 #: ../templates/_database/openlibrary/visible_categories_title:41
@@ -13108,6 +13277,7 @@ msgstr "Ausgabe"
 msgid "T0405"
 msgstr "Erscheinungsverlauf"
 
+#: ../templates/_database/bestellungen/visible_categories_title:59
 #: ../templates/_database/inst001/visible_categories_title:57
 #: ../templates/_database/kapsel/visible_categories_title:58
 #: ../templates/_database/openlibrary/visible_categories_title:58
@@ -13148,6 +13318,7 @@ msgstr "Höhe x Breite"
 msgid "T0407-muenzen"
 msgstr "Stempelstellung"
 
+#: ../templates/_database/bestellungen/visible_categories_title:38
 #: ../templates/_database/inst001/visible_categories_title:36
 #: ../templates/_database/kapsel/visible_categories_title:37
 #: ../templates/_database/landschaft/visible_categories_title:37
@@ -13206,6 +13377,7 @@ msgstr "Verwahrort"
 msgid "T0411-totenzettel"
 msgstr "Geburtsort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:39
 #: ../templates/_database/einbaende/visible_categories_title:20
 #: ../templates/_database/inst001/visible_categories_title:37
 #: ../templates/_database/kapsel/visible_categories_title:38
@@ -13248,6 +13420,7 @@ msgstr "Verlag"
 msgid "T0412-zpe"
 msgstr "Herkunft"
 
+#: ../templates/_database/bestellungen/visible_categories_title:48
 #: ../templates/_database/inst001/visible_categories_title:46
 #: ../templates/_database/kapsel/visible_categories_title:47
 #: ../templates/_database/openlibrary/visible_categories_title:47
@@ -13288,6 +13461,7 @@ msgstr "Drucker"
 msgid "T0413-zpe"
 msgstr "Datierung"
 
+#: ../templates/_database/bestellungen/visible_categories_title:41
 #: ../templates/_database/inst001/visible_categories_title:39
 #: ../templates/_database/kapsel/visible_categories_title:40
 #: ../templates/_database/landschaft/visible_categories_title:39
@@ -13333,6 +13507,7 @@ msgstr "Jahr / Ansetzung"
 msgid "T0424-totenzettel"
 msgstr "Sterbedatum"
 
+#: ../templates/_database/bestellungen/visible_categories_title:40
 #: ../templates/_database/filme/visible_categories_title:20
 #: ../templates/_database/inst001/visible_categories_title:38
 #: ../templates/_database/kapsel/visible_categories_title:39
@@ -13403,6 +13578,7 @@ msgstr "Datierung von"
 msgid "T0427-muenzen"
 msgstr "Datierung bis"
 
+#: ../templates/_database/bestellungen/visible_categories_title:52
 #: ../templates/_database/filme/visible_categories_title:21
 #: ../templates/_database/inst001/visible_categories_title:50
 #: ../templates/_database/kapsel/visible_categories_title:51
@@ -13453,6 +13629,8 @@ msgstr "Umfang Originale"
 msgid "T0433-totenzettel"
 msgstr "Beruf"
 
+#: ../templates/_database/bestellungen/visible_categories_title:47
+#: ../templates/_database/bestellungen/visible_categories_title:60
 #: ../templates/_database/inst001/visible_categories_title:45
 #: ../templates/_database/inst001/visible_categories_title:58
 #: ../templates/_database/kapsel/visible_categories_title:46
@@ -13516,6 +13694,7 @@ msgstr "Beruf"
 msgid "T0434"
 msgstr "Sonst.Angaben"
 
+#: ../templates/_database/bestellungen/visible_categories_title:50
 #: ../templates/_database/inst001/visible_categories_title:48
 #: ../templates/_database/kapsel/visible_categories_title:49
 #: ../templates/_database/openlibrary/visible_categories_title:49
@@ -13557,6 +13736,7 @@ msgstr "Maße"
 msgid "T0435-muenzen"
 msgstr "Durchmesser"
 
+#: ../templates/_database/bestellungen/visible_categories_title:61
 #: ../templates/_database/inst001/visible_categories_title:59
 #: ../templates/_database/kapsel/visible_categories_title:60
 #: ../templates/_database/openlibrary/visible_categories_title:60
@@ -13589,6 +13769,7 @@ msgstr "Durchmesser"
 msgid "T0437"
 msgstr "Begleitmaterial"
 
+#: ../templates/_database/bestellungen/visible_categories_title:56
 #: ../templates/_database/inst001/visible_categories_title:54
 #: ../templates/_database/kapsel/visible_categories_title:55
 #: ../templates/_database/openlibrary/visible_categories_title:55
@@ -13630,6 +13811,7 @@ msgstr "Forschungsliteratur"
 msgid "T0451-totenzettel"
 msgstr "Trauernde"
 
+#: ../templates/_database/bestellungen/visible_categories_title:62
 #: ../templates/_database/inst001/visible_categories_title:60
 #: ../templates/_database/kapsel/visible_categories_title:61
 #: ../templates/_database/landschaft/visible_categories_title:31
@@ -13694,6 +13876,7 @@ msgstr "Seite"
 msgid "T0502"
 msgstr "EST beig. Werk"
 
+#: ../templates/_database/bestellungen/visible_categories_title:91
 #: ../templates/_database/inst001/visible_categories_title:88
 #: ../templates/_database/kapsel/visible_categories_title:90
 #: ../templates/_database/openlibrary/visible_categories_title:90
@@ -13726,6 +13909,7 @@ msgstr "EST beig. Werk"
 msgid "T0503"
 msgstr "Übersetzter Titel"
 
+#: ../templates/_database/bestellungen/visible_categories_title:63
 #: ../templates/_database/inst001/visible_categories_title:61
 #: ../templates/_database/kapsel/visible_categories_title:62
 #: ../templates/_database/landschaft/visible_categories_title:44
@@ -13760,6 +13944,7 @@ msgstr "Übersetzter Titel"
 msgid "T0504"
 msgstr "Paralleltitel/Fußnote"
 
+#: ../templates/_database/bestellungen/visible_categories_title:64
 #: ../templates/_database/inst001/visible_categories_title:62
 #: ../templates/_database/kapsel/visible_categories_title:63
 #: ../templates/_database/landschaft/visible_categories_title:45
@@ -13794,6 +13979,7 @@ msgstr "Paralleltitel/Fußnote"
 msgid "T0505"
 msgstr "Weiterer Titel/Fußnote"
 
+#: ../templates/_database/bestellungen/visible_categories_title:65
 #: ../templates/_database/inst001/visible_categories_title:63
 #: ../templates/_database/kapsel/visible_categories_title:64
 #: ../templates/_database/openlibrary/visible_categories_title:64
@@ -13827,6 +14013,7 @@ msgstr "Weiterer Titel/Fußnote"
 msgid "T0507"
 msgstr "Titelangaben"
 
+#: ../templates/_database/bestellungen/visible_categories_title:51
 #: ../templates/_database/inst001/visible_categories_title:49
 #: ../templates/_database/kapsel/visible_categories_title:50
 #: ../templates/_database/landschaft/visible_categories_title:84
@@ -13873,6 +14060,7 @@ msgstr "Referenz"
 msgid "T0508-portrait"
 msgstr "Bibl. Nachweis"
 
+#: ../templates/_database/bestellungen/visible_categories_title:66
 #: ../templates/_database/inst001/visible_categories_title:64
 #: ../templates/_database/kapsel/visible_categories_title:65
 #: ../templates/_database/landschaft/visible_categories_title:46
@@ -13914,6 +14102,7 @@ msgstr "Personennamen"
 msgid "T0509-portrait"
 msgstr "Vermerke zur Personenangabe"
 
+#: ../templates/_database/bestellungen/visible_categories_title:67
 #: ../templates/_database/inst001/visible_categories_title:65
 #: ../templates/_database/kapsel/visible_categories_title:66
 #: ../templates/_database/landschaft/visible_categories_title:47
@@ -13948,6 +14137,7 @@ msgstr "Vermerke zur Personenangabe"
 msgid "T0510"
 msgstr "Ausgabe Fußnote"
 
+#: ../templates/_database/bestellungen/visible_categories_title:68
 #: ../templates/_database/inst001/visible_categories_title:66
 #: ../templates/_database/kapsel/visible_categories_title:67
 #: ../templates/_database/landschaft/visible_categories_title:48
@@ -13982,6 +14172,7 @@ msgstr "Ausgabe Fußnote"
 msgid "T0511"
 msgstr "Erschverm. Fußnote"
 
+#: ../templates/_database/bestellungen/visible_categories_title:69
 #: ../templates/_database/inst001/visible_categories_title:67
 #: ../templates/_database/kapsel/visible_categories_title:68
 #: ../templates/_database/landschaft/visible_categories_title:49
@@ -14016,6 +14207,7 @@ msgstr "Erschverm. Fußnote"
 msgid "T0512"
 msgstr "Koll. Fußnote"
 
+#: ../templates/_database/bestellungen/visible_categories_title:70
 #: ../templates/_database/inst001/visible_categories_title:68
 #: ../templates/_database/kapsel/visible_categories_title:69
 #: ../templates/_database/landschaft/visible_categories_title:50
@@ -14050,6 +14242,7 @@ msgstr "Koll. Fußnote"
 msgid "T0513"
 msgstr "Impress. Änderung"
 
+#: ../templates/_database/bestellungen/visible_categories_title:71
 #: ../templates/_database/inst001/visible_categories_title:69
 #: ../templates/_database/kapsel/visible_categories_title:70
 #: ../templates/_database/landschaft/visible_categories_title:51
@@ -14084,6 +14277,7 @@ msgstr "Impress. Änderung"
 msgid "T0515"
 msgstr "Ergänzt. GesamtTitel"
 
+#: ../templates/_database/bestellungen/visible_categories_title:89
 #: ../templates/_database/inst001/visible_categories_title:86
 #: ../templates/_database/kapsel/visible_categories_title:88
 #: ../templates/_database/openlibrary/visible_categories_title:88
@@ -14116,6 +14310,7 @@ msgstr "Ergänzt. GesamtTitel"
 msgid "T0516"
 msgstr "Sprache"
 
+#: ../templates/_database/bestellungen/visible_categories_title:72
 #: ../templates/_database/kapsel/visible_categories_title:71
 #: ../templates/_database/openlibrary/visible_categories_title:71
 #: ../templates/_database/richter/visible_categories_title:69
@@ -14137,6 +14332,7 @@ msgstr "Sprache"
 msgid "T0517"
 msgstr "Angaben zum Inhalt"
 
+#: ../templates/_database/bestellungen/visible_categories_title:84
 #: ../templates/_database/inst001/visible_categories_title:81
 #: ../templates/_database/kapsel/visible_categories_title:83
 #: ../templates/_database/openlibrary/visible_categories_title:83
@@ -14174,6 +14370,7 @@ msgstr "Hochschulschrift"
 msgid "T0521"
 msgstr "Angaben zum Inhalt"
 
+#: ../templates/_database/bestellungen/visible_categories_title:73
 #: ../templates/_database/inst001/visible_categories_title:70
 #: ../templates/_database/kapsel/visible_categories_title:72
 #: ../templates/_database/landschaft/visible_categories_title:53
@@ -14208,6 +14405,7 @@ msgstr "Angaben zum Inhalt"
 msgid "T0522"
 msgstr "Teilungsvermerk"
 
+#: ../templates/_database/bestellungen/visible_categories_title:43
 #: ../templates/_database/inst001/visible_categories_title:41
 #: ../templates/_database/kapsel/visible_categories_title:42
 #: ../templates/_database/openlibrary/visible_categories_title:42
@@ -14240,6 +14438,7 @@ msgstr "Teilungsvermerk"
 msgid "T0523"
 msgstr "Erscheinungsweise"
 
+#: ../templates/_database/bestellungen/visible_categories_title:74
 #: ../templates/_database/inst001/visible_categories_title:71
 #: ../templates/_database/kapsel/visible_categories_title:73
 #: ../templates/_database/landschaft/visible_categories_title:54
@@ -14278,6 +14477,7 @@ msgstr "Herkunft Fußnote"
 msgid "T0525-inst450"
 msgstr "Ortsnamen"
 
+#: ../templates/_database/bestellungen/visible_categories_title:78
 #: ../templates/_database/inst001/visible_categories_title:75
 #: ../templates/_database/kapsel/visible_categories_title:77
 #: ../templates/_database/landschaft/visible_categories_title:55
@@ -14312,6 +14512,7 @@ msgstr "Ortsnamen"
 msgid "T0527"
 msgstr "Parallele Ausg."
 
+#: ../templates/_database/bestellungen/visible_categories_title:79
 #: ../templates/_database/inst001/visible_categories_title:76
 #: ../templates/_database/kapsel/visible_categories_title:78
 #: ../templates/_database/landschaft/visible_categories_title:56
@@ -14346,6 +14547,7 @@ msgstr "Parallele Ausg."
 msgid "T0529"
 msgstr "Titel Beilage"
 
+#: ../templates/_database/bestellungen/visible_categories_title:80
 #: ../templates/_database/inst001/visible_categories_title:77
 #: ../templates/_database/kapsel/visible_categories_title:79
 #: ../templates/_database/landschaft/visible_categories_title:57
@@ -14380,6 +14582,7 @@ msgstr "Titel Beilage"
 msgid "T0530"
 msgstr "Bezugswerk"
 
+#: ../templates/_database/bestellungen/visible_categories_title:81
 #: ../templates/_database/inst001/visible_categories_title:78
 #: ../templates/_database/kapsel/visible_categories_title:80
 #: ../templates/_database/landschaft/visible_categories_title:58
@@ -14414,6 +14617,7 @@ msgstr "Bezugswerk"
 msgid "T0531"
 msgstr "Frühere Ausg."
 
+#: ../templates/_database/bestellungen/visible_categories_title:82
 #: ../templates/_database/inst001/visible_categories_title:79
 #: ../templates/_database/kapsel/visible_categories_title:81
 #: ../templates/_database/landschaft/visible_categories_title:59
@@ -14448,6 +14652,7 @@ msgstr "Frühere Ausg."
 msgid "T0532"
 msgstr "Früherer Titel"
 
+#: ../templates/_database/bestellungen/visible_categories_title:83
 #: ../templates/_database/inst001/visible_categories_title:80
 #: ../templates/_database/kapsel/visible_categories_title:82
 #: ../templates/_database/landschaft/visible_categories_title:60
@@ -14482,6 +14687,7 @@ msgstr "Früherer Titel"
 msgid "T0533"
 msgstr "Spätere Ausg."
 
+#: ../templates/_database/bestellungen/visible_categories_title:75
 #: ../templates/_database/inst001/visible_categories_title:72
 #: ../templates/_database/kapsel/visible_categories_title:74
 #: ../templates/_database/landschaft/visible_categories_title:61
@@ -14516,6 +14722,7 @@ msgstr "Spätere Ausg."
 msgid "T0534"
 msgstr "Titelkonk."
 
+#: ../templates/_database/bestellungen/visible_categories_title:76
 #: ../templates/_database/inst001/visible_categories_title:73
 #: ../templates/_database/kapsel/visible_categories_title:75
 #: ../templates/_database/landschaft/visible_categories_title:62
@@ -14550,6 +14757,7 @@ msgstr "Titelkonk."
 msgid "T0535"
 msgstr "Anz. Exemplare"
 
+#: ../templates/_database/bestellungen/visible_categories_title:77
 #: ../templates/_database/inst001/visible_categories_title:74
 #: ../templates/_database/kapsel/visible_categories_title:76
 #: ../templates/_database/landschaft/visible_categories_title:63
@@ -14594,6 +14802,7 @@ msgstr "Redaktionelle Bemerkungen"
 msgid "T0538"
 msgstr "Angabe Vervielfältigungsart"
 
+#: ../templates/_database/bestellungen/visible_categories_title:110
 #: ../templates/_database/inst001/visible_categories_title:104
 #: ../templates/_database/kapsel/visible_categories_title:108
 #: ../templates/_database/openlibrary/visible_categories_title:107
@@ -14626,6 +14835,7 @@ msgstr "Angabe Vervielfältigungsart"
 msgid "T0540"
 msgstr "ISBN"
 
+#: ../templates/_database/bestellungen/visible_categories_title:112
 #: ../templates/_database/inst001/visible_categories_title:105
 #: ../templates/_database/kapsel/visible_categories_title:110
 #: ../templates/_database/openlibrary/visible_categories_title:109
@@ -14658,6 +14868,7 @@ msgstr "ISBN"
 msgid "T0543"
 msgstr "ISSN"
 
+#: ../templates/_database/bestellungen/visible_categories_title:111
 #: ../templates/_database/kapsel/visible_categories_title:109
 #: ../templates/_database/openlibrary/visible_categories_title:108
 #: ../templates/_database/richter/visible_categories_title:103
@@ -14684,6 +14895,7 @@ msgstr "ISBN"
 msgid "T0578"
 msgstr "Fingerprint"
 
+#: ../templates/_database/bestellungen/visible_categories_title:86
 #: ../templates/_database/inst001/visible_categories_title:83
 #: ../templates/_database/kapsel/visible_categories_title:85
 #: ../templates/_database/landschaft/visible_categories_title:67
@@ -14711,6 +14923,7 @@ msgstr "Fingerprint"
 msgid "T0580"
 msgstr "Nachweise / Sonstige Nummern"
 
+#: ../templates/_database/bestellungen/visible_categories_title:57
 #: ../templates/_database/inst001/visible_categories_title:55
 #: ../templates/_database/kapsel/visible_categories_title:56
 #: ../templates/_database/landschaft/visible_categories_title:68
@@ -14749,6 +14962,7 @@ msgstr "In:"
 msgid "T0590-pruessen"
 msgstr "Veröffentlicht"
 
+#: ../templates/_database/bestellungen/visible_categories_title:44
 #: ../templates/_database/inst001/visible_categories_title:42
 #: ../templates/_database/kapsel/visible_categories_title:43
 #: ../templates/_database/openlibrary/visible_categories_title:43
@@ -14796,6 +15010,7 @@ msgstr "Abteilung Unterreiche der Quelle"
 msgid "T0593"
 msgstr "Ausgabebez. der Quelle"
 
+#: ../templates/_database/bestellungen/visible_categories_title:45
 #: ../templates/_database/inst001/visible_categories_title:43
 #: ../templates/_database/kapsel/visible_categories_title:44
 #: ../templates/_database/openlibrary/visible_categories_title:44
@@ -14833,6 +15048,7 @@ msgstr "Ersch.Ort Quelle"
 msgid "T0594-landschaft"
 msgstr "Entstehungslandschaft"
 
+#: ../templates/_database/bestellungen/visible_categories_title:46
 #: ../templates/_database/inst001/visible_categories_title:44
 #: ../templates/_database/kapsel/visible_categories_title:45
 #: ../templates/_database/openlibrary/visible_categories_title:45
@@ -14894,6 +15110,7 @@ msgstr "Fußnote der Quelle"
 msgid "T0599"
 msgstr "Standardnummer der Quelle"
 
+#: ../templates/_database/bestellungen/visible_categories_title:58
 #: ../templates/_database/inst001/visible_categories_title:56
 #: ../templates/_database/kapsel/visible_categories_title:57
 #: ../templates/_database/openlibrary/visible_categories_title:57
@@ -14930,6 +15147,7 @@ msgstr "Bemerkung"
 msgid "T0600-inst404abklatsch"
 msgstr "Schublade"
 
+#: ../templates/_database/bestellungen/visible_categories_title:85
 #: ../templates/_database/inst001/visible_categories_title:82
 #: ../templates/_database/kapsel/visible_categories_title:84
 #: ../templates/_database/landschaft/visible_categories_title:73
@@ -14972,6 +15190,7 @@ msgstr "Prägejahr"
 msgid "T0622-muenzen"
 msgstr "Links"
 
+#: ../templates/_database/bestellungen/visible_categories_title:87
 #: ../templates/_database/inst001/visible_categories_title:84
 #: ../templates/_database/kapsel/visible_categories_title:86
 #: ../templates/_database/landschaft/visible_categories_title:74
@@ -15006,6 +15225,7 @@ msgstr "Links"
 msgid "T0646"
 msgstr "Filmbesitz"
 
+#: ../templates/_database/bestellungen/visible_categories_title:54
 #: ../templates/_database/inst001/visible_categories_title:52
 #: ../templates/_database/kapsel/visible_categories_title:53
 #: ../templates/_database/openlibrary/visible_categories_title:53
@@ -15038,6 +15258,7 @@ msgstr "Filmbesitz"
 msgid "T0652"
 msgstr "EDV Material"
 
+#: ../templates/_database/bestellungen/visible_categories_title:55
 #: ../templates/_database/inst001/visible_categories_title:53
 #: ../templates/_database/kapsel/visible_categories_title:54
 #: ../templates/_database/landschaft/visible_categories_title:75
@@ -15072,6 +15293,7 @@ msgstr "EDV Material"
 msgid "T0655"
 msgstr "EDV Adress"
 
+#: ../templates/_database/bestellungen/visible_categories_title:113
 #: ../templates/_database/inst001/visible_categories_title:106
 #: ../templates/_database/kapsel/visible_categories_title:111
 #: ../templates/_database/landschaft/visible_categories_title:85
@@ -15121,6 +15343,7 @@ msgstr "JSTOR-URL"
 msgid "T0663-ebooks"
 msgstr "Volltext-Hinweis"
 
+#: ../templates/_database/bestellungen/visible_categories_title:27
 #: ../templates/_database/kapsel/visible_categories_title:26
 #: ../templates/_database/landschaft/visible_categories_title:76
 #: ../templates/_database/openlibrary/visible_categories_title:26
@@ -15189,6 +15412,10 @@ msgstr "Abweichende Orthographie"
 msgid "T0700"
 msgstr "Notation"
 
+#: ../templates/_database/bestellungen/visible_categories_title:107
+msgid "T0700-bestellungen"
+msgstr "Bestellzeichen"
+
 #: ../templates/_database/einbaende/visible_categories_cover:20
 msgid "T0700-einbaende"
 msgstr "Einband"
@@ -15244,6 +15471,10 @@ msgstr "Provenienz"
 msgid "T0710"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:95
+msgid "T0710-bestellungen"
+msgstr "Lieferant"
+
 #: ../templates/_database/einbaende/visible_categories_cover:17
 msgid "T0710-einbaende"
 msgstr "Jahrhundert"
@@ -15274,6 +15505,7 @@ msgstr "Region"
 msgid "T0710-umschlaege"
 msgstr "Am Umschlag Beteiligte"
 
+#: ../templates/_database/bestellungen/visible_categories_title:90
 #: ../templates/_database/filme/visible_categories_title:23
 #: ../templates/_database/inst001/visible_categories_title:87
 #: ../templates/_database/kapsel/visible_categories_title:89
@@ -15316,6 +15548,7 @@ msgstr "Beschreibung"
 msgid "T0750-landschaft"
 msgstr "Transkription"
 
+#: ../templates/_database/bestellungen/visible_categories_title:94
 #: ../templates/_database/inst001/visible_categories_title:90
 #: ../templates/_database/kapsel/visible_categories_title:93
 #: ../templates/_database/landschaft/visible_categories_title:81
@@ -15368,6 +15601,7 @@ msgstr "Medienart"
 msgid "T0840"
 msgstr "Konkordanz"
 
+#: ../templates/_database/bestellungen/visible_categories_title:96
 #: ../templates/_database/inst001/visible_categories_title:92
 #: ../templates/_database/kapsel/visible_categories_title:95
 #: ../templates/_database/openlibrary/visible_categories_title:94
@@ -15400,6 +15634,7 @@ msgstr "Konkordanz"
 msgid "T0902"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:97
 #: ../templates/_database/inst001/visible_categories_title:93
 #: ../templates/_database/kapsel/visible_categories_title:96
 #: ../templates/_database/openlibrary/visible_categories_title:95
@@ -15432,6 +15667,7 @@ msgstr "Schlagwort"
 msgid "T0907"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:98
 #: ../templates/_database/inst001/visible_categories_title:94
 #: ../templates/_database/kapsel/visible_categories_title:97
 #: ../templates/_database/openlibrary/visible_categories_title:96
@@ -15464,6 +15700,7 @@ msgstr "Schlagwort"
 msgid "T0912"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:99
 #: ../templates/_database/inst001/visible_categories_title:95
 #: ../templates/_database/kapsel/visible_categories_title:98
 #: ../templates/_database/openlibrary/visible_categories_title:97
@@ -15496,6 +15733,7 @@ msgstr "Schlagwort"
 msgid "T0917"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:100
 #: ../templates/_database/inst001/visible_categories_title:96
 #: ../templates/_database/kapsel/visible_categories_title:99
 #: ../templates/_database/openlibrary/visible_categories_title:98
@@ -15528,6 +15766,7 @@ msgstr "Schlagwort"
 msgid "T0922"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:101
 #: ../templates/_database/inst001/visible_categories_title:97
 #: ../templates/_database/kapsel/visible_categories_title:100
 #: ../templates/_database/openlibrary/visible_categories_title:99
@@ -15560,6 +15799,7 @@ msgstr "Schlagwort"
 msgid "T0927"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:102
 #: ../templates/_database/inst001/visible_categories_title:98
 #: ../templates/_database/kapsel/visible_categories_title:101
 #: ../templates/_database/openlibrary/visible_categories_title:100
@@ -15592,6 +15832,7 @@ msgstr "Schlagwort"
 msgid "T0932"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:103
 #: ../templates/_database/inst001/visible_categories_title:99
 #: ../templates/_database/kapsel/visible_categories_title:102
 #: ../templates/_database/openlibrary/visible_categories_title:101
@@ -15624,6 +15865,7 @@ msgstr "Schlagwort"
 msgid "T0937"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:104
 #: ../templates/_database/inst001/visible_categories_title:100
 #: ../templates/_database/kapsel/visible_categories_title:103
 #: ../templates/_database/openlibrary/visible_categories_title:102
@@ -15656,6 +15898,7 @@ msgstr "Schlagwort"
 msgid "T0942"
 msgstr "Schlagwort"
 
+#: ../templates/_database/bestellungen/visible_categories_title:105
 #: ../templates/_database/inst001/visible_categories_title:101
 #: ../templates/_database/kapsel/visible_categories_title:104
 #: ../templates/_database/openlibrary/visible_categories_title:103
@@ -15707,6 +15950,7 @@ msgstr "Bestand Bemerkung"
 msgid "T1600"
 msgstr "Hinweis"
 
+#: ../templates/_database/bestellungen/visible_categories_title:114
 #: ../templates/_database/inst001/visible_categories_title:107
 #: ../templates/_database/kapsel/visible_categories_title:112
 #: ../templates/_database/openlibrary/visible_categories_title:111
@@ -15770,6 +16014,7 @@ msgstr "Person"
 msgid "T1802"
 msgstr "Körperschaft"
 
+#: ../templates/_database/bestellungen/visible_categories_title:115
 #: ../templates/_database/inst001/visible_categories_title:108
 #: ../templates/_database/kapsel/visible_categories_title:113
 #: ../templates/_database/openlibrary/visible_categories_title:112
@@ -15807,6 +16052,7 @@ msgstr "USB URL"
 msgid "T2662-zpe"
 msgstr "Externer URL"
 
+#: ../templates/_database/bestellungen/visible_categories_title:116
 #: ../templates/_database/inst001/visible_categories_title:109
 #: ../templates/_database/kapsel/visible_categories_title:114
 #: ../templates/_database/openlibrary/visible_categories_title:113
@@ -15876,6 +16122,7 @@ msgstr "Bemerkung"
 msgid "T4100"
 msgstr "Basis-Klassifikation"
 
+#: ../templates/_database/bestellungen/visible_categories_title:117
 #: ../templates/_database/filme/visible_categories_title:26
 #: ../templates/_database/kapsel/visible_categories_title:115
 #: ../templates/_database/openlibrary/visible_categories_title:114
@@ -15885,6 +16132,7 @@ msgstr "Basis-Klassifikation"
 msgid "T4200"
 msgstr "Nutzername"
 
+#: ../templates/_database/bestellungen/visible_categories_title:125
 #: ../templates/_database/landschaft/titles_record_html_categories:258
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:258
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:112
@@ -15892,14 +16140,17 @@ msgstr "Nutzername"
 msgid "T4210"
 msgstr "Rechte-Information"
 
+#: ../templates/_database/bestellungen/visible_categories_title:123
 #: ../templates/visible_categories_title:122
 msgid "T4211"
 msgstr "Preis"
 
+#: ../templates/_database/bestellungen/visible_categories_title:124
 #: ../templates/visible_categories_title:123
 msgid "T4212"
 msgstr "Währung"
 
+#: ../templates/_database/bestellungen/visible_categories_title:93
 #: ../templates/_database/kapsel/visible_categories_title:92
 #: ../templates/_profile/kug/_database/edz/visible_categories_title:92
 #: ../templates/_profile/kug/_database/inst001/visible_categories_title:92
@@ -15916,6 +16167,7 @@ msgstr "Währung"
 msgid "T4410"
 msgstr "Typ"
 
+#: ../templates/_database/bestellungen/visible_categories_title:120
 #: ../templates/_database/inst001/visible_categories_title:112
 #: ../templates/_database/kapsel/visible_categories_title:118
 #: ../templates/_database/openlibrary/visible_categories_title:117
@@ -15970,6 +16222,7 @@ msgstr "Sammlungs-Portale"
 msgid "T5001"
 msgstr "Anzahl Gesamttitel"
 
+#: ../templates/_database/bestellungen/visible_categories_title:122
 #: ../templates/_database/einbaende/visible_categories_title:26
 #: ../templates/_database/filme/visible_categories_title:28
 #: ../templates/_database/inst001/visible_categories_title:115
@@ -16014,6 +16267,7 @@ msgstr "IDs Gesamttitel"
 msgid "T5004"
 msgstr "IDs Bände/Stücke"
 
+#: ../templates/_database/bestellungen/visible_categories_title:121
 #: ../templates/_database/einbaende/visible_categories_title:25
 #: ../templates/_database/filme/visible_categories_title:27
 #: ../templates/_database/inst001/visible_categories_title:114
@@ -16040,6 +16294,7 @@ msgstr "IDs Bände/Stücke"
 msgid "T5005"
 msgstr "Zum Gesamttitel"
 
+#: ../templates/_database/bestellungen/visible_categories_title:126
 #: ../templates/_database/filme/visible_categories_title:29
 #: ../templates/_database/inst001/visible_categories_title:116
 #: ../templates/_database/kapsel/visible_categories_title:122
@@ -16213,7 +16468,7 @@ msgstr "Thematische Integration weiterer Quellen"
 #: ../templates/admin_topics_html:69 ../templates/admin_topics_html:99
 #: ../templates/admin_topics_mappings_html:77
 #: ../templates/admin_topics_mappings_record_html:76
-#: ../templates/admin_topics_record_edit:119
+#: ../templates/admin_topics_record_edit:117
 #: ../templates/authority_search_facet:194 ../templates/search_title_field:20
 #: ../templates/topics_html:63 ../templates/topics_mappings_html:75
 #: ../templates/topics_mappings_record_html:74
@@ -16222,34 +16477,34 @@ msgstr "Thematische Integration weiterer Quellen"
 msgid "Themengebiet"
 msgstr "Themengebiet"
 
-#: ../templates/admin_topics_record_edit:116
+#: ../templates/admin_topics_record_edit:114
 #: ../templates/topics_record_mapping_html:76
 msgid "Themengebiet bearbeiten"
 msgstr "Themengebiet bearbeiten"
 
-#: ../templates/admin_topics_record_edit:146
+#: ../templates/admin_topics_record_edit:144
 #: ../templates/topics_record_mapping_html:114
 msgid "Themengebiet(e) der Basisklassifikation zuordnen"
 msgstr "Themengebiet(e) der Basisklassifikation zuordnen"
 
-#: ../templates/admin_topics_record_edit:276
+#: ../templates/admin_topics_record_edit:274
 msgid "Themengebiet(e) der DDC zuordnen"
 msgstr "Themengebiet(e) der DDC zuordnen"
 
-#: ../templates/admin_topics_record_edit:179
+#: ../templates/admin_topics_record_edit:177
 #: ../templates/topics_record_mapping_html:164
 msgid "Themengebiet(e) der EZB zuordnen"
 msgstr "Themengebiet(e) der EZB zuordnen"
 
-#: ../templates/admin_topics_record_edit:309
+#: ../templates/admin_topics_record_edit:307
 msgid "Themengebiet(e) der LoC Classification zuordnen"
 msgstr "Themengebiet(e) der LoC Classification zuordnen"
 
-#: ../templates/admin_topics_record_edit:243
+#: ../templates/admin_topics_record_edit:241
 msgid "Themengebiet(e) der Regensburger Verbundklassifikation zuordnen"
 msgstr "Themengebiet(e) der Regensburger Verbundklassifikation zuordnen"
 
-#: ../templates/admin_topics_record_edit:211
+#: ../templates/admin_topics_record_edit:209
 #: ../templates/topics_record_mapping_html:211
 msgid "Themengebiet(e) von DBIS zuordnen"
 msgstr "Themengebiet(e) von DBIS zuordnen"
@@ -16267,13 +16522,13 @@ msgstr "Themengebiet(e) von DBIS zuordnen"
 #: ../templates/admin_topics_mappings_record_html:54
 #: ../templates/admin_topics_mappings_record_html:83
 #: ../templates/admin_topics_record_delete_confirm:39
-#: ../templates/admin_topics_record_edit:149
-#: ../templates/admin_topics_record_edit:182
-#: ../templates/admin_topics_record_edit:214
-#: ../templates/admin_topics_record_edit:246
-#: ../templates/admin_topics_record_edit:279
-#: ../templates/admin_topics_record_edit:312
-#: ../templates/admin_topics_record_edit:91
+#: ../templates/admin_topics_record_edit:147
+#: ../templates/admin_topics_record_edit:180
+#: ../templates/admin_topics_record_edit:212
+#: ../templates/admin_topics_record_edit:244
+#: ../templates/admin_topics_record_edit:277
+#: ../templates/admin_topics_record_edit:310
+#: ../templates/admin_topics_record_edit:89
 #: ../templates/admin_topics_record_html:113
 #: ../templates/admin_topics_record_html:149
 #: ../templates/admin_topics_record_html:54
@@ -17243,17 +17498,18 @@ msgstr "WebOPAC-URL"
 
 #: ../templates/_database/inst001/circulation:100
 #: ../templates/_database/inst411/circulation:53
-#: ../templates/_profile/kug/_database/edz/circulation:100
+#: ../templates/_profile/kug/_database/edz/circulation:106
 #: ../templates/_profile/kug/_database/inst001/circulation:106
+#: ../templates/_profile/kug/_database/inst001/holding:93
 #: ../templates/_profile/kug/_database/inst302/circulation:54
 #: ../templates/_profile/kug/_database/islandica/circulation:100
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:100
-#: ../templates/_profile/kug/_database/lesesaal/circulation:100
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:100
-#: ../templates/_profile/kug/_database/rheinabt/circulation:100
-#: ../templates/_profile/kug/_database/usbhwa/circulation:100
-#: ../templates/_profile/kug/_database/usbsab/circulation:100
-#: ../templates/_profile/kug/_database/wiso/circulation:100
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:106
+#: ../templates/_profile/kug/_database/lesesaal/circulation:106
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:106
+#: ../templates/_profile/kug/_database/rheinabt/circulation:106
+#: ../templates/_profile/kug/_database/usbhwa/circulation:106
+#: ../templates/_profile/kug/_database/usbsab/circulation:106
+#: ../templates/_profile/kug/_database/wiso/circulation:106
 #: ../templates/_profile/kug/_database/zbmed/circulation:53
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:100
 #: ../templates/_profile/sammlungen/_database/dante/circulation:100
@@ -17850,8 +18106,8 @@ msgstr ""
 
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:255
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:259
-#: ../templates/_profile/kug/searchforms_record_query:197
-#: ../templates/_profile/kug/searchforms_record_query:201
+#: ../templates/_profile/kug/searchforms_record_query:198
+#: ../templates/_profile/kug/searchforms_record_query:202
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:220
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:224
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:129
@@ -18092,17 +18348,17 @@ msgstr "aufsteigend"
 
 #: ../templates/_database/inst001/circulation:135
 #: ../templates/_database/inst411/circulation:86
-#: ../templates/_profile/kug/_database/edz/circulation:135
+#: ../templates/_profile/kug/_database/edz/circulation:141
 #: ../templates/_profile/kug/_database/inst001/circulation:141
 #: ../templates/_profile/kug/_database/inst302/circulation:95
 #: ../templates/_profile/kug/_database/islandica/circulation:135
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:135
-#: ../templates/_profile/kug/_database/lesesaal/circulation:135
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:135
-#: ../templates/_profile/kug/_database/rheinabt/circulation:135
-#: ../templates/_profile/kug/_database/usbhwa/circulation:135
-#: ../templates/_profile/kug/_database/usbsab/circulation:135
-#: ../templates/_profile/kug/_database/wiso/circulation:135
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:141
+#: ../templates/_profile/kug/_database/lesesaal/circulation:141
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:141
+#: ../templates/_profile/kug/_database/rheinabt/circulation:141
+#: ../templates/_profile/kug/_database/usbhwa/circulation:141
+#: ../templates/_profile/kug/_database/usbsab/circulation:141
+#: ../templates/_profile/kug/_database/wiso/circulation:141
 #: ../templates/_profile/kug/_database/zbmed/circulation:88
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:135
 #: ../templates/_profile/sammlungen/_database/dante/circulation:135
@@ -18123,17 +18379,17 @@ msgstr "ausleihbar"
 
 #: ../templates/_database/inst001/circulation:133
 #: ../templates/_database/inst411/circulation:84
-#: ../templates/_profile/kug/_database/edz/circulation:133
+#: ../templates/_profile/kug/_database/edz/circulation:139
 #: ../templates/_profile/kug/_database/inst001/circulation:139
 #: ../templates/_profile/kug/_database/inst302/circulation:93
 #: ../templates/_profile/kug/_database/islandica/circulation:133
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:133
-#: ../templates/_profile/kug/_database/lesesaal/circulation:133
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:133
-#: ../templates/_profile/kug/_database/rheinabt/circulation:133
-#: ../templates/_profile/kug/_database/usbhwa/circulation:133
-#: ../templates/_profile/kug/_database/usbsab/circulation:133
-#: ../templates/_profile/kug/_database/wiso/circulation:133
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:139
+#: ../templates/_profile/kug/_database/lesesaal/circulation:139
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:139
+#: ../templates/_profile/kug/_database/rheinabt/circulation:139
+#: ../templates/_profile/kug/_database/usbhwa/circulation:139
+#: ../templates/_profile/kug/_database/usbsab/circulation:139
+#: ../templates/_profile/kug/_database/wiso/circulation:139
 #: ../templates/_profile/kug/_database/zbmed/circulation:86
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:133
 #: ../templates/_profile/sammlungen/_database/dante/circulation:133
@@ -18150,17 +18406,17 @@ msgstr "beim Lieferanten reklamiert"
 
 #: ../templates/_database/inst001/circulation:131
 #: ../templates/_database/inst411/circulation:82
-#: ../templates/_profile/kug/_database/edz/circulation:131
+#: ../templates/_profile/kug/_database/edz/circulation:137
 #: ../templates/_profile/kug/_database/inst001/circulation:137
 #: ../templates/_profile/kug/_database/inst302/circulation:91
 #: ../templates/_profile/kug/_database/islandica/circulation:131
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:131
-#: ../templates/_profile/kug/_database/lesesaal/circulation:131
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:131
-#: ../templates/_profile/kug/_database/rheinabt/circulation:131
-#: ../templates/_profile/kug/_database/usbhwa/circulation:131
-#: ../templates/_profile/kug/_database/usbsab/circulation:131
-#: ../templates/_profile/kug/_database/wiso/circulation:131
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:137
+#: ../templates/_profile/kug/_database/lesesaal/circulation:137
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:137
+#: ../templates/_profile/kug/_database/rheinabt/circulation:137
+#: ../templates/_profile/kug/_database/usbhwa/circulation:137
+#: ../templates/_profile/kug/_database/usbsab/circulation:137
+#: ../templates/_profile/kug/_database/wiso/circulation:137
 #: ../templates/_profile/kug/_database/zbmed/circulation:84
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:131
 #: ../templates/_profile/sammlungen/_database/dante/circulation:131
@@ -18177,17 +18433,17 @@ msgstr "beim Lieferanten storniert"
 
 #: ../templates/_database/inst001/circulation:127
 #: ../templates/_database/inst411/circulation:78
-#: ../templates/_profile/kug/_database/edz/circulation:127
+#: ../templates/_profile/kug/_database/edz/circulation:133
 #: ../templates/_profile/kug/_database/inst001/circulation:133
 #: ../templates/_profile/kug/_database/inst302/circulation:87
 #: ../templates/_profile/kug/_database/islandica/circulation:127
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:127
-#: ../templates/_profile/kug/_database/lesesaal/circulation:127
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:127
-#: ../templates/_profile/kug/_database/rheinabt/circulation:127
-#: ../templates/_profile/kug/_database/usbhwa/circulation:127
-#: ../templates/_profile/kug/_database/usbsab/circulation:127
-#: ../templates/_profile/kug/_database/wiso/circulation:127
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:133
+#: ../templates/_profile/kug/_database/lesesaal/circulation:133
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:133
+#: ../templates/_profile/kug/_database/rheinabt/circulation:133
+#: ../templates/_profile/kug/_database/usbhwa/circulation:133
+#: ../templates/_profile/kug/_database/usbsab/circulation:133
+#: ../templates/_profile/kug/_database/wiso/circulation:133
 #: ../templates/_profile/kug/_database/zbmed/circulation:80
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:127
 #: ../templates/_profile/sammlungen/_database/dante/circulation:127
@@ -18204,7 +18460,7 @@ msgstr "bestellt beim Lieferanten"
 
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:259
 #: ../templates/_profile/kug/search_facet:442
-#: ../templates/_profile/kug/searchforms_record_query:201
+#: ../templates/_profile/kug/searchforms_record_query:202
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:224
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:133
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:153
@@ -18283,17 +18539,17 @@ msgstr "entliehen"
 
 #: ../templates/_database/inst001/circulation:129
 #: ../templates/_database/inst411/circulation:80
-#: ../templates/_profile/kug/_database/edz/circulation:129
+#: ../templates/_profile/kug/_database/edz/circulation:135
 #: ../templates/_profile/kug/_database/inst001/circulation:135
 #: ../templates/_profile/kug/_database/inst302/circulation:89
 #: ../templates/_profile/kug/_database/islandica/circulation:129
-#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:129
-#: ../templates/_profile/kug/_database/lesesaal/circulation:129
-#: ../templates/_profile/kug/_database/mikrofilm/circulation:129
-#: ../templates/_profile/kug/_database/rheinabt/circulation:129
-#: ../templates/_profile/kug/_database/usbhwa/circulation:129
-#: ../templates/_profile/kug/_database/usbsab/circulation:129
-#: ../templates/_profile/kug/_database/wiso/circulation:129
+#: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:135
+#: ../templates/_profile/kug/_database/lesesaal/circulation:135
+#: ../templates/_profile/kug/_database/mikrofilm/circulation:135
+#: ../templates/_profile/kug/_database/rheinabt/circulation:135
+#: ../templates/_profile/kug/_database/usbhwa/circulation:135
+#: ../templates/_profile/kug/_database/usbsab/circulation:135
+#: ../templates/_profile/kug/_database/wiso/circulation:135
 #: ../templates/_profile/kug/_database/zbmed/circulation:82
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:129
 #: ../templates/_profile/sammlungen/_database/dante/circulation:129
@@ -18320,7 +18576,7 @@ msgstr "im Gesch&auml;ftsgang"
 #: ../templates/_profile/kug/_view/kug/mainnavigation_html:59
 #: ../templates/_profile/kug/authority_search_facet:696
 #: ../templates/_profile/kug/mainnavigation_html:59
-#: ../templates/_profile/kug/searchforms_record_query:207
+#: ../templates/_profile/kug/searchforms_record_query:208
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:232
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:147
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:237
@@ -18893,7 +19149,7 @@ msgstr "usw. usf."
 #: ../templates/_profile/kug/_database/dbis/search_title_item_html:122
 #: ../templates/_profile/kug/_database/ezb/search_title_item_html:121
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:255
-#: ../templates/_profile/kug/searchforms_record_query:197
+#: ../templates/_profile/kug/searchforms_record_query:198
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:220
 #: ../templates/_profile/rheinlandbib/titles_html:77
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:129
@@ -18938,12 +19194,12 @@ msgstr "wiederholt"
 #: ../templates/admin_profiles_record_edit:78
 #: ../templates/admin_searchprofiles_record_edit:86
 #: ../templates/admin_servers_record_edit:110
-#: ../templates/admin_topics_record_edit:129
-#: ../templates/admin_topics_record_edit:166
-#: ../templates/admin_topics_record_edit:198
-#: ../templates/admin_topics_record_edit:230
-#: ../templates/admin_topics_record_edit:263
-#: ../templates/admin_topics_record_edit:296
+#: ../templates/admin_topics_record_edit:127
+#: ../templates/admin_topics_record_edit:164
+#: ../templates/admin_topics_record_edit:196
+#: ../templates/admin_topics_record_edit:228
+#: ../templates/admin_topics_record_edit:261
+#: ../templates/admin_topics_record_edit:294
 #: ../templates/admin_topics_record_edit:329
 #: ../templates/admin_views_record_edit:125
 #: ../templates/admin_views_rss_record_edit:92

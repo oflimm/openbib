@@ -219,6 +219,11 @@
 <label for="toc">[% msg.maketext("Inhaltsverzeichnis") %]</label>
 </div>
 
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="hss"     value="1" [% IF searchfields.hss.active %]checked="checked"[% END %]/>
+<label for="toc">[% msg.maketext("T0519") %]</label>
+</div>
+
 </div>
 
 <div class="ym-g50 ym-gr">

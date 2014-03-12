@@ -161,6 +161,16 @@
 </div>
 [% END %]
 
+[% IF available_searchfields.hss.active %]
+[%- cgiparam = searchfield.hss.prefix;
+    this_searchfield = 'hss';
+ -%]
+<div class="ym-fbox-text">
+<label for="[% cgiparam %]">[% msg.maketext("T0519") %]</label>
+<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+[% END %]
+
 [% IF available_searchfields.mediatype.active %]
 [%- cgiparam = searchfield.mediatypestring.prefix;
     this_searchfield = 'mediatypestring';

@@ -28,7 +28,7 @@
 [%- checked_profile=1 ; END -%]
 >- [% unit.description %]</option>
 [% END %]
-[% searchprofile_of_bestellungen = config.get_searchprofile_of_database('bestellungen') %]
+[% searchprofileid_of_bestellungen = config.get_searchprofile_of_database('bestellungen') %]
 <option value="[% searchprofileid_of_bestellungen %]"
 [%- IF prevprofile == searchprofileid_of_bestellungen && NOT checked_profile -%]
  selected="selected"

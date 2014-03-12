@@ -196,47 +196,19 @@ sub update_searchfields {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    my $searchfields_ref = {};
+
     # CGI Args
-    my $freesearch     = ($query->param('freesearch'))?$query->param('freesearch'):'0';
-    my $title          = ($query->param('title'))?$query->param('title'):'0';
-    my $titlestring    = ($query->param('titlestring'))?$query->param('titlestring'):'0';
-    my $source         = ($query->param('source'))?$query->param('source'):'0';
-    my $person         = ($query->param('person'))?$query->param('person'):'0';
-    my $corporatebody  = ($query->param('corporatebody'))?$query->param('corporatebody'):'0';
-    my $subject        = ($query->param('subject'))?$query->param('subject'):'0';
-    my $classification = ($query->param('classification'))?$query->param('classification'):'0';
-    my $isbn           = ($query->param('isbn'))?$query->param('isbn'):'0';
-    my $issn           = ($query->param('issn'))?$query->param('issn'):'0';
-    my $markstring     = ($query->param('markstring'))?$query->param('markstring'):'0';
-    my $content        = ($query->param('content'))?$query->param('content'):'0';
-    my $mediatype      = ($query->param('mediatype'))?$query->param('mediatype'):'0';
-    my $year           = ($query->param('year'))?$query->param('year'):'0';
-    my $publisher      = ($query->param('publisher'))?$query->param('publisher'):'0';
-    my $toc            = ($query->param('toc'))?$query->param('toc'):'0';
+    foreach my $searchfield (keys %{$config->{default_searchfields}}){
+        $searchfields_ref->{$searchfield} = ($query->param($searchfield))?$query->param($searchfield):'0';
+    }
     
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
     }
 
-    $user->set_searchfields({
-        freesearch     => $freesearch,
-        title          => $title,
-        titlestring    => $titlestring,
-        person         => $person,
-        corporatebody  => $corporatebody,
-        subject        => $subject,
-        classification => $classification,
-        isbn           => $isbn,
-        issn           => $issn,
-        markstring     => $markstring,
-        mediatype      => $mediatype,
-        year           => $year,
-        content        => $content,
-        source         => $source,
-        publisher      => $publisher,
-        toc            => $toc,
-    });
+    $user->set_searchfields($searchfields_ref);
 
     $self->return_baseurl;
     

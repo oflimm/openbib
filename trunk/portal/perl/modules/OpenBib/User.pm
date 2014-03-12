@@ -4569,39 +4569,6 @@ sub get_searchfields {
 sub set_searchfields {
     my ($self,$arg_ref)=@_;
 
-    my $freesearch     = exists $arg_ref->{freesearch}
-        ? $arg_ref->{freesearch}           : undef;
-    my $title          = exists $arg_ref->{title}
-        ? $arg_ref->{title}                 : undef;
-    my $titlestring    = exists $arg_ref->{titlestring}
-        ? $arg_ref->{titlestring}           : undef;
-    my $person         = exists $arg_ref->{person}
-        ? $arg_ref->{person}                : undef;
-    my $corporatebody  = exists $arg_ref->{corporatebody}
-        ? $arg_ref->{corporatebody}         : undef;
-    my $subject        = exists $arg_ref->{subject}
-        ? $arg_ref->{subject}               : undef;
-    my $classification = exists $arg_ref->{classification}
-        ? $arg_ref->{classification}        : undef;
-    my $isbn           = exists $arg_ref->{isbn}
-        ? $arg_ref->{isbn}                  : undef;
-    my $issn           = exists $arg_ref->{issn}
-        ? $arg_ref->{issn}                  : undef;
-    my $markstring     = exists $arg_ref->{markstring}
-        ? $arg_ref->{markstring}            : undef;
-    my $mediatype      = exists $arg_ref->{mediatype}
-        ? $arg_ref->{mediatype}            : undef;
-    my $year           = exists $arg_ref->{year}
-        ? $arg_ref->{year}                 : undef;
-    my $content        = exists $arg_ref->{content}
-        ? $arg_ref->{content}              : undef;
-    my $source         = exists $arg_ref->{source}
-        ? $arg_ref->{source}               : undef;
-    my $publisher      = exists $arg_ref->{publisher}
-        ? $arg_ref->{publisher}            : undef;
-    my $toc            = exists $arg_ref->{toc}
-        ? $arg_ref->{toc}                  : undef;
-
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
@@ -4612,90 +4579,18 @@ sub set_searchfields {
         }
     )->delete;
 
+    my $searchfields_ref = [];
+
+    foreach my $searchfield (keys %$arg_ref){
+        push @$searchfields_ref, {
+            userid      => $self->{ID},
+            searchfield => $searchfield,
+            active      => $arg_ref->{$searchfield},
+        };
+    }
+    
     # DBI: "insert into searchfield values (?,?,?)"
-    $self->{schema}->resultset('Searchfield')->populate(
-        [
-            {
-                userid      => $self->{ID},
-                searchfield => 'freesearch',
-                active      => $freesearch,,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'title',
-                active      => $title,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'titlestring',
-                active      => $titlestring,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'classification',
-                active      => $classification,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'corporatebody',
-                active      => $corporatebody,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'subject',
-                active      => $subject,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'source',
-                active      => $source,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'person',
-                active      => $person,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'year',
-                active      => $year,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'isbn',
-                active      => $isbn,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'issn',
-                active      => $issn,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'content',
-                active      => $content,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'mediatype',
-                active      => $mediatype,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'markstring',
-                active      => $markstring,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'publisher',
-                active      => $publisher,
-            },
-            {
-                userid      => $self->{ID},
-                searchfield => 'toc',
-                active      => $toc,
-            },
-        ]);
+    $self->{schema}->resultset('Searchfield')->populate($searchfields_ref);
     
     return;
 }

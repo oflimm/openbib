@@ -325,7 +325,7 @@ sub get_posts {
         }
 
         if ($generic_attributes_ref->{user}){
-            $record->set_field({field => 'T4200', subfield => '', mult => 1, content => $self->conv($generic_attributes_ref->{user}) });
+            $record->set_field({field => 'T4220', subfield => '', mult => 1, content => $self->conv($generic_attributes_ref->{user}) });
         }
         
         $logger->debug($post_node->toString());

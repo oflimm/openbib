@@ -146,7 +146,7 @@ FOREACH category IN categories;
 	 content       = "<a href=\"${localurl}\">${content}</a>";
          rswkswt_done.${thiscontent} = 1;
 
-    CASE "T4200";
+    CASE "T4220";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};user=${content}";
          content       = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a>";
 

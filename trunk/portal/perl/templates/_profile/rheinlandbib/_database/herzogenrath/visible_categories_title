@@ -113,7 +113,7 @@
                 'T2662', # msg.maketext("T2662") USB EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo
                 'T3004', # msg.maketext("T3004") 
-                'T4200', # msg.maketext("T4200") Nutzer
+                #'T4200', # msg.maketext("T4200") Nutzer
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
                 'E4120', # msg.maketext("E4120") Ebook-URL
                 #'T4500', # msg.maketext("T4500") Nutzer-Tags

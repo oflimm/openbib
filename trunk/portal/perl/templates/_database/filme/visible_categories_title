@@ -23,7 +23,7 @@
                 'T0750', # msg.maketext("T0750") Abstract
                 'T0710', # msg.maketext("T0710-filme") Typ
                 'T0700', # msg.maketext("T0700-filme") Altersfreigabe
-                'T4200', # msg.maketext("T4200") Nutzer
+                #'T4200', # msg.maketext("T4200") Nutzer
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung

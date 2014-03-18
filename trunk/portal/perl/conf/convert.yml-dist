@@ -9,9 +9,9 @@ convtab:
       '4110': 1        # TOC-URL
       '4111': 1        # TOC-Text
       '4120': 1        # eBook-URL
+      '4200': 1        # Wikipedia
       '4201': 1        # Wikipedia
       '4202': 1        # Wikipedia
-      '4203': 1        # Wikipedia
       '4300': 1        # Fremde Schlagworte
     blacklist_person:
       '0002': 1        # Aufnahmedatum
@@ -662,15 +662,15 @@ convtab:
       '4111':         # TOC
         index:
           'toc': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
       '4201':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4203':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -1269,15 +1269,15 @@ convtab:
       '4111':         # TOC
         index:
           'toc': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
       '4201':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4203':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -1705,15 +1705,15 @@ convtab:
           'classificationstring': 1
         facet:
           'classification': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
       '4201':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4203':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -1953,7 +1953,7 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-      '4201':         # Wikipedia
+      '4200':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -1961,7 +1961,7 @@ convtab:
         index:
           'content': 1
           'freesearch': 1
-      '4203':         # Wikipedia
+      '4202':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -2195,7 +2195,7 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
-      '4201':         # Wikipedia
+      '4200':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -2203,7 +2203,7 @@ convtab:
         index:
           'content': 1
           'freesearch': 1
-      '4203':         # Wikipedia
+      '4202':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -2427,15 +2427,15 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
       '4201':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4203':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -2669,15 +2669,15 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
       '4201':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4203':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -2938,15 +2938,15 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
       '4201':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4203':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -3156,15 +3156,15 @@ convtab:
       '4100':         # BK
         index:
           't4100': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
       '4201':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4203':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -3732,15 +3732,15 @@ convtab:
           'classification': 1
         facet:
           'classification': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
       '4201':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4203':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
@@ -4201,15 +4201,15 @@ convtab:
           'classification': 1
         facet:
           'classification': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+          'freesearch': 1
       '4201':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4203':         # Wikipedia
         index:
           'content': 1
           'freesearch': 1

@@ -38,7 +38,7 @@
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=512;url=[% uri_escape(normdata.${"E4122"}.first.content) %]" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('paperc_img') %]" alt="Bei PaperC vorhanden" border="0" /></a>
 </p>
 [% END %]
-[% IF cgiapp.is_authenticated('admin') %]
+[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
 <p>
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
 </p>

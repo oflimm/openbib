@@ -37,6 +37,6 @@ tle="OpenLibrary Cover" />
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]/512/[% uri_escape(normset.${"E4122"}.first.content) %]" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('paperc_img') %]" alt="Bei PaperC vorhanden" border="0" /></a><br/>
 </p>
 [% END %]
-[% IF cgiapp.is_authenticated('admin') %]
+[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databaes_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
 [% END %]

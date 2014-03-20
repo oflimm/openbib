@@ -31,6 +31,6 @@
 
 [% END %]
 
-[% IF cgiapp.is_authenticated('admin') %]
+[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databaes_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
 [% END %]

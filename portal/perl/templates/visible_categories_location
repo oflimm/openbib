@@ -15,7 +15,7 @@
 [%# Ausgabekategorien %]
 [% categories = [
                 'L0010', # msg.maketext("L0010") # Institutsname
-                'L0020', # msg.maketext("L0020") # Straße
+                'L0020', # msg.maketext("L0020") # Adresse
                 'L0030', # msg.maketext("L0030") # Gebäude
                 'L0040', # msg.maketext("L0040") # Interaktiver Lageplan der Universität
                 'L0050', # msg.maketext("L0050") # Gemeinsame Bibliothek

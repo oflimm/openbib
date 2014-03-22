@@ -14,10 +14,6 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
-<li><b>20.3.2014</b>: Stromabschaltung 21./22.3.: Wegen einer
-Stromabschaltung kann der KUG ab 21.3. 16 Uhr bis vorraussichtlich
-22.3. 18 Uhr nicht genutzt werden.
-</li>
 <li><b>5.3.2014</b>: OER im KUG - In den
 KUG sind jetzt auch offene Lehr- und Lernmaterialien (Open Educational
 Resources, OER), wie z.B. Vorlesungs-Videos, integriert. Weitergehende Informationen in diesem

@@ -191,10 +191,6 @@ sub dispatch_args {
         }
     }
 
-    if ($logger->is_debug){
-        $logger->debug("Dispatch-table: ".YAML::Dump($table_ref));
-    }
-    
     return {
         #debug => 1,
         table => $table_ref,

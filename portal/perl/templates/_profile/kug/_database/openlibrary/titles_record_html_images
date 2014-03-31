@@ -32,11 +32,6 @@ tle="OpenLibrary Cover" />
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]/511/[% uri_escape("http://www.bibsonomy.org/bibtex/${bibkey}") %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
-[% IF normset.${"E4122"} %]
-<p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]/512/[% uri_escape(normset.${"E4122"}.first.content) %]" target="_blank" title="Online Lesen bei PaperC"><img src="[% config.get('paperc_img') %]" alt="Bei PaperC vorhanden" border="0" /></a><br/>
-</p>
-[% END %]
 [% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databaes_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
 [% END %]

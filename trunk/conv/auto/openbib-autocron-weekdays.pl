@@ -190,10 +190,6 @@ if ($updatemaster && $maintenance){
 }
                                     
 if ($maintenance){
-    $logger->info("### Enriching PaperC E-Books");
-    
-    system("$config->{'base_dir'}/conv/paperc2enrich.pl");
-
     $logger->info("### Enriching USB BK's");
     
     system("$config->{'base_dir'}/conv/usb_bk2enrich.pl");

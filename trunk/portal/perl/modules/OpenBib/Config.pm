@@ -1943,8 +1943,10 @@ sub del_databaseinfo {
         my $databaseinfo =  $self->{schema}->resultset('Databaseinfo')->single({ dbname => $dbname});
 
         if ($databaseinfo){
-            $databaseinfo->libraryinfos->delete;
+            $databaseinfo->locationid->delete;
             $databaseinfo->orgunit_dbs->delete;
+            $databaseinfo->rssinfos->delete;
+            $databaseinfo->updatelogs->delete;
             $databaseinfo->searchprofile_dbs->delete;
             $databaseinfo->view_dbs->delete;
             $databaseinfo->delete

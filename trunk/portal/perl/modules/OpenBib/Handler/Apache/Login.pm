@@ -99,16 +99,21 @@ sub show_form {
     my $scheme         = $self->param('scheme');
     my $servername     = $self->param('servername');
 
-    # CGI Args
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    my $authenticatorid  = $input_data_ref->{authenticatorid};
+    my $username         = $input_data_ref->{username};
+    my $password         = $input_data_ref->{password};
+
+    # CGI-only Parameters for html-representation
     my $action      = ($query->param('action'))?$query->param('action'):'none';
     my $code        = ($query->param('code'))?$query->param('code'):'1';
-    my $authenticatorid  = ($query->param('authenticatorid'))?$query->param('authenticatorid'):0;
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type        = ($query->param('type'))?$query->param('type'):'';
-    my $username    = ($query->param('username'))?$query->param('username'):'';
-    my $password    = decode_utf8($query->param('password')) || $query->param('password') || '';
     my $redirect_to = $query->param('redirect_to'); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
 
+    
     # Wenn die Session schon authentifiziert ist, dann wird
     # in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
@@ -168,13 +173,17 @@ sub authenticate {
     my $scheme         = $self->param('scheme');
     my $servername     = $self->param('servername');
     
-    # CGI Args
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    my $authenticatorid  = $input_data_ref->{authenticatorid};
+    my $username         = $input_data_ref->{username};
+    my $password         = $input_data_ref->{password};
+
+    # CGI-only Parameters for html-representation
     my $code        = ($query->param('code'))?$query->param('code'):'1';
-    my $authenticatorid    = ($query->param('authenticatorid'))?$query->param('authenticatorid'):undef;
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type        = ($query->param('type'))?$query->param('type'):'';
-    my $username    = ($query->param('username'))?$query->param('username'):'';
-    my $password    = decode_utf8($query->param('password')) || $query->param('password') || '';
     my $redirect_to = uri_unescape($query->param('redirect_to'));
 
     # Wenn die Session schon authentifiziert ist, dann wird
@@ -231,34 +240,36 @@ sub authenticate {
         
         # Gegebenenfalls Benutzer lokal eintragen
         else {
-            my $userid;
-
-            $logger->debug("Save/update user");
-            
-            # Eintragen, wenn noch nicht existent
-            if (!$user->user_exists($username)) {
-                # Neuen Satz eintragen
-                $user->add({
-                    username => $username,
-                    password  => $password,
-                });
-
-                $logger->debug("User added");
+            if ($self->param('representation') eq "html"){
+                my $userid;
+                
+                $logger->debug("Save/update user");
+                
+                # Eintragen, wenn noch nicht existent
+                if (!$user->user_exists($username)) {
+                    # Neuen Satz eintragen
+                    $user->add({
+                        username => $username,
+                        password  => $password,
+                    });
+                    
+                    $logger->debug("User added");
+                }
+                else {
+                    # Satz aktualisieren
+                    $user->set_credentials({
+                        username => $username,
+                        password  => $password,
+                    });
+                    
+                    $logger->debug("User credentials updated");
+                }
+                
+                # Benuzerinformationen eintragen
+                $user->set_private_info($username,$userinfo_ref);
+                
+                $logger->debug("Updated private user info");
             }
-            else {
-                # Satz aktualisieren
-                $user->set_credentials({
-                    username => $username,
-                    password  => $password,
-                });
-
-                $logger->debug("User credentials updated");
-            }
-            
-            # Benuzerinformationen eintragen
-            $user->set_private_info($username,$userinfo_ref);
-
-            $logger->debug("Updated private user info");
         }
     }
     elsif ($authenticator_ref->{type} eq "self") {
@@ -283,63 +294,73 @@ sub authenticate {
     }
     
     my $redirecturl = "";
-    
+
+    my $result_ref = {
+        success => 0,
+    };
+
     if (!$loginfailed) {
 
         $logger->debug("Authentication successful");
-                
-        # Jetzt wird die Session mit der Benutzerid assoziiert
-        my $userid = $user->get_userid_for_username($username);
-        
-        $user->connect_session({
-            sessionID => $session->{ID},
-            userid    => $userid,
-            authenticatorid  => $authenticatorid,
-        });
-        
-        # Falls noch keins da ist, eintragen
-        if (!$user->searchfields_exist($userid)) {
-            $user->set_default_searchfields($userid);
-        }
-        
-        if (!$user->livesearch_exists($userid)) {
-            $user->set_default_livesearch($userid);
-        }
-        
-        # Jetzt wird die bestehende Trefferliste uebernommen.
-        # Gehe ueber alle Eintraege der Trefferliste
+        $result_ref->{success} = 1;
 
-        $logger->debug("Session connected, defaults for searchfields/livesearch set");
+        my $userid = $user->get_userid_for_username($username);
+
+        $result_ref->{userid} = $userid;
         
-        my $recordlist_existing_collection = $session->get_items_in_collection();
-        
-        if ($logger->is_debug){
-            $logger->debug("Items in Session: ".YAML::Dump($recordlist_existing_collection));
-        }
-        
-        foreach my $record (@{$recordlist_existing_collection->to_list}){
-            if ($logger->is_debug){
-                $logger->debug("Adding item to personal collection of user $userid: ".YAML::Dump($record));
+        if ($self->param('representation') eq "html"){
+            # Jetzt wird die Session mit der Benutzerid assoziiert
+            
+            $user->connect_session({
+                sessionID => $session->{ID},
+                userid    => $userid,
+                authenticatorid  => $authenticatorid,
+            });
+            
+            # Falls noch keins da ist, eintragen
+            if (!$user->searchfields_exist($userid)) {
+                $user->set_default_searchfields($userid);
             }
             
-            $user->move_cartitem_to_user({
-                userid => $userid,
-                itemid => $record->{listid},
-            });
-        }
-
-        $logger->debug("Added recently collected title");
-        
-        # Bestimmen des Recherchemasken-Typs
-        my $masktype = $user->get_mask($userid);
-        
-        $session->set_mask($masktype);
-        
-        $redirecturl
-            = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html?l=$lang";
-
-        if ($scheme eq "https"){
-            $redirecturl ="https://$servername$redirecturl";
+            if (!$user->livesearch_exists($userid)) {
+                $user->set_default_livesearch($userid);
+            }
+            
+            # Jetzt wird die bestehende Trefferliste uebernommen.
+            # Gehe ueber alle Eintraege der Trefferliste
+            
+            $logger->debug("Session connected, defaults for searchfields/livesearch set");
+            
+            my $recordlist_existing_collection = $session->get_items_in_collection();
+            
+            if ($logger->is_debug){
+                $logger->debug("Items in Session: ".YAML::Dump($recordlist_existing_collection));
+            }
+            
+            foreach my $record (@{$recordlist_existing_collection->to_list}){
+                if ($logger->is_debug){
+                    $logger->debug("Adding item to personal collection of user $userid: ".YAML::Dump($record));
+                }
+                
+                $user->move_cartitem_to_user({
+                    userid => $userid,
+                    itemid => $record->{listid},
+                });
+            }
+            
+            $logger->debug("Added recently collected title");
+            
+            # Bestimmen des Recherchemasken-Typs
+            my $masktype = $user->get_mask($userid);
+            
+            $session->set_mask($masktype);
+            
+            $redirecturl
+                = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html?l=$lang";
+            
+            if ($scheme eq "https"){
+                $redirecturl ="https://$servername$redirecturl";
+            }
         }
     }
     
@@ -353,12 +374,18 @@ sub authenticate {
         $redirecturl="$path_prefix/$config->{login_loc}/failure?code=$loginfailed";
     }
     
-    $logger->debug("Redirecting to $redirecturl");
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $redirecturl);
-    $self->query->status(Apache2::Const::REDIRECT);
+
+    if ($self->param('representation') eq "html"){
+        $logger->debug("Redirecting to $redirecturl");
+
+        $self->query->method('GET');
+        $self->query->content_type('text/html');
+        $self->query->headers_out->add(Location => $redirecturl);
+        $self->query->status(Apache2::Const::REDIRECT);
+    }
+    else {
+        $self->print_json($result_ref);        
+    }
     
     return;
 }
@@ -414,6 +441,28 @@ sub failure {
     }
 
     return Apache2::Const::OK;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        authenticatorid => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        username => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        password => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
 }
 
 1;

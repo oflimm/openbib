@@ -774,6 +774,29 @@ sub print_info {
     return;
 }
 
+sub print_json {
+    my $self      = shift;
+    my $json_ref  = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+
+    # Dann Ausgabe des neuen Headers
+    $r->content_type('application/json');
+
+    if ($logger->is_debug()){
+        $logger->debug(YAML::Dump($json_ref))
+    }
+
+    $r->print(encode_json($json_ref));
+
+    return ;    
+}
+
 sub print_page {
     my $self = shift;
     my ($templatename,$ttdata)=@_;

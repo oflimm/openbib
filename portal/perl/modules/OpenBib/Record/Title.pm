@@ -263,7 +263,9 @@ sub enrich_content {
     
     if (!exists $self->{enrich_schema}){
         $self->connectEnrichmentDB;
-        $self->{enrich_schema}->storage->debug(1);
+        if ($logger->is_debug){            
+            $self->{enrich_schema}->storage->debug(1);
+        }
     }
 
     my @isbn_refs = ();
@@ -408,8 +410,10 @@ sub enrich_content {
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
-            
-            #            $logger->debug("Found ".($same_titles->count)." records");
+
+            if ($logger->is_debug){            
+                $logger->debug("Found ".($same_titles->count)." records");
+            }
             
             while (my $item = $same_titles->next) {
                 my $id         = $item->{titleid};
@@ -543,8 +547,10 @@ sub enrich_content {
                     group_by => ['id'],
                 }
             );
-            
-            $logger->debug("Found ".($related_ids->count)." related isbns");
+
+            if ($logger->is_debug){                        
+                $logger->debug("Found ".($related_ids->count)." related isbns");
+            }
             
             my $related_isbns = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
                 {
@@ -556,8 +562,10 @@ sub enrich_content {
                     group_by => ['isbn'],
                 }
             );
-            
-            $logger->debug("Found ".($related_isbns->count)." isbns");
+
+            if ($logger->is_debug){            
+                $logger->debug("Found ".($related_isbns->count)." isbns");
+            }
             
             my $where_ref = {
                 isbn    => { -in => $related_isbns->as_query },
@@ -836,7 +844,10 @@ sub load_olwsviewer {
 
     # Anreicherung mit OLWS-Daten
     if (exists $circinfotable->{$self->{database}} && exists $circinfotable->{$self->{database}}{circcheckurl}){
-        $logger->debug("Endpoint: ".$circinfotable->{$self->{database}}{circcheckurl});
+        if ($logger->is_debug){                        
+            $logger->debug("Endpoint: ".$circinfotable->{$self->{database}}{circcheckurl});
+        }
+        
         my $soapresult;
         eval {
             my $soap = SOAP::Lite

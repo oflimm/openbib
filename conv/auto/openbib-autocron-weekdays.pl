@@ -102,6 +102,8 @@ my $blacklist_ref = {
     'inst324' => 1,
     'inst325' => 1,
     'inst420' => 1,
+    'inst132' => 1,
+    'inst132master' => 1,
     'inst420master' => 1,
     'inst421' => 1,
     'inst422' => 1,
@@ -223,6 +225,20 @@ sub threadA {
     # Wegen Interimsloesung: Andere Kataloge, die nicht von aperol geholt werden
 
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe','kups','gdea','inst526earchive'] });
+
+    ##############################
+
+    $logger->info("### Master: inst132master");
+    
+    autoconvert({ updatemaster => $updatemaster, databases => ['inst132master'] });
+
+    ##############################
+    
+    $logger->info("### Aufgesplittete Kataloge inst132master");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst132'] });
+    
+    ##############################
 
     $logger->info("### Master: inst301");
     

@@ -6,3 +6,4 @@ exclude:
         - usbebooks
         - tmpebooks
         - freebooks
+        - tusculum

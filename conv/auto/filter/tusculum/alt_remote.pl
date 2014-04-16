@@ -50,4 +50,4 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 my $filename      = $dbinfo->titlefile;
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool ; rm meta.*");
-system("cd $pooldir/$pool; $simplecsv2metaexe --database=$pool -persistent-normdata-ids --inputfile=$filename --configfile=$confdir/$pool.yml; gzip meta.*");
+system("cd $pooldir/$pool; $simplecsv2metaexe --database=$pool --inputfile=$filename --configfile=$confdir/$pool.yml; gzip meta.*");

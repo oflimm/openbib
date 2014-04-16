@@ -1,0 +1,47 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': ";"
+  'quote_char': '"'
+  'escape_char': '"'
+
+# Feld der eindeutigen Titel-ID
+#uniqueidfield: ''
+
+category_split_chars:
+  'Fachgebiete': '\s*,\s*'
+
+# Personen
+person:
+  'Autor': '0100'        # Verfasser
+  'Herausgeber': '0101'  # Person
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+
+
+# Titel
+title:
+  'Titel': '0331'
+  'Fortsetzungstitel': '0451'
+  'Band': '0453'
+  'Auflage': '0403'
+  'Print-ISBN': '0540'
+  'Ebook-ISBN': '0553'
+  'Sprache': '0015'
+  'Link': '0662'
+
+defaultmediatype: 'Digital'

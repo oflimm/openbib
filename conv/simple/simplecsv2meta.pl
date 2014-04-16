@@ -108,12 +108,13 @@ my $convconfig = YAML::Syck::LoadFile($configfile);
 my $outputencoding = ($convconfig->{outputencoding})?$convconfig->{outputencoding}:'utf8';
 my $inputencoding  = ($convconfig->{encoding})?$convconfig->{encoding}:'utf8';
 
-my $csv = Text::CSV_XS->new ({
-    'eol'         => $convconfig->{csv}{eol},
-    'sep_char'    => $convconfig->{csv}{sep_char},
-    'quote_char'  => $convconfig->{csv}{quote_char},
-    'escape_char' => $convconfig->{csv}{escape_char},
-});
+my $csv_options = {};
+
+foreach my $csv_option (keys %{$convconfig->{csv}}){
+    $csv_options->{$csv_option} = $convconfig->{csv}{$csv_option};
+}
+
+my $csv = Text::CSV_XS->new($csv_options);
 
 our $mexidn=1;
 

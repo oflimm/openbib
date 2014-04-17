@@ -1,6 +1,13 @@
 [%-
 
 all_viewinfo = [] ;
+
+user_path = "";
+
+IF user.ID ;
+  user_path = "${config.get('users_loc')}/id/${user.ID}/";
+END ;
+
 FOREACH viewinfo IN views.all ;
 
   databases = [];
@@ -8,7 +15,7 @@ FOREACH viewinfo IN views.all ;
     databases.push({
             link = {
                 rel = 'self'
-                href = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('databases_loc')}/id/${item}.json?l=${lang}"
+                href = "${path_prefix}/${user_path}${config.get('databases_loc')}/id/${item}.json?l=${lang}"
             }
 
             dbname = item

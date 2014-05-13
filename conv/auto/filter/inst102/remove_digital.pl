@@ -9,7 +9,7 @@ while (<>){
 
     my $is_digital = 0;
 
-    foreach my $item_ref (@{$titles_ref->{fields}{'0334'}}){
+    foreach my $item_ref (@{$title_ref->{fields}{'0334'}}){
         if ($item_ref->{content} =~/Elektronische Ressource/i){
             $is_digital = 1;
         }

@@ -49,6 +49,6 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 
-print "### $pool: Erweiterung um Zugriffsinformation online\n";
+print "### $pool: Entfernung initial geladener digitaler Medien\n";
 
 system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/remove_digital.pl < meta.title > meta.title.tmp ; mv -f meta.title.tmp meta.title");

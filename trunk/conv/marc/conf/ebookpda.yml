@@ -7,3 +7,6 @@ exclude:
         - tmpebooks
         - freebooks
         - tusculum
+  'by_isbn_in_file':
+     field: '0540'
+     filename: '/opt/openbib/autoconv/pools/ebookpda/exclude_isbns.txt'

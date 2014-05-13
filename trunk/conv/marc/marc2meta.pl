@@ -140,6 +140,25 @@ my $count=1;
 
 my $mexid = 1;
 
+my $exclude_by_isbn_in_file_ref = {};
+
+if ($configfile && $convconfig->{exclude}{by_isbn_in_file} && $convconfig->{exclude}{by_isbn_in_file}{filename}){
+    my $filename = $convconfig->{exclude}{by_isbn_in_file}{filename};
+
+    $logger->info("Einladen auszuschliessender ISBNs aus Datei $filename ");
+    
+    open(ISBN,$filename);
+
+    while (<ISBN>){
+        # Normierung auf ISBN13
+        my $isbn13 = OpenBib::Common::Util::to_isbn13($_);
+
+        $exclude_by_isbn_in_file_ref->{$isbn13} = 1;
+    }
+
+    close(ISBN);
+}
+
 # Ignore 4 consecutive errors
 while (my $record = $batch->next() || $batch->next || $batch->next || $batch->next ){
 
@@ -193,7 +212,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
                 my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('d')):decode_utf8($field->as_string('d'));
 
-                my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
+                $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
 
                 if ($content_a){
                     $title_ref = add_person($content_a,$content_c,$content_d,$title_ref);
@@ -1003,7 +1022,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         my $key_field = $convconfig->{exclude}{by_availability}{field};
         
         my @keys = ();
-        foreach my $item_ref (@{$title_ref->{fields}{'0540'}}){
+        foreach my $item_ref (@{$title_ref->{fields}{$key_field}}){
             push @keys, $item_ref->{content};
         }
         
@@ -1016,6 +1035,27 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         }        
     }
 
+    if ($configfile && $convconfig->{exclude}{by_isbn_in_file}){
+        my $key_field = $convconfig->{exclude}{by_isbn_in_file}{field};
+        
+        my $in_file = 0;
+        my @keys = ();
+        foreach my $item_ref (@{$title_ref->{fields}{$key_field}}){
+            my $isbn13 = OpenBib::Common::Util::to_isbn13($item_ref->{content});
+            push @keys, $isbn13 if ($isbn13);
+
+            if (defined $exclude_by_isbn_in_file_ref->{$isbn13} && $exclude_by_isbn_in_file_ref->{$isbn13}){
+                $in_file = 1;
+            }
+        }
+        
+        if ($in_file){
+            $logger->info("Titel mit ISBNs ".join(' ',@keys)." ueber ISBN in Negativ-Datei ausgeschlossen");
+            $excluded_titles++;
+            next;
+        }        
+    }
+    
     print TITLE encode_json $title_ref, "\n";
     
     $logger->debug(encode_json $title_ref);
@@ -1033,6 +1073,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
     
 }
 
+$logger->info("$count titles done");
 $logger->info("Excluded titles: $excluded_titles");
 
 close(TITLE);

@@ -44,10 +44,11 @@ my $simpleexe     = "$config->{'conv_dir'}/simple2meta.pl";
 my $pool          = $ARGV[0];
 
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+my $titlefile     = $dbinfo->titlefile;
 
 print "### $pool: Alternative Umwandlung\n";
 
-system("zcat $rootdir/pools/$pool/".$dbinfo->titlefilename." | $helperexe > $rootdir/pools/$pool/pool.tmp.dat");
+system("zcat $rootdir/pools/$pool/$titlefile | $helperexe > $rootdir/pools/$pool/pool.tmp.dat");
 system("cd $rootdir/pools/$pool ; $simpleexe --inputfile=pool.tmp.dat --configfile=/opt/openbib/conf/inst132alt.yml");
 system("cd $rootdir/pools/$pool ; rm meta.*.gz ; gzip meta.*");
 

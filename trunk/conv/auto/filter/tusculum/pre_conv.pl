@@ -51,4 +51,4 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 print "### $pool: Prefixen der URLs mit 'http://'\n";
 
-system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/change-mark.pl < meta.title > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/change-url.pl < meta.title > meta.title.tmp ; mv -f meta.title.tmp meta.title");

@@ -51,4 +51,4 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 print "### $pool: Prefixen der Signaturen mit 'VWL/105/'\n";
 
-system("cd $pooldir/$pool ; zcat meta.holding.gz| $rootdir/filter/$pool/change-mark.pl | gzip > meta.holding.gz.tmp ; mv -f meta.holding.gz.tmp meta.holding.gz");
+system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/change-mark.pl < meta.holding > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");

@@ -190,13 +190,17 @@ sub filterchars {
   # URL's sind verlinkt
   $content=~s/>(http:\S+)</>\\url{$1}</g;
   $content=~s/\&#39;/'/g;
+  $content=~s/\&apos;/'/ig;
 
-  $content=~s/<a.*?>//g;
-  $content=~s/<\/a>//g;
+  $content=~s/<a.*?>//ig;
+  $content=~s/<\/a>//ig;
+  $content=~s/<span.*?>//gi;
+  $content=~s/<\/span>//gi;
+
   $content=~s/^\s+//g;
   $content=~s/\s+$//g;
-  $content=~s/<br \/>$/ /g;
-  $content=~s/<br.*?>/\\newline /g unless ($chapter);
+  $content=~s/<br \/>$/ /ig;
+  $content=~s/<br.*?>/\\newline /gi unless ($chapter);
 #  $content=~s/ (http:\S+)/ \\url{$1}/g;    
   $content=~s/<.*?>//g;
   $content=~s/\$/\\\$/g;

@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -77,6 +77,8 @@ my $blacklist_ref = {
     'econbiz' => 1,
     'edz' => 1,
     'inst001' => 1,
+    'inst105' => 1,
+    'inst105master' => 1,
     'inst137' => 1,
     'inst301' => 1,
     'inst303' => 1,
@@ -237,6 +239,18 @@ sub threadA {
     $logger->info("### Aufgesplittete Kataloge inst132master");
     
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst132'] });
+    
+    ##############################
+
+    $logger->info("### Master: inst105master");
+    
+    autoconvert({ updatemaster => $updatemaster, databases => ['inst105master'] });
+
+    ##############################
+    
+    $logger->info("### Aufgesplittete Kataloge inst105master");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst105'] });
     
     ##############################
 

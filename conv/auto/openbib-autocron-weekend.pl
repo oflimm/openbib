@@ -71,6 +71,10 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
+my $blacklist_enrichmnt_ref = {
+    'bestellungen' => 1,
+};
+
 my $blacklist_ref = {
     'alekiddr' => 1,
     'ebookpda' => 1,
@@ -410,7 +414,7 @@ sub autoconvert {
         $logger->info("Ausfuehrung von $this_cmd");
         system($this_cmd);
 
-        if ($maintenance){
+        if ($maintenance && !defined $blacklist_enrichmnt_ref->{$database}){
             $logger->info("### Enriching subject headings for all institutes");
             
             system("$config->{'base_dir'}/conv/swt2enrich.pl --database=$database");

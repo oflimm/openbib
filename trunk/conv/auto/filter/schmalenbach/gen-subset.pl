@@ -87,7 +87,7 @@ my $enrich_mediatype_ref = sub {
 
 my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
 $subset->set_title_filter($enrich_mediatype_ref);
-$subset->identify_by_mark("^SCHM");
+$subset->identify_by_field_content('title',([ { field => '4700', content => '^Sammlung Eugen Schmalenbach' } ]));
 $subset->write_set;
 
 sub print_help {

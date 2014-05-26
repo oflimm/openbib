@@ -76,7 +76,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
-$subset->identify_by_mark(["^LS/A6524-","^HL/Dek414/2-","^16A5804-","^Fd6/7-"]);
+$subset->identify_by_field_content('title',([ { field => '4700', content => '^Sammlung Ernst von Oidtman' } ]));
 $subset->write_set;
 
 sub print_help {

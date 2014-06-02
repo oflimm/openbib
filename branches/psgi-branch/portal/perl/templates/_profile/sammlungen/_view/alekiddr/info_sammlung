@@ -1,0 +1,142 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_22
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='info' %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Informationen") %]</a></li>
+         <li><a href="#" class="lastitem">Weitere Informationen zur Sammlung</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[%# PROCESS common/subtemplate name="subnavigation" active_submenu='sammlung' %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+          <div class="float-left" style="padding:8px;">
+
+<img src="/images/openbib/views/alekiddr/info21bild.png" class="img"
+alt="Geelhaar, Zucker: Der kleine Kommandeur,Bekier: Auf den Spuren Lenins,Kant:Klassenfest,Pludra: Insel der Schwäne" />
+
+          </div>
+
+<h1>Weitere Informationen zur Sammlung DDR-Kinderbuch</h1>
+
+
+<h2>Der politische Anspruch der DDR-KJL</h2>
+
+<p>
+Anders als die frühere bundesrepublikanische KJL war die KJL der DDR -
+schon allein aufgrund ihres politischens Anspruchs, ihrer engen
+Einbindung in die staatlichen Lehrpläne, der forcierten "Lenkung der
+außerunterrichtlichen Lektüre" sowie der Instrumentalisierung der
+Kinder- und Jugendliteratur in der Arbeit der 'Jungen Pioniere' - nie
+eine weitgehend separierte Literatur. Durchgängig ist sie davon
+gekennzeichnet, dass sie zur praktisch-politischen Einordnung der
+Heranwachsenden in die 'sozialistische Ordnung' beitragen sollte. In
+diesem Sinne galt sie als "wichtigstes Mittel zur sozialistischen
+Erziehung", wie Gerhard Holtz-Baumert, einer der bekanntesten
+Kinderbuchautoren und -funktionäre der DDR, in seinem Beitrag "Kunst
+ist  Waffe" von 1957 hervorhob. Auch wenn der ideologische Gestus
+dieser Literatur im Verlaufe der Zeit hinter ambitionierteren
+ästhetischen Entwürfen - mitunter: deutlich - zurücktrat, bleibt ein
+hervorstechendes Merkmal der DDR-KJL die deutliche Präsenz von
+Ideologemen, die so ganz ähnlich bereits in der
+nationalsozialistischen KJL anzutreffen waren: v.a. die Herausstellung
+von Einzelpersonen als 'Führer' und 'Erlöser', die Beschwörung der
+Kameradschaft bzw. des 'Kollektivs', das Lob der selbstlosen Arbeit
+und die Erziehung zum Hass, der in diesem Fall als 'humanistisch'
+(Holz-Baumert) geadelt wurde.
+<br />
+<a href="http://www.zeit.de/2005/17/KL-DDR-Jugendliteratur/komplettansicht">Heidi Strobel: Unser Ferkel Eduard - glücklich in der
+LPG. DDR-Kinderbücher sollten kleine Hoffnungsträger für die
+sozialistische Gesellschaft formen.</a>
+</p>
+
+<h2>
+Der Urspung der Sammlung
+</h2>
+
+<p>
+Die Sammlung "DDR-Kinderbuch" geht in ihrem Kern zurück auf eine
+großzügige Schenkung des Instituts für deutsche Literatur der
+Humboldt-Universität zu Berlin, Professur für Kinder- und
+Jugendliteratur. Die überlassenen Titel dienten - neben anderen - als
+Arbeitsbasis für das von Professor Dr. Rüdiger Steinlein initiierte
+DFG-Forschungsvorhaben "Kinder- und Jugendliteratur der SBZ und DDR"
+(siehe: <i>Handbuch zur Kinder- und Jugendliteratur. SBZ/DDR. Von 1945
+bis 1990</i>. Hg. von Rüdiger Steinlein, Heidi Strobel und Thomas
+Kramer. Stuttgart [u.a.]: Metzler, 2006). Der überlassene Bestand
+wurde mit bereits in der ALEKI-Bibliothek vorhandenen Titeln
+zusammengeführt, die Sammlung wird durch Zukäufe und Schenkungen
+kontinuierlich ausgebaut.
+</p>
+
+<h2>
+Die Sammlung in der ALEKI.
+</h2>
+<p>
+Die Sammlung steht geschlossen in der Bibliothek der <a href="http://www.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/fakultaetsuebersicht/323/index_ger.html">ALEKI</a>. Davon,
+dass auch die Kinder- und Jugendbuchillustration der DDR eigene
+Wege ging, zeugt die Gestaltung der Buchumschläge (siehe die
+Abbildungen bei den einzelnen Titelaufnahmen).
+</p>
+
+<p>
+Prof. Dr. Otto Brunken
+</p>
+
+
+<p>Die Ansprechpartnerin der ALEKI-Bibliothek, Frau Michels-Kohlhage,
+erreichen Sie via
+<a
+href="mailto:michels.kohlhage@uni-koeln.de"> E-Mail</a>.
+</p>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

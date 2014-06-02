@@ -1,0 +1,47 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_authenticators
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste der Anmeldeziele.
+#
+#######################################################################
+-%]
+[%-
+
+ servers = [];
+ FOREACH server IN config.get_serverinfo_overview.all;
+   thisserver = {
+       link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('servers_loc')}/id/${server.id}"
+       }
+       id = server.id
+       hostip = server.hostip
+       description = server.description
+       clusterid = server.clusterid.id
+       status = server.status
+       active = server.active
+   };
+
+   servers.push(thisserver);
+ END;
+ 
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     servers = servers
+ };
+
+
+#USE dumper;dumper.dump(servers);
+  to_json(this_json_output);
+
+-%]

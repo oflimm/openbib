@@ -1,0 +1,29 @@
+[%- searchprofiles = config.get_searchprofiles ;
+
+  searchprofileinfos = [];
+  FOREACH searchprofile IN searchprofiles ;
+    this_searchprofile = {
+        link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('searchprofiles_loc')}/id/${searchprofile.id}.json?l=${lang}"
+        }
+        
+        id                  = searchprofile.id
+        number_of_databases = config.get_databases_of_searchprofile(searchprofile.id).size
+        own_index           = searchprofile.own_index
+    };
+    searchprofileinfos.push(this_searchprofile);
+  END;
+
+  this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+
+     searchprofiles = searchprofileinfos
+  };
+
+  to_json(this_json_output)
+
+-%]

@@ -1,0 +1,74 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_portal
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header"  %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='' %]
+
+    <!-- begin: main content area #main -->
+    <div id="main" style="padding:10px;">
+
+ <div class="float-left" style="padding:8px;width:30%">
+
+<center>
+<img src="/images/openbib/views/grevenbroich/Rheinlandbib.Grevenbroich_klein.png" alt="Grevenbroich" /><br><br>
+<!--<i style="font-size:0.8em">Grevenbroich</i>-->
+</center>
+</div>
+
+<h1>Alte Pfarrbibliothek in St. Georg, Grevenbroich-Neu-Elfgen</h1>
+
+<p> Die kleine Bibliothek, die sich in der Elfgener Pfarrei St. Georg
+erhalten hat, zählt 217 Bände, die je etwa zur Hälfte vor 1800 und
+nach 1900 erschienen sind. Aus dem 19. Jahrhundert stammen nur wenige
+Titel. Wie etliche andere Pfarrbibliotheken auch ist sie im
+Wesentlichen aus dem Nachlass einzelner Geistlicher des 18. oder
+19. Jahrhunderts entstanden, dem im Laufe der Zeit alte Bücher
+unterschiedlichster Herkunft hinzugefügt wurden. In Elfgen fallen der
+Pfarrer Johannes Weller und der ehemalige Kanoniker des Stifts
+Mariengraden in Köln, Johann Theodor Wirtz, die beide um 1800 lebten,
+als Vorbesitzer zahlreicher älterer Werke auf.  </p>
+
+<p> Pfarrbibliotheken dieses Typus sind vor allem von pastoralen
+Bedürfnissen (Predigtlehre, Liturgie, Moraltheologie) geprägt. Daneben
+finden sich in Elfgen auffallend viele Titel aus der Kirchengeschichte
+vor allem des Rheinlandes sowie Bände aus ganz verschiedenen, meist
+rheinischen Klöstern, von denen das Kölner Mariengradenstift, das in
+Elfgen von Alters her erheblichen Besitz hatte, der Pfarrei besonders
+eng verbunden war. Auch unter den wenigen nicht theologischen Büchern
+fällt das Übergewicht der historischen Werke auf; alle anderen
+Disziplinen sind nur mit einzelnen Titeln wie einem Kräuterbuch, einem
+?Romführer“ oder einem Wörterbuch vertreten. Sammlungen wie die
+Elfgener können, wenn auch äußerlich eher unscheinbar, oft wichtige
+Ergänzungen der Bestände großer Bibliotheken sein, da diese diese
+wissenschaftlich wenig relevante Literatur nie systematisch gesammelt
+haben. Heute wird deren Quellenwert für die Erforschung der Geistes-,
+Kultur- und Sozialgeschichte der Neuzeit aber mehr denn je geschätzt.
+</p>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

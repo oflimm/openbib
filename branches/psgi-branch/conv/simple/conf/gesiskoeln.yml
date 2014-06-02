@@ -1,0 +1,53 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+# encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# XPath-Parameter
+
+# Record-Selector
+recordselector: /FAUST_Datenbank/*
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'Objektnummer'
+
+category_split_chars:
+  'Schlagworte': '\s*;\s*'
+  'ISBN': '\s*;\s*'
+
+# Personen
+person:
+  'Verf': '0100'        # Verfasser
+  'Hrsg': '0101'        # Person
+  'bet_Pers': '0101'
+
+# Koerperschaften
+corporatebody:
+ 'Konferenz': '0201'
+
+# Systematik
+classification: 
+  'Schlagworte': '0700'
+
+# Schlagworte
+subject:
+  'Deskribierung': '0710'
+
+# Titel
+title:
+  'Erf_Datum': '0002'
+  'Titel': '0331'
+  'Untertitel': '0370'
+  'Verlagsort': '0410'
+  'Verlag': '0412'
+  'Reihentitel': '0451'
+  'Ausgabe': '0403'
+  'Umfang_Ill_Format': '0433'
+  'Erscheinungsjahr': '0425'
+  'ISBN': '0540'
+  'Inhalt': '0750'
+
+holding:
+  'Standorte': '0014'

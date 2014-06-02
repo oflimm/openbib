@@ -1,0 +1,35 @@
+# Mycroft Search Plugin for Mozilla, Firebird, Netscape 6+, Beonix browsers
+# Mycroft Homepage: http://mycroft.mozdev.org
+#
+# SearchSite: KUG (http://kug.ub.uni-koeln.de/)
+# Status: Working Full
+#
+# Original Author: Oliver Flimm <flimm@openbib.org>
+# Created: 11 Nov, 2004
+# Updated: 28 Mar, 2013
+#
+# Country: DE
+# Language: de
+# Category: Academic
+#
+# Known issues: None.
+#
+
+<search
+   version="9.1"
+   name="KUG"
+   description="Suche im Kölner UniversitätsGesamtkatalog"
+   method="GET"
+   queryEncoding="utf-8"
+   queryCharset="utf-8"
+   action="http://kug.ub.uni-koeln.de/portal/kug/search.html"
+   searchform="http://kug.ub.uni-koeln.de/portal/kug/search.html"
+>
+
+<input name="fs" user>
+
+<browser
+   update="http://kug.ub.uni-koeln.de/plugins/KUG.src"
+   updateIcon="http://kug.ub.uni-koeln.de/plugins/KUG.jpg"
+   updateCheckDays="3"
+>

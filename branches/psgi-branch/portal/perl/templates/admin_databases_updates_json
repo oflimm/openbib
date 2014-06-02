@@ -1,0 +1,33 @@
+[%-
+
+all_logentries = [] ;
+
+FOREACH logentry IN databaseinfo.search_related("updatelogs", {}, { order_by => 'tstamp_start DESC' } ) ;
+  this_logentry = {
+    serverinfo  =   {
+                     link = {
+                           rel = 'self'
+                           href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}/id/${logentry.serverid.id}.json?l=${lang}"
+                     }
+                     id = logentry.serverid.id
+                     hostip =  logentry.serverid.hostip
+                    }
+    tstamp_start = logentry.tstamp_start
+    duration     = logentry.duration
+    title_count  = logentry.title_count
+  };
+  all_logentries.push(this_logentry);
+END;
+
+this_json_output = {
+    link = {
+          rel = 'self'
+          href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${databaseinfo.dbname}/updates.json?l=${lang}"
+    }
+
+    logentries = all_logentries
+};
+
+to_json(this_json_output) ;
+
+-%]

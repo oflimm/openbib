@@ -1,0 +1,44 @@
+[%#-
+#######################################################################
+#
+# Templatename: rssframe
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller verfuegbaren RSS-Feeds
+#
+#######################################################################
+-%]
+[%
+rssfeeds = [] ; 
+
+FOREACH orgunitdesc IN rssfeedinfo.keys;
+  FOREACH rssfeed IN rssfeedinfo.${orgunitdesc} ;
+    thisrssfeed = {
+        link = {
+           rel = 'self'
+           url = "http://${servername}${path_prefix}/${config.get('databases_loc')}/id/${rssfeed.pool}/titles/recent.rss?l=${lang}"
+        }
+        orgunit_description = orgunitdesc
+        database            = rssfeed.pool
+        description         = rssfeed.pooldesc
+    };
+    rssfeeds.push(thisrssfeed);
+  END;
+
+END;
+
+this_rssfeeds = {
+        link = {
+           rel = 'self'
+           url = "http://${servername}${path_prefix}/${config.get('rssfeeds_loc')}.json?l=${lang}"
+        }
+        rssfeeds = rssfeeds
+};
+
+to_json(this_rssfeeds);
+
+
+%]

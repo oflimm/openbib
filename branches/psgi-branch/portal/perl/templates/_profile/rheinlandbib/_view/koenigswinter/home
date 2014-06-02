@@ -1,0 +1,65 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_portal
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='' %]
+
+    <!-- begin: main content area #main -->
+    <div id="main" style="padding:10px;">
+
+ <div class="float-left" style="padding:8px;">
+
+<center>
+<img src="/images/openbib/views/koenigswinter/Rheinlandbib.Koenigswinter.jpg" alt="Rheinansicht" /><br><br>
+<i style="font-size:0.8em">Rheinansicht</i>
+</center>
+</div>
+
+<h1>Bibliothek des Heimatvereins Siebengebirge e.V. in Königswinter</h1>
+
+<p> Der Heimatverein Siebengebirge e.V. hat in über 70 Jahren eine
+regionalkundliche Bibliothek zusammengetragen, die heute im
+Siebengebirgsmuseum aufbewahrt wird, aber noch im Besitz und in der
+Verwaltung des Heimatvereins ist. Neben der üblichen landeskundlichen
+Literatur – Ortsmonografien, Literatur über das Siebengebirge,
+Rheinbücher u. ä. – besitzt die Bibliothek mehr als 50 Ausgaben der
+Werke des in Königswinter geborenen Schriftstellers Wolfgang Müller
+(1816–1873), z. T. aus dem Besitz des Müller-Biografen Toni
+Metternich. Damit dürfte diese eine der größten Sammlungen dieses
+Schriftstellers in Deutschland sein.  </p>
+
+<p> Die Aufstellungssystematik der Bibliothek lässt die Breite, in der
+regionales Schrifttum gesammelt wird, gut erkennen. Im Rahmen dieses
+elektronischen Kataloges sind nur die Abteilungen A (Alte Bücher, im
+allgemeinen vor etwa 1850 erschienen) und die Werke von Wolfgang
+Müller erfasst worden.  </p>
+
+
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

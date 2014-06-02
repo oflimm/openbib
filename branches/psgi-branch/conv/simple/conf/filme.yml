@@ -1,0 +1,42 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+# encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# XPath-Parameter
+
+# Record-Selector
+recordselector: /tellico/collection/entry
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'id'
+
+category_split_chars:
+
+# Personen
+person:
+  '//cast/column': '0101'
+
+# Koerperschaften
+corporatebody:
+  '//director': '0200'
+
+# Systematik
+classification: 
+  '//certification': '0700'
+
+# Schlagworte
+subject:
+  '//genre': '0710'
+
+# Titel
+title:
+  'title': '0331'
+  'medium': '4410'
+  'region': '0434'
+  'year': '0425'
+
+holding:
+  'signatur': '0014'

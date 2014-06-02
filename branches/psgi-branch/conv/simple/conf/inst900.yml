@@ -1,0 +1,49 @@
+# Encoding der Daten
+encoding: cp437
+
+# Tracelevel
+tracelevel:
+
+file:
+  'sep_char': ": "
+  'rec_sep': "ENDE"
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'INV'
+
+category_split_chars:
+
+# Personen
+person:
+  'AUT': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+  'SWT': '0710'
+
+# Titel
+title:
+  'ART': '0331'
+  'JAR': '0425'
+  'VER': '0412'
+  'ORT': '0410'
+  'KOL': '0433'
+  'AUF': '0403'
+  'REI': '0451'
+  'ORI': '0501'
+  'HRG': '0359'
+
+# Exemplare
+holding:
+  'SIG': '0014'
+
+filter:
+  'join':
+     - from: 'SAT'
+       to: 'ART'

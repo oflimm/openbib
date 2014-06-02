@@ -1,0 +1,55 @@
+# Encoding der Daten
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': ','
+  'quote_char': "\""
+  'escape_char': "\""
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'id'
+
+category_split_chars:
+
+# Personen
+person:
+  'person': '0100'
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+  'bestellzeichen': '0700'
+
+
+# Schlagworte
+subject:
+  'lieferant': '0710'
+
+# Titel
+title:
+  'titel': '0331'
+  'isbn': '0540'
+  'verlag': '0412'
+  'jahr': '0425'
+  'preis': '0434'
+  'datum': '0002'
+  'exemplar': '0535'
+  'auflage': '0403'
+  'preis': '4211'
+  'waehrung': '4212'
+
+# Exemplare
+holding:
+
+exclude:
+  'by_availability':
+     field: 'ISBN'
+     databases:
+        - inst001

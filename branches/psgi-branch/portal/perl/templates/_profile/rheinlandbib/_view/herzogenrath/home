@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_portal
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header"  %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='' %]
+
+    <!-- begin: main content area #main -->
+    <div id="main" style="padding:10px;">
+
+ <div class="float-left" style="padding:8px;width:30%">
+
+<center>
+<img
+src="/images/openbib/views/herzogenrath/herzogenrath.jpg" />
+</center>
+</div>
+
+<h1>Herzogenrath, Pfarrbibliothek St. Gertrud</h1>
+
+<p> Die Bibliothek der katholischen Pfarrgemeinde St. Gertrud in
+Herzogenrath umfasst in ihrer aktuellen Gestalt etwa 700 Bände. Sie
+wurde aus verschiedenen Quellen gespeist: Zum Büchernachlaß des
+Herzogenrather Pfarrers Tilmann Laurent Turck (1779-1823) von
+St. Mariae Himmelfahrt kamen im Laufe der Zeit weitere Sammlungen
+hinzu, zum Schluss ein kleinerer Bestand aus der früheren Pfarrei
+St. Gertrud, Afden. Den Kern des Nachlasses Turck bildet ein kleinerer
+Teil der Bibliothek des benachbarten ehemaligen
+Augustinerchorherrenstifts Klosterrath (heute Rolduc) in Kerkrade
+(Niederlande); diese Bände sind häufig mit dem Besitzvermerk
+"Abbatiae Rodenses" versehen.  </p>
+
+<p> Wie bei solchen Bibliotheken zu erwarten ist, ist der Bestand
+weitgehend durch theologische Literatur geprägt. Der Schwerpunkt
+liegt bei pastoraler Literatur des 18. Jahrhunderts
+(Predigtsammlungen, Liturgica, Moraltheologie, Andachtsliteratur),
+aber er geht, vor allem mit Kirchenväterausgaben (Augustinus,
+Hieronymus, Johannes Chrysostomus u. a.), bis in das frühe
+16. Jahrhundert zurück. Aufgrund der Nähe zu den Niederlanden und zum
+französischen Kulturraum spielen Veröffentlichungen in diesen Sprachen
+und aus den entsprechenden Druckorten (Antwerpen, Brüssel ,Den Haag,
+Paris) eine wichtige Rolle. Daneben fehlen aber Publikationen anderer
+Fächer und Regionen (Geographie oder Kirchengeschichte, Drucke aus
+Ingolstadt oder Venedig) durchaus nicht.  </p>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,28 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_toolset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer die Einband-Daten
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                'T0102', # msg.maketext("T0102-einbaende") Werkstatt/Werkzeug
+                'T0310', # msg.maketext("T0310-einbaende") Titel
+                'T0304', # msg.maketext("T0304-einbaende") Motiv
+                'T0335', # msg.maketext("T0335-einbaende") Motivbeschreibung
+                'T0201', # msg.maketext("T0201-einbaende") Region/Werkzeug
+                'T0750', # msg.maketext("T0750-einbaende") Beschreibung
+                'T0501', # msg.maketext("T0501-einbaende") Quellen
+                'T0508', # msg.maketext("T0508-einbaende") Bibl. Nachweis
+                'T0435', # msg.maketext("T0435-einbaende") Maße
+                'T0800', # msg.maketext("T0800-einbaende") Art
+                ]
+
+%]

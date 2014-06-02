@@ -1,0 +1,84 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main" style="padding:10px;">
+
+ <div class="float-left" style="padding:40px;">
+
+<center> <img
+src="/images/openbib/views/lefort/lefort_start.png" alt="Sammlung Gertrud von
+Le Fort" /><br /><br /><i style="font-size:0.8em">Gedenkmarke Gertrud von Le Fort</i></center>
+
+ </div>
+
+<h1>Die Gertrud-von-Le-Fort-Sammlung (Heribert Hilgers) in der USB Köln</h1>
+
+<p>Dr. Heribert Hilgers, Akademischer Direktor a. D. im Dekanat der
+Philosophischen Fakultät, hat 2006 der Universitätsbibliothek seine
+Büchersammlung von Gertrud von Le Fort geschenkt. Herr Hilgers hat
+insgesamt 55 Monographien von ihr zusammengetragen,
+die sich dadurch auszeichnen, dass sie alle in gutem Originalzustand
+erhalten sind. Bei den Titeln, die mit Schutzumschlag erschienen sind,
+ist dieser noch vorhanden. Das früheste enthaltene Werk ist die
+Erstausgabe von "Hymnen an die Kirche" von 1924, das als Beginn des
+schriftstellerischen Werkes von Gertrud von Le Fort gilt. Die
+Schenkung umfasst bis auf wenige Ausnahmen beinahe alle selbständig
+erschienenen Schriften der Autorin in verschiedenen Auflagen und
+Ausgaben, darunter 26 Erstausgaben. </p>
+
+
+<p> Die Sammlung Gertrud von Le Fort ist als geschlossener Bestand mit
+der Sondersignatur <b>LEFO</b> aufgestellt. Um den Originalzustand
+weiterhin zu gewähren, sind bibliothekarische Bearbeitungsmerkmale
+sehr zurückhaltend angebracht worden. So wurde auch auf das Einkleben
+von Etiketten verzichtet.
+</p>
+<p>
+Die Originalumschläge werden erhalten und sie können zu wissenschaftlichen
+Zwecken eingesehen werden. Alle Umschläge werden zudem gescannt und in
+der Datenbank der <a
+href="http://umschlagsammlung.ub.uni-koeln.de/">Umschlagsammlung</a>
+gezeigt.
+</p>
+<p>
+Die bibliographische Beschreibung der Werke geht, wenn zusätzliche
+Informationen vorhanden sind, über die Standardbeschreibung hinaus.
+</p>
+<p>
+Die Benutzung der Bücher erfolgt aus konservatorischen Gründen im <a href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/histsamm/lesesaal/index_ger.html" target="_blank">Lesesaal
+Historische Sammlungen</a>. 
+</p>
+
+<p>[<a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Weitere Informationen</a>] </p>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

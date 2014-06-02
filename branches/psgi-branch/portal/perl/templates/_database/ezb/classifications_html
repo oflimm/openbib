@@ -1,0 +1,135 @@
+[%#-
+#######################################################################
+#
+# Templatename: classification_collection_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der EZB Fachgebiete (=Klassifikationen + Beschreibung)
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "ezb" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Fachgebiete") %]</a></li>
+         <li><a href="#" class="lastitem">[% dbinfo.dbnames.${database}.short %]</a></li>
+      </ul>
+     </div>
+     <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('classifications_loc') %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+<div class="ob-headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
+<p/>
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="db"        value="ezb" />
+<input type="hidden" name="l"         value="[% lang %]" />
+<input type="hidden" name="sm"        value="seq" />
+<input type="hidden" name="page"      value="1" />
+<input type="hidden" name="num"       value="20" />
+
+<table>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF query.param('access_green') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF query.param('access_yellow') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF query.param('access_red') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
+<tr><td colspan="3"></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="cln"><option value="all" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH classification IN classifications -%]
+<option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>[%- END -%]</select></td></tr>
+</table>
+<p/>
+<table>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="tit" value="" size="13" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</form>
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[%# USE dumper; dumper.dump(classifications) %]
+
+<h3><img src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_234x32.gif" alt="[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]" /></h3>
+
+<h1>[% msg.maketext("Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten") %]</h1>
+<p/>
+<div class="ob-listoptions">
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'cloud' }}) %]"[% IF query.param('type') == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'list' }}) %]"[% IF type == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+</div>
+<p/>
+<div class="left_side23">
+[% IF query.param('type') == 'cloud' %]
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+<ol class="ob-cloud">
+[% FOREACH classification IN classifications %]
+[%-
+   classnr       = classification.class;
+   itemclass     = css_classes.$classnr;
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+-%]
+<li class="[% itemclass %]"><span>[% classification.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]"  class="tag" title="[% classification.count %] Zeitschriften sind in der Fachgruppe [% classification.desc %]">[% classification.desc %]</a></li>
+[% END %]
+</ol>
+<!-- Ende Tag-Cloud -->
+[% ELSE %]
+<ul class="classificationlist">
+[% FOREACH classification IN classifications;
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+%]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %]</a> ([% classification.count %])</li>
+[% END %]
+</ul>
+[% END %]
+<p/>
+</div>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

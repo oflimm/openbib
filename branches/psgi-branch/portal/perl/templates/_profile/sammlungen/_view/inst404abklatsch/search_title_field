@@ -1,0 +1,34 @@
+[%    field_map = {
+          "freesearch" = msg.maketext("Freie Suche")
+          "title"      = 'Kurztitel'
+          "database"   = msg.maketext("Katalog")
+          "content" = 'Edition/SEG-Eintrag'
+          "person" = msg.maketext("Autor")
+          "corporatebody" = 'Ort der Inschrift'
+          "subject" = 'Kategorie'
+          "classification" = msg.maketext("Systematik")
+          "mediatype" = msg.maketext("Medientyp")
+          "language" = msg.maketext("Sprache")
+          "year" = msg.maketext("Jahr")
+          "year_from" = msg.maketext("Jahr von")
+          "year_to" = msg.maketext("Jahr bis")
+          "tag" = msg.maketext("Tag")
+          "litlist" = msg.maketext("Literaturliste")
+          "dbstring" = msg.maketext("Katalog")
+          "personstring" = msg.maketext("Autor")
+          "corporatebodystring" = 'Ort der Inschrift'
+          "subjectstring" = 'Kategorie'
+          "classificationstring" = msg.maketext("Systematik")
+          "mediatypestring" = msg.maketext("Medientyp")
+          "markstring" = 'Inventarnummer'
+          "languagestring" = msg.maketext("Sprache")
+          "yearstring" = msg.maketext("Jahr")
+          "tagstring" = msg.maketext("Tag")
+          "litliststring" = msg.maketext("Literaturliste")
+          "t0200" = 'Ort der Inschrift'
+          "t0410" = 'Aufbewahrungsort der Inschrift'
+          "t0425" = 'Datierung der Inschrift'
+          "t0335" = 'Edition/SEG-Nummer'
+          "t0710" = 'Kategorie'
+};
+%]

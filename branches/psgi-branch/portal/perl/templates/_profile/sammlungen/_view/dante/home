@@ -1,0 +1,88 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main" style="padding:10px;">
+
+ <div class="float-left" style="padding:40px;">
+
+<center> <img src="/images/openbib/views/dante/dantestartbild.jpg"
+alt="Wallraf" /><br /><br /><i
+style="font-size:0.8em">Fresco im Dom zu Orvieto</i><br/></center>
+
+ </div>
+
+<h1>Die Dante-Sammlung (Wilhelm Reiners) in der Universit&auml;ts-
+und Stadtbibliothek K&ouml;ln </h1>
+
+<p> Die 1964 erworbene Privatsammlung Wilhelm Reiners umfasste
+ursprünglich ca. 1200 Bände. Nach Abgabe von etwa 290 Dubletten an das Kölner
+Petrarca-Institut und an die Universitätsbibliothek Bochum
+verblieben ca. 900 Bände. Eine Zählung anhand des Katalogs der Sammlung
+Reiners ergab 409 Titel, die vor 1900 erschienen sind. Die Mehrzahl
+dieser Werke wurde im 19. Jahrhundert publiziert. Neben 244
+italienischen Titeln sind die deutschen Ausgaben am meisten vertreten
+(110). Die übrigen Werke verteilen sich auf die lateinische,
+französische, englische, niederländische und dänische Sprache. Etwa
+200 Titel sind Dante-Ausgaben und Dante-Briefe, überwiegend in der
+Originalsprache, teilweise mit Illustrationen versehen. Die restlichen
+Titel der Sammlung sind Kommentare, Forschungsberichte, biographische
+Werke und Literatur über die Renaissance. Die Sammlung Reiners brachte
+für die USB eine außergewöhnliche Bereicherung ihres
+Dante-Bestandes, so dass dieser nun zu den umfassendsten und besten
+Dante-Kollektionen Deutschlands gehört. Die Sammlung wird von der USB
+Köln stetig erweitert.
+</p>
+
+<p>[<a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Weitere Informationen</a>] </p>
+
+<h1>Dante Alighieri</h1>
+
+<p>
+Dante Alighieri wurde im  Mai oder Juni 1265 in Florenz geboren. Er
+starb am 14. September 1321 in Ravenna.
+Mit seiner Göttlichen Komödie hat er das bis dahin dominierende Latein
+überwunden und das Italienische zu einer Literatursprache
+geführt.
+Dante ist der bekannteste Dichter Italiens und gilt als einer der
+bedeutendsten Poeten des europäischen Mittelalters. Sein Werk schöpft
+souverän aus der Theologie, der Philosophie und den übrigen
+Wissenschaften (Artes liberales) seiner Zeit.
+</p>
+
+<p>
+Die Einsichtnahme für Forschungszwecke erfolgt im  <a
+href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/histsamm/lesesaal/index_ger.html#e1968/index_ger.html" target="_blank">
+Lesesaal Historische Sammlungen</a>.
+</p>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

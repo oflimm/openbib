@@ -1,0 +1,28 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_holding
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Exemplar-Informationen aus den bibliograph. Daten
+#
+#######################################################################
+-%]
+<table class="ym-full">
+<thead>
+<tr align="center"><th>[% msg.maketext("Ehepartner") %]</th><th>[% msg.maketext("Heiratsdatum") %]</th><th>[% msg.maketext("Heiratsort") %]</th></tr>
+</thead>
+<tbody>
+[% FOREACH thisholding IN holding %]
+<tr align="center">
+<td>[% thisholding.${"X0014"}.content %]</td>
+<td>[% thisholding.${"X0005"}.content %]</td>
+<td>[% thisholding.${"X0016"}.content %]</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+

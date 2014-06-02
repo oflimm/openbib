@@ -1,0 +1,108 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_portal
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='info' %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">Alte Pfarrbibliothek St. Dionysius Hürth-Gleuel</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='gleuel' %]
+
+        </div>
+      </div>
+
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3">
+        <div class="ym-cbox" class="ym-clearfix">
+
+<h2>Alte Pfarrbibliothek St. Dionysius Hürth-Gleuel</h2>
+
+<p>
+Die Sammlung - 195 Titel in 211 Bänden, dazu 9 neuzeitliche
+Handschriften - zeigt in ihrer Zusammensetzung im Wesentlichen das
+typische Bild einer Pastorenbibliothek. Erwartungsgemäß überwiegt die
+theologische Literatur deutlich. Je ein Viertel des Bestandes wird von
+den Sparten Moraltheologie, Homiletik (meist Predigtsammlungen) und
+Liturgik eingenommen. Das letzte Viertel umfasst die übrige
+theologische Literatur (Exegese, Dogmatik, Kirchengeschichte,
+Pastoraltheologie und Erbauungsschriften), aber auch den gesamten
+nichttheologischen Bestand, u. a. Schulbücher, Texte klassischer
+Autoren, Philosophie, Wörterbücher, Geschichte oder Medizin. Gerade in
+diesem letzten Viertel finden sich etliche seltene und unerwartete
+Titel.
+</p>
+
+<p>Die Geschichte der Sammlung ist vornehmlich an den in den Büchern
+vermerkten Provenienzen abzulesen. Demnach stellt sich die Entwicklung
+folgendermaßen dar: den Anfang bildete offensichtlich die Sammlung von
+Büchern, die der 1695 eingeführte Hermülheimer Pfarrer Albert Wortmann
+schon seit seinen Schülertagen zusammengetragen hatte. Auf ihn gehen
+eine der Handschriften und etliche der Drucke zurück; manche lassen
+noch erkennen, in welcher Phase von Schule und Studium -
+beides absolvierte er in Köln - er sie erworben hat. Von ihm,
+der schon 1726 starb, sind die Bücher übergegangen an den Pfarrer
+Franz Albert Rhedecker in Gleuel. Dort überdauerten sie bis zum
+heutigen Tag, leider nicht ohne Verluste.</p>
+
+<p>Nachdem die Sammlung lange unbeachtet im Gleueler Pfarrhaus gestanden
+hatte, wurde sie am Ende des 20. Jahrhunderts restauriert und
+verzeichnet. Mit der Aufnahme der Titel in die Nordrhein-Westfälische
+Verbunddatenbank ist diese Literatur jetzt für die wissenschaftliche
+Nutzung bundesweit verfügbar.</p>
+
+<p>
+Der Bestand dieser Bibliothek ist auch separat in einem
+eigenst&auml;ndigen Portal recherchierbar.
+</p>
+
+<p>
+&gt;&gt;&nbsp;<a href="http://gleuel.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
+</p>
+
+</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

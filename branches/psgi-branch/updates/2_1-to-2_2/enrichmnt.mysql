@@ -1,0 +1,2 @@
+alter table normdata add index (category);
+alter table normdata add index (content(20));

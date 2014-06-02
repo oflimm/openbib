@@ -1,0 +1,93 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="info" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+  <h1>&nbsp;Europäische St&auml;dte- und Landschaftsdarstellungen des 16. und 17. Jahrhunderts</h1>
+
+
+         <div class="ym-grid">
+          <div class="ym-g50 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+  <center style="padding-top: 40px;">
+<img src="/images/openbib/views/landschaft/landschaft.jpg"
+alt="Aachen um 1616" /><br /><br /><i
+style="font-size:0.8em">Aachen um 1616</i></center>
+         
+          </div>
+         </div>
+          <div class="ym-g50 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+<p>
+Gegenstand des Projekts war die Digitalisierung, Erfassung, sachliche Erschlie&szlig;ung und Eintragung in die
+HIDA-Datenbank von historischen St&auml;dte- und Landschaftsansichten
+des 16. und 17. Jahrhunderts aus den Buchbeständen der USB
+K&ouml;ln. Es wurden etwa 1.400 Abbildungen erfasst und aufbereitet.
+</P>
+
+<p>
+
+Die Digitalisierung dieser Spezialbestände diente in erster Linie der
+Verbesserung der Zugriffsmöglichkeiten und der Erm&ouml;glichung einer
+intensiveren wissenschaftlichen Nutzung der Materialien unter dem
+Aspekt der Erforschung der europ&auml;ischen Architektur-, Kunst- und
+Kulturgeschichte.  Da Teile der betreffenden Werke nur noch
+eingeschränkt benutzbar und bei Beschädigung unersetzlich sind, war
+die Sicherung dieses kulturhistorisch wichtigen Schrifttums ein
+weiteres Ziel der Digitalisierung. Aus damaliger Sicht diente das
+Projekt zus&auml;tzlich einer zukunftsorientierten Erweiterung des
+Aufgabensprektrums der Bibliothek und folgte dem Trend der wachsenden
+Internationalisierung der Forschung. Das Projekt erweitert zudem
+das Aufgabenspektrum der Bibliothek und trägt der wachsenden
+Internationalisierung der Forschung Rechnung.
+
+</p>
+
+<p> 
+<!-- [<a href="[% config.get('info_loc') %]?sessionID=[% sessionID %]&stid=21">Weitere Informationen</a>]--></p>
+
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+<p>[<a
+href="http://www.ub.uni-koeln.de/sammlungen/landschaft/digital/index_ger.html">Informationen
+zur Digitalisierung der Sammlung Europäische Stadte- und
+Landschaftsdarstellungen des 16. und 17. Jahrhunderts</a>]</p>
+
+
+          </div>
+         </div>
+      </div>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

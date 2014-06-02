@@ -1,0 +1,63 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_portal
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header"  %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='' %]
+
+    <!-- begin: main content area #main -->
+    <div id="main" style="padding:10px;">
+
+ <div class="float-left" style="padding:8px;">
+
+<center>
+<img src="/images/openbib/views/moenchengladbach/Rheinlandbib.Franziskaner.jpg" />
+</center>
+</div>
+
+<h1>Franziskanerbibliothek in der Stadtbibliothek Mönchengladbach</h1>
+
+<p> Im Jahr 2003 unterzeichneten die Kölnische Franziskanerprovinz und
+die Stadt Mönchengladbach einen Vertrag, mit dem der Stadtbibliothek
+der größte Teil des Altbestandes der Zentralbibliothek ?Wissenschaft
+und Weisheit“, ca. 4.500 Bände des 16. bis frühen 19. Jahrhunderts,
+geschenkweise übereignet wurden. Die Stadtbibliothek verpflichtete
+sich im Gegenzug, für die Erhaltung und Erschließung des Bestandes zu
+sorgen.  Dieser wird naturgemäß stark von der katholischen Theologie
+geprägt: Zahlreich vertreten sind Werke franziskanischer Theologie ,
+aber auch solche von Dominikanern und Jesuiten. Einzelne Titel
+protestantischer Theologen (Luther, Melanchthon) ergänzen den Bestand
+ebenso wie zahlreiche philosophische Werke. Erstaunlicher in der
+Bibliothek eines Bettelordens wirken die italienischen Theaterstücke
+des 18. Jahrhunderts in französischer Sprache ("Le théatre
+italien". Amsterdam 1697; "Le nouveau théatre italien". 1729) und die
+Werke kritischer bis antiklerikaler Aufklärer (René Descartes,
+Jean-Baptiste Louis Gresset). Dazu tritt ein kleinerer Fundus an
+Literatur zur Geschichte und zur klassischen Philologie.  </p>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

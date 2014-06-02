@@ -1,0 +1,42 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+# encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'id'
+
+category_split_chars:
+  'keywords': '\s*,\s+'
+
+
+# Personen
+person:
+  'author_names': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+  'keywords': '0710'        # Schlagwort
+
+# Titel
+title:
+  'title': '0331'
+  'description': '0750'
+  'ka_url': '0662'
+  'kind': '0800'
+  'ka-user-licence': '4210'
+  'translated_youtube_lang': '0015'
+  'image_url': '4111'
+
+defaultmediatype: 'Online-Kurs'
+
+filter:
+

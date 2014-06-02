@@ -1,0 +1,124 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_portal
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='info' %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">Rheinische Abteilung der USB</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='rheinischeabteilung' %]
+
+        </div>
+      </div>
+
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3">
+        <div class="ym-cbox" class="ym-clearfix">
+
+<h2>Die Rheinische Abteilung an der USB Köln</h2>
+
+<p> Die Rheinische Abteilung ist im 19. Jahrhundert mit Blick auf die
+neugegründete preußische Rheinprovinz geschaffen worden, die große
+Teile der heutigen Bundesländer Nordrhein-Westfalen, Rheinland-Pfalz
+und Saarland sowie die seit 1919 belgischen Kreise Eupen, Malmedy und
+St.Vith umfaßte. Sie sammelt seitdem die in- und außerhalb des
+Buchhandels zu diesem Raum erschienene Literatur aller
+Fachgebiete. Das bezieht heute auch in digitaler Form vorliegende
+Informationen ein.  </p>
+
+<p> Aufgrund des exorbitanten Anstiegs der Buchproduktion, vor allem
+auch der "grauen Literatur", in den letzten Jahrzehnten kann der
+Bestand nicht mehr für den gesamten Raum gleich intensiv gesammelt
+werden. Für die Stadt Köln und ihr direktes Umland wird möglichst
+Vollständigkeit angestrebt bis hin zu Firmen- und
+Verwaltungsschrifttum, Freizeitführern, Köln-Krimis und
+Ausstellungskatalogen jeglicher Couleur. Diese Region darf deshalb als
+"Kernzone" der Rheinischen Abteilung gelten.  </p>
+
+<p> Der südliche Teil des Landesteils Nordrhein (max. bis zur Linie
+Viersen - Krefeld - Velbert) kann als "Verdichtungszone" definiert
+werden. Hier wird die im Buchhandel erschienene Literatur in der Regel
+erworben; auf graue Literatur kann hier genauso wie auf das Schrifttum
+aus Wirtschaft und Verwaltung, auf Freizeitführer und -karten oder auf
+tagesaktuelle Literatur mehrheitlich verzichtet werden. Im übrigen
+rheinischen Raum (Niederrhein, Eifel, Mittelrheintal bis etwa Koblenz)
+wird die Regionalliteratur dichter erworben als für die übrigen
+deutschen Landschaften. Von einer wirklichen Spezialsammlung kann hier
+aber nicht mehr die Rede sein, auch wenn gerade im Bereich der
+landeskundlichen Periodika immer noch eine hohe Dichte erreicht wird.
+</p>
+
+<p> Die rheinischen Randlandschaften jenseits von Mosel und Ruhr, der
+rheinische Anteil des Ruhrgebiets, der Westerwald und das Rheintal
+südlich von Koblenz / Rhens bilden dann eine Übergangszone, in der
+sich die aktuelle Erwerbung von Literatur nicht mehr wesentlich von
+der anderer deutscher Regionen unterscheidet.  </p>
+
+<p> Inhaltlich liegt der Schwerpunkt der Sammlung heute beim
+Schrifttum zur Geschichte (incl. der Fachgeschichten), Geographie,
+Volkskunde, regionalen Sprache und Literatur und Kunst
+(Kulturwissenschaften mit historischer Ausrichtung). Besondere
+Aufmerksamkeit wird der rheinischen Künstler-Landschaft, dem Brauchtum
+(z. B. Karneval und Schützenvereine) und der kölschen
+Mundart-Literatur geschenkt.  </p>
+
+<p> Die rheinische Abteilung unterstützt die bibliographische
+Verzeichnung der für die Region wichtigen Literatur, die sie erwirbt,
+indem sie die betreffenden Titel an die Nordrhein-Westfälische
+Bibliographie meldet. Ebenso verfährt sie mit den Coloniensien, die in
+die bislang nur gedruckt vorliegende Kölnische Bibliographie von Hans
+Blum aufgenommen werden. Beide Verzeichnisse enthalten auch Titel, die
+die Rheinische Abteilung selbst nicht erschließt (z.B. Aufsätze aus
+Zeitschriften und Sammelbänden) oder auch nicht besitzt.  </p>
+
+<p> Dagegen besitzt die Bibliothek alle Zeitungsartikel, die sie in
+der Sammlung Kölner Zeitungsausschnitte aus den Jahren 1840-1975 und
+ihrer digitalen Nachfolgerin für die Jahre 1.1970-8.1984 und 1990
+/1991 vorhält und nachweist.  </p>
+</div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

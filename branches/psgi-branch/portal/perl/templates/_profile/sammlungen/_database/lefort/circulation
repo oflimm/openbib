@@ -1,0 +1,144 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Ausleih/Explar-Informationen (via OLWS)
+#
+#######################################################################
+-%]
+[%
+ Aquisition = 0;
+
+ FOREACH thiscirculation IN circulation ;
+    IF thiscirculation.AquisitionStatuscode >= 1 ;
+       Aquisition = 1;
+    END ;
+ END ;
+
+ IF normset.${"T5002"}.first.content.defined ;
+    Aquisition = 2 ;
+ END ;
+
+%]
+<p />
+[%# USE dumper;dumper.dump(dbinfo)%]
+[% IF Aquisition == 0 %]
+<table class="ym-full">
+<thead>
+<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th><th>[% msg.maketext("Ausleihsystem") %]</th></tr>
+</thead>
+<tbody>
+[% FOREACH thiscirculation IN circulation %]
+[%-
+  thiscirculation.Ausleihurl = "${thiscirculation.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID=${record.id}";
+
+     IF     thiscirculation.Zweigstelle == 0 ;
+
+        IF thiscirculation.Signatur.match('^2[3-9]A') || thiscirculation.Signatur.match('[3-9][0-9]A') ;
+           IF thiscirculation.Status == "bestellbar" ;
+              thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / ausleihbar";
+           ELSIF thiscirculation.Status == "entliehen" ;
+              thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/sab/index_ger.html\" target=\"_blank\">SAB</a> / vormerkbar";
+           END ;
+        END ;      
+
+        IF thiscirculation.Abteilungscode == 3 ;
+           IF thiscirculation.Status == "bestellbar" ;
+              thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / ausleihbar";
+           ELSIF thiscirculation.Status == "entliehen" ;
+              thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/lbs/index_ger.html\" target=\"_blank\">LBS</a> / entliehen";
+           END ;
+        ELSIF thiscirculation.Abteilungscode == 2 ; 
+           thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/fragen/ausleihabc/ls/index_ger.html\" target=\"_blank\">LS</a> / Pr&auml;senzbestand";
+        ELSIF thiscirculation.Abteilungscode == 98 ; 
+           thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/edz/content/index_ger.html\" target=\"_blank\">EDZ</a> / einsehbar";
+        END ;
+
+        IF thiscirculation.Signatur.match('^KS/V') ;
+           thiscirculation.Status = "bestellbar (Nutzung nur im Lesesaal)<br/>Bitte f&uuml;llen Sie einen konventionellen Leihschein aus (erh&auml;ltlich an der Auskunft und der Lesesaal-Theke im 1.OG)";
+           thiscirculation.Standort = "Hauptabteilung / Magazin";
+        END ; 
+
+     ELSIF thiscirculation.Zweigstelle == 4 ;
+
+        IF thiscirculation.Abteilungscode == 3 ;
+           IF thiscirculation.Status == "bestellbar" ;
+              thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html\" target=\"_blank\">LBS EWA</a> / ausleihbar";
+           ELSIF thiscirculation.Status == "entliehen" ;
+              thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html\" target=\"_blank\">LBS EWA</a> / entliehen";
+           END ;
+        ELSIF thiscirculation.Abteilungscode == 4 || thiscirculation.Abteilungscode == 7 ; 
+           thiscirculation.Status = "EWA LS / Pr&auml;senzbestand";
+        END ;
+     END ;
+
+    title    = normdata.${"T0331"}.first.content ;
+    IF  normdata.${"T0310"}.first.content ;
+       title = normdata.${"T0310"}.first.content ;
+    END ;
+-%]
+<tr align="center"><td>
+[%-   IF dbinfo.locationid.${record.database}.identifier %]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.locationid.${record.database}.identifier %].html?l=[% lang %]">
+[%-   ELSE -%]
+<a href="[% thiscirculation.Bibinfourl %]" target="_blank">
+[%-   END -%]
+<strong>USB Köln</strong></a></td>
+<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: USB Köln :: [% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') | uri %][% ELSE %][% thiscirculation.Standort | uri %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote | uri %])[%- END -%] :: [% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur | uri %][% thiscirculation.Exemplar | uri %][% ELSE %][% thiscirculation.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td>[% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') %][% ELSE %][% thiscirculation.Standort %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote %])[%- END -%]<br/><a href="http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a></td>
+<td><strong>[% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur %][% thiscirculation.Exemplar %][% ELSE %][% thiscirculation.Signatur %][% END %]</strong></td>
+<td><strong>[%- IF thiscirculation.Status == 'bestellbar' -%]ausleihbar[% ELSIF
+thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.Status %][%- END -%]</strong></td>
+<td class="circurl">
+[%
+     IF thiscirculation.Ausleihurl %]
+   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
+[%   ELSE %]
+[%      IF thiscirculation.Statuscode != 0 ;
+            IF thiscirculation.Gruppe.Name.match("Handapparat") %]
+                keine Vormerkung m&ouml;glich<br/>(in [% thiscirculation.Entleiher.Name %])
+[%#          ELSIF thiscirculation.Vormerkbarkeit  %]
+<!--     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% thiscirculation.Mediennr %];zst=[% thiscirculation.Zweigstelle %];aort=[% thiscirculation.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle) -->
+[%          ELSE %]            
+                keine Vormerkung m&ouml;glich
+[%          END %]
+[%      ELSE %]
+Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
+[%      END %]
+[%   END %]
+</td></tr>
+[% END %]
+</tbody>
+</table>
+[% ELSIF Aquisition == 1 %]
+<table width="100%">
+<tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
+<tr><td class="boxedclear">
+<table width="100%">
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td></tr>
+[% FOREACH thiscirculation IN circulation %]
+<tr align="center"><td><a href="[% thiscirculation.Bibinfourl %]" target="_blank"><strong>[% thiscirculation.Bibliothek.full %]</strong></a></td><td>
+[%   IF thiscirculation.AquisitionStatuscode <= 2 %]
+[% msg.maketext("bestellt beim Lieferanten") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode <= 4 %]
+[% msg.maketext("im Gesch&auml;ftsgang") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode == 5 %]
+[% msg.maketext("beim Lieferanten storniert") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode <= 8 %]
+[% msg.maketext("beim Lieferanten reklamiert") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode == 9 %]
+[% msg.maketext("ausgeschieden") %]
+[%   END %]
+</td></tr>
+[% END %]
+</table>
+
+</td></tr>
+</table>
+
+[% END %]

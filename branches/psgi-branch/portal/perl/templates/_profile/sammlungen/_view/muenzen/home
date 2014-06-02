@@ -1,0 +1,83 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+         <div class="ym-grid">
+          <div class="ym-g33 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+ <center style="padding-top: 5em;"> <img src="/images/openbib/views/muenzen/muenze-schiff.jpeg"
+alt="Münze mit Schiff" /><br /><br /><i
+style="font-size:0.8em"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('titles_loc') %]/id/AL_0184">Schiff des Kaisers Nero unter Segel, datiert 66-67 n. Chr.</a></i></center>
+
+          </div>
+         </div>
+          <div class="ym-g66 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+<h1>Die digitale Münzsammlung am Institut für Altertumskunde</h1>
+
+<p> Das Institut für Altertumskunde der Universität zu Köln beherbergt
+eine Sammlung von 5750 antiken Münzen.  </p>
+
+<p> Der Kernbestand von 3769 Münzen aus dem kaiserzeitlichen Ägypten
+ist eine der bedeutendsten Sammlungen für dieses Themengebiet. Hinzu
+kommen 225 Prägungen aus der Zeit der Ptolemäer (323-31 v. Chr.) und
+1756 Münzen aus den griechischen Städten Kleinasiens.  </p>
+
+<p> Es wird eine Präsentation der <a href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">Bestände</a> angestrebt, die es den an
+der Numismatik partizipierenden Disziplinen leicht erlaubt, das
+Material über eine Internetdatenbank auf komplexe Fragestellungen hin
+auszuwerten. Der Schwerpunkt des in Gemeinschaft mit der IT-Abteilung
+der Universitätsbibliothek Köln entwickelten Projektes liegt auf der
+präzisen numismatischen Erfassung und Darstellung der einzelnen
+Objektdaten. Kommentarfelder sollen dabei anderen kultur- und
+geisteswissenschaftlichen Fächern Anschlussmöglichkeiten an die
+Numismatik eröffnen.  </p>
+
+<p> Neben der Fotografie des Gesamtbestandes sowie der Einarbeitung
+und Aktualisierung des Kataloges der alexandrinischen Münzen nach den
+Kriterien der Datenbank soll der wichtigste Teil der noch nicht
+publizierten Bestände kleinasiatischer Münzen erfasst werden.  </p>
+
+<!--
+<p>
+<a href="[% path_prefix %]/[% config.get('info_loc') %]/abklatsch.html?l=[% lang %]">[Weitere Informationen]</a>
+</p>
+-->
+          </div>
+         </div>
+      </div>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

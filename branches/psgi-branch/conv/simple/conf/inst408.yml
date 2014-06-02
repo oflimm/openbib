@@ -1,0 +1,62 @@
+# Encoding der Daten
+encoding: iso-8859-1
+
+outputencoding: iso-8859-1
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': "#"
+  'quote_char': "\""
+  'escape_char': "\""
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'ID'
+
+category_split_chars:
+  'AUTOR': '\s*;\s*'
+  'KÖRPERSCHAFT': '\s*;\s*'
+  'SCHLAGWORT': '\s*;\s*'
+  'SIGNATUR ALT': '\s*;\s*'
+  'STANDORT': '\s*;\s*'
+
+# Personen
+person:
+  'AUTOR': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+  'KÖRPERSCHAFT': '0201'        # Verfasser
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+  'SCHLAGWORT': '0710'
+
+# Titel
+title:
+  'TITEL': '0331'
+  'JAHR': '0425'
+  'VERLAG': '0412'
+  'ORT': '0410'
+  'SERIE': '0451'
+  'AUSGABE': '0501'
+  'SEITEN': '0433'
+#  'DATUM': '0002'
+  'EXTRAAUSGABE': '0335'
+  'ISBN / ISSN': '0540'
+  'SPRACHE': '0015'
+  'SCHRIFT': '0516'
+  'ERSCHEINUNGSWEISE': '0523'
+  'BUCH / JOURNAL': '0800'
+  'BEMERKUNGEN': '0600'
+
+# Exemplare
+holding:
+  'SIGNATUR ALT': '0014'
+  'STANDORT': '0016'

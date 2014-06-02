@@ -1,0 +1,44 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+# encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# XPath-Parameter
+
+# Record-Selector
+recordselector: /dcx:descriptionSet/dcx:description
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: '@vap:localId'
+
+# Personen
+person:
+  'dc:creator/dcx:valueString': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+
+# Titel
+title:
+  'dc:title/dcx:valueString': '0331'
+  'productidentifier/b244': '0540'
+  'b003': '0425'
+# 'Kurzbeschreibung': '0750'
+  'dcterms:isPartOf[dcx:valueURI]': '0662'
+  'publisher/b081': '0412'
+  'b209': '0410'
+  'dcterms:extent/dcx:valueString': '0433'
+#  'dcterms:tableOfContents/dcx:valueString': '0750'
+  'dcterms:abstract/dcx:valueString': '0750'
+  'dc:type/dcx:valueString': '0800'
+  ''
+
+defaultmediatype: 'Digital'

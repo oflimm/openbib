@@ -1,0 +1,13 @@
+@media all
+{
+
+  #header_logo_image {
+    background: url(/images/openbib/openbib-logo_small.gif) center no-repeat;
+    width: 200px;
+    height: 58px;
+    position: absolute;
+    top: 10px;
+    left: 5px;
+  }
+
+}

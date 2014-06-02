@@ -1,0 +1,113 @@
+[%#-
+#######################################################################
+#
+# Templatename: databaseprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle und weiterer
+# Eingabeelemte fuer die Erstellung und Bearbeitung eigener
+# Katalogsuchprofile
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Katalogprofile") %]</a></li>
+       </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="databaseprofile" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]" class="ym-form">
+<fieldset>
+<legend class="ob-toggable_legend">[% msg.maketext("Neues Katalogprofil anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></legend>
+
+<div class="ob-fieldset">
+
+<div class="ym-fbox-text">
+<label for="profilename">[% msg.maketext("Names des Profils") %]</label>
+<input type="text" name="profilename" id="profilename" size="50" />
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Neu") %]" />
+</div>
+
+</div>
+
+</fieldset>
+</form>
+
+<p />
+
+[%- IF userdbprofiles.size > 0 -%]
+
+<h3>[% msg.maketext("Bereits existierende Profile") %]</h3>
+
+<table class="ym-full">
+<tr><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("Ausgew&auml;hlte Kataloge") %]</th><th></th></tr>
+[%-   FOREACH userdbprofile IN userdbprofiles -%]
+<tr class="[% listrow %]">
+<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% userdbprofile.profileid %]/edit">[% userdbprofile.profilename %]</a></td>
+<td>
+[% FOREACH db IN user.get_profiledbs_of_usersearchprofileid(userdbprofile.profileid) %]
+[% dbinfo.dbnames.${db}.short %]<br/>
+[% END %]
+</td>
+<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% userdbprofile.profileid %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="ob_button">[% msg.maketext("Löschen") %]</a></td>
+</tr>
+
+[%-   END -%]
+</table>
+[% ELSE %]
+Sie haben noch keine Profile angelegt.
+[% END %]
+
+</form>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]
+

@@ -1,0 +1,41 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitlist
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Titel-Kurztrefferliste
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+[%-
+    start_range     = 1;
+    end_range       = recordlist.get_size;
+-%]
+
+<script type="text/javascript" src="http://www.ub.uni-koeln.de/js/loadpage.js"></script>
+<link rel="stylesheet" type="text/css" href="http://kug4.ub.uni-koeln.de/styles/openbib_zms.css" />
+
+<style>
+#searchresult {
+   width: 90%;
+   font-size:0.9em;
+}
+</style>
+
+<div id="searchresult">
+
+<ol start="[% start_range %]" class="hitlist">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
+[%- END -%]
+</ol>
+
+</div>
+

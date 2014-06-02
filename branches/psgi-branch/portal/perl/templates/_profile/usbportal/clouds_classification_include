@@ -1,0 +1,51 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[%
+      funcargs = { id => database, type => 4 } ;
+      resultlist = statistics.get_result(funcargs);
+      request_base = "${view_config.$view.zms_search_url}?l=de;view=${view};num=10;page=1"; 
+
+%]
+
+[%- PROCESS common/subtemplate name="clouds_css" -%] 
+
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.size > 5 -%]
+[%- searchprefix  = config.get('searchfield').classificationstring.prefix -%]
+
+<ol class="ob-cloud">
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="http://www.ub.uni-koeln.de/IPS?SERVICE=TEMPLATE&SUBSERVICE=GOTO&LOCATION=USB&DEST_SERVICE=METASEARCH&DEST_SUBSERVICE=INITSEARCH&DEST_URLENCODING=TRUE&DEST_VIEW=USB%3AKUGView&DEST_KUGView=[% database.replace('inst','38_') %]%7C[%database%]&DEST_SEARCHGROUP=SERVICEGROUP.USB%3AKUGViewKatalog&DEST_STREAMING=on&DEST_HIGHLIGHTING=on&DEST_START=1&DEST_COUNT=10&DEST_GWTIMEOUT=45&DEST_HISTORY=SESSION&D_PARAM_QUERY_ubkNO=[% item %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe dieser Kategorie anbieten.") %]
+[% END %]

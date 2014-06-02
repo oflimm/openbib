@@ -1,0 +1,80 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_portal
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='' %]
+
+    <!-- begin: main content area #main -->
+    <div id="main" style="padding:10px;">
+
+ <div class="float-left" style="padding:8px;">
+
+<center>
+<img src="/images/openbib/views/xanten/Xanten_1650.jpg" alt="Ansicht von Xanten, 1650" /><br><br>
+<i style="font-size:0.8em">Ansicht von Xanten, 1650</i>
+<!-- source: http://commons.wikimedia.org/wiki/File:Xanten_1650.jpg -->
+</center>
+</div>
+
+<h1>StiftsBibliothek Xanten</h1>
+
+<p> Die StiftsBibliothek Xanten verfügt über einen bedeutenden Bestand
+an Handschriften, Inkunabeln und Alten Drucken vornehmlich des 16. bis
+18. Jahrhunderts.  </p>
+
+<p> Die Anfänge der Bibliothek und des Archivs liegen wohl im
+8. Jahrhundert, als das Chorherrenstift St. Viktor gegründet wurde.
+Mit dem Dom fielen im Jahr 1109 auch Archiv und Bibliothek einem
+verheerenden Brand zum Opfer. Die umfänglich erhaltenen
+Dombaurechnungen weisen ab der 2. Hälfte des 14. Jahrhunderts Ausgaben
+für eine Bibliothek auf; ein regelmäßiger Erwerbungsetat ist
+allerdings nicht nachzuweisen. Die Bibliothek wuchs in der Folgezeit
+hauptsächlich durch Schenkungen von Kanonikern und sonstigen
+Gönnern. Ab 1547/48 verfügte die Bibliothek über eigene Räume, die
+über dem Westflügel des Kreuzgangs lagen. Durch die Säkularisation um
+1800 gelangte wertvoller Buchbesitz von Xantener Klöstern, u.a. der
+Kartäuser, der Kapuziner, der Jesuiten und des Birgittenklosters
+Marienbaum, in die Bibliothek.  Ab 1876 wurden die Bücher des Stifts,
+der Klöster und der - allerdings unbedeutenden - Pfarrbibliothek
+verschmolzen, katalogisiert und in 19 Sachgruppen aufgestellt.  </p>
+
+<p> Im Zweiten Weltkrieg nahm die Büchersammlung großen Schaden; nach
+der Bombardierung der Stadt und der starken Zerstörung des Domes 1945
+waren die wertvollen Drucke einige Monate der Witterung ausgesetzt und
+weitgehend ungesichert.  </p>
+
+<p> Spätestens seit 1970 wurden die Bestände der Stiftsbibliothek im
+Auftrag des Landes Nordrhein-Westfalen katalogisiert. Der Katalog
+erschien 1986 im Druck.  </p>
+
+<p> Der Bestand der StiftsBibliothek Xanten umfasst heute ca. 13.000
+Bände, darunter fast 450 Inkunabeln.  </p>
+
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

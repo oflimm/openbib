@@ -1,0 +1,102 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+         <div class="ym-grid">
+          <div class="ym-g33 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+  <center style="padding-top: 40px;">
+<img src="/images/openbib/views/poetica/startseite.png"
+alt="Poetica-Sammlung" /><br /><br /><i style="font-size:0.8em"> <a href="/images/openbib/views/poetica/bild1.jpg">
+</a></a></i>
+</center>
+         
+          </div>
+         </div>
+          <div class="ym-g66 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+<h1>Die Poetica-Sammlung in der Universitäts-
+und Stadtbibliothek Köln </h1>
+
+<p> Die sogenannte Poetica-Sammlung der Universitäts- und
+Stadtbibliothek Köln besteht aus 37 Sammelbänden mit 1.937
+Gelegenheitsschriften (1.849 Drucke und 88 Handschriften). Es handelt sich durchweg um
+personenbezogenes Schrifttum aus dem 17. und 18. Jh., d.h. um Drucke,
+die anlässlich von Hochzeiten, Todesfällen, Jubiläen u.ä. entstanden sind.
+</p>
+
+<p>
+Der Großteil der Schriften ist in lateinischer Sprache abgefasst; in
+geringerem Umfang sind auch deutsche, französische und
+niederländische Drucke enthalten.Die meisten Stücke dürfen als
+ausgesprochen selten gelten, denn etwa 90 Prozent der Drucke sind in
+Nordrhein-Westfalen in keiner anderen öffentlich zugänglichen
+Bibliothek vorhanden. Der Reiz der Sammlung liegt neben der Seltenheit
+vieler Stücke und dem regionalen Bezug auch in den interessanten
+Einblicken, die sie in die Kulturgeschichte der Frühen Neuzeit
+erlaubt. Gerade die Verbindung von Text, Bild und grafischer
+Gestaltung lässt manche Eigentümlichkeit der Epoche erkennen;
+zeittypische Spielereien wie Chronogramme oder Figurengedichte finden
+sich in großer Zahl.
+
+</p>
+
+<p>
+Die Drucke in der Nordrhein-Westfälischen
+Verbunddatenbank enthalten. Die Deutsche Forschungsgemeinschaft
+unterstützte dieses Erschließungsprojekt in den Jahren 1999 bis
+2002.
+<!--[<a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Weitere
+Informationen]</a>-->
+</p>
+
+
+<p> Die Poetica-Sammlung steht geschlossen unter der Signatur
+RHFOL2354. Die Einsichtnahme für Forschungszwecke erfolgt im
+ <a
+href="http://www.ub.uni-koeln.de/bibliothek//kontakt/zeiten/index_ger.html#e1968/index_ger.html/"target="_blank">
+Lesesaal Historische Sammlungen</a>.
+</p>
+<br />
+
+
+<!--<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="Search it!"/>&nbsp;&nbsp;<a href="[% config.get('searchmask_loc') %]?sessionID=[% sessionID %]&setmask=simple">Recherchieren Sie in der Sammlung</a></h3>-->
+
+          </div>
+         </div>
+      </div>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,81 @@
+[%#-
+#######################################################################
+#
+# Templatename: topic_mappings_record_json
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Themengebietes
+#
+#######################################################################
+-%]
+[%-
+bks         = config.load_bk;
+
+bklist = [];
+FOREACH bk IN bks;
+  IF bk.key.length == 2;
+    thisbk = {
+      classification   => bk.key,
+      desc             => bk.value,
+    };
+    bklist.push(thisbk);
+  END ;
+END ;
+
+all_mappings = [] ;
+
+# Basisklassifikation
+
+IF type == "bk";
+  this_json_output = {
+     topic    = topic
+     link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/bk.json?l=${lang}"
+     }
+     type = 'bk'
+     classifications = []
+  };
+  classification_selected = {};
+  FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+     classification_selected.${classification} = 1;
+  END;
+
+  FOREACH bk IN bklist;
+    IF classification_selected.${bk.classification} ;
+       this_json_output.classifications.push({classification = bk.classification, description = bk.desc});
+    END;
+  END;
+END;
+
+# EZB / DBIS
+
+IF type == "ezb" || type == 'dbis';
+this_json_output = {
+   topic = topic
+   link = {
+        rel = 'self'
+        href = "${path_prefix}/${config.get('admin_loc')}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/${type}.json?l=${lang}"
+   }
+   type = type
+   classifications = []
+};
+  mapping = cgiapp.get_mapping_by_id(type);   
+  classification_selected = {};
+  FOREACH classification IN user.get_classifications_of_topic({ type => type, topicid => topic.id});
+     classification_selected.${classification} = 1;
+  END;
+
+  FOREACH thisclassification IN mapping.get_classifications;
+    IF classification_selected.${thisclassification.name} ;
+       this_json_output.classifications.push({classification = thisclassification.name, description = thisclassification.desc});
+    END;
+  END;
+END;
+
+to_json(this_json_output) ;
+
+-%]

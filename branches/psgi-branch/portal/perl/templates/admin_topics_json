@@ -1,0 +1,21 @@
+[%#-
+#######################################################################
+#
+# Templatename: topic
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Views
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%-
+
+to_json(topics);
+
+
+
+-%]

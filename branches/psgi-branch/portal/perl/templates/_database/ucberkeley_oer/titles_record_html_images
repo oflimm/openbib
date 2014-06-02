@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+
+[% IF normdata.${'T4111'}.first.content %]
+<p>
+<a href="[% normdata.${'T0662'}.first.content %]" target="_blank" ><img src="[% normdata.${'T4111'}.first.content %]" title="Zum Kurs-Video" /></a>
+</p>
+[% END %]
+
+[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
+<p>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
+</p>
+[% END %]

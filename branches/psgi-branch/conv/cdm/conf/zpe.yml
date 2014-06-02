@@ -1,0 +1,42 @@
+# Tracelevel
+tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'cdmid'
+
+category_split_chars:
+#  'Autor': '\s*;\s*'
+#  'Herausgeber': '\s*;\s*'
+
+# Personen
+pers:
+  'band': '0100'        
+#  'Herausgeber': '0101'  # Person
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys: 
+#  'Paket1': '0700'
+#  'Paket2': '0700'
+
+# Schlagworte
+subj:
+#  'Paket': '0710' # GBV-Schlagwoerter
+#  'Subject': '0710'
+#  'Subject2': '0710'
+#  'Subject3': '0710'
+
+# Titel
+title:
+  'titel': '0331'
+  'tafel': '0335'
+  'seite': '0501'
+  'bemerkung': '0370'
+  'jahr': '0425'
+  'verwahrort': '0410'
+  'jstor-url': '0662'
+  'extern-url': '2662'
+  'herkunft': '0412'
+  'datierung': '0413'

@@ -1,0 +1,93 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main" style="padding:10px;">
+
+<h1>Die Digitale Sammlung Schutzumschläge</h1>
+
+ <div class="float-left" style="padding:8px;">
+
+<center> <img src="/images/openbib/views/umschlaege/umschlag1.jpg"
+alt="Alexander Nitzberg: Lyrikbaukasten" /><br /><br /><i
+style="font-size:0.8em">Alexander Nitzberg: Lyrikbaukasten</i></center>
+           <center >
+  </div>
+
+<p>In Universitätsbibliotheken finden die Buchhüllen noch heute als
+"schmückendes und werbendes Beiwerk" zum Buch wenig Beachtung; sie
+gelten als "nicht zitierfähig" und werden im Allgemeinen bei der
+Einarbeitung der erworbenen Bücher in den Bestand makuliert.  </p>
+
+<p>Nachdem sich die Funktion der Umschläge im Laufe ihrer Entwicklung
+vom Buchschutz zum aussagekräftigen Informationsträger gewandelt hat
+und ihr Fehlen vor allem in wissenschaftlichen Bibliotheken regelmäßig
+als Substanzverlust reklamiert wird, archiviert und konserviert die
+Universitäts- und Stadtbibliothek Köln in ihrem Auftrag der
+Bestandserhaltung seit etwa sieben Jahren wenigstens einen Teil der
+täglich anfallenden Objekte als originären, unverzichtbaren
+Bestandteil des Buchs.  </p>
+
+<p>Dazu gehören alle Buchhüllen aus den kontinuierlich - meist um
+Erstausgaben - anwachsenden Sondersammlungen "Moderne Deutschsprachige
+Literatur" und "Neue Deutschsprachige Lyrik", aber auch die
+bibliophiler Kollektionen wie H. C. Artmann, Heinrich Vormweg, Gertrud
+von Le Fort und Reinhold Schneider. Die Umschläge finden getrennt von
+den Büchern nach Signaturen geordnet in konservatorisch geeigneten
+Behältnissen Aufbewahrung; ihr Erhalt ist in einer lokalen Fußnote mit
+dem Hinweis: "Schutzumschlag bitte separat per Leihschein bestellen"
+im Katalog nachgewiesen. Bei Bedarf stehen sie auf Bestellung im
+Lesesaal für Historische Sammlungen bereit. Um die Umschläge mit
+Ausleihen möglichst wenig zu strapazieren und auch, um
+Forschungsarbeiten außerhalb des Hauses zu gewährleisten, sind sie in
+der Digitalen Umschlag-Sammlung der USB erschlossen und komplett (mit
+Klappen und Rücken, evtl. auch Bauchbinde oder, falls bedruckt, mit
+der "stummen" Rückseite) abgebildet. </p>
+
+<p>Die Datenbank für Schutzumschläge entstand 2008 als
+Gemeinschaftsprojekt der Dezernate ´Historische Sammlungen und
+Bestandserhaltung´, ´Medienbearbeitung und bibliothekarische
+Dienstleistungen´ und ´IT-Dienste´ in Absprache mit dem Börsenverein
+des deutschen Buchhandels. Mit der Titelaufnahme der Bücher verknüpft,
+lassen die gemäß der Buchvorlage in Registern recherchierbar
+verzeichneten Umschlaggestalter und -fotografen interessante
+Zusammenhänge zwischen Grafikern, Verlagen und Autoren
+nachvollziehen. Weitere Einträge vermerken die Umschlagmaße und
+spezifische Angaben zu den Umschlagabbildungen.  </p>
+
+[<a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Weitere Informationen</a>]
+
+<p>[<a
+href="http://www.ub.uni-koeln.de/sammlungen/umschlaege/digital/index_ger.html">Informationen
+zur Digitalen Sammlung Schutzumschläge</a>]</p>
+
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,18 @@
+Umstellung auf PSGI:
+
+- Eigenes OpenBib::Request-Objekt, das von Plack::Request abgeleitet
+wird anstelle von CGI-Bloatware-Standort-Modul
+
+- Inhalt wird per in Handler-Methoden via 'return' uebergeben
+
+- Header werden explizit mit header_type('header'|'redirect') und und
+header_add gesetzt.
+
+- Von 200 abweichender HTTP-Status wird ueber Header 'Status' gesetzt.
+
+- Template Toolkit liefert Ausgabe in Scalar-Ref $content
+
+- Template-Provider mit map pack('U*', unpack 'U0U*', $_) anstelle map
+decode_utf8
+
+- L10N _decode UTF-Handling off

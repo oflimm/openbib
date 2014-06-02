@@ -1,9 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Template::Provider
+#  OpenBib::Handler::PSGI::Authentication
 #
-#  Dieses File ist (C) 2003 Ilya Martynov  <ilya@iponweb.net>
-#                      2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -25,37 +24,36 @@
 #####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Template::Provider;
+package OpenBib::Handler::PSGI::Authentication;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Reload;
-use Encode qw(decode_utf8);
+use Apache2::Access ();
+use Apache2::RequestUtil ();
+use Log::Log4perl qw(get_logger :levels);
 
-use base qw(Template::Provider);
+use Apache2::Const -compile => qw(OK);
 
-sub _load {
-    my $self = shift;
+use constant SECRET_LENGTH => 14;
 
-    my ($data, $error) = $self->SUPER::_load(@_);
+sub handler {
+    my $r = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-    if(defined $data) {
-        $data->{text} = conv2utf8($data->{text});
-    }
+    my $http_user = $r->user || '';
+    my $http_auth = $r->auth_type || '';
+    
+    $logger->debug("Authentication with $http_user and type $http_auth");
 
-    return ($data, $error);
-}
-
-sub conv2utf8 {
-    my @list = map pack('U*', unpack 'U0U*', $_), @_;
-#    my @list = map decode_utf8($_), @_;
-    return wantarray ? @list : $list[0];
+    return Apache2::Const::OK;
 }
 
 1;

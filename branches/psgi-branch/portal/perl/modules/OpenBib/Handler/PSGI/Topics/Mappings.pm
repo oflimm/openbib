@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -98,9 +92,7 @@ sub show_collection {
         topic    => $topic_ref,
     };
     
-    $self->print_page($config->{tt_topics_mappings_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_topics_mappings_tname},$ttdata);
 }
 
 sub show_record {
@@ -124,8 +116,7 @@ sub show_record {
     my $mapping = $self->get_mapping_by_id($mappingid);
 
     unless (defined $mapping) {
-        $self->print_warning($msg->maketext("Das Mapping ist nicht definiert."));
-        return;
+        return $self->print_warning($msg->maketext("Das Mapping ist nicht definiert."));
     }
     
     my $ttdata={
@@ -134,9 +125,7 @@ sub show_record {
         mapping    => $mapping,
     };
     
-    $self->print_page($config->{tt_topics_mappings_record_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_topics_mappings_record_tname},$ttdata);
 }
 
 sub get_mapping_by_id {

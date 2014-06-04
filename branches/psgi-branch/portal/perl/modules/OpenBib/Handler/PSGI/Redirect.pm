@@ -34,13 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::URI ();
-use APR::URI ();
-
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use URI::Escape qw(uri_unescape);
@@ -125,16 +118,16 @@ sub show {
             content   => $url,
         });
 
-        $self->query->method('GET');
-        $self->query->content_type('text/html');
-        $self->query->headers_out->add(Location => $url);
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html');
+        $self->redirect($url);
+
+        return;
     }
     else {
-        $self->print_warning($msg->maketext("Typ [_1] ist nicht definiert",$type));
         $logger->error("Typ $type nicht definiert");
-        return Apache2::Const::OK;
-    }
+        return $self->print_warning($msg->maketext("Typ [_1] ist nicht definiert",$type));
+    }    
 }
 
 1;

@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -162,8 +156,7 @@ sub show_search {
     }
 
     if (!$args_ref->{roleid} && !$args_ref->{username} && !$args_ref->{surname} && !$args_ref->{commonname}){
-        $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
     }
 
     my $userlist_ref = $user->search($args_ref);;
@@ -173,7 +166,7 @@ sub show_search {
         userlist   => $userlist_ref,
     };
     
-    $self->print_page($config->{tt_admin_users_search_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_users_search_tname},$ttdata);
 }
     
 1;

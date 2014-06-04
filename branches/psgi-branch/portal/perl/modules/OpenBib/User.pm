@@ -31,7 +31,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;

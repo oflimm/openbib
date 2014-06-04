@@ -84,9 +84,7 @@ sub show_collection {
         statistics => $statistics,
     };
     
-    $self->print_page($config->{'tt_browse_topics_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_topics_tname'},$ttdata);
 }
 
 sub show_record {
@@ -126,9 +124,7 @@ sub show_record {
         topicid => $topicid,
     };
     
-    $self->print_page($config->{'tt_browse_topics_record_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_topics_record_tname'},$ttdata);
 }
 
 1;

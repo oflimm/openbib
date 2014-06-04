@@ -34,10 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
 use DBI;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
@@ -49,7 +45,6 @@ use YAML;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
-use Apache2::Cookie;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::SearchQuery;
@@ -150,7 +145,7 @@ sub show {
         $searchquery->load({sid => $session->{sid}, queryid => $queryid});
     }
     else {
-        $searchquery->set_from_apache_request($r);
+        $searchquery->set_from_psgi_request($r);
     }
     
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
@@ -215,9 +210,7 @@ sub show {
     
     my $templatename = "tt_searchforms_record_".$type."_tname";
 
-    $self->print_page($config->{$templatename},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_session {
@@ -237,7 +230,7 @@ sub show_session {
 
     $self->show;
 
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -112,8 +106,7 @@ sub show_collection {
     }
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
     
     my $orgunits_ref = $config->get_orgunitinfo_overview($profilename);
@@ -123,9 +116,7 @@ sub show_collection {
         orgunits    => $orgunits_ref,
     };
     
-    $self->print_page($config->{tt_admin_orgunits_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_orgunits_tname},$ttdata);
 }
 
 sub show_record {
@@ -157,13 +148,11 @@ sub show_record {
     }
     
     if (!$config->profile_exists($profilename)) {        
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     if (!$config->orgunit_exists($profilename,$orgunitname)) {        
-        $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
     }
 
     my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
@@ -218,37 +207,33 @@ sub create_record {
     }
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     if ($input_data_ref->{orgunitname} eq "" || $input_data_ref->{description} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens den Namen einer Organisationseinheit und deren Beschreibung eingeben."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie müssen mindestens den Namen einer Organisationseinheit und deren Beschreibung eingeben."));
     }
 
     if ($config->orgunit_exists($profilename,$input_data_ref->{orgunitname})){
-        $self->print_warning($msg->maketext("In diesem Profil existiert bereits eine Organisationseinheit diesen Namens"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("In diesem Profil existiert bereits eine Organisationseinheit diesen Namens"));
     }
     
     my $new_orgunitid = $config->new_orgunit($input_data_ref);
     
     if (!$new_orgunitid){
-        $self->print_warning($msg->maketext("Es existiert bereits eine Organisationseinheit unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert bereits eine Organisationseinheit unter diesem Namen"));
     }
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/$config->{orgunits_loc}/id/$input_data_ref->{orgunitname}/edit.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/$config->{orgunits_loc}/id/$input_data_ref->{orgunitname}/edit.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($new_orgunitid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zum Record $input_data_ref->{orgunitname}");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201); # created
             $self->param('orgunitid',$input_data_ref->{orgunitname});
             $self->param('location',"$location/$input_data_ref->{orgunitname}");
             $self->show_record;
@@ -289,8 +274,7 @@ sub show_record_form {
     }
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
     
     if (!$config->orgunit_exists($profilename,$orgunitname)) {
@@ -315,9 +299,7 @@ sub show_record_form {
         activedbs      => $activedbs_ref,
     };
     
-    $self->print_page($config->{tt_admin_orgunits_record_edit_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_orgunits_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -357,21 +339,19 @@ sub update_record {
     }
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     if (!$config->orgunit_exists($profilename,$orgunitname)) {
-        $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
     }
 
     $config->update_orgunit($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/edit?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/edit?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $orgunitname");
@@ -402,9 +382,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_orgunits_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_admin_orgunits_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -439,22 +418,19 @@ sub delete_record {
     }
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     if (!$config->orgunit_exists($profilename,$orgunitname)) {
-        $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
     }
 
     $config->del_orgunit($profilename,$orgunitname);
 
     return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/edit.html?l=$lang");
-    $self->query->status(Apache2::Const::REDIRECT);
+
+    # TODO GET?
+    $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/edit.html?l=$lang");
 
     return;
 }

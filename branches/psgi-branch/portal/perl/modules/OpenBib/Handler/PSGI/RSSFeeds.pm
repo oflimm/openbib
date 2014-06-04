@@ -34,9 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
 use DBI;
 use Encode 'decode_utf8';
 use JSON::XS;
@@ -97,9 +94,7 @@ sub show_collection {
         rssfeedinfo => $rssfeedinfo_ref,
     };
 
-    $self->print_page($config->{tt_rssfeeds_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_rssfeeds_tname},$ttdata);
 }
 
 1;

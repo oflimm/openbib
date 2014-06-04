@@ -33,14 +33,9 @@
 
 package OpenBib::Handler::PSGI::Connector::LocationMark;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::RequestRec ();
-
 use strict;
 use warnings;
 no warnings 'redefine';
-
-use Apache2::Request();      # CGI-Handling (or require)
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -104,7 +99,7 @@ sub show {
     my $hitrange   = $query->param('hitrange')   || 50;;
     my $database   = $query->param('database')   || '';
 
-    return Apache2::Const::OK unless (defined $base);
+    return 200 unless (defined $base); # ok
 
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
@@ -221,27 +216,30 @@ sub show {
             view         => $view,
             config       => $config,
         };
-        
+
+        my $content = "";
         my $template = Template->new({ 
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                 INCLUDE_PATH   => $config->{tt_include_path},
                 ABSOLUTE       => 1,
             }) ],
-            OUTPUT         => $r,    # Output geht direkt an Apache Request
+            OUTPUT         => \$content,
             RECURSION      => 1,
         });
 
         # Start der Ausgabe mit korrektem Header
-        $r->content_type("text/html");
+        $self->header_add('Content-Type' => 'text/html');
 
         $template->process($config->{tt_connector_locationmark_titlist_tname}, $ttdata) || do {
-#        $template->process("lbs_systematik", $ttdata) || do {
             $logger->error("Fehler bei der Ausgabe des Template: ".$template->error());
+            $self->header_add('Status',400); # server error
             return;
         };
+
+        return $content;
     }
     
-    return Apache2::Const::OK;
+    return;
 }
 
 sub by_signature {

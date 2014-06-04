@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
-use Apache2::URI ();
-use APR::URI ();
 use URI::Escape;
 
 use Benchmark ':hireswallclock';
@@ -122,9 +116,7 @@ sub show_collection {
         public_tags   => $tags_ref->{tags},
     };
     
-    $self->print_page($config->{tt_tags_names_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_tags_names_tname},$ttdata);
 }
 
 sub show_collection_recent {
@@ -158,9 +150,7 @@ sub show_collection_recent {
         recent_tags   => $recent_tags_ref,
     };
     
-    $self->print_page($config->{tt_tags_names_recent_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_tags_names_recent_tname},$ttdata);
 }
 
 sub show_record {
@@ -235,8 +225,7 @@ sub show_record {
                 $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
             }
             else  {
-                $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-                return Apache2::Const::OK;
+                return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
             }
         }
                 
@@ -254,11 +243,10 @@ sub show_record {
         }
 
         my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
-        
-        $self->query->method('GET');
-        $self->query->content_type('text/html');
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);        
+
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html');
+        $self->redirect($new_location);
 
         return;
     }
@@ -303,9 +291,7 @@ sub show_record {
         tagid            => $tagid,
     };
 
-    $self->print_page($config->{'tt_tags_names_record_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_tags_names_record_tname'},$ttdata);
 }
 
 sub show_collection_form {
@@ -321,7 +307,7 @@ sub show_collection_form {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query  = $r;
 
     my $session = OpenBib::Session->instance({ apreq => $r });    
 
@@ -374,20 +360,18 @@ sub show_collection_form {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     unless($user->{ID}){
         # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
+        my $return_uri = uri_escape($r->request_uri);
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
+        $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
 
-        return Apache2::Const::OK;
+        return;
     }
 
     my $targettype=$user->get_targettype_of_session($session->{ID});
@@ -404,8 +388,8 @@ sub show_collection_form {
         user       => $user,
         msg        => $msg,
     };
-    $self->print_page($config->{tt_users_tags_edit_tname},$ttdata);
-    return Apache2::Const::OK;
+    
+    return $self->print_page($config->{tt_users_tags_edit_tname},$ttdata);
 }
 
 sub create_record {
@@ -437,13 +421,15 @@ sub create_record {
     if (! $user->{ID} | $user->{ID} ne $userid){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
-            
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            my $return_uri = uri_escape($r->request_uri);
+
+            # TODO internal redirect
+            $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+
+            return;
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -466,10 +452,9 @@ sub create_record {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$input_data_ref->{dbname}/id/$input_data_ref->{titleid}.html?l=$lang;no_log=1";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }
@@ -501,13 +486,14 @@ sub delete_record {
     if (! $user->{ID} || $user->{ID} ne $userid){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
+            my $return_uri = uri_escape($r->request_uri);
             
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+
+            return;
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -525,10 +511,9 @@ sub delete_record {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }
@@ -546,7 +531,7 @@ sub update_record {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query  = $r;
 
     my $session = OpenBib::Session->instance({ apreq => $r });    
 
@@ -599,20 +584,18 @@ sub update_record {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     unless($user->{ID}){
         # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
+        my $return_uri = uri_escape($r->request_uri);
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+        $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
 
-        return Apache2::Const::OK;
+        return;
     }
 
     my $username = $user->get_username();
@@ -626,16 +609,14 @@ sub update_record {
     });
     
     if ($status){
-        $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
-        return Apache2::Const::OK;
+        return $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
     }
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/tag.html";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }
@@ -695,7 +676,7 @@ sub showyyy {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query  = $r;
 
     my $session = OpenBib::Session->instance({ apreq => $r });    
 
@@ -748,20 +729,18 @@ sub showyyy {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     unless($user->{ID} || $searchtitoftag){
         # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
+        my $return_uri = uri_escape($r->request_uri);
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
+        $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
 
-        return Apache2::Const::OK;
+        return;
     }
 
     my $username = $user->get_username();
@@ -778,8 +757,9 @@ sub showyyy {
             type      => $type,
         });
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
-        return Apache2::Const::OK;
+        $self->redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
+
+        return;
     }
     elsif ($do_del && $user->{ID}){
 
@@ -794,12 +774,13 @@ sub showyyy {
 
         if ($tags =~/^\w+$/){
             my $tagid = $user->get_id_of_tag({tag => $tags});
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
+            $self->redirect("$config->{base_loc}/$view/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
+            $self->redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
         }
-        return Apache2::Const::OK;
+        
+        return;
 
     }
     elsif ($do_change && $user->{ID}){
@@ -813,13 +794,12 @@ sub showyyy {
         });
 
         if ($status){
-            $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
-            return Apache2::Const::OK;
+            return $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
         }
         
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{tags_loc}?show_usertags=1");
-        return Apache2::Const::OK;
+        $self->redirect("$config->{base_loc}/$view/$config->{tags_loc}?show_usertags=1");
 
+        return;
     }
     
     if ($edit_usertags && $user->{ID}){
@@ -872,8 +852,7 @@ sub showyyy {
             
             if ($private_tags){
                 if (!$user->{ID}){
-                    $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
-                    return Apache2::Const::OK;
+                    return $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
                 }
 
                 my $titles_ref;
@@ -930,7 +909,7 @@ sub showyyy {
         });
     }
 
-    return Apache2::Const::OK;
+    return;
 }
 
 sub showzzz {
@@ -946,7 +925,7 @@ sub showzzz {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query  = $r;
 
     my $session = OpenBib::Session->instance({ apreq => $r });    
 
@@ -999,20 +978,18 @@ sub showzzz {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     unless($user->{ID} || $searchtitoftag){
         # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
+        my $return_uri = uri_escape($r->request_uri);
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
+        $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
 
-        return Apache2::Const::OK;
+        return;
     }
 
     my $username = $user->get_username();
@@ -1029,8 +1006,9 @@ sub showzzz {
             type     => $type,
         });
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
-        return Apache2::Const::OK;
+        $self->redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
+
+        return;
     }
     elsif ($do_del && $user->{ID}){
 
@@ -1045,13 +1023,13 @@ sub showzzz {
 
         if ($tags =~/^\w+$/){
             my $tagid = $user->get_id_of_tag({tag => $tags});
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
+            $self->redirect("$config->{base_loc}/$view/$config->{tags_loc}?searchtitoftag=$tagid;private_tags=1");
         }
         else {
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
+            $self->redirect("$config->{base_loc}/$view/$config->{search_loc}?db=$dbname;searchsingletit=$titleid;queryid=$queryid;no_log=1");
         }
-        return Apache2::Const::OK;
-
+        
+        return;
     }
     elsif ($do_change && $user->{ID}){
         
@@ -1064,13 +1042,12 @@ sub showzzz {
         });
 
         if ($status){
-            $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
-            return Apache2::Const::OK;
+            return $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
         }
         
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{tags_loc}?show_usertags=1");
-        return Apache2::Const::OK;
+        $self->redirect("$config->{base_loc}/$view/$config->{tags_loc}?show_usertags=1");
 
+        return;
     }
     
     if ($edit_usertags && $user->{ID}){
@@ -1115,8 +1092,7 @@ sub showzzz {
             
             if ($private_tags){
                 if (!$user->{ID}){
-                    $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
-                    return Apache2::Const::OK;
+                    return $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
                 }
 
                 my $titles_ref;
@@ -1173,7 +1149,7 @@ sub showzzz {
         });
     }
 
-    return Apache2::Const::OK;
+    return;
 }
 
 sub return_baseurl {
@@ -1190,10 +1166,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/tag.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

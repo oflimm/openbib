@@ -80,9 +80,7 @@ sub show_collection {
     my $ttdata={
     };
     
-    $self->print_page($config->{'tt_browse_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_tname'},$ttdata);
 }
 
 1;

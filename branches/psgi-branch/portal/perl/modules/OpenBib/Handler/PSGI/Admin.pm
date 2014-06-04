@@ -34,10 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
 use DBI;
 use Email::Valid;
 use Encode 'decode_utf8';
@@ -89,9 +85,7 @@ sub show_collection {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_tname},$ttdata);
 }
 
 # Authentifizierung wird spezialisiert

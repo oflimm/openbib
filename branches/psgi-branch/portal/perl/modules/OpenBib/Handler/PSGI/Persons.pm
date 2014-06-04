@@ -126,7 +126,7 @@ sub show_record {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

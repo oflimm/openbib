@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -137,11 +137,11 @@ __END__
 
 =head1 NAME
 
-OpenBib::Config::DatabaseInfoTable - Apache-Singleton mit Informationen über alle Datenbanken/Kataloge
+OpenBib::Config::DatabaseInfoTable - Singleton mit Informationen über alle Datenbanken/Kataloge
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton enthält Informtionen über alle Datenbanken
+Dieses Singleton enthält Informtionen über alle Datenbanken
 bzw. Kataloge.
 
 
@@ -178,7 +178,7 @@ bzw. Kataloge.
 
 =item instance
 
-Instanziierung des Apache-Singleton.
+Instanziierung des Singleton.
 
 =item get($type)
 

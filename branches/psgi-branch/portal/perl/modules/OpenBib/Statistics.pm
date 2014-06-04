@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
 use Encode qw(decode_utf8 encode_utf8);
 use Date::Manip qw/ParseDate UnixDate/;
@@ -1022,8 +1022,7 @@ Dieser Singleton bietet einen Zugriff auf die Statistik-Datenbank.
 =item new
 
 Erzeugung als herkömmliches Objektes und nicht als
-Apache-Singleton. Damit kann auch ausserhalb des Apache mit mod_perl
-auf Statistikdaten in Perl-Skripten zugegriffen werden.
+Singleton.
 
 =item store_titleusage({ tstamp => $tstamp, id => $id, dbname => $dbname, isbn => $isbn, $katkey => $katkey, type => $type})
 

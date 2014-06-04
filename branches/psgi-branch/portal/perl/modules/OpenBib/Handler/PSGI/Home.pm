@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Home
 #
-#  Dieses File ist (C) 2001-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,14 +33,6 @@ use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
-
-use Apache2::Connection ();
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
-use APR::Table;
 
 use DBI;
 use Encode qw(decode_utf8);
@@ -106,17 +98,15 @@ sub show {
 
         $logger->info("Redirecting to $redirecturl");
 
-        $r->internal_redirect($redirecturl);
+        $self->redirect($redirecturl);
     }
     else {
         # TT-Data erzeugen
         my $ttdata={
         };
         
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
+        return $self->print_page($config->{'tt_home_tname'},$ttdata);
     }
-
-    return Apache2::Const::OK;
 }
 
 1;

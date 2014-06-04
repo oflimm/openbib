@@ -137,17 +137,16 @@ sub show {
         $logger->debug("Found corrections for $word in language $aspell_language: ".join(',',@aspell_suggestions));
     }
 
-    $r->content_type("text/plain");
+    $self->header_add('Content-Type','text/plain');
     
     if (@aspell_suggestions){
-        $r->print(join("\n",map {decode_utf8($_)} @aspell_suggestions));
+        return join("\n",map {decode_utf8($_)} @aspell_suggestions);
     }
     else {
         $logger->debug("Found $word in dictionary or no suggestions");
     }
 
-
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

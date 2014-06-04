@@ -34,10 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
@@ -115,9 +111,8 @@ sub show_popular {
     };
 
     my $templatename = "tt_titles_popular".(($database)?'_by_database':'')."_tname";
-    $self->print_page($config->{$templatename},$ttdata);
 
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_recent {
@@ -167,9 +162,7 @@ sub show_recent {
 
     my $templatename = "tt_titles_recent".(($database)?'_by_database':'')."_tname";
 
-    $self->print_page($config->{$templatename},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_collection_form {
@@ -194,9 +187,7 @@ sub show_collection_form {
         database => $database,
     };
     
-    $self->print_page($config->{tt_titles_form_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_titles_form_tname},$ttdata);
 }
 
 sub create_record {
@@ -226,11 +217,10 @@ sub create_record {
 
     my $record = new OpenBib::Record::Title;
     $record->set_database($database);
-    $record->set_from_apache_request($r);
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{titles_loc}/database/$database/new.html");
-    $self->query->status(Apache2::Const::REDIRECT);
+    $record->set_from_psgi_request($r);
+
+    # TODO: GET?
+    $self->redirect("$path_prefix/$config->{titles_loc}/database/$database/new.html");
 
     return;
 }
@@ -415,7 +405,7 @@ sub show_record {
         }
     }
     else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
     if ($config->{benchmark}) {
@@ -425,7 +415,8 @@ sub show_record {
     }
 
     $logger->debug("Done showing record");
-    return Apache2::Const::OK;
+
+    return;
 }
 
 sub show_record_searchindex {
@@ -453,9 +444,7 @@ sub show_record_searchindex {
         values => $values_ref,
     };
     
-    $self->print_page($config->{'tt_users_titles_record_searchindex_tname'},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_users_titles_record_searchindex_tname'},$ttdata);
 }
 
 sub redirect_to_bibsonomy {
@@ -494,11 +483,10 @@ sub redirect_to_bibsonomy {
             type      => 510,
             content   => $bibsonomy_url
         });
-        
-        $self->query->method('GET');
-        $self->query->content_type('text/html; charset=UTF-8');
-        $self->query->headers_out->add(Location => $bibsonomy_url);
-        $self->query->status(Apache2::Const::REDIRECT);
+
+        # TODO Get?
+        $self->header_add('Content-Type' => 'text/html; charset=UTF-8');
+        $self->redirect($bibsonomy_url);
     }
 
     return;

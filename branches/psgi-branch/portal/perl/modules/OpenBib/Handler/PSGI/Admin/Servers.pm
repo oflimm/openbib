@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -204,22 +198,21 @@ sub create_record {
     }
 
     if ($input_data_ref->{hostip} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen einen Servernamen eingeben."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie müssen einen Servernamen eingeben."));
     }
     
     my $new_serverid = $config->new_server($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{servers_loc}/id/$new_serverid/edit.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{servers_loc}/id/$new_serverid/edit.html?l=$lang");
+        return ;
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($new_serverid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zur DB $new_serverid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201); # created
             $self->param('serverid',$new_serverid);
             $self->param('location',"$location/$new_serverid");
             $self->show_record;
@@ -257,9 +250,9 @@ sub update_record {
     $config->update_server($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{servers_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{servers_loc}");
+        return ;
     }
     else {
         $logger->debug("Weiter zum Record $serverid");
@@ -288,8 +281,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_servers_record_delete_confirm_tname},$ttdata);
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_admin_servers_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -315,9 +308,8 @@ sub delete_record {
 
     $config->del_server({id => $serverid});
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{servers_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    #TODO GET?
+    $self->redirect("$path_prefix/$config->{servers_loc}");
 
     return;
 }

@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -112,9 +106,7 @@ sub show_collection {
         year       => $year,
     };
     
-    $self->print_page($config->{tt_admin_searchprofiles_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_searchprofiles_tname},$ttdata);
 }
 
 sub show_record {
@@ -179,9 +171,7 @@ sub show_record_form {
         dbinfo          => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_searchprofiles_record_edit_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_searchprofiles_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -208,8 +198,7 @@ sub update_record {
     }
 
     if (!$config->searchprofile_exists($searchprofileid)) {
-        $self->print_warning($msg->maketext("Es existiert kein Suchprofil mit dieser ID"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Suchprofil mit dieser ID"));
     }
 
     # POST oder PUT => Aktualisieren
@@ -217,9 +206,9 @@ sub update_record {
     $config->update_searchprofile($searchprofileid,$input_data_ref->{own_index});
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{searchprofiles_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{searchprofiles_loc}");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $searchprofileid");

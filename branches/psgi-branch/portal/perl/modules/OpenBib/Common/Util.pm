@@ -30,7 +30,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
 use Benchmark ':hireswallclock';
 use DBI;
 use Digest::MD5 qw(md5_hex);
@@ -1800,7 +1799,9 @@ sub dispatch_to_content_type {
         $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accept_types));
     }
 
-    return Apache2::Const::HTTP_SEE_OTHER;
+    $self->header_add('Status',303); # see other
+
+    return;
 }
 
 sub query2hashref {
@@ -1957,7 +1958,7 @@ die Bildung einer Wortwolke an.
 
 =back
 
-=head2 Ausgabe über Apache-Handler
+=head2 Ausgabe über Handler
 
 =over 4
 
@@ -1965,16 +1966,16 @@ die Bildung einer Wortwolke an.
 =item print_page($templatename,$ttdata,$r)
 
 Ausgabe des Templates $templatename mit den Daten $ttdata über den
-Apache-Handler $r
+Handler
 
 =item print_warning($warning,$r,$msg)
 
-Ausgabe des Warnhinweises $warning über den Apache-Handler $r unter
+Ausgabe des Warnhinweises $warning über den Handler $r unter
 Verwendung des Message-Katalogs $msg
 
 =item print_info($info,$r,$msg,$representation,$content_type)
 
-Ausgabe des Informationstextes $info an den Apache-Handler $r unter
+Ausgabe des Informationstextes $info an den Handler $r unter
 Verwendung des Message-Katalogs $msg
 
 =back

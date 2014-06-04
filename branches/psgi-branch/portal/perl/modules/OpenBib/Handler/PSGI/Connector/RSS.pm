@@ -33,15 +33,6 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestIO (); # print, rflush
-use Apache2::RequestRec ();
-use Apache2::URI ();
-use APR::URI ();
-
 use Benchmark;
 use Date::Manip;
 use DBI;
@@ -279,8 +270,9 @@ sub show {
             };
             
             $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                $r->log_error($itemtemplate->error(), $r->filename);
-                return Apache2::Const::SERVER_ERROR;
+                $logger->error($itemtemplate->error());
+                $self->header_add('Status',400); # server error
+                return;
             };
             
             $logger->debug("Adding $title / $desc") if (defined $title && defined $desc);
@@ -307,11 +299,7 @@ sub show {
         $logger->debug("Verwende Eintrag aus RSS-Cache");
     }
 
-    #$self->header_props(-type => 'application/xml');
-    #print $r->content_type("application/rdf+xml");
-    $r->content_type("application/xml");
-
-    $r->print($rss_content);
+    $self->header_add('Content-Type' => 'application/xml');
 
     # Aufruf des Feeds loggen
     $session->log_event({
@@ -319,8 +307,8 @@ sub show {
         content   => "$database:$type:$subtype",
     });
 
-#    return $rss_content;
-    return Apache2::Const::OK;
+    return $rss_content;
+
 }
 
 1;

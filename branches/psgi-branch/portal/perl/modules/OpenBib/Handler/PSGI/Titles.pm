@@ -34,12 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
 use Benchmark ':hireswallclock';
-use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
 use Date::Manip;
 use URI::Escape qw(uri_escape uri_escape_utf8);
@@ -115,9 +110,8 @@ sub show_popular {
     };
 
     my $templatename = "tt_titles_popular".(($database)?'_by_database':'')."_tname";
-    $self->print_page($config->{$templatename},$ttdata);
 
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_dbis_recommendations {
@@ -149,9 +143,8 @@ sub show_dbis_recommendations {
     };
 
     my $templatename = "tt_titles_dbis_recommendations_tname";
-    $self->print_page($config->{$templatename},$ttdata);
 
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_recent {
@@ -200,9 +193,7 @@ sub show_recent {
 
     my $templatename = "tt_titles_recent".(($database)?'_by_database':'')."_tname";
 
-    $self->print_page($config->{$templatename},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_collection {
@@ -281,9 +272,7 @@ sub show_collection {
         nav         => $self->param('nav'),
     };
     
-    $self->print_page($config->{tt_titles_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_titles_tname},$ttdata);
 }
 
 sub show_record {
@@ -481,7 +470,7 @@ sub show_record {
         }
     }
     else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
     if ($config->{benchmark}) {
@@ -491,7 +480,8 @@ sub show_record {
     }
 
     $logger->debug("Done showing record");
-    return Apache2::Const::OK;
+
+    return;
 }
 
 sub redirect_to_bibsonomy {
@@ -532,10 +522,10 @@ sub redirect_to_bibsonomy {
             content   => $bibsonomy_url
         });
 
-        $self->query->method('GET');
-        $self->query->content_type('text/html; charset=UTF-8');
-        $self->query->headers_out->add(Location => $bibsonomy_url);
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html; charset=UTF-8');
+        $self->redirect($bibsonomy_url);
+        
     }
 
     return;
@@ -573,8 +563,7 @@ sub show_availability {
                 titleid     => $titleid,
             };
 
-            $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
-            return;
+            return $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
         }
     }
 

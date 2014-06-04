@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -224,9 +218,9 @@ sub update_record {
     $user->update_topic_mapping($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $topicid mit mapping %type");

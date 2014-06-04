@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -155,9 +149,13 @@ sub update_record {
 
     $user->update_userrole($thisuserinfo_ref);
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{users_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    my $new_location = "$path_prefix/$config->{admin_loc}/$config->{users_loc}";
+    
+    # TODO Get?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
+
+    return;
 }
 
 sub authorization_successful {

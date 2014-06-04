@@ -34,13 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common M_GET HTTP_CREATED);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestIO (); # print, rflush
-use Apache2::SubRequest (); # internal_redirect
-use Apache2::URI ();
-use APR::URI ();
 use URI::Escape;
 
 use DBI;
@@ -156,8 +149,7 @@ sub show_collection {
         dbinfo            => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_cartitems_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_cartitems_tname},$ttdata);
 }
 
 sub show_collection_count {
@@ -219,11 +211,9 @@ sub show_collection_count {
     my $anzahl = $self->get_number_of_items_in_collection();
     
     # Start der Ausgabe mit korrektem Header
-    $r->content_type("text/plain");
-    
-    $r->print($anzahl);
-    
-    return Apache2::Const::OK;
+    $self->header_add('Content-Type','text/plain');
+
+    return $anzahl;
 }
 
 sub show_record {
@@ -359,9 +349,7 @@ sub create_record {
         }
         elsif ($do_addlitlist) {
             if (!$title) {
-                $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
-                
-                return Apache2::Const::OK;
+                return $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
             }
             
             my $new_litlistid = $user->add_litlist({ title =>$title, type => $littype});
@@ -390,8 +378,7 @@ sub create_record {
         }
         elsif ($do_addtags) {
             if (!$tags) {
-                $self->print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."));
-                return Apache2::Const::OK;
+                return $self->print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."));
             }
             
             if ($user->{ID}){
@@ -413,8 +400,7 @@ sub create_record {
                     }
                 }
                 else {
-                    $self->print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."));
-                    return Apache2::Const::OK;
+                    return $self->print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."));
                 }
             }
             else {
@@ -430,22 +416,20 @@ sub create_record {
         my $input_data_ref = $self->parse_valid_input();
         
         if (defined $input_data_ref->{error} && $input_data_ref->{error} == 1){
-            $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
         }
         
         # Einfuegen eines Titels in die Merkliste
         my $new_titleid = $self->add_item_to_collection($input_data_ref);
         
         if ($self->param('representation') eq "html"){
-            $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
-            return Apache2::Const::OK;
+            return $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
         }
         else {
             $logger->debug("Weiter zum Record");
             if ($new_titleid){
                 $logger->debug("Weiter zur Titelid $new_titleid");
-                $self->param('status',Apache2::Const::HTTP_CREATED);
+                $self->param('status',201); # created
                 $self->param('itemid',$new_titleid);
                 $self->param('location',"$location/item/$new_titleid");
                 $self->show_record;
@@ -487,8 +471,7 @@ sub update_record {
     $input_data_ref->{itemid} = $itemid;
     
     if (defined $input_data_ref->{error} && $input_data_ref->{error} == 1){
-        $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
     }
 
     # Einfuegen eines Titels in die Merkliste
@@ -599,8 +582,7 @@ sub print_collection {
         dbinfo     => $dbinfotable,
     };
         
-    $self->print_page($config->{tt_cartitems_print_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_cartitems_print_tname},$ttdata);
 }
 
 sub save_collection {
@@ -659,15 +641,17 @@ sub save_collection {
     
     if ($format eq "short" || $format eq "full") {
         $self->param('content_type','text/html');
-        $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
-        $self->print_page($config->{tt_cartitems_save_html_tname},$ttdata);
+        $self->header_add("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
+        return $self->print_page($config->{tt_cartitems_save_html_tname},$ttdata);
     }
     else {
         $self->param('content_type','text/plain');
-        $r->headers_out->add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
-        $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
+        $self->param('content_type','text/html');
+        $self->header_add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
+        return $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
     }
-    return Apache2::Const::OK;
+
+    return;
 }
 
 sub mail_collection {
@@ -728,8 +712,7 @@ sub mail_collection {
         dbinfo      => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_cartitems_mail_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_cartitems_mail_tname},$ttdata);
 }
 
 sub mail_collection_send {
@@ -766,13 +749,11 @@ sub mail_collection_send {
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     if ($email eq "") {
-        $self->print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."));
     }
 
     unless (Email::Valid->address($email)) {
-        $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
     }	
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
@@ -836,8 +817,9 @@ sub mail_collection_send {
     }
 
     $datatemplate->process($datatemplatename, $ttdata) || do {
-        $r->log_error($datatemplate->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->error($datatemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
     };
   
     my $anschreiben="";
@@ -862,8 +844,9 @@ sub mail_collection_send {
     });
 
     $maintemplate->process($config->{tt_cartitems_mail_message_tname}, $mainttdata ) || do { 
-        $r->log_error($maintemplate->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->error($maintemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
     };
 
     my $mailmsg = MIME::Lite->new(
@@ -893,13 +876,11 @@ sub mail_collection_send {
     );
   
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
-    
-    $self->print_page($config->{tt_cartitems_mail_success_tname},$ttdata);
-    
+
     unlink $anschfile;
     unlink $mailfile;
 
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_cartitems_mail_success_tname},$ttdata);
 }
 
 sub return_baseurl {
@@ -917,10 +898,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{cartitems_loc}.html?l=$lang";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }
@@ -942,10 +922,9 @@ sub return_loginurl {
 
     my $new_location = "$path_prefix/$config->{login_loc}.html?redirect_to=$return_uri";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

@@ -34,10 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;
@@ -108,8 +104,7 @@ sub update_record {
             return $self->tunnel_through_authenticator('POST');            
         }
         else  {
-            $self->print_warning("Sie müssen sich authentifizieren, um diese Rezension zu beurteilen");
-            return Apache2::Const::OK;
+            return $self->print_warning("Sie müssen sich authentifizieren, um diese Rezension zu beurteilen");
         }
     }
 
@@ -124,8 +119,7 @@ sub update_record {
     });
     
     if ($status == 1){
-        $self->print_warning("Sie haben bereits diese Rezension beurteilt");
-        return Apache2::Const::OK;
+        return $self->print_warning("Sie haben bereits diese Rezension beurteilt");
     }
     
     if ($self->param('representation') eq "html"){
@@ -149,10 +143,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{reviews_loc}/id/$reviewid.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

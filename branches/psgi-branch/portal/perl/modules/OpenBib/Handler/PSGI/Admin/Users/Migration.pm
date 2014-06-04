@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -119,9 +113,7 @@ sub show_collection {
         userinfo            => $userinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_users_migration_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_users_migration_tname},$ttdata);
 }
 
 sub migrate_ugc {

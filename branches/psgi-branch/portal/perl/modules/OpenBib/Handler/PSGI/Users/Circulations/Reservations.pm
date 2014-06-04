@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest ();
-use Apache2::URI ();
-use APR::URI ();
 use DBI;
 use Digest::MD5;
 use Email::Valid;
@@ -108,8 +102,7 @@ sub show_collection {
             return $self->tunnel_through_authenticator('POST');            
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
     
@@ -156,9 +149,7 @@ sub show_collection {
         show_foot_banner      => 1,
     };
     
-    $self->print_page($config->{tt_users_circulations_reservations_tname},$ttdata);
-
-    return Apache2::Const::OK;    
+    return $self->print_page($config->{tt_users_circulations_reservations_tname},$ttdata);
 }
 
 sub create_record {
@@ -202,8 +193,7 @@ sub create_record {
             return $self->tunnel_through_authenticator('POST',$authenticatorid);            
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
     
@@ -241,9 +231,7 @@ sub create_record {
         result     => $circexlist,
     };
     
-    $self->print_page($config->{tt_users_circulations_make_reservation_tname},$ttdata);
-
-    return Apache2::Const::OK;        
+    return $self->print_page($config->{tt_users_circulations_make_reservation_tname},$ttdata);
 }
 
 sub delete_record {
@@ -283,8 +271,7 @@ sub delete_record {
             return $self->tunnel_through_authenticator('POST');            
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -317,12 +304,14 @@ sub delete_record {
     }
 
     return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$database/$config->{circulations_loc}/id/reservations.html");
-    $self->query->status(Apache2::Const::REDIRECT);
 
-    return Apache2::Const::OK;
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$database/$config->{circulations_loc}/id/reservations.html";
+
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
+
+    return;
 }
 
 1;

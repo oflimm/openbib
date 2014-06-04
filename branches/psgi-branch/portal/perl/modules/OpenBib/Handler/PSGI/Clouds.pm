@@ -34,10 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
 use DBI;
 use Encode 'decode_utf8';
 use JSON::XS;
@@ -115,9 +111,7 @@ sub show_collection {
         utils         => $utils,
     };
 
-    $self->print_page($config->{tt_clouds_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_clouds_tname},$ttdata);
 }
 
 sub show_collection_databases {
@@ -161,9 +155,7 @@ sub show_collection_databases {
         utils         => $utils,
     };
 
-    $self->print_page($config->{tt_clouds_databases_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_clouds_databases_tname},$ttdata);
 }
 
 sub show_collection_databases_record {
@@ -209,9 +201,7 @@ sub show_collection_databases_record {
         utils         => $utils,
     };
 
-    $self->print_page($config->{tt_clouds_databases_record_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_clouds_databases_record_tname},$ttdata);
 }
 
 sub show_record {
@@ -267,9 +257,7 @@ sub show_record {
 
     my $templatename = "tt_clouds_".$cloudid."_tname";
 
-    $self->print_page($config->{$templatename},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 1;

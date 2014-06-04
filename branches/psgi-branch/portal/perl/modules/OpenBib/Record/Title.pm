@@ -32,7 +32,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -1704,7 +1703,7 @@ sub get_database {
     return $self->{database};
 }
 
-sub set_from_apache_request {
+sub set_from_psgi_request {
     my ($self,$r) = @_;
 
     # Log4perl logger erzeugen
@@ -1712,7 +1711,7 @@ sub set_from_apache_request {
 
     my $config = OpenBib::Config->instance;
     
-    my $query = Apache2::Request->new($r);
+    my $query = $r;
 
     my $set_categories_ref = [];
 

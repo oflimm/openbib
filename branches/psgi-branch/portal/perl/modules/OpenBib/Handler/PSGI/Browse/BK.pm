@@ -85,9 +85,7 @@ sub show_collection {
     my $ttdata={
     };
     
-    $self->print_page($config->{'tt_browse_bks_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_bks_tname'},$ttdata);
 }
 
 sub show_record {
@@ -120,9 +118,7 @@ sub show_record {
         bkid       => $bkid,
     };
     
-    $self->print_page($config->{'tt_browse_bks_record_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_bks_record_tname'},$ttdata);
 }
 
 sub show_record_databases {
@@ -160,9 +156,7 @@ sub show_record_databases {
         dbinfo       => $dbinfotable,
     };
     
-    $self->print_page($config->{'tt_browse_bks_record_databases_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_bks_record_databases_tname'},$ttdata);
 }
 
 1;

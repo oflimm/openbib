@@ -34,9 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
@@ -129,9 +126,8 @@ sub show {
 #        resultdbs  => $resultdbs_ref,
         queries    => \@queries,
     };
-    $self->print_page($config->{tt_search_history_tname},$ttdata);
     
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_search_history_tname},$ttdata);
 }
 
 1;

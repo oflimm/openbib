@@ -30,9 +30,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-
 my @stopwords = (
 "A ",
 "a ",

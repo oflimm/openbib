@@ -30,9 +30,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton::Process);
+use base qw(Class::Singleton);
 
-use Apache2::Reload;
 use YAML::Syck;
 
 sub new {
@@ -96,12 +95,12 @@ __END__
 
 =head1 NAME
 
-OpenBib::Conv::Config - Apache-Singleton mit Informationen über die
+OpenBib::Conv::Config - Singleton mit Informationen über die
 Einstellungen zur Konvertierung.
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton enthält Informationen über alle grundlegenden
+Dieses Singleton enthält Informationen über alle grundlegenden
 Konfigurationseinstellungen für die Konvertierung von externen Daten
 in die lokalen Datenbanken des Portals. Diese sind in der Datei
 convert.yml definiert.
@@ -122,12 +121,11 @@ convert.yml definiert.
 =item new
 
 Erzeugung als herkömmliches Objektes und nicht als
-Apache-Singleton. Damit kann auch ausserhalb des Apache mit mod_perl
-auf die Konfigurationseinstellungen in Perl-Skripten zugegriffen werden.
+Singleton.
 
 =item instance
 
-Instanziierung als Apache-Singleton.
+Instanziierung als Singleton.
 
 =back
 

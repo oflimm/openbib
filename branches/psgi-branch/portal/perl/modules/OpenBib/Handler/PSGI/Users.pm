@@ -34,10 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
 use DBI;
 use Email::Valid;
 use Encode 'decode_utf8';
@@ -103,10 +99,9 @@ sub update_record {
 
     my $new_location = "$path_prefix/$view/$config->{logout_loc}";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }
@@ -128,9 +123,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_users_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_users_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -155,9 +149,7 @@ sub delete_record {
     $user->wipe_account();
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{home_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
+        $self->redirect("$path_prefix/$config->{home_loc}");
     }
 
     return;

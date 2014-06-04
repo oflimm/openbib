@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::ServerActive
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,11 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Connection;
-use Apache2::Reload;
-use Apache2::RequestIO  ();
-use Apache2::RequestRec ();
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 
@@ -91,7 +86,7 @@ sub show {
         {
             hostip => $config->get('local_ip'),
         }
-    )->single;
+    )->first;
 
     $logger->debug("Local IP is ".$config->get('local_ip'));
 
@@ -106,12 +101,12 @@ sub show {
 	    return;
 	}
 	else {
-	    $r->status(Apache2::Const::NOT_FOUND);
+            $self->header_add('Status' => 404);
 	    return;
 	}
     }
 
-    $r->status(Apache2::Const::NOT_FOUND);
+    $self->header_add('Status' => 404);
     return;
 }
 

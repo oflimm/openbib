@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -110,8 +104,7 @@ sub show_record {
     }
 
     if (!$config->view_exists($viewname)) {
-        $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -130,9 +123,7 @@ sub show_record {
         dbinfo     => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_views_rss_record_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_views_rss_record_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -163,8 +154,7 @@ sub show_record_form {
     }
 
     if (!$config->view_exists($viewname)) {
-        $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -183,9 +173,7 @@ sub show_record_form {
         dbinfo     => $dbinfotable,
     };
 
-    $self->print_page($config->{tt_admin_views_rss_record_edit_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_views_rss_record_edit_tname},$ttdata);
 }
 
 sub create_record {
@@ -206,15 +194,16 @@ sub create_record {
     $self->update_record;
  
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{views_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO Get
+        $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{views_loc}");
+
+        return;
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($viewid){
             $logger->debug("Weiter zum Record $viewid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201); # created
             $self->param('location',"$location/$viewid");
             $self->show_record;
         }
@@ -258,17 +247,16 @@ sub update_record {
     }
 
     if (!$config->view_exists($viewname)) {
-        $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
     }
 
     # Ansonsten POST oder PUT => Aktualisieren
     $config->update_view_rss($viewname,$input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{views_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{views_loc}");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $viewname");

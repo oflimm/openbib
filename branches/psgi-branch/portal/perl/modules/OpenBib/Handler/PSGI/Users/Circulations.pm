@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest ();
-use Apache2::URI ();
-use APR::URI ();
 use DBI;
 use Digest::MD5;
 use Email::Valid;
@@ -111,9 +105,7 @@ sub show_collection {
         authenticator => $authenticator,
     };
     
-    $self->print_page($config->{tt_users_collections_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_collections_tname},$ttdata);
 }
 
 sub show_record {
@@ -149,8 +141,7 @@ sub show_record {
             return $self->tunnel_through_authenticator('POST');            
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -259,9 +250,7 @@ sub show_reservations {
         show_foot_banner      => 1,
     };
     
-    $self->print_page($config->{tt_users_circulations_reservations_tname},$ttdata);
-
-    return Apache2::Const::OK;    
+    return $self->print_page($config->{tt_users_circulations_reservations_tname},$ttdata);
 }
 
 sub show_reminders {
@@ -345,9 +334,7 @@ sub show_reminders {
         show_foot_banner      => 1,
     };
       
-    $self->print_page($config->{tt_users_circulations_reminders_tname},$ttdata);
-
-    return Apache2::Const::OK;    
+    return $self->print_page($config->{tt_users_circulations_reminders_tname},$ttdata);
 }
 
 sub show_orders {
@@ -430,9 +417,7 @@ sub show_orders {
         show_foot_banner      => 1,
     };
     
-    $self->print_page($config->{tt_users_circulations_orders_tname},$ttdata);
-
-    return Apache2::Const::OK;    
+    return $self->print_page($config->{tt_users_circulations_orders_tname},$ttdata);
 }
 
 sub show_borrows {
@@ -514,9 +499,7 @@ sub show_borrows {
         database   => $database,
     };
     
-    $self->print_page($config->{tt_users_circulations_borrows_tname},$ttdata);
-
-    return Apache2::Const::OK;    
+    return $self->print_page($config->{tt_users_circulations_borrows_tname},$ttdata);
 }
 
 sub make_reservation {
@@ -566,10 +549,8 @@ sub make_reservation {
             return $self->tunnel_through_authenticator('POST');            
         }
         else {
-            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+            return $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
         }   
-
-        return Apache2::Const::OK;
     }
     
     if (!$self->authorization_successful){
@@ -614,9 +595,7 @@ sub make_reservation {
         result     => $circexlist,
     };
     
-    $self->print_page($config->{tt_users_circulations_make_reservation_tname},$ttdata);
-
-    return Apache2::Const::OK;        
+    return $self->print_page($config->{tt_users_circulations_make_reservation_tname},$ttdata);
 }
 
 
@@ -685,10 +664,13 @@ sub cancel_reservation {
     if ($@){
         $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
+
+    my $new_location = "$config->{base_loc}/$view/$config->{circulation_loc}?action=showcirc;circaction=reservations";
+
+    # TODO internal redirect
+    $self->redirect($new_location);
     
-    $r->internal_redirect("$config->{base_loc}/$view/$config->{circulation_loc}?action=showcirc;circaction=reservations");
-    
-    return Apache2::Const::OK;
+    return;
 }
 
 sub make_order {
@@ -735,11 +717,12 @@ sub make_order {
 
     unless($sessionauthenticator eq $validtarget){
         # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
-        
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget;redirect_to=$return_uri");
-        
-        return Apache2::Const::OK;
+        my $return_uri = uri_escape($r->request_uri);
+
+        # TODO internal redirect
+        $self->redirect($return_uri);
+
+        return;
     }
     
     my $circexlist=undef;
@@ -779,9 +762,7 @@ sub make_order {
         result     => $circexlist,
     };
     
-    $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
 }
 
 sub renew_loans {
@@ -856,9 +837,7 @@ sub renew_loans {
         result     => $circexlist,
     };
     
-    $self->print_page($config->{tt_users_circulations_renew_loans_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_circulations_renew_loans_tname},$ttdata);
 }
 
 1;

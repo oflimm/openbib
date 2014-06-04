@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -107,11 +107,11 @@ __END__
 
 =head1 NAME
 
-OpenBib::Config::LocationInfoTable - Apache-Singleton mit Informationen über alle Standorte
+OpenBib::Config::LocationInfoTable - Singleton mit Informationen über alle Standorte
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton enthält Informtionen über alle Standorte
+Dieses Singleton enthält Informtionen über alle Standorte
 
 
 =head1 SYNOPSIS
@@ -147,7 +147,7 @@ Dieses Apache-Singleton enthält Informtionen über alle Standorte
 
 =item instance
 
-Instanziierung des Apache-Singleton.
+Instanziierung des Singleton.
 
 =item get($type)
 

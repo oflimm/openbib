@@ -30,9 +30,9 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
-use Apache2::Cookie;
+use CGI::Cookie;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Benchmark ':hireswallclock';
 use Digest::MD5;
@@ -63,9 +63,6 @@ sub new {
     my $view        = exists $arg_ref->{view}
         ? $arg_ref->{view}                  : undef;
 
-    my $r           = exists $arg_ref->{apreq}
-        ? $arg_ref->{apreq}                 : undef;
-    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -80,19 +77,12 @@ sub new {
 
     $self->{servername} = $config->{servername};
     $self->{view}       = $view;
+    $self->{_is_new_session} = 0;
 
     $logger->debug("Entering Session->new");
-    
-    # Setzen der Defaults
-    if ($r){
-        my $cookiejar = Apache2::Cookie::Jar->new($r);
-        $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
-        
-        $logger->debug("Got SessionID-Cookie: $sessionID");
-    }        
-        
-    if (!defined $sessionID || !$sessionID){
-        $self->_init_new_session($r);
+
+    if (!$sessionID){
+        $self->_init_new_session();
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
@@ -102,26 +92,9 @@ sub new {
             $logger->debug("SessionID is NOT valid");
             
             # Wenn uebergebene SessionID nicht ok, dann neue generieren
-            $self->_init_new_session($r);
+            $self->_init_new_session();
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
-    }
-    
-    # Neuer Cookie?, dann senden
-    if ($r && $sessionID ne $self->{ID}){
-        
-        $sessionID = $self->{ID};
-        
-        $logger->debug("Creating new Cookie with SessionID $self->{ID}");
-        
-        my $cookie = Apache2::Cookie->new($r,
-                                          -name    => "sessionID",
-                                          -value   => $self->{ID},
-                                          -expires => '+24h',
-                                          -path    => $config->{base_loc},
-                                      );
-        
-        $r->err_headers_out->set('Set-Cookie', $cookie);
     }
     
     if ($self->{ID} && !$self->{sid}){
@@ -150,9 +123,6 @@ sub _new_instance {
     my $view        = exists $arg_ref->{view}
         ? $arg_ref->{view}                  : undef;
 
-    my $r           = exists $arg_ref->{apreq}
-        ? $arg_ref->{apreq}             : undef;
-    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -173,42 +143,14 @@ sub _new_instance {
 
     $self->{servername} = $config->{servername};
     $self->{view}       = $view;
-    
+    $self->{_is_new_session} = 0;
+
     # Setzen der Defaults
-
-    $logger->debug("Entering Session->instance");
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 1 is ".timestr($timeall));
-    }
-
-    my $lang;
     
-    if ($r){
-        my $cookiejar = Apache2::Cookie::Jar->new($r);
-        $sessionID = ($cookiejar->cookies("sessionID"))?$cookiejar->cookies("sessionID")->value:undef;
-        $lang      = ($cookiejar->cookies("lang"))?$cookiejar->cookies("lang")->value:undef;
-        
-        if ($sessionID){
-	  $logger->debug("Got SessionID-Cookie: $sessionID");
-	}
-
-        if ($lang){
-            $self->{lang} = $lang;
-            $logger->debug("Got language-Cookie: $lang");
-	}
-    }
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 2 is ".timestr($timeall));
-    }
+    $logger->debug("Entering Session->new");
 
     if (!defined $sessionID || !$sessionID){
-        $self->_init_new_session($r);
+        $self->_init_new_session();
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
@@ -219,59 +161,25 @@ sub _new_instance {
             $logger->debug("SessionID is NOT valid");
             
             # Wenn uebergebene SessionID nicht ok, dann neue generieren
-            $self->_init_new_session($r);
+            $self->_init_new_session();
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 3 is ".timestr($timeall));
-    }
-
-    # Neuer Cookie?, dann senden
-    if ($r && $sessionID ne $self->{ID}){
-        
-        $sessionID = $self->{ID};
-        
-        $logger->debug("Creating new Cookie with SessionID $self->{ID}");
-        
-        my $cookie = Apache2::Cookie->new($r,
-                                          -name    => "sessionID",
-                                          -value   => $self->{ID},
-                                          -expires => '+24h',
-                                          -path    => $config->{base_loc},
-                                      );
-        
-        $r->err_headers_out->set('Set-Cookie', $cookie);
-    }
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 4 is ".timestr($timeall));
-    }
-
+    
     if ($self->{ID} && !$self->{sid}){
         my $search_sid = $self->{schema}->resultset('Sessioninfo')->single(
             {
                 sessionid => $self->{ID},
             }
         );
-
+        
         if ($search_sid){
             $self->{sid} = $search_sid->id;
         }
     }
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for is ".timestr($timeall));
-    }
-
+    
     #$logger->debug("Session-Object created: ".YAML::Dump($self));
+
     return $self;
 }
 
@@ -354,40 +262,8 @@ sub _init_new_session {
         $logger->info("Total time for stage 3 is ".timestr($timeall));
     }
 
-    if ($r){
-        # Loggen des Brower-Types
-        $self->log_event({
-            type      => 101,
-            content   => $r->headers_in->get('User-Agent'),
-        });
-        
-        # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-        # Client-IP setzen
-        if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
-            $r->connection->remote_ip($1);
-        }
-        
-        # Loggen der Client-IP
-        $self->log_event({
-            type      => 102,
-            content   => $r->connection->remote_ip,
-        });
-
-        # Loggen der Client-IP
-        $self->log_event({
-            type      => 102,
-            content   => $r->connection->remote_ip,
-        });
-
-    }
+    $self->{_is_new_session} = 1;
     
-    if ($self->{view}) {
-        # Loggen der View-Auswahl
-        $self->log_event({
-            type      => 100,
-            content   => $self->{view},
-        });
-    }
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -430,23 +306,6 @@ sub _init_new_session {
     }
 
     return $sessionID;
-}
-
-sub set_cookie {
-    my ($self,$r,$name,$value)=@_;
-
-    my $config = OpenBib::Config->instance;
-    
-    my $cookie = Apache2::Cookie->new($r,
-                                      -name    => $name,
-                                      -value   => $value,
-                                      -expires => '+24h',
-                                      -path    => $config->{base_loc},
-                                  );
-    
-    $r->err_headers_out->set('Set-Cookie', $cookie);
-
-    return;
 }
 
 sub is_valid {
@@ -1737,6 +1596,45 @@ sub get_info {
     return ($username,$createtime);
 }
 
+sub log_new_session_once {
+    my ($self,$r) = @_;
+
+    return unless ($self->{_is_new_session});
+    
+    # Loggen des Brower-Types
+    $self->log_event({
+        type      => 101,
+        content   => $r->user_agent,
+    });
+    
+    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+    # Client-IP setzen
+
+    my $remote_ip = $r->remote_host || '';
+    
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $remote_ip = $1;
+    }
+    
+    # Loggen der Client-IP
+    $self->log_event({
+        type      => 102,
+        content   => $remote_ip,
+    });
+    
+    if ($self->{view}) {
+        # Loggen der View-Auswahl
+        $self->log_event({
+            type      => 100,
+            content   => $self->{view},
+        });
+    }
+    
+    $self->{_is_new_session} = 0;
+    
+    return;
+}
+
 sub get_recently_selected_titles {
     my ($self,$arg_ref)=@_;
 
@@ -1892,11 +1790,11 @@ __END__
 
 =head1 NAME
 
-OpenBib::Session - Apache-Singleton einer Session
+OpenBib::Session - Singleton einer Session
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton verwaltet eine Session im Portal
+Dieses Singleton verwaltet eine Session im Portal
 
 =head1 SYNOPSIS
 
@@ -1909,17 +1807,16 @@ Dieses Apache-Singleton verwaltet eine Session im Portal
 =item new({ sessionID => $sessionID })
 
 Erzeugung als herkömmliches Objektes und nicht als
-Apache-Singleton. Damit kann auch ausserhalb des Apache mit mod_perl
-auf eine gegebene Session in Perl-Skripten zugegriffen werden.
+Singleton.
 
 =item instance({ sessionID => $sessionID })
 
-Instanziierung des Apache-Singleton yur SessionID $sessionID. Wird
+Instanziierung des Singleton yur SessionID $sessionID. Wird
 keine sessionID übergeben, dann wird eine neue erzeugt.
 
 =item instance({ sessionID => $sessionID })
 
-Instanziierung des Apache-Singleton yur SessionID $sessionID. Wird keine sessionID übergeben, dann wird eine neue erzeugt.
+Instanziierung des Singleton yur SessionID $sessionID. Wird keine sessionID übergeben, dann wird eine neue erzeugt.
 
 =item _init_new_session
 

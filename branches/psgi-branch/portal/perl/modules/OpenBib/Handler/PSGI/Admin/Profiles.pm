@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -110,9 +104,7 @@ sub show_collection {
         profiles   => $profileinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_profiles_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_profiles_tname},$ttdata);
 }
 
 sub show_record {
@@ -135,8 +127,7 @@ sub show_record {
     }
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -185,14 +176,12 @@ sub create_record {
     }
 
     if ($input_data_ref->{profilename} eq "" || $input_data_ref->{description} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."));
     }
 
     # Profile darf noch nicht existieren
     if ($config->profile_exists($input_data_ref->{profilename})) {
-        $self->print_warning($msg->maketext("Ein Profil dieses Namens existiert bereits."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ein Profil dieses Namens existiert bereits."));
     }
 
     my $new_profileid = $config->new_profile({
@@ -201,20 +190,19 @@ sub create_record {
     });
     
     if (!$new_profileid){
-        $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
     }
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$input_data_ref->{profilename}/edit.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$input_data_ref->{profilename}/edit.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($new_profileid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zum Record $input_data_ref->{profilename}");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201); # created
             $self->param('profileid',$input_data_ref->{profilename});
             $self->param('location',"$location/$input_data_ref->{profilename}");
             $self->show_record;
@@ -244,8 +232,7 @@ sub show_record_form {
     }
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -259,9 +246,7 @@ sub show_record_form {
         dbinfo      => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_profiles_record_edit_tname},$ttdata);
-        
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_profiles_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -291,8 +276,7 @@ sub update_record {
     }
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     $config->update_profile({
@@ -301,9 +285,9 @@ sub update_record {
     });
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{profiles_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{profiles_loc}");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $profilename");
@@ -332,9 +316,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_profiles_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_admin_profiles_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -358,17 +341,15 @@ sub delete_record {
     }
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     $config->del_profile($profilename);
 
     return unless ($self->param('representation') eq "html");
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{profiles_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->redirect("$path_prefix/$config->{profiles_loc}");
 
     return;
 }

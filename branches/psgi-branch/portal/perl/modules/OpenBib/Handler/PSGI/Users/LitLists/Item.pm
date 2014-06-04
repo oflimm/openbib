@@ -34,9 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
@@ -116,8 +113,7 @@ sub show_collection {
         items       => $items,
     };
     
-    $self->print_page($config->{tt_users_litlists_item_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_litlists_item_tname},$ttdata);
 }
 
 sub show_record {
@@ -182,9 +178,7 @@ sub show_record {
         dbinfo         => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_litlists_item_record_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_litlists_item_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -216,16 +210,13 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if ($input_data_ref->{error} == 1){
-        $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
     }
 
     $input_data_ref->{litlistid} = $litlistid;
     
     if (!$litlistid && ( (!$input_data_ref->{titleid} && !$input_data_ref->{dbname}) || !$input_data_ref->{record}) ){
-        $self->print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben, Titel und Datenbank existieren nicht oder Sie haben die Daten nicht via JSON geliefert."));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben, Titel und Datenbank existieren nicht oder Sie haben die Daten nicht via JSON geliefert."));
     }
         
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -246,17 +237,16 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{litlists_loc}/id/$litlistid/edit.html?l=$lang";
-        
-        $self->query->method('GET');
-        $self->query->content_type('text/html');
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
+
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html');
+        $self->redirect($new_location);
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($new_itemid){
             $logger->debug("Weiter zum Record $new_itemid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201);
             $self->param('itemid',$new_itemid);
             $self->param('location',"$location/$new_itemid");
             $self->show_record;
@@ -295,8 +285,7 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if ($input_data_ref->{error} == 1){
-        $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
     }
     
     $input_data_ref->{litlistid} = $litlistid;
@@ -317,19 +306,17 @@ sub update_record {
     }
 
     if ($user->update_litlistentry($input_data_ref) > 0){
-        $self->print_warning($msg->maketext("Der Eintrag in der Literaturliste existiert nicht"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Der Eintrag in der Literaturliste existiert nicht"));
     }   
     
     if ($self->param('representation') eq "html"){
         # Anpassen eines Kommentars
         
         my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{litlists_loc}/id/$litlistid/edit.html?l=$lang";
-        
-        $self->query->method('GET');
-        $self->query->content_type('text/html');
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
+
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html');
+        $self->redirect($new_location);
     }
     else {
         $logger->debug("Weiter zum Record $itemid");
@@ -366,9 +353,7 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$itemid || !$litlistid) {
-        $self->print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."));
     }
 
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -390,11 +375,10 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{litlists_loc}/id/$litlistid/edit.html?l=$lang";
-    
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 
@@ -414,10 +398,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/litlists.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

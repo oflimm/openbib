@@ -34,9 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
@@ -164,8 +161,7 @@ sub show_collection {
         targettype => $targettype,
     };
     
-    $self->print_page($config->{tt_users_litlists_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_litlists_tname},$ttdata);
 }
 
 sub show_record {
@@ -218,14 +214,13 @@ sub show_record {
         if (! $user->{ID}){
             if ($self->param('representation') eq "html"){
                 # Aufruf-URL
-                my $return_uri = uri_escape($r->parsed_uri->unparse);
+                my $return_uri = uri_escape($r->request_uri);
                 
-                $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+                return $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
             }
             else {
-                $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+                return $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
             }   
-            return Apache2::Const::OK;
         }
 
         if (!$user_owns_litlist){
@@ -281,9 +276,7 @@ sub show_record {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_users_litlists_record_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_litlists_record_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -376,9 +369,7 @@ sub show_record_form {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_users_litlists_record_edit_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_litlists_record_edit_tname},$ttdata);
 }
 
 sub create_record {
@@ -416,8 +407,7 @@ sub create_record {
             return $self->tunnel_through_authenticator('POST');            
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -429,9 +419,7 @@ sub create_record {
 
     if (!$litlistid){
         if ($input_data_ref->{title} eq ""){
-            $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
-            
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."));
         }
         
         # Sonst muss Litlist neu erzeugt werden
@@ -486,7 +474,7 @@ sub create_record {
             }
             else {                
                 $logger->debug("Weiter zum Record $litlistid");
-                $self->param('status',Apache2::Const::HTTP_CREATED);
+                $self->param('status',201);
                 $self->param('litlistid',$litlistid);
                 $self->param('location',"$location/$litlistid");
                 $self->show_record;
@@ -534,9 +522,7 @@ sub update_record {
     $input_data_ref->{litlistid} = $litlistid;
     
     if (!$input_data_ref->{title} || !$input_data_ref->{type} || !$litlistid){
-        $self->print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."));
     }
 
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
@@ -589,9 +575,7 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_users_litlists_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_litlists_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -660,13 +644,6 @@ sub return_baseurl {
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{litlists_loc}.html?l=$lang";
 
     return $self->redirect($new_location,'303 See Other');
-
-#    $self->query->method('GET');
-#    $self->query->content_type('text/html');
-#    $self->query->headers_out->add(Location => $new_location);
-#    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
 }
 
 sub get_input_definition {

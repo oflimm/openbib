@@ -32,9 +32,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestRec ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
@@ -348,7 +345,7 @@ sub print_to_handler {
     my $user         = OpenBib::User->instance;
     my $queryoptions = OpenBib::QueryOptions->instance;
 
-    my $query         = Apache2::Request->new($r);
+    my $query         = $r;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
 

@@ -34,10 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
 use DBI;
 use Email::Valid;
 use Encode 'decode_utf8';
@@ -168,9 +164,7 @@ sub show_collection {
         userinfo            => $userinfo_ref,
     };
     
-    $self->print_page($config->{tt_users_preferences_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_preferences_tname},$ttdata);
 }
 
 
@@ -323,8 +317,7 @@ sub update_searchform {
     }
 
     if ($setmask eq "") {
-        $self->print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"));
     }
 
     $user->set_mask($setmask);
@@ -367,8 +360,7 @@ sub update_password {
     }
 
     if ($password1 eq "" || $password1 ne $password2) {
-        $self->print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"));
     }
 
     $user->set_credentials({
@@ -523,10 +515,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

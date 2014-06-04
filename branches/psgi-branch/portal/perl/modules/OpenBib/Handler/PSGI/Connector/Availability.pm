@@ -33,15 +33,6 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::URI ();
-use APR::URI ();
-use APR::Table ;
-
 use Business::ISBN;
 use Benchmark;
 use DBI;
@@ -225,9 +216,7 @@ sub show_collection_by_isbn {
         available_recordlist => $recordlist,
     };
 
-    $self->print_page($config->{tt_connector_availability_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_connector_availability_tname},$ttdata);
 }
 
 sub show_collection_by_bibkey {
@@ -354,9 +343,7 @@ sub show_collection_by_bibkey {
         similar_recordlist   => $similar_recordlist,
     };
 
-    $self->print_page($config->{tt_connector_availability_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_connector_availability_tname},$ttdata);
 }
 
 sub identify_type_of_id {

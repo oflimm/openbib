@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest ();
-use Apache2::URI ();
-use APR::URI ();
 use DBI;
 use Digest::MD5;
 use Email::Valid;
@@ -107,8 +101,7 @@ sub show_collection {
             return $self->tunnel_through_authenticator('POST');            
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
     
@@ -153,9 +146,7 @@ sub show_collection {
         database   => $database,
     };
     
-    $self->print_page($config->{tt_users_circulations_borrows_tname},$ttdata);
-
-    return Apache2::Const::OK;    
+    return $self->print_page($config->{tt_users_circulations_borrows_tname},$ttdata);
 }
 
 

@@ -33,13 +33,6 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();   # CGI-Handling (or require)
-use Apache2::RequestIO (); # rflush, print
-use Apache2::RequestRec ();
-use Apache2::URI ();
-use APR::URI ();
 use URI;
 
 use Benchmark;
@@ -211,12 +204,13 @@ sub show {
     if ($current_service_ref){
         $logger->debug("Using service $serviceid");
         my $source = SeeAlso::Source->new($current_service_ref->{query_proc},
-        ( "ShortName" => $current_service_ref->{description} )
-    );
+                                          ( "ShortName" => $current_service_ref->{description} )
+                                      );
         
-    $r->print($server->query($source, $identifier, $format, $callback));
-                                  }
-    return Apache2::Const::OK;
+        return $server->query($source, $identifier, $format, $callback); # TODO print
+    }
+
+    return;
 }
 
 1;

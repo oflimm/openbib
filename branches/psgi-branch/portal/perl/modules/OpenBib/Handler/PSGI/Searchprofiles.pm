@@ -82,9 +82,7 @@ sub show_collection {
         year       => $year,
     };
     
-    $self->print_page($config->{tt_searchprofiles_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_searchprofiles_tname},$ttdata);
 }
 
 sub show_record {
@@ -125,10 +123,7 @@ sub show_record {
         dbinfo            => $dbinfotable,
     };
 
-    $self->print_page($config->{tt_searchprofiles_record_tname},$ttdata);
-
-    $logger->debug("Done showing record");
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_searchprofiles_record_tname},$ttdata);
 }
 
 1;

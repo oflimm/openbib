@@ -74,9 +74,7 @@ sub show_collection {
         databases   => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_databases_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_databases_tname},$ttdata);
 }
 
 sub show_popular {
@@ -97,9 +95,7 @@ sub show_popular {
         databases   => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_databases_popular_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_databases_popular_tname},$ttdata);
 }
 
 sub show_record {
@@ -132,10 +128,9 @@ sub show_record {
         databaseinfo => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_databases_record_tname},$ttdata);
-
     $logger->debug("Done showing record");
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_databases_record_tname},$ttdata);
 }
 
 1;

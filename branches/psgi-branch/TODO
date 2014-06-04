@@ -8,7 +8,9 @@ wird anstelle von CGI-Bloatware-Standort-Modul
 - Header werden explizit mit header_type('header'|'redirect') und und
 header_add gesetzt.
 
-- Von 200 abweichender HTTP-Status wird ueber Header 'Status' gesetzt.
+- Von 200 abweichender HTTP-Status wird ueber Header 'Status' gesetzt,
+der ueber psgi_header-Methode im OpenBib::Request-Objekt abgefangen
+und gesetzt wird.
 
 - Template Toolkit liefert Ausgabe in Scalar-Ref $content
 
@@ -16,3 +18,12 @@ header_add gesetzt.
 decode_utf8
 
 - L10N _decode UTF-Handling off
+
+- Handler liefern i.A. via 'return $self->print_page($config->{'tt_xxx_tname'},$ttdata);  die erzeugte Webseite zurueck 
+
+- read_json_input: Rohdaten koennen direkt via $r->content/raw_body
+ausgelesen werden anstelle aufwaendigem Verfahren mit mod_perl2
+
+- Singletons: Apache::Singleton wird durch Class::Singleton ersetzt
+
+- Header: Aus $r->headers_in->{'Accept'} wird $r->header('Accept')

@@ -34,11 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Access ();
-use Apache2::RequestUtil ();
 use Log::Log4perl qw(get_logger :levels);
-
-use Apache2::Const -compile => qw(OK);
 
 use constant SECRET_LENGTH => 14;
 
@@ -53,7 +49,7 @@ sub handler {
     
     $logger->debug("Authentication with $http_user and type $http_auth");
 
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

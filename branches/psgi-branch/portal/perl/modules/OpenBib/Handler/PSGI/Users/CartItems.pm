@@ -34,14 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common M_GET);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestIO (); # print, rflush
-use Apache2::SubRequest (); # internal_redirect
-use Apache2::URI ();
-use APR::URI ();
-
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -165,10 +157,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{cartitems_loc}.html?l=$lang";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

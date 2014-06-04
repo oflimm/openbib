@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -218,32 +212,26 @@ sub create_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
-    if ($input_data_ref->{description} eq "") {
-        
-        $self->print_warning($msg->maketext("Sie müssen mindestens eine Beschreibung eingeben."));
-        
-        return Apache2::Const::OK;
+    if ($input_data_ref->{description} eq "") {        
+        return $self->print_warning($msg->maketext("Sie müssen mindestens eine Beschreibung eingeben."));
     }
     
     if ($config->authenticator_exists({description => $input_data_ref->{description}})) {
-        
-        $self->print_warning($msg->maketext("Es existiert bereits ein Anmeldeziel unter diesem Namen"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert bereits ein Anmeldeziel unter diesem Namen"));
     }
     
     my $new_authenticatorid = $config->new_authenticator($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}/id/$new_authenticatorid.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}/id/$new_authenticatorid.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($new_authenticatorid){
             $logger->debug("Weiter zum Record $new_authenticatorid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201); # created
             $self->param('authenticatorid',$new_authenticatorid);
             $self->param('location',"$location/$new_authenticatorid");
             $self->show_record;
@@ -313,9 +301,8 @@ sub update_record {
             };
 
             $logger->debug("Asking for confirmation");
-            $self->print_page($config->{tt_admin_authenticators_record_delete_confirm_tname},$ttdata);
 
-            return Apache2::Const::OK;
+            return $self->print_page($config->{tt_admin_authenticators_record_delete_confirm_tname},$ttdata);
         }
         else {
             $logger->debug("Redirecting to delete location");
@@ -331,9 +318,9 @@ sub update_record {
     return unless ($self->param('representation') eq "html");
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $authenticatorid");
@@ -362,9 +349,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_authenticators_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_admin_authenticators_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -393,10 +379,9 @@ sub delete_record {
     $config->delete_authenticator($authenticatorid);
 
     return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
-    $self->query->status(Apache2::Const::REDIRECT);
+
+    # TODO GET?
+    $self->redirect("$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
 
     return;
 }

@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -112,8 +106,7 @@ sub show_collection {
     }
 
     if (!$config->db_exists($dbname)) {
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
     my $rssfeed_ref= $config->get_rssfeeds_of_db($dbname);;
@@ -129,9 +122,7 @@ sub show_collection {
         katalog      => $katalog,
     };
     
-    $self->print_page($config->{tt_admin_databases_rss_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_databases_rss_tname},$ttdata);
 }
 
 sub show_record {
@@ -165,9 +156,7 @@ sub show_record {
     $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->db_exists($dbname)) {        
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
     my $rssinfo_ref = $config->get_rssfeed_by_id($rssid);
@@ -218,13 +207,11 @@ sub create_record {
 
     
     if ($input_data_ref->{type} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen einen RSS-Typ eingeben."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie müssen einen RSS-Typ eingeben."));
     }
     
     if (!$config->db_exists($dbname)) {
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
     my $dbid = $config->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
@@ -234,15 +221,15 @@ sub create_record {
     my $new_rssid = $config->new_databaseinfo_rss($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$dbname/rss.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$dbname/rss.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($new_rssid){
             $logger->debug("Weiter zum Record $new_rssid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201); # created
             $self->param('rssid',$new_rssid);
             $self->param('location',"$location/$new_rssid");
             $self->show_record;
@@ -283,9 +270,7 @@ sub show_record_form {
     $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->db_exists($dbname)) {        
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
     my $rssinfo_ref = $config->get_rssfeed_by_id($rssid);
@@ -297,9 +282,7 @@ sub show_record_form {
         dbname       => $dbname,
     };
     
-    $self->print_page($config->{tt_admin_databases_rss_record_edit_tname},$ttdata);
-        
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_databases_rss_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -340,9 +323,7 @@ sub update_record {
     $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->db_exists($dbname)) {        
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
     my $dbid = $config->get_databaseinfo->search_rs({ dbname => $dbname })->single()->id;
@@ -361,9 +342,9 @@ sub update_record {
     $config->update_databaseinfo_rss($update_args);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}/id/$dbname/rss");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{databases_loc}/id/$dbname/rss");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $rssid");
@@ -404,18 +385,15 @@ sub delete_record {
     $logger->debug("Server: ".$r->get_server_name);
 
     if (!$config->db_exists($dbname)) {        
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
     $config->del_databaseinfo_rss($rssid);
 
     return unless ($self->param('representation') eq "html");
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}/$dbname/rss");
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->redirect("$path_prefix/$config->{databases_loc}/$dbname/rss");
 
     return;
 }

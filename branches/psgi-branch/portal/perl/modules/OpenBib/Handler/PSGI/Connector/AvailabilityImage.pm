@@ -33,12 +33,6 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common REDIRECT);
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use APR::Table;
-
 use Business::ISBN;
 use Benchmark;
 use DBI;
@@ -162,11 +156,7 @@ sub process_gbs {
         }
     }
 
-#    $self->header_type('redirect');
-#    $self->header_props(-url => $redirect_url);
-
-    $self->query->headers_out->add(Location => $redirect_url);
-    $self->query->status(Apache2::Const::REDIRECT);
+    $self->redirect($redirect_url);
 
     return '';
 }
@@ -223,8 +213,7 @@ sub process_bibsonomy {
         }
     }
 
-    $self->query->headers_out->add(Location => $redirect_url);
-    $self->query->status(Apache2::Const::REDIRECT);
+    $self->redirect($redirect_url);
 
     return;
 }
@@ -277,10 +266,9 @@ sub process_ebooks {
         }
     }
 
-    $self->query->headers_out->add(Location => $redirect_url);
-    $self->query->status(Apache2::Const::REDIRECT);
+    $self->redirect($redirect_url);
 
-    return '';
+    return;
 }
 
 sub process_ol {
@@ -376,10 +364,9 @@ sub process_ol {
         $redirect_url = "/images/openbib/no_img.png";
     }
 
-    $self->query->headers_out->add(Location => $redirect_url);
-    $self->query->status(Apache2::Const::REDIRECT);
+    $self->redirect($redirect_url);
 
-    return '';
+    return;
 }
 
 sub process_wikipedia {
@@ -439,10 +426,9 @@ sub process_wikipedia {
         }
     }
 
-    $self->query->headers_out->add(Location => $redirect_url);
-    $self->query->status(Apache2::Const::REDIRECT);
+    $self->redirect($redirect_url);
     
-    return '';
+    return;
 }
 
 sub id2isbnX {

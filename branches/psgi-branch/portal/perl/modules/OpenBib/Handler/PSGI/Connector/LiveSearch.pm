@@ -33,11 +33,6 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestIO (); # print
-use Apache2::RequestRec (); # headers_in, headers_out, args
 use Benchmark;
 use DBI;
 use Encode 'decode_utf8';
@@ -96,7 +91,8 @@ sub show {
     my $exact = $query->param('exact') || '';
     
     if (!$word || $word=~/\d/){
-        return Apache2::Const::OK;
+        $self->header_add('Status',200); # ok
+        return;
     }
 
     if (!$exact){
@@ -148,17 +144,16 @@ sub show {
 
     $logger->debug("LiveSearch for word $word and type $type");
     
-    $r->content_type("text/plain");
+    $self->header_add('Content-Type',"text/plain");
     
     if (@livesearch_suggestions){
-        $r->print(join("\n",map {decode_utf8($_)} @livesearch_suggestions));
+        return join("\n",map {decode_utf8($_)} @livesearch_suggestions);
     }
     else {
         $logger->debug("No suggestions");
     }
 
-
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

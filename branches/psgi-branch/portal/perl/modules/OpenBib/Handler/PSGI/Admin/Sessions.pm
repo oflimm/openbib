@@ -34,12 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Data::Pageset;
@@ -131,9 +125,7 @@ sub show_active_collection {
         sessions    => \@sessions,
     };
     
-    $self->print_page($config->{tt_admin_sessions_active_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_sessions_active_tname},$ttdata);
 }
 
 sub show_active_record {
@@ -252,9 +244,7 @@ sub show_active_record {
         events      => \@events,
     };
     
-    $self->print_page($config->{tt_admin_sessions_active_record_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_sessions_active_record_tname},$ttdata);
 }
 
 sub show_archived_search_form {
@@ -286,9 +276,7 @@ sub show_archived_search_form {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_sessions_archived_search_form_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_sessions_archived_search_form_tname},$ttdata);
 }
 
 sub show_archived_search {
@@ -323,8 +311,7 @@ sub show_archived_search {
 
     unless ($fromdate && $todate){
         $logger->debug("No dates given.");
-        $self->print_warning($msg->maketext("Bitte geben Sie ein Anfangs- sowie ein End-Datum an."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Bitte geben Sie ein Anfangs- sowie ein End-Datum an."));
     }
 
     my $statistics = new OpenBib::Statistics;
@@ -365,9 +352,7 @@ sub show_archived_search {
         todate     => $todate,
     };
     
-    $self->print_page($config->{tt_admin_sessions_archived_search_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_sessions_archived_search_tname},$ttdata);
 }
 
 sub show_archived_record {
@@ -471,9 +456,7 @@ sub show_archived_record {
         events          => \@events,
     };
 
-    $self->print_page($config->{tt_admin_sessions_archived_record_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_sessions_archived_record_tname},$ttdata);
 }
 
 1;

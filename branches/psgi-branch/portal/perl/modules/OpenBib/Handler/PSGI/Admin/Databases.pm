@@ -34,13 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::RequestIO ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -105,9 +98,7 @@ sub show_collection {
         catalogs   => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_databases_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_databases_tname},$ttdata);
 }
 
 sub create_record {
@@ -137,13 +128,11 @@ sub create_record {
     }
 
     if ($input_data_ref->{dbname} eq "" || $input_data_ref->{description} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."),2);
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."),2);
     }
     
     if ($config->db_exists($input_data_ref->{dbname})) {
-        $self->print_warning($msg->maketext("Es existiert bereits ein Katalog unter diesem Namen"),3);
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert bereits ein Katalog unter diesem Namen"),3);
     }
 
     if ($input_data_ref->{locationid} eq ""){
@@ -153,15 +142,15 @@ sub create_record {
     my $new_databaseid = $config->new_databaseinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{databases_loc}/id/$input_data_ref->{dbname}/edit.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{databases_loc}/id/$input_data_ref->{dbname}/edit.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($new_databaseid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zur DB $input_data_ref->{dbname}");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201); # created
             $self->param('databaseid',$input_data_ref->{dbname});
             $self->param('location',"$location/$input_data_ref->{dbname}");
             $self->show_record;
@@ -227,9 +216,7 @@ sub show_record_form {
     }
 
     if (!$config->db_exists($dbname)) {        
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
     
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
@@ -238,9 +225,7 @@ sub show_record_form {
         databaseinfo => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_databases_record_edit_tname},$ttdata);
-        
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_databases_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -273,9 +258,7 @@ sub update_record {
     }
 
     if (!$config->db_exists($dbname)) {        
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
     if ($input_data_ref->{locationid} eq ""){
@@ -292,9 +275,9 @@ sub update_record {
     $config->update_databaseinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{databases_loc}");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record");
@@ -325,9 +308,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_databases_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_admin_databases_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -350,9 +332,7 @@ sub delete_record {
     }
     
     if (!$config->db_exists($dbname)) {        
-        $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
     $logger->debug("Deleting database record $dbname");
@@ -361,9 +341,8 @@ sub delete_record {
 
     return unless ($self->param('representation') eq "html");
     
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{databases_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->redirect("$path_prefix/$config->{databases_loc}");
 
     return;
 }

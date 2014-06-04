@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -101,12 +101,12 @@ __END__
 
 =head1 NAME
 
-OpenBib::Config::CirculationInfoTable - Apache-Singleton mit
+OpenBib::Config::CirculationInfoTable - Singleton mit
 Informationen zur Kopplung mit den jeweiligen Ausleihsystemen
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton enthält für alle Datenbanken bzw. Kataloge die
+Dieses Singleton enthält für alle Datenbanken bzw. Kataloge die
 Informationen über einen Zugriff über OLWS (circ, ja = 1, nein = 0),
 den DB-Namen im Lokalsystem für den Zugriff über OLWS (circdb), den
 Zugriffs-URL für OLWS (circheckurl) sowie einen optionalen
@@ -127,7 +127,7 @@ OpenBib angeboten.
 
 =item instance
 
-Instanziierung des Apache-Singleton.
+Instanziierung des Singleton.
 
 =item get($dbname)
 

@@ -33,13 +33,6 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();   # CGI-Handling (or require)
-use Apache2::RequestIO (); # rflush, print
-use Apache2::RequestRec ();
-use Apache2::URI ();
-use APR::URI ();
 use URI;
 
 use Benchmark;
@@ -131,10 +124,10 @@ sub show {
                                         {ECC => 'M', Version => $version, ModuleSize => $modulesize}
 
                                     );
-    $r->content_type("image/png");
-    $r->print($code->plot->png);
 
-    return Apache2::Const::OK;
+    $self->header_add('Content-Type' => 'image/png');
+
+    return $code->plot->png;
 }
 
 1;

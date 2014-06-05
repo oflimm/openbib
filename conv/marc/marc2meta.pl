@@ -138,6 +138,8 @@ my $have_title_ref = {};
 
 my $count=1;
 
+my $all_count=1;
+
 my $mexid = 1;
 
 my $exclude_by_isbn_in_file_ref = {};
@@ -161,6 +163,7 @@ if ($configfile && $convconfig->{exclude}{by_isbn_in_file} && $convconfig->{excl
 
 # Ignore 4 consecutive errors
 while (my $record = $batch->next() || $batch->next || $batch->next || $batch->next ){
+    $all_count++;
 
     my $title_ref = {
         'fields' => {},
@@ -184,6 +187,8 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         
         $title_ref->{id} = (defined $idfield)?$idfield->as_string():undef;
     }
+
+    $title_ref->{id}=~s/\s//g;
 
     unless (defined $title_ref->{id}){
         $logger->info("Keine ID vorhanden");
@@ -1073,7 +1078,8 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
     
 }
 
-$logger->info("$count titles done");
+$logger->info("$all_count titles done");
+$logger->info("$count titles survived");
 $logger->info("Excluded titles: $excluded_titles");
 
 close(TITLE);

@@ -346,9 +346,9 @@ sub create_record {
     if (! $user->{ID} | $user->{ID} ne $userid){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
+            my $return_uri = uri_escape($r->request_uri);
             
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            return $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         }
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
@@ -408,9 +408,9 @@ sub delete_record {
     if (! $user->{ID} || $user->{ID} ne $userid){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
+            my $return_uri = uri_escape($r->request_uri);
             
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            return $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         }
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));

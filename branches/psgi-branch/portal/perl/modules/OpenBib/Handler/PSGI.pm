@@ -227,8 +227,8 @@ sub cgiapp_prerun {
        # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
        # zu verwenden
        
-       my $method          = $self->query->param('_method') || '';
-       my $confirm         = $self->query->param('confirm') || 0;
+       my $method          = $r->param('_method') || '';
+       my $confirm         = $r->param('confirm') || 0;
        
        if ($method eq "DELETE" || $r->method eq "DELETE"){
            $logger->debug("Deletion shortcut");
@@ -304,7 +304,7 @@ sub negotiate_content {
 
                 # Zusaetzlich auch Sprache verhandeln
                 my $args="";
-                if (!$self->query->param('l')){
+                if (!$r->param('l')){
                     if ($session->{lang}){
                         $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
                         $self->param('lang',$session->{lang});
@@ -337,7 +337,7 @@ sub negotiate_content {
 
             # Wenn eine konkrete Repraesentation angesprochen wird, jedoch ohne Sprach-Parameter,
             # dann muss dieser verhandelt werden.
-            if (!$self->query->param('l') ){
+            if (!$r->param('l') ){
                 $logger->debug("Specific representation given, but without language - negotiating");
                 
                 # Pfade sind immer mit base_loc und view
@@ -390,9 +390,9 @@ sub alter_negotiated_language {
     my $session = $self->param('session');
 
     # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
-    if ($self->query->param('l')){
-        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$self->query->param('l'));
-        $self->param('lang',$self->query->param('l'));
+    if ($r->param('l')){
+        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$r->param('l'));
+        $self->param('lang',$r->param('l'));
         
         # Setzen als Cookie
         $self->set_cookie('lang',$self->param('lang'));
@@ -1282,9 +1282,11 @@ sub to_cgi_params {
 
     my @cgiparams = ();
 
-    if ($self->query->param){
-        foreach my $param (keys %{$self->query->param}){
-            next unless ($self->query->param($param));
+    my $r            = $self->param('r');
+
+    if ($r->param){
+        foreach my $param (keys %{$r->param}){
+            next unless ($r->param($param));
             $logger->debug("Processing $param");
             if (exists $arg_ref->{change}->{$param}){
                 push @cgiparams, {
@@ -1293,7 +1295,7 @@ sub to_cgi_params {
                 };
             }
             elsif (! exists $exclude_ref->{$param}){
-                my @values = $self->query->param($param);
+                my @values = $r->param($param);
                 if (@values){
                     foreach my $value (@values){
                         push @cgiparams, {
@@ -1305,7 +1307,7 @@ sub to_cgi_params {
                 else {
                     push @cgiparams, {
                         param => $param,
-                        val => decode_utf8(uri_unescape($self->query->param($param))),
+                        val => decode_utf8(uri_unescape($r->param($param))),
                     };
                 }
             }
@@ -1501,8 +1503,8 @@ sub redirect {
 
     $status = $status || '302 Found';
 
-    $self->header_type('header');
-    $self->header_add('Status' => $status);
+    $self->header_type('redirect');
+    $self->header_props('Status' => $status);
 #    $self->header_add('Window-Target' => '_top');
     $self->header_add('Location' => $url) if ($url);
 

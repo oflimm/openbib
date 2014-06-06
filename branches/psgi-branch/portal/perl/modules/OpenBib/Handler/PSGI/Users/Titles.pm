@@ -35,7 +35,6 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
-use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
 use Date::Manip;
 use URI::Escape qw(uri_escape uri_escape_utf8);

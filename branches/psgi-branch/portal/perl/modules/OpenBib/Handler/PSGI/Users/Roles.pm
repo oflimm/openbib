@@ -54,8 +54,6 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use CGI::Application::Plugin::Redirect;
-
 use base 'OpenBib::Handler::PSGI';
 
 # Run at startup

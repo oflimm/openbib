@@ -73,7 +73,7 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
 
 
-    <title>[% IF page_title %][% page_title %][% ELSE %]Schatzbehalter[% END %]</title>
+    <title>[% IF page_title %][% page_title %][% ELSE %]Schatzbehalter – Das Portal für historische Kinder- und Jugendliteratur[% END %]</title>
 
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="/js/pngfix.js"></script>

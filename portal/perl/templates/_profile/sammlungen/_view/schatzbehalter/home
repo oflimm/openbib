@@ -34,7 +34,7 @@
           <div class="ym-g33 ym-gl">
            <div class="ym-gbox" class="ym-clearfix">
 
- <center style="padding-top: 3em;"> <a href=""><img src="/images/openbib/views/schatzbehalter/maerchenbuch-517-250px.jpg"
+ <center style="padding-top: 3em;"> <a href="[% path_prefix %]/databases/id/schatzbehalter/titles/id/517"><img src="/images/openbib/views/schatzbehalter/maerchenbuch-517-250px.jpg"
 alt="M&auml;rchenbuch aus 1880" /></a><br /><br /><i
 style="font-size:0.8em">M&auml;rchenbuch aus 1880</i></center>
 

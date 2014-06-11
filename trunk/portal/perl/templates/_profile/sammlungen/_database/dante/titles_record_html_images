@@ -1,0 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[% 
+   cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fdante&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${record.id}";
+
+   cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
+%]
+[% IF cdm.total > 0 ;
+
+   FOREACH cdmrecord IN cdm.records ;
+     cdm_url       = "http://www.ub.uni-koeln.de/cdm4/document.php?CISOROOT=/dante&CISOPTR=${cdmrecord.pointer}&CISOBOX=1&REC=1";
+     cdm_imgurl    = "http://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}";
+%]
+<a class="invisible" href="[% cdm_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
+
+<p/>
+<a href="[% cdm_url %]" target="_blank">Zum Digitalisat in ContentDM</a>
+  [% END %]
+
+[% END %]
+
+[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databaes_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/searchindex.html?l=[% lang %]" >Suchindex</a>
+[% END %]

@@ -794,7 +794,7 @@ $blobencoding=($blobencoding)?$blobencoding:"utf8";
 #            Koerperschaften gehoert.
 #
 
-my $indicator_tab = {
+my $subfield_transform_ref = {
     person => {
         '0806a' => '0200',      # Lebensjahre
         '0806i' => '0201',      # Beruf
@@ -814,7 +814,7 @@ our $entl_map_ref = {
 ## Feldstrukturtabelle auswerten
 #
 
-our $fstab_ref = read_fstab();
+our ($fstab_ref,$subfield_ref) = read_fstab();
 
 my %zweigstelle  = ();
 my %abteilung    = ();
@@ -864,9 +864,15 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
             $mult  = $2;
         }
         
-        my $content = $record{$key};
+        my $content  = $record{$key};
+
+        my $subfield = "";
+        
+        ($content,$subfield) = check_subfield('person',$field,$content) if (defined $subfield_ref->{'person'}{$field});
+        
         my $thiskey = $key;
-        my $newkey  = have_indicator('person',$key,$content);
+        my $newkey  = transform_subfield('person',$key,$subfield,$content) if (defined $subfield_ref->{'person'}{$field});
+
         if ($newkey) {
             $thiskey = $newkey;
             $content=~s/^[a-z]\|*//;
@@ -896,7 +902,7 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
 
         push @{$person_ref->{fields}{$field}}, {
             mult      => $mult,
-            subfield  => '',
+            subfield  => $subfield,
             content   => $content,
         };
 
@@ -946,11 +952,15 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)) {
         
         my $content = konv($record{$key});
 
+        my $subfield = "";
+        
+        ($content,$subfield) = check_subfield('corporatebody',$field,$content) if (defined $subfield_ref->{'corporatebody'}{$field});
+        
 #        print KOESIK $key.":".$content."\n" if ($record{$key} !~ /idn:/);
 
         push @{$corporatebody_ref->{fields}{$field}}, {
             mult      => $mult,
-            subfield  => '',
+            subfield  => $subfield,
             content   => $content,
         };
 
@@ -1001,11 +1011,15 @@ while (my ($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)) {
         
         my $content = konv($record{$key});
 
+        my $subfield = "";
+        
+        ($content,$subfield) = check_subfield('classification',$field,$content) if (defined $subfield_ref->{'classification'}{$field});
+        
 #        print SYSSIK $key.":".$content."\n" if ($record{$key} !~ /idn:/);
 
         push @{$classification_ref->{fields}{$field}}, {
             mult      => $mult,
-            subfield  => '',
+            subfield  => $subfield,
             content   => $content,
         };
 
@@ -1078,15 +1092,11 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
             $mult  = $2;
         }
         
-        my $content  = $record{$key};
-        my $subfield = "";
-        # etwaige Indikatoren bestimmen        
-        if ($content=~m/^([a-z])([\p{Lu}0-9¬].+?)$/) {
-            $subfield = $1;
-            $content  = $2;
-        }
+        my $content  = konv($record{$key});
 
-        $content  = konv($content);
+        my $subfield = "";
+        
+        ($content,$subfield) = check_subfield('subject',$field,$content) if (defined $subfield_ref->{'subject'}{$field});
 
 #        print SWDSIK $key.":".$content."\n" if ($record{$key} !~ /idn:/ && $key !~/^0800/);
     
@@ -1260,8 +1270,13 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
         }
 
         if ($key !~/^0000/) {
-            my $content  = konv($record{$key});
 
+            my $content  = konv($record{$key});
+            
+            my $subfield = "";
+            
+            ($content,$subfield) = check_subfield('title',$field,$content) if (defined $subfield_ref->{'title'}{$field});
+            
             my $line = $key.":".$content."\n";
 #            print TITSIK $line if ($record{$key} !~ /idn:/);
 
@@ -1959,9 +1974,10 @@ sub decode_blob {
                 $inh = hex(substr($BLOB,$idup+8,8));
                 $inh="IDN: $inh";
             }
-            if ( substr($inh,0,1) eq " " ) {
-                $inh =~ s/^ //;
-            }
+# Leerzeichen-Indikator entfernen
+#            if ( substr($inh,0,1) eq " " ) {
+#                $inh =~ s/^ //;
+#            }
 
             # Schmutzzeichen weg
             $inh=~s/ //g;
@@ -1994,9 +2010,11 @@ sub decode_blob {
                         }
                     }
                     my $uKAT = sprintf "%04d.%03d", $kateg, $ukat;
-                    if ( substr($inh,0,1) eq " " ) {
-                        $inh =~ s/^ //;
-                    }
+
+# Leerzeichen-Indikator entfernen
+#                    if ( substr($inh,0,1) eq " " ) {
+#                        $inh =~ s/^ //;
+#                    }
 
                     # Schmutzzeichen weg
                     $inh=~s/ //g;
@@ -2026,12 +2044,20 @@ sub read_fstab {
     };
 
     my $fstab_ref = {};
+
+    my $subfield_ref = {};
     
     open(FSTAB,"cat $bcppath/sik_fstab.bcp |");
     while (<FSTAB>) {
         my ($setnr,$fnr,$name,$kateg,$muss,$fldtyp,$mult,$invert,$stop,$zusatz,$multgr,$refnr,$vorbnr,$pruef,$knuepf,$trenn,$normueber,$bewahrenjn,$pool_cop,$indikator,$ind_bezeicher,$ind_indikator,$sysnr,$vocnr)=split("",$_);
         
         if ($setnr >= 1 && $setnr <= 5){
+            if ($indikator){
+
+                my $field = sprintf "%04d", $kateg;
+                $subfield_ref->{$fstab_map_ref->{$setnr}}{$field}{$ind_indikator} = 1;
+            }
+
             $fstab_ref->{$fstab_map_ref->{$setnr}}[$fnr] = {
                 field => $kateg,
                 type  => $fldtyp,
@@ -2041,20 +2067,38 @@ sub read_fstab {
     }
     close(FSTAB);
 
-    return $fstab_ref;
+    return ($fstab_ref,$subfield_ref);
 }
 
-sub have_indicator {
-    my ($type,$category,$content) = @_;
+sub transform_subfield {
+    my ($type,$field,$subfield,$content) = @_;
 
-    if ($category=~/^(\d\d\d\d)/) {
-        my $indicator = substr($content,0,1);
-        if ($indicator_tab->{$type}{"$1$indicator"}) {
-            return $indicator_tab->{$type}{"$1$indicator"};
+    if ($field=~/^(\d\d\d\d)/) {
+        if ($subfield_transform_ref->{$type}{"$1$subfield"}) {
+            return $subfield_transform_ref->{$type}{"$1$subfield"};
         }
     }
 
     return;
+}
+
+sub check_subfield {
+    my ($type,$field,$content) = @_;
+
+    my $subfield = "";
+
+    if (defined $subfield_ref->{$type}{$field}){
+        my $subfield_regexp = join "|", map {$_ = $_."\\|?"} keys %{$subfield_ref->{$type}{$field}};
+
+        if ($content=~m/^($subfield_regexp)(.+)$/){
+            $subfield=$1;
+            $content=$2;
+            $subfield =~s/\|//;
+        }
+    }
+
+    
+    return ($content,$subfield);    
 }
 
 sub normalize_lang {

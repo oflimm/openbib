@@ -13,12 +13,12 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
-[%- IF field == '0800' ;
-       field_description = 'Medienart';
-       searchfield = 'mediatypestring' ;
-    ELSIF field == '0100' ;
-       field_description = 'Absender';
-       searchfield = 't0100' ;
+[%- IF field == '0700' ;
+       field_description = 'Systematik';
+       searchfield = 'classificationstring' ;
+    ELSIF field == '0425' ;
+       field_description = 'Erscheinungsjahre';
+       searchfield = 'yearstring' ;
     END ; -%]
 
 <body>

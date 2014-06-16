@@ -59,11 +59,22 @@ ELSE;
   tags_content.push("F&uuml;r Titel in diesem Katalog wurden noch keine Tags vergeben");
 END;
 
-locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriften dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];
+no_journals = {
+                 '302' = 1
+                 '302' = 1
+                 '326' = 1
+                 '317' = 1
+              };
+
+IF NOT no_journals.exists("${sigel}") ;
+   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriften dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];
+END ;
+
 locationinfo.fields.${"Die 5 zuletzt angelegten Literaturlisten"} = [ { content = litlist_content.join("\n") } ];
 locationinfo.fields.${"Die 5 zuletzt vergebenen Tags"} = [ { content = tags_content.join("\n") } ];
 
 trclass = "even" ;
+
 
 FOREACH category IN categories;
     IF category == 'Bestand';

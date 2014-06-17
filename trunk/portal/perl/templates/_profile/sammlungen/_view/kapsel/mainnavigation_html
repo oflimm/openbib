@@ -32,6 +32,11 @@
 [% ELSE %]
           <li><a  href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
 [% END %]
+[% IF active_menu == "topic" %]
+         <li class="active"><strong>[% msg.maketext("Themenschwerpunkte") %]</strong></li>
+[% ELSE %]
+          <li><a  href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Themenschwerpunkte") %]</a></li>
+[% END %]
 [% IF active_menu == "register" %]
          <li class="active"><strong>[% msg.maketext("Register") %]</strong></li>
 [% ELSE %]

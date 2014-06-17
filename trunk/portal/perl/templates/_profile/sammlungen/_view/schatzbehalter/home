@@ -58,10 +58,10 @@ style="font-size:0.8em">Frida Schanz: Der Teufelsbub aus 1925</i></center>
 <p>Es ist geplant, einzelne Sachgruppen noch einmal gesondert abzubilden. Es sind dies:</p>
 
 <ul>
-<li>die Jüdische Abteilung mit jüdischen Kinder- und Jugendbüchern und solchen Texten, die einen Bezug zum Judentum haben. In dieser Abteilung finden Sie auch Quellenschriften und Sekundärliteratur zur jüdischen KJL.</li>
-<li>Bilderbücher (im weiteren Sinne)</li>
-<li>Mädchenbücher</li>
-<li>Quellenschriften zur Kinder- und Jugendliteratur sowie Forschungsliteratur zur KJL.</li>
+<li>die <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Jüdische Abteilung">Jüdische Abteilung</a> mit jüdischen Kinder- und Jugendbüchern und solchen Texten, die einen Bezug zum Judentum haben. In dieser Abteilung finden Sie auch Quellenschriften und Sekundärliteratur zur jüdischen KJL.</li>
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Bilderbücher">Bilderbücher</a> (im weiteren Sinne)</li>
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Mädchenbücher">Mädchenbücher</a></li>
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Quellentexte">Quellenschriften</a> zur Kinder- und Jugendliteratur sowie Forschungsliteratur zur KJL.</li>
 </ul>
 
 <p>Sofern die Dateien im PDF-Format vorliegen, können sie mit dem kostenlosen Adobe Reader angezeigt und ausgedruckt werden.</p>

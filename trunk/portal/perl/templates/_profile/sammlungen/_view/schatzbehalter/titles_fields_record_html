@@ -16,8 +16,14 @@
 [%- IF field == '0700' ;
        field_description = 'Systematik';
        searchfield = 'classificationstring' ;
+    ELSIF field == '0100' ;
+       field_description = 'Autor';
+       searchfield = 'personstring' ;
+    ELSIF field == '0331' ;
+       field_description = 'Titel';
+       searchfield = 'titlestring' ;
     ELSIF field == '0425' ;
-       field_description = 'Erscheinungsjahre';
+       field_description = 'Erscheinungsjahr';
        searchfield = 'yearstring' ;
     END ; -%]
 

@@ -77,6 +77,7 @@ my $logger = get_logger();
 
 my $subset = new OpenBib::Catalog::Subset("inst323",$pool);
 $subset->identify_by_mark("^AC.*DDR");
+$subset->identify_by_field_content('subject',([ { field => '0800', content => '^DDR-Produktion' } ]));
 $subset->write_set;
 
 sub print_help {

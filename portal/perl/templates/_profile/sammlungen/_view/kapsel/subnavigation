@@ -34,3 +34,15 @@
  </ul>
 </nav>
 [% END %]
+[% IF active_menu == "topic" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Themenschwerpunkte") %]</h6>
+ <ul>
+[% IF active_submenu == "erster_weltkrieg" %]
+  <li class="active"><strong>Erster Weltkrieg</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/erster_weltkrieg.html?l=[% lang %];page=1">Erster Weltkrieg (1914-1918)</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]

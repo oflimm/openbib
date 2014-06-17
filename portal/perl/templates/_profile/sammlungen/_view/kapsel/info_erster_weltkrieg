@@ -25,7 +25,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu='info' %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='topic' %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
@@ -34,8 +34,8 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="#">[% msg.maketext("Informationen") %]</a></li>
-         <li><a href="#" class="lastitem">Sammlung</a></li>
+         <li><a href="#">[% msg.maketext("Themenschwerpunkte") %]</a></li>
+         <li><a href="#" class="lastitem">Erster Weltkrieg (1914-1918)</a></li>
       </ul>
      </div>
    </div>
@@ -43,7 +43,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_submenu='sammlung' %]
+[% PROCESS common/subtemplate name="subnavigation" active_menu='topic' active_submenu='erster_weltkrieg' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -60,7 +60,7 @@ Der Beginn des Ersten Weltkrieges jährt sich am 28. Juli zum 100. Mal.
 </p>
 
 <p> Aus diesem Anlass präsentiert Ihnen die USB Köln eine <a
-href="http://zeitungsausschnitte.ub.uni-koeln.de/portal/search.html?l=de;page=1;profile=739;fsubj=Weltkrieg%20%281914-1918%29"><span
+href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;profile=739;fsubj=Weltkrieg%20%281914-1918%29"><span
 style="font-size:1.3em">Auswahl von Artikeln</span></a> aus dieser
 Zeitungsausschnittsammlung, in denen es nicht um Schlachtgetümmel und
 Heldenmythos geht, sondern um die Probleme der rheinischen Metropole

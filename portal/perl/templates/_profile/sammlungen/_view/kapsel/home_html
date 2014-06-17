@@ -49,6 +49,10 @@ Bibliothekarinnen und Bibliothekare durchsuchten die Zeitungen ihrer
 Zeit, schnitten relevante Artikel aus und klebten sie in ca.260
 Sammelbände ein. </p>
 
+<hr/>
+<b>Aktueller Themenschwerpunkt: <a href="[% path_prefix %]/[% config.get('info_loc') %]/erster_weltkrieg">Erster Weltkrieg (1914-1918)</a></b>
+<hr/>
+
 <p> Die Zeitungsausschnittsammlung besteht aus vier Abteilungen: Den
 Grundstock bildet ein gutes Dutzend Sammelbände, die der Kölner
 Kunsthistoriker Johann Jakob Merlo über die Jahre 1840-1890 hinweg

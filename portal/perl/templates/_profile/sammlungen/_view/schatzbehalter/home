@@ -36,7 +36,7 @@
 
  <center style="padding-top: 3em;"> <a href="[% path_prefix %]/databases/id/schatzbehalter/titles/id/517"><img src="/images/openbib/views/schatzbehalter/teufelsbub-250px.jpg"
 alt="Frida Schanz: Der Teufelsbub aus 1925" /></a><br /><br /><i
-style="font-size:0.8em">Frida Schanz: Der Teufelsbub aus 1925</i></center>
+style="font-size:0.8em">Frida Schanz: Der Teufelsbub (1925)</i></center>
 
           </div>
          </div>
@@ -45,40 +45,69 @@ style="font-size:0.8em">Frida Schanz: Der Teufelsbub aus 1925</i></center>
 
 <h1>Schatzbehalter - Das Portal für historische Kinder- und Jugendliteratur</h1>
 
-<h3>Ein Projekt der ALEKI in Zusammenarbeit mit dem Bilderbuchmuseum Burg Wissem</h3>
+<h4>Ein Projekt der ALEKI in Zusammenarbeit mit dem Bilderbuchmuseum Burg Wissem</h4>
 
-<p>Willkommen beim Schatzbehalter, der Elektronischen Bibliothek der ALEKI (Arbeitsstelle für Kinder- und Jugendmedienforschung) der Universität zu Köln und des Bilderbuchmuseums Burg Wissem (Museum der Stadt Troisdorf).</p>
+<p> Willkommen beim <emph>Schatzbehalter</emph>, der Elektronischen Bibliothek der
+ALEKI (Arbeitsstelle für Kinder- und Jugendmedienforschung) der
+Universität zu Köln und des Bilderbuchmuseums Burg Wissem (Museum der
+Stadt Troisdorf).  </p>
 
-<p>Der Schatzbehalter ist ein Portal für historische Kinder- und Jugendliteratur und vor allem zum Gebrauch von Studierenden und Lehrenden der Kinder- und Jugendliteraturwissenschaft gedacht. In ihm stehen wichtige Texte der historischen Kinder- und Jugendliteratur – vom 15. Jahrhundert bis zum Beginn des 20. Jahrhunderts, komplett oder auch in Auszügen – sowie Quellentexte und einschlägige Forschungsliteratur zur Bildschirmlektüre und zum Download bereit.</p>
+<p> Der <emph>Schatzbehalter</emph> ist ein Portal für historische Kinder- und
+Jugendliteratur und vor allem zum Gebrauch von Studierenden und
+Lehrenden der Kinder- und Jugendliteraturwissenschaft gedacht. In ihm
+stehen wichtige Texte der historischen Kinder- und Jugendliteratur
+- vom 15. Jahrhundert bis zum Beginn des 20. Jahrhunderts,
+komplett oder auch in Auszügen - sowie Quellentexte und
+einschlägige Forschungsliteratur zur Bildschirmlektüre und zum
+Download bereit.  </p>
 
-<p>Der Schatzbehalter bietet Ihnen Digitalisate von Büchern aus Beständen der ALEKI und des Bilderbuchmuseums Burg Wissem, zahlreiche Links zu historischen Kinder- und Jugendbüchern und Forschungsliteratur in anderen digitalen Bibliotheken sowie Scans von Textsammlungen zur historischen Kinder- und Jugendliteratur.</p>
+<p> Der <emph>Schatzbehalter</emph> bietet Ihnen Digitalisate von
+Büchern aus Beständen der ALEKI und des Bilderbuchmuseums Burg Wissem,
+zahlreiche Links zu historischen Kinder- und Jugendbüchern und
+Forschungsliteratur in anderen digitalen Bibliotheken.  </p>
 
-<p>Sämtliche Digitalisate sind in ?Texte A-Z“ verzeichnet. Dieses Gesamtverzeichnis ist zudem nach Jahrhunderten aufgeschlüsselt.</p>
+<p> Die Digitalisate sind durch verschiedene Register erschlossen:
+Autor, Titel, Erscheinungsjahr und Systematik. Das Register
+"Systematik" ist noch einmal untergliedert in: Jahrhunderte,
+<a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Bilderbücher&srt=title_asc">Bilderbücher</a> (im weiteren Sinne), die <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Jüdische Abteilung&srt=title_asc">Jüdische Abteilung</a> (mit
+jüdischen Kinder- und Jugendbüchern und solchen Texten, die einen
+Bezug zum Judentum haben), Textsammlungen zur historischen Kinder- und
+Jugendliteratur sowie in <a href="[% path_prefix %]/[%
+config.get('search_loc')
+%].html?l=de;page=1;fcln=Quellentexte&srt=title_asc">Quellenschriften
+/ Forschungsliteratur</a>. </p>
 
-<p>Es ist geplant, einzelne Sachgruppen noch einmal gesondert abzubilden. Es sind dies:</p>
-
-<ul>
-<li>die <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Jüdische Abteilung&srt=title_asc">Jüdische Abteilung</a> mit jüdischen Kinder- und Jugendbüchern und solchen Texten, die einen Bezug zum Judentum haben. In dieser Abteilung finden Sie auch Quellenschriften und Sekundärliteratur zur jüdischen KJL.</li>
-<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Bilderbücher&srt=title_asc">Bilderbücher</a> (im weiteren Sinne)</li>
-<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Mädchenbücher&srt=title_asc">Mädchenbücher</a></li>
-<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Quellentexte&srt=title_asc">Quellenschriften</a> zur Kinder- und Jugendliteratur sowie Forschungsliteratur zur KJL.</li>
-</ul>
-
-<p>Sofern die Dateien im PDF-Format vorliegen, können sie mit dem kostenlosen Adobe Reader angezeigt und ausgedruckt werden.</p>
-
-<p>Texte, die mit versehen sind, sind zur Bestandssicherung für ein eigenes Archiv digitalisiert (gemäß § 53 Absatz 2 Satz 1 Nr. 2 UrhG), ausschließlich für den internen Gebrauch gedacht und daher nur mit einem Passwort zugänglich (nähere Auskünfte dazu geben Fabian Binder und Noelle Rensing).</p>
-
-<p>Der Schatzbehalter enthält sog. ?externe Links‘ (Verknüpfungen zu Webseiten Dritter), auf deren Inhalt wir keinen Einfluss haben und für den wir aus diesem Grund keine Gewähr übernehmen. Für die Inhalte und Richtigkeit der Informationen ist der jeweilige Informationsanbieter der verlinkten Webseite verantwortlich. Als die Verlinkung vorgenommen wurde, waren für uns keine Rechtsverstöße erkennbar. Sollte uns eine Rechtsverletzung bekannt werden, wird der jeweilige Link umgehend von uns entfernt.</p>
-
-<p>Der Schatzbehalter startete als ?Elektronische Bibliothek der ALEKI“ im Februar 2005 und präsentiert sich seit dem Herbst 2013 im jetzigen Format.</p>
-
-<p>Das Angebot an Digitalisaten wird fortlaufend ergänzt. Sollten Sie wider Erwarten bei einem Link falsch oder gar nicht verbunden werden, wären wir für eine kurze Nachricht dankbar – ebenso für Hinweise auf digitalisierte Texte, die Sie zur Aufnahme in den Schatzbehalter empfehlen möchten.</p>
-
-<!--
-<p>
-<a href="[% path_prefix %]/[% config.get('info_loc') %]/abklatsch.html?l=[% lang %]">[Weitere Informationen]</a>
+<p> Sofern die Dateien im PDF-Format vorliegen, können sie mit dem
+kostenlosen <a href="http://get.adobe.com/de/reader/"
+target="_blank">Adobe Reader</a> angezeigt und ausgedruckt werden.
 </p>
--->
+
+<p> Texte, die mit <img src="/images/openbib/views/schatzbehalter/schluessel.gif" alt="Schlosssymbol" /> versehen sind, sind zur
+Bestandssicherung für ein eigenes Archiv digitalisiert (gemäß § 53
+Absatz 2 Satz 1 Nr. 2 UrhG), ausschließlich für den internen Gebrauch
+gedacht und daher nur mit einem Passwort zugänglich (nähere Auskünfte
+dazu geben die Administratoren).  </p>
+
+<p> Der <emph>Schatzbehalter</emph> enthält sog. "externe Links"
+(Verknüpfungen zu Webseiten Dritter), auf deren Inhalt wir keinen
+Einfluss haben und für den wir aus diesem Grund keine Gewähr
+übernehmen. Für die Inhalte und Richtigkeit der Informationen ist der
+jeweilige Informationsanbieter der verlinkten Webseite
+verantwortlich. Als die Verlinkung vorgenommen wurde, waren für uns
+keine Rechtsverstöße erkennbar. Sollte uns eine Rechtsverletzung
+bekannt werden, wird der jeweilige Link umgehend von uns entfernt.
+</p>
+
+<p> Der <emph>Schatzbehalter</emph> startete als "Elektronische
+Bibliothek der ALEKI" im Februar 2005 und präsentiert sich seit dem
+Sommer 2014 im jetzigen Format.  </p>
+
+<p> Das Angebot an Digitalisaten wird fortlaufend ergänzt. Sollten Sie
+wider Erwarten bei einem Link falsch oder gar nicht verbunden werden,
+wären wir für eine kurze Nachricht dankbar - ebenso für
+Hinweise auf digitalisierte Texte, die Sie zur Aufnahme in den
+<emph>Schatzbehalter</emph> empfehlen möchten.  </p>
+
 
           </div>
          </div>

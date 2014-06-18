@@ -67,8 +67,13 @@ zahlreiche Links zu historischen Kinder- und Jugendbüchern und
 Forschungsliteratur in anderen digitalen Bibliotheken.  </p>
 
 <p> Die Digitalisate sind durch verschiedene Register erschlossen:
-Autor, Titel, Erscheinungsjahr und Systematik. Das Register
-"Systematik" ist noch einmal untergliedert in: Jahrhunderte,
+<a href="[% path_prefix %]/[% config.get('databases_loc')
+%]/id/schatzbehalter/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">Autor</a>, <a href="[% path_prefix %]/[% config.get('databases_loc')
+%]/id/schatzbehalter/[% config.get('titles_loc') %]/fields/id/0331.html?l=[% lang %]">Titel</a>, <a href="[% path_prefix %]/[% config.get('databases_loc')
+%]/id/schatzbehalter/[% config.get('titles_loc')
+%]/fields/id/0425.html?l=[% lang %]">Erscheinungsjahr</a> und <a href="[% path_prefix %]/[% config.get('databases_loc')
+%]/id/schatzbehalter/[% config.get('titles_loc') %]/fields/id/0700.html?l=[% lang %]">Systematik</a>. Das Register
+"Systematik" ist noch einmal untergliedert in: <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;cln=Jahrhundert&srt=title_asc">Jahrhunderte</a>,
 <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Bilderbücher&srt=title_asc">Bilderbücher</a> (im weiteren Sinne), die <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Jüdische Abteilung&srt=title_asc">Jüdische Abteilung</a> (mit
 jüdischen Kinder- und Jugendbüchern und solchen Texten, die einen
 Bezug zum Judentum haben), Textsammlungen zur historischen Kinder- und

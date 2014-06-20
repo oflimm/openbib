@@ -18,6 +18,8 @@
           "litliststring" = msg.maketext("Literaturliste")
           "t0410" = "Sterbeort"
           "t0411" = "Geburtsort"
+          "t0425_from" = "Sterbejahr von"
+          "t0425_to" = "Sterbejahr bis"
           "t0425" = "Sterbejahr"
           "t0426" = "Geburtsjahr"
 };

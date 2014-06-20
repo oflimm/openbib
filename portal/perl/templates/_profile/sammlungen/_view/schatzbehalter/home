@@ -62,8 +62,8 @@ einschlägige Forschungsliteratur zur Bildschirmlektüre und zum
 Download bereit.  </p>
 
 <p> Der <emph>Schatzbehalter</emph> bietet Ihnen Digitalisate von
-Büchern aus Beständen der ALEKI und des Bilderbuchmuseums Burg Wissem,
-zahlreiche Links zu historischen Kinder- und Jugendbüchern und
+Büchern aus Beständen der ALEKI und des Bilderbuchmuseums Burg Wissem sowie
+zahlreiche Links zu historischen Kinder- und Jugendbüchern und zu
 Forschungsliteratur in anderen digitalen Bibliotheken.  </p>
 
 <p> Die Digitalisate sind durch verschiedene Register erschlossen:
@@ -73,14 +73,11 @@ Forschungsliteratur in anderen digitalen Bibliotheken.  </p>
 %]/id/schatzbehalter/[% config.get('titles_loc')
 %]/fields/id/0425.html?l=[% lang %]">Erscheinungsjahr</a> und <a href="[% path_prefix %]/[% config.get('databases_loc')
 %]/id/schatzbehalter/[% config.get('titles_loc') %]/fields/id/0700.html?l=[% lang %]">Systematik</a>. Das Register
-"Systematik" ist noch einmal untergliedert in: <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;cln=Jahrhundert&srt=title_asc">Jahrhunderte</a>,
-<a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Bilderbücher&srt=title_asc">Bilderbücher</a> (im weiteren Sinne), die <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;fcln=Jüdische Abteilung&srt=title_asc">Jüdische Abteilung</a> (mit
+"Systematik" ist noch einmal untergliedert in: Jahrhunderte, Bilderbücher (im weiteren Sinne), die Jüdische Abteilung (mit
 jüdischen Kinder- und Jugendbüchern und solchen Texten, die einen
 Bezug zum Judentum haben), Textsammlungen zur historischen Kinder- und
-Jugendliteratur sowie in <a href="[% path_prefix %]/[%
-config.get('search_loc')
-%].html?l=de;page=1;fcln=Quellentexte&srt=title_asc">Quellenschriften
-/ Forschungsliteratur</a>. </p>
+Jugendliteratur, Mädchenbücher sowie in Quellenschriften
+/ Forschungsliteratur. </p>
 
 <p> Sofern die Dateien im PDF-Format vorliegen, können sie mit dem
 kostenlosen <a href="http://get.adobe.com/de/reader/"

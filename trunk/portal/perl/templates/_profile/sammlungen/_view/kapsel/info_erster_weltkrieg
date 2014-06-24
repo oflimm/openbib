@@ -62,7 +62,7 @@
 
               <span
 style="font-size:0.8em;text-align:center">Schulklasse der Volksschule Rochusstr.
- (Köln-Bickendorf) vor dem "Kölsche Boor" am Gürzenich (1916), CC-BY-SA-3.0 Michael Osieka</i></span>
+ (Köln-Bickendorf) vor dem "Kölsche Boor" am Gürzenich (1916), <a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC-BY-SA-3.0</a> Michael Osieka</i></span>
             </div>
           </div>
           <div class="ym-g50 ym-gl">
@@ -73,15 +73,15 @@ style="font-size:0.8em;text-align:center">Schulklasse der Volksschule Rochusstr.
               <p/>
 
               <span style="font-size:0.8em;text-align:center">Emma
-Kranz - Lazarettdienst in Köln, CC-BY-SA-3.0 Rolf Kranz (<a
+Kranz - Lazarettdienst in Köln, <a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC-BY-SA-3.0</a> Rolf Kranz (<a
 href="http://europeana1914-1918.eu/en/contributions/4182" target=_blank">Europeana</a>)</i> </span>
             </div>
           </div>
         </div>
 
-<p>
+<h2>
 Der Beginn des Ersten Weltkrieges jährt sich am 28. Juli zum 100. Mal.
-</p>
+</h2>
 
 <p> Aus diesem Anlass präsentiert Ihnen die USB Köln eine <a
 href="[% path_prefix %]/[% config.get('search_loc') %].html?l=de;page=1;profile=739;fsubj=Weltkrieg%20%281914-1918%29">Auswahl von Artikeln</a> aus dieser
@@ -95,12 +95,13 @@ vielen Themen, die dieses Kaleidoskop zu einer Fundgrube nicht nur für
 Lokalhistoriker, Soziologen oder Wirtschaftswissenschaftler machen,
 sondern für jeden historisch Interessierten.  </p>
 
-<p> Darüber hinaus finden Sie in unserer <a
-href="http://totenzettel.ub.uni-koeln.de/" target="_blank">Totenzettelsammlung</a> weitere
-<a
+<p>Nirgendwo werden Tragik und Leid des Krieges greifbarer als auf den <a
 href="http://totenzettel.ub.uni-koeln.de/portal/search.html?l=de&fs=Soldat&t0425_from=1914&t0425_to=1918&novrp=1&srt=title_asc"
-target="_blank">Digitalisate</a>
-zu gefallenen Soldaten mit lokalem historischen Bezug.  </p>
+target="_blank">Totenzetteln
+ gefallener Soldaten</a>.
+Die hier vorgestellten Zeitzeugnisse stammen aus der <a
+href="http://totenzettel.ub.uni-koeln.de/"
+target="_blank">Totenzettelsammlung</a> der USB-Köln.</p>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

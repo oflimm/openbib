@@ -33,6 +33,8 @@
                    'T0424', # msg.maketext("T0424-portrait") Jahr/Ansetzung
                    'T0433', # msg.maketext("T0433") Umfang
 
+                   'T0451', # msg.maketext("T0451") GesTit Vorl
+
                    'T0434', # msg.maketext("T0434") Illustrationsangabe
                    'T0502', # msg.maketext("T0502") EST beig. Werk
                    'T0504', # msg.maketext("T0504") Angabe Paralelltitel

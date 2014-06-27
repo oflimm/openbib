@@ -22,6 +22,7 @@ person:
 
 # Koerperschaften
 corporatebody:
+  'metadata/oai_dc:dc/dc:contributor': '0201'        # Urheber
 
 # Systematik
 classification: 

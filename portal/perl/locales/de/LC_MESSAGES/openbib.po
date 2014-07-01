@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-07-01 15:12+0200\n"
+"PO-Revision-Date: 2014-07-01 15:41+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -12916,7 +12916,7 @@ msgstr "SammelVermerk"
 #: ../templates/_profile/usbportal/visible_categories_title:23
 #: ../templates/visible_categories_title:23
 msgid "T0304"
-msgstr "Einheitstitel"
+msgstr "Originaltitel"
 
 #: ../templates/_database/einbaende/visible_categories_tool:18
 msgid "T0304-einbaende"

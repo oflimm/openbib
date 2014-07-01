@@ -19,6 +19,9 @@
     ELSIF field == '0100' ;
        field_description = 'Autor';
        searchfield = 'personstring' ;
+    ELSIF field == '0304' ;
+       field_description = 'Originaltitel';
+       searchfield = 'titlestring' ;
     ELSIF field == '0331' ;
        field_description = 'Titel';
        searchfield = 'titlestring' ;

@@ -293,6 +293,7 @@
 ../templates/admin_exploresessions_list
 ../templates/admin_exploresessions_show
 ../templates/admin_locations
+../templates/admin_locations_csv
 ../templates/admin_locations_html
 ../templates/admin_locations_json
 ../templates/admin_locations_record
@@ -944,6 +945,8 @@
 ../templates/_profile/kug/_view/inst526/home_html_bottom_right
 ../templates/_profile/kug/_view/inst900/std_header_html
 ../templates/_profile/kug/_view/jki/std_header_html
+../templates/_profile/kug/_view/kapskoelnztg/std_header_html
+../templates/_profile/kug/_view/koelnzeitung/std_header_html
 ../templates/_profile/kug/_view/kug/home_html_bottom_left
 ../templates/_profile/kug/_view/kug/home_html_bottom_right
 ../templates/_profile/kug/_view/kug/mainnavigation_html
@@ -1070,6 +1073,7 @@
 ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/artmann/circulation
 ../templates/_profile/sammlungen/_database/dante/circulation
+../templates/_profile/sammlungen/_database/dante/titles_record_html_images
 ../templates/_profile/sammlungen/_database/dirksen/circulation
 ../templates/_profile/sammlungen/_database/dirksen/titles_record_html_images
 ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short
@@ -1079,6 +1083,7 @@
 ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories
 ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title
+../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/kempis/circulation
 ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories
 ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short
@@ -1095,6 +1100,8 @@
 ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title
 ../templates/_profile/sammlungen/_database/richter/holding
 ../templates/_profile/sammlungen/_database/richter/visible_categories_title
+../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories
+../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title
 ../templates/_profile/sammlungen/_database/schmalenbach/circulation
 ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation
 ../templates/_profile/sammlungen/_database/totenzettel/holding
@@ -1148,6 +1155,14 @@
 ../templates/_profile/sammlungen/_view/dante/info_sammlung
 ../templates/_profile/sammlungen/_view/dante/std_footer_html
 ../templates/_profile/sammlungen/_view/dante/std_header_html
+../templates/_profile/sammlungen/_view/digitalis/corporate_banner
+../templates/_profile/sammlungen/_view/digitalis/home
+../templates/_profile/sammlungen/_view/digitalis/info_project
+../templates/_profile/sammlungen/_view/digitalis/mainnavigation
+../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query
+../templates/_profile/sammlungen/_view/digitalis/std_header_html
+../templates/_profile/sammlungen/_view/digitalis/subnavigation
+../templates/_profile/sammlungen/_view/digitalis/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/dirksen/corporate_banner
 ../templates/_profile/sammlungen/_view/dirksen/home
 ../templates/_profile/sammlungen/_view/dirksen/info_sammlung
@@ -1206,7 +1221,9 @@
 ../templates/_profile/sammlungen/_view/kapsel/clouds_html
 ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation
 ../templates/_profile/sammlungen/_view/kapsel/home_html
+../templates/_profile/sammlungen/_view/kapsel/info_erster_weltkrieg
 ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html
+../templates/_profile/sammlungen/_view/kapsel/search_facet
 ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query
 ../templates/_profile/sammlungen/_view/kapsel/std_footer_html
 ../templates/_profile/sammlungen/_view/kapsel/std_header_html
@@ -1215,6 +1232,16 @@
 ../templates/_profile/sammlungen/_view/kempis/home
 ../templates/_profile/sammlungen/_view/kempis/info_sammlung
 ../templates/_profile/sammlungen/_view/kempis/std_header_html
+../templates/_profile/sammlungen/_view/koelnzeitung/clouds_databases_record_html
+../templates/_profile/sammlungen/_view/koelnzeitung/clouds_html
+../templates/_profile/sammlungen/_view/koelnzeitung/clouds_navigation
+../templates/_profile/sammlungen/_view/koelnzeitung/home_html
+../templates/_profile/sammlungen/_view/koelnzeitung/mainnavigation_html
+../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query
+../templates/_profile/sammlungen/_view/koelnzeitung/std_footer_html
+../templates/_profile/sammlungen/_view/koelnzeitung/std_header_html
+../templates/_profile/sammlungen/_view/koelnzeitung/subnavigation
+../templates/_profile/sammlungen/_view/koelnzeitung/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/landschaft/clouds_classification_html
 ../templates/_profile/sammlungen/_view/landschaft/clouds_corporatebody_html
 ../templates/_profile/sammlungen/_view/landschaft/clouds_databases_record_html
@@ -1325,6 +1352,14 @@
 ../templates/_profile/sammlungen/_view/richter/titles_fields_html
 ../templates/_profile/sammlungen/_view/richter/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/richter/titles_fields_record_mobile
+../templates/_profile/sammlungen/_view/schatzbehalter/corporate_banner
+../templates/_profile/sammlungen/_view/schatzbehalter/home
+../templates/_profile/sammlungen/_view/schatzbehalter/info_project
+../templates/_profile/sammlungen/_view/schatzbehalter/mainnavigation
+../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query
+../templates/_profile/sammlungen/_view/schatzbehalter/std_header_html
+../templates/_profile/sammlungen/_view/schatzbehalter/subnavigation
+../templates/_profile/sammlungen/_view/schatzbehalter/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/schmalenbach/home
 ../templates/_profile/sammlungen/_view/schmalenbach/info_sammlung
 ../templates/_profile/sammlungen/_view/schmalenbach/std_header_html
@@ -1409,6 +1444,7 @@
 ../templates/_profile/usbportal/resource_title_html_categories
 ../templates/_profile/usbportal/searchforms_record_query
 ../templates/_profile/usbportal/search_title_combined_include
+../templates/_profile/usbportal/std_header_html
 ../templates/_profile/usbportal/tags_include
 ../templates/_profile/usbportal/tags_names_recent_include
 ../templates/_profile/usbportal/titles_popular_by_database_include

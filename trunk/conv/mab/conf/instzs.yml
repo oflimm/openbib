@@ -190,7 +190,7 @@ title:
     '010 ':           # identifikationsnummer des direkt uebergeordneten datensatzes
         'newcat': '0004' # Uebergeordn. Satz
         mut: 1
-    '020a':              # ZDBID
+    '025z':              # ZDBID
         'newcat': '0572' # ZDBID
         'mult': 1
     '036a':              # Erschland

@@ -29,6 +29,7 @@
           "languagestring" = msg.maketext("Sprache")
           "yearstring" = msg.maketext("Jahr")
           "tagstring" = msg.maketext("Tag")
+          "titlestring" = msg.maketext("T0331")
           "litliststring" = msg.maketext("Literaturliste")
           "t0720" = msg.maketext("Provenienz")
           "t4100" = msg.maketext("E4100")

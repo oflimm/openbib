@@ -283,7 +283,7 @@ sub threadA {
     
     $logger->info("### Sammlungen aus dem Universitaet");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alekiddr','digitalis'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alekiddr','digitalis','schatzbehalter'] });
     
     ##############################
 

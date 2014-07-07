@@ -43,7 +43,7 @@ while (<HOLDING>){
         elsif ($location_ref->{content} =~m/^Humanwiss. Abteilung/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-HWA";
         }
-        elsif ($location_ref->{content} =~m/^Hauptabteilung \/ Lehrbuchsammlung/){
+        elsif ($location_ref->{content} =~m/^Hauptabteilung\s*\/\s*Lehrbuchsammlung/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-LBS";
         }
         elsif ($location_ref->{content} =~m/^Hauptabteilung \/ Lesesaal/){

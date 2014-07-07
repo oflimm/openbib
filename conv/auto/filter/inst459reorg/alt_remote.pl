@@ -41,7 +41,7 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Umwandlung in das Meta-Format\n";
 
-system("cd $pooldir/$pool ; rm unload.* pool.dat");
+system("cd $pooldir/$pool ; rm meta.* pool.dat");
 system("gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");
 system("cd $pooldir/$pool ; $konvdir/filemaker2meta.pl --inputfile=$pooldir/$pool/pool.dat");
 system("rm $pooldir/$pool/pool.dat");

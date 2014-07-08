@@ -64,7 +64,7 @@
 
 [%-
 
-  browsers = statistics.get_ranking_of_event({ type => 101, limit => 50, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ;
+  browsers = statistics.get_ranking_of_event({ type => 101, limit => 200, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ;
 
   count_msie    = 0;
   count_ff      = 0;
@@ -76,7 +76,9 @@
   count_os_windows = 0;
   count_os_macos   = 0;
   count_os_linux   = 0;
-
+  count_os_android = 0;
+  count_os_ios     = 0;
+  count_os_all     = 0;
 
   FOREACH browser IN browsers ;
    IF browser.content.match('MSIE') ;
@@ -98,12 +100,23 @@
 
    IF browser.content.match('Windows NT') ;
       count_os_windows =  count_os_windows + browser.number;
+      count_os_all = count_os_all + browser.number;
+   ELSIF browser.content.match('Android') ;
+      count_os_android =  count_os_android + browser.number;
+      count_os_all = count_os_all + browser.number;
    ELSIF browser.content.match('Linux') ;
-      count_os_linux =  count_os_linux + browser.number;
+      # Nur echte Browser, keine Spider
+      IF browser.content.match('Firefox') || browser.content.match('Chrome') || browser.content.match('KHTML');
+        count_os_linux =  count_os_linux + browser.number;
+        count_os_all = count_os_all + browser.number;
+      END;
+   ELSIF browser.content.match('iPhone OS') ;
+      count_os_ios = count_os_ios + browser.number;
+      count_os_all = count_os_all + browser.number;
    ELSIF browser.content.match('Mac OS') ;
       count_os_macos =  count_os_macos + browser.number;
+      count_os_all = count_os_all + browser.number;
    END;
-
   END ;
 -%]
 
@@ -112,11 +125,11 @@
 <h3>[% msg.maketext("Browserverteilung") %]</h3>
 
 <table class="ym-full">
-<tr><th>Firefox</th><td>[% count_ff * 100.0 / count_all %]</td></tr>
-<tr><th>MSIE</th><td>[% count_msie * 100.0 / count_all %]</td></tr>
-<tr><th>Safari</th><td>[% count_safari * 100.0 / count_all %]</td></tr>
-<tr><th>Opera</th><td>[% count_opera * 100.0 / count_all %]</td></tr>
-<tr><th>Chrome</th><td>[% count_chrome * 100.0 / count_all %]</td></tr>
+<tr><th>Firefox</th><td>[% count_ff * 100.0 / count_all %] %</td></tr>
+<tr><th>MSIE</th><td>[% count_msie * 100.0 / count_all %] %</td></tr>
+<tr><th>Safari</th><td>[% count_safari * 100.0 / count_all %] %</td></tr>
+<tr><th>Opera</th><td>[% count_opera * 100.0 / count_all %] %</td></tr>
+<tr><th>Chrome</th><td>[% count_chrome * 100.0 / count_all %] %</td></tr>
 </table>
 
 <p />
@@ -124,9 +137,11 @@
 <h3>[% msg.maketext("Betriebssystemverteilung") %]</h3>
 
 <table class="ym-full">
-<tr><th>Windows</th><td>[% count_os_windows * 100.0 / count_all %]</td></tr>
-<tr><th>Mac OS</th><td>[% count_os_macos * 100.0 / count_all %]</td></tr>
-<tr><th>Linux</th><td>[% count_os_linux * 100.0 / count_all %]</td></tr>
+<tr><th>Windows</th><td>[% count_os_windows * 100.0 / count_os_all %] %</td></tr>
+<tr><th>Mac OS</th><td>[% count_os_macos * 100.0 / count_os_all %] %</td></tr>
+<tr><th>Linux</th><td>[% count_os_linux * 100.0 / count_os_all %] %</td></tr>
+<tr><th>Android</th><td>[% count_os_android * 100.0 / count_os_all %] %</td></tr>
+<tr><th>iOS</th><td>[% count_os_ios * 100.0 / count_os_all %] %</td></tr>
 </table>
 
 <p />

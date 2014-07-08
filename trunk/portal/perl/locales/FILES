@@ -360,8 +360,11 @@
 ../templates/admin_statistics_client_html
 ../templates/admin_statistics_html
 ../templates/admin_statistics_navigation
+../templates/admin_statistics_paging_monthly
 ../templates/admin_statistics_query
 ../templates/admin_statistics_query_html
+../templates/admin_statistics_redirect
+../templates/admin_statistics_redirect_html
 ../templates/admin_statistics_request
 ../templates/admin_statistics_request_html
 ../templates/admin_statistics_view

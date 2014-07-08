@@ -171,9 +171,14 @@
       <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html">[% msg.maketext("Allgemein") %]</a></li>
 [% END %]
 [% IF active_subsubmenu == "request" %]
-      <li class="active"><strong>[% msg.maketext("Interne/Externe Aufrufe") %]</strong></li>
+      <li class="active"><strong>[% msg.maketext("Interne Aufrufe") %]</strong></li>
 [% ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/request.html">[% msg.maketext("Interne/Externe Aufrufe") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/request.html">[% msg.maketext("Interne Aufrufe") %]</a></li>
+[% END %]
+[% IF active_subsubmenu == "redirect" %]
+      <li class="active"><strong>[% msg.maketext("Externe Aufrufe") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/redirect.html">[% msg.maketext("Externe Aufrufe") %]</a></li>
 [% END %]
 [% IF active_subsubmenu == "view" %]
       <li class="active"><strong>[% msg.maketext("Views") %]</strong></li>

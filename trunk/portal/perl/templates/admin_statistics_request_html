@@ -58,59 +58,18 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<div class="ob-listoptions">
-<b>[% msg.maketext("Jahr") %]:</b>&nbsp;
-[%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');
-    i         = ret.min ;
-
-    IF NOT year ;
-     year = ret.max ;
-    END ;
-
-    WHILE i <= ret.max ; -%]
-<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/request.html?year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
-[%- i = i+1 -%]
-[%- END -%]
-</div>
-</p>
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="request" %] 
 
 <p/>
 
 <h3>[% msg.maketext("Aufrufe in OpenBib") %]</h3>
 
 <table>
-<tr><th>[% msg.maketext("Anzahl Aufrufe RSS-Feeds") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 801, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe Literaturlisten") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 800, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe PermaLink (Einzeltitel)") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 802, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe PermaLink (Literaturliste)") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 803, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe Titelliste zu einem Tag") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 804, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-</table>
-
-<p/>
-
-<h3>[% msg.maketext("Aufrufe externer Seiten &uuml;ber Weiterleitungen aus OpenBib") %]</h3>
-
-<table>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von TOC / hbz-Server") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 500, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von TOC / ImageWare-Server") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 501, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von Nationallizenzen") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 503, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von E-Books / USB Koeln") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 502, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von E-Books / Gutenberg") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 504, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von E-Books / Open Library") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 505, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl per Klick &uuml;bertragene Titel nach BibSonomy") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 510, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe Weiterleitung zu Titel in BibSonomy") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 511, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe Weiterleitung zu Titel in Google Books") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 525, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe Weiterleitung &uuml;ber Cover-Scan") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 526, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von Wikipedia / Personen") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 520, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von Wikipedia / ISBN-Suche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 521, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von Wikipedia / Artikel") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 522, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von EZB") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 530, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von DBIS") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 531, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe der Kartenkataloge/PhilFak") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 532, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe von MedPilot") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 533, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe der hbz Mono-Fernleihe") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 540, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe der hbz Artikel-Fernleihe") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 541, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
-<tr><th>[% msg.maketext("Anzahl Aufrufe des WebOPACs") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 550, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>(seit: [% ret.since %])</td></tr>
+<tr><th>[% msg.maketext("Anzahl Aufrufe RSS-Feeds") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 801, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Anzahl Aufrufe Literaturlisten") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 800, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Anzahl Aufrufe PermaLink (Einzeltitel)") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 802, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Anzahl Aufrufe PermaLink (Literaturliste)") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 803, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Anzahl Aufrufe Titelliste zu einem Tag") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 804, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
 </table>
 
 

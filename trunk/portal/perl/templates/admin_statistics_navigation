@@ -13,7 +13,8 @@
 -%]
 <ul class="tabbingmenu">
    <li><a [%- IF active == "stat_general" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_statistics_loc') %].html">Allgemein</a></li>
-   <li><a [%- IF active == "stat_request" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/request.html">Interne/Externe Aufrufe</a></li>
+   <li><a [%- IF active == "stat_request" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/request.html">Interne Aufrufe</a></li>
+   <li><a [%- IF active == "stat_redirect" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/redirect.html">Externe Aufrufe</a></li>
    <li><a [%- IF active == "stat_view" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/view.html">Views</a></li>
    <li><a [%- IF active == "stat_query" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/query.html">Recherche-Arten</a></li>
    <li><a [%- IF active == "stat_client" -%]class="active"[%- END -%] href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/client.html">Klienten</a></li>

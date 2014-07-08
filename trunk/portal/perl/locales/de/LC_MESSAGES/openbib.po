@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-07-01 15:41+0200\n"
+"PO-Revision-Date: 2014-07-08 16:06+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1045,7 +1045,7 @@ msgstr "Alles"
 #: ../templates/admin_navigation:119 ../templates/admin_navigation:121
 #: ../templates/admin_navigation:140 ../templates/admin_navigation:142
 #: ../templates/admin_navigation:169 ../templates/admin_navigation:171
-#: ../templates/admin_navigation:212 ../templates/admin_navigation:214
+#: ../templates/admin_navigation:217 ../templates/admin_navigation:219
 #: ../templates/admin_navigation:26 ../templates/admin_navigation:28
 #: ../templates/admin_navigation:42 ../templates/admin_navigation:44
 #: ../templates/admin_navigation:58 ../templates/admin_navigation:60
@@ -1370,7 +1370,7 @@ msgstr "Anmeldeziele"
 #: ../templates/admin_authenticators_record_delete_confirm:39
 #: ../templates/admin_authenticators_record_edit:39
 #: ../templates/admin_authenticators_record_html:39
-#: ../templates/admin_navigation:227 ../templates/admin_navigation:229
+#: ../templates/admin_navigation:232 ../templates/admin_navigation:234
 #: ../templates/authenticators_html:38
 #: ../templates/authenticators_record_html:38
 msgid "Anmeldung"
@@ -1448,99 +1448,79 @@ msgstr ""
 msgid "Anzahl"
 msgstr "Anzahl"
 
-#: ../templates/admin_statistics_request_html:83
+#: ../templates/admin_statistics_request_html:69
 msgid "Anzahl Aufrufe Literaturlisten"
 msgstr "Anzahl Aufrufe Literaturlisten"
 
-#: ../templates/admin_statistics_request_html:84
+#: ../templates/admin_statistics_request_html:70
 msgid "Anzahl Aufrufe PermaLink (Einzeltitel)"
 msgstr "Anzahl Aufrufe PermaLink (Einzeltitel)"
 
-#: ../templates/admin_statistics_request_html:85
+#: ../templates/admin_statistics_request_html:71
 msgid "Anzahl Aufrufe PermaLink (Literaturliste)"
 msgstr "Anzahl Aufrufe PermaLink (Literaturliste)"
 
-#: ../templates/admin_statistics_request_html:82
+#: ../templates/admin_statistics_request_html:68
 msgid "Anzahl Aufrufe RSS-Feeds"
 msgstr "Anzahl Aufrufe RSS-Feeds"
 
-#: ../templates/admin_statistics_request_html:86
+#: ../templates/admin_statistics_request_html:72
 msgid "Anzahl Aufrufe Titelliste zu einem Tag"
 msgstr "Anzahl Aufrufe Titelliste zu einem Tag"
 
-#: ../templates/admin_statistics_request_html:103
+#: ../templates/admin_statistics_redirect_html:75
 msgid "Anzahl Aufrufe Weiterleitung &uuml;ber Cover-Scan"
 msgstr "Anzahl Aufrufe Weiterleitung &uuml;ber Cover-Scan"
 
-#: ../templates/admin_statistics_request_html:101
+#: ../templates/admin_statistics_redirect_html:73
 msgid "Anzahl Aufrufe Weiterleitung zu Titel in BibSonomy"
 msgstr "Anzahl Aufrufe Weiterleitung zu Titel in BibSonomy"
 
-#: ../templates/admin_statistics_request_html:102
+#: ../templates/admin_statistics_redirect_html:74
 msgid "Anzahl Aufrufe Weiterleitung zu Titel in Google Books"
 msgstr "Anzahl Aufrufe Weiterleitung zu Titel in Google Books"
 
-#: ../templates/admin_statistics_request_html:109
+#: ../templates/admin_statistics_redirect_html:81
 msgid "Anzahl Aufrufe der Kartenkataloge/PhilFak"
 msgstr "Anzahl Aufrufe der Kartenkataloge/PhilFak"
 
-#: ../templates/admin_statistics_request_html:112
-msgid "Anzahl Aufrufe der hbz Artikel-Fernleihe"
-msgstr "Anzahl Aufrufe der hbz Artikel-Fernleihe"
-
-#: ../templates/admin_statistics_request_html:111
-msgid "Anzahl Aufrufe der hbz Mono-Fernleihe"
-msgstr "Anzahl Aufrufe der hbz Mono-Fernleihe"
-
-#: ../templates/admin_statistics_request_html:113
+#: ../templates/admin_statistics_redirect_html:82
 msgid "Anzahl Aufrufe des WebOPACs"
 msgstr "Anzahl Aufrufe des WebOPACs"
 
-#: ../templates/admin_statistics_request_html:108
+#: ../templates/admin_statistics_redirect_html:80
 msgid "Anzahl Aufrufe von DBIS"
 msgstr "Anzahl Aufrufe von DBIS"
 
-#: ../templates/admin_statistics_request_html:98
+#: ../templates/admin_statistics_redirect_html:70
 msgid "Anzahl Aufrufe von E-Books / Gutenberg"
 msgstr "Anzahl Aufrufe von E-Books / Gutenberg"
 
-#: ../templates/admin_statistics_request_html:99
+#: ../templates/admin_statistics_redirect_html:71
 msgid "Anzahl Aufrufe von E-Books / Open Library"
 msgstr "Anzahl Aufrufe von E-Books / Open Library"
 
-#: ../templates/admin_statistics_request_html:97
+#: ../templates/admin_statistics_redirect_html:69
 msgid "Anzahl Aufrufe von E-Books / USB Koeln"
 msgstr "Anzahl Aufrufe von E-Books / USB Koeln"
 
-#: ../templates/admin_statistics_request_html:107
+#: ../templates/admin_statistics_redirect_html:79
 msgid "Anzahl Aufrufe von EZB"
 msgstr "Anzahl Aufrufe von EZB"
 
-#: ../templates/admin_statistics_request_html:110
-msgid "Anzahl Aufrufe von MedPilot"
-msgstr "Anzahl Aufrufe von MedPilot"
-
-#: ../templates/admin_statistics_request_html:96
+#: ../templates/admin_statistics_redirect_html:68
 msgid "Anzahl Aufrufe von Nationallizenzen"
 msgstr "Anzahl Aufrufe von Nationallizenzen"
 
-#: ../templates/admin_statistics_request_html:95
-msgid "Anzahl Aufrufe von TOC / ImageWare-Server"
-msgstr "Anzahl Aufrufe von TOC / ImageWare-Server"
-
-#: ../templates/admin_statistics_request_html:94
-msgid "Anzahl Aufrufe von TOC / hbz-Server"
-msgstr "Anzahl Aufrufe von TOC / hbz-Server"
-
-#: ../templates/admin_statistics_request_html:106
+#: ../templates/admin_statistics_redirect_html:78
 msgid "Anzahl Aufrufe von Wikipedia / Artikel"
 msgstr "Anzahl Aufrufe von Wikipedia / Artikel"
 
-#: ../templates/admin_statistics_request_html:105
+#: ../templates/admin_statistics_redirect_html:77
 msgid "Anzahl Aufrufe von Wikipedia / ISBN-Suche"
 msgstr "Anzahl Aufrufe von Wikipedia / ISBN-Suche"
 
-#: ../templates/admin_statistics_request_html:104
+#: ../templates/admin_statistics_redirect_html:76
 msgid "Anzahl Aufrufe von Wikipedia / Personen"
 msgstr "Anzahl Aufrufe von Wikipedia / Personen"
 
@@ -1588,7 +1568,7 @@ msgstr "Anzahl der Suchprofile von Nutzern"
 msgid "Anzahl der Titels&auml;tze (Alle/Zeitschriften-Serien/Artikel/Online)"
 msgstr "Anzahl der Titels&auml;tze (Alle/Zeitschriften-Serien/Artikel/Online)"
 
-#: ../templates/admin_statistics_request_html:100
+#: ../templates/admin_statistics_redirect_html:72
 msgid "Anzahl per Klick &uuml;bertragene Titel nach BibSonomy"
 msgstr "Anzahl per Klick &uuml;bertragene Titel nach BibSonomy"
 
@@ -1673,15 +1653,16 @@ msgstr "Aufnehmen"
 msgid "Aufruf dieser Spezial-Sicht"
 msgstr "Aufruf dieser Spezial-Sicht"
 
+#: ../templates/admin_statistics_redirect_html:42
 #: ../templates/admin_statistics_request_html:42
 msgid "Aufrufe"
 msgstr "Aufrufe"
 
-#: ../templates/admin_statistics_request_html:91
+#: ../templates/admin_statistics_redirect_html:65
 msgid "Aufrufe externer Seiten &uuml;ber Weiterleitungen aus OpenBib"
 msgstr "Aufrufe externer Seiten &uuml;ber Weiterleitungen aus OpenBib"
 
-#: ../templates/admin_statistics_request_html:79
+#: ../templates/admin_statistics_request_html:65
 msgid "Aufrufe in OpenBib"
 msgstr "Aufrufe in OpenBib"
 
@@ -2428,6 +2409,10 @@ msgstr "Bestellungen"
 msgid "Betreff"
 msgstr "Betreff"
 
+#: ../templates/admin_statistics_browser_html:137
+msgid "Betriebssystemverteilung"
+msgstr "Betriebssystemverteilung"
+
 #: ../templates/_database/einbaende/titles_record_html:326
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:301
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:291
@@ -2619,12 +2604,12 @@ msgstr "Blättern nach"
 msgid "Browsen"
 msgstr "Browsen"
 
-#: ../templates/admin_navigation:194 ../templates/admin_navigation:196
+#: ../templates/admin_navigation:199 ../templates/admin_navigation:201
 #: ../templates/admin_statistics_browser_html:42
 msgid "Browser"
 msgstr "Browser"
 
-#: ../templates/admin_statistics_browser_html:112
+#: ../templates/admin_statistics_browser_html:125
 msgid "Browserverteilung"
 msgstr "Browserverteilung"
 
@@ -3829,7 +3814,7 @@ msgstr "E-Mail-Adresse"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:102
 #: ../templates/_profile/usbportal/visible_categories_title:105
-#: ../templates/search_title_field:34
+#: ../templates/search_title_field:35
 #: ../templates/visible_categories_title:107
 msgid "E4100"
 msgstr "Basis-Klassifikation"
@@ -4073,7 +4058,7 @@ msgstr ""
 
 #: ../templates/_profile/kug/info_help:137
 #: ../templates/_profile/kug/info_help:65
-#: ../templates/admin_statistics_query_html:80 ../templates/info_help:143
+#: ../templates/admin_statistics_query_html:68 ../templates/info_help:143
 #: ../templates/info_help:65
 msgid "Einfache Recherche"
 msgstr "Einfache Recherche"
@@ -4801,10 +4786,6 @@ msgstr "Es konnten keine Themen bestimmt werden."
 msgid "Es konnten keine verwandten Themen bestimmt werden."
 msgstr "Es konnten keine verwandten Themen bestimmt werden."
 
-#: ../templates/admin_statistics_browser_html:122
-msgid "Es liegen keine Daten vor"
-msgstr "Es liegen keine Daten vor"
-
 #: ../templates/users_circulations_reminders_html:59
 msgid "Es sind keine Gebühren angefallen."
 msgstr "Es sind keine Gebühren angefallen."
@@ -4864,11 +4845,15 @@ msgstr "Exemplar-Datei"
 msgid "Explorer"
 msgstr "Explorer"
 
-#: ../templates/admin_statistics_query_html:82
+#: ../templates/admin_navigation:179 ../templates/admin_navigation:181
+msgid "Externe Aufrufe"
+msgstr "Externe Aufrufe"
+
+#: ../templates/admin_statistics_query_html:70
 msgid "Externer Suchschlitz"
 msgstr "Externer Suchschlitz"
 
-#: ../templates/search_title_field:35
+#: ../templates/search_title_field:36
 msgid "Externes Schlagwort"
 msgstr "Externes Schlagwort"
 
@@ -5198,7 +5183,7 @@ msgstr "Französisch"
 #: ../templates/_profile/usbportal/searchforms_record_query:69
 #: ../templates/_view/filme/searchforms_record_query:70
 #: ../templates/_view/richter/searchforms_record_query:70
-#: ../templates/admin_statistics_query_html:90
+#: ../templates/admin_statistics_query_html:78
 #: ../templates/authority_search_facet:672 ../templates/search_title_field:3
 #: ../templates/searchforms_record_authority:130
 #: ../templates/searchforms_record_query:70
@@ -5315,7 +5300,7 @@ msgstr "Gebühr"
 msgid "Gefundene Nutzer"
 msgstr "Gefundene Nutzer"
 
-#: ../templates/admin_statistics_browser_html:77
+#: ../templates/admin_statistics_browser_html:151
 msgid "Genutzte Browser"
 msgstr "Genutzte Browser"
 
@@ -5783,7 +5768,7 @@ msgstr "IP-Adresse"
 #: ../templates/_profile/sammlungen/searchforms_record_query:137
 #: ../templates/_profile/usbportal/searchforms_record_query:99
 #: ../templates/_view/richter/searchforms_record_query:100
-#: ../templates/admin_statistics_query_html:96
+#: ../templates/admin_statistics_query_html:84
 #: ../templates/search_title_field:5 ../templates/searchforms_record_query:112
 #: ../templates/users_preferences_html:214
 msgid "ISBN"
@@ -5796,7 +5781,7 @@ msgstr "ISBN"
 #: ../templates/_profile/sammlungen/searchforms_record_query:147
 #: ../templates/_profile/usbportal/searchforms_record_query:104
 #: ../templates/_view/richter/searchforms_record_query:105
-#: ../templates/admin_statistics_query_html:97
+#: ../templates/admin_statistics_query_html:85
 #: ../templates/search_title_field:6 ../templates/searchforms_record_query:119
 #: ../templates/users_preferences_html:233
 msgid "ISSN"
@@ -6781,8 +6766,8 @@ msgid "Interaktives Tutorium"
 msgstr "Interaktives Tutorium"
 
 #: ../templates/admin_navigation:174 ../templates/admin_navigation:176
-msgid "Interne/Externe Aufrufe"
-msgstr "Interne/Externe Aufrufe"
+msgid "Interne Aufrufe"
+msgstr "Interne Aufrufe"
 
 #: ../templates/_database/kapsel/holding:33
 #: ../templates/_profile/kug/_database/inst404abklatsch/holding:17
@@ -7050,9 +7035,7 @@ msgstr "Ja"
 #: ../templates/_view/richter/subnavigation:71
 #: ../templates/_view/richter/subnavigation:73
 #: ../templates/admin_statistics_access_html:62
-#: ../templates/admin_statistics_query_html:101
-#: ../templates/admin_statistics_request_html:62
-#: ../templates/admin_statistics_view_html:62
+#: ../templates/admin_statistics_query_html:89
 #: ../templates/authority_search_facet:197 ../templates/clouds_navigation:33
 #: ../templates/clouds_navigation:35 ../templates/search_facet:181
 #: ../templates/search_title_field:15 ../templates/search_title_field:30
@@ -7183,7 +7166,7 @@ msgstr "K&ouml;rperschaft"
 #: ../templates/_view/richter/clouds_navigation:44
 #: ../templates/_view/richter/subnavigation:81
 #: ../templates/_view/richter/subnavigation:83
-#: ../templates/admin_statistics_query_html:93
+#: ../templates/admin_statistics_query_html:81
 #: ../templates/clouds_corporatebody_html:51
 #: ../templates/clouds_corporatebody_html:70 ../templates/clouds_navigation:47
 #: ../templates/clouds_navigation:49 ../templates/subnavigation:65
@@ -7483,7 +7466,7 @@ msgstr "Klassifikation"
 msgid "Klassifizierung"
 msgstr "Klassifizierung"
 
-#: ../templates/admin_navigation:189 ../templates/admin_navigation:191
+#: ../templates/admin_navigation:194 ../templates/admin_navigation:196
 #: ../templates/admin_statistics_client_html:42
 msgid "Klienten"
 msgstr "Klienten"
@@ -7498,14 +7481,14 @@ msgstr "Klienten"
 #: ../templates/_profile/usbportal/searchforms_record_query:114
 #: ../templates/_view/filme/searchforms_record_query:119
 #: ../templates/_view/richter/searchforms_record_query:115
-#: ../templates/admin_statistics_query_html:99
+#: ../templates/admin_statistics_query_html:87
 #: ../templates/searchforms_record_query:133
 msgid "Kompletter Titel"
 msgstr "Kompletter Titel"
 
 #: ../templates/_profile/kug/info_help:172
 #: ../templates/_profile/kug/info_help:68
-#: ../templates/admin_statistics_query_html:81 ../templates/info_help:177
+#: ../templates/admin_statistics_query_html:69 ../templates/info_help:177
 #: ../templates/info_help:68
 msgid "Komplexe Recherche"
 msgstr "Komplexe Recherche"
@@ -7578,7 +7561,7 @@ msgstr "Kontextsensitive Hilfe"
 msgid "Konto migrieren"
 msgstr "Konto migrieren"
 
-#: ../templates/admin_navigation:217 ../templates/admin_navigation:219
+#: ../templates/admin_navigation:222 ../templates/admin_navigation:224
 #: ../templates/users_navigation:70 ../templates/users_navigation:72
 msgid "Konto-Migration"
 msgstr "Konto-Migration"
@@ -8173,7 +8156,7 @@ msgstr "Listen mit gemeinsamen Titeln"
 #: ../templates/_view/richter/cartitems_html_actions:21
 #: ../templates/authority_search_facet:199
 #: ../templates/cartitems_html_actions:27 ../templates/search_facet:183
-#: ../templates/search_title_field:21 ../templates/search_title_field:32
+#: ../templates/search_title_field:21 ../templates/search_title_field:33
 #: ../templates/titles_record_html_actions:40
 #: ../templates/titles_record_include:382
 msgid "Literaturliste"
@@ -9320,7 +9303,7 @@ msgstr "Normdaten-Recherche"
 msgid "Notation"
 msgstr "Notation"
 
-#: ../templates/admin_statistics_query_html:95
+#: ../templates/admin_statistics_query_html:83
 #: ../templates/clouds_databases_record_html:73
 msgid "Notationen"
 msgstr "Notationen"
@@ -9391,7 +9374,7 @@ msgstr "Nutzergenerierte Inhalte"
 msgid "Nutzername"
 msgstr "Nutzername"
 
-#: ../templates/admin_navigation:209 ../templates/admin_navigation:224
+#: ../templates/admin_navigation:214 ../templates/admin_navigation:229
 #: ../templates/admin_users_html:39 ../templates/admin_users_migration_html:39
 #: ../templates/admin_users_migration_success_html:39
 #: ../templates/admin_users_search_form:39
@@ -9403,7 +9386,7 @@ msgstr "Nutzerverwaltung"
 msgid "Nutzung"
 msgstr "Nutzung"
 
-#: ../templates/admin_statistics_view_html:77
+#: ../templates/admin_statistics_view_html:65
 msgid "Nutzung der vorhandenen Views"
 msgstr "Nutzung der vorhandenen Views"
 
@@ -9784,7 +9767,7 @@ msgstr "Person/Körperschaft"
 #: ../templates/_view/richter/searchforms_record_query:80
 #: ../templates/_view/richter/subnavigation:76
 #: ../templates/_view/richter/subnavigation:78
-#: ../templates/admin_statistics_query_html:92
+#: ../templates/admin_statistics_query_html:80
 #: ../templates/authority_search_facet:680
 #: ../templates/clouds_databases_record_html:71
 #: ../templates/clouds_navigation:40 ../templates/clouds_navigation:42
@@ -10027,7 +10010,7 @@ msgstr "Protokoll"
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:42
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_navigation:44
 #: ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_query:92
-#: ../templates/search_title_field:33
+#: ../templates/search_title_field:34
 msgid "Provenienz"
 msgstr "Provenienz"
 
@@ -10159,7 +10142,7 @@ msgstr "Recherche im USB-Portal"
 msgid "Recherche in beliebigen Katalogen"
 msgstr "Recherche in beliebigen Katalogen"
 
-#: ../templates/admin_navigation:184 ../templates/admin_navigation:186
+#: ../templates/admin_navigation:189 ../templates/admin_navigation:191
 #: ../templates/admin_statistics_query_html:42
 msgid "Recherche-Arten"
 msgstr "Recherche-Arten"
@@ -10639,7 +10622,7 @@ msgstr "Schlagwort-Information: %1 in Katalog %2"
 #: ../templates/_profile/sammlungen/searchforms_record_query:117
 #: ../templates/_profile/usbportal/searchforms_record_query:89
 #: ../templates/_view/richter/searchforms_record_query:90
-#: ../templates/admin_statistics_query_html:94
+#: ../templates/admin_statistics_query_html:82
 #: ../templates/authority_search_facet:696
 #: ../templates/clouds_databases_record_html:72
 #: ../templates/clouds_subject_html:51 ../templates/clouds_subject_html:70
@@ -10775,7 +10758,7 @@ msgstr "Selbstregistrierung"
 #: ../templates/_profile/usbportal/searchforms_record_query:124
 #: ../templates/_view/filme/searchforms_record_query:140
 #: ../templates/_view/richter/searchforms_record_query:130
-#: ../templates/admin_statistics_query_html:100
+#: ../templates/admin_statistics_query_html:88
 #: ../templates/searchforms_record_query:154
 #: ../templates/users_preferences_html:253
 msgid "Serie/Band/Quelle"
@@ -11343,7 +11326,7 @@ msgstr "Sigel"
 #: ../templates/_view/richter/searchforms_record_query:110
 #: ../templates/_view/richter/titlist_item_html_short:231
 #: ../templates/acquisition_collection_item_short:255
-#: ../templates/admin_statistics_query_html:98
+#: ../templates/admin_statistics_query_html:86
 #: ../templates/cartitems_html_short:141 ../templates/circulation:29
 #: ../templates/circulation_mobile:29 ../templates/holding:34
 #: ../templates/holding_mobile:17 ../templates/search_title_field:28
@@ -11827,7 +11810,7 @@ msgstr "Standortinformationen bearbeiten"
 msgid "Start"
 msgstr "Start"
 
-#: ../templates/admin_navigation:166 ../templates/admin_navigation:206
+#: ../templates/admin_navigation:166 ../templates/admin_navigation:211
 msgid "Statistik"
 msgstr "Statistik"
 
@@ -11836,6 +11819,7 @@ msgstr "Statistik"
 #: ../templates/admin_statistics_client_html:41
 #: ../templates/admin_statistics_html:41
 #: ../templates/admin_statistics_query_html:41
+#: ../templates/admin_statistics_redirect_html:41
 #: ../templates/admin_statistics_request_html:41
 #: ../templates/admin_statistics_view_html:41
 msgid "Statistiken"
@@ -12995,7 +12979,7 @@ msgstr "Ordensname"
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:16
 #: ../templates/_profile/usbportal/visible_categories_title:24
-#: ../templates/visible_categories_title:24
+#: ../templates/search_title_field:32 ../templates/visible_categories_title:24
 msgid "T0331"
 msgstr "Titel"
 
@@ -16821,7 +16805,7 @@ msgstr "Themengebiet(e) von DBIS zuordnen"
 #: ../templates/_view/richter/litlists_record_html:55
 #: ../templates/_view/richter/searchforms_record_simple:83
 #: ../templates/_view/richter/users_litlists_record_edit:40
-#: ../templates/admin_navigation:232 ../templates/admin_navigation:234
+#: ../templates/admin_navigation:237 ../templates/admin_navigation:239
 #: ../templates/admin_topics_html:41
 #: ../templates/admin_topics_mappings_html:54
 #: ../templates/admin_topics_mappings_record_html:54
@@ -17070,7 +17054,7 @@ msgstr "Titelliste"
 #: ../templates/_profile/usbportal/searchforms_record_query:74
 #: ../templates/_view/filme/searchforms_record_query:77
 #: ../templates/_view/richter/searchforms_record_query:75
-#: ../templates/admin_statistics_query_html:91
+#: ../templates/admin_statistics_query_html:79
 #: ../templates/searchforms_record_query:77
 msgid "Titelworte"
 msgstr "Titelworte"
@@ -17621,11 +17605,11 @@ msgstr ""
 msgid "Verwenden Sie das Sternchen (*) als Platzhalter."
 msgstr "Verwenden Sie das Sternchen (*) als Platzhalter."
 
-#: ../templates/admin_statistics_query_html:87
+#: ../templates/admin_statistics_query_html:75
 msgid "Verwendete Kategorien"
 msgstr "Verwendete Kategorien"
 
-#: ../templates/admin_statistics_query_html:77
+#: ../templates/admin_statistics_query_html:65
 msgid "Verwendete Recherche-Art"
 msgstr "Verwendete Recherche-Art"
 
@@ -17645,7 +17629,7 @@ msgid "Viewname"
 msgstr "Viewname"
 
 #: ../templates/admin_navigation:111 ../templates/admin_navigation:113
-#: ../templates/admin_navigation:179 ../templates/admin_navigation:181
+#: ../templates/admin_navigation:184 ../templates/admin_navigation:186
 #: ../templates/admin_statistics_view_html:42 ../templates/admin_views_html:40
 #: ../templates/admin_views_record_delete_confirm:39
 #: ../templates/admin_views_record_edit:39
@@ -18411,7 +18395,7 @@ msgstr ""
 "      für den Fall einer nicht vorhandenen ISBN - um den Bibkey\n"
 "      erweitert."
 
-#: ../templates/admin_navigation:199 ../templates/admin_navigation:201
+#: ../templates/admin_navigation:204 ../templates/admin_navigation:206
 #: ../templates/admin_statistics_access_html:42
 msgid "Zahl Recherchen/Sessions"
 msgstr "Zahl Recherchen/Sessions"
@@ -18535,11 +18519,11 @@ msgstr "Zu ersetzendes Tag"
 msgid "Zugemailte Merkliste"
 msgstr "Zugemailte Merkliste"
 
-#: ../templates/admin_statistics_client_html:104
+#: ../templates/admin_statistics_client_html:92
 msgid "Zugreifende IP's nach H&auml;ufigkeit"
 msgstr "Zugreifende IP's nach H&auml;ufigkeit"
 
-#: ../templates/admin_statistics_client_html:77
+#: ../templates/admin_statistics_client_html:65
 msgid "Zugreifende IP's nach Region"
 msgstr "Zugreifende IP's nach Region"
 
@@ -19596,6 +19580,24 @@ msgstr "Übersicht"
 #: ../templates/users_navigation:100 ../templates/users_navigation:102
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "Anzahl Aufrufe der hbz Artikel-Fernleihe"
+#~ msgstr "Anzahl Aufrufe der hbz Artikel-Fernleihe"
+
+#~ msgid "Anzahl Aufrufe der hbz Mono-Fernleihe"
+#~ msgstr "Anzahl Aufrufe der hbz Mono-Fernleihe"
+
+#~ msgid "Anzahl Aufrufe von MedPilot"
+#~ msgstr "Anzahl Aufrufe von MedPilot"
+
+#~ msgid "Anzahl Aufrufe von TOC / ImageWare-Server"
+#~ msgstr "Anzahl Aufrufe von TOC / ImageWare-Server"
+
+#~ msgid "Anzahl Aufrufe von TOC / hbz-Server"
+#~ msgstr "Anzahl Aufrufe von TOC / hbz-Server"
+
+#~ msgid "Es liegen keine Daten vor"
+#~ msgstr "Es liegen keine Daten vor"
 
 #~ msgid "T5050"
 #~ msgstr "Rechte-Information"

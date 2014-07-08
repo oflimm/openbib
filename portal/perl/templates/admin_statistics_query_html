@@ -58,28 +58,16 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<div class="ob-listoptions">
-<b>Jahr:</b>&nbsp;
-[%- ret       = statistics.get_tstamp_range_of_events({ format => '%Y' });
-    i         = ret.min ;
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="query" %] 
 
-    IF NOT year ;
-     year = ret.max ;
-    END ;
-
-    WHILE i <= ret.max ; -%]
-<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/query.html?year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
-[%- i = i+1 -%]
-[%- END -%]
-</div>
-</p>
+<p/>
 
 <h3>[% msg.maketext("Verwendete Recherche-Art") %]</h3>
 
 <table>
-<tr><th>[% msg.maketext("Einfache Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 1, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Komplexe Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 2, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Externer Suchschlitz") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 3, from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Einfache Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 1, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Komplexe Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 2, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Externer Suchschlitz") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 3, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
 </table>
 
 <p />
@@ -87,18 +75,18 @@
 <h3>[% msg.maketext("Verwendete Kategorien") %]</h3>
 
 <table>
-<tr><th>[% msg.maketext("Freie Suche") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'freesearch', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Titelworte") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'title', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Personen") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'person', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("K&ouml;rperschaften") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'corporatebody', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Schlagworte") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'subject', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Notationen") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'classification', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("ISBN") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'isbn', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("ISSN") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'issn', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Signatur") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'mark', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Kompletter Titel") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'titlestring', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Serie/Band/Quelle") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'source', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
-<tr><th>[% msg.maketext("Jahr") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'year', from => "${year}0101", to => "${year}1231" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Freie Suche") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'freesearch', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Titelworte") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'title', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Personen") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'person', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("K&ouml;rperschaften") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'corporatebody', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Schlagworte") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'subject', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Notationen") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'classification', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("ISBN") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'isbn', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("ISSN") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'issn', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Signatur") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'mark', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Kompletter Titel") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'titlestring', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Serie/Band/Quelle") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'source', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Jahr") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'year', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
 </table>
 
 

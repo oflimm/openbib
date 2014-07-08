@@ -58,28 +58,16 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<div class="ob-listoptions">
-<b>[% msg.maketext("Jahr") %]:</b>&nbsp;
-[%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');
-    i         = ret.min ;
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="view" %] 
 
-    IF NOT year ;
-     year = ret.max ;
-    END ;
-
-    WHILE i <= ret.max ; -%]
-<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/view.html?year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
-[%- i = i+1 -%]
-[%- END -%]
-</div>
-</p>
+<p/>
 
 <h3>[% msg.maketext("Nutzung der vorhandenen Views") %]</h3>
 
 <table>
-[% views = statistics.get_ranking_of_event({ type => 100, from => "${year}0101", to => "${year}1231"}) %]
+[% views = statistics.get_ranking_of_event({ type => 100, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %]
 [% FOREACH view IN views %]
-<tr><td>[% view.content %]</td><td><b>[% view.number %]</b> </td></tr>
+<tr><td>[% view.content %]</td><td><b>[% view.number %]</b></td></tr>
 [% END %]
 </table>
 

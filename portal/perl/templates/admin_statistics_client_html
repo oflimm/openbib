@@ -58,32 +58,20 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<div class="ob-listoptions">
-<b>Jahr:</b>&nbsp;
-[%- ret       = statistics.get_tstamp_range_of_events(format => '%Y');
-    i         = ret.min ;
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="client" %] 
 
-    IF NOT year ;
-     year = ret.max ;
-    END ;
-
-    WHILE i <= ret.max ; -%]
-<a href="[% path_prefix %]/[% config.get('admin_statistics_loc') %]/client.html?year=[% i %]" [%- IF "${i}" == "${year}" -%]style="font-weight:bold;font-size:1.2em;"[%- END -%]>[% i %]</a>&nbsp;
-[%- i = i+1 -%]
-[%- END -%]
-</div>
-</p>
+<p/>
 
 <h3>[% msg.maketext("Zugreifende IP's nach Region") %]</h3>
 
 [% 
-   allcount = statistics.get_number_of_event({ type => 102, from => "${year}0101", to => "${year}1231" }) ;
+   allcount = statistics.get_number_of_event({ type => 102, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) ;
 
-   ubcount1 = statistics.get_number_of_event({ type => 102, content => '134.95.52.%', from => "${year}0101", to => "${year}1231"}) ; 
-   ubcount2 = statistics.get_number_of_event({ type => 102, content => '134.95.54.%', from => "${year}0101", to => "${year}1231"}) ; 
+   ubcount1 = statistics.get_number_of_event({ type => 102, content => '134.95.52.%', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ; 
+   ubcount2 = statistics.get_number_of_event({ type => 102, content => '134.95.54.%', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ; 
    ubcount  = ubcount1.number + ubcount2.number ;
 
-   unicount1 = statistics.get_number_of_event({ type => 102, content => '134.95.%', from => "${year}0101", to => "${year}1231"}) ; 
+   unicount1 = statistics.get_number_of_event({ type => 102, content => '134.95.%', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ; 
 
    unicount = unicount1.number - ubcount ;
 
@@ -104,7 +92,7 @@ Es liegen keine Daten vor
 <h3>[% msg.maketext("Zugreifende IP's nach H&auml;ufigkeit") %]</h3>
 
 <table>
-[% clients = statistics.get_ranking_of_event({ type => 102, limit => 50, from => "${year}0101", to => "${year}1231"}) %]
+[% clients = statistics.get_ranking_of_event({ type => 102, limit => 50, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %]
 [% FOREACH client IN clients %]
 <tr><th>[% client.content %]</th><td><b>[% client.number %]</b> </td><td>([% client.number * 100 / allcount.number | format ("%.3f") %]) Prozent</td></tr>
 [% END %]

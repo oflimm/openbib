@@ -1223,8 +1223,12 @@ sub clear_data {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->save_eventlog_to_statisticsdb;
-    
+    my $config = OpenBib::Config->instance;
+
+    if ($config->{statisticsdb_enable}){
+        $self->save_eventlog_to_statisticsdb;
+    }
+        
     # dann Sessiondaten loeschen
     my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
 

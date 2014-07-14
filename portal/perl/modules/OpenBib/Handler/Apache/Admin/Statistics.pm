@@ -41,6 +41,7 @@ use Apache2::RequestRec ();
 use Apache2::Request ();
 use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
+use Date::Calc qw/Days_in_Month/;
 use DBI;
 use Digest::MD5;
 use Encode qw/decode_utf8 encode_utf8/;
@@ -124,8 +125,8 @@ sub show_graph {
 
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $statisticid    = $self->param('statisticid')    || '';
-    my $statisticid2   = $self->param('statisticid2')   || '';
+    my $statisticsid    = $self->param('statisticsid')    || '';
+    my $statisticsid2   = $self->param('statisticsid2')   || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -155,10 +156,10 @@ sub show_graph {
         statistics => $statistics,
     };
 
-    my $templatename = "tt_admin_statistic_";
+    my $templatename = "tt_admin_statistics_";
 
-    if ($statisticid && $statisticid2){
-        $templatename = $templatename.$statisticid."_".$statisticid2."_graph";
+    if ($statisticsid && $statisticsid2){
+        $templatename = $templatename.$statisticsid."_".$statisticsid2."_graph";
     }
 
     $templatename.="_tname";
@@ -193,6 +194,8 @@ sub show_statistics {
 
     # CGI Args
     my $year       = $query->param('year')       || '';
+    my $month      = $query->param('month')      || '';
+    my $day        = $query->param('day')        || '';
 
     if (!$self->authorization_successful){
         $self->print_authorization_error();
@@ -203,10 +206,26 @@ sub show_statistics {
     my $laststatisticsid = $self->strip_suffix($id);
     
     my $statistics = new OpenBib::Statistics();
+
+    unless ($year){
+        ($year,$month,$day) = (localtime)[5,4,3];
+        $year+=1900;
+        $month+=1;
+    }
+
+    $month = sprintf "%02d",$month;
+    $day   = sprintf "%02d",$day;
     
     # TT-Data erzeugen
     my $ttdata={
         year       => $year,
+        month      => $month,
+        day        => $day,
+
+        days_in_month => sub {
+            return Days_in_Month(@_);
+        },
+            
         statistics => $statistics,
     };
 

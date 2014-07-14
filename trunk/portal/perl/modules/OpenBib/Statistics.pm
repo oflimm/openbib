@@ -32,6 +32,7 @@ use utf8;
 
 use base qw(Apache::Singleton);
 
+use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8 encode_utf8);
 use Date::Manip qw/ParseDate UnixDate/;
 use JSON::XS;
@@ -176,6 +177,7 @@ sub cache_data {
             id     => $id,
             type   => $type,
             subkey => $subkey,
+            tstamp => \'NOW()',
             data   => $datastring
         }
     );
@@ -410,11 +412,43 @@ sub get_number_of_event {
     my $content      = exists $arg_ref->{content}
         ? $arg_ref->{content}            : undef;
 
+    my $refresh      = exists $arg_ref->{refresh}
+        ? $arg_ref->{refresh}            : 0;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;    
 
+    my $atime;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $cache_id     = "get_number_of_event";
+
+    delete $arg_ref->{refresh} if (defined $arg_ref->{refresh});
+    
+    my $cache_subkey = encode_json $arg_ref;
+    
+    unless ($refresh){
+        my $count_ref = $self->get_result({id => $cache_id, type => 14, subkey => $cache_subkey});
+
+        if (defined $count_ref){
+            if ($config->{benchmark}){
+                my $btime      = new Benchmark;
+                my $timeall    = timediff($btime,$atime);
+                my $resulttime = timestr($timeall,"nop");
+                $resulttime    =~s/(\d+\.\d+) .*/$1/;
+                
+                $logger->info("Get events in $resulttime seconds");
+            }
+            
+            return $count_ref;
+        }
+    }
+        
     # DBI: "select count(tstamp) as rowcount, min(tstamp) as sincetstamp from eventlog"
     my $where_ref     = {};
     
@@ -422,21 +456,22 @@ sub get_number_of_event {
         $where_ref->{type} = $type,
     } 
 
-    if ($year){
-        push @{$where_ref->{tstamp_year}}, { '=' => $year }; 
-    } 
-    
-    if ($month){
-        push @{$where_ref->{tstamp_month}}, { '=' => $month } ; 
-    } 
 
-    if ($from){
-        push @{$where_ref->{tstamp}}, { '>' => $from }; 
-    } 
-    
-    if ($to){
-        push @{$where_ref->{tstamp}}, { '<' => $to } ; 
-    } 
+    if ($from && $to){
+        $where_ref->{-and} = [
+           tstamp => { '>=' => $from },
+           tstamp => {'<=' => $to },
+        ]; 
+    }
+    else {
+        if ($year){
+            push @{$where_ref->{tstamp_year}}, { '=' => $year }; 
+        } 
+        
+        if ($month){
+            push @{$where_ref->{tstamp_month}}, { '=' => $month } ; 
+        } 
+    }
     
     if ($content){
         my $op = "=";
@@ -451,36 +486,28 @@ sub get_number_of_event {
         $logger->debug(YAML::Dump($where_ref));
     }
 
-    if (exists $config->{eventlogjson_type}{$type}){
-        my $count = $self->{schema}->resultset('Eventlogjson')->search_rs($where_ref)->count;
+    my $resultset = (exists $config->{eventlogjson_type}{$type})?'Eventlogjson':'Eventlog';
+
+    my $count = $self->{schema}->resultset($resultset)->search_rs($where_ref)->count;
+    
+    $logger->debug("Got results: Number $count");
+
+    my $count_ref = {
+        number => $count,
+    };
+
+    $self->cache_data({id => $cache_id, type => 14, subkey => $cache_subkey, data => $count_ref});
+    
+    if ($config->{benchmark}){
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
         
-        $logger->debug("Since when?");
-        
-        my $since = $self->{schema}->resultset('Eventlogjson')->search_rs($where_ref)->get_column('tstamp')->min;
-        
-        #    my $since = "ultimo";
-        $logger->debug("Got results: Number $count since $since");
-        
-        return {
-            number => $count,
-            since  => $since,
-        };
+        $logger->info("Get events in $resulttime seconds");
     }
-    else {            
-        my $count = $self->{schema}->resultset('Eventlog')->search_rs($where_ref)->count;
-        
-        $logger->debug("Since when?");
-        
-        my $since = $self->{schema}->resultset('Eventlog')->search_rs($where_ref)->get_column('tstamp')->min;
-        
-        #    my $since = "ultimo";
-        $logger->debug("Got results: Number $count since $since");
-        
-        return {
-            number => $count,
-            since  => $since,
-        };
-    }
+
+    return $count_ref;
 }
 
 sub get_tstamp_range_of_events {
@@ -492,31 +519,51 @@ sub get_tstamp_range_of_events {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;    
     
+    my $min_tstamp = 0;
+    my $max_tstamp = 0;
+
+    my $atime;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
     # Shortcut fuer Jahr
-    if ($format == '%Y'){
+    if ($format eq '%Y'){
         my $eventlog_tstamp = $self->{schema}->resultset('Eventlog')->get_column('tstamp_year');
         
-        my $min_tstamp = $eventlog_tstamp->min;
-        my $max_tstamp = $eventlog_tstamp->max;
-        
-        return {
-            min  => $min_tstamp,
-            max  => $max_tstamp,
-        };
+        $min_tstamp = $eventlog_tstamp->min;
+        $max_tstamp = $eventlog_tstamp->max;
+
+        $logger->debug("tstamp range: $min_tstamp - $max_tstamp");
     }
     else {
         # DBI: "select min(tstamp) as min_tstamp, max(tstamp) as max_tstamp from eventlog";
         my $eventlog_tstamp = $self->{schema}->resultset('Eventlog')->get_column('tstamp');
         
-        my $min_tstamp = ParseDate($eventlog_tstamp->min);
-        my $max_tstamp = ParseDate($eventlog_tstamp->max);
+        $min_tstamp = ParseDate($eventlog_tstamp->min);
+        $min_tstamp = UnixDate($min_tstamp, $format);
         
-        return {
-            min  => UnixDate($min_tstamp, $format),
-            max  => UnixDate($max_tstamp, $format),
-        };
+        $max_tstamp = ParseDate($eventlog_tstamp->max);
+        $max_tstamp = UnixDate($max_tstamp, $format);
     }
+
+    if ($config->{benchmark}){
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $logger->info("Get range in $resulttime seconds");
+    }
+
+    return {
+        min  => $min_tstamp,
+        max  => $max_tstamp,
+    };
 }
 
 sub get_number_of_queries_by_category {
@@ -537,38 +584,88 @@ sub get_number_of_queries_by_category {
 
     my $category     = exists $arg_ref->{category}
         ? $arg_ref->{category}           : undef;
+
+    my $refresh      = exists $arg_ref->{refresh}
+        ? $arg_ref->{refresh}            : 0;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     return 0 if (!$category);
 
+    my $config = OpenBib::Config->instance;    
+    
+    my $atime;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $cache_id     = "get_number_of_queries_by_category";
+
+    delete $arg_ref->{refresh} if (defined $arg_ref->{refresh});
+    
+    my $cache_subkey = encode_json $arg_ref;
+    
+    unless ($refresh){
+        my $count_ref = $self->get_result({id => $cache_id, type => 14, subkey => $cache_subkey});
+        
+        if (defined $count_ref){
+            if ($config->{benchmark}){
+                my $btime      = new Benchmark;
+                my $timeall    = timediff($btime,$atime);
+                my $resulttime = timestr($timeall,"nop");
+                $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+                $logger->info("Got number of queries in category $category in $resulttime seconds");
+            }
+            
+            return $count_ref;
+        }
+    }
+    
     # DBI: "select count(tstamp) as rowcount from querycategory";
     my $where_ref = {
-        $category => 1,
+        $category => 't',
     };
 
-    if ($year){
-        push @{$where_ref->{tstamp_year}}, { '=' => $year }; 
-    } 
+    if ($from && $to){
+        $where_ref->{-and} = [
+           tstamp => { '>=' => $from },
+           tstamp => {'<=' => $to },
+        ]; 
+    }
+    else {
+        if ($year){
+            push @{$where_ref->{tstamp_year}}, { '=' => $year }; 
+        } 
+        
+        if ($month){
+            push @{$where_ref->{tstamp_month}}, { '=' => $month } ; 
+        } 
+    }
 
-    if ($month){
-        push @{$where_ref->{tstamp_month}}, { '=' => $month } ; 
-    } 
-
-    if ($from){
-        push @{$where_ref->{tstamp}}, { '>' => $from }; 
-    } 
-
-    if ($to){
-        push @{$where_ref->{tstamp}}, { '<' => $to } ; 
-    } 
-
+    $logger->info("Getting number of queries in category $category");
+    
     my $count = $self->{schema}->resultset('Searchfield')->search($where_ref)->count;
 
-    return {
+    my $count_ref = {
 	 number => $count,
     };
+
+    $self->cache_data({id => $cache_id, type => 14, subkey => $cache_subkey, data => $count_ref});
+
+    if ($config->{benchmark}){
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $logger->info("Got number of queries in category $category in $resulttime seconds");
+    }
+
+    return $count_ref;
+    
 }
 
 sub get_ranking_of_event {
@@ -593,37 +690,70 @@ sub get_ranking_of_event {
     my $limit        = exists $arg_ref->{limit}
         ? $arg_ref->{limit}              : '';
 
-    my $sortorder    = exists $arg_ref->{sortorder}
-        ? $arg_ref->{sortorder}          : 'up';
-
+    my $refresh      = exists $arg_ref->{refresh}
+        ? $arg_ref->{refresh}            : 0;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;    
+
+    my $atime;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $cache_id     = "get_ranking_of_event";
+
+    delete $arg_ref->{refresh} if (defined $arg_ref->{refresh});
+    
+    my $cache_subkey = encode_json $arg_ref;
+    
+    unless ($refresh){
+        my $ranking_ref = $self->get_result({id => $cache_id, type => 14, subkey => $cache_subkey});
+        
+        if (defined $ranking_ref){
+            if ($config->{benchmark}){
+                my $btime      = new Benchmark;
+                my $timeall    = timediff($btime,$atime);
+                my $resulttime = timestr($timeall,"nop");
+                $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+                $logger->info("Got ranking of event in $resulttime seconds");
+            }
+            
+            return @$ranking_ref;
+        }
+    }
+    
     # DBI: "select count(content) as rowcount, content from eventlog" XXX "group by content order by rowcount DESC"
     my $where_ref     = {};
 
+    my $order_count = "count(content) desc";
+    
     my $attribute_ref = {
-        group_by => 'content',
+        group_by => ['content'],
+        order_by => \[ $order_count ],
         select => [{ count => 'content'},'content'],
         as     => ['thiscount','thiscontent'],
     };
 
-    if ($year){
-        push @{$where_ref->{tstamp_year}}, { '=' => $year }; 
-    } 
-
-    if ($month){
-        push @{$where_ref->{tstamp_month}}, { '=' => $month } ; 
-    } 
-    
-    if ($from){
-        push @{$where_ref->{tstamp}}, { '>' => $from }; 
-    } 
-
-    if ($to){
-        push @{$where_ref->{tstamp}}, { '<' => $to } ; 
-    } 
+    if ($from && $to){
+        $where_ref->{-and} = [
+           tstamp => { '>=' => $from },
+           tstamp => {'<=' => $to },
+        ]; 
+    }
+    else {
+        if ($year){
+            push @{$where_ref->{tstamp_year}}, { '=' => $year }; 
+        } 
+        
+        if ($month){
+            push @{$where_ref->{tstamp_month}}, { '=' => $month } ; 
+        } 
+    }
 
     if ($type){
         $where_ref->{type} = $type;
@@ -651,21 +781,22 @@ sub get_ranking_of_event {
                        };
     }
 
-    
-    my @sortedranking = ();
-
-    if ($sortorder eq "up"){
-        @sortedranking = sort {$b->{number} cmp $a->{number}} @ranking;
-    }
-    else {
-        @sortedranking = sort {$a->{number} cmp $b->{number}} @ranking;
-    }
-    
     if ($logger->is_debug){
-        $logger->debug(YAML::Dump(\@sortedranking));
+        $logger->debug(YAML::Dump(\@ranking));
     }
 
-    return @sortedranking;
+    $self->cache_data({id => $cache_id, type => 14, subkey => $cache_subkey, data => \@ranking});
+
+    if ($config->{benchmark}){
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $logger->info("Get ranking in $resulttime seconds");
+    }
+    
+    return @ranking;
 }
 
 sub log_query {
@@ -867,14 +998,52 @@ sub get_sequencestat_of_event {
 
     my $day          = exists $arg_ref->{day}
         ? $arg_ref->{day}                : undef;
+
+    my $refresh      = exists $arg_ref->{refresh}
+        ? $arg_ref->{refresh}            : 0;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;    
+
+    my $atime;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $cache_id     = "get_sequencestat_of_event";
+
+    delete $arg_ref->{refresh} if (defined $arg_ref->{refresh});
+    
+    my $cache_subkey = encode_json $arg_ref;
+    
+    unless ($refresh){
+        my $values_ref = $self->get_result({id => $cache_id, type => 14, subkey => $cache_subkey});
+        
+        if (defined $values_ref){
+            if ($config->{benchmark}){
+                my $btime      = new Benchmark;
+                my $timeall    = timediff($btime,$atime);
+                my $resulttime = timestr($timeall,"nop");
+                $resulttime    =~s/(\d+\.\d+) .*/$1/;
+                
+                $logger->info("Get sequencestat in $resulttime seconds");
+            }
+            
+            return $values_ref;
+        }
+    }
+    
     my @x_values = ();
     my @y_values = ();
 
     my $where_ref = {};
+
+    if ($logger->is_debug){
+        $logger->debug("Passed args ".YAML::Dump($arg_ref));
+    }
     
     if ($type){
         $where_ref->{type} = $type;
@@ -883,6 +1052,8 @@ sub get_sequencestat_of_event {
     if ($content){
         $where_ref->{content} = { $contentop => $content };
     } 
+
+    my $resultset = (exists $config->{eventlogjson_type}{$type})?'Eventlogjson':'Eventlog';
     
     my ($thisday, $thismonth, $thisyear) = (localtime)[3,4,5];
     $thisyear  += 1900;
@@ -894,34 +1065,45 @@ sub get_sequencestat_of_event {
 
     my $where_lhsql_ref = []; # Conditions for use of left hand sql functions
     my $attribute_ref   = {};
-    
-    # Monatsstatistik fuer Jahr $year
-    if ($subtype eq 'monthly'){
-        # DBI: "select month(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and year(tstamp) = ? group by month(tstamp)";
-        push @$where_lhsql_ref, \[ 'YEAR(tstamp) = ?', [ plain_value => $year ] ]; 
+
+    # Jahresuebergreifende Statistik
+    if ($subtype eq 'yearly'){
         $attribute_ref = {
-            group_by => [ { month => 'tstamp' } ],
-            select => [ { month => 'tstamp'}, { count => 'tstamp' } ],
+            group_by => [ 'tstamp_year' ],
+            order_by => [ 'tstamp_year' ],
+            select => [ 'tstamp_year', { count => 'tstamp_year' } ],
+            as     => ['x_value','y_value'],
+        };
+    }
+    # Monatsstatistik fuer Jahr $year
+    elsif ($subtype eq 'monthly'){
+        # DBI: "select month(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and year(tstamp) = ? group by month(tstamp)";
+        push @$where_lhsql_ref, \[ 'tstamp_year = ?', [ plain_value => $year ] ]; 
+        $attribute_ref = {
+            group_by => [ 'tstamp_month' ],
+            order_by => [ 'tstamp_month' ],
+            select => [ 'tstamp_month', { count => 'tstamp' } ],
             as     => ['x_value','y_value'],
         };
     }
     # Tagesstatistik fuer Monat $month
     elsif ($subtype eq 'daily'){
         # DBI: "select day(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and month(tstamp) = ? and YEAR(tstamp) = ? group by day(tstamp)";
-        push @$where_lhsql_ref, \[ 'MONTH(tstamp) = ?', [ plain_value => $month ] ]; 
-        push @$where_lhsql_ref, \[ 'YEAR(tstamp) = ?', [ plain_value => $year ] ]; # thisyear??
+        push @$where_lhsql_ref, \[ 'tstamp_month = ?', [ plain_value => $month ] ]; 
+        push @$where_lhsql_ref, \[ 'tstamp_year = ?', [ plain_value => $year ] ]; # thisyear??
         $attribute_ref = {
-            group_by => [ { day => 'tstamp' } ],
-            select => [ { day => 'tstamp'}, { count => 'tstamp' } ],
+            group_by => [ 'tstamp_day'  ],
+            order_by => [ 'tstamp_day'  ],
+            select => [ 'tstamp_day', { count => 'tstamp' } ],
             as     => ['x_value','y_value'],
         };
     }
     # Stundenstatistik fuer Tag $day
     elsif ($subtype eq 'hourly'){
         # DBI: "select hour(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and DAY(tstamp) = ? and MONTH(tstamp) = ? and YEAR(tstamp) = ? group by hour(tstamp)";
-        push @$where_lhsql_ref, \[ 'DAY(tstamp) = ?', [ plain_value => $day ] ]; 
-        push @$where_lhsql_ref, \[ 'MONTH(tstamp) = ?', [ plain_value => $month ] ]; 
-        push @$where_lhsql_ref, \[ 'YEAR(tstamp) = ?', [ plain_value => $year ] ]; # thisyear??
+        push @$where_lhsql_ref, \[ 'tstamp_day = ?', [ plain_value => $day ] ]; 
+        push @$where_lhsql_ref, \[ 'tstamp_month = ?', [ plain_value => $month ] ]; 
+        push @$where_lhsql_ref, \[ 'tstamp_year = ?', [ plain_value => $year ] ]; # thisyear??
         $attribute_ref = {
             group_by => [ { hour => 'tstamp' } ],
             select => [ { hour => 'tstamp'}, { count => 'tstamp' } ],
@@ -929,7 +1111,7 @@ sub get_sequencestat_of_event {
         };
     }
 
-    my $stats = $self->{schema}->resultset('Eventlog')->search(
+    my $stats = $self->{schema}->resultset($resultset)->search(
         {
             -and => [
                 $where_ref,
@@ -944,8 +1126,21 @@ sub get_sequencestat_of_event {
         push @y_values, $row->get_column('y_value');
     }
 
-    my $values_ref = { x_values => \@x_values,
-		       y_values => \@y_values};
+    my $values_ref = {
+        x_values => \@x_values,
+        y_values => \@y_values
+    };
+
+    $self->cache_data({id => $cache_id, type => 14, subkey => $cache_subkey, data => $values_ref});
+
+    if ($config->{benchmark}){
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $logger->info("Get sequencestat in $resulttime seconds");
+    }
 
     if ($logger->is_debug){
         $logger->debug(YAML::Dump($values_ref));

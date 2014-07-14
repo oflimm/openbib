@@ -42,8 +42,9 @@ use YAML;
 use OpenBib::Config;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
+use OpenBib::Template::Provider;
 
-my ($type,$graph,$year,$month,$day,$help,$logfile);
+my ($type,$graph,$year,$month,$day,$refresh,$help,$logfile);
 
 &GetOptions("type=s"          => \$type,
 	    "graph=s"         => \$graph,
@@ -52,6 +53,7 @@ my ($type,$graph,$year,$month,$day,$help,$logfile);
 	    "day=s"           => \$day,
 	    
             "logfile=s"       => \$logfile,
+            "refresh"         => \$refresh,
 	    "help"            => \$help
 	    );
 
@@ -62,7 +64,7 @@ if ($help){
 $logfile=($logfile)?$logfile:'/var/log/openbib/gen_graphs.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -103,7 +105,7 @@ my $template = Template->new({
 
 	    ABSOLUTE       => 1,
         }) ],
-         OUTPUT_PATH   => $config->{image_root_path}."/graph",
+         OUTPUT_PATH   => $config->{image_root_path}."/openbib/graph",
          RECURSION      => 1,
     });
 
@@ -113,9 +115,9 @@ if (! -e "$config->{tt_include_path}/graph/$graph/$type"){
 
 }
 
-if (! -e "$config->{image_root_path}/graph/$graph/$type"){
-  mkdir "$config->{image_root_path}/graph/$graph/$type";
-  $logger->info("Erstelle Verzeichnis "."$config->{image_root_path}/graph/$graph/$type");
+if (! -e "$config->{image_root_path}/openbib/graph/$graph/$type"){
+  mkdir "$config->{image_root_path}/openbib/graph/$graph/$type";
+  $logger->info("Erstelle Verzeichnis "."$config->{image_root_path}/openbib/graph/$graph/$type");
 }
 
 # TT-Data erzeugen
@@ -125,6 +127,7 @@ my $ttdata={
 	    month      => $month,
 	    day        => $day,
 
+            refresh    => $refresh,
 	    type       => $type,
 	    graph      => $graph,
 	    config     => $config,

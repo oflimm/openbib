@@ -1,7 +1,7 @@
 [% 
 
     FILTER null ;
-        result = statistics.get_sequencestat_of_event({ type => 1 , subtype => graph, month => month }) ;
+        result = statistics.get_sequencestat_of_event({ type => 10 , subtype => graph }) ;
 
 	data = [
 	     result.x_values ,
@@ -11,10 +11,10 @@
         USE my_graph = GD.Graph.bars3d(700,400);
 
         my_graph.set(
-            x_label          => 'Tag',
-            y_label          => 'Anfragen',
+            x_label          => 'Jahr',
+            y_label          => 'Aufrufe',
 	    x_label_position => 0.5,
-            title            => "Rechercheanfragen in ${month}/${year}",
+            title            => "Einzeltrefferaufrufe insgesamt",
             y_min_value      => 0,
 	    show_values      => 1,
 	    values_space     => 12,
@@ -26,7 +26,7 @@
             transparent      => 0,
         ) ; 
 
-        my_graph.plot(data).png | redirect("${graph}/${type}/${year}-${month}.png",1);
+        my_graph.plot(data).png | redirect("${graph}/${type}/titles.png",1);
       END;
 
 

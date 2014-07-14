@@ -64,7 +64,7 @@
 
 [%-
 
-  browsers = statistics.get_ranking_of_event({ type => 101, limit => 200, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ;
+  browsers = statistics.get_ranking_of_event({ type => 101, limit => 300, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ;
 
   count_msie    = 0;
   count_ff      = 0;

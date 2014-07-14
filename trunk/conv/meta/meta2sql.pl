@@ -940,62 +940,59 @@ while (my $jsonline=<IN>){
     # Medientypen erkennen und anreichern
     if ($addmediatype) {
         my $type_mult = 1;
+
+        my $have_type_ref = {};
         foreach my $item_ref (@{$fields_ref->{'4410'}}) {
+            $have_type_ref->{$item_ref->{content}} = 1;
             $type_mult++;
         }
 
+        # Monographie:
+        # Kollation 434 besetzt und enthaelt S. bzw. p.
+        if (defined $fields_ref->{'0433'}) {
+            my $is_mono   = 0;
+
+            foreach my $item_ref (@{$fields_ref->{'0433'}}) {
+                if ($item_ref->{'content'} =~m/[Sp]\./){
+                    $is_mono = 1;
+                }
+            }
+            
+            push @{$fields_ref->{'4410'}}, {
+                mult      => $type_mult++,
+                content   => 'Monographie',
+                subfield  => '',
+            } if ($is_mono && !defined $have_type_ref->{'Monographie'});
+        }   
+        
         # Zeitschriften/Serien:
         # ISSN und/oder ZDB-ID besetzt
         if (defined $fields_ref->{'0572'} || defined $fields_ref->{'0543'}) {
-            my $have_journal = 0;
-
-            foreach my $item_ref (@{$fields_ref->{'4410'}}) {
-                if ($item_ref->{'content'} eq "Zeitschrift/Serie"){
-                    $have_journal = 1;
-                }
-            }
-
             push @{$fields_ref->{'4410'}}, {
                 mult      => $type_mult++,
                 content   => 'Zeitschrift/Serie',
                 subfield  => '',
-            } unless ($have_journal);
+            } unless (defined $have_type_ref->{'Zeitschrift/Serie'});
         }   
                 
         # Aufsatz
         # HSTQuelle besetzt
         if ($fields_ref->{'0590'}) {
-            my $have_article = 0;
-            
-            foreach my $item_ref (@{$fields_ref->{'4410'}}) {
-                if ($item_ref->{'content'} eq "Aufsatz"){
-                    $have_article = 1;
-                }
-            }
-            
             push @{$fields_ref->{'4410'}}, {
                 mult      => $type_mult++,
                 content   => 'Aufsatz',
                 subfield  => '',
-            } unless ($have_article);
+            } unless (defined $have_type_ref->{'Aufsatz'});
         }   
 
         # Hochschulschrift
         # HSSvermerk besetzt
         if ($fields_ref->{'0519'}) {
-            my $have_hss = 0;
-            
-            foreach my $item_ref (@{$fields_ref->{'4410'}}) {
-                if ($item_ref->{'content'} eq "Hochschulschrift"){
-                    $have_hss = 1;
-                }
-            }
-            
             push @{$fields_ref->{'4410'}}, {
                 mult      => $type_mult++,
                 content   => 'Hochschulschrift',
                 subfield  => '',
-            } unless ($have_hss);
+            } unless (defined $have_type_ref->{'Hochschulschrift'});
         }   
 
         # Elektronisches Medium mit Online-Zugriff

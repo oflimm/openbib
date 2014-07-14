@@ -43,36 +43,70 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+<img src="/images/openbib/graph/yearly/fulltitle/titles.png" />
+
+
+[% IF year %]
+
+[%-
+
+  images = [];
+  
+  TRY ;
+   USE dir = Directory("${config.get('image_root_path')}/openbib/graph/monthly/fulltitle") ;
+    FOREACH file = dir.files ;
+     NEXT IF NOT file.name.match("${year}.png") ;
+     images.push("/images/openbib/graph/monthly/fulltitle/${file.name}");
+    END;
+   CATCH Directory ;
+    error = 1;
+   END ;
+-%]
+
+[%  IF images.size > 0 %]
 <table width="100%">
 <tr><th>Entwicklung der Einzeltrefferaufrufe nach Monaten eines Jahres</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
-[% TRY %]
-[%   USE dir = Directory("${config.get('image_root_path')}/graph/monthly/fulltitle") %]
-[%   FOREACH file = dir.files %]
-<img src="/images/openbib/graph/monthly/fulltitle/[% file.name %]" />
-[%   END %]
-[% CATCH Directory %] 
-Es existieren keine entsprechenden Grafiken.
-[% END %]
+[%    FOREACH filename IN images %]
+<img src="[% filename %]" />
+[%    END %]
 </td></td>
 </table>
+[%  END %]
+[% END %]
 
+
+[% IF month %]
 <p />
 
+[%-
+
+  images = [];
+  
+  TRY ;
+   USE dir = Directory("${config.get('image_root_path')}/openbib/graph/daily/fulltitle") ;
+    FOREACH file = dir.files ;
+     NEXT IF NOT file.name.match("${year}-${month}") ;
+     images.push("/images/openbib/graph/daily/fulltitle/${file.name}");
+    END;
+   CATCH Directory ;
+    error = 1;
+   END ;
+-%]
+
+[%  IF images.size > 0 %]
 <table width="100%">
 <tr><th>Entwicklung der Einzeltrefferaufrufe nach Tagen eines Monats</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
-[% TRY %]
-[%   USE dir = Directory("${config.get('image_root_path')}/graph/daily/fulltitle") %]
-[%   FOREACH file = dir.files %]
-<img src="/images/openbib/graph/daily/fulltitle/[% file.name %]" />
+[%   FOREACH filename IN images %]
+<img src="[% filename %]" />
 <p />
 [%   END %]
-[% CATCH Directory %] 
-Es existieren keine entsprechenden Grafiken.
-[% END %]
 </td></td>
 </table>
+[%  END %]
+[% END %]
+
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

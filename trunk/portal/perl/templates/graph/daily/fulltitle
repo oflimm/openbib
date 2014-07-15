@@ -8,7 +8,7 @@
 	     result.y_values ,
 	] ;
 	
-        USE my_graph = GD.Graph.bars3d();
+        USE my_graph = GD.Graph.bars3d(700,400);
 
         my_graph.set(
 

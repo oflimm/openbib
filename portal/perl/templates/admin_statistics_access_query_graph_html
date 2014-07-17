@@ -93,7 +93,7 @@
    END ;
 -%]
 
-
+[% USE dumper; dumper.dump(images)%]
 [%  IF images.size > 0 %]
 <table width="100%">
 <tr><th>Entwicklung der Suchanfragen nach Tagen eines Monats</th></tr>

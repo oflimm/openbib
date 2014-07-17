@@ -142,6 +142,8 @@ sub show_graph {
 
     # CGI Args
     my $year       = $query->param('year')       || '';
+    my $month      = $query->param('month')      || '';
+    my $day        = $query->param('month')      || '';
     
     if (!$self->authorization_successful){
         $self->print_authorization_error();
@@ -153,6 +155,8 @@ sub show_graph {
     # TT-Data erzeugen
     my $ttdata={
         year       => $year,
+        month      => $month,
+        day        => $day,
         statistics => $statistics,
     };
 

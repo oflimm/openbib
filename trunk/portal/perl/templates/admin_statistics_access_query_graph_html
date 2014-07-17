@@ -85,7 +85,7 @@
   TRY ;
    USE dir = Directory("${config.get('image_root_path')}/openbib/graph/daily/queries") ;
     FOREACH file = dir.files ;
-     NEXT IF NOT file.name.match("${year}-[0]*${month}") ;
+     NEXT IF NOT file.name.match("${year}-0*${month}") ;
      images.push("/images/openbib/graph/daily/queries/${file.name}");
     END;
    CATCH Directory ;

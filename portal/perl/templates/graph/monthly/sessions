@@ -1,7 +1,7 @@
 [% 
 
     FILTER null ;
-        result = statistics.get_sequencestat_of_event({ type => 102 , subtype => graph, year => year }) ;
+        result = statistics.get_sequencestat_of_event({ type => 102 , subtype => graph, year => year, refresh => refresh }) ;
 
 	data = [
 	     result.x_values ,

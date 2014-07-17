@@ -1,7 +1,7 @@
 [% 
 
     FILTER null ;
-        result = statistics.get_sequencestat_of_event({ type => 1 , subtype => graph, month => month }) ;
+        result = statistics.get_sequencestat_of_event({ type => 1 , subtype => graph, month => month, refresh => refresh }) ;
 
 	data = [
 	     result.x_values ,

@@ -1077,8 +1077,12 @@ sub get_sequencestat_of_event {
     }
     # Monatsstatistik fuer Jahr $year
     elsif ($subtype eq 'monthly'){
+        my $tstamp_from = sprintf "%d-01-01 00:00:00", $year;
+        my $tstamp_to = sprintf "%d-01-01 00:00:00", $year+1;
+
         # DBI: "select month(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and year(tstamp) = ? group by month(tstamp)";
-        push @$where_lhsql_ref, \[ 'tstamp_year = ?', [ plain_value => $year ] ]; 
+        push @$where_lhsql_ref, \[ 'tstamp < ?', [ plain_value => $tstamp_to ] ];     
+        push @$where_lhsql_ref, \[ 'tstamp >= ?', [ plain_value => $tstamp_from ] ]; 
         $attribute_ref = {
             group_by => [ 'tstamp_month' ],
             order_by => [ 'tstamp_month' ],
@@ -1088,9 +1092,20 @@ sub get_sequencestat_of_event {
     }
     # Tagesstatistik fuer Monat $month
     elsif ($subtype eq 'daily'){
+        my $month_next_month = $month+1;
+        my $month_next_year  = $year;
+
+        if ($month_next_month > 12){
+          $month_next_month = 1;
+          $month_next_year  = $year+1;      
+        }
+
+        my $tstamp_from = sprintf "%d-%02d-%02d 00:00:00", $year,$month;
+        my $tstamp_to = sprintf "%d-%02d-%02d 23:59:59", $month_next_year,$month_next_month;
+
         # DBI: "select day(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and month(tstamp) = ? and YEAR(tstamp) = ? group by day(tstamp)";
-        push @$where_lhsql_ref, \[ 'tstamp_month = ?', [ plain_value => $month ] ]; 
-        push @$where_lhsql_ref, \[ 'tstamp_year = ?', [ plain_value => $year ] ]; # thisyear??
+        push @$where_lhsql_ref, \[ 'tstamp < ?', [ plain_value => $tstamp_to ] ];     
+        push @$where_lhsql_ref, \[ 'tstamp >= ?', [ plain_value => $tstamp_from ] ]; 
         $attribute_ref = {
             group_by => [ 'tstamp_day'  ],
             order_by => [ 'tstamp_day'  ],
@@ -1100,10 +1115,12 @@ sub get_sequencestat_of_event {
     }
     # Stundenstatistik fuer Tag $day
     elsif ($subtype eq 'hourly'){
+        my $tstamp_from = sprintf "%d-%02d-%02d 00:00:00", $year,$month,$day;
+        my $tstamp_to = sprintf "%d-%02d-%02d 23:59:59", $year,$month,$day;
+
         # DBI: "select hour(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and DAY(tstamp) = ? and MONTH(tstamp) = ? and YEAR(tstamp) = ? group by hour(tstamp)";
-        push @$where_lhsql_ref, \[ 'tstamp_day = ?', [ plain_value => $day ] ]; 
-        push @$where_lhsql_ref, \[ 'tstamp_month = ?', [ plain_value => $month ] ]; 
-        push @$where_lhsql_ref, \[ 'tstamp_year = ?', [ plain_value => $year ] ]; # thisyear??
+        push @$where_lhsql_ref, \[ 'tstamp <= ?', [ plain_value => $tstamp_to ] ];     
+        push @$where_lhsql_ref, \[ 'tstamp >= ?', [ plain_value => $tstamp_from ] ]; 
         $attribute_ref = {
             group_by => [ { hour => 'tstamp' } ],
             select => [ { hour => 'tstamp'}, { count => 'tstamp' } ],
@@ -1113,10 +1130,8 @@ sub get_sequencestat_of_event {
 
     my $stats = $self->{schema}->resultset($resultset)->search(
         {
-            -and => [
-                $where_ref,
-                $where_lhsql_ref,
-            ],
+            -and => $where_lhsql_ref,
+            %$where_ref,
         },
         $attribute_ref,
     );

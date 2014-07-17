@@ -2,7 +2,7 @@
 [% 
 
     FILTER null ;
-        result = statistics.get_sequencestat_of_event({ type => 100 , subtype => graph, content => view, month => month }) ;
+        result = statistics.get_sequencestat_of_event({ type => 100 , subtype => graph, content => view, month => month, refresh => refresh }) ;
 
 	data = [
 	     result.x_values ,

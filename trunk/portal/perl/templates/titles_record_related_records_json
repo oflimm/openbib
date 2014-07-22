@@ -1,0 +1,15 @@
+[%-
+
+related_records_output = [];
+
+FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records ;
+  item = related_record.get_fields ;
+  item.delete('id','database');
+
+  related_records_output.push({ fields => item, database => related_record.database, id => related_record.id, dbdesc => dbinfo.get('dbnames').${related_record.database}.short });
+END ;
+
+to_json(related_records_output);
+
+
+-%]

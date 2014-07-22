@@ -100,9 +100,17 @@ sub _new_instance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
     my $self = { };
 
     bless ($self, $class);
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
 
     $self->connectDB();
     $self->connectMemcached();
@@ -117,6 +125,12 @@ sub _new_instance {
     elsif (defined $id){
          $self->{ID} = $id ;
          $logger->debug("Got UserID $id - NO session assiziated");
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for is ".timestr($timeall));
     }
 
     return $self;

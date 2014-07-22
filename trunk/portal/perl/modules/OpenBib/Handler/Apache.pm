@@ -101,12 +101,39 @@ sub cgiapp_init {
     }
 
     my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage -1 is ".timestr($timeall));
+    }
+
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 0 is ".timestr($timeall));
+    }
+    
     my $dbinfo       = OpenBib::Config::DatabaseInfoTable->instance;
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 0.1 is ".timestr($timeall));
+    }
+
     my $locinfo      = OpenBib::Config::LocationInfoTable->instance;
     my $useragent    = $r->headers_in->get('User-Agent');
     my $browser      = HTTP::BrowserDetect->new($useragent);
 
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 0.2 is ".timestr($timeall));
+    }
+    
     $self->param('config',$config);
     $self->param('session',$session);
     $self->param('user',$user);

@@ -65,10 +65,13 @@ sub setup {
         'show_collection'         => 'show_collection',        
         'show_record'             => 'show_record',
         'show_popular'            => 'show_popular',
-        'show_dbis_recommendations' => 'show_dbis_recommendations',
-        'show_recent'             => 'show_recent',
-        'show_availability'       => 'show_availability',
-        'redirect_to_bibsonomy'   => 'redirect_to_bibsonomy',
+        'show_dbis_recommendations'  => 'show_dbis_recommendations',
+        'show_recent'                => 'show_recent',
+        'show_availability'          => 'show_availability',
+        'show_record_related_records'       => 'show_record_related_records',
+        'show_record_similar_records'       => 'show_record_similar_records',
+        'show_record_same_records'          => 'show_record_same_records',
+        'redirect_to_bibsonomy'      => 'redirect_to_bibsonomy',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -576,6 +579,141 @@ sub show_availability {
             $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
             return;
         }
+    }
+
+    return;
+}
+
+sub show_record_related_records {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $titleid        = $self->param('titleid');
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');
+    my $dbinfotable    = $self->param('dbinfo');
+
+    if ($database && $titleid ){ # Valide Informationen etc.
+        $logger->debug("ID: $titleid - DB: $database");
+        
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
+
+        my $sysprofile= $config->get_profilename_of_view($view);
+
+        $record->enrich_related_records({ profilename => $sysprofile });
+
+        my $related_records = $record->get_related_records;
+
+        # TT-Data erzeugen
+        my $ttdata={
+            database        => $database, # Zwingend wegen common/subtemplate
+            record          => $record,
+            titleid         => $titleid,
+            related_records => $related_records,
+        };
+
+        $self->print_page($config->{tt_titles_record_related_records_tname},$ttdata);
+        return;
+    }
+
+    return;
+}
+
+sub show_record_similar_records {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $titleid        = $self->param('titleid');
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');
+    my $dbinfotable    = $self->param('dbinfo');
+
+    if ($database && $titleid ){ # Valide Informationen etc.
+        $logger->debug("ID: $titleid - DB: $database");
+        
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
+
+        my $sysprofile= $config->get_profilename_of_view($view);
+
+        $record->enrich_similar_records({ profilename => $sysprofile });
+
+        my $similar_records = $record->get_similar_records;
+
+        # TT-Data erzeugen
+        my $ttdata={
+            database        => $database, # Zwingend wegen common/subtemplate
+            record          => $record,
+            titleid         => $titleid,
+            similar_records => $similar_records,
+        };
+
+        $self->print_page($config->{tt_titles_record_similar_records_tname},$ttdata);
+        return;
+    }
+
+    return;
+}
+
+sub show_record_same_records {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $titleid        = $self->param('titleid');
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');
+    my $dbinfotable    = $self->param('dbinfo');
+
+    if ($database && $titleid ){ # Valide Informationen etc.
+        $logger->debug("ID: $titleid - DB: $database");
+        
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
+
+        my $sysprofile= $config->get_profilename_of_view($view);
+
+        $record->enrich_same_records({ profilename => $sysprofile });
+
+        my $same_records = $record->get_same_records;
+
+        # TT-Data erzeugen
+        my $ttdata={
+            database        => $database, # Zwingend wegen common/subtemplate
+            record          => $record,
+            titleid         => $titleid,
+            same_records    => $same_records,
+        };
+
+        $self->print_page($config->{tt_titles_record_same_records_tname},$ttdata);
+        return;
     }
 
     return;

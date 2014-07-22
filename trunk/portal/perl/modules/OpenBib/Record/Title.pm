@@ -145,6 +145,8 @@ sub load_full_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
     # (Re-)Initialisierung
     delete $self->{_fields}         if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
@@ -153,6 +155,12 @@ sub load_full_record {
     my $fields_ref   = {};
 
     $self->{id      }        = $id;
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
 
     unless (defined $self->{id} && defined $self->{database}){
         ($self->{_fields},$self->{_holding},$self->{_circulation})=({},(),[]);
@@ -172,6 +180,12 @@ sub load_full_record {
     $self->set_fields($record->get_fields);
     $self->set_holding($record->get_holding);
     $self->load_circulation;
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for is ".timestr($timeall));
+    }
     
     return $self;
 }
@@ -268,9 +282,19 @@ sub enrich_content {
         }
     }
 
-    my @isbn_refs = ();
-    push @isbn_refs, @{$self->get_field({field => 'T0540'})} if ($self->has_field('T0540'));
-    push @isbn_refs, @{$self->get_field({field => 'T0553'})} if ($self->has_field('T0553'));
+    return $self unless ($self->{database} && $self->{id});
+    
+    # ISBNs aus Anreicherungsdatenbank als subquery
+    my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['isbn'],
+            group_by => ['isbn'],
+        }
+    );
     
     my $bibkey    = $self->get_field({field => 'T5050', mult => 1})  if ($self->has_field('T5050'));
     
@@ -278,7 +302,6 @@ sub enrich_content {
     push @issn_refs, @{$self->get_field({field => 'T0543'})} if ($self->has_field('T0543'));                                           
     
     if ($logger->is_debug){
-        $logger->debug("Enrichment ISBN's ".YAML::Dump(\@isbn_refs));
         $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
     }
     
@@ -286,8 +309,7 @@ sub enrich_content {
     
     my $mult_map_ref = {};
     
-
-    if (@isbn_refs){
+    if ($this_isbns){
         my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
             ($viewname)?$config->get_viewdbs($viewname):();
 
@@ -301,42 +323,13 @@ sub enrich_content {
         if ($logger->is_debug){
             $logger->debug("Filtern Profile: $profilename / View: $viewname nach Datenbanken ".YAML::Dump(\@filter_databases));
         }
-        
-        my @isbn_refs_tmp = ();
-        
-        # Normierung auf ISBN-13
-        foreach my $isbn_ref (@isbn_refs){
-            my $thisisbn = $isbn_ref->{content};
-            
-            # Alternative ISBN zur Rechercheanrei
-            my $isbn     = Business::ISBN->new($thisisbn);
-            
-            if (defined $isbn && $isbn->is_valid){
-                $thisisbn = $isbn->as_isbn13->as_string;
-            }
-            
-            push @isbn_refs_tmp, OpenBib::Common::Util::normalize({
-                field => 'T0540',
-                content  => $thisisbn,
-            });
-            
-        }
-        
-        # Dubletten Bereinigen
-        my %seen_isbns = ();
-        
-        @isbn_refs = grep { ! $seen_isbns{$_} ++ } @isbn_refs_tmp;
-        
-        if ($logger->is_debug){
-            $logger->debug("Relevante ISBNs des Titels fuer die Anreicherung: ".YAML::Dump(\@isbn_refs));
-        }       
-
+                
         # Anreicherung der Normdaten
         {
             # DBI "select distinct category,content from normdata where isbn=? order by category,indicator";
             my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByIsbn')->search_rs(
                 {
-                    isbn => \@isbn_refs,
+                    isbn    => { -in => $this_isbns->as_query },
                 },
                 {
                     group_by => ['isbn','field','content','origin','subfield'],
@@ -344,12 +337,12 @@ sub enrich_content {
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
-
+            
             while (my $item = $enriched_contents->next) {
                 my $field      = "E".sprintf "%04d",$item->{field};
                 my $subfield   =                    $item->{subfield};
                 my $content    =                    $item->{content};
-
+                
                 if ($seen_content{$content}) {
                     next;
                 }
@@ -372,263 +365,6 @@ sub enrich_content {
             $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten ist ".timestr($timeall));
         }
         
-        # Anreicherung mit 'gleichen' (=gleiche ISBN) Titeln aus anderen Katalogen
-        {
-            # Same Records via Backend sind Grundlage.               
-            my $same_recordlist = $self->get_same_records;
-            
-            if ($logger->is_debug){
-                $logger->debug("Same records via backend ".YAML::Dump($same_recordlist));
-            }
-
-            my $where_ref = {
-                isbn    => \@isbn_refs,
-                titleid => {'!=' => $self->{id} },
-                dbname  => {'!=' => $self->{database}}
-            };
-            
-            if (@filter_databases){
-                $where_ref = {
-                    isbn    => \@isbn_refs,
-                    titleid => {'!=' => $self->{id} },
-                    -and => [
-                        {
-                            dbname  => {'!=' => $self->{database}}
-                        },
-                        {
-                            dbname => \@filter_databases,
-                        },
-                    ]
-                };
-            }
-            
-            # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
-            my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
-                $where_ref,
-                {
-                    group_by => ['titleid','dbname','isbn','tstamp','titlecache'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                }
-            );
-
-            if ($logger->is_debug){            
-                $logger->debug("Found ".($same_titles->count)." records");
-            }
-            
-            while (my $item = $same_titles->next) {
-                my $id         = $item->{titleid};
-                my $database   = $item->{dbname};
-                my $titlecache = $item->{titlecache};
-                
-                if ($titlecache){
-                    $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
-                }
-                else {
-                    $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
-                }
-            }
-
-            if ($config->{benchmark}) {
-                $btime=new Benchmark;
-                $timeall=timediff($btime,$atime);
-                $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles w/o load_brief_records ist ".timestr($timeall));
-            }
-
-            $self->set_same_records($same_recordlist);
-        }
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles ist ".timestr($timeall));
-        }
-        
-        # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
-        {
-            my $similar_recordlist = $self->get_similar_records;
-            
-            if ($logger->is_debug){
-                $logger->debug("Similar records via backend ".YAML::Dump($similar_recordlist));
-            }   
-            
-            # Alle Werke zu gegebenen ISBNs bestimmen
-            my $works = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
-                {
-                    isbn    => \@isbn_refs,,
-                },
-                {
-                    columns => ['workid'],
-                    group_by => ['workid'],
-                }
-            );
-            
-            my $similar_isbns = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
-                {
-                    isbn      => { '!=' => \@isbn_refs },
-                    workid    => { -in => $works->as_query },
-                },
-                {
-                    columns => ['isbn'],
-                    group_by => ['isbn'],
-                }
-            );
-            
-            my $where_ref = {
-                isbn    => { -in => $similar_isbns->as_query },
-            };
-            
-            if (@filter_databases){
-                $where_ref = {
-                    isbn    => { -in => $similar_isbns->as_query },                            
-                    dbname => \@filter_databases,
-                };
-            }
-            
-            my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
-                $where_ref,
-                {
-                    group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                }
-            );
-            
-            while (my $titleitem = $titles->next) {
-                my $id         = $titleitem->{titleid};
-                my $database   = $titleitem->{dbname};
-                my $titlecache = $titleitem->{titlecache};
-                
-                $logger->debug("Found Title with id $id in database $database");
-
-                if ($titlecache){
-                    $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
-                }
-                else {
-                    $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
-                }
-            }
-
-            if ($config->{benchmark}) {
-                $btime=new Benchmark;
-                $timeall=timediff($btime,$atime);
-                $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles w/o load_brief_records ist ".timestr($timeall));
-            }
-
-            $self->set_similar_records($similar_recordlist);
-        }
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles ist ".timestr($timeall));
-        }
-        
-        # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
-        {
-            my $ctime;
-            my $dtime;
-            if ($config->{benchmark}) {
-                $ctime=new Benchmark;
-            }
-
-            my $related_recordlist = $self->get_related_records;
-            
-            if ($logger->is_debug){
-                $logger->debug("Related records via backend ".YAML::Dump($related_recordlist));
-            }
-            
-            my $titles_found_ref = {}; # Ein Titel kann ueber verschiedenen ISBNs erreicht werden. Das laesst sich nicht trivial via SQL loesen, daher haendisch                    
-            
-            my $related_ids = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
-                {
-                    isbn    => \@isbn_refs,
-                },
-                {
-                    columns => ['id'],
-                    group_by => ['id'],
-                }
-            );
-
-            if ($logger->is_debug){                        
-                $logger->debug("Found ".($related_ids->count)." related isbns");
-            }
-            
-            my $related_isbns = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
-                {
-                    isbn      => { '!=' => \@isbn_refs },
-                    id    => { -in => $related_ids->as_query },
-                },
-                {
-                    columns => ['isbn'],
-                    group_by => ['isbn'],
-                }
-            );
-
-            if ($logger->is_debug){            
-                $logger->debug("Found ".($related_isbns->count)." isbns");
-            }
-            
-            my $where_ref = {
-                isbn    => { -in => $related_isbns->as_query },
-            };
-            
-            if (@filter_databases){
-                $where_ref = {
-                    isbn    => { -in => $related_isbns->as_query },
-                    dbname => \@filter_databases,
-                };
-            }
-            
-            my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
-                $where_ref,
-                {
-                    group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                    rows => 20,
-                }
-            );
-            
-            while (my $titleitem = $titles->next) {
-                my $id         = $titleitem->{titleid};
-                my $database   = $titleitem->{dbname};
-                my $titlecache = $titleitem->{titlecache};
-                
-                next if (defined $titles_found_ref->{"$database:$id"});
-
-                my $ctime;
-                my $dtime;
-                if ($config->{benchmark}) {
-                    $ctime=new Benchmark;
-                }
-
-                if ($titlecache){
-                    $logger->debug("Record from cache");
-                    $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
-                }
-                else {
-                    $logger->debug("Record from database");
-                    $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
-                }
-
-                if ($config->{benchmark}) {
-                    $dtime=new Benchmark;
-                    $timeall=timediff($dtime,$ctime);
-                    $logger->info("Zeit fuer : Bestimmung von Kurztitel-Information des Titels ist ".timestr($timeall));
-                }
-
-                $titles_found_ref->{"$database:$id"} = 1;
-            }
-
-            if ($config->{benchmark}) {
-                $btime=new Benchmark;
-                $timeall=timediff($btime,$atime);
-                $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles/Related Titles w/o load_brief_records ist ".timestr($timeall));
-            }
-
-            $related_recordlist->sort({order => 'up', type => 'title'});
-            
-            $self->set_related_records($related_recordlist);
-            
-        }
     }
     elsif ($bibkey){
         # DBI "select category,content from normdata where isbn=? order by category,indicator";
@@ -720,8 +456,6 @@ sub enrich_content {
                 content    => $content,
             });
         }
-        
-        
     }
     
     if ($config->{benchmark}) {
@@ -736,6 +470,437 @@ sub enrich_content {
     return;
 }
 
+sub enrich_related_records {
+    my ($self, $arg_ref) = @_;
+
+    my $profilename = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}        : undef;
+    
+    my $viewname = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = OpenBib::Config->instance;
+
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    if (!exists $self->{enrich_schema}){
+        $self->connectEnrichmentDB;
+        if ($logger->is_debug){            
+            $self->{enrich_schema}->storage->debug(1);
+        }
+    }
+
+    my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
+        ($viewname)?$config->get_viewdbs($viewname):();
+
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
+    }
+
+    return $self unless ($self->{database} && $self->{id});
+    
+    # ISBNs aus Anreicherungsdatenbank als subquery
+    my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['isbn'],
+            group_by => ['isbn'],
+        }
+    );
+    
+    
+    # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
+    {
+        my $ctime;
+        my $dtime;
+        if ($config->{benchmark}) {
+            $ctime=new Benchmark;
+        }
+        
+        my $related_recordlist = $self->get_related_records;
+        
+        if ($logger->is_debug){
+            $logger->debug("Related records via backend ".YAML::Dump($related_recordlist));
+        }
+        
+        my $titles_found_ref = {}; # Ein Titel kann ueber verschiedenen ISBNs erreicht werden. Das laesst sich nicht trivial via SQL loesen, daher haendisch                    
+        
+        my $related_ids = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
+            {
+                isbn    => { -in => $this_isbns->as_query },
+            },
+            {
+                columns => ['id'],
+                group_by => ['id'],
+            }
+        );
+        
+        if ($logger->is_debug){                        
+            $logger->debug("Found ".($related_ids->count)." related isbns");
+        }
+        
+        my $related_isbns = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
+            {
+                isbn      => { -not_in => $this_isbns->as_query },
+                id        => { -in => $related_ids->as_query },
+            },
+            {
+                columns => ['isbn'],
+                group_by => ['isbn'],
+            }
+        );
+        
+        if ($logger->is_debug){            
+            $logger->debug("Found ".($related_isbns->count)." isbns");
+        }
+        
+        my $where_ref = {
+            isbn    => { -in => $related_isbns->as_query },
+        };
+            
+        if (@filter_databases){
+            $where_ref = {
+                isbn    => { -in => $related_isbns->as_query },
+                dbname => \@filter_databases,
+            };
+        }
+        
+        my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+            $where_ref,
+            {
+                group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                rows => 20,
+            }
+        );
+        
+        while (my $titleitem = $titles->next) {
+            my $id         = $titleitem->{titleid};
+            my $database   = $titleitem->{dbname};
+            my $titlecache = $titleitem->{titlecache};
+            
+            next if (defined $titles_found_ref->{"$database:$id"});
+            
+            my $ctime;
+            my $dtime;
+            if ($config->{benchmark}) {
+                $ctime=new Benchmark;
+            }
+            
+            if ($titlecache){
+                $logger->debug("Record from cache");
+                $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+            }
+            else {
+                $logger->debug("Record from database");
+                    $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+            }
+            
+            if ($config->{benchmark}) {
+                $dtime=new Benchmark;
+                $timeall=timediff($dtime,$ctime);
+                    $logger->info("Zeit fuer : Bestimmung von Kurztitel-Information des Titels ist ".timestr($timeall));
+            }
+            
+            $titles_found_ref->{"$database:$id"} = 1;
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles/Related Titles w/o load_brief_records ist ".timestr($timeall));
+        }
+        
+        $related_recordlist->sort({order => 'up', type => 'title'});
+        
+        $self->set_related_records($related_recordlist);
+
+    }
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen ist ".timestr($timeall));
+        undef $atime;
+        undef $btime;
+        undef $timeall;
+    }
+
+    return $self;
+}
+
+sub enrich_similar_records {
+    my ($self, $arg_ref) = @_;
+
+    my $profilename = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}        : undef;
+    
+    my $viewname = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = OpenBib::Config->instance;
+
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    if (!exists $self->{enrich_schema}){
+        $self->connectEnrichmentDB;
+        if ($logger->is_debug){            
+            $self->{enrich_schema}->storage->debug(1);
+        }
+    }
+
+    my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
+        ($viewname)?$config->get_viewdbs($viewname):();
+
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
+    }
+
+    return $self unless ($self->{database} && $self->{id});
+    
+    # ISBNs aus Anreicherungsdatenbank als subquery
+    my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['isbn'],
+            group_by => ['isbn'],
+        }
+    );
+    
+    
+    # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
+    {
+        my $similar_recordlist = $self->get_similar_records;
+        
+        if ($logger->is_debug){
+            $logger->debug("Similar records via backend ".YAML::Dump($similar_recordlist));
+        }   
+        
+        # Alle Werke zu gegebenen ISBNs bestimmen
+        my $works = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
+            {
+                isbn    => { -in => $this_isbns->as_query },
+            },
+            {
+                columns => ['workid'],
+                group_by => ['workid'],
+            }
+        );
+        
+        my $similar_isbns = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
+            {
+                isbn      => { -not_in => $this_isbns->as_query },
+                workid    => { -in => $works->as_query },
+            },
+            {
+                columns => ['isbn'],
+                group_by => ['isbn'],
+            }
+        );
+            
+        my $where_ref = {
+            isbn    => { -in => $similar_isbns->as_query },
+        };
+        
+        if (@filter_databases){
+            $where_ref = {
+                isbn    => { -in => $similar_isbns->as_query },                            
+                dbname => \@filter_databases,
+            };
+        }
+        
+        my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+            $where_ref,
+            {
+                group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+        
+        while (my $titleitem = $titles->next) {
+            my $id         = $titleitem->{titleid};
+            my $database   = $titleitem->{dbname};
+            my $titlecache = $titleitem->{titlecache};
+            
+            $logger->debug("Found Title with id $id in database $database");
+            
+            if ($titlecache){
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+            }
+            else {
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+            }
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles w/o load_brief_records ist ".timestr($timeall));
+        }
+        
+        $self->set_similar_records($similar_recordlist);
+    }
+        
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles ist ".timestr($timeall));
+    }
+
+    return $self;
+}
+
+sub enrich_same_records {
+    my ($self, $arg_ref) = @_;
+
+    my $profilename = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}        : undef;
+    
+    my $viewname = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = OpenBib::Config->instance;
+
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    if (!exists $self->{enrich_schema}){
+        $self->connectEnrichmentDB;
+        if ($logger->is_debug){            
+            $self->{enrich_schema}->storage->debug(1);
+        }
+    }
+
+    my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
+        ($viewname)?$config->get_viewdbs($viewname):();
+
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
+    }
+
+    return $self unless ($self->{database} && $self->{id});
+    
+    # ISBNs aus Anreicherungsdatenbank als subquery
+    my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['isbn'],
+            group_by => ['isbn'],
+        }
+    );
+    
+    # Anreicherung mit 'gleichen' (=gleiche ISBN) Titeln aus anderen Katalogen
+    {
+        # Same Records via Backend sind Grundlage.               
+        my $same_recordlist = $self->get_same_records;
+        
+        if ($logger->is_debug){
+            $logger->debug("Same records via backend ".YAML::Dump($same_recordlist));
+        }
+        
+        my $where_ref = {
+            isbn    => { -in => $this_isbns->as_query },
+            titleid => {'!=' => $self->{id} },
+            dbname  => {'!=' => $self->{database}}
+        };
+            
+        if (@filter_databases){
+            $where_ref = {
+                isbn    => { -in => $this_isbns->as_query },
+                titleid => {'!=' => $self->{id} },
+                -and => [
+                    {
+                        dbname  => {'!=' => $self->{database}}
+                    },
+                    {
+                        dbname => \@filter_databases,
+                    },
+                ]
+            };
+        }
+        
+        # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
+        my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+            $where_ref,
+            {
+                group_by => ['titleid','dbname','isbn','tstamp','titlecache'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+        
+        if ($logger->is_debug){            
+            $logger->debug("Found ".($same_titles->count)." records");
+        }
+        
+        while (my $item = $same_titles->next) {
+            my $id         = $item->{titleid};
+            my $database   = $item->{dbname};
+            my $titlecache = $item->{titlecache};
+            
+            if ($titlecache){
+                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+            }
+            else {
+                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+            }
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles w/o load_brief_records ist ".timestr($timeall));
+        }
+        
+        $self->set_same_records($same_recordlist);
+    }
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles ist ".timestr($timeall));
+    }
+
+    return $self;
+}
+
 sub load_circulation {
     my ($self,$arg_ref) = @_;
 
@@ -748,9 +913,17 @@ sub load_circulation {
     my $logger = get_logger();
 
     my $config        = OpenBib::Config->instance;
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
+    
     # Ausleihinformationen der Exemplare
     my $circulation_ref = [];
     {
@@ -823,6 +996,12 @@ sub load_circulation {
     }
 
     $self->set_circulation($circulation_ref);
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for is ".timestr($timeall));
+    }
 
     return $self;
 }

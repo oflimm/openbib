@@ -1,0 +1,23 @@
+[% IF related_records.get_size > 0 %]
+<ul>
+[% FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records %]
+[% item = related_record.get_fields %]
+[% related_url = "${path_prefix}/${config.get('databases_loc')}/id/${related_record.database}/${config.get('titles_loc')}/id/${related_record.id}.html?l=${lang}" %]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Edition konstruieren %]
+[%- edition   = item.${'T0403'}.first.content -%]
+<li><a href="[% related_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfo.get('dbnames').${related_record.database}.short %]</li>
+[% END %]
+</ul>
+<p/>
+[% ELSE %]
+<script>
+    $(".ob-related").hide();
+</script>
+[% END %]

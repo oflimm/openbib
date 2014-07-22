@@ -56,7 +56,7 @@
         <div class="ym-cbox" class="ym-clearfix">
 
 [% IF similar_records.get_size > 0 %]
-[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen") %]:
+<h2>[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen") %]</h2>
 <p />
 <ol>
 [% FOREACH similar_record IN similar_records.get_records %]

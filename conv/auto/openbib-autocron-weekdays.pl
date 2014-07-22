@@ -81,6 +81,8 @@ my $blacklist_ref = {
     'econbiz' => 1,
     'edz' => 1,
     'inst001' => 1,
+    'inst103' => 1,
+    'inst103master' => 1,
     'inst105' => 1,
     'inst105master' => 1,
     'inst137' => 1,
@@ -246,15 +248,15 @@ sub threadA {
     
     ##############################
 
-    $logger->info("### Master: inst105master");
+    $logger->info("### Master: VWL-Masterkataloge");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['inst105master'] });
+    autoconvert({ updatemaster => $updatemaster, databases => ['inst103master','inst105master'] });
 
     ##############################
+
+    $logger->info("### Aufgesplittete Kataloge aus VWL-Masterkatalogen");
     
-    $logger->info("### Aufgesplittete Kataloge inst105master");
-    
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst105'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst103','inst105'] });
     
     ##############################
 

@@ -1,0 +1,15 @@
+[%-
+
+same_records_output = [];
+
+FOREACH same_record IN same_records.sort({order = 'asc', type = 'title'}).get_records ;
+  item = same_record.get_fields ;
+  item.delete('id','database');
+
+  same_records_output.push({ fields => item, database => same_record.database, id => same_record.id, dbdesc => dbinfo.get('dbnames').${same_record.database}.short });
+END ;
+
+to_json(same_records_output);
+
+
+-%]

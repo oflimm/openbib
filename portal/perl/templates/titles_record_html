@@ -17,9 +17,8 @@
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
   circulation     = record.get_circulation ; 
-  same_records    = record.get_same_records;
-  similar_records = record.get_similar_records;
-  related_records = record.get_related_records;
+  same_records    = record.enrich_same_records({ profilename => sysprofile }).get_same_records;
+  similar_records = record.enrich_similar_records({ profilename => sysprofile }).get_similar_records;
 
   IF record.record_exists;
     record_exists = 1;
@@ -229,12 +228,8 @@ $(document).ready(function(){
 [%   IF journaltocs_feed %]
 <li><a href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
 [%   END %]
-[%   IF same_records.get_size > 0 %]
-<li><a href="#ob-same_records">[% msg.maketext("In anderen Katalogen") %]</a></li>
-[%   END %]
-[%   IF similar_records.get_size > 0 %]
-<li><a href="#ob-similar_records">[% msg.maketext("Andere Ausgaben") %]</a></li>
-[%   END %]
+<li><a href="#ob-same_records" id="ob-same_records_li">[% msg.maketext("In anderen Katalogen") %]</a></li>
+<li><a href="#ob-similar_records" id="ob-similar_records_li">[% msg.maketext("Andere Ausgaben") %]</a></li>
 [%   IF config.get('reviews') %]
 <li><a href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
 [%   END %]
@@ -353,43 +348,29 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 
 <!-- End: Reviews -->
 
-[% IF same_records.get_size > 0 %]
+    <script>
+$(document).ready(function(){
+    $("#ob-same_records").html("<img src=\"/images/openbib/loading.gif\"/>"); 
+    $("#ob-same_records").load("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.include?l=[% lang %]");
+});
+    </script>
 
 <div id="ob-same_records"><!-- Begin: Same records -->
-[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]:
-<p />
-<ol>
-[% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${path_prefix}/${config.get('databases_loc')}/id/${same_record.database}/${config.get('titles_loc')}/id/${same_record.id}.html" %]
-<li><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
-[% END %]
-</ol>
+   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.html?l=[% lang %]">Anzeigen?</a>
 </div><!-- End: Same Records -->
-[% END %]
 
-[% IF similar_records.get_size > 0 %]
+    <script>
+$(document).ready(function(){
+    $("#ob-similar_records").html("<img src=\"/images/openbib/loading.gif\"/>"); 
+    $("#ob-similar_records").load("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.include?l=[% lang %]");
+});
+
+    </script>
 
 <div id="ob-similar_records"><!-- Begin: Similar records -->
-[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen") %]:
-<p />
-<ol>
-[% FOREACH similar_record IN similar_records.get_records %]
-[% item = similar_record.get_fields %]
-[% similar_url = "${path_prefix}/${config.get('databases_loc')}/id/${similar_record.database}/${config.get('titles_loc')}/id/${similar_record.id}.html" %]
-[%# Titel konstruieren %]
-[%- title = item.${'T0331'}.first.content -%]
-[%- IF item.${'T0310'}.first.content -%]
-[%- title = item.${'T0310'}.first.content -%]
-[%- END -%]
-[%# Ejahr konstruieren %]
-[%- yearofpub = item.${'T0425'}.first.content -%]
-[%# Edition konstruieren %]
-[%- edition   = item.${'T0403'}.first.content -%]
-<li><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfo.get('dbnames').${similar_record.database}.short %]</li>
-[% END %]
-</ol>
+   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.html?l=[% lang %]">Anzeigen?</a>
 </div><!-- End: Similar Records -->
-[% END %]
+
 
 </div><!-- End: Additional Title Info -->
 [% END %]

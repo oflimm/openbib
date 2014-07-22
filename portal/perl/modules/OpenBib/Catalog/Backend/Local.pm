@@ -293,22 +293,22 @@ sub load_full_title_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     my $config        = OpenBib::Config->instance;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
     my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
 
     eval {
         # Titelkategorien
         {
-            
-            my ($atime,$btime,$timeall)=(0,0,0);
-            
-            if ($config->{benchmark}) {
-                $atime=new Benchmark;
-            }
-            
+                        
             # DBI: select * from title where id = ?
             my $title_fields = $self->{schema}->resultset('Title')->search(
                 {
@@ -634,6 +634,12 @@ sub load_full_title_record {
 
     if ($@){
         $logger->fatal($@);
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer gesamte Bestimmung der Titeldaten ist ".timestr($timeall));
     }
     
     return $title_record;

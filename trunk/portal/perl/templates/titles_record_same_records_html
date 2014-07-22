@@ -56,7 +56,7 @@
         <div class="ym-cbox" class="ym-clearfix">
 
 [% IF same_records.get_size > 0 %]
-[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]:
+<h2>[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]</h2>
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]

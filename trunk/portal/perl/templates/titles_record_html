@@ -356,7 +356,7 @@ $(document).ready(function(){
     </script>
 
 <div id="ob-same_records"><!-- Begin: Same records -->
-   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.html?l=[% lang %]">Anzeigen?</a>
+   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.html?l=[% lang %]">Titel in anderen Katalogen anzeigen?</a>
 </div><!-- End: Same Records -->
 
     <script>
@@ -368,7 +368,7 @@ $(document).ready(function(){
     </script>
 
 <div id="ob-similar_records"><!-- Begin: Similar records -->
-   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.html?l=[% lang %]">Anzeigen?</a>
+   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.html?l=[% lang %]">Titel in anderen Ausgaben anzeigen?</a>
 </div><!-- End: Similar Records -->
 
 

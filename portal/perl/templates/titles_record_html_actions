@@ -302,7 +302,7 @@ $(document).ready(function(){
 <div class="ob-related"><!-- Begin thematisch Relevant -->
 <div class="ob-headline">Literaturanalyse in der Wikipedia</div>
  <div id="ob-related">
-   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/related_records.html?l=[% lang %]">Anzeigen?</a>
+   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/related_records.html?l=[% lang %]">Thematisch relevante Titel anzeigen?</a>
  </div>
 </div>
 

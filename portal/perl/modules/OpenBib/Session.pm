@@ -373,12 +373,6 @@ sub _init_new_session {
             content   => $r->connection->remote_ip,
         });
 
-        # Loggen der Client-IP
-        $self->log_event({
-            type      => 102,
-            content   => $r->connection->remote_ip,
-        });
-
     }
     
     if ($self->{view}) {
@@ -455,12 +449,16 @@ sub is_valid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
     # Spezielle SessionID -1 ist erlaubt
     if (defined $self->{ID} && $self->{ID} eq "-1") {
         return 1;
     }
 
     my $anzahl = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->count;
+
+    $logger->debug("SessionID $self->{ID} found $anzahl times");
 
     if ($anzahl == 1) {
         return 1;

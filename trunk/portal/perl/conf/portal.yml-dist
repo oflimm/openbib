@@ -315,6 +315,15 @@ dispatch_rules:
      runmode: 'show_record'
      args:
         users_loc: 'databases'
+  - # users_loc/titles_loc: Circulation
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/circulation[get]'
+     runmode: 'show_record_circulation'
+     representations:
+       - none
+       - html
+       - include
+       - json
   - # users_loc/titles_loc: Record show related_records (wikipedia)
      module: 'OpenBib::Handler::Apache::Titles'
      rule: '/portal/:view/databases/id/:database/titles/id/:titleid/related_records[get]'

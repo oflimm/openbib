@@ -17,8 +17,6 @@
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
   circulation     = record.get_circulation ; 
-  same_records    = record.enrich_same_records({ profilename => sysprofile }).get_same_records;
-  similar_records = record.enrich_similar_records({ profilename => sysprofile }).get_similar_records;
 
   IF record.record_exists;
     record_exists = 1;

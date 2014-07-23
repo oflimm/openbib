@@ -56,6 +56,7 @@ use Locale::Maketext::Lexicon {
     '*'        => [Gettext => OpenBib::Config->instance->{locale_base_path}."/*/LC_MESSAGES/openbib.po"],
 #   _style     => 'gettext', # fuer korrektes TT-handling irrelevant
     _decode    => 1,         # UTF-8 handling on
+    _preload   => 1,
 #   _use_fuzzy => 1,         # Fuzzy-Matching off
 };
 

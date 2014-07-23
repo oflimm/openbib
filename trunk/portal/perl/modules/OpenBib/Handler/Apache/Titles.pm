@@ -71,6 +71,7 @@ sub setup {
         'show_record_related_records'       => 'show_record_related_records',
         'show_record_similar_records'       => 'show_record_similar_records',
         'show_record_same_records'          => 'show_record_same_records',
+        'show_record_circulation'           => 'show_record_circulation',
         'redirect_to_bibsonomy'      => 'redirect_to_bibsonomy',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -579,6 +580,44 @@ sub show_availability {
             $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
             return;
         }
+    }
+
+    return;
+}
+
+sub show_record_circulation {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $titleid        = $self->param('titleid');
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');
+    my $dbinfotable    = $self->param('dbinfo');
+
+    if ($database && $titleid ){ # Valide Informationen etc.
+        $logger->debug("ID: $titleid - DB: $database");
+        
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid})->load_circulation;
+
+        # TT-Data erzeugen
+        my $ttdata={
+            database        => $database, # Zwingend wegen common/subtemplate
+            record          => $record,
+            titleid         => $titleid,
+        };
+
+        $self->print_page($config->{tt_titles_record_circulation_tname},$ttdata);
+        return;
     }
 
     return;

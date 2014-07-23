@@ -179,7 +179,6 @@ sub load_full_record {
     
     $self->set_fields($record->get_fields);
     $self->set_holding($record->get_holding);
-    $self->load_circulation;
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;

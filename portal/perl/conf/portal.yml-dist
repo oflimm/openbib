@@ -315,6 +315,33 @@ dispatch_rules:
      runmode: 'show_record'
      args:
         users_loc: 'databases'
+  - # users_loc/titles_loc: Record show related_records (wikipedia)
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/related_records[get]'
+     runmode: 'show_record_related_records'
+     representations:
+       - none
+       - html
+       - include
+       - json
+  - # users_loc/titles_loc: Record show similar_records (belonging to same work, eg. other editions)
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/similar_records[get]'
+     runmode: 'show_record_similar_records'
+     representations:
+       - none
+       - html
+       - include
+       - json
+  - # users_loc/titles_loc: Record show same records in other databases
+     module: 'OpenBib::Handler::Apache::Titles'
+     rule: '/portal/:view/databases/id/:database/titles/id/:titleid/same_records[get]'
+     runmode: 'show_record_same_records'
+     representations:
+       - none
+       - html
+       - include
+       - json
   - # users_loc/titles_loc: Record show
      module: 'OpenBib::Handler::Apache::CartItems'
      rule: '/portal/:view/databases/id/:database/titles/id/:titleid/save[get]'
@@ -2902,6 +2929,10 @@ tt_titles_record_form_tname: titles_record_form
 tt_users_titles_record_searchindex_tname: users_titles_record_searchindex
 tt_titles_record_tname: titles_record
 tt_titles_record_availability_tname: titles_record_availability
+
+tt_titles_record_related_records_tname: titles_record_related_records
+tt_titles_record_similar_records_tname: titles_record_similar_records
+tt_titles_record_same_records_tname: titles_record_same_records
 
 tt_topics_record_mapping_tname: topics_record_mapping
 tt_topics_record_tname: topics_record

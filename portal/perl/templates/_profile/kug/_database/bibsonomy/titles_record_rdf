@@ -13,9 +13,9 @@
 -%]
 [%- normdata        = record.get_fields -%]
 [%- holding         = record.get_holding -%]
-[%- circulation     = record.get_circulation -%] 
-[%- same_records    = record.get_same_records -%]
-[%- similar_records = record.get_similar_records -%]
+[%- circulation     = record.load_circulation.get_circulation -%] 
+[%- same_records    = record.enrich_same_records.get_same_records -%]
+[%- similar_records = record.enrich_similar_records.get_similar_records -%]
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:bibo="http://purl.org/ontology/bibo/"

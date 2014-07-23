@@ -16,7 +16,7 @@
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
-  circulation     = record.get_circulation ; 
+  circulation     = record.load_circulation.get_circulation ; 
 
   IF record.record_exists;
     record_exists = 1;
@@ -51,7 +51,7 @@
 
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
- $(".ob-collection").click(function(){
+    $(".ob-collection").click(function(){
 
 
    // Insert-Funktion aufrufen
@@ -67,6 +67,37 @@ $(document).ready(function(){
    return false;
  });
 });
+</script>
+
+<script>
+$(document).ready(function(){
+    $("#ob-holding_info_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-holding_info_loading\" />"); 
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/circulation.include?l=[% lang %]",
+         function (txt){
+           if (txt) {
+             $("#ob-holding_info").html(txt);
+             $("#ob-holding_info_li").html("[% msg.maketext("Ausleihe/Exemplare") %]");
+           };
+
+           $("#ob-holding_info_loading").hide();
+         });
+
+    $("#ob-same_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-same_records_loading\" />"); 
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.include?l=[% lang %]",
+        function (txt){
+            $("#ob-same_records").html(txt);
+            $("#ob-same_records_loading").hide();
+        });
+
+    $("#ob-similar_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-similar_records_loading\" />"); 
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.include?l=[% lang %]",
+        function (txt){
+            $("#ob-similar_records").html(txt);
+            $("#ob-similar_records_loading").hide();
+        });
+
+});
+
 </script>
 
 <!-- skip link navigation -->
@@ -205,9 +236,6 @@ $(document).ready(function(){
  END ;
 %]
 
-[% IF circulation.size > 0 || holding.size > 0 || same_records.get_size
-> 0 || similar_records.get_size > 0 || config.get('reviews') || journaltocs_feed %]
-
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
 [%- issn              = normset.${"T0543"}.first.content ;
@@ -218,11 +246,11 @@ $(document).ready(function(){
 [%# USE dumper;dumper.dump(holding)%]
 
 <ul>
-[%   IF circulation.size > 0 %]
-<li><a href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
-[%   ELSE %]
-<li><a href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
-[%   END %]
+<!--
+<li><a href="#ob-circulation_info" id="ob-circulation_info_li">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+-->
+<li><a href="#ob-holding_info" id="ob-holding_info_li">[% msg.maketext("Bestand") %]</a></li>
+
 [%   IF journaltocs_feed %]
 <li><a href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
 [%   END %]
@@ -233,15 +261,10 @@ $(document).ready(function(){
 [%   END %]
 </ul>
 
-[% IF circulation.size > 0 %]
-<div id="ob-circulation_info"><!-- Begin Circulation -->
-[% PROCESS common/subtemplate name="circulation" %]
-</div><!-- End Circulation -->
-[% ELSE %]
+
 <div id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
-[% END %]
 
 [% IF journaltocs_feed %]
 <script type="text/javascript">
@@ -346,24 +369,9 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 
 <!-- End: Reviews -->
 
-    <script>
-$(document).ready(function(){
-    $("#ob-same_records").html("<img src=\"/images/openbib/loading.gif\"/>"); 
-    $("#ob-same_records").load("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.include?l=[% lang %]");
-});
-    </script>
-
 <div id="ob-same_records"><!-- Begin: Same records -->
    <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.html?l=[% lang %]">Titel in anderen Katalogen anzeigen?</a>
 </div><!-- End: Same Records -->
-
-    <script>
-$(document).ready(function(){
-    $("#ob-similar_records").html("<img src=\"/images/openbib/loading.gif\"/>"); 
-    $("#ob-similar_records").load("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.include?l=[% lang %]");
-});
-
-    </script>
 
 <div id="ob-similar_records"><!-- Begin: Similar records -->
    <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.html?l=[% lang %]">Titel in anderen Ausgaben anzeigen?</a>
@@ -371,7 +379,6 @@ $(document).ready(function(){
 
 
 </div><!-- End: Additional Title Info -->
-[% END %]
 
 [% END # record_exists %]
 </div><!-- End: Bottom Info -->

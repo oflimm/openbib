@@ -291,19 +291,28 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <!-- Ende Tags -->
 
-    <script>
+<script>
 $(document).ready(function(){
-    $("#ob-related").html("<img src=\"/images/openbib/loading.gif\"/>"); 
-    $("#ob-related").load("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/related_records.include?l=[% lang %]");
+    $("#ob-related_nojs").hide();
+    $(".ob-related .ob-headline").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-related_loading\" />"); 
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/related_records.include?l=[% lang %]",
+        function (txt){
+            $("#ob-related").html(txt);
+            $("#ob-related_loading").hide();
+        });
 });
-    </script>
+</script>
 
 <!-- Anfang Thematisch relevante Titel (Wikipedia) -->
 <div class="ob-related"><!-- Begin thematisch Relevant -->
-<div class="ob-headline">Literaturanalyse in der Wikipedia</div>
+ <div class="ob-headline">Literaturanalyse in der Wikipedia</div>
  <div id="ob-related">
+   <p id="ob-related_nojs">
    <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/related_records.html?l=[% lang %]">Thematisch relevante Titel anzeigen?</a>
+   </p>   
  </div>
+
+ <p/>
 </div>
 
 <!-- Ende Empfehlungen -->

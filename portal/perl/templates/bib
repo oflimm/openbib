@@ -13,9 +13,9 @@
 -%]
 [%- normset         = record.get_fields -%]
 [%- mexnormset      = record.get_holding -%]
-[%- cirset          = record.get_circulation -%] 
-[%- same_records    = record.get_same_records -%]
-[%- similar_records = record.get_similar_records -%]
+[%- cirset          = record.load_circulation.get_circulation -%] 
+[%- same_records    = record.enrich_same_records.get_same_records -%]
+[%- similar_records = record.enrich_similar_records.get_similar_records -%]
 [%- IF format == "rdf" -%]
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"

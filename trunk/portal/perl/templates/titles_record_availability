@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%- circulation     = record.get_circulation -%] 
+[%- circulation     = record.load_circulation.get_circulation -%] 
 
 [% overall_mediastatus = {} ;
 

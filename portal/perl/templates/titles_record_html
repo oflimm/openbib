@@ -71,17 +71,6 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function(){
-    $("#ob-holding_info_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-holding_info_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/circulation.include?l=[% lang %]",
-         function (txt){
-           if (txt) {
-             $("#ob-holding_info").html(txt);
-             $("#ob-holding_info_li").html("[% msg.maketext("Ausleihe/Exemplare") %]");
-           };
-
-           $("#ob-holding_info_loading").hide();
-         });
-
     $("#ob-same_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-same_records_loading\" />"); 
     $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.include?l=[% lang %]",
         function (txt){
@@ -246,10 +235,11 @@ $(document).ready(function(){
 [%# USE dumper;dumper.dump(holding)%]
 
 <ul>
-<!--
-<li><a href="#ob-circulation_info" id="ob-circulation_info_li">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
--->
-<li><a href="#ob-holding_info" id="ob-holding_info_li">[% msg.maketext("Bestand") %]</a></li>
+[%   IF circulation.size > 0 %]
+<li><a href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+[%   ELSE %]
+<li><a href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+[%   END %]
 
 [%   IF journaltocs_feed %]
 <li><a href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
@@ -261,10 +251,15 @@ $(document).ready(function(){
 [%   END %]
 </ul>
 
-
+[% IF circulation.size > 0 %]
+<div id="ob-circulation_info"><!-- Begin Circulation -->
+[% PROCESS common/subtemplate name="circulation" %]
+</div><!-- End Circulation -->
+[% ELSE %]
 <div id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
+[% END %]
 
 [% IF journaltocs_feed %]
 <script type="text/javascript">

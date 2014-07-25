@@ -152,12 +152,12 @@ foreach my $database (@databases){
                     'title_fields.field' => '1586', # ISBN_dat/www/mnt/_o/r/f
                     'title_fields.field' => '1587',
                     'title_fields.field' => '1588',
-                    'title_fields.field' => '1589',
                     'title_fields.field' => '1590',
                     'title_fields.field' => '1591',
                     'title_fields.field' => '1592',
-                    'title_fields.field' => '1593',
                     'title_fields.field' => '1594',
+                    'title_fields.field' => '1595',
+                    'title_fields.field' => '1596',
                     
                 ],
             },
@@ -180,12 +180,12 @@ foreach my $database (@databases){
                     'title_fields.field' => '1586', # ISBN_dat/www/mnt/_o/r/f
                     'title_fields.field' => '1587',
                     'title_fields.field' => '1588',
-                    'title_fields.field' => '1589',
                     'title_fields.field' => '1590',
                     'title_fields.field' => '1591',
                     'title_fields.field' => '1592',
-                    'title_fields.field' => '1593',
                     'title_fields.field' => '1594',
+                    'title_fields.field' => '1595',
+                    'title_fields.field' => '1596',
                 ],
             },
             {
@@ -215,7 +215,19 @@ foreach my $database (@databases){
         }
         else {
             $logger->error("ISBN $thisisbn nicht gueltig!");
-            next;
+
+            if ($thisisbn=~m/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/){
+                $thisisbn="$1$2$3$4$5$6$7$8$9$10$11$12$13";
+            }
+            elsif ($thisisbn=~m/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/){
+                $thisisbn="$1$2$3$4$5$6$7$8$9$10";
+            }
+            else {
+                $logger->error("ISBN $thisisbn hat auch nicht die Form einer ISBN. Ignoriert.");
+                next;
+            }
+            
+            $logger->error("ISBN $thisisbn hat aber zumindest die Form einer ISBN. Verarbeitet.");
         }
         
         # Normierung als String

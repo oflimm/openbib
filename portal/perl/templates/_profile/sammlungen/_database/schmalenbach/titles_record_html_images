@@ -19,7 +19,7 @@
 %]
 [% IF cdm.total > 0 ;
 
-   FOREACH cdmrecord IN cdm.records ;
+   cdmrecord = cdm.records.first ;
      cdm_url       = "http://www.ub.uni-koeln.de/cdm/compoundobject/collection/schmalbach/id/${cdmrecord.pointer}";
      cdm_imgurl    = "http://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}";
 %]
@@ -27,7 +27,6 @@
 
 <p/>
 <a href="[% cdm_url %]" target="_blank">Zum Digitalisat in ContentDM</a>
-  [% END %]
 
 [% END %]
 

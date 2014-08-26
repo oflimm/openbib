@@ -75,13 +75,13 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Catalog::Subset("inst103master",$pool);
+my $subset = new OpenBib::Catalog::Subset("inst157master",$pool);
 $subset->identify_by_field_content('title',[ { field => '0960', content => 'Retro' } ]);
 $subset->identify_by_field_content('title',[ { field => '0960', content => 'Aufsatz' } ]);
 $subset->write_set;
 
 sub print_help {
-    print "gen-subset-mex.pl - Erzeugen von Kataloguntermengen\n\n";
+    print "gen-subset.pl - Erzeugen von Kataloguntermengen\n\n";
     print "Optionen: \n";
     print "  -help                   : Diese Informationsseite\n\n";
 

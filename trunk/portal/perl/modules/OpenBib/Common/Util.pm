@@ -269,7 +269,8 @@ my %char_replacements = (
     "Þ" => "th",       # Gr. Thorn
     "þ" => "th",       # kl. Thorn
     "ð" => "d",      # eth
-    
+
+    "\x{02b9}" => "", # Slavisches Weichheitszeichen (modifier letter prime) entfernen
    );
 
 my $chars_to_replace = join '|',

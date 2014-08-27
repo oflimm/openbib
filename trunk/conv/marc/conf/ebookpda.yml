@@ -3,7 +3,8 @@ exclude:
      field: '0540'
      databases:
         - doab
-        - usbebooks
+        - inst001
+        - nationallizenzen
         - tmpebooks
         - freebooks
         - tusculum

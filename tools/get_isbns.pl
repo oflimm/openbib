@@ -3,7 +3,7 @@
 #
 #  get_isbns.pl
 #
-#  Bestimmung aller ISBNs eines Kataloges
+#  Bestimmung aller ISBNs eines Kataloges aus der Anreicherungs-DB
 #
 #  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
 #
@@ -42,16 +42,17 @@ use YAML;
 use POSIX qw/strftime/;
 
 use OpenBib::Config;
-use OpenBib::Catalog::Factory;
+use OpenBib::Enrichment;
 use OpenBib::Common::Util;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
 my $config     = OpenBib::Config->instance;
 
-my (@databases,$help,$logfile);
+my ($database,$view,$help,$logfile);
 
-&GetOptions("database=s@"     => \@databases,
+&GetOptions("database=s"      => \$database,
+	    "view=s"          => \$view,
             "logfile=s"       => \$logfile,
 	    "help"            => \$help
 	    );
@@ -79,41 +80,56 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-open(ISBNOUT,">isbns.txt");
+my $outputfile;
+my @databases = ();
+
+if ($view){
+    if ($config->view_exists($view)){
+	@databases = $config->get_viewdbs($view);
+    }
+
+    $outputfile = "$view.txt";
+
+    $logger->info("Getting ISBNs from view $view");    
+}
+elsif ($database) {
+    $logger->info("Getting ISBNs from databases $database");    
+
+    push @databases, $database;
+
+    $outputfile = "$database.txt";
+}
+
+my $databases_ref = [];
+
+foreach my $database (@databases){
+    push @$databases_ref, { 'dbname' => $database };
+}
+
+open(ISBNOUT,">$outputfile");
 
 my $isbn_insertcount = 0;
 
-foreach my $database (@databases){
+my $enrichment = new OpenBib::Enrichment();
 
-    $logger->info("Getting ISBNs from database $database");
-    
-    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database});
-
-    my $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
-        {
-            -or   => [
-                'title_fields.field' => '0540',
-                'title_fields.field' => '0541',
-                'title_fields.field' => '0553',
-                'title_fields.field' => '0634',
-            ],
-        },
-        {
-            select => ['title_fields.content'],
-            as     => ['thisisbn'],
-            group_by => ['title_fields.content'],
-            join   => ['title_fields'],
-            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-        }
+my $all_isbns = $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
+    {
+	-or   => $databases_ref,
+    },
+    {
+	select => ['isbn'],
+	as     => ['thisisbn'],
+	group_by => ['isbn'],
+	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+    }
     );
     
-    foreach my $item ($all_isbns->all){
-        my $thisisbn = $item->{'thisisbn'};
-        
-        print ISBNOUT $thisisbn,"\n";
-        
-        $isbn_insertcount++;
-    }
+foreach my $item ($all_isbns->all){
+    my $thisisbn = $item->{'thisisbn'};
+    
+    print ISBNOUT $thisisbn,"\n";
+    
+    $isbn_insertcount++;
 }
 
 close(ISBNOUT);

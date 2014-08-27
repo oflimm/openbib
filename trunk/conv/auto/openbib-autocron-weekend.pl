@@ -192,6 +192,12 @@ $logger->info("### Generating joined searchindexes");
 
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 
+$logger->info("### Dumping isbns");
+
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_uni 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett 2>&1 > /dev/null");
+
 $logger->info("###### Updating done");
 
 if ($updatemaster && $maintenance){

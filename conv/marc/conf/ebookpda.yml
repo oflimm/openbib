@@ -8,6 +8,19 @@ exclude:
         - tmpebooks
         - freebooks
         - tusculum
+        - inst103
+        - inst104
+        - inst105
+        - inst113
+        - inst128
+        - inst157
+        - inst429
+        - inst448
+        - inst450
+        - inst459reorg
+        - inst123
+        - inst201
+        - inst503
   'by_isbn_in_file':
      field: '0540'
      filename: '/opt/openbib/autoconv/pools/ebookpda/exclude_isbns.txt'

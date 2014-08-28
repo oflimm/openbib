@@ -566,7 +566,7 @@ END;
 \textbf{Anzahl Bibliotheken} & [% all_dezbiblanz %]\\
 &\\
 \textbf{Anzahl Medien}       & \\
-\emph{B"ucher} & [% all_dezmonoanz.chunk(-3).join('.') %] (online recherchierbar: [% all_dezonlinemonoanz.chunk(-3).join('.') %] \\
+\emph{B"ucher} & [% all_dezmonoanz.chunk(-3).join('.') %] (online recherchierbar: [% all_dezonlinemonoanz.chunk(-3).join('.') %]) \\
 \emph{Zeitschriften} & [% all_dezzeitanz.chunk(-3).join('.') %]\\
 \emph{Lfd. Zeitschriften} & [% all_dezlfdzeitanz.chunk(-3).join('.') %]\\
 \textbf{Gesamtanzahl online recherchierbare Titel} & [% all_dezonlineanz.chunk(-3).join('.') %]\\
@@ -598,7 +598,7 @@ END;
 \textbf{Anzahl Bibliotheken} & [% anzahl.${orgunit.id}.bibl %]\\
 &\\
 \textbf{Anzahl Medien}       & \\
-\emph{B"ucher} & [% anzahl.${orgunit.id}.mono.chunk(-3).join('.') %]\\
+\emph{B"ucher} & [% anzahl.${orgunit.id}.mono.chunk(-3).join('.') %] (online recherchierbar: [% anzahl.${orgunit.id}.onlinemono.chunk(-3).join('.') %])\\
 \emph{Zeitschriften} & [% anzahl.${orgunit.id}.zeit.chunk(-3).join('.') %]\\
 \emph{Lfd. Zeitschriften} & [% anzahl.${orgunit.id}.lfdzeit.chunk(-3).join('.') %]\\
 \textbf{Anzahl online recherchierbare Titel} & [% anzahl.${orgunit.id}.online.chunk(-3).join('.') %]\\

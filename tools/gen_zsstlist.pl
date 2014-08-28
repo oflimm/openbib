@@ -197,8 +197,10 @@ sub filterchars {
   $content=~s/\%/\\\%/g;
   $content=~s/ð/d/g;      # eth
 
-  $content=~s/\x{02b9}//g;      #
-  $content=~s/\x{02ba}//g;      #
+  $content=~s/\x{02b9}/\'/g;      #
+  $content=~s/\x{2019}/\'/g;      #
+  $content=~s/\x{02ba}/\'\'/g;      #
+  $content=~s/\x{201d}/\'\'/g;      #
   $content=~s/\x{02bb}//g;      #
   $content=~s/\x{02bc}//g;      #
   $content=~s/\x{0332}//g;      #

@@ -510,6 +510,7 @@ all_dezmonoanz    = 0;
 all_dezzeitanz    = 0;
 all_dezlfdzeitanz = 0;
 all_dezonlineanz  = 0;
+all_dezonlinemonoanz  = 0;
 all_dezbiblanz    = 0;
 
 FOREACH orgunit IN dez_orgunits ;
@@ -518,6 +519,7 @@ FOREACH orgunit IN dez_orgunits ;
   zeitanz          = 0;
   lfdzeitanz       = 0;
   onlineanz        = 0;
+  onlinemonoanz    = 0;
   biblanz          = 0;
 
   FOREACH database IN dez_orgunit_pools.${orgunit.id} ;
@@ -528,12 +530,15 @@ FOREACH orgunit IN dez_orgunits ;
      zeitanz          = zeitanz + locationinfo.${"L0130"}.first.content.replace('\D','');
      lfdzeitanz       = lfdzeitanz + locationinfo.${"L0140"}.first.content.replace('\D','');
      onlineanz        = onlineanz + onlinetitcount.allcount;
+     onlinemonoanz    = onlinemonoanz + onlinetitcount.allcount - onlinetitcount.journalcount - onlinetitcount.articlecount -onlinetitcount.digitalcount;
      biblanz          = biblanz + 1;
 
      all_dezmonoanz    = all_dezmonoanz + locationinfo.${"L0120"}.first.content.replace('\D','');
      all_dezzeitanz    = all_dezzeitanz + locationinfo.${"L0130"}.first.content.replace('\D','');
      all_dezlfdzeitanz = all_dezlfdzeitanz + locationinfo.${"L0140"}.first.content.replace('\D','');
      all_dezonlineanz  = all_dezonlineanz + onlinetitcount.allcount;
+     all_dezonlinemonoanz  = all_dezonlinemonoanz + onlinetitcount.allcount - onlinetitcount.journalcount - onlinetitcount.articlecount -onlinetitcount.digitalcount;
+
 -%]
 % [% database %] - Monos [% locationinfo.${"L0120"}.first.content.replace('\D','') %] - Online [% onlinetitcount.allcount %]
 [%
@@ -544,6 +549,7 @@ FOREACH orgunit IN dez_orgunits ;
   anzahl.${orgunit.id}.zeit    = zeitanz;
   anzahl.${orgunit.id}.lfdzeit = lfdzeitanz;
   anzahl.${orgunit.id}.online  = onlineanz;
+  anzahl.${orgunit.id}.onlinemono  = onlinemonoanz;
   anzahl.${orgunit.id}.bibl    = biblanz;
 
   all_dezbiblanz   = all_dezbiblanz + biblanz;
@@ -560,10 +566,10 @@ END;
 \textbf{Anzahl Bibliotheken} & [% all_dezbiblanz %]\\
 &\\
 \textbf{Anzahl Medien}       & \\
-\emph{B"ucher} & [% all_dezmonoanz.chunk(-3).join('.') %]\\
+\emph{B"ucher} & [% all_dezmonoanz.chunk(-3).join('.') %] (online recherchierbar: [% all_dezonlinemonoanz.chunk(-3).join('.') %] \\
 \emph{Zeitschriften} & [% all_dezzeitanz.chunk(-3).join('.') %]\\
 \emph{Lfd. Zeitschriften} & [% all_dezlfdzeitanz.chunk(-3).join('.') %]\\
-\textbf{Anzahl online recherchierbare Titel} & [% all_dezonlineanz.chunk(-3).join('.') %]\\
+\textbf{Gesamtanzahl online recherchierbare Titel} & [% all_dezonlineanz.chunk(-3).join('.') %]\\
 \end{tabular}
 \end{minipage} }
 

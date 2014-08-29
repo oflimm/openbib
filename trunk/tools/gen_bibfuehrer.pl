@@ -226,6 +226,7 @@ sub filterchars {
   $content=~s/\^/\\\^\{\}/g;
   $content=~s/µ/\$µ\$/g;
   $content=~s/\&amp\;/\\&/g;
+  $content=~s/\&quot\;/\'\'/g;
   $content=~s/\&/\\&/g;
   $content=~s/\"/\'\'/g;
   $content=~s/\%/\\\%/g;
@@ -315,7 +316,6 @@ sub cleanrl {
     $line=~s/Ö/Oe/g;
     $line=lc($line);
     $line=~s/&(.)uml;/$1e/g;
-    $line=~s/&quot;/"/g;
     $line=~s/^ +//g;
     $line=~s/^¬//g;
     $line=~s/^"//g;

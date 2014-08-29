@@ -58,7 +58,7 @@ while (my $result=$request->fetchrow_hashref()){
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all.tex");
 }
 
-system("cd /var/www/zeitschriftenlisten ; rm *.tex *.aux *.loc *.out");
+system("cd /var/www/zeitschriftenlisten ; rm *.tex *.aux *.loc *.out *.log");
 
 sub print_help {
     print "gen-zsstlist-all.pl - Erzeugen von Zeitschiftenlisten fuer alle Sigel\n\n";

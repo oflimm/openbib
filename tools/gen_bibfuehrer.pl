@@ -315,6 +315,7 @@ sub cleanrl {
     $line=~s/Ö/Oe/g;
     $line=lc($line);
     $line=~s/&(.)uml;/$1e/g;
+    $line=~s/&quot;/"/g;
     $line=~s/^ +//g;
     $line=~s/^¬//g;
     $line=~s/^"//g;

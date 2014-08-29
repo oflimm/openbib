@@ -272,8 +272,8 @@ my %char_replacements = (
 
     "\x{02b9}" => "'", # Slavisches Weichheitszeichen (modifier letter prime) als '
     "\x{2019}" => "'", # Slavisches Weichheitszeichen (modifier letter prime) als '
-    "\x{02ba}" => "\x{0022}", # Slavisches hartes Zeichen als "
-    "\x{201d}" => "\x{0022}",
+    #"\x{02ba}" => "\x{0022}", # Slavisches hartes Zeichen als "
+    #"\x{201d}" => "\x{0022}",
    );
 
 my $chars_to_replace = join '|',
@@ -1150,6 +1150,9 @@ sub normalize {
             $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: '()"^*_]//g;
             
             # Verbundene Terme splitten
+            $content=~s/(\w)\"(\w)/$1 $2/g;
+            $content=~s/(\w)\x{02ba}(\w)/$1 $2/g; # Hartes Zeichen Slavistik
+            $content=~s/(\w)\x{201d}(\w)/$1 $2/g; # Hartes Zeichen Slavistik
             $content=~s/(\w)-(\w)/$1 $2/g;
             $content=~s/(\w)'(\w)/$1 $2/g;
             
@@ -1180,6 +1183,9 @@ sub normalize {
             $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/:* ']//g;
             
             # Verbundene Terme splitten
+            $content=~s/(\w)\"(\w)/$1 $2/g;
+            $content=~s/(\w)\x{02ba}(\w)/$1 $2/g; # Hartes Zeichen Slavistik
+            $content=~s/(\w)\x{201d}(\w)/$1 $2/g; # Hartes Zeichen Slavistik
             $content=~s/(\w)-(\w)/$1 $2/g;
             $content=~s/(\w)'(\w)/$1 $2/g;
             

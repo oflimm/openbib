@@ -17,11 +17,11 @@ uniqueidfield: 'upi'
 
 category_split_chars:
   'title': ';'
-  'person_all': ';'
+  'person': ';'
 
 # Personen
 person:
-  'person_all': '0100'        # Verfasser
+  'person': '0100'        # Verfasser
 
 # Koerperschaften
 corporatebody:
@@ -35,13 +35,14 @@ subject:
 # Titel
 title:
   'title': '0331'
-  'subtitle': '0370'
+# 'subtitle': '0370'
   'identifier': '0540'
-  'releasedate_': '0425'
+  'publishingyear': '0425'
   'publisher': '0412'
-filter:
-  'releasedate_':
-     filter_match: "^(\d\d\d\d)"
+  'availability': '0600' # Bemerkung
+#filter:
+#  'releasedate_':
+#     filter_match: "^(\d\d\d\d)"
 
 exclude:
   'by_availability':

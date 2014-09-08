@@ -200,10 +200,10 @@ system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl
 
 $logger->info("### Finding corresponding ebooks in inst526/inst006");
 
-system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=usbebooks --filename=/opt/openbib/autoconv/pools/inst526/abgleich-inst526-usbebooks.csv 2>&1 > /dev/null");
-system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=tmpebooks --filename=/opt/openbib/autoconv/pools/inst526/abgleich-inst526-tmpebooks.csv 2>&1 > /dev/null");
-system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=usbebooks --filename=/opt/openbib/autoconv/pools/inst006/abgleich-inst006-usbebooks.csv 2>&1 > /dev/null");
-system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=tmpebooks --filename=/opt/openbib/autoconv/pools/inst006/abgleich-inst006-tmpebooks.csv 2>&1 > /dev/null");
+system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=usbebooks --filename=/var/www.kug/extra/inst526/abgleich-inst526-usbebooks.csv 2>&1 > /dev/null");
+system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=tmpebooks --filename=/var/www.kug/extra/inst526/abgleich-inst526-tmpebooks.csv 2>&1 > /dev/null");
+system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=usbebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-usbebooks.csv 2>&1 > /dev/null");
+system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=tmpebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-tmpebooks.csv 2>&1 > /dev/null");
 
 $logger->info("###### Updating done");
 

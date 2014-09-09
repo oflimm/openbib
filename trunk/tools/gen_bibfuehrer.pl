@@ -78,8 +78,8 @@ if (!$mode){
 }
 
 
-if ($mode ne "tex" && $mode ne "pdf"){
-  print "Mode muss enweder tex oder pdf sein.\n";
+if ($mode ne "tex" && $mode ne "pdf" && $mode ne "csv"){
+  print "Mode muss enweder tex oder pdf oder csv sein.\n";
   exit;
 }
 
@@ -141,7 +141,11 @@ foreach my $database (keys %{$dbinfotable->{locationid}}){
     }
 }
 
-my $outputbasename="bibliotheksfuehrer";
+my $outputname="bibliotheksfuehrer.tex";
+
+if ($mode eq "csv"){
+    $outputname = "bibliotheksfuehrer.csv";
+}
 
 my $template = Template->new({
     LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -149,7 +153,7 @@ my $template = Template->new({
         ABSOLUTE       => 1,
     }) ],
     OUTPUT_PATH   => './',
-    OUTPUT        => "$outputbasename.tex",
+    OUTPUT        => "$outputname",
 });
 
 
@@ -160,9 +164,16 @@ my $ttdata = {
     msg          => $msg,
 };
 
-$template->process("bibfuehrer_tex", $ttdata) || do { 
-    print $template->error();
-};
+if ($mode eq "tex" || $mode eq "pdf"){
+    $template->process("bibfuehrer_tex", $ttdata) || do { 
+	print $template->error();
+    };
+}
+elsif ($mode eq "csv"){
+    $template->process("bibfuehrer_csv", $ttdata) || do { 
+	print $template->error();
+    };
+}
 
 if ($mode eq "pdf"){
     system("pdflatex $outputbasename.tex");

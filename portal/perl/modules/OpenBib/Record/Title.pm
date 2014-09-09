@@ -1827,10 +1827,46 @@ sub to_drilldown_term {
     return $term;
 }
 
-sub to_json ($){
-    my ($self)=@_;
+sub to_json {
+    my ($self,$msg)=@_;
 
-    return encode_json $self->to_hash;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $record = $self->to_hash;
+
+    # Anreicherung mit Feld-Bezeichnungen
+    if (defined $msg){
+        foreach my $fieldnumber (keys %{$record->{fields}}){
+            my $effective_fieldnumber = $fieldnumber;
+            my $mapping = $config->{'categorymapping'};
+            if (defined $mapping->{$record->{database}}{$fieldnumber}){
+                $effective_fieldnumber = $fieldnumber."-".$record->{database};
+            }
+                    
+            foreach my $fieldcontent_ref (@{$record->{fields}->{$fieldnumber}}){
+                $fieldcontent_ref->{desc} = $msg->maketext($effective_fieldnumber);
+            }
+        }
+
+        foreach my $item_ref (@{$record->{items}}){            
+            foreach my $fieldnumber (keys %{$item_ref}){                
+                next if ($fieldnumber eq "id");
+
+                my $effective_fieldnumber = $fieldnumber;
+                my $mapping = $config->{'categorymapping'};
+                if (defined $mapping->{$record->{database}}{$fieldnumber}){
+                    $effective_fieldnumber = $fieldnumber."-".$record->{database};
+                }
+                
+                $item_ref->{$fieldnumber}->{desc} = $msg->maketext($effective_fieldnumber);
+            }
+        }
+    }
+    
+    return encode_json $record;
 }
 
 sub from_json ($){

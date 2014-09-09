@@ -353,7 +353,6 @@
 ../templates/admin_statistics_access_session_graph
 ../templates/admin_statistics_access_session_graph_html
 ../templates/admin_statistics_access_title_graph
-../templates/admin_statistics_access_title_graph_html
 ../templates/admin_statistics_browser
 ../templates/admin_statistics_browser_html
 ../templates/admin_statistics_client
@@ -408,6 +407,7 @@
 ../templates/admin_views_rss_record_edit
 ../templates/admin_views_rss_record_html
 ../templates/admin_views_rss_record_json
+../templates/all_categories_title
 ../templates/authenticators
 ../templates/authenticators_html
 ../templates/authenticators_json

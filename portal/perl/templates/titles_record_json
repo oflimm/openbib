@@ -9,7 +9,7 @@ END;
 
 record.set_circulation(circulation);
 
-record.to_json
+record.to_json(msg);
 
 
 -%]

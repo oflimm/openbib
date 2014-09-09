@@ -44,6 +44,8 @@ statisticsdbname: openbib_statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
+statisticsdb_enable: 1
+
 # Einstellungen fuer Memcached
 
 #memcached:
@@ -64,7 +66,7 @@ local_search_backend: xapian
 
 # Benutzer, Passwort und Default view fuer die Administration
 adminuser: admin
-adminpasswd: StrengGeheim 
+adminpasswd: StrengGeheim
 
 defaultview: openbib
 
@@ -1369,7 +1371,7 @@ dispatch_rules:
        - none
        - html
        - json
-       - rdf
+       - csv
   - # admin_loc/locations_loc: Record show
      module: 'OpenBib::Handler::Apache::Admin::Locations'
      rule: '/portal/:view/admin/locations/id/:locationid[get]'
@@ -2690,6 +2692,7 @@ tt_admin_statistics_browser_tname: admin_statistics_browser
 tt_admin_statistics_client_tname: admin_statistics_client
 tt_admin_statistics_query_tname: admin_statistics_query
 tt_admin_statistics_request_tname: admin_statistics_request
+tt_admin_statistics_redirect_tname: admin_statistics_redirect
 tt_admin_statistics_tname: admin_statistics
 tt_admin_statistics_view_session_graph_tname: admin_statistics_view_session_graph
 tt_admin_statistics_view_tname: admin_statistics_view
@@ -2939,6 +2942,8 @@ tt_users_titles_record_searchindex_tname: users_titles_record_searchindex
 tt_titles_record_tname: titles_record
 tt_titles_record_availability_tname: titles_record_availability
 
+tt_titles_record_circulation_tname: titles_record_circulation
+
 tt_titles_record_related_records_tname: titles_record_related_records
 tt_titles_record_similar_records_tname: titles_record_similar_records
 tt_titles_record_same_records_tname: titles_record_same_records
@@ -2985,6 +2990,8 @@ tt_info_redaktion_tname: info_redaktion
 tt_info_dokumentation_tname: info_dokumentation
 tt_info_bibliographie_tname: info_bibliographie
 tt_info_buchpaten_tname: info_buchpaten
+# Kapselkatalog
+tt_info_erster_weltkrieg_tname: info_erster_weltkrieg
 # Richter-Bibliothek
 tt_info_richterbibliothek_heute_tname: info_richterbibliothek_heute
 tt_info_externe_nachweise_tname: info_externe_nachweise
@@ -3030,8 +3037,8 @@ css_loc: /css
 mail_prog: /usr/bin/mailx
 
 # Email-Adressen fuer den Admin und generellen Kontakt
-admin_email: foo@bar
-contact_email: foo@bar
+admin_email: kug@ub.uni-koeln.de
+contact_email: kug@ub.uni-koeln.de
 
 # Externe Links zum direkten Einsprung in die Digitale
 # Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
@@ -3162,6 +3169,9 @@ searchfield:
      'type': 'ft'
   'publisher':
      'prefix': 'publ'
+     'type': 'ft'
+  'hss':
+     'prefix': 'hss'
      'type': 'ft'
   'isbn':
      'prefix': 'isbn'
@@ -3297,10 +3307,10 @@ searchfield:
      'type': 'string'
   't0425':
      'prefix': 't0425'
-     'type': 'string'
+     'type': 'integer'
   't0426':
      'prefix': 't0426'
-     'type': 'string'
+     'type': 'integer'
   't0531':
      'prefix': 't0531'
      'type': 'string'
@@ -3573,7 +3583,7 @@ xapian_option:
 xapian_search:
   'id':
      'prefix': 'Q'
-     'type': 'standard'
+     'type': 'boolean'
   'bkey':
      'prefix': 'B'
      'type': 'boolean'
@@ -3652,8 +3662,11 @@ xapian_search:
   'auth':
      'prefix': 'Y8'
      'type': 'default'
+  'hss':
+     'prefix': 'Y9'
+     'type': 'default'
 
-  # String / Facets
+  # String / Drilldowns
   'fsubj':
      'prefix': 'D1'
      'type': 'default'
@@ -3745,10 +3758,10 @@ xapian_search:
      'type': 'default'
   't0425':
      'prefix': 'T0425'
-     'type': 'default'
+     'type': 'boolean'
   't0426':
      'prefix': 'T0426'
-     'type': 'default'
+     'type': 'boolean'
   't0531':
      'prefix': 'T0531'
      'type': 'default'
@@ -3792,6 +3805,7 @@ xapian_sorttype_value:
   'mark': 25
   'popularity': 26
   'authority': 27
+  't0425': 28
 
 # Standard-Eingabefelder fuer die Recherche
 default_searchfields:
@@ -3816,7 +3830,9 @@ default_searchfields:
   'topic':
     'active': 1
   'mediatype':
-    'active': 0
+    'active': 1
+  'hss':
+    'active': 1
   'titlestring':
     'active': 1
   'content':
@@ -3875,6 +3891,7 @@ no_next_img: /images/openbib/no_next.png
 no_previous_img: /images/openbib/no_previous.png
 note_img: /images/openbib/note.png
 openbib_img: /images/openbib/openbib-powered.png
+paperc_img: /images/openbib/paperc.png
 pdf_img: /images/openbib/pdf-document.png
 permalink_img: /images/openbib/3d-file-blue-permalink.png
 persons_img: /images/openbib/persons.png
@@ -3909,16 +3926,16 @@ dbdesc_dir: /opt/openbib/db
 tool_dir: /opt/openbib/bin
 
 # Zugriffsinformationen fuer das BibSonomy-API
-bibsonomy_api_key: ''
-bibsonomy_api_user: ''
+bibsonomy_api_key: 'dbf4fa3770dc95d22bab691e3f6549f4'
+bibsonomy_api_user: 'kug'
 
 # Zugriffsinformationen fuer die LibraryThing-APIs
 librarything_api_key: ''
 
 # Zugriffsinformationen fuer ReCaptcha
-recaptcha_user: ''
-recaptcha_public_key: ''
-recaptcha_private_key: ''
+recaptcha_user: 'kug'
+recaptcha_public_key: '6Ldj1gIAAAAAAOB5ej06L0Vs9HD5028puP-IE_eC'
+recaptcha_private_key: '6Ldj1gIAAAAAAJY6nlG_j0vXL9od5Kcl8J3olXAD'
 
 # Aktivierung verschiedener Funktionalitaeten
 login_active: 1
@@ -3980,6 +3997,9 @@ representation:
 # Default Query-Options (Session)
 queryoptions:
   clp: # Collapse via sorttype_value (title,authority,...)
+    value: ''
+    storage: none
+  facets: # Generate these facets instead of defaults
     value: ''
     storage: none
   num:
@@ -4083,6 +4103,10 @@ eventlogjson_type:
 
 # Katalogabhaengige Kategorie-Mappings
 categorymapping:
+  bestellungen:
+    T0002: 1
+    T0700: 1
+    T0710: 1
   ebooks:
     T0662: 1
     T0663: 1
@@ -4108,6 +4132,11 @@ categorymapping:
     T0710: 1
     T0750: 1
     T0800: 1
+  filme:
+    T0101: 1
+    T0200: 1
+    T0700: 1
+    T0710: 1
   inst404abklatsch:
     T0200: 1
     T0331: 1
@@ -4189,6 +4218,8 @@ categorymapping:
     T3001: 1
   richter:
     T0501: 1
+  schatzbehalter:
+    T0015: 1
   totenzettel:
     T0100: 1
     T0101: 1

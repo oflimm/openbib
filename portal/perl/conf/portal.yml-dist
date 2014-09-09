@@ -3926,16 +3926,16 @@ dbdesc_dir: /opt/openbib/db
 tool_dir: /opt/openbib/bin
 
 # Zugriffsinformationen fuer das BibSonomy-API
-bibsonomy_api_key: 'dbf4fa3770dc95d22bab691e3f6549f4'
-bibsonomy_api_user: 'kug'
+bibsonomy_api_key: ''
+bibsonomy_api_user: ''
 
 # Zugriffsinformationen fuer die LibraryThing-APIs
 librarything_api_key: ''
 
 # Zugriffsinformationen fuer ReCaptcha
 recaptcha_user: 'kug'
-recaptcha_public_key: '6Ldj1gIAAAAAAOB5ej06L0Vs9HD5028puP-IE_eC'
-recaptcha_private_key: '6Ldj1gIAAAAAAJY6nlG_j0vXL9od5Kcl8J3olXAD'
+recaptcha_public_key: ''
+recaptcha_private_key: ''
 
 # Aktivierung verschiedener Funktionalitaeten
 login_active: 1

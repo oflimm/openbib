@@ -176,8 +176,9 @@ elsif ($mode eq "csv"){
 }
 
 if ($mode eq "pdf"){
-    system("pdflatex $outputbasename.tex");
-    system("pdflatex $outputbasename.tex");
+    my ($outputbasename) = $outputname =~m/^(.+)\.tex/;
+    system("pdflatex $outputname");
+    system("pdflatex $outputname");
     system("rm $outputbasename.aux $outputbasename.out $outputbasename.log $outputbasename.tex $outputbasename.toc");
 }
 

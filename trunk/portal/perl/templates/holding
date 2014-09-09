@@ -11,6 +11,18 @@
 #
 #######################################################################
 -%]
+[%- holding_categories = [
+                'X0004', # msg.maketext("X0004") # Titel-ID
+                'X0005', # msg.maketext("X0005") # Inventarnummer
+                'X0010', # msg.maketext("X0010") # Mediennummer
+                'X0014', # msg.maketext("X0014") # Signatur
+                'X0016', # msg.maketext("X0016") # Standort
+                'X1204', # msg.maketext("X1204") # Bestandsverlauf
+                'X3330', # msg.maketext("X3330") # Sigel
+                'X4000', # msg.maketext("X4000") # Bibliothek
+                'X4001', # msg.maketext("X4001") # Bibliotheks-Infoseite
+-%]
+
 [% IF circulation.size <= 0 %]
 [%
   have_bestandsverlauf = 0;

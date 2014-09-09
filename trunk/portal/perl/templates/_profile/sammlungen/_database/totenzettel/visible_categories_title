@@ -27,11 +27,12 @@
                 'T0101', # msg.maketext("T0101-totenzettel") Vater
                 'T0102', # msg.maketext("T0102-totenzettel") Mutter
                 'T0451', # msg.maketext("T0451-totenzettel") Trauernde
-                #'T0425', # msg.maketext("T0425") ErschJahr
+                #'T0425', # msg.maketext("T0425-totenzettel") Geburtsjahr
+                #'T0426', # msg.maketext("T0426-totenzettel") Sterbejahr
                  'T0700', # msg.maketext("T0700-totenzettel") Provenienz
                 'T0662', # msg.maketext("T0662") EDVurl
                 'T1664', # msg.maketext("T1664") Provenienz
-                #'T2662', # msg.maketext("T2662") USB EDVurl
+                #'T2662', # msg.maketext("T2662-totenzettel") Gesamt-Digitalisat: URL
                 #'T2663', # msg.maketext("T2663") USB URLInfo
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
                 'E4120', # msg.maketext("E4120") Ebook-URL

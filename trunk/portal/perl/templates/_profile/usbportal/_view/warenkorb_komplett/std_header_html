@@ -71,7 +71,7 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.js"></script>
 
 
-    <title>[% IF page_title %][% page_title %][% ELSE %]KUG - Kölner UniversitätsGesamtkatalog[% END %]</title>
+    <title>[% IF page_title %][% page_title %][% ELSE %][% config.get_viewdesc_from_viewname(view) %][% END %]</title>
 
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="/js/pngfix.js"></script>

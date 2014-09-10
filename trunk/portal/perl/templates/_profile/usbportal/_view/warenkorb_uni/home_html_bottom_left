@@ -1,0 +1,70 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+<div class="ob-category_header">Über dieses Portal</div>
+
+<p/>
+
+[%# PROCESS common/subtemplate name="newsflash" %]
+
+[% titlecount = config.get_number_of_titles({profile = sysprofile}) %]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h3>
+
+<style>
+.ob-right_align td {
+   text-align:right;
+}
+</style>
+<table class="ym-full ob-right_align">
+<tr>
+<th>[% msg.maketext("Kataloge") %]</th>
+<td>[% config.get_profiledbs(sysprofile).size %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Titel") %]</th>
+<td>[% titlecount.allcount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon Zeitschriften/Serien") %]</td>
+<td>[% titlecount.journalcount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon Artikel") %]</td>
+<td>[% titlecount.articlecount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon Digital") %]</td>
+<td>[% titlecount.digitalcount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Angemeldete Nutzer") %]</th>
+<td>[% user.get_number_of_users.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Literaturlisten") %]</th>
+[% ret = user.get_number_of_litlists ;
+   litlists_all = ret.public + ret.private ;
+%]
+<td>[% litlists_all.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon öffentlich") %]</td>
+<td>[% ret.public.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon privat") %]</td>
+<td>[% ret.private.chunk(-3).join('.') %]</td>
+</tr>
+</table>
+

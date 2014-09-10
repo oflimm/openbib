@@ -52,22 +52,80 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>[% Login %]</h1>
-<div id="login_container">
+<h1>[% msg.maketext("Anmelden") %]</h1>
 
-<div class="left_side">
-<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="ym-form">
+<p/>
 
-<input type="hidden" name="redirect_to" value="[% redirect_to %]">
+[% IF authenticatorid %]
+<script>
+$(document).ready(function(){
+  $('#ob-login_forms').tabs('select', '#ob-login_forms_library');
+});
+</script>
+[% END %]
 
-[%- FOREACH target IN authenticators -%]
-[%-   IF target.type == 'self' -%]
-<input type="hidden" name="targetid" value="[% target.id %]">
+<div id="ob-login_forms">
+
+<ul>
+<li><a href="#ob-login_forms_library">[% msg.maketext("Anmeldung mit einem Benutzerausweis") %]</a></li>
+<li><a href="#ob-login_forms_selfreg">[% msg.maketext("Anmeldung/Registrierung mit einer E-Mail-Adresse") %]</a></li>
+</ul>
+
+<div id="ob-login_forms_library">
+<form method="post" action="[% IF servername == "kug.ub.uni-koeln.de" %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
+
+[% IF redirect_to %]
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+[% END %]
+
+<fieldset class="ym-columnar">
+<legend>[% msg.maketext("Anmeldung mit einem Benutzerausweis") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="authenticator">[% msg.maketext("mit") %]:</label>
+<select name="authenticatorid">
+[%- FOREACH authenticator IN authenticators -%]
+[%#-  NEXT IF authenticator.description.match("Ausweis:USB") -%]
+[%-   IF authenticator.type != 'self' -%]
+<option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
+[%-   END -%]
+[%- END -%]
+</select>
+</div>
+
+<div class="ym-fbox-text">
+<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<input type="text" name="username" id="username" value="[% username %]" />
+</div>
+<div class="ym-fbox-text">
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
+<input type="password" name="password" id="password" />
+</div>
+
+<p/>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Anmelden") %]" />
+</div>
+
+</fieldset>
+
+</form>
+</div>
+
+<div id="ob-login_forms_selfreg">
+<form method="post" action="https://[% servername %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="ym-form">
+
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+
+[%- FOREACH authenticator IN authenticators -%]
+[%-   IF authenticator.type == 'self' -%]
+<input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
 [%-   END -%]
 [%- END -%]
 
-<fieldset class="ym-full">
-<legend>[% msg.maketext("Anmelden") %]</legend>
+<fieldset class="ym-columnar">
+<legend>[% msg.maketext("Anmeldung mit registrierter E-Mail-Adresse") %]</legend>
 <div class="ym-fbox-text">
 <label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 <input type="text" name="username" id="email_username" value="[% username %]" />
@@ -83,15 +141,15 @@
 <p/>
 
 <div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Einloggen") %]" />
+<input type="submit" value="[% msg.maketext("Anmelden") %]" />
 </div>
 
 </fieldset>
 
-</div><!-- End right_side -->
-</div><!-- End login_container -->
 </form>
+</div>
 
+</div>
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

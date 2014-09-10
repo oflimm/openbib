@@ -57,7 +57,7 @@ Werke und Literatur über die Renaissance. Die Sammlung Reiners brachte
 für die USB eine außergewöhnliche Bereicherung ihres
 Dante-Bestandes, so dass dieser nun zu den umfassendsten und besten
 Dante-Kollektionen Deutschlands gehört. Die Sammlung wird von der USB
-Köln stetig erweitert und <a href="http://www.ub.uni-koeln.de/sammlungen/dante/digital/index_ger.html" target="_blank">digitalisiert</a>.
+Köln stetig erweitert.
 </p>
 
 <p>[<a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Weitere Informationen</a>] </p>
@@ -80,6 +80,10 @@ Wissenschaften (Artes liberales) seiner Zeit.
 Die Einsichtnahme für Forschungszwecke erfolgt im  <a
 href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/histsamm/lesesaal/index_ger.html#e1968/index_ger.html" target="_blank">
 Lesesaal Historische Sammlungen</a>.
+</p>
+
+<p>
+[<a href="http://www.ub.uni-koeln.de/sammlungen/dante/digital/index_ger.html" target="_blank">Informationen zur Digitalisierung der Dante-Sammlung</a>]
 </p>
 
     </div>

@@ -31,20 +31,5 @@
 [% END %]
 <optgroup label="[% msg.maketext("Suchradius") %]">
 <option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>Standard</option>
-[%  FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
-     IF unit.orgunitname == orgunitname ;
-      searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
-%]
-<option value="[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% unit.description %]</option>
-[%   END;
-    END; %]
-<option value="[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Alle Kataloge") %]</option>
-</optgroup>
-<optgroup label="[% msg.maketext("Allgemeine Suchprofile") %]">
-[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
-     searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
-%]
-<option value="[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>- [% unit.description %]</option>
-[% END %]
 </optgroup>
 </select>

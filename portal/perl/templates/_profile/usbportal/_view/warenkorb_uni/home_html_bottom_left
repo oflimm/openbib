@@ -17,7 +17,7 @@
 
 [%# PROCESS common/subtemplate name="newsflash" %]
 
-[% titlecount = config.get_number_of_titles({profile = sysprofile}) %]
+[% titlecount = config.get_number_of_titles({view = view}) %]
 
 <h3><img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h3>
 
@@ -29,7 +29,7 @@
 <table class="ym-full ob-right_align">
 <tr>
 <th>[% msg.maketext("Kataloge") %]</th>
-<td>[% config.get_profiledbs(sysprofile).size %]</td>
+<td>[% config.get_viewdbs(view).size %]</td>
 </tr>
 <tr>
 <th>[% msg.maketext("Titel") %]</th>

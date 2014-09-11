@@ -21,6 +21,7 @@
                 'X3330', # msg.maketext("X3330") # Sigel
                 'X4000', # msg.maketext("X4000") # Bibliothek
                 'X4001', # msg.maketext("X4001") # Bibliotheks-Infoseite
+    ];
 -%]
 
 [% IF circulation.size <= 0 %]

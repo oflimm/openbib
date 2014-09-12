@@ -5,8 +5,8 @@
 uniqueidfield: 'id'
 
 category_split_chars:
-  'regent': '\s*und\s*'
-  'referenz': '\s*;\s*'
+#  'regent': '\s*und\s*'
+#  'referenz': '\s*;\s*'
   'vorderseite-referenz': '\s*;\s*'
   'rueckseite-referenz': '\s*;\s*'
 

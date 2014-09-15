@@ -1,0 +1,136 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_1
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "project" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Projekt") %]</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<h1>Ansprechpartner</h1>
+
+<table>
+<tr><th>Projekt und Inhaltliche Realisierung</th><th></th><th>Technische Realisierung</th></tr>
+<tr><td valign="top">
+
+<p><b>Projektleitung</b>
+<br /><i>Dr. Gregor Staab</i>
+<br />Institut für Altertumskunde
+<br />Universität zu Köln
+<br />50923 Köln
+<br />Tel. 0049 221 470 3024
+<br />Email: gstaab@uni-koeln.de
+</p>
+<p>
+<b>Mitantragsteller</b>
+<br /><i>Dr. Rolf Thiele</i>
+<br />USB Köln
+<br />Universitätsstr. 33
+<br />50931 Köln
+<br />Tel. 0049 221 470 2404
+<br />Email: thiele@ub.uni-koeln.de
+</p>
+<p>
+<b>Wissenschaftliche Bearbeitung der kleinasiatischen Münzen</b>
+<br /><i>Prof. Dr. Johannes Heinrichs</i>
+</p>
+<p>
+<b>Münzfotografie</b>
+<br /><i>Hermann Koop, student. Hilfskraft (DFG)</i>
+</p>
+<p>
+<b>Einarbeitung der Katalogdaten</b>
+<br /><i>Christina Daniels, student. Hilfskraft</i>
+<br /><i>Katrin Flass, student. Hilfskraft (DFG)</i>
+</p>
+</td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top">
+<b>Universitäts- und Stadtbibliothek Köln</b>
+<br />Universitätsstr. 33
+<br />50931 Köln
+<p>
+<b>Recherche-/Präsentations-Plattform KUG</b>
+<br /><i>Oliver Flimm</i>
+<br />IT-Dezernat
+<br />Email: flimm@ub.uni-koeln.de<br />
+</p>
+<p>
+<b>Koordination zwischen Institut für Altertumskunde und IT-Dezernat/UGK</b>
+<br /><i>Christiane Hoffrath</i>
+<br />Abt. UniversitätsGesamtKatalog
+<br />Email: hoffrath@ub.uni-koeln.de<br />
+</p>
+<p>
+<b>Datenerfassung, Administrator CONTENTdm</b>
+<br /><i>Dr. Peter Kostaedt</i>
+<br />IT-Dezernat
+<br />Email: hoffrath@ub.uni-koeln.de<br />
+</p>
+<p>
+<b>Datenerfassung, Administrator CONTENTdm</b>
+<br /><i>Dr. Peter Kostaedt</i>
+<br />IT-Dezernat
+<br />Email: hoffrath@ub.uni-koeln.de<br />
+</p>
+<p>
+<b>Layout / Design</b>
+<br /><i>Hildegard Schoel</i>
+<br />Abt. UniversitätsGesamtKatalog
+<br />Email: schoel@ub.uni-koeln.de<br />
+</p>
+</td></tr>
+</table>
+
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

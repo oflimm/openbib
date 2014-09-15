@@ -75,6 +75,44 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0338.html?l=[% lang %];page=1">[% msg.maketext("Nominal") %]</a></li>
 [% END %]
+<li><span  style="font-weight:normal">Legende Vorderseite</span>
+    <ul>
+[% IF active_submenu == "register_0341" %]
+  <li class="active"><strong>nicht aufgelöst</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0341.html?l=[% lang %];page=1">nicht aufgelöst</a></li>
+[% END %]
+[% IF active_submenu == "register_0342" %]
+  <li class="active"><strong>aufgelöst, nur Text</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0342.html?l=[% lang %];page=1">aufgelöst, nur Text</a></li>
+[% END %]
+[% IF active_submenu == "register_0343" %]
+  <li class="active"><strong>aufgelöst, Editionstext</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0343.html?l=[% lang %];page=1">aufgelöst, Editionstext</a></li>
+[% END %]
+</ul>
+</li>
+<li><span style="font-weight:normal">Legende Rückseite</span>
+    <ul>
+[% IF active_submenu == "register_0351" %]
+  <li class="active"><strong>nicht aufgelöst</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0351.html?l=[% lang %];page=1">nicht aufgelöst</a></li>
+[% END %]
+[% IF active_submenu == "register_0352" %]
+  <li class="active"><strong>aufgelöst, nur Text</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0352.html?l=[% lang %];page=1">aufgelöst, nur Text</a></li>
+[% END %]
+[% IF active_submenu == "register_0353" %]
+  <li class="active"><strong>aufgelöst, Editionstext</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0353.html?l=[% lang %];page=1">aufgelöst, nur Editionstext</a></li>
+[% END %]
+</ul>
+</li>
  </ul>
 </nav>
 [% END %]

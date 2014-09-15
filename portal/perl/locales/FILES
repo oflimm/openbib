@@ -1091,6 +1091,7 @@
 ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories
 ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/lefort/circulation
+../templates/_profile/sammlungen/_database/muenzen/titles_record_html
 ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories
 ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_images
 ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short

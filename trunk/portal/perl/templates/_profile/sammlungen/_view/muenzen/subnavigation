@@ -109,7 +109,7 @@
 [% IF active_submenu == "register_0353" %]
   <li class="active"><strong>aufgelöst, Editionstext</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0353.html?l=[% lang %];page=1">aufgelöst, nur Editionstext</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0353.html?l=[% lang %];page=1">aufgelöst, Editionstext</a></li>
 [% END %]
 </ul>
 </li>

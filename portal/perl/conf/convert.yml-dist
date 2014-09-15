@@ -3493,6 +3493,42 @@ convtab:
           'title': 50
           'titlestring': 50
           'freesearch': 50
+      '0341':         # 
+        index:
+          't0341': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0342':         # 
+        index:
+          't0342': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0343':         # 
+        index:
+          't0343': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0351':         # 
+        index:
+          't0351': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0352':         # 
+        index:
+          't0352': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0353':         # 
+        index:
+          't0353': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
       '0407':         # Stempelstellung
         index:
           't0407': 1
@@ -3809,6 +3845,7 @@ convtab:
       '0412': 1
       '0424': 1
       '0425': 1
+      '0428': 1
       '0451': 1
       '0453': 1
       '0540': 1

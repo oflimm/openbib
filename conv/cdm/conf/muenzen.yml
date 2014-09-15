@@ -7,8 +7,8 @@ uniqueidfield: 'id'
 category_split_chars:
 #  'regent': '\s*und\s*'
 #  'referenz': '\s*;\s*'
-  'vorderseite-referenz': '\s*;\s*'
-  'rueckseite-referenz': '\s*;\s*'
+#  'vorderseite-referenz': '\s*;\s*'
+#  'rueckseite-referenz': '\s*;\s*'
 
 # Personen
 pers:
@@ -33,6 +33,7 @@ title:
 #  'rueckseite': '0332'
   'datierung-von': '0426'
   'datierung-bis': '0427'
+  'datierung': '0428'
   'nominal': '0338'
   'material': '0800'        # Medienart
   'durchmesser': '0435'     # Format

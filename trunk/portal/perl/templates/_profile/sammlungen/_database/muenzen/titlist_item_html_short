@@ -220,7 +220,7 @@
      publisher = item.${'T0412'}.first.content;
 
      # Ejahr konstruieren
-     yearofpub = item.${'T0425'}.first.content;
+     yearofpub = item.${'T0428'}.first.content;
 
      # Signaturen konstruieren
      signaturen = [];
@@ -286,21 +286,11 @@
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]
-         <span class="ob-person">[% person %]</span><br />[% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF nominal %]<br/>[% nominal %][% END %][% IF item.${'T0425'}.first.content %]<br/>Datiert: <span class="ob-yearofpub">[% yearofpub %]</span>[% END %]   
+         <span class="ob-person">[% person %]</span><br />[% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF nominal %]<br/>[% nominal %][% END %][% IF yearofpub %]<br/><span class="ob-yearofpub">[% yearofpub %]</span>[% END %]   
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
       </div>
-      <div class="ob-titlemark">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]</div>
+      <div class="ob-titlemark"><span>[% record.id %]</span></div>
       <div class="ob-titleactions">
-[% IF tagname %]
-      <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
-[% END %]
-[% IF record.id && record.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get('share_small_img') %]" alt="Share this"/>BibSonomy</a>[% END %]
-[% IF user_owns_litlist %]
-&nbsp;&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="/images/openbib/cancel-16px.png" alt="[% msg.maketext("Entfernen") %]" />[% msg.maketext("L&ouml;schen") %]</a>
-[% END %]
-[% IF parameter.private_tags %]
-&nbsp;&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="/images/openbib/cancel-16px.png" alt="[% msg.maketext("Entfernen") %]" />[% msg.maketext("L&ouml;schen") %]</a>
-[% END %]
       </div>
     </div>
 <!-- Ende einzelner Treffer -->

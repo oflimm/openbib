@@ -1275,6 +1275,8 @@
 ../templates/_profile/sammlungen/_view/lefort/info_sammlung
 ../templates/_profile/sammlungen/_view/lefort/std_footer_html
 ../templates/_profile/sammlungen/_view/lefort/std_header_html
+../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions
+../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short
 ../templates/_profile/sammlungen/_view/muenzen/clouds_classification_html
 ../templates/_profile/sammlungen/_view/muenzen/clouds_corporatebody_html
 ../templates/_profile/sammlungen/_view/muenzen/clouds_databases_record_html
@@ -1296,6 +1298,8 @@
 ../templates/_profile/sammlungen/_view/muenzen/std_header_html
 ../templates/_profile/sammlungen/_view/muenzen/subnavigation
 ../templates/_profile/sammlungen/_view/muenzen/titles_fields_record_html
+../templates/_profile/sammlungen/_view/muenzen/titles_navigation
+../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html
 ../templates/_profile/sammlungen/_view/muenzen/titles_record_html_actions
 ../templates/_profile/sammlungen/_view/muenzen/titlist_options
 ../templates/_profile/sammlungen/_view/poetica/home_html

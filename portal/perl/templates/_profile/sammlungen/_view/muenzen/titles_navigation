@@ -20,12 +20,10 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles.html?l=[% lang %]">[% msg.maketext("Alle Münzen") %]</a></li>
 [% END %]
-<!--
 [% IF active_submenu == "popular" %]
-  <li class="active"><strong>Beliebte Totenzettel</strong></li>
+  <li class="active"><strong>[% msg.maketext("Beliebte Münzen") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/popular.html?l=[% lang %]">[% msg.maketext("Populäre Titel") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/popular.html?l=[% lang %]">[% msg.maketext("Beliebte Münzen") %]</a></li>
 [% END %]
--->
 </ul>
 </nav>

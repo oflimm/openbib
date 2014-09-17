@@ -36,7 +36,7 @@
 #                'T0426', # msg.maketext("T0426-muenzen") Datierung von
 #                'T0427', # msg.maketext("T0427-muenzen") Datierung bis
                 'T0407', # msg.maketext("T0407-muenzen") Stempelstellung
-                'T1664', # msg.maketext("T1664") Provenienz
+#                'T1664', # msg.maketext("T1664") Provenienz
 #                'T0508', # msg.maketext("T0508-muenzen") Referenz
                 'T0622', # msg.maketext("T0622-muenzen") Links
                 'T0451', # msg.maketext("T0451-muenzen") Forschungsliteratur

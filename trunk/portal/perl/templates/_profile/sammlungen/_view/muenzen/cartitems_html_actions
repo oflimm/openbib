@@ -1,0 +1,13 @@
+[% IF NOT hide_options %]
+<div class="ob-cartitems ob-reuse_data"><!-- Begin Reuse -->
+<h4>[% msg.maketext("Ausgewählte Titel") %]</h4>
+
+
+<p>
+
+<input type="submit" name="do_cartitems_delentry" value="[% msg.maketext("Löschen") %]" />
+
+</p>
+
+</div> <!-- End: Reuse Data -->
+[% END %]

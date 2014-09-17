@@ -430,7 +430,6 @@
 ../templates/bib
 ../templates/bibfuehrer_csv
 ../templates/bibfuehrer_tex
-../templates/bibliotheksfuehrer.csv
 ../templates/browse
 ../templates/browse_bks
 ../templates/browse_bks_html

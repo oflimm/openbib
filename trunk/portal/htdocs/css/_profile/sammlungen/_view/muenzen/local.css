@@ -1,6 +1,16 @@
 @media all
 {
 
+  .ym-hlist ul {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .ym-hlist form {
+    padding-left: 5px;
+    padding-right: 8px;
+  }
+
   .ym-wrapper {
     text-align:left;
     width: 1000px;

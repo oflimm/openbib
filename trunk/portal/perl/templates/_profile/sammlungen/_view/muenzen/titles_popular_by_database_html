@@ -238,7 +238,7 @@
     ebook     = item.${'T4120'}.first.content ;
     toc       = item.${'T4110'}.first.content ;
 
-    titleinfos.push("${itemcount} Nutzer");
+    #titleinfos.push("${itemcount} Nutzer");
 
     IF item.tags ;
       tags = [];

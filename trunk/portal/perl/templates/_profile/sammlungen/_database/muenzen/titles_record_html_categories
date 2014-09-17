@@ -17,7 +17,7 @@
 [%# USE dumper;dumper.dump(normdata) %]
 
 <table class="ym-full ob-title_fields">
-<tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
+<tr><td class="ob-field">[% msg.maketext("T0010-muenzen") %]</td><td>[% record.id %]</td></tr>
 
 [%-
    request_base = config.get('search_defaultparams');
@@ -37,6 +37,34 @@
 view_searchprofile  = config.get_searchprofile_of_view(view) ;
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
+
+vorderseite = [];
+rueckseite = [];
+
+IF normdata.${"T0332"}.first.content ;
+  vorderseite.push(normdata.${"T0332"}.first.content);
+END ;
+IF normdata.${"T0334"}.first.content ;
+  vorderseite.push(normdata.${"T0334"}.first.content);
+END ;
+
+vorderseite_string = vorderseite.join("<br />");
+IF vorderseite_string ;
+  normdata.${"Vorderseite"} = [ { content = vorderseite_string } ];
+END;
+
+IF normdata.${"T0335"}.first.content ;
+  rueckseite.push(normdata.${"T0335"}.first.content);
+END ;
+IF normdata.${"T0337"}.first.content ;
+  rueckseite.push(normdata.${"T0337"}.first.content);
+END ;
+
+rueckseite_string = rueckseite.join("<br />");
+
+IF rueckseite_string ;
+  normdata.${"Rückseite"} = [ { content = rueckseite_string } ];
+END;
 
 FOREACH category IN categories;
     FOREACH item IN normdata.$category;
@@ -93,13 +121,26 @@ FOREACH category IN categories;
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
+    CASE "T0433";
+         content   = "${content} g";
+
+    CASE "T0435";
+         content   = "${content} mm";
+
+    CASE "T0433";
+         content   = "${content} g";
+
     CASE "T0407";
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').t0407.prefix;
 
+         unit = "Uhr";
+         IF lang == 'en';
+            unit = "o'clock";
+         END ;
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";
-         content   = "<a href=\"${localurl}\">${content}</a>";
+         content   = "<a href=\"${localurl}\">${content} ${unit}</a>";
 
     CASE "T0410";
          searchterm    = uri_escape(item.content);

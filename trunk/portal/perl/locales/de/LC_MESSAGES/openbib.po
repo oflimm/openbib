@@ -110,8 +110,8 @@ msgstr "${category}"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:296
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:253
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:285
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:330
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:358
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:329
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:357
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:342
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:373
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:283
@@ -214,6 +214,10 @@ msgstr "%1 Titel in %2 Gruppen, %3 Literaturlisten"
 #. (itemcount)
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:161
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:209
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:161
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:209
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:161
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:209
 #: ../templates/_view/richter/cartitems_html_actions:129
 #: ../templates/cartitems_html_actions:144
 #: ../templates/titles_record_html_actions:161
@@ -289,12 +293,16 @@ msgid "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 msgstr "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:49
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:49
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:49
 #: ../templates/titles_record_html_actions:49
 #: ../templates/titles_record_include:394
 msgid "&Uuml;bernahme dieses Titels in die bestehende Literaturliste: "
 msgstr "&Uuml;bernahme dieses Titels in die bestehende Literaturliste: "
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:69
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:69
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:69
 #: ../templates/titles_record_html_actions:69
 #: ../templates/titles_record_include:407
 msgid "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
@@ -416,6 +424,12 @@ msgstr "&ntilde; <i>suchen mit:</i> n"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:132
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:233
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:81
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:132
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:233
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:81
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:132
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:233
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:81
 #: ../templates/_view/richter/cartitems_html_actions:62
 #: ../templates/_view/richter/cartitems_html_actions:95
 #: ../templates/_view/richter/users_litlists_record_edit:73
@@ -796,6 +810,9 @@ msgstr "Abgleich zu BibSonomy"
 #: ../templates/_profile/sammlungen/_view/zpe/corporate_banner:7
 #: ../templates/_profile/sammlungen/corporate_banner:7
 #: ../templates/_profile/usbintern/corporate_banner:18
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/corporate_banner:18
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/corporate_banner:18
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:18
 #: ../templates/_view/filme/corporate_banner:18
 #: ../templates/_view/richter/corporate_banner:6
 #: ../templates/corporate_banner:18
@@ -807,6 +824,8 @@ msgid "Abschicken"
 msgstr "Abschicken"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:24
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:24
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:24
 #: ../templates/_view/richter/cartitems_html_actions:5
 #: ../templates/cartitems_html_actions:6
 #: ../templates/titles_record_html_actions:24
@@ -820,6 +839,9 @@ msgstr "Abspeichern"
 #: ../templates/_profile/kug/users_preferences_html:232
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:177
 #: ../templates/_profile/sammlungen/searchforms_record_query:177
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:129
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:129
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:129
 #: ../templates/_profile/usbportal/searchforms_record_query:119
 #: ../templates/_view/filme/searchforms_record_query:126
 #: ../templates/_view/richter/searchforms_record_query:120
@@ -1160,6 +1182,8 @@ msgstr ""
 "      recherchieren."
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:23
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:23
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:23
 #: ../templates/_view/richter/cartitems_html_actions:7
 #: ../templates/cartitems_html_actions:8
 #: ../templates/titles_record_html_actions:23
@@ -1239,10 +1263,16 @@ msgstr "An"
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:21
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:21
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:21
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:299
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/titlist_item_html_short:280
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:324
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:324
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:324
 #: ../templates/_view/richter/cartitems_html_short:144
 #: ../templates/_view/richter/titlist_item_html_short:233
 #: ../templates/cartitems_html_short:143 ../templates/info_help:969
@@ -1266,6 +1296,8 @@ msgid "Andere Ausgaben"
 msgstr "Andere Ausgaben"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:29
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:29
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:29
 #: ../templates/_view/richter/cartitems_html_actions:11
 #: ../templates/_view/richter/users_litlists_record_edit:55
 #: ../templates/cartitems_html_actions:12
@@ -1298,6 +1330,9 @@ msgstr "Angelegt"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:51
 #: ../templates/_profile/usbintern/home_html_bottom_left:51
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:51
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:51
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:51
 #: ../templates/home_html_bottom_left:67
 msgid "Angemeldete Nutzer"
 msgstr "Angemeldete Nutzer"
@@ -1325,6 +1360,21 @@ msgstr "Anlegen einer neuen Literaturliste: "
 #: ../templates/_profile/sammlungen/login:39
 #: ../templates/_profile/sammlungen/login:55
 #: ../templates/_profile/usbintern/corporate_banner:21
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/corporate_banner:21
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:108
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:144
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:39
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:55
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/corporate_banner:21
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:108
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:144
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:39
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:55
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:21
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:108
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:144
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:39
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:55
 #: ../templates/_view/filme/corporate_banner:21
 #: ../templates/_view/richter/corporate_banner:8
 #: ../templates/_view/richter/login:39 ../templates/corporate_banner:21
@@ -1365,14 +1415,26 @@ msgid "Anmeldung"
 msgstr "Anmeldung"
 
 #: ../templates/_profile/kug/login:70 ../templates/_profile/kug/login:82
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:70
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:82
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:70
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:82
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:70
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:82
 msgid "Anmeldung mit einem Benutzerausweis"
 msgstr "Anmeldung mit einem Benutzerausweis"
 
 #: ../templates/_profile/kug/login:128
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:128
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:128
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:128
 msgid "Anmeldung mit registrierter E-Mail-Adresse"
 msgstr "Anmeldung mit registrierter E-Mail-Adresse"
 
 #: ../templates/_profile/kug/login:71
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:71
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:71
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:71
 msgid "Anmeldung/Registrierung mit einer E-Mail-Adresse"
 msgstr "Anmeldung/Registrierung mit einer E-Mail-Adresse"
 
@@ -1676,6 +1738,8 @@ msgid "Aus"
 msgstr "Aus"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:25
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:25
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:25
 #: ../templates/_view/richter/cartitems_html_actions:6
 #: ../templates/cartitems_html_actions:7
 #: ../templates/titles_record_html_actions:25
@@ -1762,6 +1826,9 @@ msgstr "Ausleihinformationen"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:33
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:33
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:33
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:29
 #: ../templates/_profile/usbportal/circulation:31 ../templates/circulation:29
 #: ../templates/circulation_mobile:29
 msgid "Ausleihstatus"
@@ -1943,6 +2010,8 @@ msgid "Behalten Sie diese Liste"
 msgstr "Behalten Sie diese Liste"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:19
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:19
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:19
 #: ../templates/titles_record_html_actions:19
 #: ../templates/titles_record_include:347
 msgid "Behalten Sie diesen Titel"
@@ -2122,6 +2191,9 @@ msgstr "Benutzername"
 #: ../templates/_profile/kug/login:97
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_images:59
 #: ../templates/_profile/sammlungen/login:133
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:97
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:97
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:97
 #: ../templates/_profile/usbportal/login:71 ../templates/login_circulation:79
 msgid "Benutzernummer"
 msgstr "Benutzernummer"
@@ -2299,7 +2371,7 @@ msgstr "Beschreibung"
 #: ../templates/_profile/sammlungen/_database/kempis/circulation:123
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:290
 #: ../templates/_profile/sammlungen/_database/lefort/circulation:123
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:363
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:362
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:378
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:319
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:123
@@ -2310,6 +2382,9 @@ msgstr "Beschreibung"
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:289
 #: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:315
 #: ../templates/_profile/sammlungen/titles_record_html_categories:315
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:87
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:87
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:87
 #: ../templates/_profile/usbportal/circulation:106
 #: ../templates/_profile/usbportal/circulation:31
 #: ../templates/_profile/usbportal/holding:19
@@ -2350,6 +2425,9 @@ msgstr "Bestaetigen Sie Ihre Registrierung"
 #: ../templates/_profile/mobile/_view/richtermobile/holding:16
 #: ../templates/_profile/sammlungen/_database/richter/holding:35
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:222
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:46
 #: ../templates/_profile/usbportal/holding:19
 #: ../templates/_profile/usbportal/titles_record_include:77
 #: ../templates/_profile/usbportal/visible_categories_location:32
@@ -2435,6 +2513,8 @@ msgid "BibSonomy"
 msgstr "BibSonomy"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:399
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:375
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:375
 #: ../templates/titles_record_html_actions:401
 #: ../templates/titles_record_include:673
 msgid "BibSonomy Tags"
@@ -2487,6 +2567,15 @@ msgstr "Bibinformationen statt URL"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:33
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:33
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:33
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:80
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:80
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:80
 #: ../templates/circulation:29 ../templates/circulation_mobile:29
 #: ../templates/holding:47 ../templates/holding:81
 #: ../templates/holding_mobile:17
@@ -2530,6 +2619,8 @@ msgstr ""
 "vergeben."
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:166
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:166
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:166
 #: ../templates/_view/richter/cartitems_html_actions:134
 #: ../templates/cartitems_html_actions:149
 #: ../templates/titles_record_html_actions:166
@@ -2787,6 +2878,9 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/pruessen/std_footer_html:17
 #: ../templates/_profile/sammlungen/std_footer_html:17
 #: ../templates/_profile/usbintern/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/std_footer_html:18
 msgid "Dank"
 msgstr "Dank"
 
@@ -3165,6 +3259,7 @@ msgstr "Deutsch"
 msgid "Deutsche Wikipedia"
 msgstr "Deutsche Wikipedia"
 
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:71
 #: ../templates/titles_popular_by_database_html:71
 #: ../templates/titles_popular_html:64
 msgid "Die 20 meist aufgerufenen Titel in den letzten 6 Monaten"
@@ -3494,6 +3589,8 @@ msgid "Diese Session existiert nicht."
 msgstr "Diese Session existiert nicht."
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:510
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:455
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:455
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_record_html_actions:95
 #: ../templates/titles_record_html_actions:481
 #: ../templates/titles_record_include:753
@@ -3723,9 +3820,13 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:22
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:20
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/titles_html:17
 #: ../templates/_profile/sammlungen/titlist_item_html_short:22
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:22
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:22
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:22
 #: ../templates/_profile/usbportal/litlists_record_include:14
 #: ../templates/_profile/usbportal/tags_include:14
 #: ../templates/_profile/usbportal/titles_popular_by_database_include:18
@@ -3763,6 +3864,9 @@ msgstr "E-Mail"
 
 #: ../templates/_profile/kug/login:130
 #: ../templates/_profile/sammlungen/login:89
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:130
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:130
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:130
 #: ../templates/_profile/usbportal/login:102
 #: ../templates/_view/richter/login:72
 #: ../templates/_view/richter/users_passwords:59
@@ -3799,6 +3903,9 @@ msgstr "E-Mail-Adresse"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:102
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:107
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:107
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:107
 #: ../templates/_profile/usbportal/visible_categories_title:105
 #: ../templates/all_categories_title:16 ../templates/search_title_field:35
 #: ../templates/visible_categories_title:107
@@ -3811,6 +3918,9 @@ msgstr "RVK"
 
 #: ../templates/_database/bestellungen/visible_categories_title:109
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:108
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:108
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:108
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:108
 #: ../templates/all_categories_title:18
 #: ../templates/visible_categories_title:108
 msgid "E4102"
@@ -3833,6 +3943,9 @@ msgstr "Themengebiet"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:37
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:110
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:117
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:117
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:117
 #: ../templates/_profile/usbportal/visible_categories_title:113
 #: ../templates/all_categories_title:19
 #: ../templates/visible_categories_title:117
@@ -3860,6 +3973,9 @@ msgstr "Volltext Inhaltsverzeichnis"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:118
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:111
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:118
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:118
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:118
 #: ../templates/_profile/usbportal/visible_categories_title:114
 #: ../templates/all_categories_title:21
 #: ../templates/visible_categories_title:118
@@ -3898,6 +4014,9 @@ msgstr "Wikipedia-Artikel (französisch)"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:105
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:105
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:105
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:105
 #: ../templates/_profile/usbportal/visible_categories_title:103
 #: ../templates/all_categories_title:25
 #: ../templates/visible_categories_title:105
@@ -4085,6 +4204,8 @@ msgid "Einfache Suche"
 msgstr "Einfache Suche"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:122
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:122
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:122
 #: ../templates/_view/richter/cartitems_html_actions:86
 #: ../templates/cartitems_html_actions:97
 #: ../templates/titles_record_html_actions:122
@@ -4099,6 +4220,9 @@ msgstr "Eingrenzen"
 
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:263
 #: ../templates/_profile/kug/searchforms_record_query:216
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:216
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:216
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:216
 #: ../templates/_profile/usbportal/searchforms_record_query:138
 #: ../templates/_view/filme/searchforms_record_query:165
 #: ../templates/searchforms_record_query:179
@@ -4265,6 +4389,8 @@ msgstr ""
 "die aufgrund ihres Alters nicht infrage kam."
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:273
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:273
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:273
 #: ../templates/titles_record_html_actions:273
 #: ../templates/titles_record_include:591
 msgid "Empfehlungen"
@@ -4328,6 +4454,8 @@ msgid "Englische Wikipedia"
 msgstr "Englische Wikipedia"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:267
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:267
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:267
 #: ../templates/titles_record_html_actions:267
 #: ../templates/titles_record_include:585
 msgid "Entdecken Sie weitere Titel &uuml;ber:"
@@ -4400,6 +4528,8 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:185
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:200
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:198
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:301
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:304
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:240
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:243
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:198
@@ -4407,6 +4537,12 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/_profile/sammlungen/search_facet:198
 #: ../templates/_profile/sammlungen/titlist_item_html_short:282
 #: ../templates/_profile/sammlungen/titlist_item_html_short:285
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:326
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:329
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:326
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:329
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329
 #: ../templates/_view/richter/cartitems_html_actions:145
 #: ../templates/_view/richter/cartitems_html_short:145
 #: ../templates/_view/richter/titlist_item_html_short:235
@@ -4530,7 +4666,7 @@ msgstr "Erscheinungsjahre"
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:441
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:305
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:294
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:367
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:366
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:382
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:323
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:325
@@ -4613,6 +4749,12 @@ msgstr "Erweitere Recherchemaske"
 #: ../templates/_profile/sammlungen/mainnavigation_html:121
 #: ../templates/_profile/sammlungen/searchforms_record_advanced:38
 #: ../templates/_profile/sammlungen/searchforms_record_query:68
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_advanced:36
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:4
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_advanced:36
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:4
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_advanced:36
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:4
 #: ../templates/_view/richter/mainnavigation:127
 #: ../templates/_view/richter/searchforms_record_advanced:38
 #: ../templates/_view/richter/searchforms_record_simple:160
@@ -4651,6 +4793,9 @@ msgstr "Erweiterte Suche"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:123
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:123
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:123
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:87
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:87
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:87
 #: ../templates/_profile/usbportal/circulation:106 ../templates/circulation:87
 #: ../templates/circulation_mobile:76
 msgid "Erwerbungsstatus"
@@ -5183,6 +5328,9 @@ msgstr "Französisch"
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:76
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/searchforms_record_query:77
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:13
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:13
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:13
 #: ../templates/_profile/usbportal/searchforms_record_query:69
 #: ../templates/_view/filme/searchforms_record_query:70
 #: ../templates/_view/richter/searchforms_record_query:70
@@ -5627,6 +5775,9 @@ msgstr "Hier suchen Sie im gesamten Münzbestand"
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:129
 #: ../templates/_profile/sammlungen/mainnavigation_html:119
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:225
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:225
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:225
 #: ../templates/_profile/usbportal/searchforms_record_query:164
 #: ../templates/_view/filme/searchforms_record_query:168
 #: ../templates/_view/richter/mainnavigation:125
@@ -5668,6 +5819,12 @@ msgstr "Hier suchen Sie in der Sammlung"
 #: ../templates/_profile/kug/corporate_banner:20
 #: ../templates/_profile/usbintern/corporate_banner:17
 #: ../templates/_profile/usbintern/corporate_banner:20
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/corporate_banner:17
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/corporate_banner:20
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/corporate_banner:17
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/corporate_banner:20
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:17
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:20
 #: ../templates/_view/filme/corporate_banner:17
 #: ../templates/_view/filme/corporate_banner:20
 #: ../templates/corporate_banner:17 ../templates/corporate_banner:20
@@ -5702,6 +5859,10 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:138
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:240
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:138
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:240
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:138
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:240
 #: ../templates/_view/richter/cartitems_html_actions:100
 #: ../templates/cartitems_html_actions:113
 #: ../templates/titles_record_html_actions:138
@@ -5770,6 +5931,9 @@ msgstr "IP-Adresse"
 #: ../templates/_profile/kug/users_preferences_html:198
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:137
 #: ../templates/_profile/sammlungen/searchforms_record_query:137
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:89
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:89
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:89
 #: ../templates/_profile/usbportal/searchforms_record_query:99
 #: ../templates/_view/richter/searchforms_record_query:100
 #: ../templates/admin_statistics_query_html:84
@@ -5783,6 +5947,9 @@ msgstr "ISBN"
 #: ../templates/_profile/kug/users_preferences_html:217
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:147
 #: ../templates/_profile/sammlungen/searchforms_record_query:147
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:99
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:99
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:99
 #: ../templates/_profile/usbportal/searchforms_record_query:104
 #: ../templates/_view/richter/searchforms_record_query:105
 #: ../templates/admin_statistics_query_html:85
@@ -6144,6 +6311,9 @@ msgstr "Import-Einstellungen"
 #: ../templates/_profile/sammlungen/info_impressum_html:43
 #: ../templates/_profile/sammlungen/std_footer_html:17
 #: ../templates/_profile/usbintern/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/std_footer_html:18
 #: ../templates/_view/richter/info_impressum_html:44
 #: ../templates/_view/richter/std_footer:17
 #: ../templates/info_impressum_html:37 ../templates/info_impressum_html:53
@@ -6395,10 +6565,16 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:22
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:22
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:299
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/titlist_item_html_short:280
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:324
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:324
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:324
 #: ../templates/_view/richter/titlist_item_html_short:233
 #: ../templates/reviews_edit:199
 #: ../templates/titles_popular_by_database_html:297
@@ -6676,9 +6852,16 @@ msgstr "Inhalte zu neuer Kennung verschieben"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_title_field:11
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:21
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/titles_html:18
 #: ../templates/_profile/sammlungen/titlist_item_html_short:23
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:159
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:23
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:159
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:23
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:159
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:23
 #: ../templates/_profile/usbportal/litlists_record_include:15
 #: ../templates/_profile/usbportal/tags_include:15
 #: ../templates/_profile/usbportal/titles_popular_by_database_include:19
@@ -6731,6 +6914,9 @@ msgstr "Institut"
 #: ../templates/_profile/kug/searchforms_record_query:43
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/searchforms_record_query:107
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:43
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:43
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:43
 #: ../templates/_profile/usbportal/searchforms_record_query:84
 #: ../templates/_view/richter/searchforms_record_query:85
 #: ../templates/authority_search_facet:688
@@ -6810,7 +6996,7 @@ msgstr "Inventarnummer"
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:440
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:304
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:293
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:366
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:365
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:381
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:324
@@ -7029,6 +7215,9 @@ msgstr "Ja"
 #: ../templates/_profile/sammlungen/clouds_navigation:30
 #: ../templates/_profile/sammlungen/search_facet:181
 #: ../templates/_profile/sammlungen/searchforms_record_query:222
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:196
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:196
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:196
 #: ../templates/_profile/usbportal/searchforms_record_query:135
 #: ../templates/_view/filme/searchforms_record_query:155
 #: ../templates/_view/richter/clouds_navigation:28
@@ -7237,6 +7426,9 @@ msgstr "Kartenkataloge der Philosophischen Fakultät"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:4
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:162
 #: ../templates/_profile/sammlungen/search_facet:174
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:308
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:308
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:308
 #: ../templates/_profile/usbportal/titlist_item_html_short:178
 #: ../templates/_view/richter/cartitems_html_short:134
 #: ../templates/_view/richter/resultlists_choice:109
@@ -7308,7 +7500,11 @@ msgstr "Katalogauswahl zu diesem View"
 #: ../templates/_profile/kug/_database/dbis/classifications_html:37
 #: ../templates/_profile/kug/_database/ezb/classifications_html:37
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:31
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:44
 #: ../templates/_profile/usbintern/home_html_bottom_left:31
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:31
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:31
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:31
 #: ../templates/admin_databases_html:42
 #: ../templates/admin_databases_record_delete_confirm:39
 #: ../templates/admin_databases_record_edit:39
@@ -7410,6 +7606,9 @@ msgstr "Keine"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:111
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:111
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:111
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:75
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:75
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:75
 #: ../templates/circulation:75 ../templates/circulation_mobile:64
 msgid "Keine Aktion m&ouml;glich"
 msgstr "Keine Aktion m&ouml;glich"
@@ -7452,6 +7651,9 @@ msgstr "Kennung soll wirklich gel&ouml;scht werden"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:22
 #: ../templates/_profile/usbintern/home_html_bottom_left:22
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:22
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:22
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:22
 #: ../templates/home_html_bottom_left:38
 msgid "Kennzahlen"
 msgstr "Kennzahlen"
@@ -7479,6 +7681,9 @@ msgstr "Klienten"
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:117
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:118
 #: ../templates/_profile/sammlungen/searchforms_record_query:167
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:119
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:119
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:119
 #: ../templates/_profile/usbportal/searchforms_record_query:114
 #: ../templates/_view/filme/searchforms_record_query:119
 #: ../templates/_view/richter/searchforms_record_query:115
@@ -7549,6 +7754,9 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/pruessen/std_footer_html:17
 #: ../templates/_profile/sammlungen/std_footer_html:17
 #: ../templates/_profile/usbintern/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/std_footer_html:18
 #: ../templates/info_help:1029 ../templates/info_help:104
 msgid "Kontakt"
 msgstr "Kontakt"
@@ -7661,6 +7869,12 @@ msgstr "Künstler"
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:243
 #: ../templates/_profile/sammlungen/titlist_item_html_short:282
 #: ../templates/_profile/sammlungen/titlist_item_html_short:285
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:326
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:329
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:326
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:329
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329
 #: ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144
 #: ../templates/titles_record_include:512
 #: ../templates/titlist_item_html_short:326
@@ -7689,8 +7903,12 @@ msgstr "L&ouml;schen"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:24
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:24
 #: ../templates/_profile/kug/home_html_bottom_left:23
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:17
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:17
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:17
 #: ../templates/_profile/usbportal/visible_categories_location:17
-#: ../templates/bibfuehrer_tex:297 ../templates/visible_categories_location:17
+#: ../templates/bibfuehrer_csv:211 ../templates/bibfuehrer_tex:297
+#: ../templates/visible_categories_location:17
 msgid "L0010"
 msgstr "Institution"
 
@@ -7715,8 +7933,12 @@ msgstr "Institution"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:25
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:25
 #: ../templates/_profile/kug/home_html_bottom_left:24
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:18
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:18
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:18
 #: ../templates/_profile/usbportal/visible_categories_location:18
-#: ../templates/bibfuehrer_tex:298 ../templates/visible_categories_location:18
+#: ../templates/bibfuehrer_csv:212 ../templates/bibfuehrer_tex:298
+#: ../templates/visible_categories_location:18
 msgid "L0020"
 msgstr "Adresse"
 
@@ -7741,43 +7963,75 @@ msgstr "Adresse"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:26
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:26
 #: ../templates/_profile/kug/home_html_bottom_left:25
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:19
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:19
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:19
 #: ../templates/_profile/usbportal/visible_categories_location:19
-#: ../templates/bibfuehrer_tex:299 ../templates/visible_categories_location:19
+#: ../templates/bibfuehrer_csv:213 ../templates/bibfuehrer_tex:299
+#: ../templates/visible_categories_location:19
 msgid "L0030"
 msgstr "Gebäude"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:20
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:20
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:20
 #: ../templates/_profile/usbportal/visible_categories_location:25
-#: ../templates/bibfuehrer_tex:300 ../templates/visible_categories_location:20
+#: ../templates/bibfuehrer_csv:214 ../templates/bibfuehrer_tex:300
+#: ../templates/visible_categories_location:20
 msgid "L0040"
 msgstr "Interaktiver Lageplan der Universität"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:21
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:21
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:21
 #: ../templates/_profile/usbportal/visible_categories_location:26
-#: ../templates/bibfuehrer_tex:301 ../templates/visible_categories_location:21
+#: ../templates/bibfuehrer_csv:215 ../templates/bibfuehrer_tex:301
+#: ../templates/visible_categories_location:21
 msgid "L0050"
 msgstr "Gemeinsame Bibliothek"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:23
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:23
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:23
 #: ../templates/_profile/usbportal/visible_categories_location:27
-#: ../templates/bibfuehrer_tex:302 ../templates/visible_categories_location:23
+#: ../templates/bibfuehrer_csv:216 ../templates/bibfuehrer_tex:302
+#: ../templates/visible_categories_location:23
 msgid "L0060"
 msgstr "Telefon"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:24
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:24
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:24
 #: ../templates/_profile/usbportal/visible_categories_location:28
-#: ../templates/bibfuehrer_tex:303 ../templates/visible_categories_location:24
+#: ../templates/bibfuehrer_csv:217 ../templates/bibfuehrer_tex:303
+#: ../templates/visible_categories_location:24
 msgid "L0070"
 msgstr "Fax"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:25
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:25
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:25
 #: ../templates/_profile/usbportal/visible_categories_location:29
-#: ../templates/bibfuehrer_tex:304 ../templates/visible_categories_location:25
+#: ../templates/bibfuehrer_csv:218 ../templates/bibfuehrer_tex:304
+#: ../templates/visible_categories_location:25
 msgid "L0080"
 msgstr "E-Mail"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:26
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:26
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:26
 #: ../templates/_profile/usbportal/visible_categories_location:30
-#: ../templates/bibfuehrer_tex:305 ../templates/visible_categories_location:26
+#: ../templates/bibfuehrer_csv:219 ../templates/bibfuehrer_tex:305
+#: ../templates/visible_categories_location:26
 msgid "L0090"
 msgstr "Internet"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:27
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:27
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:27
 #: ../templates/_profile/usbportal/visible_categories_location:24
-#: ../templates/bibfuehrer_tex:306 ../templates/visible_categories_location:27
+#: ../templates/bibfuehrer_csv:220 ../templates/bibfuehrer_tex:306
+#: ../templates/visible_categories_location:27
 msgid "L0100"
 msgstr "Auskunft / Bibliothekar(in)"
 
@@ -7802,38 +8056,66 @@ msgstr "Auskunft / Bibliothekar(in)"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:27
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:27
 #: ../templates/_profile/kug/home_html_bottom_left:26
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:28
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:28
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:28
 #: ../templates/_profile/usbportal/visible_categories_location:21
-#: ../templates/bibfuehrer_tex:307 ../templates/visible_categories_location:28
+#: ../templates/bibfuehrer_csv:221 ../templates/bibfuehrer_tex:307
+#: ../templates/visible_categories_location:28
 msgid "L0110"
 msgstr "Öffnungszeiten"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:29
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:29
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:29
 #: ../templates/_profile/usbportal/visible_categories_location:33
-#: ../templates/bibfuehrer_tex:308 ../templates/visible_categories_location:29
+#: ../templates/bibfuehrer_csv:222 ../templates/bibfuehrer_tex:308
+#: ../templates/visible_categories_location:29
 msgid "L0120"
 msgstr "Bestand Monographien"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:30
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:30
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:30
 #: ../templates/_profile/usbportal/visible_categories_location:34
-#: ../templates/bibfuehrer_tex:309 ../templates/visible_categories_location:30
+#: ../templates/bibfuehrer_csv:223 ../templates/bibfuehrer_tex:309
+#: ../templates/visible_categories_location:30
 msgid "L0130"
 msgstr "Bestand Zeitschriften"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:31
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:31
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:31
 #: ../templates/_profile/usbportal/visible_categories_location:35
-#: ../templates/bibfuehrer_tex:310 ../templates/visible_categories_location:31
+#: ../templates/bibfuehrer_csv:224 ../templates/bibfuehrer_tex:310
+#: ../templates/visible_categories_location:31
 msgid "L0140"
 msgstr "Anzahl laufender Zeitschriften"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:32
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:32
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:32
 #: ../templates/_profile/usbportal/visible_categories_location:36
-#: ../templates/bibfuehrer_tex:311 ../templates/visible_categories_location:32
+#: ../templates/bibfuehrer_csv:225 ../templates/bibfuehrer_tex:311
+#: ../templates/visible_categories_location:32
 msgid "L0150"
 msgstr "Bestand CD's / Digitale Medien"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:33
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:33
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:33
 #: ../templates/_profile/usbportal/visible_categories_location:37
-#: ../templates/bibfuehrer_tex:312 ../templates/visible_categories_location:33
+#: ../templates/bibfuehrer_csv:226 ../templates/bibfuehrer_tex:312
+#: ../templates/visible_categories_location:33
 msgid "L0160"
 msgstr "Sonstige Bestandsangaben"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:34
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:34
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:34
 #: ../templates/_profile/usbportal/visible_categories_location:38
-#: ../templates/bibfuehrer_tex:313 ../templates/visible_categories_location:34
+#: ../templates/bibfuehrer_csv:227 ../templates/bibfuehrer_tex:313
+#: ../templates/visible_categories_location:34
 msgid "L0170"
 msgstr "Besondere Sammelgebiete"
 
@@ -7858,28 +8140,48 @@ msgstr "Besondere Sammelgebiete"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:28
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:28
 #: ../templates/_profile/kug/home_html_bottom_left:27
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:35
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:35
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:35
 #: ../templates/_profile/usbportal/visible_categories_location:20
-#: ../templates/bibfuehrer_tex:314 ../templates/visible_categories_location:35
+#: ../templates/bibfuehrer_csv:228 ../templates/bibfuehrer_tex:314
+#: ../templates/visible_categories_location:35
 msgid "L0180"
 msgstr "Art der Bibliothek"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:36
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:36
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:36
 #: ../templates/_profile/usbportal/visible_categories_location:40
-#: ../templates/bibfuehrer_tex:315 ../templates/visible_categories_location:36
+#: ../templates/bibfuehrer_csv:229 ../templates/bibfuehrer_tex:315
+#: ../templates/visible_categories_location:36
 msgid "L0190"
 msgstr "Neuerwerbungslisten"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:37
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:37
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:37
 #: ../templates/_profile/usbportal/visible_categories_location:41
-#: ../templates/bibfuehrer_tex:316 ../templates/visible_categories_location:37
+#: ../templates/bibfuehrer_csv:230 ../templates/bibfuehrer_tex:316
+#: ../templates/visible_categories_location:37
 msgid "L0200"
 msgstr "Kopierer / Technische Ausstattung"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:39
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:39
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:39
 #: ../templates/_profile/usbportal/visible_categories_location:43
-#: ../templates/bibfuehrer_tex:318 ../templates/visible_categories_location:39
+#: ../templates/bibfuehrer_csv:232 ../templates/bibfuehrer_tex:318
+#: ../templates/visible_categories_location:39
 msgid "L0210"
 msgstr "DV-Ausstattung"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:40
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:40
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:40
 #: ../templates/_profile/usbportal/visible_categories_location:44
-#: ../templates/bibfuehrer_tex:319 ../templates/visible_categories_location:40
+#: ../templates/bibfuehrer_csv:233 ../templates/bibfuehrer_tex:319
+#: ../templates/visible_categories_location:40
 msgid "L0220"
 msgstr "Art des Systems"
 
@@ -7904,8 +8206,12 @@ msgstr "Art des Systems"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:29
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:29
 #: ../templates/_profile/kug/home_html_bottom_left:28
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:41
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:41
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:41
 #: ../templates/_profile/usbportal/visible_categories_location:22
-#: ../templates/bibfuehrer_tex:320 ../templates/visible_categories_location:41
+#: ../templates/bibfuehrer_csv:234 ../templates/bibfuehrer_tex:320
+#: ../templates/visible_categories_location:41
 msgid "L0230"
 msgstr "Online-Katalogisierung"
 
@@ -7930,31 +8236,54 @@ msgstr "Online-Katalogisierung"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:30
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:30
 #: ../templates/_profile/kug/home_html_bottom_left:29
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:42
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:42
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:42
 #: ../templates/_profile/usbportal/visible_categories_location:45
-#: ../templates/bibfuehrer_tex:321 ../templates/visible_categories_location:42
+#: ../templates/bibfuehrer_csv:235 ../templates/bibfuehrer_tex:321
+#: ../templates/visible_categories_location:42
 msgid "L0235"
 msgstr "Online-Katalogisierung seit Erwerbungsjahr"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:43
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:43
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:43
 #: ../templates/_profile/usbportal/visible_categories_location:46
-#: ../templates/bibfuehrer_tex:322 ../templates/visible_categories_location:43
+#: ../templates/bibfuehrer_csv:236 ../templates/bibfuehrer_tex:322
+#: ../templates/visible_categories_location:43
 msgid "L0240"
 msgstr "Mitarbeit am KUG"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:44
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:44
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:44
 #: ../templates/_profile/usbportal/visible_categories_location:47
-#: ../templates/bibfuehrer_tex:323 ../templates/visible_categories_location:44
+#: ../templates/bibfuehrer_csv:237 ../templates/bibfuehrer_tex:323
+#: ../templates/visible_categories_location:44
 msgid "L0250"
 msgstr "Sigel in ZDB"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:38
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:38
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:38
 #: ../templates/_profile/usbportal/visible_categories_location:42
-#: ../templates/bibfuehrer_tex:317 ../templates/visible_categories_location:38
+#: ../templates/bibfuehrer_csv:231 ../templates/bibfuehrer_tex:317
+#: ../templates/visible_categories_location:38
 msgid "L0260"
 msgstr "Art der Vernetzung"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:45
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:45
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:45
 #: ../templates/_profile/usbportal/visible_categories_location:48
-#: ../templates/bibfuehrer_tex:324 ../templates/visible_categories_location:45
+#: ../templates/bibfuehrer_csv:238 ../templates/bibfuehrer_tex:324
+#: ../templates/visible_categories_location:45
 msgid "L0280"
 msgstr "Geo-Koordinaten"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_location:22
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_location:22
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_location:22
 #: ../templates/_profile/usbportal/visible_categories_location:23
 #: ../templates/visible_categories_location:22
 msgid "L0290"
@@ -8131,6 +8460,8 @@ msgstr "Listen mit gemeinsamen Titeln"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:40
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:102
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:112
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:40
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:40
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:183
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:183
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:16
@@ -8167,6 +8498,8 @@ msgstr "Literaturliste"
 #: ../templates/_profile/rheinlandbib/clouds_navigation:76
 #: ../templates/_profile/rheinlandbib/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:321
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:297
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:297
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:76
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:78
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:62
@@ -8192,6 +8525,9 @@ msgstr "Literaturliste"
 #: ../templates/_profile/sammlungen/users_navigation:25
 #: ../templates/_profile/sammlungen/users_navigation:27
 #: ../templates/_profile/usbintern/home_html_bottom_left:55
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:55
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:55
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:55
 #: ../templates/_view/richter/clouds_navigation:76
 #: ../templates/_view/richter/clouds_navigation:78
 #: ../templates/_view/richter/litlists_record_html:43
@@ -8275,7 +8611,7 @@ msgstr "Lokal"
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:439
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:303
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:292
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:365
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:364
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:380
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:321
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:323
@@ -8295,6 +8631,10 @@ msgstr "Lokale Signatur      "
 #: ../templates/_profile/kug/users_preferences_html:398
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:59
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:85
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:59
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:85
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:59
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:85
 #: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:24
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:22
 #: ../templates/_view/richter/cartitems_html_actions:146
@@ -8469,6 +8809,8 @@ msgstr "Medientyp"
 #: ../templates/_profile/kug/search_facet:87
 #: ../templates/_profile/kug/search_facet:98
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:495
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:440
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:440
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:102
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:114
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:126
@@ -8678,8 +9020,12 @@ msgstr "Meldung"
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:299
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/titlist_item_html_short:280
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:324
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:324
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:324
 #: ../templates/titles_popular_by_database_html:297
 #: ../templates/titles_popular_html:291
 #: ../templates/titlist_item_html_short:324
@@ -8755,6 +9101,12 @@ msgstr "Merken"
 #: ../templates/_profile/sammlungen/mainnavigation_html:48
 #: ../templates/_profile/usbintern/corporate_banner:11
 #: ../templates/_profile/usbintern/corporate_banner:13
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/corporate_banner:11
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/corporate_banner:13
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/corporate_banner:11
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/corporate_banner:13
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:11
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:13
 #: ../templates/_view/filme/corporate_banner:11
 #: ../templates/_view/filme/corporate_banner:13
 #: ../templates/_view/richter/cartitems_empty:38
@@ -8865,6 +9217,10 @@ msgstr "Nachname"
 #: ../templates/_profile/kug/_database/ezb/search_title_item_html:91
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:54
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:75
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:54
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:75
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:54
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:75
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:84
 #: ../templates/_view/richter/cartitems_html_actions:38
 #: ../templates/_view/richter/cartitems_html_actions:55
@@ -9181,6 +9537,9 @@ msgstr "Neuer Tagname"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:120
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:120
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:120
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:84
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:84
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:84
 #: ../templates/_profile/usbportal/circulation:103 ../templates/circulation:84
 #: ../templates/circulation_mobile:73
 msgid "Neuerwerbung"
@@ -9284,6 +9643,9 @@ msgstr "Normdaten-Recherche"
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/clouds_databases_record_html:64
 #: ../templates/_profile/sammlungen/searchforms_record_query:127
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:79
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:79
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:79
 #: ../templates/_profile/usbportal/searchforms_record_query:94
 #: ../templates/_view/richter/searchforms_record_query:95
 #: ../templates/search_classification:75 ../templates/search_corporatebody:75
@@ -9620,6 +9982,12 @@ msgstr "Titel"
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_images:63
 #: ../templates/_profile/sammlungen/login:137
 #: ../templates/_profile/sammlungen/login:93
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:101
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:134
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:101
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:134
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:101
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:134
 #: ../templates/_profile/usbportal/login:103
 #: ../templates/_profile/usbportal/login:72
 #: ../templates/_view/richter/login:76
@@ -9650,6 +10018,9 @@ msgstr "Passwort vergessen"
 
 #: ../templates/_profile/kug/login:138
 #: ../templates/_profile/sammlungen/login:97
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:138
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:138
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:138
 #: ../templates/_profile/usbportal/login:107
 #: ../templates/_profile/usbportal/login:76
 #: ../templates/_view/richter/login:80 ../templates/login:80
@@ -9751,6 +10122,9 @@ msgstr "Person/Körperschaft"
 #: ../templates/_profile/sammlungen/clouds_navigation:35
 #: ../templates/_profile/sammlungen/clouds_navigation:37
 #: ../templates/_profile/sammlungen/searchforms_record_query:97
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:33
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:33
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:33
 #: ../templates/_profile/usbportal/searchforms_record_query:79
 #: ../templates/_view/richter/clouds_navigation:35
 #: ../templates/_view/richter/clouds_navigation:37
@@ -9858,9 +10232,13 @@ msgstr "Popularit&auml;ts-Funktionen"
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:24
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:22
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/titles_html:19
 #: ../templates/_profile/sammlungen/titlist_item_html_short:24
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:24
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:24
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:24
 #: ../templates/_profile/usbportal/litlists_record_include:16
 #: ../templates/_profile/usbportal/tags_include:16
 #: ../templates/_profile/usbportal/titles_popular_by_database_include:20
@@ -9952,6 +10330,7 @@ msgstr "Profile"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:39
+#: ../templates/_profile/sammlungen/_view/muenzen/info_project:37
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:36
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:38
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:34
@@ -10386,6 +10765,9 @@ msgstr "Register"
 #: ../templates/_profile/kug/login:138
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:557
 #: ../templates/_profile/sammlungen/login:97
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:138
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:138
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:138
 #: ../templates/_profile/usbportal/login:107
 #: ../templates/_profile/usbportal/login:76
 #: ../templates/_view/richter/login:80
@@ -10617,6 +10999,9 @@ msgstr "Schlagwort-Information: %1 in Katalog %2"
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:108
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/searchforms_record_query:117
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:69
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:69
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:69
 #: ../templates/_profile/usbportal/searchforms_record_query:89
 #: ../templates/_view/richter/searchforms_record_query:90
 #: ../templates/admin_statistics_query_html:82
@@ -10752,6 +11137,9 @@ msgstr "Selbstregistrierung"
 #: ../templates/_profile/kug/users_preferences_html:237
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:197
 #: ../templates/_profile/sammlungen/searchforms_record_query:197
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:149
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:149
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:149
 #: ../templates/_profile/usbportal/searchforms_record_query:124
 #: ../templates/_view/filme/searchforms_record_query:140
 #: ../templates/_view/richter/searchforms_record_query:130
@@ -10799,6 +11187,10 @@ msgstr "Sessions"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:130
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:80
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:130
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:80
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:130
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:80
 #: ../templates/_view/richter/cartitems_html_actions:60
 #: ../templates/_view/richter/cartitems_html_actions:93
 #: ../templates/_view/richter/users_litlists_record_edit:72
@@ -11313,6 +11705,18 @@ msgstr "Sigel"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:23
 #: ../templates/_profile/sammlungen/searchforms_record_query:157
 #: ../templates/_profile/sammlungen/titlist_item_html_short:275
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:109
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:319
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:109
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:319
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:109
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:319
 #: ../templates/_profile/usbportal/circulation:31
 #: ../templates/_profile/usbportal/holding:19
 #: ../templates/_profile/usbportal/searchforms_record_query:109
@@ -11453,6 +11857,9 @@ msgstr "Spezialisierte Portale"
 #: ../templates/_profile/sammlungen/_view/zpe/corporate_banner:4
 #: ../templates/_profile/sammlungen/corporate_banner:4
 #: ../templates/_profile/usbintern/corporate_banner:8
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/corporate_banner:8
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/corporate_banner:8
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:8
 #: ../templates/_view/filme/corporate_banner:8
 #: ../templates/_view/richter/corporate_banner:4
 #: ../templates/corporate_banner:8 ../templates/info_journaltocs:43
@@ -11546,6 +11953,12 @@ msgstr "Stadt"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:33
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:33
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:33
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:46
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:29
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:46
 #: ../templates/_profile/usbportal/circulation:31
 #: ../templates/_profile/usbportal/holding:19 ../templates/circulation:29
 #: ../templates/circulation_mobile:29 ../templates/databases_record_html:68
@@ -11583,7 +11996,7 @@ msgstr "Standort"
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:438
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:302
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:291
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:364
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:363
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:379
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:320
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:322
@@ -11701,6 +12114,7 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:37
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_subject_html:48
 #: ../templates/_profile/sammlungen/_view/muenzen/info_bestand:36
+#: ../templates/_profile/sammlungen/_view/muenzen/info_project:36
 #: ../templates/_profile/sammlungen/_view/muenzen/search_history:37
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_fields_record_html:75
 #: ../templates/_profile/sammlungen/_view/poetica/info_sammlung:36
@@ -11757,6 +12171,12 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_profile/sammlungen/login:38
 #: ../templates/_profile/sammlungen/search_history:37
 #: ../templates/_profile/sammlungen/searchforms_record_advanced:37
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:38
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_advanced:35
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:38
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_advanced:35
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:38
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_advanced:35
 #: ../templates/_view/richter/browse_title_html:37
 #: ../templates/_view/richter/cartitems_empty:37
 #: ../templates/_view/richter/cartitems_html:52
@@ -12074,6 +12494,9 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/sammlungen/mainnavigation_html:118
 #: ../templates/_profile/sammlungen/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/searchforms_record_query:246
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:225
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:225
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:225
 #: ../templates/_profile/usbportal/searchforms_record_query:164
 #: ../templates/_view/filme/searchforms_record_query:168
 #: ../templates/_view/richter/mainnavigation:124
@@ -12266,6 +12689,9 @@ msgstr "Suchprofile"
 #: ../templates/_profile/kug/_view/vwl/searchforms_record_profile:17
 #: ../templates/_profile/kug/_view/wisostatistik/searchforms_record_profile:17
 #: ../templates/_profile/kug/searchforms_record_profile:32
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_profile:32
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_profile:32
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_profile:32
 msgid "Suchradius"
 msgstr "Suchradius"
 
@@ -12451,6 +12877,9 @@ msgstr "Signatur"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:85
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:87
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:87
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:87
 #: ../templates/_profile/usbportal/visible_categories_title:86
 #: ../templates/all_categories_title:34
 #: ../templates/visible_categories_title:87
@@ -12494,6 +12923,9 @@ msgstr "Standort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:89
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:91
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:91
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:91
 #: ../templates/_profile/usbportal/visible_categories_title:90
 #: ../templates/all_categories_title:36
 #: ../templates/visible_categories_title:91
@@ -12529,6 +12961,9 @@ msgstr "Nebeneintr."
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:46
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:47
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:48
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:48
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:48
 #: ../templates/_profile/usbportal/visible_categories_title:47
 #: ../templates/all_categories_title:37
 #: ../templates/visible_categories_title:48
@@ -12565,6 +13000,9 @@ msgstr "Ersch.Land"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:22
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:21
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:21
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:21
 #: ../templates/_profile/usbportal/visible_categories_title:21
 #: ../templates/all_categories_title:38
 #: ../templates/visible_categories_title:21
@@ -12598,6 +13036,9 @@ msgstr "Bandangabe"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:16
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:16
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:16
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:16
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:16
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:16
 #: ../templates/_profile/usbportal/visible_categories_title:16
 #: ../templates/all_categories_title:39
 #: ../templates/visible_categories_title:16
@@ -12673,6 +13114,9 @@ msgstr "Band"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:17
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:17
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:19
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:17
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:17
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:17
 #: ../templates/_profile/usbportal/visible_categories_title:17
 #: ../templates/all_categories_title:40
 #: ../templates/visible_categories_title:17
@@ -12751,6 +13195,9 @@ msgstr "Mutter"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:20
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:18
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:18
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:18
 #: ../templates/_profile/usbportal/visible_categories_title:18
 #: ../templates/all_categories_title:41
 #: ../templates/visible_categories_title:18
@@ -12791,6 +13238,9 @@ msgstr "Kinder"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:19
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:19
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:19
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:19
 #: ../templates/_profile/usbportal/visible_categories_title:19
 #: ../templates/all_categories_title:42
 #: ../templates/visible_categories_title:19
@@ -12857,6 +13307,9 @@ msgstr "Zusammenarbeit"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:21
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:20
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:20
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:20
 #: ../templates/_profile/usbportal/visible_categories_title:20
 #: ../templates/all_categories_title:43
 #: ../templates/visible_categories_title:20
@@ -12904,6 +13357,9 @@ msgstr "Körperschaft"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:26
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:30
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:30
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:30
 #: ../templates/_profile/usbportal/visible_categories_title:25
 #: ../templates/all_categories_title:44
 #: ../templates/visible_categories_title:30
@@ -12939,6 +13395,9 @@ msgstr "SammelVermerk"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:24
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:23
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:23
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:23
 #: ../templates/_profile/usbportal/visible_categories_title:23
 #: ../templates/all_categories_title:45
 #: ../templates/visible_categories_title:23
@@ -12978,6 +13437,9 @@ msgstr "Motiv"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:23
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:22
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:22
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:22
 #: ../templates/_profile/usbportal/visible_categories_title:22
 #: ../templates/all_categories_title:46
 #: ../templates/visible_categories_title:22
@@ -13022,6 +13484,9 @@ msgstr "Ordensname"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:24
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:16
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:24
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:24
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:24
 #: ../templates/_profile/usbportal/visible_categories_title:24
 #: ../templates/all_categories_title:47 ../templates/search_title_field:32
 #: ../templates/visible_categories_title:24
@@ -13083,6 +13548,9 @@ msgstr "Vorderseite / Legende"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:29
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:28
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:28
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:28
 #: ../templates/_profile/usbportal/visible_categories_title:29
 #: ../templates/all_categories_title:48
 #: ../templates/visible_categories_title:28
@@ -13122,6 +13590,9 @@ msgstr "Vorderseite stempelgleich mit"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:51
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:52
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:52
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:52
 #: ../templates/_profile/usbportal/visible_categories_title:51
 #: ../templates/all_categories_title:49
 #: ../templates/visible_categories_title:52
@@ -13172,6 +13643,9 @@ msgstr "Technik"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:29
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:29
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:30
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:29
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:29
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:29
 #: ../templates/_profile/usbportal/visible_categories_title:30
 #: ../templates/all_categories_title:50
 #: ../templates/visible_categories_title:29
@@ -13242,6 +13716,9 @@ msgstr "Nominal"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:28
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:27
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:27
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:27
 #: ../templates/_profile/usbportal/visible_categories_title:28
 #: ../templates/all_categories_title:51
 #: ../templates/visible_categories_title:27
@@ -13302,6 +13779,9 @@ msgstr "Legende Rückseite: aufgelöst, Editionstext"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:33
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:34
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:34
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:34
 #: ../templates/_profile/usbportal/visible_categories_title:33
 #: ../templates/all_categories_title:52
 #: ../templates/visible_categories_title:34
@@ -13341,6 +13821,9 @@ msgstr "Vorlageform"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:34
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:35
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:35
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:35
 #: ../templates/_profile/usbportal/visible_categories_title:34
 #: ../templates/all_categories_title:53
 #: ../templates/visible_categories_title:35
@@ -13386,6 +13869,9 @@ msgstr "Vorlage Unterreihe"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:31
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:31
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:31
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:31
 #: ../templates/_profile/usbportal/visible_categories_title:31
 #: ../templates/all_categories_title:54
 #: ../templates/visible_categories_title:31
@@ -13429,6 +13915,9 @@ msgstr "Einzelbild"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:32
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:32
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:32
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:32
 #: ../templates/_profile/usbportal/visible_categories_title:32
 #: ../templates/all_categories_title:55
 #: ../templates/visible_categories_title:32
@@ -13442,6 +13931,9 @@ msgstr "Gemeinsame Angaben"
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:33
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:33
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:33
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:33
 #: ../templates/all_categories_title:56
 #: ../templates/visible_categories_title:33
 msgid "T0369"
@@ -13476,6 +13968,9 @@ msgstr "Gemeins. Angaben Verfasser"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:26
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:27
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:25
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:25
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:25
 #: ../templates/_profile/usbportal/visible_categories_title:26
 #: ../templates/all_categories_title:57
 #: ../templates/visible_categories_title:25
@@ -13522,6 +14017,9 @@ msgstr "Bemerkung"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:35
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:36
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:36
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:36
 #: ../templates/_profile/usbportal/visible_categories_title:35
 #: ../templates/all_categories_title:58
 #: ../templates/visible_categories_title:36
@@ -13557,6 +14055,9 @@ msgstr "Ausgabe"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:40
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:41
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:41
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:41
 #: ../templates/_profile/usbportal/visible_categories_title:40
 #: ../templates/all_categories_title:59
 #: ../templates/visible_categories_title:41
@@ -13592,6 +14093,9 @@ msgstr "Erscheinungsverlauf"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:57
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:58
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:58
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:58
 #: ../templates/_profile/usbportal/visible_categories_title:57
 #: ../templates/all_categories_title:60
 #: ../templates/visible_categories_title:58
@@ -13636,6 +14140,9 @@ msgstr "Stempelstellung"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:37
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:36
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:37
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:37
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:37
 #: ../templates/_profile/usbportal/visible_categories_title:36
 #: ../templates/all_categories_title:61
 #: ../templates/visible_categories_title:37
@@ -13702,6 +14209,9 @@ msgstr "Geburtsort"
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:37
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:30
 #: ../templates/_profile/sammlungen/_view/umschlaege/titles_fields_record_html:23
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:38
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:38
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:38
 #: ../templates/_profile/usbportal/visible_categories_title:37
 #: ../templates/all_categories_title:62
 #: ../templates/visible_categories_title:38
@@ -13741,6 +14251,9 @@ msgstr "Herkunft"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:46
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:47
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:47
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:47
 #: ../templates/_profile/usbportal/visible_categories_title:46
 #: ../templates/all_categories_title:63
 #: ../templates/visible_categories_title:47
@@ -13785,6 +14298,9 @@ msgstr "Datierung"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:39
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:40
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:40
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:40
 #: ../templates/_profile/usbportal/visible_categories_title:39
 #: ../templates/all_categories_title:64
 #: ../templates/visible_categories_title:40
@@ -13834,6 +14350,9 @@ msgstr "Sterbedatum"
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:31
 #: ../templates/_profile/sammlungen/_view/umschlaege/titles_fields_record_html:26
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:39
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:39
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:39
 #: ../templates/_profile/usbportal/visible_categories_title:38
 #: ../templates/all_categories_title:65
 #: ../templates/visible_categories_title:39
@@ -13917,6 +14436,9 @@ msgstr "Datierung"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:50
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:51
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:51
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:51
 #: ../templates/_profile/usbportal/visible_categories_title:50
 #: ../templates/all_categories_title:66
 #: ../templates/visible_categories_title:51
@@ -14000,6 +14522,12 @@ msgstr "Beruf"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:59
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:58
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:46
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:59
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:46
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:59
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:46
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:59
 #: ../templates/_profile/usbportal/visible_categories_title:45
 #: ../templates/_profile/usbportal/visible_categories_title:58
 #: ../templates/all_categories_title:67 ../templates/all_categories_title:68
@@ -14037,6 +14565,9 @@ msgstr "Sonst.Angaben"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:48
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:49
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:49
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:49
 #: ../templates/_profile/usbportal/visible_categories_title:48
 #: ../templates/all_categories_title:69
 #: ../templates/visible_categories_title:49
@@ -14081,6 +14612,9 @@ msgstr "Durchmesser"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:59
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:60
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:60
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:60
 #: ../templates/_profile/usbportal/visible_categories_title:59
 #: ../templates/all_categories_title:70
 #: ../templates/visible_categories_title:60
@@ -14118,6 +14652,9 @@ msgstr "Begleitmaterial"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:55
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:54
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:55
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:55
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:55
 #: ../templates/_profile/usbportal/visible_categories_title:54
 #: ../templates/all_categories_title:71
 #: ../templates/visible_categories_title:55
@@ -14157,6 +14694,9 @@ msgstr "Trauernde"
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:60
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:61
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:61
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:61
 #: ../templates/_profile/usbportal/visible_categories_title:60
 #: ../templates/all_categories_title:72
 #: ../templates/visible_categories_title:61
@@ -14228,6 +14768,9 @@ msgstr "EST beig. Werk"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:88
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:90
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:90
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:90
 #: ../templates/_profile/usbportal/visible_categories_title:89
 #: ../templates/all_categories_title:73
 #: ../templates/visible_categories_title:90
@@ -14265,6 +14808,9 @@ msgstr "Übersetzter Titel"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:62
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:61
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:62
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:62
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:62
 #: ../templates/_profile/usbportal/visible_categories_title:61
 #: ../templates/all_categories_title:74
 #: ../templates/visible_categories_title:62
@@ -14302,6 +14848,9 @@ msgstr "Paralleltitel/Fußnote"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:62
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:63
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:63
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:63
 #: ../templates/_profile/usbportal/visible_categories_title:62
 #: ../templates/all_categories_title:75
 #: ../templates/visible_categories_title:63
@@ -14338,6 +14887,9 @@ msgstr "Weiterer Titel/Fußnote"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:62
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:63
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:64
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:64
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:64
 #: ../templates/_profile/usbportal/visible_categories_title:63
 #: ../templates/all_categories_title:76
 #: ../templates/visible_categories_title:64
@@ -14374,6 +14926,9 @@ msgstr "Titelangaben"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:49
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:50
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:50
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:50
 #: ../templates/_profile/usbportal/visible_categories_title:49
 #: ../templates/all_categories_title:77
 #: ../templates/visible_categories_title:50
@@ -14424,6 +14979,9 @@ msgstr "Bibl. Nachweis"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:64
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:65
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:65
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:65
 #: ../templates/_profile/usbportal/visible_categories_title:64
 #: ../templates/all_categories_title:78
 #: ../templates/visible_categories_title:65
@@ -14469,6 +15027,9 @@ msgstr "Vermerke zur Personenangabe"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:65
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:66
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:66
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:66
 #: ../templates/_profile/usbportal/visible_categories_title:65
 #: ../templates/all_categories_title:79
 #: ../templates/visible_categories_title:66
@@ -14506,6 +15067,9 @@ msgstr "Ausgabe Fußnote"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:66
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:67
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:67
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:67
 #: ../templates/_profile/usbportal/visible_categories_title:66
 #: ../templates/all_categories_title:80
 #: ../templates/visible_categories_title:67
@@ -14543,6 +15107,9 @@ msgstr "Erschverm. Fußnote"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:67
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:68
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:68
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:68
 #: ../templates/_profile/usbportal/visible_categories_title:67
 #: ../templates/all_categories_title:81
 #: ../templates/visible_categories_title:68
@@ -14580,6 +15147,9 @@ msgstr "Koll. Fußnote"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:68
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:69
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:69
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:69
 #: ../templates/_profile/usbportal/visible_categories_title:68
 #: ../templates/all_categories_title:82
 #: ../templates/visible_categories_title:69
@@ -14617,6 +15187,9 @@ msgstr "Impress. Änderung"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:69
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:70
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:70
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:70
 #: ../templates/_profile/usbportal/visible_categories_title:69
 #: ../templates/all_categories_title:83
 #: ../templates/visible_categories_title:70
@@ -14652,6 +15225,9 @@ msgstr "Ergänzt. GesamtTitel"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:85
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:86
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:88
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:88
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:88
 #: ../templates/_profile/usbportal/visible_categories_title:87
 #: ../templates/all_categories_title:84
 #: ../templates/visible_categories_title:88
@@ -14676,6 +15252,9 @@ msgstr "Sprache"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:70
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:71
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:71
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:71
 #: ../templates/_profile/usbportal/visible_categories_title:70
 #: ../templates/all_categories_title:85
 #: ../templates/visible_categories_title:71
@@ -14713,6 +15292,12 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:82
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:169
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:83
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:169
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:83
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:169
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:83
 #: ../templates/_profile/usbportal/visible_categories_title:82
 #: ../templates/all_categories_title:86
 #: ../templates/users_preferences_html:224
@@ -14756,6 +15341,9 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:71
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:72
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:72
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:72
 #: ../templates/_profile/usbportal/visible_categories_title:71
 #: ../templates/all_categories_title:87
 #: ../templates/visible_categories_title:72
@@ -14791,6 +15379,9 @@ msgstr "Teilungsvermerk"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:41
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:42
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:42
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:42
 #: ../templates/_profile/usbportal/visible_categories_title:41
 #: ../templates/all_categories_title:88
 #: ../templates/visible_categories_title:42
@@ -14828,6 +15419,9 @@ msgstr "Erscheinungsweise"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:72
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:73
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:73
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:73
 #: ../templates/_profile/usbportal/visible_categories_title:72
 #: ../templates/all_categories_title:89
 #: ../templates/visible_categories_title:73
@@ -14869,6 +15463,9 @@ msgstr "Ortsnamen"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:76
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:77
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:77
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:77
 #: ../templates/_profile/usbportal/visible_categories_title:76
 #: ../templates/all_categories_title:90
 #: ../templates/visible_categories_title:77
@@ -14906,6 +15503,9 @@ msgstr "Parallele Ausg."
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:77
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:78
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:78
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:78
 #: ../templates/_profile/usbportal/visible_categories_title:77
 #: ../templates/all_categories_title:91
 #: ../templates/visible_categories_title:78
@@ -14943,6 +15543,9 @@ msgstr "Titel Beilage"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:78
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:79
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:79
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:79
 #: ../templates/_profile/usbportal/visible_categories_title:78
 #: ../templates/all_categories_title:92
 #: ../templates/visible_categories_title:79
@@ -14980,6 +15583,9 @@ msgstr "Bezugswerk"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:79
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:80
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:80
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:80
 #: ../templates/_profile/usbportal/visible_categories_title:79
 #: ../templates/all_categories_title:93
 #: ../templates/visible_categories_title:80
@@ -15017,6 +15623,9 @@ msgstr "Frühere Ausg."
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:80
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:81
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:81
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:81
 #: ../templates/_profile/usbportal/visible_categories_title:80
 #: ../templates/all_categories_title:94
 #: ../templates/visible_categories_title:81
@@ -15054,6 +15663,9 @@ msgstr "Früherer Titel"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:81
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:82
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:82
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:82
 #: ../templates/_profile/usbportal/visible_categories_title:81
 #: ../templates/all_categories_title:95
 #: ../templates/visible_categories_title:82
@@ -15091,6 +15703,9 @@ msgstr "Spätere Ausg."
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:73
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:74
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:74
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:74
 #: ../templates/_profile/usbportal/visible_categories_title:73
 #: ../templates/all_categories_title:96
 #: ../templates/visible_categories_title:74
@@ -15128,6 +15743,9 @@ msgstr "Titelkonk."
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:74
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:75
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:75
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:75
 #: ../templates/_profile/usbportal/visible_categories_title:74
 #: ../templates/all_categories_title:97
 #: ../templates/visible_categories_title:75
@@ -15165,6 +15783,9 @@ msgstr "Anz. Exemplare"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:75
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:76
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:76
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:76
 #: ../templates/_profile/usbportal/visible_categories_title:75
 #: ../templates/all_categories_title:98
 #: ../templates/visible_categories_title:76
@@ -15210,6 +15831,9 @@ msgstr "Angabe Vervielfältigungsart"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:109
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:103
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:109
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:109
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:109
 #: ../templates/_profile/usbportal/visible_categories_title:106
 #: ../templates/all_categories_title:99
 #: ../templates/visible_categories_title:109
@@ -15245,6 +15869,9 @@ msgstr "ISBN"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:111
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:105
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:111
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:111
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:111
 #: ../templates/_profile/usbportal/visible_categories_title:108
 #: ../templates/all_categories_title:100
 #: ../templates/visible_categories_title:111
@@ -15269,6 +15896,9 @@ msgstr "ISSN"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:110
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:104
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:110
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:110
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:110
 #: ../templates/_profile/usbportal/visible_categories_title:107
 #: ../templates/all_categories_title:101
 #: ../templates/visible_categories_title:110
@@ -15304,6 +15934,9 @@ msgstr "Fingerprint"
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:85
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:85
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:85
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:85
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:85
 #: ../templates/_profile/usbportal/visible_categories_title:84
 #: ../templates/all_categories_title:102
 #: ../templates/visible_categories_title:85
@@ -15341,6 +15974,9 @@ msgstr "Nachweise / Sonstige Nummern"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:55
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:56
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:56
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:56
 #: ../templates/_profile/usbportal/visible_categories_title:55
 #: ../templates/all_categories_title:103
 #: ../templates/visible_categories_title:56
@@ -15381,6 +16017,9 @@ msgstr "Veröffentlicht"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:42
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:43
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:43
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:43
 #: ../templates/_profile/usbportal/visible_categories_title:42
 #: ../templates/all_categories_title:104
 #: ../templates/visible_categories_title:43
@@ -15431,6 +16070,9 @@ msgstr "Ausgabebez. der Quelle"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:44
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:43
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:44
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:44
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:44
 #: ../templates/_profile/usbportal/visible_categories_title:43
 #: ../templates/all_categories_title:105
 #: ../templates/visible_categories_title:44
@@ -15471,6 +16113,9 @@ msgstr "Entstehungslandschaft"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:44
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:45
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:45
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:45
 #: ../templates/_profile/usbportal/visible_categories_title:44
 #: ../templates/all_categories_title:106
 #: ../templates/visible_categories_title:45
@@ -15533,6 +16178,9 @@ msgstr "Standardnummer der Quelle"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:57
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:56
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:57
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:57
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:57
 #: ../templates/_profile/usbportal/visible_categories_title:56
 #: ../templates/all_categories_title:107
 #: ../templates/visible_categories_title:57
@@ -15575,6 +16223,9 @@ msgstr "Schublade"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:83
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:84
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:84
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:84
 #: ../templates/_profile/usbportal/visible_categories_title:83
 #: ../templates/all_categories_title:108
 #: ../templates/visible_categories_title:84
@@ -15620,6 +16271,9 @@ msgstr "Links"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:84
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:86
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:86
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:86
 #: ../templates/_profile/usbportal/visible_categories_title:85
 #: ../templates/all_categories_title:109
 #: ../templates/visible_categories_title:86
@@ -15655,6 +16309,9 @@ msgstr "Filmbesitz"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:52
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:53
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:53
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:53
 #: ../templates/_profile/usbportal/visible_categories_title:52
 #: ../templates/all_categories_title:110
 #: ../templates/visible_categories_title:53
@@ -15692,6 +16349,9 @@ msgstr "EDV Material"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:53
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:54
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:54
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:54
 #: ../templates/_profile/usbportal/visible_categories_title:53
 #: ../templates/all_categories_title:111
 #: ../templates/visible_categories_title:54
@@ -15728,6 +16388,9 @@ msgstr "EDV Adress"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:112
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:106
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:112
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:112
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:112
 #: ../templates/_profile/usbportal/visible_categories_title:109
 #: ../templates/all_categories_title:112
 #: ../templates/visible_categories_title:112
@@ -15763,6 +16426,9 @@ msgstr "Volltext-Hinweis"
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:26
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:26
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:26
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:26
 #: ../templates/_profile/usbportal/visible_categories_title:27
 #: ../templates/all_categories_title:113
 #: ../templates/visible_categories_title:26
@@ -15817,6 +16483,9 @@ msgstr "Abweichende Orthographie"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:101
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:106
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:106
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:106
 #: ../templates/_profile/usbportal/visible_categories_title:104
 #: ../templates/all_categories_title:114
 #: ../templates/visible_categories_title:106
@@ -15878,6 +16547,9 @@ msgstr "Provenienz"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:94
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:94
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:94
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:94
 #: ../templates/_profile/usbportal/visible_categories_title:92
 #: ../templates/all_categories_title:115
 #: ../templates/visible_categories_title:94
@@ -15948,6 +16620,9 @@ msgstr "Am Umschlag Beteiligte"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:87
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:89
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:89
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:89
 #: ../templates/_profile/usbportal/visible_categories_title:88
 #: ../templates/all_categories_title:116
 #: ../templates/visible_categories_title:89
@@ -15994,6 +16669,9 @@ msgstr "Transkription"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:90
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:93
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:93
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:93
 #: ../templates/_profile/usbportal/visible_categories_title:91
 #: ../templates/all_categories_title:117
 #: ../templates/visible_categories_title:93
@@ -16047,6 +16725,9 @@ msgstr "Konkordanz"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:91
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:95
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:95
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:95
 #: ../templates/_profile/usbportal/visible_categories_title:93
 #: ../templates/all_categories_title:118
 #: ../templates/visible_categories_title:95
@@ -16082,6 +16763,9 @@ msgstr "Schlagwort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:92
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:96
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:96
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:96
 #: ../templates/_profile/usbportal/visible_categories_title:94
 #: ../templates/all_categories_title:119
 #: ../templates/visible_categories_title:96
@@ -16117,6 +16801,9 @@ msgstr "Schlagwort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:93
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:97
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:97
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:97
 #: ../templates/_profile/usbportal/visible_categories_title:95
 #: ../templates/all_categories_title:120
 #: ../templates/visible_categories_title:97
@@ -16152,6 +16839,9 @@ msgstr "Schlagwort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:94
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:94
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:98
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:98
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:98
 #: ../templates/_profile/usbportal/visible_categories_title:96
 #: ../templates/all_categories_title:121
 #: ../templates/visible_categories_title:98
@@ -16187,6 +16877,9 @@ msgstr "Schlagwort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:95
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:99
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:99
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:99
 #: ../templates/_profile/usbportal/visible_categories_title:97
 #: ../templates/all_categories_title:122
 #: ../templates/visible_categories_title:99
@@ -16222,6 +16915,9 @@ msgstr "Schlagwort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:96
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:100
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:100
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:100
 #: ../templates/_profile/usbportal/visible_categories_title:98
 #: ../templates/all_categories_title:123
 #: ../templates/visible_categories_title:100
@@ -16257,6 +16953,9 @@ msgstr "Schlagwort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:97
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:101
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:101
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:101
 #: ../templates/_profile/usbportal/visible_categories_title:99
 #: ../templates/all_categories_title:124
 #: ../templates/visible_categories_title:101
@@ -16292,6 +16991,9 @@ msgstr "Schlagwort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:98
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:102
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:102
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:102
 #: ../templates/_profile/usbportal/visible_categories_title:100
 #: ../templates/all_categories_title:125
 #: ../templates/visible_categories_title:102
@@ -16327,6 +17029,9 @@ msgstr "Schlagwort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:99
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:103
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:103
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:103
 #: ../templates/_profile/usbportal/visible_categories_title:101
 #: ../templates/all_categories_title:126
 #: ../templates/visible_categories_title:103
@@ -16362,6 +17067,9 @@ msgstr "Schlagwort"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:100
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:104
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:104
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:104
 #: ../templates/_profile/usbportal/visible_categories_title:102
 #: ../templates/all_categories_title:127
 #: ../templates/visible_categories_title:104
@@ -16416,6 +17124,9 @@ msgstr "Hinweis"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:107
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:113
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:113
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:113
 #: ../templates/_profile/usbportal/visible_categories_title:110
 #: ../templates/all_categories_title:128
 #: ../templates/visible_categories_title:113
@@ -16482,6 +17193,9 @@ msgstr "Körperschaft"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:108
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:114
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:114
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:114
 #: ../templates/_profile/usbportal/visible_categories_title:111
 #: ../templates/all_categories_title:129
 #: ../templates/visible_categories_title:114
@@ -16526,6 +17240,9 @@ msgstr "Externer URL"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:109
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:115
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:115
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:115
 #: ../templates/_profile/usbportal/visible_categories_title:112
 #: ../templates/all_categories_title:130
 #: ../templates/visible_categories_title:115
@@ -16606,6 +17323,9 @@ msgstr "Wikipedia-Artikel (französisch)"
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:258
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:124
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:112
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:124
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:124
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:124
 #: ../templates/all_categories_title:140
 #: ../templates/visible_categories_title:124
 msgid "T4210"
@@ -16613,6 +17333,9 @@ msgstr "Rechte-Information"
 
 #: ../templates/_database/bestellungen/visible_categories_title:123
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:122
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:122
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:122
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:122
 #: ../templates/all_categories_title:141
 #: ../templates/visible_categories_title:122
 msgid "T4211"
@@ -16620,6 +17343,9 @@ msgstr "Preis"
 
 #: ../templates/_database/bestellungen/visible_categories_title:124
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:123
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:123
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:123
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:123
 #: ../templates/all_categories_title:142
 #: ../templates/visible_categories_title:123
 msgid "T4212"
@@ -16632,6 +17358,9 @@ msgstr "Währung"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:114
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:116
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:116
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:116
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:116
 #: ../templates/all_categories_title:143
 #: ../templates/visible_categories_title:116
 msgid "T4220"
@@ -16663,6 +17392,9 @@ msgstr "Verfügbarkeit"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:92
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:92
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:92
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:92
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:92
 #: ../templates/all_categories_title:147
 #: ../templates/visible_categories_title:92
 msgid "T4410"
@@ -16697,6 +17429,9 @@ msgstr "Typ"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:119
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:113
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:119
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:119
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:119
 #: ../templates/_profile/usbportal/visible_categories_title:115
 #: ../templates/all_categories_title:148
 #: ../templates/visible_categories_title:119
@@ -16758,6 +17493,9 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:27
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:121
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:121
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:121
 #: ../templates/_profile/usbportal/visible_categories_title:117
 #: ../templates/all_categories_title:149
 #: ../templates/visible_categories_title:121
@@ -16796,6 +17534,9 @@ msgstr "IDs Bände/Stücke"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:120
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:120
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:120
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:120
 #: ../templates/all_categories_title:150
 #: ../templates/visible_categories_title:120
 msgid "T5005"
@@ -16841,6 +17582,9 @@ msgstr "BibKey-Basis"
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:28
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:125
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:125
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:125
 #: ../templates/_profile/usbportal/visible_categories_title:118
 #: ../templates/all_categories_title:153
 #: ../templates/visible_categories_title:125
@@ -16907,6 +17651,8 @@ msgid "Taggen"
 msgstr "Taggen"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:111
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:111
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:111
 #: ../templates/_view/richter/cartitems_html_actions:80
 #: ../templates/cartitems_html_actions:91
 #: ../templates/titles_record_html_actions:111
@@ -16918,6 +17664,12 @@ msgstr "Tagging"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:125
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:226
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:372
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:125
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:226
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:348
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:125
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:226
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:348
 #: ../templates/_profile/sammlungen/users_navigation:31
 #: ../templates/_profile/sammlungen/users_navigation:46
 #: ../templates/admin_users_migration_html:89
@@ -16934,6 +17686,8 @@ msgid "Tags"
 msgstr "Tags"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:248
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:248
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:248
 #: ../templates/titles_record_html_actions:248
 msgid "Tags entfernen"
 msgstr "Tags entfernen"
@@ -16999,6 +17753,9 @@ msgstr "Thematische Integration weiterer Quellen"
 #: ../templates/_profile/kug/authority_search_facet:196
 #: ../templates/_profile/kug/search_facet:233
 #: ../templates/_profile/kug/searchforms_record_query:53
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:53
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:53
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:53
 #: ../templates/admin_topics_html:69 ../templates/admin_topics_html:99
 #: ../templates/admin_topics_mappings_html:77
 #: ../templates/admin_topics_mappings_record_html:76
@@ -17118,9 +17875,14 @@ msgstr "Tip: Digitaler Kartenkatalog"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:305
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:3
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:3
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:46
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:65
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:3
 #: ../templates/_profile/sammlungen/titles_html:42
 #: ../templates/_profile/usbintern/home_html_bottom_left:35
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:35
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:35
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:35
 #: ../templates/_profile/usbportal/litlists_record_include:42
 #: ../templates/_view/richter/cartitems_html_full:26
 #: ../templates/_view/richter/litlists_record_html:87
@@ -17136,8 +17898,13 @@ msgstr "Tip: Digitaler Kartenkatalog"
 #: ../templates/tags_names_record_html:77
 #: ../templates/titles_popular_by_database_html:46
 #: ../templates/titles_popular_by_database_html:65
-#: ../templates/titles_popular_html:45 ../templates/titles_record_html:131
-#: ../templates/titles_record_html:316 ../templates/titles_record_include:214
+#: ../templates/titles_popular_html:45
+#: ../templates/titles_record_circulation_html:38
+#: ../templates/titles_record_html:131 ../templates/titles_record_html:316
+#: ../templates/titles_record_include:214
+#: ../templates/titles_record_related_records_html:38
+#: ../templates/titles_record_same_records_html:38
+#: ../templates/titles_record_similar_records_html:38
 #: ../templates/usage_navigation:5 ../templates/usage_navigation:7
 #: ../templates/users_circulations_make_order:82
 #: ../templates/users_litlists_record_edit:134
@@ -17193,6 +17960,8 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:369
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:359
 #: ../templates/titles_record_include:272
+#: ../templates/titles_record_same_records_html:59
+#: ../templates/titles_record_same_records_include:2
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen "
 "vorhanden"
@@ -17298,6 +18067,9 @@ msgstr "Titelliste"
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:84
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/searchforms_record_query:87
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:23
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:23
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:23
 #: ../templates/_profile/usbportal/searchforms_record_query:74
 #: ../templates/_view/filme/searchforms_record_query:77
 #: ../templates/_view/richter/searchforms_record_query:75
@@ -17311,6 +18083,10 @@ msgid "Titelzahl"
 msgstr "Titelzahl"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:451
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:427
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:427
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:46
+#: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:65
 #: ../templates/databases_popular_html:42 ../templates/info_11:34
 #: ../templates/info_tutorials:73
 #: ../templates/titles_popular_by_database_html:46
@@ -17457,6 +18233,9 @@ msgstr "Tutorien zu einzelnen Themen:"
 
 #: ../templates/_profile/kug/searchforms_record_query:179
 #: ../templates/_profile/sammlungen/searchforms_record_query:207
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:179
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:179
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:179
 #: ../templates/admin_authenticators_html:119
 #: ../templates/admin_authenticators_html:92
 #: ../templates/admin_authenticators_record_edit:92
@@ -17476,6 +18255,8 @@ msgid "Typ %1 ist nicht definiert"
 msgstr "Typ %1 ist nicht definiert"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:231
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:231
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:231
 #: ../templates/titles_record_html_actions:231
 #: ../templates/titles_record_include:437
 #: ../templates/titles_record_include:509
@@ -17757,6 +18538,9 @@ msgstr "Verkn&uuml;pfungen mehrerer Suchfelder"
 #: ../templates/_profile/sammlungen/_view/umschlaege/subnavigation:40
 #: ../templates/_profile/sammlungen/_view/umschlaege/subnavigation:42
 #: ../templates/_profile/sammlungen/searchforms_record_query:187
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:139
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:139
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:139
 #: ../templates/_view/filme/searchforms_record_query:133
 #: ../templates/_view/richter/searchforms_record_query:125
 #: ../templates/searchforms_record_query:147
@@ -17777,6 +18561,8 @@ msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr "Verlinkung und Lastverteilung von OpenBib"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:448
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:424
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:424
 #: ../templates/titles_record_html_actions:450
 #: ../templates/titles_record_include:722
 msgid "Verschiedenes"
@@ -17787,6 +18573,8 @@ msgid "Verschlagwortung anderer Kataloge"
 msgstr "Verschlagwortung aus anderen Katalogen"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:353
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:329
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:329
 #: ../templates/titles_record_html_actions:355
 msgid "Verschlagwortung dieses Titels in anderen Katalogen"
 msgstr "Verschlagwortung dieses Titels in anderen Katalogen"
@@ -17816,6 +18604,8 @@ msgstr ""
 "durch zus&auml;tzliche Worte weiter eingrenzen."
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:419
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:395
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:395
 #: ../templates/connector_similarpersons_html:40
 #: ../templates/titles_record_html_actions:421
 #: ../templates/titles_record_include:693
@@ -17827,6 +18617,8 @@ msgid "Verwandte Schlagworte"
 msgstr "Verwandte Schlagworte"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:438
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:414
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:414
 #: ../templates/titles_record_html_actions:440
 #: ../templates/titles_record_include:712
 msgid "Verwandte Themen"
@@ -17907,6 +18699,8 @@ msgid "Volltext"
 msgstr "Volltext"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:32
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:32
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:32
 #: ../templates/_view/richter/cartitems_html_actions:14
 #: ../templates/_view/richter/users_litlists_record_edit:58
 #: ../templates/cartitems_html_actions:15
@@ -18071,6 +18865,9 @@ msgstr "WebOPAC-URL"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:100
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:100
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:100
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:55
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:55
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:55
 #: ../templates/_profile/usbportal/circulation:126
 #: ../templates/_profile/usbportal/circulation:90 ../templates/circulation:55
 #: ../templates/circulation_mobile:53
@@ -18643,10 +19440,16 @@ msgstr ""
 "      für den Fall einer nicht vorhandenen ISBN - um den Bibkey\n"
 "      erweitert."
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:15
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:15
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:15
 #: ../templates/holding:15
 msgid "X0004"
 msgstr "Titel-ID"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:16
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:16
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:16
 #: ../templates/holding:16
 msgid "X0005"
 msgstr "Inventarnummer"
@@ -18655,10 +19458,16 @@ msgstr "Inventarnummer"
 msgid "X0005-totenzettel"
 msgstr "Heiratsdatum"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:17
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:17
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:17
 #: ../templates/holding:17
 msgid "X0010"
 msgstr "Mediennummer"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:18
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:18
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:18
 #: ../templates/holding:18
 msgid "X0014"
 msgstr "Signatur"
@@ -18667,6 +19476,9 @@ msgstr "Signatur"
 msgid "X0014-totenzettel"
 msgstr "Ehepartner"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:19
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:19
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:19
 #: ../templates/holding:19
 msgid "X0016"
 msgstr "Standort"
@@ -18675,18 +19487,30 @@ msgstr "Standort"
 msgid "X0016-totenzettel"
 msgstr "Heiratsort"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:20
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:20
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:20
 #: ../templates/holding:20
 msgid "X1204"
 msgstr "Bestandsverlauf"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:21
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:21
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:21
 #: ../templates/holding:21
 msgid "X3330"
 msgstr "Sigel"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:22
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:22
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:22
 #: ../templates/holding:22
 msgid "X4000"
 msgstr "Bibliothek"
 
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/holding:23
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/holding:23
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/holding:23
 #: ../templates/holding:23
 msgid "X4001"
 msgstr "Bibliotheksinfo-URL"
@@ -18733,6 +19557,12 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:145
 #: ../templates/_profile/sammlungen/searchforms_record_query:234
 #: ../templates/_profile/sammlungen/searchforms_record_query:238
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:208
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:212
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:208
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:212
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:208
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:212
 #: ../templates/_view/filme/searchforms_record_query:163
 #: ../templates/_view/richter/searchforms_record_query:145
 #: ../templates/searchforms_record_query:177
@@ -18799,6 +19629,8 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:383
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:373
 #: ../templates/titles_record_include:287
+#: ../templates/titles_record_similar_records_html:59
+#: ../templates/titles_record_similar_records_include:2
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
 "Auflage usw.) in den Katalogen"
@@ -18976,6 +19808,9 @@ msgstr "aufsteigend"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:135
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:135
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:135
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:99
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:99
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:99
 #: ../templates/_profile/usbportal/circulation:122 ../templates/circulation:99
 #: ../templates/circulation_mobile:88
 msgid "ausgeschieden"
@@ -19007,6 +19842,9 @@ msgstr "ausleihbar"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:133
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:133
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:133
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:97
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:97
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:97
 #: ../templates/_profile/usbportal/circulation:120 ../templates/circulation:97
 #: ../templates/circulation_mobile:86
 msgid "beim Lieferanten reklamiert"
@@ -19034,6 +19872,9 @@ msgstr "beim Lieferanten reklamiert"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:131
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:131
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:131
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:95
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:95
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:95
 #: ../templates/_profile/usbportal/circulation:118 ../templates/circulation:95
 #: ../templates/circulation_mobile:84
 msgid "beim Lieferanten storniert"
@@ -19061,6 +19902,9 @@ msgstr "beim Lieferanten storniert"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:127
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:127
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:127
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:91
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:91
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:91
 #: ../templates/_profile/usbportal/circulation:114 ../templates/circulation:91
 #: ../templates/circulation_mobile:80
 msgid "bestellt beim Lieferanten"
@@ -19082,6 +19926,9 @@ msgstr "bestellt beim Lieferanten"
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:140
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:145
 #: ../templates/_profile/sammlungen/searchforms_record_query:238
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:212
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:212
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:212
 #: ../templates/_view/filme/searchforms_record_query:163
 #: ../templates/_view/richter/searchforms_record_query:145
 #: ../templates/searchforms_record_query:177
@@ -19090,6 +19937,9 @@ msgstr "bis"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:43
 #: ../templates/_profile/usbintern/home_html_bottom_left:43
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:43
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:43
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:43
 #: ../templates/admin_databases_record_edit:129
 #: ../templates/home_html_bottom_left:59
 msgid "davon Artikel"
@@ -19097,6 +19947,9 @@ msgstr "davon Artikel"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:47
 #: ../templates/_profile/usbintern/home_html_bottom_left:47
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:47
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:47
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:47
 #: ../templates/admin_databases_record_edit:134
 #: ../templates/home_html_bottom_left:63
 msgid "davon Digital"
@@ -19104,6 +19957,9 @@ msgstr "davon Digital"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:39
 #: ../templates/_profile/usbintern/home_html_bottom_left:39
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:39
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:39
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:39
 #: ../templates/admin_databases_record_edit:124
 #: ../templates/home_html_bottom_left:55
 msgid "davon Zeitschriften/Serien"
@@ -19111,12 +19967,18 @@ msgstr "davon Zeitschriften/Serien"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:66
 #: ../templates/_profile/usbintern/home_html_bottom_left:66
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:66
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:66
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:66
 #: ../templates/home_html_bottom_left:82
 msgid "davon privat"
 msgstr "davon privat"
 
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:62
 #: ../templates/_profile/usbintern/home_html_bottom_left:62
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:62
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/home_html_bottom_left:62
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/home_html_bottom_left:62
 #: ../templates/home_html_bottom_left:78
 msgid "davon öffentlich"
 msgstr "davon öffentlich"
@@ -19171,6 +20033,9 @@ msgstr "entliehen"
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:129
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:129
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:129
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/circulation:93
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/circulation:93
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/circulation:93
 #: ../templates/_profile/usbportal/circulation:116 ../templates/circulation:93
 #: ../templates/circulation_mobile:82
 msgid "im Gesch&auml;ftsgang"
@@ -19194,6 +20059,9 @@ msgstr "im Gesch&auml;ftsgang"
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:237
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:329
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:422
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:218
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:218
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:218
 #: ../templates/_profile/usbportal/searchforms_record_query:141
 #: ../templates/_view/filme/searchforms_record_query:166
 #: ../templates/_view/richter/searchforms_record_simple:158
@@ -19212,6 +20080,9 @@ msgstr "in:"
 
 #: ../templates/_profile/kug/std_footer_html:18
 #: ../templates/_profile/usbintern/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/std_footer_html:18
 msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
 msgstr "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
 
@@ -19284,6 +20155,9 @@ msgstr "meistgenutzte Titel"
 #: ../templates/_profile/kug/login:85
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:520
 #: ../templates/_profile/sammlungen/login:122
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/login:85
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/login:85
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/login:85
 #: ../templates/_profile/usbportal/login:61
 msgid "mit"
 msgstr "mit"
@@ -19703,6 +20577,12 @@ msgstr "nur einsehbar / nach Bestellung"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:133
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:234
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:81
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:133
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:234
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:81
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:133
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:234
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:81
 #: ../templates/_view/richter/cartitems_html_actions:63
 #: ../templates/_view/richter/cartitems_html_actions:96
 #: ../templates/_view/richter/users_litlists_record_edit:73
@@ -19734,6 +20614,9 @@ msgstr "privat"
 #: ../templates/_profile/sammlungen/_view/pruessen/std_footer_html:17
 #: ../templates/_profile/sammlungen/std_footer_html:17
 #: ../templates/_profile/usbintern/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/std_footer_html:18
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/std_footer_html:18
 #: ../templates/_view/richter/std_footer:17 ../templates/std_footer_html:17
 #: ../templates/std_footer_mobile:16
 msgid "realisiert mit"
@@ -19779,6 +20662,9 @@ msgstr "usw. usf."
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/searchforms_record_query:234
 #: ../templates/_profile/sammlungen/titles_html:77
+#: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:208
+#: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:208
+#: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:208
 #: ../templates/_profile/usbportal/search_title_combined_include:48
 #: ../templates/authority_search_combined_html:75
 #: ../templates/search_title_combined_html:75
@@ -19841,6 +20727,8 @@ msgid "Über den KUG"
 msgstr "Über den KUG"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:199
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:199
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:199
 #: ../templates/titles_record_html_actions:199
 #: ../templates/titles_record_include:480
 #: ../templates/titles_record_include:554
@@ -19848,6 +20736,8 @@ msgid "Übernahme bereits von Nutzern vergebener Tags"
 msgstr "Übernahme bereits von Nutzern vergebener Tags"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:148
+#: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:148
+#: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:148
 #: ../templates/_view/richter/cartitems_html_actions:105
 #: ../templates/cartitems_html_actions:120
 #: ../templates/titles_record_html_actions:148

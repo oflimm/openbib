@@ -1,5 +1,4 @@
 [%
-
    IF normdata.${'T0508'} ;
 %]
 
@@ -27,6 +26,49 @@
 </ul>
 </div><!-- End Reuse -->
 
+<p/>
+[% END %]
+
+[% IF normdata.${'T0333'} %]
+
+<div class="ob-reuse_data"><!-- Begin Reuse -->
+
+<div class="ob-category_header">[% msg.maketext("T0333-muenzen") %]:</div><p/>
+
+<ul>
+[%
+      referenzen = normdata.${'T0333'}.first.content.split(' ; ');
+ 
+      FOREACH referenz IN referenzen ;
+%]
+<li>[% referenz %]</li>
+[%
+      END ;
+%]
+</ul>
+</div><!-- End Reuse -->
+
+[% END %]
+
+[% IF normdata.${'T0336'} %]
+
+<div class="ob-reuse_data"><!-- Begin Reuse -->
+
+<div class="ob-category_header">[% msg.maketext("T0336-muenzen") %]:</div><p/>
+
+<ul>
+[%
+      referenzen = normdata.${'T0336'}.first.content.split(' ; ');
+ 
+      FOREACH referenz IN referenzen ;
+%]
+<li>[% referenz %]</li>
+[%
+      END ;
+%]
+</ul>
+</div><!-- End Reuse -->
+<p/>
 [% END %]
 
 
@@ -47,8 +89,6 @@ $("#history_toggle").click(function(){
 
 [% recent_titles = session.get_recently_selected_titles.load_brief_records %]
 [% IF recent_titles.get_size > 0 %]
-
-<p/>
 
 <div class="ob-session_history"><!-- Begin Historie -->
 

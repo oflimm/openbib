@@ -41,8 +41,8 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %].html?l=[% lang %]">[% dbinfo.get('dbnames').${database}.short %]</a></li>
+         <li><a href="#">[% msg.maketext("Kataloge") %]</a></li>
+         <li><a href="#">[% dbinfo.get('dbnames').${database}.short %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Top 20") %] [% msg.maketext("Münzen") %]</a></li>
        </ul>
      </div>

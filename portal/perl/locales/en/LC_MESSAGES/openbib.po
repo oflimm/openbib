@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-09-17 08:44+0200\n"
+"PO-Revision-Date: 2014-09-17 14:05+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -922,6 +922,7 @@ msgstr "All public literature lists"
 
 #: ../templates/_database/einbaende/cartitems_html_short:23
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:23
+#: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:23
 #: ../templates/_view/richter/cartitems_html_short:23
 #: ../templates/cartitems_html_short:23
 msgid "Alle Eintr&auml;ge ausw&auml;hlen"
@@ -997,7 +998,9 @@ msgstr "All catalogs"
 msgid "Alle Listen"
 msgstr "All lists"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:121
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:126
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:19
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:21
 msgid "Alle Münzen"
 msgstr "All coins"
 
@@ -1717,6 +1720,7 @@ msgstr "Selected catalogs"
 msgid "Ausgew&auml;hlte Recherche"
 msgstr "Selected search request"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions:3
 #: ../templates/cartitems_html_actions:19
 msgid "Ausgewählte Titel"
 msgstr "Selected title"
@@ -2095,6 +2099,11 @@ msgstr "Example: Installing Feedview for the Browser Firefox"
 #: ../templates/info_help:73
 msgid "Beispiele"
 msgstr "Examples"
+
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:24
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:26
+msgid "Beliebte Münzen"
+msgstr "Popular coins"
 
 #: ../templates/admin_sessions_active_html:66
 msgid "Benutzer"
@@ -3177,6 +3186,10 @@ msgstr "German"
 msgid "Deutsche Wikipedia"
 msgstr "German Wikipedia"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:71
+msgid "Die 20 meist aufgerufenen Münzen in den letzten 6 Monaten"
+msgstr "Top 20 most popular coins in the last 6 months"
+
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:71
 #: ../templates/titles_popular_by_database_html:71
 #: ../templates/titles_popular_html:64
@@ -3695,6 +3708,8 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:22
+#: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:15
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:20
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:20
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/titles_html:17
@@ -4375,6 +4390,7 @@ msgstr "Discover other titles using:"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:198
 #: ../templates/_profile/sammlungen/_view/kapsel/search_facet:198
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:198
+#: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:150
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:185
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:200
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:198
@@ -4574,7 +4590,7 @@ msgstr "Advanced search mask"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:126
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:68
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:121
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:126
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:69
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:116
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:131
@@ -5536,7 +5552,7 @@ msgstr ""
 "Complex searches containing combinations of AND and OR operators by using "
 "brackets are possible here (see example 7)"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:119
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:124
 msgid "Hier suchen Sie im gesamten Münzbestand"
 msgstr "Search in this collection"
 
@@ -6298,12 +6314,14 @@ msgstr "In simple search or free search field"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:234
 #: ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:294
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:294
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:22
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:296
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:299
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/titlist_item_html_short:280
@@ -6580,6 +6598,8 @@ msgstr "Move user generated content to new login"
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:23
+#: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:16
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:21
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_title_field:11
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:21
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:23
@@ -7227,6 +7247,7 @@ msgstr "Choice of catalogs for this view"
 #: ../templates/_profile/kug/_database/dbis/classifications_html:37
 #: ../templates/_profile/kug/_database/ezb/classifications_html:37
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:31
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:44
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:44
 #: ../templates/_profile/usbintern/home_html_bottom_left:31
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:31
@@ -8374,6 +8395,8 @@ msgstr "Go"
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:144
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:311
+#: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions:8
+#: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:150
 #: ../templates/admin_authenticators_record_edit:104
 #: ../templates/admin_clusters_record_edit:100
 #: ../templates/admin_databases_record_edit:252
@@ -8733,9 +8756,11 @@ msgstr "Message"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:234
 #: ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:294
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_database/muenzen/titlist_item_html_short:294
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:296
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:299
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/titlist_item_html_short:280
@@ -8795,6 +8820,8 @@ msgstr "Collect"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:51
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:53
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:51
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:53
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:56
@@ -8865,6 +8892,11 @@ msgstr "Motive/Tool"
 #: ../templates/info_tutorials:66
 msgid "Multimedia"
 msgstr "Multimedia"
+
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:46
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:65
+msgid "Münzen"
+msgstr "Coins"
 
 #: ../templates/common/navitembar:37
 msgid "N&auml;chste Seite"
@@ -9931,6 +9963,8 @@ msgstr "Popularity-Functions"
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:24
+#: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:17
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:22
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:22
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/titles_html:19
@@ -12119,8 +12153,8 @@ msgstr "Search for journals"
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:123
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:161
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:118
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:119
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:123
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:124
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:178
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:113
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
@@ -17742,6 +17776,8 @@ msgstr "Number of titles"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:451
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:427
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:427
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:46
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:65
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:46
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:65
 #: ../templates/databases_popular_html:42 ../templates/info_11:34

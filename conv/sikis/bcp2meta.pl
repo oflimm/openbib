@@ -844,7 +844,8 @@ open(PERSIKJSON,"|gzip > ./meta.person.gz");
 binmode(PERSIKJSON);
 
 while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
-    next if ($aktion);
+    next if ($katkey < 0);
+    next if ($aktion != 0 && $aktion != 2);
 
     my %record  = decode_blob('person',$daten);
 
@@ -930,7 +931,8 @@ open(KOESIKJSON,"|gzip > ./meta.corporatebody.gz");
 binmode(KOESIKJSON);
 
 while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)) {
-    next if ($aktion);
+    next if ($katkey < 0);
+    next if ($aktion != 0 && $aktion != 2);
 
     my %record  = decode_blob('corporatebody',$daten);
 
@@ -989,7 +991,8 @@ open(SYSSIKJSON,"| gzip >./meta.classification.gz");
 binmode(SYSSIKJSON);
 
 while (my ($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)) {
-    next if ($aktion);
+    next if ($katkey < 0);
+    next if ($aktion != 0 && $aktion != 2);
 
     my %record  = decode_blob('classification',$daten);
         
@@ -1048,7 +1051,8 @@ open(SWDSIKJSON,"| gzip >./meta.subject.gz");
 binmode(SWDSIKJSON);
 
 while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
-    next if ($aktion);
+    next if ($katkey < 0);
+    next if ($aktion != 0 && $aktion != 2);
 
     my %record  = decode_blob('subject',$daten);
     
@@ -1230,7 +1234,8 @@ binmode(MEXSIKJSON);
 my $mexid           = 1;
 
 while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("",<TITEL>)) {
-    next if ($aktion);
+    next if ($katkey < 0);
+    next if ($aktion != 0 && $aktion != 2);
     next if ($titelexclude{"$katkey"} eq "excluded");
 
     my %record  = decode_blob('title',$daten);

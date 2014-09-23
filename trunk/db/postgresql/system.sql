@@ -327,6 +327,45 @@ CREATE TABLE user_role (
   roleid    BIGINT NOT NULL
 );
 
+DROP TABLE IF EXISTS user_view;
+CREATE TABLE user_view (
+  id        BIGSERIAL,
+  userid    BIGINT NOT NULL,
+  viewid    BIGINT NOT NULL
+);
+
+DROP TABLE IF EXISTS user_db;
+CREATE TABLE user_db (
+  id        BIGSERIAL,
+  userid    BIGINT NOT NULL,
+  dbid      BIGINT NOT NULL
+);
+
+DROP TABLE IF EXISTS templateinfo;
+CREATE TABLE templateinfo (
+  id         BIGSERIAL,
+  viewid     BIGINT NOT NULL,
+  templatename TEXT NOT NULL,
+  templatetext TEXT
+);
+
+DROP TABLE IF EXISTS user_templateinfo;
+CREATE TABLE user_templateinfo (
+  id         BIGSERIAL,
+  userid     BIGINT NOT NULL,
+  templateid BIGINT NOT NULL
+);
+
+
+DROP TABLE IF EXISTS templateinforevision;
+CREATE TABLE templateinforevision (
+  id         BIGSERIAL,
+  tstamp       TIMESTAMP,
+
+  templateid  BIGINT NOT NULL,
+  templatetext TEXT
+);
+
 DROP TABLE IF EXISTS registration;
 CREATE TABLE registration (
   id                  TEXT,

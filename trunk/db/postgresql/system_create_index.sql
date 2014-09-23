@@ -129,6 +129,33 @@ ALTER TABLE user_role ADD CONSTRAINT fk_userrole_role FOREIGN KEY (roleid) REFER
 CREATE INDEX user_role_userid ON user_role (userid);
 CREATE INDEX user_role_roleid ON user_role (roleid);
 
+ALTER TABLE templateinfo ADD PRIMARY KEY (id);
+ALTER TABLE templateinfo ADD CONSTRAINT fk_templateinfo_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
+CREATE INDEX templateinfo_templatename ON templateinfo (templatename);
+CREATE INDEX templateinfo_viewid ON templateinfo (viewid);
+
+ALTER TABLE templateinforevision ADD PRIMARY KEY (id);
+ALTER TABLE templateinforevision ADD CONSTRAINT fk_templateinforevision_templateinfo FOREIGN KEY (templateid) REFERENCES templateinfo (id);
+CREATE INDEX templateinforevision_templateid ON templateinforevision (templateid);
+CREATE INDEX templateinforevision_tstamp ON templateinforevision (templateid);
+
+ALTER TABLE user_templateinfo ADD PRIMARY KEY (id);
+ALTER TABLE user_templateinfo ADD CONSTRAINT fk_templateinfo_user FOREIGN KEY (userid) REFERENCES userinfo (id);
+ALTER TABLE user_templateinfo ADD CONSTRAINT fk_templateinfo_templateinfo FOREIGN KEY (templateid) REFERENCES templateinfo (id);
+CREATE INDEX user_templateinfo_userid ON user_templateinfo (userid);
+CREATE INDEX user_templateinfo_templateid ON user_templateinfo (templateid);
+
+ALTER TABLE user_view ADD PRIMARY KEY (id);
+ALTER TABLE user_view ADD CONSTRAINT fk_userview_user FOREIGN KEY (userid) REFERENCES userinfo (id);
+ALTER TABLE user_view ADD CONSTRAINT fk_userview_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
+CREATE INDEX user_view_userid ON user_view (userid);
+CREATE INDEX user_view_viewid ON user_view (viewid);
+
+ALTER TABLE user_db ADD PRIMARY KEY (id);
+ALTER TABLE user_db ADD CONSTRAINT fk_userdb_user FOREIGN KEY (userid) REFERENCES userinfo (id);
+ALTER TABLE user_db ADD CONSTRAINT fk_userdb_db FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
+CREATE INDEX user_db_userid ON user_db (userid);
+CREATE INDEX user_db_dbid ON user_db (dbid);
 
 ALTER TABLE registration ADD PRIMARY KEY (id);
 

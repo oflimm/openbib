@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::Livesearch;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Livesearch
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<livesearch>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Livesearch
 
 =cut
 
@@ -75,8 +71,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-28 16:56:17
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EbSmXzYFVm8uDBSONnTvjg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-09-23 11:14:49
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DlraYrB0LtzJ4wdyrn63IQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::Userinfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Userinfo
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<userinfo>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Userinfo
 
 =cut
 
@@ -67,7 +63,7 @@ __PACKAGE__->table("userinfo");
 
 =head2 plz
 
-  data_type: 'integer'
+  data_type: 'text'
   is_nullable: 1
 
 =head2 soll
@@ -190,7 +186,7 @@ __PACKAGE__->add_columns(
   "ort",
   { data_type => "text", is_nullable => 1 },
   "plz",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "soll",
   { data_type => "text", is_nullable => 1 },
   "gut",
@@ -230,31 +226,7 @@ __PACKAGE__->add_columns(
   "bibsonomy_sync",
   { data_type => "text", is_nullable => 1 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</id>
-
-=back
-
-=cut
-
 __PACKAGE__->set_primary_key("id");
-
-=head1 UNIQUE CONSTRAINTS
-
-=head2 C<uq_userinfo_username>
-
-=over 4
-
-=item * L</username>
-
-=back
-
-=cut
-
 __PACKAGE__->add_unique_constraint("uq_userinfo_username", ["username"]);
 
 =head1 RELATIONS
@@ -289,21 +261,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 reviewratings
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::System::Result::Reviewrating>
-
-=cut
-
-__PACKAGE__->has_many(
-  "reviewratings",
-  "OpenBib::Schema::System::Result::Reviewrating",
-  { "foreign.userid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 reviews
 
 Type: has_many
@@ -315,6 +272,21 @@ Related object: L<OpenBib::Schema::System::Result::Review>
 __PACKAGE__->has_many(
   "reviews",
   "OpenBib::Schema::System::Result::Review",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 reviewratings
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Reviewrating>
+
+=cut
+
+__PACKAGE__->has_many(
+  "reviewratings",
+  "OpenBib::Schema::System::Result::Reviewrating",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -364,6 +336,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 user_dbs
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::UserDb>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_dbs",
+  "OpenBib::Schema::System::Result::UserDb",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 user_roles
 
 Type: has_many
@@ -409,9 +396,39 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 user_templateinfos
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-28 16:56:17
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rQLBHRGfigBDTgfdlrqGDA
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::UserTemplateinfo>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_templateinfos",
+  "OpenBib::Schema::System::Result::UserTemplateinfo",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 user_views
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::UserView>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_views",
+  "OpenBib::Schema::System::Result::UserView",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-09-23 11:14:49
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KS+1waNyNCeG63j6Vm9ZCg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

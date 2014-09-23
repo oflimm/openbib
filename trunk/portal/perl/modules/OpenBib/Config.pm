@@ -415,6 +415,27 @@ sub view_exists {
     return $count;
 }
 
+sub template_exists {
+    my $self     = shift;
+    my $templatename = shift;
+    my $viewname     = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $count = $self->{schema}->resultset('Templateinfo')->search(
+        {
+            "me.templatename" => $templatename,
+            "viewid.viewname" => $viewname,
+        },
+        {
+            join => ["viewid"],
+        }
+    )->count;
+    
+    return $count;
+}
+
 sub profile_exists {
     my $self     = shift;
     my $profilename = shift;
@@ -1872,6 +1893,34 @@ sub local_server_belongs_to_updatable_cluster {
     return $is_updatable;
 }
 
+sub get_templateinfo_overview {
+    my $self   = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->get_templateinfo->search(
+        undef,
+        {
+            order_by => 'id',
+        }
+    );
+    
+    return $object;
+}
+
+sub get_templateinfo {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->{schema}->resultset('Templateinfo');
+
+    return $object;
+}
+
+
 sub get {
     my ($self,$key) = @_;
 
@@ -2772,6 +2821,97 @@ sub new_cluster {
 
     if ($new_cluster){
         return $new_cluster->id;
+    }
+
+    return;
+}
+
+# Durch Nutzer aenderbare Template-Inhalte
+
+sub del_template {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("About to delete id $id");
+
+    eval {
+        # DBI: "delete from templateinfo where id = ?"
+        $self->{schema}->resultset('Templateinfo')->single({ id => $id })->delete;
+    };
+
+    if ($@){
+        $logger->error($@);
+    }
+
+    return;
+}
+
+sub update_template {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+
+    my $update_args = {};
+    
+    if ($arg_ref->{templatetext}){
+        $update_args->{templatetext} = $arg_ref->{templatetext};
+    }
+
+    if ($arg_ref->{viewname}){
+        my $viewid = $self->get_viewinfo->single({ viewname => $arg_ref->{viewname} })->id;
+        $update_args->{viewid} = $viewid;
+    }
+
+    if ($arg_ref->{templatename}){
+        $update_args->{templatename} = $arg_ref->{templatename};
+    }
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($logger->is_debug){
+        $logger->debug("Updating ID $id".YAML::Dump($update_args));
+    }
+    
+    # DBI: "update templateinfo set active = ? where id = ?"
+    $self->{schema}->resultset('Templateinfo')->search_rs({ id => $id })->update($update_args);
+
+    return;
+}
+
+sub new_template {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $viewname                 = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}             : undef;
+    my $templatename             = exists $arg_ref->{templatename}
+        ? $arg_ref->{templatename}         : '';
+    my $templatetext             = exists $arg_ref->{templatetext}
+        ? $arg_ref->{templatetext}         : '';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+
+    if (!$viewid || !$templatename){
+        return -1;
+    }
+
+    # DBI: "insert into templateinfo (id,host,active) values (NULL,?,?)"
+    my $new_template = $self->{schema}->resultset('Templateinfo')->create({ viewid => $viewid, templatename => $templatename, templatetext => $templatetext });
+
+    if ($new_template){
+        return $new_template->id;
     }
 
     return;

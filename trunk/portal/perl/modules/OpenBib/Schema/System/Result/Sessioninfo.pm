@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::Sessioninfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Sessioninfo
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<sessioninfo>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Sessioninfo
 
 =cut
 
@@ -55,6 +51,11 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'text'
   is_nullable: 1
 
+=head2 viewname
+
+  data_type: 'text'
+  is_nullable: 1
+
 =head2 queryoptions
 
   data_type: 'text'
@@ -85,11 +86,6 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'text'
   is_nullable: 1
 
-=head2 viewname
-
-  data_type: 'text'
-  is_nullable: 1
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -110,6 +106,8 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "userpassword",
   { data_type => "text", is_nullable => 1 },
+  "viewname",
+  { data_type => "text", is_nullable => 1 },
   "queryoptions",
   { data_type => "text", is_nullable => 1 },
   "searchform",
@@ -122,38 +120,10 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "bibsonomy_sync",
   { data_type => "text", is_nullable => 1 },
-  "viewname",
-  { data_type => "text", is_nullable => 1 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</id>
-
-=back
-
-=cut
-
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
-
-=head2 eventlogjsons
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::System::Result::Eventlogjson>
-
-=cut
-
-__PACKAGE__->has_many(
-  "eventlogjsons",
-  "OpenBib::Schema::System::Result::Eventlogjson",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
 
 =head2 eventlogs
 
@@ -166,6 +136,21 @@ Related object: L<OpenBib::Schema::System::Result::Eventlog>
 __PACKAGE__->has_many(
   "eventlogs",
   "OpenBib::Schema::System::Result::Eventlog",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 eventlogjsons
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Eventlogjson>
+
+=cut
+
+__PACKAGE__->has_many(
+  "eventlogjsons",
+  "OpenBib::Schema::System::Result::Eventlogjson",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -261,8 +246,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-28 16:56:17
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4sDhp9YpOgau7e6+6Zy1xQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-09-23 11:14:49
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:yXP2VTpoi70VxW44wM0I/Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -1037,6 +1037,7 @@ msgstr "All"
 #: ../templates/admin_navigation:140 ../templates/admin_navigation:142
 #: ../templates/admin_navigation:169 ../templates/admin_navigation:171
 #: ../templates/admin_navigation:217 ../templates/admin_navigation:219
+#: ../templates/admin_navigation:250 ../templates/admin_navigation:252
 #: ../templates/admin_navigation:26 ../templates/admin_navigation:28
 #: ../templates/admin_navigation:42 ../templates/admin_navigation:44
 #: ../templates/admin_navigation:58 ../templates/admin_navigation:60
@@ -2202,6 +2203,11 @@ msgstr "Already existing server for loadbalancing"
 msgid "Bereits existierende Standorte"
 msgstr "Already existing locations"
 
+#: ../templates/admin_templates_html:99
+#, fuzzy
+msgid "Bereits existierende Templates"
+msgstr "Already existing cluster"
+
 #: ../templates/admin_topics_html:91
 msgid "Bereits existierende Themengebiete"
 msgstr "Already existing subjects"
@@ -3186,7 +3192,7 @@ msgstr "German"
 msgid "Deutsche Wikipedia"
 msgstr "German Wikipedia"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:71
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:70
 msgid "Die 20 meist aufgerufenen Münzen in den letzten 6 Monaten"
 msgstr "Top 20 most popular coins in the last 6 months"
 
@@ -5786,6 +5792,8 @@ msgstr "ISSN"
 #: ../templates/admin_servers_record_edit:67
 #: ../templates/admin_sessions_active_html:66
 #: ../templates/admin_sessions_archived_search_html:66
+#: ../templates/admin_templates_html:103
+#: ../templates/admin_templates_record_edit:67
 #: ../templates/admin_topics_mappings_html:76
 #: ../templates/authenticators_record_html:60 ../templates/clusters_html:62
 #: ../templates/clusters_record_html:60 ../templates/search_title_field:2
@@ -6321,7 +6329,7 @@ msgstr "In simple search or free search field"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:296
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:295
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:299
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/titlist_item_html_short:280
@@ -6850,6 +6858,7 @@ msgstr "JSON cannot be parsed"
 #: ../templates/admin_servers_html:143 ../templates/admin_servers_html:99
 #: ../templates/admin_servers_record_delete_confirm:66
 #: ../templates/admin_servers_record_edit:104
+#: ../templates/admin_templates_record_delete_confirm:66
 #: ../templates/admin_topics_record_delete_confirm:66
 #: ../templates/admin_views_html:121 ../templates/admin_views_html:91
 #: ../templates/admin_views_record_delete_confirm:66
@@ -7247,7 +7256,6 @@ msgstr "Choice of catalogs for this view"
 #: ../templates/_profile/kug/_database/dbis/classifications_html:37
 #: ../templates/_profile/kug/_database/ezb/classifications_html:37
 #: ../templates/_profile/kug/_view/kug/home_html_bottom_left:31
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:44
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:44
 #: ../templates/_profile/usbintern/home_html_bottom_left:31
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/home_html_bottom_left:31
@@ -7619,6 +7627,7 @@ msgstr "Artist"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329
 #: ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144
+#: ../templates/admin_templates_html:111
 #: ../templates/titles_record_include:512
 #: ../templates/titlist_item_html_short:326
 #: ../templates/titlist_item_html_short:329
@@ -8406,6 +8415,7 @@ msgstr "Go"
 #: ../templates/admin_orgunits_record_edit:107
 #: ../templates/admin_profiles_record_edit:83
 #: ../templates/admin_servers_record_edit:114
+#: ../templates/admin_templates_record_edit:100
 #: ../templates/admin_topics_record_edit:131
 #: ../templates/admin_views_record_edit:129
 #: ../templates/cartitems_html_actions:160
@@ -8760,7 +8770,7 @@ msgstr "Message"
 #: ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:226
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:252
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:226
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:296
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:295
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:299
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/titlist_item_html_short:280
@@ -8893,8 +8903,8 @@ msgstr "Motive/Tool"
 msgid "Multimedia"
 msgstr "Multimedia"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:46
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:65
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:45
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:64
 msgid "Münzen"
 msgstr "Coins"
 
@@ -8966,6 +8976,7 @@ msgstr "Surname"
 #: ../templates/_view/richter/cartitems_html_actions:55
 #: ../templates/admin_orgunits_html:66
 #: ../templates/admin_profiles_record_edit:124
+#: ../templates/admin_templates_html:103 ../templates/admin_templates_html:66
 #: ../templates/cartitems_html_actions:44
 #: ../templates/cartitems_html_actions:63 ../templates/databases_html:92
 #: ../templates/orgunits_html:66 ../templates/profiles_record_html:75
@@ -9080,6 +9091,7 @@ msgstr ""
 #: ../templates/admin_servers_html:100 ../templates/admin_servers_html:143
 #: ../templates/admin_servers_record_delete_confirm:72
 #: ../templates/admin_servers_record_edit:105
+#: ../templates/admin_templates_record_delete_confirm:72
 #: ../templates/admin_topics_record_delete_confirm:72
 #: ../templates/admin_views_html:121 ../templates/admin_views_html:92
 #: ../templates/admin_views_record_delete_confirm:72
@@ -9112,9 +9124,9 @@ msgstr "No"
 #: ../templates/admin_locations_record_edit:138
 #: ../templates/admin_profiles_html:78
 #: ../templates/admin_profiles_record_edit:112
-#: ../templates/admin_servers_html:105 ../templates/admin_topics_html:79
-#: ../templates/admin_views_html:97 ../templates/titles_form:86
-#: ../templates/users_litlists_html:84
+#: ../templates/admin_servers_html:105 ../templates/admin_templates_html:85
+#: ../templates/admin_topics_html:79 ../templates/admin_views_html:97
+#: ../templates/titles_form:86 ../templates/users_litlists_html:84
 #: ../templates/users_searchprofiles_html:69
 msgid "Neu"
 msgstr "New"
@@ -9312,6 +9324,11 @@ msgstr "New password"
 #: ../templates/users_passwords:66
 msgid "Neues Passwort zusenden"
 msgstr "Send new password"
+
+#: ../templates/admin_templates_html:61
+#, fuzzy
+msgid "Neues Template einrichten"
+msgstr "Create new cluster"
 
 #: ../templates/admin_topics_html:64
 msgid "Neues Themengebiet anlegen"
@@ -17404,6 +17421,28 @@ msgstr "Import Tags to BibSonomy"
 msgid "Tags nach Namen"
 msgstr "Tags by name"
 
+#: ../templates/admin_templates_record_edit:64
+#, fuzzy
+msgid "Template bearbeiten"
+msgstr "Edit cluster"
+
+#: ../templates/admin_templates_record_edit:81
+#, fuzzy
+msgid "Templatename"
+msgstr "Title data"
+
+#: ../templates/admin_navigation:242 ../templates/admin_navigation:244
+#: ../templates/admin_templates_html:39
+#: ../templates/admin_templates_record_delete_confirm:39
+#: ../templates/admin_templates_record_edit:39
+#, fuzzy
+msgid "Templates"
+msgstr "Holdings-File"
+
+#: ../templates/admin_templates_record_edit:91
+msgid "Templatetext"
+msgstr ""
+
 #: ../templates/testsystem_info:15
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr "Development system - Not intended for regular use"
@@ -17411,6 +17450,8 @@ msgstr "Development system - Not intended for regular use"
 #: ../templates/_database/einbaende/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306
+#: ../templates/admin_templates_html:80
+#: ../templates/admin_templates_record_edit:86
 #: ../templates/titles_record_html:317 ../templates/titles_record_include:215
 msgid "Text"
 msgstr "Text"
@@ -17776,8 +17817,8 @@ msgstr "Number of titles"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:451
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:427
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:427
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:46
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:65
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:45
+#: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:64
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:46
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:65
 #: ../templates/databases_popular_html:42 ../templates/info_11:34
@@ -18320,6 +18361,12 @@ msgstr "Used search type"
 #: ../templates/_view/richter/logout:48 ../templates/logout:47
 msgid "Vielen Dank f&uuml;r Ihren Besuch."
 msgstr "Thank you for your visit."
+
+#: ../templates/admin_templates_html:103 ../templates/admin_templates_html:71
+#: ../templates/admin_templates_record_edit:72
+#, fuzzy
+msgid "View"
+msgstr "Views"
 
 #: ../templates/admin_views_record_edit:64
 msgid "View bearbeiten"
@@ -20307,6 +20354,7 @@ msgstr "repeated"
 #: ../templates/admin_profiles_record_edit:78
 #: ../templates/admin_searchprofiles_record_edit:86
 #: ../templates/admin_servers_record_edit:110
+#: ../templates/admin_templates_record_edit:96
 #: ../templates/admin_topics_record_edit:127
 #: ../templates/admin_topics_record_edit:164
 #: ../templates/admin_topics_record_edit:196

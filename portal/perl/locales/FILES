@@ -371,6 +371,12 @@
 ../templates/admin_statistics_view_html
 ../templates/admin_statistics_view_session_graph
 ../templates/admin_statistics_view_session_graph_html
+../templates/admin_templates
+../templates/admin_templates_html
+../templates/admin_templates_json
+../templates/admin_templates_record_delete_confirm
+../templates/admin_templates_record_edit
+../templates/admin_templates_record_json
 ../templates/admin_topics
 ../templates/admin_topics_html
 ../templates/admin_topics_json

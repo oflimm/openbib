@@ -1,0 +1,29 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_templates_record_json
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Informationen eines Templates im JSON-format
+#
+#######################################################################
+-%]
+[%-
+
+   this_json_output = {
+       link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('templates_loc')}/id/${templateinfo.id}"
+       }
+       id = templateinfo.id
+       viewid = templateinfo.viewid
+       templatename = templateinfo.templatename
+       templatetext = templateinfo.templatetext
+   };
+
+  to_json(this_json_output);
+
+-%]

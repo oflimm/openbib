@@ -49,75 +49,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>Ansprechpartner</h1>
-
-<table>
-<tr><th>Projekt und Inhaltliche Realisierung</th><th></th><th>Technische Realisierung</th></tr>
-<tr><td valign="top">
-
-<p><b>Projektleitung</b>
-<br /><i>Dr. Gregor Staab</i>
-<br />Institut für Altertumskunde
-<br />Universität zu Köln
-<br />50923 Köln
-<br />Tel. 0049 221 470 3024
-<br />Email: gstaab@uni-koeln.de
-</p>
-<p>
-<b>Mitantragsteller</b>
-<br /><i>Dr. Rolf Thiele</i>
-<br />USB Köln
-<br />Universitätsstr. 33
-<br />50931 Köln
-<br />Tel. 0049 221 470 2404
-<br />Email: thiele@ub.uni-koeln.de
-</p>
-<p>
-<b>Wissenschaftliche Bearbeitung der kleinasiatischen Münzen</b>
-<br /><i>Prof. Dr. Johannes Heinrichs</i>
-</p>
-<p>
-<b>Münzfotografie</b>
-<br /><i>Hermann Koop, student. Hilfskraft (DFG)</i>
-</p>
-<p>
-<b>Einarbeitung der Katalogdaten</b>
-<br /><i>Christina Daniels, student. Hilfskraft</i>
-<br /><i>Katrin Flass, student. Hilfskraft (DFG)</i>
-</p>
-</td>
-<td>&nbsp;&nbsp;</td>
-<td valign="top">
-<b>Universitäts- und Stadtbibliothek Köln</b>
-<br />Universitätsstr. 33
-<br />50931 Köln
-<p>
-<b>Recherche-/Präsentations-Plattform KUG</b>
-<br /><i>Oliver Flimm</i>
-<br />IT-Dezernat
-<br />Email: flimm@ub.uni-koeln.de<br />
-</p>
-<p>
-<b>Koordination zwischen Institut für Altertumskunde und IT-Dezernat/UGK</b>
-<br /><i>Christiane Hoffrath</i>
-<br />Abt. UniversitätsGesamtKatalog
-<br />Email: hoffrath@ub.uni-koeln.de<br />
-</p>
-<p>
-<b>Datenerfassung, Administrator CONTENTdm</b>
-<br /><i>Dr. Peter Kostaedt</i>
-<br />IT-Dezernat
-<br />Email: hoffrath@ub.uni-koeln.de<br />
-</p>
-<p>
-<b>Layout / Design</b>
-<br /><i>Hildegard Schoel</i>
-<br />Abt. UniversitätsGesamtKatalog
-<br />Email: schoel@ub.uni-koeln.de<br />
-</p>
-</td></tr>
-</table>
-
+[% config.get_templatetext('info_project','muenzen')%]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

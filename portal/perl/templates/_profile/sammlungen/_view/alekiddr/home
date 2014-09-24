@@ -30,62 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:8px;">
-
- <img
-src="/images/openbib/views/alekiddr/alekistart.png" alt="Strittmatter:
-Tinko, Görlich: Den Wolken ein Stück näher" /><br /><br /><i style="font-size:0.8em">Strittmatter:
-Tinko, Görlich: Den Wolken ein Stück näher</i>
-
- </div>
-
-<h1>Sammlung DDR-Kinderbuch in der ALEKI</h1>
-
-<p>
-Die Sammlung "DDR-Kinderbuch" ist eine Sondersammlung der Bibliothek
-der <a href="http://www.aleki.uni-koeln.de/">ALEKI</a> (Arbeitsstelle für Kinder- und Jugendmedienforschung) der
-Universität zu Köln. Sie umfasst rund 1.000 Titel der Kinder-,
-Jugend- und Bilderbuchproduktion der DDR von den Anfängen bis zum
-Beitritt der DDR zur Bundesrepublik Deutschland im Jahr 1990.
-</p>
-
-
-<p>
-In ihrer Vielfalt liefert sie ein weitgehend repräsentatives Bild der
-Kinder- und Jugendliteratur der DDR. Sie dokumentiert einerseits das
-Bestreben, an die 'linke' und die 'proletarisch-revolutionäre' KJL der
-Weimarer Republik anzuknüpfen, andererseits das Bemühen, die als
-weltanschaulich und ästhetisch vorbildlich apostrophierten Werke der
-sowjetischen Kinder- und Jugendliteratur durch Übersetzung zugänglich
-zu machen. Vor allem verdeutlicht die Sammlung jedoch die
-unterschiedlichen Tendenzen, die die KJL der DDR im Verlauf ihrer
-Entwicklung prägten: Die literarisch eher einfach strukturierten,
-meist auf dem Dorf spielenden "Gegenwartsbücher" der 1950er Jahre
-präsentieren überwiegend kindliche bzw. jugendliche Vorbildfiguren,
-die sich ganz in den Dienst des 'sozialistischen Aufbaus' stellen,
-aber auch Außenseiter, die sich erst allmählich in das Kollektiv
-eingliedern. In den 1960er Jahren rückt die Individualität des Kindes
-stärker in den Vordergrund, wobei nun auch psychologische Aspekte zur
-Darstellung kommen. Der von einem drängenden Aufbauoptimismus
-geprägte Ton in der KJL in den beiden ersten Jahrzehnten der DDR wird
-zunehmend leiser hörbar, und ab den 1970er Jahren erscheinen dann in
-den Werken mitunter idealisierte Kindfiguren "als gefährdete Wesen in
-einer Gemeinschaft, die gegen ihre einstige Ideale lebt" (Karin
-Richter). Nicht mehr die (Um-)Erziehung des Einzelnen wird vor allem
-betont, auch die Notwendigkeit gesellschaftlicher Veränderungen rückt
-vermehrt in den Blick. Gleichzeitig, verstärkt ab den 1980er Jahren,
-übernimmt die KJL Erzählstrukturen der Erwachsenenliteratur. Der
-auktoriale Erzähler tritt zugunsten anderer, vor allem personaler,
-Erzählstrukturen zurück, neben dem linearen Erzählen finden sich
-komplexere Zeitstrukturen, bisher übliche, bereits zu Mustern
-gewordene Figurenkonstellationen werden umgemodelt, und die Innenwelt
-der Protagonisten wird nun bisweilen durch phantastische Erzählmomente
-gespiegelt.
-</p>
-
-<p>
-[<a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Weitere Informationen</a>]
-</p>
+[% config.get_templatetext('home','alekiddr')%]
 
     </div>
     <!-- end: #main -->

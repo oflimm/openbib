@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::Reviewrating;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Reviewrating
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Reviewrating
+=head1 TABLE: C<reviewrating>
 
 =cut
 
@@ -46,7 +50,7 @@ __PACKAGE__->table("reviewrating");
 =head2 rating
 
   data_type: 'smallint'
-  default_value: '0)::smallint'
+  default_value: 0
   is_nullable: 0
 
 =cut
@@ -66,12 +70,19 @@ __PACKAGE__->add_columns(
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
   "rating",
-  {
-    data_type     => "smallint",
-    default_value => "0)::smallint",
-    is_nullable   => 0,
-  },
+  { data_type => "smallint", default_value => 0, is_nullable => 0 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -107,8 +118,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-09-23 11:14:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cINRgW47sXF14VUHbgq9PA
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-24 11:40:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tcvKF0/0OLg6vrvXt5fAnA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

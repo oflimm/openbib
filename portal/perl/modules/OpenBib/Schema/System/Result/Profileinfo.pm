@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::Profileinfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Profileinfo
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Profileinfo
+=head1 TABLE: C<profileinfo>
 
 =cut
 
@@ -51,7 +55,31 @@ __PACKAGE__->add_columns(
   "description",
   { data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<uq_profileinfo_profilename>
+
+=over 4
+
+=item * L</profilename>
+
+=back
+
+=cut
+
 __PACKAGE__->add_unique_constraint("uq_profileinfo_profilename", ["profilename"]);
 
 =head1 RELATIONS
@@ -87,8 +115,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-09-23 11:14:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:QVHSzOuoZq5jQ3KmlT/UPg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-24 11:40:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:D7GGgbtfGvGmFxPLLfKG+A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

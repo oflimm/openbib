@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::LocationinfoField;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::LocationinfoField
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::LocationinfoField
+=head1 TABLE: C<locationinfo_fields>
 
 =cut
 
@@ -86,8 +90,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-09-23 11:14:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sWgSTFvp5+OxPRm5T6126w
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-24 11:40:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PwXeC1Og4qR73HriXp5n7Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

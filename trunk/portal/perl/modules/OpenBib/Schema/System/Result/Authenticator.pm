@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::Authenticator;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Authenticator
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Authenticator
+=head1 TABLE: C<authenticator>
 
 =cut
 
@@ -79,6 +83,17 @@ __PACKAGE__->add_columns(
   "type",
   { data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -99,8 +114,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-09-23 11:14:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:yLfuN6TpaDLz1DECm9XarQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-24 11:40:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7rcpjCHRwc5l55BeljieHQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

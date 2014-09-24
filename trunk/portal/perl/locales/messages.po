@@ -1141,7 +1141,7 @@ msgstr ""
 msgid "Bereits existierende Standorte"
 msgstr ""
 
-#: ../templates/admin_templates_html:99
+#: ../templates/admin_templates_html:103
 msgid "Bereits existierende Templates"
 msgstr ""
 
@@ -2327,12 +2327,20 @@ msgstr ""
 msgid "Es existiert bereits ein Standort mit diesem Identifier"
 msgstr ""
 
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:146
+msgid "Es existiert bereits ein Template in diesem View"
+msgstr ""
+
 #: ../modules/OpenBib/Handler/Apache/Admin/Topics.pm:251
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Profiles.pm:204 ../modules/OpenBib/Handler/Apache/Admin/Views.pm:205 ../modules/OpenBib/Handler/Apache/Admin/Views.pm:212
 msgid "Es existiert bereits ein View unter diesem Namen"
+msgstr ""
+
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:281
+msgid "Es existiert bereits ein anderes Template mit diesem Namen und View"
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnits.pm:238
@@ -2353,6 +2361,10 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Searchprofiles.pm:211
 msgid "Es existiert kein Suchprofil mit dieser ID"
+msgstr ""
+
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:275 ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:346
+msgid "Es existiert kein Template unter dieser ID"
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:313 ../modules/OpenBib/Handler/Apache/Admin/Views/RSS.pm:113 ../modules/OpenBib/Handler/Apache/Admin/Views/RSS.pm:166 ../modules/OpenBib/Handler/Apache/Admin/Views/RSS.pm:261 ../modules/OpenBib/Handler/Apache/Views/RSS.pm:105 ../modules/OpenBib/Handler/Apache/Views/RSS.pm:150
@@ -2917,7 +2929,7 @@ msgstr ""
 msgid "ISSN"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:77 ../templates/admin_clusters_html:107 ../templates/admin_clusters_record_edit:67 ../templates/admin_searchprofiles_record_edit:67 ../templates/admin_searchprofiles_record_html:60 ../templates/admin_servers_html:123 ../templates/admin_servers_record_edit:67 ../templates/admin_sessions_active_html:66 ../templates/admin_sessions_archived_search_html:66 ../templates/admin_templates_html:103 ../templates/admin_templates_record_edit:67 ../templates/admin_topics_mappings_html:76 ../templates/authenticators_record_html:60 ../templates/clusters_html:62 ../templates/clusters_record_html:60 ../templates/search_title_field:2 ../templates/searchprofiles_record_html:59 ../templates/servers_html:64 ../templates/servers_record_html:60 ../templates/topics_mappings_html:74 ../templates/topics_record_html:73
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:77 ../templates/admin_clusters_html:107 ../templates/admin_clusters_record_edit:67 ../templates/admin_searchprofiles_record_edit:67 ../templates/admin_searchprofiles_record_html:60 ../templates/admin_servers_html:123 ../templates/admin_servers_record_edit:67 ../templates/admin_sessions_active_html:66 ../templates/admin_sessions_archived_search_html:66 ../templates/admin_templates_html:107 ../templates/admin_templates_record_edit:67 ../templates/admin_topics_mappings_html:76 ../templates/authenticators_record_html:60 ../templates/clusters_html:62 ../templates/clusters_record_html:60 ../templates/search_title_field:2 ../templates/searchprofiles_record_html:59 ../templates/servers_html:64 ../templates/servers_record_html:60 ../templates/topics_mappings_html:74 ../templates/topics_record_html:73
 msgid "Id"
 msgstr ""
 
@@ -3605,7 +3617,7 @@ msgstr ""
 msgid "Künstler"
 msgstr ""
 
-#: ../templates/_database/einbaende/titlist_item_html_short:247 ../templates/_database/einbaende/titlist_item_html_short:250 ../templates/_database/gresham_oer/titlist_item_html_short:329 ../templates/_database/gresham_oer/titlist_item_html_short:332 ../templates/_database/kapsel/titlist_item_html_short:228 ../templates/_database/kapsel/titlist_item_html_short:231 ../templates/_database/khanacademy/titlist_item_html_short:329 ../templates/_database/khanacademy/titlist_item_html_short:332 ../templates/_database/khanacademy_de/titlist_item_html_short:329 ../templates/_database/khanacademy_de/titlist_item_html_short:332 ../templates/_database/loviscach_oer/titlist_item_html_short:329 ../templates/_database/loviscach_oer/titlist_item_html_short:332 ../templates/_database/mitocw_oer/titlist_item_html_short:329 ../templates/_database/mitocw_oer/titlist_item_html_short:332 ../templates/_database/nptelhrd_oer/titlist_item_html_short:329 ../templates/_database/nptelhrd_oer/titlist_item_html_short:332 ../templates/_database/stanford_oer/titlist_item_html_short:329 ../templates/_database/stanford_oer/titlist_item_html_short:332 ../templates/_database/ucberkeley_oer/titlist_item_html_short:329 ../templates/_database/ucberkeley_oer/titlist_item_html_short:332 ../templates/_database/ucla_oer/titlist_item_html_short:329 ../templates/_database/ucla_oer/titlist_item_html_short:332 ../templates/_database/yale_oer/titlist_item_html_short:329 ../templates/_database/yale_oer/titlist_item_html_short:332 ../templates/_profile/kug/_database/jki/titlist_item_html_short:333 ../templates/_profile/kug/_database/jki/titlist_item_html_short:336 ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:239 ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:242 ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:238 ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:241 ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:247 ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:250 ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:236 ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:239 ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:296 ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:299 ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:228 ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:231 ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:228 ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:231 ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:254 ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:257 ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:228 ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:231 ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:240 ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:243 ../templates/_profile/sammlungen/titlist_item_html_short:282 ../templates/_profile/sammlungen/titlist_item_html_short:285 ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:326 ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:329 ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:326 ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:329 ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326 ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329 ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144 ../templates/admin_templates_html:111 ../templates/titles_record_include:512 ../templates/titlist_item_html_short:326 ../templates/titlist_item_html_short:329
+#: ../templates/_database/einbaende/titlist_item_html_short:247 ../templates/_database/einbaende/titlist_item_html_short:250 ../templates/_database/gresham_oer/titlist_item_html_short:329 ../templates/_database/gresham_oer/titlist_item_html_short:332 ../templates/_database/kapsel/titlist_item_html_short:228 ../templates/_database/kapsel/titlist_item_html_short:231 ../templates/_database/khanacademy/titlist_item_html_short:329 ../templates/_database/khanacademy/titlist_item_html_short:332 ../templates/_database/khanacademy_de/titlist_item_html_short:329 ../templates/_database/khanacademy_de/titlist_item_html_short:332 ../templates/_database/loviscach_oer/titlist_item_html_short:329 ../templates/_database/loviscach_oer/titlist_item_html_short:332 ../templates/_database/mitocw_oer/titlist_item_html_short:329 ../templates/_database/mitocw_oer/titlist_item_html_short:332 ../templates/_database/nptelhrd_oer/titlist_item_html_short:329 ../templates/_database/nptelhrd_oer/titlist_item_html_short:332 ../templates/_database/stanford_oer/titlist_item_html_short:329 ../templates/_database/stanford_oer/titlist_item_html_short:332 ../templates/_database/ucberkeley_oer/titlist_item_html_short:329 ../templates/_database/ucberkeley_oer/titlist_item_html_short:332 ../templates/_database/ucla_oer/titlist_item_html_short:329 ../templates/_database/ucla_oer/titlist_item_html_short:332 ../templates/_database/yale_oer/titlist_item_html_short:329 ../templates/_database/yale_oer/titlist_item_html_short:332 ../templates/_profile/kug/_database/jki/titlist_item_html_short:333 ../templates/_profile/kug/_database/jki/titlist_item_html_short:336 ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:239 ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:242 ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:238 ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:241 ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:247 ../templates/_profile/sammlungen/_database/einbaende/titlist_item_html_short:250 ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:236 ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:239 ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:296 ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:299 ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:228 ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:231 ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:228 ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short:231 ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:254 ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:257 ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:228 ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:231 ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:240 ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:243 ../templates/_profile/sammlungen/titlist_item_html_short:282 ../templates/_profile/sammlungen/titlist_item_html_short:285 ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:326 ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:329 ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:326 ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:329 ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326 ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329 ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144 ../templates/admin_templates_html:115 ../templates/titles_record_include:512 ../templates/titlist_item_html_short:326 ../templates/titlist_item_html_short:329
 msgid "L&ouml;schen"
 msgstr ""
 
@@ -3833,7 +3845,7 @@ msgstr ""
 msgid "Los"
 msgstr ""
 
-#: ../templates/_database/einbaende/cartitems_html_short:144 ../templates/_database/einbaende/titles_record_html:346 ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:144 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:311 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions:8 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:150 ../templates/admin_authenticators_record_edit:104 ../templates/admin_clusters_record_edit:100 ../templates/admin_databases_record_edit:252 ../templates/admin_databases_rss_record_edit:109 ../templates/admin_databases_rss_record_html:351 ../templates/admin_locations_record_edit:161 ../templates/admin_orgunits_record_edit:107 ../templates/admin_profiles_record_edit:83 ../templates/admin_servers_record_edit:114 ../templates/admin_templates_record_edit:100 ../templates/admin_topics_record_edit:131 ../templates/admin_views_record_edit:129 ../templates/cartitems_html_actions:160 ../templates/cartitems_html_short:144 ../templates/titles_record_html:322 ../templates/titles_record_include:220 ../templates/topics_record_mapping_html:95 ../templates/users_litlists_html:110 ../templates/users_searchprofiles_html:93
+#: ../templates/_database/einbaende/cartitems_html_short:144 ../templates/_database/einbaende/titles_record_html:346 ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:144 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:311 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions:8 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:150 ../templates/admin_authenticators_record_edit:104 ../templates/admin_clusters_record_edit:100 ../templates/admin_databases_record_edit:252 ../templates/admin_databases_rss_record_edit:109 ../templates/admin_databases_rss_record_html:351 ../templates/admin_locations_record_edit:161 ../templates/admin_orgunits_record_edit:107 ../templates/admin_profiles_record_edit:83 ../templates/admin_servers_record_edit:114 ../templates/admin_templates_record_edit:99 ../templates/admin_topics_record_edit:131 ../templates/admin_views_record_edit:129 ../templates/cartitems_html_actions:160 ../templates/cartitems_html_short:144 ../templates/titles_record_html:322 ../templates/titles_record_include:220 ../templates/topics_record_mapping_html:95 ../templates/users_litlists_html:110 ../templates/users_searchprofiles_html:93
 msgid "Löschen"
 msgstr ""
 
@@ -3980,7 +3992,7 @@ msgstr ""
 msgid "Nachname"
 msgstr ""
 
-#: ../templates/_profile/kug/_database/dbis/search_title_item_html:92 ../templates/_profile/kug/_database/ezb/classifications_html:69 ../templates/_profile/kug/_database/ezb/search_title_item_html:91 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:75 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:75 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:75 ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:84 ../templates/_view/richter/cartitems_html_actions:38 ../templates/_view/richter/cartitems_html_actions:55 ../templates/admin_orgunits_html:66 ../templates/admin_profiles_record_edit:124 ../templates/admin_templates_html:103 ../templates/admin_templates_html:66 ../templates/cartitems_html_actions:44 ../templates/cartitems_html_actions:63 ../templates/databases_html:92 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/titles_record_html_actions:54 ../templates/titles_record_html_actions:75 ../templates/users_searchprofiles_html:84 ../templates/users_searchprofiles_record_edit:80
+#: ../templates/_profile/kug/_database/dbis/search_title_item_html:92 ../templates/_profile/kug/_database/ezb/classifications_html:69 ../templates/_profile/kug/_database/ezb/search_title_item_html:91 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:75 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:75 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:75 ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:84 ../templates/_view/richter/cartitems_html_actions:38 ../templates/_view/richter/cartitems_html_actions:55 ../templates/admin_orgunits_html:66 ../templates/admin_profiles_record_edit:124 ../templates/admin_templates_html:107 ../templates/admin_templates_html:66 ../templates/admin_templates_record_edit:81 ../templates/cartitems_html_actions:44 ../templates/cartitems_html_actions:63 ../templates/databases_html:92 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/titles_record_html_actions:54 ../templates/titles_record_html_actions:75 ../templates/users_searchprofiles_html:84 ../templates/users_searchprofiles_record_edit:80
 msgid "Name"
 msgstr ""
 
@@ -4034,7 +4046,7 @@ msgstr ""
 msgid "Nein"
 msgstr ""
 
-#: ../templates/admin_authenticators_html:100 ../templates/admin_clusters_html:89 ../templates/admin_databases_html:107 ../templates/admin_databases_rss_html:114 ../templates/admin_databases_rss_record_html:131 ../templates/admin_databases_rss_record_html:188 ../templates/admin_databases_rss_record_html:245 ../templates/admin_databases_rss_record_html:302 ../templates/admin_databases_rss_record_html:74 ../templates/admin_locations_html:89 ../templates/admin_locations_record_edit:138 ../templates/admin_profiles_html:78 ../templates/admin_profiles_record_edit:112 ../templates/admin_servers_html:105 ../templates/admin_templates_html:85 ../templates/admin_topics_html:79 ../templates/admin_views_html:97 ../templates/titles_form:86 ../templates/users_litlists_html:84 ../templates/users_searchprofiles_html:69
+#: ../templates/admin_authenticators_html:100 ../templates/admin_clusters_html:89 ../templates/admin_databases_html:107 ../templates/admin_databases_rss_html:114 ../templates/admin_databases_rss_record_html:131 ../templates/admin_databases_rss_record_html:188 ../templates/admin_databases_rss_record_html:245 ../templates/admin_databases_rss_record_html:302 ../templates/admin_databases_rss_record_html:74 ../templates/admin_locations_html:89 ../templates/admin_locations_record_edit:138 ../templates/admin_profiles_html:78 ../templates/admin_profiles_record_edit:112 ../templates/admin_servers_html:105 ../templates/admin_templates_html:89 ../templates/admin_topics_html:79 ../templates/admin_views_html:97 ../templates/titles_form:86 ../templates/users_litlists_html:84 ../templates/users_searchprofiles_html:69
 msgid "Neu"
 msgstr ""
 
@@ -5135,6 +5147,10 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Profiles.pm:188
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
+msgstr ""
+
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:141
+msgid "Sie müssen mindestens einen Templatename und einen View eingeben."
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:193
@@ -6721,23 +6737,15 @@ msgstr ""
 msgid "Template bearbeiten"
 msgstr ""
 
-#: ../templates/admin_templates_record_edit:81
-msgid "Templatename"
-msgstr ""
-
 #: ../templates/admin_navigation:242 ../templates/admin_navigation:244 ../templates/admin_templates_html:39 ../templates/admin_templates_record_delete_confirm:39 ../templates/admin_templates_record_edit:39
 msgid "Templates"
-msgstr ""
-
-#: ../templates/admin_templates_record_edit:91
-msgid "Templatetext"
 msgstr ""
 
 #: ../templates/testsystem_info:15
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr ""
 
-#: ../templates/_database/einbaende/titles_record_html:341 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306 ../templates/admin_templates_html:80 ../templates/admin_templates_record_edit:86 ../templates/titles_record_html:317 ../templates/titles_record_include:215
+#: ../templates/_database/einbaende/titles_record_html:341 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306 ../templates/admin_templates_html:84 ../templates/admin_templates_record_edit:90 ../templates/titles_record_html:317 ../templates/titles_record_include:215
 msgid "Text"
 msgstr ""
 
@@ -7196,7 +7204,7 @@ msgstr ""
 msgid "Vielen Dank f&uuml;r Ihren Besuch."
 msgstr ""
 
-#: ../templates/admin_templates_html:103 ../templates/admin_templates_html:71 ../templates/admin_templates_record_edit:72
+#: ../templates/admin_templates_html:107 ../templates/admin_templates_html:75 ../templates/admin_templates_record_edit:72
 msgid "View"
 msgstr ""
 
@@ -8209,7 +8217,7 @@ msgstr ""
 msgid "wiederholt"
 msgstr ""
 
-#: ../templates/admin_authenticators_record_edit:100 ../templates/admin_clusters_record_edit:96 ../templates/admin_databases_record_edit:248 ../templates/admin_databases_rss_record_edit:105 ../templates/admin_databases_rss_record_html:152 ../templates/admin_databases_rss_record_html:209 ../templates/admin_databases_rss_record_html:266 ../templates/admin_databases_rss_record_html:323 ../templates/admin_databases_rss_record_html:351 ../templates/admin_databases_rss_record_html:95 ../templates/admin_locations_record_edit:157 ../templates/admin_orgunits_record_edit:103 ../templates/admin_profiles_record_edit:78 ../templates/admin_searchprofiles_record_edit:86 ../templates/admin_servers_record_edit:110 ../templates/admin_templates_record_edit:96 ../templates/admin_topics_record_edit:127 ../templates/admin_topics_record_edit:164 ../templates/admin_topics_record_edit:196 ../templates/admin_topics_record_edit:228 ../templates/admin_topics_record_edit:261 ../templates/admin_topics_record_edit:294 ../templates/admin_topics_record_edit:329 ../templates/admin_views_record_edit:125 ../templates/admin_views_rss_record_edit:92 ../templates/topics_record_mapping_html:144 ../templates/topics_record_mapping_html:190 ../templates/topics_record_mapping_html:235 ../templates/topics_record_mapping_html:89 ../templates/users_searchprofiles_record_edit:141
+#: ../templates/admin_authenticators_record_edit:100 ../templates/admin_clusters_record_edit:96 ../templates/admin_databases_record_edit:248 ../templates/admin_databases_rss_record_edit:105 ../templates/admin_databases_rss_record_html:152 ../templates/admin_databases_rss_record_html:209 ../templates/admin_databases_rss_record_html:266 ../templates/admin_databases_rss_record_html:323 ../templates/admin_databases_rss_record_html:351 ../templates/admin_databases_rss_record_html:95 ../templates/admin_locations_record_edit:157 ../templates/admin_orgunits_record_edit:103 ../templates/admin_profiles_record_edit:78 ../templates/admin_searchprofiles_record_edit:86 ../templates/admin_servers_record_edit:110 ../templates/admin_templates_record_edit:95 ../templates/admin_topics_record_edit:127 ../templates/admin_topics_record_edit:164 ../templates/admin_topics_record_edit:196 ../templates/admin_topics_record_edit:228 ../templates/admin_topics_record_edit:261 ../templates/admin_topics_record_edit:294 ../templates/admin_topics_record_edit:329 ../templates/admin_views_record_edit:125 ../templates/admin_views_rss_record_edit:92 ../templates/topics_record_mapping_html:144 ../templates/topics_record_mapping_html:190 ../templates/topics_record_mapping_html:235 ../templates/topics_record_mapping_html:89 ../templates/users_searchprofiles_record_edit:141
 msgid "Ändern"
 msgstr ""
 

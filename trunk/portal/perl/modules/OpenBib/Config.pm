@@ -48,6 +48,24 @@ use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
 
+my %char_replacements = (
+    
+    # Zeichenersetzungen
+    "\n"     => "",
+    "\r"     => "",
+#    "\n"     => "\\n",
+#    "\r"     => "\\r",
+    ""     => "",
+#    "\x{00}" => "",
+#    "\x{80}" => "",
+#    "\x{87}" => "",
+);
+
+my $chars_to_replace = join '|',
+    keys %char_replacements;
+
+$chars_to_replace = qr/$chars_to_replace/;
+
 sub new {
     my $class = shift;
 
@@ -423,17 +441,23 @@ sub template_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $count = $self->{schema}->resultset('Templateinfo')->search(
+    my $template = $self->{schema}->resultset('Templateinfo')->search(
         {
             "me.templatename" => $templatename,
             "viewid.viewname" => $viewname,
         },
         {
+            select => ['me.id'],
+            as     => ['id'],
             join => ["viewid"],
         }
-    )->count;
+    )->single;
+
+    if ($template){
+        return $template->id;
+    }
     
-    return $count;
+    return 0;
 }
 
 sub profile_exists {
@@ -2852,37 +2876,40 @@ sub del_template {
     return;
 }
 
+sub get_templatetext {
+    my ($self,$templatename,$viewname) = @_;
+
+    my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+
+    my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename })->single;
+
+    if ($template){
+        return $template->templatetext;
+    }
+
+    return "";
+}
+
 sub update_template {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
     my $id                       = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
+    my $viewname                 = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}             : undef;
+    my $templatename             = exists $arg_ref->{templatename}
+        ? $arg_ref->{templatename}         : '';
+    my $templatetext             = exists $arg_ref->{templatetext}
+        ? $arg_ref->{templatetext}         : '';
 
-    my $update_args = {};
-    
-    if ($arg_ref->{templatetext}){
-        $update_args->{templatetext} = $arg_ref->{templatetext};
-    }
+    my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
 
-    if ($arg_ref->{viewname}){
-        my $viewid = $self->get_viewinfo->single({ viewname => $arg_ref->{viewname} })->id;
-        $update_args->{viewid} = $viewid;
-    }
-
-    if ($arg_ref->{templatename}){
-        $update_args->{templatename} = $arg_ref->{templatename};
-    }
-    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if ($logger->is_debug){
-        $logger->debug("Updating ID $id".YAML::Dump($update_args));
-    }
-    
     # DBI: "update templateinfo set active = ? where id = ?"
-    $self->{schema}->resultset('Templateinfo')->search_rs({ id => $id })->update($update_args);
+    $self->{schema}->resultset('Templateinfo')->search_rs({ id => $id })->update({ viewid => $viewid, templatename => $templatename, templatetext => $templatetext });
 
     return;
 }
@@ -3598,6 +3625,16 @@ sub get_description_of_dbrtopic {
     }
 
     return '';
+}
+
+sub cleanup_pg_content {
+    my $content = shift;
+
+    # Make PostgreSQL Happy    
+    $content =~ s/\\/\\\\/g;
+    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
+            
+    return $content;
 }
 
 sub DESTROY {

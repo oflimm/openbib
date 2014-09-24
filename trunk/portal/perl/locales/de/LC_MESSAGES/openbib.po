@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-09-23 15:30+0200\n"
+"PO-Revision-Date: 2014-09-24 09:53+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2255,7 +2255,7 @@ msgstr "Bereits existierende Rechner zur Lastverteilung"
 msgid "Bereits existierende Standorte"
 msgstr "Bereits existierende Standorte"
 
-#: ../templates/admin_templates_html:99
+#: ../templates/admin_templates_html:103
 msgid "Bereits existierende Templates"
 msgstr "Bereits existierende Templates"
 
@@ -4838,6 +4838,10 @@ msgstr "Es existiert bereits ein Profil unter diesem Namen!"
 msgid "Es existiert bereits ein Standort mit diesem Identifier"
 msgstr "Es existiert bereits ein Standort mit diesem Identifier"
 
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:146
+msgid "Es existiert bereits ein Template in diesem View"
+msgstr "Es existiert bereits ein Template in diesem View"
+
 #: ../modules/OpenBib/Handler/Apache/Admin/Topics.pm:251
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
 msgstr "Es existiert bereits ein Themengebiet unter diesem Namen"
@@ -4847,6 +4851,10 @@ msgstr "Es existiert bereits ein Themengebiet unter diesem Namen"
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:212
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr "Es existiert bereits ein View unter diesem Namen"
+
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:281
+msgid "Es existiert bereits ein anderes Template mit diesem Namen und View"
+msgstr "Es existiert bereits ein anderes Template mit diesem Namen und View"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnits.pm:238
 msgid "Es existiert bereits eine Organisationseinheit unter diesem Namen"
@@ -4890,6 +4898,11 @@ msgstr "Es existiert kein Profil unter diesem Namen"
 #: ../modules/OpenBib/Handler/Apache/Admin/Searchprofiles.pm:211
 msgid "Es existiert kein Suchprofil mit dieser ID"
 msgstr "Es existiert kein Suchprofil mit dieser ID"
+
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:275
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:346
+msgid "Es existiert kein Template unter dieser ID"
+msgstr "Es existiert kein Template unter dieser ID"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:313
 #: ../modules/OpenBib/Handler/Apache/Admin/Views/RSS.pm:113
@@ -5988,7 +6001,7 @@ msgstr "ISSN"
 #: ../templates/admin_servers_record_edit:67
 #: ../templates/admin_sessions_active_html:66
 #: ../templates/admin_sessions_archived_search_html:66
-#: ../templates/admin_templates_html:103
+#: ../templates/admin_templates_html:107
 #: ../templates/admin_templates_record_edit:67
 #: ../templates/admin_topics_mappings_html:76
 #: ../templates/authenticators_record_html:60 ../templates/clusters_html:62
@@ -7904,7 +7917,7 @@ msgstr "Künstler"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329
 #: ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144
-#: ../templates/admin_templates_html:111
+#: ../templates/admin_templates_html:115
 #: ../templates/titles_record_include:512
 #: ../templates/titlist_item_html_short:326
 #: ../templates/titlist_item_html_short:329
@@ -8697,7 +8710,7 @@ msgstr "Los"
 #: ../templates/admin_orgunits_record_edit:107
 #: ../templates/admin_profiles_record_edit:83
 #: ../templates/admin_servers_record_edit:114
-#: ../templates/admin_templates_record_edit:100
+#: ../templates/admin_templates_record_edit:99
 #: ../templates/admin_topics_record_edit:131
 #: ../templates/admin_views_record_edit:129
 #: ../templates/cartitems_html_actions:160
@@ -9267,7 +9280,8 @@ msgstr "Nachname"
 #: ../templates/_view/richter/cartitems_html_actions:55
 #: ../templates/admin_orgunits_html:66
 #: ../templates/admin_profiles_record_edit:124
-#: ../templates/admin_templates_html:103 ../templates/admin_templates_html:66
+#: ../templates/admin_templates_html:107 ../templates/admin_templates_html:66
+#: ../templates/admin_templates_record_edit:81
 #: ../templates/cartitems_html_actions:44
 #: ../templates/cartitems_html_actions:63 ../templates/databases_html:92
 #: ../templates/orgunits_html:66 ../templates/profiles_record_html:75
@@ -9422,7 +9436,7 @@ msgstr "Nein"
 #: ../templates/admin_locations_record_edit:138
 #: ../templates/admin_profiles_html:78
 #: ../templates/admin_profiles_record_edit:112
-#: ../templates/admin_servers_html:105 ../templates/admin_templates_html:85
+#: ../templates/admin_servers_html:105 ../templates/admin_templates_html:89
 #: ../templates/admin_topics_html:79 ../templates/admin_views_html:97
 #: ../templates/titles_form:86 ../templates/users_litlists_html:84
 #: ../templates/users_searchprofiles_html:69
@@ -11619,6 +11633,10 @@ msgstr "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 msgstr ""
 "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
+
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:141
+msgid "Sie müssen mindestens einen Templatename und einen View eingeben."
+msgstr "Sie müssen mindestens einen Templatename und einen View eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:193
 msgid ""
@@ -17761,20 +17779,12 @@ msgstr "Tags nach Namen"
 msgid "Template bearbeiten"
 msgstr "Template bearbeiten"
 
-#: ../templates/admin_templates_record_edit:81
-msgid "Templatename"
-msgstr "Templatename"
-
 #: ../templates/admin_navigation:242 ../templates/admin_navigation:244
 #: ../templates/admin_templates_html:39
 #: ../templates/admin_templates_record_delete_confirm:39
 #: ../templates/admin_templates_record_edit:39
 msgid "Templates"
 msgstr "Templates"
-
-#: ../templates/admin_templates_record_edit:91
-msgid "Templatetext"
-msgstr "Templatetext"
 
 #: ../templates/testsystem_info:15
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
@@ -17783,8 +17793,8 @@ msgstr "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 #: ../templates/_database/einbaende/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306
-#: ../templates/admin_templates_html:80
-#: ../templates/admin_templates_record_edit:86
+#: ../templates/admin_templates_html:84
+#: ../templates/admin_templates_record_edit:90
 #: ../templates/titles_record_html:317 ../templates/titles_record_include:215
 msgid "Text"
 msgstr "Text"
@@ -18722,7 +18732,7 @@ msgstr "Verwendete Recherche-Art"
 msgid "Vielen Dank f&uuml;r Ihren Besuch."
 msgstr "Vielen Dank f&uuml;r Ihren Besuch."
 
-#: ../templates/admin_templates_html:103 ../templates/admin_templates_html:71
+#: ../templates/admin_templates_html:107 ../templates/admin_templates_html:75
 #: ../templates/admin_templates_record_edit:72
 msgid "View"
 msgstr "View"
@@ -20775,7 +20785,7 @@ msgstr "wiederholt"
 #: ../templates/admin_profiles_record_edit:78
 #: ../templates/admin_searchprofiles_record_edit:86
 #: ../templates/admin_servers_record_edit:110
-#: ../templates/admin_templates_record_edit:96
+#: ../templates/admin_templates_record_edit:95
 #: ../templates/admin_topics_record_edit:127
 #: ../templates/admin_topics_record_edit:164
 #: ../templates/admin_topics_record_edit:196
@@ -20839,6 +20849,12 @@ msgstr "Übersicht"
 #: ../templates/users_navigation:100 ../templates/users_navigation:102
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "Templatename"
+#~ msgstr "Templatename"
+
+#~ msgid "Templatetext"
+#~ msgstr "Templatetext"
 
 #~ msgid "X3300"
 #~ msgstr "Sigel"

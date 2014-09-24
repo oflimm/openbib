@@ -2203,7 +2203,7 @@ msgstr "Already existing server for loadbalancing"
 msgid "Bereits existierende Standorte"
 msgstr "Already existing locations"
 
-#: ../templates/admin_templates_html:99
+#: ../templates/admin_templates_html:103
 #, fuzzy
 msgid "Bereits existierende Templates"
 msgstr "Already existing cluster"
@@ -4685,6 +4685,11 @@ msgstr "There already exists a profile with this name"
 msgid "Es existiert bereits ein Standort mit diesem Identifier"
 msgstr "There already exists a location with this identifier"
 
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:146
+#, fuzzy
+msgid "Es existiert bereits ein Template in diesem View"
+msgstr "There already exists a view with this name"
+
 #: ../modules/OpenBib/Handler/Apache/Admin/Topics.pm:251
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
 msgstr "There already exists a subject with this name"
@@ -4693,6 +4698,11 @@ msgstr "There already exists a subject with this name"
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:205
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:212
 msgid "Es existiert bereits ein View unter diesem Namen"
+msgstr "There already exists a view with this name"
+
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:281
+#, fuzzy
+msgid "Es existiert bereits ein anderes Template mit diesem Namen und View"
 msgstr "There already exists a view with this name"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnits.pm:238
@@ -4737,6 +4747,12 @@ msgstr "There does not exist a profile with this name"
 #: ../modules/OpenBib/Handler/Apache/Admin/Searchprofiles.pm:211
 msgid "Es existiert kein Suchprofil mit dieser ID"
 msgstr "There does not exist a search profile with this id"
+
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:275
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:346
+#, fuzzy
+msgid "Es existiert kein Template unter dieser ID"
+msgstr "There does not exist a view with this name"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:313
 #: ../modules/OpenBib/Handler/Apache/Admin/Views/RSS.pm:113
@@ -5792,7 +5808,7 @@ msgstr "ISSN"
 #: ../templates/admin_servers_record_edit:67
 #: ../templates/admin_sessions_active_html:66
 #: ../templates/admin_sessions_archived_search_html:66
-#: ../templates/admin_templates_html:103
+#: ../templates/admin_templates_html:107
 #: ../templates/admin_templates_record_edit:67
 #: ../templates/admin_topics_mappings_html:76
 #: ../templates/authenticators_record_html:60 ../templates/clusters_html:62
@@ -7627,7 +7643,7 @@ msgstr "Artist"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329
 #: ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144
-#: ../templates/admin_templates_html:111
+#: ../templates/admin_templates_html:115
 #: ../templates/titles_record_include:512
 #: ../templates/titlist_item_html_short:326
 #: ../templates/titlist_item_html_short:329
@@ -8415,7 +8431,7 @@ msgstr "Go"
 #: ../templates/admin_orgunits_record_edit:107
 #: ../templates/admin_profiles_record_edit:83
 #: ../templates/admin_servers_record_edit:114
-#: ../templates/admin_templates_record_edit:100
+#: ../templates/admin_templates_record_edit:99
 #: ../templates/admin_topics_record_edit:131
 #: ../templates/admin_views_record_edit:129
 #: ../templates/cartitems_html_actions:160
@@ -8976,7 +8992,8 @@ msgstr "Surname"
 #: ../templates/_view/richter/cartitems_html_actions:55
 #: ../templates/admin_orgunits_html:66
 #: ../templates/admin_profiles_record_edit:124
-#: ../templates/admin_templates_html:103 ../templates/admin_templates_html:66
+#: ../templates/admin_templates_html:107 ../templates/admin_templates_html:66
+#: ../templates/admin_templates_record_edit:81
 #: ../templates/cartitems_html_actions:44
 #: ../templates/cartitems_html_actions:63 ../templates/databases_html:92
 #: ../templates/orgunits_html:66 ../templates/profiles_record_html:75
@@ -9124,7 +9141,7 @@ msgstr "No"
 #: ../templates/admin_locations_record_edit:138
 #: ../templates/admin_profiles_html:78
 #: ../templates/admin_profiles_record_edit:112
-#: ../templates/admin_servers_html:105 ../templates/admin_templates_html:85
+#: ../templates/admin_servers_html:105 ../templates/admin_templates_html:89
 #: ../templates/admin_topics_html:79 ../templates/admin_views_html:97
 #: ../templates/titles_form:86 ../templates/users_litlists_html:84
 #: ../templates/users_searchprofiles_html:69
@@ -11281,6 +11298,11 @@ msgstr "You have to enter at least the name of your subject."
 #: ../modules/OpenBib/Handler/Apache/Admin/Profiles.pm:188
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a profile name and a description."
+
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:141
+#, fuzzy
+msgid "Sie müssen mindestens einen Templatename und einen View eingeben."
+msgstr "You have to enter at least a catalog name and a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:193
 msgid ""
@@ -17426,11 +17448,6 @@ msgstr "Tags by name"
 msgid "Template bearbeiten"
 msgstr "Edit cluster"
 
-#: ../templates/admin_templates_record_edit:81
-#, fuzzy
-msgid "Templatename"
-msgstr "Title data"
-
 #: ../templates/admin_navigation:242 ../templates/admin_navigation:244
 #: ../templates/admin_templates_html:39
 #: ../templates/admin_templates_record_delete_confirm:39
@@ -17439,10 +17456,6 @@ msgstr "Title data"
 msgid "Templates"
 msgstr "Holdings-File"
 
-#: ../templates/admin_templates_record_edit:91
-msgid "Templatetext"
-msgstr ""
-
 #: ../templates/testsystem_info:15
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr "Development system - Not intended for regular use"
@@ -17450,8 +17463,8 @@ msgstr "Development system - Not intended for regular use"
 #: ../templates/_database/einbaende/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306
-#: ../templates/admin_templates_html:80
-#: ../templates/admin_templates_record_edit:86
+#: ../templates/admin_templates_html:84
+#: ../templates/admin_templates_record_edit:90
 #: ../templates/titles_record_html:317 ../templates/titles_record_include:215
 msgid "Text"
 msgstr "Text"
@@ -18362,7 +18375,7 @@ msgstr "Used search type"
 msgid "Vielen Dank f&uuml;r Ihren Besuch."
 msgstr "Thank you for your visit."
 
-#: ../templates/admin_templates_html:103 ../templates/admin_templates_html:71
+#: ../templates/admin_templates_html:107 ../templates/admin_templates_html:75
 #: ../templates/admin_templates_record_edit:72
 #, fuzzy
 msgid "View"
@@ -20354,7 +20367,7 @@ msgstr "repeated"
 #: ../templates/admin_profiles_record_edit:78
 #: ../templates/admin_searchprofiles_record_edit:86
 #: ../templates/admin_servers_record_edit:110
-#: ../templates/admin_templates_record_edit:96
+#: ../templates/admin_templates_record_edit:95
 #: ../templates/admin_topics_record_edit:127
 #: ../templates/admin_topics_record_edit:164
 #: ../templates/admin_topics_record_edit:196
@@ -20418,6 +20431,10 @@ msgstr "Overview"
 #: ../templates/users_navigation:100 ../templates/users_navigation:102
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#, fuzzy
+#~ msgid "Templatename"
+#~ msgstr "Title data"
 
 #~ msgid "X3300"
 #~ msgstr "Library ID"

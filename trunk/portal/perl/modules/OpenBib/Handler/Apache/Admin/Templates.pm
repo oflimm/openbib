@@ -142,7 +142,9 @@ sub create_record {
         return Apache2::Const::OK;
     }
     
-    if ($config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname})) {
+    my $other_template_exists = $config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname});
+    
+    if ($other_template_exists) {
         $self->print_warning($msg->maketext("Es existiert bereits ein Template in diesem View"),3);
         return Apache2::Const::OK;
     }
@@ -276,23 +278,14 @@ sub update_record {
         
         return Apache2::Const::OK;
     }
+
+    my $other_template_exists = $config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname});
     
-    if ($config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname})) {
-        $self->print_warning($msg->maketext("Es existiert bereits ein Template mit diesem Namen und View"));        
+    if ($other_template_exists && $templateid != $other_template_exists ) {
+        $self->print_warning($msg->maketext("Es existiert bereits ein anderes Template mit diesem Namen und View"));        
         return Apache2::Const::OK;
     }
 
-    if ($input_data_ref->{viewname} ne ""){
-        my $viewid = $config->get_viewinfo->single({ viewname => $input_data_ref->{viewname} })->id;
-        
-        if ($viewid){
-            $input_data_ref->{viewid} = $viewid;
-            
-        }
-    }
-
-    delete $input_data_ref->{viewname};
-    
     $config->update_template($input_data_ref);
 
     if ($self->param('representation') eq "html"){

@@ -32,6 +32,7 @@
 ../modules/OpenBib/Handler/Apache/Admin/Servers.pm
 ../modules/OpenBib/Handler/Apache/Admin/Sessions.pm
 ../modules/OpenBib/Handler/Apache/Admin/Statistics.pm
+../modules/OpenBib/Handler/Apache/Admin/Templates.pm
 ../modules/OpenBib/Handler/Apache/Admin/Topics/Mappings.pm
 ../modules/OpenBib/Handler/Apache/Admin/Topics.pm
 ../modules/OpenBib/Handler/Apache/Admin/Users/Migration.pm

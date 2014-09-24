@@ -51,37 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Angaben über den Münzbestand</h2>
-
-<p>
-Die generierten Datensätz sind für die weitere Bearbeitung und spätere Handhabung im Internet unter IDs nach
-folgenden Provenienzkürzeln, zu denen eine durchlaufende Nummer hinzutritt, referenzierbar; bei dieser Disponierung wurden urspüngliche Inventar-Komplexe, soweit es sinnvoll bzw. notwendig war, beibehalten.
-</p>
-
-<table class="ym-full">
-<tr>
-<th>Herkunft</th><th>Stückzahl</th>
-</tr>
-
-<tr><th>AL = Alexandrinische Kaisermünzen</th><td></td></tr>
-<tr><td>Katalog Geißen: AL_0001-AL_3627</td><td>3627</td></tr>
-<tr><td>Nachträge: AL_N0001-AL_N0146</td><td>146</td></tr>
-<tr><th>PT = Ptolemäische Münzen</th><td></td></tr>
-<tr><td>Katalog Weiser: PT_0001-0188 [+ A-O]</td><td>203</td></tr>
-<tr><td>Nachträge: PT_N0189-PT_N0210</td><td>22</td></tr>
-<tr><th>BI = Bithynien</th><td>219</td></tr>
-<tr><th>NI = Nikaia</th><td>263</td></tr>
-<tr><th>HYP = Hypaipa</th><td>194</td></tr>
-<tr><th>EPH = Ephesos</th><td>41</td></tr>
-<tr><th>KIL = Kilbianoi</th><td>7</td></tr>
-<tr><th>AM = Asia Minor</th><td>640</td></tr>
-<tr><th>ATR = Alexandria Troas</th><td>42</td></tr>
-<tr><th>ERY = Erythrai</th><td>103</td></tr>
-<tr><th>KYM = Kyme</th><td>183</td></tr>
-<tr><th>VAR = Varia aus Kleinasien</th><td>60</td></tr>
-<tr><td></td><td></td></tr>
-<tr><td>Gesamt:</td><td>5750</td></tr>
-</table>
+[% config.get_templatetext('info_bestand','muenzen')%]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

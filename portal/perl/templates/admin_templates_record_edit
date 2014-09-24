@@ -71,8 +71,8 @@
 <div class="ym-fbox-select">
 <label for="viewname">[% msg.maketext("View") %]</label>
   <select name="viewname" id="viewname">
-[% FOREACH viewinfo IN config.get_viewinfo_overview.all %]    
-     <option value="[% viewinfo.viewname %]" [% IF templateinfo.viewid == viewinfo.id %]selected="selected"[% END %]>[% viewinfo.viewname %]</option>
+[% FOREACH viewinfo IN config.get_viewinfo_overview.all %]
+     <option value="[% viewinfo.viewname %]" [% IF templateinfo.viewid.id == viewinfo.id %]selected="selected"[% END %]>[% viewinfo.viewname %]: [% viewinfo.description %]</option>
 [% END %]
   </select>
 </div>
@@ -81,14 +81,14 @@
 <label for="templatename">[% msg.maketext("Name") %]</label>
   <select name="templatename" id="templatename">
 [% FOREACH templatename IN all_templates.keys.sort %]    
-     <option value="templatename" [% IF templateinfo.templatename == templatename %]selected="selected"[% END %]>[% templatename %]</option>
+     <option value="[% templatename %]" [% IF templateinfo.templatename == templatename %]selected="selected"[% END %]>[% templatename %]</option>
 [% END %]
   </select>
 </div>
 
 <div class="ym-fbox-text">
 <label for="templatetext">[% msg.maketext("Text") %]</label>
-<textarea name="templatetext" id="templatetext" cols="60" rows="20">[% templateinfo.templatetext %]</textarea>
+<textarea name="templatetext" id="templatetext" cols="80" rows="40">[% templateinfo.templatetext %]</textarea>
 </div>
 
 <div class="ym-fbox-button">

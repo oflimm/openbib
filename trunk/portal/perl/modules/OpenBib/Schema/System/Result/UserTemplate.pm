@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::UserTemplateinfo;
+package OpenBib::Schema::System::Result::UserTemplate;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::UserTemplateinfo
+OpenBib::Schema::System::Result::UserTemplate
 
 =cut
 
@@ -15,11 +15,11 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<user_templateinfo>
+=head1 TABLE: C<user_template>
 
 =cut
 
-__PACKAGE__->table("user_templateinfo");
+__PACKAGE__->table("user_template");
 
 =head1 ACCESSORS
 
@@ -103,8 +103,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-24 11:40:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:K0ln/tRqfO1mQdvwTojFTw
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-25 11:06:58
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:B/pmGVbLk+IQJlPkbDwlEQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

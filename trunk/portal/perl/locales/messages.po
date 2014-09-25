@@ -459,7 +459,7 @@ msgstr ""
 msgid "Allgemein"
 msgstr ""
 
-#: ../templates/admin_users_html:96
+#: ../templates/admin_users_html:97
 msgid "Allgemeine Angaben"
 msgstr ""
 
@@ -768,11 +768,11 @@ msgstr ""
 msgid "Anzahl der Literaturlisten (&ouml;ffentlich/privat)"
 msgstr ""
 
-#: ../templates/admin_statistics_html:71 ../templates/admin_users_html:100
+#: ../templates/admin_statistics_html:71 ../templates/admin_users_html:101
 msgid "Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)"
 msgstr ""
 
-#: ../templates/admin_statistics_html:69 ../templates/admin_users_html:98
+#: ../templates/admin_statistics_html:69 ../templates/admin_users_html:99
 msgid "Anzahl der Nutzer"
 msgstr ""
 
@@ -780,7 +780,7 @@ msgstr ""
 msgid "Anzahl der Spezialsichten (aktiv/gesamt)"
 msgstr ""
 
-#: ../templates/admin_statistics_html:70 ../templates/admin_users_html:99
+#: ../templates/admin_statistics_html:70 ../templates/admin_users_html:100
 msgid "Anzahl der Suchprofile von Nutzern"
 msgstr ""
 
@@ -2327,7 +2327,7 @@ msgstr ""
 msgid "Es existiert bereits ein Standort mit diesem Identifier"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:146
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:148
 msgid "Es existiert bereits ein Template in diesem View"
 msgstr ""
 
@@ -2339,7 +2339,7 @@ msgstr ""
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:281
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:285
 msgid "Es existiert bereits ein anderes Template mit diesem Namen und View"
 msgstr ""
 
@@ -2363,7 +2363,7 @@ msgstr ""
 msgid "Es existiert kein Suchprofil mit dieser ID"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:275 ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:346
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:277 ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:350
 msgid "Es existiert kein Template unter dieser ID"
 msgstr ""
 
@@ -4214,7 +4214,7 @@ msgstr ""
 msgid "Nutzer"
 msgstr ""
 
-#: ../templates/admin_users_html:86 ../templates/admin_users_search_form:80
+#: ../templates/admin_users_html:87 ../templates/admin_users_search_form:80
 msgid "Nutzer mit Rollen"
 msgstr ""
 
@@ -8203,6 +8203,10 @@ msgstr ""
 
 #: ../templates/_profile/kug/info_help:370 ../templates/info_help:443
 msgid "usw. usf."
+msgstr ""
+
+#: ../templates/admin_users_html:83
+msgid "viewadmin"
 msgstr ""
 
 #: ../templates/_database/dbis/search_title_item_html:87 ../templates/_database/ezb/search_title_item_html:86 ../templates/_profile/kug/_database/dbis/search_title_item_html:122 ../templates/_profile/kug/_database/ezb/search_title_item_html:121 ../templates/_profile/kug/_view/inst501/searchforms_record_query:255 ../templates/_profile/kug/searchforms_record_query:208 ../templates/_profile/rheinlandbib/searchforms_record_query:220 ../templates/_profile/rheinlandbib/titles_html:77 ../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query:139 ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:129 ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:129 ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:149 ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:166 ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:131 ../templates/_profile/sammlungen/_view/richter/titles_fields_record_mobile:36 ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:139 ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:136 ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:141 ../templates/_profile/sammlungen/searchforms_record_query:234 ../templates/_profile/sammlungen/titles_html:77 ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:208 ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:208 ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:208 ../templates/_profile/usbportal/search_title_combined_include:48 ../templates/authority_search_combined_html:75 ../templates/search_title_combined_html:75 ../templates/search_title_combined_include:32 ../templates/search_title_combined_mobile:31 ../templates/search_title_item_html:53 ../templates/titles_html:78

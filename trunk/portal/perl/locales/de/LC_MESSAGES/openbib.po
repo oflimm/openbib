@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-09-24 09:53+0200\n"
+"PO-Revision-Date: 2014-09-25 08:31+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1073,7 +1073,7 @@ msgstr "Alles"
 msgid "Allgemein"
 msgstr "Allgemein"
 
-#: ../templates/admin_users_html:96
+#: ../templates/admin_users_html:97
 msgid "Allgemeine Angaben"
 msgstr "Allgemeine Angaben"
 
@@ -1602,11 +1602,11 @@ msgstr "Anzahl der Kataloge (aktiv/gesamt)"
 msgid "Anzahl der Literaturlisten (&ouml;ffentlich/privat)"
 msgstr "Anzahl der Literaturlisten (&ouml;ffentlich/privat)"
 
-#: ../templates/admin_statistics_html:71 ../templates/admin_users_html:100
+#: ../templates/admin_statistics_html:71 ../templates/admin_users_html:101
 msgid "Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)"
 msgstr "Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)"
 
-#: ../templates/admin_statistics_html:69 ../templates/admin_users_html:98
+#: ../templates/admin_statistics_html:69 ../templates/admin_users_html:99
 msgid "Anzahl der Nutzer"
 msgstr "Anzahl der Nutzer"
 
@@ -1614,7 +1614,7 @@ msgstr "Anzahl der Nutzer"
 msgid "Anzahl der Spezialsichten (aktiv/gesamt)"
 msgstr "Anzahl der Spezialsichten (aktiv/gesamt)"
 
-#: ../templates/admin_statistics_html:70 ../templates/admin_users_html:99
+#: ../templates/admin_statistics_html:70 ../templates/admin_users_html:100
 msgid "Anzahl der Suchprofile von Nutzern"
 msgstr "Anzahl der Suchprofile von Nutzern"
 
@@ -4838,7 +4838,7 @@ msgstr "Es existiert bereits ein Profil unter diesem Namen!"
 msgid "Es existiert bereits ein Standort mit diesem Identifier"
 msgstr "Es existiert bereits ein Standort mit diesem Identifier"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:146
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:148
 msgid "Es existiert bereits ein Template in diesem View"
 msgstr "Es existiert bereits ein Template in diesem View"
 
@@ -4852,7 +4852,7 @@ msgstr "Es existiert bereits ein Themengebiet unter diesem Namen"
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr "Es existiert bereits ein View unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:281
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:285
 msgid "Es existiert bereits ein anderes Template mit diesem Namen und View"
 msgstr "Es existiert bereits ein anderes Template mit diesem Namen und View"
 
@@ -4899,8 +4899,8 @@ msgstr "Es existiert kein Profil unter diesem Namen"
 msgid "Es existiert kein Suchprofil mit dieser ID"
 msgstr "Es existiert kein Suchprofil mit dieser ID"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:275
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:346
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:277
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:350
 msgid "Es existiert kein Template unter dieser ID"
 msgstr "Es existiert kein Template unter dieser ID"
 
@@ -9735,7 +9735,7 @@ msgstr "Nr"
 msgid "Nutzer"
 msgstr "Nutzer"
 
-#: ../templates/admin_users_html:86 ../templates/admin_users_search_form:80
+#: ../templates/admin_users_html:87 ../templates/admin_users_search_form:80
 msgid "Nutzer mit Rollen"
 msgstr "Nutzer mit Rollen"
 
@@ -20728,6 +20728,10 @@ msgstr "sehr gut"
 #: ../templates/_profile/kug/info_help:370 ../templates/info_help:443
 msgid "usw. usf."
 msgstr "usw. usf."
+
+#: ../templates/admin_users_html:83
+msgid "viewadmin"
+msgstr "Portal-Administrator"
 
 #: ../templates/_database/dbis/search_title_item_html:87
 #: ../templates/_database/ezb/search_title_item_html:86

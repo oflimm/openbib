@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-09-17 14:05+0200\n"
+"PO-Revision-Date: 2014-09-25 08:34+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1046,7 +1046,7 @@ msgstr "All"
 msgid "Allgemein"
 msgstr "General"
 
-#: ../templates/admin_users_html:96
+#: ../templates/admin_users_html:97
 msgid "Allgemeine Angaben"
 msgstr "General informations"
 
@@ -1560,11 +1560,11 @@ msgstr "Number of catalogs (active/total)"
 msgid "Anzahl der Literaturlisten (&ouml;ffentlich/privat)"
 msgstr "Number of literature lists (public/private)"
 
-#: ../templates/admin_statistics_html:71 ../templates/admin_users_html:100
+#: ../templates/admin_statistics_html:71 ../templates/admin_users_html:101
 msgid "Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)"
 msgstr "Number of user collection lists (entries/users)"
 
-#: ../templates/admin_statistics_html:69 ../templates/admin_users_html:98
+#: ../templates/admin_statistics_html:69 ../templates/admin_users_html:99
 msgid "Anzahl der Nutzer"
 msgstr "Number of users"
 
@@ -1572,7 +1572,7 @@ msgstr "Number of users"
 msgid "Anzahl der Spezialsichten (aktiv/gesamt)"
 msgstr "Number of views (active/total)"
 
-#: ../templates/admin_statistics_html:70 ../templates/admin_users_html:99
+#: ../templates/admin_statistics_html:70 ../templates/admin_users_html:100
 msgid "Anzahl der Suchprofile von Nutzern"
 msgstr "Number of user search profiles"
 
@@ -2204,9 +2204,8 @@ msgid "Bereits existierende Standorte"
 msgstr "Already existing locations"
 
 #: ../templates/admin_templates_html:103
-#, fuzzy
 msgid "Bereits existierende Templates"
-msgstr "Already existing cluster"
+msgstr "Already existing templates"
 
 #: ../templates/admin_topics_html:91
 msgid "Bereits existierende Themengebiete"
@@ -4685,10 +4684,9 @@ msgstr "There already exists a profile with this name"
 msgid "Es existiert bereits ein Standort mit diesem Identifier"
 msgstr "There already exists a location with this identifier"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:146
-#, fuzzy
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:148
 msgid "Es existiert bereits ein Template in diesem View"
-msgstr "There already exists a view with this name"
+msgstr "There already exists this template in this view"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Topics.pm:251
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
@@ -4700,10 +4698,9 @@ msgstr "There already exists a subject with this name"
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr "There already exists a view with this name"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:281
-#, fuzzy
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:285
 msgid "Es existiert bereits ein anderes Template mit diesem Namen und View"
-msgstr "There already exists a view with this name"
+msgstr "There already exists another template with this name and view"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnits.pm:238
 msgid "Es existiert bereits eine Organisationseinheit unter diesem Namen"
@@ -4748,11 +4745,10 @@ msgstr "There does not exist a profile with this name"
 msgid "Es existiert kein Suchprofil mit dieser ID"
 msgstr "There does not exist a search profile with this id"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:275
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:346
-#, fuzzy
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:277
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:350
 msgid "Es existiert kein Template unter dieser ID"
-msgstr "There does not exist a view with this name"
+msgstr "There does not exist a template with ID"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:313
 #: ../modules/OpenBib/Handler/Apache/Admin/Views/RSS.pm:113
@@ -9343,9 +9339,8 @@ msgid "Neues Passwort zusenden"
 msgstr "Send new password"
 
 #: ../templates/admin_templates_html:61
-#, fuzzy
 msgid "Neues Template einrichten"
-msgstr "Create new cluster"
+msgstr "Create new template"
 
 #: ../templates/admin_topics_html:64
 msgid "Neues Themengebiet anlegen"
@@ -9441,7 +9436,7 @@ msgstr "Number"
 msgid "Nutzer"
 msgstr "User"
 
-#: ../templates/admin_users_html:86 ../templates/admin_users_search_form:80
+#: ../templates/admin_users_html:87 ../templates/admin_users_search_form:80
 msgid "Nutzer mit Rollen"
 msgstr "User with special roles"
 
@@ -11300,9 +11295,8 @@ msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a profile name and a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:141
-#, fuzzy
 msgid "Sie müssen mindestens einen Templatename und einen View eingeben."
-msgstr "You have to enter at least a catalog name and a description."
+msgstr "You have to enter at least a template name and a view."
 
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:193
 msgid ""
@@ -17444,17 +17438,15 @@ msgid "Tags nach Namen"
 msgstr "Tags by name"
 
 #: ../templates/admin_templates_record_edit:64
-#, fuzzy
 msgid "Template bearbeiten"
-msgstr "Edit cluster"
+msgstr "Edit template"
 
 #: ../templates/admin_navigation:242 ../templates/admin_navigation:244
 #: ../templates/admin_templates_html:39
 #: ../templates/admin_templates_record_delete_confirm:39
 #: ../templates/admin_templates_record_edit:39
-#, fuzzy
 msgid "Templates"
-msgstr "Holdings-File"
+msgstr "Templates"
 
 #: ../templates/testsystem_info:15
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
@@ -18377,9 +18369,8 @@ msgstr "Thank you for your visit."
 
 #: ../templates/admin_templates_html:107 ../templates/admin_templates_html:75
 #: ../templates/admin_templates_record_edit:72
-#, fuzzy
 msgid "View"
-msgstr "Views"
+msgstr "View"
 
 #: ../templates/admin_views_record_edit:64
 msgid "View bearbeiten"
@@ -20310,6 +20301,10 @@ msgstr "very good"
 #: ../templates/_profile/kug/info_help:370 ../templates/info_help:443
 msgid "usw. usf."
 msgstr "etc."
+
+#: ../templates/admin_users_html:83
+msgid "viewadmin"
+msgstr "Portal-Administrator"
 
 #: ../templates/_database/dbis/search_title_item_html:87
 #: ../templates/_database/ezb/search_title_item_html:86

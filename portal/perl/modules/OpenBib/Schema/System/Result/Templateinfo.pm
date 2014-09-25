@@ -46,6 +46,11 @@ __PACKAGE__->table("templateinfo");
   data_type: 'text'
   is_nullable: 1
 
+=head2 lang
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -61,6 +66,8 @@ __PACKAGE__->add_columns(
   "templatename",
   { data_type => "text", is_nullable => 0 },
   "templatetext",
+  { data_type => "text", is_nullable => 1 },
+  "lang",
   { data_type => "text", is_nullable => 1 },
 );
 
@@ -93,17 +100,17 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 user_templateinfos
+=head2 user_templates
 
 Type: has_many
 
-Related object: L<OpenBib::Schema::System::Result::UserTemplateinfo>
+Related object: L<OpenBib::Schema::System::Result::UserTemplate>
 
 =cut
 
 __PACKAGE__->has_many(
-  "user_templateinfos",
-  "OpenBib::Schema::System::Result::UserTemplateinfo",
+  "user_templates",
+  "OpenBib::Schema::System::Result::UserTemplate",
   { "foreign.templateid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -124,8 +131,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-24 11:40:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:bh8EhnCJUHFhDB08jkCUUA
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-25 11:06:58
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Idh4tmd3j2MRuPKZCPp6yw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

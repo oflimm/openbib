@@ -80,6 +80,7 @@
     msg.maketext("admin")     # Administrator
     msg.maketext("librarian") # Bibliothekar
     msg.maketext("lecturer")  # Dozent
+    msg.maketext("viewadmin") # Portal-Administrator
 
 -%]
 

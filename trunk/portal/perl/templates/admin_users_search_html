@@ -75,7 +75,7 @@
       <div class="ob-thumbnail">
       </div> 
       <div class="ob-brieftitle">
-<span class="ob-person">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% singleuser.id %]/[% config.get('roles_loc') %]/edit"><strong><span class="ob-title">[% singleuser.username %]</span></strong></a></span>    
+<span class="ob-person">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><strong><span class="ob-title"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% singleuser.id %]/edit">[% singleuser.username %]</a></span></strong></span><br/>    
       </div>
       <div class="ob-titlemark"></div>
       <div class="ob-titleactions">

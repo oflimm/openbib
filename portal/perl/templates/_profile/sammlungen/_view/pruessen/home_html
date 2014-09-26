@@ -30,7 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-[% config.get_templatetext('home','pruessen')%]
+[% config.get_templatetext('home','pruessen',lang) %]
 
     </div>
     <!-- end: #main -->

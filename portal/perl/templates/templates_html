@@ -59,7 +59,7 @@
 
 <table class="ym-full">
 <thead>
-<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th><th></th><th></th><th></th></tr>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th><th>[% msg.maketext("Sprache") %]</th><th></th><th></th></tr>
 </thead>
 <tbody>
 [% FOREACH templateinfo IN templateinfos.all %]
@@ -67,6 +67,7 @@
 <td>[% templateinfo.id %]</td>
 <td><a href="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]">[% templateinfo.templatename %]</a></td>
 <td>[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</td>
+<td><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></td>
 </tr>
 [% END %]
 </tbody>

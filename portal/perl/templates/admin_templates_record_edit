@@ -69,6 +69,11 @@
 </div>
 
 <div class="ym-fbox-text">
+<label for="templatelang">[% msg.maketext("Sprache") %]</label>
+<img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" />
+</div>
+
+<div class="ym-fbox-text">
 <label for="viewname">[% msg.maketext("View") %]</label>
 [% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]
 </div>

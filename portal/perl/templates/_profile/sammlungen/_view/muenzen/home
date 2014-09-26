@@ -30,7 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-[% config.get_templatetext('home','muenzen')%]
+[% config.get_templatetext('home','muenzen',lang) %]
 
     </div>
     <!-- end: #main -->

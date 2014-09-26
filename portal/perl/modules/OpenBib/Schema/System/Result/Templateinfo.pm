@@ -46,7 +46,7 @@ __PACKAGE__->table("templateinfo");
   data_type: 'text'
   is_nullable: 1
 
-=head2 lang
+=head2 templatelang
 
   data_type: 'text'
   is_nullable: 1
@@ -67,7 +67,7 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 0 },
   "templatetext",
   { data_type => "text", is_nullable => 1 },
-  "lang",
+  "templatelang",
   { data_type => "text", is_nullable => 1 },
 );
 

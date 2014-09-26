@@ -4545,6 +4545,7 @@ sub get_all_templates {
             id           => $template->id,
             templatename => $template->templatename,
             viewname     => $template->viewid->viewname,
+            templatelang => $template->templatelang,
         };
     }
 

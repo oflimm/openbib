@@ -127,7 +127,7 @@
 <label for="templates">[% msg.maketext("Templates") %]</label>
 <select name="templates" multiple="multiple" size="5">
 [% FOREACH template IN user.get_all_templates %]
-  <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename%]</option>
+  <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename %] - [% template.templatelang %]</option>
 [% END %]
 </select>
 </div>

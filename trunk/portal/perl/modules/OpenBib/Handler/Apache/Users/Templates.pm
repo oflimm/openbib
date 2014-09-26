@@ -179,7 +179,7 @@ sub update_record {
     $logger->debug("User->ID? ".$user->{ID});
     $logger->debug("Has Template?".$user->has_template($templateid));
     
-    if (!$user->is_admin || !$user->has_template($templateid)){
+    if (!$user->is_admin && !$user->has_template($templateid)){
         $self->print_warning($msg->maketext("Sie haben keine Berechtigung dieses Template zu ändern!"));
         return Apache2::Const::OK;
     }

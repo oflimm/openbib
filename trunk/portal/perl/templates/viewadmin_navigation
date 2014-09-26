@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 <nav class="ym-vlist">
-<h6 class="ym-vtitle">[% msg.maketext("viewmaster") %]</h6>
+<h6 class="ym-vtitle">[% msg.maketext("viewadmin") %]</h6>
 <ul>
 [% IF active_submenu == "viewmaster_templates" %]
   <li class="active"><strong>[% msg.maketext("Templates") %]</strong></li>

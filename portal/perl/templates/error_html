@@ -39,7 +39,9 @@
 
    <h1>[% msg.maketext("Fehler") %]</h1>
 
+<p>
 [% err_msg %]
+</p>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

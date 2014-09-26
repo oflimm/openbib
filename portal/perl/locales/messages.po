@@ -1305,7 +1305,7 @@ msgstr ""
 msgid "Bitte geben Sie eine alte und neue Kennung ein."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Users.pm:165
+#: ../modules/OpenBib/Handler/Apache/Admin/Users.pm:202
 msgid "Bitte geben Sie einen Suchbegriff ein."
 msgstr ""
 
@@ -1971,7 +1971,7 @@ msgstr ""
 msgid "E-Book"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:92 ../templates/users_preferences_html:92 ../templates/users_roles_edit:82
+#: ../templates/_profile/kug/users_preferences_html:92 ../templates/admin_users_record_edit:80 ../templates/users_preferences_html:92
 msgid "E-Mail"
 msgstr ""
 
@@ -2149,7 +2149,7 @@ msgstr ""
 msgid "Einloggen"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:156 ../templates/users_preferences_html:156
+#: ../templates/_profile/kug/users_preferences_html:156 ../templates/admin_users_record_edit:91 ../templates/users_preferences_html:156
 msgid "Einstellungen"
 msgstr ""
 
@@ -2363,7 +2363,7 @@ msgstr ""
 msgid "Es existiert kein Suchprofil mit dieser ID"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:277 ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:350
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:277 ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:350 ../modules/OpenBib/Handler/Apache/Users/Templates.pm:173
 msgid "Es existiert kein Template unter dieser ID"
 msgstr ""
 
@@ -2691,7 +2691,7 @@ msgstr ""
 msgid "Geben Sie hier einen oder mehrere Tags ein"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:84 ../templates/users_preferences_html:84 ../templates/users_roles_edit:71
+#: ../templates/_profile/kug/users_preferences_html:84 ../templates/admin_users_record_edit:69 ../templates/users_preferences_html:84
 msgid "Geburtsdatum"
 msgstr ""
 
@@ -2929,7 +2929,7 @@ msgstr ""
 msgid "ISSN"
 msgstr ""
 
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:77 ../templates/admin_clusters_html:107 ../templates/admin_clusters_record_edit:67 ../templates/admin_searchprofiles_record_edit:67 ../templates/admin_searchprofiles_record_html:60 ../templates/admin_servers_html:123 ../templates/admin_servers_record_edit:67 ../templates/admin_sessions_active_html:66 ../templates/admin_sessions_archived_search_html:66 ../templates/admin_templates_html:107 ../templates/admin_templates_record_edit:67 ../templates/admin_topics_mappings_html:76 ../templates/authenticators_record_html:60 ../templates/clusters_html:62 ../templates/clusters_record_html:60 ../templates/search_title_field:2 ../templates/searchprofiles_record_html:59 ../templates/servers_html:64 ../templates/servers_record_html:60 ../templates/topics_mappings_html:74 ../templates/topics_record_html:73
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:77 ../templates/admin_clusters_html:107 ../templates/admin_clusters_record_edit:67 ../templates/admin_searchprofiles_record_edit:67 ../templates/admin_searchprofiles_record_html:60 ../templates/admin_servers_html:123 ../templates/admin_servers_record_edit:67 ../templates/admin_sessions_active_html:66 ../templates/admin_sessions_archived_search_html:66 ../templates/admin_templates_html:107 ../templates/admin_templates_record_edit:67 ../templates/admin_topics_mappings_html:76 ../templates/authenticators_record_html:60 ../templates/clusters_html:62 ../templates/clusters_record_html:60 ../templates/search_title_field:2 ../templates/searchprofiles_record_html:59 ../templates/servers_html:64 ../templates/servers_record_html:60 ../templates/topics_mappings_html:74 ../templates/topics_record_html:73 ../templates/users_templates_html:64 ../templates/users_templates_record_edit:67
 msgid "Id"
 msgstr ""
 
@@ -3841,11 +3841,11 @@ msgstr ""
 msgid "Lokale Signatur      "
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:398 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:59 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:85 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:59 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:85 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:59 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:85 ../templates/_profile/sammlungen/_view/muenzen/titlist_options:24 ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:22 ../templates/_view/richter/cartitems_html_actions:146 ../templates/_view/richter/cartitems_html_actions:46 ../templates/_view/richter/cartitems_html_actions:67 ../templates/admin_users_html:71 ../templates/admin_users_search_form:65 ../templates/authlist_options:20 ../templates/cartitems_html_actions:53 ../templates/cartitems_html_actions:76 ../templates/titles_record_html_actions:59 ../templates/titles_record_html_actions:85 ../templates/titles_record_include:396 ../templates/titles_record_include:409 ../templates/titlist_options:27 ../templates/users_preferences_html:396 ../templates/users_roles_edit:110 ../templates/users_tags_names_record_html:78
+#: ../templates/_profile/kug/users_preferences_html:398 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:59 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:85 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:59 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:85 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:59 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:85 ../templates/_profile/sammlungen/_view/muenzen/titlist_options:24 ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:22 ../templates/_view/richter/cartitems_html_actions:146 ../templates/_view/richter/cartitems_html_actions:46 ../templates/_view/richter/cartitems_html_actions:67 ../templates/admin_users_html:71 ../templates/admin_users_record_edit:110 ../templates/admin_users_record_edit:136 ../templates/admin_users_search_form:65 ../templates/authlist_options:20 ../templates/cartitems_html_actions:53 ../templates/cartitems_html_actions:76 ../templates/titles_record_html_actions:59 ../templates/titles_record_html_actions:85 ../templates/titles_record_include:396 ../templates/titles_record_include:409 ../templates/titlist_options:27 ../templates/users_preferences_html:396 ../templates/users_tags_names_record_html:78
 msgid "Los"
 msgstr ""
 
-#: ../templates/_database/einbaende/cartitems_html_short:144 ../templates/_database/einbaende/titles_record_html:346 ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:144 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:311 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions:8 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:150 ../templates/admin_authenticators_record_edit:104 ../templates/admin_clusters_record_edit:100 ../templates/admin_databases_record_edit:252 ../templates/admin_databases_rss_record_edit:109 ../templates/admin_databases_rss_record_html:351 ../templates/admin_locations_record_edit:161 ../templates/admin_orgunits_record_edit:107 ../templates/admin_profiles_record_edit:83 ../templates/admin_servers_record_edit:114 ../templates/admin_templates_record_edit:99 ../templates/admin_topics_record_edit:131 ../templates/admin_views_record_edit:129 ../templates/cartitems_html_actions:160 ../templates/cartitems_html_short:144 ../templates/titles_record_html:322 ../templates/titles_record_include:220 ../templates/topics_record_mapping_html:95 ../templates/users_litlists_html:110 ../templates/users_searchprofiles_html:93
+#: ../templates/_database/einbaende/cartitems_html_short:144 ../templates/_database/einbaende/titles_record_html:346 ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:144 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:311 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions:8 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:150 ../templates/admin_authenticators_record_edit:104 ../templates/admin_clusters_record_edit:100 ../templates/admin_databases_record_edit:252 ../templates/admin_databases_rss_record_edit:109 ../templates/admin_databases_rss_record_html:351 ../templates/admin_locations_record_edit:161 ../templates/admin_orgunits_record_edit:107 ../templates/admin_profiles_record_edit:83 ../templates/admin_servers_record_edit:114 ../templates/admin_templates_record_edit:91 ../templates/admin_topics_record_edit:131 ../templates/admin_views_record_edit:129 ../templates/cartitems_html_actions:160 ../templates/cartitems_html_short:144 ../templates/titles_record_html:322 ../templates/titles_record_include:220 ../templates/topics_record_mapping_html:95 ../templates/users_litlists_html:110 ../templates/users_searchprofiles_html:93 ../templates/users_templates_record_edit:91
 msgid "Löschen"
 msgstr ""
 
@@ -3988,11 +3988,11 @@ msgid ""
 "      Bibliothekskennzahl."
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:82 ../templates/users_preferences_html:82 ../templates/users_roles_edit:65
+#: ../templates/_profile/kug/users_preferences_html:82 ../templates/admin_users_record_edit:63 ../templates/users_preferences_html:82
 msgid "Nachname"
 msgstr ""
 
-#: ../templates/_profile/kug/_database/dbis/search_title_item_html:92 ../templates/_profile/kug/_database/ezb/classifications_html:69 ../templates/_profile/kug/_database/ezb/search_title_item_html:91 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:75 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:75 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:75 ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:84 ../templates/_view/richter/cartitems_html_actions:38 ../templates/_view/richter/cartitems_html_actions:55 ../templates/admin_orgunits_html:66 ../templates/admin_profiles_record_edit:124 ../templates/admin_templates_html:107 ../templates/admin_templates_html:66 ../templates/admin_templates_record_edit:81 ../templates/cartitems_html_actions:44 ../templates/cartitems_html_actions:63 ../templates/databases_html:92 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/titles_record_html_actions:54 ../templates/titles_record_html_actions:75 ../templates/users_searchprofiles_html:84 ../templates/users_searchprofiles_record_edit:80
+#: ../templates/_profile/kug/_database/dbis/search_title_item_html:92 ../templates/_profile/kug/_database/ezb/classifications_html:69 ../templates/_profile/kug/_database/ezb/search_title_item_html:91 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:75 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:75 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:54 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:75 ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:84 ../templates/_view/richter/cartitems_html_actions:38 ../templates/_view/richter/cartitems_html_actions:55 ../templates/admin_orgunits_html:66 ../templates/admin_profiles_record_edit:124 ../templates/admin_templates_html:107 ../templates/admin_templates_html:66 ../templates/admin_templates_record_edit:77 ../templates/cartitems_html_actions:44 ../templates/cartitems_html_actions:63 ../templates/databases_html:92 ../templates/orgunits_html:66 ../templates/profiles_record_html:75 ../templates/titles_record_html_actions:54 ../templates/titles_record_html_actions:75 ../templates/users_searchprofiles_html:84 ../templates/users_searchprofiles_record_edit:80 ../templates/users_templates_html:64 ../templates/users_templates_record_edit:77
 msgid "Name"
 msgstr ""
 
@@ -4234,7 +4234,7 @@ msgstr ""
 msgid "Nutzername"
 msgstr ""
 
-#: ../templates/admin_navigation:214 ../templates/admin_navigation:229 ../templates/admin_users_html:39 ../templates/admin_users_migration_html:39 ../templates/admin_users_migration_success_html:39 ../templates/admin_users_search_form:39 ../templates/admin_users_search_html:39 ../templates/users_roles_edit:39
+#: ../templates/admin_navigation:214 ../templates/admin_navigation:229 ../templates/admin_users_html:39 ../templates/admin_users_migration_html:39 ../templates/admin_users_migration_success_html:39 ../templates/admin_users_record_edit:39 ../templates/admin_users_search_form:39 ../templates/admin_users_search_html:39
 msgid "Nutzerverwaltung"
 msgstr ""
 
@@ -4318,7 +4318,7 @@ msgstr ""
 msgid "Organisationseinheiten dieses Profils"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:86 ../templates/users_preferences_html:86 ../templates/users_roles_edit:76
+#: ../templates/_profile/kug/users_preferences_html:86 ../templates/admin_users_record_edit:74 ../templates/users_preferences_html:86
 msgid "Ort"
 msgstr ""
 
@@ -4455,7 +4455,7 @@ msgstr ""
 msgid "Personen-Information: %1 in Katalog %2"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:79 ../templates/users_preferences_html:79 ../templates/users_roles_edit:61
+#: ../templates/_profile/kug/users_preferences_html:79 ../templates/admin_users_record_edit:59 ../templates/users_preferences_html:79
 msgid "Personendaten"
 msgstr ""
 
@@ -4726,19 +4726,11 @@ msgid ""
 "Rassengesetze im Jahr 1938."
 msgstr ""
 
-#: ../templates/users_roles_edit:40
-msgid "Rolle"
-msgstr ""
-
-#: ../templates/users_roles_edit:59
-msgid "Rolle bearbeiten"
-msgstr ""
-
-#: ../templates/users_roles_edit:98
+#: ../templates/admin_users_record_edit:98
 msgid "Rolle zuordnen"
 msgstr ""
 
-#: ../templates/users_roles_edit:101
+#: ../templates/admin_users_record_edit:101
 msgid "Rollen"
 msgstr ""
 
@@ -4966,6 +4958,10 @@ msgstr ""
 
 #: ../templates/users_circulations_borrows_html:59 ../templates/users_circulations_borrows_ics:95
 msgid "Sie haben keine Ausleihen getätigt."
+msgstr ""
+
+#: ../modules/OpenBib/Handler/Apache/Users/Templates.pm:183
+msgid "Sie haben keine Berechtigung dieses Template zu ändern!"
 msgstr ""
 
 #: ../templates/users_circulations_orders_html:59
@@ -5230,7 +5226,7 @@ msgstr ""
 msgid "Spanisch"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:94 ../templates/users_preferences_html:94 ../templates/users_roles_edit:84
+#: ../templates/_profile/kug/users_preferences_html:94 ../templates/admin_users_record_edit:82 ../templates/users_preferences_html:94
 msgid "Sperre"
 msgstr ""
 
@@ -5323,7 +5319,7 @@ msgstr ""
 msgid "Sterbeorte"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:85 ../templates/users_preferences_html:85 ../templates/users_roles_edit:74
+#: ../templates/_profile/kug/users_preferences_html:85 ../templates/admin_users_record_edit:72 ../templates/users_preferences_html:85
 msgid "Strasse"
 msgstr ""
 
@@ -6733,19 +6729,23 @@ msgstr ""
 msgid "Tags nach Namen"
 msgstr ""
 
-#: ../templates/admin_templates_record_edit:64
+#: ../templates/admin_templates_record_edit:64 ../templates/users_templates_record_edit:64
 msgid "Template bearbeiten"
 msgstr ""
 
-#: ../templates/admin_navigation:242 ../templates/admin_navigation:244 ../templates/admin_templates_html:39 ../templates/admin_templates_record_delete_confirm:39 ../templates/admin_templates_record_edit:39
+#: ../templates/admin_navigation:242 ../templates/admin_navigation:244 ../templates/admin_templates_html:39 ../templates/admin_templates_record_delete_confirm:39 ../templates/admin_templates_record_edit:39 ../templates/admin_users_record_edit:127 ../templates/users_templates_html:39 ../templates/users_templates_html:60 ../templates/users_templates_record_edit:39 ../templates/viewadmin_navigation:18 ../templates/viewadmin_navigation:20
 msgid "Templates"
+msgstr ""
+
+#: ../templates/admin_users_record_edit:124
+msgid "Templates zuordnen"
 msgstr ""
 
 #: ../templates/testsystem_info:15
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr ""
 
-#: ../templates/_database/einbaende/titles_record_html:341 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306 ../templates/admin_templates_html:84 ../templates/admin_templates_record_edit:90 ../templates/titles_record_html:317 ../templates/titles_record_include:215
+#: ../templates/_database/einbaende/titles_record_html:341 ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316 ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306 ../templates/admin_templates_html:84 ../templates/admin_templates_record_edit:82 ../templates/titles_record_html:317 ../templates/titles_record_include:215 ../templates/users_templates_record_edit:82
 msgid "Text"
 msgstr ""
 
@@ -7204,7 +7204,7 @@ msgstr ""
 msgid "Vielen Dank f&uuml;r Ihren Besuch."
 msgstr ""
 
-#: ../templates/admin_templates_html:107 ../templates/admin_templates_html:75 ../templates/admin_templates_record_edit:72
+#: ../templates/admin_templates_html:107 ../templates/admin_templates_html:75 ../templates/admin_templates_record_edit:72 ../templates/users_templates_html:64 ../templates/users_templates_record_edit:72
 msgid "View"
 msgstr ""
 
@@ -7292,7 +7292,7 @@ msgstr ""
 msgid "Vormerkungsfrist"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:83 ../templates/users_preferences_html:83 ../templates/users_roles_edit:68
+#: ../templates/_profile/kug/users_preferences_html:83 ../templates/admin_users_record_edit:66 ../templates/users_preferences_html:83
 msgid "Vorname"
 msgstr ""
 
@@ -7918,7 +7918,7 @@ msgstr ""
 msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:96 ../templates/users_preferences_html:96 ../templates/users_roles_edit:86
+#: ../templates/_profile/kug/users_preferences_html:96 ../templates/admin_users_record_edit:84 ../templates/users_preferences_html:96
 msgid "ja, seit"
 msgstr ""
 
@@ -7963,7 +7963,7 @@ msgid ""
 "      dem E-Book erworbenen Beschränkungen (nur vom Campus)."
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:96 ../templates/users_preferences_html:96 ../templates/users_roles_edit:86
+#: ../templates/_profile/kug/users_preferences_html:96 ../templates/admin_users_record_edit:84 ../templates/users_preferences_html:96
 msgid "mit Grund"
 msgstr ""
 
@@ -8161,7 +8161,7 @@ msgstr ""
 msgid "nach am Umschlag Beteiligte"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:98 ../templates/users_preferences_html:98 ../templates/users_roles_edit:88
+#: ../templates/_profile/kug/users_preferences_html:98 ../templates/admin_users_record_edit:86 ../templates/users_preferences_html:98
 msgid "nein"
 msgstr ""
 
@@ -8209,6 +8209,10 @@ msgstr ""
 msgid "viewadmin"
 msgstr ""
 
+#: ../templates/viewadmin_navigation:15
+msgid "viewmaster"
+msgstr ""
+
 #: ../templates/_database/dbis/search_title_item_html:87 ../templates/_database/ezb/search_title_item_html:86 ../templates/_profile/kug/_database/dbis/search_title_item_html:122 ../templates/_profile/kug/_database/ezb/search_title_item_html:121 ../templates/_profile/kug/_view/inst501/searchforms_record_query:255 ../templates/_profile/kug/searchforms_record_query:208 ../templates/_profile/rheinlandbib/searchforms_record_query:220 ../templates/_profile/rheinlandbib/titles_html:77 ../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query:139 ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:129 ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:129 ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:149 ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:166 ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:131 ../templates/_profile/sammlungen/_view/richter/titles_fields_record_mobile:36 ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:139 ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:136 ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:141 ../templates/_profile/sammlungen/searchforms_record_query:234 ../templates/_profile/sammlungen/titles_html:77 ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:208 ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:208 ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:208 ../templates/_profile/usbportal/search_title_combined_include:48 ../templates/authority_search_combined_html:75 ../templates/search_title_combined_html:75 ../templates/search_title_combined_include:32 ../templates/search_title_combined_mobile:31 ../templates/search_title_item_html:53 ../templates/titles_html:78
 msgid "von"
 msgstr ""
@@ -8221,7 +8225,7 @@ msgstr ""
 msgid "wiederholt"
 msgstr ""
 
-#: ../templates/admin_authenticators_record_edit:100 ../templates/admin_clusters_record_edit:96 ../templates/admin_databases_record_edit:248 ../templates/admin_databases_rss_record_edit:105 ../templates/admin_databases_rss_record_html:152 ../templates/admin_databases_rss_record_html:209 ../templates/admin_databases_rss_record_html:266 ../templates/admin_databases_rss_record_html:323 ../templates/admin_databases_rss_record_html:351 ../templates/admin_databases_rss_record_html:95 ../templates/admin_locations_record_edit:157 ../templates/admin_orgunits_record_edit:103 ../templates/admin_profiles_record_edit:78 ../templates/admin_searchprofiles_record_edit:86 ../templates/admin_servers_record_edit:110 ../templates/admin_templates_record_edit:95 ../templates/admin_topics_record_edit:127 ../templates/admin_topics_record_edit:164 ../templates/admin_topics_record_edit:196 ../templates/admin_topics_record_edit:228 ../templates/admin_topics_record_edit:261 ../templates/admin_topics_record_edit:294 ../templates/admin_topics_record_edit:329 ../templates/admin_views_record_edit:125 ../templates/admin_views_rss_record_edit:92 ../templates/topics_record_mapping_html:144 ../templates/topics_record_mapping_html:190 ../templates/topics_record_mapping_html:235 ../templates/topics_record_mapping_html:89 ../templates/users_searchprofiles_record_edit:141
+#: ../templates/admin_authenticators_record_edit:100 ../templates/admin_clusters_record_edit:96 ../templates/admin_databases_record_edit:248 ../templates/admin_databases_rss_record_edit:105 ../templates/admin_databases_rss_record_html:152 ../templates/admin_databases_rss_record_html:209 ../templates/admin_databases_rss_record_html:266 ../templates/admin_databases_rss_record_html:323 ../templates/admin_databases_rss_record_html:351 ../templates/admin_databases_rss_record_html:95 ../templates/admin_locations_record_edit:157 ../templates/admin_orgunits_record_edit:103 ../templates/admin_profiles_record_edit:78 ../templates/admin_searchprofiles_record_edit:86 ../templates/admin_servers_record_edit:110 ../templates/admin_templates_record_edit:87 ../templates/admin_topics_record_edit:127 ../templates/admin_topics_record_edit:164 ../templates/admin_topics_record_edit:196 ../templates/admin_topics_record_edit:228 ../templates/admin_topics_record_edit:261 ../templates/admin_topics_record_edit:294 ../templates/admin_topics_record_edit:329 ../templates/admin_views_record_edit:125 ../templates/admin_views_rss_record_edit:92 ../templates/topics_record_mapping_html:144 ../templates/topics_record_mapping_html:190 ../templates/topics_record_mapping_html:235 ../templates/topics_record_mapping_html:89 ../templates/users_searchprofiles_record_edit:141 ../templates/users_templates_record_edit:87
 msgid "Ändern"
 msgstr ""
 

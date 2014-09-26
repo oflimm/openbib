@@ -19,7 +19,8 @@
           href = "${path_prefix}/${config.get('templates_loc')}/id/${templateinfo.id}"
        }
        id = templateinfo.id
-       viewid = templateinfo.viewid
+       viewid = templateinfo.viewid.id
+       viewname = templateinfo.viewid.viewname
        templatename = templateinfo.templatename
        templatetext = templateinfo.templatetext
    };

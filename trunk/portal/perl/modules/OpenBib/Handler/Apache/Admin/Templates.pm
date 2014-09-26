@@ -142,7 +142,7 @@ sub create_record {
         return Apache2::Const::OK;
     }
     
-    my $other_template_exists = $config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname});
+    my $other_template_exists = $config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname},$input_data_ref->{templatelang});
     
     if ($other_template_exists) {
         $self->print_warning($msg->maketext("Es existiert bereits ein Template in diesem View"),3);
@@ -279,7 +279,7 @@ sub update_record {
         return Apache2::Const::OK;
     }
 
-    my $other_template_exists = $config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname});
+    my $other_template_exists = $config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname},$input_data_ref->{templatelang});
     
     if ($other_template_exists && $templateid != $other_template_exists ) {
         $self->print_warning($msg->maketext("Es existiert bereits ein anderes Template mit diesem Namen und View"));        
@@ -379,6 +379,11 @@ sub get_input_definition {
             type     => 'scalar',
         },
         templatetext => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        templatelang => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

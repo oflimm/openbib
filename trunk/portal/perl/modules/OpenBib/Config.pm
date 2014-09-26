@@ -437,6 +437,7 @@ sub template_exists {
     my $self     = shift;
     my $templatename = shift;
     my $viewname     = shift;
+    my $templatelang = shift;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -444,6 +445,7 @@ sub template_exists {
     my $template = $self->{schema}->resultset('Templateinfo')->search(
         {
             "me.templatename" => $templatename,
+            "me.templatelang" => $templatelang,
             "viewid.viewname" => $viewname,
         },
         {
@@ -2897,14 +2899,26 @@ sub del_template {
 }
 
 sub get_templatetext {
-    my ($self,$templatename,$viewname) = @_;
+    my ($self,$templatename,$viewname,$templatelang) = @_;
 
     my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
 
-    my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename })->single;
+    my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $templatelang })->single;
 
     if ($template){
         return $template->templatetext;
+    }
+    # Sonst erste alternative Sprachfassung ausgeben
+    else {
+#         foreach my $thislang (@{$self->{lang}}){
+#             next if ($thislang eq $templatelanglang);
+
+#             my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $thislang })->single;
+            
+#             if ($template){
+#                 return $template->templatetext;
+#             }
+#         }
     }
 
     return "";
@@ -2922,8 +2936,8 @@ sub update_template {
         ? $arg_ref->{templatename}         : '';
     my $templatetext             = exists $arg_ref->{templatetext}
         ? $arg_ref->{templatetext}         : '';
-    my $lang                     = exists $arg_ref->{lang}
-        ? $arg_ref->{lang}                 : '';
+    my $templatelang             = exists $arg_ref->{templatelang}
+        ? $arg_ref->{templatelang}         : '';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -2937,7 +2951,7 @@ sub update_template {
         
     $update_args_ref->{templatename} = $templatename if ($templatename);
     $update_args_ref->{templatetext} = $templatetext if ($templatetext);
-    $update_args_ref->{lang}         = $lang if ($lang);
+    $update_args_ref->{templatelang} = $templatelang if ($templatelang);
     
     # DBI: "update templateinfo set active = ? where id = ?"
     $self->{schema}->resultset('Templateinfo')->search_rs({ id => $id })->update($update_args_ref);
@@ -2955,6 +2969,8 @@ sub new_template {
         ? $arg_ref->{templatename}         : '';
     my $templatetext             = exists $arg_ref->{templatetext}
         ? $arg_ref->{templatetext}         : '';
+    my $templatelang             = exists $arg_ref->{templatelang}
+        ? $arg_ref->{templatelang}         : '';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -2966,7 +2982,7 @@ sub new_template {
     }
 
     # DBI: "insert into templateinfo (id,host,active) values (NULL,?,?)"
-    my $new_template = $self->{schema}->resultset('Templateinfo')->create({ viewid => $viewid, templatename => $templatename, templatetext => $templatetext });
+    my $new_template = $self->{schema}->resultset('Templateinfo')->create({ viewid => $viewid, templatename => $templatename, templatetext => $templatetext, templatelang => $templatelang });
 
     if ($new_template){
         return $new_template->id;

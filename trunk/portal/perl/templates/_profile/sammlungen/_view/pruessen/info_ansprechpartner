@@ -50,7 +50,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% config.get_templatetext('info_ansprechpartner','pruessen') %]
+[% config.get_templatetext('info_ansprechpartner','pruessen',lang) %]
  
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

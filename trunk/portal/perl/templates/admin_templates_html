@@ -63,6 +63,14 @@
 <div class="ob-fieldset">
 
 <div class="ym-fbox-select">
+<label for="templatelang">[% msg.maketext("Sprache") %]</label>
+  <select name="templatelang" id="templatelang">
+     <option value="de">[% msg.maketext("Deutsch") %]</option>
+     <option value="en">[% msg.maketext("Englisch") %]</option>
+  </select>
+</div>
+
+<div class="ym-fbox-select">
 <label for="templatename">[% msg.maketext("Name") %]</label>
   <select name="templatename" id="templatename">
 [% FOREACH templatename IN all_templates.keys.sort %]    
@@ -104,12 +112,13 @@
 
 <table class="ym-full">
 <thead>
-<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th><th></th><th></th><th></th></tr>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Sprache") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th><th></th><th></th></tr>
 </thead>
 <tbody>
 [% FOREACH templateinfo IN templateinfos.all %]
 <tr>
 <td>[% templateinfo.id %]</td>
+<td><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></td>
 <td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %]">[% templateinfo.templatename %]</a></td>
 <td>[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>

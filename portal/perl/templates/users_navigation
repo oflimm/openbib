@@ -108,6 +108,10 @@
 </nav>
 [% END %]
 
+[% IF user.has_role('viewadmin',user.ID) %]
+[% PROCESS common/subtemplate name="viewadmin_navigation" %]
+[% END %]
+
 [% IF cgiapp.is_authenticated('admin') %]
 [% PROCESS common/subtemplate name="admin_navigation" %]
 [% END %]

@@ -1,17 +1,17 @@
 [%#-
 #######################################################################
 #
-# Templatename: user_role_edit
+# Templatename: admin_users_record_edit
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Zuordnung einer Rolle zu einem Nutzer durch den Administrator
+# Aenderung von Nutzerinformationen durch den Administrator
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Nutzerverwaltung anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Nutzer editieren' %]
 
   <body>
 
@@ -37,7 +37,7 @@
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung") %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Rolle") %]</a></li>
+         <li><a href="#" class="lastitem">[% userinfo.id %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
@@ -56,9 +56,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-   <h1>[% msg.maketext("Rolle bearbeiten") %]</h1>
-
-<h3>[% msg.maketext("Personendaten") %]</h3>
+<h2>[% msg.maketext("Personendaten") %]</h2>
 
 <table class="ym-full">
 [% IF userinfo.nachname %]
@@ -90,7 +88,9 @@
 </td></tr>
 </table>
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/[% config.get('roles_loc') %]" class="ym-form">
+<h3>[% msg.maketext("Einstellungen") %]</h3>
+
+<form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('roles_loc') %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
 <fieldset class="ym-columnar">
@@ -102,6 +102,32 @@
 <select name="roles" multiple="multiple" size="5">
 [% FOREACH role IN user.get_all_roles %]
   <option value="[% role.id %]"[% IF userinfo.role.${role.role} %] selected="selected"[% END %]>[% msg.maketext(role.role) %]</option>
+[% END %]
+</select>
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Los") %]">
+
+</div>
+</fieldset>
+</form>
+
+
+<p/>
+
+<form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('templates_loc') %]" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Templates zuordnen") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="templates">[% msg.maketext("Templates") %]</label>
+<select name="templates" multiple="multiple" size="5">
+[% FOREACH template IN user.get_all_templates %]
+  <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename%]</option>
 [% END %]
 </select>
 </div>

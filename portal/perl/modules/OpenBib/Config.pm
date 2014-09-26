@@ -1933,6 +1933,26 @@ sub get_templateinfo_overview {
     return $object;
 }
 
+sub get_templateinfo_overview_of_user {
+    my $self   = shift;
+    my $userid   = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->get_templateinfo->search(
+        {
+            'userid.id' => $userid,
+        },
+        {
+            join     => ['user_templates',{ 'user_templates' => 'userid' }],
+            order_by => 'id',
+        }
+    );
+    
+    return $object;
+}
+
 sub get_templateinfo {
     my ($self) = @_;
 
@@ -2902,14 +2922,25 @@ sub update_template {
         ? $arg_ref->{templatename}         : '';
     my $templatetext             = exists $arg_ref->{templatetext}
         ? $arg_ref->{templatetext}         : '';
-
-    my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+    my $lang                     = exists $arg_ref->{lang}
+        ? $arg_ref->{lang}                 : '';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $update_args_ref = { };
+
+    if ($viewname) {
+        my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+        $update_args_ref->{viewid}       = $viewid ;
+    }
+        
+    $update_args_ref->{templatename} = $templatename if ($templatename);
+    $update_args_ref->{templatetext} = $templatetext if ($templatetext);
+    $update_args_ref->{lang}         = $lang if ($lang);
+    
     # DBI: "update templateinfo set active = ? where id = ?"
-    $self->{schema}->resultset('Templateinfo')->search_rs({ id => $id })->update({ viewid => $viewid, templatename => $templatename, templatetext => $templatetext });
+    $self->{schema}->resultset('Templateinfo')->search_rs({ id => $id })->update($update_args_ref);
 
     return;
 }

@@ -3991,7 +3991,7 @@ sub delete_item_from_collection {
     return ;
 }
 
-sub update_userrole {
+sub update_user_rights_role {
     my ($self,$userinfo_ref)=@_;
 
     # Log4perl logger erzeugen
@@ -4016,6 +4016,70 @@ sub update_userrole {
             {
                 userid => $userinfo_ref->{id},
                 roleid => $roleid,
+            }
+        );
+    }
+
+    return;
+}
+
+sub update_user_rights_template {
+    my ($self,$userinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $self->{schema}->resultset('UserTemplate')->search_rs(
+        {
+            userid => $userinfo_ref->{id},
+        }
+    )->delete_all;
+    
+    foreach my $templateid (@{$userinfo_ref->{templates}}){
+        $logger->debug("Adding Template $templateid to user $userinfo_ref->{id}");
+
+        $self->{schema}->resultset('UserTemplate')->search_rs(
+            {
+                userid => $userinfo_ref->{id},
+            }
+        )->create(
+            {
+                userid     => $userinfo_ref->{id},
+                templateid => $templateid,
+            }
+        );
+    }
+
+    return;
+}
+
+sub update_user_rights_view {
+    my ($self,$userinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $self->{schema}->resultset('UserView')->search_rs(
+        {
+            userid => $userinfo_ref->{id},
+        }
+    )->delete_all;
+    
+    foreach my $viewname (@{$userinfo_ref->{views}}){
+        $logger->debug("Adding View $viewname to user $userinfo_ref->{id}");
+
+        my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+
+        next unless ($viewid);
+        
+        $self->{schema}->resultset('UserView')->search_rs(
+            {
+                userid => $userinfo_ref->{id},
+            }
+        )->create(
+            {
+                userid => $userinfo_ref->{id},
+                viewid => $viewid,
             }
         );
     }
@@ -4383,6 +4447,23 @@ sub get_info {
         $userinfo_ref->{role}{$userrole->get_column('thisrolename')}=1;
     }
 
+    # Templates
+
+    my $usertemplates = $self->{schema}->resultset('UserTemplate')->search_rs(
+        {
+            'me.userid' => $self->{ID},
+        },
+        {
+            join   => ['templateid'],
+            select => ['templateid.id'],
+            as     => ['thistemplateid'],
+        }
+    );
+
+    foreach my $usertemplate ($usertemplates->all){
+        $userinfo_ref->{template}{$usertemplate->get_column('thistemplateid')}=1;
+    }
+
     return $userinfo_ref;
 }
 
@@ -4444,6 +4525,75 @@ sub get_roles_of_user {
     }
     
     return $role_ref;
+}
+
+sub get_all_templates {
+    my ($self)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $logger->debug("Getting templates");
+
+    # DBI: "select * from templateinfo"
+    my $templates = $self->{schema}->resultset('Templateinfo')->search_rs(undef);
+
+    my $templates_ref = [];
+    foreach my $template ($templates->all){
+        push @$templates_ref, {
+            id           => $template->id,
+            templatename => $template->templatename,
+            viewname     => $template->viewid->viewname,
+        };
+    }
+
+    if ($logger->is_debug){
+        $logger->debug("Available templates ".YAML::Dump($templates_ref));
+    }
+    
+    return $templates_ref;
+}
+
+sub get_templates_of_user {
+    my ($self,$userid)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $logger->debug("Getting templates");
+
+    my $thisuserid = ($userid)?$userid:$self->{ID};
+    
+    my $usertemplates = $self->{schema}->resultset('UserTemplate')->search_rs(
+        {
+            'me.userid' => $thisuserid,
+        },
+    );
+
+    return $usertemplates ;
+}
+
+sub has_template {
+    my ($self,$templateid,$userid)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $logger->debug("Getting templates");
+
+    my $thisuserid = ($userid)?$userid:$self->{ID};
+    
+    my $has_template = $self->{schema}->resultset('UserTemplate')->search_rs(
+        {
+            'userid'     => $thisuserid,
+            'templateid' => $templateid,
+        },
+    )->count;
+
+    return $has_template ;
 }
 
 sub searchfields_exist {
@@ -5047,6 +5197,30 @@ sub is_admin {
         {
             'roleid.name' => 'admin',
             'userid.id'   => $self->{ID},
+        },
+        {
+            join => ['roleid','userid'],
+        }
+    )->count;
+    
+    return $count;
+}
+
+sub has_role {
+    my ($self,$role,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $thisuserid = ($userid)?$userid:$self->{ID};
+
+    # DBI: "select count(ur.userid) as rowcount from userrole as ur, role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid"
+    my $count = $self->{schema}->resultset('UserRole')->search(
+        {
+            'roleid.name' => $role,
+            'userid.id'   => $thisuserid,
         },
         {
             join => ['roleid','userid'],

@@ -1,4 +1,4 @@
-#####################################################################
+####################################################################
 #
 #  OpenBib::Handler::Apache::Templates.pm
 #
@@ -62,9 +62,9 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show_record'                              => 'show_record',
-        'show_collection'                          => 'show_collection',
-        'dispatch_to_representation'               => 'dispatch_to_representation',
+        'show_record'                => 'show_record',
+        'show_collection'            => 'show_collection',
+        'dispatch_to_representation' => 'dispatch_to_representation',
     );
 
     # Use current path as template path,
@@ -72,77 +72,24 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-# Alle beschreibbaren Templates
 sub show_collection {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Dispatched Args
-    my $view           = $self->param('view');
-
     # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
     my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
 
-    # CGI-Parameter
+    my $templateinfo_ref = $config->get_templateinfo_overview();
 
-    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
-    my $num    = $queryoptions->get_option('num');
-    
-    my $topics_ref           = $user->get_topics;
-    my $public_litlists_ref  = $user->get_public_litlists({ offset => $offset, num => $num });
-
-    my $nav = Data::Pageset->new({
-        'total_entries'    => $user->get_number_of_public_litlists(),
-        'entries_per_page' => $queryoptions->get_option('num'),
-        'current_page'     => $queryoptions->get_option('page'),
-        'mode'             => 'slide',
-    });
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        nav            => $nav,
-        topics         => $topics_ref,
-        public_litlists=> $public_litlists_ref,
+    my $ttdata={                # 
+        templateinfos   => $templateinfo_ref,
     };
     
-    $self->print_page($config->{tt_litlists_tname},$ttdata);
+    $self->print_page($config->{tt_templates_tname},$ttdata);
+
     return Apache2::Const::OK;
-}
-
-sub return_baseurl {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $view           = $self->param('view')           || '';
-    my $userid         = $self->param('userid')         || '';
-    my $path_prefix    = $self->param('path_prefix');
-
-    my $config = OpenBib::Config->instance;
-
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/templates.html";
-
-    $logger->debug("Returning to $new_location");
-
-    return $self->redirect($new_location,'303 See Other');
-
-#    $self->query->method('GET');
-#    $self->query->content_type('text/html');
-#    $self->query->headers_out->add(Location => $new_location);
-#    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
 }
 
 sub show_record {
@@ -150,142 +97,30 @@ sub show_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     # Dispatched Args
-    my $r              = $self->param('r');
-    my $view           = $self->param('view')           || '';
-    my $litlistid      = $self->strip_suffix($self->param('litlistid'))      || '';
-    my $path_prefix    = $self->param('path_prefix');
 
     # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    
-    # CGI Args
-    my $method         = $query->param('_method')     || '';
-    my $titleid          = $query->param('titleid')       || '';
-    my $dbname          = $query->param('dbname')       || '';
-    my $title          = decode_utf8($query->param('title'))        || '';
-    my $type           = $query->param('type')        || 1;
-    my $lecture        = $query->param('lecture')     || 0;
-    my $format         = $query->param('format')      || 'short';
-    my $sorttype       = $query->param('srt')    || "person";
-    my $sortorder      = $query->param('srto')   || "asc";
-    my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
-    my $topicid      = $query->param('topicid')   || undef;
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $templateid     = $self->strip_suffix($self->param('templateid'));
 
-    my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    my $topics_ref   = $user->get_topics;
+    $logger->debug("Show Record $templateid");
 
-    $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
+    my $templateinfo_ref = $config->get_templateinfo->search_rs({ id => $templateid})->single;
 
-    my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
-    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
-
-    my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
-
-    if (!$litlist_is_public){
-
-        if (! $user->{ID}){
-            if ($self->param('representation') eq "html"){
-                return $self->tunnel_through_authenticator;            
-            }
-            else {
-                $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
-            }   
-            return Apache2::Const::OK;
-        }
-
-        if (!$user_owns_litlist){
-            $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-
-            $logger->debug("UserID: $self->{ID} trying to delete litlistid $litlistid");
-            
-            # Aufruf der privaten Literaturlisten durch "Andere" loggen
-            $session->log_event({
-                type      => 800,
-                content   => $litlistid,
-            });
-            
-            return;
-        }
-    }
-
-    $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
-    
-    if ($method eq "DELETE"){
-        $self->delete_record;
-        return;
+    if (!$templateinfo_ref){
+        $logger->error("Template $templateid couldn't be found.");
     }
     
-    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
-        
-    my $targettype    = $user->get_targettype_of_session($session->{ID});
-        
-    my $singlelitlist = {
-        id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt')}),
-        properties => $litlist_properties_ref,
-    };
-        
-        
-    # Thematische Einordnung
-        
-    my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
-    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
-    
-    # TT-Data erzeugen
     my $ttdata={
-        user_owns_litlist => $user_owns_litlist,
-        topics       => $topics_ref,
-        thistopics   => $litlist_topics_ref,
-        query          => $query,
-        qopts          => $queryoptions->get_options,
-        userrole       => $userrole_ref,
-        format         => $format,
-        litlist        => $singlelitlist,
-        other_litlists => $other_litlists_of_user,
-        dbinfo         => $dbinfotable,
-        targettype     => $targettype,
+        templateinfo => $templateinfo_ref,
     };
     
-    $self->print_page($config->{tt_litlists_record_tname},$ttdata);
+    $self->print_page($config->{tt_templates_record_tname},$ttdata);
 
-    return Apache2::Const::OK;
+    return;
 }
 
-sub get_input_definition {
-    my $self=shift;
-    
-    return {
-        title => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        type => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        lecture => {
-            default  => 'false',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        topics => {
-            default  => [],
-            encoding => 'none',
-            type     => 'array',
-        },
-        
-    };
-}
 
 1;

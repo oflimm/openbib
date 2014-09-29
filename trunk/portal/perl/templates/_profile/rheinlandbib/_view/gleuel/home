@@ -30,33 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:8px;">
-
-<center>
-<img src="/images/openbib/views/gleuel/Rheinlandbib.Gleuel-300.jpg"  />
-</center>
-</div>
-
-<h1>Alte Pfarrbibliothek St. Dionysius Hürth-Gleuel</h1>
-
-<p> Die Sammlung - 195 Titel in 211 Bänden, dazu 9 neuzeitliche
-Handschriften - zeigt in ihrer Zusammensetzung im Wesentlichen das
-typische Bild einer Pastorenbibliothek. Erwartungsgemäß überwiegt die
-theologische Literatur deutlich. Je ein Viertel des Bestandes wird von
-den Sparten Moraltheologie, Homiletik (meist Predigtsammlungen) und
-Liturgik eingenommen. Das letzte Viertel umfasst die übrige
-theologische Literatur (Exegese, Dogmatik, Kirchengeschichte,
-Pastoraltheologie und Erbauungsschriften), aber auch den gesamten
-nichttheologischen Bestand, u. a. Schulbücher, Texte klassischer
-Autoren, Philosophie, Wörterbücher, Geschichte oder Medizin. Gerade in
-diesem letzten Viertel finden sich etliche seltene und unerwartete
-Titel. </p>
-
-<p> Nachdem die Sammlung lange unbeachtet im Gleueler Pfarrhaus
-gestanden hatte, wurde sie am Ende des 20. Jahrhunderts restauriert
-und verzeichnet. Mit der Aufnahme der Titel in die
-Nordrhein-Westfälische Verbunddatenbank ist diese Literatur jetzt für
-die wissenschaftliche Nutzung bundesweit verfügbar.  </p>
+[% config.get_templatetext('home','gleuel',lang) %]
 
     </div>
     <!-- end: #main -->

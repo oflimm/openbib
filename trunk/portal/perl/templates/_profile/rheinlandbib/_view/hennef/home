@@ -30,42 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:8px;">
-
-<center>
-<img src="/images/openbib/views/hennef/hennef.jpg" alt="Stadtarchiv"/><br/><br/><i>Quelle: Stadtarchiv</i>
-</center>
-</div>
-
-<h1>Historische Buchbestände im Stadtarchiv Hennef (mit Turmmuseum Stadt Blankenberg)</h1>
-
-<p> Die hier präsentierte Sammlung, die über das Stadtarchiv Hennef
-zugänglich ist, besteht aus zwei Teilen. Zunächst sammelte sich ein
-älterer Buchbestand, der im Kern aus der katholischen Pfarrei
-St. Katharina Blankenberg stammt, im Turmmuseum Stadt Blankenberg. Er
-befindet sich bis auf einen kleinen, dort ausgestellten Teil heute im
-Stadtarchiv Hennef. Dazu kam die Sammlung des Domänen- und Forstrates
-Franz Joseph Wilhelm Scheven aus Hennef, der ab 1816 zunächst Landrat
-des Kreises Uckerath, später bis 1837 des Siegkreises war.  </p>
-
-<p> Die Blankenberger Sammlung umfasst knapp 140 Nummern und besteht
-weitgehend aus theologischer Literatur aus dem Zeitraum Mitte
-16. Jahrhundert - Ende 19. Jahrhundert. Überwiegt im älteren Bestand
-die lateinische Fachliteratur, so gewinnen im Laufe der Zeit die
-Gebets- und Andachtsbücher in deutscher Sprache spürbar an
-Bedeutung. Daneben finden sich aber Werke aus fast allen damals
-gängigen Wissensgebieten: Klassische Philologie, Geschichte, Jura,
-Philosophie, Kunst, Literatur.  </p>
-
-<p> Die gut hundert Nummern (in rund 166 Bänden) der Sammlung Scheven
-sind durch juristische Literatur mit Werken vom Ende des
-16. Jahrhunderts bis zur Mitte des 19. Jahrhunderts geprägt. Darunter
-befinden sich Ausgaben maßgeblicher Rechtstexte wie des "Codex
-Iustinianus" oder Johann Josef Scottis "Sammlung der Gesetze und
-Verordnungen ... Jülich, Cleve und Berg", wie auch Kommentare zu
-solchen Rechtstexten oder wichtige Entscheidungssammlungen – etwa die
-"Decisiones" des David Mevius oder die "Decisiones diversarum
-causarum" des Johann Meichsner.  </p>
+[% config.get_templatetext('home','hennef',lang) %]
 
     </div>
     <!-- end: #main -->

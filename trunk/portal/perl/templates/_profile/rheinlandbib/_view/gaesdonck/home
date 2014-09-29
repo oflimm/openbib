@@ -30,40 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:8px;">
-
-<center>
-<img src="/images/openbib/views/gaesdonck/Bibliothekraum_Gaesdonck.jpg" alt="Prieserhaus" /><br><br>
-<i style="font-size:0.8em">Bibliothek</i>
-</center>
-</div>
-
-<h1>Bibliotheca domus presbyterorum Gaesdonck</h1>
-
-<p> Auf der Gaesdonck, einem um 1400 gegründeten ehemaligen
-Augustinerchorherrenkloster direkt an der niederländischen Grenze,
-blieb der größte Teil der nicht unbedeutenden Bibliothek auch nach der
-Aufhebung des Klosters 1802 an Ort und Stelle, weil es den Chorherren
-gelungen war, Kirche und Klostergebäude samt Inventar privat zu
-erwerben.  </p>
-
-<p> Zu den heute vorhandenen ca. 6.000 Bänden gehören neben 21
-mittelalterlichen Handschriften ungefähr 150 Inkunabeln. Der
-Schwerpunkt des Bestandes liegt aber eindeutig im 16. und
-17. Jahrhundert.  </p>
-
-<p> Natürlich wird er von der Theologie geprägt, die quer durch alle
-Disziplinen gut vertreten ist und neben lateinischen vor allem
-französische und auch manche niederländische Titel enthält; besondere
-Beachtung verdient dabei die unauffällige, in Deutschland aber seltene
-französische und niederländische Erbauungsliteratur des 17. und
-18. Jahrhunderts. Besonders bemerkenswert sind daneben aber nicht so
-sehr die z. T. sehr ansprechend kolorierten Inkunabeln und
-Postinkunabeln, sondern die Musikdrucke. Über ihren Bezug zum
-Augustinerchorherrenkloster – spiegeln sie die Musikpraxis Gaesdoncks
-wider oder nicht? – herrscht keine Einigkeit, umso mehr aber über
-ihre Seltenheit: von 134 Stimmbüchern gelten 51 als Unikate und
-weitere 23 als Unikate dieser Auflage.  </p>
+[% config.get_templatetext('home','gaesdonck',lang) %]
 
     </div>
     <!-- end: #main -->

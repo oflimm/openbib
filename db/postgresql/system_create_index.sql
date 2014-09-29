@@ -139,11 +139,11 @@ ALTER TABLE templateinforevision ADD CONSTRAINT fk_templateinforevision_template
 CREATE INDEX templateinforevision_templateid ON templateinforevision (templateid);
 CREATE INDEX templateinforevision_tstamp ON templateinforevision (templateid);
 
-ALTER TABLE user_templateinfo ADD PRIMARY KEY (id);
-ALTER TABLE user_templateinfo ADD CONSTRAINT fk_templateinfo_user FOREIGN KEY (userid) REFERENCES userinfo (id);
-ALTER TABLE user_templateinfo ADD CONSTRAINT fk_templateinfo_templateinfo FOREIGN KEY (templateid) REFERENCES templateinfo (id);
-CREATE INDEX user_templateinfo_userid ON user_templateinfo (userid);
-CREATE INDEX user_templateinfo_templateid ON user_templateinfo (templateid);
+ALTER TABLE user_template ADD PRIMARY KEY (id);
+ALTER TABLE user_template ADD CONSTRAINT fk_user_template_user FOREIGN KEY (userid) REFERENCES userinfo (id);
+ALTER TABLE user_template ADD CONSTRAINT fk_user_template_template FOREIGN KEY (templateid) REFERENCES templateinfo (id);
+CREATE INDEX user_template_userid ON user_template (userid);
+CREATE INDEX user_template_templateid ON user_template (templateid);
 
 ALTER TABLE user_view ADD PRIMARY KEY (id);
 ALTER TABLE user_view ADD CONSTRAINT fk_userview_user FOREIGN KEY (userid) REFERENCES userinfo (id);

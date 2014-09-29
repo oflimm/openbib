@@ -15,17 +15,17 @@
 
  templates = [] ;
 
- FOREACH templateinfo IN config.get_templateinfo_overview.all;
+ FOREACH usertemplate IN usertemplates.all;
    thistemplateinfo = {
        link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('templates_loc')}/id/${templateinfo.id}"
+          href = "${path_prefix}/${config.get('templates_loc')}/id/${usertemplate.templateid.id}"
        }
-       id = templateinfo.id
-       viewname = templateinfo.viewname
-       templatename = templateinfo.templatename
-       templatetext = templateinfo.templatetext
-       templatelang = templateinfo.templatelang
+       id = usertemplate.templateid.id
+       viewname = usertemplate.templateid.viewname
+       templatename = usertemplate.templateid.templatename
+       templatetext = usertemplate.templateid.templatetext
+       templatelang = usertemplate.templateid.templatelang
    };
 
    templates.push(thistemplateinfo);

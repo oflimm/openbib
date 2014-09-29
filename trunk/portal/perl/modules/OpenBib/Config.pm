@@ -2910,15 +2910,15 @@ sub get_templatetext {
     }
     # Sonst erste alternative Sprachfassung ausgeben
     else {
-#         foreach my $thislang (@{$self->{lang}}){
-#             next if ($thislang eq $templatelanglang);
+         foreach my $thislang (@{$self->{lang}}){
+             next if ($thislang eq $templatelang);
 
-#             my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $thislang })->single;
+             my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $thislang })->single;
             
-#             if ($template){
-#                 return $template->templatetext;
-#             }
-#         }
+             if ($template){
+                 return $template->templatetext;
+             }
+         }
     }
 
     return "";

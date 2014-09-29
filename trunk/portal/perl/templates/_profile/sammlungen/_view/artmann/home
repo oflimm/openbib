@@ -30,48 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:40px;">
-
-<center> <img src="/images/openbib/views/artmann/yeti_300x308.gif"
-alt="Yeti" /><br /><br /><i
-style="font-size:0.8em">Cover der Ausgabe Sherpa bensing grinsing</i></center>
-
- </div>
-
-<h1>Die H. C. Artmann-Sammlung Knupfer</h1>
-
-<p>
-<span style="color:#F7931E; font-weight:bold">Bei den Menschfressern geht alles so einfach<br />&nbsp;
--krach schleif schneid brat schmalz<br />
-und der liebe Bauch ist lecker Sonne<br />
-
-<br /> H.C. Artmann: Der handkolorierte Menschenfresser<br /> </span>
-</p>
-
-<p> Am 8. Februar 2006 schenkte der Geschäftsführer des Auktionshauses
-Venator und Hanstein Karl-Heinz Knupfer der Universitäts- und
-Stadtbibliothek Köln seine umfangreiche Sammlung von Werken des
-österreichischen Schriftstellers H.C. Artmann.  </p> <p> Die Schenkung
-umfasst insgesamt 239 Titel. Damit ist die USB Köln im Besitz des
-umfangreichsten Artmann-Bestandes in deutschen wissenschaftlichen
-Bibliotheken.  </p>
-
-<h1>Die Sammlung in der USB</h1>
-
-<p> Die Titel wurden geschlossen unter der Signatur KNUP
-aufgestellt. Sie sind vollständig in ihrer ursprünglichen Form mit den
-Originalumschlägen erhalten. Signaturen und Etiketten sind den Büchern
-beigelegt und nicht eingeklebt. Alle Titel wurden in der
-Hausbuchbinderei durchgesehen und ggf. repariert. Elf Bücher wurden
-von den Buchbindermeisterinnen, die bereits eine Anzahl bedeutender
-Preise gewonnen haben, und ihren Lehrlingen mit handwerklich gekonnten
-und künstlerisch interessanten Einbänden und Kassetten versehen.  </p>
-
-<p>
-Die Einsichtnahme für Forschungszwecke erfolgt im  <a
-href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/histsamm/lesesaal/index_ger.html" target="_blank">
-Lesesaal Historische Sammlungen</a>. Alle Titel sind in Suchen & Bestellen der USB und im
-Verbundkatalog NRW erfasst. [<a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Weitere Informationen</a>] </p>
+[% config.get_templatetext('home','artmann',lang) %]
 
     </div>
     <!-- end: #main -->

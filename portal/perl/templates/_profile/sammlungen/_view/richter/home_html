@@ -30,76 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-         <div class="ym-grid">
-          <div class="ym-g33 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-           <center style="padding-top: 70px;">
-
-             <img src="/images/openbib/views/richter/richterexlibris_270px.jpg" alt="Ex Libris" />
-
-             <br /><br />
-
-             <i style="font-size:0.8em">Exlibris der Richter-Bibliothek</i>
-
-             <br/></center>
-          </div>
-         </div>
-          <div class="ym-g66 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-<h1>Die Virtuelle Bibliothek Elise und Helene Richter</h1>
-
-
-<p> Die Bibliothek der Schwestern Elise und Helene Richter wurde im Rahmen der NS-Provenienzforschung
-in der USB Köln rekonstruiert und dokumentiert. Ausführliche
-Informationen in: <a href="[% path_prefix %]/[% config.get('info_loc') %]/richterbibliothek_heute.html?l=[% lang %]">Die Richterbibliothek heute</a>. Das Ziel der "Virtuellen
-Bibliothek" ist, alle noch physisch fassbaren
-Bücher der ehemaligen Privatbibliothek zu erfassen. Dabei stellt die
-Erfassung und Beschreibung der USB-Bestände den ersten Schritt dar. Bücher aus dem
-Besitz der Schwestern befinden sich heute nicht nur in Köln, sondern u.a in der Österreichischen
-Nationalbibliothek, im Österreichischen Theatermuseum und in <a href="[% path_prefix %]/[%
-config.get('info_loc') %]/externe_nachweise.html?l=[% lang %]">weiteren Institutionen</a>.
-</p>
-
-
-<h2> Elise und Helene Richter</h2>
-
-<p>
-Die Wiener Philologinnen <a href="[% path_prefix %]/[%
-config.get('info_loc') %]/elise_richter.html?l=[% lang %]">Elise und Helene Richter</a> besaßen gemeinsam
-eine umfangreiche Bibliothek mit anglistischem, romanistischem,
-sprachwissenschaftlichem und theaterwissenschaftlichem
-Schwerpunkt. Durch den 1938 erfolgten "Anschluss" ihrer österreichischen Heimat an
-das Deutsche Reich wurden die beiden Jüdinnen nahezu mittellos und sahen sich
-gezwungen, ihren Besitz, darunter auch ihre Bücher zu verkaufen. Aus
-diesem Grund nahm Elise Richter 1941 Kontakt
-zu Hermann Corsten, dem damaligen Direktor der Universitäts- und Stadtbibliothek Köln auf.
-Bei einem Treffen in Wien wurde der Kauf von etwa 2.700 Bänden zum
-Preis von 4.500 Reichsmark vereinbart. Bevor es zu einer Überweisung
-des Betrages kam, wurden die Schwestern nach Theresienstadt
-deportiert. Die betagten Damen starben beide im
-Konzentrationslager.
-<br / >
-Die Bücher ihrer Bibliothek kamen 1942 in die USB
-Köln und wurden in den Bestand eingefügt.
-Diese Erwerbung zählt zu den NS-verfolgungsbedingt entzogenen
-Kulturgütern.
-Die USB Köln ist nach Rücksprache mit der Universität zu
-Köln, sowie nach der Einverständniserklärung des Oberbürgermeisters der
-Stadt Köln bereit, die Richter-Bibliothek zu restituieren. Die Suche
-nach möglichen Erben verlief allerdings bislang ergebnislos.
-</p>
-
-<p />
-Aktuelle Publikation: <b><a href="http://www.ub.uni-koeln.de/bibliothek/pub/schriften/index_ger.html#e15780"
-target="_blank">Bücherspuren - Das Schicksal von Elise und Helene
-Richter und ihrer Bibliothek im "Dritten Reich"</a></b>
-<p/>
-
-          </div>
-         </div>
-      </div>
+[% config.get_templatetext('home','richter',lang) %]
 
     </div>
     <!-- end: #main -->

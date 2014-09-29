@@ -51,35 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<p />
-
-<h1>Ansprechpartner</h1>
-
-<h2>Inhaltliche Realisierung</h2>
-
-<table>
-<tr>
-<td><b>Christiane Hoffrath</b><br />
-Recherche, Beschreibung, Erfassung<br />
-Abt. Universit&auml;tsGesamtKatalog<br />
-Tel:   0221/470-3306<br />
-Email: <a href="mailto:hoffrath@ub.uni-koeln.de">hoffrath@ub.uni-koeln.de</a></td>
-</tr>
-</table>
-
-<br />
-<br />
-
-<h2>Technische Realisierung</h2>
-
-<table>
-<tr><td><b>Oliver Flimm</b><br />
-Programmierung<br />
-IT-Dienste / Abt. Universit&auml;tsGesamtKatalog<br />
-Tel:   0221/470-3330<br />
-Email: <a href="mailto:flimm@ub.uni-koeln.de">flimm@ub.uni-koeln.de</a></td>
-</tr>
-</table>
+[% config.get_templatetext('info_ansprechpartner','richter',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

@@ -51,63 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Verfahren zur Abnahme eines Abklatsches</h2>
-
-<p>
-Zur Dokumentation antiker Inschriften auf Stein sind sogenannte
-Abklatsche (frz. estampage, engl. squeeze) noch vor der
-fotographischen Aufnahme von erstrangiger Bedeutung. Zur Herstellung
-eines Abklatsches wird auf die gereinigte Oberfläche eines Steines ein
-spezielles säure- und leimfreies Löschpapier aufgelegt, benetzt und
-mit einer robusten Bürste in die Vertiefungen des Steines
-"eingeschlagen." Nach der Trocknung liegt in dem Papierbogen eine
-beständige und gut transportable Negativ-Kopie der Steinoberfläche
-vor.
-</p>
-
-<p/>
-        <div class="ym-grid">
-          <div class="ym-g20 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-<img src="/images/openbib/views/inst404abklatsch/abklatsch1_small.jpg" class="img" alt="" />
-
-           </div>
-          </div>
-
-          <div class="ym-g20 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-<img src="/images/openbib/views/inst404abklatsch/abklatsch2_small.jpg" class="img" alt="" />
-
-           </div>
-          </div>
-
-          <div class="ym-g20 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-<img src="/images/openbib/views/inst404abklatsch/abklatsch3_small.jpg" class="img" alt="" />
-
-           </div>
-          </div>
-
-          <div class="ym-g20 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-<img src="/images/openbib/views/inst404abklatsch/abklatsch4_small.jpg" class="img" alt="" />
-
-           </div>
-          </div>
-
-          <div class="ym-g20 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-<img src="/images/openbib/views/inst404abklatsch/abklatsch5_small.jpg" class="img" alt="" />
-
-          </div>
-         </div>
-       </div>
-
+[% config.get_templatetext('info_abklatsch','inst404abklatsch',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

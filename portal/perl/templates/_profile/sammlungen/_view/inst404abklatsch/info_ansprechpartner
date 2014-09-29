@@ -51,48 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Inhaltliche Realisierung</h2>
-
-<table>
-<tr><td>
-Dr. Gregor Staab<br/>
-Universität zu Köln<br/>
-Institut für Altertumskunde<br/>
-Arbeitsstelle für Papyrologie, Epigraphik und Numismatik der Nordrhein-Westfälischen Akademie der Wissenschaften und der Künste<br/>
-Philosophikum<br/>
-Albertus-Magnus-Platz<br/>
-50923 Köln<br/>
-Tel. +49 221 470 3024<br/>
-E-Mail: <a href="mailto:gstaab@uni-koeln.de">gstaab@uni-koeln.de</a><br/>
-Webseite: <a href="http://ifa.phil-fak.uni-koeln.de/index.php?id=12990" target="_blank">Dr. Gregor Staab</a> und <a href="http://awk-pen.phil-fak.uni-koeln.de/" target="_blank">Arbeitsstelle für Papyrologie, Epigraphik und Numismatik</a>
-<br/>
-Mitarbeiter: stud. phil. Hermann Koop<br/>
-</td>
-</tr>
-</table>
-
-<br />
-<br />
-
-<h2>Technische Realisierung</h2>
-
-<table>
-
-<tr><td><b>Oliver Flimm</b><br />
-Programmierung<br />
-Abt.EDV<br />
-Tel:   0221/470-3330<br />
-Email:<a href="http://www.ub.uni-koeln.de/res/personen_e_mail/flimm/index_ger.html" target="_blank"> flimm@ub.uni-koeln.de</a></td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-<td><b>Christiane Hoffrath</b><br />
-Workflow-Konzept<br />
-
-Abt. Universit&auml;tsGesamtKatalog<br />
-Tel:   0221/470-3306<br />
-Email: <a href="http://www.ub.uni-koeln.de/res/personen_e_mail/hoffrath/index_ger.html" target="_blank">hoffrath@ub.uni-koeln.de</a></td>
-</tr>
-</table>
-
+[% config.get_templatetext('info_ansprechpartner','inst404abklatsch',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

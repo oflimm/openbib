@@ -35,7 +35,7 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('users_loc') %].html?l=[% lang %]">Usersistration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Templates") %]</a></li>
        </ul>
      </div>

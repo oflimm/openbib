@@ -349,8 +349,8 @@ CREATE TABLE templateinfo (
   templatetext TEXT
 );
 
-DROP TABLE IF EXISTS user_templateinfo;
-CREATE TABLE user_templateinfo (
+DROP TABLE IF EXISTS user_template;
+CREATE TABLE user_template (
   id         BIGSERIAL,
   userid     BIGINT NOT NULL,
   templateid BIGINT NOT NULL

@@ -53,46 +53,9 @@
       <div class="ym-col3">
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Alte Pfarrbibliothek in St. Georg, Grevenbroich-Neu-Elfgen</h2>
+[% config.get_templatetext('info_grevenbroich','rheinlandbib',lang) %]
 
-<p> Die kleine Bibliothek, die sich in der Elfgener Pfarrei St. Georg
-erhalten hat, zählt 217 Bände, die je etwa zur Hälfte vor 1800 und
-nach 1900 erschienen sind. Aus dem 19. Jahrhundert stammen nur wenige
-Titel. Wie etliche andere Pfarrbibliotheken auch ist sie im
-Wesentlichen aus dem Nachlass einzelner Geistlicher des 18. oder
-19. Jahrhunderts entstanden, dem im Laufe der Zeit alte Bücher
-unterschiedlichster Herkunft hinzugefügt wurden. In Elfgen fallen der
-Pfarrer Johannes Weller und der ehemalige Kanoniker des Stifts
-Mariengraden in Köln, Johann Theodor Wirtz, die beide um 1800 lebten,
-als Vorbesitzer zahlreicher älterer Werke auf.  </p>
-
-<p> Pfarrbibliotheken dieses Typus sind vor allem von pastoralen
-Bedürfnissen (Predigtlehre, Liturgie, Moraltheologie) geprägt. Daneben
-finden sich in Elfgen auffallend viele Titel aus der Kirchengeschichte
-vor allem des Rheinlandes sowie Bände aus ganz verschiedenen, meist
-rheinischen Klöstern, von denen das Kölner Mariengradenstift, das in
-Elfgen von Alters her erheblichen Besitz hatte, der Pfarrei besonders
-eng verbunden war. Auch unter den wenigen nicht theologischen Büchern
-fällt das Übergewicht der historischen Werke auf; alle anderen
-Disziplinen sind nur mit einzelnen Titeln wie einem Kräuterbuch, einem
-<emph>Romführer</emph> oder einem Wörterbuch vertreten. Sammlungen
-wie die Elfgener können, wenn auch äußerlich eher unscheinbar, oft
-wichtige Ergänzungen der Bestände großer Bibliotheken sein, da diese
-diese wissenschaftlich wenig relevante Literatur nie systematisch
-gesammelt haben. Heute wird deren Quellenwert für die Erforschung der
-Geistes-, Kultur- und Sozialgeschichte der Neuzeit aber mehr denn je
-geschätzt.  </p>
-
-<p>
-Der Bestand dieser Bibliothek ist auch separat in einem
-eigenst&auml;ndigen Portal recherchierbar.
-</p>
-
-<p>
-&gt;&gt;&nbsp;<a href="http://grevenbroich.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
-</p>
-
-</div>
+        </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>

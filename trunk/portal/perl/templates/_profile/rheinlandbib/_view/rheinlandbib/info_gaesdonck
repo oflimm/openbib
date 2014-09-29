@@ -53,57 +53,9 @@
       <div class="ym-col3">
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Bibliotheca Domus Presbyterorum Gaesdonck</h2>
+[% config.get_templatetext('info_gaesdonck','rheinlandbib',lang) %]
 
-<p>Auf der Gaesdonck, einem um 1400 gegründeten ehemaligen
-Augustinerchorherrenkloster direkt an der niederländischen Grenze,
-blieb der größte Teil der nicht unbedeutenden Bibliothek auch nach der
-Aufhebung des Klosters 1802 an Ort und Stelle, weil es den Chorherren
-gelungen war, Kirche und Klostergebäude samt Inventar privat zu
-erwerben.</p>
-
-<p>Ein Teil der Bücher kam allerdings zwischen Aufhebung und Rückkauf
-abhanden; andere, die für die Kölner Zentralschule bestimmt waren,
-befinden sich ganz überwiegend noch am Ort. Eine Reihe von
-Handschriften kam in die Königliche Bibliothek in Berlin, die heutige
-Staatsbibliothek. Der Bestand wuchs aber auch um mindestens 500 Bände,
-die aus anderen niederrheinischen Klöstern zur Gaesdonck kamen, und
-durch alte Buchbestände, die das 1828 eingerichtete
-"Hülfspriesterseminar" der Diözese Münster sowie das ihm 1849 folgende
-Gymnasium erwarben.</p>
-
-<p>Zu den heute vorhandenen ca. 6.000 Bänden gehören neben 21
-mittelalterlichen Handschriften ungefähr 150 Inkunabeln. Der
-Schwerpunkt des Bestandes liegt aber eindeutig im 16. und
-17. Jahrhundert.</p>
-
-<p>Natürlich wird er von der Theologie geprägt, die quer durch alle
-Disziplinen gut vertreten ist und neben lateinischen vor allem
-französische und auch manche niederländische Titel enthält; besondere
-Beachtung verdient dabei die unauffällige, in Deutschland aber seltene
-französische und niederländische Erbauungsliteratur des 17. und
-18. Jahrhunderts. Besonders bemerkenswert sind daneben aber nicht so
-sehr die z. T. sehr ansprechend kolorierten Inkunabeln und
-Postinkunabeln, sondern die Musikdrucke. Über ihren Bezug zum
-Augustinerchorherrenkloster - spiegeln sie die Musikpraxis
-Gaesdoncks wider oder nicht? - herrscht keine Einigkeit, um so
-mehr aber über ihre Seltenheit: von 134 Stimmbüchern gelten 51 als
-Unikate und weitere 23 als Unikate dieser Auflage.</p>
-
-<p>
-Aus: Beßelmann, Karl-Ferdinand: Alte Bücher - neu geschätzt. Köln 1998
-</p>
-
-<p>
-Der Bestand dieser Bibliothek ist auch separat in einem
-eigenst&auml;ndigen Portal recherchierbar.
-</p>
-
-<p>
-&gt;&gt;&nbsp;<a href="http://gaesdonck.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
-</p>
-
-</div>
+        </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>

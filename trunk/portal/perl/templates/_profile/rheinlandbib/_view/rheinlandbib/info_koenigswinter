@@ -53,39 +53,9 @@
       <div class="ym-col3">
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Heimatverein Siebengebirge in Königswinter</h2>
+[% config.get_templatetext('info_koenigswinter','rheinlandbib',lang) %]
 
-<p>
-Der Heimatverein Siebengebirge e.V. hat in über 70 Jahren eine
-regionalkundliche Bibliothek zusammengetragen, die heute im
-Siebengebirgsmuseum aufbewahrt wird, aber noch im Besitz und in der
-Verwaltung des Heimatvereins ist. Neben der üblichen landeskundlichen
-Literatur - Ortsmonografien, Literatur über das Siebengebirge,
-Rheinbücher u. ä. - besitzt die Bibliothek mehr als 50 Ausgaben der
-Werke des in Königswinter geborenen Schriftstellers Wolfgang Müller
-(1816-1873), z. T. aus dem Besitz des Müller-Biografen Toni
-Metternich. Damit dürfte diese eine der größten Sammlungen dieses
-Schriftstellers in Deutschland sein.
-</p>
-
-<p>
-Die Aufstellungssystematik der Bibliothek lässt die Breite, in der
-regionales Schrifttum gesammelt wird, gut erkennen. Im Rahmen dieses
-elektronischen Kataloges sind nur die Abteilungen A (Alte Bücher, im
-allgemeinen vor etwa 1850 erschienen) und die Werke von Wolfgang
-Müller erfasst worden.
-</p>
-
-<p>
-Der Bestand dieser Bibliothek ist auch separat in einem
-eigenst&auml;ndigen Portal recherchierbar.
-</p>
-
-<p>
-&gt;&gt;&nbsp;<a href="http://koenigswinter.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
-</p>
-
-</div>
+        </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>

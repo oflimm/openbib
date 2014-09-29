@@ -53,50 +53,9 @@
       <div class="ym-col3">
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Bibliothek des Max-Ernst-Gymnasiums (MEG) der Stadt Brühl</h2>
+[% config.get_templatetext('info_bruehl','rheinlandbib',lang) %]
 
-<p> Trotz massiver Verluste durch Kriegseinwirkungen ist der Bestand
-dieser Schulbibliothek mittlerweile auf ca. 12.000 Bände
-angewachsen. Ihr Altbestand bildet einen repräsentativen und
-lebendigen Querschnitt durch den Lehrstoff einer kleinstädtischen
-Bürgerschule des 19. und 20. Jahrhunderts. Im Jahre 2002 bekam die
-Bibliothek einen neuen Platz im Selbstlernzentrum des MEG. Im
-Zusammenhang mit diesem Umzug aus dem Hauptgebäude entschloss man
-sich, den teilweise schon separat aufgestellten Altbestand (ca. 2.000
-Bände) in die Nordrhein-Westfälische Verbunddatenbank einzubinden.
-</p>
-
-<p> Aus der Zeit vor 1800 stammen ca. 200 Bände, die besonderes
-Interesse beanspruchen dürfen. Bestandsschwerpunkte sind daneben die
-wichtigen Fächer der Zeit: Die alten Sprachen Latein und Griechisch,
-Geschichte vor allem der klassischen Antike, aber auch des
-Mittelalters, Theologie, Deutsch und Pädagogik. Zahlreiche Werke in
-spanischer und italienischer Sprache stammen aus dem Besitz des
-Schriftstellers Lerique.  </p>
-
-<p> Zahlenmäßig überwiegen Titel zur Geschichte. Hierzu gehört mit der
-"Cronica van der hilliger Stat van Coellen", der sog. "Koelhoffschen
-Chronik" von 1499, das älteste Buch der Bibliothek, aber auch Samuel
-Pufendorfs "De rebus gestis Friderici Wilhelmi Magni … commentaria"
-(1733) und der "Entwurf einer Geschichte des gegenwärtigen Krieges" (2
-Bände 1762, 1763), der fast nur aus handkolorierten Karten und
-Grundrissen zu den Kriegsschauplätzen dieses "ersten Weltkrieges“ 
-besteht. Im 19. Jahrhundert liegen Schwerpunkte bei Werkausgaben
-deutscher klassischer und romantischer Autoren, Wörterbüchern und
-sprachwissenschaftlichen Werken, lateinischen und griechischen
-Textausgaben, Werken philosophischen, pädagogischen und
-religionswissenschaftlichen Inhalts.  </p>
-
-<p>
-Der Bestand dieser Bibliothek ist auch separat in einem
-eigenst&auml;ndigen Portal recherchierbar.
-</p>
-
-<p>
-&gt;&gt;&nbsp;<a href="http://bruehl.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
-</p>
-
-</div>
+        </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>

@@ -53,48 +53,9 @@
       <div class="ym-col3">
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Ehemaliges Redemptoristenkloster Hennef-Geistingen</h2>
+[% config.get_templatetext('info_geistingen','rheinlandbib',lang) %]
 
-<h3>Historischer (Teil-)Katalog der aufgelösten Bibliothek</h3>
-
-<p> Wenige Jahre nach der Hundertjahrfeier der Errichtung des Klosters
-und Studienhauses des Redemptoristenordens in Hennef-Geistingen im
-Jahre 1902 wurde der gesamte Komplex im Frühjahr 2006 von den
-Redemptoristen verkauft und verlassen. Im Zuge dieser Veränderung
-wurde auch die Bibliothek, deren 180.000 Bände dem Konvent wie der
-schon 1996 aufgehobenen Philosophisch-Theologischen Hochschule gedient
-hatten, aufgelöst und in alle Winde zerstreut. Nachdem wertvolle Teile
-wie die 43 Inkunabeln an das Redemptoristenkloster Heiligenstadt und
-andere Ordenseinrichtungen gegangen waren, suchte man nach einem
-Abnehmer des restlichen Bestandes im Ganzen und fand ihn in einem
-Antiquar, der die Bücher auf eBay anbot. Dort gelang es der Bibliothek
-der Monumenta Germaniae Historica, etwa 200 Bände zu erwerben – 
-sowohl Alte Drucke als auch neuere Literatur vornehmlich zur
-Patristik, Aszetik und zur Geistesgeschichte des Spätmittelalters.
-</p>
-
-<p> Nachdem die Bibliothek endgültig aufgelöst worden war, erwies es
-sich als notwendig, ihre Nachweise auch aus der Verbunddatenbank zu
-löschen. Auf Anregung des Hochschulbibliothekszentrums
-Nordrhein-Westfalen entschloss sich die Arbeitsstelle "Historische
-Bestände im Rheinland", den dort erfassten Bestand – etwa 14.000
-Titel vornehmlich älterer und alter Drucke - als historischen
-Teilkatalog dieser nicht mehr existierenden Sammlung zu übernehmen und
-als Quelle bibliothekshistorischer Forschung zugänglich zu
-machen. Außerdem bleiben so insbesondere die gar nicht seltenen
-Titelaufnahmen erhalten, für die ausschließlich Geistinger Exemplare
-nachgewiesen waren.  </p>
-
-<p>
-Der Bestand dieser Bibliothek ist auch separat in einem
-eigenst&auml;ndigen Portal recherchierbar.
-</p>
-
-<p>
-&gt;&gt;&nbsp;<a href="http://geistingen.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
-</p>
-
-</div>
+        </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>

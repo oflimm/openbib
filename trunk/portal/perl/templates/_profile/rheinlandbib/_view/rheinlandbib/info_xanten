@@ -53,69 +53,7 @@
       <div class="ym-col3">
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>StiftsBibliothek Xanten</h2>
-
-<p> Die StiftsBibliothek Xanten verfügt über einen bedeutenden Bestand
-an Handschriften, Inkunabeln und Alten Drucken vornehmlich des 16. bis
-18. Jahrhunderts. Sie bildet mit dem Stiftsarchiv und dem Domschatz
-seit 2010 das <emph>StiftsMuseum Xanten</emph> in Trägerschaft der
-katholischen Propsteigemeinde St. Viktor.  </p>
-
-<p> Die Anfänge der Bibliothek und des Archivs liegen wohl im
-8. Jahrhundert, als das Chorherrenstift St. Viktor gegründet
-wurde. Unter dem Namen <emph>Xantener Evangeliar</emph> wird in der
-Königlichen Bibliothek in Brüssel (Ms. 18732) eine Handschrift vom
-Beginn des 9. Jahrhunderts aufbewahrt, die vermutlich in Aachen in der
-Palastschule Karls des Großen entstand und im Xantener Stift benutzt
-wurde.  </p>
-
-<p> Mit dem Dom fielen im Jahr 1109 auch Archiv und Bibliothek einem
-verheerenden Brand zum Opfer. Die umfänglich erhaltenen
-Dombaurechnungen weisen ab der 2. Hälfte des 14. Jahrhunderts Ausgaben
-für eine Bibliothek (im Jahre 1392 beispielsweise für
-Sicherungsketten) auf; ein regelmäßiger Erwerbungsetat ist allerdings
-nicht nachzuweisen. Die Bibliothek wuchs in der Folgezeit
-hauptsächlich durch Schenkungen von Kanonikern und sonstigen
-Gönnern. Ab 1547/48 verfügte die Bibliothek über eigene Räume, die
-über dem Westflügel des Kreuzgangs lagen.  </p>
-
-<p> Durch die Säkularisation um 1800 gelangte wertvoller Buchbesitz
-von Xantener Klöstern, u.a. der Kartäuser, der Kapuziner, der Jesuiten
-und des Birgittenklosters Marienbaum, in die Bibliothek. Die
-Buchbestände, die nicht zerstört, verkauft oder verschleudert worden
-waren, wurden hier gesammelt und warteten auf den Abtransport durch
-die französischen Kommissare nach Paris. Glücklicherweise kam es
-jedoch für den überwiegenden Teil des Xantener Bestandes nicht so
-weit; er verblieb am Ort. Ab 1876 wurden die Bücher des Stifts, der
-Klöster und der - allerdings unbedeutenden - Pfarrbibliothek
-verschmolzen, katalogisiert und in 19 Sachgruppen aufgestellt.  </p>
-
-<p> Im Zweiten Weltkrieg nahm die Büchersammlung großen Schaden; nach
-der Bombardierung der Stadt und der starken Zerstörung des Domes 1945
-waren die wertvollen Drucke einige Monate der Witterung ausgesetzt und
-weitgehend ungesichert.  </p>
-
-<p> Spätestens seit 1970 wurden die Bestände der Stiftsbibliothek im
-Auftrag des Landes Nordrhein-Westfalen katalogisiert. Der Katalog
-erschien 1986 im Druck.  </p>
-
-<p> Dem Förderverein StiftsMuseum Xanten e.V. und der NRW-Stiftung ist
-die umfassende Sicherung und Konservierung des Gesamtbestandes zu
-verdanken, die 2005 abgeschlossen werden konnte. Die historischen
-Bibliotheksräume wurden zwischenzeitlich saniert, klimatisiert und
-baulich modernisiert.  </p>
-
-<p> Der Bestand der StiftsBibliothek Xanten umfasst heute ca. 13.000
-Bände, darunter fast 450 Inkunabeln.  </p>
-
-<p>
-Der Bestand dieser Bibliothek ist auch separat in einem
-eigenst&auml;ndigen Portal recherchierbar.
-</p>
-
-<p>
-&gt;&gt;&nbsp;<a href="http://xanten.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
-</p>
+[% config.get_templatetext('info_xanten','rheinlandbib',lang) %]
 
 </div>
         <div class="ym-ie-clearing">&nbsp;</div>

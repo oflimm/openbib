@@ -43,7 +43,7 @@
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
 
-[% PROCESS common/subtemplate name="subnavigation" active_submenu='kevelar' %]
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='kevelaer' %]
 
         </div>
       </div>

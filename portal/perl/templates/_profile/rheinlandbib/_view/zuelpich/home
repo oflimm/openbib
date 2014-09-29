@@ -30,42 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:8px;">
-
-<center>
-<img src="/images/openbib/views/zuelpich/zuelpich.png" />
-</center>
-</div>
-
-<h1>Kapuziner-Bibliothek im Stadtarchiv Zülpich (Depositum des Propsteimuseums Zülpich)</h1>
-
-<p> Die Sammlung besteht aus ca. 130 Titeln in 85
-Bänden. Überlieferungsschwerpunkte sind das 17. und 18. Jahrhundert;
-beide sind mit etwa 45 Werken vertreten. Aus dem 16. Jahrhundert
-stammen aber auch noch rund 30 Werke. Drei Titel aus dem
-19. Jahrhundert und eine Inkunabel komplettieren die Sammlung, die
-ganz überwiegend lateinischsprachig ist und daneben vor allem deutsche
-Texte enthält.  </p>
-
-<p> Ohne jede Einschränkung bildet die Theologie mit ihren
-Spezialdisziplinen den inhaltlichen Schwerpunkt dieser
-Sammlung. Andere Fachgebiete - Rhetorik, Recht, Geschichte und
-Philosophie - sind mit wenigen Werken vertreten, insgesamt vielleicht
-ein Dutzend, dann aber mit großen Namen: Aristoteles, Cicero, Livius,
-Pufendorf. Dieses "Prinzip" scheint sich übrigens in der Theologie
-fortzusetzen: bedeutende, aber auch sehr unterschiedliche Theologen
-wie der zu den populären Erbauungsschriftstellern zu rechnende
-Jeremias Drexel, der Mystiker Luis de Granada, der Kontroverstheologe
-Robert Bellarmin, der Kirchenrechtler Pierre Stockmans und der
-Moraltheologe Hermann Busenbaum sind ebenfalls mit einem, höchstens
-zwei Werken vertreten. Letztlich lassen sich aber drei Schwerpunkte im
-Bestand benennen: 1. Circa 20 Werke bieten religiöse Betrachtungen und
-Predigten, die in der Abfolge des Kirchenjahres gegliedert
-sind. 2. Rund ein Dutzend Werke sind Ausgaben der Bibel und ihrer
-Teile bzw. Kommentare zu diesen Texten. 3. Ebenso viele Titel zählen
-zu den Andachts- und Gebetbüchern im engeren Sinne. Damit liegt der
-Wert dieser Sammlung schwerpunktmäßig auf dem Felde der praktischen
-Theologie.  </p>
+[% config.get_templatetext('home','zuelpich',lang) %]
 
     </div>
     <!-- end: #main -->

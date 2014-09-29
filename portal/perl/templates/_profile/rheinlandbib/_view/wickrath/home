@@ -30,37 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:12px;padding-top:8px;">
-
-<center>
-<img src="/images/openbib/views/wickrath/wickrath.png" />
-</center>
-</div>
-
-<h1>Die Kreuzherrenbibliothek Wickrath im Stadtarchiv Mönchengladbach</h1>
-
-<p> Die Bibliothek des ehemaligen Kreuzherrenklosters zu Wickrath, die
-sich als Depositum der Katholischen Pfarrgemeinde St. Antonius
-Wickrath im Stadtarchiv Mönchengladbach befindet, ist in Kooperation
-zwischen der Stadtbibliothek Mönchengladbach und der Arbeitsstelle
-"Historische Bestände im Rheinland" verzeichnet und in die
-Nordrhein-Westfälische Verbunddatenbank eingebracht worden.  </p>
-
-<p> Mit der Stiftung des Klosters Wickrath durch Heinrich von
-Hompesch, Herr von Wickrath, und seine Frau Sophia von Burtscheid im
-Jahre 1490 beginnt auch die Geschichte der Klosterbibliothek. Sie
-endet mit der Säkularisation 1802. Wertvolle Drucke und Handschriften
-sind vorher schon von den Franzosen während ihrer Besatzungszeit
-eingezogen worden. Die noch vorhandenen Bestände waren bis 1976 Teil
-der Pfarrbücherei St. Antonius Wickrath und sind seitdem im
-Stadtarchiv Mönchengladbach gelagert. Diese 432 erhaltenen Bände, die
-mehrheitlich stark geschädigt waren und in den vergangenen Jahrzehnten
-nur zum Teil restauriert werden konnten, sind fast ausschließlich
-theologischen Inhalts und überwiegend in lateinischer Sprache, zu
-geringen Teilen auch in Deutsch oder Niederländisch, abgefasst. Von
-dem um 1900 noch umfangreicheren Bestand an Inkunabeln sind immerhin
-sechs Werke erhalten, darunter ein "Missale Dominicanum seu Ordinis
-Praedicatorum" (Basel, um 1488).  </p>
+[% config.get_templatetext('home','wickrath',lang) %]
 
     </div>
     <!-- end: #main -->

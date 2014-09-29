@@ -30,49 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:8px;">
-
-<center>
-<img src="/images/openbib/views/kevelaer/Rheinlandbib.Priesterhaus_kevelaer.png" alt="Prieserhaus" /><br><br>
-<i style="font-size:0.8em">Priesterhaus</i>
-</center>
-</div>
-
-<h1>Bibliothek des Oratorium Kevelaeriense</h1>
-
-<p> Im Priesterhaus in Kevelaer, einem der wichtigsten deutschen
-Wallfahrtsorte, befindet sich eine bemerkenswerte alte
-Oratorianerbibliothek, deren Schwerpunkt auf der theologischen
-Literatur des 17. Jahrhunderts liegt.  </p>
-
-<p> Neben zwei Dutzend meist neuzeitlichen Handschriften und ebenso
-vielen Inkunabeln besteht diese Bibliothek aus annähernd 4000 Drucken,
-die bis zur Aufhebung der Oratorianerniederlassung 1802/03 erschienen
-sind. Hinzu kommen 400 Bände vor allem des 18. und 19. Jahrhunderts
-aus der Kaplanei Keeken (bei Kleve), die seit 1969 in Kevelaer
-aufbewahrt werden.  </p>
-
-<p> Der Bestand wird beherrscht von Literatur zu allen Teilgebieten
-der Theologie und ihren Randbereichen (Philosophie,
-Geschichte). Daneben findet sich ein größerer Bestand neulateinischer
-Dichtung und Einzelwerke aus praktisch allen Fachgebieten.  </p>
-
-<p> Schwerpunkte liegen eindeutig bei der Literatur des
-17. Jahrhunderts, die sicher mehr als die Hälfte des gesamten
-Bestandes umfaßt, dann bei niederländischen und nordfranzösischen
-Drucken, darunter auch zahlreiche in niederländischer und
-französischer Sprache. </p>
-
-<p> Die Bücher sind im Nordrhein-Westfälischen Verbundkatalog
-nachgewiesen; darüber hinaus sind die mittelalterlichen Handschriften
-dem Handschriftencensus Rheinland und die Inkunabeln dem Gesamtkatalog
-der Wiegendrucke gemeldet worden.  </p>
-
-<p> Die Bände stehen zur Benutzung vor Ort zur Verfügung. In
-Einzelfällen werden sie nach Möglichkeit auch zur Benutzung in eine
-zentraler gelegene, größere Bibliothek gebracht, vorzugsweise in die
-Universitäts- und Stadtbibliothek Köln.  </p>
-
+[% config.get_templatetext('home','kevelaer',lang) %]
 
     </div>
     <!-- end: #main -->

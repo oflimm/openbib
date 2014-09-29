@@ -23,6 +23,7 @@
        viewname = templateinfo.viewid.viewname
        templatename = templateinfo.templatename
        templatetext = templateinfo.templatetext
+       templatelang = templateinfo.templatelang
    };
 
   to_json(this_json_output);

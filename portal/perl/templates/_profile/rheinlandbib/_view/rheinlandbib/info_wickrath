@@ -53,55 +53,9 @@
       <div class="ym-col3">
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Kreuzherrenbibliothek Wickrath im Stadtarchiv Mönchengladbach</h2>
+[% config.get_templatetext('info_wickrath','rheinlandbib',lang) %]
 
-<p> Nach der Erschließung der Altbestände der Kölnischen
-Franziskanerprovinz, die heute der Stadtbibliothek Mönchengladbach
-gehören, ist jetzt ein weiterer historischer Bücherschatz aus
-Mönchengladbach der Öffentlichkeit zugänglich gemacht worden. Die
-Bibliothek des ehemaligen Kreuzherrenklosters zu Wickrath, die sich
-als Depositum der Katholischen Pfarrgemeinde St. Antonius Wickrath im
-Stadtarchiv Mönchengladbach befindet, ist in Kooperation zwischen der
-Stadtbibliothek Mönchengladbach und der Arbeitsstelle "Historische
-Bestände im Rheinland" verzeichnet und in die Nordrhein-Westfälische
-Verbunddatenbank eingebracht worden.  </p>
-
-<p> Mit der Stiftung des Klosters Wickrath durch Heinrich von
-Hompesch, Herr von Wickrath, und seine Frau Sophia von Burtscheid im
-Jahre 1490 beginnt auch die Geschichte der Klosterbibliothek. Sie
-endet mit der Säkularisation 1802. Wertvolle Drucke und Handschriften
-sind vorher schon von den Franzosen während ihrer Besatzungszeit
-eingezogen worden. Die noch vorhandenen Bestände waren bis 1976 Teil
-der Pfarrbücherei St. Antonius Wickrath und sind seitdem im
-Stadtarchiv Mönchengladbach gelagert. Diese 432 erhaltenen Bände, die
-mehrheitlich stark geschädigt waren und in den vergangenen Jahrzehnten
-nur zum Teil restauriert werden konnten, sind fast ausschließlich
-theologischen Inhalts und überwiegend in lateinischer Sprache, zu
-geringen Teilen auch in Deutsch oder Niederländisch, abgefasst.  </p>
-
-<p> Von dem um 1900 noch umfangreicheren Bestand an Inkunabeln sind
-immerhin sechs Werke erhalten. Darunter befindet sich ein "Missale
-Dominicanum seu Ordinis Praedicatorum" (Basel, um 1488), von dem
-weltweit nur noch sechs andere Exemplare nachweisbar sind, so dass die
-Existenz eines siebten Exemplars als besonders erfreulich bewertet
-werden kann. Genauso erfreulich war es, dass die Pfarrgemeinde
-Wickrath auf Hinweis der Arbeitsstelle mit einem "Liber sextus
-decretalium", Basel 1500, einen Band zurückerwerben konnte, der im
-Laufe des 20. Jahrhunderts entfremdet worden war. So hat die Arbeit an
-diesem verborgenen "Schatz" nicht nur dazu beigetragen, ihn für die
-Allgemeinheit zugänglich zu machen, sondern auch bewirkt, dass er um
-ein einstmals verlorenes Stück bereichert wurde.  </p>
-
-<p>
-Der Bestand dieser Bibliothek ist auch separat in einem
-eigenst&auml;ndigen Portal recherchierbar.
-</p>
-
-<p>
-&gt;&gt;&nbsp;<a href="http://wickrath.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
-</p>
-
-</div>
+        </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>

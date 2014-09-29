@@ -30,56 +30,8 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:8px;">
+[% config.get_templatetext('home','rheinlandbib',lang) %]
 
-<center>
-<img src="/images/openbib/views/rheinlandbib/logo_start.png" alt="Linz am
-Rhein" /><br><br>
-<i style="font-size:0.8em">Linz am Rhein - Druckgraphik von Christoph
-Boethius - datiert auf das Jahr 1690</i>
-</center>
-</div>
-
-<h1>Virtueller Katalog der Arbeitsstelle Historische Bestände im Rheinland</h1>
-
-
-<p>
-Der Virtuelle Katalog der Kölner "<a
-href="http://www.ub.uni-koeln.de/bibliothek/profil/arbeitsstelle_rheinland/index_ger.html"
-target="_blank">Arbeitsstelle Historische Bestände im
-Rheinland</a>" trägt die Bestände kleiner historischer
-Bibliotheken des Rheinlandes zusammen. 
-</p>
-
-<p>
-Die Katalogisierung der Bestände erfolgt in der
-Landesbibliothekarischen Arbeitsstelle, d.h. in der Universitäts- und
-Stadtbibliothek Köln. Die Bücher werden online in die
-HBZ-Verbunddatenbank NRW katalogisiert, und können in diesem Portal
-gemeinsam recherchiert werden.
-</p>
-
-<p>
-Zum gegenw&auml;rtigen Zeitpunkt umfasst dieser virtuelle Katalog die
-Best&auml;nde von <a href="[% path_prefix %]/[% config.get('info_loc')
-%]/rheinischeabteilung.html?l=[% lang %]" >14
-Bibliotheken</a>. Weitere Best&auml;nde werden kontinuierlich integriert. 
-</p>
-
-<p> Neben den rheinischen Bibliotheken ist auch der Bestand der <a
-href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/rheinabt/index_ger.html"
-target="_blank">Rheinischen Abteilung der USB</a> mit mehr als 117.000
-Titeln integriert. Darüber hinaus stellt die Rheinische Abteilung der
-USB Köln für jede der rheinischen Bibliotheken einen eigenständigen
-Online-Katalog bereit.  </p>
-
-<!--
-<p>Während die USB Köln im Rahmen Ihrer landesbibliothekarischen
-Aufgaben die historischen rheinischen Bibliotheken betreut, ist die
-Aufgabe der ULB Münster die Betreuung der <a
-href="http://www.ulb.uni-muenster.de/landesbibliothek/sammlungen/histbibl/index.html">historischen
-westfälischen Bibliotheken</a>.</p>
--->
     </div>
     <!-- end: #main -->
 

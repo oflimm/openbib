@@ -53,91 +53,9 @@
       <div class="ym-col3">
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Bibliothek des Oratorium Kevelaeriense</h2>
+[% config.get_templatetext('info_kevelaer','rheinlandbib',lang) %]
 
-<p> Im Priesterhaus in Kevelaer, einem der wichtigsten deutschen
-Wallfahrtsorte, befindet sich eine bemerkenswerte alte Bibliothek,
-deren Schwerpunkt auf der theologischen Literatur des 17. Jahrhunderts
-liegt.  </p>
-
-<h3>Bestandsgeschichte:</h3>
-
-<p> Erstmals erwähnt wird die Bibliothek im Zusammenhang mit dem 1696
-- 1704 errichteten Neubau der Niederlassung der Oratorianer, denen
-1646 die Betreuung des Wallfahrtsortes Kevelaer übertragen worden
-war. Die Geschichte der Oratorianerbibliothek ist also eng verknüpft
-mit dem Wallfahrtsort Kevelaer.  Dank der wichtigen Rolle, die die
-Bibliothek für das Oratorianer-Generalstudium in Kevelaer spielte,
-wurde der Bestand kontinuierlich aufgebaut; Nachlässe und Schenkungen
-einzelner Oratorianer bereicherten die Sammlung zusätzlich.
-</p>
-
-<p> Die Aufhebung der Oratorianerniederlassung 1802/03 bedeutete für
-den Bestand der Bibliothek einen tiefen Einschnitt. Über viele Jahre
-wurde er nicht vermehrt, aber immerhin relativ sorgfältig
-verwahrt. Seit dem 2. Weltkrieg versucht man, den vorhandenen
-Schwerpunkt Wallfahrtsliteratur antiquarisch zu ergänzen.  </p>
-
-<h3>Bestandsumfang:</h3>
-
-<p> Neben zwei Dutzend meist neuzeitlichen Handschriften und ebenso
-vielen Inkunabeln besteht die Oratorianerbibliothek aus annähernd 4000
-Drucken, die bis zur Aufhebung der Oratorianerniederlassung 1802/03
-erschienen sind. Hinzu kommen 400 Bände vor allem des 18. und
-19. Jahrhunderts aus der Kaplanei Keeken (bei Kleve), die seit 1969 in
-Kevelaer aufbewahrt werden.  </p>
-
-<p> Der Bestand wird beherrscht von Literatur zu allen Teilgebieten
-der Theologie und ihren Randbereichen (Philosophie,
-Geschichte). Daneben findet sich ein größerer Bestand neulateinischer
-Dichtung und Einzelwerke aus praktisch allen Fachgebieten.  </p>
-
-<p> Schwerpunkte liegen eindeutig bei der Literatur des
-17. Jahrhunderts, die sicher mehr als die Hälfte des gesamten
-Bestandes umfasst, dann bei niederländischen und nordfranzösischen
-Drucken, darunter auch zahlreiche in niederländischer und
-französischer Sprache. Besonders interessant ist die inhaltliche
-Prägung durch die Priestergemeinschaft der Oratorianer, die aus
-Mecheln nach Kevelaer gekommen sind. Sie spiegelt sich nicht nur in
-zahlreichen Predigtsammlungen oder moraltheologischen Auslegungen, die
-von Oratorianern geschrieben wurden, sondern ganz besonders deutlich
-in den Streitschriften zwischen Jansenisten und Jesuiten in Frankreich
-und Belgien. Und da die Mechelner Oratorianer den Jansenisten
-verbunden waren, einer sehr rigiden Frömmigkeitsrichtung mit dem
-Zentrum im von der Familie Arnauld beherrschten
-Zisterzienserinnenkloster Port-Royal vor Paris, ist es auch nur
-folgerichtig, dass sie nicht nur mit den Löwener Jesuiten in lange
-Auseinandersetzungen verstrickt waren, sondern auch der Dogmatik und
-der Moraltheologie besondere Aufmerksamkeit schenkten. Diese
-Schwerpunkte finden sich auch in der Oratorianerbibliothek deutlich
-wieder.  </p>
-
-<h3>Bestandserschließung und Benutzung:</h3>
-
-<p> Mit Unterstützung der Deutschen Forschungsgemeinschaft wurde die
-Katalogisierung der Bibliothek 1990 begonnen. Seit Mitte 1992 wurde
-sie allein aus Landesmitteln fortgeführt und ist inzwischen
-abgeschlossen. Die Bücher sind im Nordrhein-Westfälischen
-Verbundkatalog nachgewiesen; darüber hinaus sind die mittelalterlichen
-Handschriften dem Handschriftencensus Rheinland und die Inkunabeln dem
-Gesamtkatalog der Wiegendrucke gemeldet worden.  </p>
-
-<p> Die Bände stehen zur Benutzung vor Ort zur Verfügung. In
-Einzelfällen werden sie nach Möglichkeit auch zur Benutzung in eine
-zentraler gelegene, größere Bibliothek gebracht, vorzugsweise in die
-Universitäts- und Stadtbibliothek Köln.  </p>
-
-
-<p>
-Der Bestand dieser Bibliothek ist auch separat in einem
-eigenst&auml;ndigen Portal recherchierbar.
-</p>
-
-<p>
-&gt;&gt;&nbsp;<a href="http://kevelaer.ub.uni-koeln.de/" target="_blank">Zum Portal</a>
-</p>
-
-</div>
+        </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
       </div>

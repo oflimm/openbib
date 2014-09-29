@@ -49,58 +49,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>Ansprechpartner</h1>
-
-<table>
-<tr><th>Inhaltliche Realisierung</th><th></th><th>Technische Realisierung</th></tr>
-<tr><td valign="top">
-
-<b>ALEKI - Arbeitsstelle für Kinder- und
-Jugendmedienforschung</b><br />
-
-<p><b>Prof. Dr. Otto Brunken</b>
-<br /> Bernhard-Feilchenfeld-Str. 11, 50969 Köln
-<br />Email: otto.brunken@uni-koeln.de</br>
-</p>
-<p>
-<b>Maria Michels-Kohlhage</b>
-<br />
-Bibliothek der ALEKI
-<br />Bernhard-Feilchenfeld-Str. 11, 50969 Köln
-<br />Email: michels.kohlhage@uni-koeln.de<br />
-</p>
-<p>
-<b>Noelle Rensing</b>
-<br />
-Administrator
-<br />Bernhard-Feilchenfeld-Str. 11, 50969 Köln
-<br />Email: noelle.rensing@uni-koeln.de<br />
-</p>
-<p>
-<b>Fabian Binder</b>
-<br />
-Administrator
-<br />Bernhard-Feilchenfeld-Str. 11, 50969 Köln
-<br />Email: fbinder0@uni-koeln.de<br />
-</p>
-</td>
-<td>&nbsp;&nbsp;</td>
-<td valign="top">
-<b>Universitäts- und Stadtbibliothek Köln</b><br />
-<p>
-<b>Abt. UGK</b>
-<br />Dezernat Medienbearbeitung, bibl. Dienstleistungen,
-<br /> Universitätsstr. 33, 50931 Köln
-<br />Email: gk@ub.uni-koeln.de<br />
-<p>
-<b>Oliver Flimm</b>
-<br />Dezernat Datenverarbeitung
-<br /> Universitätsstr. 33, 50931 Köln
-<br />Email: flimm@ub.uni-koeln.de<br />
-</p>
-</td></tr>
-</table>
-
+[% config.get_templatetext('info_project','schatzbehalter',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

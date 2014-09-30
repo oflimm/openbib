@@ -1940,17 +1940,24 @@ sub get_templateinfo_overview {
 sub get_templateinforevision_overview {
     my $self       = shift;
     my $templateid = shift;
+    my $numrev     = shift;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $opts_ref = {
+        order_by => 'tstamp DESC',
+    };
+
+    if ($numrev){
+        $opts_ref->{rows} = $numrev;
+    }
+    
     my $object = $self->get_templateinforevision->search(
         {
             templateid => $templateid,
         },
-        {
-            order_by => 'tstamp DESC',
-        }
+        $opts_ref
     );
     
     return $object;

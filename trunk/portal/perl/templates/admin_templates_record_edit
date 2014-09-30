@@ -109,12 +109,22 @@
 
 <h2>Revisionen</h2>
 
+<p>
+[% msg.maketext("Anzahl") %]
+&nbsp;
+<a [% IF numrev == 10 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=10">10</a>
+&nbsp;|&nbsp;
+<a  [% IF numrev == 20 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=20">20</a>
+&nbsp;|&nbsp;
+<a  [% IF numrev == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=100">100</a>
+</p>
+
 <table class="ym-full">
 <thead>
 <tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Datum") %]</th><th>[% msg.maketext("Text") %]</th><th>&nbsp;</th></tr>
 </thead>
 <tbody>
-[%   FOREACH thistemplaterevision IN config.get_templateinforevision_overview(templateinfo.id).all %]
+[%   FOREACH thistemplaterevision IN config.get_templateinforevision_overview(templateinfo.id,numrev).all %]
 <tr>
 <td>[% thistemplaterevision.id %]</td>
 <td>[% thistemplaterevision.tstamp %]</td>

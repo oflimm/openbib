@@ -119,7 +119,7 @@
 <tr>
 <td>[% templateinfo.id %]</td>
 <td><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></td>
-<td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %]">[% templateinfo.templatename %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=3">[% templateinfo.templatename %]</a></td>
 <td>[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form></td></tr>
 [% END %]

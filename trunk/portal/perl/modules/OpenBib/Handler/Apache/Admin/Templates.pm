@@ -178,9 +178,13 @@ sub show_record {
 
     # Shared Args
     my $r              = $self->param('r');
+    my $query          = $self->query();
     my $config         = $self->param('config');
     my $templateid     = $self->strip_suffix($self->param('templateid'));
 
+    # CGI Args
+    my $numrev         = $query->param('numrev') || 3;
+    
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
@@ -195,6 +199,7 @@ sub show_record {
     }
     
     my $ttdata={
+        numrev       => $numrev,
         templateinfo => $templateinfo_ref,
     };
     
@@ -211,12 +216,16 @@ sub show_record_form {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $query          = $self->query();
 
     my $view           = $self->param('view')           || '';
     my $templateid     = $self->param('templateid')             || '';
 
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
+
+    # CGI Args
+    my $numrev         = $query->param('numrev');
     
     if (!$self->authorization_successful){
         $self->print_authorization_error();
@@ -234,6 +243,7 @@ sub show_record_form {
     }
 
     my $ttdata={                # 
+        numrev          => $numrev,
         templateinfo    => $templateinfo_ref,
         all_templates   => $all_templates_ref,
     };

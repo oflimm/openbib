@@ -107,6 +107,7 @@ sub show_record_form {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
+    my $query          = $self->query();
 
     my $view           = $self->param('view')           || '';
     my $templateid     = $self->param('templateid')             || '';
@@ -114,7 +115,10 @@ sub show_record_form {
     my $config         = $self->param('config');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
-    
+
+    # CGI Args
+    my $numrev         = $query->param('numrev');
+
     if (!$self->authorization_successful){
         $self->print_authorization_error();
         return;
@@ -130,8 +134,9 @@ sub show_record_form {
         }
     )->single;
 
-    my $ttdata={                # 
-        templateinfo    => $templateinfo_ref,
+    my $ttdata = {
+        numrev       => $numrev,
+        templateinfo => $templateinfo_ref,
     };
     
     $self->print_page($config->{tt_users_templates_record_edit_tname},$ttdata);

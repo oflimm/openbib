@@ -1920,15 +1920,31 @@ sub local_server_belongs_to_updatable_cluster {
 }
 
 sub get_templateinfo_overview {
-    my $self   = shift;
+    my $self       = shift;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $object = $self->get_templateinfo->search(
         undef,
+    );
+    
+    return $object;
+}
+
+sub get_templateinforevision_overview {
+    my $self       = shift;
+    my $templateid = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->get_templateinforevision->search(
         {
-            order_by => 'id',
+            templateid => $templateid,
+        },
+        {
+            order_by => 'tstamp DESC',
         }
     );
     
@@ -1962,6 +1978,17 @@ sub get_templateinfo {
     my $logger = get_logger();
 
     my $object = $self->{schema}->resultset('Templateinfo');
+
+    return $object;
+}
+
+sub get_templateinforevision {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->{schema}->resultset('Templateinforevision');
 
     return $object;
 }
@@ -2954,7 +2981,13 @@ sub update_template {
     $update_args_ref->{templatelang} = $templatelang if ($templatelang);
     
     # DBI: "update templateinfo set active = ? where id = ?"
-    $self->{schema}->resultset('Templateinfo')->search_rs({ id => $id })->update($update_args_ref);
+    my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ id => $id })->single;
+
+    # Save old Text in new revision
+    $template->create_related('templateinforevisions',{ tstamp => \'NOW()', templatetext => $template->templatetext });
+
+    # then update 
+    $template->update($update_args_ref);
 
     return;
 }

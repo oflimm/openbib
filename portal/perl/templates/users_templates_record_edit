@@ -100,8 +100,29 @@
 
 </fieldset>
 
-
 </form>
+
+<p/>
+
+[% IF templateinfo.templateinforevisions %]
+<table class="ym-full">
+<thead>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Zeit") %]</th><th>[% msg.maketext("Text") %]</th><th>&nbsp;</th></tr>
+</thead>
+<tbody>
+[%   FOREACH thistemplaterevision IN config.get_templateinforevision_overview(templateinfo.id).all %]
+<tr>
+<td>[% thistemplaterevision.id %]</td>
+<td>[% thistemplaterevision.tstamp %]</td>
+<td>[% thistemplaterevision.templatetext %]</td>
+<td><form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/revisions/id/[% thistemplaterevision.id %]">
+<input type="hidden" name="_method"    value="PUT" />
+<input type="submit" value="Wiederherstellen" /></form></td>
+</tr>
+[%   END %]
+</tbody>
+</table>
+[% END %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

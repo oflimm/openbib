@@ -54,7 +54,7 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::Apache::Admin';
 
 # Run at startup
 sub setup {
@@ -66,7 +66,6 @@ sub setup {
         'show_collection'            => 'show_collection',
         'show_record_form'           => 'show_record_form',
         'create_record'              => 'create_record',
-        'update_record'              => 'update_record',
         'delete_record'              => 'delete_record',
         'confirm_delete_record'      => 'confirm_delete_record',
         'dispatch_to_representation' => 'dispatch_to_representation',
@@ -242,65 +241,6 @@ sub show_record_form {
     $self->print_page($config->{tt_admin_templates_record_edit_tname},$ttdata);
         
     return Apache2::Const::OK;
-}
-
-sub update_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-
-    my $query          = $self->query();
-    
-    my $view           = $self->param('view')           || '';
-    my $templateid     = $self->param('templateid')             || '';
-    my $path_prefix    = $self->param('path_prefix');
-    my $config         = $self->param('config');
-    my $msg            = $self->param('msg');
-
-    if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
-    }
-
-    # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input();
-    $input_data_ref->{id} = $templateid; # templateid wird durch Resourcenbestandteil ueberschrieben
-    
-    if ($logger->is_debug){
-        $logger->debug("Info: ".YAML::Dump($input_data_ref));
-    }
-
-    if (!$config->{schema}->resultset('Templateinfo')->search_rs({id => $templateid})->count){
-        $self->print_warning($msg->maketext("Es existiert kein Template unter dieser ID"));
-        
-        return Apache2::Const::OK;
-    }
-
-    my $other_template_exists = $config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname},$input_data_ref->{templatelang});
-    
-    if ($other_template_exists && $templateid != $other_template_exists ) {
-        $self->print_warning($msg->maketext("Es existiert bereits ein anderes Template mit diesem Namen und View"));        
-        return Apache2::Const::OK;
-    }
-
-    $config->update_template($input_data_ref);
-
-    if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{templates_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
-    }
-    else {
-        $logger->debug("Weiter zum Record");
-        $logger->debug("Weiter zur ID $templateid");
-        $self->show_record;
-    }
-    
-
-    return;
 }
 
 sub confirm_delete_record {

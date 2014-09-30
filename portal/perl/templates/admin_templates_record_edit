@@ -106,6 +106,9 @@
 <p/>
 
 [% IF templateinfo.templateinforevisions %]
+
+<h2>Revisionen</h2>
+
 <table class="ym-full">
 <thead>
 <tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Datum") %]</th><th>[% msg.maketext("Text") %]</th><th>&nbsp;</th></tr>

@@ -1927,6 +1927,11 @@ sub get_templateinfo_overview {
 
     my $object = $self->get_templateinfo->search(
         undef,
+        {
+            join => ['viewid'],
+            group_by => ['me.id','me.templatelang','me.templatename','viewid.viewname'],
+            order_by => ['viewid.viewname ASC','me.templatename','me.templatelang'],
+        }
     );
     
     return $object;

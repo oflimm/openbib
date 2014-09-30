@@ -90,7 +90,7 @@ ebenso unterdrückt wird. Im Firefox müssen Sie bei dieser Seite links oben auf
 <label for="email_password"/>Captcha</label>
 [%- IF config.${"recaptcha_public_key"} -%]
 [%- recaptcha_options = { lang => lang, theme => 'white' } -%]
-[% recaptcha.get_html(config.${"recaptcha_public_key"},'',0,recaptcha_options) %]
+[% recaptcha.get_html(config.${"recaptcha_public_key"},'',1,recaptcha_options) %]
 [%- END -%]
 </div>
 

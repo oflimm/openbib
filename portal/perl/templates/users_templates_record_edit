@@ -107,7 +107,7 @@
 [% IF templateinfo.templateinforevisions %]
 <table class="ym-full">
 <thead>
-<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Zeit") %]</th><th>[% msg.maketext("Text") %]</th><th>&nbsp;</th></tr>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Datum") %]</th><th>[% msg.maketext("Text") %]</th><th>&nbsp;</th></tr>
 </thead>
 <tbody>
 [%   FOREACH thistemplaterevision IN config.get_templateinforevision_overview(templateinfo.id).all %]

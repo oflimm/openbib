@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-09-26 10:48+0200\n"
+"PO-Revision-Date: 2014-09-30 11:07+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1042,7 +1042,8 @@ msgstr "All"
 #: ../templates/admin_navigation:42 ../templates/admin_navigation:44
 #: ../templates/admin_navigation:58 ../templates/admin_navigation:60
 #: ../templates/admin_navigation:74 ../templates/admin_navigation:76
-#: ../templates/admin_statistics_html:42
+#: ../templates/admin_statistics_html:42 ../templates/viewadmin_navigation:26
+#: ../templates/viewadmin_navigation:28
 msgid "Allgemein"
 msgstr "General"
 
@@ -2203,7 +2204,7 @@ msgstr "Already existing server for loadbalancing"
 msgid "Bereits existierende Standorte"
 msgstr "Already existing locations"
 
-#: ../templates/admin_templates_html:103
+#: ../templates/admin_templates_html:111 ../templates/templates_html:58
 msgid "Bereits existierende Templates"
 msgstr "Already existing templates"
 
@@ -3034,6 +3035,12 @@ msgstr "Dating to"
 msgid "Datierung von"
 msgstr "Dating from"
 
+#: ../templates/admin_templates_record_edit:111
+#: ../templates/templates_revisions_html:63
+#: ../templates/templates_revisions_record_html:61
+msgid "Datum"
+msgstr "Date"
+
 #: ../templates/admin_databases_updates_html:88
 #: ../templates/admin_servers_record_edit:136
 msgid "Dauer"
@@ -3171,6 +3178,7 @@ msgstr "The following external services  are currently being offered:"
 #: ../templates/_profile/sammlungen/search_facet:450
 #: ../templates/_profile/sammlungen/search_facet:451
 #: ../templates/_profile/sammlungen/search_facet:452
+#: ../templates/admin_templates_html:68
 #: ../templates/authority_search_facet:514
 #: ../templates/authority_search_facet:515
 #: ../templates/authority_search_facet:516 ../templates/search_facet:474
@@ -4305,6 +4313,7 @@ msgstr "End"
 #: ../templates/_profile/sammlungen/search_facet:453
 #: ../templates/_profile/sammlungen/search_facet:454
 #: ../templates/_profile/sammlungen/search_facet:455
+#: ../templates/admin_templates_html:69
 #: ../templates/authority_search_facet:517
 #: ../templates/authority_search_facet:518
 #: ../templates/authority_search_facet:519 ../templates/search_facet:477
@@ -4686,7 +4695,7 @@ msgstr "There already exists a profile with this name"
 msgid "Es existiert bereits ein Standort mit diesem Identifier"
 msgstr "There already exists a location with this identifier"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:148
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:147
 msgid "Es existiert bereits ein Template in diesem View"
 msgstr "There already exists this template in this view"
 
@@ -4699,10 +4708,6 @@ msgstr "There already exists a subject with this name"
 #: ../modules/OpenBib/Handler/Apache/Admin/Views.pm:212
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr "There already exists a view with this name"
-
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:285
-msgid "Es existiert bereits ein anderes Template mit diesem Namen und View"
-msgstr "There already exists another template with this name and view"
 
 #: ../modules/OpenBib/Handler/Apache/Admin/OrganizationalUnits.pm:238
 msgid "Es existiert bereits eine Organisationseinheit unter diesem Namen"
@@ -4747,8 +4752,7 @@ msgstr "There does not exist a profile with this name"
 msgid "Es existiert kein Suchprofil mit dieser ID"
 msgstr "There does not exist a search profile with this id"
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:277
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:350
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:290
 #: ../modules/OpenBib/Handler/Apache/Users/Templates.pm:173
 msgid "Es existiert kein Template unter dieser ID"
 msgstr "There does not exist a template with ID"
@@ -4769,6 +4773,11 @@ msgstr "There does not exist a view with this name"
 msgid ""
 "Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"
 msgstr "There does not exist an organizational unit with this name"
+
+#: ../modules/OpenBib/Handler/Apache/Templates/Revisions.pm:120
+#: ../modules/OpenBib/Handler/Apache/Users/Templates/Revisions.pm:118
+msgid "Es existiert keine Revision mit dieser ID"
+msgstr "There does not exist a template revision with this id"
 
 #: ../templates/admin_databases_rss_record_html:186
 msgid ""
@@ -5808,14 +5817,20 @@ msgstr "ISSN"
 #: ../templates/admin_servers_record_edit:67
 #: ../templates/admin_sessions_active_html:66
 #: ../templates/admin_sessions_archived_search_html:66
-#: ../templates/admin_templates_html:107
+#: ../templates/admin_templates_html:115
+#: ../templates/admin_templates_record_edit:111
 #: ../templates/admin_templates_record_edit:67
 #: ../templates/admin_topics_mappings_html:76
 #: ../templates/authenticators_record_html:60 ../templates/clusters_html:62
 #: ../templates/clusters_record_html:60 ../templates/search_title_field:2
 #: ../templates/searchprofiles_record_html:59 ../templates/servers_html:64
-#: ../templates/servers_record_html:60 ../templates/topics_mappings_html:74
-#: ../templates/topics_record_html:73 ../templates/users_templates_html:64
+#: ../templates/servers_record_html:60 ../templates/templates_html:62
+#: ../templates/templates_record_html:58
+#: ../templates/templates_revisions_html:63
+#: ../templates/templates_revisions_record_html:60
+#: ../templates/topics_mappings_html:74 ../templates/topics_record_html:73
+#: ../templates/users_templates_html:64
+#: ../templates/users_templates_record_edit:110
 #: ../templates/users_templates_record_edit:67
 msgid "Id"
 msgstr "Id"
@@ -7644,7 +7659,7 @@ msgstr "Artist"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329
 #: ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144
-#: ../templates/admin_templates_html:115
+#: ../templates/admin_templates_html:124
 #: ../templates/titles_record_include:512
 #: ../templates/titlist_item_html_short:326
 #: ../templates/titlist_item_html_short:329
@@ -8434,7 +8449,7 @@ msgstr "Go"
 #: ../templates/admin_orgunits_record_edit:107
 #: ../templates/admin_profiles_record_edit:83
 #: ../templates/admin_servers_record_edit:114
-#: ../templates/admin_templates_record_edit:91
+#: ../templates/admin_templates_record_edit:96
 #: ../templates/admin_topics_record_edit:131
 #: ../templates/admin_views_record_edit:129
 #: ../templates/cartitems_html_actions:160
@@ -8443,7 +8458,7 @@ msgstr "Go"
 #: ../templates/topics_record_mapping_html:95
 #: ../templates/users_litlists_html:110
 #: ../templates/users_searchprofiles_html:93
-#: ../templates/users_templates_record_edit:91
+#: ../templates/users_templates_record_edit:96
 msgid "Löschen"
 msgstr "Delete"
 
@@ -8997,17 +9012,18 @@ msgstr "Surname"
 #: ../templates/_view/richter/cartitems_html_actions:55
 #: ../templates/admin_orgunits_html:66
 #: ../templates/admin_profiles_record_edit:124
-#: ../templates/admin_templates_html:107 ../templates/admin_templates_html:66
-#: ../templates/admin_templates_record_edit:77
+#: ../templates/admin_templates_html:115 ../templates/admin_templates_html:74
+#: ../templates/admin_templates_record_edit:82
 #: ../templates/cartitems_html_actions:44
 #: ../templates/cartitems_html_actions:63 ../templates/databases_html:92
 #: ../templates/orgunits_html:66 ../templates/profiles_record_html:75
+#: ../templates/templates_html:62 ../templates/templates_record_html:60
 #: ../templates/titles_record_html_actions:54
 #: ../templates/titles_record_html_actions:75
 #: ../templates/users_searchprofiles_html:84
 #: ../templates/users_searchprofiles_record_edit:80
 #: ../templates/users_templates_html:64
-#: ../templates/users_templates_record_edit:77
+#: ../templates/users_templates_record_edit:82
 msgid "Name"
 msgstr "Name"
 
@@ -9148,7 +9164,7 @@ msgstr "No"
 #: ../templates/admin_locations_record_edit:138
 #: ../templates/admin_profiles_html:78
 #: ../templates/admin_profiles_record_edit:112
-#: ../templates/admin_servers_html:105 ../templates/admin_templates_html:89
+#: ../templates/admin_servers_html:105 ../templates/admin_templates_html:97
 #: ../templates/admin_topics_html:79 ../templates/admin_views_html:97
 #: ../templates/titles_form:86 ../templates/users_litlists_html:84
 #: ../templates/users_searchprofiles_html:69
@@ -10473,11 +10489,6 @@ msgstr "Director"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:61
 #: ../templates/_profile/sammlungen/_view/einbaende/titles_fields_record_html:64
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:119
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:132
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:74
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:82
-#: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:93
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:39
@@ -11034,6 +11045,7 @@ msgid "Sie haben keine Ausleihen getätigt."
 msgstr "No loans available."
 
 #: ../modules/OpenBib/Handler/Apache/Users/Templates.pm:183
+#: ../modules/OpenBib/Handler/Apache/Users/Templates/Revisions.pm:106
 msgid "Sie haben keine Berechtigung dieses Template zu ändern!"
 msgstr "You are not allowed to change this template!"
 
@@ -11304,7 +11316,7 @@ msgstr "You have to enter at least the name of your subject."
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a profile name and a description."
 
-#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:141
+#: ../modules/OpenBib/Handler/Apache/Admin/Templates.pm:140
 msgid "Sie müssen mindestens einen Templatename und einen View eingeben."
 msgstr "You have to enter at least a template name and a view."
 
@@ -11573,7 +11585,9 @@ msgstr "Specialized OpenBib portals"
 msgid "Spezialisierte Portale"
 msgstr "Specialized portals"
 
+#. (templateinfo.templatelang)
 #. (l)
+#. (usertemplate.templateid.templatelang)
 #: ../templates/_profile/kug/corporate_banner:8
 #: ../templates/_profile/rheinlandbib/corporate_banner:4
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:507
@@ -11595,7 +11609,11 @@ msgstr "Specialized portals"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:8
 #: ../templates/_view/filme/corporate_banner:8
 #: ../templates/_view/richter/corporate_banner:4
-#: ../templates/corporate_banner:8 ../templates/info_journaltocs:43
+#: ../templates/admin_templates_html:121
+#: ../templates/admin_templates_record_edit:73 ../templates/corporate_banner:8
+#: ../templates/info_journaltocs:43 ../templates/templates_html:70
+#: ../templates/users_templates_html:70
+#: ../templates/users_templates_record_edit:73
 msgid "Sprach-Icon für %1"
 msgstr "Language icon for %1"
 
@@ -11623,8 +11641,12 @@ msgstr "Language icon for %1"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:24
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:168
 #: ../templates/_profile/sammlungen/search_facet:180
+#: ../templates/admin_templates_html:115 ../templates/admin_templates_html:66
+#: ../templates/admin_templates_record_edit:72
 #: ../templates/authority_search_facet:196 ../templates/search_facet:180
 #: ../templates/search_title_field:14 ../templates/search_title_field:29
+#: ../templates/templates_html:62 ../templates/users_templates_html:64
+#: ../templates/users_templates_record_edit:72
 msgid "Sprache"
 msgstr "Language"
 
@@ -17458,7 +17480,7 @@ msgstr "Edit template"
 #: ../templates/admin_templates_html:39
 #: ../templates/admin_templates_record_delete_confirm:39
 #: ../templates/admin_templates_record_edit:39
-#: ../templates/admin_users_record_edit:127
+#: ../templates/admin_users_record_edit:127 ../templates/templates_html:38
 #: ../templates/users_templates_html:39 ../templates/users_templates_html:60
 #: ../templates/users_templates_record_edit:39
 #: ../templates/viewadmin_navigation:18 ../templates/viewadmin_navigation:20
@@ -17476,10 +17498,15 @@ msgstr "Development system - Not intended for regular use"
 #: ../templates/_database/einbaende/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306
-#: ../templates/admin_templates_html:84
-#: ../templates/admin_templates_record_edit:82
+#: ../templates/admin_templates_html:92
+#: ../templates/admin_templates_record_edit:111
+#: ../templates/admin_templates_record_edit:87
+#: ../templates/templates_record_html:61
+#: ../templates/templates_revisions_html:63
+#: ../templates/templates_revisions_record_html:62
 #: ../templates/titles_record_html:317 ../templates/titles_record_include:215
-#: ../templates/users_templates_record_edit:82
+#: ../templates/users_templates_record_edit:110
+#: ../templates/users_templates_record_edit:87
 msgid "Text"
 msgstr "Text"
 
@@ -18389,10 +18416,10 @@ msgstr "Used search type"
 msgid "Vielen Dank f&uuml;r Ihren Besuch."
 msgstr "Thank you for your visit."
 
-#: ../templates/admin_templates_html:107 ../templates/admin_templates_html:75
-#: ../templates/admin_templates_record_edit:72
-#: ../templates/users_templates_html:64
-#: ../templates/users_templates_record_edit:72
+#: ../templates/admin_templates_html:115 ../templates/admin_templates_html:83
+#: ../templates/admin_templates_record_edit:77 ../templates/templates_html:62
+#: ../templates/templates_record_html:59 ../templates/users_templates_html:64
+#: ../templates/users_templates_record_edit:77
 msgid "View"
 msgstr "View"
 
@@ -19215,6 +19242,10 @@ msgid ""
 msgstr ""
 "A lot of older holdings of several institutes are not searchable "
 "electronically. They are available as digitized catalog cards."
+
+#: ../templates/users_templates_record_edit:110
+msgid "Zeit"
+msgstr "Time"
 
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:255
 #: ../templates/_profile/kug/_view/inst501/searchforms_record_query:259
@@ -20330,13 +20361,9 @@ msgstr "very good"
 msgid "usw. usf."
 msgstr "etc."
 
-#: ../templates/admin_users_html:83
+#: ../templates/admin_users_html:83 ../templates/viewadmin_navigation:15
 msgid "viewadmin"
 msgstr "Portal-Administrator"
-
-#: ../templates/viewadmin_navigation:15
-msgid "viewmaster"
-msgstr ""
 
 #: ../templates/_database/dbis/search_title_item_html:87
 #: ../templates/_database/ezb/search_title_item_html:86
@@ -20394,7 +20421,7 @@ msgstr "repeated"
 #: ../templates/admin_profiles_record_edit:78
 #: ../templates/admin_searchprofiles_record_edit:86
 #: ../templates/admin_servers_record_edit:110
-#: ../templates/admin_templates_record_edit:87
+#: ../templates/admin_templates_record_edit:92
 #: ../templates/admin_topics_record_edit:127
 #: ../templates/admin_topics_record_edit:164
 #: ../templates/admin_topics_record_edit:196
@@ -20409,7 +20436,7 @@ msgstr "repeated"
 #: ../templates/topics_record_mapping_html:235
 #: ../templates/topics_record_mapping_html:89
 #: ../templates/users_searchprofiles_record_edit:141
-#: ../templates/users_templates_record_edit:87
+#: ../templates/users_templates_record_edit:92
 msgid "Ändern"
 msgstr "Change"
 
@@ -20459,6 +20486,9 @@ msgstr "Overview"
 #: ../templates/users_navigation:100 ../templates/users_navigation:102
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#~ msgid "Es existiert bereits ein anderes Template mit diesem Namen und View"
+#~ msgstr "There already exists another template with this name and view"
 
 #~ msgid "Rolle"
 #~ msgstr "Role"

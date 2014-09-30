@@ -101,6 +101,7 @@
 ../modules/OpenBib/Handler/Apache/Tags/Names.pm
 ../modules/OpenBib/Handler/Apache/Tags.pm
 ../modules/OpenBib/Handler/Apache/Templates.pm
+../modules/OpenBib/Handler/Apache/Templates/Revisions.pm
 ../modules/OpenBib/Handler/Apache/Titles/Fields.pm
 ../modules/OpenBib/Handler/Apache/Titles.pm
 ../modules/OpenBib/Handler/Apache/Titles/Tag.pm
@@ -125,6 +126,7 @@
 ../modules/OpenBib/Handler/Apache/Users/Tags/Names.pm
 ../modules/OpenBib/Handler/Apache/Users/Tags.pm
 ../modules/OpenBib/Handler/Apache/Users/Templates.pm
+../modules/OpenBib/Handler/Apache/Users/Templates/Revisions.pm
 ../modules/OpenBib/Handler/Apache/Users/Titles.pm
 ../modules/OpenBib/Handler/Apache/Views.pm
 ../modules/OpenBib/Handler/Apache/Views/RSS.pm
@@ -387,7 +389,6 @@
 ../templates/admin_templates_json
 ../templates/admin_templates_record_delete_confirm
 ../templates/admin_templates_record_edit
-../templates/admin_templates_record_json
 ../templates/admin_topics
 ../templates/admin_topics_html
 ../templates/admin_topics_json
@@ -1630,6 +1631,17 @@
 ../templates/tags_names_record_html
 ../templates/tags_names_record_json
 ../templates/tags_navigation
+../templates/templates
+../templates/templates_html
+../templates/templates_json
+../templates/templates_record
+../templates/templates_record_html
+../templates/templates_record_json
+../templates/templates_revisions
+../templates/templates_revisions_html
+../templates/templates_revisions_record
+../templates/templates_revisions_record_html
+../templates/templates_revisions_record_json
 ../templates/testsystem_info
 ../templates/titles
 ../templates/titles_dbis_recommendations
@@ -1756,6 +1768,7 @@
 ../templates/users_tags_names_record_html
 ../templates/users_templates
 ../templates/users_templates_html
+../templates/users_templates_json
 ../templates/users_templates_record_edit
 ../templates/users_titles_record_searchindex
 ../templates/users_titles_record_searchindex_html

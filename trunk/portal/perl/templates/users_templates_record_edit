@@ -126,9 +126,14 @@
 <td>[% thistemplaterevision.id %]</td>
 <td>[% thistemplaterevision.tstamp %]</td>
 <td>[% thistemplaterevision.templatetext %]</td>
-<td><form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/revisions/id/[% thistemplaterevision.id %]">
-<input type="hidden" name="_method"    value="PUT" />
-<input type="submit" value="Wiederherstellen" /></form></td>
+<td>
+ <form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/revisions/id/[% thistemplaterevision.id %]">
+  <input type="hidden" name="_method"    value="PUT" />
+  <input type="submit" value="Wiederherstellen" />
+ </form>
+ <br/>
+ <a class="ob_button" href="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/revisions/id/[% thistemplaterevision.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+</td>
 </tr>
 [%   END %]
 </tbody>

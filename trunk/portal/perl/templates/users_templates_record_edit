@@ -15,6 +15,9 @@
 
   <body>
 
+<script src="/js/tinymce-4.1.5/tinymce.min.js"></script>
+<script>tinymce.init({selector:'textarea', language: '[% lang %]', plugins: ['table','code','link','lists','charmap'], relative_urls:0, convert_urls: 0, remove_script_host: 0,});</script>
+
 <!-- skip link navigation -->
 <ul class="ym-skiplinks">
 	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
@@ -84,8 +87,8 @@
 </div>
 
 <div class="ym-fbox-text">
-<label for="templatetext">[% msg.maketext("Text") %]</label>
-<textarea name="templatetext" id="templatetext" cols="80" rows="40">[% templateinfo.templatetext %]</textarea>
+<!-- <label for="templatetext">[% msg.maketext("Text") %]</label> -->
+<textarea name="templatetext" id="templatetext" style="width:100%" rows="50">[% templateinfo.templatetext %]</textarea>
 </div>
 
 <div class="ym-fbox-button">

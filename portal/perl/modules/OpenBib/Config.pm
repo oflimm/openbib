@@ -2913,6 +2913,30 @@ sub new_cluster {
 
 # Durch Nutzer aenderbare Template-Inhalte
 
+sub del_templaterevision {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                       = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("About to delete id $id");
+
+    eval {
+        # DBI: "delete from templateinfo where id = ?"
+        $self->get_templateinforevision->single({ id => $id })->delete;
+    };
+
+    if ($@){
+        $logger->error($@);
+    }
+
+    return;
+}
+
 sub del_template {
     my ($self,$arg_ref) = @_;
 

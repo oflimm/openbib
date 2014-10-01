@@ -63,6 +63,8 @@ sub setup {
     $self->start_mode('show');
     $self->run_modes(
         'revert_record'              => 'revert_record',
+        'delete_record'              => 'delete_record',
+        'confirm_delete_record'      => 'confirm_delete_record',
         'dispatch_to_representation' => 'dispatch_to_representation',
     );
 
@@ -143,6 +145,76 @@ sub revert_record {
     return;
 }
 
+sub delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $templateid     = $self->param('templateid');
+    my $revisionid     = $self->param('revisionid');
+    my $path_prefix    = $self->param('path_prefix');
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+
+    if (!$self->authorization_successful){
+        $self->print_authorization_error();
+        return;
+    }
+    
+    if (!$config->get_templateinforevision->search_rs({id => $revisionid})->count){
+        $self->print_warning($msg->maketext("Es existiert keine Template-Revision mit dieser ID"));
+        return Apache2::Const::OK;
+    }
+
+    $logger->debug("Deleting revision record $revisionid");
+    
+    $config->del_templaterevision({ id => $revisionid });
+
+    return unless ($self->param('representation') eq "html");
+    
+    $self->query->method('GET');
+    if ($user->is_admin){ 
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{templates_loc}/id/${templateid}/edit");
+    }
+    else {
+        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{templates_loc}/id/${templateid}/edit");
+    }       
+    $self->query->status(Apache2::Const::REDIRECT);
+
+    return;
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $templateid     = $self->param('templateid');
+    my $revisionid     = $self->strip_suffix($self->param('revisionid'));
+    my $config         = $self->param('config');
+
+    my $revision_ref   = $config->get_templateinforevision->search_rs({ id => $revisionid})->single;
+    
+    my $ttdata={
+        templateid => $templateid,
+        revisionid => $revisionid,
+        revision   => $revision_ref,
+    };
+    
+    $logger->debug("Asking for confirmation");
+    $self->print_page($config->{tt_templates_revisions_record_delete_confirm_tname},$ttdata);
+    
+    return Apache2::Const::OK;
+}
 
 sub authorization_successful {
     my $self   = shift;

@@ -109,6 +109,8 @@
 
 [% IF templateinfo.templateinforevisions %]
 
+<h2>Revisionen</h2>
+
 <p>
 [% msg.maketext("Anzahl") %]
 &nbsp;

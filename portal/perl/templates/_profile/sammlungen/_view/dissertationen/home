@@ -30,29 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:40px;padding-top:10px;padding-bottom:10px;">
-
-<center> <img src="/images/openbib/views/dissertationen/siegel_blau.png"
-alt="Universität zu Köln" /><br /><i
-style="font-size:0.8em">Universität zu Köln</i></center>
-
- </div>
-
-<h1>Die Dissertationen der Universität zu Köln</h1>
-
-<p>In der Sammlung von Dissertationen der Universität zu Köln
-können Sie gezielt alle Dissertationen recherchieren, die im Katalog
-der Universitäts- und Stadtbibliothek Köln nachgewiesen sind und durch
-sie bereitgestellt werden.</p>
-
-<p>Insgesamt umfasst diese Sammlung derzeit knapp 30.000
-Dissertationen, die bis in das 16. Jahrhundert zurückreichen.</p>
-
-<p>Um einen Überblick der Veröffentlichungsjahre zu erhalten, verwenden
-Sie bitten den Link <b>Übersichten</b> in der
-Hauptnavigation</p>. Dieser Katalog ist mit dem Ausleihsystem des
-USB-Katalogs gekoppelt, so dass Ihnen der aktuelle Ausleihstatus
-angezeigt werden kann.</p>
+[% config.get_templatetext('home','dissertationen',lang) %]
 
     </div>
     <!-- end: #main -->

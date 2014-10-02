@@ -30,47 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-         <div class="ym-grid">
-          <div class="ym-g33 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
- <center style="padding-top: 5em;"> <img src="/images/openbib/views/digitalis/Lokomotive_BURGK-310px.jpg"
-alt="Lokomotive" /><br /><br /><i
-style="font-size:0.8em">Lokomotive BURGK der Albertsbahn AG (1857)
-(aus: <a
-href="http://commons.wikimedia.org/wiki/File:Lokomotive_BURGK.jpg" target="_blank">Wikipedia</a>)</i></center>
-
-          </div>
-         </div>
-          <div class="ym-g66 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-<h1>Digitalis - Digitale Texte zur Wirtschaftsgeschichte</h1>
-
-<p>
-Die Sammlung digitalisierter Bücher zur Wirtschafts- und Sozialgeschichte umfasst 1.180 Titel. Es handelt sich um Bücher aus der ehemaligen
-Bibliothek des Seminars für Wirtschafts- und
-Unternehmensgeschichte.</p>
-
-<p>Das Ziel des 2002 gestarteten Digitalisierungsprojektes war, relevante Werke
-aus diesem Themenbereich als frei zugängliche Texte online bereitzustellen. Der zeitliche Schwerpunkt der Sammlung liegt auf der Literatur aus der Zeit
-des späten 19. Jahrhunderts.
-</p>
-
-<p>Initiator dieses Projektes war der damalige Bibliothekar des Seminars Herr Werner Vogel. Die Buchauswahl wurde auch unter
-dem Aspekt der häufigen Nutzung und der Bestandserhaltung der
-Werke vorgenommen. Im Jahr 2013 wurde das Projekt abgeschlossen.</p>
-
-<p>Rund 1.000 Titel,
-die älter als 100 Jahre alt sind, können wir in diesem Portal in digitalisierter Form zur Verfügung stellen. Mit jedem weiteren Jahr erhöht sich entsprechend
-die Anzahl der bereitgestellten Werke.</p>
-
-<p>Die digitalisierten Bücher werden als pdf-Dokumente bereitgestellt
-(<a href="http://get.adobe.com/de/reader/" target="_blank">Download Acrobat-Reader</a>)<p>.
-
-          </div>
-         </div>
-      </div>
+[% config.get_templatetext('home','digitalis',lang) %]
 
     </div>
     <!-- end: #main -->

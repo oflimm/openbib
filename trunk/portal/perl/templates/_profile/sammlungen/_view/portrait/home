@@ -30,59 +30,8 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:40px;">
+[% config.get_templatetext('home','portrait',lang) %]
 
-<center> <img src="/images/openbib/views/portrait/basta.png"
-alt="Portrait von Maria Basta - Lithographie um 1880" /><br /><i
-style="font-size:0.8em">Maria Basta - Lithographie um 1880</i></center>
-
- </div>
-
-<h1>Die Portraitsammlung der USB Köln</h1>
-
-<p> Die USB Köln besitzt eine ansehnliche gemeinfreie Sammlung von Portraits aus
-dem 16. bis 20. Jahrhundert. Die Portraits stammen zumeist aus den
-Sammlungen Oidtmann, Mevissen, Dirksen, Wolff und der ehemaligen
-Stadtbibliothek Köln. Es handelt sich um Kupfer- und Stahlstiche,
-Schabkunst, Lithografien, Radierungen und Fotografien. Viele der
-abgebildeten Personen aus den Beständen der Stadtbibliothek Köln sind
-auf ganz unterschiedliche Art und Weise mit der Stadt und / oder dem
-Erzbistum Köln und dem Rheinland verbunden gewesen.  <p/> <p> Die
-Portraits der Sammlungen Oidtmann und Mevissen zeigen Persönlichkeiten
-aus dem gesamten deutschen Reich und darüber hinaus. Das Spektrum
-umfasst Herrscher und Staatsmänner, Erz- und Weihbischöfe, Bischöfe,
-Pfarrer, Pastoren, Mönche, Äbte, Dichter, Musiker und Künstler,
-Wissenschaftler und Mäzene, Adelige und Feldherren.  </p> <p> Anfang
-April 2006 wurde das Projekt gestartet. Die Erfassung der Portraits
-erfolgte zunächst durch die Katalogisierung der Bilder. Neben den
-reinen Katalogdaten wurden weitere Informationen wie Lebensdaten,
-Beruf und Weltanschauung, Region und Bildtexte
-erfasst. Zus&auml;tzlich werden <a href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">Informationen zu
-weiteren Portrait-Quellen</a> bereit gestellt. Im Mai 2008 wurde das
-Projekt mit der Ausstellung "Von Angesicht zu Angesicht: die
-Portraitsammlung der Universitäts- und Stadtbibliothek Köln" beendet.
-</p>
-
-<p>
-Jedes in diesem Sammlungsportal erfasste Portrait
-kann via Onlinebestellung in den <a
-href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/histsamm/lesesaal/index_ger.html#e1968/index_ger.html/"target="_blank">
-Lesesaal Historische Sammlungen</a> bestellt werden. Die
-Bestellmöglichkeit ist der Vollanzeige eines Treffers beigefügt. Im
-Bestellformular ist die Angabe der Signatur (POR...) 
-erforderlich. Für die Bestellung und Einsichtnahme benötigen Sie einen
-<a
-href="http://www.ub.uni-koeln.de/fragen/ausleihabc/anmeldung/index_ger.html"target="_blank">
-Bibliotheksausweis</a> der USB Köln.
-</p>
-
-<p>Die USB Köln ist assoziierter Partner des von der Deutschen
-Forschungsgemeinschaft (DFG) geförderten Projekts "<a href="http://www.portraitindex.de/" target="_blank">Digitaler
-Portraitindex druckgraphischer Bildnisse der Frühen Neuzeit</a>" des
-Deutschen Dokumentationszentrums für Kunstgeschichte - Bildarchiv Foto
-Marburg.
-
-</p>
     </div>
     <!-- end: #main -->
 

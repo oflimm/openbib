@@ -30,62 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main" style="padding:10px;">
 
- <div class="float-left" style="padding:40px;padding-top:30px;padding-bottom:20px;">
-
-<center> <img src="/images/openbib/views/wallraf/wallraf.jpg"
-alt="Wallraf" /><br /><i
-style="font-size:0.8em" Ferdinand Franz Wallraf (1748-1824)<br
-/>J. A. De Peters, 1792</i></center>
- </div>
-
-<h1>Die Bibliothek Ferdinand Franz Wallraf in der Universit&auml;ts-
-und Stadtbibliothek K&ouml;ln </h1>
-
-<p> Zu den Wallraf'schen Sammlungen, dem "Wallrafianum", geh&ouml;rte
-neben Mineralien, Pr&auml;paraten, Gem&auml;lden, Skulpturen, Urkunden
-und Handschriften auch eine umfangreiche Bibliothek. Als 1802 der
-K&ouml;lner Klosterbesitz der S&auml;kularisation zum Opfer fiel,
-bem&uuml;hte sich Wallraf darum, Restbest&auml;nde k&ouml;lnischer und
-niederrheinischer Ordensniederlassungen zu sichern. Seine
-B&uuml;chersammlung erhielt auf diese Weise einen nahezu universalen
-Charakter. Wallraf vermachte seine Sammlungen der Stadt
-K&ouml;ln. Gemeinsam mit der Syndikatsbibliothek des K&ouml;lner Rates
-bildete die "Bibliothek Wallraf" den Grundstock der ehemaligen
-Stadtbibliothek K&ouml;ln, die 1919 Teil der neuen Universit&auml;ts-
-und Stadtbibliothek wurde. In der USB befindet sich heute der
-überwiegende Teil der ehemaligen Wallraf-Bibliothek. Weitere Buchbestände befinden sich
-außerdem in städtischen Einrichtungen wie dem Stadtmuseum, dem
-Wallraf-Richartz-Museum und dem Stadtarchiv. Die
-Wallraf'schen Handschriften werden im Stadtarchiv aufbewahrt.
-</p>
-
-<h1>Ferdinand Franz Wallraf</h1>
-
-<p>
-Ferdinand Franz Wallraf prägte wie kaum ein zweiter Bürger seiner Zeit
-das kulturelle Leben in seiner Heimatstadt Köln. Er ist als Sammler
-und Mäzen den Kölnern bis heute in lebendiger Erinnerung durch sein
-großzügiges Erbe, das die Stadt und einige ihrer Institutionen
-kulturell schmückt. Die USB Köln ist stolz darauf, einen bedeutenden
-Bestand an gedruckten Werken aus seinem Erbe aufzubewahren.
-</p>
-
-<p> Wallrafs Lebenszeit umspannte drei wichtige politische Phasen, die
-seine Tätigkeit und seinen Erfolg aber nicht beschränken konnten. Sein
-einziges Bekenntnis war sein unverbrüchlicher reichsstädtischer
-Patriotismus und seine Liebe zur Vaterstadt Köln, unabhängig von den
-herrschenden politischen Verhältnissen. Seine wissenschaftliche Arbeit
-und seine Sammeltätigkeit schützten ihn in den vielfältigen Umbrüchen
-seiner Zeit.[<a href="[% path_prefix %]/[% config.get('info_loc')
-%]/sammlung.html?l=[% lang %]">Weitere Informationen</a>]
-</p>
-
-<p>
-Die Einsichtnahme für Forschungszwecke erfolgt im  <a
-href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/histsamm/lesesaal/index_ger.html#e1968/index_ger.html/"target="_blank">
-Lesesaal Historische Sammlungen<a/>.
-</p>
-
+[% config.get_templatetext('home','wallraf',lang) %]
 
     </div>
     <!-- end: #main -->

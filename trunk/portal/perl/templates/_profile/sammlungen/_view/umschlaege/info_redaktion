@@ -51,40 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>Redaktion</h1>
-
-<table>
-<tr><th>Inhaltliche Realisierung</th><th></th><th>Technische Realisierung</th></tr>
-<tr><td valign="top">
-<b>Regine Boeff</b><br />
-Begr&uuml;nderin der Sammlung
-
-<p>
-<b>Caroline Dohmen-Richter</b><br />
-Beschreibung und Erfassung<br />
-Abt. Einbandstelle<br />
-
-Tel:   0221/470-2416<br />
-Email:<a href="http://www.ub.uni-koeln.de/res/personen_e_mail/dohmen/index_ger.html" target="_blank">dohmen@ub.uni-koeln.de</a>
-</p>
-</td>
-<td>&nbsp;&nbsp;</td>
-<td valign="top">
-<b>Oliver Flimm</b><br />
-Programmierung<br />
-Dezernat Datenverarbeitung<br />
-Tel.: 0221/470-3330<br />
-Email:<a href="http://www.ub.uni-koeln.de/res/personen_e_mail/flimm/index_ger.html" target="_blank"> flimm@ub.uni-koeln.de</a>
-<p>
-<b>Christiane Hoffrath</b><br />
-Workflow-Konzept<br />
-
-Abt. Universit&auml;tsGesamtKatalog<br />
-Tel:   0221/470-3306<br />
-Email: <a href="http://www.ub.uni-koeln.de/res/personen_e_mail/hoffrath/index_ger.html" target="_blank">hoffrath@ub.uni-koeln.de</a></td>
-</p>
-</td></tr>
-</table>
+[% config.get_templatetext('info_redaktion','umschlaege',lang) %]
  
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

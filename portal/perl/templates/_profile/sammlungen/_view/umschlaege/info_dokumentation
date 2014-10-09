@@ -51,16 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>Schutzumschlag und Umschlagschutz</h1>
-
-<p>
-Unter dem Titel <a
-href="http://kups.ub.uni-koeln.de/volltexte/2009/2634/" target="_blank">Schutzumschlag und Umschlagschutz - Die Archivierung
-und Verwaltung von Schutzumschl&auml;gen in der Universit&auml;ts- und
-Stadtbibliothek K&ouml;ln</a> finden Sie eine ausf&uuml;hrliche
-Beschreibung von Regine Boeff der Schutzumschl&auml;ge und ihrer
-Sammlung an der USB K&ouml;ln.
-</p>
+[% config.get_templatetext('info_dokumentation','umschlaege',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

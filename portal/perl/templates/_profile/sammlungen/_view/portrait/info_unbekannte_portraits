@@ -51,67 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Portraits von uns unbekannten Personen</h2>
-
-<p>
-An dieser Stelle bitten wir alle Nutzerinnen und Nutzer unserer
-Portraitsammlung um Mithilfe: Die hier aufgeführten Personen konnten
-wir bislang nicht identifizieren. Falls Sie über Informationen zu den
-dargestellten Personen haben, würden wir sehr freuen, wenn Sie uns
-diese mitteilen. Bitte schreiben Sie eine Mail an: <a href="http://www.ub.uni-koeln.de/e16879/e18078/e18110/e26367/"target="_blank"> portraitsammlung@ub.uni-koeln.de
-</p>
-
-<table class="ym-full">
-
-<tr>
-<td><center><img src="/images/openbib/views/portrait/turban.jpg"
-alt="Unbekannter Mann mit Turban" /><br /><br /><b
-style="font-size:0.8em">Unbekannter Mann mit Turban, unbekannte Unterschrift</b></center>
-<td>
-Herkunft  : Sammlung Sack.<br />
-Technik   : Stich. <br />
-Datierung : unbekannt.<br />
-Vermerke  : "<i>258/100</i>" links unterhalb des Bildes.<br />
-Signatur  : unbekannt, es handelt sich nicht um die Unterschrift des
-Musikwissenschaftlers Ernst Kurth. <br />
-</tr>
-</td>
-
-<tr>
-<td><center><img src="/images/openbib/views/portrait/kappe.jpg"
-alt="Unbekanntes Mädchen mit Kappe" /<br /><br /><b
-style="font-size:0.8em">Unbekanntes Mädchen mit Kappe</b></center>
-<td>
-Herkunft   : Stadtbibliothek Köln<br />
-Technik    : Kolorierte Bleistiftzeichnung. <br />
-Datierung  : unbekannt.<br />
-Vermerke   : 6 Kr. [?]rechts unten. Auf dem unteren rechten Rand der Pappe
-ist "2110" vermerkt, es handelt sich möglicherweise eine Auktionsnummer.<br />
-Signatur   : "<i>Ant, van Deyck.</i>" in der linken unteren Hälfte.<br />
-</td>
-</tr>
-
-<tr>
-<td><center><img src="/images/openbib/views/portrait/spitzenkragen.jpg"
-alt="Unbekannter Mann mit Spitzenkragen" /><br /><br /><b
-style="font-size:0.8em">Unbekannter Mann mit Spitzenkragen</b></center>
-<td>
-Herkunft   : Sammlung Oidtman<br />
-Technik    : Fotographie, möglichweise handelt es sich um einen
-Ausschnitt aus einem Gemälde. <br />
-Datierung  : unbekannt.<br />
-Vermerke   : Auf der Rückseite des Fotos ist ein Stempel mit folgenden
-Angaben: "Limburgsch Persbureau. Foto No 2339. Copyright Varkensmarkt
-9, Tel 492, Roermond". Außerdem befindet sich auf der Rückseite ein
-Bleistiftvermerk mit folgendem Wortlaut:"fälschlich für Jan van Werth
-ausgegeben! nach Fhrn. Werner v. Negri. EVO" EVO ist die Abkürzung des
-Namens von Generalleutnant Ernst von Oidtman (1854-1937). Er hat der
-Universität Köln seine Sammlungen geschenkt.<br />
-Signatur   : keine. <br />
-</tr>
-</td>
-
-</table>
+[% config.get_templatetext('info_unbekannte_portraits','portrait',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

@@ -51,54 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>Ansprechpartner</h1>
-
-<table>
-<tr><th>Inhaltliche Realisierung</th><th></th><th>Technische Realisierung</th></tr>
-<tr><td valign="top">
-<b>Ernst Stinner</b><br />
-Formale und inhaltliche Erfassung<br />
-Projekt Portraitsammlung<br />
-Tel.: 0221/470-3340<br />
-Email: stinner@ub.uni-koeln.de<br />
-<p>
-<b>Christiane Hoffrath</b><br />
-Koordination und Workflow<br />
-Dezernat Medienbearbeitung, bibl. Dienstleistungen<br />
-Tel.: 0221/470-3306</br>
-Email: hoffrath@ub.uni-koeln.de</br>
-</p>
-<p>
-<b>Irene Bischoff</b><br />
-Portraitbestellungen<br />
-Dezernat Historische Sammlungen<br />
-Tel: 0221/470-2389<br />
-Email: bischoff@ub.uni-koeln.de<br />
-</p>
-</td>
-<td>&nbsp;&nbsp;</td>
-<td valign="top">
-<b>Oliver Flimm</b><br />
-Programmierung<br />
-Dezernat Datenverarbeitung<br />
-Tel.: 0221/470-3330<br />
-Email: flimm@ub.uni-koeln.de<br />
-<p>
-<b>Freya Hunold</b><br />
-Konservatorische Bearbeitung<br />
-Dezernat Bestanderhaltung<br />
-Tel.: 0221/470-3527<br />
-Email: hunold@ub.uni-koeln.de<br />
-</p>
-<p>
-<b>Sophia Falk und Wolfgang Schneider</b><br />
-Digitalisierung<br />
-Dezernat Bestanderhaltung<br />
-Tel.: 0221/470-3750<br />
-Email: fotostell@ub.uni-koeln.de<br />
-<p>
-</td></tr>
-</table>
+[% config.get_templatetext('info_ansprechpartner','portrait',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

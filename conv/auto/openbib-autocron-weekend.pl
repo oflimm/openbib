@@ -310,7 +310,8 @@ sub threadA {
 
     $logger->info("### Diverse Kataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho','zbmed'] });
+#    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho','zbmed'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho'] });
 
     ##############################
     

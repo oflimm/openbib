@@ -19,6 +19,7 @@ this_json_output = {
          href = location
    }
 
+   id          = profileinfo.profilename
    profilename = profileinfo.profilename
    description = profileinfo.description
 };

@@ -5,9 +5,10 @@ FOREACH thislocation IN locations ;
   this_locationinfo = {
     link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('locations_loc')}/id/${thislocation.identifier}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${thislocation.identifier}.json?l=${lang}"
     }
 
+    id          = thislocation.identifier
     description = thislocation.description
     type        = thislocation.type
     identifier  = thislocation.identifier
@@ -20,7 +21,7 @@ END;
 this_json_output = {
      link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}.json?l=${lang}"
      }
 
     locations = all_locationinfo

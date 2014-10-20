@@ -20,9 +20,10 @@ FOREACH profile IN profiles.all ;
   this_profile = {
      link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('profiles_loc')}/id/${profile.profilename}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('profiles_loc')}/id/${profile.profilename}.json?l=${lang}"
      }
 
+     id          = profile.profilename
      profilename = profile.profilename
      description = profile.description
 
@@ -34,7 +35,7 @@ END;
 this_json_output = {
      link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('profiles_loc')}.json?l=${lang}"
      }
 
      profiles = profileinfos

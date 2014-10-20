@@ -5,7 +5,7 @@ FOREACH database IN kataloge.all ;
   this_databaseinfo = {
     link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${database.dbname}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${database.dbname}.json?l=${lang}"
     }
 
     description = database.description
@@ -47,7 +47,7 @@ END;
 this_json_output = {
      link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}.json?l=${lang}"
      }
 
     databases = all_databaseinfo

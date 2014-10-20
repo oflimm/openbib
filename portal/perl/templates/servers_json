@@ -18,12 +18,19 @@
    thisserver = {
        link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('servers_loc')}/id/${server.id}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('servers_loc')}/id/${server.id}.json?l=${lang}"
        }
-       id = server.id
+       cluster = {
+              link = {
+                rel = 'self'
+                href = "${scheme}://${servername}${path_prefix}/${config.get('clusters_loc')}/id/${server.clusterid.id}.json?l=${lang}"
+              }
+
+              id = server.clusterid.id
+       }
+       id     = server.id
        hostip = server.hostip
        description = server.description
-       clusterid = server.clusterid.id
        status = server.status
        active = server.active
    };
@@ -35,7 +42,7 @@
  this_json_output = {
      link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('servers_loc')}.json?l=${lang}"
      }
      servers = servers
  };

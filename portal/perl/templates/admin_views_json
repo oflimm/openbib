@@ -1,6 +1,7 @@
 [%-
 
-all_viewinfo = [] ;
+all_views = [] ;
+
 FOREACH viewinfo IN views.all ;
 
   databases = [];
@@ -8,29 +9,51 @@ FOREACH viewinfo IN views.all ;
     databases.push({
             link = {
                 rel = 'self'
-                href = "${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${item}.json?l=${lang}"
+                href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${item}.json?l=${lang}"
             }
 
+            id     = item
             dbname = item
             description = dbinfo.dbnames.${item}.full
   });
   END ;
 
-  this_viewinfo = {
+  this_profile = {
     link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('profiles_loc')}/id/${viewinfo.profileid.profilename}.json?l=${lang}"
     }
 
+    id          = viewinfo.profileid.profilename
+    profilename = viewinfo.profileid.profilename
+    description = viewinfo.profileid.description
+  }
+
+  this_view = {
+    link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
+    }
+
+    id          = viewinfo.viewname
+    viewname    = viewinfo.viewname
     description = viewinfo.description
     active      = viewinfo.active
-    profile     = { id = viewinfo.profileid.id, description = viewinfo.profileid.description },
+    profile     = this_profile,
     databases   = databases,
   };
   
-  all_viewinfo.push(this_viewinfo);
+  all_views.push(this_view);
 END;
 
-to_json(all_viewinfo) ;
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('views_loc')}.json?l=${lang}"
+     }
+     views = all_views
+ };
+
+to_json(this_json_output) ;
 
 -%]

@@ -9,7 +9,7 @@ FOREACH viewinfo IN views.all ;
     databases.push({
             link = {
                 rel = 'self'
-                href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${item}.json?l=${lang}"
+                href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${item}.json?l=${lang}"
             }
 
             id     = item
@@ -21,7 +21,7 @@ FOREACH viewinfo IN views.all ;
   this_profile = {
     link = {
           rel = 'self'
-          href = "${scheme}://${servername}${path_prefix}/${config.get('profiles_loc')}/id/${viewinfo.profileid.profilename}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${viewinfo.profileid.profilename}.json?l=${lang}"
     }
 
     id          = viewinfo.profileid.profilename
@@ -32,7 +32,7 @@ FOREACH viewinfo IN views.all ;
   this_view = {
     link = {
           rel = 'self'
-          href = "${scheme}://${servername}${path_prefix}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
     }
 
     id          = viewinfo.viewname

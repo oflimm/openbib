@@ -18,12 +18,12 @@
    thisserver = {
        link = {
           rel = 'self'
-          href = "${scheme}://${servername}${path_prefix}/${config.get('servers_loc')}/id/${server.id}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}/id/${server.id}.json?l=${lang}"
        }
        cluster = {
               link = {
                 rel = 'self'
-                href = "${scheme}://${servername}${path_prefix}/${config.get('clusters_loc')}/id/${server.clusterid.id}.json?l=${lang}"
+                href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('clusters_loc')}/id/${server.clusterid.id}.json?l=${lang}"
               }
 
               id = server.clusterid.id
@@ -42,7 +42,7 @@
  this_json_output = {
      link = {
           rel = 'self'
-          href = "${scheme}://${servername}${path_prefix}/${config.get('servers_loc')}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}.json?l=${lang}"
      }
      servers = servers
  };

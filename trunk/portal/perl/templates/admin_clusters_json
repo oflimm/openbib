@@ -17,11 +17,13 @@
  FOREACH cluster IN config.get_clusterinfo_overview.all;
    servers = [];
 
-   FOREACH server IN cluster.serverinfos.all;
-       thisserver = {};
-       thisserver.link = {
-          rel = 'self'
-          href = "${path_prefix}/${config.get('servers_loc')}/id/${server.id}"
+   FOREACH server IN cluster.serverinfos;
+       thisserver = {
+          link = {
+             rel = 'self'
+             href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}/id/${server.id}.json?l=${lang}"
+          }
+          id = server.id
        };
        servers.push(thisserver);
    END;
@@ -29,7 +31,7 @@
    thiscluster = {
        link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('clusters_loc')}/id/${cluster.id}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('clusters_loc')}/id/${cluster.id}.json?l=${lang}"
        }
        id = cluster.id
        description = cluster.description
@@ -45,7 +47,7 @@
  this_json_output = {
      link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('clusters_loc')}.json?l=${lang}"
      }
      clusters = clusters
  };

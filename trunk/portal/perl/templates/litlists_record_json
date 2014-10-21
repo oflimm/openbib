@@ -16,8 +16,8 @@
       thisrecord.fields.id.delete();
       thisrecord.fields.database.delete();
       IF record.id && record.database ;
-         thisrecord.id  = record.id;
-         thisrecord.database = record.database;
+         thisrecord.titleid  = record.id;
+         thisrecord.dbname   = record.database;
  
       END;
       records.push(thisrecord);

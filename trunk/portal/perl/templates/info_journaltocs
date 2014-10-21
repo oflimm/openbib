@@ -13,7 +13,11 @@
 -%]
 [% IF format == "ajax" %]
 <div style="padding:5px;">
-[% rss = utils.load_rss_feed(uri_unescape(id)) %]
+[%
+  id  = "${uri_unescape(id)}&user=${config.get('journaltocs_api_user')}";
+  rss = utils.load_rss_feed(uri_unescape(id));
+
+%]
 <h1>[% rss.channel.title.replace('JournalTOCs API - ','') %]</h1>
 
 <p>

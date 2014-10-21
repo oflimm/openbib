@@ -141,7 +141,7 @@ sub show_record {
     my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
     
     my $ttdata={
-        authenticator => $authenticator_ref,
+        authenticator_record => $authenticator_ref,
     };
     
     $self->print_page($config->{tt_admin_authenticators_record_tname},$ttdata);

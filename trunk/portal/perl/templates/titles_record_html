@@ -227,9 +227,9 @@ $(document).ready(function(){
 
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
-[%- issn              = normset.${"T0543"}.first.content ;
+[%- issn              = normdata.${"T0543"}.first.content ;
     IF issn ;
-       journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
+       journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles&user=${config.get('journaltocs_api_user')}";
     END ;
 -%]
 [%# USE dumper;dumper.dump(holding)%]
@@ -264,8 +264,8 @@ $(document).ready(function(){
 [% IF journaltocs_feed %]
 <script type="text/javascript">
 $(document).ready(function(){
-// Begin Verwandte Personen
-  $.get("[% path_prefix %]/[% config.get('info_loc') %]/journaltocs?id=[% normdata.${"E4115"}.first.content %];format=ajax",
+// Begin Journaltocs
+  $.get("[% path_prefix %]/[% config.get('info_loc') %]/journaltocs?id=[% journaltocs_feed | uri | html %];format=ajax",
          function (txt){
            $("#ob-journaltocs").html(txt); 
   });

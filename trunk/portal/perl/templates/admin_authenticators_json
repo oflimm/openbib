@@ -13,23 +13,23 @@
 -%]
 [%-
 
- targets = [];
+ authenticators = [];
  FOREACH target IN config.get_authenticators;
    target.link = {
           rel = 'self'
-          href = "${location}/${target.id}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('authenticators_loc')}/id/${target.id}.json?l=${lang}"
    };
 
-   targets.push(target);
+   authenticators.push(target);
  END;
  
 
  this_json_output = {
      link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('authenticators_loc')}.json?l=${lang}"
      }
-     authentication_targets = targets
+     authenticators = authenticators
  };
 
  to_json(this_json_output);

@@ -15,7 +15,7 @@
      this_json_output = {
            link = {
               rel = 'self'
-              href = location
+              href = "${scheme}://${servername}${path_prefix}/${config.get('authenticators_loc')}/id/${authenticator_record.id}.json?l=${lang}"
            }
            id = authenticator_record.id
            description = authenticator_record.description

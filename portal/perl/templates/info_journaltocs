@@ -13,7 +13,7 @@
 -%]
 [% IF format == "ajax" %]
 <div style="padding:5px;">
-[% rss = utils.load_rss_feed(id) %]
+[% rss = utils.load_rss_feed(uri_unescape(id)) %]
 <h1>[% rss.channel.title.replace('JournalTOCs API - ','') %]</h1>
 
 <p>

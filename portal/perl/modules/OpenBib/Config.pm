@@ -1907,7 +1907,10 @@ sub local_server_belongs_to_updatable_cluster {
 
     my $is_updatable = $self->get_clusterinfo->search_rs(
 	{
-	    'me.status'          => 'updatable',
+	    -or                  => [
+                      'me.status' => 'updatable',
+                      'me.status' => 'updating',
+             ],
 	    'serverinfos.status' => 'updatable',
 	    'serverinfos.hostip' => $self->{local_ip},
 	},

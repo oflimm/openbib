@@ -11,4 +11,75 @@
 #
 #######################################################################
 -%]
-[% to_json(public_litlists) %]
+[%-
+
+ querystring_without_page = cgiapp.to_cgi_querystring({ exclude = ['page'] });
+
+ this_litlists = [];
+ FOREACH litlist IN public_litlists ;
+
+    FOREACH thistopic IN litlist.topics;
+      thistopic.link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${thistopic.id}.json?l=${lang}"
+      };
+    END;
+
+    thislitlist = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('litlists_loc')}/id/${litlist.id}.json?${querystring_without_page}"
+       }
+       id = litlist.id
+       tstamp = litlist.tstamp
+       title = litlist.title
+       type = litlist.type
+       topics = litlist.topics
+       itemcount = litlist.itemcount
+       lecture = litlist.lecture
+        
+    };
+
+    this_litlists.push(thislitlist);
+
+ END;
+
+ metainformation = {
+      hits = nav.total_entries
+      num = qopts.get_option('num')
+      page = nav.current_page
+ };
+
+ IF nav.current_page < nav.last_page ;
+   next_page = nav.next_page;
+   metainformation.next_page = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('litlists_loc')}.json?page=${next_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+ IF nav.current_page > nav.first_page ;
+   previous_page = nav.previous_page;
+   metainformation.previous_page = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('litlists_loc')}.json?page=${previous_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('litlists_loc')}.json?${cgiapp.to_cgi_querystring}"
+     }
+
+     meta = metainformation
+     litlists = this_litlists
+ };
+
+
+  to_json(this_json_output);
+-%]

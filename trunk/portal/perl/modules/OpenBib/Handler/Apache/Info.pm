@@ -94,6 +94,7 @@ sub show_record {
     
     # CGI Args
     my $format         = $query->param('format')         || '';
+    my $id             = $query->param('id')             || '';
     
     my $statistics  = new OpenBib::Statistics();
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -105,6 +106,7 @@ sub show_record {
     my $ttdata={
         format        => $format,
         stid          => $stid,
+        id            => $id,
         viewdesc      => $viewdesc,
         dbinfo        => $dbinfotable,
         statistics    => $statistics,

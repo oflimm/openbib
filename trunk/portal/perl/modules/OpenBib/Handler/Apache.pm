@@ -1043,6 +1043,11 @@ sub add_default_ttdata {
         return uri_escape_utf8($string);
     };
 
+    $ttdata->{'uri_unescape'}     = sub {
+        my $string = shift;
+        return uri_unescape($string);
+    };
+    
     $ttdata->{'iso2utf'}        = sub {
         my $string=shift;
         $string=Encode::encode("iso-8859-1",$string);

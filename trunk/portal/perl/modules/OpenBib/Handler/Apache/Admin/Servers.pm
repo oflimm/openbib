@@ -67,6 +67,7 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'           => 'show_collection',
+        'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',
@@ -157,7 +158,7 @@ sub show_record {
 
     # Dispatches Args
     my $view             = $self->param('view');
-    my $serverid         = $self->param('serverid');
+    my $serverid         = $self->strip_suffix($self->param('serverid'));
 
     # Shared Args
     my $config           = $self->param('config');
@@ -167,7 +168,7 @@ sub show_record {
         return;
     }
 
-    my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid });
+    my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid })->single;
     
     my $ttdata = {
         serverid     => $serverid,

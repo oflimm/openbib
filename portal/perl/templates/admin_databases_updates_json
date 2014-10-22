@@ -1,31 +1,81 @@
 [%-
 
-all_logentries = [] ;
+querystring_without_page = cgiapp.to_cgi_querystring({ exclude = ['page'] });
 
-FOREACH logentry IN databaseinfo.search_related("updatelogs", {}, { order_by => 'tstamp_start DESC' } ) ;
-  this_logentry = {
+all_updates = [] ;
+
+FOREACH update IN updates.all;
+  this_update = {
     serverinfo  =   {
                      link = {
                            rel = 'self'
-                           href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}/id/${logentry.serverid.id}.json?l=${lang}"
+                           href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}/id/${update.serverid.id}.json?l=${lang}"
                      }
-                     id = logentry.serverid.id
-                     hostip =  logentry.serverid.hostip
+                     id = update.serverid.id
+                     hostip =  update.serverid.hostip
                     }
-    tstamp_start = logentry.tstamp_start
-    duration     = logentry.duration
-    title_count  = logentry.title_count
+
+    tstamp_start = update.tstamp_start
+    duration     = update.duration
+    count       = {
+       title_all  = update.title_count
+
+       title_digital  = update.title_digitalcount
+       title_journal  = update.title_journalcount
+       title_article  = update.title_articlecount
+       person         = update.person_count
+       corporatebody  = update.corporatebody_count
+       classification = update.classification_count
+       subject        = update.subject_count
+       holding        = update.holding_count
+    }
+    database     =  {
+                     link = {
+                           rel = 'self'
+                           href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${update.dbid.dbname}.json?l=${lang}"
+                     }
+                     id          = update.dbid.dbname
+                     dbname      = update.dbid.dbname
+                     description = update.dbid.description
+                    }
   };
-  all_logentries.push(this_logentry);
+  all_updates.push(this_update);
 END;
+
+ metainformation = {
+      hits = nav.total_entries
+      num = qopts.get_option('num')
+      page = nav.current_page
+ };
+
+ IF nav.current_page < nav.last_page ;
+   next_page = nav.next_page;
+   metainformation.next_page = {
+       link = {
+            rel = 'self'
+            href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${databaseinfo.dbname}/updates.json?page=${next_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+ IF nav.current_page > nav.first_page ;
+   previous_page = nav.previous_page;
+   metainformation.previous_page = {
+       link = {
+            rel = 'self'
+            href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${databaseinfo.dbname}/updates.json?page=${previous_page};${querystring_without_page}"
+       }
+   };
+ END;
 
 this_json_output = {
     link = {
           rel = 'self'
-          href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${databaseinfo.dbname}/updates.json?l=${lang}"
+          href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${databaseinfo.dbname}/updates.json?${cgiapp.to_cgi_querystring}"
     }
 
-    logentries = all_logentries
+    updates = all_updates
+    meta = metainformation
 };
 
 to_json(this_json_output) ;

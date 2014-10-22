@@ -107,9 +107,26 @@ sub show_collection {
 
     my $rssfeed_ref= $config->get_rssfeeds_of_db($dbname);;
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
+
+    my $number_of_updates = $dbinfo_ref->search_related("updatelogs")->count;
+
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+    my $num    = $queryoptions->get_option('num');
+
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $number_of_updates,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
+
+    my $updates_ref = $dbinfo_ref->search_related("updatelogs", {}, { rows => $num, offset => $offset, order_by => 'tstamp_start DESC' } );
+
     
     my $ttdata={
+        nav          => $nav,
         databaseinfo => $dbinfo_ref,
+        updates      => $updates_ref,
     };
     
     $self->print_page($config->{tt_admin_databases_updates_tname},$ttdata);

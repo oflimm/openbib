@@ -1907,10 +1907,7 @@ sub local_server_belongs_to_updatable_cluster {
 
     my $is_updatable = $self->get_clusterinfo->search_rs(
 	{
-	    -or                  => [
-                      'me.status' => 'updatable',
-                      'me.status' => 'updating',
-             ],
+            'me.status'          => 'updatable',
 	    'serverinfos.status' => 'updatable',
 	    'serverinfos.hostip' => $self->{local_ip},
 	},
@@ -1920,6 +1917,44 @@ sub local_server_belongs_to_updatable_cluster {
 	)->count;
 
     return $is_updatable;
+}
+
+sub all_servers_of_local_cluster_have_status {
+    my ($self,$status) = @_;
+
+    my $local_cluster = $self->get_clusterinfo->search_rs(
+	{
+	    'serverinfos.hostip' => $self->{local_ip},
+	},
+	{
+            select => ['me.id'],
+            as     => ['clusterid'],
+	    join   => ['serverinfos'],
+	}
+    );
+
+    my $have_status = 1;
+
+    my $serverstatus = $self->get_clusterinfo->search_rs(
+	{
+            'me.id'              =>  { -in => $local_cluster->as_query },
+	},
+	{
+            select => ['serverinfos.status'],
+            as     => ['serverstatus'],
+	    join   => ['serverinfos'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	}
+    );
+
+    while (my $thisstatus = $serverstatus->next()){
+        if ($thisstatus->{serverstatus} ne $status){
+            $have_status = 0;
+            last;
+        }
+    }
+    
+    return $have_status;
 }
 
 sub get_templateinfo_overview {

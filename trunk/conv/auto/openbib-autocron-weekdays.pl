@@ -144,8 +144,10 @@ if ($cluster){
         $logger->info("### Updating in cluster mode");
         $logger->info("### Changing server-status to updating");
         $config->update_local_serverstatus("updating");
-        $logger->info("### Changing cluster-status to updating");
-        $config->update_local_clusterstatus("updating");
+        if ($config->all_servers_of_local_cluster_have_status('updating'){
+            $logger->info("### Changing cluster-status to updating");
+            $config->update_local_clusterstatus("updating");
+        }
     }
     else {
         $logger->info("### Local server is not updatable. Exiting.");

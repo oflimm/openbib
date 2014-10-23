@@ -218,6 +218,9 @@ CREATE INDEX tittag_userid ON tit_tag (userid);
 CREATE INDEX tittag_tagid ON tit_tag (tagid);
 CREATE INDEX tittag_dbname ON tit_tag (dbname);
 CREATE INDEX tittag_type ON tit_tag (type);
+CREATE INDEX tittag_srt_person ON tit_tag (srt_person);
+CREATE INDEX tittag_srt_title ON tit_tag (srt_title);
+CREATE INDEX tittag_srt_year ON tit_tag (srt_year);
 CREATE INDEX tittag_tstamp ON tit_tag (tstamp);
 
 ALTER TABLE review ADD PRIMARY KEY (id);

@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::Litlist;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Litlist
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<litlist>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Litlist
 
 =cut
 
@@ -49,7 +45,7 @@ __PACKAGE__->table("litlist");
 =head2 type
 
   data_type: 'smallint'
-  default_value: 1
+  default_value: '1)::smallint'
   is_nullable: 0
 
 =head2 lecture
@@ -75,38 +71,31 @@ __PACKAGE__->add_columns(
   "title",
   { data_type => "text", is_nullable => 0 },
   "type",
-  { data_type => "smallint", default_value => 1, is_nullable => 0 },
+  {
+    data_type     => "smallint",
+    default_value => "1)::smallint",
+    is_nullable   => 0,
+  },
   "lecture",
   { data_type => "boolean", default_value => \"false", is_nullable => 0 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</id>
-
-=back
-
-=cut
-
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 litlist_topics
+=head2 userid
 
-Type: has_many
+Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::LitlistTopic>
+Related object: L<OpenBib::Schema::System::Result::Userinfo>
 
 =cut
 
-__PACKAGE__->has_many(
-  "litlist_topics",
-  "OpenBib::Schema::System::Result::LitlistTopic",
-  { "foreign.litlistid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+__PACKAGE__->belongs_to(
+  "userid",
+  "OpenBib::Schema::System::Result::Userinfo",
+  { id => "userid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 litlistitems
@@ -124,24 +113,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 userid
+=head2 litlist_topics
 
-Type: belongs_to
+Type: has_many
 
-Related object: L<OpenBib::Schema::System::Result::Userinfo>
+Related object: L<OpenBib::Schema::System::Result::LitlistTopic>
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "userid",
-  "OpenBib::Schema::System::Result::Userinfo",
-  { id => "userid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+__PACKAGE__->has_many(
+  "litlist_topics",
+  "OpenBib::Schema::System::Result::LitlistTopic",
+  { "foreign.litlistid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-25 11:06:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:A1WccPVq2oPqRD7bAz0TaA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-10-23 10:41:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VOaCjTqumBOOEPaBfp+NZg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

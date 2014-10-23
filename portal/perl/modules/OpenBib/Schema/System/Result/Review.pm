@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::Review;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Review
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<review>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Review
 
 =cut
 
@@ -62,7 +58,7 @@ __PACKAGE__->table("review");
 =head2 rating
 
   data_type: 'smallint'
-  default_value: 0
+  default_value: '0)::smallint'
   is_nullable: 0
 
 =head2 dbname
@@ -104,7 +100,11 @@ __PACKAGE__->add_columns(
   "reviewtext",
   { data_type => "text", default_value => "", is_nullable => 0 },
   "rating",
-  { data_type => "smallint", default_value => 0, is_nullable => 0 },
+  {
+    data_type     => "smallint",
+    default_value => "0)::smallint",
+    is_nullable   => 0,
+  },
   "dbname",
   { data_type => "text", default_value => "", is_nullable => 0 },
   "titleid",
@@ -112,35 +112,9 @@ __PACKAGE__->add_columns(
   "titleisbn",
   { data_type => "text", default_value => "", is_nullable => 0 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</id>
-
-=back
-
-=cut
-
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
-
-=head2 reviewratings
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::System::Result::Reviewrating>
-
-=cut
-
-__PACKAGE__->has_many(
-  "reviewratings",
-  "OpenBib::Schema::System::Result::Reviewrating",
-  { "foreign.reviewid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
 
 =head2 userid
 
@@ -157,9 +131,24 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
+=head2 reviewratings
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-25 11:06:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2eRCdkwAqFWbvkMPynfu1Q
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Reviewrating>
+
+=cut
+
+__PACKAGE__->has_many(
+  "reviewratings",
+  "OpenBib::Schema::System::Result::Reviewrating",
+  { "foreign.reviewid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-10-23 10:41:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:UWAW3jomUotS1t+U7jfWoA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

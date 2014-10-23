@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::Viewinfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Viewinfo
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<viewinfo>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Viewinfo
 
 =cut
 
@@ -99,69 +95,10 @@ __PACKAGE__->add_columns(
   "active",
   { data_type => "boolean", is_nullable => 1 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</id>
-
-=back
-
-=cut
-
 __PACKAGE__->set_primary_key("id");
-
-=head1 UNIQUE CONSTRAINTS
-
-=head2 C<uq_viewinfo_viewname>
-
-=over 4
-
-=item * L</viewname>
-
-=back
-
-=cut
-
 __PACKAGE__->add_unique_constraint("uq_viewinfo_viewname", ["viewname"]);
 
 =head1 RELATIONS
-
-=head2 profileid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Schema::System::Result::Profileinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "profileid",
-  "OpenBib::Schema::System::Result::Profileinfo",
-  { id => "profileid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-=head2 rssid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Schema::System::Result::Rssinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "rssid",
-  "OpenBib::Schema::System::Result::Rssinfo",
-  { id => "rssid" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
-);
 
 =head2 templateinfos
 
@@ -208,6 +145,41 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 rssid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Rssinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "rssid",
+  "OpenBib::Schema::System::Result::Rssinfo",
+  { id => "rssid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+=head2 profileid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Profileinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "profileid",
+  "OpenBib::Schema::System::Result::Profileinfo",
+  { id => "profileid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
 =head2 view_rsses
 
 Type: has_many
@@ -224,8 +196,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-25 11:06:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4Ku3ycTDwAygaonzAzorfw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-10-23 10:41:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hSoaXWczfS6H+g33FG9sQA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::ViewRss;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::ViewRss
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<view_rss>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::ViewRss
 
 =cut
 
@@ -46,21 +42,6 @@ __PACKAGE__->add_columns(
 
 =head1 RELATIONS
 
-=head2 rssid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Schema::System::Result::Rssinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "rssid",
-  "OpenBib::Schema::System::Result::Rssinfo",
-  { id => "rssid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
 =head2 viewid
 
 Type: belongs_to
@@ -76,9 +57,24 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
+=head2 rssid
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-25 11:06:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:57rxLFbSw7vlrs2O9w3v0A
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Rssinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "rssid",
+  "OpenBib::Schema::System::Result::Rssinfo",
+  { id => "rssid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-10-23 10:41:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:aT+Fx7IuXQjBYJwzpCQZ4A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

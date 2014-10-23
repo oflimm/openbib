@@ -1,21 +1,17 @@
-use utf8;
 package OpenBib::Schema::System::Result::Userinfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Userinfo
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<userinfo>
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Userinfo
 
 =cut
 
@@ -230,31 +226,7 @@ __PACKAGE__->add_columns(
   "bibsonomy_sync",
   { data_type => "text", is_nullable => 1 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</id>
-
-=back
-
-=cut
-
 __PACKAGE__->set_primary_key("id");
-
-=head1 UNIQUE CONSTRAINTS
-
-=head2 C<uq_userinfo_username>
-
-=over 4
-
-=item * L</username>
-
-=back
-
-=cut
-
 __PACKAGE__->add_unique_constraint("uq_userinfo_username", ["username"]);
 
 =head1 RELATIONS
@@ -289,21 +261,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 reviewratings
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::System::Result::Reviewrating>
-
-=cut
-
-__PACKAGE__->has_many(
-  "reviewratings",
-  "OpenBib::Schema::System::Result::Reviewrating",
-  { "foreign.userid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 reviews
 
 Type: has_many
@@ -315,6 +272,21 @@ Related object: L<OpenBib::Schema::System::Result::Review>
 __PACKAGE__->has_many(
   "reviews",
   "OpenBib::Schema::System::Result::Review",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 reviewratings
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Reviewrating>
+
+=cut
+
+__PACKAGE__->has_many(
+  "reviewratings",
+  "OpenBib::Schema::System::Result::Reviewrating",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -455,8 +427,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2014-09-25 11:06:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qHtEr01jHiRiFDYgNdmO9g
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-10-23 10:41:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2mNLG2pBGxnIlvvaOsCkmw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

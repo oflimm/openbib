@@ -464,6 +464,10 @@ CREATE TABLE tit_tag (
  titleid    TEXT        NOT NULL,
  titleisbn  TEXT        NOT NULL default '',
 
+ srt_person TEXT,
+ srt_title  TEXT,
+ srt_year   TEXT,
+
  titlecache TEXT,
  type       SMALLINT       NOT NULL default '1'
 );

@@ -88,13 +88,20 @@
 <tr><th>[% msg.maketext("Server") %]</th><th>[% msg.maketext("Start") %]</th><th>[% msg.maketext("Dauer") %]</th><th>[% msg.maketext("Titel") %]</th></tr>
 </thead>
 <tbody>
-[% FOREACH logentry IN databaseinfo.search_related("updatelogs", {}, { order_by => 'tstamp_start DESC' } ) %]
+[% FOREACH logentry IN updates.all %]
 [% thisdate = date.format(logentry.tstamp_start,"%s"); plot_data.push("[${thisdate}*1000,${logentry.title_count}]") %]
 <tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% logentry.serverid.id %]/edit?l=[% lang %]">[% logentry.serverid.hostip %]</a></td><td>[% logentry.tstamp_start %]</td><td>[% logentry.duration %]</td><td>[% logentry.title_count %]</td></tr>
 [% END %]
 </tbody>
 </table>
 [% END %]
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+    <div class="ob-resulttime">
+<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+    </div>
+  </div>
 
 <style>
 .legend table {

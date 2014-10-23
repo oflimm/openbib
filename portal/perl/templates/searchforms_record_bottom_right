@@ -40,9 +40,9 @@ thematisch zugeordnet.
 
 [%-
    IF viewdbs.size == 1 ;
-      lasttags = user.get_recent_tags_by_name({count => 5, database => viewdbs.first }) ;
+      lasttags = user.get_recent_tags_by_name({num => 5, database => viewdbs.first }) ;
    ELSE ;
-      lasttags = user.get_recent_tags_by_name({count => 5 }) ;
+      lasttags = user.get_recent_tags_by_name({num => 5 }) ;
    END ;
 -%]
 

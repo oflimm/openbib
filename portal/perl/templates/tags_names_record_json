@@ -11,4 +11,35 @@
 #
 #######################################################################
 -%]
-[% to_json(recent_tags) %]
+[%-
+
+   start_range     = 1;
+   end_range       = recordlist.get_size;
+
+   records = [];
+
+   FOREACH record IN recordlist.get_records ;
+      records.push({ id => record.id, database => record.database, fields => record.get_fields });
+   END ;
+
+
+   metainformation = {
+      start_range = start_range
+      end_range   = end_range
+      hits        = end_range
+   };
+
+   titles_of_tagname = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('tags_loc')}/names/id/${tagname}.json?${cgiapp.to_cgi_querystring}"
+     }
+
+     name     = tagname
+     meta     = metainformation
+     records  = records
+   };
+
+   to_json(titles_of_tagname);
+
+-%]

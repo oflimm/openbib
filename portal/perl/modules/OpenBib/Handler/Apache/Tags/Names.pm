@@ -148,14 +148,23 @@ sub show_collection_recent {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI-Parameter
-    my $num  = $query->param('num') || 20;
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+    my $num    = $queryoptions->get_option('num');
 
-    my $recent_tags_ref = $user->get_recent_tags_by_name({count => $num});
+    my $tags_ref = $user->get_recent_tags_by_name({offset => $offset, num => $num});
+
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $tags_ref->{count},
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
 
     # TT-Data erzeugen
     my $ttdata={
-        recent_tags   => $recent_tags_ref,
+        total_count   => $tags_ref->{count},
+        nav           => $nav,
+        recent_tags   => $tags_ref->{tags},
     };
     
     $self->print_page($config->{tt_tags_names_recent_tname},$ttdata);
@@ -193,8 +202,8 @@ sub show_record {
     my $method         = $query->param('_method')     || '';
     
     my $offset         = $query->param('offset')            || 0;
-    my $num            = $query->param('num')               || 50;
-    $titleid          = $query->param('titleid')             || '';
+    my $num            = $query->param('num')               || 200;
+    $titleid           = $query->param('titleid')             || '';
     my $dbname          = $query->param('dbname')             || '';
     my $titisbn        = $query->param('titisbn')           || '';
     my $tags           = decode_utf8($query->param('tags')) || '';

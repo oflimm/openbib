@@ -1818,8 +1818,75 @@ sub get_recent_tags_by_name {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $count        = exists $arg_ref->{count}
-        ? $arg_ref->{count}           : 5;
+    my $offset       = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}        : 0;
+    my $num          = exists $arg_ref->{num}
+        ? $arg_ref->{num}           : 20;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $tags_ref = [];
+    
+    # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
+    my $tags = $self->{schema}->resultset('Tag')->search(
+        {
+            'tit_tags.type'   => 1,
+        },
+        {
+            group_by => ['me.name','me.id'],
+            order_by => ['me.id DESC'],
+            join     => ['tit_tags'],
+            rows     => $num,
+            offset   => $offset,
+            select   => ['me.name','me.id'],
+            as       => ['thisname','thisid'],
+        }
+    );
+
+    my $numoftags = $self->{schema}->resultset('Tag')->search(
+        {
+            'tit_tags.type'   => 1,
+        },
+        {
+            group_by => ['me.name'],
+            order_by => ['me.id DESC'],
+            join     => ['tit_tags'],
+            select   => ['me.name'],
+            as       => ['thisname'],
+        }
+    )->count;
+    
+    foreach my $singletag ($tags->all){
+        my $tagname    = $singletag->get_column('thisname');
+        my $tagid      = $singletag->get_column('thisid');
+        my $itemcount  = $self->get_number_of_public_tags_by_name($tagname);        
+        
+        $logger->debug("Got tagname $tagname");
+        
+        push @$tags_ref, {
+            itemcount => $itemcount,
+            tagname   => $tagname,
+            id        => $tagid,
+        };
+    }        
+    
+    return {
+        count => $numoftags,
+        tags  => $tags_ref
+    };
+}
+
+sub obsolete_get_recent_tags_by_name {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $num          = exists $arg_ref->{num}
+        ? $arg_ref->{num}             : 5;
+
+    my $offset       = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}          : 0;
 
     my $database     = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
@@ -1838,11 +1905,24 @@ sub get_recent_tags_by_name {
         },
         {
             group_by => ['id','tagid'],
-            order_by => ['id desc'],
+            order_by => ['id DESC'],
             select   => ['tagid'],
             as       => ['thistagid'],
         }
     );
+
+    my $numoftags = $self->{schema}->resultset('Tag')->search(
+        {
+            'tit_tags.type'   => 1,
+        },
+        {
+            group_by => ['me.name'],
+            order_by => ['me.id DESC'],
+            join     => ['tit_tags'],
+            select   => ['me.name'],
+            as       => ['thisname'],
+        }
+    )->count;
 
     my $tags = $tittag->search_rs(
         {
@@ -1851,7 +1931,8 @@ sub get_recent_tags_by_name {
         {
             select => [{ distinct => 'tagid'}],
             order_by => ['tagid'],
-            rows     => $count,
+            rows     => $num,
+            offset   => $offset,
             as       => ['thistagid'],
             order_by => ['tagid'],
         }
@@ -1860,7 +1941,6 @@ sub get_recent_tags_by_name {
     
     foreach my $singletag ($tags->all){
         my $tagid     = $singletag->get_column('thistagid');
-
         my $tagname   = $self->get_name_of_tag({ tagid => $tagid});
         my $itemcount = $self->get_number_of_public_tags_by_name($tagname);        
 
@@ -1869,11 +1949,15 @@ sub get_recent_tags_by_name {
         push @$tags_ref, {
             itemcount => $itemcount,
             tagname   => $tagname,
+            id        => $tagid,
         };
     }        
 
     
-    return $tags_ref;
+    return {
+        count => $numoftags,
+        tags  => $tags_ref,
+    }
 }
 
 sub get_public_tags {
@@ -1883,7 +1967,7 @@ sub get_public_tags {
     my $offset       = exists $arg_ref->{offset}
         ? $arg_ref->{offset}        : undef;
     my $num          = exists $arg_ref->{num}
-        ? $arg_ref->{num}        : undef;
+        ? $arg_ref->{num}           : undef;
     
     # Log4perl logger erzeugen
   
@@ -1936,9 +2020,9 @@ sub get_public_tags_by_name {
 
     # Set defaults
     my $offset       = exists $arg_ref->{offset}
-        ? $arg_ref->{offset}        : undef;
+        ? $arg_ref->{offset}        : 0;
     my $num          = exists $arg_ref->{num}
-        ? $arg_ref->{num}        : undef;
+        ? $arg_ref->{num}           : 20;
     
     # Log4perl logger erzeugen
   
@@ -1952,13 +2036,13 @@ sub get_public_tags_by_name {
             'tit_tags.type'   => 1,
         },
         {
-            group_by => ['me.name'],
+            group_by => ['me.name','me.id'],
             order_by => ['me.name ASC'],
             join     => ['tit_tags'],
             rows     => $num,
             offset   => $offset,
-            select   => ['me.name'],
-            as       => ['thisname'],
+            select   => ['me.name','me.id'],
+            as       => ['thisname','thisid'],
         }
     );
 
@@ -1977,6 +2061,7 @@ sub get_public_tags_by_name {
     
     foreach my $singletag ($tags->all){
         my $tagname    = $singletag->get_column('thisname');
+        my $tagid      = $singletag->get_column('thisid');
         my $itemcount  = $self->get_number_of_public_tags_by_name($tagname);        
         
         $logger->debug("Got tagname $tagname");
@@ -1984,6 +2069,7 @@ sub get_public_tags_by_name {
         push @$tags_ref, {
             itemcount => $itemcount,
             tagname   => $tagname,
+            id        => $tagid,
         };
     }        
     

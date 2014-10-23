@@ -14,6 +14,8 @@
 
 [%
 
+   querystring_without_page = cgiapp.to_cgi_querystring({ exclude = ['page'] });
+
    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
    end_range       = nav.current_page*queryoptions.get_option('num');
    IF end_range >= hits ;
@@ -27,19 +29,43 @@
    END ;
 
 
+   metainformation = {
+      start_range = start_range
+      end_range   = end_range
+      hits        = nav.total_entries
+      num         = qopts.get_option('num')
+      page        = nav.current_page
+      ips_user    = queryoptions.get_option('ips_user')
+   };
+
+ IF nav.current_page < nav.last_page ;
+   next_page = nav.next_page;
+   metainformation.next_page = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('search_loc')}.json?page=${next_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+ IF nav.current_page > nav.first_page ;
+   previous_page = nav.previous_page;
+   metainformation.previous_page = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('search_loc')}.json?page=${previous_page};${querystring_without_page}"
+       }
+   };
+ END;
+
 
    search_result = {
      link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('search_loc')}.json?${cgiapp.to_cgi_querystring}"
      }
 
-     meta = {
-              'start_range' = start_range
-              'end_range'   = end_range
-              'hits'        = hits
-              'ips_user'    = queryoptions.get_option('ips_user')
-     }
+     meta = metainformation
 
      records = records
 

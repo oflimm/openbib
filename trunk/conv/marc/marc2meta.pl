@@ -469,12 +469,14 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
             my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
             my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
             my $content_h = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('h')):decode_utf8($field->as_string('h'));
+            my $content_n = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('n')):decode_utf8($field->as_string('n'));
             my $linkage   = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):decode_utf8($field->as_string('6'));
             
             # Subfields entfernen
             $field->delete_subfield(code => 'b');
             $field->delete_subfield(code => 'c');
             $field->delete_subfield(code => 'h');
+            $field->delete_subfield(code => 'n');
             $field->delete_subfield(code => '6'); # Linkage
 
 
@@ -501,6 +503,18 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                     subfield => '',
                     mult     => $multcount,
                 };                
+            }
+
+            # Zaehlung
+            if ($content_n){
+                my $multcount=++$multcount_ref->{'0089'};
+                
+                push @{$title_ref->{fields}{'0089'}}, {
+                    content  => konv($content_n),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+                
             }
 
             my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());

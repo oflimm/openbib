@@ -47,7 +47,7 @@ my $pool          = $ARGV[0];
 print "### $pool: Zusammenspielen der Datenlieferungen und Umwandlung von MARC\n";
 system("cd $pooldir/$pool ; rm meta.* ; rm pool*");
 
-system("cd $pooldir/$pool ; cat header.xml > $pooldir/$pool/pool.xml ; cat `ls -1 *mdz.xml|sort -r |xargs` | sed -e 's/<marc:/</g' | sed -e 's/<\/marc:/</g'  >> $pooldir/$pool/pool.xml ; cat footer.xml >> $pooldir/$pool/pool.xml");
+system("cd $pooldir/$pool ; cat header.xml > $pooldir/$pool/pool.xml ; zcat `ls -1 *mdz.xml.gz|sort -r |xargs` | sed -e 's/<marc:/</g' | sed -e 's/<\/marc:/</g'  >> $pooldir/$pool/pool.xml ; cat footer.xml >> $pooldir/$pool/pool.xml");
 
 system("cd $pooldir/$pool; $marc2metaexe --inputfile=pool.xml -use-xml; gzip meta.*");
 system("rm $pooldir/$pool/pool.xml");

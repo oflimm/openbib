@@ -1,13 +1,3 @@
-<script>
-$(document).ready(function(){
-// Begin Verwandte Personen
-  $.get("[% path_prefix %]/[% config.get('litlists_loc') %]/journaltocs?id=[% normdata.${"E4115"}.first.content %];format=ajax",
-         function (txt){
-           $("#ob-journaltocs").html(txt); 
-  });
-});
-</script>
-
 <table class="ZMSTable" >
 <caption align="top"></caption>
 <colgroup>

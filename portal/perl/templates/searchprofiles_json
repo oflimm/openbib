@@ -5,7 +5,7 @@
     this_searchprofile = {
         link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('searchprofiles_loc')}/id/${searchprofile.id}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('searchprofiles_loc')}/id/${searchprofile.id}.json?l=${lang}"
         }
         
         id                  = searchprofile.id
@@ -18,7 +18,7 @@
   this_json_output = {
      link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('searchprofiles_loc')}.json?l=${lang}"
      }
 
      searchprofiles = searchprofileinfos

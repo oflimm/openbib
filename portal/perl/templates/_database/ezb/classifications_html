@@ -82,7 +82,7 @@
 <h1>[% msg.maketext("Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten") %]</h1>
 <p/>
 <div class="ob-listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'cloud' }}) %]"[% IF query.param('type') == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'list' }}) %]"[% IF type == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'cloud' }}) %]"[% IF query.param('type') == 'cloud' %] class="ob-selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?[% cgiapp.to_cgi_querystring({ change => { type => 'list' }}) %]"[% IF type == 'list' %] class="ob-selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
 <div class="left_side23">

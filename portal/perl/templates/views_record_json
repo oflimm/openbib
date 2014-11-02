@@ -10,7 +10,8 @@ FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort ;
 
           id     = item
           dbname = item
-          description = dbinfo.dbnames.${item}.full
+          description       = dbinfo.dbnames.${item}.full
+          description_short = dbinfo.dbnames.${item}.short
 });
 END ;
 

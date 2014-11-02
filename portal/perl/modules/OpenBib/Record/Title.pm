@@ -1238,6 +1238,39 @@ sub to_normalized_isbn13 {
     return $thisisbn;
 }
 
+sub get_sortfields {
+    my ($self) = @_;
+
+    my $person_field = $self->get_field({ field => 'PC0001' });
+    my $title_field  = $self->get_field({ field => 'T0331' });
+    my $year_field   = $self->get_field({ field => 'T0425' });
+
+    if (!defined $year_field->[0]{content}){
+        $year_field   = $self->get_field({ field => 'T0424' });
+    }
+
+    my $srt_person = OpenBib::Common::Util::normalize({
+        content => $person_field->[0]{content}
+    });
+    
+    my $srt_title  =  OpenBib::Common::Util::normalize({
+        content => $title_field->[0]{content},
+        field   => 'T0331',
+    });
+    
+    my $srt_year   =  OpenBib::Common::Util::normalize({
+        content => $year_field->[0]{content},
+        field   => 'T0425',
+        type    => 'integer',
+    });
+
+    return {
+        person => $srt_person,
+        title  => $srt_title,
+        year   => $srt_year,
+    }
+}
+
 sub to_endnote {
     my ($self) = @_;
 

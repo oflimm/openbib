@@ -39,9 +39,9 @@
         <li><a href="#" class="lastitem">[% msg.maketext('Tags nach Namen') %]</a></li>
       </ul>
      </div>
-     <div class="ob-representation">
-<!-- <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a> -->
+     <div class="ob-representation" >
+       <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<!-- <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a> -->
      </div>
   </div>
 
@@ -57,11 +57,8 @@
         <div class="ym-cbox" class="ym-clearfix">
 
 <div class="ob-listoptions">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.html?format=cloud"[% IF format == 'cloud' %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.html?format=list"[% IF format == 'list' %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.html?format=cloud"[% IF format == 'cloud' %] class="ob-selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.html?format=list"[% IF format == 'list' %] class="ob-selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
-[%
-   private_tags = user.get_private_tags_by_name({ userid => user.ID  });
-%]
 
 <style>
 .ob-cloud {
@@ -71,7 +68,18 @@
 </style>
 
 
-[%- IF private_tags.size > 0 -%]
+[%- IF private_tags_by_name.size > 0 -%]
+
+[%-
+    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
 
 <h3>[% msg.maketext("Eigene Tags") %]</h3>
 
@@ -92,7 +100,7 @@
 %]
 
 <ol class="ob-cloud">
-[%-     FOREACH thisitem IN private_tags -%]
+[%-     FOREACH thisitem IN private_tags_by_name -%]
 [% item      = thisitem.name;
    itemcount = thisitem.count;
    classnr   = thisitem.class;
@@ -100,12 +108,12 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names/id/[% item %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names/id/[% item %].html?l=[% lang %];num=[% qopts.get_option('num') %];srt=title_asc" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%     END %]
 </ol>
 [%   ELSIF format == 'list' %]
 <ul class="topiclist">
-[%-     FOREACH thisitem IN private_tags -%]
+[%-     FOREACH thisitem IN private_tags_by_name -%]
 [% item      = thisitem.name;
    itemcount = thisitem.count;
    classnr   = thisitem.class;
@@ -115,7 +123,15 @@ verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('user
 <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names/id/[% item %]">[% item %]</a> ([% itemcount %])</li>
 [%     END %]
 </ul>
+
+<p/>
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+  </div>
+
 [%   END %]
+
 [% ELSE %]
 [% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
 [% END %]

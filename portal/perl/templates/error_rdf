@@ -1,0 +1,5 @@
+<error>
+ <msg>[% err_msg %]</msg>
+ <code>[% err_nr %]</code>
+</error>
+

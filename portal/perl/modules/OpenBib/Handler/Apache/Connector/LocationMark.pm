@@ -215,6 +215,7 @@ sub show {
 
         # TT-Data erzeugen
         my $ttdata={
+            
             itemlist     => \@outputbuffer,
             signaturdesc => $title,
             database     => $database,
@@ -230,15 +231,12 @@ sub show {
             OUTPUT         => $r,    # Output geht direkt an Apache Request
             RECURSION      => 1,
         });
-
-        # Start der Ausgabe mit korrektem Header
-        $r->content_type("text/html");
-
-        $template->process($config->{tt_connector_locationmark_titlist_tname}, $ttdata) || do {
-#        $template->process("lbs_systematik", $ttdata) || do {
-            $logger->error("Fehler bei der Ausgabe des Template: ".$template->error());
-            return;
-        };
+        
+        $self->print_page($config->{tt_connector_locationmark_titlist_tname},$ttdata);
+        
+    }
+    else {
+        $self->print_warning("Insufficient Arguments",2);
     }
     
     return Apache2::Const::OK;

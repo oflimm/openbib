@@ -816,7 +816,13 @@ sub get_titles_of_tag {
 
     my $hitrange    = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}              : '';
+
+    my $sortorder   = exists $arg_ref->{sortorder}
+        ? $arg_ref->{sortorder}              : '';
     
+    my $sorttype    = exists $arg_ref->{sorttype}
+        ? $arg_ref->{sorttype}               : '';
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -839,10 +845,10 @@ sub get_titles_of_tag {
     }
 
     # DBI: "select count(distinct titleid,dbname) as conncount from tittag where tagid=?"
-    my $hits = $self->{schema}->resultset('TitTag')->search_rs(
-        $where_ref,
-        $attribute_ref
-    )->count;
+#    my $hits = $self->{schema}->resultset('TitTag')->search_rs(
+#        $where_ref,
+#        $attribute_ref
+#    )->count;
 
 
     # Dann jeweilige Titelmenge bestimmen
@@ -856,7 +862,7 @@ sub get_titles_of_tag {
     $attribute_ref = {
         select   => ['me.titleid','me.dbname'],
         as       => ['thistitleid','thisdbname'],
-        group_by => ['me.titleid','me.dbname'],
+        group_by => ['me.titleid','me.dbname','me.id','me.srt_title','me.srt_person','me.srt_year'],
     };
     
     if ($username) {
@@ -868,9 +874,44 @@ sub get_titles_of_tag {
         $where_ref->{'me.dbname'} = $database;
     }
 
+    # DBI: "select count(distinct titleid,dbname) as conncount from tittag where tagid=?"
+    my $hits = $self->{schema}->resultset('TitTag')->search_rs(
+        $where_ref,
+        $attribute_ref
+    )->count;
+    
     if ($hitrange){
         $attribute_ref->{rows}   = $hitrange;
         $attribute_ref->{offset} = $offset;
+    }
+
+    if ($sorttype eq "person"){
+        if ($sortorder eq "asc"){
+            $attribute_ref->{order_by}   = "me.srt_person ASC";
+        }
+        else {
+            $attribute_ref->{order_by}   = "me.srt_person DESC";
+        }
+    }
+    elsif ($sorttype eq "title"){
+        if ($sortorder eq "asc"){
+            $attribute_ref->{order_by}   = "me.srt_title ASC";
+        }
+        else {
+            $attribute_ref->{order_by}   = "me.srt_title DESC";
+        }
+    }
+    elsif ($sorttype eq "year"){
+        if ($sortorder eq "asc"){
+            $attribute_ref->{order_by}   = "me.srt_year ASC";
+        }
+        else {
+            $attribute_ref->{order_by}   = "me.srt_year DESC";
+        }
+    }
+    # Sonst nach ID
+    else {
+        $attribute_ref->{order_by}   = "me.id DESC";
     }
     
     # DBI: "select distinct titleid,dbname from tittag where tagid=?";
@@ -1088,6 +1129,22 @@ sub add_tags {
             }
         )->single();
 
+        # Sortierungsinformationen bestimmen
+
+        my $record;
+        
+        eval {
+            $record = OpenBib::Record::Title->new({database => $dbname, id => $titleid})->load_brief_record;
+        };
+        
+        if ($@){
+            $logger->error($@);
+            next;
+        }
+        
+        my $sortfields_ref = $record->get_sortfields;
+        my $cached_title   = $record->to_json;
+
         # Wenn Tag nicht existiert, dann kann alles eintragen werden (tags/tittag)
         
         if (!$tag){
@@ -1102,11 +1159,15 @@ sub add_tags {
             $new_tag->create_related(
                 'tit_tags',
                 {
-                    titleid   => $titleid,
-                    titleisbn => $titleisbn,
-                    dbname    => $dbname,
-                    userid    => $userid,
-                    type      => $type,                    
+                    titleid    => $titleid,
+                    titleisbn  => $titleisbn,
+                    dbname     => $dbname,
+                    userid     => $userid,
+                    type       => $type,
+                    titlecache => $cached_title,
+                    srt_person => $sortfields_ref->{person},
+                    srt_title  => $sortfields_ref->{title},
+                    srt_year   => $sortfields_ref->{year},
                 }
             );
         }
@@ -1133,11 +1194,15 @@ sub add_tags {
                 $tag->create_related(
                     'tit_tags',
                     {
-                        titleid   => $titleid,
-                        titleisbn => $titleisbn,
-                        dbname    => $dbname,
-                        userid    => $userid,
-                        type      => $type,                    
+                        titleid    => $titleid,
+                        titleisbn  => $titleisbn,
+                        dbname     => $dbname,
+                        userid     => $userid,
+                        type       => $type,                    
+                        titlecache => $cached_title,
+                        srt_person => $sortfields_ref->{person},
+                        srt_title  => $sortfields_ref->{title},
+                        srt_year   => $sortfields_ref->{year},
                     }
                 );
             }
@@ -1580,27 +1645,61 @@ sub get_private_tags {
         ? $arg_ref->{num}           : undef;
     my $userid       = exists $arg_ref->{userid}
         ? $arg_ref->{userid}        : undef;
+    my $sortorder   = exists $arg_ref->{sortorder}
+        ? $arg_ref->{sortorder}              : '';
+    my $sorttype    = exists $arg_ref->{sorttype}
+        ? $arg_ref->{sorttype}               : '';
     
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
     my $tags_ref = [];
-    
+
+    my $attribute_ref =         {
+        group_by => ['id','titleid','dbname'],
+        rows     => $num,
+        offset   => $offset,
+        select   => ['id','tagid','titleid','dbname'],
+        as       => ['thisid','thistagid','thistitleid','thisdbname','srt_person','srt_title','srt_year'],
+        result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+    };
+
+    if ($sorttype eq "person"){
+        if ($sortorder eq "asc"){
+            $attribute_ref->{order_by}   = "srt_person ASC";
+        }
+        else {
+            $attribute_ref->{order_by}   = "srt_person DESC";
+        }
+    }
+    elsif ($sorttype eq "title"){
+        if ($sortorder eq "asc"){
+            $attribute_ref->{order_by}   = "srt_title ASC";
+        }
+        else {
+            $attribute_ref->{order_by}   = "srt_title DESC";
+        }
+    }
+    elsif ($sorttype eq "year"){
+        if ($sortorder eq "asc"){
+            $attribute_ref->{order_by}   = "srt_year ASC";
+        }
+        else {
+            $attribute_ref->{order_by}   = "srt_year DESC";
+        }
+    }
+    # Sonst nach ID
+    else {
+        $attribute_ref->{order_by}   = "id DESC";
+    }
+
     # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
     my $tags = $self->{schema}->resultset('TitTag')->search(
         {
             'userid'   => $userid,
         },
-        {
-            group_by => ['id','titleid','dbname'],
-            order_by => ['id ASC'],
-            rows     => $num,
-            offset   => $offset,
-            select   => ['id','tagid','titleid','dbname'],
-            as       => ['thisid','thistagid','thistitleid','thisdbname'],
-            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
-        }
+        $attribute_ref
     );
     
     while (my $singletag = $tags->next){
@@ -1632,28 +1731,62 @@ sub get_private_tags_by_name {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $userid           = exists $arg_ref->{userid}
-        ? $arg_ref->{userid}           : undef;
-
+    my $userid       = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}        : undef;
+    my $offset       = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}        : undef;
+    my $num          = exists $arg_ref->{num}
+        ? $arg_ref->{num}           : undef;
+    my $sortorder    = exists $arg_ref->{sortorder}
+        ? $arg_ref->{sortorder}     : 'title';
+    my $sorttype     = exists $arg_ref->{sorttype}
+        ? $arg_ref->{sorttype}      : 'asc';
+    
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
     $logger->debug("userid: $userid");
 
+    my $attribute_ref = { 
+        group_by => ['tagid.id','tagid.name'],
+        order_by => ['tagid.name'],
+        join     => ['tagid','userid'],
+        select   => ['tagid.name','tagid.id',{ count => 'me.tagid' }],
+        as       => ['thistagname','thistagid','thistagcount'],
+        result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+    };
+    
     # DBI: "select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where t.id=tt.tagid and tt.userid=? group by tt.tagid order by t.name"
+    my $numoftags = $self->{schema}->resultset('TitTag')->search_rs(
+        {
+            'userid.id' => $userid,
+        },
+        $attribute_ref
+    )->count;
+
+    if (defined $num && defined $offset){
+        $attribute_ref->{rows}   = $num;
+        $attribute_ref->{offset} = $offset;
+    }
+
+    if ($sorttype eq "title"){
+        if ($sortorder eq "asc"){
+            $attribute_ref->{order_by}   = "tagid.name ASC";
+        }
+        else {
+            $attribute_ref->{order_by}   = "tagid.name DESC";
+        }
+    }
+    else {
+        $attribute_ref->{order_by}   = "tagid.name ASC";
+    }
+
     my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
         {
             'userid.id' => $userid,
         },
-        {
-            group_by => ['tagid.id','tagid.name'],
-            order_by => ['tagid.name'],
-            join     => ['tagid','userid'],
-            select   => ['tagid.name','tagid.id',{ count => 'me.tagid' }],
-            as       => ['thistagname','thistagid','thistagcount'],
-            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
-        }
+        $attribute_ref
     );
 
     my $taglist_ref = [];
@@ -1683,7 +1816,7 @@ sub get_private_tags_by_name {
         $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
     }
     
-    return $taglist_ref;
+    return ($taglist_ref,$numoftags);
 }
 
 sub get_private_tagged_titles {

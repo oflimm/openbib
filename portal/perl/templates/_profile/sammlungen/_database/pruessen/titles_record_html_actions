@@ -11,7 +11,7 @@
 [%
   private_tags_of_tit = [];
   IF user.ID ;
-    private_tags        = user.get_private_tags_by_name({ userid => user.ID  });
+    private_tags        = user.get_private_tags_by_name({ userid => user.ID  }).first;
     private_tags_of_tit = user.get_private_tags_of_tit({ titleid => record.id, dbname => record.database, username => username  });
   END ;
 %]

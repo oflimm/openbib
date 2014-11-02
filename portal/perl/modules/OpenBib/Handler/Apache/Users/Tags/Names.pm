@@ -146,12 +146,39 @@ sub show_collection {
 
     my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
+
+    my $method_args_ref = {
+        userid    => $user->{ID},
+        sortorder => $queryoptions->get_option('srto'),
+        sorttype  => $queryoptions->get_option('srt'),
+    };
+
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+    
+    # Bei der Clouddarstellung werden alle Tags verarbeitet, ansonsten(Listendarstellung)
+    # wird mit Paging ausgegeben
+    if ($format ne "cloud"){
+        $method_args_ref->{offset} = $offset;
+        $method_args_ref->{num}    = $queryoptions->get_option('num');
+    }
+    
+    my ($private_tags,$hits) = $user->get_private_tags_by_name($method_args_ref);
+
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $hits,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
     
     # TT-Data erzeugen
     my $ttdata={
-        format     => $format,
-        targettype => $targettype,
-        username   => $username,
+        hits                 => $hits,
+        nav                  => $nav,
+        private_tags_by_name => $private_tags, 
+        format               => $format,
+        targettype           => $targettype,
+        username             => $username,
     };
 
     $self->print_page($config->{tt_users_tags_names_tname},$ttdata,$r);
@@ -185,8 +212,6 @@ sub show_record {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $offset         = $query->param('offset') || 0;
-    my $num            = $query->param('num')               || 50;
     my $method         = $query->param('_method') || '';
     my $database       = $query->param('db')     || '';
     my $sorttype       = $query->param('srt')    || "person";
@@ -208,14 +233,25 @@ sub show_record {
     my $tagid = $user->get_id_of_tag({tag => $tagname});
     
     my $titles_ref;
+
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
     
     ($recordlist,$hits)= $user->get_titles_of_tag({
         tagid     => $tagid,
         offset    => $offset,
-        hitrange  => $num,
+        hitrange  => $queryoptions->get_option('num'),
         username  => $user->get_username,
+        sortorder => $queryoptions->get_option('srto'),
+        sorttype  => $queryoptions->get_option('srt'),
     });
-        
+
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $hits,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
+    
     # Zugriff loggen
     $session->log_event({
         type      => 804,
@@ -224,16 +260,13 @@ sub show_record {
 
     $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
 
-    $recordlist->load_brief_records;
-
-    $recordlist->sort({order => $queryoptions->get_option('srto'), type => $queryoptions->get_option('srt')});
-    
     my $ttdata = {
+        nav              => $nav,
         sortorder        => $queryoptions->get_option('srto'),
         sorttype         => $queryoptions->get_option('srt'),
         hits             => $hits,
         offset           => $offset,
-        num              => $num,
+        num              => $queryoptions->get_option('num'),
 
         recordlist       => $recordlist,
         query            => $query,

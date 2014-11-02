@@ -39,12 +39,12 @@
        <ul>
         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
         <li><a href=["% path_prefix%]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
-        <li><a href="#" class="lastitem">[% msg.maketext('Tags nach Namen') %]</a></li>
+        <li><a href="#" class="lastitem">[% msg.maketext("Tags") %]&nbsp;[% msg.maketext("nach Titeln") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">
-<!-- <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a> -->
+       <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %].json?[% cgiapp.to_cgi_querystring %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+<!--<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a> -->
      </div>
   </div>
 
@@ -59,25 +59,44 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% IF public_tags.size == 0 %]
+[% IF private_tags.size == 0 %]
 
    <h1>Bisher wurden keine Tags vergeben</h1>
 
 [% ELSE %]
 
 [%-
-    start_range     = nav.current_page*qopts.get_option('num') - qopts.get_option('num') + 1;
-    end_range       = private_tags.size;
-    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']});
+    start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+    end_range       = nav.current_page*qopts.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
   <div class="ob-resultheader">
     <div class="left">
-[% total_count %]  [% msg.maketext("Tags") %]
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>  [% msg.maketext("Tags") %]&nbsp;[% msg.maketext("nach Titeln") %]
     </div>
     <div class="right">
+<form method="get" action="[% path_prefix%]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %].html">
+<input type="hidden" name="page" value="1" />
+
+[% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto']}) %]
+
+<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
+<select name="srt" class="autosubmit">
+  <option value="year_desc"[%- IF query.param('srt') == 'year_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&darr;</option>
+  <option value="year_asc"[%- IF query.param('srt') == 'year_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&uarr;</option>
+  <option value="person_asc"[%- IF query.param('srt') == 'person_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title_asc"[%- IF query.param('srt') == 'title_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+</select>
+
+<input class="ob-nojs_show" type="submit" value="[% msg.maketext("Los") %]" />
+</form>
     </div>    
   </div>
   <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">

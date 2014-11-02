@@ -1557,11 +1557,7 @@ sub print_authorization_error {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if ($self->param('representation') ne "html"){
-        $logger->debug("Authorization error");
-        $r->status(Apache2::Const::FORBIDDEN);
-    }
-    else {
+    if ($self->param('representation') eq "html"){
         # Aufruf-URL
         my $return_uri  = uri_escape($r->parsed_uri->path);
         
@@ -1571,6 +1567,11 @@ sub print_authorization_error {
         
         return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",'303 See Other');
     }        
+    else {
+        $self->print_warning("Authorization error",1);
+        $logger->debug("Authorization error");
+        $r->status(Apache2::Const::FORBIDDEN);
+    }
 
     return;
 }

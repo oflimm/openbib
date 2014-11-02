@@ -146,7 +146,13 @@ sub show_collection {
         return;
     }
 
-    my $private_tags_ref = $user->get_private_tags({ userid => $user->{ID}, offset => $self->param('offset'), num => $self->param('num')});
+    my $private_tags_ref = $user->get_private_tags({
+        userid    => $user->{ID},
+        offset    => $self->param('offset'),
+        sortorder => $queryoptions->get_option('srto'),
+        sorttype  => $queryoptions->get_option('srt'),
+        num       => $self->param('num')
+    });
 
     my $total_count = $user->get_number_of_private_tags({ userid => $user->{ID} });
     
@@ -162,7 +168,7 @@ sub show_collection {
     # TT-Data erzeugen
     my $ttdata={
         username      => $username,
-        total_count   => $total_count,
+        hits          => $total_count,
         nav           => $nav,
         private_tags  => $private_tags_ref,
     };
@@ -197,8 +203,6 @@ sub show_record {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $offset         = $query->param('offset') || 0;
-    my $hitrange       = $query->param('num')    || 50;
     my $database       = $query->param('db')     || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
@@ -222,14 +226,24 @@ sub show_record {
     }
     
     my $titles_ref;
-    
+
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+
     ($recordlist,$hits)= $user->get_titles_of_tag({
         username  => $username,
-        tagid     => $tagid,
         offset    => $offset,
-        hitrange  => $hitrange,
+        hitrange  => $queryoptions->get_option('num'),
+        sortorder => $queryoptions->get_option('srto'),
+        sorttype  => $queryoptions->get_option('srt'),
     });
-        
+
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $hits,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
+
     # Zugriff loggen
     $session->log_event({
         type      => 804,
@@ -239,30 +253,48 @@ sub show_record {
     if ($logger->is_debug){
         $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
     }
-    
-    $recordlist->print_to_handler({
-        representation   => $representation,
-        content_type     => $content_type,
-        database         => $database,
-        sortorder        => $sortorder,
-        sorttype         => $sorttype,
-        apachereq        => $r,
-        stylesheet       => $stylesheet,
-        view             => $view,
+
+    $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+
+    my $ttdata = {
+        nav              => $nav,
+        sortorder        => $queryoptions->get_option('srto'),
+        sorttype         => $queryoptions->get_option('srt'),
         hits             => $hits,
         offset           => $offset,
-        hitrange         => $hitrange,
+        num              => $queryoptions->get_option('num'),
+
+        recordlist       => $recordlist,
         query            => $query,
-        template         => 'tt_users_tags_record_tname',
-        location         => 'users_loc',
-        parameter        => {
-            username     => $username,
-            tag          => $tag,
-            private_tags => 1,
-        },
+        tagname          => $tag,
+        tagid            => $tagid,
+    };
+
+    $self->print_page($config->{'tt_users_tags_record_tname'},$ttdata);
+    
+#     $recordlist->print_to_handler({
+#         representation   => $representation,
+#         content_type     => $content_type,
+#         database         => $database,
+#         sortorder        => $sortorder,
+#         sorttype         => $sorttype,
+#         apachereq        => $r,
+#         stylesheet       => $stylesheet,
+#         view             => $view,
+#         hits             => $hits,
+#         offset           => $offset,
+#         hitrange         => $hitrange,
+#         query            => $query,
+#         template         => 'tt_users_tags_record_tname',
+#         location         => 'users_loc',
+#         parameter        => {
+#             username     => $username,
+#             tag          => $tag,
+#             private_tags => 1,
+#         },
         
-        msg              => $msg,
-    });
+#         msg              => $msg,
+#     });
 
     return Apache2::Const::OK;
 }

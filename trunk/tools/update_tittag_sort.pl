@@ -96,30 +96,12 @@ while (my $tittag = $tittags->next()){
         next;
     }
 
-    my $person_field = $record->get_field({ field => 'PC0001' });
-    my $title_field  = $record->get_field({ field => 'T0331' });
-    my $year_field   = $record->get_field({ field => 'T0425' });
-
-    if (!defined $year_field->[0]{content}){
-        $year_field   = $record->get_field({ field => 'T0424' });
-    }
-
-    my $srt_person = OpenBib::Common::Util::normalize({
-        content => $person_field->[0]{content}
-    });
-    my $srt_title  =  OpenBib::Common::Util::normalize({
-        content => $title_field->[0]{content},
-        field   => 'T0331',
-    });
-    my $srt_year   =  OpenBib::Common::Util::normalize({
-        content => $year_field->[0]{content},
-        field   => 'T0425',
-    });
-                                                           
+    my $sortfields_ref = $record->get_sortfields;
+    
     $tittag->update({
-        srt_person => $srt_person,
-        srt_title  => $srt_title,
-        srt_year   => $srt_year,
+        srt_person => $sortfields_ref->{person},
+        srt_title  => $sortfields_ref->{title},
+        srt_year   => $sortfields_ref->{year},
     });
 }
 

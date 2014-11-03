@@ -1,0 +1,44 @@
+[%-
+
+ records = [];
+
+ FOREACH item IN itemlist ;
+   thisdatabase = item.database ;
+   thisid       = item.id ;
+
+   item.delete('database','id');
+
+   thisrecord = {
+      id = thisid
+      database = {
+             link = {
+                      rel = 'self'
+                      href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${thisdatabase}.json"
+             }
+             id                = thisdatabase
+             description       = dbinfo.get('dbnames').${thisdatabase}.full
+             description_short = dbinfo.get('dbnames').${thisdatabase}.short
+             url               = dbinfo.get('urls').${thisdatabase}                          
+      }
+      fields = item      
+   };
+
+   records.push(thisrecord);
+ END;
+
+ json_output = {
+   link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('connector_locationmark_loc')}.json?${cgiapp.to_cgi_querystring}"
+   }
+
+    meta = {
+      description = signaturdesc
+    }
+
+    records = records
+ };
+
+ to_json(json_output);
+
+%]

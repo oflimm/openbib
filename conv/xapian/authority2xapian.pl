@@ -108,6 +108,10 @@ my @authority_files = (
     {
         type     => "corporatebody",
         filename =>$config->{autoconv_dir}."/pools/$database/meta.corporatebody.gz",
+    },
+    {
+        type     => "holding",
+        filename =>$config->{autoconv_dir}."/pools/$database/meta.holding.gz",
     }
 );
 
@@ -134,8 +138,8 @@ foreach my $authority_file_ref (@authority_files){
 
         my $fieldprefix = ($authority_file_ref->{type} eq "person")?"P":
             ($authority_file_ref->{type} eq "subject")?"S":
-                 ($authority_file_ref->{type} eq "corporatebody")?"C":"";
-
+                ($authority_file_ref->{type} eq "corporatebody")?"C":
+                    ($authority_file_ref->{type} eq "holding")?"X":"";
         next unless ($fieldprefix);
         
         open(SEARCHENGINE,"zcat $authority_file_ref->{filename} |" ) || die "$authority_file_ref->{filename} konnte nicht geoeffnet werden";

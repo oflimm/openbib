@@ -124,11 +124,11 @@ sub get_relevant_terms {
 }
 
 sub search {
-    my ($self) = @_;
+    my ($self,$arg_ref) = @_;
 
     # Set defaults search parameters
-#    my $serien            = exists $arg_ref->{serien}
-#        ? $arg_ref->{serien}        : undef;
+    my $options_ref          = exists $arg_ref->{options}
+        ? $arg_ref->{options}        : {};
 
         
     # Log4perl logger erzeugen
@@ -139,17 +139,17 @@ sub search {
     my $queryoptions = OpenBib::QueryOptions->instance;
 
     # Used Parameters
-    my $sorttype          = $queryoptions->get_option('srt');
-    my $sortorder         = $queryoptions->get_option('srto');
-    my $defaultop         = $queryoptions->get_option('dop');
-    my $facets            = $queryoptions->get_option('facets');
+    my $sorttype          = (defined $options_ref->{srt})?$options_ref->{srt}:$queryoptions->get_option('srt');
+    my $sortorder         = (defined $options_ref->{srto})?$options_ref->{srto}:$queryoptions->get_option('srto');
+    my $defaultop         = (defined $options_ref->{dop})?$options_ref->{dop}:$queryoptions->get_option('dop');
+    my $facets            = (defined $options_ref->{facets})?$options_ref->{facets}:$queryoptions->get_option('facets');
     my $gen_facets        = ($facets eq "none")?0:1;
 
     
     # Pagination parameters
-    my $page              = $queryoptions->get_option('page');
-    my $num               = $queryoptions->get_option('num');
-    my $collapse          = $queryoptions->get_option('clp');
+    my $page              = (defined $options_ref->{page})?$options_ref->{page}:$queryoptions->get_option('page');
+    my $num               = (defined $options_ref->{num})?$options_ref->{num}:$queryoptions->get_option('num');
+    my $collapse          = (defined $options_ref->{clp})?$options_ref->{clp}:$queryoptions->get_option('clp');
     
     my ($atime,$btime,$timeall);
   
@@ -628,6 +628,29 @@ sub get_records {
     }
 
     return $recordlist;
+}
+
+
+sub get_records_as_json {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config     = OpenBib::Config->instance;
+
+    my @matches = $self->matches;
+
+    my $records_ref = [];
+    
+    foreach my $match (@matches) {        
+        my $document        = $match->get_document();
+        my $titlistitem_ref = decode_json $document->get_data();
+
+        push @$records_ref, $titlistitem_ref;
+    }
+
+    return $records_ref;
 }
 
 sub get_facets {

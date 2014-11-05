@@ -113,6 +113,18 @@ sub get_generic_attributes {
     return $self->{generic_attributes};
 }
 
+sub get_id {
+    my ($self)=@_;
+
+    return (defined $self->{id})?$self->{id}:undef;
+}
+
+sub get_database {
+    my ($self)=@_;
+
+    return (defined $self->{database})?$self->{database}:undef;
+}
+
 sub get_fields {
     my ($self)=@_;
 

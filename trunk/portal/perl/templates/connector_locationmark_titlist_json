@@ -36,8 +36,8 @@
    metainformation = {
       locationmark   = {
          base = mark_base
-         numericrange_start = mark_numerickrange_start
-         numericrange_end = mark_numerickrange_end
+         start_numericrange = mark_numerickrange_start
+         end_numericrange = mark_numerickrange_end
       }
       description = signaturdesc
       start_range = start_range

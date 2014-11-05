@@ -3,8 +3,13 @@
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <title>USB K&ouml;ln</title>
    <link rel="stylesheet" type="text/css" href="http://www.ub.uni-koeln.de/stylesheet_default.css" />
+   <link rel="stylesheet" type="text/css" href="http://kug.ub.uni-koeln.de/css/_profile/kug/local.css" />
 </head>
 <body text="#000000" bgcolor="#FFFFFF" link="#000080" vlink="#003300" alink="#FF0000">
+
+[%-
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
 
 <h3>[% signaturdesc %]</h3>
 
@@ -69,6 +74,14 @@
  
 <!---------------------- Inhalt Ende --------------------------------------->
 
+<p/>
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+    <div class="ob-resulttime">
+<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+    </div>
+  </div>
 
 </body>
 </html>

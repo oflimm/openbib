@@ -6,7 +6,7 @@
 #
 #  Konverierung von MARC-Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2009-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -281,30 +281,32 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         foreach my $field ($record->field('082')){
             my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($field)):decode_utf8($field->as_string($field));
             
-            my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($content);
-            
-            if ($new){
-                my $item_ref = {
-                    'fields' => {},
-                };
-                $item_ref->{id} = $classification_id;
-                push @{$item_ref->{fields}{'0800'}}, {
-                    mult     => 1,
-                    subfield => '',
-                    content  => konv($content),
-                };
+            if ($content){            
+                my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($content);
                 
-                print CLASSIFICATION encode_json $item_ref, "\n";
+                if ($new){
+                    my $item_ref = {
+                        'fields' => {},
+                    };
+                    $item_ref->{id} = $classification_id;
+                    push @{$item_ref->{fields}{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => konv($content),
+                    };
+                    
+                    print CLASSIFICATION encode_json $item_ref, "\n";
+                }
+                
+                my $multcount=++$multcount_ref->{'0700'};
+                
+                push @{$title_ref->{fields}{'0700'}}, {
+                    mult       => $multcount,
+                    subfield   => '',
+                    id         => $classification_id,
+                    supplement => '',
+                };
             }
-            
-            my $multcount=++$multcount_ref->{'0700'};
-            
-            push @{$title_ref->{fields}{'0700'}}, {
-                mult       => $multcount,
-                subfield   => '',
-                id         => $classification_id,
-                supplement => '',
-            };
         }
         
     }
@@ -332,7 +334,9 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
                     my $content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('a')):decode_utf8($linkage_field->as_string('a'));
 
-                    $title_ref = add_subject($content,$title_ref);
+                    if ($content){
+                        $title_ref = add_subject($content,$title_ref);
+                    }
                 }
 
             }

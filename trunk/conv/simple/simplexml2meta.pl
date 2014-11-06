@@ -7,7 +7,7 @@
 #  Konvertierung eines flachen XML-Formates in des OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -335,7 +335,7 @@ sub parse_record {
                 mult     => $mult,
                 subfield => '',
                 content  => $part,
-            };
+            } if ($part);
         }
     }
     
@@ -375,32 +375,34 @@ sub parse_record {
 
         my $mult = 1;
         foreach my $part (@parts){
-            my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($part);
-            
-            if ($new){
-                my $item_ref = {
-                    'fields' => {},
-                };
-                $item_ref->{id} = $person_id;
-                push @{$item_ref->{fields}{'0800'}}, {
-                    mult     => 1,
-                    subfield => '',
-                    content  => $part,
+            if ($part){
+                my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($part);
+                
+                if ($new){
+                    my $item_ref = {
+                        'fields' => {},
+                    };
+                    $item_ref->{id} = $person_id;
+                    push @{$item_ref->{fields}{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+                    
+                    print PERSON encode_json $item_ref, "\n";
+                }
+                
+                my $new_category = $convconfig->{person}{$kateg};
+                
+                push @{$title_ref->{fields}{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $person_id,
+                    supplement => '',
                 };
                 
-                print PERSON encode_json $item_ref, "\n";
+                $mult++;
             }
-            
-            my $new_category = $convconfig->{person}{$kateg};
-
-            push @{$title_ref->{fields}{$new_category}}, {
-                mult       => $mult,
-                subfield   => '',
-                id         => $person_id,
-                supplement => '',
-            };
-
-            $mult++;
         }
         # Autoren abarbeiten Ende
     }
@@ -441,32 +443,34 @@ sub parse_record {
 
         my $mult = 1;
         foreach my $part (@parts){
-            my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
-            
-            if ($new){
-                my $item_ref = {
-                    'fields' => {},
-                };
-                $item_ref->{id} = $corporatebody_id;
-                push @{$item_ref->{fields}{'0800'}}, {
-                    mult     => 1,
-                    subfield => '',
-                    content  => $part,
+            if ($part){
+                my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
+                
+                if ($new){
+                    my $item_ref = {
+                        'fields' => {},
+                    };
+                    $item_ref->{id} = $corporatebody_id;
+                    push @{$item_ref->{fields}{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+                    
+                    print CORPORATEBODY encode_json $item_ref, "\n";
+                }
+                
+                my $new_category = $convconfig->{corporatebody}{$kateg};
+                
+                push @{$title_ref->{fields}{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $corporatebody_id,
+                    supplement => '',
                 };
                 
-                print CORPORATEBODY encode_json $item_ref, "\n";
+                $mult++;
             }
-            
-            my $new_category = $convconfig->{corporatebody}{$kateg};
-
-            push @{$title_ref->{fields}{$new_category}}, {
-                mult       => $mult,
-                subfield   => '',
-                id         => $corporatebody_id,
-                supplement => '',
-            };
-
-            $mult++;
         }
     }
     # Koerperschaften abarbeiten Ende
@@ -507,32 +511,34 @@ sub parse_record {
 
         my $mult = 1;
         foreach my $part (@parts){
-            my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
-            
-            if ($new){
-                my $item_ref = {
-                    'fields' => {},
-                };
-                $item_ref->{id} = $classification_id;
-                push @{$item_ref->{fields}{'0800'}}, {
-                    mult     => 1,
-                    subfield => '',
-                    content  => $part,
+            if ($part){
+                my ($classification_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
+                
+                if ($new){
+                    my $item_ref = {
+                        'fields' => {},
+                    };
+                    $item_ref->{id} = $classification_id;
+                    push @{$item_ref->{fields}{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+                    
+                    print CLASSIFICATION encode_json $item_ref, "\n";
+                }
+                
+                my $new_category = $convconfig->{classification}{$kateg};
+                
+                push @{$title_ref->{fields}{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $classification_id,
+                    supplement => '',
                 };
                 
-                print CLASSIFICATION encode_json $item_ref, "\n";
+                $mult++;
             }
-            
-            my $new_category = $convconfig->{classification}{$kateg};
-
-            push @{$title_ref->{fields}{$new_category}}, {
-                mult       => $mult,
-                subfield   => '',
-                id         => $classification_id,
-                supplement => '',
-            };
-
-            $mult++;
         }
     }
     # Notationen abarbeiten Ende
@@ -573,32 +579,34 @@ sub parse_record {
 
         my $mult = 1;
         foreach my $part (@parts){
-            my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
-            
-            if ($new){
-                my $item_ref = {
-                    'fields' => {},
-                };
-                $item_ref->{id} = $subject_id;
-                push @{$item_ref->{fields}{'0800'}}, {
-                    mult     => 1,
-                    subfield => '',
-                    content  => $part,
+            if ($part){
+                my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($part);
+                
+                if ($new){
+                    my $item_ref = {
+                        'fields' => {},
+                    };
+                    $item_ref->{id} = $subject_id;
+                    push @{$item_ref->{fields}{'0800'}}, {
+                        mult     => 1,
+                        subfield => '',
+                        content  => $part,
+                    };
+                    
+                    print SUBJECT encode_json $item_ref, "\n";
+                }
+                
+                my $new_category = $convconfig->{subject}{$kateg};
+                
+                push @{$title_ref->{fields}{$new_category}}, {
+                    mult       => $mult,
+                    subfield   => '',
+                    id         => $subject_id,
+                    supplement => '',
                 };
                 
-                print SUBJECT encode_json $item_ref, "\n";
+                $mult++;
             }
-            
-            my $new_category = $convconfig->{subject}{$kateg};
-
-            push @{$title_ref->{fields}{$new_category}}, {
-                mult       => $mult,
-                subfield   => '',
-                id         => $subject_id,
-                supplement => '',
-            };
-
-            $mult++;
         }
     }
     # Schlagworte abarbeiten Ende
@@ -642,7 +650,7 @@ sub parse_record {
         my $multiple = 1;
 
         foreach my $part (@parts){
-            $mex{$multiple}{$convconfig->{holding}{$kateg}} = $part; 
+            $mex{$multiple}{$convconfig->{holding}{$kateg}} = $part if ($part); 
         }
 
     }

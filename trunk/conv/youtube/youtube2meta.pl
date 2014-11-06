@@ -7,7 +7,7 @@
 #  Konvertierung von YouTube-Metadaten in des OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -299,32 +299,34 @@ foreach my $channel_ref (@{$convconfig->{channels}}){
             
             if ($playlist->author->[0]->name){
                 my $content = $playlist->author->[0]->name;
-                
-                my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
-                
-                if ($new){
-                    my $item_ref = {
-                        'fields' => {},
-                    };
-                    $item_ref->{id} = $corporatebody_id;
-                    push @{$item_ref->{fields}{'0800'}}, {
-                        mult     => 1,
-                        subfield => '',
-                        content  => conv($content),
-                    };
+
+                if ($content){
+                    my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
                     
-                    print CORPORATEBODY to_json $item_ref;
-                    print CORPORATEBODY "\n";
+                    if ($new){
+                        my $item_ref = {
+                            'fields' => {},
+                        };
+                        $item_ref->{id} = $corporatebody_id;
+                        push @{$item_ref->{fields}{'0800'}}, {
+                            mult     => 1,
+                            subfield => '',
+                            content  => conv($content),
+                        };
+                        
+                        print CORPORATEBODY to_json $item_ref;
+                        print CORPORATEBODY "\n";
+                    }
+                    
+                    my $new_category = "0200";
+                    
+                    push @{$title_ref->{fields}{$new_category}}, {
+                        mult       => 1,
+                        subfield   => '',
+                        id         => $corporatebody_id,
+                        supplement => '',
+                    };
                 }
-                
-                my $new_category = "0200";
-                
-                push @{$title_ref->{fields}{$new_category}}, {
-                    mult       => 1,
-                    subfield   => '',
-                    id         => $corporatebody_id,
-                    supplement => '',
-                };
                 
             }
             # Autoren abarbeiten Ende
@@ -433,33 +435,34 @@ foreach my $channel_ref (@{$convconfig->{channels}}){
                         
                         if ($vid->author->[0]->name){
                             my $content = $vid->author->[0]->name;
-                            
-                            my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
-                            
-                            if ($new){
-                                my $item_ref = {
-                                    'fields' => {},
-                                };
-                                $item_ref->{id} = $corporatebody_id;
-                                push @{$item_ref->{fields}{'0800'}}, {
-                                    mult     => 1,
-                                    subfield => '',
-                                    content  => $content,
-                                };
+
+                            if ($content){
+                                my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
                                 
-                                print CORPORATEBODY to_json $item_ref;
-                                print CORPORATEBODY "\n";
+                                if ($new){
+                                    my $item_ref = {
+                                        'fields' => {},
+                                    };
+                                    $item_ref->{id} = $corporatebody_id;
+                                    push @{$item_ref->{fields}{'0800'}}, {
+                                        mult     => 1,
+                                        subfield => '',
+                                        content  => $content,
+                                    };
+                                    
+                                    print CORPORATEBODY to_json $item_ref;
+                                    print CORPORATEBODY "\n";
+                                }
+                                
+                                my $new_category = "0200";
+                                
+                                push @{$title_ref->{fields}{$new_category}}, {
+                                    mult       => 1,
+                                    subfield   => '',
+                                    id         => $corporatebody_id,
+                                    supplement => '',
+                                };
                             }
-                            
-                            my $new_category = "0200";
-                            
-                            push @{$title_ref->{fields}{$new_category}}, {
-                                mult       => 1,
-                                subfield   => '',
-                                id         => $corporatebody_id,
-                                supplement => '',
-                            };
-                            
                         }
                         # Autoren abarbeiten Ende
                         

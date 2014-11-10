@@ -647,16 +647,11 @@ sub show_record_related_records {
         
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
 
-        $record->enrich_related_records({ viewname => $view });
-
-        my $related_records = $record->get_related_records;
-
         # TT-Data erzeugen
         my $ttdata={
             database        => $database, # Zwingend wegen common/subtemplate
             record          => $record,
             titleid         => $titleid,
-            related_records => $related_records,
         };
 
         $self->print_page($config->{tt_titles_record_related_records_tname},$ttdata);
@@ -690,16 +685,11 @@ sub show_record_similar_records {
         
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
 
-        $record->enrich_similar_records({ viewname => $view });
-
-        my $similar_records = $record->get_similar_records;
-
         # TT-Data erzeugen
         my $ttdata={
             database        => $database, # Zwingend wegen common/subtemplate
             record          => $record,
             titleid         => $titleid,
-            similar_records => $similar_records,
         };
 
         $self->print_page($config->{tt_titles_record_similar_records_tname},$ttdata);
@@ -733,16 +723,11 @@ sub show_record_same_records {
         
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
 
-        $record->enrich_same_records({ viewname => $view });
-
-        my $same_records = $record->get_same_records;
-
         # TT-Data erzeugen
         my $ttdata={
             database        => $database, # Zwingend wegen common/subtemplate
             record          => $record,
             titleid         => $titleid,
-            same_records    => $same_records,
         };
 
         $self->print_page($config->{tt_titles_record_same_records_tname},$ttdata);

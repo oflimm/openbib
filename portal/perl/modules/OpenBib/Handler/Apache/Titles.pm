@@ -647,9 +647,7 @@ sub show_record_related_records {
         
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
 
-        my $sysprofile= $config->get_profilename_of_view($view);
-
-        $record->enrich_related_records({ profilename => $sysprofile });
+        $record->enrich_related_records({ viewname => $view });
 
         my $related_records = $record->get_related_records;
 
@@ -692,9 +690,7 @@ sub show_record_similar_records {
         
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
 
-        my $sysprofile= $config->get_profilename_of_view($view);
-
-        $record->enrich_similar_records({ profilename => $sysprofile });
+        $record->enrich_similar_records({ viewname => $view });
 
         my $similar_records = $record->get_similar_records;
 
@@ -737,9 +733,7 @@ sub show_record_same_records {
         
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
 
-        my $sysprofile= $config->get_profilename_of_view($view);
-
-        $record->enrich_same_records({ profilename => $sysprofile });
+        $record->enrich_same_records({ viewname => $view });
 
         my $same_records = $record->get_same_records;
 

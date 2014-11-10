@@ -1,4 +1,8 @@
-[% IF same_records.get_size > 0 %]
+[%
+
+  same_records = record.enrich_same_records({ viewname => view }).get_same_records ;
+  
+  IF same_records.get_size > 0 %]
 [% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]:
 <p />
 <ol>

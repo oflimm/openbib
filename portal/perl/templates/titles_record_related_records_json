@@ -1,5 +1,7 @@
 [%-
 
+related_records = record.enrich_related_records({ viewname => view }).get_related_records ;
+
 related_records_output = [];
 
 FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records ;
@@ -27,9 +29,10 @@ FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).
   related_records_output.push(thisrecord);
 END ;
 
-   metainformation = {
-      ips_user    = qopts.get_option('ips_user')
-   };
+metainformation = {
+   hits        = related_records.get_size()
+   ips_user    = qopts.get_option('ips_user')
+};
 
 json_output = {
     link = {

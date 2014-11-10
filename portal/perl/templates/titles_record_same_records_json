@@ -1,5 +1,7 @@
 [%-
 
+same_records = record.enrich_same_records({ viewname => view }).get_same_records ;
+
 same_records_output = [];
 
 FOREACH same_record IN same_records.sort({order = 'asc', type = 'title'}).get_records ;
@@ -28,6 +30,7 @@ FOREACH same_record IN same_records.sort({order = 'asc', type = 'title'}).get_re
 END ;
 
 metainformation = {
+   hits        = same_records.get_size
    ips_user    = qopts.get_option('ips_user')
 };
 

@@ -623,8 +623,6 @@ sub enrich_related_records {
             $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles/Related Titles w/o load_brief_records ist ".timestr($timeall));
         }
         
-        $related_recordlist->sort({order => 'up', type => 'title'});
-        
         $self->set_related_records($related_recordlist);
 
     }

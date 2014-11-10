@@ -1,4 +1,8 @@
-[% IF related_records.get_size > 0 %]
+[%
+
+   related_records = record.enrich_related_records({ viewname => view }).get_related_records ;
+ 
+   IF related_records.get_size > 0 %]
 <ul>
 [% FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records %]
 [% item = related_record.get_fields %]

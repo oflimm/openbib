@@ -1,4 +1,8 @@
-[% IF similar_records.get_size > 0 %]
+[%
+
+   similar_records = record.enrich_similar_records({ viewname => view }).get_similar_records ;
+
+   IF similar_records.get_size > 0 %]
 [% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den Katalogen") %]:
 <p />
 <ol>

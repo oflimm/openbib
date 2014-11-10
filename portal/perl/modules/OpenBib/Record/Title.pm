@@ -478,6 +478,9 @@ sub enrich_related_records {
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}        : undef;
 
+    my $num      = exists $arg_ref->{num}
+        ? $arg_ref->{num}             : 20;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
@@ -582,7 +585,7 @@ sub enrich_related_records {
             {
                 group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                rows => 20,
+                rows => $num,
             }
         );
         
@@ -1173,7 +1176,7 @@ sub set_fields_from_json {
 
     # (Re-)Initialisierung
     delete $self->{_exists}         if (exists $self->{_exists});
-    delete $self->{_fields}       if (exists $self->{_fields});
+    delete $self->{_fields}         if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
 

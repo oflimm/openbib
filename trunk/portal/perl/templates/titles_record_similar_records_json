@@ -6,10 +6,41 @@ FOREACH similar_record IN similar_records.sort({order = 'asc', type = 'title'}).
   item = similar_record.get_fields ;
   item.delete('id','database');
 
-  similar_records_output.push({ fields => item, database => similar_record.database, id => similar_record.id, dbdesc => dbinfo.get('dbnames').${similar_record.database}.short });
+  thisdatabase = similar_record.database;
+  thisid       = similar_record.id;
+
+  thisrecord = {
+      id = thisid
+      database = {
+             link = {
+                      rel = 'self'
+                      href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${thisdatabase}.json"
+             }
+             id                = thisdatabase
+             description       = dbinfo.get('dbnames').${thisdatabase}.full
+             description_short = dbinfo.get('dbnames').${thisdatabase}.short
+             url               = dbinfo.get('urls').${thisdatabase}                          
+      }
+      fields = item      
+  };
+
+  similar_records_output.push(thisrecord);
 END ;
 
-to_json(similar_records_output);
+metainformation = {
+   ips_user    = qopts.get_option('ips_user')
+};
 
+json_output = {
+    link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}/similar_records.json?${cgiapp.to_cgi_querystring}"
+    }
+
+    meta    = metainformation
+    records = similar_records_output
+};
+
+to_json(json_output);
 
 -%]

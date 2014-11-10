@@ -6,10 +6,41 @@ FOREACH same_record IN same_records.sort({order = 'asc', type = 'title'}).get_re
   item = same_record.get_fields ;
   item.delete('id','database');
 
-  same_records_output.push({ fields => item, database => same_record.database, id => same_record.id, dbdesc => dbinfo.get('dbnames').${same_record.database}.short });
+  thisdatabase = same_record.database;
+  thisid       = same_record.id;
+
+  thisrecord = {
+      id = thisid
+      database = {
+             link = {
+                      rel = 'self'
+                      href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${thisdatabase}.json"
+             }
+             id                = thisdatabase
+             description       = dbinfo.get('dbnames').${thisdatabase}.full
+             description_short = dbinfo.get('dbnames').${thisdatabase}.short
+             url               = dbinfo.get('urls').${thisdatabase}                          
+      }
+      fields = item      
+  };
+
+  same_records_output.push(thisrecord);
 END ;
 
-to_json(same_records_output);
+metainformation = {
+   ips_user    = qopts.get_option('ips_user')
+};
 
+json_output = {
+    link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}/same_records.json?${cgiapp.to_cgi_querystring}"
+    }
+
+    meta    = metainformation
+    records = same_records_output
+};
+
+to_json(json_output);
 
 -%]

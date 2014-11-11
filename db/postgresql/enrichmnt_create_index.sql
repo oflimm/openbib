@@ -21,16 +21,27 @@ CREATE INDEX enrichedcontentissn_content ON enriched_content_by_issn (content);
 
 CREATE INDEX alltitlesisbn_isbn ON all_titles_by_isbn (isbn);
 CREATE INDEX alltitlesisbn_dbname ON all_titles_by_isbn (dbname);
-
--------------------------------------------------
-
-CREATE INDEX alltitlesbibkey_bibkey ON all_titles_by_bibkey (bibkey);
-CREATE INDEX alltitlesbibkey_dbname ON all_titles_by_bibkey (dbname);
+CREATE INDEX alltitlesisbn_titleid ON all_titles_by_isbn (titleid);
 
 -------------------------------------------------
 
 CREATE INDEX alltitlesissn_issn ON all_titles_by_issn (issn);
 CREATE INDEX alltitlesissn_dbname ON all_titles_by_issn (dbname);
+CREATE INDEX alltitlesissn_titleid ON all_titles_by_issn (titleid);
+
+-------------------------------------------------
+
+CREATE INDEX alltitlesbibkey_bibkey ON all_titles_by_bibkey (bibkey);
+CREATE INDEX alltitlesbibkey_dbname ON all_titles_by_bibkey (dbname);
+CREATE INDEX alltitlesbibkey_titleid ON all_titles_by_bibkey (titleid);
+
+-------------------------------------------------
+
+ALTER TABLE all_titles_by_workkey ADD PRIMARY KEY (id);
+CREATE INDEX alltitlesworkkey_workkey ON all_titles_by_workkey (workkey);
+CREATE INDEX alltitlessworkkey_dbname ON all_titles_by_workkey (dbname);
+CREATE INDEX alltitlessworkkey_titleid ON all_titles_by_workkey (titleid);
+CREATE INDEX alltitlessworkkey_edition ON all_titles_by_workkey (edition);
 
 -------------------------------------------------
 

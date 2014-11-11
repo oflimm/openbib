@@ -1547,7 +1547,7 @@ sub gen_bibkey_base {
     
     # Nur Bibkeys mit allen relevanten Informationen sinnvoll!
     
-    return "" unless ( (exists $fields_ref->{'T0100'} || exists $fields_ref->{'T0101'} ) && exists $fields_ref->{'T0331'} && exists $fields_ref->{'T0425'} );
+    return "" unless ( (defined $fields_ref->{'T0100'} || defined $fields_ref->{'T0101'} ) && defined $fields_ref->{'T0331'} && defined $fields_ref->{'T0425'} );
     
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];
@@ -1571,7 +1571,7 @@ sub gen_bibkey_base {
                 $single_person    = $lastname;
             }
 
-            if (exists $part_ref->{supplement} && $part_ref->{supplement} =~ /Hrsg/){
+            if (defined $part_ref->{supplement} && $part_ref->{supplement} =~ /Hrsg/){
                 push @$editors_ref, $single_person;
             }
             else {
@@ -1587,12 +1587,12 @@ sub gen_bibkey_base {
     $author    = "[".join(",", sort(@$persons_ref))."]" if (defined $persons_ref && @$persons_ref);
 
     # Titel
-    my $title  = (exists $fields_ref->{T0331})?lc($fields_ref->{T0331}[0]{content}):"";
+    my $title  = (defined $fields_ref->{T0331})?lc($fields_ref->{T0331}[0]{content}):"";
     
     $title     =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
 
     # Jahr
-    my $year   = (exists $fields_ref->{T0425})?$fields_ref->{T0425}[0]{content}:undef;
+    my $year   = (defined $fields_ref->{T0425})?$fields_ref->{T0425}[0]{content}:undef;
 
     $year      =~ s/[^0-9]+//g if ($year);
 
@@ -1631,6 +1631,119 @@ sub gen_bibkey {
     else {
         return "";
     }
+}
+
+sub gen_workkeys {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $fields_ref  = exists $arg_ref->{fields}
+        ? $arg_ref->{fields}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return () unless (defined $fields_ref);
+
+    if ($logger->is_debug){
+        $logger->debug("Trying to generate workkey with fields: ".YAML::Dump($fields_ref));
+    }
+
+    my @workkeys = ();
+    
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $field (qw/T0100 T0101/){
+        next if (!exists $fields_ref->{$field});
+        foreach my $part_ref (@{$fields_ref->{$field}}){
+            my $single_person = lc($part_ref->{content});
+            $single_person    =~ s/[^0-9\p{L}\. ]+//g;
+            my ($lastname,$firstname) = split(/\s+/,$single_person);
+
+            if (defined $firstname){
+                if ($firstname eq $lastname){
+                    $single_person    = $lastname;
+                }
+                else {
+                    $single_person    = substr($firstname,0,1).".".$lastname;
+                }
+            }
+            else {
+                $single_person    = $lastname;
+            }
+
+            if (exists $part_ref->{supplement} && $part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, $single_person;
+            }
+            else {
+                push @$authors_ref, $single_person;
+            }
+        }
+    }
+
+    my $persons_ref=(@$authors_ref)?$authors_ref:
+    (@$editors_ref)?$editors_ref:[];
+
+    foreach my $person (@$persons_ref){
+        foreach my $field (qw/T0304 T0331/){
+            next if (!exists $fields_ref->{$field});
+            foreach my $part_ref (@{$fields_ref->{$field}}){
+                my $title = lc($part_ref->{content});
+
+                if ($field eq "T0304"){
+                    $title =~s/\s+\&lt;.+\&gt;\s*$//;
+                }
+
+                $title     =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
+                
+                # Person
+                $person = "[$person]";
+
+                # Titel
+                $title  =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
+
+                # Verlag ??? oder nur Fehlerquelle???
+                my $publisher = (defined $fields_ref->{T0412})?lc($fields_ref->{T0412}[0]{content}):"";
+                $publisher    =~ s/[^0-9\p{L}\x{C4}]+//g if ($publisher);
+
+                # Auflage
+                my $editionstring = (defined $fields_ref->{T0403})?$fields_ref->{T0403}[0]{content}:"";
+                my ($edition) = $editionstring =~ m/^\D*(\d+)/;
+                
+                if ($edition){
+                    $edition = sprintf "%04d",$edition;
+
+                }
+                else {
+                    $edition = "0001";
+                }       
+
+                my $is_online=0;
+
+                foreach my $part_ref (@{$fields_ref->{'T4400'}}){
+                    if ($part_ref->{content} eq "online"){
+                        $is_online=1;
+                        last;
+                    }
+                }
+
+                if ($is_online){
+                    $edition = $edition."online";
+                }
+                
+                if ($logger->is_debug){
+                    $logger->debug("Got title: $title / person: $person / publisher: $publisher");
+                }
+                
+                if ($person && $title && $publisher){
+                    push @workkeys, $title." ".$person." ".$publisher." <".$edition.">";
+                }
+            }
+        }
+    }
+
+    return @workkeys;
 }
 
 sub to_isbn13 {

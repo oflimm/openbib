@@ -922,7 +922,8 @@ while (my $jsonline=<IN>){
                 }
             }
         }
-        else {
+
+        if (!$langcode){
             # Sonst: Sprachcodeanhand 0331 usw. und Linguistischer Spracherkennung
             
             my @langtexts = ();

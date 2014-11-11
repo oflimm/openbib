@@ -1356,6 +1356,32 @@ while (my $jsonline=<IN>){
         }
     }
 
+    # Workkey-Kategorie 5055 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
+    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0101'}) && defined $fields_ref->{'0331'} && (defined $fields_ref->{'0424'} || defined $fields_ref->{'0425'}) && defined $fields_ref->{'0412'}){
+        # Erscheinungsjahr muss existieren, damit nur 'ordentliche' Titel untersucht werden
+        
+        my $workkey_record_ref = {
+            'T0100' => $fields_ref->{'0100'}, # Verfasser
+            'T0101' => $fields_ref->{'0101'}, # Person
+            'T0331' => $fields_ref->{'0331'}, # HST
+            'T0412' => $fields_ref->{'0412'}, # Verlag
+            'T0304' => $fields_ref->{'0304'}, # EST
+            'T0403' => $fields_ref->{'0403'}, # Auflage als Suffix
+            'T4400' => $fields_ref->{'4400'}, # Zugriff: online
+        };
+
+        my @workkeys = OpenBib::Common::Util::gen_workkeys({ fields => $workkey_record_ref});
+
+        my $mult = 1;
+        foreach my $workkey (@workkeys) {
+            push @{$fields_ref->{'5055'}}, {
+                mult      => $mult++,
+                content   => $workkey,
+                subfield  => '',
+            };
+        }
+    }
+    
     # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
     {
         foreach my $field (keys %{$stammdateien_ref->{title}{inverted_ref}}){

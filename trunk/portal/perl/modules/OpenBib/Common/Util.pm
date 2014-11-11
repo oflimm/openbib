@@ -1719,6 +1719,10 @@ sub gen_workkeys {
                     $edition = "0001";
                 }       
 
+                my $language = (defined $fields_ref->{T4301})?lc($fields_ref->{T4301}[0]{content}):"";
+
+                $edition = $edition.$language;
+                
                 my $is_online=0;
 
                 foreach my $part_ref (@{$fields_ref->{'T4400'}}){

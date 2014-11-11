@@ -642,7 +642,7 @@ sub enrich_related_records {
     return $self;
 }
 
-sub enrich_similar_records {
+sub enrich_similar_records_old {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
@@ -776,7 +776,7 @@ sub enrich_similar_records {
     return $self;
 }
 
-sub enrich_similar_records_neu {
+sub enrich_similar_records {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
@@ -836,7 +836,13 @@ sub enrich_similar_records_neu {
             columns  => ['edition'],
             group_by => ['edition'],
         }
-    )->first->edition;
+    )->first;
+
+    my $edition = '0001';
+    
+    if ($this_edition){
+        $edition = $this_edition->edition;
+    }
     
     # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
     {
@@ -848,13 +854,13 @@ sub enrich_similar_records_neu {
         
         my $where_ref = {
             workkey    => { -in => $this_workkeys->as_query },
-            edition    => { '!=' => $this_edition },
+            edition    => { '!=' => $edition },
         };
         
         if (@filter_databases){
             $where_ref = {
                 workkey    => { -in => $this_workkeys->as_query },
-                edition    => { '!=' => $this_edition },
+                edition    => { '!=' => $edition },
                 dbname     => \@filter_databases,
             };
         }

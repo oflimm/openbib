@@ -61,6 +61,16 @@ create table all_titles_by_bibkey (
  tstamp        TIMESTAMP
 );
 
+drop table IF EXISTS all_titles_by_workkey;
+create table all_titles_by_workkey (
+ id            BIGSERIAL,
+ workkey       TEXT NOT NULL,
+ edition       TEXT,
+ dbname        VARCHAR(25) NOT NULL,
+ titleid       VARCHAR(255) NOT NULL,
+ titlecache    TEXT,
+ tstamp        TIMESTAMP
+);
 
 -- ISBN's belonging to the same WORK (eg. ThingISBN) --
 drop table IF EXISTS work_by_isbn;

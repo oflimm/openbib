@@ -134,6 +134,12 @@ foreach my $database (@databases){
                 dbname => $database
             }
         )->delete;
+        
+        $enrichment->{schema}->resultset('AllTitleByWorkkey')->search_rs(
+            {
+                dbname => $database
+            }
+        )->delete;
     }
 
     my $all_isbns;
@@ -375,7 +381,67 @@ foreach my $database (@databases){
     }
     
     $logger->info("### $database: $issn_insertcount ISSNs inserted");
+
+    $logger->info("### $database: Getting Workkeys from database $database and adding to enrichmntdb");
     
+    if ($incr){
+        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+            {
+                'me.tstamp_create'   => { '>' => $last_insertion_date },
+                'title_fields.field' => '5055',
+            },
+            {
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+                as     => ['thistitleid', 'thisworkkey', 'thisdate','thistitlecache'],
+                join =>   ['title_fields'],
+            }
+        );
+    }
+    else {
+        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+            {
+                'title_fields.field' => '5055',
+            },
+            {
+                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+                as     => ['thistitleid', 'thisworkkeybase','thisdate','thistitlecache'],
+                join   => ['title_fields'],
+            }
+        );
+    }
+
+    my $workkey_insertcount = 0;
+    my $alltitlebyworkkey_ref = [];
+    foreach my $item ($all_isbns->all){
+        my $thistitleid         = $item->get_column('thistitleid');
+        my $thisworkkeybase     = $item->get_column('thisworkkeybase');
+
+        my ($thisworkkey,$edition) = $thisworkkeybase =~m/^(.+)\s<(.*?)>/;
+        
+        my $thistitlecache      = $item->get_column('thistitlecache');
+        my $thisdate            = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
+        
+        if ($thisworkkey){
+            $logger->debug("Got Title with id $thistitleid and workkey $thisworkkey");
+
+            push @$alltitlebyworkkey_ref, {
+                workkey    => $thisworkkey,
+                edition    => $edition || 1,
+                titleid    => $thistitleid,
+                dbname     => $database,
+                tstamp     => $thisdate,
+                titlecache => $thistitlecache,
+            };
+            $workkey_insertcount++;
+        }
+    }
+
+    if (@$alltitlebyworkkey_ref){
+        $enrichment->{schema}->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
+    }
+    
+    $logger->info("### $database: $workkey_insertcount Workkeys inserted");
+
 }
 
 sub print_help {

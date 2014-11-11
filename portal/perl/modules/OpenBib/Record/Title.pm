@@ -776,6 +776,136 @@ sub enrich_similar_records {
     return $self;
 }
 
+sub enrich_similar_records_neu {
+    my ($self, $arg_ref) = @_;
+
+    my $profilename = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}        : undef;
+    
+    my $viewname = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = OpenBib::Config->instance;
+
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    if (!exists $self->{enrich_schema}){
+        $self->connectEnrichmentDB;
+        if ($logger->is_debug){            
+            $self->{enrich_schema}->storage->debug(1);
+        }
+    }
+
+    my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
+        ($viewname)?$config->get_viewdbs($viewname):();
+
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
+    }
+
+    return $self unless ($self->{database} && $self->{id});
+    
+    # Workkeys aus Anreicherungsdatenbank als subquery
+    my $this_workkeys = $self->{enrich_schema}->resultset('AllTitleByWorkkey')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['workkey'],
+            group_by => ['workkey'],
+        }
+    );
+    
+    my $this_edition = $self->{enrich_schema}->resultset('AllTitleByWorkkey')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['edition'],
+            group_by => ['edition'],
+        }
+    )->first->edition;
+    
+    # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
+    {
+        my $similar_recordlist = $self->get_similar_records;
+        
+        if ($logger->is_debug){
+            $logger->debug("Similar records via backend ".YAML::Dump($similar_recordlist));
+        }   
+        
+        my $where_ref = {
+            workkey    => { -in => $this_workkeys->as_query },
+            edition    => { '!=' => $this_edition },
+        };
+        
+        if (@filter_databases){
+            $where_ref = {
+                workkey    => { -in => $this_workkeys->as_query },
+                edition    => { '!=' => $this_edition },
+                dbname     => \@filter_databases,
+            };
+        }
+        
+        my $titles = $self->{enrich_schema}->resultset('AllTitleByWorkkey')->search_rs(
+            $where_ref,
+            {
+                order_by => ['edition DESC'],
+                group_by => ['id','dbname','workkey','tstamp','titleid','titlecache'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+
+        my $have_title_ref = {};
+        while (my $titleitem = $titles->next) {
+            my $id         = $titleitem->{titleid};
+            my $database   = $titleitem->{dbname};
+            my $titlecache = $titleitem->{titlecache};
+
+            next if (defined $have_title_ref->{"$database:$id"});
+            
+            $logger->debug("Found Title with id $id in database $database");
+            
+            if ($titlecache){
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+            }
+            else {
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+            }
+            
+            $have_title_ref->{"$database:$id"} = 1;
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles w/o load_brief_records ist ".timestr($timeall));
+        }
+        
+        $self->set_similar_records($similar_recordlist);
+    }
+        
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles ist ".timestr($timeall));
+    }
+
+    return $self;
+}
+
 sub enrich_same_records {
     my ($self, $arg_ref) = @_;
 

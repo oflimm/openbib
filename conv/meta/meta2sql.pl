@@ -1367,6 +1367,7 @@ while (my $jsonline=<IN>){
             'T0412' => $fields_ref->{'0412'}, # Verlag
             'T0304' => $fields_ref->{'0304'}, # EST
             'T0403' => $fields_ref->{'0403'}, # Auflage als Suffix
+            'T4301' => $fields_ref->{'4301'}, # Angereicherte Sprache
             'T4400' => $fields_ref->{'4400'}, # Zugriff: online
         };
 

@@ -890,50 +890,87 @@ while (my $jsonline=<IN>){
     
     # Sprachcode erkennen und anreichern
     if ($addlanguage && !$valid_language_available) {
-        my @langtexts = ();
-        if (defined $fields_ref->{'0331'}){
-            foreach my $item_ref (@{$fields_ref->{'0331'}}) {
-                push @langtexts, $item_ref->{content};
-            }            
-        }
-        if (defined $fields_ref->{'0451'}){
-            foreach my $item_ref (@{$fields_ref->{'0451'}}) {
-                push @langtexts, $item_ref->{content};
-            }            
-        }
-        if (defined $fields_ref->{'0335'}){
-            foreach my $item_ref (@{$fields_ref->{'0335'}}) {
-                push @langtexts, $item_ref->{content};
-            }            
-        }
 
-        my $langtext = join(" ",@langtexts);
-        $langtext =~s/\W/ /g;
-        $langtext =~s/\s+/ /g;
+        my $langcode= "";
 
-        my @lang = $cld->identify($langtext);
-
-        if ($logger->is_debug){
-            $logger->debug("Sprachanreicherung fuer $langtext");
-            $logger->debug("Sprachname  : $lang[0]");
-            $logger->debug("Sprachid    : $lang[1]");
-            $logger->debug("Sicherheit  : $lang[2]");
-            $logger->debug("Zuverlaessig: $lang[3]");
-        }
-
-        if ($lang[3]){ # reliable!
-
-            my $langcode = OpenBib::Common::Util::normalize_lang($lang[1]);
-
-            if (defined $langcode){
-                push @{$fields_ref->{'4301'}}, {
-                    mult      => $mult_lang++,
-                    content   => $langcode,
-                    subfield  => 'e', # enriched
-                };
-
-                $stats_enriched_language++;
+        # Sprachcode anhand der ISBN zuordnen
+        if (@{$enrichmnt_isbns_ref}) {
+            foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
+                if ($isbn13 =~m/^978[01]/){
+                    $langcode = "eng";
+                    last;
+                }
+                elsif ($isbn13 =~m/^9782/){
+                    $langcode = "fre";
+                    last;
+                }
+                elsif ($isbn13 =~m/^9783/){
+                    $langcode = "ger";
+                    last;
+                }
+                elsif ($isbn13 =~m/^9784/){
+                    $langcode = "jpn";
+                    last;
+                }
+                elsif ($isbn13 =~m/^9785/){
+                    $langcode = "rus";
+                    last;
+                }
+                elsif ($isbn13 =~m/^9787/){
+                    $langcode = "chi";
+                    last;
+                }
             }
+        }
+        else {
+            # Sonst: Sprachcodeanhand 0331 usw. und Linguistischer Spracherkennung
+            
+            my @langtexts = ();
+            if (defined $fields_ref->{'0331'}){
+                foreach my $item_ref (@{$fields_ref->{'0331'}}) {
+                    push @langtexts, $item_ref->{content};
+                }            
+            }
+            if (defined $fields_ref->{'0451'}){
+                foreach my $item_ref (@{$fields_ref->{'0451'}}) {
+                    push @langtexts, $item_ref->{content};
+                }            
+            }
+            if (defined $fields_ref->{'0335'}){
+                foreach my $item_ref (@{$fields_ref->{'0335'}}) {
+                    push @langtexts, $item_ref->{content};
+                }            
+            }
+            
+            my $langtext = join(" ",@langtexts);
+            $langtext =~s/\W/ /g;
+            $langtext =~s/\s+/ /g;
+            
+            my @lang = $cld->identify($langtext);
+            
+            if ($logger->is_debug){
+                $logger->debug("Sprachanreicherung fuer $langtext");
+                $logger->debug("Sprachname  : $lang[0]");
+                $logger->debug("Sprachid    : $lang[1]");
+                $logger->debug("Sicherheit  : $lang[2]");
+                $logger->debug("Zuverlaessig: $lang[3]");
+            }
+            
+            if ($lang[3]){ # reliable!
+                
+                $langcode = OpenBib::Common::Util::normalize_lang($lang[1]);
+                
+            }
+        }
+
+        if ($langcode){
+            push @{$fields_ref->{'4301'}}, {
+                mult      => $mult_lang++,
+                content   => $langcode,
+                subfield  => 'e', # enriched
+            };
+            
+            $stats_enriched_language++;
         }
     }
     

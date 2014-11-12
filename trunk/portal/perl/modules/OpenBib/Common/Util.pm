@@ -1708,8 +1708,13 @@ sub gen_workkeys {
                 $publisher    =~ s/[^0-9\p{L}\x{C4}]+//g if ($publisher);
 
                 # Auflage
-                my $editionstring = (defined $fields_ref->{T0403})?$fields_ref->{T0403}[0]{content}:"";
-                my ($edition) = $editionstring =~ m/^\D*(\d+)/;
+#                my $editionstring = (defined $fields_ref->{T0403})?$fields_ref->{T0403}[0]{content}:"";
+#                my ($edition) = $editionstring =~ m/^\D*(\d+)/;
+
+                # Jahr
+                my $edition   = (defined $fields_ref->{T0425})?$fields_ref->{T0425}[0]{content}:
+                    (defined $fields_ref->{T0424})?$fields_ref->{T0424}:"";
+
                 
                 if ($edition){
                     $edition = sprintf "%04d",$edition;
@@ -1741,7 +1746,8 @@ sub gen_workkeys {
                 }
                 
                 if ($person && $title && $publisher){
-                    push @workkeys, $title." ".$person." ".$publisher." <".$edition.">";
+#                    push @workkeys, $title." ".$person." ".$publisher." <".$edition.">";
+                    push @workkeys, $title." ".$person." <".$edition.">";
                 }
             }
         }

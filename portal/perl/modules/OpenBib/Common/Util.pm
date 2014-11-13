@@ -1697,10 +1697,7 @@ sub gen_workkeys {
 
                 $title     =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
                 
-                # Person
-                $person = "[$person]";
-
-                # Titel
+                            # Titel
                 $title  =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
 
                 # Verlag ??? oder nur Fehlerquelle???
@@ -1746,8 +1743,8 @@ sub gen_workkeys {
                 }
                 
                 if ($person && $title && $publisher){
-#                    push @workkeys, $title." ".$person." ".$publisher." <".$edition.">";
-                    push @workkeys, $title." ".$person." <".$edition.">";
+#                    push @workkeys, $title." [".$person."] ".$publisher." <".$edition.">";
+                    push @workkeys, $title." [".$person."] <".$edition.">";
                 }
             }
         }

@@ -1712,9 +1712,9 @@ sub gen_workkeys {
 #                my ($edition) = $editionstring =~ m/^\D*(\d+)/;
 
                 # Jahr
-                my $edition   = (defined $fields_ref->{T0425})?$fields_ref->{T0425}[0]{content}:
-                    (defined $fields_ref->{T0424})?$fields_ref->{T0424}:"";
-
+                my $editionstring   = (defined $fields_ref->{T0425})?$fields_ref->{T0425}[0]{content}:
+                    (defined $fields_ref->{T0424})?$fields_ref->{T0424}:"";                
+                my ($edition) = $editionstring =~ m/^\D*(\d\d\d\d)/;
                 
                 if ($edition){
                     $edition = sprintf "%04d",$edition;

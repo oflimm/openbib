@@ -3,10 +3,10 @@
 #
 #  update_all_isbn_table.pl
 #
-#  Aktualisierung der all_isbn-Tabelle, in der die ISBN's aller Kataloge
-#  nachgewiesen sind.
+#  Aktualisierung der all_titles_by-Tabellen, in der die ISBN's, ISSN's,
+#  BibKeys und WorkKeys aller Titel in allen Kataloge nachgewiesen sind.
 #
-#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -260,9 +260,11 @@ foreach my $database (@databases){
     $logger->info("### $database: $isbn_insertcount ISBN's inserted");
 
     $logger->info("### $database: Getting Bibkeys from database $database and adding to enrichmntdb");
-    
+
+    my $all_bibkeys;
+
     if ($incr){
-        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_bibkeys = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 'title_fields.field' => '5050',
@@ -275,7 +277,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_bibkeys = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'title_fields.field' => '5050',
             },
@@ -289,7 +291,7 @@ foreach my $database (@databases){
 
     my $bibkey_insertcount = 0;
     my $alltitlebybibkey_ref = [];
-    foreach my $item ($all_isbns->all){
+    foreach my $item ($all_bibkeys->all){
         my $thistitleid         = $item->get_column('thistitleid');
         my $thisbibkey     = $item->get_column('thisbibkey');
         my $thistitlecache = $item->get_column('thistitlecache');
@@ -317,8 +319,10 @@ foreach my $database (@databases){
 
     $logger->info("### $database: Getting ISSNs from database $database and adding to enrichmntdb");
 
+    my $all_issns;
+
     if ($incr){
-        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_issns = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 'title_fields.field' => '0543',
@@ -331,7 +335,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_issns = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'title_fields.field' => '0543',
             },
@@ -346,7 +350,7 @@ foreach my $database (@databases){
     my $issn_insertcount = 0;
     my $alltitlebyissn_ref = [];
     
-    foreach my $item ($all_isbns->all){
+    foreach my $item ($all_issns->all){
         my $thistitleid    = $item->get_column('thistitleid');
         my $thistitlecache = $item->get_column('thistitlecache');
         my $thisissn       = $item->get_column('thisissn');
@@ -383,9 +387,11 @@ foreach my $database (@databases){
     $logger->info("### $database: $issn_insertcount ISSNs inserted");
 
     $logger->info("### $database: Getting Workkeys from database $database and adding to enrichmntdb");
-    
+
+    my $all_workkeys;
+
     if ($incr){
-        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_workkeys = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 'title_fields.field' => '5055',
@@ -398,7 +404,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_workkeys = $catalog->{schema}->resultset('Title')->search_rs(
             {
                 'title_fields.field' => '5055',
             },
@@ -412,7 +418,7 @@ foreach my $database (@databases){
 
     my $workkey_insertcount = 0;
     my $alltitlebyworkkey_ref = [];
-    foreach my $item ($all_isbns->all){
+    foreach my $item ($all_workkeys->all){
         my $thistitleid         = $item->get_column('thistitleid');
         my $thisworkkeybase     = $item->get_column('thisworkkeybase');
 

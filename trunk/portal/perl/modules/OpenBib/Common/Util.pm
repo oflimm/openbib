@@ -1695,9 +1695,7 @@ sub gen_workkeys {
                     $title =~s/\s+\&lt;.+\&gt;\s*$//;
                 }
 
-                $title     =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
-                
-                            # Titel
+                # Titel
                 $title  =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
 
                 # Verlag ??? oder nur Fehlerquelle???

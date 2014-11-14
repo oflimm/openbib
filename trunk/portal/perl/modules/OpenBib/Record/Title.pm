@@ -1005,11 +1005,15 @@ sub enrich_same_records {
         if ($logger->is_debug){            
             $logger->debug("Found ".($same_titles->count)." records");
         }
-        
+
+        my $have_title_ref = {};
+
         while (my $item = $same_titles->next) {
             my $id         = $item->{titleid};
             my $database   = $item->{dbname};
             my $titlecache = $item->{titlecache};
+
+            next if (defined $have_title_ref->{"$database:$id"});
             
             if ($titlecache){
                 $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
@@ -1017,6 +1021,8 @@ sub enrich_same_records {
             else {
                 $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
             }
+
+            $have_title_ref->{"$database:$id"} = 1;
         }
         
         if ($config->{benchmark}) {

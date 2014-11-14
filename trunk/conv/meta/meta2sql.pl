@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -956,8 +956,32 @@ while (my $jsonline=<IN>){
                         $langcode = "rus";
                         last;
                     }
+                    elsif ($isbn13 =~m/^978605/ || $isbn13 =~m/^978975/){
+                        $langcode = "tur";
+                        last;
+                    }
                     elsif ($isbn13 =~m/^9787/){
                         $langcode = "chi";
+                        last;
+                    }
+                    elsif ($isbn13 =~m/^97880/){
+                        $langcode = "cze";
+                        last;
+                    }
+                    elsif ($isbn13 =~m/^97884/){
+                        $langcode = "spa";
+                        last;
+                    }
+                    elsif ($isbn13 =~m/^97888/){
+                        $langcode = "ita";
+                        last;
+                    }
+                    elsif ($isbn13 =~m/^97890/){
+                        $langcode = "dut";
+                        last;
+                    }
+                    elsif ($isbn13 =~m/^97891/){
+                        $langcode = "swe";
                         last;
                     }
                 }

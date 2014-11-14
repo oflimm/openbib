@@ -14,6 +14,13 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
+<li><b>13.11.2014</b>: Andere Ausgaben eines Titels
+- Die Bestimmung anderer Ausgaben (Auflage/Sprache/online) eines
+Titels wurde im KUG komplett überarbeitet. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2014/11/13/bestimmung-anderer-ausgaben-eines-titels/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
 <li><b>15.10.2014</b>: E-Books von Nomos online Premium jetzt im KUG
 - E-Books des Pakets von Beck-Online sind jetzt in KUG und USB-Portal recherchierbar. Weitergehende Informationen in diesem
 <a

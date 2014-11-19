@@ -810,6 +810,12 @@ our $entl_map_ref = {
       'W' => 4, # Wochenende
   };
 
+our $updatecode_map_ref = {
+    'c' => 'change',
+    'n' => 'create',
+    'd' => 'delete',
+};
+
 ###
 ## Feldstrukturtabelle auswerten
 #
@@ -843,9 +849,11 @@ open(PERSIKJSON,"|gzip > ./meta.person.gz");
 #binmode(PERSIK,     ":utf8");
 binmode(PERSIKJSON);
 
-while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
+while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten,$updatecode) = split ("",<PER>)) {
     next if ($katkey < 0);
     next if ($aktion != 0 && $aktion != 2);
+
+    chomp($updatecode);
 
     my %record  = decode_blob('person',$daten);
 
@@ -855,6 +863,10 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)) {
         id     => $katkey,
         fields => {},
     };
+
+    if ($updatecode){
+	$person_ref->{action} = $updatecode_map_ref->{$updatecode};
+    }
 
     foreach my $key (sort keys %record) {
         my $field = $key;
@@ -930,9 +942,11 @@ open(KOESIKJSON,"|gzip > ./meta.corporatebody.gz");
 #binmode(KOESIK,     ":utf8");
 binmode(KOESIKJSON);
 
-while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)) {
+while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten,$updatecode) = split ("",<KOE>)) {
     next if ($katkey < 0);
     next if ($aktion != 0 && $aktion != 2);
+
+    chomp($updatecode);
 
     my %record  = decode_blob('corporatebody',$daten);
 
@@ -942,6 +956,10 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)) {
         id     => $katkey,
         fields => {},
     };
+
+    if ($updatecode){
+	$corporatebody_ref->{action} = $updatecode_map_ref->{$updatecode};
+    }
 
     foreach my $key (sort {$b cmp $a} keys %record) {
         my $field = $key;
@@ -990,9 +1008,11 @@ open(SYSSIKJSON,"| gzip >./meta.classification.gz");
 #binmode(SYSSIK,     ":utf8");
 binmode(SYSSIKJSON);
 
-while (my ($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)) {
+while (my ($katkey,$aktion,$reserv,$ansetzung,$daten,$updatecode) = split ("",<SYS>)) {
     next if ($katkey < 0);
     next if ($aktion != 0 && $aktion != 2);
+
+    chomp($updatecode);
 
     my %record  = decode_blob('classification',$daten);
         
@@ -1002,6 +1022,10 @@ while (my ($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)) {
         id     => $katkey,
         fields => {},
     };
+
+    if ($updatecode){
+	$classification_ref->{action} = $updatecode_map_ref->{$updatecode};
+    }
 
     foreach my $key (sort keys %record) {
         my $field = $key;
@@ -1050,9 +1074,11 @@ open(SWDSIKJSON,"| gzip >./meta.subject.gz");
 #binmode(SWDSIK,     ":utf8");
 binmode(SWDSIKJSON);
 
-while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
+while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten,$updatecode) = split ("",<SWD>)) {
     next if ($katkey < 0);
     next if ($aktion != 0 && $aktion != 2);
+
+    chomp($updatecode);
 
     my %record  = decode_blob('subject',$daten);
     
@@ -1062,6 +1088,10 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)) {
         id     => $katkey,
         fields => {},
     };
+
+    if ($updatecode){
+	$subject_ref->{action} = $updatecode_map_ref->{$updatecode};
+    }
 
     # Schlagwortkettensonderbehandlung SIKIS
     # Nicht im JSON-Format!!!
@@ -1233,10 +1263,12 @@ binmode(MEXSIKJSON);
 
 my $mexid           = 1;
 
-while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("",<TITEL>)) {
+while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updatecode) = split ("",<TITEL>)) {
     next if ($katkey < 0);
     next if ($aktion != 0 && $aktion != 2);
     next if ($titelexclude{"$katkey"} eq "excluded");
+
+    chomp($updatecode);
 
     my %record  = decode_blob('title',$daten);
         
@@ -1262,6 +1294,10 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split 
         id     => $katkey,
         fields => {},
     };
+
+    if ($updatecode){
+	$title_ref->{action} = $updatecode_map_ref->{$updatecode};
+    }
 
     my $langmult = 1;
     

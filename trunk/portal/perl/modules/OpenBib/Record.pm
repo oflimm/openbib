@@ -126,8 +126,41 @@ sub get_database {
 }
 
 sub get_fields {
-    my ($self)=@_;
+    my ($self,$msg)=@_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Anreicherung mit Feld-Bezeichnungen
+    if (defined $msg){
+        foreach my $fieldnumber (keys %{$self->{_fields}}){
+            my $effective_fieldnumber = $fieldnumber;
+            my $mapping = $config->{'categorymapping'};
+            if (defined $mapping->{$self->{database}}{$fieldnumber}){
+                $effective_fieldnumber = $fieldnumber."-".$self->{database};
+            }
+                    
+            foreach my $fieldcontent_ref (@{$self->{_fields}->{$fieldnumber}}){
+                $fieldcontent_ref->{description} = $msg->maketext($effective_fieldnumber);
+            }
+        }
+
+        foreach my $item_ref (@{$self->{items}}){            
+            foreach my $fieldnumber (keys %{$item_ref}){                
+                next if ($fieldnumber eq "id");
+
+                my $effective_fieldnumber = $fieldnumber;
+                my $mapping = $config->{'categorymapping'};
+                if (defined $mapping->{$self->{database}}{$fieldnumber}){
+                    $effective_fieldnumber = $fieldnumber."-".$self->{database};
+                }
+                
+                $item_ref->{$fieldnumber}->{description} = $msg->maketext($effective_fieldnumber);
+            }
+        }
+    }
     
     return (defined $self->{_fields})?$self->{_fields}:{};
 }
@@ -202,6 +235,20 @@ sub set_field {
             subfield  => $subfield,
             content   => $content,
         };
+    }
+
+    return $self;
+}
+
+sub set_fields {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $fields         = exists $arg_ref->{fields}
+        ? $arg_ref->{fields}            : undef;
+
+    if ($fields && ref $fields eq "HASH"){
+        $self->{_fields} = $fields;
     }
 
     return $self;

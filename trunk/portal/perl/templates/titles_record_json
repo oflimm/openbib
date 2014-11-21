@@ -25,7 +25,7 @@ thisrecord = {
                 description_short = dbinfo.get('dbnames').${record.database}.short
                 url               = dbinfo.get('urls').${record.database}                          
            }
-           fields      = record.get_fields
+           fields      = record.get_fields(msg)
            items       = record.get_holding
            circulation = record.get_circulation
 };

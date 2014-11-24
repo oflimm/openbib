@@ -179,13 +179,18 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         my $field = $record->field('037');
 
         if ($field->as_string('b') eq "MIL"){
-            $title_ref->{id} = $field->as_string('a');
+            my $titleid = $field->as_string('a');
+            $titleid=~s/\//_/g;
+
+            $title_ref->{id} = $titleid;
         }
     }
     else {
         my $idfield = $record->field('001');
+        my $titleid = (defined $idfield)?$idfield->as_string():undef;
+        $titleid=~s/\//_/g;
         
-        $title_ref->{id} = (defined $idfield)?$idfield->as_string():undef;
+        $title_ref->{id} = $titleid;
     }
 
     $title_ref->{id}=~s/\s//g;

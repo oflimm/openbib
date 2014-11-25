@@ -21,10 +21,10 @@ while (<>){
         $is_digital = 1;
     } 
     
-    # 3) T0078 hat Inhalt 'ldd'
+    # 3) T0078 hat Inhalt 'ldd' oder 'fzo'
     if (defined $title_ref->{fields}{'0078'}){
         foreach my $item (@{$title_ref->{fields}{'0078'}}){
-            if ($item->{content} eq "ldd"){
+            if ($item->{content} eq "ldd" || $item->{content} eq "fzo"){
                 $is_digital = 1;
             }        
         }

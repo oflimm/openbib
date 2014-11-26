@@ -1,7 +1,7 @@
 [%-
 
 all_databaseinfo = [] ;
-FOREACH database IN kataloge.all ;
+FOREACH database IN catalogs.all ;
   this_databaseinfo = {
     link = {
           rel = 'self'

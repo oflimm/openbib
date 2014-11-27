@@ -21,7 +21,7 @@ FOREACH database IN catalogs.all ;
     protocol    = database.protocol
     remotepath  = database.remotepath
     remoteuser  = database.remoteuser
-    remotepassword  = database.remotepassword
+    remotepassword  = "NoneOfYourBusiness" # database.remotepassword
     titlefile   = database.titlefile
     personfile  = database.personfile
     corporatebodyfile = database.corporatebodyfile

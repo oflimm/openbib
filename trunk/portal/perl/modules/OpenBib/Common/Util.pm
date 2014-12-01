@@ -53,7 +53,10 @@ my %char_replacements = (
 
     # $logger->debug("Checkpoint 3: $content");
 
-    # Buchstabenersetzungen
+    # Alte/Neue Schriftformen
+    "ph"  => "f",
+    "Ph"  => "F",
+
     # Buchstabenersetzungen
     "u\x{0308}" => "ue",
     "a\x{0308}" => "ae",
@@ -61,7 +64,7 @@ my %char_replacements = (
     "U\x{0308}" => "Ue",
     "O\x{0308}" => "Oe",
     "A\x{0308}" => "Ae",
-
+    
     "ü" => "ue",
     "ä" => "ae",
     "ö" => "oe",

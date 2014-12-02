@@ -13,13 +13,13 @@
 #######################################################################
 -%]
 [% 
-   cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Falekiddr&start=1&maxrecs=100&field0=identi&mode0=exact&string0=alekiddr:${record.id}";
+   cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fportrait&start=1&maxrecs=100&field0=identi&mode0=exact&string0=portrait:${record.id}";
 
    cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
 %]
 [% IF cdm.total > 0 ;
    FOREACH cdmrecord IN cdm.records ;
-     cdm_url       = "http://www.ub.uni-koeln.de/cdm4/item_viewer.php?CISOROOT=/alekiddr&CISOPTR=${cdmrecord.pointer}&CISOBOX=1&REC=1";
+     cdm_url       = "http://www.ub.uni-koeln.de/cdm/singleitem/collection/portrait/id/${cdmrecord.pointer}/";
      cdm_imgurl    = "http://www.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=200";
      cdm_webimgurl = "http://www.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=800";
 %]

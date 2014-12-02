@@ -21,7 +21,7 @@
 %]
 [% IF cdm.total > 0 ;
    FOREACH cdmrecord IN cdm.records ;
-     cdm_url       = "http://www.ub.uni-koeln.de/cdm/singleitem/collection/portrait/id/{cdmrecord.pointer}/";
+     cdm_url       = "http://www.ub.uni-koeln.de/cdm/singleitem/collection/portrait/id/${cdmrecord.pointer}/";
      cdm_imgurl    = "http://www.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=180";
      cdm_webimgurl = "http://www.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=800";
 %]

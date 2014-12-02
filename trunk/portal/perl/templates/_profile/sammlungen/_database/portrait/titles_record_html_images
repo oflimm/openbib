@@ -29,7 +29,7 @@
 <a class="invisible cloud-zoom" rel="zoomWidth:400, zoomHeight:400, position:'left'" href="[% cdm_webimgurl %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
 
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=534;url=[% uri_escape(cdm_url) %]" target="_blank">Zum Digitalisat in ContentDM</a>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=534;url=[% uri_escape(cdm_url) %]" target="_blank">Zum Digitalisat</a>
 </p>
 </center>
   [% END %]

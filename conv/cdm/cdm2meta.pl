@@ -91,12 +91,24 @@ close(HOLDING);
 
 sub parse_titset {
     my($t, $titset)= @_;
-
+    
     my $title_ref = {
         'fields' => {},
     };
 
     $title_ref->{id} = $titset->first_child($convconfig->{uniqueidfield})->text();
+
+    if ($convconfig->{exclude}{by_field}){
+        foreach my $key_field (keys %{$convconfig->{exclude}{by_field}}){
+            my $exclude_content = $convconfig->{exclude}{by_field}{$key_field};
+            my $content = $titset->first_child($key_field)->text();
+            
+            if ($content eq $exclude_content){
+                print STDERR "Titel mit ID $title_ref->{id} wegen excludes ignoriert\n";
+                return;
+            }
+        }
+    }
 
     next unless ($title_ref->{id});
     

@@ -56,3 +56,7 @@ title:
 
 # Exemplare
 exempl:
+
+exclude:
+  by_field:
+    'publizieren': 'nein'

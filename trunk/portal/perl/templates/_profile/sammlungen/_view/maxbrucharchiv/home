@@ -30,7 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-[% config.get_templatetext('home','maxbruch',lang) %]
+[% config.get_templatetext('home','maxbrucharchiv',lang) %]
 
     </div>
     <!-- end: #main -->

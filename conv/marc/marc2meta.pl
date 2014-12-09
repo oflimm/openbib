@@ -987,24 +987,28 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         # URLs
         foreach my $field ($record->field('856')){
-            my $content_u = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('u')):decode_utf8($field->as_string('u'));
-            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
+            my @content_u = $field->subfield('u');
+            my @content_z = $field->subfield('z');
+            for (my $idx=0;$idx <= $#content_u; $idx++){
+                my $content_u_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_u[$idx]):decode_utf8($content_u[$idx]);
+                my $content_z_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_z[$idx]):decode_utf8($content_z[$idx]);
             
-            if ($content_u){
-                my $multcount=++$multcount_ref->{'0662'};
-                
-                push @{$title_ref->{fields}{'0662'}}, {
-                    content  => $content_u,
-                    subfield => '',
-                    mult     => $multcount,
-                };
-
-                if ($content_z){
-                    push @{$title_ref->{fields}{'0663'}}, {
-                        content  => konv($content_z),
+                if ($content_u_string){
+                    my $multcount=++$multcount_ref->{'0662'};
+                    
+                    push @{$title_ref->{fields}{'0662'}}, {
+                        content  => $content_u_string,
                         subfield => '',
                         mult     => $multcount,
                     };
+                    
+                    if ($content_z_string){
+                        push @{$title_ref->{fields}{'0663'}}, {
+                            content  => konv($content_z_string),
+                            subfield => '',
+                            mult     => $multcount,
+                        };
+                    }
                 }
             }
         }

@@ -29,19 +29,10 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Impressum") %]</a></li>
-       </ul>
-     </div>
-   </div>
-
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1 ob-hidden">
+      <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_menu='' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -67,8 +58,8 @@ Sie wird durch den <a href="http://www.portal.uni-koeln.de/3580.html">Rektor der
 <strong>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:</strong> DE 123 486 767<br />
 <strong>Inhaltlich Verantwortlicher gemäß § 5 des Telemediengesetzes (TMG) und § 55 Abs. 2 des Rundfunkstaatsvertrages (RStV):</strong><br />
 <a
-href="http://www.ub.uni-koeln.de/bibliothek/kontakt/personal/schmitz/index_ger.html">Prof.
-Dr. W. Schmitz</a> (Leitender Bibliotheksdirektor)<br /></p>
+href="http://www.ub.uni-koeln.de/bibliothek/kontakt/personal/neuhausen/index_ger.html">Dr.
+H. Neuhausen</a> (Bibliotheksdirektor)<br /></p>
 
 <h4>Haftungshinweis:<br /></h4>
 
@@ -95,7 +86,6 @@ Ausleihbewegungen in unserem Online-Katalog gespeichert. Dies
 geschieht soweit es für den Bibliotheksbetrieb erforderlich und nach
 dem Datenschutzgesetz Nordrhein-Westfalen (DSG NRW) zulässig ist.<br
 /></p>
-
 
 <h4>Deutsche Bibliotheksstatistik</h4>
 

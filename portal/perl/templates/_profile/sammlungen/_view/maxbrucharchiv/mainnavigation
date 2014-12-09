@@ -30,18 +30,20 @@
 [% IF active_menu == "info" %]
          <li class="active"><strong>[% msg.maketext("Informationen") %]</strong></li>
 [% ELSE %]
-          <li><a  href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
+          <li><a  href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
 [% END %]
 [% IF active_menu == "project" %]
          <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a></li>
 [% END %]
+<!--
 [% IF active_menu == "register" %]
          <li class="active"><strong>[% msg.maketext("Register") %]</strong></li>
 [% ELSE %]
           <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/maxbruch/[% config.get('titles_loc') %]/fields/id/0800.html?l=[% lang %]" title="Projekt">[% msg.maketext("Register") %]</a></li>
 [% END %]
+-->
 [% IF active_menu == "cloud" %]
          <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>
 [% ELSE %]

@@ -21,6 +21,7 @@ exclude:
         - inst123
         - inst201
         - inst503
+        - nomos
   'by_isbn_in_file':
      field: '0540'
      filename: '/opt/openbib/autoconv/pools/ebookpda/exclude_isbns.txt'

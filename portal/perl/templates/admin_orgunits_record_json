@@ -19,7 +19,7 @@ FOREACH db IN orgunitdbs ;
   thisdatabase = {
     link = {
         rel = 'self'
-        href = "${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${db}.json?l=${lang}"
+        href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${db}.json?l=${lang}"
     }
     id                = db
     description       = dbinfo.get('dbnames').${db}.full
@@ -32,7 +32,7 @@ END;
 this_json_output = {
   link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profileinfo.profilename}/${config.get('orgunits_loc')}/id/${orgunitinfo.orgunitname}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profileinfo.profilename}/${config.get('orgunits_loc')}/id/${orgunitinfo.orgunitname}.json?l=${lang}"
   }
 
   description = orgunitinfo.description

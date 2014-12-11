@@ -21,6 +21,11 @@ FOREACH db IN orgunitdbs ;
         rel = 'self'
         href = "${path_prefix}/${config.get('databases_loc')}/id/${db}.json?l=${lang}"
     }
+    id                = db
+    description       = dbinfo.get('dbnames').${db}.full
+    description_short = dbinfo.get('dbnames').${db}.short
+    url               = dbinfo.get('urls').${db}                          
+
   };
   databases.push(thisdatabase);
 END;

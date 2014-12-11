@@ -20,7 +20,7 @@
      thisorgunit = {
         link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profilename}/${config.get('orgunits_loc')}/id/${orgunit.orgunitname}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profilename}/${config.get('orgunits_loc')}/id/${orgunit.orgunitname}.json?l=${lang}"
         }
         orgunitname = orgunit.orgunitname
         description = orgunit.description
@@ -33,7 +33,7 @@
  this_json_output = {
      link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profilename}/${config.get('orgunits_loc')}.json?l=${lang}"
      }
      orgunits = orgunitinfos
  };

@@ -33,7 +33,7 @@ END;
 this_json_output = {
   link = {
           rel = 'self'
-          href = location
+          href = "${scheme}://${servername}${path_prefix}/${config.get('profiles_loc')}/id/${profileinfo.profilename}/${config.get('orgunits_loc')}/id/${orgunit.orgunitname}.json?l=${lang}"
   }
 
   description = orgunitinfo.description

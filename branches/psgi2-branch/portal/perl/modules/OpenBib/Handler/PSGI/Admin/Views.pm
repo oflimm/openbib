@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Views
+#  OpenBib::Handler::PSGI::Admin::Views
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Views;
+package OpenBib::Handler::PSGI::Admin::Views;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -59,9 +53,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use CGI::Application::Plugin::Redirect;
-
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::PSGI::Admin';
 
 # Run at startup
 sub setup {
@@ -111,9 +103,7 @@ sub show_collection {
         views      => $viewinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_views_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_views_tname},$ttdata);
 }
 
 sub show_record {
@@ -137,8 +127,7 @@ sub show_record {
 
     # View muss existieren
     unless ($config->view_exists($viewname)) {
-        $self->print_warning($msg->maketext("Ein View dieses Namens existiert nicht."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ein View dieses Namens existiert nicht."));
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -190,39 +179,35 @@ sub create_record {
     }
 
     if ($input_data_ref->{viewname} eq "" || $input_data_ref->{description} eq "" || $input_data_ref->{profilename} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-Profil eingeben."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-Profil eingeben."));
     }
 
     # Profile muss vorhanden sein.
     if (!$config->profile_exists($input_data_ref->{profilename})) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     # View darf noch nicht existieren
     if ($config->view_exists($input_data_ref->{viewname})) {
-        $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
     }
     
     my $new_viewid = $config->new_view($input_data_ref);
     
     if (!$new_viewid){
-        $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"));
     }
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{views_loc}/id/$input_data_ref->{viewname}/edit.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{views_loc}/id/$input_data_ref->{viewname}/edit.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($new_viewid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zum Record $input_data_ref->{viewname}");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201); # created
             $self->param('viewid',$input_data_ref->{viewname});
             $self->param('location',"$location/$input_data_ref->{viewname}");
             $self->show_record;
@@ -275,9 +260,7 @@ sub show_record_form {
         dbinfo     => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_views_record_edit_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_views_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -310,22 +293,20 @@ sub update_record {
     }
 
     if (!$config->view_exists($viewname)) {
-        $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
     }
 
     # Profile muss vorhanden sein.
     if (!$config->profile_exists($input_data_ref->{profilename})) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     $config->update_view($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{views_loc}.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{views_loc}.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $viewname");
@@ -354,9 +335,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_views_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_admin_views_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -382,10 +362,9 @@ sub delete_record {
     $config->del_view($viewname);
 
     return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{views_loc}.html?l=$lang");
-    $self->query->status(Apache2::Const::REDIRECT);
+
+    # TODO GET?
+    $self->redirect("$path_prefix/$config->{admin_loc}/$config->{views_loc}.html?l=$lang");
 
     return;
 }

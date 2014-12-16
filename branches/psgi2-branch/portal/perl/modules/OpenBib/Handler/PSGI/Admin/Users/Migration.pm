@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Users::Migration
+#  OpenBib::Handler::PSGI::Admin::Users::Migration
 #
 #  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Users::Migration;
+package OpenBib::Handler::PSGI::Admin::Users::Migration;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -60,9 +54,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use CGI::Application::Plugin::Redirect;
-
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::PSGI::Admin';
 
 # Run at startup
 sub setup {
@@ -119,9 +111,7 @@ sub show_collection {
         userinfo            => $userinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_users_migration_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_users_migration_tname},$ttdata);
 }
 
 sub migrate_ugc {

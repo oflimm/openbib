@@ -253,6 +253,18 @@ sub cgiapp_prerun {
    $logger->debug("Exit cgiapp_prerun");
 }
 
+sub cgiapp_get_query {
+	my $self = shift;
+
+	# Include OpenBib::Request instead of CGI.pm and related modules
+#	require OpenBib::Request;
+
+	# Get the query object
+#	my $r = OpenBib::Request->new();
+
+	return $self->param('r');
+}
+
 sub set_paging {
     my $self = shift;
 
@@ -887,7 +899,7 @@ sub print_page {
         $logger->info("Total time until stage 2 is ".timestr($timeall));
     }
 
-    $logger->debug("Template-Output: ".$content);
+#    $logger->debug("Template-Output: ".$content);
     
     return \$content;
 }
@@ -1284,8 +1296,8 @@ sub to_cgi_params {
 
     my $r            = $self->param('r');
 
-    if ($r->param){
-        foreach my $param (keys %{$r->param}){
+    if ($r->parameters){
+        foreach my $param (keys %{$r->parameters}){
             next unless ($r->param($param));
             $logger->debug("Processing $param");
             if (exists $arg_ref->{change}->{$param}){
@@ -1490,7 +1502,7 @@ sub dispatch_to_representation {
 
     $logger->debug("Dispatching to representation ".$self->param('dispatch_url'));
 
-    $self->redirect($self->param('dispatch_url'),'303 See Other');
+    $self->redirect($self->param('dispatch_url'),'303');
     
     return;
 }
@@ -1504,9 +1516,9 @@ sub redirect {
     $status = $status || '302 Found';
 
     $self->header_type('redirect');
-    $self->header_props('Status' => $status);
+    $self->header_props({'Status' => $status});
 #    $self->header_add('Window-Target' => '_top');
-    $self->header_add('Location' => $url) if ($url);
+    $self->header_add({'Location' => $url}) if ($url);
 
     if ($logger->is_debug){
         $logger->debug(YAML::Syck::Dump($self->{__HEADER_PROPS}));
@@ -1648,8 +1660,13 @@ sub set_cookie {
 
     my $config = OpenBib::Config->instance;
 
-    $logger->debug("Setting cookie $name to $value");
+    if (!($name || $value)){
+        $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
+        return;
+    }   
     
+    $logger->debug("Setting cookie $name to $value");
+   
     my $cookie = CGI::Cookie->new(
         -name    => $name,
         -value   => $value,
@@ -1657,9 +1674,11 @@ sub set_cookie {
         -path    => $config->{base_loc},
     );
 
-    $self->header_add('Set-Cookie' => $cookie->as_string());
+    my $cookie_string = $cookie->as_string();
+    
+    $self->header_add('Set-Cookie', $cookie_string) if ($cookie_string);
 
-    $logger->debug("Setting cookie $name to $value with Set-Cookie: ".$cookie->as_string());
+    $logger->debug("Setting cookie $name to $value with Set-Cookie: ".$cookie_string);
     
     return;
 }

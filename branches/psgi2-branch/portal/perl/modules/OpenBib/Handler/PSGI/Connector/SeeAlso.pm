@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Connector::SeeAlso.pm
+#  OpenBib::Handler::PSGI::Connector::SeeAlso.pm
 #
 #  Dieses File ist (C) 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,12 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Connector::SeeAlso;
+package OpenBib::Handler::PSGI::Connector::SeeAlso;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();   # CGI-Handling (or require)
-use Apache2::RequestIO (); # rflush, print
-use Apache2::RequestRec ();
-use Apache2::URI ();
-use APR::URI ();
 use URI;
 
 use Benchmark;
@@ -58,7 +51,7 @@ use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -211,12 +204,13 @@ sub show {
     if ($current_service_ref){
         $logger->debug("Using service $serviceid");
         my $source = SeeAlso::Source->new($current_service_ref->{query_proc},
-        ( "ShortName" => $current_service_ref->{description} )
-    );
+                                          ( "ShortName" => $current_service_ref->{description} )
+                                      );
         
-    $r->print($server->query($source, $identifier, $format, $callback));
-                                  }
-    return Apache2::Const::OK;
+        return $server->query($source, $identifier, $format, $callback); # TODO print
+    }
+
+    return;
 }
 
 1;

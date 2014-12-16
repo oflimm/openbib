@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Connector::UnAPI.pm
+#  OpenBib::Handler::PSGI::Connector::UnAPI.pm
 #
 #  Dieses File ist (C) 2007-2013 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,17 +27,12 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Connector::UnAPI;
+package OpenBib::Handler::PSGI::Connector::UnAPI;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(OK HTTP_NOT_ACCEPTABLE HTTP_NOT_FOUND SERVER_ERROR);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestRec ();
 use Benchmark;
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
@@ -50,7 +45,7 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -93,7 +88,8 @@ sub show {
         
         unless (exists $config->{unAPI_formats}->{$format}){
             $logger->error("Format $format not acceptable");
-            return Apache2::Const::HTTP_NOT_ACCEPTABLE;
+            $self->header_add('Status',406); # not acceptable
+            return;
         }
 
         if ($unapiid){
@@ -110,7 +106,8 @@ sub show {
             }
 
             if (!$record->record_exists){
-                return Apache2::Const::HTTP_NOT_FOUND;
+                $self->header_add('Status',404); # not found
+                return;
             }
             
             my $ttdata={
@@ -123,13 +120,15 @@ sub show {
             my $templatename = ($format)?"tt_connector_unapi_".$format."_tname":"tt_unapi_formats_tname";
             
             $logger->debug("Using Template $templatename");
+
+            my $content = "";
             
             my $template = Template->new({ 
                 LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                     INCLUDE_PATH   => $config->{tt_include_path},
                     ABSOLUTE       => 1,
                 }) ],
-                OUTPUT         => $r,    # Output geht direkt an Apache Request
+                OUTPUT         => \$content,  
                 RECURSION      => 1,
             });
             
@@ -139,17 +138,19 @@ sub show {
             
             # Dann Ausgabe des neuen Headers
             if ($format_info{$format}){
-                $r->content_type($format_info{$format});
+                $self->header_add('Content-Type',$format_info{$format});
             }
             else {
-                $r->content_type('application/xml');
+                $self->header_add('Content-Type','application/xml');                
             }
             
             $template->process($config->{$templatename}, $ttdata) || do {
-                $r->log_error($template->error(), $r->filename);
-                return Apache2::Const::SERVER_ERROR;
+                $logger->error($template->error());
+                $self->header_add('Status',400); # server error
+                return;
             };
-            
+
+            return $content;
         }
         else {
         }
@@ -164,27 +165,28 @@ sub show {
         my $templatename = $config->{tt_connector_unapi_formats_tname};
 
         $logger->debug("Using Template $templatename");
+
+        my $content = "";
         
         my $template = Template->new({ 
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                 INCLUDE_PATH   => $config->{tt_include_path},
                 ABSOLUTE       => 1,
             }) ],
-            OUTPUT         => $r,    # Output geht direkt an Apache Request
+            OUTPUT         => \$content, 
             RECURSION      => 1,
         });
         
         # Dann Ausgabe des neuen Headers
-        $r->content_type("application/xml");
+        $self->header_add('Content-Type','application/xml');                
   
         $template->process($templatename, $ttdata) || do {
-            $r->log_error($template->error(), $r->filename);
-            return Apache2::Const::SERVER_ERROR;
+            $logger->error($template->error());
+            $self->header_add('Status',400); # server error
         };
 
+        return $content;
     }
-
-    return Apache2::Const::OK;    
 }
 
 1;

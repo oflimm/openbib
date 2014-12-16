@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Authentication
+#  OpenBib::Handler::PSGI::Authentication
 #
 #  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,18 +27,14 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Authentication;
+package OpenBib::Handler::PSGI::Authentication;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Access ();
-use Apache2::RequestUtil ();
 use Log::Log4perl qw(get_logger :levels);
-
-use Apache2::Const -compile => qw(OK);
 
 use constant SECRET_LENGTH => 14;
 
@@ -53,7 +49,7 @@ sub handler {
     
     $logger->debug("Authentication with $http_user and type $http_auth");
 
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

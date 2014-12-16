@@ -1,6 +1,6 @@
 ###################################################################
 #
-#  OpenBib::Handler::Apache::Authority::Search.pm
+#  OpenBib::Handler::PSGI::Authority::Search.pm
 #
 #  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Authority::Search;
+package OpenBib::Handler::PSGI::Authority::Search;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestIO (); # rflush, print
-use Apache2::RequestRec ();
 use Benchmark ':hireswallclock';
 use Data::Pageset;
 use DBI;
@@ -73,7 +67,7 @@ use OpenBib::Session;
 use OpenBib::Template::Provider;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Search';
+use base 'OpenBib::Handler::PSGI::Search';
 
 # Run at startup
 sub setup {

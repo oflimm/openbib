@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Classifications::Titles.pm
+#  OpenBib::Handler::PSGI::Classifications::Titles.pm
 #
 #  Titel zu einer Classification-ID
 #
@@ -29,16 +29,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Classifications::Titles;
+package OpenBib::Handler::PSGI::Classifications::Titles;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
@@ -65,7 +62,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::SearchQuery;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -119,9 +116,7 @@ sub show_recent {
         recordlist       => $recordlist
     };
 
-    $self->print_page($config->{'tt_classifications_record_titles_recent_tname'},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_classifications_record_titles_recent_tname'},$ttdata);
 }
 
 1;

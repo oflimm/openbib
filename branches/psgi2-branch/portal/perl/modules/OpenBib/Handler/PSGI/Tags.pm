@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Tags.pm
+#  OpenBib::Handler::PSGI::Tags.pm
 #
 #  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Tags;
+package OpenBib::Handler::PSGI::Tags;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
-use Apache2::URI ();
-use APR::URI ();
 use Data::Pageset;
 use URI::Escape;
 
@@ -62,7 +56,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -128,9 +122,8 @@ sub show_collection {
         nav           => $nav,
         public_tags   => $public_tags_ref,
     };
-    $self->print_page($config->{tt_tags_tname},$ttdata);
 
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_tags_tname},$ttdata);
 }
 
 sub show_record {
@@ -236,9 +229,7 @@ sub show_record {
         tagid            => $tagid,
     };
 
-    $self->print_page($config->{'tt_tags_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_tags_tname'},$ttdata);
 }
 
 sub show_collection_form {
@@ -254,7 +245,7 @@ sub show_collection_form {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query  = $r;
 
     my $session = OpenBib::Session->instance({ apreq => $r });    
 
@@ -294,20 +285,19 @@ sub show_collection_form {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     unless($user->{ID}){
         # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
+        my $return_uri = uri_escape($r->request_uri);
 
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
+        # TODO internal redirect
+        $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;redirect_to=$return_uri");
 
-        return Apache2::Const::OK;
+        return;
     }
 
     my $targettype=$user->get_targettype_of_session($session->{ID});
@@ -324,8 +314,8 @@ sub show_collection_form {
         user       => $user,
         msg        => $msg,
     };
-    $self->print_page($config->{tt_users_tags_edit_tname},$ttdata);
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_users_tags_edit_tname},$ttdata);
 }
 
 # Alle oeffentlichen Literaturlisten
@@ -366,8 +356,7 @@ sub show_collection_recent {
         recent_tags    => $recent_tags_ref,
     };
     
-    $self->print_page($config->{tt_tags_collection_recent_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_tags_collection_recent_tname},$ttdata);
 }
 
 # sub delete_record {
@@ -376,7 +365,7 @@ sub show_collection_recent {
 #     # Log4perl logger erzeugen
 #     my $logger = get_logger();
 
-#     return OpenBib::Handler::Apache::Users::Tags::delete_record($self);
+#     return OpenBib::Handler::PSGI::Users::Tags::delete_record($self);
 # }
 
 
@@ -394,10 +383,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/tags.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

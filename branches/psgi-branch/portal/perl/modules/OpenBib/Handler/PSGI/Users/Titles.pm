@@ -372,14 +372,6 @@ sub show_record {
             highlightquery    => \&highlightquery,
         };
 
-        $self->print_page($config->{tt_titles_record_tname},$ttdata);
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 3 is ".timestr($timeall));
-        }
-
         # Log Event
 
         my $isbn;
@@ -402,6 +394,9 @@ sub show_record {
                 serialize => 1,
             });
         }
+        
+        return $self->print_page($config->{tt_titles_record_tname},$ttdata);
+
     }
     else {
         return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));

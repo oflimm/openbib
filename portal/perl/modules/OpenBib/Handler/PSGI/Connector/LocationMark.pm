@@ -1,12 +1,12 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Connector::LocationMark.pm
+#  OpenBib::Handler::PSGI::Connector::LocationMark.pm
 #
 #  ehemals biblio-signatur.pl
 #
 #  Herausgabe von Titellisten anhand einer Grundsignatur
 #
-#  Dieses File ist (C) 2000-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2000-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -31,16 +31,11 @@
 # Einladen der benoetigten Perl-Module 
 #####################################################################
 
-package OpenBib::Handler::Apache::Connector::LocationMark;
-
-use Apache2::Const -compile => qw(:common);
-use Apache2::RequestRec ();
+package OpenBib::Handler::PSGI::Connector::LocationMark;
 
 use strict;
 use warnings;
 no warnings 'redefine';
-
-use Apache2::Request();      # CGI-Handling (or require)
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -58,7 +53,7 @@ use OpenBib::Search::Factory;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -106,7 +101,7 @@ sub show_via_sql {
     my $title      = decode_utf8($query->param('title'))      || '';
     my $database   = $query->param('database')   || '';
 
-    return Apache2::Const::OK unless (defined $base);
+    return 200 unless (defined $base); # ok
 
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
@@ -258,23 +253,12 @@ sub show_via_sql {
             config       => $config,
         };
         
-        my $template = Template->new({ 
-            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config->{tt_include_path},
-                ABSOLUTE       => 1,
-            }) ],
-            OUTPUT         => $r,    # Output geht direkt an Apache Request
-            RECURSION      => 1,
-        });
-        
-        $self->print_page($config->{tt_connector_locationmark_titlist_tname},$ttdata);
+        return $self->print_page($config->{tt_connector_locationmark_titlist_tname},$ttdata);
         
     }
     else {
-        $self->print_warning("Insufficient Arguments",2);
+        return $self->print_warning("Insufficient Arguments",2);
     }
-    
-    return Apache2::Const::OK;
 }
 
 sub show_via_searchengine {
@@ -307,7 +291,7 @@ sub show_via_searchengine {
     my $title      = decode_utf8($query->param('title'))      || '';
     my $database   = $query->param('database')   || '';
 
-    return Apache2::Const::OK unless (defined $base);
+    return 200 unless (defined $base); # ok
 
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
@@ -466,23 +450,12 @@ sub show_via_searchengine {
             config       => $config,
         };
         
-        my $template = Template->new({ 
-            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config->{tt_include_path},
-                ABSOLUTE       => 1,
-            }) ],
-            OUTPUT         => $r,    # Output geht direkt an Apache Request
-            RECURSION      => 1,
-        });
-        
-        $self->print_page($config->{tt_connector_locationmark_titlist_tname},$ttdata);
+        return $self->print_page($config->{tt_connector_locationmark_titlist_tname},$ttdata);
         
     }
     else {
-        $self->print_warning("Insufficient Arguments",2);
+        return $self->print_warning("Insufficient Arguments",2);
     }
-    
-    return Apache2::Const::OK;
 }
 
 sub by_signature {

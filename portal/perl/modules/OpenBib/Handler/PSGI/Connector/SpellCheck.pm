@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Connector::SpellCheck.pm
+#  OpenBib::Handler::PSGI::Connector::SpellCheck.pm
 #
 #  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Connector::SpellCheck;
+package OpenBib::Handler::PSGI::Connector::SpellCheck;
 
 use strict;
 use warnings;
@@ -51,7 +51,7 @@ use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -137,17 +137,16 @@ sub show {
         $logger->debug("Found corrections for $word in language $aspell_language: ".join(',',@aspell_suggestions));
     }
 
-    $r->content_type("text/plain");
+    $self->header_add('Content-Type','text/plain');
     
     if (@aspell_suggestions){
-        $r->print(join("\n",map {decode_utf8($_)} @aspell_suggestions));
+        return join("\n",map {decode_utf8($_)} @aspell_suggestions);
     }
     else {
         $logger->debug("Found $word in dictionary or no suggestions");
     }
 
-
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

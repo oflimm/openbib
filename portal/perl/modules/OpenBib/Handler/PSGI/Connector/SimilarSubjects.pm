@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Connector::SimilarSubjects
+#  OpenBib::Handler::PSGI::Connector::SimilarSubjects
 #
 #  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,15 +27,12 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Connector::SimilarSubjects;
+package OpenBib::Handler::PSGI::Connector::SimilarSubjects;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
 use Business::ISBN;
 use Benchmark;
 use DBI;
@@ -52,7 +49,7 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -99,8 +96,7 @@ sub show {
     my $format         = $query->param('format')          || 'ajax';
 
     if (!$database || !$type){
-        OpenBib::Common::Util::print_warning($msg->maketext("Fehler."),$r,$msg);
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Fehler."));
     }
 
     my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
@@ -248,9 +244,7 @@ sub show {
         database         => $database,
     };
 
-    $self->print_page($config->{tt_connector_similarsubjects_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_connector_similarsubjects_tname},$ttdata);
 }
 
 1;

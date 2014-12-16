@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Connector::LiveSearch.pm
+#  OpenBib::Handler::PSGI::Connector::LiveSearch.pm
 #
 #  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,17 +27,12 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Connector::LiveSearch;
+package OpenBib::Handler::PSGI::Connector::LiveSearch;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestIO (); # print
-use Apache2::RequestRec (); # headers_in, headers_out, args
 use Benchmark;
 use DBI;
 use Encode 'decode_utf8';
@@ -51,7 +46,7 @@ use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -96,7 +91,8 @@ sub show {
     my $exact = $query->param('exact') || '';
     
     if (!$word || $word=~/\d/){
-        return Apache2::Const::OK;
+        $self->header_add('Status',200); # ok
+        return;
     }
 
     if (!$exact){
@@ -148,17 +144,16 @@ sub show {
 
     $logger->debug("LiveSearch for word $word and type $type");
     
-    $r->content_type("text/plain");
+    $self->header_add('Content-Type',"text/plain");
     
     if (@livesearch_suggestions){
-        $r->print(join("\n",map {decode_utf8($_)} @livesearch_suggestions));
+        return join("\n",map {decode_utf8($_)} @livesearch_suggestions);
     }
     else {
         $logger->debug("No suggestions");
     }
 
-
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

@@ -37,10 +37,14 @@ use utf8;
 use Benchmark ':hireswallclock';
 use Log::Log4perl qw(get_logger :levels);
 use YAML;
+use Data::Dumper;
+use HTTP::Exception;
 
 use OpenBib::Config;
 
 use base 'CGI::Application::Dispatch::PSGI';
+
+our $DEBUG   = 0;
 
 sub as_psgi {
     my ($self, %args) = @_;
@@ -49,11 +53,14 @@ sub as_psgi {
 
     my $config  = OpenBib::Config->instance;
 
-    my $query = $args{args_to_new}{QUERY};
+    my $query = $args{args_to_new}->{QUERY};
+
+    $logger->debug("Query: ".ref($query));
 
     # set method for http-tunnel based on _method-CGI-Parameter
     if ($query->param('_method')){
-        $self->{_method}=$query->param('_method');
+        $args{args_to_new}->{PARAMS}->{method} = $query->param('_method');
+
         if ($logger->is_debug){
             $logger->debug("Changed method to tunneled ".$query->param('_method'));
         }
@@ -61,13 +68,17 @@ sub as_psgi {
     
     $logger->debug("Dispatching as PSGI");
 
-    $args{args_to_new}{PARAMS}{r} = $query;
+    $args{args_to_new}->{PARAMS}->{r} = $query;
+    $args{args_to_new}->{QUERY} = $query;
 
-    my $output = $self->SUPER::as_psgi(%args) ;
-
-    $logger->debug(YAML::Dump($output));
     
-    return $output;
+    $logger->debug("ARGS as_psgi: ".Data::Dumper::Dumper(\%args));
+    
+    my $psgi_app = $self->SUPER::as_psgi(%args) ;
+
+    #$logger->debug("Output is :".YAML::Dump($psgi_app));
+    
+    return $psgi_app;
 }
 
 
@@ -190,6 +201,8 @@ sub dispatch_args {
                 if ($item->{args}){
                     # Request-Object dazu, da sonst ueberschrieben
                     $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
+                    $item->{args}->{method} = $args->{args_to_new}->{method};
+                    $item->{args}->{QUERY} = $args->{args_to_new}->{QUERY};
                     $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
                 }
                 
@@ -207,6 +220,8 @@ sub dispatch_args {
             if ($item->{args}){
                 # Request-Object dazu, da sonst ueberschrieben
                 $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
+                $item->{args}->{method} = $args->{args_to_new}->{method};
+                $item->{args}->{QUERY} = $args->{args_to_new}->{QUERY};
                 $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
             }
                         
@@ -220,5 +235,70 @@ sub dispatch_args {
     };
 }
 
+sub _run_app {
+    my ($self, $module, $rm, $args,$env) = @_;
+
+    if($DEBUG) {
+        require Data::Dumper;
+        warn "[Dispatch] Final args to pass to new(): " . Data::Dumper::Dumper($args) . "\n";
+    }
+
+    if($rm) {
+
+        # check runmode name
+        ($rm) = ($rm =~ /^([a-zA-Z_][\w']+)$/);
+        HTTP::Exception->throw(400, status_message => "Invalid characters in runmode name") unless $rm;
+
+    }
+
+    # now create and run then application object
+    warn "[Dispatch] creating instance of $module\n" if($DEBUG);
+
+    my $psgi;
+    eval {
+        my $app = do {
+            if (ref($args) eq 'HASH' and not defined $args->{PARAMS}{QUERY}) {
+                require CGI::PSGI;
+                $args->{QUERY} = CGI::PSGI->new($env);
+                $module->new($args);
+            }
+            elsif (ref($args) eq 'HASH' and defined $args->{PARAMS}{QUERY}) {
+                $args->{QUERY} = $args->{PARAMS}{QUERY};
+                $module->new($args);
+            }
+            elsif (ref($args) eq 'HASH') {
+                $module->new($args);
+            }
+            else {
+                $module->new();
+            }
+        };
+        $app->mode_param(sub { return $rm }) if($rm);
+        $psgi = $app->run_as_psgi;
+    };
+
+    # App threw an HTTP::Exception? Cool. Bubble it up.
+    my $e;
+    if ($e = HTTP::Exception->caught) {
+        $e->rethrow;   
+    } 
+    else {
+          $e = Exception::Class->caught();
+
+          # catch invalid run-mode stuff
+          if (not ref $e and  $e =~ /No such run mode/) {
+              HTTP::Exception->throw(404, status_message => "RM '$rm' not found");
+          }
+          # otherwise, it's an internal server error.
+          elsif (defined $e and length $e) {
+              HTTP::Exception->throw(500, status_message => "Unknown error: $e");
+              #return $psgi;
+          }
+          else {
+              # no exception
+              return $psgi;
+          }
+    }
+}
 
 1;

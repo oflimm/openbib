@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Templates.pm
+#  OpenBib::Handler::PSGI::Admin::Templates.pm
 #
 #  Copyright 2014 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,16 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Templates;
+package OpenBib::Handler::PSGI::Admin::Templates;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
@@ -54,7 +51,7 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::PSGI::Admin';
 
 # Run at startup
 sub setup {
@@ -105,9 +102,7 @@ sub show_collection {
         all_templates   => $all_templates_ref,
     };
     
-    $self->print_page($config->{tt_admin_templates_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_templates_tname},$ttdata);
 }
 
 sub create_record {
@@ -137,29 +132,27 @@ sub create_record {
     }
 
     if ($input_data_ref->{templatename} eq "" || $input_data_ref->{viewname} eq "") {
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Templatename und einen View eingeben."),2);
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie müssen mindestens einen Templatename und einen View eingeben."),2);
     }
     
     my $other_template_exists = $config->template_exists($input_data_ref->{templatename},$input_data_ref->{viewname},$input_data_ref->{templatelang});
     
     if ($other_template_exists) {
-        $self->print_warning($msg->maketext("Es existiert bereits ein Template in diesem View"),3);
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert bereits ein Template in diesem View"),3);
     }
 
     my $new_templateid = $config->new_template($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{templates_loc}/id/$new_templateid/edit.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        $self->header_add('Content-Type' => 'text/html');
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{templates_loc}/id/$new_templateid/edit.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($new_templateid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zur DB $input_data_ref->{dbname}");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status',201); # created
             $self->param('templateid',$new_templateid);
             $self->show_record;
         }
@@ -248,9 +241,7 @@ sub show_record_form {
         all_templates   => $all_templates_ref,
     };
     
-    $self->print_page($config->{tt_admin_templates_record_edit_tname},$ttdata);
-        
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_templates_record_edit_tname},$ttdata);
 }
 
 sub confirm_delete_record {
@@ -272,9 +263,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_templates_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_admin_templates_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -297,8 +287,7 @@ sub delete_record {
     }
     
     if (!$config->{schema}->resultset('Templateinfo')->search_rs({id => $templateid})->count){
-        $self->print_warning($msg->maketext("Es existiert kein Template unter dieser ID"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Template unter dieser ID"));
     }
 
     $logger->debug("Deleting template record $templateid");
@@ -306,10 +295,9 @@ sub delete_record {
     $config->del_template({ id => $templateid });
 
     return unless ($self->param('representation') eq "html");
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{templates_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect("$path_prefix/$config->{templates_loc}");
 
     return;
 }

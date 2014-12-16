@@ -1,0 +1,174 @@
+#####################################################################
+#
+#  OpenBib::Request
+#
+#  Dieses File ist (C) 2014 Oliver Flimm <flimm@ub.uni-koeln.de>
+#
+#  Dieses Programm ist freie Software. Sie koennen es unter
+#  den Bedingungen der GNU General Public License, wie von der
+#  Free Software Foundation herausgegeben, weitergeben und/oder
+#  modifizieren, entweder unter Version 2 der Lizenz oder (wenn
+#  Sie es wuenschen) jeder spaeteren Version.
+#
+#  Die Veroeffentlichung dieses Programms erfolgt in der
+#  Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE JEDE
+#  GEWAEHRLEISTUNG - sogar ohne die implizite Gewaehrleistung
+#  der MARKTREIFE oder der EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
+#  Details finden Sie in der GNU General Public License.
+#
+#  Sie sollten eine Kopie der GNU General Public License zusammen
+#  mit diesem Programm erhalten haben. Falls nicht, schreiben Sie
+#  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
+#  MA 02139, USA.
+#
+#####################################################################
+
+package OpenBib::Request;
+
+use strict;
+use warnings;
+no warnings 'redefine';
+use utf8;
+
+use base qw(Plack::Request);
+
+use Log::Log4perl qw(get_logger :levels);
+use YAML::Syck;
+
+sub psgi_header {
+    my($self, @header_props) = @_;
+
+    my $logger = get_logger();
+
+    #print STDERR "IN: ".YAML::Syck::Dump(\@header_props);
+    
+    my @headers;
+    
+    my $status = 200;
+
+    for (my $i = 0; $i < @header_props; $i += 2) {
+        my $header = $header_props[$i];
+        my $value  = $header_props[$i+1];
+
+        if ($header =~/Status/i){
+            $status = $value;
+            next;
+        }
+        
+        push @headers, $header, $value;
+    }
+
+    print STDERR "OUT: ".YAML::Syck::Dump(\@headers);
+
+    return ($status,\@headers);
+}
+
+sub psgi_redirect {
+    my($self, @header_props) = @_;
+
+    my $logger = get_logger();
+    
+    my @headers;
+    
+    my $status   = 302;
+    my $cookie   = "";
+    my $location = "";
+
+    for (my $i = 0; $i < @header_props; $i += 2) {
+        my $header = $header_props[$i];
+        my $value  = $header_props[$i+1];
+
+        push @headers, $header, $value;
+    }
+
+    if ($logger->is_debug){
+        $logger->debug("Redirect:".YAML::Syck::Dump(\@headers));
+    }
+
+    #print STDERR YAML::Syck::Dump(\@headers);
+    
+    return ($status,\@headers);
+}
+
+sub args {
+    my $self = shift;
+
+    my @parameters = ();
+    foreach my $param ($self->parameters->keys){
+        foreach my $value ($self->parameters->get_all($param)){
+            push @parameters, "$param=$value";
+        }
+    }
+
+    return join(";",@parameters);
+}
+
+sub get_server_name {
+    my $self = shift;
+
+    my $logger = get_logger();
+
+    my ($hostname) = $self->uri =~m/http.*:\/\/(.+?)\//;
+
+    $logger->debug($hostname);
+        
+    return $hostname;
+}
+
+sub remote_host {
+    my $self = shift;
+
+    my $logger = get_logger();
+
+    my ($hostname) = $self->SUPER::remote_host =~m/(\d+\.\d+\.\d+\.\d+)/;
+
+    $logger->debug($hostname);
+        
+    return $hostname;
+}
+
+1;
+__END__
+
+=head1 NAME
+
+OpenBib::Request - Request-Objekt
+
+=head1 DESCRIPTION
+
+Dieses Objekt enthalt das PSGI-Request als abgeleitete Klasse von Plack::Request und fuegt die fuer den
+PSGI-Support notwendigen Methoden psgi_header und psgi_redirect.
+
+=head1 SYNOPSIS
+
+ use OpenBib::Request;
+
+ my $r = OpenBib::Request->new($env);
+
+ # Zugriff auf Request-Variablen
+ my $foo        = $r->param('foo'); # foo-Parameter
+ my $method     = $r->method;       # HTTP-Methode
+
+
+=head1 METHODS
+
+=over 4
+
+=item new
+
+Erzeugung des Objektes
+
+=back
+
+=head1 EXPORT
+
+Es werden keine Funktionen exportiert. Alle Funktionen muessen
+vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
+Verzicht auf den Exporter weniger Speicherverbrauch und mehr
+Performance auf Kosten von etwas mehr Schreibarbeit.
+
+=head1 AUTHOR
+
+Oliver Flimm <flimm@ub.uni-koeln.de>
+
+=cut

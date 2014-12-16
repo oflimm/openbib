@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Users
+#  OpenBib::Handler::PSGI::Admin::Users
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Users;
+package OpenBib::Handler::PSGI::Admin::Users;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -59,9 +53,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use CGI::Application::Plugin::Redirect;
-
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::PSGI::Admin';
 
 # Run at startup
 sub setup {
@@ -139,8 +131,7 @@ sub show_record_form {
         userinfo   => $userinfo,
     };
     
-    $self->print_page($config->{tt_admin_users_record_edit_tname},$ttdata);
-
+    return $self->print_page($config->{tt_admin_users_record_edit_tname},$ttdata);
 }
 
 sub show_search_form {
@@ -199,8 +190,7 @@ sub show_search {
     }
 
     if (!$args_ref->{roleid} && !$args_ref->{username} && !$args_ref->{surname} && !$args_ref->{commonname}){
-        $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
     }
 
     my $userlist_ref = $user->search($args_ref);;
@@ -210,7 +200,7 @@ sub show_search {
         userlist   => $userlist_ref,
     };
     
-    $self->print_page($config->{tt_admin_users_search_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_users_search_tname},$ttdata);
 }
     
 1;

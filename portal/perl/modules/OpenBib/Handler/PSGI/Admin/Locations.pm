@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Locations
+#  OpenBib::Handler::PSGI::Admin::Locations
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Locations;
+package OpenBib::Handler::PSGI::Admin::Locations;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -59,9 +53,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use CGI::Application::Plugin::Redirect;
-
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::PSGI::Admin';
 
 # Run at startup
 sub setup {
@@ -110,9 +102,7 @@ sub show_collection {
         locations  => $locationinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_locations_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_locations_tname},$ttdata);
 }
 
 sub show_record {
@@ -156,9 +146,7 @@ sub show_record {
         locationinfo => $locationinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_locations_record_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_locations_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -194,28 +182,24 @@ sub create_record {
 
     if ($input_data_ref->{identifier} eq "" && $input_data_ref->{description} eq "" && $input_data_ref->{type}) {
         
-        $self->print_warning($msg->maketext("Sie müssen mindestens einen Identifier, dessen Typ und eine Beschreibung eingeben."));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie müssen mindestens einen Identifier, dessen Typ und eine Beschreibung eingeben."));
     }
     
     if ($config->location_exists($input_data_ref->{identifier})) {
         
-        $self->print_warning($msg->maketext("Es existiert bereits ein Standort mit diesem Identifier"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert bereits ein Standort mit diesem Identifier"));
     }
     
     $config->new_locationinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{locations_loc}/id/$input_data_ref->{identifier}/edit.html?l=$lang");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{locations_loc}/id/$input_data_ref->{identifier}/edit.html?l=$lang");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $input_data_ref->{identifier}");
-        $self->param('status',Apache2::Const::HTTP_CREATED);
+        $self->param('status',201); # created
         $self->show_record;
     }
     
@@ -268,9 +252,7 @@ sub show_record_form {
         locationinfo => $locationinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_locations_record_edit_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_admin_locations_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -307,9 +289,9 @@ sub update_record {
     $config->update_locationinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{locations_loc}");
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->redirect("$path_prefix/$config->{locations_loc}");
+        return;
     }
     else {
         $logger->debug("Weiter zum Record $locationid");
@@ -336,9 +318,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_admin_locations_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_admin_locations_record_delete_confirm_tname},$ttdata);
 }
 
 sub delete_record {
@@ -369,10 +350,9 @@ sub delete_record {
     }
 
     $config->delete_locationinfo($locationid);
-    
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{locations_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+
+    # TODO GET?
+    $self->redirect("$path_prefix/$config->{locations_loc}");
 
     return;
 }

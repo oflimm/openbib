@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Statistics
+#  OpenBib::Handler::PSGI::Admin::Statistics
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Statistics;
+package OpenBib::Handler::PSGI::Admin::Statistics;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use Date::Calc qw/Days_in_Month/;
 use DBI;
@@ -59,7 +53,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::PSGI::Admin';
 
 # Run at startup
 sub setup {
@@ -113,8 +107,7 @@ sub show_collection {
     
     my $templatename = "tt_admin_statistics_tname";
     
-    $self->print_page($config->{$templatename},$ttdata);
-
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_graph {
@@ -168,8 +161,7 @@ sub show_graph {
 
     $templatename.="_tname";
     
-    $self->print_page($config->{$templatename},$ttdata);
-
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_statistics {
@@ -245,7 +237,7 @@ sub show_statistics {
 
     $logger->debug("Template: $templatename");
     
-    $self->print_page($config->{$templatename},$ttdata);
+    return $self->print_page($config->{$templatename},$ttdata);
 
 }
 

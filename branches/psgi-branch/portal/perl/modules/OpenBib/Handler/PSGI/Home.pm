@@ -98,7 +98,7 @@ sub show {
 
         $logger->info("Redirecting to $redirecturl");
 
-        $self->redirect($redirecturl);
+        return $self->redirect($redirecturl);
     }
     else {
         # TT-Data erzeugen

@@ -7,8 +7,12 @@
 -------------------------------------------------
 
 drop table IF EXISTS person;
+drop sequence IF EXISTS person_id_seq; 
+
+create sequence person_id_seq;
+
 create table person (
- id            TEXT,
+ id            TEXT default nextval('person_id_seq'::regclass),
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP
 );
@@ -28,8 +32,12 @@ create table person_fields (
 -------------------------------------------------
 
 drop table IF EXISTS corporatebody;
+drop sequence IF EXISTS corporatebody_id_seq;
+
+create sequence corporatebody_id_seq;
+
 create table corporatebody (
- id            TEXT,
+ id            TEXT default nextval('corporatebody_id_seq'::regclass),
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP
 );
@@ -49,8 +57,12 @@ create table corporatebody_fields (
 -------------------------------------------------
 
 drop table IF EXISTS subject;
+drop sequence IF EXISTS subject_id_seq;
+
+create sequence subject_id_seq;
+
 create table subject (
- id            TEXT,
+ id            TEXT default nextval('subject_id_seq'::regclass),
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP
 );
@@ -70,8 +82,12 @@ create table subject_fields (
 -------------------------------------------------
 
 drop table IF EXISTS classification;
+drop sequence IF EXISTS classification_id_seq;
+
+create sequence classification_id_seq;
+
 create table classification (
- id            TEXT,
+ id            TEXT default nextval('classification_id_seq'::regclass),
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP
 );
@@ -91,8 +107,12 @@ create table classification_fields (
 -------------------------------------------------
 
 drop table IF EXISTS title;
+drop sequence IF EXISTS title_id_seq; 
+
+create sequence title_id_seq;
+
 create table title (
- id            TEXT,
+ id            TEXT default nextval('title_id_seq'::regclass),
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP,
  titlecache    TEXT,
@@ -114,8 +134,12 @@ create table title_fields (
 -------------------------------------------------
 
 drop table IF EXISTS holding;
+drop sequence IF EXISTS holding_id_seq; 
+
+create sequence holding_id_seq;
+
 create table holding (
- id            TEXT
+ id            TEXT default nextval('holding_id_seq'::regclass)
 );
 
 drop table IF EXISTS holding_fields;

@@ -1,0 +1,270 @@
+katalog,titel_gemeldet,katalogisiert_gesamt,katalogisiert_aufsatz,katalogisiert_zeitschriftenserien,katalogisiert_online
+[%
+  dez_orgunits = [
+                   { 
+                     desc = "Fakult\"atsungebundene Bibliotheken",
+                     id   = 7,
+#                     image = "logounikoeln.jpg",
+                   },
+                   { 
+                     desc = "Bibliotheken der Wirtschafts- und Sozialwissenschaftlichen Fakult\"at",
+                     id   = 1,
+                     image = "logowiso.jpg",
+                   },
+                   {                       
+                     desc = "Bibliotheken der Rechtswissenschaftlichen Fakult\"at",
+                     id   = 2,
+                     image = "logorecht.jpg",
+                   },
+                   { 
+                     desc = "Bibliotheken der Humanwissenschaftlichen Fakult\"at",
+                     id   = 3,
+                   },
+                   { 
+                     desc = "Bibliotheken der Philosophischen Fakult\"at",
+                     id   = 4,
+                     image = "logophil.jpg",
+                   },
+                   { 
+                     desc = "Bibliotheken der Mathematisch-Naturwissenschaftlichen Fakult\"at",
+                     id   = 5,
+                     image = "logomatnat.jpg",
+                   },
+               ];
+
+     dez_orgunit_pools = {
+
+                     "7" = [
+                     "inst005",
+                     "inst006",
+                     "inst007",
+                     "inst009",
+                     "inst526",
+                     ],
+
+                     "1" = [
+                     "inst103",
+                     "inst104",
+                     "inst105",
+                     #"inst106",
+                     #"inst113",
+                     "inst120",
+                     "inst121",
+                     "inst128",
+                     "inst157",
+                     "inst166",
+                     "inst102",
+                     "inst107",
+                     "inst108",
+                     "inst109",
+                     "inst110",
+                     #"inst112",
+                     "inst117",
+                     "inst118",
+                     "inst119",
+                     "inst123",
+                     #"inst124",
+                     "inst125",
+                     "inst132",
+                     "inst134",
+                     "inst135",
+                     "inst136",
+                     "inst137",
+                     "inst139",
+                     "inst140",
+                     "inst141",
+                     "inst146",
+                     "inst155",
+                     "inst156",
+                     #"inst158",
+                     "inst159",
+                     "inst160",
+                     "inst164",
+                     "inst171",
+                         ],
+                  "2" = [
+                     "inst201",
+                     "inst203",
+                     "inst204",
+                     "inst205",
+                     "inst206",
+                     "inst207",
+                     "inst208",
+                     "inst209",
+                     "inst210",
+                     "inst211",
+                     "inst212",
+                     "inst213",
+                     "inst214",
+                     "inst215",
+                     "inst216",
+                     "inst217",
+                     "inst218",
+                     "inst219",
+                     "inst220",
+                     "inst221",
+                     "inst222",
+                     "inst223",
+                     "inst224",
+                     "inst225",
+                     "inst226",
+                     "inst227",
+                     "inst228",
+                     "inst230",
+                     "inst231",
+                     "inst232",
+                     "inst233",
+                     "inst234",
+                     "inst235",
+                     "inst236",
+                     "inst237",
+                      ],
+                  "3" = [
+                     "inst403",
+                     "inst303",
+                     "inst304",
+                     "inst308",
+                     "inst309",
+                     "inst310",
+                     "inst302",
+                     "inst305",
+                     "inst319",
+                     "inst320",
+                     "inst321",
+                     #"inst324",
+                     "inst326",
+                     "inst327",
+                     "inst328",
+                      ],
+                  "4" = [
+                     "inst401",
+                     "inst404",
+                     "inst405",
+                     "inst312",
+                     "inst323",
+                     "inst406",
+                     "inst407",
+                     "inst408",
+                     "inst409",
+                     "inst410",
+                     "inst411",
+                     "inst313",
+                     "inst412",
+                     "inst413",
+                     "inst414",
+                     "inst415",
+                     "inst416",
+                     "inst418",
+                     "inst419",
+                     "inst420",
+                     "inst421",
+                     "inst422",
+                     "inst423",
+                     "inst425",
+                     "inst306",
+                     "inst426",
+                     "inst427",
+                     "inst428",
+                     "inst429",
+                     "inst430",
+                     "inst431",
+                     "inst432",
+                     "inst433",
+                     "inst434",
+                     "inst435",
+                     "inst437",
+                     "inst438",
+                     "inst444",
+                     "inst445",
+                     "inst448",
+                     "inst450",
+                     "inst459",
+                     "inst460",
+                     "inst461",
+                     "inst462",
+                     "inst463",
+                     "inst464",
+                     "inst465",
+                     "inst466",
+                     "inst467",
+                     "inst468",
+                     "inst622",
+                     "inst325",
+                     "inst623",
+                     "inst311",
+                      ],
+                  "5" = [
+                     "inst501",
+                     "inst502",
+                     "inst314",
+                     "inst315",
+                     "inst507",
+                     "inst509",
+                     "inst514",
+                     "inst517",
+                     "inst540",
+                     "inst503",
+                      ],
+                    };
+
+            categories = [
+                'L0010', # msg.maketext("L0010") # Institutsname
+                'L0020', # msg.maketext("L0020") # Straße
+                'L0030', # msg.maketext("L0030") # Gebäude
+#                'L0040', # msg.maketext("L0040") # Interaktiver Lageplan der Universität
+                'L0050', # msg.maketext("L0050") # Gemeinsame Bibliothek
+                'L0060', # msg.maketext("L0060") # Telefon
+                'L0070', # msg.maketext("L0070") # Fax
+                'L0080', # msg.maketext("L0080") # E-Mail
+                'L0090', # msg.maketext("L0090") # Internet
+                'L0100', # msg.maketext("L0100") # Auskunft / Bibliothekar(in)
+                'L0110', # msg.maketext("L0110") # Öffnungszeiten
+                'L0120', # msg.maketext("L0120") # Bestand Monos
+                'L0130', # msg.maketext("L0130") # Bestand Zeitschriften
+                'L0140', # msg.maketext("L0140") # Anzahl laufender Zeitschriften
+                'L0150', # msg.maketext("L0150") # Bestand CD's / Digitale Medien
+                'L0160', # msg.maketext("L0160") # Sonstige Bestandsangaben
+                'L0170', # msg.maketext("L0170") # Besondere Sammelgebiete
+                'L0180', # msg.maketext("L0180") # Art der Bibliothek
+                'L0190', # msg.maketext("L0190") # Neuerwerbungslisten
+                'L0200', # msg.maketext("L0200") # Kopierer / Technische Ausstattung
+                'L0260', # msg.maketext("L0260") # Art der Vernetzung
+                'L0210', # msg.maketext("L0210") # DV-Ausstattung  
+                'L0220', # msg.maketext("L0220") # Art des Systems
+                'L0230', # msg.maketext("L0230") # Online-Katalogisierung seit Erscheinungsjahr
+                'L0235', # msg.maketext("L0235") # Online-Katalogisierung seit Erwerbungsjahr
+                'L0240', # msg.maketext("L0240") # Mitarbeit am KUG
+                'L0250', # msg.maketext("L0250") # Sigel in ZDB
+                'L0280', # msg.maketext("L0280") # Geo-Koordinaten
+               ];
+-%]
+[%-
+  monoanz          = 0;
+  zeitanz          = 0;
+  lfdzeitanz       = 0;
+  onlineanz        = 0;
+  biblanz          = 0;
+-%]
+[%-
+
+FOREACH orgunit IN dez_orgunits ;
+
+  FOREACH database IN dez_orgunit_pools.${orgunit.id} ;
+     onlinetitcount = config.get_number_of_titles({ database => database });
+     locationinfo     = config.get_locationinfo_fields_of_database(database);
+
+     monoanz          = locationinfo.${"L0120"}.first.content.replace('\D','');
+
+     IF monoanz <= 0 ;
+        monoanz = 0;
+     END ;
+     zeitanz          = locationinfo.${"L0130"}.first.content.replace('\D','');
+     lfdzeitanz       = locationinfo.${"L0140"}.first.content.replace('\D','');
+-%]
+[% database %],[% monoanz %],[% onlinetitcount.allcount %],[% onlinetitcount.articlecount %],[% onlinetitcount.journalcount %],[% onlinetitcount.digitalcount %]
+[%
+
+  END;
+END;
+
+-%]

@@ -1,0 +1,102 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_22
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='info' %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Informationen") %]</a></li>
+         <li><a href="#" class="lastitem">Sammlung</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='sammlung' %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+   <div class="ym-grid">
+          <div class="ym-g50 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+<p> <img src="/images/openbib/views/poetica/seiteinfo21_2.jpg"
+class="img" alt="Bildunterschrift2" /> 
+<center><a href="/images/openbib/views/poetica/bild2.jpg">
+Bildunterschrift1</a></center>
+</p>
+
+<p> <img
+src="/images/openbib/views/poetica/seiteinfo21_1.jpg"
+class="img" alt="Bildunterschrift1" />
+<center><a href="/images/openbib/views/poetica/bild3.jpg">Bildunterschrift2</a></center>
+</p>
+
+
+<p>
+<img
+src="/images/openbib/views/poetica/seiteinfo21_3.jpg"
+class="img" alt="Bildunterschrift3" />
+</p>
+<center><a href="/images/openbib/views/poetica/bild4.jpg">Bildunterschrift3</a></center>
+</p>
+
+          </div>
+         </div>
+          <div class="ym-g50 ym-gl">
+           <div class="ym-gbox" class="ym-clearfix">
+
+<h3>Ansprechpartner:</h3>
+<strong>Dr. K.-F. Beßelmann<br />
+Tel.: 0221-470 3877</strong>, 
+<br />
+<a href="http://www.ub.uni-koeln.de/res/personen_e_mail/dr_besselmann/index_ger.html" target="_blank">E-Mail</a><br /></p>
+
+          </div>
+         </div>
+        </div>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

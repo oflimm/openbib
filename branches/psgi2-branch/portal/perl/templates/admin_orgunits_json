@@ -1,0 +1,43 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Profiles
+#
+#######################################################################
+-%]
+[%-
+
+ orgunitinfos = [];
+
+ FOREACH orgunit IN orgunits.all ;
+
+     thisorgunit = {
+        link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profilename}/${config.get('orgunits_loc')}/id/${orgunit.orgunitname}.json?l=${lang}"
+        }
+        orgunitname = orgunit.orgunitname
+        description = orgunit.description
+        nr          = orgunit.nr
+        databases   = config.get_orgunitdbs(profilename,orgunit.orgunitname).sort
+     };
+     orgunitinfos.push(thisorgunit);
+ END;
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profilename}/${config.get('orgunits_loc')}.json?l=${lang}"
+     }
+     orgunits = orgunitinfos
+ };
+
+ to_json(this_json_output);
+
+-%]

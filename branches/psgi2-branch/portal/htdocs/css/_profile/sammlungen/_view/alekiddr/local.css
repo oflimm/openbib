@@ -1,0 +1,219 @@
+@media all
+{
+  .ym-wrapper {
+    text-align:left;
+    width: 1000px;
+    margin: 0 auto;
+
+     width-min: 1000px;
+     width-max: 1000px;
+  }
+
+  header {
+    padding-bottom:62px;
+  }
+
+  header #logo {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+  }
+
+  header #institution {
+    padding: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    with: 30%;
+  }
+
+  #header_logo_image {
+    background: url(/images/openbib/views/alekiddr/logo.png) center no-repeat;
+    position: absolute;
+    width: 1000px;
+    height: 100px;    
+    left: 0px;
+    top: 30px;
+  }
+
+  #header_institution_image {
+    background: url(/images/openbib/views/alekiddr/aleki_logo.png) center no-repeat;
+    width: 111px;
+    height: 90px;
+    position: absolute;
+    top: 30px;
+    right: 0px;
+  }
+
+  .details {
+    padding-top: 1em;
+  }
+
+  .images {
+    padding-top: 1em;
+  }
+
+
+  .ob-fulltitle {
+    padding: 5px;
+  }
+
+  .ob-fulltitle .ob-category_header {
+    float: left;
+    margin-left: 2px;
+    width: 98%;
+  }
+
+    .ob-pagination {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center; 
+  }
+  
+  .ob-pagination_firstpage, .ob-pagination_page, .ob-pagination_activepage, .ob-pagination_lastpage {
+    border: 1px solid #999999;
+    margin: 0 4px 4px 0;
+    padding: 3px 10px;
+    border-radius: 2px 2px 2px 2px;    
+    white-space: no-wrap;
+    background: #eeeeee;
+  }
+
+  .ob-pagination_firstpage:focus, .ob-pagination_page:focus, .ob-pagination_activepage:focus, .ob-pagination_lastpage:focus {
+    box-shadow: 0 0 2px #eeeeee;
+  }
+
+  .ob-pagination_space:after {
+    content: ' ... ';
+    font-size: 1.2em;
+  }
+
+  .ob-pagination_previous, .ob-pagination_next {
+    font-size: 1.2em;
+  }
+  
+  .ob-pagination_previous { 
+    padding-right: 0.5em;
+  }
+  
+  .ob-pagination_next {
+    padding-left: 0.5em;
+  }
+  
+  .ob-pagination_firstpage {
+    font-size: 1.4em;
+
+  }
+
+  .ob-pagination_activepage {
+    border: 2px solid #999999;
+    font-size: 1.4em;
+  }
+
+  .ob-pagination_page {
+    font-size: 1.4em;
+  }
+
+  .ob-pagination_lastpage {
+    font-size: 1.4em;
+  }
+
+  .ob-titleactions .ob-collection {
+    font-size: 12px;
+    border: 1px solid #777;
+    webkit-border-radius: .2em;
+    moz-border-radius: .2em;
+    border-radius: .2em;
+    padding: 3px;
+  }
+
+  .ob-titleactions .ob-collection img {
+    padding-right: 5px;
+    vertical-align:text-top;
+  }
+
+  .ob-fulltitle {
+    padding: 5px;
+  }
+
+  .ob-fulltitle .ob-category_header {
+    float: left;
+    margin-left: 2px;
+    width: 98%;
+  }
+
+  .ob-titleimage {
+
+  }
+
+
+  body {
+    background:#9eff84 url("/images/openbib/bg_green.png") repeat-x top left fixed;
+  }
+
+  footer {
+    margin: 0.5em 0 0 0;
+/*    background: #e8fca4;
+    color: #444; */
+    padding: 0.5em;
+    background: #e8fca4;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#e8fca4), to(#c9ff0f));
+    background: -moz-linear-gradient(top,  #e8fca4,  #c9ff0f);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8fca4', endColorstr='#c9ff0f');
+    
+    
+    border: 1px #e8fca4 solid;
+  }
+
+  .ym-vlist li.active {
+    background-color:#e8fca4;
+    color: #444444;
+  }
+
+  .ym-vlist li ul li a, .ym-vlist li ul li a:visited {
+    background-color: #f5ffd1;
+    color: #333333;
+  }
+  
+  .ym-hlist {
+    padding: 0px;
+    margin-left:0px;
+    width: auto;
+    background: #e8fca4;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#e8fca4), to(#c9ff0f));
+    background: -moz-linear-gradient(top,  #e8fca4,  #c9ff0f);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8fca4', endColorstr='#c9ff0f');
+    
+    
+    border: 1px #e8fca4 solid;
+  }
+
+  .ym-hlist ul li a, .ym-hlist ul li strong {  
+    text-shadow: none !important;
+  }
+
+  .ym-form {
+    background: #fff;
+  }
+
+  .ob-items dt {
+    background: #e8fca4;
+  }
+
+  .ob-reuse_data, .ob-discover_sources, .ob-session_history {
+      background: #edffda;
+  }
+
+  .ob-category_header {
+    background: #e8fca4;
+  }
+
+  .ob-item:hover {
+    border-left-color: #c9ff0f; 
+  }
+
+}

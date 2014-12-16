@@ -1,0 +1,37 @@
+ul.subjectlist li {
+  background: url(/images/openbib/solidrightarrow-ie.png) 5px 5px no-repeat;
+}
+
+#header2 {
+  width: 99.5%;
+/*  position: absolute;
+  top: 0;
+  left: 0; */
+  background: white ;
+  padding: 0px 0px 0px 10px;
+}
+
+#header2 #header_logo {
+  float: left;
+  width: 120px;
+}
+
+#header2 #header_simplesearch {
+  float: right;
+  margin-top:10px;
+  margin-right:10px;
+  
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 1px;
+  border-left-style: solid;
+  border-left-color: lightblue;
+  border-left-width: 1px;
+  border-right-style: solid;
+  border-right-color: lightblue;
+  border-right-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;  
+
+}

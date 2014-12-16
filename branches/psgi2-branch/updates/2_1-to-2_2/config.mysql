@@ -1,0 +1,26 @@
+drop table IF EXISTS profileinfo;
+CREATE TABLE profileinfo (
+ profilename VARCHAR(20),
+ description TEXT,
+
+ INDEX (profilename)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+drop table IF EXISTS profiledbs;
+CREATE TABLE profiledbs (
+ profilename VARCHAR(20),
+ dbname      VARCHAR(255),
+
+ INDEX(profilename),
+ INDEX(dbname)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
+
+alter table viewinfo add start_loc text after rssfeed;
+alter table viewinfo add start_stid text after start_loc;
+alter table viewinfo add profilename varchar(20) after start_stid;

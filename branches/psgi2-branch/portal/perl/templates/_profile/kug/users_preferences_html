@@ -1,0 +1,464 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen ueber den Benutzer
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="#">[% username %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Grundeinstellungen") %]</a></li>
+       </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="userprefs" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<h2>[% msg.maketext("Grundeinstellungen") %]</h2>
+
+<table>
+<tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% username %]</td>
+
+[% IF authenticator.type == 'self' && username != 'admin' %]
+<td><form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="confirm" value="1" /><input type="hidden" name="_method" value="DELETE" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
+[% END %]
+
+</tr>
+
+[% IF authenticator.type == 'self' %]
+<tr><form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded"><input type="hidden" name="_method"    value="PUT" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="" /></td><td><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></form></tr>
+[% END %]
+
+</table>
+
+<p />
+
+[% IF authenticator.type != 'self' %]
+
+<div class="ym-grid">
+  <div class="ym-g50 ym-gl">
+    <div class="ym-gbox">
+<h4>[% msg.maketext("Personendaten") %]</h4>
+
+<table>
+<tr><th>[% msg.maketext("Nachname") %]:</th><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
+<tr><th>[% msg.maketext("Vorname") %]:</th><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
+<tr><th>[% msg.maketext("Geburtsdatum") %]:</th><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
+<tr><th>[% msg.maketext("Strasse") %]:</th><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
+<tr><th>[% msg.maketext("Ort") %]:</th><td align="left">
+[% IF userinfo.plz %]
+&nbsp;[% userinfo.plz %]
+[% END %] 
+&nbsp;[% userinfo.ort %]</td></tr>
+[% IF userinfo.email %]
+<tr><th>[% msg.maketext("E-Mail") %]:</th><td align="left">&nbsp;[% userinfo.email %]</td></tr>
+[% END %]
+<tr><th>[% msg.maketext("Sperre") %]:</th><td align="left">&nbsp;
+[%- IF userinfo.sperre -%]
+[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
+[%- ELSE -%]
+[% msg.maketext("nein") %]
+[%- END -%]
+</td></tr>
+</table>
+   </div>
+  </div>
+  <div class="ym-g50 ym-gl">
+    <div class="ym-gbox">
+
+<h4>[% msg.maketext("Ausleihinformationen") %] / [% authenticator.description %]</h4>
+
+<table class="ym-full">
+<tr><th>[% msg.maketext("Guthaben") %]:</th><td align="right">[% userinfo.gut %]&nbsp;EUR</td></tr>
+<tr><th>[% msg.maketext("Soll") %]:</th><td align="right">[% userinfo.soll %]&nbsp;EUR</td></tr>
+<tr><th>[% msg.maketext("Offene Geb&uuml;hren") %]</th><td>
+[% IF userinfo.maanz > 0 %]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reminders.html?l=[% lang %]">[% userinfo.maanz %]</a>
+[% ELSE %]
+[% userinfo.maanz %]
+[% END %]
+</td></tr>
+
+<tr><th>[% msg.maketext("Ausgeliehen") %]:</th><td align="left">
+[%- IF userinfo.avanz > 0 -%]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/borrows.html?l=[% lang %]">[% userinfo.avanz %]</a>
+[%- ELSE -%]
+[%- userinfo.avanz -%]
+[%- END -%]
+</td></tr>
+<tr><th>[% msg.maketext("Vorgemerkt") %]:</th><td>
+[%- IF userinfo.vmanz > 0 -%]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% userinfo.vmanz %]</a>
+[%- ELSE -%]
+[%- userinfo.vmanz -%]
+[%- END -%]
+</td></tr>
+<tr><th>[% msg.maketext("Bestellungen") %]:</th><td align="left">
+[%- IF userinfo.bsanz > 0 -%]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% userinfo.bsanz %]</a>
+[%- ELSE -%]
+[%- userinfo.bsanz -%]
+[%- END -%]
+</td></tr>
+</table>
+
+   </div>
+  </div>
+
+</div>
+
+<p>
+[% msg.maketext("Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.") %]
+</p>
+
+
+<p />
+[% END %]
+
+<h2>[% msg.maketext("Einstellungen") %]</h2>
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/searchfields" enctype="application/x-www-form-urlencoded" class="ym-form">
+<input type="hidden" name="_method" value="PUT" />
+<fieldset>
+<legend>[% msg.maketext("Suchfelder") %]</legend>
+
+<div class="ym-grid">
+<div class="ym-g50 ym-gl">
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="freesearch" id="freesearch" value="1" [% IF searchfields.freesearch.active %]checked="checked"[% END %]/>
+<label for="freesearch">[% msg.maketext("Freie Suche") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="title" id="title" value="1" [% IF searchfields.title.active %]checked="checked"[% END %]/>
+<label for="title">[% msg.maketext("Hauptsachtitel (HST)") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="person"     value="1" [% IF searchfields.person.active %]checked="checked"[% END %]/>
+<label for="person">[% msg.maketext("Verfasser") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="corporatebody"     value="1" [% IF searchfields.corporatebody.active %]checked="checked"[% END %]/>
+<label for="corporatebody">[% msg.maketext("K&ouml;rperschaft") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="subject"     value="1" [% IF searchfields.subject.active %]checked="checked"[% END %]/>
+<label for="subject">[% msg.maketext("Schlagwort") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="classification"     value="1" [% IF searchfields.classification.active %]checked="checked"[% END %]/>
+<label for="classification">[% msg.maketext("Notation") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="isbn"     value="1" [% IF searchfields.isbn.active %]checked="checked"[% END %]/>
+<label for="isbn">[% msg.maketext("ISBN") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="toc"     value="1" [% IF searchfields.toc.active %]checked="checked"[% END %]/>
+<label for="toc">[% msg.maketext("Inhaltsverzeichnis") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="hss"     value="1" [% IF searchfields.hss.active %]checked="checked"[% END %]/>
+<label for="toc">[% msg.maketext("T0519") %]</label>
+</div>
+
+</div>
+
+<div class="ym-g50 ym-gr">
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="issn"     value="1" [% IF searchfields.issn.active %]checked="checked"[% END %]/>
+<label for="issn">[% msg.maketext("ISSN") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="markstring"     value="1" [% IF searchfields.markstring.active %]checked="checked"[% END %]/>
+<label for="markstring">[% msg.maketext("Signatur") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="titlestring"     value="1" [% IF searchfields.titlestring.active %]checked="checked"[% END %]/>
+<label for="titlestring">[% msg.maketext("Titel-String") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="content"     value="1" [% IF searchfields.content.active %]checked="checked"[% END %]/>
+<label for="content">[% msg.maketext("Abstrakt/Inhalt") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="source"     value="1" [% IF searchfields.source.active %]checked="checked"[% END %]/>
+<label for="source">[% msg.maketext("Serie/Band/Quelle") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="mediatype"     value="1" [% IF searchfields.mediatype.active %]checked="checked"[% END %]/>
+<label for="mediatype">[% msg.maketext("Medienart") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="year"     value="1" [% IF searchfields.year.active %]checked="checked"[% END %]/>
+<label for="year">[% msg.maketext("Erscheinungsjahr") %]</label>
+</div>
+
+<div class="ym-gbox-left ym-fbox-check">
+<input type="checkbox" name="publisher"     value="1" [% IF searchfields.publisher.active %]checked="checked"[% END %]/>
+<label for="year">[% msg.maketext("Verlag") %]</label>
+</div>
+
+</div>
+</div><!-- End grid -->
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
+
+</fieldset>
+</form>
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset class="ym-full">
+<legend>[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</legend>
+
+<div class="ym-fbox-select">
+<select name="setautocompletion">
+<option value="none"[%- IF userinfo.autocompletiontype == 'none' -%] selected="selected"[%- END -%]>[% msg.maketext("Keine") %]</option>
+<option value="livesearch"[%- IF userinfo.autocompletiontype == 'livesearch' -%] selected="selected"[%- END -%]>[% msg.maketext("LiveSearch") %]</option>
+<!--<option value="spelling"[%- IF userinfo.autocompletiontype == 'spelling' -%] selected="selected"[%- END -%]>[% msg.maketext("Rechtschreibvorschläge") %]</option>-->
+</select>
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
+
+</fieldset>
+</form>
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/livesearch" enctype="application/x-www-form-urlencoded" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset>
+<legend>[% msg.maketext("LiveSearch") %]</legend>
+
+<fieldset>
+<legend>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</legend>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="livesearch_freesearch" id="livesearch_freesearch" value="1" [% IF livesearch.freesearch.active %]checked="checked"[% END %]/>
+<label for="livesearch_freesearch">[% msg.maketext("Aktiv") %]</label>
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="livesearch_freesearch_exact" id="livesearch_freesearch_exact" value="1" [% IF livesearch.freesearch.exact %]checked="checked"[% END %]/>
+<label for="livesearch_freesearch_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend>[% msg.maketext("Bei der Eingabe von Personen") %]</legend>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="livesearch_person" id="livesearch_person" "value="1" [% IF livesearch.person.active %]checked="checked"[% END %] />
+<label for="livesearch_person">[% msg.maketext("Aktiv") %]</label>
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="livesearch_person_exact" id="livesearch_person_exact" value="1" [% IF livesearch.person.exact %]checked="checked"[% END %]/>
+<label for="livesearch_person_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend>[% msg.maketext("Bei der Eingabe von Schlagworten") %]</legend>
+<div class="ym-fbox-check">
+<input type="checkbox" name="livesearch_subject" id="livesearch_subject" "value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
+<label for="livesearch_subject">[% msg.maketext("Aktiv") %]</label>
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="livesearch_subjects_exact" id="livesearch_subjects_exact" value="1" [% IF livesearch.subject.exact %]checked="checked"[% END %]/>
+<label for="livesearch_subjects_exact">Keine Wortbestandteile bei Schlagwortangaben suchen</label>
+</div>
+</fieldset>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
+
+</fieldset>
+</form>
+
+<!--
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/spelling" enctype="application/x-www-form-urlencoded" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+
+<fieldset>
+<legend>[% msg.maketext("Rechtschreibvorschläge") %]</legend>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="spelling_as_you_type" id="spelling_as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/>
+<label for="spelling_as_you_type">[% msg.maketext("In der Recherchemaske") %]</label>
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="spelling_resultlist" id="spelling_resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] />
+<label for="spelling_resultlist">[% msg.maketext("In der Trefferliste") %]</label>
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
+
+</fieldset>
+</form>
+-->
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/bibsonomy" enctype="application/x-www-form-urlencoded" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset>
+<legend>[% msg.maketext("BibSonomy") %]</legend>
+[% bibsonomy = user.get_bibsonomy %]
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="bibsonomy_sync" id="bibsonomy_sync" [% IF bibsonomy.sync == 'on' %]checked="checked"[% END %]/>
+<label for="bibsonomy_sync">[% msg.maketext("Abgleich zu BibSonomy") %]</label>
+</div>
+
+<div class="ym-fbox-text">
+<label for="bibsonomy_user">[% msg.maketext("BibSonomy-API-User") %]</label>
+<input type="text" name="bibsonomy_user" id="bibsonomy_user" value="[% bibsonomy.user %]"/>
+</div>
+
+<div class="ym-fbox-text">
+<label for="bibsonomy_key">[% msg.maketext("BibSonomy-API-Key") %]</label>
+<input type="text" name="bibsonomy_key" id="bibsonomy_key" value="[% bibsonomy.key %]"/>
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+</div>
+
+</fieldset>
+</form>
+
+[%- IF bibsonomy.sync == "on" -%]
+<p/>
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/bibsonomysync" enctype="application/x-www-form-urlencoded" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset>
+<legend>[% msg.maketext("Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen") %]</legend>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Los") %]" />
+</div>
+
+</fieldset>
+</form>
+[%- END -%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/migration" enctype="application/x-www-form-urlencoded" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+<fieldset>
+<legend>Migration von Inhalten einer anderen Kennung</legend>
+
+<p style="padding: 5px; padding-left: 10px;">Haben Sie Ihren Bibliotheksausweis verloren und eine neue
+Benutzernummer bekommen? Oder haben Sie keinen Bibliotheksausweis mehr
+und wollen den KUG weiter mit Ihrer registrierten E-Mail-Adresse
+verwenden? Dann können Sie hier Ihre unter der alten
+Kennung angelegten Merklisteneinträge, Literaturlisten und Tags
+zu dieser Kennung verschieben.
+</p>
+
+<p style="padding: 5px; padding-left:10px;">
+Geben Sie bitte die Authentifizierungsinformationen für die alte Kennung
+ein, von der Inhalte zu dieser hin verschoben werden sollen.
+</p>
+
+<div class="ym-fbox-text">
+<label for="username">Alte Benutzernummer/E-Mail-Adresse</label>
+<input type="text" name="username" id="username" value="[% username %]" />
+</div>
+<div class="ym-fbox-text">
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
+<input type="password" name="password" id="password" />
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="migration_collections" id="migration_collections" value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
+<label for="migration_collections">[% msg.maketext("Merkliste") %]</label>
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="migration_litlists" id="migration_litlists" value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
+<label for="migration_litlists">[% msg.maketext("Literaturlisten") %]</label>
+</div>
+
+<div class="ym-fbox-check">
+<input type="checkbox" name="migration_tags" id="migration_tags" value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
+<label for="migration_tags">[% msg.maketext("Tags") %]</label>
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="Zur aktuellen Kennung verschieben" />
+</div>
+
+</fieldset>
+
+</form>
+
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

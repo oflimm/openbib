@@ -1,0 +1,49 @@
+[%-
+
+same_records = record.enrich_same_records({ viewname => view }).get_same_records ;
+
+same_records_output = [];
+
+FOREACH same_record IN same_records.sort({order = 'asc', type = 'title'}).get_records ;
+  item = same_record.get_fields ;
+  item.delete('id','database');
+
+  thisdatabase = same_record.database;
+  thisid       = same_record.id;
+
+  thisrecord = {
+      id = thisid
+      database = {
+             link = {
+                      rel = 'self'
+                      href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${thisdatabase}.json"
+             }
+             id                = thisdatabase
+             description       = dbinfo.get('dbnames').${thisdatabase}.full
+             description_short = dbinfo.get('dbnames').${thisdatabase}.short
+             url               = dbinfo.get('urls').${thisdatabase}                          
+      }
+      fields = item      
+  };
+
+  same_records_output.push(thisrecord);
+END ;
+
+metainformation = {
+   hits        = same_records.get_size
+   ips_user    = qopts.get_option('ips_user')
+};
+
+json_output = {
+    link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}/same_records.json?${cgiapp.to_cgi_querystring}"
+    }
+
+    meta    = metainformation
+    records = same_records_output
+};
+
+to_json(json_output);
+
+-%]

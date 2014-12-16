@@ -1,0 +1,268 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_databases_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Datenbank-Einstellungen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
+         <li><a href="#" class="lastitem">[% databaseinfo.dbname%]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_databases_record" active_subsubmenu="admin_databases_record_main" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Allgemeines Kataloginformationen") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="dbname">[% msg.maketext("DB-Name") %]</label>
+[% databaseinfo.dbname %]
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" value="[% databaseinfo.description %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="shortdesc">[% msg.maketext("Kurzbeschreibung") %]</label>
+<input type="text" name="shortdesc" id="shortdesc" value="[% databaseinfo.shortdesc %]" size="20" />
+</div>
+
+<div class="ym-fbox-select">
+<label for="system">[% msg.maketext("System") %]</label>
+  <select name="system" id="system">
+[% FOREACH source_system IN config.get('source_systems').keys.sort %]
+       <option value="[% source_system %]" [% IF databaseinfo.system == source_system %]selected[% END %]>[% source_system %]</option>
+[% END %]
+   </select>
+</div>
+
+<div class="ym-fbox-text">
+<label for="sigel">[% msg.maketext("Sigel") %]</label>
+<input type="text" name="sigel" id="sigel" value="[% databaseinfo.sigel %]" size="3" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="url">[% msg.maketext("URL") %]</label>
+<input type="text" name="url" id="url" value="[% databaseinfo.url %]" size="15" />
+</div>
+
+<div class="ym-fbox-select">
+<label for="locationid">[% msg.maketext("Bibinformationen statt URL") %]</label>
+  <select name="locationid" id ="locationid">
+       <option value="" [% IF NOT databaseinfo.locationid %]selected="selected"[% END %]>[% msg.maketext("Keine") %]</option>
+[% FOREACH locationinfo IN config.get_locationinfo_overview %]
+       <option value="[% locationinfo.identifier %]" [% IF databaseinfo.locationid.identifier == locationinfo.identifier %]selected="selected"[% END %]>[% locationinfo.identifier %]: [% locationinfo.description %]</option>
+[% END %]
+  </select>
+</div>
+
+<div class="ym-fbox-select">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+  <select name="active" id="active">
+    <option value="true" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+    <option value="false" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+  </select>
+</div>
+
+<div class="ym-fbox-text">
+<label>[% msg.maketext("Titel") %]</label>
+[% databaseinfo.allcount.chunk(-3).join('.') %]
+</div>
+
+<div class="ym-fbox-text">
+<label>&nbsp;&nbsp;[% msg.maketext("davon Zeitschriften/Serien") %]</label>
+[% databaseinfo.journalcount.chunk(-3).join('.') %]
+</div>
+
+<div class="ym-fbox-text">
+<label>&nbsp;&nbsp;[% msg.maketext("davon Artikel") %]</label>
+[% databaseinfo.articlecount.chunk(-3).join('.') %]
+</div>
+
+<div class="ym-fbox-text">
+<label>&nbsp;&nbsp;[% msg.maketext("davon Digital") %]</label>
+[% databaseinfo.digitalcount.chunk(-3).join('.') %]
+</div>
+
+</fieldset>
+
+<p/>
+
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Datenquelle") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="protocol">[% msg.maketext("Protokoll") %]</label>
+  <select name="protocol" id="protocol">
+    <option value="ftp" [% IF databaseinfo.protocol == 'ftp' %]selected[% END %]>[% msg.maketext("FTP") %]</option>
+    <option value="http" [% IF databaseinfo.protocol == 'http' %]selected[% END %]>[% msg.maketext("HTTP") %]</option>
+    <option value="lokal" [% IF databaseinfo.protocol == 'lokal' %]selected[% END %]>[% msg.maketext("Lokal") %]</option>
+    <option value="api" [% IF databaseinfo.protocol == 'api' %]selected[% END %]>[% msg.maketext("API") %]</option>
+  </select>
+</div>
+
+<div class="ym-fbox-text">
+<label for="host">[% msg.maketext("Entfernter Rechnername") %]</label>
+<input type="text" name="host" id="host" value="[% databaseinfo.host %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="remotepath">[% msg.maketext("Entferntes Verzeichnis") %]</label>
+<input type="text" name="remotepath" id="remotepath" value="[% databaseinfo.remotepath %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="remoteuser">[% msg.maketext("Entfernter Nutzername") %]</label>
+<input type="text" name="remoteuser" id="remoteuser" value="[% databaseinfo.remoteuser %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="remotepassword">[% msg.maketext("Entferntes Passwort") %]</label>
+<input type="password" name="remotepassword" id="remotepassword" value="[% databaseinfo.remotepassword %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="titlefile">[% msg.maketext("Titel-Datei") %]</label>
+<input type="text" name="titlefile" id="titlefile" value="[% databaseinfo.titlefile %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="personfile">[% msg.maketext("Personen-Datei") %]</label>
+<input type="text" name="personfile" id="personfile" value="[% databaseinfo.personfile %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="corporatebodyfile">[% msg.maketext("K&ouml;rperschafts-Datei") %]</label>
+<input type="text" name="corporatebodyfile" id="corporatebodyfile" value="[% databaseinfo.corporatebodyfile %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="classificationfile">[% msg.maketext("Notations-Datei") %]</label>
+<input type="text" name="classificationfile" id="classificationfile" value="[% databaseinfo.classificationfile %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="subjectfile">[% msg.maketext("Schlagwort-Datei") %]</label>
+<input type="text" name="subjectfile" id="subjectfile" value="[% databaseinfo.subjectfile %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="holdingfile">[% msg.maketext("Exemplar-Datei") %]</label>
+<input type="text" name="holdingfile" id="holdingfile" value="[% databaseinfo.holdingfile %]" size="20" />
+</div>
+
+<div class="ym-fbox-select">
+<label for="autoconvert">[% msg.maketext("Autokonvertierung (cron)") %]</label>
+  <select name="autoconvert" id="autoconvert">
+    <option value="false" [% IF databaseinfo.autoconvert == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+    <option value="true" [% IF databaseinfo.autoconvert == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+  </select>
+</div>
+
+</fieldset>
+
+<p />
+
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Ausleih-Einstellungen") %]</legend>
+
+<div class="ym-fbox-select">
+<label for="cird">[% msg.maketext("Zugriff &uuml;ber OLWS") %]</label>
+  <select name="circ" id="circ">
+    <option value="false" [% IF databaseinfo.circ == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+    <option value="true" [% IF databaseinfo.circ == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+  </select>
+</div>
+
+<div class="ym-fbox-text">
+<label for="host">[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</label>
+<input type="text" name="circdb" id="circdb" value="[% databaseinfo.circdb %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="circwsurl">[% msg.maketext("OLWS Zugriffs-URL") %]</label>
+<input type="text" name="circwsurl" id="circwsurl" value="[% databaseinfo.circwsurl %]" size="20" />
+</div>
+
+<div class="ym-fbox-text">
+<label for="circurl">[% msg.maketext("WebOPAC-URL") %]</label>
+<input type="text" name="circurl" id="circurl" value="[% databaseinfo.circurl %]" size="20" />
+</div>
+</fieldset>
+
+<div class="ym-fbox-button">
+
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
+
+&nbsp;&nbsp;&nbsp;
+
+<a class="ob_button" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+</div>
+
+</form>
+
+
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

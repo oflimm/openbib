@@ -1,0 +1,58 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_right
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Rechts
+#
+#######################################################################
+-%]
+
+<div class="ob-category_header">[% msg.maketext("Weitere Informationsquellen") %]</div>
+
+[%- IF viewdbs.size == 1 && viewdbs.first.match("^inst[0-6]") -%]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="Bibliotheksangebote" />&nbsp;Bibliotheksangebote</h3>
+
+<h4>Elektronische Bibliothek</h4>
+<p>
+Greifen Sie auf <a
+href="http://www.aleki.uni-koeln.de/schatzbehalter/index.shtml"
+target="_blank">digitalisierte historische Kinder- und
+Jugendliteratur</a> im "Schatzbehalter" der ALEKI in Zusammenarbeit mit dem Bilderbuchmuseum Burg Wissem zu
+</p>
+
+<h4>Sammlungsportal DDR-Kinderbuch der ALEKI</h4>
+<p>
+Greifen Sie auf das <a href="http://ddr-kinderbuch.aleki.uni-koeln.de/"
+target="_blank">Sammlungsportal DDR-Kinderbuch</a> der ALEKI in Zusammenarbeit mit der
+USB K&ouml;ln zu
+</p>
+
+<h4>[% msg.maketext("Zeitschriften der Bibliothek") %]</h4>
+
+<p>
+[% msg.maketext("Eine Aufstellung der Zeitschriften in dieser Bibliothek stellen wir
+f&uuml;r Sie als [_1]E-Book[_2] bereit.","<a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${viewdbs.first.replace('inst','')}-all.pdf\" target=\"_blank\">","</a>") %]
+</p>
+[% END %]
+
+<h3><img style="vertical-align:bottom" src="[% config.get('global_img') %]" alt="Externe Angebote" />&nbsp;Allgemeine Informationsquellen</h3>
+
+<h4>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h4>
+
+<p>
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/ezb/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1\">","</a>") %]
+</p>
+
+<h4>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h4>
+
+<p>
+[% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
+lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1;access_national=1\">","</a>") %]
+</p>
+

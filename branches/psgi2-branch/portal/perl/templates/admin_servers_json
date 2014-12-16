@@ -1,0 +1,54 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_authenticators
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste der Anmeldeziele.
+#
+#######################################################################
+-%]
+[%-
+
+ servers = [];
+ FOREACH server IN config.get_serverinfo_overview.all;
+   thisserver = {
+       link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}/id/${server.id}.json?l=${lang}"
+       }
+       cluster = {
+              link = {
+                rel = 'self'
+                href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('clusters_loc')}/id/${server.clusterid.id}.json?l=${lang}"
+              }
+
+              id = server.clusterid.id
+       }
+       id     = server.id
+       hostip = server.hostip
+       description = server.description
+       status = server.status
+       active = server.active
+   };
+
+   servers.push(thisserver);
+ END;
+ 
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}.json?l=${lang}"
+     }
+     servers = servers
+ };
+
+
+#USE dumper;dumper.dump(servers);
+  to_json(this_json_output);
+
+-%]

@@ -1,0 +1,55 @@
+[%-
+
+  records = [];
+
+  FOREACH record IN litlist.recordlist.get_records ;
+      thisrecord = {
+         link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.json?l=${lang}"
+         }
+         fields  = record.get_fields
+         comment = record.comment
+         tstamp  = record.date
+         itemid  = record.listid
+      };
+      thisrecord.fields.id.delete();
+      thisrecord.fields.database.delete();
+      IF record.id && record.database ;
+         thisrecord.titleid  = record.id;
+         thisrecord.dbname   = record.database;
+ 
+      END;
+      records.push(thisrecord);
+  END ;
+
+ FOREACH thistopic IN litlist.properties.topics;
+     thistopic.link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${thistopic.id}.json?l=${lang}"
+      };
+ END;
+
+ thisproperties = litlist.properties ;
+
+ thismeta = {
+       id = thisproperties.id
+       tstamp = thisproperties.tstamp
+       title = thisproperties.title
+       type = thisproperties.type
+       topics = thisproperties.topics
+       itemcount = thisproperties.itemcount
+       lecture = thisproperties.lecture
+ };
+
+
+ thislitlist = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('litlists_loc')}/id/${litlist.id}.json?l=${lang}"
+     }
+     meta = thismeta
+     records = records
+ };
+
+to_json(thislitlist) -%]

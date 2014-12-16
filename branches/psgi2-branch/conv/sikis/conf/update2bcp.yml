@@ -1,0 +1,7 @@
+database: 'sisis'
+dbimodule: 'Sybase'
+dbhost: '127.0.0.1'
+dbport: '1500'
+dbuser: 'sisis'
+dbpasswd: 'StrengGeheim'
+dbserver: 'sisisSYB'

@@ -1,0 +1,41 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_sessio_archived_search
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%-
+
+ sessioninfos = [];
+
+ FOREACH thissession IN sessions;
+
+  thissessioninfo = {
+     link = {
+          rel = 'self'
+          href = "${location}/${thissession.id}"
+     }
+     id => thissession.id
+     createtime => thissession.createtime
+  };
+  sessioninfos.push(thissessioninfo);
+ END;
+
+  this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+
+     sessions = sessioninfos
+  };
+
+to_json(this_json_output) -%]

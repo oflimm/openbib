@@ -1,0 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: topic_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Themengebietes
+#
+#######################################################################
+-%]
+[%-
+
+  this_json_output = topic;
+
+  this_json_output.link = {
+          rel = 'self'
+          href = location
+  };
+
+  to_json(this_json_output);
+
+-%]

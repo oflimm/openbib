@@ -1,0 +1,21 @@
+[%- 
+
+thisviewinfo = {
+  link = {
+        rel = 'self'
+        href = "${path_prefix}/[% config.get('admin_loc')}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
+  }
+  
+  viewname    = viewinfo.viewname
+  description = viewinfo.description
+  profilename = viewinfo.profileid.profilename
+  stripuri    = viewinfo.stripuri
+  active      = viewinfo.active
+  databases   = viewdbs
+  servername  = viewinfo.servername
+  start_loc   = viewinfo.start_loc
+};
+
+to_json(thisviewinfo);
+
+-%]

@@ -1,0 +1,106 @@
+[%-
+#######################################################################
+#
+# Templatename: newsflash
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe aktueller Meldungen und Hinweise
+#
+#######################################################################
+-%]
+<h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
+
+<ul class="news">
+<li><b>13.11.2014</b>: Andere Ausgaben eines Titels
+- Die Bestimmung anderer Ausgaben (Auflage/Sprache/online) eines
+Titels wurde im KUG komplett überarbeitet. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2014/11/13/bestimmung-anderer-ausgaben-eines-titels/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>15.10.2014</b>: E-Books von Nomos online Premium jetzt im KUG
+- E-Books des Pakets von Beck-Online sind jetzt in KUG und USB-Portal recherchierbar. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2014/10/16/nachweise-von-e-books-dank-open-data/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>5.3.2014</b>: OER im KUG - In den
+KUG sind jetzt auch offene Lehr- und Lernmaterialien (Open Educational
+Resources, OER), wie z.B. Vorlesungs-Videos, integriert. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2014/03/05/open-educational-resources-oer-in-bibliotheken/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>3.2.2014</b>: KUG und USB-Portal - Aus zwei wird eins: Die
+Verschmelzung der beiden Portale hin zu einer einheitlichen
+Recherche-Lösung für die Universität hat den zweiten Meilenstein erreicht. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2014/02/03/kug-und-usb-portal-aus-zwei-wird-eins/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>23.1.2014</b>: Digitalisate aus OAI-Datenquellen. Durch die Integration von online frei verfügbaren Digitalisaten aus OAI-Datenquellen konnten fast 4 Millionen neue Nachweise dem KUG hinzugefügt werden. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2014/01/10/integration-von-oai-quellen-mit-repox/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>6.12.2013</b>: OpenStreetMap statt Google Maps. Die
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]">Standortkarten</a> werden nicht mehr von Google Maps, sondern von
+OpenStreetMap mittels der JavaScript-Bibliothek <a
+href="http://www.openlayers.org/">OpenLayers</a> geliefert.
+</li>
+<li><b>11.11.2013</b>: Überarbeitung der Rechercheeingrenzungen für Standorte und Sprachen. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2013/11/11/facetten-im-kug-standorte-und-sprachen/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>23.10.2013</b>: Recherche von Normdaten im KUG. Im KUG kann man
+nun auch gezielt nach Personen, Körperschaften sowie Schlagworten
+recherchieren. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2013/10/23/recherche-von-normdaten-im-kug/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>1.10.2013</b>: Recherche-Eingrenzung in Themengebiete. Die
+Ergebnisse einer Recherche können jetzt auf ein KUG Themengebiet
+eingegrenzt werden. Diese Eingrenzung kann auch direkt in der
+erweiterten Recherchemaske vorgenommen werden. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2013/10/01/mehr-finden-mit-offenen-katalogdaten-2/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>23.9.2013</b>: Die Suche mit Begriffen aus
+Inhaltsverzeichnissen ist jetzt im KUG &uuml;ber die erweiterte Recherchemaske m&ouml;glich. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2013/09/23/suche-in-inhaltsverzeichnissen/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>1.8.2013</b>: Mehr im KUG finden mit offenen Katalogdaten. Ab
+sofort werden Titel im KUG für die Recherche mit Schlagworten
+verschiedener Verbundkataloge (BVB/KOBV) angereichert und können so
+besser gefunden werden. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2013/08/01/mehr-finden-mit-offenen-katalogdaten/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+<li><b>9.6.2013</b>: Empfehlungen von Fachdatenbanken im KUG. Ab
+sofort bietet der KUG passend zu den eingegebenen Suchbegriffen die
+relevantesten Fachdatenbanken thematisch gruppiert rechts in den
+Trefferlisten unterhalb der Facetten an. Weitergehende Informationen in diesem
+<a
+href="http://blog.openbib.org/2013/06/09/empfehlungen-von-fachdatenbanken-im-kug/"
+target="_blank" class="ext">Blog-Artikel</a>
+</li>
+</ul>
+
+<script>
+var index = 1;
+$('.news li:gt('+index+')').hide();
+$('.news').append('<p class="more">[% msg.maketext("Mehr") %]</p>');
+$('.news p.more').click(function() {
+  $('.news p.more').remove();
+  $('.news li:gt('+index+')').show();
+});
+</script>

@@ -1,0 +1,66 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat_rss
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen der RSS-Feeds
+# eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[%-
+
+typedescription = {
+   '1' = msg.maketext("Neuaufnahmen (generell)")
+   '2' = msg.maketext("Neuaufnahmen nach Verfasser")
+   '3' = msg.maketext("Neuaufnahmen nach K&ouml;rperschaft") 
+   '4' = msg.maketext("Neuaufnahmen nach Schlagwort")
+   '5' = msg.maketext("Neuaufnahmen nach Systematik")
+};
+
+yesno = {
+   '0' = msg.maketext("Nein")
+   '1' = msg.maketext("Ja")
+};
+
+available_types = {
+ '1' = '1'
+ '2' = '2'
+ '3' = '3'
+ '4' = '4'
+ '5' = '5'
+};
+
+rssfeedinfos = [];
+
+FOREACH feed IN katalog.rssfeeds;
+   thisfeed = {
+     link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('databases_loc')}/id/${katalog.dbname}/rss/${feed.id}.json?l=${lang}"
+     }
+     id                  = feed.id
+     type                = feed.type
+     type_description    = typedescription.${feed.type}
+     subtype             = feed.subtype
+     subtype_description = feed.subtypedesc
+     active              = feed.active
+   };
+   rssfeedinfos.push(thisfeed);
+END;
+
+this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     rssfeeds = rssfeedinfos
+};
+
+to_json(this_json_output);
+
+-%]

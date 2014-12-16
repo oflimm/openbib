@@ -1,0 +1,106 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_holding
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Exemplar-Informationen aus den bibliograph. Daten
+#
+#######################################################################
+-%]
+[%-
+    location = {} ;
+
+    FOREACH mex IN itemmex ;
+
+       catname  = utf2iso(mex.${"X4000"}.content.short) ;
+       caturl   = mex.${"X4001"}.content ;
+       verlauf  = mex.${"X1204"}.content ;
+       signatur = mex.${"X0014"}.content ;
+
+       IF verlauf == '-' ;
+          verlauf = '' ;
+       ELSE ;
+          verlauf = "(${verlauf})" ;
+       END ;
+       location.${catname}.${"url"}     = caturl ;
+       location.${catname}.${"verlauf"} = verlauf ;
+
+       standort = "";
+
+       IF mex.${"X0014"}.content.match('^FHM ');
+         standort = "USB-Freihandmagazin (1. OG) (<i>sofort einsehbar</i>)" ;
+       ELSIF mex.${"X0014"}.content.match('^EWA Z');
+         standort = "Zeitschriftenbestand der Humanwissenschaftlichen Abteilung, Gronewaldstr. 2. Erh&auml;ltlich &uuml;ber EWA-LS-Theke (<i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^USB-Zeitschr.-Stelle ');
+         standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen P-Nummer (z.B. P1234, <i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^USB-Zeitschr.-Lesesaal ');
+         standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen Fachgruppe (<i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^LS ') ;
+         standort = "USB-Lesesaal (1. OG, <i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^KS ');
+         standort = "USB-Katalogsaal (2. OG, <i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^EDZ ');
+         standort = "USB-Lesesaal (1. OG): Europ&auml;isches Dokumentationszentrum (<i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^EWA-LS-Theke ');
+         standort = "Humanwissenschaftliche Abteilung, Lesesaaltheke, Gronewaldstr. 2 (<i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^EWA-LS ');
+         standort = "Humanwissenschaftliche Abteilung, Lesesaal, Gronewaldstr. 2 (<i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^HP ') || mex.${"X0014"}.content.match('^HP-LS ');
+         standort = "Humanwissenschaftliche Abteilung, Lesesaal Heilp&auml;dagogik, Frangenheimstr. 4 (<i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^FC ');
+         standort = "Fachbibliothek Chemie, Greinstr. 4 (<i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^FBV ');
+         standort = "Fachbibliothek Versicherungswissenschaft, Kerpener Str. 30 (<i>sofort einsehbar</i>)";
+       ELSIF mex.${"X0014"}.content.match('^B ') ;
+         standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (<i>ausleihbar nach Bestellung</i>)";
+       ELSIF mex.${"X0014"}.content.match('^ZTG ');
+         standort = "Zeitungsbestand. USB-Magazin (<i>ausleihbar nach Bestellung</i> mit konventionellem Bestellschein der Auskunft o. Lesesaal-Theke im 1.OG)";
+       ELSIF NOT mex.${"X0014"}.content.match('^-') && mex.${"X0016"}.content.match('^-');
+         standort = "USB Magazin (<i>ausleihbar nach Bestellung</i>, siehe B&auml;nde)";
+       ELSE ;
+         standort =  mex.${"X0016"}.content ;
+       END ;
+
+       IF NOT location.${catname}.exists("signatur") ;
+          IF standort ;
+             location.${catname}.${"signatur"} = "${signatur} / ${standort}" ;
+          ELSE ;
+             location.${catname}.${"signatur"} = "${signatur} " ;
+          END;
+       ELSE ;
+          signaturstring = location.${catname}.${"signatur"} ;
+          IF standort ;
+             signaturstring = "${signaturstring} ; ${signatur} / ${standort}" ;
+          ELSE ;
+             signaturstring = "${signaturstring} ; ${signatur} " ;
+          END;
+
+          location.${catname}.${"signatur"}= signaturstring  ;      
+       END ;
+    END ;
+
+    locations = [] ;
+
+    FOREACH catname IN location.keys ;
+       caturl         = location.${catname}.${"url"} ;
+       verlauf        = location.${catname}.${"verlauf"} ;
+       signaturstring = location.${catname}.${"signatur"} ;
+
+       locations.push("<a href=\"${caturl}\" target=\"_blank\">${catname}</a>: ${signaturstring} / ${verlauf}");
+
+    END ;
+
+    dbdesc   = dbinfo.get('dbnames').${database}.short ;
+    dburl    = dbinfo.get('urls').${database} ;
+
+    IF locations.size == 0;
+       locationstring = "<a href=\"${dburl}\" target=\"_blank\">${dbdesc}</a>";
+    ELSE ;
+       locationstring = locations.join("<br />");
+    END ;
+%]
+<LI> LO=[% utf2iso(locationstring)             # Locations mit Signatur und Bestandsverlauf%]

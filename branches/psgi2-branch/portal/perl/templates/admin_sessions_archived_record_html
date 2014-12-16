@@ -1,0 +1,135 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_session_archived_record
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Bestehende Sessions anzeigen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/search.html?l=[% lang %]">[% msg.maketext("Archiviert") %]</a></li>
+         <li><a href="#" class="lastitem">[% sid %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/id/[% sid %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_sessions" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+
+<h3>Einzelne Session [% sid %]</h3>
+
+[%# USE dumper;dumper.dump(events)%]
+<table>
+<thead>
+<tr><th>[% msg.maketext("Timestamp") %]</th><th>[% msg.maketext("Event") %]</th><th>[% msg.maketext("Inhalt") %]</th></th><th></th></tr>
+</thead>
+<tbody>
+[% FOREACH event IN events %]
+[%  SWITCH event.type %]
+[%    CASE 1 %]
+[%       searchquery = event.content %]
+<tr><td>[% event.tstamp %]</td><td>Recherche</td><td>
+[%- IF searchquery.freesearch.val -%]&nbsp;FS: [% searchquery.freesearch.val %] 
+[%- END -%]
+[%- IF searchquery.person.val -%]
+&nbsp;[% searchquery.person.bool %]&nbsp;PER: [% searchquery.person.val %]
+[%- END -%]
+[%- IF searchquery.title.val -%]
+&nbsp;[% searchquery.title.bool %]&nbsp;TIT: [% searchquery.title.val %]
+[%- END -%]
+[%- IF searchquery.subject.val -%]
+&nbsp;[% searchquery.subject.bool %]&nbsp;SUBJ: [% searchquery.subject.val %]
+[%- END -%]
+[%- IF searchquery.corporatebody.val -%]
+&nbsp;[% searchquery.corporatebody.bool %]&nbsp;CORP: [% searchquery.corporatebody.val %]
+[%- END -%]
+[%- IF searchquery.classification.val -%]
+&nbsp;[% searchquery.classification.bool %]&nbsp;NOT: [% searchquery.classification.val %] 
+[%- END -%]
+[%- IF searchquery.mark.val -%]
+&nbsp;[% searchquery.mark.bool %]&nbsp;SIG: [% searchquery.mark.val %]
+[%- END -%]
+[%- IF searchquery.year.val -%]
+&nbsp;[% searchquery.year.bool %]&nbsp;EJAHR: [% searchquery.year.val %]
+[%- END -%]
+[%- IF searchquery.isbn.val -%]
+&nbsp;[% searchquery.isbn.bool %]&nbsp;ISBN: [% searchquery.isbn.val %]
+[%- END -%]
+[%- IF searchquery.issn.val -%]
+&nbsp;[% searchquery.issn.bool %]&nbsp;ISSN: [% searchquery.issn.val %]
+[%- END -%]
+[%- IF searchquery.mediatype.val -%]
+&nbsp;[% searchquery.mediatype.bool %]&nbsp;MART: [% searchquery.mediatype.val %]
+[%- END -%]
+[%- IF searchquery.titlestring.val -%]
+&nbsp;[% searchquery.titlestring.bool %]&nbsp;HSTR: [% searchquery.titlestring.val %] 
+[%- END -%]
+</td><td align="center">(Treffer: [% searchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchquery.searchprofile %]">[% searchquery.searchprofile %]</a>)</td></tr>
+[%    CASE 10 %]
+<tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
+[%    CASE 100 %]
+<tr><td>[% event.tstamp %]</td><td>View</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE 101 %]
+<tr><td>[% event.tstamp %]</td><td>Browser</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE 102 %]
+<tr><td>[% event.tstamp %]</td><td>IP</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE ; %]
+<tr><td>[% event.tstamp %]</td><td>[% event.type %]</td><td>[% event.content %]</td><td></td></tr>
+[%    END %]
+[% END %]
+</tbody>
+</table>
+
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,5 @@
+<table>
+<tr><td class="ob-field">[% msg.maketext("Treffermenge") %]</td><td colspan="3"><select name="num"><option selected="selected">50</option><option>100</option><option>200</option></select></td></tr>
+<tr><td class="ob-field">[% msg.maketext("Sortierung nach") %]</td><td colspan="2"><select name="srt"><option value="relevance" selected="selected">[% msg.maketext("Relevanz") %]</option><option value="person">[% msg.maketext("Person/Körperschaft") %]</option><option value="title">[% msg.maketext("Titel") %]</option><option value="year">[% msg.maketext("Erscheinungsjahr") %]</option></select><select name="srto"><option value="asc">[% msg.maketext("aufsteigend") %]</option><option value="desc" selected="selected">[% msg.maketext("absteigend") %]</option></select></td><td></td></tr>
+<tr><td class="ob-field">[% msg.maketext("Und-Verknüpfung innerhalb eines Suchfeldes") %]</td><td colspan="3"><input type="radio" name="autoplus" value="1" checked="checked" />[% msg.maketext("Ja") %]&nbsp;<input type="radio" name="autoplus" value="0" />[% msg.maketext("Nein") %]</td></tr>
+</table>

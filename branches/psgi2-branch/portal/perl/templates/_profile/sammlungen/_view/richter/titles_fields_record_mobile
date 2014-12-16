@@ -1,0 +1,75 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_fields_record_mobile
+#
+# Aufgabe:
+#
+# Ausgabe der Register
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[%-
+    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};" ;
+    start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+    end_range       = nav.current_page*qopts.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+<div data-role="page">
+
+       <div  data-role="header">
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].mobile?l=de" >[% msg.maketext("Home") %]</a>
+	   <h1>Register:
+[%- IF field == '0720' -%]
+Provenienzen
+[%- ELSIF field == '0501' -%]
+Richter-Indizien
+[% END %]
+&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]</h1> 
+       </div> 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="register" %]
+
+       <div data-role="content">
+
+[% IF hits > 0 %]
+<!-- Beginn Result Item -->
+
+<ul data-role="listview">
+[% FOREACH item IN browselist %]
+<li>[% IF cgiapp.get_searchprefix %]<a href="[% path_prefix %]/[% config.get('search_loc') %].mobile?db=[% database %];[% cgiapp.get_searchprefix %]=[% item.replace('&amp;','%26').replace('/','').replace('\(','').replace('\)','') %]">[% item %]</a>[% ELSE %][% item %][% END %]</li>
+[% END %]
+</ul>
+
+
+     </div>
+
+<div  data-role="footer">
+[% msg.maketext("Seite:") %]&nbsp;
+[%- IF nav.pages_in_set.first > nav.first_page -%]
+&nbsp;&nbsp;<a href="[% path %]?page=[% nav.first_page %];[% query_args_base %]">[% nav.first_page %]</a>&nbsp;&nbsp;<b>...</b>
+[%- END -%]
+[%- FOREACH page IN nav.pages_in_set -%]
+[%-   lastpage = page -%]
+[%-   IF page == nav.current_page -%]
+&nbsp;&nbsp;<span class="paging_active">[% page %]</span>
+[%-   ELSE -%]
+&nbsp;&nbsp;<a href="[% path %]?page=[% page %];[% query_args_base %]">[% page %]</a>
+[%-   END -%]
+[%- END -%]
+[%- IF lastpage < nav.last_page -%]
+&nbsp;&nbsp;<b>...</b>&nbsp;&nbsp;<a href="[% path %]?page=[% nav.last_page %];[% query_args_base %]">[% nav.last_page %]</a>
+[%- END -%]
+</div>
+
+[% END %]
+
+[% PROCESS common/subtemplate name="std_footer" %]

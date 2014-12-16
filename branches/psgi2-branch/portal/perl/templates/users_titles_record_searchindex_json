@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+[%-
+
+  to_json(terms);
+
+-%]

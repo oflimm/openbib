@@ -1,0 +1,152 @@
+[% IF NOT hide_options %]
+<div class="ob-reuse_data"><!-- Begin Reuse -->
+<h6>[% msg.maketext("Behalten Sie diese Liste") %]:</h6>
+
+<img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/save?format=[% format %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
+<img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print?format=[% format %]" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
+<img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/mail?format=[% format %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
+
+<p />
+
+<h6>[% msg.maketext("Andere Formate") %]</h6>
+
+<p>
+<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=short"[%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <!-- <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=full" [%- IF format == 'full' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>,--> <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a>
+</p>
+
+[% IF extended_actions == 1 %]
+
+[%    IF config.get('litlists') %]
+<div class="ob-litlists"><!-- Begin Litlist -->
+<div class="ob-headline"><span id="ob-litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-litlists_do"><!-- Begin Litlist do -->
+
+[% 
+      litlists = [] ;
+      IF user.ID ;
+          litlists = user.get_litlists();
+      END ;
+
+      IF litlists.size > 0 ;
+%]
+<p/>
+
+<fieldset class="ym-full">
+<legend>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</legend>
+
+<div class="type-select">
+<label for="litlistid">[% msg.maketext("Name") %]</label>
+<select name="litlistid" id="litlistid">
+[% FOREACH litlist IN litlists %]
+  <option value="[% litlist.id %]">[% litlist.title %]</option>
+[% END %]
+</select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" name="do_litlists_addentry" value="[% msg.maketext("Los") %]" /></div>
+</fieldset>
+[%    END %]
+<p/>
+
+<fieldset class="ym-full">
+<legend>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</legend>
+
+<div class="type-text">
+<label for="title">[% msg.maketext("Name") %]</label>
+<input type="text" name="title" id="title" size="20" />
+</div>
+
+<div class="type-select">
+<label for="littype">[% msg.maketext("Sichtbarkeit") %]</label>
+<select name="littype" id="littype">
+  <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
+  <option value="2">[% msg.maketext("privat") %]</option>
+</select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" name="do_addlitlist" value="[% msg.maketext("Los") %]" /></div>
+</fieldset>
+
+[% END %]
+
+</div> <!-- End: Listlist do -->
+<p/>
+</div><!-- End: Listlist -->
+
+
+[%# IF user.ID %]
+[% username = user.get_username %]
+<div class="ob-tagging"><!-- Begin: Tagging -->
+<div class="ob-headline"><span id="ob-tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
+<div id="ob-tagging_do"><!-- Begin Tagging do -->
+<p/>
+[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
+
+<fieldset class="ym-full">
+<legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
+
+<div class="type-text">
+<input type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
+</div>
+
+<div class="type-select">
+<label for="tags_type">[% msg.maketext("Sichtbarkeit") %]</label>
+<select name="tags_type" id="tags_type">
+  <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
+  <option value="2">[% msg.maketext("privat") %]</option>
+</select>
+</div>
+
+<div class="cssbutton glass kug"><input type="submit" name="do_addtags" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div>
+</fieldset>
+
+[% private_tags = user.get_private_tags({ username => username  }) %]
+
+<h4>[% msg.maketext("Übernahme eigener Tags") %]</h4>
+
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%-   IF private_tags.size > 0 -%]
+<ol class="ob-cloud">
+[%-     FOREACH thisitem IN private_tags -%]
+[%        item      = thisitem.name;
+          itemcount = thisitem.count;
+          classnr   = thisitem.class;
+          itemid    = thisitem.id;
+          itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% msg.maketext("[_1] Titel sind
+verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'tags'); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[%      END %]
+</ol>
+[%    ELSE %]
+[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
+[%    END %]
+
+</div><!-- End: Tagging do -->
+</div><!-- End: Tagging -->
+[%# END %]
+
+</p>
+
+<p>
+<table>
+<tr><td><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen") %]</td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_collection_delentry" value="[% msg.maketext("Los") %]" /></div></td></tr>
+</table>
+</p>
+
+[%   END %]
+</div> <!-- End: Reuse Data -->
+[% END %]

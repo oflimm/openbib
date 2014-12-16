@@ -1,0 +1,19 @@
+<div data-role="navbar">
+		<ul>
+[% IF active_menu == "info" %]
+          <li><a class="ui-btn-active" href="[% path_prefix %]/[% config.get('home_loc') %].mobile?l=[% lang %]">[% msg.maketext("Info") %]</a></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].mobile?l=[% lang %]">[% msg.maketext("Info") %]</a></li>
+[% END %]
+[% IF active_menu == "register" %]
+          <li><a class="ui-btn-active" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/richter/titles/fields/id/0720.mobile?l=[% lang %]" title="Register">[% msg.maketext("Register") %]</a></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/richter/titles/fields/id/0720.mobile?l=[% lang %]" title="Register">[% msg.maketext("Register") %]</a></li>
+[% END %]
+[% IF active_menu == "cloud" %]
+          <li><a class="ui-btn-active" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/richter.mobile?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/richter.mobile?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+[% END %]
+		</ul>
+	</div><!-- /navbar -->

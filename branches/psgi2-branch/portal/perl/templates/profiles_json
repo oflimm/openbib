@@ -1,0 +1,46 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showprofiles_json
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Profile
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%-
+
+profileinfos = [] ;
+
+FOREACH profile IN profiles.all ;
+  this_profile = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('profiles_loc')}/id/${profile.profilename}.json?l=${lang}"
+     }
+
+     id          = profile.profilename
+     profilename = profile.profilename
+     description = profile.description
+
+  };
+
+  profileinfos.push(this_profile);
+END;
+
+this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('profiles_loc')}.json?l=${lang}"
+     }
+
+     profiles = profileinfos
+};
+
+to_json(this_json_output) ;
+
+-%]

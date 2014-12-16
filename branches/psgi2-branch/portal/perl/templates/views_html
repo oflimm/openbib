@@ -1,0 +1,79 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showviews
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Views
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Views anzeigen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Views") %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('views_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1 ob-hidden">
+        <div class="ym-cbox" class="ym-clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% IF views.size > 0 %]
+<h3>[% msg.maketext("Views") %]</h3>
+
+<table class="ym-full">
+<tr><th>[% msg.maketext("Viewname") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Profil") %]</th><th>[% msg.maketext("Datenbanken") %]</th><th>[% msg.maketext("Aktiv") %]</th></tr>
+
+[% FOREACH viewinfo IN views.all %]
+<tr><td>[% viewinfo.viewname %]</td><td><a href="[% path_prefix %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %].html?l=[% lang %]">[% viewinfo.description %]</a></td><td>[% viewinfo.profileid.description %]</td><td><ul>[% FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul><p>[% thissearchprofileid = config.get_searchprofile_of_view(viewinfo.viewname) %]<a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% thissearchprofileid %].html?l=[% lang %]">Zum Suchprofil ([% thissearchprofileid %])</a></p></td><td>[% IF viewinfo.active %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td></tr>
+[% END %]
+
+</table>
+
+[% END %]
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

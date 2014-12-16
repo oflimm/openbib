@@ -1,0 +1,12 @@
+[%-
+
+circulation = record.get_circulation;
+
+FOREACH thiscirculation IN circulation ;
+  thiscirculation.delete('Opactext','Entleiher') ;
+END;
+
+to_json(circulation);
+
+
+-%]

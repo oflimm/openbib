@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showsessions
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%-
+
+  FOREACH sessioninfo IN sessions ;
+    sessioninfo.link = {
+          rel = 'self'
+          href = "${location}/${sessioninfo.id}"
+    };
+  END;
+
+  this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+
+     sessions = sessions
+  };
+
+to_json(this_json_output) -%]

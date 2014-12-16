@@ -1,0 +1,62 @@
+# Tracelevel
+#tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'id'
+
+category_split_chars:
+#  'regent': '\s*und\s*'
+#  'referenz': '\s*;\s*'
+#  'vorderseite-referenz': '\s*;\s*'
+#  'rueckseite-referenz': '\s*;\s*'
+
+# Personen
+pers:
+  'regent': '0100'
+# Koerperschaften
+corp:
+  
+# Systematik
+sys:
+  'stadt': '0700'
+
+# Schlagworte
+subj:
+  'region': '0710'
+
+# Titel
+title:
+  'katalognummer': '0010'
+  'bereich': '0410' # Verlagsort
+  'praegejahr': '0619'
+#  'vorderseite': '0331'
+#  'rueckseite': '0332'
+  'datierung-von': '0426'
+  'datierung-bis': '0427'
+  'datierung': '0428'
+  'nominal': '0338'
+  'material': '0800'        # Medienart
+  'durchmesser': '0435'     # Format
+  'gewicht': '0433'         # Kollation
+  'stempelstellung': '0407' # Massstab
+  'vorderseite-legende': '0332'
+  'vorderseite-referenz': '0333'
+  'vorderseite-beschreibung': '0334'
+  'rueckseite-legende': '0335'
+  'rueckseite-referenz': '0336'    
+  'rueckseite-beschreibung': '0337'
+  'referenz': '0508' # Quelle
+  'links': '0662'
+  'forschungsliteratur': '0451'
+  'provenienz': '1664'
+  'kommentar': ''
+  'type': ''
+  'format': ''
+  
+
+# Exemplare
+exempl:
+
+exclude:
+  by_field:
+    'publizieren': 'nein'

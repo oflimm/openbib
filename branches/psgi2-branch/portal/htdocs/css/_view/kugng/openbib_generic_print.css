@@ -1,0 +1,82 @@
+/* Generisches Stylesheet fuer die Print-Ausgabe des OpenBib-Portals */
+
+* {
+  background: #fff;
+  color: #000;
+}
+
+html {
+  font: 100%/1.5 georgia, serif;
+  margin: 0;
+/*  border: 1px solid red;  */
+}
+
+body {
+  background: white;
+  font-size: 8pt;
+}
+
+#thumbnail, .resultdrilldown, .resultheader .resultnavigation, #header2, #header_uni_siegel, #header_usb_siegel, #mainnavigation, #mainnavigation_left, #mainnavigation_right, #langchoice, #options, .listoptions { display: none }
+
+#header {
+  width: 100%;
+  position: relative;
+  background: white ;
+  padding: 0px;
+}
+
+#header_uni_schriftzug {
+  border-bottom: 4px solid #00089e; /* Linie im Kopf */
+  padding-bottom: 3px;
+  display: block;
+  margin: 17px 10px 0 10px;
+}
+
+#header_usb_schriftzug {
+  display: block;
+  margin: 4px 0 0 10px;
+}	
+
+#maincontent {
+  overflow: visible;
+  width: 98%;
+  position: relative;
+  background: white ;
+  padding: 0px;
+
+}
+
+.content {
+  width: 98%;
+  overflow: visible;
+  padding: 5px;
+}
+
+.resultlist {
+  overflow: visible;
+/*  border: 1px solid red;  */
+}
+
+.resultitems {
+  width: 99%;
+  overflow: visible;
+}
+
+.resultheader {
+  height: 20px;
+  width: 98%;
+  padding: 10px;
+/*  position:static; */
+}
+
+/*.item {  
+  page-break-before: always;
+}*/
+
+.item .brieftitle {
+  top: 5px;
+}
+
+.item .titleactions, .resultheader .navigation {
+  display: none 
+}

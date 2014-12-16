@@ -1,0 +1,127 @@
+[%- searchfield = config.get('searchfield') -%]
+[% IF user.is_authenticated %]
+[% autocompletion_type = user.get_autocompletion %]
+[% livesearch = user.get_livesearch %]
+[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+[%   IF available_searchfields.freesearch.active %]
+  $("#autocomplete_[% searchfield.freesearch.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+[%   END %]
+[%   IF available_searchfields.person.active %]
+  $("#autocomplete_[% searchfield.person.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+[%   END %]
+[%   IF available_searchfields.subject.active %]
+  $("#autocomplete_[% searchfield.subject.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+[%   END %]
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" && (livesearch.freesearch.active || livesearch.person.active || livesearch.subject.active) %]
+<script type="text/javascript">
+$(document).ready(function(){
+[%   IF available_searchfields.freesearch.active %]
+  $("#autocomplete_[% searchfield.freesearch.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+[%   END %]
+[%   IF available_searchfields.person.active %]
+  $("#autocomplete_[% searchfield.person.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]",
+                  type: "2" }});
+[%   END %]
+[%   IF available_searchfields.subject.active %]
+  $("#autocomplete_[% searchfield.subject.prefix %]").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  type: "4" }});
+[%   END %]
+})
+</script>
+[%   END %]
+[% END %]
+
+<input type="hidden" name="db" value="[% config.get_dbs_of_view(view).first %]" />
+
+<fieldset class="ym-columnar">
+<legend>Totenzettel</legend>
+
+[%# USE dumper;dumper.dump(available_searchfields)%]
+
+[%- cgiparam = searchfield.freesearch.prefix ;
+    this_searchfield = 'freesearch';
+-%]
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.person.prefix;
+    this_searchfield = 'person';
+ -%]
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.classification.prefix;
+    this_searchfield = 'classification';
+ -%]
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Provenienz") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+
+[%- cgiparam = searchfield.content.prefix;
+    this_searchfield = 'content';
+ -%]
+<div class="ym-fbox-text">
+<label for="[% cgiparam %]">Orte</label>
+<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.yearstring.prefix;
+    this_searchfield = 'yearstring';
+ -%]
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Jahr") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.publisher.prefix;
+    this_searchfield = 'publisher';
+ -%]
+<div class="ym-fbox-text">
+<label for="[% cgiparam %]">Beruf / Stand</label>
+<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+<p/>
+
+<div class="ym-fbox-button">
+<input type="submit" title="[% msg.maketext("Hier suchen Sie in der Sammlung") %]" value="[% msg.maketext("Suchen") %]" />
+</div>
+
+</fieldset>

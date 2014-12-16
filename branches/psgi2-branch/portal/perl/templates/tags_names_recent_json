@@ -1,0 +1,83 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[%-
+
+ querystring_without_page = cgiapp.to_cgi_querystring({ exclude = ['page'] });
+
+ start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+ end_range       = nav.current_page*qopts.get_option('num');
+ IF end_range >= nav.total_entries ;
+    end_range       = nav.total_entries ;
+ END;
+
+ thistags = [];
+ FOREACH singletag IN recent_tags ;
+
+    thistag = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('tags_loc')}/names/id/${singletag.tagname}.json"
+       }
+       id        = singletag.id
+       name      = singletag.tagname
+       itemcount = singletag.itemcount
+        
+    };
+
+    thistags.push(thistag);
+
+ END;
+
+ metainformation = {
+      hits        = total_count
+      num         = qopts.get_option('num')
+      page        = nav.current_page
+      start_range = start_range
+      end_range   = end_range
+ };
+
+ IF nav.current_page < nav.last_page ;
+   next_page = nav.next_page;
+   metainformation.next_page = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('tags_loc')}/names/recent.json?page=${next_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+ IF nav.current_page > nav.first_page ;
+   previous_page = nav.previous_page;
+   metainformation.previous_page = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('tags_loc')}/names/recent.json?page=${previous_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('tags_loc')}/names/recent.json?${cgiapp.to_cgi_querystring}"
+     }
+
+     meta = metainformation
+     tags = thistags
+ };
+
+
+  to_json(this_json_output);
+
+-%]

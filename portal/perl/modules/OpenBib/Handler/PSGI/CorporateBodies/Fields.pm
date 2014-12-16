@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Titles::Fields.pm
+#  OpenBib::Handler::PSGI::Titles::Fields.pm
 #
 #  Register ueber Titelfeld
 #
@@ -29,16 +29,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Titles::Fields;
+package OpenBib::Handler::PSGI::Titles::Fields;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
@@ -64,7 +61,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::SearchQuery;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -213,8 +210,7 @@ sub show_record {
                 $stid=~s/[^0-9]//g;
                 my $templatename = ($stid)?"tt_indexes_olws_".$stid."_tname":"tt_indexes_olws_tname";
 
-                $self->print_page($config->{$templatename},$ttdata);
-                return Apache2::Const::OK;
+                return $self->print_page($config->{$templatename},$ttdata);
             }
             
             my $soap = SOAP::Lite
@@ -447,8 +443,8 @@ sub show_record {
         hits       => $hits,
         nav        => $nav,
     };
-    $self->print_page($config->{"tt_indexes_".$type."_tname"},$ttdata);
-    return Apache2::Const::OK;
+    
+    return $self->print_page($config->{"tt_indexes_".$type."_tname"},$ttdata);
 }
 
 1;

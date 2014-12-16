@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Browse::BK.pm
+#  OpenBib::Handler::PSGI::Browse::BK.pm
 #
 #  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Browse::BK;
+package OpenBib::Handler::PSGI::Browse::BK;
 
 use strict;
 use warnings;
@@ -40,7 +40,7 @@ use Encode qw/decode_utf8 encode_utf8/;
 use OpenBib::Statistics;
 use OpenBib::Config::DatabaseInfoTable;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -85,9 +85,7 @@ sub show_collection {
     my $ttdata={
     };
     
-    $self->print_page($config->{'tt_browse_bks_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_bks_tname'},$ttdata);
 }
 
 sub show_record {
@@ -120,9 +118,7 @@ sub show_record {
         bkid       => $bkid,
     };
     
-    $self->print_page($config->{'tt_browse_bks_record_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_bks_record_tname'},$ttdata);
 }
 
 sub show_record_databases {
@@ -160,9 +156,7 @@ sub show_record_databases {
         dbinfo       => $dbinfotable,
     };
     
-    $self->print_page($config->{'tt_browse_bks_record_databases_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_bks_record_databases_tname'},$ttdata);
 }
 
 1;

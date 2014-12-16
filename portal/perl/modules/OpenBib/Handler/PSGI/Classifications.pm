@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Classifications.pm
+#  OpenBib::Handler::PSGI::Classifications.pm
 #
 #  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Classifications;
+package OpenBib::Handler::PSGI::Classifications;
 
 use strict;
 use warnings;
@@ -43,7 +43,7 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Common::Util;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -132,7 +132,7 @@ sub show_record {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
-    return Apache2::Const::OK;
+    return;
 }
 
 sub show_collection {
@@ -191,7 +191,7 @@ sub show_collection {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));
     }
     
-    return Apache2::Const::OK;
+    return;
 }
 
 sub show_collection_ezb {
@@ -271,9 +271,7 @@ sub show_collection_ezb {
         subjects      => $subjects_ref,
     };
     
-    $self->print_page($config->{'tt_classifications_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_classifications_tname'},$ttdata);
 }
 
 sub show_collectionxxx {
@@ -353,9 +351,7 @@ sub show_collectionxxx {
         subjects      => $subjects_ref,
     };
     
-    $self->print_page($config->{'tt_classifications_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_classifications_tname'},$ttdata);
 }
 
 sub show_collection_dbis {
@@ -445,9 +441,7 @@ sub show_collection_dbis {
         subjects      => $subjects_ref,
     };
     
-    $self->print_page($config->{'tt_classifications_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_classifications_tname'},$ttdata);
 }
 
 sub show_collection_sql {

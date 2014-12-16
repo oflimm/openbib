@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Browse::Topics.pm
+#  OpenBib::Handler::PSGI::Browse::Topics.pm
 #
 #  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Browse::Topics;
+package OpenBib::Handler::PSGI::Browse::Topics;
 
 use strict;
 use warnings;
@@ -38,7 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode_utf8/;
 
 use OpenBib::Statistics;
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -84,9 +84,7 @@ sub show_collection {
         statistics => $statistics,
     };
     
-    $self->print_page($config->{'tt_browse_topics_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_topics_tname'},$ttdata);
 }
 
 sub show_record {
@@ -126,9 +124,7 @@ sub show_record {
         topicid => $topicid,
     };
     
-    $self->print_page($config->{'tt_browse_topics_record_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_topics_record_tname'},$ttdata);
 }
 
 1;

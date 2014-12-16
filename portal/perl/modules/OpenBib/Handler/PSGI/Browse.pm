@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Browse.pm
+#  OpenBib::Handler::PSGI::Browse.pm
 #
 #  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Browse;
+package OpenBib::Handler::PSGI::Browse;
 
 use strict;
 use warnings;
@@ -37,7 +37,7 @@ use utf8;
 use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode_utf8/;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -80,9 +80,7 @@ sub show_collection {
     my $ttdata={
     };
     
-    $self->print_page($config->{'tt_browse_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_browse_tname'},$ttdata);
 }
 
 1;

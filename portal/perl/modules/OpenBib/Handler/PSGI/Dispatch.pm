@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Dispatch
+#  OpenBib::Handler::PSGI::Dispatch
 #
 #  Dieses File ist (C) 2010-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,104 +27,138 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Dispatch;
+package OpenBib::Handler::PSGI::Dispatch;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestRec ();
-use Apache2::URI ();
-use APR::URI ();
 use Benchmark ':hireswallclock';
 use Log::Log4perl qw(get_logger :levels);
 use YAML;
+use Data::Dumper;
+use HTTP::Exception;
 
 use OpenBib::Config;
 
-use base 'CGI::Application::Dispatch';
+use base 'CGI::Application::Dispatch::PSGI';
 
-sub handler : method {
-    my ($self, $r) = @_;
+our $DEBUG   = 0;
+
+sub as_psgi {
+    my ($self, %args) = @_;
 
     my $logger = get_logger();
 
     my $config  = OpenBib::Config->instance;
 
-    my ($atime,$btime,$timeall)=(0,0,0);
+    my $query = $args{args_to_new}->{QUERY};
 
-    if ($config->{benchmark}) {
-        $atime=new Benchmark;
-    }
+    $logger->debug("Query: ".ref($query));
 
-    # set the PATH_INFO
-    $ENV{PATH_INFO} = $r->uri(); # was $r->path_info();
-
-    my $query = Apache2::Request->new($r);
-    
     # set method for http-tunnel based on _method-CGI-Parameter
     if ($query->param('_method')){
-        $r->method($query->param('_method'));
+        $args{args_to_new}->{PARAMS}->{method} = $query->param('_method');
+
         if ($logger->is_debug){
             $logger->debug("Changed method to tunneled ".$query->param('_method'));
         }
     }
     
-    # setup our args to dispatch()
-    my %args;
-    my $config_args = $r->dir_config();
-    foreach my $var ('DEFAULT','PREFIX','ERROR_DOCUMENT') {
-        my $dir_var = "CGIAPP_DISPATCH_$var";
-        $args{lc($var)} = $config_args->{$dir_var}
-          if($config_args->{$dir_var});
-    }
+    $logger->debug("Dispatching as PSGI");
 
-    # add $r to the args_to_new's PARAMS
-    $args{args_to_new}->{PARAMS}->{r} = $r;
+    $args{args_to_new}->{PARAMS}->{r} = $query;
+    $args{args_to_new}->{QUERY} = $query;
 
-    # set debug if we need to
-    $DEBUG = 0; # if($config_args->{CGIAPP_DISPATCH_DEBUG});
-    if($DEBUG) {
-        require Data::Dumper;
-        warn "[Dispatch] Calling dispatch() with the following arguments: "
-          . Data::Dumper::Dumper(\%args) . "\n";
-    }
-
-    $logger->debug("Dispatching");
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 2 ".$r->uri()." is ".timestr($timeall));
-    }
-
-    $self->dispatch(%args);
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for dispatching ".$r->uri()." is ".timestr($timeall));
-    }
     
-    if ($logger->is_debug){
-        $logger->debug("Dispatching done with status ".$r->status);
-    }
+    $logger->debug("ARGS as_psgi: ".Data::Dumper::Dumper(\%args));
+    
+    my $psgi_app = $self->SUPER::as_psgi(%args) ;
 
-    if($r->status == 404) {
-        return Apache2::Const::NOT_FOUND;
-    } elsif($r->status == 500) {
-        return Apache2::Const::NOT_FOUND;
-#        return Apache2::Const::SERVER_ERROR;
-    } elsif($r->status == 400) {
-        return Apache2::Const::HTTP_BAD_REQUEST;
-    } else {
-        return Apache2::Const::OK;
-    }
+    #$logger->debug("Output is :".YAML::Dump($psgi_app));
+    
+    return $psgi_app;
 }
+
+
+# sub handler : method {
+#     my ($self, $r) = @_;
+
+#     my $logger = get_logger();
+
+#     my $config  = OpenBib::Config->instance;
+
+#     my ($atime,$btime,$timeall)=(0,0,0);
+
+#     if ($config->{benchmark}) {
+#         $atime=new Benchmark;
+#     }
+
+#     # set the PATH_INFO
+#     $ENV{PATH_INFO} = $r->uri(); # was $r->path_info();
+
+#     my $query = Apache2::Request->new($r);
+    
+#     # set method for http-tunnel based on _method-CGI-Parameter
+#     if ($query->param('_method')){
+#         $r->method($query->param('_method'));
+#         if ($logger->is_debug){
+#             $logger->debug("Changed method to tunneled ".$query->param('_method'));
+#         }
+#     }
+    
+#     # setup our args to dispatch()
+#     my %args;
+#     my $config_args = $r->dir_config();
+#     foreach my $var ('DEFAULT','PREFIX','ERROR_DOCUMENT') {
+#         my $dir_var = "CGIAPP_DISPATCH_$var";
+#         $args{lc($var)} = $config_args->{$dir_var}
+#           if($config_args->{$dir_var});
+#     }
+
+#     # add $r to the args_to_new's PARAMS
+#     $args{args_to_new}->{PARAMS}->{r} = $r;
+
+#     # set debug if we need to
+#     $DEBUG = 0; # if($config_args->{CGIAPP_DISPATCH_DEBUG});
+#     if($DEBUG) {
+#         require Data::Dumper;
+#         warn "[Dispatch] Calling dispatch() with the following arguments: "
+#           . Data::Dumper::Dumper(\%args) . "\n";
+#     }
+
+#     $logger->debug("Dispatching");
+
+#     if ($config->{benchmark}) {
+#         $btime=new Benchmark;
+#         $timeall=timediff($btime,$atime);
+#         $logger->info("Total time for stage 2 ".$r->uri()." is ".timestr($timeall));
+#     }
+
+#     $self->dispatch(%args);
+
+#     if ($config->{benchmark}) {
+#         $btime=new Benchmark;
+#         $timeall=timediff($btime,$atime);
+#         $logger->info("Total time for dispatching ".$r->uri()." is ".timestr($timeall));
+#     }
+    
+#     if ($logger->is_debug){
+#         $logger->debug("Dispatching done with status ".$r->status);
+#     }
+
+#     if($r->status == 404) {
+#         return Apache2::Const::NOT_FOUND;
+#     } elsif($r->status == 500) {
+#         return Apache2::Const::NOT_FOUND;
+# #        return Apache2::Const::SERVER_ERROR;
+#     } elsif($r->status == 400) {
+#         return Apache2::Const::HTTP_BAD_REQUEST;
+#     } else {
+#         return Apache2::Const::OK;
+#     }
+# }
 
 
 sub dispatch_args {
@@ -134,12 +168,6 @@ sub dispatch_args {
     
     my $config  = OpenBib::Config->instance;
 
-    my ($atime,$btime,$timeall)=(0,0,0);
-
-    if ($config->{benchmark}) {
-        $atime=new Benchmark;
-    }
-    
     my $table_ref = [];
 
     foreach my $item (@{$config->{dispatch_rules}}){
@@ -173,6 +201,8 @@ sub dispatch_args {
                 if ($item->{args}){
                     # Request-Object dazu, da sonst ueberschrieben
                     $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
+                    $item->{args}->{method} = $args->{args_to_new}->{method};
+                    $item->{args}->{QUERY} = $args->{args_to_new}->{QUERY};
                     $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
                 }
                 
@@ -190,17 +220,13 @@ sub dispatch_args {
             if ($item->{args}){
                 # Request-Object dazu, da sonst ueberschrieben
                 $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
+                $item->{args}->{method} = $args->{args_to_new}->{method};
+                $item->{args}->{QUERY} = $args->{args_to_new}->{QUERY};
                 $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
             }
                         
             push @{$table_ref}, $rule_specs;
         }
-    }
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for processing dispatch args is ".timestr($timeall));
     }
 
     return {
@@ -209,5 +235,70 @@ sub dispatch_args {
     };
 }
 
+sub _run_app {
+    my ($self, $module, $rm, $args,$env) = @_;
+
+    if($DEBUG) {
+        require Data::Dumper;
+        warn "[Dispatch] Final args to pass to new(): " . Data::Dumper::Dumper($args) . "\n";
+    }
+
+    if($rm) {
+
+        # check runmode name
+        ($rm) = ($rm =~ /^([a-zA-Z_][\w']+)$/);
+        HTTP::Exception->throw(400, status_message => "Invalid characters in runmode name") unless $rm;
+
+    }
+
+    # now create and run then application object
+    warn "[Dispatch] creating instance of $module\n" if($DEBUG);
+
+    my $psgi;
+    eval {
+        my $app = do {
+            if (ref($args) eq 'HASH' and not defined $args->{PARAMS}{QUERY}) {
+                require CGI::PSGI;
+                $args->{QUERY} = CGI::PSGI->new($env);
+                $module->new($args);
+            }
+            elsif (ref($args) eq 'HASH' and defined $args->{PARAMS}{QUERY}) {
+                $args->{QUERY} = $args->{PARAMS}{QUERY};
+                $module->new($args);
+            }
+            elsif (ref($args) eq 'HASH') {
+                $module->new($args);
+            }
+            else {
+                $module->new();
+            }
+        };
+        $app->mode_param(sub { return $rm }) if($rm);
+        $psgi = $app->run_as_psgi;
+    };
+
+    # App threw an HTTP::Exception? Cool. Bubble it up.
+    my $e;
+    if ($e = HTTP::Exception->caught) {
+        $e->rethrow;   
+    } 
+    else {
+          $e = Exception::Class->caught();
+
+          # catch invalid run-mode stuff
+          if (not ref $e and  $e =~ /No such run mode/) {
+              HTTP::Exception->throw(404, status_message => "RM '$rm' not found");
+          }
+          # otherwise, it's an internal server error.
+          elsif (defined $e and length $e) {
+              HTTP::Exception->throw(500, status_message => "Unknown error: $e");
+              #return $psgi;
+          }
+          else {
+              # no exception
+              return $psgi;
+          }
+    }
+}
 
 1;

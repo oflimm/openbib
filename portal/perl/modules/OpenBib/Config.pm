@@ -30,10 +30,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton::Process);
+use base qw(Class::Singleton);
 
-use Apache2::Reload;
-use Apache2::Const -compile => qw(:common);
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
 use Cache::Memcached;
@@ -3808,11 +3806,11 @@ __END__
 
 =head1 NAME
 
-OpenBib::Config - Apache-Singleton mit Informationen über die allgemeine Portal-Konfiguration
+OpenBib::Config - Singleton mit Informationen über die allgemeine Portal-Konfiguration
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton enthält Informationen über alle grundlegenden
+Dieses Singleton enthält Informationen über alle grundlegenden
 Konfigurationseinstellungen des Portals. Diese werden in YAML-Datei
 portal.yml definiert.  Darüber hinaus werden verschiedene Methoden
 bereitgestellt, mit denen auf die Einstellungen in der
@@ -3837,12 +3835,11 @@ Kataloge, Sichten, Profile usw. definiert.
 =item new
 
 Erzeugung als herkömmliches Objektes und nicht als
-Apache-Singleton. Damit kann auch ausserhalb des Apache mit mod_perl
-auf die Konfigurationseinstellungen in Perl-Skripten zugegriffen werden.
+Singleton.
 
 =item instance
 
-Instanziierung als Apache-Singleton.
+Instanziierung als Singleton.
 
 =item get($key)
 

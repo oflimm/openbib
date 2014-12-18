@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
 use Business::ISBN;
 use Encode qw(decode_utf8 encode_utf8);
@@ -143,12 +143,12 @@ __END__
 
 =head1 NAME
 
-OpenBib::Catalog - Apache-Singleton für den Zugriff auf
+OpenBib::Catalog - Singleton für den Zugriff auf
 Informationen in einer Katalog-Datenbank.
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton bietet einen Zugriff auf die Informationen in
+Dieses Singleton bietet einen Zugriff auf die Informationen in
 einer Katalogdatenbank.
 
 =head1 SYNOPSIS

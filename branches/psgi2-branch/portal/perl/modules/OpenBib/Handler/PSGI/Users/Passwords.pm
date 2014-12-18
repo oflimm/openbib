@@ -1,7 +1,7 @@
 
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Passwords
+#  OpenBib::Handler::PSGI::Users::Passwords
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -28,17 +28,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Passwords;
+package OpenBib::Handler::PSGI::Users::Passwords;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::Request ();
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -52,7 +48,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -96,9 +92,7 @@ sub show_collection {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_users_passwords_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_passwords_tname},$ttdata);
 }
 
 sub create_record {
@@ -128,13 +122,11 @@ sub create_record {
     my $loginfailed=0;
     
     if ($username eq "") {
-        $self->print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"));
     }
 
     if (!$user->user_exists($username)) {
-        $self->print_warning($msg->maketext("Dieser Nutzer ist nicht registriert."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Dieser Nutzer ist nicht registriert."));
     }
 
     # Zufaelliges 12-stelliges Passwort
@@ -169,8 +161,9 @@ sub create_record {
     });
     
     $maintemplate->process($config->{tt_users_passwords_mail_body_tname}, $mainttdata ) || do {
-        $r->log_error($maintemplate->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->error($maintemplate->error());
+        $self->header_add('Status',400); # Server Error
+        return;
     };
     
     my $mailmsg = MIME::Lite->new(
@@ -195,9 +188,7 @@ sub create_record {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_users_passwords_success_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_passwords_success_tname},$ttdata);
 }
 
 1;

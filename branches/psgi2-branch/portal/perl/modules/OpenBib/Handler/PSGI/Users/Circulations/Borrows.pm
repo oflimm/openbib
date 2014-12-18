@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Circulations::Borrows
+#  OpenBib::Handler::PSGI::Users::Circulations::Borrows
 #
 #  Dieses File ist (C) 2004-2013 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Circulations::Borrows;
+package OpenBib::Handler::PSGI::Users::Circulations::Borrows;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest ();
-use Apache2::URI ();
-use APR::URI ();
 use DBI;
 use Digest::MD5;
 use Email::Valid;
@@ -58,7 +52,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Users';
+use base 'OpenBib::Handler::PSGI::Users';
 
 # Run at startup
 sub setup {
@@ -107,8 +101,7 @@ sub show_collection {
             return $self->tunnel_through_authenticator('POST');            
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
     
@@ -153,9 +146,7 @@ sub show_collection {
         database   => $database,
     };
     
-    $self->print_page($config->{tt_users_circulations_borrows_tname},$ttdata);
-
-    return Apache2::Const::OK;    
+    return $self->print_page($config->{tt_users_circulations_borrows_tname},$ttdata);
 }
 
 

@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::CartItems
+#  OpenBib::Handler::PSGI::Users::CartItems
 #
 #  Dieses File ist (C) 2001-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,20 +27,12 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::CartItems;
+package OpenBib::Handler::PSGI::Users::CartItems;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
-
-use Apache2::Const -compile => qw(:common M_GET);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestIO (); # print, rflush
-use Apache2::SubRequest (); # internal_redirect
-use Apache2::URI ();
-use APR::URI ();
 
 use DBI;
 use Encode 'decode_utf8';
@@ -57,7 +49,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::CartItems';
+use base 'OpenBib::Handler::PSGI::CartItems';
 
 # Authentifizierung wird spezialisiert
 
@@ -165,10 +157,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{cartitems_loc}.html?l=$lang";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

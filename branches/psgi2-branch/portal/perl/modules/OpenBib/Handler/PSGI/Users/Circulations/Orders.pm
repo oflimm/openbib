@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Circulations::Orders
+#  OpenBib::Handler::PSGI::Users::Circulations::Orders
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Circulations::Orders;
+package OpenBib::Handler::PSGI::Users::Circulations::Orders;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest ();
-use Apache2::URI ();
-use APR::URI ();
 use DBI;
 use Digest::MD5;
 use Email::Valid;
@@ -58,7 +52,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Users';
+use base 'OpenBib::Handler::PSGI::Users';
 
 # Run at startup
 sub setup {
@@ -107,8 +101,7 @@ sub show_collection {
             return $self->tunnel_through_authenticator('POST');            
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -152,9 +145,7 @@ sub show_collection {
         orders     => $circexlist,
     };
     
-    $self->print_page($config->{tt_users_circulations_orders_tname},$ttdata);
-
-    return Apache2::Const::OK;    
+    return $self->print_page($config->{tt_users_circulations_orders_tname},$ttdata);
 }
 
 sub create_record {
@@ -201,11 +192,11 @@ sub create_record {
 
     unless($sessionauthenticator eq $validtarget){
         # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
+        my $return_uri = uri_escape($r->request_uri);
         
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget;redirect_to=$return_uri");
-        
-        return Apache2::Const::OK;
+        $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget;redirect_to=$return_uri");
+
+        return;
     }
     
     my $circexlist=undef;
@@ -245,9 +236,7 @@ sub create_record {
         result     => $circexlist,
     };
     
-    $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
 }
 
 

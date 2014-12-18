@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Templates.pm
+#  OpenBib::Handler::PSGI::Users::Templates.pm
 #
 #  Copyright 2014 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,16 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Templates;
+package OpenBib::Handler::PSGI::Users::Templates;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
@@ -54,7 +51,7 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -95,9 +92,7 @@ sub show_collection {
         userid          => $user->{ID},
     };
     
-    $self->print_page($config->{tt_users_templates_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_templates_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -139,9 +134,7 @@ sub show_record_form {
         templateinfo => $templateinfo_ref,
     };
     
-    $self->print_page($config->{tt_users_templates_record_edit_tname},$ttdata);
-        
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_templates_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -175,9 +168,7 @@ sub update_record {
     }
 
     if (!$config->{schema}->resultset('Templateinfo')->search_rs({id => $templateid})->count){
-        $self->print_warning($msg->maketext("Es existiert kein Template unter dieser ID"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Template unter dieser ID"));
     }
 
     $logger->debug("Admin? ".$user->is_admin);
@@ -185,22 +176,20 @@ sub update_record {
     $logger->debug("Has Template?".$user->has_template($templateid));
     
     if (!$user->is_admin && !$user->has_template($templateid)){
-        $self->print_warning($msg->maketext("Sie haben keine Berechtigung dieses Template zu ändern!"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben keine Berechtigung dieses Template zu ändern!"));
     }
     
     $config->update_template($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
+        $self->header_add('Content-Type','text/html');
+
         if ($user->is_admin){ 
-            $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{templates_loc}");
+            return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{templates_loc}");
         }
         else {
-            $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{templates_loc}");
+            return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{templates_loc}");
         }       
-        
-        $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         $logger->debug("Weiter zum Record");

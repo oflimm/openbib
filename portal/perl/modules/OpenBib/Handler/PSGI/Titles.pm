@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Titles.pm
+#  OpenBib::Handler::PSGI::Titles.pm
 #
 #  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,17 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Titles;
+package OpenBib::Handler::PSGI::Titles;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
@@ -54,7 +50,7 @@ use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Template::Utilities;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -119,9 +115,7 @@ sub show_popular {
     };
 
     my $templatename = "tt_titles_popular".(($database)?'_by_database':'')."_tname";
-    $self->print_page($config->{$templatename},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_dbis_recommendations {
@@ -153,9 +147,7 @@ sub show_dbis_recommendations {
     };
 
     my $templatename = "tt_titles_dbis_recommendations_tname";
-    $self->print_page($config->{$templatename},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_recent {
@@ -204,9 +196,7 @@ sub show_recent {
 
     my $templatename = "tt_titles_recent".(($database)?'_by_database':'')."_tname";
 
-    $self->print_page($config->{$templatename},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 sub show_collection {
@@ -285,9 +275,7 @@ sub show_collection {
         nav         => $self->param('nav'),
     };
     
-    $self->print_page($config->{tt_titles_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_titles_tname},$ttdata);
 }
 
 sub show_record {
@@ -453,8 +441,6 @@ sub show_record {
             highlightquery    => \&highlightquery,
         };
 
-        $self->print_page($config->{tt_titles_record_tname},$ttdata);
-
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
@@ -483,19 +469,24 @@ sub show_record {
                 serialize => 1,
             });
         }
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for show_record is ".timestr($timeall));
+        }
+
+        return $self->print_page($config->{tt_titles_record_tname},$ttdata);
     }
     else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
-    }
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for show_record is ".timestr($timeall));
+        }
 
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for show_record is ".timestr($timeall));
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
-
-    $logger->debug("Done showing record");
-    return Apache2::Const::OK;
 }
 
 sub redirect_to_bibsonomy {
@@ -513,6 +504,7 @@ sub redirect_to_bibsonomy {
     my $r              = $self->param('r');
     my $config         = $self->param('config');
     my $session        = $self->param('session');
+    my $msg            = $self->param('msg');
     my $path_prefix    = $self->param('path_prefix');
     my $servername     = $self->param('servername');
     my $dbinfotable    = $self->param('dbinfo');
@@ -536,13 +528,13 @@ sub redirect_to_bibsonomy {
             content   => $bibsonomy_url
         });
 
-        $self->query->method('GET');
-        $self->query->content_type('text/html; charset=UTF-8');
-        $self->query->headers_out->add(Location => $bibsonomy_url);
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html; charset=UTF-8');
+        return $self->redirect($bibsonomy_url);
     }
-
-    return;
+    else {
+        return $self->print_warning($msg->maketext("Es wurden zuwenige Parameter übergeben."));
+    }
 }
 
 sub show_availability {

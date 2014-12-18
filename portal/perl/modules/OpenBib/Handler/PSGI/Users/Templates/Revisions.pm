@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Templates::Revisions.pm
+#  OpenBib::Handler::PSGI::Users::Templates::Revisions.pm
 #
 #  Copyright 2014 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,16 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Templates::Revisions;
+package OpenBib::Handler::PSGI::Users::Templates::Revisions;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
@@ -54,7 +51,7 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Users';
+use base 'OpenBib::Handler::PSGI::Users';
 
 # Run at startup
 sub setup {
@@ -105,8 +102,7 @@ sub revert_record {
     )->single;
 
     if (!$user->is_admin && !$user->has_template($templateid)){
-        $self->print_warning($msg->maketext("Sie haben keine Berechtigung dieses Template zu ändern!"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben keine Berechtigung dieses Template zu ändern!"));
     }
     
     my $input_data_ref = {};
@@ -117,32 +113,28 @@ sub revert_record {
         $input_data_ref->{templatetext} = $revision->templatetext;
     }
     else {
-        $self->print_warning($msg->maketext("Es existiert keine Revision mit dieser ID"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert keine Revision mit dieser ID"));
     }   
     
     $config->update_template($input_data_ref);
 
     if ($self->param('representation') eq "html"){
-        $self->query->method('GET');
+        $self->header_add('Content-Type' => 'text/html');
+        
         if ($user->is_admin){ 
-            $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{templates_loc}");
+            return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{templates_loc}");
         }
         else {
-            $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{templates_loc}");
+            return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{templates_loc}");
         }       
-        $self->query->status(Apache2::Const::REDIRECT);
     }
     else {
         $logger->debug("Weiter zum Record");
         $logger->debug("Weiter zur ID $templateid");
-        $self->query->method('GET');
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{templates_loc}/id/$templateid");
-        $self->query->status(Apache2::Const::REDIRECT);
-    }
+        $self->header_add('Content-Type' => 'text/html');
 
-    return;
+        return $self->redirect("$path_prefix/$config->{templates_loc}/id/$templateid");
+    }
 }
 
 sub delete_record {
@@ -167,8 +159,7 @@ sub delete_record {
     }
     
     if (!$config->get_templateinforevision->search_rs({id => $revisionid})->count){
-        $self->print_warning($msg->maketext("Es existiert keine Template-Revision mit dieser ID"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert keine Template-Revision mit dieser ID"));
     }
 
     $logger->debug("Deleting revision record $revisionid");
@@ -177,16 +168,15 @@ sub delete_record {
 
     return unless ($self->param('representation') eq "html");
     
-    $self->query->method('GET');
-    if ($user->is_admin){ 
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{templates_loc}/id/${templateid}/edit");
+    $self->header_add('Content-Type' => 'text/html');
+    
+    if ($user->is_admin){
+        
+        return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{templates_loc}/id/${templateid}/edit");
     }
     else {
-        $self->query->headers_out->add(Location => "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{templates_loc}/id/${templateid}/edit");
+        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{templates_loc}/id/${templateid}/edit");
     }       
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
 }
 
 sub confirm_delete_record {
@@ -211,9 +201,7 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_templates_revisions_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_templates_revisions_record_delete_confirm_tname},$ttdata);
 }
 
 sub authorization_successful {

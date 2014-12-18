@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Searchprofiles::Session
+#  OpenBib::Handler::PSGI::Searchprofiles::Session
 #
 #  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,17 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Searchprofiles::Session;
+package OpenBib::Handler::PSGI::Searchprofiles::Session;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -49,7 +45,7 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -133,8 +129,7 @@ sub show_collection {
         catdb      => \@catdb,
     };
     
-    $self->print_page($config->{tt_searchprofiles_session_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_searchprofiles_session_tname},$ttdata);
 }
 
 sub update_collection {
@@ -170,10 +165,9 @@ sub update_collection {
 
     my $new_location = "$path_prefix/$config->{searchforms_loc}/session.html?l=$lang";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Subjects.pm
+#  OpenBib::Handler::PSGI::Subjects.pm
 #
 #  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Subjects;
+package OpenBib::Handler::PSGI::Subjects;
 
 use strict;
 use warnings;
@@ -39,7 +39,7 @@ use Encode qw/decode_utf8 encode_utf8/;
 
 use OpenBib::Record::Subject;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -128,7 +128,7 @@ sub show_record {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
-    return Apache2::Const::OK;
+    return;
 }
 
 sub show_collection {
@@ -191,7 +191,7 @@ sub show_collection {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));
     }
     
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

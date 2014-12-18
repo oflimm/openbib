@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Title::Tag.pm
+#  OpenBib::Handler::PSGI::Title::Tag.pm
 #
 #  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,18 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Title::Tag;
+package OpenBib::Handler::PSGI::Title::Tag;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
 use Date::Manip;
 use URI::Escape qw(uri_escape uri_escape_utf8);
@@ -50,7 +45,7 @@ use OpenBib::Search::Util;
 use OpenBib::Record::Title;
 use OpenBib::Template::Utilities;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -142,13 +137,14 @@ sub show_record {
             
             if ($self->param('representation') eq "html"){
                 # Aufruf-URL
-                my $return_uri = uri_escape($r->parsed_uri->unparse);
+                my $return_uri = uri_escape($r->request_uri);
                 
-                $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+                $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+
+                return;
             }
             else  {
-                $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-                return Apache2::Const::OK;
+                return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
             }
         }
                 
@@ -170,10 +166,9 @@ sub show_record {
 
         $logger->debug("Redirecting to $new_location");
 
-        $self->query->method('GET');
-        $self->query->content_type('text/html');
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html');
+        $self->redirect($new_location);
 
         return;
     }
@@ -232,9 +227,7 @@ sub show_record {
         tagid            => $tagid,
     };
 
-    $self->print_page($config->{'tt_tags_tname'},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_tags_tname'},$ttdata);
 }
 
 sub create_record {
@@ -266,13 +259,12 @@ sub create_record {
     if (! $user->{ID}){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
+            my $return_uri = uri_escape($r->request_uri);
             
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            return $request->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -290,10 +282,9 @@ sub create_record {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$input_data_ref->{dbname}/id/$input_data_ref->{titleid}.html?l=$lang;no_log=1";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }
@@ -325,13 +316,12 @@ sub delete_record {
     if (! $user->{ID}){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
+            my $return_uri = uri_escape($r->request_uri);
             
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            return $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -349,10 +339,9 @@ sub delete_record {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

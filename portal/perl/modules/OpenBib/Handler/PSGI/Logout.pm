@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Logout
+#  OpenBib::Handler::PSGI::Logout
 #
 #  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,18 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Logout;
+package OpenBib::Handler::PSGI::Logout;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
+use CGI::Cookie;
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use Template;
+
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -48,7 +47,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -88,14 +87,14 @@ sub show {
 
     $logger->debug("Deleting Cookie with SessionID $session->{ID}");
     
-    my $cookie = Apache2::Cookie->new($r,
+    my $cookie = CGI::Cookie->new($r,
                                       -name    => "sessionID",
                                       -value   => "",
                                       -path    => '/',
                                       -expires => 'now',
                                   );
     
-    $r->err_headers_out->set('Set-Cookie', $cookie);
+    $self->header_add('Set-Cookie', $cookie);
 
     if ($user->{ID}) {
         # Authentifiziert-Status der Session loeschen
@@ -113,9 +112,7 @@ sub show {
     my $ttdata={
     };
   
-    $self->print_page($config->{tt_logout_tname},$ttdata);
-  
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_logout_tname},$ttdata);
 }
 
 1;

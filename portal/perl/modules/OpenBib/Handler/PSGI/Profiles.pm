@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Profiles
+#  OpenBib::Handler::PSGI::Profiles
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Profiles;
+package OpenBib::Handler::PSGI::Profiles;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -60,7 +54,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::PSGI::Admin';
 
 # Run at startup
 sub setup {
@@ -100,9 +94,7 @@ sub show_collection {
         profiles   => $profileinfo_ref,
     };
     
-    $self->print_page($config->{tt_profiles_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_profiles_tname},$ttdata);
 }
 
 sub show_record {
@@ -120,8 +112,7 @@ sub show_record {
     my $msg            = $self->param('msg');
 
     if (!$config->profile_exists($profilename)) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -140,7 +131,7 @@ sub show_record {
         activedbs   => $activedbs_ref,
     };
 
-    $self->print_page($config->{tt_profiles_record_tname},$ttdata);
+    return $self->print_page($config->{tt_profiles_record_tname},$ttdata);
 }
 
 1;

@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Servers
+#  OpenBib::Handler::PSGI::Servers
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Servers;
+package OpenBib::Handler::PSGI::Servers;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -58,7 +52,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -119,7 +113,7 @@ sub show_record {
         serverinfo   => $serverinfo_ref,
     };
     
-    $self->print_page($config->{tt_servers_record_tname},$ttdata);
+    return $self->print_page($config->{tt_servers_record_tname},$ttdata);
 }
 
 1;

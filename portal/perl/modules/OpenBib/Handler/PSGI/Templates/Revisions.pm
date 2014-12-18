@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Templates::Revisions.pm
+#  OpenBib::Handler::PSGI::Templates::Revisions.pm
 #
 #  Copyright 2014 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,16 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Templates::Revisions;
+package OpenBib::Handler::PSGI::Templates::Revisions;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
@@ -54,7 +51,7 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -90,9 +87,7 @@ sub show_collection {
         revisions  => $revisions_ref,
     };
     
-    $self->print_page($config->{tt_templates_revisions_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_templates_revisions_tname},$ttdata);
 }
 
 sub show_record {
@@ -117,9 +112,7 @@ sub show_record {
     )->single;
 
     unless ($revision_ref){
-        $self->print_warning($msg->maketext("Es existiert keine Revision mit dieser ID"));
-        
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es existiert keine Revision mit dieser ID"));
     }   
     
     my $ttdata={
@@ -128,9 +121,7 @@ sub show_record {
         revision   => $revision_ref,
     };
     
-    $self->print_page($config->{tt_templates_revisions_record_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_templates_revisions_record_tname},$ttdata);
 }
 
 1;

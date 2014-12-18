@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::ServerActive
+#  OpenBib::Handler::PSGI::ServerActive
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,24 +27,19 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::ServerActive;
+package OpenBib::Handler::PSGI::ServerActive;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Connection;
-use Apache2::Reload;
-use Apache2::RequestIO  ();
-use Apache2::RequestRec ();
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -106,12 +101,12 @@ sub show {
 	    return;
 	}
 	else {
-	    $r->status(Apache2::Const::NOT_FOUND);
+            $self->header_add('Status' => 404);
 	    return;
 	}
     }
 
-    $r->status(Apache2::Const::NOT_FOUND);
+    $self->header_add('Status' => 404);
     return;
 }
 

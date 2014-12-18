@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::MailCollection
+#  OpenBib::Handler::PSGI::MailCollection
 #
 #  Dieses File ist (C) 2001-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,17 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::MailCollection;
+package OpenBib::Handler::PSGI::MailCollection;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::Request ();
 use DBI;
 use Email::Valid;
 use Encode 'decode_utf8';
@@ -56,7 +52,7 @@ use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -105,13 +101,11 @@ sub show {
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     if ($email eq "") {
-        $self->print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."));
     }
 
     unless (Email::Valid->address($email)) {
-        $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
     }	
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
@@ -180,8 +174,9 @@ sub show {
     }
 
     $datatemplate->process($datatemplatename, $ttdata) || do {
-        $r->log_error($datatemplate->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->error($datatemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
     };
   
     my $anschreiben="";
@@ -206,8 +201,9 @@ sub show {
     });
 
     $maintemplate->process($config->{tt_mailcollection_mail_main_tname}, $mainttdata ) || do { 
-        $r->log_error($maintemplate->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->error($maintemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
     };
 
     my $mailmsg = MIME::Lite->new(
@@ -237,13 +233,11 @@ sub show {
     );
   
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
-    
-    $self->print_page($config->{tt_mailcollection_success_tname},$ttdata);
-    
+
     unlink $anschfile;
     unlink $mailfile;
-
-    return Apache2::Const::OK;
+    
+    return $self->print_page($config->{tt_mailcollection_success_tname},$ttdata);
 }
 
 1;

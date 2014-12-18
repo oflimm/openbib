@@ -1,6 +1,6 @@
 ###################################################################
 #
-#  OpenBib::Handler::Apache::Search.pm
+#  OpenBib::Handler::PSGI::Search.pm
 #
 #  ehemals VirtualSearch.pm
 #
@@ -29,19 +29,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Search;
+package OpenBib::Handler::PSGI::Search;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestIO (); # rflush, print
-use Apache2::RequestRec ();
 use Benchmark ':hireswallclock';
 use Data::Pageset;
 use DBI;
@@ -75,7 +69,7 @@ use OpenBib::Session;
 use OpenBib::Template::Provider;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -203,8 +197,7 @@ sub show_search {
     
     if (!$searchquery->have_searchterms) {
 #        $searchquery->set_searchfield('freesearch','*','AND');
-#        $self->print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."));
-#        return Apache2::Const::OK;
+#        return $self->print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."));
     }
 
     my %trefferpage  = ();
@@ -273,8 +266,9 @@ sub show_search {
     });
         
     $starttemplate->process($starttemplatename, $startttdata) || do {
-        $r->log_error($starttemplate->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->error($starttemplate->error());
+        $self->header_add('Status',400); # Server error
+        return;
     };
     
     # Ausgabe flushen
@@ -352,8 +346,9 @@ sub show_search {
     });
     
     $endtemplate->process($endtemplatename, $endttdata) || do {
-        $r->log_error($endtemplate->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->error($endtemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
     };
     
     # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
@@ -382,7 +377,7 @@ sub show_search {
         serialize => 1,
     });
 
-    return Apache2::Const::OK;
+    return;
 }
 
 # Auf Grundlage der <form>-Struktur im Template searchform derzeit nicht verwendet
@@ -474,13 +469,11 @@ sub show_index {
     $contentreq=~s/%//g;
     
     if (!$contentreq) {
-        $self->print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"));
     }
     
     if ($#databases > 0 && length($contentreq) < 3) {
-        $self->print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."));
     }
     
     my %index=();
@@ -610,9 +603,7 @@ sub show_index {
         profile    => $profile,
     };
     
-    $self->print_page($template,$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($template,$ttdata);
 
     ####################################################################
     # ENDE Indizes
@@ -1000,8 +991,9 @@ sub print_resultitem {
     $logger->debug("Printing Result item");
     
     $itemtemplate->process($templatename, $ttdata) || do {
-        $r->log_error($itemtemplate->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->error($itemtemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
     };
 }
 
@@ -1025,15 +1017,13 @@ sub enforce_year_restrictions {
     if ($searchquery->get_searchfield('ejahr')->{norm}) {
         my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
-            $self->print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."));
         }
     }
     
     if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
         if ($searchquery->get_searchfield('ejahr')->{norm}) {
-            $self->print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."));
         }
     }
 }

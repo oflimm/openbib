@@ -35,7 +35,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Reload;
 use Encode qw(decode_utf8);
 
 use base qw(Template::Provider);

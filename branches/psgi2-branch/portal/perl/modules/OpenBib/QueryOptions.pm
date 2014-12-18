@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
 use DBI;
 use Encode 'decode_utf8';
@@ -64,15 +64,6 @@ sub _new_instance {
     
     $self->connectDB();
     $self->connectMemcached();
-
-    # Hinweis: Bisher wurde statt $query direkt das Request-Objekt $r
-    # uebergeben und an dieser Stelle wieder ein $query-Objekt via
-    # Apache2::Request daraus erzeugt. Bei Requests, die via POST
-    # sowohl mit dem enctype multipart/form-data wie auch
-    # multipart/form-data abgesetzt wurden, lassen sich keine
-    # Parameter ala sessionID extrahieren.  Das ist ein grosses
-    # Problem. Andere Informationen lassen sich ueber das $r
-    # aber sehr wohl extrahieren, z.B. der Useragent.
 
     # Initializierung mit Defaults
 #    $self->initialize_defaults;
@@ -361,11 +352,11 @@ __END__
 
 =head1 NAME
 
-OpenBib::QueryOptions - Apache-Singleton zur Behandlung von Recherche-Optionen
+OpenBib::QueryOptions - Singleton zur Behandlung von Recherche-Optionen
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton Verwaltet die Recherche-Optionen wie num,
+Dieses Singleton Verwaltet die Recherche-Optionen wie num,
 offset, Sprache l, Profil profile, Automatische Und-Verknuepfung
 autoplus, Such-Backend sb sowie den Trefferlistentyp listtype.
 
@@ -385,7 +376,7 @@ autoplus, Such-Backend sb sowie den Trefferlistentyp listtype.
 
 =item instance
 
-Instanziierung des Apache-Singleton.
+Instanziierung des Singleton.
 
 =item load
 

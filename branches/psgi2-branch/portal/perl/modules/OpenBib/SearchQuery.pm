@@ -2,7 +2,7 @@
 #
 #  OpenBib::SearchQuery
 #
-#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,9 +30,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton); # per request
+use base qw(Class::Singleton); # per request
 
-use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
@@ -89,7 +88,7 @@ sub _new_instance {
     
     if ($r){
         $self->{r} = $r;
-        $self->set_from_apache_request
+        $self->set_from_psgi_request
     }
     
     $self->connectDB();
@@ -134,7 +133,7 @@ sub new {
 
     if ($r){
         $self->{r} = $r;
-        $self->set_from_apache_request
+        $self->set_from_psgi_request
     }
 
     $self->connectDB();
@@ -142,7 +141,7 @@ sub new {
     return $self;
 }
 
-sub set_from_apache_request {
+sub set_from_psgi_request {
     my ($self)=@_;
     
     # Log4perl logger erzeugen
@@ -150,7 +149,7 @@ sub set_from_apache_request {
 
     my $config = OpenBib::Config->instance;
     
-    my $query = Apache2::Request->new($self->{r});
+    my $query = $self->{r};
 
     my ($indexterm,$indextermnorm,$indextype);
 
@@ -1002,7 +1001,7 @@ sub to_json {
     my $tmp_ref = {};
     foreach my $property (sort keys %{$self}){
         next if ($property eq "schema"); # DBIx::Class wird nicht gewandelt
-        next if ($property eq "r");      # Apache2::RequestRec wird nicht gewandelt
+        next if ($property eq "r");      # OpenBib::Request wird nicht gewandelt
         $tmp_ref->{$property} = $self->{$property};
     }
     
@@ -1045,7 +1044,7 @@ sub _get_searchprofile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $query = Apache2::Request->new($self->{r});
+    my $query = $self->{r};
     my $view  = $self->{'view'}                      || '';
 
     my $config         = OpenBib::Config->instance;
@@ -1125,12 +1124,12 @@ __END__
 
 =head1 NAME
 
-OpenBib::SearchQuery - Apache-Singleton der vom Nutzer eingegebenen
+OpenBib::SearchQuery - Singleton der vom Nutzer eingegebenen
 Suchanfrage
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton verwaltet die vom Nutzer eingegebene Suchanfrage.
+Dieses Singleton verwaltet die vom Nutzer eingegebene Suchanfrage.
 
 =head1 SYNOPSIS
 
@@ -1144,14 +1143,14 @@ Dieses Apache-Singleton verwaltet die vom Nutzer eingegebene Suchanfrage.
 
 =item instance
 
-Instanziierung des Apache-Singleton. Zu jedem Suchbegriff lässt sich
+Instanziierung des Singleton. Zu jedem Suchbegriff lässt sich
 neben der eingegebenen Form vol auch die Normierung norm, der
 zugehörige Bool'sche Verknüpfungsparameter bool sowie die ausgewählten
 Datenbanken speichern.
 
-=item set_from_apache_request($r,$searchprofile)
+=item set_from_psgi_request($r,$searchprofile)
 
-Setzen der Suchbegriffe direkt aus dem Apache-Request samt übergebener
+Setzen der Suchbegriffe direkt aus dem PSGI-Request samt übergebener
 Suchoptionen und zusätzlicher Normierung der Suchbegriffe.
 
 =item load({ sid => $sid, queryid => $queryid })

@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
 use DB_File ;
 use Business::ISBN;
@@ -538,12 +538,12 @@ __END__
 
 =head1 NAME
 
-OpenBib::Enrichment - Apache-Singleton für den Zugriff auf
+OpenBib::Enrichment - Singleton für den Zugriff auf
 Informationen in der zugehörigen Anreicherungs-Datenbank.
 
 =head1 DESCRIPTION
 
-Dieses Apache-Singleton bietet einen Zugriff auf die Informationen in
+Dieses Singleton bietet einen Zugriff auf die Informationen in
 der Anreicherungsdatenbank. Diese lassen sich z.B. in den Templates
 über $config->get_enrichmnt_object verwenden.
 

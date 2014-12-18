@@ -30,8 +30,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Reload;
-use Apache2::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';

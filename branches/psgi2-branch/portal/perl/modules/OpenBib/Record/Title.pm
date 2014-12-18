@@ -32,7 +32,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Reload;
 use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;

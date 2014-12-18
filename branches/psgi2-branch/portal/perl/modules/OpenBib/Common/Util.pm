@@ -30,7 +30,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
 use Benchmark ':hireswallclock';
 use DBI;
 use Digest::MD5 qw(md5_hex);
@@ -1902,52 +1901,6 @@ sub gen_cloud_class {
     return $items_ref;
 }
 
-sub dispatch_to_content_type {
-    my ($arg_ref) = @_;
-    
-    # Set defaults
-    my $uri          = exists $arg_ref->{uri}
-        ? $arg_ref->{uri}     : undef;
-    my $r            = exists $arg_ref->{apreq}
-        ? $arg_ref->{apreq}   : 0;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $content_type_map_ref = {
-        "application/rdf+xml" => "rdf+xml",
-        "text/rdf+n3"         => "rdf+n3",
-    };
-
-    my $accept       = $r->headers_in->{Accept} || '';
-    my @accept_types = map { (split ";", $_)[0] } split /\*s,\*s/, $accept;
-        
-    my $information_found = 0;
-    foreach my $information_type (keys %{$content_type_map_ref}){            
-        if (any { $_ eq $information_type } @accept_types) {
-            $r->content_type($information_type);
-            my $new_location = $uri."/".$content_type_map_ref->{$information_type};
-            $logger->debug("Redirecting to $new_location");
-            $r->headers_out->add("Location" => $new_location);
-            $information_found = 1;
-            $logger->debug("Information Resource Type: $information_type");
-        }                                                
-    }
-    
-    if (!$information_found){
-        my $information_type="text/html";
-        $r->content_type($information_type);
-        $r->headers_out->add("Location" => "$uri/html");
-        $logger->debug("Information Resource Type: $information_type");
-    }
-    
-    if ($logger->is_debug){
-        $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accept_types));
-    }
-
-    return Apache2::Const::HTTP_SEE_OTHER;
-}
-
 sub query2hashref {
     my $query=shift;
 
@@ -2102,7 +2055,7 @@ die Bildung einer Wortwolke an.
 
 =back
 
-=head2 Ausgabe über Apache-Handler
+=head2 Ausgabe über Handler
 
 =over 4
 
@@ -2110,16 +2063,16 @@ die Bildung einer Wortwolke an.
 =item print_page($templatename,$ttdata,$r)
 
 Ausgabe des Templates $templatename mit den Daten $ttdata über den
-Apache-Handler $r
+Handler $r
 
 =item print_warning($warning,$r,$msg)
 
-Ausgabe des Warnhinweises $warning über den Apache-Handler $r unter
+Ausgabe des Warnhinweises $warning über den Handler $r unter
 Verwendung des Message-Katalogs $msg
 
 =item print_info($info,$r,$msg,$representation,$content_type)
 
-Ausgabe des Informationstextes $info an den Apache-Handler $r unter
+Ausgabe des Informationstextes $info an den Handler $r unter
 Verwendung des Message-Katalogs $msg
 
 =back

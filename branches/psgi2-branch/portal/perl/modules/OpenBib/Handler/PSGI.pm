@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache
+#  OpenBib::Handler::PSGI
 #
-#  Dieses File ist (C) 2010-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,23 +27,15 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache;
+package OpenBib::Handler::PSGI;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use CGI::Application::Plugin::Apache qw(:all);
-use CGI::Application::Plugin::Redirect;
 use Log::Log4perl qw(get_logger :levels);
 use List::MoreUtils qw(none any);
-use Apache2::Access ();
-use Apache2::RequestUtil ();
-use Apache2::RequestRec ();
-use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_UNAUTHORIZED MODE_READBYTES);
-use Apache2::URI ();
-use APR::URI ();
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8 encode_utf8);
 use HTTP::Negotiate;
@@ -54,14 +46,6 @@ use URI::Escape;
 use XML::RSS;
 use Text::CSV_XS;
 use YAML ();
-
-use APR::Brigade ();
-use APR::Bucket ();
-use Apache2::Filter ();
-
-use APR::Const -compile => qw(SUCCESS BLOCK_READ);
-
-use constant IOBUFSIZE => 8192;
 
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
@@ -100,40 +84,26 @@ sub cgiapp_init {
         $atime=new Benchmark;
     }
 
-    my $session      = OpenBib::Session->instance({ apreq => $r , view => $view });
+    my $sessionID     = $r->cookies->{sessionID} || '';
+    
+    my $session      = OpenBib::Session->instance({ sessionID => $sessionID , view => $view });
 
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage -1 is ".timestr($timeall));
+    $logger->debug("Got sessionID $sessionID and effecitve sessionID is $session->{ID}");
+
+    # Neuer Cookie?, dann senden
+    if ($sessionID ne $session->{ID}){
+        $self->set_cookie('sessionID',$session->{ID}) ;
     }
+    
+    # Neue Session, dann loggen
+    $session->log_new_session_once($r);
 
     my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 0 is ".timestr($timeall));
-    }
-    
     my $dbinfo       = OpenBib::Config::DatabaseInfoTable->instance;
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 0.1 is ".timestr($timeall));
-    }
-
     my $locinfo      = OpenBib::Config::LocationInfoTable->instance;
-    my $useragent    = $r->headers_in->get('User-Agent');
+    my $useragent    = $r->user_agent;
     my $browser      = HTTP::BrowserDetect->new($useragent);
 
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 0.2 is ".timestr($timeall));
-    }
-    
     $self->param('config',$config);
     $self->param('session',$session);
     $self->param('user',$user);
@@ -257,8 +227,8 @@ sub cgiapp_prerun {
        # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
        # zu verwenden
        
-       my $method          = $self->query->param('_method') || '';
-       my $confirm         = $self->query->param('confirm') || 0;
+       my $method          = $r->param('_method') || '';
+       my $confirm         = $r->param('confirm') || 0;
        
        if ($method eq "DELETE" || $r->method eq "DELETE"){
            $logger->debug("Deletion shortcut");
@@ -281,6 +251,18 @@ sub cgiapp_prerun {
    }
    
    $logger->debug("Exit cgiapp_prerun");
+}
+
+sub cgiapp_get_query {
+	my $self = shift;
+
+	# Include OpenBib::Request instead of CGI.pm and related modules
+#	require OpenBib::Request;
+
+	# Get the query object
+#	my $r = OpenBib::Request->new();
+
+	return $self->param('r');
 }
 
 sub set_paging {
@@ -334,7 +316,7 @@ sub negotiate_content {
 
                 # Zusaetzlich auch Sprache verhandeln
                 my $args="";
-                if (!$self->query->param('l')){
+                if (!$r->param('l')){
                     if ($session->{lang}){
                         $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
                         $self->param('lang',$session->{lang});
@@ -344,12 +326,12 @@ sub negotiate_content {
                     }
                     
                     $args="?l=".$self->param('lang');
-                    if ($self->query->args()){
-                        $args="$args;".$self->query->args();
+                    if ($r->args()){
+                        $args="$args;".$r->args();
                     }
                 }
                 else {
-                    $args="?".$self->query->args();
+                    $args="?".$r->args();
                 }
 
                 my $path = "";
@@ -367,7 +349,7 @@ sub negotiate_content {
 
             # Wenn eine konkrete Repraesentation angesprochen wird, jedoch ohne Sprach-Parameter,
             # dann muss dieser verhandelt werden.
-            if (!$self->query->param('l') ){
+            if (!$r->param('l') ){
                 $logger->debug("Specific representation given, but without language - negotiating");
                 
                 # Pfade sind immer mit base_loc und view
@@ -384,7 +366,7 @@ sub negotiate_content {
                 
                 my $args = "?l=".$self->param('lang');
                 
-                $args=$args.";".$self->query->args() if ($self->query->args());
+                $args=$args.";".$r->args() if ($r->args());
 
                 my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').$args;
             
@@ -402,7 +384,7 @@ sub negotiate_content {
         }
         else {
             $logger->debug("No additional negotiation necessary");
-            $logger->debug("Current URL is ".$self->param('path')." with args ".$self->query->args());
+            $logger->debug("Current URL is ".$self->param('path')." with args ".$r->args());
         }
     }
     
@@ -420,12 +402,12 @@ sub alter_negotiated_language {
     my $session = $self->param('session');
 
     # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
-    if ($self->query->param('l')){
-        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$self->query->param('l'));
-        $self->param('lang',$self->query->param('l'));
+    if ($r->param('l')){
+        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$r->param('l'));
+        $self->param('lang',$r->param('l'));
         
         # Setzen als Cookie
-        $session->set_cookie($r,'lang',$self->param('lang'));
+        $self->set_cookie('lang',$self->param('lang'));
     }
     # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
     elsif ($session->{lang}){
@@ -451,12 +433,12 @@ sub process_uri {
     my $complete_path_prefix = "$path_prefix/$view";
     
     # Letztes Pfad-Element bestimmen
-    my $uri    = $r->parsed_uri;
-    my $path   = $uri->path;
-    my $scheme = $uri->scheme || 'http';
+    my $uri    = $r->request_uri;
+    my $path   = $r->path;
+    my $scheme = $r->scheme || 'http';
     my $args   = $r->args;
 
-    my $forwarded_proto = $r->headers_in->get('X-Forwarded-Proto');
+    my $forwarded_proto = $r->header('X-Forwarded-Proto');
 
     $logger->debug("X-Forwarded-Proto: $forwarded_proto");
 
@@ -466,7 +448,7 @@ sub process_uri {
 
     my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
     
-    $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$self->query->args());
+    $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$r->args);
     
     if (! $config->strip_view_from_uri($view)){
         $path_prefix = $complete_path_prefix;
@@ -503,7 +485,7 @@ sub process_uri {
     $self->param('path',$path);
     $self->param('scheme',$scheme);
 
-    my $url = $uri->unparse;
+    my $url = $r->request_uri;
     
     $self->param('url',$url);
 }
@@ -513,6 +495,8 @@ sub personalize_uri {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $r = $self->param('r');
     
     # Personalisierte URIs
     if ($self->param('users_loc')){
@@ -541,8 +525,8 @@ sub personalize_uri {
             
             $dispatch_url .=$path;
             
-            if ($self->query->args()){
-                $dispatch_url.="?".$self->query->args();
+            if ($r->args()){
+                $dispatch_url.="?".$r->args();
             }
 
             $logger->debug("Dispatching to $dispatch_url");
@@ -551,7 +535,9 @@ sub personalize_uri {
             return;            
         }
         else {
-            $logger->debug("No Dispatch: User: $user->{ID} / Representation:$representation:");
+            if (defined $user->{ID} && defined $representation){
+                $logger->debug("No Dispatch: User: $user->{ID} / Representation:$representation:");
+            }   
         }   
     }
     elsif ($self->param('admin_loc')){
@@ -580,8 +566,8 @@ sub personalize_uri {
             
             $dispatch_url .=$path;
             
-            if ($self->query->args()){
-                $dispatch_url.="?".$self->query->args();
+            if ($r->args()){
+                $dispatch_url.="?".$r->args();
             }
 
             $logger->debug("Dispatching to $dispatch_url");
@@ -610,8 +596,10 @@ sub set_content_type_from_uri {
 
     my ($representation) = $uri =~m/^.*?\/[^\/]*?\.($suffixes)$/;
 
-    $logger->debug("Setting type from URI $uri. Got Represenation $representation");
-
+    if (defined $representation){
+        $logger->debug("Setting type from URI $uri. Got Represenation $representation");
+    }
+    
     # Korrektur des ausgehandelten Typs bei direkter Auswahl einer bestimmten Repraesentation
     if (defined $representation && $config->{content_type_map_rev}{$representation}){
         $self->param('content_type',$config->{content_type_map_rev}{$representation});
@@ -631,8 +619,8 @@ sub negotiate_type {
     my $config         = OpenBib::Config->instance;    
 
     
-    my $content_type = $r->headers_in->{'Content-Type'} || '';
-    my $accept       = $r->headers_in->{'Accept'} || '';
+    my $content_type = $r->header('Content-Type') || '';
+    my $accept       = $r->header('Accept') || '';
     my @accepted_types = ();
 
     foreach my $item (split '\s*,\s*', $accept){
@@ -693,7 +681,7 @@ sub negotiate_language {
     my $r              = $self->param('r');
     my $config         = $self->param('config');
     
-    my $lang         = $r->headers_in->{'Accept-Language'} || '';
+    my $lang         = $r->header('Accept-Language') || '';
     my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
     
     if ($logger->is_debug){
@@ -848,7 +836,7 @@ sub print_page {
     my $path_prefix    = $self->param('path_prefix');
     my $path           = $self->param('path');
     my $representation = $self->param('representation');
-    my $status         = $self->param('status') || Apache2::Const::OK;
+    my $status         = $self->param('status') || 200;
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $location       = $self->param('location');
     my $url            = $self->param('url');
@@ -871,7 +859,9 @@ sub print_page {
     });
 
     $logger->debug("Using database/view specific Template $templatename");
-  
+
+    my $content = "";
+
     my $template = Template->new({ 
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
@@ -881,17 +871,9 @@ sub print_page {
         COMPILE_EXT => '.ttc',
         COMPILE_DIR => '/tmp/ttc',
         STAT_TTL => 60,  # one minute
-        OUTPUT         => $r,    # Output geht direkt an Apache Request
+        OUTPUT         => \$content,    # Output geht in Scalar-Ref
         RECURSION      => 1,
     });
-  
-    # Dann Ausgabe des neuen Headers
-    $r->content_type($content_type);
-
-    # Location- und Content-Location-Header setzen
-    my $head = $r->headers_out;
-    $head->set('Location' => $location);
-    $head->set('Content-Location' => $location);
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -900,13 +882,16 @@ sub print_page {
     }
 
     $template->process($templatename, $ttdata) || do {
-        $r->log_reason($template->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->fatal($template->error());
+        return;
     };
 
-    if ($self->param('status')){
-        $r->status($self->param('status'));
-    }
+    # Location- und Content-Location-Header setzen    
+    $self->header_type('header');
+    $self->header_add('Status' => $status) if ($status);
+    $self->header_add('Content-Type' => $content_type) if ($content_type);
+    $self->header_add('Content-Location' => $location) if ($location);
+
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -914,7 +899,9 @@ sub print_page {
         $logger->info("Total time until stage 2 is ".timestr($timeall));
     }
 
-    return;
+#    $logger->debug("Template-Output: ".$content);
+    
+    return \$content;
 }
 
 sub add_default_ttdata {
@@ -1312,9 +1299,11 @@ sub to_cgi_params {
 
     my @cgiparams = ();
 
-    if ($self->query->param){
-        foreach my $param (keys %{$self->query->param}){
-            next unless ($self->query->param($param));
+    my $r            = $self->param('r');
+
+    if ($r->parameters){
+        foreach my $param (keys %{$r->parameters}){
+            next unless ($r->param($param));
             $logger->debug("Processing $param");
             if (exists $arg_ref->{change}->{$param}){
                 push @cgiparams, {
@@ -1323,7 +1312,7 @@ sub to_cgi_params {
                 };
             }
             elsif (! exists $exclude_ref->{$param}){
-                my @values = $self->query->param($param);
+                my @values = $r->param($param);
                 if (@values){
                     foreach my $value (@values){
                         push @cgiparams, {
@@ -1335,7 +1324,7 @@ sub to_cgi_params {
                 else {
                     push @cgiparams, {
                         param => $param,
-                        val => decode_utf8(uri_unescape($self->query->param($param))),
+                        val => decode_utf8(uri_unescape($r->param($param))),
                     };
                 }
             }
@@ -1407,34 +1396,8 @@ sub read_json_input {
     my $self = shift;
     
     my $r  = $self->param('r');
-    
-    my $bb = APR::Brigade->new($r->pool,
-                               $r->connection->bucket_alloc);
-    
-    my $data = '';
-    my $seen_eos = 0;
-    do {
-        $r->input_filters->get_brigade($bb, Apache2::Const::MODE_READBYTES,
-                                       APR::Const::BLOCK_READ, IOBUFSIZE);
         
-        for (my $b = $bb->first; $b; $b = $bb->next($b)) {
-            if ($b->is_eos) {
-                $seen_eos++;
-                last;
-            }
-            
-            if ($b->read(my $buf)) {
-                $data .= $buf;
-            }
-            
-            $b->remove; # optimization to reuse memory
-        }
-        
-    } while (!$seen_eos);
-    
-    $bb->destroy;
-    
-    return $data;
+    return $r->content;
 }
 
 sub parse_valid_input {
@@ -1543,7 +1506,30 @@ sub dispatch_to_representation {
     my $logger = get_logger();
 
     $logger->debug("Dispatching to representation ".$self->param('dispatch_url'));
-    return $self->redirect($self->param('dispatch_url'),'303 See Other');
+
+    $self->redirect($self->param('dispatch_url'),'303');
+    
+    return;
+}
+
+sub redirect {
+    my ($self,$url,$status) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $status = $status || '302 Found';
+
+    $self->header_type('redirect');
+    $self->header_props({'Status' => $status});
+#    $self->header_add('Window-Target' => '_top');
+    $self->header_add({'Location' => $url}) if ($url);
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Syck::Dump($self->{__HEADER_PROPS}));
+    }
+    
+    return;
 }
 
 sub print_authorization_error {
@@ -1559,21 +1545,19 @@ sub print_authorization_error {
 
     if ($self->param('representation') eq "html"){
         # Aufruf-URL
-        my $return_uri  = uri_escape($r->parsed_uri->path);
+        my $return_uri  = uri_escape($r->request_uri);
         
         # Return-URL in der Session abspeichern
-
+        
         $logger->debug("Authorization error: Redirecting to $return_uri");
         
-        return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",'303 See Other');
-    }        
-    else {
-        $self->print_warning("Authorization error",1);
-        $logger->debug("Authorization error");
-        $r->status(Apache2::Const::FORBIDDEN);
+        return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",303);
     }
-
-    return;
+    else {
+        $logger->debug("Authorization error");
+        $self->header_add('Status' => 403); # FORBIDDEN
+        return;
+    }
 }
 
 sub authorization_successful {
@@ -1598,12 +1582,12 @@ sub check_http_basic_authentication {
     # Wenn beim Aufruf ein Username und ein Passwort uebergeben wird, dann
     # wird der Nutzer damit authentifiziert und die Session automatisch authorisiert
     
-    # Es interessiert nicht der per so in der Apache-Konfiguration openbib.conf definierte Authentifizierungstyp,
+    # Es interessiert nicht der per so in der PSGI-Konfiguration portal.psgi definierte Authentifizierungstyp,
     # sondern der etwaig mit dem aktuellen Request gesendete Typ!
     my $http_authtype = "";
     
-    if (defined $r->headers_in->{'Authorization'}){
-        ($http_authtype) = $r->headers_in->{'Authorization'} =~/^(\S+)\s+/; #  $r->ap_auth_type(); 
+    if (defined $r->header('Authorization')){
+        ($http_authtype) = $r->header('Authorization') =~/^(\S+)\s+/; #  $r->ap_auth_type(); 
     }
     
     $logger->debug("HTTP Authtype: $http_authtype");
@@ -1616,7 +1600,7 @@ sub check_http_basic_authentication {
         
         $logger->debug("get_basic_auth: Status $status");
         
-        return $status unless $status == Apache2::Const::OK;
+        return $status unless $status == 200; # OK
         
         my $http_user     = $r->user;
         
@@ -1669,8 +1653,38 @@ sub tunnel_through_authenticator {
     
     my $new_location = "$config->{base_loc}/$view/$config->{login_loc}?authenticatorid=$authenticatorid;redirect_to=$return_uri";
     
-    return $self->redirect($new_location,'303 See Other');
+    return $self->redirect($new_location,303);
 }
 
+sub set_cookie {
+    my ($self,$name,$value)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    if (!($name || $value)){
+        $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
+        return;
+    }   
+    
+    $logger->debug("Setting cookie $name to $value");
+   
+    my $cookie = CGI::Cookie->new(
+        -name    => $name,
+        -value   => $value,
+        -expires => '+24h',
+        -path    => $config->{base_loc},
+    );
+
+    my $cookie_string = $cookie->as_string();
+    
+    $self->header_add('Set-Cookie', $cookie_string) if ($cookie_string);
+
+    $logger->debug("Setting cookie $name to $value with Set-Cookie: ".$cookie_string);
+    
+    return;
+}
 
 1;

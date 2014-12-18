@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Persons.pm
+#  OpenBib::Handler::PSGI::Persons.pm
 #
 #  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Persons;
+package OpenBib::Handler::PSGI::Persons;
 
 use strict;
 use warnings;
@@ -38,7 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Record::Person;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -126,7 +126,7 @@ sub show_record {
         $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 
-    return Apache2::Const::OK;
+    return;
 }
 
 1;

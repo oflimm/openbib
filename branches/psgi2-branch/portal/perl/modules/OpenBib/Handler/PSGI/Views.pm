@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Views
+#  OpenBib::Handler::PSGI::Views
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Views;
+package OpenBib::Handler::PSGI::Views;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -59,9 +53,7 @@ use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
 
-use CGI::Application::Plugin::Redirect;
-
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::PSGI::Admin';
 
 # Run at startup
 sub setup {
@@ -101,9 +93,7 @@ sub show_collection {
         views      => $viewinfo_ref,
     };
     
-    $self->print_page($config->{tt_views_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_views_tname},$ttdata);
 }
 
 sub show_record {
@@ -122,8 +112,7 @@ sub show_record {
 
     # View muss existieren
     unless ($config->view_exists($viewname)) {
-        $self->print_warning($msg->maketext("Ein View dieses Namens existiert nicht."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ein View dieses Namens existiert nicht."));
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -145,7 +134,7 @@ sub show_record {
         allrssfeeds => $all_rssfeeds_ref,
     };
     
-    $self->print_page($config->{tt_views_record_tname},$ttdata);
+    return $self->print_page($config->{tt_views_record_tname},$ttdata);
 }
 
 1;

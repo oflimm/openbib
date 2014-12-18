@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::RSSFeeds
+#  OpenBib::Handler::PSGI::RSSFeeds
 #
 #  Dieses File ist (C) 2006-2010 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,16 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::RSSFeeds;
+package OpenBib::Handler::PSGI::RSSFeeds;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
 use DBI;
 use Encode 'decode_utf8';
 use JSON::XS;
@@ -50,7 +47,7 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -97,9 +94,7 @@ sub show_collection {
         rssfeedinfo => $rssfeedinfo_ref,
     };
 
-    $self->print_page($config->{tt_rssfeeds_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_rssfeeds_tname},$ttdata);
 }
 
 1;

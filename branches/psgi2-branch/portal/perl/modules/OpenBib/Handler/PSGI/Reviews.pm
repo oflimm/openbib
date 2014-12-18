@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Reviews.pm
+#  OpenBib::Handler::PSGI::Reviews.pm
 #
 #  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,17 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Reviews;
+package OpenBib::Handler::PSGI::Reviews;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;
@@ -57,7 +53,7 @@ use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -89,7 +85,7 @@ sub show_collection_by_isbn_negotiate {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query  = $r;
 
     my $session = OpenBib::Session->instance({ apreq => $r });
 
@@ -138,9 +134,7 @@ sub show_collection_by_isbn_negotiate {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
@@ -149,8 +143,7 @@ sub show_collection_by_isbn_negotiate {
     my $targettype = $user->get_targettype_of_session($session->{ID});
 
     if (!$user->{ID}){
-        $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
-        return Apache2::Const::OK;
+        return $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
     }
     
     my $reviewlist_ref = $user->get_reviews({username => $username});
@@ -177,9 +170,7 @@ sub show_collection_by_isbn_negotiate {
         msg              => $msg,
     };
     
-    $self->print_page($config->{tt_reviews_by_isbn_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_reviews_by_isbn_tname},$ttdata);
 }
 
 sub show_record {
@@ -216,8 +207,7 @@ sub show_record {
     }
 
     if (! exists $review_ref->{id}){
-        $self->print_warning("Diese Rezension existiert nicht.");
-        return Apache2::Const::OK;
+        return $self->print_warning("Diese Rezension existiert nicht.");
     }
     
     # TT-Data erzeugen
@@ -226,9 +216,7 @@ sub show_record {
         review           => $review_ref,
     };
     
-    $self->print_page($config->{tt_reviews_record_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_reviews_record_tname},$ttdata);
 }
 
 1;

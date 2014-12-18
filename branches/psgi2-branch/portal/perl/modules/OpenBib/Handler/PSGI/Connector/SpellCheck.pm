@@ -33,11 +33,6 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::RequestIO (); # print, rflush
-use Apache2::RequestRec ();
 use Benchmark;
 use DBI;
 use Encode 'decode_utf8';
@@ -92,7 +87,7 @@ sub show {
     # CGI Args
     my $word = $query->param('q') || '';
 
-    return Apache2::Const::OK if (!$word || $word=~/\d/);
+    return if (!$word || $word=~/\d/);
     
     # Blacklist von unterdrueckten Worten, die leider in den entsprechenden Aspell-Dictionaries vorhanden sind
     # ToDo: Entfernung auf dem Dictionary-Level. Hier kann es aber zu Lizenzproblemen kommen, wenn diese geaendert werden.

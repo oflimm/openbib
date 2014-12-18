@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::LitLists.pm
+#  OpenBib::Handler::PSGI::LitLists.pm
 #
 #  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,16 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::LitLists;
+package OpenBib::Handler::PSGI::LitLists;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Reload;
-use Apache2::Request;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
@@ -63,7 +60,7 @@ use OpenBib::Record::Classification;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -130,8 +127,7 @@ sub show_collection {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlists_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_litlists_tname},$ttdata);
 }
 
 # Alle oeffentlichen Literaturlisten
@@ -167,8 +163,7 @@ sub show_collection_recent {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlists_recent_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_litlists_recent_tname},$ttdata);
 }
 
 sub show_collection_by_topic {
@@ -201,8 +196,7 @@ sub show_collection_by_topic {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlists_by_topic_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_litlists_by_topic_tname},$ttdata);
 }
 
 sub show_collection_by_single_topic_recent {
@@ -239,8 +233,7 @@ sub show_collection_by_single_topic_recent {
         public_litlists=> $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlists_by_single_topic_recent_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_litlists_by_single_topic_recent_tname},$ttdata);
 }
 
 sub show_collection_by_single_topic {
@@ -286,8 +279,7 @@ sub show_collection_by_single_topic {
         public_litlists => $public_litlists_ref,
     };
     
-    $self->print_page($config->{tt_litlists_by_single_topic_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_litlists_by_single_topic_tname},$ttdata);
 }
 
 sub show_collection_by_single_userxxx {
@@ -404,9 +396,7 @@ sub show_collection_by_single_userxxx {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlists_record_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_litlists_record_tname},$ttdata);
 }
 
 sub show_collection_by_single_user {
@@ -524,9 +514,7 @@ sub show_collection_by_single_user {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlists_record_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_litlists_record_tname},$ttdata);
 }
 
 sub return_baseurl {
@@ -546,13 +534,6 @@ sub return_baseurl {
     $logger->debug("Returning to $new_location");
 
     return $self->redirect($new_location,'303 See Other');
-
-#    $self->query->method('GET');
-#    $self->query->content_type('text/html');
-#    $self->query->headers_out->add(Location => $new_location);
-#    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
 }
 
 sub show_record {
@@ -607,9 +588,8 @@ sub show_record {
                 return $self->tunnel_through_authenticator;            
             }
             else {
-                $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+                return $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
             }   
-            return Apache2::Const::OK;
         }
 
         if (!$user_owns_litlist){
@@ -665,9 +645,7 @@ sub show_record {
         targettype     => $targettype,
     };
     
-    $self->print_page($config->{tt_litlists_record_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_litlists_record_tname},$ttdata);
 }
 
 sub get_input_definition {

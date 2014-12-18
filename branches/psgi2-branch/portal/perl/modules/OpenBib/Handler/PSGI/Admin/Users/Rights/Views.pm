@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::Users::Rights::Views
+#  OpenBib::Handler::PSGI::Admin::Users::Rights::Views
 #
 #  Dieses File ist (C) 2014 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::Users::Rights::Views;
+package OpenBib::Handler::PSGI::Admin::Users::Rights::Views;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common :http);
-use Apache2::Log;
-use Apache2::Reload;
-use Apache2::RequestRec ();
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
@@ -62,7 +56,7 @@ use OpenBib::User;
 
 use CGI::Application::Plugin::Redirect;
 
-use base 'OpenBib::Handler::Apache::Admin';
+use base 'OpenBib::Handler::PSGI::Admin';
 
 # Run at startup
 sub setup {
@@ -116,9 +110,7 @@ sub update_record {
 
     $user->update_user_rights_view($thisuserinfo_ref);
 
-    $self->query->method('GET');
-    $self->query->headers_out->add(Location => "$path_prefix/$config->{admin_loc}/$config->{users_loc}");
-    $self->query->status(Apache2::Const::REDIRECT);
+    $self->redirect("$path_prefix/$config->{admin_loc}/$config->{users_loc}");
 }
 
 1;

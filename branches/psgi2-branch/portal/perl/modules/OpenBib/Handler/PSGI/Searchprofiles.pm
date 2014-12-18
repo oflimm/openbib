@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Searchprofiles.pm
+#  OpenBib::Handler::PSGI::Searchprofiles.pm
 #
 #  Copyright 2011-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Searchprofiles;
+package OpenBib::Handler::PSGI::Searchprofiles;
 
 use strict;
 use warnings;
@@ -39,7 +39,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Record::Title;
 use OpenBib::Template::Utilities;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -82,9 +82,7 @@ sub show_collection {
         year       => $year,
     };
     
-    $self->print_page($config->{tt_searchprofiles_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_searchprofiles_tname},$ttdata);
 }
 
 sub show_record {
@@ -125,10 +123,7 @@ sub show_record {
         dbinfo            => $dbinfotable,
     };
 
-    $self->print_page($config->{tt_searchprofiles_record_tname},$ttdata);
-
-    $logger->debug("Done showing record");
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_searchprofiles_record_tname},$ttdata);
 }
 
 1;

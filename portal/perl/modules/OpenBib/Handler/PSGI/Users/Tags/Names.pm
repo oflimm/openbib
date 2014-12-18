@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Tags::Names.pm
+#  OpenBib::Handler::PSGI::Users::Tags::Names.pm
 #
 #  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,12 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Tags::Names;
+package OpenBib::Handler::PSGI::Users::Tags::Names;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
-
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
-use Apache2::URI ();
-use APR::URI ();
 
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
@@ -60,7 +53,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Users';
+use base 'OpenBib::Handler::PSGI::Users';
 
 # Run at startup
 sub setup {
@@ -181,9 +174,7 @@ sub show_collection {
         username             => $username,
     };
 
-    $self->print_page($config->{tt_users_tags_names_tname},$ttdata,$r);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_tags_names_tname},$ttdata,$r);
 }
 
 sub show_record {
@@ -274,9 +265,7 @@ sub show_record {
         tagid            => $tagid,
     };
 
-    $self->print_page($config->{'tt_users_tags_names_record_tname'},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_users_tags_names_record_tname'},$ttdata);
 }
 
 sub update_record {
@@ -302,10 +291,8 @@ sub update_record {
             return $self->tunnel_through_authenticator;            
         }
         else {
-            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+            return $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
         }   
-
-        return Apache2::Const::OK;
     }
 
     # CGI / JSON input
@@ -315,15 +302,12 @@ sub update_record {
     my $status = $user->rename_tag($input_data_ref);
     
     if ($status){
-        $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
-        return Apache2::Const::OK;
+        return $self->print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.");
     }
 
     if ($self->param('representation') eq "html"){
-        $self->return_baseurl;
+        return $self->return_baseurl;
     }
-
-    return;
 }
 
 sub show_collection_form {
@@ -362,8 +346,7 @@ sub show_collection_form {
         targettype => $targettype,
     };
     
-    $self->print_page($config->{tt_users_tags_record_edit_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_tags_record_edit_tname},$ttdata);
 }
 
 sub create_record {
@@ -394,13 +377,11 @@ sub create_record {
     if (! $user->{ID} | $user->{ID} ne $userid){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
-            
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            my $return_uri =  uri_escape($r->request_uri);
+            return $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -421,11 +402,10 @@ sub create_record {
     
     if ($self->param('representation') eq "html"){
         my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$input_data_ref->{dbname}/id/$input_data_ref->{titleid}.html?l=$lang;no_log=1";
-        
-        $self->query->method('GET');
-        $self->query->content_type('text/html');
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
+
+        # TODO Get?
+        $self->header_add('Content-Type' => 'text/html');
+        $self->redirect($new_location);
     }
     
     return;
@@ -458,13 +438,11 @@ sub delete_record {
     if (! $user->{ID} || $user->{ID} ne $userid){
         if ($self->param('representation') eq "html"){
             # Aufruf-URL
-            my $return_uri = uri_escape($r->parsed_uri->unparse);
-            
-            $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            my $return_uri =  uri_escape($r->request_uri);
+            return $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         }
         else  {
-            $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
@@ -482,12 +460,9 @@ sub delete_record {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
+    # TODO Get?
+    $self->header_add('Content-Type' => 'text/html');
+    return $self->redirect($new_location);
 }
 
 sub return_baseurl {
@@ -503,12 +478,9 @@ sub return_baseurl {
     
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{tags_loc}/names.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
+    # TODO Get?
+    $self->header_add('Content-Type' => 'text/html');
+    return $self->redirect($new_location);
 }
 
 sub get_input_definition {

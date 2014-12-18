@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Registrations
+#  OpenBib::Handler::PSGI::Users::Registrations
 #
 #  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,18 +27,12 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Registrations;
+package OpenBib::Handler::PSGI::Users::Registrations;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
-
-use Apache2::Connection ();
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request();          # CGI-Handling (or require)
-use APR::Table;
 
 use Email::Valid;               # EMail-Adressen testen
 use Encode 'decode_utf8';
@@ -53,7 +47,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
@@ -117,9 +111,8 @@ sub show {
         
         lang       => $queryoptions->get_option('l'),
     };
-    $self->print_page($config->{tt_users_registrations_tname},$ttdata);
- 
-    return Apache2::Const::OK;
+    
+    return $self->print_page($config->{tt_users_registrations_tname},$ttdata);
 }
 
 sub mail_confirmation {
@@ -161,24 +154,20 @@ sub mail_confirmation {
     }
 
     if ($username eq "" || $password1 eq "" || $password2 eq "") {
-        $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"));
     }
 
     if ($password1 ne $password2) {
-        $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht Ã¼berein."));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht Ã¼berein."));
     }
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($username)){
-        $self->print_warning($msg->maketext("Sie haben keine gÃ¼tige Mailadresse eingegeben. Gehen Sie bitte [_1]zurÃ¼ck[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben keine gÃ¼tige Mailadresse eingegeben. Gehen Sie bitte [_1]zurÃ¼ck[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
     }
     
     if ($user->user_exists($username)) {
-        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurÃ¼ck[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurÃ¼ck[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
     }
     
     # Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
@@ -190,8 +179,7 @@ sub mail_confirmation {
         );
         
         unless ( $recaptcha_result->{is_valid} ) {
-            $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurÃ¼ck[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
-            return Apache2::Const::OK;
+            return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurÃ¼ck[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
         }
     }
 
@@ -227,8 +215,9 @@ sub mail_confirmation {
     });
 
     $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
-        $r->log_error($maintemplate->error(), $r->filename);
-        return Apache2::Const::SERVER_ERROR;
+        $logger->error($maintemplate->error());
+        $self->header_add('Status','400'); # Server Error
+        return;
     };
 
     my $mailmsg = MIME::Lite->new(
@@ -253,9 +242,7 @@ sub mail_confirmation {
         username      => $username,
     };
 
-    $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
 }
 
 sub register {
@@ -299,8 +286,7 @@ sub register {
 
       # Wurde dieser Nutzername inzwischen bereits registriert?
       if ($user->user_exists($username)) {
-        $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}.html\">","</a>"));
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}.html\">","</a>"));
       }
 
       # OK, neuer Nutzer -> eintragen
@@ -326,9 +312,7 @@ sub register {
         username   => $username,
     };
 
-    $self->print_page($config->{tt_users_registrations_success_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_registrations_success_tname},$ttdata);
 }
 
 1;

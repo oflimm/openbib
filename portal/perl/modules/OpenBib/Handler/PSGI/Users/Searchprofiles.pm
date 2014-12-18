@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Searchprofiles
+#  OpenBib::Handler::PSGI::Users::Searchprofiles
 #
 #  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,17 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Searchprofiles;
+package OpenBib::Handler::PSGI::Users::Searchprofiles;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest ();
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -51,7 +47,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Users';
+use base 'OpenBib::Handler::PSGI::Users';
 
 # Run at startup
 sub setup {
@@ -157,8 +153,7 @@ sub show_collection {
         dbinfo         => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_users_searchprofiles_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_searchprofiles_tname},$ttdata);
 }
 
 sub show_record {
@@ -222,8 +217,7 @@ sub show_record {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_users_searchprofiles_record_tname},$ttdata,$r);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_searchprofiles_record_tname},$ttdata,$r);
 }
 
 sub show_record_form {
@@ -280,8 +274,7 @@ sub show_record_form {
         catdb          => \@catdb,
     };
     
-    $self->print_page($config->{tt_users_searchprofiles_record_edit_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_searchprofiles_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -364,8 +357,7 @@ sub create_record {
 
     # Wurde ueberhaupt ein Profilname eingegeben?
     if (!$profilename) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keinen Profilnamen eingegeben!"),$r,$msg);
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Sie haben keinen Profilnamen eingegeben!"));
     }
     
     my $profileid = $user->dbprofile_exists($profilename);
@@ -384,17 +376,16 @@ sub create_record {
     
     if ($self->param('representation') eq "html"){
         my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{searchprofiles_loc}/id/$profileid/edit";
-        
-        $self->query->method('GET');
-        $self->query->content_type('text/html');
-        $self->query->headers_out->add(Location => $new_location);
-        $self->query->status(Apache2::Const::REDIRECT);
+
+        # TODO Get?
+        $self->header_add('Content-Type' => 'text/html');
+        $self->redirect($new_location);
     }
     else {
         $logger->debug("Weiter zum Record");
         if ($profileid){
             $logger->debug("Weiter zum Record $profileid");
-            $self->param('status',Apache2::Const::HTTP_CREATED);
+            $self->param('status','201');
             $self->param('searchprofileid',$profileid);
             $self->param('location',"$location/$profileid");
             $self->show_record;
@@ -456,9 +447,8 @@ sub confirm_delete_record {
     };
     
     $logger->debug("Asking for confirmation");
-    $self->print_page($config->{tt_users_searchprofiles_record_delete_confirm_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+
+    return $self->print_page($config->{tt_users_searchprofiles_record_delete_confirm_tname},$ttdata);
 }
 
 sub return_baseurl {
@@ -477,10 +467,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{searchprofiles_loc}.html?l=$lang";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO Get?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

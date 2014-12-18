@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Reviews.pm
+#  OpenBib::Handler::PSGI::Users::Reviews.pm
 #
 #  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,17 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Reviews;
+package OpenBib::Handler::PSGI::Users::Reviews;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;
@@ -56,7 +52,7 @@ use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Users';
+use base 'OpenBib::Handler::PSGI::Users';
 
 # Run at startup
 sub setup {
@@ -125,9 +121,7 @@ sub show_collection {
         reviews          => $reviewlist_ref,
     };
     
-    $self->print_page($config->{tt_users_reviews_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_reviews_tname},$ttdata);
 }
 
 sub create_record {
@@ -152,7 +146,7 @@ sub update_record {
     
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query  = $r;
 
     my $session = OpenBib::Session->instance({ apreq => $r });
 
@@ -201,9 +195,7 @@ sub update_record {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
@@ -213,8 +205,7 @@ sub update_record {
 
 
     if (!$user->{ID}){
-        $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
-        return Apache2::Const::OK;
+        return $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
     }
     
     $logger->debug("Aufnehmen/Aendern des Reviews");
@@ -247,7 +238,7 @@ sub delete_record {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query  = $r;
 
     my $session = OpenBib::Session->instance({ apreq => $r });
 
@@ -258,9 +249,7 @@ sub delete_record {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
@@ -268,8 +257,7 @@ sub delete_record {
     my $username  = $user->get_username();
 
     if (!$user->{ID}){
-        $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
-        return Apache2::Const::OK;
+        return $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
     }
     
     $logger->debug("Loeschung des Reviews");
@@ -298,7 +286,7 @@ sub show_record_form {
 
     my $config = OpenBib::Config->instance;
     
-    my $query  = Apache2::Request->new($r);
+    my $query  = $r;
 
     my $session = OpenBib::Session->instance({ apreq => $r });
 
@@ -346,27 +334,22 @@ sub show_record_form {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
-        $self->print_warning($msg->maketext("Ungültige Session"));
-
-        return Apache2::Const::OK;
+        return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     if (! $user->{ID}){
         # Aufruf-URL
-        my $return_uri = uri_escape($r->parsed_uri->unparse);
+        my $return_uri = uri_escape($r->request_uri);
         
-        $r->internal_redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
-        
-        return Apache2::Const::OK;
+        return $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
     }
 
     my $user_owns_review = ($user->{ID} eq $user->get_review_owner({reviewid => $reviewid}))?1:0;
 
     unless($user_owns_review){
-        $self->print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}");
-        return Apache2::Const::OK;
+        return $self->print_warning("Der Zugriff ist nicht authorisiert. Melden Sie sich als zugeh&ouml;riger Nutzer an. User:$user->{ID}");
     }
 
     my $username   = $user->get_username();
@@ -396,9 +379,7 @@ sub show_record_form {
         msg              => $msg,
     };
     
-    $self->print_page($config->{tt_reviews_edit_tname},$ttdata);
-    
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_reviews_edit_tname},$ttdata);
 }
 
 sub return_baseurl {
@@ -417,10 +398,9 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/reviews.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
 
     return;
 }

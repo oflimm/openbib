@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Users::Tags.pm
+#  OpenBib::Handler::PSGI::Users::Tags.pm
 #
 #  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,19 +27,13 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Users::Tags;
+package OpenBib::Handler::PSGI::Users::Tags;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common);
-use Apache2::Reload;
-use Apache2::Request ();
-use Apache2::SubRequest (); # internal_redirect
-use Apache2::URI ();
-use APR::URI ();
 use CGI::Application::Plugin::Redirect;
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
@@ -60,7 +54,7 @@ use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::Apache::Users';
+use base 'OpenBib::Handler::PSGI::Users';
 
 # Run at startup
 sub setup {
@@ -172,9 +166,8 @@ sub show_collection {
         nav           => $nav,
         private_tags  => $private_tags_ref,
     };
-    $self->print_page($config->{tt_users_tags_tname},$ttdata);
-
-    return Apache2::Const::OK;
+    
+    return $self->print_page($config->{tt_users_tags_tname},$ttdata);
 }
 
 sub show_record {
@@ -270,33 +263,7 @@ sub show_record {
         tagid            => $tagid,
     };
 
-    $self->print_page($config->{'tt_users_tags_record_tname'},$ttdata);
-    
-#     $recordlist->print_to_handler({
-#         representation   => $representation,
-#         content_type     => $content_type,
-#         database         => $database,
-#         sortorder        => $sortorder,
-#         sorttype         => $sorttype,
-#         apachereq        => $r,
-#         stylesheet       => $stylesheet,
-#         view             => $view,
-#         hits             => $hits,
-#         offset           => $offset,
-#         hitrange         => $hitrange,
-#         query            => $query,
-#         template         => 'tt_users_tags_record_tname',
-#         location         => 'users_loc',
-#         parameter        => {
-#             username     => $username,
-#             tag          => $tag,
-#             private_tags => 1,
-#         },
-        
-#         msg              => $msg,
-#     });
-
-    return Apache2::Const::OK;
+    return $self->print_page($config->{'tt_users_tags_record_tname'},$ttdata);
 }
 
 sub show_collection_form {
@@ -328,10 +295,8 @@ sub show_collection_form {
             return $self->tunnel_through_authenticator('POST');            
         }
         else {
-            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+            return $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
         }   
-
-        return Apache2::Const::OK;
     }
 
     my $targettype=$user->get_targettype_of_session($session->{ID});
@@ -341,8 +306,7 @@ sub show_collection_form {
         targettype => $targettype,
     };
     
-    $self->print_page($config->{tt_users_tags_record_edit_tname},$ttdata);
-    return Apache2::Const::OK;
+    return $self->print_page($config->{tt_users_tags_record_edit_tname},$ttdata);
 }
 
 sub create_record {
@@ -373,10 +337,8 @@ sub create_record {
             return $self->tunnel_through_authenticator('POST');            
         }
         else {
-            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+            return $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
         }   
-
-        return Apache2::Const::OK;
     }
 
     # CGI / JSON input
@@ -393,11 +355,6 @@ sub create_record {
         if ($query->param('redirect_to')){
             my $new_location = uri_unescape($query->param('redirect_to'));
             return $self->redirect($new_location,'303 See Other');
-
-#             $self->query->method('GET');
-#             $self->query->content_type('text/html');
-#             $self->query->headers_out->add(Location => $new_location);
-#             $self->query->status(Apache2::Const::REDIRECT);            
         }
         else {
             $self->return_baseurl;
@@ -433,10 +390,8 @@ sub delete_record {
             return $self->tunnel_through_authenticator('POST');            
         }
         else {
-            $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
+            return $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
         }   
-
-        return Apache2::Const::OK;
     }
 
     if ($tagid && $user->{ID}){
@@ -447,13 +402,12 @@ sub delete_record {
         if ($query->param('redirect_to')){
             my $new_location = $query->param('redirect_to');
 
-            $self->query->method('GET');
-            $self->query->content_type('text/html');
-            $self->query->headers_out->add(Location => $new_location);
-            $self->query->status(Apache2::Const::REDIRECT);            
+            # TODO: Get?
+            $self->header_add('Content-Type','text/html');
+            $self->redirect($new_location);
         }
         else {
-            $self->return_baseurl;
+            return $self->return_baseurl;
         }
     }
 
@@ -474,12 +428,9 @@ sub return_baseurl {
     
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{tags_loc}.html";
 
-    $self->query->method('GET');
-    $self->query->content_type('text/html');
-    $self->query->headers_out->add(Location => $new_location);
-    $self->query->status(Apache2::Const::REDIRECT);
-
-    return;
+    # TODO: Get?
+    $self->header_add('Content-Type','text/html');
+    return $self->redirect($new_location);
 }
 
 sub get_input_definition {

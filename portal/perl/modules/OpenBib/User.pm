@@ -5408,7 +5408,7 @@ sub is_admin {
     my $config = OpenBib::Config->instance;
 
     # Statischer Admin-User aus portal.yml
-    return 1 if ($self->{ID} eq $config->{adminuser});
+    return 1 if (defined $self->{ID} && $self->{ID} eq $config->{adminuser});
 
     # Sonst: Normale Nutzer mit der der Admin-Role
     

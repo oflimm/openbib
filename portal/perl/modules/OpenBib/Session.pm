@@ -1615,8 +1615,10 @@ sub log_new_session_once {
     # Client-IP setzen
 
     my $remote_ip = $r->remote_host || '';
+
+    my $forwarded_for = $r->header('X-Forwarded-For');
     
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if (defined $forwarded_for && $forwarded_for =~ /([^,\s]+)$/) {
         $remote_ip = $1;
     }
     

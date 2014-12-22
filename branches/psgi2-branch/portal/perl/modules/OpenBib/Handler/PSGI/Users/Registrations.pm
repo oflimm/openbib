@@ -101,7 +101,7 @@ sub show {
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $r->connection->remote_ip($1);
     }
 
@@ -149,7 +149,7 @@ sub mail_confirmation {
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $r->connection->remote_ip($1);
     }
 
@@ -268,10 +268,11 @@ sub register {
     my $path_prefix    = $self->param('path_prefix');
     
 
+    my $client_ip = "";
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $r->connection->remote_ip($1);
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $client_ip = $1; # $r->connection->remote_ip($1);
     }
 
     # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Connector::AvailabilityImage
 #
-#  Dieses File ist (C) 2008-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -93,7 +93,7 @@ sub process_gbs {
     my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -184,7 +184,7 @@ sub process_bibsonomy {
     my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -241,7 +241,7 @@ sub process_ebooks {
     my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -294,7 +294,7 @@ sub process_ol {
     my $path_prefix    = $self->param('path_prefix');
 
     my $client_ip="";
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -395,7 +395,7 @@ sub process_wikipedia {
     my $lang           = $query->param('lang') || 'de';
 
     my $client_ip="";
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
     

@@ -99,6 +99,8 @@ sub get_db_histogram_of_occurence {
         $histogram_ref->{count}=$histogram_ref->{count}+1;
     }
 
+    $dbh->disconnect;
+    
     return $histogram_ref;
 }
 
@@ -204,6 +206,8 @@ sub get_similar_isbns {
         }
     }
 
+    $dbh->disconnect;
+    
     return $similar_isbn_ref;
 }
 
@@ -241,6 +245,8 @@ sub get_all_holdings {
         };
     }
 
+    $dbh->disconnect;
+    
     return $all_isbn_ref;
 }
 
@@ -378,8 +384,10 @@ sub enriched_content_to_bdb {
     }
 
 #    print YAML::Dump(\%enrichmntdata);
-    $request->finish();
+    
     $dbh->disconnect;
+
+    return;
 }
 
 sub get_common_holdings {
@@ -485,6 +493,8 @@ sub get_common_holdings {
         push @{$common_holdings_ref}, $this_item_ref;
     }
 
+    $dbh->disconnect;
+    
     return $common_holdings_ref;
 }
 
@@ -501,17 +511,31 @@ sub connectDB {
         $config->{enrichmntdbname} = $arg_ref->{enrichmntdbname};
     }
 
-    eval {
-        # UTF8: {'pg_enable_utf8'    => 1}
-        $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
-    };
-
-    if ($@){
-        $logger->fatal("Unable to connect schema to database $config->{enrichmntdbname}: DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}");
+    if ($self->{'enrichmntdbsingleton'}){
+        eval {        
+            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd}) or $logger->error_die($DBI::errstr);
+#            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $self->{enrichmntdbname}");
+        }
     }
+    else {
+        eval {
+            # UTF8: {'pg_enable_utf8'    => 1}
+            #        $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $config->{enrichmntdbname}: DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}");
+        }
 
-    return;
-
+    }
+    
+    return;    
 }
 
 sub DESTROY {

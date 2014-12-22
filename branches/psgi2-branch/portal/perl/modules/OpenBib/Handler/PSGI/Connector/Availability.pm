@@ -92,7 +92,7 @@ sub show_collection {
 
     my $client_ip="";
     
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -142,7 +142,7 @@ sub show_collection_by_isbn {
 
     my $client_ip="";
     
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -245,7 +245,7 @@ sub show_collection_by_bibkey {
 
     my $client_ip="";
     
-    if ($r->headers_in->get('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 

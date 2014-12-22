@@ -440,9 +440,9 @@ sub process_uri {
 
     my $forwarded_proto = $r->header('X-Forwarded-Proto');
 
-    $logger->debug("X-Forwarded-Proto: $forwarded_proto");
+    $logger->debug("X-Forwarded-Proto: $forwarded_proto") if (defined $forwarded_proto);
 
-    if ($forwarded_proto=~/^https/){
+    if (defined $forwarded_proto && $forwarded_proto=~/^https/){
 	$scheme = "https";
     }
 
@@ -466,7 +466,7 @@ sub process_uri {
 #    my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
     my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
 
-    $logger->debug("ID: $id");
+    $logger->debug("ID: $id") if ($id);
     
     if ($id){
         $location_uri.="/$id";
@@ -723,7 +723,7 @@ sub is_authenticated {
     my $msg            = $self->param('msg');
 
     $logger->debug("Args: Role: $role UserID: $userid");
-    $logger->debug("Session-UserID: ".$user->{ID});
+    $logger->debug("Session-UserID: ".$user->{ID}) if (defined $user->{ID});
     
 #     if (! $user->{ID} && $self->param('represenation') eq "html"){
 #         # Aufruf-URL
@@ -741,7 +741,7 @@ sub is_authenticated {
         return 1;
     }
     else {
-      $logger->debug("User authenticated as $user->{ID}, but doesn't match required userid $userid");
+      $logger->debug("User authenticated as $user->{ID}, but doesn't match required userid $userid") if (defined $user->{ID} && $userid);
 #      $self->print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"));
       return 0;
     }
@@ -763,9 +763,7 @@ sub print_warning {
         err_msg => $warning,
     };
 
-    $self->print_page($config->{tt_error_tname},$ttdata);
-  
-    return;
+    return $self->print_page($config->{tt_error_tname},$ttdata);
 }
 
 sub print_info {
@@ -784,9 +782,7 @@ sub print_info {
         info_nr  => $infonr,
     };
 
-    $self->print_page($config->{tt_info_message_tname},$ttdata);
-  
-    return;
+    retunr $self->print_page($config->{tt_info_message_tname},$ttdata);
 }
 
 sub print_json {
@@ -801,15 +797,13 @@ sub print_json {
     my $config         = $self->param('config');
 
     # Dann Ausgabe des neuen Headers
-    $r->content_type('application/json');
+    $self->header_add('Content-Type' => 'application/json');
 
     if ($logger->is_debug()){
         $logger->debug(YAML::Dump($json_ref))
     }
 
-    $r->print(encode_json($json_ref));
-
-    return ;    
+    return encoder_json($json_ref);
 }
 
 sub print_page {
@@ -899,7 +893,7 @@ sub print_page {
         $logger->info("Total time until stage 2 is ".timestr($timeall));
     }
 
-#    $logger->debug("Template-Output: ".$content);
+    $logger->debug("Template-Output: ".$content);
     
     return \$content;
 }
@@ -1522,7 +1516,6 @@ sub redirect {
 
     $self->header_type('redirect');
     $self->header_props({'Status' => $status});
-#    $self->header_add('Window-Target' => '_top');
     $self->header_add({'Location' => $url}) if ($url);
 
     if ($logger->is_debug){
@@ -1685,6 +1678,18 @@ sub set_cookie {
     $logger->debug("Setting cookie $name to $value with Set-Cookie: ".$cookie_string);
     
     return;
+}
+
+sub teardown {
+    my $self = shift;
+
+    my $config     = OpenBib::Config->instance;
+    my $enrichmnt  = OpenBib::Enrichment->instance;
+
+    $config->DESTROY;
+    $enrichmnt->DESTROY;
+    
+    return $self;
 }
 
 1;

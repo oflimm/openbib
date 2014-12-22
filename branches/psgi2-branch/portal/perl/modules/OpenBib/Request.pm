@@ -58,7 +58,7 @@ sub psgi_header {
         push @headers, $header, $value;
     }
 
-    print STDERR "OUT: ".YAML::Syck::Dump(\@headers);
+    # print STDERR "OUT: ".YAML::Syck::Dump(\@headers);
 
     return ($status,\@headers);
 }

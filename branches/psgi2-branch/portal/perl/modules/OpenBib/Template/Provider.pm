@@ -52,8 +52,8 @@ sub _load {
 }
 
 sub conv2utf8 {
-#    my @list = map pack('U*', unpack 'U0U*', $_), @_;
-    my @list = map decode_utf8($_), @_;
+    my @list = map pack('U*', unpack 'U0U*', $_), @_;
+#    my @list = map decode_utf8($_), @_;
     return wantarray ? @list : $list[0];
 }
 

@@ -103,7 +103,7 @@ sub dispatch_to_user {
     else {
         my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{tags_loc}";
         
-        return $self->redirect($new_location,'303 See Other');
+        return $self->redirect($new_location,303);
     }
 
     return;
@@ -354,7 +354,7 @@ sub create_record {
     if ($self->param('representation') eq "html"){
         if ($query->param('redirect_to')){
             my $new_location = uri_unescape($query->param('redirect_to'));
-            return $self->redirect($new_location,'303 See Other');
+            return $self->redirect($new_location,303);
         }
         else {
             $self->return_baseurl;

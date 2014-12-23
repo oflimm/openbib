@@ -533,7 +533,7 @@ sub return_baseurl {
 
     $logger->debug("Returning to $new_location");
 
-    return $self->redirect($new_location,'303 See Other');
+    return $self->redirect($new_location,303);
 }
 
 sub show_record {

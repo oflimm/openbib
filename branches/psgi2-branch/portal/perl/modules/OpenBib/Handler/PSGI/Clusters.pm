@@ -77,7 +77,7 @@ sub show_collection {
     my $logger = get_logger();
 
     if ($self->param('dispatch_url')){
-        return $self->redirect($self->param('dispatch_url'),'303 See Other');
+        return $self->redirect($self->param('dispatch_url'),303);
     }
 
     # Dispatched Args

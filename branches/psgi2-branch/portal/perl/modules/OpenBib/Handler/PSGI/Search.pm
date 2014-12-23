@@ -39,7 +39,7 @@ use utf8;
 use Benchmark ':hireswallclock';
 use Data::Pageset;
 use DBI;
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
@@ -251,7 +251,9 @@ sub show_search {
 
     $logger->debug("Content-Type $content_type");
     # Start der Ausgabe mit korrektem Header
-    $r->content_type("$content_type");
+    $self->header_add('Content-Type' => $content_type);
+
+    my $content_header = "";
     
     # Ausgabe des ersten HTML-Bereichs
     my $starttemplate = Template->new({
@@ -262,7 +264,7 @@ sub show_search {
         #        INCLUDE_PATH   => $config->{tt_include_path},
         #        ABSOLUTE       => 1,
         RECURSION      => 1,
-        OUTPUT         => $r,
+        OUTPUT         => \$content_header,
     });
         
     $starttemplate->process($starttemplatename, $startttdata) || do {
@@ -271,23 +273,25 @@ sub show_search {
         return;
     };
     
-    # Ausgabe flushen
-    eval {
-        $r->rflush();
-    };
+#    # Ausgabe flushen
+#    eval {
+#        $r->rflush();
+#    };
 
-    if($@) {
-        $logger->error("Flush-Error");
-    }
+#    if($@) {
+#        $logger->error("Flush-Error");
+#    }
 
     # Kombinierte Suche ueber alle Kataloge
 
+    my $content_searchresult="";
+    
     # Alternativ: getrennte Suche uber alle Kataloge
     if ($query->param('sm') eq "seq"){
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
 
-        $self->sequential_search;
+        $content_searchresult = $self->sequential_search;
 
         ######################################################################
         #
@@ -299,7 +303,7 @@ sub show_search {
         # Gesamtdatenbank aus allen ausgewaehlten Recherche-Datenbanken schicken und Ergebniss ausgeben
         #
 
-        $self->joined_search;
+        $content_searchresult = $self->joined_search;
 
         ######################################################################
         #
@@ -333,6 +337,8 @@ sub show_search {
         profile      => $endttdata->{sysprofile},
         templatename => $endtemplatename,
     });
+
+    my $content_footer = "";
     
     my $endtemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -342,7 +348,7 @@ sub show_search {
         #        INCLUDE_PATH   => $config->{tt_include_path},
         #        ABSOLUTE       => 1,
         RECURSION      => 1,
-        OUTPUT         => $r,
+        OUTPUT         => \$content_footer,
     });
     
     $endtemplate->process($endtemplatename, $endttdata) || do {
@@ -377,7 +383,8 @@ sub show_search {
         serialize => 1,
     });
 
-    return;
+    my $content_result = encode_utf8($content_header.$content_searchresult.$content_footer);
+    return \$content_result;
 }
 
 # Auf Grundlage der <form>-Struktur im Template searchform derzeit nicht verwendet
@@ -776,7 +783,7 @@ sub joined_search {
     
     my $templatename = $self->get_templatename_of_joined_search();
 
-    $self->print_resultitem({templatename => $templatename});
+    my $content_searchresult = $self->print_resultitem({templatename => $templatename});
 
     # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
     foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
@@ -787,12 +794,12 @@ sub joined_search {
             
             $self->search({database => $database});
             
-            $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+            $content_searchresult.=$self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
         }
     }
 
     
-    return;
+    return $content_searchresult;
 }
 
 sub sequential_search {
@@ -810,16 +817,17 @@ sub sequential_search {
     ######################################################################
 
     $logger->debug("Starting sequential search");
-    
+
+    my $content_searchresult = "";
     foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
         $self->param('database',$database);
 
         $self->search({database => $database});
         
-        $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+        $content_searchresult.=$self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
     }
 
-    return;
+    return $content_searchresult;
 }
 
 sub search {
@@ -964,6 +972,8 @@ sub print_resultitem {
     
     $ttdata = $self->add_default_ttdata($ttdata);
 
+    my $content = "";
+    
     $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
         database     => $database, # Template ist fuer joined-search nicht datenbankabhaengig (=''), aber fuer sequential search
         view         => $ttdata->{view},
@@ -972,7 +982,7 @@ sub print_resultitem {
     });
     
     # Start der Ausgabe mit korrektem Header
-    $r->content_type($ttdata->{content_type});
+    # $r->content_type($ttdata->{content_type});
     
     # Es kann kein Datenbankabhaengiges Template geben
     
@@ -984,7 +994,7 @@ sub print_resultitem {
         #                INCLUDE_PATH   => $config->{tt_include_path},
         #                ABSOLUTE       => 1,
         RECURSION      => 1,
-        OUTPUT         => $r,
+        OUTPUT         => \$content,
     });            
     
     
@@ -995,6 +1005,8 @@ sub print_resultitem {
         $self->header_add('Status',400); # server error
         return;
     };
+
+    return $content;
 }
 
 

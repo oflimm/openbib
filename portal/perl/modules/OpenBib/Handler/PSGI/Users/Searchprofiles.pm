@@ -98,7 +98,7 @@ sub dispatch_to_user {
     else {
         my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{searchprofiles_loc}";
         
-        return $self->redirect($new_location,'303 See Other');
+      return $self->redirect($new_location,303);
     }
 
     return;

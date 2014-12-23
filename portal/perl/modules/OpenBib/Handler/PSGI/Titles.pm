@@ -315,7 +315,7 @@ sub show_record {
     if ($user->{ID} && !$userid){
         my $args = "?l=".$self->param('lang');
 
-        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/title/database/$database/id/$titleid.$representation$args",'303 See Other');
+        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/title/database/$database/id/$titleid.$representation$args",303);
     }
     
     if ($userid && !$self->is_authenticated('user',$userid)){

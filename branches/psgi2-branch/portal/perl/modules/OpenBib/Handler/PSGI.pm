@@ -85,7 +85,7 @@ sub cgiapp_init {
     }
 
     my $sessionID     = $r->cookies->{sessionID} || '';
-    
+
     my $session      = OpenBib::Session->instance({ sessionID => $sessionID , view => $view });
 
     $logger->debug("Got sessionID $sessionID and effecitve sessionID is $session->{ID}");
@@ -249,6 +249,9 @@ sub cgiapp_prerun {
        }
        
    }
+
+   # Cookie-Header ausgeben
+   $self->finalize_cookies;
    
    $logger->debug("Exit cgiapp_prerun");
 }
@@ -731,7 +734,7 @@ sub is_authenticated {
         
 #         # Return-URL in der Session abspeichern
         
-#         return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",'303 See Other');
+#         return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",303);
 #     }
 
     if ($role eq "admin" && $user->is_admin){
@@ -829,7 +832,7 @@ sub print_page {
     my $servername     = $self->param('servername');
     my $path_prefix    = $self->param('path_prefix');
     my $path           = $self->param('path');
-    my $representation = $self->param('representation');
+    my $representation = $self->param('representation') || 'html';
     my $status         = $self->param('status') || 200;
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $location       = $self->param('location');
@@ -894,7 +897,10 @@ sub print_page {
     }
 
     $logger->debug("Template-Output: ".$content);
-    
+
+    # PSGI-Spezifikation erwartet UTF8 bytestream
+    $content = encode_utf8($content);
+
     return \$content;
 }
 
@@ -1039,7 +1045,12 @@ sub add_default_ttdata {
         my $string=shift;
         return decode_utf8($string);
     };
-    
+
+    $ttdata->{'encode_utf8'}    = sub {
+        my $string=shift;
+        return encode_utf8($string);
+    };
+
     return $ttdata;
 }
 
@@ -1512,14 +1523,21 @@ sub redirect {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $status = $status || '302 Found';
+    $status = $status || '302'; # Found
 
+    if (!$url){
+        $logger->error("Trying to redirect without url...");
+        return;
+    }
+
+#    $self->param('status',$status);
+    
     $self->header_type('redirect');
-    $self->header_props({'Status' => $status});
-    $self->header_add({'Location' => $url}) if ($url);
+    $self->header_add('Location' => $url);
+    $self->header_add('Status' => $status);
 
     if ($logger->is_debug){
-        $logger->debug(YAML::Syck::Dump($self->{__HEADER_PROPS}));
+        $logger->debug("Redirect-Headers: ".YAML::Syck::Dump($self->{__HEADER_PROPS}));
     }
     
     return;
@@ -1649,6 +1667,35 @@ sub tunnel_through_authenticator {
     return $self->redirect($new_location,303);
 }
 
+sub set_cookieXX {
+    my ($self,$name,$value)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    if (!($name || $value)){
+        $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
+        return;
+    }   
+
+    $logger->debug("Adding cookie $name to $value");
+    
+    my $cookie = CGI::Cookie->new(
+        -name    => $name,
+        -value   => $value,
+        -expires => '+24h',
+        -path    => $config->{base_loc},
+    );
+    
+    my $cookie_string = $cookie->as_string();
+     
+    $self->header_add('Set-Cookie', $cookie_string) if ($cookie_string);
+    
+    return;
+}
+
 sub set_cookie {
     my ($self,$name,$value)=@_;
 
@@ -1661,35 +1708,72 @@ sub set_cookie {
         $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
         return;
     }   
+
+    my $cookie_jar_ref = (defined $self->param('cookie_jar'))?$self->param('cookie_jar'):[];
+
+    $logger->debug("Adding cookie $name to $value");
     
-    $logger->debug("Setting cookie $name to $value");
-   
     my $cookie = CGI::Cookie->new(
         -name    => $name,
         -value   => $value,
         -expires => '+24h',
         -path    => $config->{base_loc},
     );
-
-    my $cookie_string = $cookie->as_string();
     
-    $self->header_add('Set-Cookie', $cookie_string) if ($cookie_string);
-
-    $logger->debug("Setting cookie $name to $value with Set-Cookie: ".$cookie_string);
+    push @$cookie_jar_ref, $cookie;
+    
+    $self->param('cookie_jar',$cookie_jar_ref);
     
     return;
 }
 
-sub teardown {
-    my $self = shift;
-
-    my $config     = OpenBib::Config->instance;
-    my $enrichmnt  = OpenBib::Enrichment->instance;
-
-    $config->DESTROY;
-    $enrichmnt->DESTROY;
+sub finalize_cookies {
+    my ($self)=@_;
     
-    return $self;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = OpenBib::Config->instance;
+
+    if (defined $self->param('cookie_jar')){
+        $self->header_add('Set-Cookie', $self->param('cookie_jar'));
+    }
+    
+    return;
 }
+
+# return a 2 element array modeling the first PSGI redirect values: status code and arrayref of header pairs
+sub _send_psgi_headersXX {
+	my $self = shift;
+	my $q    = $self->query;
+	my $type = $self->header_type;
+
+        # Log4perl logger erzeugen
+        my $logger = get_logger();
+
+        if ($logger->is_debug){
+            $logger->debug("Query-Object: ".ref($q));
+            $logger->debug("Type: $type - ".YAML::Dump($self->header_props));
+        }
+        
+    return
+        $type eq 'redirect' ? $q->psgi_redirect( $self->header_props )
+      : $type eq 'header'   ? $q->psgi_header  ( $self->header_props )
+      : $type eq 'none'     ? ''
+      : $logger->error( "Invalid header_type '$type'");
+
+}
+
+# sub teardown {
+#     my $self = shift;
+
+#     my $config     = OpenBib::Config->instance;
+#     my $enrichmnt  = OpenBib::Enrichment->instance;
+
+#     $config->DESTROY;
+#     $enrichmnt->DESTROY;
+    
+#     return $self;
+# }
 
 1;

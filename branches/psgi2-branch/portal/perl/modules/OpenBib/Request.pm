@@ -34,13 +34,16 @@ use base qw(Plack::Request);
 
 use Log::Log4perl qw(get_logger :levels);
 use YAML::Syck;
+use CGI::Cookie;
 
 sub psgi_header {
     my($self, @header_props) = @_;
 
     my $logger = get_logger();
 
-    #print STDERR "IN: ".YAML::Syck::Dump(\@header_props);
+    if ($logger->is_debug){
+        $logger->debug("IN-header: ".YAML::Syck::Dump(\@header_props));
+    }
     
     my @headers;
     
@@ -50,16 +53,34 @@ sub psgi_header {
         my $header = $header_props[$i];
         my $value  = $header_props[$i+1];
 
-        if ($header =~/Status/i){
-            $status = $value;
-            next;
-        }
+        next unless ($header && $value);
         
-        push @headers, $header, $value;
+        if ($header =~m/Status/i){
+            $status = $value;
+            if ($logger->is_debug){
+                $logger->debug("Got Status $value");
+            }
+        }
+        elsif ($header =~m/type/i){
+            push @headers, "Content-Type", $value;
+        }
+        elsif ($header =~m/Set-Cookie/i){
+            my(@cookie) = ref($value) && ref($value) eq 'ARRAY' ? @{$value} : $value;
+            for (@cookie) {
+                my $cs = UNIVERSAL::isa($_,'CGI::Cookie') ? $_->as_string : $_;
+                push @headers, "Set-Cookie", $cs if $cs ne '';
+            }
+        }
+        else {
+            push @headers, $header, $value;
+        }
+
     }
 
-    # print STDERR "OUT: ".YAML::Syck::Dump(\@headers);
-
+    if ($logger->is_debug){
+        $logger->debug("OUT-status: $status - header: ".YAML::Syck::Dump(\@headers));
+    }
+    
     return ($status,\@headers);
 }
 
@@ -67,27 +88,37 @@ sub psgi_redirect {
     my($self, @header_props) = @_;
 
     my $logger = get_logger();
-    
-    my @headers;
-    
-    my $status   = 302;
-    my $cookie   = "";
-    my $location = "";
 
+    if ($logger->is_debug){
+        $logger->debug("IN-header: ".YAML::Syck::Dump(\@header_props));
+    }
+    
+    my $default_status   = 302;
+
+    # Nur ein Element, dann Location setzen
+    if ($#header_props == 0){
+        my $location = shift @header_props;
+        push @header_props, "Location", $location;
+    }
+
+    my $have_status = 0;
     for (my $i = 0; $i < @header_props; $i += 2) {
         my $header = $header_props[$i];
-        my $value  = $header_props[$i+1];
 
-        push @headers, $header, $value;
+        if ($header =~m/Status/i){
+            $have_status = 1;
+        }
+    }
+
+    if (!$have_status){
+        push @header_props, "Status", $default_status
     }
 
     if ($logger->is_debug){
-        $logger->debug("Redirect:".YAML::Syck::Dump(\@headers));
+        $logger->debug("OUT-have_status: $have_status - header: ".YAML::Syck::Dump(\@header_props));
     }
-
-    #print STDERR YAML::Syck::Dump(\@headers);
     
-    return ($status,\@headers);
+    return $self->psgi_header(@header_props);
 }
 
 sub args {

@@ -95,8 +95,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $userinfo_ref            = $user->get_info();
@@ -141,15 +140,13 @@ sub migrate_ugc {
     $input_data_ref->{newuserid} = $userid;
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $olduserid = $user->authenticate_self_user({ username => $input_data_ref->{oldusername}, password => $input_data_ref->{oldpassword} });
 
     if ($olduserid < 0){
-        $self->print_warning($msg->maketext("Falsches Password. Bitte geben Sie die korrekte Kennung und das zugehörige Passwort ein."));
-        return;
+        return $self->print_warning($msg->maketext("Falsches Password. Bitte geben Sie die korrekte Kennung und das zugehörige Passwort ein."));
     }
 
     $input_data_ref->{olduserid} = $olduserid;
@@ -160,9 +157,7 @@ sub migrate_ugc {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_users_migration_success_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_users_migration_success_tname},$ttdata);
 }
 
 sub get_input_definition {

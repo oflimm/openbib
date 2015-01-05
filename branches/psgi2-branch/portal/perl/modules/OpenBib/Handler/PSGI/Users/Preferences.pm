@@ -132,8 +132,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $searchfields_ref        = $user->get_searchfields();
@@ -198,8 +197,7 @@ sub update_searchfields {
     }
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $user->set_searchfields($searchfields_ref);
@@ -237,8 +235,7 @@ sub update_bibsonomy {
     my $bibsonomy_key  = ($query->param('bibsonomy_key'))?$query->param('bibsonomy_key'):0;
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $user->set_bibsonomy({
@@ -275,8 +272,7 @@ sub update_bibsonomysync {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $user->sync_all_to_bibsonomy;
@@ -312,8 +308,7 @@ sub update_searchform {
     my $setmask       = ($query->param('setmask'))?$query->param('setmask'):'';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if ($setmask eq "") {
@@ -355,8 +350,7 @@ sub update_password {
     my $password2     = ($query->param('password2'))?$query->param('password2'):'';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if ($password1 eq "" || $password1 ne $password2) {
@@ -399,8 +393,7 @@ sub update_spelling {
     my $spelling_resultlist    = ($query->param('spelling_resultlist'))?$query->param('spelling_resultlist'):'0';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $user->set_spelling_suggestion({
@@ -444,8 +437,7 @@ sub update_livesearch {
     my $livesearch_subject_exact    = ($query->param('livesearch_subject_exact'))?$query->param('livesearch_subject_exact'):'0';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $user->set_livesearch({
@@ -488,8 +480,7 @@ sub update_autocompletion {
     my $setautocompletion = ($query->param('setautocompletion'))?$query->param('setautocompletion'):'livesearch';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $user->set_autocompletion($setautocompletion);

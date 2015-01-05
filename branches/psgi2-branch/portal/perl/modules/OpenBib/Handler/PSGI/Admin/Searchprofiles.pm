@@ -91,8 +91,7 @@ sub show_collection {
     my $year           = $query->param('year');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -121,8 +120,7 @@ sub show_record {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -135,7 +133,7 @@ sub show_record {
         dbinfo          => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_admin_searchprofiles_record_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_searchprofiles_record_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -152,8 +150,7 @@ sub show_record_form {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $statistics  = new OpenBib::Statistics();
@@ -191,8 +188,7 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->searchprofile_exists($searchprofileid)) {
@@ -205,15 +201,12 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{searchprofiles_loc}");
-        return;
+        return $self->redirect("$path_prefix/$config->{searchprofiles_loc}");
     }
     else {
         $logger->debug("Weiter zum Record $searchprofileid");
-        $self->show_record;
+        return $self->show_record;
     }
-
-    return;
 }
 
 sub get_input_definition {

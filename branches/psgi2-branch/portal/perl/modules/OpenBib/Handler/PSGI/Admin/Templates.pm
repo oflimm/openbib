@@ -83,8 +83,7 @@ sub show_collection {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $templateinfo_ref = $config->get_templateinfo_overview();
@@ -127,8 +126,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if ($input_data_ref->{templatename} eq "" || $input_data_ref->{viewname} eq "") {
@@ -179,8 +177,7 @@ sub show_record {
     my $numrev         = $query->param('numrev') || 3;
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     $logger->debug("Show Record $templateid");
@@ -196,9 +193,7 @@ sub show_record {
         templateinfo => $templateinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_templates_record_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_templates_record_tname},$ttdata);
 }
 
 
@@ -221,8 +216,7 @@ sub show_record_form {
     my $numrev         = $query->param('numrev');
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $templateinfo_ref = $config->get_templateinfo->search_rs({ id => $templateid})->single;
@@ -282,8 +276,7 @@ sub delete_record {
     my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     if (!$config->{schema}->resultset('Templateinfo')->search_rs({id => $templateid})->count){
@@ -297,9 +290,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
 
     $self->header_add('Content-Type' => 'text/html');
-    $self->redirect("$path_prefix/$config->{templates_loc}");
-
-    return;
+    return $self->redirect("$path_prefix/$config->{templates_loc}");
 }
 
 sub get_input_definition {

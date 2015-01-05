@@ -101,7 +101,9 @@ sub joined_search {
     
     my $templatename = $self->get_templatename_of_joined_search();
 
-    $self->print_resultitem({templatename => $templatename});
+    my $search_content = "";
+    
+    $search_content.=$self->print_resultitem({templatename => $templatename});
 
     # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
     foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
@@ -112,12 +114,12 @@ sub joined_search {
             
             $self->search({database => $database});
             
-            $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+            $search_content.=$self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
         }
     }
 
     
-    return;
+    return $search_content;
 }
 
 sub enforce_year_restrictions {

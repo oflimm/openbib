@@ -107,8 +107,6 @@ sub show_record {
             authenticatordb => $authenticatordb,
         };
 
-        $self->print_page($config->{'tt_persons_record_tname'},$ttdata);
-
         # Log Event
         
         if (!$no_log){
@@ -121,12 +119,12 @@ sub show_record {
                 serialize => 1,
             });
         }
+
+        return $self->print_page($config->{'tt_persons_record_tname'},$ttdata);        
     }
     else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
-
-    return;
 }
 
 1;

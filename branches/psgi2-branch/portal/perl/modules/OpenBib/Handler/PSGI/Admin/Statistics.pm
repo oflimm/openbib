@@ -94,8 +94,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $statistics = new OpenBib::Statistics();
@@ -139,8 +138,7 @@ sub show_graph {
     my $day        = $query->param('month')      || '';
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $statistics = new OpenBib::Statistics();
@@ -194,8 +192,7 @@ sub show_statistics {
     my $day        = $query->param('day')        || '';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $id  = ($statisticsid && $statisticsid2)?$statisticsid2:$statisticsid;

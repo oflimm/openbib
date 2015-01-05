@@ -172,15 +172,12 @@ sub show_record {
             dbinfo         => $dbinfotable,
         };
 
-        $self->print_page($config->{tt_locations_record_tname},$ttdata);
+        return $self->print_page($config->{tt_locations_record_tname},$ttdata);
 
     }
     else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit einer Id spezifiziert."));
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit einer Id spezifiziert."));
     }
-
-
-    return;
 }
 
 1;

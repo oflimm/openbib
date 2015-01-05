@@ -99,8 +99,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->db_exists($dbname)) {
@@ -147,8 +146,7 @@ sub show_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $logger->debug("Server: ".$r->get_server_name);
@@ -166,7 +164,7 @@ sub show_record {
         dbname       => $dbname,
     };
     
-    $self->print_page($config->{tt_admin_databases_rss_record_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_databases_rss_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -197,8 +195,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     $logger->debug("Server: ".$r->get_server_name);
@@ -261,8 +258,7 @@ sub show_record_form {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $logger->debug("Server: ".$r->get_server_name);
@@ -314,8 +310,7 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $logger->debug("Server: ".$r->get_server_name);
@@ -376,8 +371,7 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $logger->debug("Server: ".$r->get_server_name);
@@ -391,9 +385,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
 
     # TODO GET?
-    $self->redirect("$path_prefix/$config->{databases_loc}/$dbname/rss");
-
-    return;
+    return $self->redirect("$path_prefix/$config->{databases_loc}/$dbname/rss");
 }
 
 sub get_input_definition {

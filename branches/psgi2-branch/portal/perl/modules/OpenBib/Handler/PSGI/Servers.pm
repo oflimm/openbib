@@ -88,7 +88,7 @@ sub show_collection {
         serverinfos => $serverinfos_ref,
     };
     
-    $self->print_page($config->{tt_servers_tname},$ttdata);
+    return $self->print_page($config->{tt_servers_tname},$ttdata);
 }
 
 sub show_record {

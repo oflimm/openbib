@@ -568,8 +568,7 @@ sub show_availability {
                 titleid     => $titleid,
             };
 
-            $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
-            return;
+            return $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
         }
     }
 
@@ -607,8 +606,7 @@ sub show_record_circulation {
             titleid         => $titleid,
         };
 
-        $self->print_page($config->{tt_titles_record_circulation_tname},$ttdata);
-        return;
+        return $self->print_page($config->{tt_titles_record_circulation_tname},$ttdata);
     }
 
     return;
@@ -645,8 +643,7 @@ sub show_record_related_records {
             titleid         => $titleid,
         };
 
-        $self->print_page($config->{tt_titles_record_related_records_tname},$ttdata);
-        return;
+        return $self->print_page($config->{tt_titles_record_related_records_tname},$ttdata);
     }
 
     return;
@@ -683,8 +680,7 @@ sub show_record_similar_records {
             titleid         => $titleid,
         };
 
-        $self->print_page($config->{tt_titles_record_similar_records_tname},$ttdata);
-        return;
+        return $self->print_page($config->{tt_titles_record_similar_records_tname},$ttdata);
     }
 
     return;
@@ -721,8 +717,7 @@ sub show_record_same_records {
             titleid         => $titleid,
         };
 
-        $self->print_page($config->{tt_titles_record_same_records_tname},$ttdata);
-        return;
+        return $self->print_page($config->{tt_titles_record_same_records_tname},$ttdata);
     }
 
     return;

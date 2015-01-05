@@ -81,8 +81,7 @@ sub show_collection {
     my $user           = $self->param('user');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $usertemplates = $user->get_templates_of_user($user->{ID});
@@ -115,8 +114,7 @@ sub show_record_form {
     my $numrev         = $query->param('numrev');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $templateinfo_ref = $config->get_templateinfo->search_rs(
@@ -155,8 +153,7 @@ sub update_record {
     my $user           = $self->param('user');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # CGI / JSON input

@@ -88,8 +88,7 @@ sub show_collection {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $serverinfos_ref = $config->get_serverinfo_overview;
@@ -98,7 +97,7 @@ sub show_collection {
         serverinfos => $serverinfos_ref,
     };
     
-    $self->print_page($config->{tt_admin_servers_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_servers_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -116,8 +115,7 @@ sub show_record_form {
     my $queryoptions     = $self->param('qopts');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     
@@ -141,7 +139,7 @@ sub show_record_form {
         updatelog    => $updatelog_ref,
     };
     
-    $self->print_page($config->{tt_admin_servers_record_edit_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_servers_record_edit_tname},$ttdata);
 }
 
 sub show_record {
@@ -158,8 +156,7 @@ sub show_record {
     my $config           = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid })->single;
@@ -169,7 +166,7 @@ sub show_record {
         serverinfo   => $serverinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_servers_record_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_servers_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -194,8 +191,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if ($input_data_ref->{hostip} eq "") {
@@ -244,23 +240,19 @@ sub update_record {
     $input_data_ref->{id} = $serverid;
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $config->update_server($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{servers_loc}");
-        return ;
+        return $self->redirect("$path_prefix/$config->{servers_loc}");
     }
     else {
         $logger->debug("Weiter zum Record $serverid");
-        $self->show_record;
+        return $self->show_record;
     }
-
-    return;
 }
 
 sub confirm_delete_record {
@@ -303,16 +295,17 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $config->del_server({id => $serverid});
 
     #TODO GET?
-    $self->redirect("$path_prefix/$config->{servers_loc}");
+    return unless ($self->param('representation') eq "html");
 
-    return;
+    $self->header_add('Content-Type' => 'text/html');
+
+    return $self->redirect("$path_prefix/$config->{servers_loc}");
 }
 
 sub get_input_definition {

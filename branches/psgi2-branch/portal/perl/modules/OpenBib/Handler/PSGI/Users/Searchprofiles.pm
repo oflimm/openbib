@@ -127,8 +127,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -180,8 +179,7 @@ sub show_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $idnresult="";
@@ -244,8 +242,7 @@ sub show_record_form {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # Zuerst Profil-Description zur ID holen
@@ -305,22 +302,18 @@ sub update_record {
     my $profilename = $query->param('profilename') || '';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # Wenn keine Profileid (=kein Profil diesen Namens)
     # existiert, dann Fehlermeldung
     unless ($profileid) {
-        $self->print_warning($msg->maketext("Es existiert kein Profil mit der ID $profileid"));
-        return;
+        return $self->print_warning($msg->maketext("Es existiert kein Profil mit der ID $profileid"));
     }
     
     $user->update_dbprofile($profileid,$profilename,\@databases);
 
-    $self->return_baseurl;
-
-    return;
+    return $self->return_baseurl;
 }
 
 sub create_record {
@@ -351,8 +344,7 @@ sub create_record {
     my $profilename = $query->param('profilename') || '';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # Wurde ueberhaupt ein Profilname eingegeben?
@@ -365,8 +357,7 @@ sub create_record {
     # Wenn Profileid bereits
     # existiert, dann Fehlermeldung.
     if ($profileid) {
-        $self->print_warning($msg->maketext("Es existiert bereits ein Profil unter diesem Namen!"));
-        return;
+        return $self->print_warning($msg->maketext("Es existiert bereits ein Profil unter diesem Namen!"));
     }
     else {
         $profileid = $user->new_dbprofile($profilename,\@databases);
@@ -419,15 +410,12 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $user->delete_dbprofile($profileid);
 
-    $self->return_baseurl;
-
-    return;
+    return $self->return_baseurl;
 }
 
 sub confirm_delete_record {
@@ -469,9 +457,7 @@ sub return_baseurl {
 
     # TODO Get?
     $self->header_add('Content-Type' => 'text/html');
-    $self->redirect($new_location);
-
-    return;
+    return $self->redirect($new_location);
 }
 
 1;

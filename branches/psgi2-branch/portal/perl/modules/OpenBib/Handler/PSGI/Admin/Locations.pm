@@ -89,8 +89,7 @@ sub show_collection {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -176,8 +175,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if ($input_data_ref->{identifier} eq "" && $input_data_ref->{description} eq "" && $input_data_ref->{type}) {
@@ -229,8 +227,7 @@ sub show_record_form {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $locationinfo = $config->get_locationinfo->single({identifier => $locationid});
@@ -282,8 +279,7 @@ sub update_record {
     $input_data_ref->{identifier} = $locationid;
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $config->update_locationinfo($input_data_ref);
@@ -345,16 +341,13 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $config->delete_locationinfo($locationid);
 
     # TODO GET?
-    $self->redirect("$path_prefix/$config->{locations_loc}");
-
-    return;
+    return $self->redirect("$path_prefix/$config->{locations_loc}");
 }
 
 sub get_input_definition {

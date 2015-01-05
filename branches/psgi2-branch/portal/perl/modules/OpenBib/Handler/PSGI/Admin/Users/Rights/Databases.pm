@@ -97,8 +97,7 @@ sub update_record {
     my @databases      = ($query->param('databases'))?$query->param('databases'):();
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $thisuserinfo_ref = {

@@ -234,7 +234,11 @@ sub get_number_of_titles {
 
 #     $self->{schema}->storage->debug(1);
 
-    $logger->debug("Parameters: Database = $database / View = $view / Profile = $profile");
+    if ($logger->is_debug){
+        $logger->debug("Parameters: Database = $database") if (defined $database);
+        $logger->debug("Parameters: View = $view") if (defined $view);
+        $logger->debug("Parameters: Profile = $profile") if (defined $profile);
+    }
     
     if ($database){
         # DBI: "select allcount, journalcount, articlecount, digitalcount from databaseinfo where dbname = ? and databaseinfo.active is true"

@@ -294,8 +294,8 @@ sub search {
     $logger->debug("Full querystring: $fullquerystring");
     
     my $default_op_ref = {
-        'and' => "Search::Xapian::OP_AND",
-        'or'  => "Search::Xapian::OP_OR",
+        'and' => Search::Xapian::OP_AND,
+        'or'  => Search::Xapian::OP_OR,
     };
     
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD

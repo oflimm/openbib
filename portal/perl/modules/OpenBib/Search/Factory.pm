@@ -54,7 +54,10 @@ sub create_searcher {
 
     my $config = OpenBib::Config->instance;
 
-    $logger->debug("Trying to dispatch database $database with optional sb $sb");
+    if ($logger->is_debug){
+        $logger->debug("Trying to dispatch database $database") if (defined $database);
+        $logger->debug("Trying to dispatch with optional sb $sb") if (defined $sb);
+    }
     
     if (!defined $database && !defined $sb){
         $sb = $config->{local_search_backend};

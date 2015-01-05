@@ -657,7 +657,10 @@ sub negotiate_type {
             }
         }
 
-        $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation'));
+        if ($logger->is_debug){
+            $logger->debug("content_type: ".$self->param('content_type')) if ($self->param('content_type'));
+            $logger->debug("representation: ".$self->param('representation')) if ($self->param('representation'));
+        }
     }
 
     # Korrektur bei mobilen Endgeraeten, wenn die Repraesentation in portal.yml definiert ist
@@ -810,8 +813,7 @@ sub print_json {
 }
 
 sub print_page {
-    my $self = shift;
-    my ($templatename,$ttdata)=@_;
+    my ($self,$templatename,$ttdata)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -926,7 +928,7 @@ sub add_default_ttdata {
     my $url            = $self->param('url');
     my $location       = $self->param('location');
     my $scheme         = $self->param('scheme');
-    my $representation = $self->param('representation');
+    my $representation = $self->param('representation') || 'html';
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $query          = $self->query();
     my $container      = OpenBib::Container->instance;
@@ -958,12 +960,12 @@ sub add_default_ttdata {
         $username = $ttdata->{'username'};
     }
     
-    if ($self->param('representation') eq "rss"){
+    if ($representation eq "rss"){
         my $rss = new XML::RSS ( version => '1.0' ) ;
         $ttdata->{'rss'}           = $rss;
     }
 
-    if ($self->param('representation') eq "csv"){
+    if ($representation eq "csv"){
         my $csv = Text::CSV_XS->new ({
             'binary'       => 1, # potential newlines inside fields
             'always_quote' => 1,

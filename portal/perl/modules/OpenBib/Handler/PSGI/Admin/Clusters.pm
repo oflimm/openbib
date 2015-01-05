@@ -87,8 +87,7 @@ sub show_collection {
     my $config         = $self->param('config');
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $clusterinfos_ref = $config->get_clusterinfo_overview;
@@ -97,7 +96,7 @@ sub show_collection {
         clusterinfos => $clusterinfos_ref,
     };
     
-    $self->print_page($config->{tt_admin_clusters_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_clusters_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -114,8 +113,7 @@ sub show_record_form {
     my $config           = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid })->single();
@@ -125,7 +123,7 @@ sub show_record_form {
         clusterinfo   => $clusterinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_clusters_record_edit_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_clusters_record_edit_tname},$ttdata);
 }
 
 sub show_record {
@@ -142,8 +140,7 @@ sub show_record {
     my $config           = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid });
@@ -153,7 +150,7 @@ sub show_record {
         clusterinfo   => $clusterinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_clusters_record_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_clusters_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -178,8 +175,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $new_clusterid = $config->new_cluster($input_data_ref);
@@ -225,8 +221,7 @@ sub update_record {
     $input_data_ref->{id} = $clusterid;
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # POST oder PUT => Aktualisieren
@@ -235,15 +230,12 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{clusters_loc}");
-        return;
+        return $self->redirect("$path_prefix/$config->{clusters_loc}");
     }
     else {
         $logger->debug("Weiter zum Record $clusterid");
-        $self->show_record;
+        return $self->show_record;
     }
-
-    return;
 }
 
 sub confirm_delete_record {
@@ -287,16 +279,13 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $config->del_cluster({id => $clusterid});
 
     # TODO GET?
-    $self->redirect("$path_prefix/$config->{clusters_loc}");
-
-    return;
+    return $self->redirect("$path_prefix/$config->{clusters_loc}");
 }
 
 sub get_input_definition {

@@ -92,7 +92,7 @@ sub show_collection {
         clusterinfos => $clusterinfos_ref,
     };
     
-    $self->print_page($config->{tt_clusters_tname},$ttdata);
+    return $self->print_page($config->{tt_clusters_tname},$ttdata);
 }
 
 sub show_record {
@@ -115,7 +115,7 @@ sub show_record {
         clusterinfo   => $clusterinfo_ref,
     };
     
-    $self->print_page($config->{tt_clusters_record_tname},$ttdata);
+    return $self->print_page($config->{tt_clusters_record_tname},$ttdata);
 }
 
 

@@ -133,8 +133,7 @@ sub show_collection {
     my $format         = $query->param('format')      || 'cloud';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $username   = $user->get_username();
@@ -210,8 +209,7 @@ sub show_record {
     my $format         = $query->param('format') || 'cloud';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $username   = $user->get_username();

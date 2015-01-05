@@ -148,15 +148,13 @@ sub show_record {
     my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
 
     if (!$user_owns_litlist){
-        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-        
         # Aufruf der privaten Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
             content   => $litlistid,
         });
         
-        return;
+        return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
     if ($method eq "DELETE"){
@@ -169,7 +167,7 @@ sub show_record {
     my $singlelitlistitem = $user->get_single_litlistentry({ litlistid => $litlistid, itemid => $itemid });
 
     if (!%$singlelitlistitem){
-        $self->print_warning("Dieser Eintrag in der Literaturliste existiert nicht.");
+        return $self->print_warning("Dieser Eintrag in der Literaturliste existiert nicht.");
     }
     
     # TT-Data erzeugen
@@ -222,15 +220,13 @@ sub create_record {
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
         
     if (!$user_owns_litlist) {
-        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-        
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
             content   => $litlistid,
         });
         
-        return;
+        return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
     my $new_itemid = $user->add_litlistentry($input_data_ref);
@@ -294,15 +290,13 @@ sub update_record {
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
 
     if (!$user_owns_litlist) {
-        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
             content   => $litlistid,
         });
 
-        return;
+        return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
     if ($user->update_litlistentry($input_data_ref) > 0){
@@ -359,15 +353,13 @@ sub delete_record {
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
 
     if (!$user_owns_litlist) {
-        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
             content   => $litlistid,
         });
         
-        return;
+        return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
     
     $user->del_litlistentry({ entryid => $itemid, litlistid => $litlistid});

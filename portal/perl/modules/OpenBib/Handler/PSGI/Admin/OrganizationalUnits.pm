@@ -101,8 +101,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->profile_exists($profilename)) {
@@ -143,8 +142,7 @@ sub show_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     if (!$config->profile_exists($profilename)) {        
@@ -168,7 +166,7 @@ sub show_record {
         orgunitdbs     => \@orgunitdbs,
     };
 
-    $self->print_page($config->{tt_admin_orgunits_record_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_orgunits_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -202,8 +200,7 @@ sub create_record {
     $input_data_ref->{profilename} = $profilename;
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->profile_exists($profilename)) {
@@ -226,8 +223,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/$config->{orgunits_loc}/id/$input_data_ref->{orgunitname}/edit.html?l=$lang");
-        return;
+        return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/$config->{orgunits_loc}/id/$input_data_ref->{orgunitname}/edit.html?l=$lang");
     }
     else {
         $logger->debug("Weiter zum Record");
@@ -236,7 +232,7 @@ sub create_record {
             $self->param('status',201); # created
             $self->param('orgunitid',$input_data_ref->{orgunitname});
             $self->param('location',"$location/$input_data_ref->{orgunitname}");
-            $self->show_record;
+            return $self->show_record;
         }
     }
 
@@ -269,8 +265,7 @@ sub show_record_form {
     # CGI Args
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->profile_exists($profilename)) {
@@ -278,7 +273,7 @@ sub show_record_form {
     }
     
     if (!$config->orgunit_exists($profilename,$orgunitname)) {
-        $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
+        return $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
     }
 
     my $profileinfo_ref = $config->get_profileinfo->search_rs({ 'profilename' => $profilename })->single();
@@ -334,8 +329,7 @@ sub update_record {
     $input_data_ref->{orgunitname} = $orgunitname;
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->profile_exists($profilename)) {
@@ -413,8 +407,7 @@ sub delete_record {
     # CGI Args
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->profile_exists($profilename)) {
@@ -430,9 +423,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
 
     # TODO GET?
-    $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/edit.html?l=$lang");
-
-    return;
+    return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/edit.html?l=$lang");
 }
 
 sub get_input_definition {

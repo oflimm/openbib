@@ -97,8 +97,7 @@ sub show_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->view_exists($viewname)) {
@@ -147,8 +146,7 @@ sub show_record_form {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->view_exists($viewname)) {
@@ -240,8 +238,7 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->view_exists($viewname)) {

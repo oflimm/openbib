@@ -95,8 +95,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $userinfo_ref            = $user->get_info();
@@ -139,24 +138,22 @@ sub migrate_ugc {
     my $input_data_ref        = $self->parse_valid_input($self->get_input_definition);
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (! $input_data_ref->{oldusername} && ! $input_data_ref->{newusername}){
-        $self->print_warning($msg->maketext("Bitte geben Sie eine alte und neue Kennung ein."));
-        return;
+        return $self->print_warning($msg->maketext("Bitte geben Sie eine alte und neue Kennung ein."));
     }
 
     my $olduserid = $user->get_userid_for_username($input_data_ref->{oldusername});
     my $newuserid = $user->get_userid_for_username($input_data_ref->{newusername});
 
     if (!$olduserid){
-        $self->print_warning($msg->maketext("Die Ursprungs-Kennung existiert nicht."));
+        return $self->print_warning($msg->maketext("Die Ursprungs-Kennung existiert nicht."));
     }
 
     if (!$newuserid){
-        $self->print_warning($msg->maketext("Die Ziel-Kennung existiert nicht."));
+        return $self->print_warning($msg->maketext("Die Ziel-Kennung existiert nicht."));
     }
 
     $input_data_ref->{olduserid} = $olduserid;
@@ -168,9 +165,7 @@ sub migrate_ugc {
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_users_migration_success_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_users_migration_success_tname},$ttdata);
 }
 
 sub get_input_definition {

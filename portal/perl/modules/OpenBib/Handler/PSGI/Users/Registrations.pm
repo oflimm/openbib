@@ -305,7 +305,7 @@ sub register {
       $user->clear_confirmation_request({ registrationid => $registrationid });
     }
     else {
-      $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht."));
+      return $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht."));
     }
 
     # TT-Data erzeugen

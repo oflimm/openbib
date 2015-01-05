@@ -78,8 +78,7 @@ sub show_collection {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $ttdata={

@@ -97,8 +97,7 @@ sub update_record {
     my @views          = ($query->param('views'))?$query->param('views'):();
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $thisuserinfo_ref = {

@@ -268,8 +268,7 @@ sub authenticate {
         # Selbstregistrierung nur fuer email-Adresse und admin
 
         if ($username ne "admin" && $username !~/\@/){
-            $self->print_warning($msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"));
-            return;
+            return $self->print_warning($msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"));
         }
         
         my $result = $user->authenticate_self_user({
@@ -372,13 +371,11 @@ sub authenticate {
 
         # TODO GET?
         $self->header_add('Content-Type' => 'text/html');
-        $self->redirect($redirecturl);
+        return $self->redirect($redirecturl);
     }
     else {
-        $self->print_json($result_ref);        
+        return $self->print_json($result_ref);        
     }
-    
-    return;
 }
 
 sub failure {
@@ -421,16 +418,14 @@ sub failure {
     }
 
     if    ($code eq "1") {
-        $self->print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Usernamen eingegeben"));
+        return $self->print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Usernamen eingegeben"));
     }
     elsif ($code eq "2") {
-        $self->print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"));
+        return $self->print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"));
     }
     else {
-        $self->print_warning($msg->maketext("Falscher Fehler-Code"));
+        return $self->print_warning($msg->maketext("Falscher Fehler-Code"));
     }
-
-    return;
 }
 
 sub get_input_definition {

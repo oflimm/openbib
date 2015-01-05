@@ -91,8 +91,7 @@ sub show_collection {
     my $user           = $self->param('user');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $topics_ref = $user->get_topics;
@@ -101,9 +100,7 @@ sub show_collection {
         topics   => $topics_ref,
     };
     
-    $self->print_page($config->{tt_admin_topics_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_topics_tname},$ttdata);
 }
 
 sub show_collection_form {
@@ -120,8 +117,7 @@ sub show_collection_form {
     my $user           = $self->param('user');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $topics_ref = $user->get_topics;
@@ -130,9 +126,7 @@ sub show_collection_form {
         topics   => $topics_ref,
     };
     
-    $self->print_page($config->{tt_admin_topics_edit_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_topics_edit_tname},$ttdata);
 }
 
 sub show_record {
@@ -150,8 +144,7 @@ sub show_record {
     my $user           = $self->param('user');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $topic_ref = $user->get_topic({ id => $topicid});
@@ -164,9 +157,7 @@ sub show_record {
         dbis       => $dbis,
     };
     
-    $self->print_page($config->{tt_admin_topics_record_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_topics_record_tname},$ttdata);
 }
 
 
@@ -185,8 +176,7 @@ sub show_record_form {
     my $user           = $self->param('user');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $topic_ref = $user->get_topic({ id => $topicid});
@@ -199,9 +189,7 @@ sub show_record_form {
         dbis       => $dbis,
     };
     
-    $self->print_page($config->{tt_admin_topics_record_edit_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_topics_record_edit_tname},$ttdata);
 }
 
 sub create_record {
@@ -225,8 +213,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if ($input_data_ref->{name} eq "") {
@@ -283,8 +270,7 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # Ansonsten POST oder PUT => Aktualisieren
@@ -297,17 +283,13 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
-        return;
+        return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
     }
     else {
         $logger->debug("Weiter zum Record");
         $logger->debug("Weiter zum Record $topicid");
-        $self->show_record;
+        return $self->show_record;
     }
-    
-
-    return;
 }
 
 sub confirm_delete_record {
@@ -352,8 +334,7 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $user->del_topic({ id => $topicid });
@@ -361,9 +342,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
 
     # TODO GET?
-    $self->redirect("$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
-
-    return;
+    return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
 }
 
 sub get_input_definition {

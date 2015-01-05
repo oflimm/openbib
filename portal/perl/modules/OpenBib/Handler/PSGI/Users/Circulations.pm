@@ -94,8 +94,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $authenticator=$session->get_authenticator;
@@ -146,8 +145,7 @@ sub show_record {
     }
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     if    ($circulationid eq "reservations"){
@@ -554,8 +552,7 @@ sub make_reservation {
     }
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     my $circexlist=undef;
@@ -633,8 +630,7 @@ sub cancel_reservation {
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     my $circexlist=undef;
@@ -801,8 +797,7 @@ sub renew_loans {
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     my $circexlist=undef;

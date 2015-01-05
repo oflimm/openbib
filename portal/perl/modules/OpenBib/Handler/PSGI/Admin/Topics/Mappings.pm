@@ -91,8 +91,7 @@ sub show_collection {
     my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $topic_ref = $user->get_topic({ id => $topicid});
@@ -101,9 +100,7 @@ sub show_collection {
         topic    => $topic_ref,
     };
     
-    $self->print_page($config->{tt_admin_topics_mappings_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_topics_mappings_tname},$ttdata);
 }
 
 sub show_record {
@@ -123,8 +120,7 @@ sub show_record {
     my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $topic_ref = $user->get_topic({ id => $topicid});
@@ -132,8 +128,7 @@ sub show_record {
     my $mapping = $self->get_mapping_by_id($mappingid);
 
     unless (defined $mapping) {
-        $self->print_warning($msg->maketext("Das Mapping ist nicht definiert."));
-        return;
+        return $self->print_warning($msg->maketext("Das Mapping ist nicht definiert."));
     }
     
     my $ttdata={
@@ -142,9 +137,7 @@ sub show_record {
         mapping    => $mapping,
     };
     
-    $self->print_page($config->{tt_admin_topics_mappings_record_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_topics_mappings_record_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -164,8 +157,7 @@ sub show_record_form {
     my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $topic_ref = $user->get_topic({ id => $topicid});
@@ -173,8 +165,7 @@ sub show_record_form {
     my $mapping = $self->get_mapping_by_id($mappingid);
 
     unless (defined $mapping) {
-        $self->print_warning($msg->maketext("Das Mapping ist nicht definiert."));
-        return;
+        return $self->print_warning($msg->maketext("Das Mapping ist nicht definiert."));
     }
 
     my $ttdata={
@@ -182,9 +173,7 @@ sub show_record_form {
         mapping    => $mapping,
     };
     
-    $self->print_page($config->{tt_admin_topic_mapping_record_edit_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_topic_mapping_record_edit_tname},$ttdata);
 }
 
 sub update_record {
@@ -211,25 +200,19 @@ sub update_record {
     $input_data_ref->{type} = $mappingid; # type wird durch Resourcenbestandteil ueberschrieben
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $user->update_topic_mapping($input_data_ref);
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
-        return;
+        return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{topics_loc}.html?l=$lang");
     }
     else {
         $logger->debug("Weiter zum Record $topicid mit mapping %type");
-        $self->show_record;
+        return $self->show_record;
     }
-
-    
-
-    return;
 }
 
 sub get_mapping_by_id {

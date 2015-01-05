@@ -144,8 +144,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $topics_ref = $user->get_topics;
@@ -224,8 +223,6 @@ sub show_record {
         }
 
         if (!$user_owns_litlist){
-            $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-
             $logger->debug("UserID: $self->{ID} trying to delete litlistid $litlistid");
             
             # Aufruf der privaten Literaturlisten durch "Andere" loggen
@@ -234,7 +231,7 @@ sub show_record {
                 content   => $litlistid,
             });
             
-            return;
+            return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
         }
     }
 
@@ -327,15 +324,13 @@ sub show_record_form {
     my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
 
     if (!$user_owns_litlist){
-        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-
         # Aufruf der privaten Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
             content   => $litlistid,
         });
 
-        return;
+        return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
     my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
@@ -433,15 +428,13 @@ sub create_record {
         my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
         
         if (!$user_owns_litlist) {
-            $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-            
             # Aufruf der Literaturlisten durch "Andere" loggen
             $session->log_event({
                 type      => 800,
                 content   => $litlistid,
             });
             
-            return;
+            return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
         }
         
         $user->add_litlistentry({ litlistid =>$litlistid, titleid => $titleid, dbname => $dbname});
@@ -516,7 +509,7 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if ($input_data_ref == 1){
-        $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
+        return $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
     }
     
     $input_data_ref->{litlistid} = $litlistid;
@@ -528,15 +521,13 @@ sub update_record {
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
     
     if (!$user_owns_litlist) {
-        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-        
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
             content   => $litlistid,
         });
         
-        return;
+        return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
     $self->param('userid',$user->{ID});
@@ -608,15 +599,13 @@ sub delete_record {
     $logger->debug("UserID: $user->{ID} trying to delete litlistid $litlistid with result $user_owns_litlist");
     
     if (!$user_owns_litlist) {
-        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-
         # Aufruf der Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
             content   => $litlistid,
         });
         
-        return;
+        return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
     $self->param('userid',$user->{ID});    

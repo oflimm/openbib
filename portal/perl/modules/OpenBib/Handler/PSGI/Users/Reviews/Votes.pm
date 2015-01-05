@@ -96,7 +96,7 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if ($input_data_ref == 1){
-        $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
+        return $self->print_warning($msg->maketext("JSON konnte nicht geparst werden"));
     }
 
     if (! $user->{ID}){
@@ -123,7 +123,7 @@ sub update_record {
     }
     
     if ($self->param('representation') eq "html"){
-        $self->return_baseurl;
+        return $self->return_baseurl;
     }
     
     return;

@@ -90,15 +90,14 @@ sub show_collection {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # TT-Data erzeugen
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_authenticators_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_authenticators_tname},$ttdata);
 }
 
 sub show_record {
@@ -124,8 +123,7 @@ sub show_record {
     my $path_prefix    = $self->param('path_prefix');
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $logger->debug("Server: ".$r->get_server_name);
@@ -136,7 +134,7 @@ sub show_record {
         authenticator_record => $authenticator_ref,
     };
     
-    $self->print_page($config->{tt_admin_authenticators_record_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_authenticators_record_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -162,8 +160,7 @@ sub show_record_form {
     my $path_prefix    = $self->param('path_prefix');
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $logger->debug("Server: ".$r->get_server_name);
@@ -174,7 +171,7 @@ sub show_record_form {
         authenticator_record => $authenticator_ref,
     };
     
-    $self->print_page($config->{tt_admin_authenticators_record_edit_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_authenticators_record_edit_tname},$ttdata);
 }
 
 sub create_record {
@@ -204,8 +201,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $logger->debug("Server: ".$r->get_server_name);
@@ -271,8 +267,7 @@ sub update_record {
     $input_data_ref->{id} = $authenticatorid;
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     $logger->debug("Server: ".$r->get_server_name);
@@ -368,8 +363,7 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $logger->debug("Server: ".$r->get_server_name);
@@ -379,9 +373,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
 
     # TODO GET?
-    $self->redirect("$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
-
-    return;
+    return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
 }
 
 sub get_input_definition {

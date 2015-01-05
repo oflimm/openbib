@@ -91,8 +91,7 @@ sub revert_record {
     my $location       = $self->param('location');
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $revision = $config->get_templateinforevision->search(
@@ -154,8 +153,7 @@ sub delete_record {
     my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     if (!$config->get_templateinforevision->search_rs({id => $revisionid})->count){

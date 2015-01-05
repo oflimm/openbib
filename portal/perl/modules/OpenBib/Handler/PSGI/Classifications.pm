@@ -113,8 +113,6 @@ sub show_record {
             authenticatordb => $authenticatordb,
         };
 
-        $self->print_page($config->{'tt_classifications_record_tname'},$ttdata);
-
         # Log Event
         
         if (!$no_log){
@@ -127,12 +125,13 @@ sub show_record {
                 serialize => 1,
             });
         }
+        
+        return $self->print_page($config->{'tt_classifications_record_tname'},$ttdata);
+
     }
     else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
-
-    return;
 }
 
 sub show_collection {
@@ -185,13 +184,11 @@ sub show_collection {
             classifications => $classifications_ref,
         };
         
-        $self->print_page($config->{'tt_classifications_tname'},$ttdata);
+        return $self->print_page($config->{'tt_classifications_tname'},$ttdata);
     }
     else {
-        $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));
     }
-    
-    return;
 }
 
 sub show_collection_ezb {

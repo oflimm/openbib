@@ -90,8 +90,7 @@ sub show_collection {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -121,8 +120,7 @@ sub show_record {
     my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # View muss existieren
@@ -149,7 +147,7 @@ sub show_record {
         allrssfeeds => $all_rssfeeds_ref,
     };
     
-    $self->print_page($config->{tt_admin_views_record_tname},$ttdata);
+    return $self->print_page($config->{tt_admin_views_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -174,8 +172,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if ($input_data_ref->{viewname} eq "" || $input_data_ref->{description} eq "" || $input_data_ref->{profilename} eq "") {
@@ -231,8 +228,7 @@ sub show_record_form {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -288,8 +284,7 @@ sub update_record {
     $input_data_ref->{viewname} = $viewname;
         
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->view_exists($viewname)) {
@@ -355,8 +350,7 @@ sub delete_record {
     my $lang           = $self->param('lang');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     $config->del_view($viewname);

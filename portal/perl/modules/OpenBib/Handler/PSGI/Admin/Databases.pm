@@ -86,8 +86,7 @@ sub show_collection {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $dbinfo_ref = $config->get_dbinfo_overview();
@@ -121,8 +120,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if ($input_data_ref->{dbname} eq "" || $input_data_ref->{description} eq "") {
@@ -141,8 +139,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{databases_loc}/id/$input_data_ref->{dbname}/edit.html?l=$lang");
-        return;
+        return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{databases_loc}/id/$input_data_ref->{dbname}/edit.html?l=$lang");
     }
     else {
         $logger->debug("Weiter zum Record");
@@ -151,7 +148,7 @@ sub create_record {
             $self->param('status',201); # created
             $self->param('databaseid',$input_data_ref->{dbname});
             $self->param('location',"$location/$input_data_ref->{dbname}");
-            $self->show_record;
+            return $self->show_record;
         }
     }
 
@@ -172,8 +169,7 @@ sub show_record {
     my $dbname         = $self->strip_suffix($self->param('databaseid'));
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     $logger->debug("Show Record $dbname");
@@ -188,9 +184,7 @@ sub show_record {
         databaseinfo => $dbinfo_ref,
     };
     
-    $self->print_page($config->{tt_admin_databases_record_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_admin_databases_record_tname},$ttdata);
 }
 
 
@@ -209,8 +203,7 @@ sub show_record_form {
     my $msg            = $self->param('msg');
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$config->db_exists($dbname)) {        
@@ -243,8 +236,7 @@ sub update_record {
     my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # CGI / JSON input
@@ -274,17 +266,13 @@ sub update_record {
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{databases_loc}");
-        return;
+        return $self->redirect("$path_prefix/$config->{databases_loc}");
     }
     else {
         $logger->debug("Weiter zum Record");
         $logger->debug("Weiter zur DB $dbname");
-        $self->show_record;
+        return $self->show_record;
     }
-    
-
-    return;
 }
 
 sub confirm_delete_record {
@@ -325,8 +313,7 @@ sub delete_record {
     my $msg            = $self->param('msg');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     if (!$config->db_exists($dbname)) {        
@@ -340,9 +327,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
     
     # TODO GET?
-    $self->redirect("$path_prefix/$config->{databases_loc}");
-
-    return;
+    return $self->redirect("$path_prefix/$config->{databases_loc}");
 }
 
 sub get_input_definition {

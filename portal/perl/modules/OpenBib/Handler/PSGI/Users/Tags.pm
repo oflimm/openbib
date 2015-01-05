@@ -135,8 +135,7 @@ sub show_collection {
     $self->set_paging;
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $private_tags_ref = $user->get_private_tags({
@@ -201,8 +200,7 @@ sub show_record {
     my $format         = $query->param('format') || 'cloud';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $username   = $user->get_username();

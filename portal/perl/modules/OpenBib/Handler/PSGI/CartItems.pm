@@ -111,8 +111,7 @@ sub show_collection {
     my $format                  = $query->param('format')                  || 'short';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
 #     # Shortcuts via Method
@@ -193,8 +192,7 @@ sub show_collection_count {
     my $format                  = $query->param('format')                  || 'short';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
@@ -242,8 +240,7 @@ sub show_record {
     my $method         = $query->param('_method')     || '';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
@@ -259,9 +256,7 @@ sub show_record {
         dbinfo         => $dbinfotable,
     };
     
-    $self->print_page($config->{tt_cartitems_record_tname},$ttdata);
-
-    return;
+    return $self->print_page($config->{tt_cartitems_record_tname},$ttdata);
 }
 
 sub create_record {
@@ -300,8 +295,7 @@ sub create_record {
     my $littype                 = $query->param('littype')                 || 1;
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # Process WWW-UI-Shortcuts
@@ -404,10 +398,10 @@ sub create_record {
                 }
             }
             else {
-                $self->print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."));
+                return $self->print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."));
             }
             
-            $self->return_baseurl;
+            return $self->return_baseurl;
         }
     }
     else {
@@ -462,8 +456,7 @@ sub update_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     # CGI / JSON input
@@ -479,8 +472,7 @@ sub update_record {
 
     return unless ($self->param('representation') eq "html");
 
-    $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
-    return;
+    return $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
 }
 
 sub delete_record {
@@ -507,8 +499,7 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn

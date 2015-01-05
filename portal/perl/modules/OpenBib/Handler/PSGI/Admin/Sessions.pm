@@ -102,8 +102,7 @@ sub show_active_collection {
     my $num    = $queryoptions->get_option('num');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my @sessions = $session->get_info_of_all_active_sessions({offset => $offset, num => $num});
@@ -149,8 +148,7 @@ sub show_active_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
@@ -163,8 +161,7 @@ sub show_active_record {
 
     if (!$thissession){
         $logger->debug("No such session with id $sid");
-        $self->print_warning($msg->maketext("Diese Session existiert nicht."));
-        return;
+        return $self->print_warning($msg->maketext("Diese Session existiert nicht."));
     }
     
     my ($username,$createtime) = ($thissession->username,$thissession->createtime);
@@ -267,8 +264,7 @@ sub show_archived_search_form {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $ttdata={
@@ -303,8 +299,7 @@ sub show_archived_search {
     my $todate          = $query->param('todate')   || '';
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     unless ($fromdate && $todate){
@@ -376,8 +371,7 @@ sub show_archived_record {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $statistics = new OpenBib::Statistics;
@@ -390,8 +384,7 @@ sub show_archived_record {
 
     if (!$thissession){
         $logger->debug("No such session with id $sid");
-        $self->print_warning($msg->maketext("Diese Session existiert nicht."));
-        return;
+        return $self->print_warning($msg->maketext("Diese Session existiert nicht."));
     }
     
     my $serialized_type_ref = {

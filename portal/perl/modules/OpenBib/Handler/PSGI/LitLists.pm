@@ -353,15 +353,13 @@ sub show_collection_by_single_userxxx {
     $litlistid = $thisid;
 
     if (!$user_owns_litlist && !$litlist_is_public){
-        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-
         # Aufruf der privaten Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
             content   => $litlistid,
         });
 
-        return;
+        return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
     my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
@@ -471,15 +469,13 @@ sub show_collection_by_single_user {
     $litlistid = $thisid;
 
     if (!$user_owns_litlist && !$litlist_is_public){
-        $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-
         # Aufruf der privaten Literaturlisten durch "Andere" loggen
         $session->log_event({
             type      => 800,
             content   => $litlistid,
         });
 
-        return;
+        return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
     my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
@@ -593,8 +589,6 @@ sub show_record {
         }
 
         if (!$user_owns_litlist){
-            $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
-
             $logger->debug("UserID: $self->{ID} trying to delete litlistid $litlistid");
             
             # Aufruf der privaten Literaturlisten durch "Andere" loggen
@@ -603,7 +597,7 @@ sub show_record {
                 content   => $litlistid,
             });
             
-            return;
+            return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
         }
     }
 

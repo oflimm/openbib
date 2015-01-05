@@ -86,16 +86,14 @@ sub show_collection {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     # TT-Data erzeugen
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_users_tname},$ttdata);
-
+    return $self->print_page($config->{tt_admin_users_tname},$ttdata);
 }
 
 sub show_record_form {
@@ -121,8 +119,7 @@ sub show_record_form {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $userinfo = new OpenBib::User({ID => $userid })->get_info;
@@ -147,16 +144,14 @@ sub show_search_form {
     my $config         = $self->param('config');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
     
     # TT-Data erzeugen
     my $ttdata={
     };
     
-    $self->print_page($config->{tt_admin_users_search_form_tname},$ttdata);
-
+    return $self->print_page($config->{tt_admin_users_search_form_tname},$ttdata);
 }
 
 sub show_search {
@@ -185,8 +180,7 @@ sub show_search {
     $args_ref->{commonname} = $query->param('commonname') if ($query->param('commonname'));
     
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     if (!$args_ref->{roleid} && !$args_ref->{username} && !$args_ref->{surname} && !$args_ref->{commonname}){

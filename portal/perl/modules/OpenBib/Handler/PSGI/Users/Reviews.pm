@@ -96,8 +96,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     if (!$self->authorization_successful){
-        $self->print_authorization_error();
-        return;
+        return $self->print_authorization_error();
     }
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;

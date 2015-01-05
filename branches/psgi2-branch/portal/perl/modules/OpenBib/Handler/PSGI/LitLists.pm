@@ -66,7 +66,7 @@ use base 'OpenBib::Handler::PSGI';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('show_collection');
     $self->run_modes(
         'show_record'                              => 'show_record',
         'show_collection'                          => 'show_collection',

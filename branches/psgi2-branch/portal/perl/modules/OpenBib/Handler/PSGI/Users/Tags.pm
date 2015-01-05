@@ -34,7 +34,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use CGI::Application::Plugin::Redirect;
 use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;

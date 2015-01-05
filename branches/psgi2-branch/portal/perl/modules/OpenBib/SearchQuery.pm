@@ -142,7 +142,7 @@ sub new {
 }
 
 sub set_from_psgi_request {
-    my ($self)=@_;
+    my ($self,$r)=@_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -459,7 +459,7 @@ sub save  {
         $logger->debug("Query already exists: $query_obj_string");
     }
 
-    $logger->debug("SearchQuery has id ".$self->get_queryid);
+    $logger->debug("SearchQuery has id ".$self->get_queryid) if (defined $self->get_queryid);
     
     return $self;
 }

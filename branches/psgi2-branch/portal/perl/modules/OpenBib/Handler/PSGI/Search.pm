@@ -287,7 +287,7 @@ sub show_search {
     my $content_searchresult="";
     
     # Alternativ: getrennte Suche uber alle Kataloge
-    if ($query->param('sm') eq "seq"){
+    if (defined $query->param('sm') && $query->param('sm') eq "seq"){
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
 
@@ -901,12 +901,15 @@ sub search {
     # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation in
     # den einzeltreffern
 
+    my $total_hits  = $self->param('total_hits') || 0 ;
+    my $resultcount = $searcher->get_resultcount || 0 ;
+    
     $self->param('searchtime',$resulttime);
     $self->param('nav',$nav);
     $self->param('facets',$facets_ref);
     $self->param('recordlist',$recordlist);
     $self->param('hits',$searcher->get_resultcount);
-    $self->param('total_hits',$self->param('total_hits')+$searcher->get_resultcount);
+    $self->param('total_hits',$total_hits + $resultcount);
 
     return;
 }

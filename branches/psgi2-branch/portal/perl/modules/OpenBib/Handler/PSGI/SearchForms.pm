@@ -191,11 +191,8 @@ sub show {
         spelling_suggestion    => $spelling_suggestion_ref,
         livesearch             => $livesearch_ref,
         
-        searchquery   => $searchquery,
+        searchquery   => $searchquery->get_searchquery,
         qopts         => $queryoptions->get_options,
-
-#        anzahl        => $anzahl,
-#        queries       => \@queries,
 
         catdb         => \@catdb,
         maxcolumn     => $maxcolumn,
@@ -204,6 +201,8 @@ sub show {
         statistics    => $statistics,
     };
 
+    $logger->debug("Mark 5");
+    
     if ($logger->is_debug){
         $logger->debug("TT-Data: ".YAML::Dump($ttdata));
     }
@@ -228,9 +227,7 @@ sub show_session {
     
     $self->param('type',$type);
 
-    $self->show;
-
-    return;
+    return $self->show;
 }
 
 1;

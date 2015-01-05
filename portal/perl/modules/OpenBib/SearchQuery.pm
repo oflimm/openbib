@@ -689,7 +689,7 @@ sub get_searchfield {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug($fieldname);
+#    $logger->debug($fieldname);
 
 #    $logger->debug(YAML::Dump($self));
     return (exists $self->{_searchquery}->{$fieldname})?$self->{_searchquery}->{$fieldname}:{val => '', norm => '', bool => '', args => ''};

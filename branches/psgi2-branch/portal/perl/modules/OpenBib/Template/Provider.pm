@@ -3,7 +3,7 @@
 #  OpenBib::Template::Provider
 #
 #  Dieses File ist (C) 2003 Ilya Martynov  <ilya@iponweb.net>
-#                      2005 Oliver Flimm <flimm@openbib.org>
+#                      2005-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -52,8 +52,8 @@ sub _load {
 }
 
 sub conv2utf8 {
-    my @list = map pack('U*', unpack 'U0U*', $_), @_;
-#    my @list = map decode_utf8($_), @_;
+#    my @list = map pack('U*', unpack 'U0U*', $_), @_;
+    my @list = map decode_utf8($_), @_;
     return wantarray ? @list : $list[0];
 }
 

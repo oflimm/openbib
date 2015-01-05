@@ -2,7 +2,7 @@
 #
 #  OpenBib::L10N
 #
-#  Dieses File ist (C) 2006-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2014 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -55,7 +55,7 @@ use base 'Locale::Maketext';
 use Locale::Maketext::Lexicon {
     '*'        => [Gettext => OpenBib::Config->instance->{locale_base_path}."/*/LC_MESSAGES/openbib.po"],
 #   _style     => 'gettext', # fuer korrektes TT-handling irrelevant
-#    _decode    => 1,         # UTF-8 handling on
+    _decode    => 1,         # UTF-8 handling on
 #    _preload   => 1,
 #   _use_fuzzy => 1,         # Fuzzy-Matching off
 };

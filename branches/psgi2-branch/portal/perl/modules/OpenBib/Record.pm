@@ -55,8 +55,8 @@ sub connectDB {
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1}
-        $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
-#        $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+#        $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
     };
     
     if ($@){
@@ -77,9 +77,8 @@ sub connectEnrichmentDB {
 
     if ($self->{'enrichmntdbsingleton'}){
         eval {        
-            $self->{enrich_schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
-#            $self->{enrich_schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            
+            $self->{enrich_schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+            # $self->{enrich_schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);            
         };
         
         if ($@){
@@ -89,8 +88,8 @@ sub connectEnrichmentDB {
     else {
         eval {
             # UTF8: {'pg_enable_utf8'    => 1}
-            #        $self->{enrich_schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
-            $self->{enrich_schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
+            $self->{enrich_schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+            # $self->{enrich_schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
         };
         
         if ($@){

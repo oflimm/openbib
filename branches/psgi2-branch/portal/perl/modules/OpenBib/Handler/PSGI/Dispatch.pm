@@ -69,6 +69,7 @@ sub as_psgi {
     $logger->debug("Dispatching as PSGI");
 
     $args{args_to_new}->{PARAMS}->{r} = $query;
+    $args{args_to_new}->{PARAMS}->{QUERY} = $query;
     $args{args_to_new}->{QUERY} = $query;
 
     
@@ -76,7 +77,7 @@ sub as_psgi {
     
     my $psgi_app = $self->SUPER::as_psgi(%args) ;
 
-    #$logger->debug("Output is :".YAML::Dump($psgi_app));
+#    $logger->debug("Output is :".YAML::Dump($psgi_app));
     
     return $psgi_app;
 }

@@ -142,7 +142,7 @@ sub new {
 }
 
 sub set_from_psgi_request {
-    my ($self,$r)=@_;
+    my ($self)=@_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();

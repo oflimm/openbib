@@ -145,7 +145,7 @@ sub show {
         $searchquery->load({sid => $session->{sid}, queryid => $queryid});
     }
     else {
-        $searchquery->set_from_psgi_request($r);
+        $searchquery->set_from_psgi_request;
     }
     
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);

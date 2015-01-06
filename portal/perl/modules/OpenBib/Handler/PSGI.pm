@@ -840,6 +840,8 @@ sub print_page {
     my $location       = $self->param('location');
     my $url            = $self->param('url');
 
+    $logger->debug("Entering print_page with template $templatename");
+    
     my ($atime,$btime,$timeall)=(0,0,0);
 
     if ($config->{benchmark}) {

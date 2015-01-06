@@ -144,9 +144,6 @@ sub show {
     if ($queryid) {
         $searchquery->load({sid => $session->{sid}, queryid => $queryid});
     }
-    else {
-        $searchquery->set_from_psgi_request;
-    }
     
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
@@ -191,7 +188,7 @@ sub show {
         spelling_suggestion    => $spelling_suggestion_ref,
         livesearch             => $livesearch_ref,
         
-        searchquery   => $searchquery->get_searchquery,
+        searchquery   => $searchquery,
         qopts         => $queryoptions->get_options,
 
         catdb         => \@catdb,
@@ -201,12 +198,6 @@ sub show {
         statistics    => $statistics,
     };
 
-    $logger->debug("Mark 5");
-    
-    if ($logger->is_debug){
-        $logger->debug("TT-Data: ".YAML::Dump($ttdata));
-    }
-    
     my $templatename = "tt_searchforms_record_".$type."_tname";
 
     return $self->print_page($config->{$templatename},$ttdata);

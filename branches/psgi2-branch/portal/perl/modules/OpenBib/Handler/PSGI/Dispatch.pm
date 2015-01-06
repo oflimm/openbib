@@ -61,6 +61,8 @@ sub as_psgi {
     if ($query->param('_method')){
         $args{args_to_new}->{PARAMS}->{method} = $query->param('_method');
 
+        $query->env->{REQUEST_METHOD} = $query->param('_method');
+        
         if ($logger->is_debug){
             $logger->debug("Changed method to tunneled ".$query->param('_method'));
         }

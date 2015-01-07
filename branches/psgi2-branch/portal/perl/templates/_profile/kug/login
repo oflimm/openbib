@@ -72,7 +72,7 @@ $(document).ready(function(){
 </ul>
 
 <div id="ob-login_forms_library">
-<form method="post" action="[% IF servername == "kug.ub.uni-koeln.de" %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
 
 [% IF redirect_to %]
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
@@ -114,7 +114,7 @@ $(document).ready(function(){
 </div>
 
 <div id="ob-login_forms_selfreg">
-<form method="post" action="https://[% servername %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="ym-form">
+<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="ym-form">
 
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 

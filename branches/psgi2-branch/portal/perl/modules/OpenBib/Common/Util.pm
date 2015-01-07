@@ -1904,12 +1904,19 @@ sub gen_cloud_class {
 sub query2hashref {
     my $query=shift;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $args_ref = {};
     my @param_names = $query->param;
     foreach my $param (@param_names){
         $args_ref->{$param} = $query->param($param);
     }
 
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($args_ref));
+    }
+    
     return $args_ref;
 }
 

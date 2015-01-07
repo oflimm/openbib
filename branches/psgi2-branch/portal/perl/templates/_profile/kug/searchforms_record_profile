@@ -20,7 +20,8 @@
 
 <select name="profile" class="ob-selectbox">
    
-[% IF usersearchprofiles.size > 0 %]
+[%# IF usersearchprofiles.size > 0 %]
+[% IF usersearchprofiles  %]
 <optgroup label="Eigene Suchprofile">
 [%- FOREACH profile IN usersearchprofiles -%]
 [%     pid   = profile.searchprofileid %]

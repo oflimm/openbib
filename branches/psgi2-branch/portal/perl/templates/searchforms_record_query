@@ -174,7 +174,7 @@ $(document).ready(function(){
 [%- cgiparam_to   = "${cgiparam}_to";
     this_searchfield_to = 'year_to';
    -%]
-<tr><td class="ob-field">[% msg.maketext("Zeitraum") %]</td><td><input type="text" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />&nbsp[% msg.maketext("bis") %]&nbsp;<input type="text" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" /></td><td></td></tr>
+<tr><td class="ob-field">[% msg.maketext("Zeitraum") %]</td><td><input type="text" name="[% cgiparam_from %]" value="[% searchquery.get_searchfield(cgiparam_from).val | html %]" size="4" maxlength="4" />&nbsp[% msg.maketext("bis") %]&nbsp;<input type="text" name="[% cgiparam_to %]" value="[% searchquery.get_searchfield(cgiparam_to).val | html %]" size="4" maxlength="4" /></td><td></td></tr>
 [% END %]
 <!-- <tr><td class="ob-field">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="ob-field">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr> -->
 <tr><td class="ob-field"><span class="bigtext">[% msg.maketext("in:") %]</span></td><td colspan="2">[% PROCESS common/subtemplate name="searchforms_record_profile" %]</td><td></td></tr>

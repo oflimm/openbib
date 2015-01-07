@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Class::Singleton); # per request
+use base qw(Class::Singleton);
 
 use Benchmark ':hireswallclock';
 use DBI;
@@ -255,7 +255,9 @@ sub set_from_psgi_request {
 
                 # Filter fuer Suchfeld und gegebenenfalls davon abgeleitete Felder (_from/_to). Daher $searchfield und nicht $name!
 
-                $logger->debug("Filter Option: ".$config->{'searchfield'}{$searchfield}{option});
+                if ($logger->is_debug){
+                    $logger->debug("Filter Option: ".YAML::Dump($config->{'searchfield'}{$searchfield}{option}));
+                }
                 
                 $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
                     option    => $config->{'searchfield'}{$searchfield}{option},

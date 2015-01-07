@@ -159,10 +159,6 @@ sub show_search {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
 
-    if ($logger->is_debug){
-        $logger->debug("SearchQuery Terms:".YAML::Dump($searchquery->get_searchquery));
-    }
-    
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
 		type      => 20,
@@ -360,9 +356,6 @@ sub show_search {
     # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
 
     if ($gesamttreffer > 0) {
-        if ($logger->is_debug){
-            $logger->debug("Resultset wird geschrieben: ".YAML::Dump(\@resultset));
-        }
         $session->updatelastresultset(\@resultset);
     }
     
@@ -854,7 +847,8 @@ sub search {
     my $resulttime;
     my $nav;
 
-    my $search_args_ref = OpenBib::Common::Util::query2hashref($query);
+    my $search_args_ref = {};
+    $search_args_ref->{options} = OpenBib::Common::Util::query2hashref($query);
     $search_args_ref->{database} = $database if (defined $database);
     $search_args_ref->{authority} = $authority if (defined $authority);
 

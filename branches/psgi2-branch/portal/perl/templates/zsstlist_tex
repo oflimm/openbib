@@ -70,17 +70,12 @@ Abteilung Universit"atsGesamtKatalog / USB K"oln}}\\
 
 Liebe Kolleginnen und Kollegen,
 
-am 01.09.2006 hat die Abt. UGK die Aufgabe der Pflege der
-Zeitschriftenbest"ande der Institute in der Zeitschriftendatenbank
-(ZDB) "ubernommen.
-
-Durch die neue KUG 2.0 Version gibt es f"ur Sie die M"oglichkeit die
-Liste Ihre Zeitschriftenbest"ande als PDF-Dokument von unserem Server
-herunterzuladen. Wir verschicken also keine Zeitschriftentitellisten
-mehr an Sie mit der Bitte um Korrektur, sondern Sie entscheiden, wann
-sie eine Revision Ihres Zeitschriftenbestandes durchf"uhren wollen und
-k"onnen sich dann Ihre Liste herunterladen, ausdrucken und nach der
-Bearbeitung an uns schicken.
+die Abt. UGK pflegt die Zeitschriftenbest"ande der Institute in der
+Zeitschriftendatenbank (ZDB) und bietet Ihnen die M"oglichkeit die
+Liste Ihrer Zeitschriftenbest"ande als PDF-Dokument von unserem Server
+herunterzuladen. Damit k"onnen Sie entscheiden, wann Sie eine Revision
+Ihres Zeitschriftenbestandes durchf"uhren wollen, indem Sie Ihre Liste
+herunterladen, ausdrucken und nach der Bearbeitung an uns schicken.
 
 \minisec{Allgemeine Hinweise zur Zeitschriftenbearbeitung:}
 
@@ -90,13 +85,10 @@ Daten aus dem Impressum.
 
 Von Ihnen gemeldete "Anderungen in der ZDB-Online sind dort auch sofort
 sichtbar. Allerdings werden diese "Anderungen in der KUG-Datenbank
-\emph{Zeitschriften der Institute} erst beim viertelj"ahrlichen Update
-angezeigt. (Viertelj"ahrlich erhalten wir vom HBZ einen Abzug der
+\emph{Zeitschriften der Institute} erst beim w"ochentlichen Update
+angezeigt. (W"ochentlich erhalten wir vom HBZ einen Abzug der
 ZDB-Daten f"ur die Best"ande der K"olner Instituts- und
-Seminarbibliotheken). Es nutzt also nichts nach unserer R"uckmeldung
-"uber durchgef"uhrte "Anderungen, diese in der \emph{Zeitschriften der
-Institute}-Datenbank zu recherchieren. Gehen Sie dazu auf die ZDB-URL:
-\texttt{http://dispatch.opac.ddb.de/}
+Seminarbibliotheken).
 
 Zus"atzlich sollten Sie uns nat"urlich alle laufenden Bestands"anderungen
 per Mail (gk@ub.uni-koeln.de ) mitteilen.
@@ -114,7 +106,7 @@ Richtig: - 34.1993
 
 \minisec{URL der Zeitschriftenlisten}
 
-Unter dem URL \texttt{http://kug.ub.uni-koeln.de/zsstlisten/} finden
+Unter dem URL \texttt{http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/} finden
 Sie aufgeschl"usselt nach Sigeln zu jedem Institut/Seminar jeweils
 eine pdf-Datei, in der nur die Bestandsnachweise des jeweiligen
 Instituts/Seminars stehen (ohne \texttt{-all}) sowie eine pdf-Datei
@@ -124,6 +116,7 @@ verzeichnet sind.  \vspace{1cm}
 
   \begin{tabular}[t]{ll}
     AnsprechpartnerInnen : & Abt. Universit"atsGesamtKatalog / USB K"oln\\
+                           & (www.ub.uni-koeln.de/bibliotheken/)\\
     Telefon : & 0221-470 3306 \\
     Fax     : & 0221-470 5166 \\
     E-Mail  : & gk@ub.uni-koeln.de \\
@@ -139,7 +132,7 @@ verzeichnet sind.  \vspace{1cm}
 %\begin{verbatim}
 
 
-%Copyright (c) 2005 Oliver Flimm <flimm@openbib.org>
+%Copyright (c) 2005-2015 Oliver Flimm <flimm@openbib.org>
 
 %Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
 %und/oder zu veraendern unter den Bedingungen der GNU Free
@@ -165,7 +158,7 @@ online von unserer Sigel-Liste:
 
 \begin{center}
 \begin{verbatim}
-http://www.ub.uni-koeln.de/bibliotheken/bibliotheksfuehrer/sigel/index_ger.html
+http://www.ub.uni-koeln.de/bibliotheken/sigel/index_ger.html
 \end{verbatim}
 \end{center}
 

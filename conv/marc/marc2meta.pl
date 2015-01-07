@@ -181,6 +181,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         if ($field->as_string('b') eq "MIL"){
             my $titleid = $field->as_string('a');
             $titleid=~s/\//_/g;
+	    $titleid=~s/\\/_/g;
 
             $title_ref->{id} = $titleid;
         }
@@ -189,6 +190,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         my $idfield = $record->field('001');
         my $titleid = (defined $idfield)?$idfield->as_string():undef;
         $titleid=~s/\//_/g;
+        $titleid=~s/\\/_/g;
         
         $title_ref->{id} = $titleid;
     }

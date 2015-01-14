@@ -4,7 +4,7 @@
 #
 #  ehemals VirtualSearch.pm
 #
-#  Dieses File ist (C) 1997-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -112,6 +112,10 @@ sub show_search {
     my $path           = $self->param('path');
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+
+
+    $logger->debug("User: ".YAML::Dump($user));
+    $logger->debug("Session: ".YAML::Dump($session));
     
     # CGI Args
     my $sb        = $query->param('sb')        || $config->{local_search_backend};
@@ -157,8 +161,14 @@ sub show_search {
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
 
+    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
+    $self->param('searchquery',$searchquery);
+    
+    if ($logger->is_debug){
+        $logger->debug("_searchquery: ".YAML::Dump($searchquery->{_searchquery}));
+    }
+    
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
 		type      => 20,
@@ -358,17 +368,31 @@ sub show_search {
     if ($gesamttreffer > 0) {
         $session->updatelastresultset(\@resultset);
     }
-    
+
+    if ($logger->is_debug){
+        $logger->debug("_searchquery pre: ".YAML::Dump($searchquery->{_searchquery}));
+    }
+
     # Wurde in allen Katalogen recherchiert?
     
     my $alldbcount = $config->get_number_of_dbs();
+
+    my $searchquery_log_ref = {};
+
+    my $searchquery_args = $searchquery->get_searchquery;
     
-    my $searchquery_log_ref = $searchquery->get_searchquery;
+    foreach my $key (keys %{$searchquery_args}){
+        $searchquery_log_ref->{$key} = $searchquery_args>{$key};
+    }
         
     $searchquery_log_ref->{searchprofile} = $searchquery->get_searchprofile;
     
     $searchquery_log_ref->{hits}   = $gesamttreffer;
-    
+
+    if ($logger->is_debug){
+        $logger->debug("_searchquery: ".YAML::Dump($searchquery->{_searchquery}));
+    }
+
     # Loggen des Queries
     $session->log_event({
         type      => 1,
@@ -432,8 +456,10 @@ sub show_index {
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    my $searchquery = OpenBib::SearchQuery->instance;
+    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
 
+    $self->param('searchquery',$searchquery);
+    
     my $sysprofile  = $config->get_profilename_of_view($view);
 
     @databases = $self->get_databases();
@@ -768,7 +794,7 @@ sub joined_search {
     my $logger = get_logger();
 
     my $config      = OpenBib::Config->instance;
-    my $searchquery = OpenBib::SearchQuery->instance;
+    my $searchquery = $self->param('searchquery');
 
     $logger->debug("Starting joined search");
 
@@ -802,7 +828,7 @@ sub sequential_search {
     my $logger = get_logger();
     
     my $config      = OpenBib::Config->instance;
-    my $searchquery = OpenBib::SearchQuery->instance;
+    my $searchquery = $self->param('searchquery');
 
     ######################################################################
     # Schleife ueber alle Datenbanken 
@@ -838,7 +864,7 @@ sub search {
     my $query        = $self->query();
     my $config       = $self->param('config');
     my $queryoptions = $self->param('qopts');
-    my $searchquery  = OpenBib::SearchQuery->instance;
+    my $searchquery  = $self->param('searchquery');
 
     my $atime=new Benchmark;
     my $timeall;
@@ -851,13 +877,14 @@ sub search {
     $search_args_ref->{options} = OpenBib::Common::Util::query2hashref($query);
     $search_args_ref->{database} = $database if (defined $database);
     $search_args_ref->{authority} = $authority if (defined $authority);
+    $search_args_ref->{searchquery} = $searchquery if (defined $searchquery);
 
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
     # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
     # und OpenBib::QueryOptions - alle weiteren benoetigten Parameter individuell
     # heraussuchen.
     # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
-    
+
     my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
 
     # Recherche starten
@@ -936,7 +963,7 @@ sub print_resultitem {
     my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $database       = $self->param('database') || '';
     
-    my $searchquery  = OpenBib::SearchQuery->instance;
+    my $searchquery  = $self->param('searchquery');
     my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->instance;
 
     # TT-Data erzeugen

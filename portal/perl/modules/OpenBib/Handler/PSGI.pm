@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI
 #
-#  Dieses File ist (C) 2010-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -76,17 +76,25 @@ sub cgiapp_init {
 
     my $r            = $self->param('r');
     my $view         = $self->param('view');
+
     my $config       = OpenBib::Config->instance;
 
+    $self->param('config',$config);
+    
     my ($atime,$btime,$timeall)=(0,0,0);
 
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
+    if (!defined $r){
+        $logger->error("No Request");
+    }
+    
     my $sessionID     = $r->cookies->{sessionID} || '';
 
-    my $session      = OpenBib::Session->instance({ sessionID => $sessionID , view => $view });
+    my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view });
+    $self->param('session',$session);
 
     $logger->debug("Got sessionID $sessionID and effecitve sessionID is $session->{ID}");
 
@@ -98,21 +106,25 @@ sub cgiapp_init {
     # Neue Session, dann loggen
     $session->log_new_session_once($r);
 
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
-    my $dbinfo       = OpenBib::Config::DatabaseInfoTable->instance;
-    my $locinfo      = OpenBib::Config::LocationInfoTable->instance;
-    my $useragent    = $r->user_agent;
-    my $browser      = HTTP::BrowserDetect->new($useragent);
-
-    $self->param('config',$config);
-    $self->param('session',$session);
+    my $user         = OpenBib::User->new({sessionID => $session->{ID}});
     $self->param('user',$user);
-    $self->param('useragent',$useragent);
-    $self->param('browser',$browser);
+
+    $logger->debug("User: ".YAML::Dump($user));
+    
+    my $dbinfo       = OpenBib::Config::DatabaseInfoTable->instance;
     $self->param('dbinfo',$dbinfo);
+
+    my $locinfo      = OpenBib::Config::LocationInfoTable->instance;
     $self->param('locinfo',$locinfo);
 
-    $self->param('qopts',OpenBib::QueryOptions->instance($self->query()));
+    my $useragent    = $r->user_agent;
+    $self->param('useragent',$useragent);
+    
+    my $browser      = HTTP::BrowserDetect->new($useragent);
+    $self->param('browser',$browser);
+    
+    my $queryoptions = OpenBib::QueryOptions->new({ query => $r, session => $session });
+    $self->param('qopts',$queryoptions);
     $self->param('servername',$r->get_server_name);
 
     if ($config->{benchmark}) {
@@ -200,7 +212,7 @@ sub cgiapp_init {
     else {
         $logger->error("No SessionID after initialization");
     }
-    
+
     $logger->debug("Main objects initialized");    
 
     if ($config->{benchmark}) {
@@ -222,6 +234,9 @@ sub cgiapp_prerun {
    $logger->debug("Entering cgiapp_prerun");
 
    my $r            = $self->param('r');
+   my $user         = $self->param('user');
+   
+   $logger->debug("User: ".YAML::Dump($user));
    
    {
        # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
@@ -1592,6 +1607,8 @@ sub check_http_basic_authentication {
     my $config  = $self->param('config');
     my $user    = $self->param('user');
     my $session = $self->param('session');
+
+    $logger->debug("User Pre: ".YAML::Dump($user));
     
     # Shortcut fuer HTTP Basic Authentication anhand lokaler Datenbank
     # Wenn beim Aufruf ein Username und ein Passwort uebergeben wird, dann
@@ -1639,6 +1656,8 @@ sub check_http_basic_authentication {
         else {
             $self->param('basic_auth_failure',1);
         }
+
+        $logger->debug("User post: ".YAML::Dump($user));
 
         # User zurueckchreiben
         $self->param('user',$user);
@@ -1771,13 +1790,26 @@ sub _send_psgi_headersXX {
 # sub teardown {
 #     my $self = shift;
 
-#     my $config     = OpenBib::Config->instance;
-#     my $enrichmnt  = OpenBib::Enrichment->instance;
+#     # Singletons zerstoeren
+#     $self->param('config')->DESTROY;;
+#     $self->param('user')->DESTROY;;
+#     $self->param('config')->DESTROY;;
+#     $self->param('qopts')->DESTROY;;
 
-#     $config->DESTROY;
+#     my $searchquery = OpenBib::SearchQuery->instance;
+#     my $container   = OpenBib::Container->instance;
+#     my $statistics  = OpenBib::Statistics->instance;
+#     my $enrichmnt   = OpenBib::Enrichment->instance;
+#     my $session     = OpenBib::Session->instance;
+    
+
+#     $statistics->DESTROY;
+#     $container->DESTROY;
+#     $session->DESTROY;
+#     $searchquery->DESTROY;
 #     $enrichmnt->DESTROY;
     
-#     return $self;
+#     return;
 # }
 
 1;

@@ -39,6 +39,8 @@ use Storable;
 use XML::LibXML;
 use YAML ();
 
+use OpenBib::SearchQuery;
+use OpenBib::QueryOptions;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
@@ -56,7 +58,16 @@ sub new {
         ? $arg_ref->{database}                : undef;
 
     my $authority          = exists $arg_ref->{authority}
-        ? $arg_ref->{authority}       : undef;
+        ? $arg_ref->{authority}               : undef;
+
+    my $options            = exists $arg_ref->{options}
+        ? $arg_ref->{options}                 : {};
+
+    my $searchquery        = exists $arg_ref->{searchquery}
+        ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
+
+    my $queryoptions       = exists $arg_ref->{queryoptions}
+        ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
     
     my $self = { };
 
@@ -75,12 +86,32 @@ sub new {
     if ($authority){
         $self->{_authority}     = $authority;
     }
+
+    if ($options){
+        $self->{_options}       = $options;
+    }
+
+    $self->{_queryoptions}  = $queryoptions;
+    
+    $self->{_searchquery}   = $searchquery;
     
     # Achtung: searchprofile und database werden fuer search direkt aus dem SearchQuery-Objekt verwendet.
 
     # Backend Specific Attributes
     
     return $self;
+}
+
+sub get_searchquery {
+    my ($self) = @_;
+
+    return $self->{_searchquery};
+}
+
+sub get_queryoptions {
+    my ($self) = @_;
+
+    return $self->{_queryoptions};
 }
 
 sub is_authority {

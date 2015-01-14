@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Reviews.pm
 #
-#  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -79,6 +79,9 @@ sub show_collection_by_isbn_negotiate {
 
     $logger->debug("Entered show_collection");
     my $r              = $self->param('r');
+    my $queryoptions   = $self->param('qopts');
+    my $user           = $self->param('user');
+    my $session        = $self->param('session');
 
     my $view           = $self->param('view')           || '';
     my $isbn           = $self->param('isbn')           || '';
@@ -86,8 +89,6 @@ sub show_collection_by_isbn_negotiate {
     my $config = OpenBib::Config->instance;
     
     my $query  = $r;
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -125,8 +126,7 @@ sub show_collection_by_isbn_negotiate {
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
+    
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
@@ -137,7 +137,7 @@ sub show_collection_by_isbn_negotiate {
         return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
+
 
     my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});

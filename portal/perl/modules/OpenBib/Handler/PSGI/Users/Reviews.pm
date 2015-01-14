@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Reviews.pm
 #
-#  Copyright 2007-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -141,13 +141,13 @@ sub update_record {
 
     my $view           = $self->param('view')           || '';
     my $reviewid       = $self->param('reviewid')         || '';
-    
-    
-    my $config = OpenBib::Config->instance;
+    my $queryoptions   = $self->param('qopts');
+    my $msg            = $self->param('msg');
+    my $user           = $self->param('user');
+    my $session        = $self->param('session');
+    my $config         = $self->param('config');
     
     my $query  = $r;
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -185,23 +185,14 @@ sub update_record {
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
         return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
-
     my $username   = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
-
 
     if (!$user->{ID}){
         return $self->print_warning("Sie müssen sich authentifizieren, um taggen zu können");
@@ -234,24 +225,17 @@ sub delete_record {
 
     my $view           = $self->param('view')           || '';
     my $reviewid       = $self->param('reviewid')         || '';
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
 
-    my $config = OpenBib::Config->instance;
-    
     my $query  = $r;
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
-
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
         return $self->print_warning($msg->maketext("Ungültige Session"));
     }
-
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     my $username  = $user->get_username();
 
@@ -282,12 +266,13 @@ sub show_record_form {
     my $view           = $self->param('view')           || '';
     my $reviewid       = $self->param('reviewid')       || '';
     my $path_prefix    = $self->param('path_prefix');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
 
-    my $config = OpenBib::Config->instance;
-    
     my $query  = $r;
-
-    my $session = OpenBib::Session->instance({ apreq => $r });
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -324,19 +309,11 @@ sub show_record_form {
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
         return $self->print_warning($msg->maketext("Ungültige Session"));
     }
-
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
 
     if (! $user->{ID}){
         # Aufruf-URL

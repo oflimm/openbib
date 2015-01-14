@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Titles.pm
 #
-#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -138,7 +138,7 @@ sub show_dbis_recommendations {
     my $useragent      = $self->param('useragent');
     my $dbinfotable    = $self->param('dbinfo');
 
-    my $searchquery = OpenBib::SearchQuery->instance({r => $r, view => $view});
+    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view});
 
     # TT-Data erzeugen
     my $ttdata={
@@ -329,7 +329,7 @@ sub show_record {
     }
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $searchquery   = OpenBib::SearchQuery->instance({r => $r, view => $view});
+    my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
     my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
     
     if ($config->{benchmark}) {

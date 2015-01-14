@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Backend::ElasticSearch
 #
-#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -130,8 +130,8 @@ sub search {
     my $logger = get_logger();
 
     my $config       = OpenBib::Config->instance;
-    my $searchquery  = OpenBib::SearchQuery->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
+    my $searchquery  = $self->get_searchquery;
+    my $queryoptions = $self->get_queryoptions;
 
     # Used Parameters
     my $sorttype          = $queryoptions->get_option('srt');

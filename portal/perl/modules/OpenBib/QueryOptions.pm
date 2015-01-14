@@ -2,7 +2,7 @@
 #
 #  OpenBib::QueryOptions
 #
-#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,8 +30,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Class::Singleton);
-
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -44,9 +42,16 @@ use OpenBib::Config;
 use OpenBib::Schema::System;
 use OpenBib::Session;
 
-sub _new_instance {
-    my ($class,$query) = @_;
+sub new {
+    my ($class,$arg_ref) = @_;
 
+    # Set defaults
+    my $query    = exists $arg_ref->{query}
+        ? $arg_ref->{query}             : undef;
+
+    my $session  = exists $arg_ref->{session}
+        ? $arg_ref->{session}           : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -56,15 +61,23 @@ sub _new_instance {
 
     bless ($self, $class);
 
-    $self->{_altered} = 0;
+    $self->connectDB();
+    $self->connectMemcached();
     
+    $self->{_altered} = 0;
+
     if (defined $query){
         $self->set_query($query);
     }
-    
-    $self->connectDB();
-    $self->connectMemcached();
 
+    if (defined $session){
+        $self->set_session($session);
+    }
+    
+    if ($logger->is_debug){
+        $logger->debug("Query: Stage 1 ".YAML::Dump($self->{option}));
+    }
+    
     # Initializierung mit Defaults
 #    $self->initialize_defaults;
     
@@ -88,8 +101,9 @@ sub _new_instance {
     }
 
     if ($logger->is_debug){
-        $logger->debug("QueryOptions-Object created with options ".YAML::Syck::Dump($self->{option}));
+        $logger->debug("QueryOptions-Object created with options ".YAML::Syck::Dump($self->get_options));
     }
+
 
     return $self;
 }
@@ -132,7 +146,7 @@ sub load_from_session {
     my $logger = get_logger();
 
     my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance;
+    my $session = $self->get_session;
 
     $logger->debug("SessionID:".$session->{ID}) if (defined $session->{ID});
 
@@ -170,8 +184,8 @@ sub dump_into_session {
     
     return unless ($self->{_altered});
     
-    my $config = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance;
+    my $config  = OpenBib::Config->instance;
+    my $session = $self->get_session;
     
     my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({id => $session->{sid}});
     
@@ -252,6 +266,19 @@ sub set_query {
     return;
 }
 
+sub get_session {
+    my ($self)=@_;
+    
+    return $self->{_session};
+}
+
+sub set_session {
+    my ($self,$session)=@_;
+    
+    $self->{_session} = $session;
+    return;
+}
+
 sub get_option_definition {
     my ($class)=@_;
     
@@ -313,15 +340,17 @@ sub connectDB {
     my $config  = OpenBib::Config->instance;
 
     eval {        
-        $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
 
     };
+
+    $logger->debug(YAML::Dump($self->{schema}));
 
     if ($@){
         $logger->fatal("Unable to connect to database $config->{systemdbname}");
     }
 
-    return;
+    return $self;
 }
 
 sub connectMemcached {
@@ -352,7 +381,7 @@ __END__
 
 =head1 NAME
 
-OpenBib::QueryOptions - Singleton zur Behandlung von Recherche-Optionen
+OpenBib::QueryOptions - Objekt zur Behandlung von Recherche-Optionen
 
 =head1 DESCRIPTION
 
@@ -364,7 +393,7 @@ autoplus, Such-Backend sb sowie den Trefferlistentyp listtype.
 
  use OpenBib::QueryOptions;
 
- my $queryoptions  = OpenBib::QueryOptions->instance;
+ my $queryoptions  = OpenBib::QueryOptions->new;
 
  my $lang = $queryoptions->get_option('l');
 

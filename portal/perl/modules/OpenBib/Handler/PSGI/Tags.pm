@@ -242,12 +242,11 @@ sub show_collection_form {
 
     my $view           = $self->param('view')           || '';
     my $path_prefix    = $self->param('path_prefix');
-
-    my $config = OpenBib::Config->instance;
+    my $user           = $self->param('user');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
     
     my $query  = $r;
-
-    my $session = OpenBib::Session->instance({ apreq => $r });    
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -278,7 +277,7 @@ sub show_collection_form {
 
     my $queryid        = $query->param('queryid')     || '';
 
-    my $queryoptions = OpenBib::QueryOptions->instance($query);
+    my $queryoptions = $self->param('qopts');
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
@@ -288,7 +287,7 @@ sub show_collection_form {
         return $self->print_warning($msg->maketext("Ungültige Session"));
     }
 
-    my $user = OpenBib::User->instance({sessionID => $session->{ID}});
+
 
     unless($user->{ID}){
         # Aufruf-URL

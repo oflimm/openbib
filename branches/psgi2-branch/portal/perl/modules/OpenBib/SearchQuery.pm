@@ -2,7 +2,7 @@
 #
 #  OpenBib::SearchQuery
 #
-#  Dieses File ist (C) 2008-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,8 +30,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Class::Singleton);
-
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
@@ -51,51 +49,6 @@ use OpenBib::Config;
 use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 
-sub _new_instance {
-    my ($class,$arg_ref) = @_;
-
-    my $view        = exists $arg_ref->{view}
-        ? $arg_ref->{view}                  : undef;
-
-    my $r           = exists $arg_ref->{r}
-        ? $arg_ref->{r}                     : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-
-    my $self = {
-        _searchprofile         => 0,
-        _filter                => [],
-        _results               => {},
-        _have_searchterms      => 0,
-    };
-
-    foreach my $searchfield (keys %{$config->{searchfield}}){
-        $self->{_searchquery}{$searchfield} = {
-            norm => '',
-            val  => '',
-            bool => '',
-        };
-    }
-
-    bless ($self, $class);
-
-    if ($view){
-        $self->{view} = $view;
-    }
-    
-    if ($r){
-        $self->{r} = $r;
-        $self->set_from_psgi_request
-    }
-    
-    $self->connectDB();
-
-    return $self;
-}
-
 sub new {
     my ($class,$arg_ref) = @_;
 
@@ -105,11 +58,15 @@ sub new {
     my $r           = exists $arg_ref->{r}
         ? $arg_ref->{r}                     : undef;
 
+    my $session     = exists $arg_ref->{session}
+        ? $arg_ref->{session}               : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
 
+    $logger->debug("Session: ".YAML::Dump($session));
     my $self = {
         _searchprofile         => 0,
         _filter                => [],
@@ -127,17 +84,22 @@ sub new {
 
     bless ($self, $class);
 
+    $self->connectDB();
+
+    if (defined $session){
+        $self->set_session($session);
+    }
+
     if ($view){
         $self->{view} = $view;
     }
 
     if ($r){
         $self->{r} = $r;
-        $self->set_from_psgi_request
+        $self->set_from_psgi_request;
     }
 
-    $self->connectDB();
-    
+
     return $self;
 }
 
@@ -373,7 +335,7 @@ sub load  {
     my $logger = get_logger();
 
     # DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
-    my $query = $self->{schema}->resultset('Query')->search_rs(
+    my $query = $self->{schema}->resultset('Query')->search(
         {
             'sid.id'        => $sid,
             'me.queryid'    => $queryid,
@@ -388,8 +350,8 @@ sub load  {
     my ($thisquery,$thiststamp);
     
     if ($query){
-        $thisquery  = $query->get_column('thisquery');
-        $thiststamp = $query->get_column('thiststamp');
+        $thisquery  = scalar $query->get_column('thisquery');
+        $thiststamp = scalar $query->get_column('thiststamp');
     }
     
     $logger->debug("$sid/$queryid -> $thisquery");
@@ -433,7 +395,7 @@ sub save  {
     $logger->debug("Query Object: ".$query_obj_string);
 
     # DBI: "select queryid from queries where query = ? and sessionid = ?"
-    my $searchquery = $self->{schema}->resultset('Query')->search_rs(
+    my $searchquery = $self->{schema}->resultset('Query')->search(
         {
             'sid.id'        => $sid,
             'me.query'      => $query_obj_string,
@@ -452,16 +414,20 @@ sub save  {
         # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
         my $new_query = $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile, tstamp => \'NOW()' });
 
-        $self->set_id($new_query->get_column('queryid'));
+        my $new_queryid = scalar $new_query->get_column('queryid');
         
-         $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sid,$query_obj_string to id ".$self->get_queryid);
+        $self->set_id($new_queryid);
+        
+         $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sid,$query_obj_string to id ".$self->get_id);
     }
     else {
-        $self->set_id($searchquery->get_column('queryid'));
+        my $this_queryid = scalar $searchquery->get_column('thisqueryid');
+        
+        $self->set_id($this_queryid);
         $logger->debug("Query already exists: $query_obj_string");
     }
 
-    $logger->debug("SearchQuery has id ".$self->get_queryid) if (defined $self->get_queryid);
+    $logger->debug("SearchQuery has id ".$self->get_id) if (defined $self->get_id);
     
     return $self;
 }
@@ -470,12 +436,6 @@ sub is_authority {
     my ($self)=@_;
 
     return $self->{_is_authority};
-}
-
-sub get_queryid {
-    my ($self)=@_;
-
-    return $self->{_queryid};
 }
 
 sub get_searchquery {
@@ -534,7 +494,11 @@ sub to_cgi_params {
 
     my @cgiparams = ();
 
+    $logger->debug("_searchquery: ".YAML::Dump($self->{_searchquery}));
+    
     foreach my $param (keys %{$self->{_searchquery}}){
+        $logger->debug("Type ",ref($self->{_searchquery}));
+        $logger->debug("Param-Type ",ref($self->{_searchquery}->{$param}));
         if ($self->{_searchquery}->{$param}{val} && !exists $exclude_ref->{$param}){
 
             my $base_param   = $param;
@@ -1000,11 +964,26 @@ sub have_searchterms {
 sub to_json {
     my ($self) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($logger->is_debug){
+        $logger->debug("Searchquery: ".YAML::Dump($self->{_searchquery}));
+    }
+
     my $tmp_ref = {};
     foreach my $property (sort keys %{$self}){
+        next if ($property eq "_session"); # Session-Objekt wird nicht gewandelt
         next if ($property eq "schema"); # DBIx::Class wird nicht gewandelt
         next if ($property eq "r");      # OpenBib::Request wird nicht gewandelt
+
+        $logger->debug("Getting property $property");
+
         $tmp_ref->{$property} = $self->{$property};
+    }
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($tmp_ref));
     }
     
     return JSON::XS->new->utf8->canonical->encode($tmp_ref);
@@ -1050,8 +1029,10 @@ sub _get_searchprofile {
     my $view  = $self->{'view'}                      || '';
 
     my $config         = OpenBib::Config->instance;
-    my $session        = OpenBib::Session->instance;
+    my $session        = $self->get_session;
 
+    $logger->debug("Session: ".YAML::Dump($session));
+    
     # CGI Args
     my @databases     = ($query->param('db'))?$query->param('db'):();
     my $profile       = $query->param('profile')       || '';
@@ -1107,10 +1088,10 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
+    my $config  = OpenBib::Config->instance;
+
     eval {        
-        $self->{schema} = OpenBib::Schema::System->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'mysql_enable_utf8'    => 1, on_connect_do => [ q|SET NAMES 'utf8'| ,]}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
 
     };
 
@@ -1118,6 +1099,19 @@ sub connectDB {
         $logger->fatal("Unable to connect to database $config->{systemdbname}");
     }
 
+    return $self;
+}
+
+sub get_session {
+    my ($self)=@_;
+    
+    return $self->{_session};
+}
+
+sub set_session {
+    my ($self,$session)=@_;
+    
+    $self->{_session} = $session;
     return;
 }
 
@@ -1126,7 +1120,7 @@ __END__
 
 =head1 NAME
 
-OpenBib::SearchQuery - Singleton der vom Nutzer eingegebenen
+OpenBib::SearchQuery - Objekt der vom Nutzer eingegebenen
 Suchanfrage
 
 =head1 DESCRIPTION
@@ -1137,7 +1131,7 @@ Dieses Singleton verwaltet die vom Nutzer eingegebene Suchanfrage.
 
  use OpenBib::SearchQuery;
 
- my $searchquery   = OpenBib::SearchQuery->instance;
+ my $searchquery   = OpenBib::SearchQuery->new;
 
 =head1 METHODS
 

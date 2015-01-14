@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Backend::Xapian
 #
-#  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -133,21 +133,24 @@ sub search {
     my $logger = get_logger();
 
     my $config       = OpenBib::Config->instance;
-    my $searchquery  = OpenBib::SearchQuery->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
+    my $searchquery  = $self->get_searchquery;
+    my $queryoptions = $self->get_queryoptions;
 
     # Used Parameters
-    my $sorttype          = (defined $options_ref->{srt})?$options_ref->{srt}:$queryoptions->get_option('srt');
-    my $sortorder         = (defined $options_ref->{srto})?$options_ref->{srto}:$queryoptions->get_option('srto');
-    my $defaultop         = (defined $options_ref->{dop})?$options_ref->{dop}:$queryoptions->get_option('dop');
-    my $facets            = (defined $options_ref->{facets})?$options_ref->{facets}:$queryoptions->get_option('facets');
+    my $sorttype          = (defined $self->{_options}{srt})?$self->{_options}{srt}:$queryoptions->get_option('srt');
+    my $sortorder         = (defined $self->{_options}{srto})?$self->{_options}{srto}:$queryoptions->get_option('srto');
+    my $defaultop         = (defined $self->{_options}{dop})?$self->{_options}{dop}:$queryoptions->get_option('dop');
+    my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
     my $gen_facets        = ($facets eq "none")?0:1;
 
+    if ($logger->is_debug){
+        $logger->debug("Options: ".YAML::Dump($options_ref));
+    }
     
     # Pagination parameters
-    my $page              = (defined $options_ref->{page})?$options_ref->{page}:$queryoptions->get_option('page');
-    my $num               = (defined $options_ref->{num})?$options_ref->{num}:$queryoptions->get_option('num');
-    my $collapse          = (defined $options_ref->{clp})?$options_ref->{clp}:$queryoptions->get_option('clp');
+    my $page              = (defined $self->{_options}{page})?$self->{_options}{page}:$queryoptions->get_option('page');
+    my $num               = (defined $self->{_options}{num})?$self->{_options}{num}:$queryoptions->get_option('num');
+    my $collapse          = (defined $self->{_options}{clp})?$self->{_options}{clp}:$queryoptions->get_option('clp');
     
     my ($atime,$btime,$timeall);
   
@@ -399,6 +402,8 @@ sub search {
 
     my $rset = Search::Xapian::RSet->new();
 
+    $logger->debug("Page: $page - Num: $num");
+    
     my $offset = $page*$num-$num;
 
     $logger->debug("Facets: $gen_facets - Offset: $offset");
@@ -458,7 +463,7 @@ sub browse {
     my $logger = get_logger();
 
     my $config       = OpenBib::Config->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
+    my $queryoptions = $self->get_queryoptions;
 
     # Used Parameters
     my $sorttype          = $queryoptions->get_option('srt');
@@ -832,7 +837,7 @@ sub parse_query {
     my $logger = get_logger();
 
     my $config       = OpenBib::Config->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
+    my $queryoptions = $self->get_queryoptions;
 
     # Used Parameters
     # Keinen Value range Prozessor?

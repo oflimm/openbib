@@ -2,7 +2,7 @@
 #
 #  OpenBib::Session
 #
-#  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,8 +30,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Class::Singleton);
-
 use CGI::Cookie;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Benchmark ':hireswallclock';
@@ -54,66 +52,6 @@ use OpenBib::SearchQuery;
 use OpenBib::Statistics;
 
 sub new {
-    my ($class,$arg_ref) = @_;
-
-    # Set defaults
-    my $sessionID   = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}             : undef;
-
-    my $view        = exists $arg_ref->{view}
-        ? $arg_ref->{view}                  : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;
-    
-    my $self = { };
-
-    bless ($self, $class);
-
-    $self->connectDB();
-    $self->connectMemcached();
-
-    $self->{servername} = $config->{servername};
-    $self->{view}       = $view;
-    $self->{_is_new_session} = 0;
-
-    $logger->debug("Entering Session->new");
-
-    if (!$sessionID){
-        $self->_init_new_session();
-        $logger->debug("Generation of new SessionID $self->{ID} successful");
-    }
-    else {
-        $self->{ID}        = $sessionID;
-        $logger->debug("Examining if SessionID $self->{ID} is valid");
-        if (!$self->is_valid()){
-            $logger->debug("SessionID is NOT valid");
-            
-            # Wenn uebergebene SessionID nicht ok, dann neue generieren
-            $self->_init_new_session();
-            $logger->debug("Generation of new SessionID $self->{ID} successful");
-        }
-    }
-    
-    if ($self->{ID} && !$self->{sid}){
-        my $search_sid = $self->{schema}->resultset('Sessioninfo')->single(
-            {
-                sessionid => $self->{ID},
-            }
-        );
-        
-        if ($search_sid){
-            $self->{sid} = $search_sid->id;
-        }
-    }
-
-    #$logger->debug("Session-Object created: ".YAML::Dump($self));
-    return $self;
-}
-
-sub _new_instance {
     my ($class,$arg_ref) = @_;
 
     # Set defaults
@@ -1205,54 +1143,54 @@ sub log_event {
     return;
 }
 
-sub get_queryid {
-    my ($self,$arg_ref)=@_;
+# sub get_queryid {
+#     my ($self,$arg_ref)=@_;
 
-    # Set defaults
-    my $databases_ref      = exists $arg_ref->{databases}
-        ? $arg_ref->{databases}               : undef;
+#     # Set defaults
+#     my $databases_ref      = exists $arg_ref->{databases}
+#         ? $arg_ref->{databases}               : undef;
     
-    my $hitrange           = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}                : undef;
+#     my $hitrange           = exists $arg_ref->{hitrange}
+#         ? $arg_ref->{hitrange}                : undef;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
+#     # Log4perl logger erzeugen
+#     my $logger = get_logger();
 
-    my $searchquery = OpenBib::SearchQuery->instance;
+#     my $searchquery = OpenBib::SearchQuery->new;
 
-    my $queryid            = 0;
-    my $queryalreadyexists = 0;
+#     my $queryid            = 0;
+#     my $queryalreadyexists = 0;
 
-    # Wenn man databases_ref hier sortiert und in VirtualSearch.pm sortiert, dann koennen anhand von Suchanfrage und Datenbankauswahl auch
-    # bei gleicher aber permutierter Datenbankliste die entsprechende queryid gefunden werden, allerdings kann man dann
-    # diese Liste nicht mehr fuer wiederholte Anfrage (Listentyp) verwenden, da sich dann
-    # durch die Sortierung die Reihenfolge geaendert hat. Daher wird hier nicht mehr sortiert
-    my $dbasesstring=join("||",@{$databases_ref});
+#     # Wenn man databases_ref hier sortiert und in VirtualSearch.pm sortiert, dann koennen anhand von Suchanfrage und Datenbankauswahl auch
+#     # bei gleicher aber permutierter Datenbankliste die entsprechende queryid gefunden werden, allerdings kann man dann
+#     # diese Liste nicht mehr fuer wiederholte Anfrage (Listentyp) verwenden, da sich dann
+#     # durch die Sortierung die Reihenfolge geaendert hat. Daher wird hier nicht mehr sortiert
+#     my $dbasesstring=join("||",@{$databases_ref});
 
-    my $query_obj_string = $searchquery->to_json;
+#     my $query_obj_string = $searchquery->to_json;
 
-    # DBI: "select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?"
-    my $rows = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid' })->count;
+#     # DBI: "select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?"
+#     my $rows = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid' })->count;
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
+#     my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
-    # Neuer Query
-    if ($rows <= 0) {
-        # Abspeichern des Queries bis auf die Gesamttrefferzahl
-        # DBI: "insert into queries (queryid,sessionid,query,hitrange,dbases) values (NULL,?,?,?,?)"
+#     # Neuer Query
+#     if ($rows <= 0) {
+#         # Abspeichern des Queries bis auf die Gesamttrefferzahl
+#         # DBI: "insert into queries (queryid,sessionid,query,hitrange,dbases) values (NULL,?,?,?,?)"
         
-        $self->{schema}->resultset('Query')->insert({ queryid => 'NULL', sid => $sid, query => $query_obj_string, hitrange => $hitrange, dbases => $dbasesstring });
-    }
-    # Query existiert schon
-    else {
-        $queryalreadyexists=1;
-    }
+#         $self->{schema}->resultset('Query')->insert({ queryid => 'NULL', sid => $sid, query => $query_obj_string, hitrange => $hitrange, dbases => $dbasesstring });
+#     }
+#     # Query existiert schon
+#     else {
+#         $queryalreadyexists=1;
+#     }
 
-    # DBI: "select queryid from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?"
-    $queryid = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid', select => 'me.queryid', as => 'thisqueryid' })->single->get_column('thisqueryid');
+#     # DBI: "select queryid from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?"
+#     $queryid = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid', select => 'me.queryid', as => 'thisqueryid' })->single->get_column('thisqueryid');
 
-    return ($queryalreadyexists,$queryid);
-}
+#     return ($queryalreadyexists,$queryid);
+# }
 
 sub set_hits_of_query {
     my ($self,$arg_ref)=@_;

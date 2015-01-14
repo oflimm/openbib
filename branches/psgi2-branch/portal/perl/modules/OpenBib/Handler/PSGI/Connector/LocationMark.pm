@@ -6,7 +6,7 @@
 #
 #  Herausgabe von Titellisten anhand einer Grundsignatur
 #
-#  Dieses File ist (C) 2000-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2000-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -296,10 +296,7 @@ sub show_via_searchengine {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
-    my $searcher = OpenBib::Search::Factory->create_searcher({database => $database."_authority"});
-
-    my $searchquery = OpenBib::SearchQuery->instance;
-
+    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
     $location = OpenBib::Common::Util::normalize({
         content   => $location,
         type      => 'string',
@@ -309,7 +306,11 @@ sub show_via_searchengine {
     $searchquery->set_searchfield('markstring',"${base}*",'');
     $searchquery->set_searchfield('t0016',$location,'');
     $searchquery->set_type('authority');
-    
+
+    $self->param('searchquery',$searchquery);
+
+    my $searcher = OpenBib::Search::Factory->create_searcher({database => $database."_authority", query => $searchquery });
+
     if ($base && $location){
         $logger->debug("Bestimme Titel zur Grundsignatur '$base' und Standort '$location'");
 

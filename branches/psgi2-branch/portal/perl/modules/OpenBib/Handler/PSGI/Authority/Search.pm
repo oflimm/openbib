@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Authority::Search.pm
 #
-#  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -91,7 +91,7 @@ sub joined_search {
     my $logger = get_logger();
 
     my $config      = OpenBib::Config->instance;
-    my $searchquery = OpenBib::SearchQuery->instance;
+    my $searchquery = $self->param('searchquery');
 
     $searchquery->set_type('authority');
     

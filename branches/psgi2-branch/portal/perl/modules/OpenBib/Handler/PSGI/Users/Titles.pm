@@ -276,7 +276,9 @@ sub show_record {
     
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $searchquery   = OpenBib::SearchQuery->instance({r => $r, view => $view});
+
+    my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
+
     my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
 
     if ($database && $titleid ){ # Valide Informationen etc.

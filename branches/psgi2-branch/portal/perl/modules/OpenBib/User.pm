@@ -3,7 +3,7 @@
 #
 #  OpenBib::User
 #
-#  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -31,8 +31,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Class::Singleton);
-
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
 use Digest::MD5;
@@ -52,42 +50,6 @@ use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 
 sub new {
-    my ($class,$arg_ref) = @_;
-
-    # Set defaults
-    my $sessionID   = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}             : undef;
-
-    my $id          = exists $arg_ref->{ID}
-        ? $arg_ref->{ID}             : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $self = { };
-
-    bless ($self, $class);
-
-    $self->connectDB();
-    $self->connectMemcached();
-
-    if (defined $sessionID){
-        my $userid = $self->get_userid_of_session($sessionID);
-        if (defined $userid){
-            $self->{ID} = $userid ;
-            $logger->debug("Got UserID $userid for session $sessionID");
-        }
-
-    }
-    elsif (defined $id) {
-        $self->{ID} = $id ;
-        $logger->debug("Got UserID $id - NO session assoziated");
-    }
-
-    return $self;
-}
-
-sub _new_instance {
     my ($class,$arg_ref) = @_;
 
     # Set defaults
@@ -121,10 +83,13 @@ sub _new_instance {
             $self->{ID} = $userid ;
             $logger->debug("Got UserID $userid for session $sessionID");
         }
+        else {
+            $logger->debug("No UserID for session $sessionID");
+        }
     }
     elsif (defined $id){
          $self->{ID} = $id ;
-         $logger->debug("Got UserID $id - NO session assiziated");
+         $logger->debug("Got UserID $id - NO session assoziated");
     }
 
     if ($config->{benchmark}) {

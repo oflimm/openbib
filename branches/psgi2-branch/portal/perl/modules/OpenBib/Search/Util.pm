@@ -261,63 +261,6 @@ sub get_index {
     return \@index;
 }
 
-sub print_index_by_swt {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $swt               = exists $arg_ref->{swt}
-        ? $arg_ref->{swt}               : undef;
-    my $dbh               = exists $arg_ref->{dbh}
-        ? $arg_ref->{dbh}               : undef;
-    my $database          = exists $arg_ref->{database}
-        ? $arg_ref->{database}          : undef;
-    my $r                 = exists $arg_ref->{apachereq}
-        ? $arg_ref->{apachereq}         : undef;
-    my $stylesheet        = exists $arg_ref->{stylesheet}
-        ? $arg_ref->{stylesheet}        : undef;
-    my $view              = exists $arg_ref->{view}
-        ? $arg_ref->{view}              : undef;
-    my $msg                = exists $arg_ref->{msg}
-        ? $arg_ref->{msg}                : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config       = OpenBib::Config->instance;
-    my $session      = OpenBib::Session->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
-    my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->instance;
-    
-    my $swtindex=OpenBib::Search::Util::get_index({
-        type       => 'swt',
-        category   => '0001',
-        contentreq => $swt,
-        dbh        => $dbh,
-    });
-
-    my $poolname=$dbinfotable->{sigel}{$dbinfotable->{dbases}{$database}};
-
-    # TT-Data erzeugen
-    my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        database   => $database,
-        poolname   => $poolname,
-        qopts      => $queryoptions->get_options,
-        sessionID  => $session->{ID},
-        swt        => $swt,
-        swtindex   => $swtindex,
-
-        config     => $config,
-        msg        => $msg,
-
-    };
-  
-    OpenBib::Common::Util::print_page($config->{tt_search_showswtindex_tname},$ttdata,$r);
-
-    return;
-}
-
 # Ehemals in VirtualSearch.pm
 
 sub conv2autoplus {

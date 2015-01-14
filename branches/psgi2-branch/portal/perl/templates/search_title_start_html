@@ -49,6 +49,7 @@
        <ul>
          <li><a href="[% config.get('home_loc') %]">Start</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Recherche") %]:&nbsp;
+
 [%- used_fields = [] ;
     FOREACH field IN searchquery.get_searchquery.keys ;
        fieldname    = field_map.${field};

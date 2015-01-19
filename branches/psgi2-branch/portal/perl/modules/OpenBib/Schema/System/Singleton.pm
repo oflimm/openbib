@@ -4,7 +4,7 @@
 #
 #  Singleton fuer den Schema-Zugriff
 #
-#  Dieses File ist (C) 2008-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Idee von brian d foy 'The singleton design pattern', The Perl Review
 #
@@ -34,32 +34,43 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(OpenBib::Schema::System);
+use base qw(Class::Singleton);
+
 use OpenBib::Schema::System;
 use Log::Log4perl qw(get_logger :levels);
-use YAML;
+use YAML::Syck;
 
-my %schema_pool = ();
-
-sub connect {
+sub _new_instance {
     my $class = shift;
     my @args  = @_;
 
-    # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $args_key = 'schema_system_singleton_';
-    $args_key   .=unpack "H*",join("_",@args);
+    my $self = {};
 
-    $logger->debug("Args-Key: $args_key");
+    bless ($self, $class);
+
+    $YAML::Syck::ImplicitTyping  = 1;
+    $YAML::Syck::ImplicitUnicode = 1;
     
-    return $schema_pool{$args_key} if (defined $schema_pool{$args_key});
+    # Ininitalisierung mit Config-Parametern
+    my $config = YAML::Syck::LoadFile("/opt/openbib/conf/portal.yml");
+
+    eval {
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1}) ;
+    };
+
+    if ($@){
+        $logger->error("Error connecting to System-DB");
+    }
     
-    $schema_pool{$args_key} = OpenBib::Schema::System->connect(@args);
+    return $self;
+}
 
-    $logger->debug("Neues schema erzeugt");
+sub get_schema {
+    my $self = shift;
 
-    return $schema_pool{$args_key};
+    return $self->{schema};
 }
 
 1;

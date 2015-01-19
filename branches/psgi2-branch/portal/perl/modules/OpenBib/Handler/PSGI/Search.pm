@@ -382,7 +382,7 @@ sub show_search {
     my $searchquery_args = $searchquery->get_searchquery;
     
     foreach my $key (keys %{$searchquery_args}){
-        $searchquery_log_ref->{$key} = $searchquery_args>{$key};
+        $searchquery_log_ref->{$key} = $searchquery_args->{$key};
     }
         
     $searchquery_log_ref->{searchprofile} = $searchquery->get_searchprofile;

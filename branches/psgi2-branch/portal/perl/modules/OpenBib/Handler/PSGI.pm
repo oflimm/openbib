@@ -1630,13 +1630,11 @@ sub check_http_basic_authentication {
     # und HTTP Basic Authentication authentifiziert, ansonsten gilt die Cookie based authentication
     if ($http_authtype eq "Basic"){
         
-        my ($status, $password) = $r->get_basic_auth_pw;
+        my ($status, $http_user, $password) = $r->get_basic_auth_credentials;
         
         $logger->debug("get_basic_auth: Status $status");
         
         return $status unless $status == 200; # OK
-        
-        my $http_user     = $r->user;
         
         $logger->debug("Authentication Shortcut for user $http_user : Status $status / Password: $password");
         

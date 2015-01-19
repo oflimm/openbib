@@ -30,9 +30,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton::Process);
+use base qw(Class::Singleton);
 
-use Apache2::Reload;
 use YAML::Syck;
 
 sub new {

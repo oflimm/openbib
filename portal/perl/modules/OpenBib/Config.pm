@@ -2062,7 +2062,6 @@ sub connectDB {
     eval {
         my $schema = OpenBib::Schema::System::Singleton->instance;
         $self->{schema} = $schema->get_schema;
-        $logger->debug("Schema: ".YAML::Dump($self->{schema}));
     };
     
     if ($@){

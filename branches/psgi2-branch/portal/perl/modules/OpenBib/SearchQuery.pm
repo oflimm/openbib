@@ -40,7 +40,7 @@ use Storable;
 use String::Tokenizer;
 use Text::Aspell;
 use Search::Xapian;
-use YAML;
+use YAML::Syck;
 use LWP::UserAgent;
 use URI::Escape;
 use XML::LibXML;

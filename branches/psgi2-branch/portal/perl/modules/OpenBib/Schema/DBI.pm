@@ -4,7 +4,7 @@
 #
 #  Singleton fuer den DBI-Zugriff
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Idee von brian d foy 'The singleton design pattern', The Perl Review
 #
@@ -37,7 +37,7 @@ use utf8;
 use base qw(DBI);
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
-use YAML;
+use YAML::Syck;
 
 my %dbh_pool = ();
 

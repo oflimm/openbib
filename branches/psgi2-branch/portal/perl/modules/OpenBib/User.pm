@@ -1,4 +1,3 @@
-
 #####################################################################
 #
 #  OpenBib::User
@@ -38,7 +37,7 @@ use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use Data::Pageset;
 use Log::Log4perl qw(get_logger :levels);
-use YAML;
+use YAML::Syck;
 
 use OpenBib::BibSonomy;
 use OpenBib::Common::Util;

@@ -158,6 +158,25 @@ sub remote_host {
     return $hostname;
 }
 
+sub get_basic_auth_credentials {
+    my $self = shift;
+
+    my $env = $self->env;
+    
+    my $auth = $env->{HTTP_AUTHORIZATION}
+        or return (404,'','');
+    
+    if ($auth =~ /^Basic (.*)$/i) {
+        my($user, $pass) = split /:/, (MIME::Base64::decode($1) || ":"), 2;
+
+        if (defined $pass && $pass){
+            return (200,$user,$pass);
+        }
+    }
+
+    return (401,'','');        
+}
+
 1;
 __END__
 

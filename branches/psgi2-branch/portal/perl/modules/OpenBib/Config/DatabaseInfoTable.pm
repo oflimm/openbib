@@ -67,7 +67,9 @@ sub load {
 
     my $schema = OpenBib::Schema::System::Singleton->instance->get_schema;
 
-    $logger->debug("Schema: ".YAML::Dump($schema));
+    if ($logger->is_debug){
+        $logger->debug("Schema: ".YAML::Dump($schema));
+    }
     
     #####################################################################
     # Dynamische Definition diverser Variablen

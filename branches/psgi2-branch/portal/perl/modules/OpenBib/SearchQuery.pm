@@ -66,7 +66,10 @@ sub new {
 
     my $config = OpenBib::Config->instance;
 
-    $logger->debug("Session: ".YAML::Dump($session));
+    if ($logger->is_debug){
+        $logger->debug("Session: ".YAML::Dump($session));
+    }
+    
     my $self = {
         _searchprofile         => 0,
         _filter                => [],
@@ -494,7 +497,9 @@ sub to_cgi_params {
 
     my @cgiparams = ();
 
-    $logger->debug("_searchquery: ".YAML::Dump($self->{_searchquery}));
+    if ($logger->is_debug){
+        $logger->debug("_searchquery: ".YAML::Dump($self->{_searchquery}));
+    }
     
     foreach my $param (keys %{$self->{_searchquery}}){
         $logger->debug("Type ",ref($self->{_searchquery}));
@@ -1031,7 +1036,9 @@ sub _get_searchprofile {
     my $config         = OpenBib::Config->instance;
     my $session        = $self->get_session;
 
-    $logger->debug("Session: ".YAML::Dump($session));
+    if ($logger->is_debug){
+        $logger->debug("Session: ".YAML::Dump($session));
+    }
     
     # CGI Args
     my @databases     = ($query->param('db'))?$query->param('db'):();

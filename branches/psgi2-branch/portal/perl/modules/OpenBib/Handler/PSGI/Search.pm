@@ -113,9 +113,10 @@ sub show_search {
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
 
-
-    $logger->debug("User: ".YAML::Dump($user));
-    $logger->debug("Session: ".YAML::Dump($session));
+    if ($logger->is_debug){
+        $logger->debug("User: ".YAML::Dump($user));
+        $logger->debug("Session: ".YAML::Dump($session));
+    }
     
     # CGI Args
     my $sb        = $query->param('sb')        || $config->{local_search_backend};

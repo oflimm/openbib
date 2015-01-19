@@ -217,8 +217,10 @@ sub show_record {
     my $recordlist = new OpenBib::RecordList::Title;
     my $hits       = 0;
 
-    $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
-
+    if ($logger->is_debug){
+        $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+    }
+    
     my $tagid = $user->get_id_of_tag({tag => $tagname});
     
     my $titles_ref;
@@ -247,8 +249,10 @@ sub show_record {
         content   => $tagname,
     });
 
-    $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
-
+    if ($logger->is_debug){
+        $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+    }
+    
     my $ttdata = {
         nav              => $nav,
         sortorder        => $queryoptions->get_option('srto'),

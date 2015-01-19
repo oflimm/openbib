@@ -344,8 +344,10 @@ sub connectDB {
 
     };
 
-    $logger->debug(YAML::Dump($self->{schema}));
-
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($self->{schema}));
+    }
+    
     if ($@){
         $logger->fatal("Unable to connect to database $config->{systemdbname}");
     }

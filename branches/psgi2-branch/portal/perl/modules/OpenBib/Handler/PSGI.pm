@@ -1608,7 +1608,9 @@ sub check_http_basic_authentication {
     my $user    = $self->param('user');
     my $session = $self->param('session');
 
-    $logger->debug("User Pre: ".YAML::Dump($user));
+    if ($logger->is_debug){
+        $logger->debug("User Pre: ".YAML::Dump($user));
+    }
     
     # Shortcut fuer HTTP Basic Authentication anhand lokaler Datenbank
     # Wenn beim Aufruf ein Username und ein Passwort uebergeben wird, dann
@@ -1657,8 +1659,10 @@ sub check_http_basic_authentication {
             $self->param('basic_auth_failure',1);
         }
 
-        $logger->debug("User post: ".YAML::Dump($user));
-
+        if ($logger->is_debug){
+            $logger->debug("User post: ".YAML::Dump($user));
+        }
+        
         # User zurueckchreiben
         $self->param('user',$user);
         

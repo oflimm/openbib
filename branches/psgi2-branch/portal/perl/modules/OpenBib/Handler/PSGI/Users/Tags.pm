@@ -242,9 +242,8 @@ sub show_record {
     
     if ($logger->is_debug){
         $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+        $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
     }
-
-    $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
 
     my $ttdata = {
         nav              => $nav,

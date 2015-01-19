@@ -30,9 +30,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton::Process);
+use base qw(Class::Singleton);
 
 use Benchmark ':hireswallclock';
+use OpenBib::Schema::System::Singleton;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
@@ -47,12 +48,27 @@ sub _new_instance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
-
     my $self = {};
 
     bless ($self, $class);
 
+    $self->load;
+    
+    return $self;
+}
+
+sub load {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config  = OpenBib::Config->instance;
+
+    my $schema = OpenBib::Schema::System::Singleton->instance->get_schema;
+
+    $logger->debug("Schema: ".YAML::Dump($schema));
+    
     #####################################################################
     # Dynamische Definition diverser Variablen
   
@@ -63,8 +79,13 @@ sub _new_instance {
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
+
+    # Bisherige Belegung loeschen
+    foreach my $key (keys %$self){
+        delete $self->{$key};
+    }
     
-    my $dbinfos = $config->{schema}->resultset('Databaseinfo')->search_rs(
+    my $dbinfos = $schema->resultset('Databaseinfo')->search_rs(
         undef,
         {
             select => ['me.dbname','me.description','me.shortdesc','me.sigel','me.url','locationid.identifier','locationid.type'],
@@ -122,9 +143,10 @@ sub _new_instance {
         $timeall=timediff($btime,$atime);
         $logger->info("Total time is ".timestr($timeall));
     }
-
+    
     return $self;
 }
+
 
 sub get {
     my ($self,$key) = @_;

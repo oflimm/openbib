@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton);
+use base qw(Class::Singleton);
 
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -47,12 +47,23 @@ sub _new_instance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
-
     my $self = {};
 
     bless ($self, $class);
 
+    $self->load;
+    
+    return $self;
+}
+
+sub load {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config  = OpenBib::Config->instance;
+    
     #####################################################################
     ## Ausleihkonfiguration fuer den Katalog einlesen
 
@@ -60,6 +71,11 @@ sub _new_instance {
 
     if ($config->{benchmark}) {
         $atime=new Benchmark;
+    }
+
+    # Bisherige Belegung loeschen
+    foreach my $key (keys %$self){
+        delete $self->{$key};
     }
     
     my $dbinfos = $config->{schema}->resultset('Databaseinfo')->search_rs(
@@ -86,10 +102,11 @@ sub _new_instance {
         $timeall=timediff($btime,$atime);
         $logger->info("Total time is ".timestr($timeall));
     }
-
+    
     return $self;
+    
 }
-
+             
 sub get {
     my ($self,$key) = @_;
 

@@ -5674,7 +5674,7 @@ sub connectDB {
 
     if ($self->{'systemdbsingleton'}){
         eval {        
-            $self->{schema} = OpenBib::Schema::System::Singleton->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::System::Singleton->instance->get_schema;
             
         };
         

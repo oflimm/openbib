@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config::LocationInfoTable
 #
-#  Dieses File ist (C) 2008-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,9 +30,10 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton::Process);
+use base qw(Class::Singleton);
 
 use Benchmark ':hireswallclock';
+use OpenBib::Schema::System::Singleton;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
@@ -47,15 +48,26 @@ sub _new_instance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
-
     my $self = {};
 
     bless ($self, $class);
 
+    $self->load;
+    
+    return $self;
+}
+
+sub load {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config  = OpenBib::Config->instance;
+    
     #####################################################################
     # Dynamische Definition diverser Variablen
-  
+    
     # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
 
     my ($atime,$btime,$timeall)=(0,0,0);
@@ -63,8 +75,13 @@ sub _new_instance {
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
+
+    # Bisherige Belegung loeschen
+    delete $self->{identifier};
     
-    my $locinfos = $config->{schema}->resultset('Locationinfo')->search_rs(
+    my $schema = OpenBib::Schema::System::Singleton->instance->get_schema;
+
+    my $locinfos = $schema->resultset('Locationinfo')->search_rs(
         undef,
         {
             select => ['identifier','description','type'],

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -2059,30 +2059,16 @@ sub connectDB {
     my $logger = get_logger();
 
     # UTF8: {'pg_enable_utf8'    => 1}
-    if ($self->{'systemdbsingleton'}){
-        eval {        
-            $self->{schema} = OpenBib::Schema::System::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-#            $self->{schema} = OpenBib::Schema::System::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd}) or $logger->error_die($DBI::errstr);
-            
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect to database $self->{systemdbname}");
-        }
-    }
-    else {
-        eval {        
-            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-#            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd}) or $logger->error_die($DBI::errstr);
-            
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect to database $self->{systemdbname}");
-        }
-    }
-        
+    eval {
+        my $schema = OpenBib::Schema::System::Singleton->instance;
+        $self->{schema} = $schema->get_schema;
+        $logger->debug("Schema: ".YAML::Dump($self->{schema}));
+    };
     
+    if ($@){
+        $logger->fatal("Unable to connect to database $self->{systemdbname}");
+    }
+
     return;
 }
 
@@ -2137,6 +2123,10 @@ sub del_databaseinfo {
     # Servern geloescht
 
     $logger->debug("Database $dbname deleted");
+
+    # Update der abhaengigen Singletons
+    OpenBib::Config::DatabaseInfoTable->instance->load;
+    OpenBib::Config::CirculationInfoTable->instance->load;
     
     return;
 }
@@ -2148,6 +2138,10 @@ sub update_databaseinfo {
     my $logger = get_logger();
 
     $self->{schema}->resultset('Databaseinfo')->single({ dbname => $dbinfo_ref->{dbname}})->update($dbinfo_ref);
+
+    # Update der abhaengigen Singletons
+    OpenBib::Config::DatabaseInfoTable->instance->load;
+    OpenBib::Config::CirculationInfoTable->instance->load;
     
     return;
 }
@@ -2169,6 +2163,11 @@ sub new_databaseinfo {
     }
 
     if ($new_database){
+        
+        # Update der abhaengigen Singletons
+        OpenBib::Config::DatabaseInfoTable->instance->load;
+        OpenBib::Config::CirculationInfoTable->instance->load;
+
         return $new_database->id;
     }
 
@@ -2279,6 +2278,9 @@ sub new_locationinfo {
     }
     
     if ($new_location){
+        # Update der abhaengigen Singletons
+        OpenBib::Config::LocationInfoTable->instance->load;
+
         return $new_location->id;
     }
     
@@ -2337,6 +2339,9 @@ sub update_locationinfo {
             $self->{schema}->resultset('LocationinfoField')->populate($update_fields_ref);
         }
     }
+
+    # Update der abhaengigen Singletons
+    OpenBib::Config::LocationInfoTable->instance->load;
     
     return;
 }
@@ -2358,6 +2363,9 @@ sub delete_locationinfo {
     if ($@){
         $logger->error("Can't delete locationinfo: ".$@);
     }
+
+    # Update der abhaengigen Singletons
+    OpenBib::Config::LocationInfoTable->instance->load;
     
     return;
 }
@@ -3803,16 +3811,17 @@ sub disconnect_db_handle {
     }
 }
 
-sub DESTROY {
-    my $self = shift;
+# Singleton und DESTROY schliessen sich aus....
+# sub DESTROY {
+#     my $self = shift;
 
-    if (defined $self->{schema}){
-        $self->{schema}->storage->dbh->disconnect;
-    }
+#     if (defined $self->{schema}){
+#         $self->{schema}->storage->dbh->disconnect;
+#     }
 
     
-    return;
-}
+#     return;
+# }
 
 
 

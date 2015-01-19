@@ -1025,7 +1025,7 @@ sub add_default_ttdata {
     # Helper functions
     $ttdata->{'to_json'}        = sub {
         my $ref = shift;
-        return encode_json $ref;
+        return decode_utf8(encode_json $ref);
     };
 
     $ttdata->{'from_json'}        = sub {

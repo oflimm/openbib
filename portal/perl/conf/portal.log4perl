@@ -1,4 +1,4 @@
-Log4perl.category.OpenBib = INFO, Syncer
+Log4perl.category.OpenBib = DEBUG, Syncer
 
 log4perl.appender.Logfile           = Log::Log4perl::Appender::File
 log4perl.appender.Logfile.autoflush = 1

@@ -766,6 +766,47 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
             }
         }
 
+        # 260 as RDA
+        foreach my $field ($record->field('264')){
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
+            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
+
+            # Verlagsort
+            if ($content_a){
+                my $multcount=++$multcount_ref->{'0410'};
+                
+                push @{$title_ref->{fields}{'0410'}}, {
+                    content  => konv($content_a),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+            # Verlag
+            if ($content_b){
+                my $multcount=++$multcount_ref->{'0412'};
+                
+                push @{$title_ref->{fields}{'0412'}}, {
+                    content  => konv($content_b),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+            # Jahr
+            if ($content_c){
+                my $multcount=++$multcount_ref->{'0425'};
+                
+                push @{$title_ref->{fields}{'0425'}}, {
+                    content  => konv($content_c),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+        }
+        
         # 
         foreach my $field ($record->field('300')){
             my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));

@@ -2,7 +2,7 @@
 #
 #  OpenBib::LitList
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,7 +32,7 @@ use utf8;
 
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
-use YAML;
+use YAML::Syck;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;

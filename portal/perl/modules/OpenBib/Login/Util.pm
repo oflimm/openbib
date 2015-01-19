@@ -2,7 +2,7 @@
 #
 #  OpenBib::Login::Util
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,7 +34,7 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
-use YAML;
+use YAML::Syck;
 
 sub authenticate_olws_user {
     my ($arg_ref) = @_;

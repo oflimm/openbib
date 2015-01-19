@@ -38,7 +38,7 @@ use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
-use YAML;
+use YAML::Syck;
 
 use OpenBib::Config;
 

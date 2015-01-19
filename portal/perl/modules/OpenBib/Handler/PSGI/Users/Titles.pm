@@ -295,8 +295,9 @@ sub show_record {
         my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
             session    => $session,
             database   => $database,
-            titleid     => $titleid,
+            titleid    => $titleid,
             view       => $view,
+            session    => $session,
         });
 
         if ($config->{benchmark}) {

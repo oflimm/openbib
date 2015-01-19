@@ -66,12 +66,13 @@ sub get_result_navigation {
         ? $arg_ref->{sorttype}              : undef;
     my $view                  = exists $arg_ref->{view}
         ? $arg_ref->{view}                  : undef;
-
+    my $session               = exists $arg_ref->{session}
+        ? $arg_ref->{session}               : OpenBib::Session->new;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config  = OpenBib::Config->instance;
-    my $session = OpenBib::Session->instance;
 
     # Bestimmen des vorigen und naechsten Treffer einer
     # vorausgegangenen Kurztitelliste

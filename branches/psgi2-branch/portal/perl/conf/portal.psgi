@@ -7,7 +7,7 @@ use OpenBib::Handler::PSGI::Dispatch;
 use OpenBib::Request;
 use Plack::Builder;
 use OpenBib::Config;
-
+#use Devel::NYTProf;
 use Log::Log4perl qw(:levels get_logger);
 
 my $cgiapp = sub {
@@ -17,7 +17,7 @@ my $cgiapp = sub {
     Log::Log4perl->init($config->{log4perl_path});
     
     my $app = OpenBib::Handler::PSGI::Dispatch->as_psgi(
-        debug      => 1,
+        #debug      => 1,
         args_to_new => {
             QUERY      => OpenBib::Request->new($env),
         });
@@ -31,7 +31,7 @@ builder {
             root => '/var/www';
 
 #    enable 'Debug', panels =>
-#        [ qw(Environment Response Timer Memory)
+#        [ qw(Environment Response Timer Memory Profiler::NYTProf)
 #      ];
     
     $cgiapp;

@@ -192,7 +192,7 @@ sub load_name {
             as     => ['thiscontent'],
             join   => ['classification_fields'],
         }
-    )->single;
+    )->first;
 
     my $main_entry="Unbekannt";
 

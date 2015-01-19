@@ -358,8 +358,9 @@ sub show_record {
         my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
             session    => $session,
             database   => $database,
-            titleid     => $titleid,
+            titleid    => $titleid,
             view       => $view,
+            session    => $session,
         });
 
         my $active_feeds = $config->get_activefeeds_of_db($database);

@@ -34,32 +34,40 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(OpenBib::Schema::Enrichment);
+use base qw(Class::Singleton);
+
+use OpenBib::Config::File;
 use OpenBib::Schema::Enrichment;
 use Log::Log4perl qw(get_logger :levels);
-use YAML::Syck;
 
-my %schema_pool = ();
-
-sub connect {
+sub _new_instance {
     my $class = shift;
     my @args  = @_;
 
-    # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $args_key = 'schema_enrichment_singleton_';
-    $args_key   .=unpack "H*",join("_",@args);
+    my $self = {};
 
-    $logger->debug("Args-Key: $args_key");
+    bless ($self, $class);
     
-    return $schema_pool{$args_key} if (defined $schema_pool{$args_key});
+    # Ininitalisierung mit Config-Parametern
+    my $config = OpenBib::Config::File->instance;
+
+    eval {
+        $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:Pg:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1}) ;
+    };
+
+    if ($@){
+        $logger->error("Error connecting to Enrichment-DB");
+    }
     
-    $schema_pool{$args_key} = OpenBib::Schema::Enrichment->connect(@args);
+    return $self;
+}
 
-    $logger->debug("Neues schema erzeugt");
+sub get_schema {
+    my $self = shift;
 
-    return $schema_pool{$args_key};
+    return $self->{schema};
 }
 
 1;

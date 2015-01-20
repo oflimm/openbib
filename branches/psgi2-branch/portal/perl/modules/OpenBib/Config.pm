@@ -42,6 +42,7 @@ use LWP;
 use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
+use OpenBib::Config::File;
 use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
@@ -67,14 +68,17 @@ $chars_to_replace = qr/$chars_to_replace/;
 sub new {
     my $class = shift;
 
-    $YAML::Syck::ImplicitTyping  = 1;
-    $YAML::Syck::ImplicitUnicode = 1;
-    
+    my $config = OpenBib::Config::File->instance;
+
     # Ininitalisierung mit Config-Parametern
-    my $self = YAML::Syck::LoadFile("/opt/openbib/conf/portal.yml");
+    my $self = {};
 
     bless ($self, $class);
 
+    foreach my $key (keys %$config){
+        $self->{$key} = $config->{$key};
+    }
+    
     $self->connectDB();
     $self->connectMemcached();
     
@@ -87,13 +91,16 @@ sub _new_instance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $YAML::Syck::ImplicitTyping  = 1;
-    $YAML::Syck::ImplicitUnicode = 1;
+    my $config = OpenBib::Config::File->instance;
 
     # Ininitalisierung mit Config-Parametern
-    my $self = YAML::Syck::LoadFile("/opt/openbib/conf/portal.yml");
+    my $self = {};
 
     bless ($self, $class);
+
+    foreach my $key (keys %$config){
+        $self->{$key} = $config->{$key};
+    }
 
     $self->connectDB();
     $self->connectMemcached();
@@ -3810,19 +3817,24 @@ sub disconnect_db_handle {
     }
 }
 
-# Singleton und DESTROY schliessen sich aus....
-# sub DESTROY {
-#     my $self = shift;
+sub DESTROY {
+    my $self = shift;
 
-#     if (defined $self->{schema}){
-#         $self->{schema}->storage->dbh->disconnect;
-#     }
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-    
-#     return;
-# }
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
 
+        if ($@){
+            $logger->error($@);
+        }
+    }
 
+    return;
+}
 
 1;
 __END__

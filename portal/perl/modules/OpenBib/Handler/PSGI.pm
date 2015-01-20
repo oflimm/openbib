@@ -58,7 +58,10 @@ use OpenBib::Session;
 use OpenBib::Template::Provider;
 use OpenBib::User;
 
+use Scalar::Util;
+
 use base 'CGI::Application';
+
 
 # Reihenfolgen der Abarbeitung
 #
@@ -1788,6 +1791,87 @@ sub _send_psgi_headersXX {
       : $logger->error( "Invalid header_type '$type'");
 
 }
+
+# Umdefinition von SUPER::run, damit diese Methode um Code-Refs fuer PSGI erweitert wird
+# vgl. https://github.com/markstos/CGI--Application/blob/master/lib/CGI/Application.pm#L201
+
+sub run {
+    my $self = shift;
+    my $q = $self->query();
+    
+    my $rm_param = $self->mode_param();
+    
+    my $rm = $self->__get_runmode($rm_param);
+    
+    # Set get_current_runmode() for access by user later
+    $self->{__CURRENT_RUNMODE} = $rm;
+    
+    # Allow prerun_mode to be changed
+    delete($self->{__PRERUN_MODE_LOCKED});
+    
+    # Call PRE-RUN hook, now that we know the run mode
+    # This hook can be used to provide run mode specific behaviors
+    # before the run mode actually runs.
+    $self->call_hook('prerun', $rm);
+    
+    # Lock prerun_mode from being changed after cgiapp_prerun()
+    $self->{__PRERUN_MODE_LOCKED} = 1;
+    
+    # If prerun_mode has been set, use it!
+    my $prerun_mode = $self->prerun_mode();
+    if (length($prerun_mode)) {
+        $rm = $prerun_mode;
+        $self->{__CURRENT_RUNMODE} = $rm;
+    }
+    
+    # Process run mode!
+    my $body = $self->__get_body($rm);
+    
+    # Support scalar-ref for body return
+    $body = $$body if ref $body eq 'SCALAR';
+    
+    # Call cgiapp_postrun() hook
+    $self->call_hook('postrun', \$body);
+    
+    my $return_value;
+    if ($self->{__IS_PSGI}) {
+        my ($status, $headers) = $self->_send_psgi_headers();
+        
+        if (ref($body) eq 'GLOB' || (Scalar::Util::blessed($body) && $body->can('getline'))) {
+            # body a file handle - return it
+            $return_value = [ $status, $headers, $body];
+        }
+        elsif (ref($body) eq 'CODE') {
+            
+            # body is a subref, or an explicit callback method is set
+            $return_value = sub {
+                my $respond = shift;
+                
+                my $writer = $respond->([ $status, $headers ]);
+                
+                &$body($writer);
+            };
+        }
+        else {
+            
+            $return_value = [ $status, $headers, [ $body ]];
+        }
+    }
+    else {
+        # Set up HTTP headers non-PSGI responses
+        my $headers = $self->_send_headers();
+        
+        # Build up total output
+        $return_value  = $headers.$body;
+        print $return_value unless $ENV{CGI_APP_RETURN_ONLY};
+    }
+    
+    # clean up operations
+    $self->call_hook('teardown');
+    
+    return $return_value;
+}
+
 
 # sub teardown {
 #     my $self = shift;

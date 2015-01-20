@@ -500,42 +500,21 @@ sub get_common_holdings {
 
 sub connectDB {
     my $self = shift;
-    my $arg_ref = shift;
-    
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-
-    if (defined $arg_ref->{enrichmntdbname} && $arg_ref->{enrichmntdbname}){
-        $config->{enrichmntdbname} = $arg_ref->{enrichmntdbname};
-    }
-
-    if ($self->{'enrichmntdbsingleton'}){
-        eval {        
-            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd}) or $logger->error_die($DBI::errstr);
-#            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
-            
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect to database $self->{enrichmntdbname}");
-        }
-    }
-    else {
-        eval {
-            # UTF8: {'pg_enable_utf8'    => 1}
-            #        $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
-            $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
-        };
-        
-        if ($@){
-            $logger->fatal("Unable to connect schema to database $config->{enrichmntdbname}: DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}");
-        }
-
-    }
+    # UTF8: {'pg_enable_utf8'    => 1}
+    eval {
+        my $schema = OpenBib::Schema::Enrichment::Singleton->instance;
+        $self->{schema} = $schema->get_schema;
+    };
     
-    return;    
+    if ($@){
+        $logger->fatal("Unable to connect to database $self->{enrichmntdbname}");
+    }
+
+    return;
 }
 
 sub DESTROY {

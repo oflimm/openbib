@@ -36,9 +36,9 @@ use utf8;
 
 use base qw(Class::Singleton);
 
+use OpenBib::Config::File;
 use OpenBib::Schema::System;
 use Log::Log4perl qw(get_logger :levels);
-use YAML::Syck;
 
 sub _new_instance {
     my $class = shift;
@@ -50,11 +50,8 @@ sub _new_instance {
 
     bless ($self, $class);
 
-    $YAML::Syck::ImplicitTyping  = 1;
-    $YAML::Syck::ImplicitUnicode = 1;
-    
     # Ininitalisierung mit Config-Parametern
-    my $config = YAML::Syck::LoadFile("/opt/openbib/conf/portal.yml");
+    my $config = OpenBib::Config::File->instance;
 
     eval {
         $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1}) ;

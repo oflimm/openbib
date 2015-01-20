@@ -867,6 +867,11 @@ sub search {
     my $queryoptions = $self->param('qopts');
     my $searchquery  = $self->param('searchquery');
 
+    if ($logger->is_debug){
+        $logger->debug("SearchQuery: ".YAML::Syck::Dump($searchquery));
+        $logger->debug("QueryOptions: ".YAML::Syck::Dump($queryoptions));
+    }
+    
     my $atime=new Benchmark;
     my $timeall;
     
@@ -879,6 +884,7 @@ sub search {
     $search_args_ref->{database} = $database if (defined $database);
     $search_args_ref->{authority} = $authority if (defined $authority);
     $search_args_ref->{searchquery} = $searchquery if (defined $searchquery);
+    $search_args_ref->{queryoptions} = $queryoptions if (defined $queryoptions);
 
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
     # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery

@@ -405,7 +405,7 @@ sub search {
     $logger->debug("Page: $page - Num: $num");
     
     my $offset = $page*$num-$num;
-
+  
     $logger->debug("Facets: $gen_facets - Offset: $offset");
     
     my $mset = ($gen_facets)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
@@ -436,7 +436,8 @@ sub search {
     $self->{_matches}     = \@matches;
 
     if ($logger->is_debug){
-        $logger->debug(YAML::Dump(\%decider_map));
+        $logger->debug("Matches: ".YAML::Dump($self->{_matches}));
+        $logger->debug("Decider map: ".YAML::Dump(\%decider_map));
     }    
     
     if ($singletermcount > $maxmatch){
@@ -625,8 +626,11 @@ sub get_records {
         my $database = $titlistitem_ref->{database};
         delete $titlistitem_ref->{id};
         delete $titlistitem_ref->{database};
-            
-        $logger->debug("Record: ".$document->get_data() );
+
+        if ($logger->is_debug){
+            $logger->debug("Record: ".decode_utf8($document->get_data()) );
+        }
+        
         $recordlist->add(new OpenBib::Record::Title({database => $database, id => $id})->set_fields_from_storable($titlistitem_ref));
     }
 

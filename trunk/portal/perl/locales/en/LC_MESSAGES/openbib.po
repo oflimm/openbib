@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-01-22 11:29+0100\n"
+"PO-Revision-Date: 2015-01-22 11:32+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -18,15 +18,15 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:300
+#: ../modules/OpenBib/Importer/JSON/Title.pm:335
 msgid " map { $_ => 1 } @${enrichmnt_data_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:270
+#: ../modules/OpenBib/Importer/JSON/Title.pm:305
 msgid " map { $_ => 1 } @${enrichmnt_isbns_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:271
+#: ../modules/OpenBib/Importer/JSON/Title.pm:306
 msgid " map { $_ => 1 } @${enrichmnt_issns_ref} "
 msgstr ""
 
@@ -2624,7 +2624,7 @@ msgstr "Please use My KUG to authenticate."
 msgid "Bitte bookmarken unter:"
 msgstr "Please bookmark as:"
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1028
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1036
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Please enter a four digit number as the year of publication."
 
@@ -2958,7 +2958,7 @@ msgid ""
 msgstr ""
 "This register of provenances lists the names of persons and review journals."
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1035
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1043
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -3098,7 +3098,7 @@ msgstr ""
 msgid "Der Basisklassifikation zugeordnete Themengebiete"
 msgstr "Topics corresponding to basic classification"
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:482
+#: ../modules/OpenBib/Handler/Apache/Search.pm:490
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
@@ -4987,7 +4987,7 @@ msgstr ""
 "<b>^</b> ahead of your search query (e.g. ^education*). As before, you can "
 "truncate the word with a *."
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:477
+#: ../modules/OpenBib/Handler/Apache/Search.pm:485
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -14071,6 +14071,10 @@ msgstr "Place of publication"
 msgid "T0410-einbaende"
 msgstr "Place of publication"
 
+#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:21
+msgid "T0410-gentzdigital"
+msgstr "Location"
+
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:35
 msgid "T0410-inst404abklatsch"
@@ -14377,7 +14381,6 @@ msgid "T0433"
 msgstr "Extent of item"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:19
-#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:21
 msgid "T0433-gentzdigital"
 msgstr "Size/Extent of item"
 

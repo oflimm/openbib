@@ -18,7 +18,7 @@
                 'T0335', # msg.maketext("T0335-gentzdigital") Incipit  
                 'T0433', # msg.maketext("T0433-gentzdigital") Format/Umfang
                 'T0424', # msg.maketext("T0424-gentzdigital") Datum
-                'T0433', # msg.maketext("T0433-gentzdigital") Format/Umfang
+                'T0410', # msg.maketext("T0410-gentzdigital") Aufstellungsort
                 'T0800', # msg.maketext("T0800-gentzdigital") Brieftyp
                 'T0594', # msg.maketext("T0594-gentzdigital") Druckorte
                 'T0412', # msg.maketext("T0412-gentzdigital") Handschriftl. Ueberlieferung

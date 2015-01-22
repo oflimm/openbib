@@ -4,7 +4,7 @@
 #
 #  alt_remote.pl
 #
-#  Holen via oai und konvertieren in das Meta-Format
+#  Holen via http und konvertieren in das Meta-Format
 #
 #  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -39,15 +39,24 @@ my $config = new OpenBib::Config();
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
-
-my $marc2metaexe = "$config->{'conv_dir'}/marc2meta.pl";
+my $confdir       = $config->{'base_dir'}."/conf";
+my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
+my $cdm2metaexe   = "$konvdir/cdm2meta.pl";
 
 my $pool          = $ARGV[0];
 
-print "### $pool: Zusammenspielen der Datenlieferungen und Umwandlung von MARC\n";
-system("cd $pooldir/$pool ; rm meta.* ; rm pool*");
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-system("cd $pooldir/$pool ; cat noi-header.xml > $pooldir/$pool/pool.xml ; cat noi-records-*.xml >> $pooldir/$pool/pool.xml ; cat noi-footer.xml >> $pooldir/$pool/pool.xml");
+my $titlefile     = $dbinfo->titlefile;
 
-system("cd $pooldir/$pool; $marc2metaexe --inputfile=pool.xml -use-xml; gzip meta.*");
-#system("rm $pooldir/$pool/pool.xml");
+my $url           = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+
+my $httpauthstring="";
+if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
+    $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-password=".$dbinfo->remotepassword;
+}
+
+print "### $pool: Datenabzug via http von $url\n";
+system("cd $pooldir/$pool ; rm *.xml meta.*");
+system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
+system("cd $pooldir/$pool; $cdm2metaexe --inputfile=$titlefile --configfile=$confdir/$pool.yml; gzip meta.*");

@@ -132,6 +132,33 @@
     padding: 5px;
   }
 
+ .ob-item {
+    height: 120px;
+    width: 100%;
+    position: relative;
+    border-style: solid;
+    border-color: #edebe3;
+    border-width: 1px;
+    margin-bottom: 5px;
+  }
+
+  .ob-item .ob-brieftitle {
+    position: absolute;
+    top: 26px;
+    left:125px;
+    width: auto;
+  }
+
+
+  .ob-item .ob-thumbnail {
+    position: relative;
+    top: -15px;
+    left: 30px;
+    width: 100px;
+    height: 120px;
+    background: none repeat scroll 0 0;
+  }
+
   .ob-fulltitle .ob-category_header {
     float: left;
     margin-left: 2px;

@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
-# Oliver Flimm <flimm@openbib.org>, 2006, 2007, 2008, 2009, 2011, 2012, 2013, 2014.
+# Oliver Flimm <flimm@openbib.org>, 2006, 2007, 2008, 2009, 2011, 2012, 2013, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-09-30 11:07+0200\n"
+"PO-Revision-Date: 2015-01-22 11:19+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -4973,9 +4973,8 @@ msgid "Es existiert keine Revision mit dieser ID"
 msgstr "Es existiert keine Revision mit dieser ID"
 
 #: ../modules/OpenBib/Handler/Apache/Users/Templates/Revisions.pm:170
-#, fuzzy
 msgid "Es existiert keine Template-Revision mit dieser ID"
-msgstr "Es existiert keine Revision mit dieser ID"
+msgstr "Es existiert keine Template-Revision mit dieser ID"
 
 #: ../templates/admin_databases_rss_record_html:186
 msgid ""
@@ -13281,9 +13280,8 @@ msgid "T0100-einbaende"
 msgstr "Person"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:16
-#, fuzzy
 msgid "T0100-gentzdigital"
-msgstr "Name"
+msgstr "Briefaussteller"
 
 #: ../templates/_profile/kug/_database/inst450/visible_categories_title:16
 msgid "T0100-inst450"
@@ -13497,7 +13495,7 @@ msgstr "Regisseur"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:17
 msgid "T0200-gentzdigital"
-msgstr ""
+msgstr "Briefempfänger"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:19
@@ -13909,9 +13907,8 @@ msgid "T0335-einbaende"
 msgstr "Untertitel"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:18
-#, fuzzy
 msgid "T0335-gentzdigital"
-msgstr "Titel"
+msgstr "Incipit"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:30
@@ -14488,7 +14485,7 @@ msgstr "Verlag"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:24
 msgid "T0412-gentzdigital"
-msgstr ""
+msgstr "Handschriftl. Überlieferung"
 
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:21
 msgid "T0412-zpe"
@@ -14586,9 +14583,8 @@ msgid "T0424-einbaende"
 msgstr "Erscheinungsjahr"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:20
-#, fuzzy
 msgid "T0424-gentzdigital"
-msgstr "Sterbedatum"
+msgstr "Datum"
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:33
 msgid "T0424-portrait"
@@ -14728,9 +14724,8 @@ msgstr "Umfang"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:21
-#, fuzzy
 msgid "T0433-gentzdigital"
-msgstr "Beruf"
+msgstr "Format/Umfang"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:49
@@ -16407,7 +16402,7 @@ msgstr "Ersch.Ort Quelle"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:23
 msgid "T0594-gentzdigital"
-msgstr ""
+msgstr "Druckorte"
 
 #: ../templates/_database/landschaft/visible_categories_title:26
 msgid "T0594-landschaft"
@@ -17026,7 +17021,7 @@ msgstr "Art"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:22
 msgid "T0800-gentzdigital"
-msgstr ""
+msgstr "Brieftyp"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:136

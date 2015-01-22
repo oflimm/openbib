@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
-# Oliver Flimm <flimm@openbib.org>, 2006, 2009, 2011, 2012, 2013, 2014.
+# Oliver Flimm <flimm@openbib.org>, 2006, 2009, 2011, 2012, 2013, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2014-09-30 11:07+0200\n"
+"PO-Revision-Date: 2015-01-22 11:29+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -12934,9 +12934,8 @@ msgid "T0100-einbaende"
 msgstr "Person"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:16
-#, fuzzy
 msgid "T0100-gentzdigital"
-msgstr "Name"
+msgstr "Issuer of letter"
 
 #: ../templates/_profile/kug/_database/inst450/visible_categories_title:16
 msgid "T0100-inst450"
@@ -13150,7 +13149,7 @@ msgstr "Director"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:17
 msgid "T0200-gentzdigital"
-msgstr ""
+msgstr "Addressee of letter"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:19
@@ -13562,9 +13561,8 @@ msgid "T0335-einbaende"
 msgstr "Description of motive"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:18
-#, fuzzy
 msgid "T0335-gentzdigital"
-msgstr "Title"
+msgstr "Incipit"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:30
@@ -14141,7 +14139,7 @@ msgstr "Publisher"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:24
 msgid "T0412-gentzdigital"
-msgstr ""
+msgstr "Handwritten record"
 
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:21
 msgid "T0412-zpe"
@@ -14239,9 +14237,8 @@ msgid "T0424-einbaende"
 msgstr "Year of publication"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:20
-#, fuzzy
 msgid "T0424-gentzdigital"
-msgstr "Date of death"
+msgstr "Date"
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:33
 msgid "T0424-portrait"
@@ -14381,9 +14378,8 @@ msgstr "Extent of item"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:21
-#, fuzzy
 msgid "T0433-gentzdigital"
-msgstr "Profession"
+msgstr "Size/Extent of item"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:49
@@ -16060,7 +16056,7 @@ msgstr "Publication place of source"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:23
 msgid "T0594-gentzdigital"
-msgstr ""
+msgstr "Places of print"
 
 #: ../templates/_database/landschaft/visible_categories_title:26
 msgid "T0594-landschaft"
@@ -16685,7 +16681,7 @@ msgstr "Type"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:22
 msgid "T0800-gentzdigital"
-msgstr ""
+msgstr "Type of letter"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:136

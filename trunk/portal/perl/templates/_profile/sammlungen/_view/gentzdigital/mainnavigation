@@ -30,7 +30,7 @@
 [% IF active_menu == "info" %]
          <li class="active"><strong>[% msg.maketext("Informationen") %]</strong></li>
 [% ELSE %]
-          <li><a  href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
+          <li><a  href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
 [% END %]
 [% IF active_menu == "project" %]
          <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>

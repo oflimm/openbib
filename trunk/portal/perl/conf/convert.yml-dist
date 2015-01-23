@@ -3532,6 +3532,15 @@ convtab:
           'freesearch': 1
         facet:
           'year': 1
+      '0426':
+        index:
+          't0426': 1
+      '0427':
+        index:
+          't0427': 1
+      '0428':
+        index:
+          't0428': 1
       '0451':
         index:
           'source': 1
@@ -3597,6 +3606,10 @@ convtab:
 #          'subjectstring': 1
         facet:
           'subject': 1
+      '0800':
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
       '6053':         # Abstract
         index:
           'content': 1

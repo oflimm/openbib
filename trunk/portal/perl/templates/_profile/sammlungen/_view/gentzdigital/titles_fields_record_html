@@ -22,6 +22,12 @@
     ELSIF field == '0428' ;
        field_description = 'Briefe Dritter';
        searchfield = 't0428' ;
+    ELSIF field == '0200' ;
+       field_description = 'Briefempfänger';
+       searchfield = 'corporatebody' ;
+    ELSIF field == '0100' ;
+       field_description = 'Briefaussteller';
+       searchfield = 'person' ;
     END ; -%]
 
 <body>

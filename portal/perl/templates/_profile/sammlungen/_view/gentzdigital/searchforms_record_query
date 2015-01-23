@@ -109,15 +109,13 @@ $(document).ready(function(){
 </div>
 [% END %]
 
-[% IF available_searchfields.content.active %]
-[%- cgiparam = searchfield.content.prefix;
-    this_searchfield = 'content';
+[%- cgiparam = searchfield.place.prefix;
+    this_searchfield = 'place';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Inhalt") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("T0410-gentzdigital") %]</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
-[% END %]
 
 [% IF available_searchfields.year.active %]
 [%- cgiparam      = searchfield.yearstring.prefix;
@@ -154,6 +152,14 @@ $(document).ready(function(){
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 [% END %]
+
+[%- cgiparam = searchfield.source.prefix;
+    this_searchfield = 'source';
+ -%]
+<div class="ym-fbox-text">
+<label for="[% cgiparam %]">[% msg.maketext("T0594-gentzdigital") %]</label>
+<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
 
 [% IF available_searchfields.mediatype.active %]
 [%- cgiparam = searchfield.mediatypestring.prefix;

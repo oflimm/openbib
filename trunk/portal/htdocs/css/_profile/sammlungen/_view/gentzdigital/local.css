@@ -169,5 +169,13 @@
 
   }
 
+  .ym-hlist ul {
+    margin:0;
+    /* padding: 0.5em 1.5em; */
+    padding: 0.2em 0.5em;
+    /* (en|de) Bugfix:IE - Doubled Float Margin Bug */
+    display:inline;
+    float:left; /* LTR */
+  }
 
 }

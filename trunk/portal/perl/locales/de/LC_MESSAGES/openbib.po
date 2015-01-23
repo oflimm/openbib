@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-01-22 11:31+0100\n"
+"PO-Revision-Date: 2015-01-22 17:03+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -14419,7 +14419,7 @@ msgstr "Erscheinungsort"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:21
 msgid "T0410-gentzdigital"
-msgstr "Aufstellungsort"
+msgstr "Ausstellungsort"
 
 #: ../templates/_profile/kug/_database/inst404abklatsch/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:35

@@ -28,9 +28,12 @@
 
      # Verfasser konstruieren
      persons = [] ;
+     corporatebodies = [] ;
 
      personslength = 0 ;
      truncatepers  = 0 ;
+     corporatebodieslength = 0 ;
+     truncatecorp  = 0 ;
 
      FOREACH part IN item.${'P0100'} ;
        thislength = part.content.length ;
@@ -84,53 +87,62 @@
      END ;
      FOREACH part IN item.${'C0200'}  ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
+       IF (thislength+corporatebodieslength) < config.get('maxlength_person') ;
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
-         personslength = personslength+thislength ;
+         corporatebodies.push("<a href=\"${globalurl}\">${part.content}</a>");
+         corporatebodieslength = corporatebodieslength+thislength ;
        ELSE ;
-         truncatepers = 1 ;
+         truncatecorp = 1 ;
        END ;
      END ;
      FOREACH part IN item.${'T0200'} ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         persons.push(part.content);
-         personslength = personslength+thislength ;
+       IF (thislength+corporatebodieslength) < config.get('maxlength_person') ;
+         corporatebodies.push(part.content);
+         corporatebodieslength = corporatebodieslength+thislength ;
        ELSE ;
-         truncatepers = 1 ;
+         truncatecorp = 1 ;
        END ;
      END ;
      FOREACH part IN item.${'C0201'}  ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
+       IF (thislength+corporatebodieslength) < config.get('maxlength_person') ;
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
-         personslength = personslength+thislength ;
+         corporatebodies.push("<a href=\"${globalurl}\">${part.content}</a>");
+         corporatebodieslength = corporatebodieslength+thislength ;
        ELSE ;
-         truncatepers = 1 ;
+         truncatecorp = 1 ;
        END ;
      END ;
      FOREACH part IN item.${'T0201'} ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         persons.push(part.content);
-         personslength = personslength+thislength ;
+       IF (thislength+corporatebodieslength) < config.get('maxlength_person') ;
+         corporatebodies.push(part.content);
+         corporatebodieslength = corporatebodieslength+thislength ;
        ELSE ;
-         truncatepers = 1 ;
+         truncatecorp = 1 ;
        END ;
      END ;
      person = persons.join(' ; ') ;
      IF truncatepers ;
        person = "$person [...]" ;
+     END ;
+
+     corporatebody = corporatebodies.join(' ; ') ;
+     IF truncatecorp ;
+       corporatebody = "$corporatebody [...]" ;
+     END ;
+
+     IF (corporatebody && person) ;
+        person = "$person &rarr; $corporatebody";
      END ;
 
      # Titel konstruieren

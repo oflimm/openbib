@@ -45,6 +45,8 @@
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("Register") %]</h6>
  <ul>
+<li><span  style="font-weight:normal">Jahre</span>
+    <ul>
 [% IF active_submenu == "register_0426" %]
   <li class="active"><strong>Briefe von Gentz</strong></li>
 [% ELSE %]
@@ -60,6 +62,9 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0428.html?l=[% lang %];page=1">Briefe Dritter</a></li>
 [% END %]
+</ul>
+</li>
+
 [% IF active_submenu == "register_0200" %]
   <li class="active"><strong>Briefempfänger</strong></li>
 [% ELSE %]

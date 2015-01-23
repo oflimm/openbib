@@ -60,6 +60,16 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0428.html?l=[% lang %];page=1">Briefe Dritter</a></li>
 [% END %]
+[% IF active_submenu == "register_0200" %]
+  <li class="active"><strong>Briefempfänger</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0200.html?l=[% lang %];page=1">Briefempfänger</a></li>
+[% END %]
+[% IF active_submenu == "register_0100" %]
+  <li class="active"><strong>Briefaussteller</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0100.html?l=[% lang %];page=1">Briefaussteller</a></li>
+[% END %]
  </ul>
 </nav>
 [% END %]

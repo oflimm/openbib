@@ -26,7 +26,8 @@
        END ;
 %]
 [%# USE dumper;dumper.dump(normdata)%]
-<center><a href="http://www.ub.uni-koeln.de/cdm/singleitem/collection/gentz/id/[% cdm_ptr %]/" target="_blank"><img src="http://www.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=/gentz&CISOPTR=[% cdm_ptr %]WIDTH=180" /></a><br/><i>[% description %]</i><center>
+<center><a href="http://www.ub.uni-koeln.de/cdm/singleitem/collection/gentz/id/[% cdm_ptr %]/" target="_blank">   [% IF normdata.${'T2662'}.first.content %]<img src="[% normdata.${'T2662'}.first.content %]" title="Thumbnail des Objekts" /></a>[% ELSE %]&nbsp;[% END %]
+</a><br/><i>[% description %]</i><center>
 <p/>
 [%   END %]
 [% ELSE %]

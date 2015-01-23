@@ -22,6 +22,7 @@
                 'T0800', # msg.maketext("T0800-gentzdigital") Brieftyp
                 'T0594', # msg.maketext("T0594-gentzdigital") Druckorte
                 'T0412', # msg.maketext("T0412-gentzdigital") Handschriftl. Ueberlieferung
+                'T6053', # msg.maketext("T6053") Text
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 'T4210', # msg.maketext("T4210") Copyright-Information

@@ -3512,6 +3512,7 @@ convtab:
           'freesearch': 1
       '0410':         # Auflage
         index:
+          'place': 1
           't0410': 1
       '0412':         # Verlag
         index:
@@ -3580,6 +3581,9 @@ convtab:
         index:
           'source': 1
           'freesearch': 1
+      '0594':
+        index:
+          'source': 1
       '0634':         # ISBN sekundaerform
         index:
           'isbn': 1

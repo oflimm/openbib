@@ -24,10 +24,10 @@
        searchfield = 't0428' ;
     ELSIF field == '0200' ;
        field_description = 'Briefempfänger';
-       searchfield = 'corporatebody' ;
+       searchfield = 'corporatebodystring' ;
     ELSIF field == '0100' ;
        field_description = 'Briefaussteller';
-       searchfield = 'person' ;
+       searchfield = 'personstring' ;
     END ; -%]
 
 <body>

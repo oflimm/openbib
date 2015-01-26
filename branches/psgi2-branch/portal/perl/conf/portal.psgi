@@ -17,7 +17,7 @@ my $cgiapp = sub {
     Log::Log4perl->init($config->{log4perl_path});
     
     my $app = OpenBib::Handler::PSGI::Dispatch->as_psgi(
-        #debug      => 1,
+#        debug      => 1,
         args_to_new => {
             QUERY      => OpenBib::Request->new($env),
         });

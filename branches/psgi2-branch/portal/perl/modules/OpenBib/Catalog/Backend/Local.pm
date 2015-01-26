@@ -373,7 +373,7 @@ sub load_full_title_record {
                     my $personid   =                    $item->{thispersonid};
                     my $supplement =                    $item->{thissupplement};
                     
-                    my $record = OpenBib::Record::Person->new({database=>$self->{database}});
+                    my $record = OpenBib::Record::Person->new({database=>$self->{database}, schema => $self->{schema}});
                     $record->load_name({id=>$personid});
                     my $content = $record->name_as_string;
                     
@@ -411,7 +411,7 @@ sub load_full_title_record {
                     my $corporatebodyid   =                    $item->{thiscorporatebodyid};
                     my $supplement        =                    $item->{thissupplement};
                     
-                    my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}});
+                    my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}, schema => $self->{schema}});
                     $record->load_name({id=>$corporatebodyid});
                     my $content = $record->name_as_string;
                     
@@ -449,7 +449,7 @@ sub load_full_title_record {
                     my $subjectid         =                    $item->{thissubjectid};
                     my $supplement        =                    $item->{thissupplement};
                     
-                    my $record = OpenBib::Record::Subject->new({database=>$self->{database}});
+                    my $record = OpenBib::Record::Subject->new({database=>$self->{database}, schema => $self->{schema}});
                     $record->load_name({id=>$subjectid});
                     my $content = $record->name_as_string;
                     
@@ -487,7 +487,7 @@ sub load_full_title_record {
                     my $classificationid  =                    $item->{thisclassificationid};
                     my $supplement        =                    $item->{thissupplement};
                     
-                    my $record = OpenBib::Record::Classification->new({database=>$self->{database}});
+                    my $record = OpenBib::Record::Classification->new({database=>$self->{database}, schema => $self->{schema}});
                     $record->load_name({id=>$classificationid});
                     my $content = $record->name_as_string;
                     

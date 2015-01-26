@@ -577,8 +577,14 @@ sub create_document {
             elsif ($this_sorting_ref->{type} eq "integercategory"){
                 my $content = (defined $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:0;
                         next unless ($content);
-                
-                ($content) = $content=~m/^\D*(-?\d+)/;
+
+                # Sonderzeichen aus Ansetzungsform entfernen
+                if ($this_sorting_ref->{category} eq "T0424"){
+                    ($content) = $content=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
+                }       
+                else {
+                    ($content) = $content=~m/^\D*(-?\d+)/;
+                }
                 
                 if ($content){
 #                    $content = sprintf "%08d",$content;

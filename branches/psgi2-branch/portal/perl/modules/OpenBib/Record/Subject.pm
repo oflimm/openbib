@@ -36,6 +36,7 @@ use Benchmark ':hireswallclock';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use YAML ();
+use DBIx::Class::ResultClass::HashRefInflator;
 
 use base 'OpenBib::Record';
 
@@ -49,6 +50,9 @@ sub new {
     my $database  = exists $arg_ref->{database}
         ? $arg_ref->{database}       : undef;
 
+    my $schema    = exists $arg_ref->{schema}
+        ? $arg_ref->{schema}         : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -60,7 +64,19 @@ sub new {
 
     if (defined $database){
         $self->{database} = $database;
-        $self->connectDB();
+
+        if ($logger->is_debug){
+            $logger->debug("Subject schema:".YAML::Dump($schema));
+        }
+        
+        if (defined $schema){
+            $logger->debug("Setting Subject schema");
+            $self->{schema} = $schema;
+        }
+        else {
+            $logger->debug("Connecting to Subject schema");
+            $self->connectDB();
+        }
         $logger->debug("Setting subject database: $database");
     }
 
@@ -107,14 +123,15 @@ sub load_full_record {
             select => ['subject_fields.field','subject_fields.mult','subject_fields.subfield','subject_fields.content'],
             as     => ['thisfield','thismult','thissubfield','thiscontent'],
             join   => ['subject_fields'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
     
     foreach my $item ($subject_fields->all){
-        my $field    = "S".sprintf "%04d",$item->get_column('thisfield');
-        my $subfield =                    $item->get_column('thissubfield');
-        my $mult     =                    $item->get_column('thismult');
-        my $content  =                    $item->get_column('thiscontent');
+        my $field    = "S".sprintf "%04d",$item->{'thisfield'};
+        my $subfield =                    $item->{'thissubfield'};
+        my $mult     =                    $item->{'thismult'};
+        my $content  =                    $item->{'thiscontent'};
         
         push @{$fields_ref->{$field}}, {
             mult      => $mult,
@@ -192,6 +209,7 @@ sub load_name {
             select => ['me.content'],
             as     => ['thiscontent'],
             join   => ['subjectid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
 
@@ -199,7 +217,7 @@ sub load_name {
     
     my @mainentries = ();
     foreach my $item ($subject_fields->all){
-        push @mainentries, $item->get_column('thiscontent');
+        push @mainentries, $item->{'thiscontent'};
     }
 
     if (@mainentries){

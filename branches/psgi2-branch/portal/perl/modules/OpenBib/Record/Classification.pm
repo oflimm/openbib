@@ -36,6 +36,7 @@ use Benchmark ':hireswallclock';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use YAML ();
+use DBIx::Class::ResultClass::HashRefInflator;
 
 use base 'OpenBib::Record';
 
@@ -49,6 +50,9 @@ sub new {
     my $database  = exists $arg_ref->{database}
         ? $arg_ref->{database}       : undef;
 
+    my $schema    = exists $arg_ref->{schema}
+        ? $arg_ref->{schema}         : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -60,7 +64,20 @@ sub new {
 
     if (defined $database){
         $self->{database} = $database;
-        $self->connectDB();
+
+        if ($logger->is_debug){
+            $logger->debug("Classification schema:".YAML::Dump($schema));
+        }
+        
+        if (defined $schema){
+            $logger->debug("Setting Classification schema");
+            $self->{schema} = $schema;
+        }
+        else {
+            $logger->debug("Connecting to Classification schema");
+            $self->connectDB();
+        }
+
         $logger->debug("Setting Classification database: $database");    
     }
 
@@ -107,14 +124,15 @@ sub load_full_record {
             select => ['classification_fields.field','classification_fields.mult','classification_fields.subfield','classification_fields.content'],
             as     => ['thisfield','thismult','thissubfield','thiscontent'],
             join   => ['classification_fields'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
     
     foreach my $item ($classification_fields->all){
-        my $field    = "N".sprintf "%04d",$item->get_column('thisfield');
-        my $subfield =                    $item->get_column('thissubfield');
-        my $mult     =                    $item->get_column('thismult');
-        my $content  =                    $item->get_column('thiscontent');
+        my $field    = "N".sprintf "%04d",$item->{'thisfield'};
+        my $subfield =                    $item->{'thissubfield'};
+        my $mult     =                    $item->{'thismult'};
+        my $content  =                    $item->{'thiscontent'};
         
         push @{$fields_ref->{$field}}, {
             mult      => $mult,
@@ -184,20 +202,21 @@ sub load_name {
     # DBI: "select content from classification whree id = ? and category=0001";
     my $classification_fields = $self->{schema}->resultset('Classification')->search(
         {
-            'me.id'                 => $id,
+            'me.id'                         => $id,
             'classification_fields.field'   => '0800',
         },
         {
             select => ['classification_fields.content'],
             as     => ['thiscontent'],
             join   => ['classification_fields'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     )->first;
 
     my $main_entry="Unbekannt";
 
     if ($classification_fields){
-        $main_entry  =                    $classification_fields->get_column('thiscontent');
+        $main_entry  =  $classification_fields->{'thiscontent'};
     }
     
     if ($config->{benchmark}) {
@@ -242,7 +261,6 @@ sub get_number_of_titles {
             join   => ['title_classifications'],
             columns  => [ qw/title_classifications.titleid/ ], # columns/group_by -> versch. titleid 
             group_by => [ qw/title_classifications.titleid/ ], # via group_by und nicht via distinct (Performance)
-
         }
     )->count;
 

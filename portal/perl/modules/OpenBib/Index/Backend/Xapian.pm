@@ -531,6 +531,13 @@ sub create_document {
                 id         => $config->{xapian_sorttype_value}{'year'},
                 category   => 'T0424',
                 type       => 'integercategory',
+                filter     => sub {
+                    my $string=shift;
+                    ($string) = $string=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
+                    $string=~s/[^-0-9]//g;
+
+                    return $string;
+                },
             },
             {
                 # Verlag
@@ -578,14 +585,11 @@ sub create_document {
                 my $content = (defined $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:0;
                         next unless ($content);
 
-                # Sonderzeichen aus Ansetzungsform entfernen
-                if ($this_sorting_ref->{category} eq "T0424"){
-                    ($content) = $content=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
-                    $content=~s/[^-0-9]//g;
-                }       
-                else {
-                    ($content) = $content=~m/^\D*(-?\d+)/;
+                if (defined $this_sorting_ref->{filter}){
+                    $content = &{$this_sorting_ref->{filter}}($content);
                 }
+
+                ($content) = $content=~m/^\D*(-?\d+)/;
                 
                 if ($content){
 #                    $content = sprintf "%08d",$content;

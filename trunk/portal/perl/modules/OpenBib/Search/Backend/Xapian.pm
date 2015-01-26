@@ -819,7 +819,12 @@ sub get_values {
 
 #        while ($values_iter != $dbh->values_end($docid)) {
         while ($values_iter ne $document->values_end()) {
-            $values_ref->{$values_iter->get_valueno} = $values_iter->get_value;
+            if ($values_iter->get_valueno == 23){ # sortable serialize year
+                $values_ref->{$values_iter->get_valueno} = Search::Xapian::sortable_unserialise($values_iter->get_value);
+            }
+            else {
+                $values_ref->{$values_iter->get_valueno} = $values_iter->get_value;
+            }
             $values_iter++;
         }
     }

@@ -48,13 +48,14 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$database,$profile,$view,$help,$logfile);
+my ($type,$database,$profile,$field,$view,$help,$logfile);
 
 &GetOptions("type=s"          => \$type,
             "database=s"      => \$database,
             "profile=s"       => \$profile,
             "view=s"          => \$view,
-            "logfile=s"       => \$logfile,
+            "profile=s"       => \$profile,
+            "field=s"         => \$field,
 	    "help"            => \$help
 	    );
 
@@ -1003,6 +1004,82 @@ if ($type == 13){
             type => 13,
             id   => $view,
             data => $bestof_ref,
+        });
+    }
+}
+
+# Typ 14 => Meistvorkommender Feldinhalt pro Datenbank
+if ($type == 14 && $field){
+    my @databases = ();
+
+    if ($database){
+        push @databases, $database;
+    }
+    else {
+        @databases=$config->get_active_databases();
+    }
+    
+    foreach my $database (@databases){
+        $logger->info("Generating Type 14 BestOf-Values for database $database");
+
+        my $maxcount=0;
+	my $mincount=999999999;
+
+        my $catalog = new OpenBib::Catalog($database);
+
+        my $bestof_ref=[];
+
+        # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
+        my $usage = $catalog->{schema}->resultset('Title')->search_rs(
+            {
+                'title_fields.field' => $field,
+            },
+            {
+                select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
+                as       => ['thiscontent','titlecount'],
+                join     => ['title_fields'],
+                group_by => ['title_fields.content'],
+                order_by => { -desc => \'count(title_fields.titleid)' },
+                rows     => 200,
+            }
+        );
+
+        foreach my $item ($usage->all){
+            my $content = $item->get_column('thiscontent');
+            my $count   = $item->get_column('titlecount');
+
+            if ($maxcount < $count){
+                $maxcount = $count;
+            }
+
+            if ($mincount > $count){
+                $mincount = $count;
+            }
+            
+            push @$bestof_ref, {
+                item  => $content,
+                count => $count,
+            };
+        }
+
+	$bestof_ref = gen_cloud_class({
+				       items => $bestof_ref, 
+				       min   => $mincount, 
+				       max   => $maxcount, 
+				       type  => $config->{best_of}{$type}{cloud}});
+
+        my $sortedbestof_ref ;
+        my $collator = Unicode::Collate->new();
+        
+        @{$sortedbestof_ref} = map { $_->[0] }
+            sort { $collator->cmp($a->[1],$b->[1]) }
+                map { [$_, $_->{item}] }
+                    @{$bestof_ref};
+        
+        $statistics->cache_data({
+            type => 14,
+            id   => "$database-$field",
+            data => $sortedbestof_ref,
         });
     }
 }

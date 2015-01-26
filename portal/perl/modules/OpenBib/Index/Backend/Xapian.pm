@@ -529,6 +529,13 @@ sub create_document {
                 id         => $config->{xapian_sorttype_value}{'year'},
                 category   => 'T0424',
                 type       => 'integercategory',
+                filter     => sub {
+                    my $string=shift;
+                    ($string) = $string=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
+                    $string=~s/[^-0-9]//g;
+
+                    return $string;
+                },
             },
             {
                 # Verlag
@@ -575,7 +582,11 @@ sub create_document {
             elsif ($this_sorting_ref->{type} eq "integercategory"){
                 my $content = (defined $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:0;
                         next unless ($content);
-                
+
+                if (defined $this_sorting_ref->{filter}){
+                    $content = &{$this_sorting_ref->{filter}}($content);
+                }
+
                 ($content) = $content=~m/^\D*(-?\d+)/;
                 
                 if ($content){

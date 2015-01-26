@@ -581,6 +581,7 @@ sub create_document {
                 # Sonderzeichen aus Ansetzungsform entfernen
                 if ($this_sorting_ref->{category} eq "T0424"){
                     ($content) = $content=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
+                    $content=~s/[^-0-9]//g;
                 }       
                 else {
                     ($content) = $content=~m/^\D*(-?\d+)/;

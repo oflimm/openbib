@@ -113,6 +113,62 @@ sub show_search {
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
 
+    $logger->debug("Content-Type $content_type");
+    
+    # Start der Ausgabe mit korrektem Header
+    $self->header_add('Content-Type' => $content_type);
+    
+    return sub {
+        my $respond = shift;
+        
+        my $writer = $respond->([ $self->send_psgi_headers ]); # using cgi-app header props
+
+        $self->param('writer',$writer);
+
+        $self->show_search_header();
+        
+        $self->show_search_result();
+        
+        $self->show_search_footer();
+        
+#        $writer->write($self->show_search_header());
+        
+#        $writer->write($self->show_search_result());
+        
+#        $writer->write($self->show_search_footer());
+        
+        $writer->close;
+    };
+}
+
+sub show_search_header {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $servername     = $self->param('servername');
+    my $path_prefix    = $self->param('path_prefix');
+    my $path           = $self->param('path');
+    my $representation = $self->param('representation');
+    my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+
+    my $writer         = $self->param('writer');
+    
     if ($logger->is_debug){
         $logger->debug("User: ".YAML::Dump($user));
         $logger->debug("Session: ".YAML::Dump($session));
@@ -121,39 +177,7 @@ sub show_search {
     # CGI Args
     my $sb        = $query->param('sb')        || $config->{local_search_backend};
     
-    # TODO: Warum hier und nicht in SearchQuery? Erstmal weg
-#    my $serien        = decode_utf8($query->param('serien'))        || 0;
-
-    # Folgende Parameter wind bereis im QueryOptions-Objekt enthalten ($self->param('qopts')
-#     my $hitrange      = ($query->param('num' ))?$query->param('num'):50;
-#     my $page          = ($query->param('page' ))?$query->param('page'):1;
-#     my $listtype      = ($query->param('lt' ))?$query->param('lt'):"cover";
-#     my $sorttype      = ($query->param('srt' ))?$query->param('srt'):"person";
-#     my $sortorder     = ($query->param('srto'))?$query->param('srto'):'asc';
-#     my $defaultop     = ($query->param('dop'))?$query->param('dop'):'and';
-#     my $joindbs       = $query->param('jn') || $query->param('combinedbs')    || 1;
-
-#    my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
-
-    # Parameter bereits in SearchQuery Objekt
-    
-#     # Index zusammen mit Eingabefelder 
-#     my $verfindex     = $query->param('verfindex')     || '';
-#     my $korindex      = $query->param('korindex')      || '';
-#     my $swtindex      = $query->param('swtindex')      || '';
-#     my $notindex      = $query->param('notindex')      || '';
-
-#     # oder Index als separate Funktion
-#     my $indextype    = $query->param('indextype')      || ''; # (verfindex, korindex, swtindex oder notindex)
-#     my $indexterm    = $query->param('indexterm')      || '';
-#     my $searchindex  = $query->param('searchindex')    || '';
-    
-#    my $profile       = $query->param('profile')       || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
-
-
-    #     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
-#     my $drilldown     = $query->param('dd')            || 1;     # Drill-Down?
 
 
     my $container = OpenBib::Container->instance;
@@ -220,12 +244,15 @@ sub show_search {
     # Hash im Loginname ersetzen
     $username =~s/#/\%23/;
 
+    # Variablen fuer den Zugriff durch andere Methoden setzen
+    $self->param('username',$username);
+    $self->param('password',$password);
+    
     # Array aus DB-Name und Titel-ID zur Navigation
     my @resultset   = ();
     
     my $fallbacksb    = "";
-    my $gesamttreffer = 0;
-
+    
     my $atime=new Benchmark;
     
     my $starttemplatename=$self->get_start_templatename();
@@ -256,10 +283,6 @@ sub show_search {
         templatename => $starttemplatename,
     });
 
-    $logger->debug("Content-Type $content_type");
-    # Start der Ausgabe mit korrektem Header
-    $self->header_add('Content-Type' => $content_type);
-
     my $content_header = "";
     
     # Ausgabe des ersten HTML-Bereichs
@@ -279,26 +302,26 @@ sub show_search {
         $self->header_add('Status',400); # Server error
         return;
     };
-    
-#    # Ausgabe flushen
-#    eval {
-#        $r->rflush();
-#    };
 
-#    if($@) {
-#        $logger->error("Flush-Error");
-#    }
+    $writer->write(encode_utf8($content_header));
 
-    # Kombinierte Suche ueber alle Kataloge
+    return;
+}
 
-    my $content_searchresult="";
+sub show_search_result {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $query          = $self->query();
     
     # Alternativ: getrennte Suche uber alle Kataloge
     if (defined $query->param('sm') && $query->param('sm') eq "seq"){
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
 
-        $content_searchresult = $self->sequential_search;
+        $self->sequential_search;
 
         ######################################################################
         #
@@ -310,12 +333,38 @@ sub show_search {
         # Gesamtdatenbank aus allen ausgewaehlten Recherche-Datenbanken schicken und Ergebniss ausgeben
         #
 
-        $content_searchresult = $self->joined_search;
+        $self->joined_search;
 
         ######################################################################
         #
         # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
     }
+
+    return;
+}
+
+sub show_search_footer {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $r              = $self->param('r');
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $searchquery    = $self->param('searchquery');
+    my $queryoptions   = $self->param('qopts');
+    my $username       = $self->param('username');
+    my $password       = $self->param('password');
+    
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $writer         = $self->param('writer');
 
     # Jetzt update der Trefferinformationen, wenn keine ID
     $searchquery->save({sid => $session->{sid}});
@@ -364,16 +413,6 @@ sub show_search {
         return;
     };
     
-    # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
-
-    if ($gesamttreffer > 0) {
-        $session->updatelastresultset(\@resultset);
-    }
-
-    if ($logger->is_debug){
-        $logger->debug("_searchquery pre: ".YAML::Dump($searchquery->{_searchquery}));
-    }
-
     # Wurde in allen Katalogen recherchiert?
     
     my $alldbcount = $config->get_number_of_dbs();
@@ -388,7 +427,7 @@ sub show_search {
         
     $searchquery_log_ref->{searchprofile} = $searchquery->get_searchprofile;
     
-    $searchquery_log_ref->{hits}   = $gesamttreffer;
+#    $searchquery_log_ref->{hits}   = $gesamttreffer;
 
     if ($logger->is_debug){
         $logger->debug("_searchquery: ".YAML::Dump($searchquery->{_searchquery}));
@@ -401,8 +440,9 @@ sub show_search {
         serialize => 1,
     });
 
-    my $content_result = encode_utf8($content_header.$content_searchresult.$content_footer);
-    return \$content_result;
+    $writer->write(encode_utf8($content_footer));
+    
+    return;
 }
 
 # Auf Grundlage der <form>-Struktur im Template searchform derzeit nicht verwendet
@@ -796,7 +836,8 @@ sub joined_search {
 
     my $config      = OpenBib::Config->instance;
     my $searchquery = $self->param('searchquery');
-
+    my $writer      = $self->param('writer');
+    
     $logger->debug("Starting joined search");
 
     $self->search;
@@ -805,6 +846,8 @@ sub joined_search {
 
     my $content_searchresult = $self->print_resultitem({templatename => $templatename});
 
+    $writer->write(encode_utf8($content_searchresult));
+    
     # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
     foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
         my $system = $config->get_system_of_db($database);
@@ -813,13 +856,15 @@ sub joined_search {
             $self->param('database',$database);
             
             $self->search({database => $database});
-            
-            $content_searchresult.=$self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+
+            my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+
+            $writer->write(encode_utf8($seq_content_searchresult));
         }
     }
 
     
-    return $content_searchresult;
+    return; # $content_searchresult;
 }
 
 sub sequential_search {
@@ -830,6 +875,7 @@ sub sequential_search {
     
     my $config      = OpenBib::Config->instance;
     my $searchquery = $self->param('searchquery');
+    my $writer      = $self->param('writer');
 
     ######################################################################
     # Schleife ueber alle Datenbanken 
@@ -843,11 +889,13 @@ sub sequential_search {
         $self->param('database',$database);
 
         $self->search({database => $database});
+
+        my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
         
-        $content_searchresult.=$self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+        $writer->write(encode_utf8($seq_content_searchresult));
     }
 
-    return $content_searchresult;
+    return; #   $content_searchresult;
 }
 
 sub search {

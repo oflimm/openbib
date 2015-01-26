@@ -37,6 +37,7 @@ use Encode 'decode_utf8';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use YAML ();
+use DBIx::Class::ResultClass::HashRefInflator;
 
 use base 'OpenBib::Record';
 
@@ -50,6 +51,9 @@ sub new {
     my $database  = exists $arg_ref->{database}
         ? $arg_ref->{database}       : undef;
 
+    my $schema    = exists $arg_ref->{schema}
+        ? $arg_ref->{schema}         : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -61,7 +65,20 @@ sub new {
 
     if (defined $database){
         $self->{database} = $database;
-        $self->connectDB();
+
+        if ($logger->is_debug){
+            $logger->debug("CorporateBody schema:".YAML::Dump($schema));
+        }
+        
+        if (defined $schema){
+            $logger->debug("Setting CorporateBody schema");
+            $self->{schema} = $schema;
+        }
+        else {
+            $logger->debug("Connecting to CorporateBody schema");
+            $self->connectDB();
+        }
+
         $logger->debug("Setting CorporateBody database: $database");
     }
 
@@ -110,14 +127,15 @@ sub load_full_record {
             select => ['corporatebody_fields.field','corporatebody_fields.mult','corporatebody_fields.subfield','corporatebody_fields.content'],
             as     => ['thisfield','thismult','thissubfield','thiscontent'],
             join   => ['corporatebody_fields'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
     
     foreach my $item ($corporatebody_fields->all){
-        my $field    = "C".sprintf "%04d",$item->get_column('thisfield');
-        my $subfield =                    $item->get_column('thissubfield');
-        my $mult     =                    $item->get_column('thismult');
-        my $content  =                    $item->get_column('thiscontent');
+        my $field    = "C".sprintf "%04d",$item->{'thisfield'};
+        my $subfield =                    $item->{'thissubfield'};
+        my $mult     =                    $item->{'thismult'};
+        my $content  =                    $item->{'thiscontent'};
         
         push @{$fields_ref->{$field}}, {
             mult      => $mult,
@@ -194,13 +212,14 @@ sub load_name {
             select => ['corporatebody_fields.content'],
             as     => ['thiscontent'],
             join   => ['corporatebody_fields'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
-    )->single;
+    )->first;
 
     my $main_entry="Unbekannt";
 
     if ($corporatebody_fields){
-        $main_entry  =                    $corporatebody_fields->get_column('thiscontent');
+        $main_entry = $corporatebody_fields->{'thiscontent'};
     }
     
     if ($config->{benchmark}) {

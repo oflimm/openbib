@@ -1835,7 +1835,7 @@ sub run {
     
     my $return_value;
     if ($self->{__IS_PSGI}) {
-        my ($status, $headers) = $self->_send_psgi_headers();
+        my ($status, $headers) = $self->send_psgi_headers();
         
         if (ref($body) eq 'GLOB' || (Scalar::Util::blessed($body) && $body->can('getline'))) {
             # body a file handle - return it
@@ -1844,13 +1844,7 @@ sub run {
         elsif (ref($body) eq 'CODE') {
             
             # body is a subref, or an explicit callback method is set
-            $return_value = sub {
-                my $respond = shift;
-                
-                my $writer = $respond->([ $status, $headers ]);
-                
-                &$body($writer);
-            };
+            $return_value = $body;
         }
         else {
             
@@ -1872,6 +1866,11 @@ sub run {
     return $return_value;
 }
 
+sub send_psgi_headers {
+    my $self = shift;
+
+    return $self->_send_psgi_headers();
+}
 
 # sub teardown {
 #     my $self = shift;

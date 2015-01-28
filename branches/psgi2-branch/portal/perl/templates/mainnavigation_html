@@ -34,8 +34,9 @@ $(document).ready(function(){
 
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]
 
-<form id="ob-simplesearch_form" method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<form id="ob-simplesearch_form" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
+<input type="hidden" name="lang"       value="[% lang %]" />
 <input type="hidden" name="num"        value="20" />
 <input type="hidden" name="page"       value="1" />
 

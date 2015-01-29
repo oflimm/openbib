@@ -1,0 +1,100 @@
+---
+'01': 'Vorläufereinrichtungen'
+'01.01': 'Syndikatsbibliothek'
+'01.02': 'Gymnasialbibliothek'
+'01.03': 'Wiss. Stadtbibliothek'
+'01.04': 'Bibliothek der Akademie für Praktische Medizin'
+'01.05': 'Handelshochschulbibliothek'
+'02': 'Geschichte und Entwicklung der Universitäts- und Stadtbibliothek Köln'
+'02.01': Allgemeines
+'02.01.01': 'Gründung und Statusfrage (zweischichtiges System)'
+'02.01.02': 'Bibliothekssystem der neuen Universität'
+'02.01.03': 'Beziehungen der USB zu anderen Einrichtungen'
+'02.01.04': 'Teilnahme an Gemeinschaftsunternehmen'
+'02.01.04.01': 'vbnw'
+'02.01.04.02': 'agub'
+'02.01.04.03': 'hbz'
+'02.01.05': 'Beziehungen einzelner Personen zur USB'
+'02.01.06': 'Allgemeine Entwicklung seit 1920'
+'02.01.07': 'Personal'
+'02.01.07.01': 'Allgemein'
+'02.01.07.02': 'Einzelne Sparten'
+'02.01.07.03': 'Entwicklung'
+'02.01.08': 'Einzelne Mitarbeiter'
+'02.02': 'Bestandsaufbau'
+'02.02.01': 'Etat'
+'02.02.02': 'Einzelne Wissenschaftsgebiete'
+'02.02.03': 'Monographien/Zeitschriften/Zeitungen'
+'02.02.04': 'Elektronische Medien'
+'02.02.05': 'DFG-Sondersammelgebiete'
+'02.02.06': 'Kauf und Kaufstrategien'
+'02.02.07': 'Tausch, Geschenk'
+'02.03': 'Bestandserschließung'
+'02.03.01': 'Zettelkataloge, Benutzerkatalog'
+'02.03.02': 'Kapselkataloge'
+'02.03.03': 'Bandkataloge'
+'02.03.04': 'Mikrofichekataloge'
+'02.03.05': 'Onlinekataloge'
+'02.03.06': 'Spezialkataloge und Datenbanken'
+'02.03.07': 'Signaturensysteme'
+'02.04': 'Benutzung'
+'02.04.01': 'Benutzungsordnung'
+'02.04.02': 'Ausleihe'
+'02.04.03': 'Fernleihe'
+'02.04.04': 'Lesesaal'
+'02.04.05': 'Katalogsaal bzw. Informationszentrum'
+'02.04.06': 'Freihandbereiche'
+'02.04.07': 'Selbstausleihbereich'
+'02.05': 'Neue Medien-Dezernat'
+'02.05.01': 'Schulungen'
+'02.05.02': 'Auskunft/Information'
+'02.05.03': 'E-Learning'
+'02.06': 'Historische und Sonderbestände und Bestandserhaltung'
+'02.06.01': 'Lesesaal und Bestandsschutz'
+'02.06.02': 'Sondersammlungen'
+'02.06.03': 'Einzelne herausragende Objekte'
+'02.06.04': 'Einbandstelle'
+'02.06.05': 'Buchbinderei'
+'02.06.06': 'Fotostelle bzw. Digitalisierungszentrum'
+'02.07': 'Baufragen'
+'02.07.01': 'Unterbringung im Hauptgebäude der Universität'
+'02.07.01': 'Neubau 1963-1966'
+'02.08': 'Datenverarbeitung'
+'02.08.01': 'Neue Medien'
+'02.08.02': 'Online-Kataloge'
+'02.08.03': 'Hardware'
+'02.08.04': 'Software'
+'02.09': 'Abteilungsbibliotheken'
+'02.09.01': 'Medizinische Abt. bzw. Deutsche Zentralbibliothek für Medizin'
+'02.09.02': 'Studentenbücherei'
+'02.09.03': 'Gemeinsame Fachbibliotheken'
+'02.09.04': 'Erziehungswissenschaftliche und Heilpädagogische Abt. bzw. Humanwissenschaftliche Abt.'
+'02.10': 'Veranstaltungen'
+'03': 'Kölnische Bibliotheksgesellschaft'
+'04': Personal
+'04.A': A
+'04.B': B
+'04.C': C
+'04.D': D
+'04.E': E
+'04.F': F
+'04.G': G
+'04.H': H
+'04.I': I
+'04.J': J
+'04.K': K
+'04.L': L
+'04.M': M
+'04.N': N
+'04.O': O
+'04.P': P
+'04.Q': Q
+'04.R': R
+'04.S': S
+'04.T': T
+'04.U': U
+'04.V': V
+'04.W': W
+'04.X': X
+'04.Y': Y
+'04.Z': Z

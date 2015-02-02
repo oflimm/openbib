@@ -51,149 +51,189 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+[%
+      funcargs = { id => 'usbbibliographie', type => 4 } ;
+      resultlist = statistics.get_result(funcargs);
+
+      have_classification = {} ;
+      FOREACH cls IN resultlist ;
+         cls_content = cls.item ;
+         cls_count   = cls.count;
+
+         NEXT IF NOT cls_count ;
+
+         have_classification.${cls_content} = have_classification.${cls_content} + cls_count;
+
+         cls_length   = cls_content.length;
+
+         WHILE cls_length > 2 ;
+             new_length = cls_length - 3;
+             supercls_content = cls_content.substr(0,new_length) ;
+             cls_content = supercls_content ;
+             have_classification.${cls_content} = have_classification.${cls_content} + cls_count;
+
+             cls_length = cls_content.length;
+         END ;
+ 
+      END ;
+%]
+
+[% USE dumper;dumper.dump(have_classification);%]
+
+<style>
+.not-active {
+   pointer-events: none;
+   color: black;
+   cursor: default;
+}
+</style>
+
 <h1>Systematik</h1>
 
 <ul>
-<li><b>01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01*">Vorläufereinrichtungen</a>
+<li><b>01</b> <a [% IF NOT have_classification.${"01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01*">Vorläufereinrichtungen</a>
   <ul>
-    <li><b>01.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.01*">Syndikatsbibliothek</a></li>
-    <li><b>01.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.02*">Gymnasialbibliothek</a></li>
-    <li><b>01.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.03*">Wiss. Stadtbibliothek</a></li>
-    <li><b>01.04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.04*">Bibliothek der Akademie für Praktische Medizin</a></li>
-    <li><b>01.05</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.05*">Handelshochschulbibliothek</a></li>
+    <li><b>01.01</b> <a [% IF NOT have_classification.${"01.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.01*">Syndikatsbibliothek</a></li>
+    <li><b>01.02</b> <a [% IF NOT have_classification.${"01.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.02*">Gymnasialbibliothek</a></li>
+    <li><b>01.03</b> <a [% IF NOT have_classification.${"01.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.03*">Wiss. Stadtbibliothek</a></li>
+    <li><b>01.04</b> <a [% IF NOT have_classification.${"01.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.04*">Bibliothek der Akademie für Praktische Medizin</a></li>
+    <li><b>01.05</b> <a [% IF NOT have_classification.${"01.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=01.05*">Handelshochschulbibliothek</a></li>
   </ul>
 </li>
-<li><b>02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02*">Geschichte und Entwicklung der Universitäts- und Stadtbibliothek Köln</a>
+<li><b>02</b> <a [% IF NOT have_classification.${"02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02*">Geschichte und Entwicklung der Universitäts- und Stadtbibliothek Köln</a>
   <ul>
-    <li><b>02.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01*">Allgemeines</a>
+    <li><b>02.01</b> <a [% IF NOT have_classification.${"02.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01*">Allgemeines</a>
       <ul>
-        <li><b>02.01.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.01*">Gründung und Statusfrage (zweischichtiges System)</a></li>
-        <li><b>02.01.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.02*">Bibliothekssystem der neuen Universität</a></li>
-        <li><b>02.01.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.03*">Beziehungen der USB zu anderen Einrichtungen</a></li>
-        <li><b>02.01.04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04*">Teilnahme an Gemeinschaftsunternehmen</a>
+        <li><b>02.01.01</b> <a [% IF NOT have_classification.${"02.01.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.01*">Gründung und Statusfrage (zweischichtiges System)</a></li>
+        <li><b>02.01.02</b> <a [% IF NOT have_classification.${"02.01.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.02*">Bibliothekssystem der neuen Universität</a></li>
+        <li><b>02.01.03</b> <a [% IF NOT have_classification.${"02.01.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.03*">Beziehungen der USB zu anderen Einrichtungen</a></li>
+        <li><b>02.01.04</b> <a [% IF NOT have_classification.${"02.01.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04*">Teilnahme an Gemeinschaftsunternehmen</a>
           <ul>
-            <li><b>02.01.04.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.01">vbnw</a></li>
-            <li><b>02.01.04.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.02">agub</a></li>
-            <li><b>02.01.04.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.03">hbz</a></li>
+            <li><b>02.01.04.01</b> <a [% IF NOT have_classification.${"02.01.04.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.01">vbnw</a></li>
+            <li><b>02.01.04.02</b> <a [% IF NOT have_classification.${"02.01.04.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.02">agub</a></li>
+            <li><b>02.01.04.03</b> <a [% IF NOT have_classification.${"02.01.04.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.03">hbz</a></li>
           </ul>
         </li>
-        <li><b>02.01.05</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.05">Beziehungen einzelner Personen zur USB</a></li>
-        <li><b>02.01.06</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.06">Allgemeine Entwicklung seit 1920</a></li>
-        <li><b>02.01.07</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07">Personal</a></li>
+        <li><b>02.01.05</b> <a [% IF NOT have_classification.${"02.01.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.05">Beziehungen einzelner Personen zur USB</a></li>
+        <li><b>02.01.06</b> <a [% IF NOT have_classification.${"02.01.06"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.06">Allgemeine Entwicklung seit 1920</a></li>
+        <li><b>02.01.07</b> <a [% IF NOT have_classification.${"02.01.07"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07">Personal</a></li>
           <ul>
-            <li><b>02.01.07.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.01">Allgemein</a></li>
-            <li><b>02.01.07.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.02">Einzelne Sparten</a></li>
-            <li><b>02.01.07.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.03>Entwicklung</a></li>
+            <li><b>02.01.07.01</b> <a [% IF NOT have_classification.${"02.01.07.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.01">Allgemein</a></li>
+            <li><b>02.01.07.02</b> <a [% IF NOT have_classification.${"02.01.07.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.02">Einzelne Sparten</a></li>
+            <li><b>02.01.07.03</b> <a [% IF NOT have_classification.${"02.01.07.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.03>Entwicklung</a></li>
           </ul>
         </li>
-        <li><b>02.01.08</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.08">Einzelne Mitarbeiter</a></li>
+        <li><b>02.01.08</b> <a [% IF NOT have_classification.${"02.01.08"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.08">Einzelne Mitarbeiter</a></li>
       </ul>
     </li>
-    <li><b>02.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02*">Bestandsaufbau</a>
-      <ul>
-        <li><b>02.02.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.01">Etat</a></li>
-        <li><b>02.02.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.02">Einzelne Wissenschaftsgebiete</a></li>
-        <li><b>02.02.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.03">Monographien/Zeitschriften/Zeitungen</a></li>
-        <li><b>02.02.04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.04">Elektronische Medien</a></li>
-        <li><b>02.02.05</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.05">DFG-Sondersammelgebiete</a></li>
-        <li><b>02.02.06</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.06">Kauf und Kaufstrategien</a></li>
-        <li><b>02.02.07</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.07">Tausch, Geschenk</a></li>
-      </ul>
-    </li>
-    <li><b>02.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03*">Bestandserschließung</a>
-      <ul>
-        <li><b>02.03.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.01">Zettelkataloge, Benutzerkatalog</a></li>
-        <li><b>02.03.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.02">Kapselkataloge</a></li>
-        <li><b>02.03.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.03">Bandkataloge</a></li>
-        <li><b>02.03.04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.04">Mikrofichekataloge</a></li>
-        <li><b>02.03.05</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.05">Onlinekataloge</a></li>
-        <li><b>02.03.06</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.06">Spezialkataloge und Datenbanken</a></li>
-        <li><b>02.03.07</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.07">Signaturensysteme</a></li>
-      </ul>
-    </li>
-     <li><b>02.04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04*">Benutzung</a>
-      <ul>
-        <li><b>02.04.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.01*">Benutzungsordnung</a></li>
-        <li><b>02.04.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.02*">Ausleihe</a></li>
-        <li><b>02.04.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.03*">Fernleihe</a></li>
-        <li><b>02.04.04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.04*">Lesesaal</a></li>
-        <li><b>02.04.05</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.05*">Katalogsaal bzw. Informationszentrum</a></li>
-        <li><b>02.04.06</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.06*">Freihandbereiche</a></li>
-        <li><b>02.04.07</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.07*">Selbstausleihbereich</a></li>
-      </ul>
-     </li>
-     <li><b>02.05</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.05*">Neue Medien-Dezernat</a>
-       <ul>
-        <li><b>02.05.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.05.01*">Schulungen</a></li>
-        <li><b>02.05.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.05.02*">Auskunft/Information</a></li>
-        <li><b>02.05.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.05.03*">E-Learning</a></li>
-       </ul>
-     </li>
-     <li><b>02.06</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06*">Historische und Sonderbestände und Bestandserhaltung</a>
-       <ul>
-        <li><b>02.06.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.01*">Lesesaal und Bestandsschutz</a></li>
-        <li><b>02.06.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02*">Sondersammlungen</a></li>
-        <li><b>02.06.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.03*">Einzelne herausragende Objekte</a></li>
-        <li><b>02.06.04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.04*">Einbandstelle</a></li>
-        <li><b>02.06.05</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.05*">Buchbinderei</a></li>
-        <li><b>02.06.06</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.06*">Fotostelle bzw. Digitalisierungszentrum</a></li>
-       </ul>
-      </li>
-      <li><b>02.07</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.07*">Baufragen</a>
-       <ul>
-        <li><b>02.07.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.07.01*">Unterbringung im Hauptgebäude der Universität</a></li>
-        <li><b>02.07.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.07.02*">Neubau 1963-1966</a></li>
-       </ul>
-      </li>
-      <li><b>02.08</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08*">Datenverarbeitung</a>
-       </ul>
-        <li><b>02.08.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08.01*">Neue Medien</a></li>
-        <li><b>02.08.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08.02*">Online-Kataloge</a></li>
-        <li><b>02.08.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08.03*">Hardware</a></li>
-        <li><b>02.08.04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08.04*">Software</a></li>
-       </ul>
-      </li>
-      <li><b>02.09</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09*">Abteilungsbibliotheken</a>
-       <ul>
-        <li><b>02.09.01</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09.01*">Medizinische Abt. bzw. Deutsche Zentralbibliothek für Medizin</a></li>
-        <li><b>02.09.02</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09.02*">Studentenbücherei</a></li>
-        <li><b>02.09.03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09.03*">Gemeinsame Fachbibliotheken</a></li>
-        <li><b>02.09.04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09.04*">Erziehungswissenschaftliche und Heilpädagogische Abt. bzw. Humanwissenschaftliche Abt.</a></li>
-       </ul>
-       <li><b>02.10</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.10*">Veranstaltungen</a></li>
+   </ul>
+  </li>
+  <li><b>02.02</b> <a [% IF NOT have_classification.${"02.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02*">Bestandsaufbau</a>
+    <ul>
+      <li><b>02.02.01</b> <a [% IF NOT have_classification.${"02.02.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.01">Etat</a></li>
+      <li><b>02.02.02</b> <a [% IF NOT have_classification.${"02.02.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.02">Einzelne Wissenschaftsgebiete</a></li>
+      <li><b>02.02.03</b> <a [% IF NOT have_classification.${"02.02.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.03">Monographien/Zeitschriften/Zeitungen</a></li>
+      <li><b>02.02.04</b> <a [% IF NOT have_classification.${"02.02.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.04">Elektronische Medien</a></li>
+      <li><b>02.02.05</b> <a [% IF NOT have_classification.${"02.02.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.05">DFG-Sondersammelgebiete</a></li>
+      <li><b>02.02.06</b> <a [% IF NOT have_classification.${"02.02.06"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.06">Kauf und Kaufstrategien</a></li>
+      <li><b>02.02.07</b> <a [% IF NOT have_classification.${"02.02.07"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.02.07">Tausch, Geschenk</a></li>
     </ul>
-   </li>
-   <li><b>03</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=03*">Kölnische Bibliotheksgesellschaft</a></li>
-   <li><b>04</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04*">Personal</a>
+  </li>
+  <li><b>02.03</b> <a [% IF NOT have_classification.${"02.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03*">Bestandserschließung</a>
+    <ul>
+      <li><b>02.03.01</b> <a [% IF NOT have_classification.${"02.03.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.01">Zettelkataloge, Benutzerkatalog</a></li>
+      <li><b>02.03.02</b> <a [% IF NOT have_classification.${"02.03.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.02">Kapselkataloge</a></li>
+      <li><b>02.03.03</b> <a [% IF NOT have_classification.${"02.03.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.03">Bandkataloge</a></li>
+      <li><b>02.03.04</b> <a [% IF NOT have_classification.${"02.03.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.04">Mikrofichekataloge</a></li>
+      <li><b>02.03.05</b> <a [% IF NOT have_classification.${"02.03.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.05">Onlinekataloge</a></li>
+      <li><b>02.03.06</b> <a [% IF NOT have_classification.${"02.03.06"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.06">Spezialkataloge und Datenbanken</a></li>
+      <li><b>02.03.07</b> <a [% IF NOT have_classification.${"02.03.07"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.03.07">Signaturensysteme</a></li>
+    </ul>
+  </li>
+  <li><b>02.04</b> <a [% IF NOT have_classification.${"02.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04*">Benutzung</a>
+    <ul>
+      <li><b>02.04.01</b> <a [% IF NOT have_classification.${"02.04.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.01*">Benutzungsordnung</a></li>
+      <li><b>02.04.02</b> <a [% IF NOT have_classification.${"02.04.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.02*">Ausleihe</a></li>
+      <li><b>02.04.03</b> <a [% IF NOT have_classification.${"02.04.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.03*">Fernleihe</a></li>
+      <li><b>02.04.04</b> <a [% IF NOT have_classification.${"02.04.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.04*">Lesesaal</a></li>
+      <li><b>02.04.05</b> <a [% IF NOT have_classification.${"02.04.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.05*">Katalogsaal bzw. Informationszentrum</a></li>
+      <li><b>02.04.06</b> <a [% IF NOT have_classification.${"02.04.06"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.06*">Freihandbereiche</a></li>
+      <li><b>02.04.07</b> <a [% IF NOT have_classification.${"02.04.07"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.07*">Selbstausleihbereich</a></li>
+    </ul>
+  </li>
+  <li><b>02.05</b> <a [% IF NOT have_classification.${"02.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.05*">Neue Medien-Dezernat</a>
      <ul>
-       <li><b>04.A</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.A">Nachnamen mit A</a></a></li>
-       <li><b>04.B</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.B">Nachnamen mit B</a></li>
-       <li><b>04.C</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.C">Nachnamen mit C</a></li>
-       <li><b>04.D</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.D">Nachnamen mit D</a></li>
-       <li><b>04.E</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.E">Nachnamen mit E</a></li>
-       <li><b>04.F</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.F">Nachnamen mit F</a></li>
-       <li><b>04.G</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.G">Nachnamen mit G</a></li>
-       <li><b>04.H</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.H">Nachnamen mit H</a></li>
-       <li><b>04.I</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.I">Nachnamen mit I</a></li>
-       <li><b>04.J</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.J">Nachnamen mit J</a></li>
-       <li><b>04.K</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.K">Nachnamen mit K</a></li>
-       <li><b>04.L</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.L">Nachnamen mit L</a></li>
-       <li><b>04.M</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.M">Nachnamen mit M</a></li>
-       <li><b>04.N</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.N">Nachnamen mit N</a></li>
-       <li><b>04.O</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.O">Nachnamen mit O</a></li>
-       <li><b>04.P</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.P">Nachnamen mit P</a></li>
-       <li><b>04.Q</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.Q">Nachnamen mit Q</a></li>
-       <li><b>04.R</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.R">Nachnamen mit R</a></li>
-       <li><b>04.S</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.S">Nachnamen mit S</a></li>
-       <li><b>04.T</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.T">Nachnamen mit T</a></li>
-       <li><b>04.U</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.U">Nachnamen mit U</a></li>
-       <li><b>04.V</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.V">Nachnamen mit V</a></li>
-       <li><b>04.W</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.W">Nachnamen mit W</a></li>
-       <li><b>04.X</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.X">Nachnamen mit X</a></li>
-       <li><b>04.Y</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.Y">Nachnamen mit Y</a></li>
-       <li><b>04.Z</b> <a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.Z">Nachnamen mit Z</a></li>
+      <li><b>02.05.01</b> <a [% IF NOT have_classification.${"02.05.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.05.01*">Schulungen</a></li>
+      <li><b>02.05.02</b> <a [% IF NOT have_classification.${"02.05.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.05.02*">Auskunft/Information</a></li>
+      <li><b>02.05.03</b> <a [% IF NOT have_classification.${"02.05.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.05.03*">E-Learning</a></li>
      </ul>
-   </li>
+  </li>
+  <li><b>02.06</b> <a [% IF NOT have_classification.${"02.06"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06*">Historische und Sonderbestände und Bestandserhaltung</a>
+     <ul>
+      <li><b>02.06.01</b> <a [% IF NOT have_classification.${"02.06.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.01*">Lesesaal und Bestandsschutz</a></li>
+      <li><b>02.06.02</b> <a [% IF NOT have_classification.${"02.06.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02*">Sondersammlungen</a></li>
+      <li><b>02.06.03</b> <a [% IF NOT have_classification.${"02.06.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.03*">Einzelne herausragende Objekte</a></li>
+      <li><b>02.06.04</b> <a [% IF NOT have_classification.${"02.06.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.04*">Einbandstelle</a></li>
+      <li><b>02.06.05</b> <a [% IF NOT have_classification.${"02.06.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.05*">Buchbinderei</a></li>
+      <li><b>02.06.06</b> <a [% IF NOT have_classification.${"02.06.06"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.06*">Fotostelle bzw. Digitalisierungszentrum</a></li>
+     </ul>
+  </li>
+  <li><b>02.07</b> <a [% IF NOT have_classification.${"02.07"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.07*">Baufragen</a>
+     <ul>
+      <li><b>02.07.01</b> <a [% IF NOT have_classification.${"02.07.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.07.01*">Unterbringung im Hauptgebäude der Universität</a></li>
+      <li><b>02.07.02</b> <a [% IF NOT have_classification.${"02.07.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.07.02*">Neubau 1963-1966</a></li>
+     </ul>
+  </li>
+  <li><b>02.08</b> <a [% IF NOT have_classification.${"02.08"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08*">Datenverarbeitung</a>
+     <ul>
+      <li><b>02.08.01</b> <a [% IF NOT have_classification.${"02.08.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08.01*">Neue Medien</a></li>
+      <li><b>02.08.02</b> <a [% IF NOT have_classification.${"02.08.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08.02*">Online-Kataloge</a></li>
+      <li><b>02.08.03</b> <a [% IF NOT have_classification.${"02.08.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08.03*">Hardware</a></li>
+      <li><b>02.08.04</b> <a [% IF NOT have_classification.${"02.08.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.08.04*">Software</a></li>
+     </ul>
+  </li>
+  <li><b>02.09</b> <a [% IF NOT have_classification.${"02.09"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09*">Abteilungsbibliotheken</a>
+     <ul>
+      <li><b>02.09.01</b> <a [% IF NOT have_classification.${"02.09.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09.01*">Medizinische Abt. bzw. Deutsche Zentralbibliothek für Medizin</a></li>
+      <li><b>02.09.02</b> <a [% IF NOT have_classification.${"02.09.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09.02*">Studentenbücherei</a></li>
+      <li><b>02.09.03</b> <a [% IF NOT have_classification.${"02.09.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09.03*">Gemeinsame Fachbibliotheken</a></li>
+      <li><b>02.09.04</b> <a [% IF NOT have_classification.${"02.09.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.09.04*">Erziehungswissenschaftliche und Heilpädagogische Abt. bzw. Humanwissenschaftliche Abt.</a></li>
+     </ul>
+  </li>
+  <li><b>02.10</b> <a [% IF NOT have_classification.${"02.10"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.10*">Veranstaltungen</a></li>
+ </ul>
+</li>
+<li><b>03</b> <a [% IF NOT have_classification.${"03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=03*">Kölnische Bibliotheksgesellschaft</a></li>
+<li><b>04</b> <a [% IF NOT have_classification.${"04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04*">Personal</a>
+   <ul>
+     <li><b>04.A</b> <a [% IF NOT have_classification.${"04.A"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.A">Nachnamen mit A</a></a></li>
+     <li><b>04.B</b> <a [% IF NOT have_classification.${"04.B"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.B">Nachnamen mit B</a></li>
+     <li><b>04.C</b> <a [% IF NOT have_classification.${"04.C"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.C">Nachnamen mit C</a></li>
+     <li><b>04.D</b> <a [% IF NOT have_classification.${"04.D"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.D">Nachnamen mit D</a></li>
+     <li><b>04.E</b> <a [% IF NOT have_classification.${"04.E"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.E">Nachnamen mit E</a></li>
+     <li><b>04.F</b> <a [% IF NOT have_classification.${"04.F"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.F">Nachnamen mit F</a></li>
+     <li><b>04.G</b> <a [% IF NOT have_classification.${"04.G"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.G">Nachnamen mit G</a></li>
+     <li><b>04.H</b> <a [% IF NOT have_classification.${"04.H"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.H">Nachnamen mit H</a></li>
+     <li><b>04.I</b> <a [% IF NOT have_classification.${"04.I"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.I">Nachnamen mit I</a></li>
+     <li><b>04.J</b> <a [% IF NOT have_classification.${"04.J"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.J">Nachnamen mit J</a></li>
+     <li><b>04.K</b> <a [% IF NOT have_classification.${"04.K"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.K">Nachnamen mit K</a></li>
+     <li><b>04.L</b> <a [% IF NOT have_classification.${"04.L"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.L">Nachnamen mit L</a></li>
+     <li><b>04.M</b> <a [% IF NOT have_classification.${"04.M"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.M">Nachnamen mit M</a></li>
+     <li><b>04.N</b> <a [% IF NOT have_classification.${"04.N"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.N">Nachnamen mit N</a></li>
+     <li><b>04.O</b> <a [% IF NOT have_classification.${"04.O"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.O">Nachnamen mit O</a></li>
+     <li><b>04.P</b> <a [% IF NOT have_classification.${"04.P"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.P">Nachnamen mit P</a></li>
+     <li><b>04.Q</b> <a [% IF NOT have_classification.${"04.Q"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.Q">Nachnamen mit Q</a></li>
+     <li><b>04.R</b> <a [% IF NOT have_classification.${"04.R"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.R">Nachnamen mit R</a></li>
+     <li><b>04.S</b> <a [% IF NOT have_classification.${"04.S"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.S">Nachnamen mit S</a></li>
+     <li><b>04.T</b> <a [% IF NOT have_classification.${"04.T"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.T">Nachnamen mit T</a></li>
+     <li><b>04.U</b> <a [% IF NOT have_classification.${"04.U"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.U">Nachnamen mit U</a></li>
+     <li><b>04.V</b> <a [% IF NOT have_classification.${"04.V"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.V">Nachnamen mit V</a></li>
+     <li><b>04.W</b> <a [% IF NOT have_classification.${"04.W"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.W">Nachnamen mit W</a></li>
+     <li><b>04.X</b> <a [% IF NOT have_classification.${"04.X"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.X">Nachnamen mit X</a></li>
+     <li><b>04.Y</b> <a [% IF NOT have_classification.${"04.Y"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.Y">Nachnamen mit Y</a></li>
+     <li><b>04.Z</b> <a [% IF NOT have_classification.${"04.Z"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=04.Z">Nachnamen mit Z</a></li>
+   </ul>
+ </li>
 </ul>
 
         </div>

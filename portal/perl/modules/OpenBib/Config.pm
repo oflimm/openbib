@@ -1768,6 +1768,21 @@ sub get_infomatrix_of_active_databases {
     return @catdb;
 }
 
+sub load_yaml {
+    my ($self,$filename) = @_;
+
+    $YAML::Syck::ImplicitTyping  = 1;
+    $YAML::Syck::ImplicitUnicode = 1;
+
+    my $yaml_ref;
+
+    eval {
+        $yaml_ref = YAML::Syck::LoadFile($filename);
+    };
+    
+    return $yaml_ref 
+}
+
 sub load_bk {
     my ($self) = @_;
 

@@ -78,7 +78,7 @@
       END ;
 %]
 
-[% USE dumper;dumper.dump(have_classification);%]
+[%# USE dumper;dumper.dump(have_classification);%]
 
 <style>
 .not-active {

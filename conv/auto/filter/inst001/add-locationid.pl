@@ -109,6 +109,7 @@ while (<>){
                 push @{$title_ref->{'locations'}}, "DE-38-HWA";
                 push @{$title_ref->{'locations'}}, "DE-38-ASIEN";
                 push @{$title_ref->{'locations'}}, "DE-38-MEKUTH";
+                push @{$title_ref->{'locations'}}, "DE-38-ARCH";
             }
         }
     }

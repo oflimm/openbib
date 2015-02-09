@@ -55,6 +55,10 @@ while (<HOLDING>){
         elsif ($location_ref->{content} =~m/^Fachbibliothek Asien \/ China/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-450";
         }
+        elsif ($location_ref->{content} =~m/^Fachbibliothek Arch.*?ologien \/ Arch.*?ologisches Institut/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-427";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
+        }
 
         if ($location_ref->{content} =~m/^Fachbibliothek Asien/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-ASIEN";
@@ -105,6 +109,7 @@ while (<>){
                 push @{$title_ref->{'locations'}}, "DE-38-HWA";
                 push @{$title_ref->{'locations'}}, "DE-38-ASIEN";
                 push @{$title_ref->{'locations'}}, "DE-38-MEKUTH";
+                push @{$title_ref->{'locations'}}, "DE-38-ARCH";
             }
         }
     }

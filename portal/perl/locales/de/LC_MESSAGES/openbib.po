@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-01-23 09:32+0100\n"
+"PO-Revision-Date: 2015-02-03 15:26+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -374,7 +374,7 @@ msgstr "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:46
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:48
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:68
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:83
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:46
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:48
@@ -1050,7 +1050,6 @@ msgstr "Alle Kataloge"
 msgid "Alle Listen"
 msgstr "Alle Listen"
 
-#: ../templates/_profile/sammlungen/_view/gentzdigital/titles_navigation:21
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:126
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:19
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:21
@@ -2184,7 +2183,6 @@ msgstr "Beispiel: Installation von Feedview f&uuml;r den Browser Firefox"
 msgid "Beispiele"
 msgstr "Beispiele"
 
-#: ../templates/_profile/sammlungen/_view/gentzdigital/titles_navigation:26
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:24
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:26
 msgid "Beliebte Münzen"
@@ -4589,8 +4587,8 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:241
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:144
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:218
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:221
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:230
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:233
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:239
 #: ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:296
@@ -5917,7 +5915,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query:151
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:132
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:134
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:177
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:183
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:136
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:141
@@ -6689,7 +6687,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:232
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:237
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:236
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:216
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:234
 #: ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:294
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
@@ -6938,7 +6936,6 @@ msgstr "Informationen zu dieser Bibliothek"
 #: ../templates/_profile/kug/_database/wikisource_de/persons_record_html:69
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:91
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_title_field:5
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:117
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:5
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:5
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:5
@@ -7304,9 +7301,9 @@ msgstr "Ja"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:30
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_facet:179
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:127
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:71
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:73
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:125
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:86
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:88
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:181
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:12
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:25
@@ -7491,8 +7488,8 @@ msgstr "K&ouml;rperschaft"
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:88
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:121
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:123
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:81
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:83
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:96
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:98
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:84
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:86
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:76
@@ -8018,8 +8015,8 @@ msgstr "Künstler"
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:242
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:238
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:241
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:218
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:221
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:230
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:233
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:236
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:239
 #: ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:296
@@ -9216,7 +9213,7 @@ msgstr "Meldung"
 #: ../templates/_profile/kug/_database/openlibrary/titlist_item_html_short:232
 #: ../templates/_profile/sammlungen/_database/alekiddr/titlist_item_html_short:237
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:236
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:216
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:228
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titlist_item_html_short:234
 #: ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:294
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:226
@@ -10312,8 +10309,8 @@ msgstr "Person/Körperschaft"
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:83
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:116
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:118
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:76
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:78
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:91
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:93
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:79
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:81
 #: ../templates/_profile/sammlungen/_view/kapsel/clouds_databases_record_html:62
@@ -10957,7 +10954,7 @@ msgstr "Regisseur"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:46
-#: ../templates/_profile/sammlungen/_view/gentzdigital/titles_fields_record_html:49
+#: ../templates/_profile/sammlungen/_view/gentzdigital/titles_fields_record_html:55
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:39
@@ -11174,8 +11171,8 @@ msgstr "Schauspieler"
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:93
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:126
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:128
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:86
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:88
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:101
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:103
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:89
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:91
 #: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:28
@@ -11950,7 +11947,7 @@ msgstr "Sigel"
 #: ../templates/_profile/sammlungen/_database/dirksen/circulation:33
 #: ../templates/_profile/sammlungen/_database/dirksen/titlist_item_html_short:231
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:141
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:211
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titlist_item_html_short:223
 #: ../templates/_profile/sammlungen/_database/kapsel/titlist_item_html_short:289
 #: ../templates/_profile/sammlungen/_database/kempis/circulation:33
 #: ../templates/_profile/sammlungen/_database/landschaft/titlist_item_html_short:221
@@ -12375,7 +12372,7 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_corporatebody_html:48
 #: ../templates/_profile/sammlungen/_view/gentzdigital/info_ansprechpartner:36
 #: ../templates/_profile/sammlungen/_view/gentzdigital/info_sammlung:36
-#: ../templates/_profile/sammlungen/_view/gentzdigital/titles_fields_record_html:48
+#: ../templates/_profile/sammlungen/_view/gentzdigital/titles_fields_record_html:54
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html:48
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_databases_record_html:37
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:37
@@ -12751,7 +12748,7 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:134
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:128
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:129
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:177
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:183
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:128
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:136
@@ -13049,8 +13046,8 @@ msgstr "System"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:178
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:131
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:133
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:91
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:93
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:106
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:108
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:178
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:21
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:9
@@ -13200,7 +13197,7 @@ msgstr "Sprache"
 
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:87
 msgid "T0015-schatzbehalter"
-msgstr "Originalsprache"
+msgstr "Sprache"
 
 #: ../templates/all_categories_title:35
 msgid "T0016"
@@ -14522,6 +14519,7 @@ msgstr "Erscheinungsort"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_0410_html:70
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:42
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:44
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:116
 msgid "T0410-gentzdigital"
 msgstr "Ausstellungsort"
 
@@ -14592,7 +14590,7 @@ msgid "T0412"
 msgstr "Verlag"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:24
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:153
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:151
 msgid "T0412-gentzdigital"
 msgstr "Handschriftl. Überlieferung"
 
@@ -15632,7 +15630,6 @@ msgstr "Ergänzt. GesamtTitel"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:85
-#: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:86
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:88
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:88
@@ -15642,6 +15639,10 @@ msgstr "Ergänzt. GesamtTitel"
 #: ../templates/visible_categories_title:88
 msgid "T0516"
 msgstr "Sprache"
+
+#: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:88
+msgid "T0516-schatzbehalter"
+msgstr "Schrift"
 
 #: ../templates/_database/bestellungen/visible_categories_title:74
 #: ../templates/_database/inst404card/visible_categories_title:71
@@ -16510,6 +16511,7 @@ msgid "T0594"
 msgstr "Ersch.Ort Quelle"
 
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:23
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:160
 msgid "T0594-gentzdigital"
 msgstr "Druckorte"
 
@@ -17132,7 +17134,7 @@ msgstr "Art"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_facet:177
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_title_field:17
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_title_field:8
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:163
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:169
 msgid "T0800-gentzdigital"
 msgstr "Brieftyp"
 
@@ -20078,8 +20080,8 @@ msgstr ""
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:224
 #: ../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query:139
 #: ../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query:143
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:139
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:143
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:137
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:129
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:133
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:129
@@ -20459,7 +20461,7 @@ msgstr "bestellt beim Lieferanten"
 #: ../templates/_profile/kug/searchforms_record_query:212
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:224
 #: ../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query:143
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:143
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/_view/kapsel/search_facet:252
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:133
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:133
@@ -21227,7 +21229,7 @@ msgstr "Portal-Administrator"
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:220
 #: ../templates/_profile/rheinlandbib/titles_html:77
 #: ../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query:139
-#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:139
+#: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:137
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:129
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:129
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:149

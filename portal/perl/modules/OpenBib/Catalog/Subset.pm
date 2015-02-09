@@ -130,7 +130,7 @@ sub identify_by_mark {
         my $titles = $self->{schema}->resultset('TitleHolding')->search_rs(
             {
                 'holding_fields.field' => 14,
-                'holding_fields.content' => { '~' => $thismark },
+                'holding_fields.content' => { '~*' => $thismark },
             },
             {
                 select   => ['titleid.id'],
@@ -168,7 +168,7 @@ sub identify_by_mark {
         my $holdings = $self->{schema}->resultset('Holding')->search_rs(
             {
                 'holding_fields.field' => 14,
-                'holding_fields.content' => { '~' => $thismark },
+                'holding_fields.content' => { '~*' => $thismark },
             },
             {
                 select   => ['me.id'],
@@ -238,7 +238,7 @@ sub identify_by_field_content {
         my $titles = $self->{schema}->resultset('TitleField')->search_rs(
             {
                 'field'   => $criteria_ref->{field},
-                'content' => { '~' => $criteria_ref->{content} },
+                'content' => { '~*' => $criteria_ref->{content} },
             },
             {
                 select   => ['titleid'],
@@ -252,7 +252,7 @@ sub identify_by_field_content {
             $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
                 {
                     $table_type{$table}{field} => $criteria_ref->{field},
-                    'content' => { '~' => $criteria_ref->{content} },
+                    'content' => { '~*' => $criteria_ref->{content} },
                 },
                 {
                     select   => ['me.titleid'],
@@ -732,7 +732,7 @@ sub titleid_by_field_content {
     my %title_b = ();
 
     foreach my $criteria_ref (@$arg_ref){
-        my $operator = ($criteria_ref->{operator})?$criteria_ref->{operator}:'~';
+        my $operator = ($criteria_ref->{operator})?$criteria_ref->{operator}:'~*';
         
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
         my $titles = $self->{schema}->resultset('TitleField')->search_rs(

@@ -1179,7 +1179,7 @@ sub connectDB {
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1 |
-        $self->{schema} = OpenBib::Schema::Statistics::Singleton->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1 }) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::Statistics::Singleton->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1, pg_server_prepare => 0 }) or $logger->error_die($DBI::errstr);
     };
 
     if ($@){

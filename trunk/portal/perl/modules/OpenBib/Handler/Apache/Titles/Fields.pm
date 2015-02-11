@@ -197,7 +197,7 @@ sub show_record {
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1}
-        $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1}) or $logger->error_die($DBI::errstr);
+        $schema = OpenBib::Schema::Catalog->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},{'pg_enable_utf8'    => 1, pg_server_prepare => 0}) or $logger->error_die($DBI::errstr);
     };
     
     if ($@){

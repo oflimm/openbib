@@ -34,6 +34,7 @@ use utf8;
 
 use Apache2::Reload;
 use Benchmark ':hireswallclock';
+use Encode qw/decode_utf8/;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use YAML ();
@@ -44,6 +45,22 @@ use OpenBib::Config;
 use OpenBib::Conv::Config;
 use OpenBib::Container;
 use OpenBib::Index::Document;
+
+my %char_replacements = (
+    
+    # Zeichenersetzungen
+    "\n"     => "<br\/>",
+    "\r"     => "\\r",
+    ""     => "",
+#    "\x{00}" => "",
+#    "\x{80}" => "",
+#    "\x{87}" => "",
+);
+
+my $chars_to_replace = join '|',
+    keys %char_replacements;
+
+$chars_to_replace = qr/$chars_to_replace/;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -123,6 +140,9 @@ sub process {
     my $json      = exists $arg_ref->{json}
         ? $arg_ref->{json}           : undef;
 
+    my $record    = exists $arg_ref->{record}
+        ? $arg_ref->{record}         : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -142,36 +162,51 @@ sub process {
     $self->{_columns_title}                = [];
     $self->{_columns_title_fields}         = [];
     
-    my %listitemdata_person         = %{$storage->get('listitemdata_person')};
-    my %listitemdata_person_date    = %{$storage->get('listitemdata_person_date')};
-    my %listitemdata_corporatebody  = %{$storage->get('listitemdata_corporatebody')};
-    my %listitemdata_classification = %{$storage->get('listitemdata_classification')};
-    my %listitemdata_subject        = %{$storage->get('listitemdata_subject')};
-    my %listitemdata_holding        = %{$storage->get('listitemdata_holding')};
-    my %listitemdata_superid        = %{$storage->get('listitemdata_superid')};
-    my %listitemdata_popularity     = %{$storage->get('listitemdata_popularity')};
-    my %listitemdata_tags           = %{$storage->get('listitemdata_tags')};
-    my %listitemdata_litlists       = %{$storage->get('listitemdata_litlists')};
-    my %listitemdata_enriched_years = %{$storage->get('listitemdata_enriched_years')};
-    my %enrichmntdata               = %{$storage->get('enrichmntdata')};
-    my %indexed_person              = %{$storage->get('indexed_person')};
-    my %indexed_corporatebody       = %{$storage->get('indexed_corporatebody')};
-    my %indexed_subject             = %{$storage->get('indexed_subject')};
-    my %indexed_classification      = %{$storage->get('indexed_classification')};
-    my %indexed_holding             = %{$storage->get('indexed_holding')};
+#     my %listitemdata_person         = %{$storage->get('listitemdata_person')};
+#     my %listitemdata_person_date    = %{$storage->get('listitemdata_person_date')};
+#     my %listitemdata_corporatebody  = %{$storage->get('listitemdata_corporatebody')};
+#     my %listitemdata_classification = %{$storage->get('listitemdata_classification')};
+#     my %listitemdata_subject        = %{$storage->get('listitemdata_subject')};
+#     my %listitemdata_holding        = %{$storage->get('listitemdata_holding')};
+#     my %listitemdata_superid        = %{$storage->get('listitemdata_superid')};
+#     my %listitemdata_popularity     = %{$storage->get('listitemdata_popularity')};
+#     my %listitemdata_tags           = %{$storage->get('listitemdata_tags')};
+#     my %listitemdata_litlists       = %{$storage->get('listitemdata_litlists')};
+#     my %listitemdata_enriched_years = %{$storage->get('listitemdata_enriched_years')};
+#     my %enrichmntdata               = %{$storage->get('enrichmntdata')};
+#     my %indexed_person              = %{$storage->get('indexed_person')};
+#     my %indexed_corporatebody       = %{$storage->get('indexed_corporatebody')};
+#     my %indexed_subject             = %{$storage->get('indexed_subject')};
+#     my %indexed_classification      = %{$storage->get('indexed_classification')};
+#     my %indexed_holding             = %{$storage->get('indexed_holding')};
 
     my $inverted_ref  = $self->{conv_config}{inverted_title};
     my $blacklist_ref = $self->{conv_config}{blacklist_title};
     
     my $record_ref;
-    
-    eval {
-        $record_ref = decode_json $json;
-    };
-    
-    if ($@){
-        $logger->error("Skipping record: $@");
-        return;
+
+    if ($json){
+        eval {
+            $record_ref = decode_json $json;
+        };
+        
+        if ($@){
+            $logger->error("Skipping record: $@");
+            return;
+        }
+    }
+    elsif ($record){
+        eval {
+            $record_ref = {
+                id     => $record->get_id,
+                fields => $record->get_fields,
+            };
+        };
+        
+        if ($@){
+            $logger->error("Skipping record: $@");
+            return;
+        }        
     }
 
     $logger->debug("JSON decoded");
@@ -199,23 +234,23 @@ sub process {
 
     # Popularitaet, Tags und Literaturlisten verarbeiten fuer Index-Data
     {
-        if (exists $listitemdata_popularity{$id}) {
+        if (exists $self->{storage}{listitemdata_popularity}{$id}) {
             if (exists $self->{conv_config}{'listitemcat'}{popularity}) {
-                $index_doc->set_data('popularity',$listitemdata_popularity{$id});
+                $index_doc->set_data('popularity',$self->{storage}{listitemdata_popularity}{$id});
             }
             
-            $index_doc->add_index('popularity',1, $listitemdata_popularity{$id});
+            $index_doc->add_index('popularity',1, $self->{storage}{listitemdata_popularity}{$id});
         }
         
-        if (exists $listitemdata_tags{$id}) {
+        if (exists $self->{storage}{listitemdata_tags}{$id}) {
             if (exists $self->{conv_config}{'listitemcat'}{tags}) {
-                $index_doc->set_data('tag',$listitemdata_tags{$id});
+                $index_doc->set_data('tag',$self->{storage}{listitemdata_tags}{$id});
             }
         }
         
-        if (exists $listitemdata_litlists{$id}) {
+        if (exists $self->{storage}{listitemdata_litlists}{$id}) {
             if (exists $self->{conv_config}{'listitemcat'}{litlists}) {
-                $index_doc->set_data('litlist',$listitemdata_litlists{$id});
+                $index_doc->set_data('litlist',$self->{storage}{listitemdata_litlists}{$id});
             }
         }        
     }
@@ -275,7 +310,7 @@ sub process {
             
             if (@{$enrichmnt_isbns_ref}) {
                 foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
-                    my $lookup_ref = $enrichmntdata{$isbn13};
+                    my $lookup_ref = $self->{storage}{enrichmntdata}{$isbn13};
                     $logger->debug("Testing ISBN $isbn13 for field $field");
                     foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
                         $logger->debug("Enrich field $field for ISBN $isbn13 with $enrich_content");
@@ -285,7 +320,7 @@ sub process {
             }
             elsif (@{$enrichmnt_issns_ref}) {
                 foreach my $issn (@{$enrichmnt_issns_ref}) {
-                    my $lookup_ref = $enrichmntdata{$issn};
+                    my $lookup_ref = $self->{storage}{enrichmntdata}{$issn};
                     
                     foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
                         $logger->debug("Enrich field $field for ISSN $issn with $enrich_content");
@@ -509,8 +544,8 @@ sub process {
     if (defined $fields_ref->{'0425'}) {        
         my $array_ref=[];
 
-        if (exists $listitemdata_enriched_years{$id}){
-            $array_ref = $listitemdata_enriched_years{$id};
+        if (exists $self->{storage}{listitemdata_enriched_years}{$id}){
+            $array_ref = $self->{storage}{listitemdata_enriched_years}{$id};
         }
 
         foreach my $item_ref (@{$fields_ref->{'0425'}}){
@@ -532,7 +567,7 @@ sub process {
             }
         }
         
-        $listitemdata_enriched_years{$id}=$array_ref;
+        $self->{storage}{listitemdata_enriched_years}{$id}=$array_ref;
     }
 
     # Verknuepfungskategorien bearbeiten    
@@ -554,15 +589,15 @@ sub process {
             
             push @superids, $target_titleid;
             
-            if (defined $listitemdata_superid{$target_titleid} && $source_titleid && $target_titleid){
+            if (defined $self->{storage}{listitemdata_superid}{$target_titleid} && $source_titleid && $target_titleid){
                 $supplement = cleanup_content($supplement);
                 push @{$self->{_columns_title_title}}, [$self->{title_title_serialid},$field,$source_titleid,$target_titleid,$supplement];
                 $self->{title_title_serialid}++;
             }
 
 
-            if (defined $listitemdata_superid{$target_titleid} && %{$listitemdata_superid{$target_titleid}}){
-                # my $title_super = encode_json($listitemdata_superid{$target_titleid});
+            if (defined $self->{storage}{listitemdata_superid}{$target_titleid} && %{$self->{storage}{listitemdata_superid}{$target_titleid}}){
+                # my $title_super = encode_json($self->{storage}{listitemdata_superid}{$target_titleid});
 
                 # $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
                 # $title_super = cleanup_content($title_super);
@@ -571,7 +606,7 @@ sub process {
                 push @{$fields_ref->{'5005'}}, {
                     mult      => $mult,
                     subfield  => '',
-                    content   => $listitemdata_superid{$target_titleid},
+                    content   => $self->{storage}{listitemdata_superid}{$target_titleid},
                   #  content   => $title_super,
                 };
             }
@@ -597,7 +632,7 @@ sub process {
                 
                 next unless $personid;
                 
-                if (defined $listitemdata_person{$personid}){
+                if (defined $self->{storage}{listitemdata_person}{$personid}){
                     $supplement = cleanup_content($supplement);
                     push @{$self->{_columns_title_person}}, [$self->{title_person_serialid},$field,$id,$personid,$supplement];
                     $self->{title_person_serialid}++;
@@ -605,8 +640,8 @@ sub process {
                 
                 # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
                 # auch wirklich existiert -> schlechte Katalogisate
-                if (exists $listitemdata_person{$personid}) {
-                    my $mainentry = $listitemdata_person{$personid};
+                if (exists $self->{storage}{listitemdata_person}{$personid}) {
+                    my $mainentry = $self->{storage}{listitemdata_person}{$personid};
                     
                     # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
@@ -658,7 +693,7 @@ sub process {
                 
                 next unless $corporatebodyid;
                 
-                if (defined $listitemdata_corporatebody{$corporatebodyid}){
+                if (defined $self->{storage}{listitemdata_corporatebody}{$corporatebodyid}){
                     $supplement = cleanup_content($supplement);
                     push @{$self->{_columns_title_corporatebody}}, [$self->{title_corporatebody_serialid},$field,$id,$corporatebodyid,$supplement];
                     $self->{title_corporatebody_serialid}++;
@@ -666,8 +701,8 @@ sub process {
                 
                 # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
                 # auch wirklich existiert -> schlechte Katalogisate
-                if (exists $listitemdata_corporatebody{$corporatebodyid}) {                        
-                    my $mainentry = $listitemdata_corporatebody{$corporatebodyid};
+                if (exists $self->{storage}{listitemdata_corporatebody}{$corporatebodyid}) {                        
+                    my $mainentry = $self->{storage}{listitemdata_corporatebody}{$corporatebodyid};
                     
 
                     # Um Ansetzungsform erweitern
@@ -720,15 +755,15 @@ sub process {
                 
                 next unless $classificationid;
                 
-                if (defined $listitemdata_classification{$classificationid}){
+                if (defined $self->{storage}{listitemdata_classification}{$classificationid}){
                     push @{$self->{_columns_title_classification}}, [$self->{title_classification_serialid},$field,$id,$classificationid,$supplement];
                     $self->{title_classification_serialid}++;
                 }
                 
                 # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
                 # auch wirklich existiert -> schlechte Katalogisate
-                if (exists $listitemdata_classification{$classificationid}) {
-                    my $mainentry = $listitemdata_classification{$classificationid};
+                if (exists $self->{storage}{listitemdata_classification}{$classificationid}) {
+                    my $mainentry = $self->{storage}{listitemdata_classification}{$classificationid};
                     
                     # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
@@ -764,7 +799,7 @@ sub process {
                 
                 next unless $subjectid;
                 
-                if (defined $listitemdata_subject{$subjectid}){
+                if (defined $self->{storage}{listitemdata_subject}{$subjectid}){
                     $supplement = cleanup_content($supplement);
                     push @{$self->{_columns_title_subject}}, [$self->{title_subject_serialid},$field,$id,$subjectid,$supplement];
                     $self->{title_subject_serialid}++;
@@ -772,8 +807,8 @@ sub process {
                 
                 # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
                 # auch wirklich existiert -> schlechte Katalogisate
-                if (exists $listitemdata_subject{$subjectid}) {
-                    my $mainentry = $listitemdata_subject{$subjectid};
+                if (exists $self->{storage}{listitemdata_subject}{$subjectid}) {
+                    my $mainentry = $self->{storage}{listitemdata_subject}{$subjectid};
                     
                     # Um Ansetzungsform erweitern
                     $item_ref->{content} = $mainentry;
@@ -801,8 +836,8 @@ sub process {
 
     if ($self->{addsuperpers}) {
         foreach my $superid (@superids) {
-            if ($superid && exists $listitemdata_superid{$superid}) {
-                my $super_ref = $listitemdata_superid{$superid};
+            if ($superid && exists $self->{storage}{listitemdata_superid}{$superid}) {
+                my $super_ref = $self->{storage}{listitemdata_superid}{$superid};
                 foreach my $field ('0100','0101','0102','0103','1800') {
                     if (defined $super_ref->{fields}{$field}) {
                         # Anreichern fuer Facetten
@@ -908,9 +943,9 @@ sub process {
                 foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
                     my $weight = $inverted_ref->{$field}->{index}{$searchfield};
                     if    ($field eq "tag"){
-                        if (exists $listitemdata_tags{$id}) {
+                        if (exists $self->{storage}{listitemdata_tags}{$id}) {
                             
-                            foreach my $tag_ref (@{$listitemdata_tags{$id}}) {
+                            foreach my $tag_ref (@{$self->{storage}{listitemdata_tags}{$id}}) {
                                 $index_doc->add_index($searchfield,$weight, ['tag',$tag_ref->{tag}]);
                             }
                             
@@ -920,8 +955,8 @@ sub process {
                         
                     }
                     elsif ($field eq "litlist"){
-                        if (exists $listitemdata_litlists{$id}) {
-                            foreach my $litlist_ref (@{$listitemdata_litlists{$id}}) {
+                        if (exists $self->{storage}{listitemdata_litlists}{$id}) {
+                            foreach my $litlist_ref (@{$self->{storage}{listitemdata_litlists}{$id}}) {
                                 $index_doc->add_index($searchfield,$weight, ['litlist',$litlist_ref->{title}]);
                             }
                             
@@ -969,15 +1004,15 @@ sub process {
             if (exists $inverted_ref->{$field}->{facet}){
                 foreach my $searchfield (keys %{$inverted_ref->{$field}->{facet}}) {
                     if ($field eq "tag"){
-                        if (exists $listitemdata_tags{$id}) {
-                            foreach my $tag_ref (@{$listitemdata_tags{$id}}) {
+                        if (exists $self->{storage}{listitemdata_tags}{$id}) {
+                            foreach my $tag_ref (@{$self->{storage}{listitemdata_tags}{$id}}) {
                                 $index_doc->add_facet("facet_$searchfield", $tag_ref->{tag});
                             }
                         }
                     }
                     elsif ($field eq "litlist"){
-                        if (exists $listitemdata_litlists{$id}) {
-                            foreach my $litlist_ref (@{$listitemdata_tags{$id}}) {
+                        if (exists $self->{storage}{listitemdata_litlists}{$id}) {
+                            foreach my $litlist_ref (@{$self->{storage}{listitemdata_tags}{$id}}) {
                                 $index_doc->add_facet("facet_$searchfield", $litlist_ref->{title});
                             }
                         }
@@ -1005,8 +1040,8 @@ sub process {
             # ID-Merken fuer Recherche ueber Suchmaschine
             $index_doc->add_index('personid',1, ['id',$item]);
             
-            if (exists $indexed_person{$item}) {
-                my $thisperson = $indexed_person{$item};
+            if (exists $self->{storage}{indexed_person}{$item}) {
+                my $thisperson = $self->{storage}{indexed_person}{$item};
                 foreach my $searchfield (keys %{$thisperson}) {		    
                     foreach my $weight (keys %{$thisperson->{$searchfield}}) {                        
                         $index_doc->add_index_array($searchfield,$weight, $thisperson->{$searchfield}{$weight}); # value is arrayref
@@ -1021,8 +1056,8 @@ sub process {
             # ID-Merken fuer Recherche ueber Suchmaschine
             $index_doc->add_index('corporatebodyid',1, ['id',$item]);
             
-            if (exists $indexed_corporatebody{$item}) {
-                my $thiscorporatebody = $indexed_corporatebody{$item};
+            if (exists $self->{storage}{indexed_corporatebody}{$item}) {
+                my $thiscorporatebody = $self->{storage}{indexed_corporatebody}{$item};
                 
                 foreach my $searchfield (keys %{$thiscorporatebody}) {
                     foreach my $weight (keys %{$thiscorporatebody->{$searchfield}}) {
@@ -1036,8 +1071,8 @@ sub process {
             # ID-Merken fuer Recherche ueber Suchmaschine
             $index_doc->add_index('subjectid',1, ['id',$item]);
             
-            if (exists $indexed_subject{$item}) {
-                my $thissubject = $indexed_subject{$item};
+            if (exists $self->{storage}{indexed_subject}{$item}) {
+                my $thissubject = $self->{storage}{indexed_subject}{$item};
                 
                 foreach my $searchfield (keys %{$thissubject}) {
                     foreach my $weight (keys %{$thissubject->{$searchfield}}) {
@@ -1051,8 +1086,8 @@ sub process {
             # ID-Merken fuer Recherche ueber Suchmaschine
             $index_doc->add_index('classificationid',1, ['id',$item]);
             
-            if (exists $indexed_classification{$item}) {
-                my $thisclassification = $indexed_classification{$item};
+            if (exists $self->{storage}{indexed_classification}{$item}) {
+                my $thisclassification = $self->{storage}{indexed_classification}{$item};
                 
                 foreach my $searchfield (keys %{$thisclassification}) {
                     foreach my $weight (keys %{$thisclassification->{$searchfield}}) {
@@ -1064,8 +1099,8 @@ sub process {
         
     }
     
-    if (exists $indexed_holding{$id}) {
-        my $thisholding = $indexed_holding{$id};
+    if (exists $self->{storage}{indexed_holding}{$id}) {
+        my $thisholding = $self->{storage}{indexed_holding}{$id};
         
         foreach my $searchfield (keys %{$thisholding}) {
             foreach my $weight (keys %{$thisholding->{$searchfield}}) {
@@ -1076,8 +1111,8 @@ sub process {
     
     # Automatische Anreicherung mit Bestands- oder Jahresverlaeufen
     {
-        if (exists $listitemdata_enriched_years{$id}) {
-            foreach my $year (@{$listitemdata_enriched_years{$id}}) {
+        if (exists $self->{storage}{listitemdata_enriched_years}{$id}) {
+            foreach my $year (@{$self->{storage}{listitemdata_enriched_years}{$id}}) {
                 $logger->debug("Enriching year $year to Title-ID $id");
                 $index_doc->add_index('year',1, ['T0425',$year]);
                 $index_doc->add_index('freesearch',1, ['T0425',$year]);
@@ -1194,8 +1229,8 @@ sub process {
         # Exemplardaten-Hash zu listitem-Hash hinzufuegen
         
         # Exemplardaten-Hash zu listitem-Hash hinzufuegen
-        if (exists $listitemdata_holding{$id}){
-            my $thisholdings = $listitemdata_holding{$id};
+        if (exists $self->{storage}{listitemdata_holding}{$id}){
+            my $thisholdings = $self->{storage}{listitemdata_holding}{$id};
             foreach my $content (@{$thisholdings}) {
                 $index_doc->add_data('X0014', {
                     content => $content,
@@ -1237,7 +1272,7 @@ sub process {
     }
     
     # Primaeren Normdatensatz erstellen und schreiben
-    my $popularity = (exists $listitemdata_popularity{$id})?$listitemdata_popularity{$id}:0;
+    my $popularity = (exists $self->{storage}{listitemdata_popularity}{$id})?$self->{storage}{listitemdata_popularity}{$id}:0;
     
     push @{$self->{_columns_title}}, [$id,$create_tstamp,$update_tstamp,$titlecache,$popularity];
     
@@ -1268,7 +1303,7 @@ sub process {
     
     # Index-Document speichern;
     
-    $self->set_indexer_document($index_doc);
+    $self->set_index_document($index_doc);
 
     return $self;
 }
@@ -1327,18 +1362,28 @@ sub set_record {
 sub get_record {
 }
 
-sub get_indexer_document {
+sub get_index_document {
     my ($self)=@_;
 
     return (defined $self->{_index_doc})? $self->{_index_doc}:undef;
 }
 
-sub set_indexer_document {
+sub set_index_document {
     my ($self,$index_doc)=@_;
 
     $self->{_index_doc} = $index_doc;
 
     return $self;
+}
+
+sub cleanup_content {
+    my $content = shift;
+
+    # Make PostgreSQL Happy    
+    $content =~ s/\\/\\\\/g;
+    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
+            
+    return $content;
 }
 
 1;

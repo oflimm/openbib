@@ -454,7 +454,11 @@ sub search {
 }
 
 sub browse {
-    my ($self) = @_;
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults search parameters
+    my $options_ref          = exists $arg_ref->{options}
+        ? $arg_ref->{options}        : {};
 
     # Set defaults search parameters
 #    my $serien            = exists $arg_ref->{serien}
@@ -467,15 +471,20 @@ sub browse {
     my $queryoptions = $self->get_queryoptions;
 
     # Used Parameters
-    my $sorttype          = $queryoptions->get_option('srt');
-    my $sortorder         = $queryoptions->get_option('srto');
-    my $defaultop         = $queryoptions->get_option('dop');
-    my $facets            = $queryoptions->get_option('facets');
+    my $sorttype          = (defined $self->{_options}{srt})?$self->{_options}{srt}:$queryoptions->get_option('srt');
+    my $sortorder         = (defined $self->{_options}{srto})?$self->{_options}{srto}:$queryoptions->get_option('srto');
+    my $defaultop         = (defined $self->{_options}{dop})?$self->{_options}{dop}:$queryoptions->get_option('dop');
+    my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
     my $gen_facets        = ($facets eq "none")?0:1;
 
+    if ($logger->is_debug){
+        $logger->debug("Options: ".YAML::Dump($options_ref));
+    }
+    
     # Pagination parameters
-    my $page              = $queryoptions->get_option('page');
-    my $num               = $queryoptions->get_option('num');
+    my $page              = (defined $self->{_options}{page})?$self->{_options}{page}:$queryoptions->get_option('page');
+    my $num               = (defined $self->{_options}{num})?$self->{_options}{num}:$queryoptions->get_option('num');
+    my $collapse          = (defined $self->{_options}{clp})?$self->{_options}{clp}:$queryoptions->get_option('clp');
     
     my ($atime,$btime,$timeall);
   

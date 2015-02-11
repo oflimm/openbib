@@ -228,13 +228,19 @@ sub show_collection {
     my $sb        = $query->param('sb')        || $config->{local_search_backend};
 
 
+    my $search_args_ref = {};
+    $search_args_ref->{options} = OpenBib::Common::Util::query2hashref($query);
+    $search_args_ref->{database} = $database if (defined $database);
+    $search_args_ref->{sb} = $sb if (defined $sb);
+    $search_args_ref->{queryoptions} = $queryoptions if (defined $queryoptions);
+    
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
     # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
     # und OpenBib::QueryOptions - alle weiteren benoetigten Parameter individuell
     # heraussuchen.
     # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
     
-    my $searcher = OpenBib::Search::Factory->create_searcher({database => $database, sb => $sb });
+    my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
 
     # Browsing starten
     $searcher->browse;

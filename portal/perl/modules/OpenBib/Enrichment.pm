@@ -504,7 +504,7 @@ sub connectDB {
     if ($self->{'enrichmntdbsingleton'}){
         eval {        
 #            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
-            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1, 'pg_server_prepare' => 0}) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},$config->{enrichmntdboptions}) or $logger->error_die($DBI::errstr);
             
         };
         
@@ -515,7 +515,7 @@ sub connectDB {
     else {
         eval {
             # UTF8: {'pg_enable_utf8'    => 1}
-            $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1, 'pg_server_prepare' => 0 }) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},$config->{enrichmntdboptions}) or $logger->error_die($DBI::errstr);
             # $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
         };
         

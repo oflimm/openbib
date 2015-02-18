@@ -44,6 +44,7 @@ use LWP;
 use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
+use OpenBib::Config::File;
 use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
@@ -69,13 +70,16 @@ $chars_to_replace = qr/$chars_to_replace/;
 sub new {
     my $class = shift;
 
-    $YAML::Syck::ImplicitTyping  = 1;
-    $YAML::Syck::ImplicitUnicode = 1;
-    
+    my $config = OpenBib::Config::File->instance;
+
     # Ininitalisierung mit Config-Parametern
-    my $self = YAML::Syck::LoadFile("/opt/openbib/conf/portal.yml");
+    my $self = {};
 
     bless ($self, $class);
+
+    foreach my $key (keys %$config){
+        $self->{$key} = $config->{$key};
+    }
 
     $self->connectDB();
     $self->connectMemcached();
@@ -89,13 +93,16 @@ sub _new_instance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $YAML::Syck::ImplicitTyping  = 1;
-    $YAML::Syck::ImplicitUnicode = 1;
+    my $config = OpenBib::Config::File->instance;
 
     # Ininitalisierung mit Config-Parametern
-    my $self = YAML::Syck::LoadFile("/opt/openbib/conf/portal.yml");
+    my $self = {};
 
     bless ($self, $class);
+
+    foreach my $key (keys %$config){
+        $self->{$key} = $config->{$key};
+    }
 
     $self->connectDB();
     $self->connectMemcached();
@@ -2074,8 +2081,8 @@ sub connectDB {
     # UTF8: {'pg_enable_utf8'    => 1}
     if ($self->{'systemdbsingleton'}){
         eval {        
-            $self->{schema} = OpenBib::Schema::System::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},$self->{systemdboptions}) or $logger->error_die($DBI::errstr);
-            
+            my $schema = OpenBib::Schema::System::Singleton->instance;
+            $self->{schema} = $schema->get_schema;
         };
         
         if ($@){

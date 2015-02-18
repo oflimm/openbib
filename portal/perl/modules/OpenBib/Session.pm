@@ -43,6 +43,7 @@ use Storable;
 use YAML::Syck;
 
 use OpenBib::Config;
+use OpenBib::Config::File;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
@@ -1821,12 +1822,13 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config::File->instance;
 
-    if ($self->{'systemdbsingleton'}){
+    # UTF8: {'pg_enable_utf8'    => 1}
+    if ($config->{'systemdbsingleton'}){
         eval {        
-            $self->{schema} = OpenBib::Schema::System::Singleton->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
-            
+            my $schema = OpenBib::Schema::System::Singleton->instance;
+            $self->{schema} = $schema->get_schema;
         };
         
         if ($@){
@@ -1843,6 +1845,7 @@ sub connectDB {
             $logger->fatal("Unable to connect to database $config->{systemdbname}");
         }
     }
+        
     
     return;
 }

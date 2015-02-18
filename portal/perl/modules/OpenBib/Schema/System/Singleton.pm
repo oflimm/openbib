@@ -4,7 +4,7 @@
 #
 #  Singleton fuer den Schema-Zugriff
 #
-#  Dieses File ist (C) 2008-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Idee von brian d foy 'The singleton design pattern', The Perl Review
 #
@@ -34,78 +34,40 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(OpenBib::Schema::System);
+use base qw(Apache::Singleton::Process);
+
+use OpenBib::Config::File;
 use OpenBib::Schema::System;
 use Log::Log4perl qw(get_logger :levels);
-use YAML;
 
-my %schema_pool = ();
-
-sub connect {
+sub _new_instance {
     my $class = shift;
     my @args  = @_;
 
-    # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $args_key = 'schema_system_singleton_';
-    $args_key   .=unpack "H*",join("_",@args);
+    my $self = {};
 
-    $logger->debug("Args-Key: $args_key");
+    bless ($self, $class);
+
+    # Ininitalisierung mit Config-Parametern
+    my $config = OpenBib::Config::File->instance;
+
+    eval {
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) ;
+    };
+
+    if ($@){
+        $logger->error("Error connecting to System-DB");
+    }
     
-    return $schema_pool{$args_key} if (defined $schema_pool{$args_key});
-    
-    $schema_pool{$args_key} = OpenBib::Schema::System->connect(@args);
+    return $self;
+}
 
-    $logger->debug("Neues schema erzeugt");
+sub get_schema {
+    my $self = shift;
 
-    return $schema_pool{$args_key};
+    return $self->{schema};
 }
 
 1;
-__END__
-
-=head1 NAME
-
-OpenBib::Schema::DBI - Singleton zum Spooling von DB-Handles
-
-=head1 DESCRIPTION
-
-Dieses Singleton kann durch Method-Overriding der connect-Methode des
-DBI-Objektes seine DB-Handles spoolen. Dies wird aus Effizienztgründen
-für die Systemdatenbanken config, session, enrichmnt, statistics und
-user verwendet - nicht jedoch für die Vielzahl an Katalogdatenbanken.
-
-=head1 SYNOPSIS
-
- use OpenBib::Schema::DBI;
-
- my $schema = OpenBib::Schema::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};
-                 host=$config->{userschemaost};port=$config->{userdbport}",
-                 $config->{userdbuser}, $config->{userdbpasswd})
-           or $logger->error($DBI::errstr);
-
-=head1 METHODS
-
-=over 4
-
-=item connect
-
-Überschriebene Methode des DBI-Objektes. Entsprechend der übergebenen
-Verbindungsparameter werden die Verbindungen in einer
-Klassen-Variablen $schema_pool gespoolt.
-
-=back
-
-=head1 EXPORT
-
-Es werden keine Funktionen exportiert. Alle Funktionen muessen
-vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
-Verzicht auf den Exporter weniger Speicherverbrauch und mehr
-Performance auf Kosten von etwas mehr Schreibarbeit.
-
-=head1 AUTHOR
-
-Oliver Flimm <flimm@openbib.org>
-
-=cut

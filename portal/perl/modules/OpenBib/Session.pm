@@ -1838,7 +1838,6 @@ sub connectDB {
     else {
         eval {        
             $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
-            
         };
         
         if ($@){
@@ -1847,6 +1846,33 @@ sub connectDB {
     }
         
     
+    return;
+}
+
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
+
     return;
 }
 
@@ -1868,25 +1894,6 @@ sub connectMemcached {
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");
-    }
-
-    return;
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    if (defined $self->{schema}){
-        eval {
-            $self->{schema}->storage->dbh->disconnect;
-        };
-
-        if ($@){
-            $logger->error($@);
-        }
     }
 
     return;

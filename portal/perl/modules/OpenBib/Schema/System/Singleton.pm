@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton::Process);
+use base qw(Apache::Singleton);
 
 use OpenBib::Config::File;
 use OpenBib::Schema::System;
@@ -69,5 +69,33 @@ sub get_schema {
 
     return $self->{schema};
 }
+
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
+
+    return;
+}
+
 
 1;

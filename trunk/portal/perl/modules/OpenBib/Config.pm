@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Apache::Singleton::Process);
+use base qw(Apache::Singleton);
 
 use Apache2::Reload;
 use Apache2::Const -compile => qw(:common);
@@ -2104,6 +2104,33 @@ sub connectDB {
     return;
 }
 
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
+
+    return;
+}
+
 sub connectMemcached {
     my $self = shift;
 
@@ -3811,17 +3838,6 @@ sub cleanup_pg_content {
     $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
             
     return $content;
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    if (defined $self->{schema}){
-        $self->{schema}->storage->dbh->disconnect;
-    }
-
-    
-    return;
 }
 
 

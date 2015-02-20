@@ -54,7 +54,7 @@ sub _new_instance {
     my $config = OpenBib::Config::File->instance;
 
     eval {
-        $self->{schema} = OpenBib::Schema::Statistics->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1}) ;
+        $self->{schema} = OpenBib::Schema::Statistics->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},$config->{statisticsdboptions}) ;
     };
 
     if ($@){

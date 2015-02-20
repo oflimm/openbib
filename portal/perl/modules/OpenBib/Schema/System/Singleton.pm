@@ -54,7 +54,7 @@ sub _new_instance {
     my $config = OpenBib::Config::File->instance;
 
     eval {
-        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},{'pg_enable_utf8'    => 1}) ;
+        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) ;
     };
 
     if ($@){

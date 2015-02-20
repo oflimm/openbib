@@ -500,21 +500,47 @@ sub get_common_holdings {
 
 sub connectDB {
     my $self = shift;
-
+    my $arg_ref = shift;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # UTF8: {'pg_enable_utf8'    => 1}
-    eval {
-        my $schema = OpenBib::Schema::Enrichment::Singleton->instance;
-        $self->{schema} = $schema->get_schema;
-    };
-    
+    my $config = OpenBib::Config->instance;
+
+    if (defined $arg_ref->{enrichmntdbname} && $arg_ref->{enrichmntdbname}){
+        $config->{enrichmntdbname} = $arg_ref->{enrichmntdbname};
+    }
+
+    if ($self->{'enrichmntdbsingleton'}){
+        eval {        
+#            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},$config->{enrichmntdboptions}) or $logger->error_die($DBI::errstr);
+            
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $self->{enrichmntdbname}");
+        }
+    }
+    else {
+        eval {
+            # UTF8: {'pg_enable_utf8'    => 1}
+            $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},$config->{enrichmntdboptions}) or $logger->error_die($DBI::errstr);
+            # $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect schema to database $config->{enrichmntdbname}: DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}");
+        }
+
+    }
+
     if ($@){
-        $logger->fatal("Unable to connect to database $self->{enrichmntdbname}");
+        $logger->fatal("Unable to connect schema to database $config->{enrichmntdbname}: DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}");
     }
 
     return;
+
 }
 
 sub DESTROY {

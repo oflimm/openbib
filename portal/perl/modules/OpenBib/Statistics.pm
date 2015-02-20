@@ -1166,21 +1166,55 @@ sub get_sequencestat_of_event {
 
 sub connectDB {
     my $self = shift;
-    
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    eval {
-        # UTF8: {'pg_enable_utf8'    => 1 |
-        $self->{schema} = OpenBib::Schema::Statistics::Singleton->instance->get_schema;
-    };
+    my $config = OpenBib::Config::File->instance;
 
-    if ($@){
-        $logger->fatal("Unable to connect statistics schema");
+    # UTF8: {'pg_enable_utf8'    => 1}
+    if ($config->{'statisticsdbsingleton'}){
+        eval {        
+            my $schema = OpenBib::Schema::Statistics::Singleton->instance;
+            $self->{schema} = $schema->get_schema;
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $config->{statisticsdbname}");
+        }
+    }
+    else {
+        eval {        
+            $self->{schema} = OpenBib::Schema::Statistics->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},$config->{statisticsdboptions}) or $logger->error_die($DBI::errstr);
+            
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $config->{statisticsdbname}");
+        }
+    }
+        
+    
+    return;
+}
+    
+sub DESTROY {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
     }
 
     return;
-
 }
 
 1;

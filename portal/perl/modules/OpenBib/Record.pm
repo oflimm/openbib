@@ -77,12 +77,13 @@ sub connectEnrichmentDB {
 
     if ($self->{'enrichmntdbsingleton'}){
         eval {        
-            $self->{enrich_schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd},$config->{enrichmntdboptions}) or $logger->error_die($DBI::errstr);
-            # $self->{enrich_schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);            
+            #            $self->{enrich_schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd}) or $logger->error_die($DBI::errstr);
+            $self->{enrich_schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},$config->{enrichmntdboptions}) or $logger->error_die($DBI::errstr);
+            
         };
         
         if ($@){
-            $logger->fatal("Unable to connect to database $self->{enrichmntdbname}");
+            $logger->fatal("Unable to connect to database $config->{enrichmntdbname}");
         }
     }
     else {
@@ -96,10 +97,6 @@ sub connectEnrichmentDB {
             $logger->fatal("Unable to connect schema to database $config->{enrichmntdbname}: DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}");
         }
 
-    }
-    
-    if ($@){
-        $logger->fatal("Unable to connect schema to database $config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}, $config->{enrichmntdbuser}");
     }
     
     return;
@@ -344,5 +341,34 @@ sub set_fields {
 
 
 #     }
+
+sub DESTROY {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    if (defined $self->{enrich_schema}){
+        eval {
+            $self->{enrich_schema}->storage->dbh->disconnect;
+        };
+        
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    return;
+}
 
 1

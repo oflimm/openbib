@@ -2081,14 +2081,54 @@ sub connectDB {
     my $logger = get_logger();
 
     # UTF8: {'pg_enable_utf8'    => 1}
-    eval {
-        my $schema = OpenBib::Schema::System::Singleton->instance;
-        $self->{schema} = $schema->get_schema;
-    };
-    
-    if ($@){
-        $logger->fatal("Unable to connect to database $self->{systemdbname}");
+    if ($self->{'systemdbsingleton'}){
+        eval {        
+            my $schema = OpenBib::Schema::System::Singleton->instance;
+            $self->{schema} = $schema->get_schema;
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $self->{systemdbname}");
+        }
     }
+    else {
+        eval {        
+            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},$self->{systemdboptions}) or $logger->error_die($DBI::errstr);
+            
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $self->{systemdbname}");
+        }
+    }
+        
+    
+    return;
+}
+
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
 
     return;
 }
@@ -3822,33 +3862,6 @@ sub cleanup_pg_content {
     $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
             
     return $content;
-}
-
-sub disconnect_db_handle {
-    my $self = shift;
-
-    if (defined $self->{schema}){
-        $self->{schema}->storage->dbh->disconnect;
-    }
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    if (defined $self->{schema}){
-        eval {
-            $self->{schema}->storage->dbh->disconnect;
-        };
-
-        if ($@){
-            $logger->error($@);
-        }
-    }
-
-    return;
 }
 
 1;

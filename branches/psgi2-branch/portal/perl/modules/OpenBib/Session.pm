@@ -41,6 +41,7 @@ use Storable;
 use YAML::Syck;
 
 use OpenBib::Config;
+use OpenBib::Config::File;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
@@ -1661,11 +1662,13 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config::File->instance;
 
-    if ($self->{'systemdbsingleton'}){
+    # UTF8: {'pg_enable_utf8'    => 1}
+    if ($config->{'systemdbsingleton'}){
         eval {        
-            $self->{schema} = OpenBib::Schema::System::Singleton->instance->get_schema;
+            my $schema = OpenBib::Schema::System::Singleton->instance;
+            $self->{schema} = $schema->get_schema;
         };
         
         if ($@){
@@ -1675,14 +1678,41 @@ sub connectDB {
     else {
         eval {        
             $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
-            
         };
         
         if ($@){
             $logger->fatal("Unable to connect to database $config->{systemdbname}");
         }
     }
+        
     
+    return;
+}
+
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
+
     return;
 }
 
@@ -1704,25 +1734,6 @@ sub connectMemcached {
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");
-    }
-
-    return;
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    if (defined $self->{schema}){
-        eval {
-            $self->{schema}->storage->dbh->disconnect;
-        };
-
-        if ($@){
-            $logger->error($@);
-        }
     }
 
     return;

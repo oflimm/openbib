@@ -42,6 +42,7 @@ use YAML::Syck;
 use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::File;
 use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
@@ -5669,12 +5670,13 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config::File->instance;
 
-    if ($self->{'systemdbsingleton'}){
+    # UTF8: {'pg_enable_utf8'    => 1}
+    if ($config->{'systemdbsingleton'}){
         eval {        
-            $self->{schema} = OpenBib::Schema::System::Singleton->instance->get_schema;
-            
+            my $schema = OpenBib::Schema::System::Singleton->instance;
+            $self->{schema} = $schema->get_schema;
         };
         
         if ($@){
@@ -5691,7 +5693,27 @@ sub connectDB {
             $logger->fatal("Unable to connect to database $config->{systemdbname}");
         }
     }
+        
     
+    return;
+}
+
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
     return;
 }
 
@@ -5721,18 +5743,7 @@ sub connectMemcached {
 sub DESTROY {
     my $self = shift;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    if (defined $self->{schema}){
-        eval {
-            $self->{schema}->storage->dbh->disconnect;
-        };
-
-        if ($@){
-            $logger->error($@);
-        }
-    }
+    $self->disconnectDB;
 
     return;
 }

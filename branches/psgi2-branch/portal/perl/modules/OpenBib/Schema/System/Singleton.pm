@@ -70,50 +70,38 @@ sub get_schema {
     return $self->{schema};
 }
 
+sub get_schema {
+    my $self = shift;
+
+    return $self->{schema};
+}
+
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
+
+    return;
+}
+
+
 1;
-__END__
-
-=head1 NAME
-
-OpenBib::Schema::DBI - Singleton zum Spooling von DB-Handles
-
-=head1 DESCRIPTION
-
-Dieses Singleton kann durch Method-Overriding der connect-Methode des
-DBI-Objektes seine DB-Handles spoolen. Dies wird aus Effizienztgründen
-für die Systemdatenbanken config, session, enrichmnt, statistics und
-user verwendet - nicht jedoch für die Vielzahl an Katalogdatenbanken.
-
-=head1 SYNOPSIS
-
- use OpenBib::Schema::DBI;
-
- my $schema = OpenBib::Schema::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};
-                 host=$config->{userschemaost};port=$config->{userdbport}",
-                 $config->{userdbuser}, $config->{userdbpasswd})
-           or $logger->error($DBI::errstr);
-
-=head1 METHODS
-
-=over 4
-
-=item connect
-
-Überschriebene Methode des DBI-Objektes. Entsprechend der übergebenen
-Verbindungsparameter werden die Verbindungen in einer
-Klassen-Variablen $schema_pool gespoolt.
-
-=back
-
-=head1 EXPORT
-
-Es werden keine Funktionen exportiert. Alle Funktionen muessen
-vollqualifiziert verwendet werden.  Bei mod_perl bedeutet dieser
-Verzicht auf den Exporter weniger Speicherverbrauch und mehr
-Performance auf Kosten von etwas mehr Schreibarbeit.
-
-=head1 AUTHOR
-
-Oliver Flimm <flimm@openbib.org>
-
-=cut

@@ -54,7 +54,7 @@ sub _new_instance {
     my $config = OpenBib::Config::File->instance;
 
     eval {
-        $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:Pg:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},{'pg_enable_utf8'    => 1}) ;
+        $self->{schema} = OpenBib::Schema::Enrichment->connect("DBI:Pg:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},$config->{enrichmntdboptions}) ;
     };
 
     if ($@){

@@ -715,6 +715,24 @@ convtab:
           'freesearch': 1
         facet:
           'mediatype': 1
+      '4710':         # Migriertes Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+      '4726':         # EUROP KatNr.
+        index:
+          'freesearch': 20
+      '4727':         # EUROP Laender Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+      '4728':         # EUROP Formales Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
       '5050':         # Bibkey
         index:
           'bkey': 1
@@ -1320,6 +1338,24 @@ convtab:
           'freesearch': 1
         facet:
           'mediatype': 1
+      '4710':         # Migriertes Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+      '4726':         # EUROP KatNr.
+        index:
+          'freesearch': 20
+      '4727':         # EUROP Laender Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+      '4728':         # EUROP Formales Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
       '5050':         # Bibkey
         index:
           'bkey': 1

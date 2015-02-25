@@ -178,7 +178,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
     if ($use_milid){
         my $field = $record->field('037');
 
-        if ($field->as_string('b') eq "MIL"){
+        if (defined $field && $field->as_string('b') eq "MIL"){
             my $titleid = $field->as_string('a');
             $titleid=~s/\//_/g;
 	    $titleid=~s/\\/_/g;

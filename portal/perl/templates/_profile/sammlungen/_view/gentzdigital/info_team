@@ -35,7 +35,7 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="#">Projekt</a></li>
-         <li><a href="#" class="lastitem">Team Gentz digtal</a></li>
+         <li><a href="#" class="lastitem">Team Gentz digital</a></li>
       </ul>
      </div>
    </div>

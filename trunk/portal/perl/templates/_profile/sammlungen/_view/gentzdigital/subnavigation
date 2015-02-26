@@ -26,25 +26,25 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/einleitung.html?l=[% lang %]">Einleitende Bemerkungen</a></li>
 [% END %]
-[% IF active_submenu == "sammlung" %]
-  <li class="active"><strong>Die Sammlung Herterich</strong></li>
-[% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Die Sammlung Herterich</a></li>
-[% END %]
-[% IF active_submenu == "vita" %]
-  <li class="active"><strong>Zur Vita des Friedrich von Gentz</strong></li>
-[% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/vita.html?l=[% lang %]">Zur Vita des Friedrich von Gentz</a></li>
-[% END %]
 [% IF active_submenu == "benutzung" %]
   <li class="active"><strong>Benutzungshinweise</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/benutzung.html?l=[% lang %]">Benutzungshinweise</a></li>
 [% END %]
 [% IF active_submenu == "quellen" %]
-  <li class="active"><strong>Quellen</strong></li>
+  <li class="active"><strong>Quellen und Literatur</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">Quellen</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">Quellen und Literatur</a></li>
+[% END %]
+[% IF active_submenu == "sammlung" %]
+  <li class="active"><strong>Sammlung Herterich</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Sammlung Herterich</a></li>
+[% END %]
+[% IF active_submenu == "vita" %]
+  <li class="active"><strong>Gentz-Vita</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/vita.html?l=[% lang %]">Gentz-Vita</a></li>
 [% END %]
 [% IF active_submenu == "literatur" %]
   <li class="active"><strong>Lektüreempfehlungen</strong></li>

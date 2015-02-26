@@ -35,7 +35,7 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="#">Einführung</a></li>
-         <li><a href="#" class="lastitem">Zur Vita des Friedrich von Gentz</a></li>
+         <li><a href="#" class="lastitem">Gentz-Vita</a></li>
       </ul>
      </div>
    </div>

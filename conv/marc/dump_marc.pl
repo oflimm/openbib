@@ -121,7 +121,7 @@ while (my $record = $batch->next()){
 
     my $idfield = $record->field('001');
 
-    print "ID: ",$idfield->as_string(),"\n";
+    print ":ID    : ",$idfield->as_string(),"\n";
 
     foreach my $field ($record->fields()){
         my $tag        = $field->tag();

@@ -37,9 +37,9 @@
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/vita.html?l=[% lang %]">Zur Vita des Friedrich von Gentz</a></li>
 [% END %]
 [% IF active_submenu == "benutzung" %]
-  <li class="active"><strong>Hinweise zur Benutzung</strong></li>
+  <li class="active"><strong>Benutzungshinweise</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/benutzung.html?l=[% lang %]">Hinweise zur Benutzung</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/benutzung.html?l=[% lang %]">Benutzungshinweise</a></li>
 [% END %]
 [% IF active_submenu == "quellen" %]
   <li class="active"><strong>Quellen</strong></li>

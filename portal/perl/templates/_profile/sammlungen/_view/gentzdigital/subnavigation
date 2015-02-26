@@ -63,6 +63,11 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]">Ansprechpartner</a></li>
 [% END %]
+[% IF active_submenu == "team" %]
+  <li class="active"><strong>Team Gentz digtal</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/team.html?l=[% lang %]">Team Gentz digtal</a></li>
+[% END %]
 </ul>
 </nav>
 [% END %]

@@ -102,6 +102,8 @@ sub new {
     $self->{_similar_records} = new OpenBib::RecordList::Title();
     $self->{_related_records} = new OpenBib::RecordList::Title();
 
+    $self->connectMemcached;
+    
     if (defined $database){
         $self->{database} = $database;
     }
@@ -168,9 +170,27 @@ sub load_full_record {
         return $self;
     }
 
+    my $memc_key = "record:title:full:$self->{database}:$self->{id}";
+
+    my $record;
+    
+    if ($self->{memc}){
+      $record = $self->{memc}->get($memc_key);
+      
+      $logger->debug("Got record from memcached");
+      
+      if ($config->{benchmark}) {
+          $btime=new Benchmark;
+          $timeall=timediff($btime,$atime);
+          $logger->info("Total time for is ".timestr($timeall));
+      }
+
+      return $record if ($record);
+    }
+    
     my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}});
     
-    my $record = $catalog->load_full_title_record({id => $id});
+    $record = $catalog->load_full_title_record({id => $id});
     
     if ($logger->is_debug){
         $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
@@ -184,7 +204,13 @@ sub load_full_record {
         $timeall=timediff($btime,$atime);
         $logger->info("Total time for is ".timestr($timeall));
     }
+
+    if ($self->{memc}){
+        $self->{memc}->set($memc_key,$self,$config->{memcached_expiration}{'record:title:full'});
+    }
     
+    $logger->debug("Fetch record from db and store in memcached");
+
     return $self;
 }
 
@@ -490,6 +516,27 @@ sub enrich_related_records {
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
+
+    my $memc_key = "record:title:enrich_related:$profilename:$viewname:$num:$self->{database}:$self->{id}";
+    
+    if ($self->{memc}){
+        my $related_recordlist = $self->{memc}->get($memc_key);
+                
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for is ".timestr($timeall));
+        }
+
+        if ($related_recordlist){
+            $logger->debug("Got recordlist from memcached");
+
+            $self->set_related_records($related_recordlist);
+
+            return $self;
+        }
+    }
+
     
     if (!exists $self->{enrich_schema}){
         $self->connectEnrichmentDB;
@@ -623,6 +670,10 @@ sub enrich_related_records {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles/Related Titles w/o load_brief_records ist ".timestr($timeall));
+        }
+
+        if ($self->{memc}){
+            $self->{memc}->set($memc_key,$related_recordlist,$config->{memcached_expiration}{'record:title:enrich_related'});
         }
         
         $self->set_related_records($related_recordlist);
@@ -794,6 +845,26 @@ sub enrich_similar_records {
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
+
+    my $memc_key = "record:title:enrich_similar:$profilename:$viewname:$self->{database}:$self->{id}";
+    
+    if ($self->{memc}){
+        my $similar_recordlist = $self->{memc}->get($memc_key);
+                
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for is ".timestr($timeall));
+        }
+
+        if ($similar_recordlist){
+            $logger->debug("Got recordlist from memcached");
+
+            $self->set_similar_records($similar_recordlist);
+
+            return $self;
+        }
+    }
     
     if (!exists $self->{enrich_schema}){
         $self->connectEnrichmentDB;
@@ -898,7 +969,11 @@ sub enrich_similar_records {
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles w/o load_brief_records ist ".timestr($timeall));
         }
-        
+
+        if ($self->{memc}){
+            $self->{memc}->set($memc_key,$similar_recordlist,$config->{memcached_expiration}{'record:title:enrich_similar'});
+        }
+
         $self->set_similar_records($similar_recordlist);
     }
         
@@ -929,6 +1004,26 @@ sub enrich_same_records {
         
     if ($config->{benchmark}) {
         $atime=new Benchmark;
+    }
+
+    my $memc_key = "record:title:enrich_same:$profilename:$viewname:$self->{database}:$self->{id}";
+    
+    if ($self->{memc}){
+        my $same_recordlist = $self->{memc}->get($memc_key);
+                
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for is ".timestr($timeall));
+        }
+
+        if ($same_recordlist){
+            $logger->debug("Got recordlist from memcached");
+
+            $self->set_same_records($same_recordlist);
+
+            return $self;
+        }
     }
     
     if (!exists $self->{enrich_schema}){
@@ -1029,6 +1124,10 @@ sub enrich_same_records {
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles w/o load_brief_records ist ".timestr($timeall));
         }
+
+        if ($self->{memc}){
+            $self->{memc}->set($memc_key,$same_recordlist,$config->{memcached_expiration}{'record:title:enrich_same'});
+        }
         
         $self->set_same_records($same_recordlist);
     }
@@ -1061,9 +1160,27 @@ sub load_circulation {
         $atime=new Benchmark;
     }
 
+    my $memc_key = "record:title:circulation:$self->{database}:$self->{id}";
+    
+    if ($self->{memc}){
+        my $circulation_ref = $self->{memc}->get($memc_key);
+                
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for is ".timestr($timeall));
+        }
+
+        if ($circulation_ref){
+            $logger->debug("Got circulation from memcached");
+
+            $self->set_circulation($circulation_ref);
+            return $self;
+        }
+    }
+
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-
     
     # Ausleihinformationen der Exemplare
     my $circulation_ref = [];
@@ -1131,10 +1248,17 @@ sub load_circulation {
                 $circulation_ref->[$i]{'Bibinfourl'} = $bibinfourl;
                 $circulation_ref->[$i]{'Ausleihurl'} = $circinfotable->{$self->{database}}{circurl};
             }
-        } else {
+        }
+        else {
             $circulation_ref=[];
         }
     }
+
+    if ($self->{memc}){
+        $self->{memc}->set($memc_key,$circulation_ref,$config->{memcached_expiration}{'record:title:circulation'});
+    }
+    
+    $logger->debug("Fetch circulation from db and store in memcached");
 
     $self->set_circulation($circulation_ref);
 

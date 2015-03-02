@@ -58,6 +58,11 @@ FOREACH category IN categories;
 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
+
+         IF content == 'Gentz';
+            wikipediaurl = "http://de.wikipedia.org/wiki/Friedrich_von_Gentz";
+         END ;
+
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;

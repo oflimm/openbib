@@ -1063,6 +1063,11 @@ msgstr "Alle Listen"
 msgid "Alle Münzen"
 msgstr "Alle Münzen"
 
+#: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:131
+#, fuzzy
+msgid "Alle Objekte"
+msgstr "Alle Fachgebiete"
+
 #: ../templates/tags_navigation:26
 msgid "Alle Tags"
 msgstr "Alle Tags"

@@ -443,6 +443,10 @@ msgstr ""
 msgid "Alle Münzen"
 msgstr ""
 
+#: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:131
+msgid "Alle Objekte"
+msgstr ""
+
 #: ../templates/tags_navigation:26
 msgid "Alle Tags"
 msgstr ""

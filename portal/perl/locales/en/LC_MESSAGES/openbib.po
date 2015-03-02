@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-02-03 15:28+0100\n"
+"PO-Revision-Date: 2015-03-02 10:58+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -4185,7 +4185,7 @@ msgstr "Simple search"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:33
 #: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:22
 msgid "Einführung"
-msgstr ""
+msgstr "Introduction"
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:122
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:122

@@ -137,6 +137,8 @@ msgstr "${category}"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:277
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:308
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/titles_record_html_categories:279
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/titles_record_html_categories:310
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:253
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:284
 #: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:279
@@ -372,7 +374,7 @@ msgstr "Add this title to a new literature list:"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:46
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:48
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:83
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:113
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:46
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:48
@@ -415,6 +417,8 @@ msgstr "Add this title to a new literature list:"
 #: ../templates/_profile/sammlungen/_view/umschlaege/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:48
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:41
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:21
@@ -822,6 +826,7 @@ msgstr "Send"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:24
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:24
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:24
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions:6
 #: ../templates/_view/richter/cartitems_html_actions:5
 #: ../templates/cartitems_html_actions:6
 #: ../templates/titles_record_html_actions:24
@@ -895,6 +900,7 @@ msgstr "Active"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:173
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:171
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:171
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:173
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:159
 #: ../templates/_profile/sammlungen/search_facet:171
 #: ../templates/authority_search_facet:186 ../templates/search_facet:171
@@ -947,6 +953,7 @@ msgstr "All public literature lists"
 
 #: ../templates/_database/einbaende/cartitems_html_short:23
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:23
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short:23
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:23
 #: ../templates/_view/richter/cartitems_html_short:23
 #: ../templates/cartitems_html_short:23
@@ -1179,6 +1186,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:23
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:23
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:23
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions:8
 #: ../templates/_view/richter/cartitems_html_actions:7
 #: ../templates/cartitems_html_actions:8
 #: ../templates/titles_record_html_actions:23
@@ -1293,6 +1301,7 @@ msgstr "Other editions"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:29
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:29
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:29
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions:12
 #: ../templates/_view/richter/cartitems_html_actions:11
 #: ../templates/_view/richter/users_litlists_record_edit:55
 #: ../templates/cartitems_html_actions:12
@@ -1639,6 +1648,7 @@ msgstr "View:"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:484
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:447
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:482
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:484
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:456
 #: ../templates/_profile/sammlungen/search_facet:482
 #: ../templates/authority_search_facet:546 ../templates/search_facet:506
@@ -1728,6 +1738,7 @@ msgstr "Off"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:25
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:25
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:25
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions:7
 #: ../templates/_view/richter/cartitems_html_actions:6
 #: ../templates/cartitems_html_actions:7
 #: ../templates/titles_record_html_actions:25
@@ -1749,6 +1760,7 @@ msgstr "Selected catalogs"
 msgid "Ausgew&auml;hlte Recherche"
 msgstr "Selected search request"
 
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions:19
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions:3
 #: ../templates/cartitems_html_actions:19
 msgid "Ausgewählte Titel"
@@ -1976,6 +1988,7 @@ msgstr "Start a new search request"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:37
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/titles_record_html_categories:37
@@ -1994,6 +2007,7 @@ msgstr "Start a new search request"
 msgid "Begriff in allen Katalogen suchen"
 msgstr "Search this term in all catalogs"
 
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions:3
 #: ../templates/_view/richter/cartitems_html_actions:3
 #: ../templates/cartitems_html_actions:3
 msgid "Behalten Sie diese Liste"
@@ -2372,6 +2386,7 @@ msgstr "Description"
 #: ../templates/_profile/sammlungen/_database/syndikatsbibliothek/circulation:123
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:321
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:313
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/titles_record_html_categories:315
 #: ../templates/_profile/sammlungen/_database/wallraf/circulation:123
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:289
 #: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:315
@@ -2630,7 +2645,7 @@ msgstr "Please use My KUG to authenticate."
 msgid "Bitte bookmarken unter:"
 msgstr "Please bookmark as:"
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1036
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1028
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Please enter a four digit number as the year of publication."
 
@@ -2728,6 +2743,7 @@ msgstr "Titles"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:483
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:446
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:481
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:483
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:455
 #: ../templates/_profile/sammlungen/search_facet:481
 #: ../templates/authority_search_facet:545 ../templates/search_facet:505
@@ -2858,6 +2874,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/pruessen/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/std_footer_html:17
 #: ../templates/_profile/sammlungen/std_footer_html:17
 #: ../templates/_profile/usbintern/std_footer_html:18
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/std_footer_html:18
@@ -2965,7 +2982,7 @@ msgid ""
 msgstr ""
 "This register of provenances lists the names of persons and review journals."
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:1043
+#: ../modules/OpenBib/Handler/Apache/Search.pm:1035
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -3108,7 +3125,7 @@ msgstr ""
 msgid "Der Basisklassifikation zugeordnete Themengebiete"
 msgstr "Topics corresponding to basic classification"
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:490
+#: ../modules/OpenBib/Handler/Apache/Search.pm:482
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
@@ -3208,6 +3225,9 @@ msgstr "The following external services  are currently being offered:"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:450
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:451
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:452
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:452
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:453
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:454
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:424
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:425
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:426
@@ -3410,6 +3430,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:519
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:482
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:517
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:519
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:488
 #: ../templates/_profile/sammlungen/search_facet:517
 #: ../templates/authority_search_facet:581 ../templates/search_facet:541
@@ -3652,6 +3673,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/pruessen/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/std_footer_html:17
 msgid ""
 "Dieses Sammlungsportal ist ein Dienst der Universtit&auml;ts- und "
 "Stadtbibliothek K&ouml;ln"
@@ -3763,6 +3785,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:22
 #: ../templates/_profile/sammlungen/_view/einbaende/titlist_item_html_short:22
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short:15
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:15
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:20
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:20
@@ -3850,6 +3873,7 @@ msgstr "E-mail address"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:102
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:107
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:107
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:107
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:107
@@ -3866,6 +3890,7 @@ msgstr "RVK"
 #: ../templates/_database/bestellungen/visible_categories_title:109
 #: ../templates/_database/inst404card/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:108
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:108
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:108
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:108
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:108
@@ -3892,6 +3917,7 @@ msgstr "Topic"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:37
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:110
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:117
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:117
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:117
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:117
@@ -3923,6 +3949,7 @@ msgstr "Full text of TOC"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:118
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:111
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:118
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:118
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:118
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:118
@@ -3965,6 +3992,7 @@ msgstr "Wikipedia article (french)"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:105
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:105
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:105
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:105
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:105
@@ -4146,6 +4174,18 @@ msgstr "Simple search mask"
 #: ../templates/searchforms_record_query:184
 msgid "Einfache Suche"
 msgstr "Simple search"
+
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_benutzung:37
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_einleitung:37
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_literatur:37
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_quellen:37
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_sammlung:37
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_vita:37
+#: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:31
+#: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:33
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:22
+msgid "Einführung"
+msgstr ""
 
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:122
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:122
@@ -4355,6 +4395,9 @@ msgstr "End"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:453
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:454
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:455
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:455
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:456
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:457
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:427
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:428
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:429
@@ -4454,6 +4497,7 @@ msgstr "Discover other titles using:"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:198
 #: ../templates/_profile/sammlungen/_view/einbaende/titlist_item_html_short:237
 #: ../templates/_profile/sammlungen/_view/einbaende/titlist_item_html_short:240
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short:143
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_facet:196
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:198
 #: ../templates/_profile/sammlungen/_view/kapsel/search_facet:198
@@ -4467,6 +4511,7 @@ msgstr "Discover other titles using:"
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:240
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_item_html_short:243
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:198
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:200
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:185
 #: ../templates/_profile/sammlungen/search_facet:198
 #: ../templates/_profile/sammlungen/titlist_item_html_short:282
@@ -4603,6 +4648,7 @@ msgstr "Years of publication"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:323
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:325
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:317
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/titles_record_html_categories:319
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:293
 #: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:319
 #: ../templates/_profile/sammlungen/titles_record_html_categories:319
@@ -4679,6 +4725,7 @@ msgstr "Advanced search mask"
 #: ../templates/_profile/sammlungen/_view/totenzettel/searchforms_record_advanced:38
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:131
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:68
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:126
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:121
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:131
@@ -5006,7 +5053,7 @@ msgstr ""
 "<b>^</b> ahead of your search query (e.g. ^education*). As before, you can "
 "truncate the word with a *."
 
-#: ../modules/OpenBib/Handler/Apache/Search.pm:485
+#: ../modules/OpenBib/Handler/Apache/Search.pm:477
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -5167,6 +5214,7 @@ msgstr "Filter"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:482
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:445
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:480
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:482
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:454
 #: ../templates/_profile/sammlungen/search_facet:480
 #: ../templates/authority_search_facet:544 ../templates/search_facet:504
@@ -5222,6 +5270,9 @@ msgstr "French Wikipedia"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:456
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:457
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:458
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:458
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:459
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:460
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:430
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:431
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:432
@@ -5495,6 +5546,8 @@ msgstr "Browse all available %1free and licensed journals%2 by subject."
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:427
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:461
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:462
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:463
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:464
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:435
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:436
 #: ../templates/_profile/sammlungen/search_facet:461
@@ -5691,6 +5744,7 @@ msgstr "Search in this collection"
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation:124
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:129
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:129
 #: ../templates/_profile/sammlungen/mainnavigation_html:119
@@ -6191,6 +6245,7 @@ msgstr "Import-Settings"
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/pruessen/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/std_footer_html:17
 #: ../templates/_profile/sammlungen/info_impressum_html:43
 #: ../templates/_profile/sammlungen/std_footer_html:17
 #: ../templates/_profile/usbintern/std_footer_html:18
@@ -6580,10 +6635,6 @@ msgstr "Info"
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/einbaende/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:22
-#: ../templates/_profile/sammlungen/_view/gentzdigital/info_sammlung:37
-#: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:31
-#: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:33
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:22
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_abklatsch:37
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/info_datenerfassung:37
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:31
@@ -6637,6 +6688,10 @@ msgstr "Info"
 #: ../templates/_profile/sammlungen/_view/umschlaege/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:33
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/info_sammlung:37
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/info_systematik:37
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:31
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/wallraf/info_sammlung:37
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:33
@@ -6720,6 +6775,7 @@ msgstr "Move user generated content to new login"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:23
 #: ../templates/_profile/sammlungen/_view/einbaende/titlist_item_html_short:23
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short:16
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:16
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:21
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_title_field:11
@@ -6873,6 +6929,7 @@ msgstr "Inventory number"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:324
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:316
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/titles_record_html_categories:318
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:292
 #: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:318
 #: ../templates/_profile/sammlungen/titles_record_html_categories:318
@@ -6895,6 +6952,7 @@ msgstr "Inventory number     "
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:481
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:444
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:479
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:481
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:453
 #: ../templates/_profile/sammlungen/search_facet:479
 #: ../templates/authority_search_facet:543 ../templates/search_facet:503
@@ -6919,6 +6977,8 @@ msgstr "Icelandic"
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:432
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:466
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:467
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:468
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:469
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:440
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:441
 #: ../templates/_profile/sammlungen/search_facet:466
@@ -7025,12 +7085,14 @@ msgstr "Yes"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:181
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:111
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:113
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_databases_record_html:61
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:30
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_facet:179
 #: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:125
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:86
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:88
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:116
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:118
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:181
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:12
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:25
@@ -7087,6 +7149,7 @@ msgstr "Yes"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:12
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:25
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:124
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:183
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:129
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:30
@@ -7172,6 +7235,7 @@ msgstr "Century"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:474
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:437
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:472
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:474
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:446
 #: ../templates/_profile/sammlungen/search_facet:472
 #: ../templates/authority_search_facet:536 ../templates/search_facet:496
@@ -7191,6 +7255,7 @@ msgstr "Japanese"
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:164
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:178
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:176
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:178
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:164
 #: ../templates/_profile/sammlungen/search_facet:176
 #: ../templates/authority_search_facet:191 ../templates/search_facet:176
@@ -7215,8 +7280,8 @@ msgstr "Corporate body"
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:88
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:121
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:123
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:96
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:98
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:126
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:128
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:84
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:86
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:76
@@ -7295,6 +7360,7 @@ msgstr "Digital card catalog (faculty of arts)"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:103
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:90
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:174
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short:133
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_facet:174
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_title_field:14
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_title_field:4
@@ -7313,6 +7379,7 @@ msgstr "Digital card catalog (faculty of arts)"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:174
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:17
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:4
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:176
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:162
 #: ../templates/_profile/sammlungen/search_facet:174
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/titlist_item_html_short:308
@@ -7638,6 +7705,7 @@ msgstr "You couldn't find the book or journal in KUG?"
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/pruessen/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/std_footer_html:17
 #: ../templates/_profile/sammlungen/std_footer_html:17
 #: ../templates/_profile/usbintern/std_footer_html:18
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/std_footer_html:18
@@ -7667,6 +7735,7 @@ msgstr "Login migration"
 msgid "Kurzbeschreibung"
 msgstr "Short description"
 
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions:15
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/searchforms_record_query:87
 #: ../templates/_view/richter/cartitems_html_actions:14
 #: ../templates/_view/richter/users_litlists_record_edit:58
@@ -8196,6 +8265,8 @@ msgstr "Other catalogs"
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:425
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:459
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:460
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:461
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:462
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:433
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:434
 #: ../templates/_profile/sammlungen/search_facet:459
@@ -8275,6 +8346,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_classification_html:103
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_classification_html:103
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_classification_html:103
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/clouds_classification_html:123
 #: ../templates/_profile/usbportal/clouds_classification_include:50
 #: ../templates/clouds_classification_html:103
 #: ../templates/clouds_classification_include:51
@@ -8370,6 +8442,7 @@ msgstr "Lists sharing titles"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:183
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:16
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:27
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:185
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:171
 #: ../templates/_profile/sammlungen/search_facet:183
 #: ../templates/_view/richter/cartitems_html_actions:21
@@ -8510,6 +8583,7 @@ msgstr "Local"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:321
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:323
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:315
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/titles_record_html_categories:317
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:291
 #: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:317
 #: ../templates/_profile/sammlungen/titles_record_html_categories:317
@@ -8555,6 +8629,8 @@ msgstr "Go"
 #: ../templates/_profile/sammlungen/_database/einbaende/cartitems_html_short:144
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:311
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions:24
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short:143
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions:8
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:150
 #: ../templates/admin_authenticators_record_edit:104
@@ -8659,6 +8735,7 @@ msgstr "Type of media"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:179
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:10
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:22
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:181
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:167
 #: ../templates/_profile/sammlungen/search_facet:179
 #: ../templates/authority_search_facet:195 ../templates/search_facet:179
@@ -8816,6 +8893,17 @@ msgstr "Type of media"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:69
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:80
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:91
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:104
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:116
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:128
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:140
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:152
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:38
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:49
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:60
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:71
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:82
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:93
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:102
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:114
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:126
@@ -9018,6 +9106,8 @@ msgstr "Collect"
 #: ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation:53
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:56
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:58
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:51
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:56
@@ -9320,6 +9410,7 @@ msgstr "New"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:465
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:428
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:463
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:465
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:437
 #: ../templates/_profile/sammlungen/search_facet:463
 #: ../templates/authority_search_facet:527 ../templates/search_facet:487
@@ -9535,6 +9626,8 @@ msgstr "Non-commercial nature of this web site"
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:443
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:477
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:478
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:479
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:480
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:451
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:452
 #: ../templates/_profile/sammlungen/search_facet:477
@@ -9978,6 +10071,7 @@ msgstr "Permanent Link to This Entry"
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:175
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_title_field:13
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_title_field:4
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:177
 #: ../templates/_profile/sammlungen/clouds_databases_record_html:62
 #: ../templates/_profile/sammlungen/search_facet:175
 #: ../templates/_view/richter/persons_record_html:48
@@ -10008,8 +10102,8 @@ msgstr "Person/Corporate Body"
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:83
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:116
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:118
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:91
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:93
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:121
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:123
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:79
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:81
 #: ../templates/_profile/sammlungen/_view/kapsel/clouds_databases_record_html:62
@@ -10124,6 +10218,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:478
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:441
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:476
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:478
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:450
 #: ../templates/_profile/sammlungen/search_facet:476
 #: ../templates/authority_search_facet:540 ../templates/search_facet:500
@@ -10169,6 +10264,7 @@ msgstr "Popularity-Functions"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_view/dirksen/titlist_item_html_short:24
 #: ../templates/_profile/sammlungen/_view/einbaende/titlist_item_html_short:24
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short:17
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:17
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_popular_by_database_html:22
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_popular_by_database_html:22
@@ -10271,7 +10367,7 @@ msgstr "Profile"
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:39
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:36
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:38
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:34
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:59
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/info_project:37
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:36
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:38
@@ -10646,7 +10742,7 @@ msgstr "Director"
 #: ../templates/_profile/sammlungen/_view/einbaende/titles_fields_record_html:64
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:43
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:46
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:76
 #: ../templates/_profile/sammlungen/_view/gentzdigital/titles_fields_record_html:55
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/mainnavigation:43
@@ -10780,6 +10876,8 @@ msgstr "Roles"
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:436
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:470
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:471
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:472
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:473
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:444
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:445
 #: ../templates/_profile/sammlungen/search_facet:470
@@ -10860,8 +10958,8 @@ msgstr "Cast"
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:93
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:126
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:128
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:101
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:103
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:131
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:133
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:89
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:91
 #: ../templates/_profile/sammlungen/_view/kapsel/clouds_navigation:28
@@ -10967,6 +11065,7 @@ msgstr "Subjects in displayed titles"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:475
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:438
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:473
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:475
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:447
 #: ../templates/_profile/sammlungen/search_facet:473
 #: ../templates/authority_search_facet:537 ../templates/search_facet:497
@@ -11621,6 +11720,7 @@ msgstr "Library-Code"
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query:125
 #: ../templates/_profile/sammlungen/_view/einbaende/searchforms_record_query_tools:117
 #: ../templates/_profile/sammlungen/_view/einbaende/titlist_item_html_short:230
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short:141
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:23
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:157
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:23
@@ -11734,6 +11834,8 @@ msgstr "Order by"
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:434
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:468
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:469
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:470
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:471
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:442
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:443
 #: ../templates/_profile/sammlungen/search_facet:468
@@ -11779,6 +11881,7 @@ msgstr "Specialized portals"
 #: ../templates/_profile/sammlungen/_view/muenzen/corporate_banner:4
 #: ../templates/_profile/sammlungen/_view/portrait/corporate_banner:4
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/corporate_banner:4
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/corporate_banner:4
 #: ../templates/_profile/sammlungen/_view/zpe/corporate_banner:4
 #: ../templates/_profile/sammlungen/corporate_banner:4
 #: ../templates/_profile/usbintern/corporate_banner:8
@@ -11819,6 +11922,7 @@ msgstr "Language icon for %1"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:180
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:11
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:24
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:182
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:168
 #: ../templates/_profile/sammlungen/search_facet:180
 #: ../templates/admin_templates_html:115 ../templates/admin_templates_html:66
@@ -11938,6 +12042,7 @@ msgstr "Location"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:320
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_categories:314
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/titles_record_html_categories:316
 #: ../templates/_profile/sammlungen/_database/wikisource_de/titles_record_html_categories:290
 #: ../templates/_profile/sammlungen/_database/zpe/titles_record_html_categories:316
 #: ../templates/_profile/sammlungen/titles_record_html_categories:316
@@ -12025,8 +12130,16 @@ msgstr "Edit information about location"
 #: ../templates/_profile/sammlungen/_view/einbaende/titles_fields_record_html:63
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_0410_html:48
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_corporatebody_html:48
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_databases_record_html:37
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_html:37
 #: ../templates/_profile/sammlungen/_view/gentzdigital/info_ansprechpartner:36
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_benutzung:36
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_einleitung:36
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_literatur:36
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_quellen:36
 #: ../templates/_profile/sammlungen/_view/gentzdigital/info_sammlung:36
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_team:36
+#: ../templates/_profile/sammlungen/_view/gentzdigital/info_vita:36
 #: ../templates/_profile/sammlungen/_view/gentzdigital/titles_fields_record_html:54
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html:48
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_databases_record_html:37
@@ -12108,6 +12221,8 @@ msgstr "Edit information about location"
 #: ../templates/_profile/sammlungen/_view/umschlaege/info_redaktion:36
 #: ../templates/_profile/sammlungen/_view/umschlaege/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/umschlaege/titles_fields_record_html:54
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/info_sammlung:36
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/info_systematik:36
 #: ../templates/_profile/sammlungen/_view/wallraf/info_sammlung:36
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_databases_record_html:37
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_html:37
@@ -12274,6 +12389,7 @@ msgstr "Search request"
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:83
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_navigation:85
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_html:58
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:69
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:71
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:58
@@ -12441,6 +12557,8 @@ msgstr "Search for journals"
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:128
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:147
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:123
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:118
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:153
@@ -12581,6 +12699,8 @@ msgstr "Search help"
 #: ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:51
 #: ../templates/_profile/sammlungen/_view/umschlaege/mainnavigation_html:53
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:46
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/wikisource/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/zpe/mainnavigation:51
@@ -12699,8 +12819,8 @@ msgstr "System"
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:178
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:131
 #: ../templates/_profile/sammlungen/_view/einbaende/subnavigation:133
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:106
-#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:108
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:136
+#: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:138
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:178
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:21
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_title_field:9
@@ -12727,6 +12847,11 @@ msgstr "System"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:178
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:21
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:9
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/clouds_classification_html:53
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/clouds_classification_html:72
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:36
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/mainnavigation_html:38
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:180
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:56
 #: ../templates/_profile/sammlungen/_view/zpe/clouds_navigation:58
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:166
@@ -12839,6 +12964,7 @@ msgstr "Location mark"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:85
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:87
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:87
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:87
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:87
@@ -12886,6 +13012,7 @@ msgstr "Location"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:89
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:91
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:91
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:91
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:91
@@ -12925,6 +13052,7 @@ msgstr "Added entry"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:46
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:47
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:48
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:48
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:48
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:48
@@ -12965,6 +13093,7 @@ msgstr "Country of publication"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:22
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:21
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:21
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:21
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:21
@@ -13002,6 +13131,7 @@ msgstr "Volume"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:16
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:16
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:16
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:16
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:16
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:16
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:16
@@ -13091,6 +13221,7 @@ msgstr "Volume"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:17
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:17
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:19
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:17
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:17
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:17
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:17
@@ -13173,6 +13304,7 @@ msgstr "Mother"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:20
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:18
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:18
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:18
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:18
@@ -13217,6 +13349,7 @@ msgstr "Children"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:19
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:19
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:19
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:19
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:19
@@ -13238,6 +13371,8 @@ msgstr "Director"
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:17
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_corporatebody_html:51
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_corporatebody_html:70
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_databases_record_html:62
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:35
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:37
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_facet:176
@@ -13299,6 +13434,7 @@ msgstr "Cooperation"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:21
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:20
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:20
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:20
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:20
@@ -13350,6 +13486,7 @@ msgstr "Corporate body"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:26
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:30
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:30
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:30
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:30
@@ -13389,6 +13526,7 @@ msgstr "Statement of collective uniform title"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:24
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:23
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:23
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:23
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:23
@@ -13432,6 +13570,7 @@ msgstr "Motive"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:23
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:22
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:22
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:22
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:22
@@ -13479,6 +13618,7 @@ msgstr "Name of order"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:24
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:24
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:25
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:24
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:16
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:24
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:24
@@ -13545,6 +13685,7 @@ msgstr "Obverse legend"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:29
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:28
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:28
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:28
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:28
@@ -13588,6 +13729,7 @@ msgstr "Same obverse stamp as"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:51
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:52
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:52
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:52
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:52
@@ -13642,6 +13784,7 @@ msgstr "Method"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:29
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:29
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:30
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:29
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:29
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:29
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:29
@@ -13656,7 +13799,7 @@ msgstr "Other title information"
 msgid "T0335-einbaende"
 msgstr "Description of motive"
 
-#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:18
+#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:23
 msgid "T0335-gentzdigital"
 msgstr "Incipit"
 
@@ -13720,6 +13863,7 @@ msgstr "Denomination"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:28
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:27
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:27
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:27
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:27
@@ -13784,6 +13928,7 @@ msgstr "Reverse legend: resolved, edition text"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:33
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:34
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:34
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:34
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:34
@@ -13827,6 +13972,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:34
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:35
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:35
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:35
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:35
@@ -13876,6 +14022,7 @@ msgstr "Subseries"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:31
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:31
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:31
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:31
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:31
@@ -13923,6 +14070,7 @@ msgstr "Single picture"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:32
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:32
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:32
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:32
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:32
@@ -13940,6 +14088,7 @@ msgstr "Remainder of title for whole item"
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:33
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:33
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:33
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:33
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:33
@@ -13978,6 +14127,7 @@ msgstr "Common description of person"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:26
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:27
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:25
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:25
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:25
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:25
@@ -14028,6 +14178,7 @@ msgstr "Remark"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:35
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:36
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:36
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:36
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:36
@@ -14067,6 +14218,7 @@ msgstr "Edition"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:40
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:41
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:41
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:41
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:41
@@ -14106,6 +14258,7 @@ msgstr "Dates/periods of publication"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:57
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:58
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:58
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:58
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:58
@@ -14154,6 +14307,7 @@ msgstr "Die-Axis"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:37
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:36
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:37
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:37
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:37
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:37
@@ -14167,9 +14321,11 @@ msgstr "Place of publication"
 msgid "T0410-einbaende"
 msgstr "Place of publication"
 
-#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:21
+#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_0410_html:51
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_0410_html:70
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_databases_record_html:63
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:42
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation:44
 #: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:116
@@ -14231,6 +14387,7 @@ msgstr "Place of birth"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:37
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:30
 #: ../templates/_profile/sammlungen/_view/umschlaege/titles_fields_record_html:23
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:38
@@ -14242,7 +14399,7 @@ msgstr "Place of birth"
 msgid "T0412"
 msgstr "Publisher"
 
-#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:24
+#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:151
 msgid "T0412-gentzdigital"
 msgstr "Handwritten record"
@@ -14281,6 +14438,7 @@ msgstr "Origin"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:46
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:47
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:47
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:47
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:47
@@ -14329,6 +14487,7 @@ msgstr "Dating"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:39
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:40
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:40
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:40
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:40
@@ -14342,7 +14501,7 @@ msgstr "Year of publication"
 msgid "T0424-einbaende"
 msgstr "Year of publication"
 
-#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:20
+#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:19
 msgid "T0424-gentzdigital"
 msgstr "Date"
 
@@ -14384,6 +14543,7 @@ msgstr "Date of death"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:37
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:38
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_title_field:19
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:31
 #: ../templates/_profile/sammlungen/_view/umschlaege/titles_fields_record_html:26
@@ -14474,6 +14634,7 @@ msgstr "Dating"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:50
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:51
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:51
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:51
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:51
@@ -14483,7 +14644,7 @@ msgstr "Dating"
 msgid "T0433"
 msgstr "Extent of item"
 
-#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:19
+#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:21
 msgid "T0433-gentzdigital"
 msgstr "Size/Extent of item"
 
@@ -14566,6 +14727,8 @@ msgstr "Profession"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:59
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:58
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:46
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:59
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:46
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:59
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:46
@@ -14610,6 +14773,7 @@ msgstr "Illustration statement"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:48
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:49
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:49
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:49
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:49
@@ -14658,6 +14822,7 @@ msgstr "Diameter"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:59
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:60
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:60
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:60
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:60
@@ -14699,6 +14864,7 @@ msgstr "Accompanying material"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:55
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:54
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:55
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:55
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:55
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:55
@@ -14742,6 +14908,7 @@ msgstr "Mourner"
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:60
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:61
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:61
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:61
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:61
@@ -14817,6 +14984,7 @@ msgstr "General note, unstructured"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:88
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:90
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:90
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:90
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:90
@@ -14858,6 +15026,7 @@ msgstr "Note on german translation"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:62
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:61
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:62
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:62
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:62
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:62
@@ -14899,6 +15068,7 @@ msgstr "Parallel titles note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:62
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:63
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:63
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:63
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:63
@@ -14939,6 +15109,7 @@ msgstr "Variant titles note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:62
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:63
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:64
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:64
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:64
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:64
@@ -14979,6 +15150,7 @@ msgstr "Other title information note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:49
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:50
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:50
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:50
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:50
@@ -15033,6 +15205,7 @@ msgstr "Bibliographic evidence"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:64
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:65
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:65
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:65
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:65
@@ -15082,6 +15255,7 @@ msgstr "Remarks of person"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:65
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:66
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:66
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:66
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:66
@@ -15123,6 +15297,7 @@ msgstr "Edition statement note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:66
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:67
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:67
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:67
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:67
@@ -15164,6 +15339,7 @@ msgstr "Imprint note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:67
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:68
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:68
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:68
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:68
@@ -15205,6 +15381,7 @@ msgstr "Physical description note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:68
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:69
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:69
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:69
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:69
@@ -15246,6 +15423,7 @@ msgstr "Alterations on imprint note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:69
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:70
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:70
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:70
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:70
@@ -15283,7 +15461,9 @@ msgstr "Series title note"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:85
+#: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:86
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:88
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:88
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:88
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:88
@@ -15292,10 +15472,6 @@ msgstr "Series title note"
 #: ../templates/visible_categories_title:88
 msgid "T0516"
 msgstr "Language"
-
-#: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:88
-msgid "T0516-schatzbehalter"
-msgstr "Writing"
 
 #: ../templates/_database/bestellungen/visible_categories_title:74
 #: ../templates/_database/inst404card/visible_categories_title:71
@@ -15316,6 +15492,7 @@ msgstr "Writing"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:70
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:71
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:71
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:71
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:71
@@ -15357,6 +15534,7 @@ msgstr "Contents note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:82
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:83
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:169
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:83
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:169
@@ -15407,6 +15585,7 @@ msgstr "Information on contents"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:71
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:72
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:72
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:72
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:72
@@ -15446,6 +15625,7 @@ msgstr "Split note for serials"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:41
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:42
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:42
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:42
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:42
@@ -15487,6 +15667,7 @@ msgstr "Frequency of publication"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:72
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:73
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:73
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:73
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:73
@@ -15532,6 +15713,7 @@ msgstr "Names of places"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:76
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:77
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:77
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:77
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:77
@@ -15573,6 +15755,7 @@ msgstr "Issued with note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:77
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:78
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:78
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:78
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:78
@@ -15614,6 +15797,7 @@ msgstr "Title of serially published supplementary items note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:78
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:79
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:79
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:79
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:79
@@ -15655,6 +15839,7 @@ msgstr "Related files note"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:79
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:80
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:80
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:80
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:80
@@ -15696,6 +15881,7 @@ msgstr "Earlier edition"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:80
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:81
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:81
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:81
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:81
@@ -15737,6 +15923,7 @@ msgstr "Earlier title"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:81
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:82
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:82
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:82
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:82
@@ -15778,6 +15965,7 @@ msgstr "Later edition"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:73
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:74
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:74
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:74
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:74
@@ -15819,6 +16007,7 @@ msgstr "Concordance of titles"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:74
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:75
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:75
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:75
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:75
@@ -15860,6 +16049,7 @@ msgstr "Number of copies"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:75
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:76
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:76
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:76
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:76
@@ -15909,6 +16099,7 @@ msgstr "Type of copy"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:109
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:103
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:109
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:109
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:109
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:109
@@ -15948,6 +16139,7 @@ msgstr "ISBN"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:111
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:105
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:111
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:111
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:111
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:111
@@ -15976,6 +16168,7 @@ msgstr "ISSN"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:110
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:104
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:110
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:110
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:110
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:110
@@ -16015,6 +16208,7 @@ msgstr "Fingerprint"
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:85
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:85
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:85
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:85
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:85
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:85
@@ -16056,6 +16250,7 @@ msgstr "Other standard numbers"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:55
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:56
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:56
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:56
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:56
@@ -16100,6 +16295,7 @@ msgstr "Released"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:42
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:43
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:43
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:43
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:43
@@ -16154,6 +16350,7 @@ msgstr "Source description"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:44
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:43
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:44
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:44
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:44
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:44
@@ -16163,7 +16360,7 @@ msgstr "Source description"
 msgid "T0594"
 msgstr "Publication place of source"
 
-#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:23
+#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:160
 msgid "T0594-gentzdigital"
 msgstr "Places of print"
@@ -16203,6 +16400,7 @@ msgstr "Landscape of origin"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:44
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:45
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:45
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:45
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:45
@@ -16271,6 +16469,7 @@ msgstr "Title source"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:57
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:56
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:57
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:57
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:57
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:57
@@ -16317,6 +16516,7 @@ msgstr "Drawer"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:83
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:84
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:84
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:84
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:84
@@ -16366,6 +16566,7 @@ msgstr "Links"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:84
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:86
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:86
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:86
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:86
@@ -16405,6 +16606,7 @@ msgstr "Holding information of original of microfilming"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:52
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:53
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:53
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:53
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:53
@@ -16446,6 +16648,7 @@ msgstr "Specific material designation / file type"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:53
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:54
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:54
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:54
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:54
@@ -16486,6 +16689,7 @@ msgstr "Electronic location / access"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:112
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:106
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:112
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:112
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:112
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:112
@@ -16525,6 +16729,7 @@ msgstr "Fulltext information"
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:26
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:26
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:26
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:26
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:26
@@ -16587,6 +16792,7 @@ msgstr "Title in variant spelling"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:101
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:106
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:106
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:106
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:106
@@ -16652,6 +16858,7 @@ msgstr "Provenance"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:94
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:94
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:94
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:94
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:94
@@ -16726,6 +16933,7 @@ msgstr "Involved in cover"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:87
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:89
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:89
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:89
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:89
@@ -16776,6 +16984,7 @@ msgstr "Transcription"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:90
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:93
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:93
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:93
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:93
@@ -16789,7 +16998,7 @@ msgstr "Type of publication"
 msgid "T0800-einbaende"
 msgstr "Type"
 
-#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:22
+#: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:24
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_facet:177
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_title_field:17
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_title_field:8
@@ -16842,6 +17051,7 @@ msgstr "Rererence"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:91
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:95
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:95
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:95
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:95
@@ -16881,6 +17091,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:92
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:96
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:96
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:96
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:96
@@ -16920,6 +17131,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:93
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:97
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:97
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:97
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:97
@@ -16959,6 +17171,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:94
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:94
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:98
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:98
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:98
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:98
@@ -16998,6 +17211,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:95
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:99
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:99
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:99
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:99
@@ -17037,6 +17251,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:96
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:100
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:100
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:100
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:100
@@ -17076,6 +17291,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:97
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:101
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:101
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:101
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:101
@@ -17115,6 +17331,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:98
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:102
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:102
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:102
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:102
@@ -17154,6 +17371,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:99
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:103
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:103
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:103
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:103
@@ -17193,6 +17411,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:100
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:104
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:104
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:104
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:104
@@ -17251,6 +17470,7 @@ msgstr "Remark"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:107
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:113
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:113
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:113
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:113
@@ -17321,6 +17541,7 @@ msgstr "Corporate body"
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:108
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:114
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:114
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:114
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:114
@@ -17369,6 +17590,7 @@ msgstr "External URL"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:109
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:115
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:115
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:115
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:115
@@ -17456,6 +17678,7 @@ msgstr "Wikipedia article (french)"
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:258
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:124
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:112
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:124
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:124
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:124
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:124
@@ -17467,6 +17690,7 @@ msgstr "Rights information"
 #: ../templates/_database/bestellungen/visible_categories_title:123
 #: ../templates/_database/inst404card/visible_categories_title:122
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:122
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:122
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:122
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:122
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:122
@@ -17478,6 +17702,7 @@ msgstr "Price"
 #: ../templates/_database/bestellungen/visible_categories_title:124
 #: ../templates/_database/inst404card/visible_categories_title:123
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:123
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:123
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:123
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:123
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:123
@@ -17494,6 +17719,7 @@ msgstr "Currency"
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:114
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:116
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:116
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:116
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:116
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:116
@@ -17529,6 +17755,7 @@ msgstr "Availability"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:92
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:92
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:92
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:92
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:92
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:92
@@ -17567,6 +17794,7 @@ msgstr "Type"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:119
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:113
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:119
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:119
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:119
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:119
@@ -17632,6 +17860,7 @@ msgstr "# of superordinate titles"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:121
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:114
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:121
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:27
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:121
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:121
@@ -17676,6 +17905,7 @@ msgstr "# of superordinate titles"
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:120
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:120
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:120
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:120
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:120
@@ -17725,6 +17955,7 @@ msgstr "BibKey-Base"
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:125
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:115
+#: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:125
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:28
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:125
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:125
@@ -17783,6 +18014,7 @@ msgstr "Digital item: ID"
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:182
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:15
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:26
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:184
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:170
 #: ../templates/_profile/sammlungen/search_facet:182
 #: ../templates/authority_search_facet:198 ../templates/search_facet:182
@@ -17908,6 +18140,7 @@ msgstr "Text"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:177
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:179
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:177
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:179
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:165
 #: ../templates/_profile/sammlungen/search_facet:177
 #: ../templates/authority_search_facet:192 ../templates/search_facet:177
@@ -18349,6 +18582,8 @@ msgstr "Resultlist"
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:479
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:165
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:514
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:167
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:516
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:153
 #: ../templates/_profile/sammlungen/search_facet:165
 #: ../templates/_profile/sammlungen/search_facet:514
@@ -18398,6 +18633,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:477
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:440
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:475
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:477
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:449
 #: ../templates/_profile/sammlungen/search_facet:475
 #: ../templates/authority_search_facet:539 ../templates/search_facet:499
@@ -18458,6 +18694,7 @@ msgstr "Types"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:476
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:439
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:474
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:476
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:448
 #: ../templates/_profile/sammlungen/search_facet:474
 #: ../templates/authority_search_facet:538 ../templates/search_facet:498
@@ -18547,6 +18784,8 @@ msgstr "AND-relation in a search field"
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:430
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:464
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:465
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:466
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:467
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:438
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:439
 #: ../templates/_profile/sammlungen/search_facet:464
@@ -18668,6 +18907,7 @@ msgstr "Author"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:186
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:184
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:184
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:186
 #: ../templates/_profile/sammlungen/search_facet:184
 #: ../templates/authority_search_facet:200 ../templates/search_facet:184
 msgid "Verfügbarkeit"
@@ -18753,6 +18993,7 @@ msgstr "Subject headings of this title in other catalogs"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:525
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:488
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:523
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:525
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:494
 #: ../templates/_profile/sammlungen/search_facet:523
 #: ../templates/authority_search_facet:587 ../templates/search_facet:547
@@ -18872,6 +19113,7 @@ msgstr "Full text"
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:32
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:32
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:32
+#: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions:15
 #: ../templates/_view/richter/cartitems_html_actions:14
 #: ../templates/_view/richter/users_litlists_record_edit:58
 #: ../templates/cartitems_html_actions:15
@@ -19485,6 +19727,8 @@ msgstr "Cloud of most frequently used tags"
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_subject_html:49
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_0410_html:49
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_corporatebody_html:49
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_databases_record_html:38
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_html:38
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html:49
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_databases_record_html:38
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:38
@@ -20225,6 +20469,7 @@ msgstr "Lecturer"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:210
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:212
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:210
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:212
 #: ../templates/_profile/sammlungen/search_facet:210
 #: ../templates/authority_search_facet:250 ../templates/search_facet:234
 msgid "lendable"
@@ -20237,6 +20482,7 @@ msgstr "lendable"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:211
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:213
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:211
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:213
 #: ../templates/_profile/sammlungen/search_facet:211
 #: ../templates/authority_search_facet:251 ../templates/search_facet:235
 msgid "lendable_immediate"
@@ -20249,6 +20495,7 @@ msgstr "lendable / immediate"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:212
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:214
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:212
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:214
 #: ../templates/_profile/sammlungen/search_facet:212
 #: ../templates/authority_search_facet:252 ../templates/search_facet:236
 msgid "lendable_order"
@@ -20261,6 +20508,7 @@ msgstr "lendable / by order"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:213
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:215
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:213
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:215
 #: ../templates/_profile/sammlungen/search_facet:213
 #: ../templates/authority_search_facet:253 ../templates/search_facet:237
 msgid "lendable_weekend"
@@ -20387,6 +20635,7 @@ msgstr "by binding"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:293
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:256
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:291
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:293
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:265
 #: ../templates/_profile/sammlungen/search_facet:291
 #: ../templates/_profile/usbportal/search_title_combined_include:65
@@ -20407,6 +20656,7 @@ msgstr "by century"
 #: ../templates/_profile/kug/authority_search_facet:477
 #: ../templates/_profile/kug/search_facet:545
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:376
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:413
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:385
 #: ../templates/_profile/sammlungen/search_facet:411
 #: ../templates/authority_search_facet:475 ../templates/search_facet:435
@@ -20436,6 +20686,7 @@ msgstr "by artist"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:365
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:328
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:363
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:365
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:337
 #: ../templates/_profile/sammlungen/search_facet:363
 #: ../templates/authority_search_facet:427 ../templates/search_facet:387
@@ -20470,6 +20721,7 @@ msgstr "by person / workplace(tool)"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:387
 #: ../templates/_profile/sammlungen/_view/kapsel/search_facet:308
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:352
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:389
 #: ../templates/_profile/sammlungen/search_facet:387
 #: ../templates/authority_search_facet:451 ../templates/search_facet:411
 msgid "nach Personen"
@@ -20520,6 +20772,7 @@ msgstr "by location mark"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:438
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:401
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:436
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:438
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:410
 #: ../templates/_profile/sammlungen/search_facet:436
 #: ../templates/authority_search_facet:500 ../templates/search_facet:460
@@ -20542,6 +20795,7 @@ msgstr "by year of death"
 #: ../templates/_profile/kug/authority_search_facet:381
 #: ../templates/_profile/kug/search_facet:449
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:315
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:317
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:289
 #: ../templates/_profile/sammlungen/search_facet:315
 #: ../templates/authority_search_facet:379 ../templates/search_facet:339
@@ -20565,6 +20819,7 @@ msgstr "by tag name"
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:341
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:304
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:339
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:341
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:313
 #: ../templates/_profile/sammlungen/search_facet:339
 #: ../templates/authority_search_facet:403 ../templates/search_facet:363
@@ -20575,6 +20830,7 @@ msgstr "by tag"
 #: ../templates/_profile/kug/search_facet:397
 #: ../templates/_profile/sammlungen/_view/kapsel/search_facet:207
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:232
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:269
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:241
 #: ../templates/_profile/sammlungen/search_facet:267
 #: ../templates/authority_search_facet:331 ../templates/search_facet:291
@@ -20613,6 +20869,7 @@ msgstr "by topogr. subject heading"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:292
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:245
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:208
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:245
 #: ../templates/_profile/sammlungen/search_facet:243
 #: ../templates/authority_search_facet:283 ../templates/search_facet:267
 msgid "nach Typ"
@@ -20638,6 +20895,7 @@ msgstr "by numbering"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:218
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:220
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:218
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:220
 #: ../templates/_profile/sammlungen/search_facet:218
 #: ../templates/authority_search_facet:258 ../templates/search_facet:242
 msgid "nach Zugriff"
@@ -20679,6 +20937,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:209
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:211
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:209
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:211
 #: ../templates/_profile/sammlungen/search_facet:209
 #: ../templates/authority_search_facet:249 ../templates/search_facet:233
 msgid "online"
@@ -20691,6 +20950,7 @@ msgstr "online"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:214
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:216
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:214
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:216
 #: ../templates/_profile/sammlungen/search_facet:214
 #: ../templates/authority_search_facet:254 ../templates/search_facet:238
 msgid "presence"
@@ -20703,6 +20963,7 @@ msgstr "presence"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:215
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:217
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:215
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:217
 #: ../templates/_profile/sammlungen/search_facet:215
 #: ../templates/authority_search_facet:255 ../templates/search_facet:239
 msgid "presence_immediate"
@@ -20715,6 +20976,7 @@ msgstr "presence / immediate"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:216
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:218
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:216
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:218
 #: ../templates/_profile/sammlungen/search_facet:216
 #: ../templates/authority_search_facet:256 ../templates/search_facet:240
 msgid "presence_order"
@@ -20759,6 +21021,7 @@ msgstr "private"
 #: ../templates/_profile/sammlungen/_view/poetica/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/portrait/std_footer_html:17
 #: ../templates/_profile/sammlungen/_view/pruessen/std_footer_html:17
+#: ../templates/_profile/sammlungen/_view/usbbibliographie/std_footer_html:17
 #: ../templates/_profile/sammlungen/std_footer_html:17
 #: ../templates/_profile/usbintern/std_footer_html:18
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/std_footer_html:18
@@ -20919,6 +21182,9 @@ msgstr "Overview"
 #: ../templates/users_navigation:100 ../templates/users_navigation:102
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#~ msgid "T0516-schatzbehalter"
+#~ msgstr "Writing"
 
 #~ msgid "Zeit"
 #~ msgstr "Time"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-03-02 10:58+0100\n"
+"PO-Revision-Date: 2015-03-02 11:05+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1037,9 +1037,8 @@ msgid "Alle Münzen"
 msgstr "All coins"
 
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:131
-#, fuzzy
 msgid "Alle Objekte"
-msgstr "All subjects"
+msgstr "All objects"
 
 #: ../templates/tags_navigation:26
 msgid "Alle Tags"

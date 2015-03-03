@@ -59,7 +59,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_corporatebody' %]
+[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_0410' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -70,7 +70,7 @@
 <h1>[% msg.maketext("T0410-gentzdigital") %]</h1>
 
 <table width="100%">
-<tr><th>[% msg.maketext("Wolke der häufigsten Begriffe") %]</th></tr>
+<tr><th>Wolke der häufigsten Ausstellungsorte</th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->
 [%

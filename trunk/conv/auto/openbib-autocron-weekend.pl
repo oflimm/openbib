@@ -218,6 +218,8 @@ if ($updatemaster && $maintenance){
     foreach my $thistype (qw/2/){
         system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype");
     }
+    system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
+
 }
                                     
 if ($maintenance){

@@ -80,6 +80,7 @@ my $blacklist_ref = {
     'ebookpda' => 1,
     'econbiz' => 1,
     'edz' => 1,
+    'gentzdigital' => 1,
     'inst001' => 1,
     'inst103' => 1,
     'inst103master' => 1,
@@ -218,7 +219,6 @@ if ($updatemaster && $maintenance){
     foreach my $thistype (qw/2/){
         system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype");
     }
-    system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
 
 }
                                     
@@ -250,6 +250,10 @@ sub threadA {
 
     # Interimsloesung: Kataloge von aperol werden vorher im Bulk geholt
     autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, autoconv => 1});
+
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
+    
+    system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
     
     ##############################
 

@@ -245,10 +245,6 @@ FOREACH category IN categories;
          # erwischt wird
          content   = content ;
 
-    CASE "T6053";
-         content   = highlightquery(searchquery,item.content);
-         content   = "${content} - ${searchquery.get_searchterms}";
-
     CASE "T5001";
          searchterms = [];
          FOREACH superid IN normdata.${"T0004"};

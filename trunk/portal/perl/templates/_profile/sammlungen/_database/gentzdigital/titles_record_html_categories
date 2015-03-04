@@ -247,7 +247,7 @@ FOREACH category IN categories;
 
     CASE "T6053";
          content   = highlightquery(searchquery,item.content);
-         content   = "! ${content}";
+         content   = "${content} - ${searchquery.get_searchterms}";
 
     CASE "T5001";
          searchterms = [];

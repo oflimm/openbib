@@ -80,6 +80,7 @@ my $blacklist_ref = {
     'ebookpda' => 1,
     'econbiz' => 1,
     'edz' => 1,
+    'gentzdigital' => 1,
     'inst001' => 1,
     'inst103' => 1,
     'inst103master' => 1,
@@ -211,7 +212,6 @@ if ($updatemaster && $maintenance){
     foreach my $thistype (qw/2 8 10 11 12 13/){
         system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype");
     }
-    system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
 }
                                     
 if ($maintenance){
@@ -248,6 +248,12 @@ sub threadA {
     # Wegen Interimsloesung: Andere Kataloge, die nicht von aperol geholt werden
 
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe','kups','gdea','inst526earchive'] });
+
+    $logger->info("### gentzdigital");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
+    
+    system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
 
     ##############################
 

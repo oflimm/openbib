@@ -45,7 +45,6 @@ use URI::Escape;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -131,8 +130,6 @@ sub show_collection_by_isbn_negotiate {
     my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     if (!$session->is_valid()){
         return $self->print_warning($msg->maketext("Ungültige Session"));
     }
@@ -162,7 +159,6 @@ sub show_collection_by_isbn_negotiate {
         queryoptions_ref => $queryoptions->get_options,
         sessionID        => $session->{ID},
         targettype       => $targettype,
-        dbinfo           => $dbinfotable,
         reviews          => $reviewlist_ref,
         
         config           => $config,
@@ -195,8 +191,6 @@ sub show_record {
     my $path_prefix    = $self->param('path_prefix');
     my $location       = $self->param('location');
     
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $review_ref = $user->get_review_properties({reviewid => $reviewid});
     
     {
@@ -212,7 +206,6 @@ sub show_record {
     
     # TT-Data erzeugen
     my $ttdata={
-        dbinfo           => $dbinfotable,
         review           => $review_ref,
     };
     

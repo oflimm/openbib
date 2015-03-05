@@ -114,10 +114,10 @@ sub cgiapp_init {
 
     $logger->debug("User: ".YAML::Dump($user));
     
-    my $dbinfo       = OpenBib::Config::DatabaseInfoTable->instance;
+    my $dbinfo       = OpenBib::Config::DatabaseInfoTable->new;
     $self->param('dbinfo',$dbinfo);
 
-    my $locinfo      = OpenBib::Config::LocationInfoTable->instance;
+    my $locinfo      = OpenBib::Config::LocationInfoTable->new;
     $self->param('locinfo',$locinfo);
 
     my $useragent    = $r->user_agent;
@@ -942,7 +942,7 @@ sub add_default_ttdata {
     my $browser        = $self->param('browser');
     my $servername     = $self->param('servername');
     my $dbinfo         = $self->param('dbinfo');
-    my $locinfo         = $self->param('locinfo');
+    my $locinfo        = $self->param('locinfo');
     my $path_prefix    = $self->param('path_prefix');
     my $path           = $self->param('path');
     my $url            = $self->param('url');
@@ -1611,9 +1611,9 @@ sub check_http_basic_authentication {
     my $user    = $self->param('user');
     my $session = $self->param('session');
 
-    if ($logger->is_debug){
-        $logger->debug("User Pre: ".YAML::Dump($user));
-    }
+#    if ($logger->is_debug){
+#        $logger->debug("User Pre: ".YAML::Dump($user));
+#    }
     
     # Shortcut fuer HTTP Basic Authentication anhand lokaler Datenbank
     # Wenn beim Aufruf ein Username und ein Passwort uebergeben wird, dann
@@ -1872,29 +1872,14 @@ sub send_psgi_headers {
     return $self->_send_psgi_headers();
 }
 
-# sub teardown {
-#     my $self = shift;
+sub teardown {
+    my $self = shift;
 
-#     # Singletons zerstoeren
-#     $self->param('config')->DESTROY;;
-#     $self->param('user')->DESTROY;;
-#     $self->param('config')->DESTROY;;
-#     $self->param('qopts')->DESTROY;;
-
-#     my $searchquery = OpenBib::SearchQuery->instance;
-#     my $container   = OpenBib::Container->instance;
-#     my $statistics  = OpenBib::Statistics->instance;
-#     my $enrichmnt   = OpenBib::Enrichment->instance;
-#     my $session     = OpenBib::Session->instance;
+    my $config = OpenBib::Config->instance;
     
-
-#     $statistics->DESTROY;
-#     $container->DESTROY;
-#     $session->DESTROY;
-#     $searchquery->DESTROY;
-#     $enrichmnt->DESTROY;
+    $config->disconnectDB;
     
-#     return;
-# }
+    return;
+}
 
 1;

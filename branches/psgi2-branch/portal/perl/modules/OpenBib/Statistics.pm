@@ -2,7 +2,7 @@
 #
 #  OpenBib::Statistics
 #
-#  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -100,7 +100,7 @@ sub store_titleusage {
     $parsed_tstamp->parse($tstamp);
     
     # DBI: insert into relevance values (?,?,?,?,?,?)
-    $self->{schema}->resultset('Titleusage')->create(
+    $self->get_schema->resultset('Titleusage')->create(
         {
             tstamp       => $tstamp,
             tstamp_year  => $parsed_tstamp->printf("%Y"),
@@ -152,7 +152,7 @@ sub cache_data {
     }
 
     eval {
-        $self->{schema}->resultset('Datacache')->search($where_ref)->delete;
+        $self->get_schema->resultset('Datacache')->search($where_ref)->delete;
     };
 
     if ($@){
@@ -172,7 +172,7 @@ sub cache_data {
     my $datastring = encode_json $data_ref;
 
     # DBI: "insert into result_data values (?,NULL,?,?,?)"
-    $self->{schema}->resultset('Datacache')->create(
+    $self->get_schema->resultset('Datacache')->create(
         {
             id     => $id,
             type   => $type,
@@ -215,7 +215,7 @@ sub get_result {
         $where_ref->{subkey}=$subkey;
     }
     
-    my $resultdatas = $self->{schema}->resultset('Datacache')->search($where_ref,{ columns => qw/ data / });
+    my $resultdatas = $self->get_schema->resultset('Datacache')->search($where_ref,{ columns => qw/ data / });
 
     $logger->debug("Searching data for Id: $id / Type: $type");
 
@@ -265,7 +265,7 @@ sub result_exists {
         type => $type,
     };
     
-    my $resultcount = $self->{schema}->resultset('Datacache')->search($where_ref)->count;
+    my $resultcount = $self->get_schema->resultset('Datacache')->search($where_ref)->count;
 
     $logger->debug("Found: $resultcount");
     
@@ -291,7 +291,7 @@ sub create_session {
     my $parsed_tstamp = new Date::Manip::Date;
     $parsed_tstamp->parse($createtime);
 
-    my $new_session = $self->{schema}->resultset('Sessioninfo')->create({
+    my $new_session = $self->get_schema->resultset('Sessioninfo')->create({
         sessionid  => $sessionid,
         createtime => $createtime,
         createtime_year  => $parsed_tstamp->printf("%Y"),
@@ -375,7 +375,7 @@ sub log_event {
         $resultset = "Eventlogjson";
     }
     
-    $self->{schema}->resultset($resultset)->create(
+    $self->get_schema->resultset($resultset)->create(
         {
             sid          => $sid,
             tstamp       => $tstamp,
@@ -488,7 +488,7 @@ sub get_number_of_event {
 
     my $resultset = (exists $config->{eventlogjson_type}{$type})?'Eventlogjson':'Eventlog';
 
-    my $count = $self->{schema}->resultset($resultset)->search_rs($where_ref)->count;
+    my $count = $self->get_schema->resultset($resultset)->search_rs($where_ref)->count;
     
     $logger->debug("Got results: Number $count");
 
@@ -533,7 +533,7 @@ sub get_tstamp_range_of_events {
 
     # Shortcut fuer Jahr
     if ($format eq '%Y'){
-        my $eventlog_tstamp = $self->{schema}->resultset('Eventlog')->get_column('tstamp_year');
+        my $eventlog_tstamp = $self->get_schema->resultset('Eventlog')->get_column('tstamp_year');
         
         $min_tstamp = $eventlog_tstamp->min;
         $max_tstamp = $eventlog_tstamp->max;
@@ -542,7 +542,7 @@ sub get_tstamp_range_of_events {
     }
     else {
         # DBI: "select min(tstamp) as min_tstamp, max(tstamp) as max_tstamp from eventlog";
-        my $eventlog_tstamp = $self->{schema}->resultset('Eventlog')->get_column('tstamp');
+        my $eventlog_tstamp = $self->get_schema->resultset('Eventlog')->get_column('tstamp');
         
         $min_tstamp = ParseDate($eventlog_tstamp->min);
         $min_tstamp = UnixDate($min_tstamp, $format);
@@ -647,7 +647,7 @@ sub get_number_of_queries_by_category {
 
     $logger->info("Getting number of queries in category $category");
     
-    my $count = $self->{schema}->resultset('Searchfield')->search($where_ref)->count;
+    my $count = $self->get_schema->resultset('Searchfield')->search($where_ref)->count;
 
     my $count_ref = {
 	 number => $count,
@@ -769,7 +769,7 @@ sub get_ranking_of_event {
 
     my @ranking=();
 
-    my $contentrankings = $self->{schema}->resultset('Eventlog')->search($where_ref,$attribute_ref);
+    my $contentrankings = $self->get_schema->resultset('Eventlog')->search($where_ref,$attribute_ref);
 
     foreach my $contentranking ($contentrankings->all){
         my $count      = $contentranking->get_column('thiscount');
@@ -928,7 +928,7 @@ sub log_query {
 	  next if (exists $term_stopword_ref->{$next});
 
           # DBI: "insert into queryterm values (?,?,?,?)"
-          $self->{schema}->resultset('Searchterm')->create(
+          $self->get_schema->resultset('Searchterm')->create(
               {
                   sid          => $sid,
                   tstamp       => $tstamp,
@@ -945,7 +945,7 @@ sub log_query {
     }
 
     # DBI: "insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-    $self->{schema}->resultset('Searchfield')->create(
+    $self->get_schema->resultset('Searchfield')->create(
               {
                   sid          => $sid,
                   tstamp       => $tstamp,
@@ -1128,7 +1128,7 @@ sub get_sequencestat_of_event {
         };
     }
 
-    my $stats = $self->{schema}->resultset($resultset)->search(
+    my $stats = $self->get_schema->resultset($resultset)->search(
         {
             -and => $where_lhsql_ref,
             %$where_ref,
@@ -1164,6 +1164,18 @@ sub get_sequencestat_of_event {
     return $values_ref;
 }
 
+sub get_schema {
+    my $self = shift;
+
+    if (defined $self->{schema}){
+        return $self->{schema};
+    }
+
+    $self->connectDB;
+
+    return $self->{schema};
+}
+    
 sub connectDB {
     my $self = shift;
 
@@ -1197,8 +1209,8 @@ sub connectDB {
     
     return;
 }
-    
-sub DESTROY {
+
+sub disconnectDB {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -1213,6 +1225,14 @@ sub DESTROY {
             $logger->error($@);
         }
     }
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
 
     return;
 }

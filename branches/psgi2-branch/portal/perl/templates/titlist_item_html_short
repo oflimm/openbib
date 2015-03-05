@@ -307,8 +307,8 @@ $(document).ready(function(){
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-  IF dburl -%]
-[%-   IF dbinfo.locationid.${record.database} %]
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.locationid.${record.database} %].html?l=[% lang %]">
+[%-   IF dbinfo.get('locationid').${record.database} %]
+         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
 [%-   ELSE -%]
          <a href="[% dburl %]" target="_blank">
 [%-   END -%]

@@ -46,7 +46,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::System;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;

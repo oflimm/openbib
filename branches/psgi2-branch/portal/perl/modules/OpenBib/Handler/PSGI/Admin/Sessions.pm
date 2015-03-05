@@ -47,7 +47,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -151,8 +150,6 @@ sub show_active_record {
         return $self->print_authorization_error();
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $thissession = $session->{schema}->resultset('Sessioninfo')->search_rs(
         {
             id => $sid,
@@ -233,7 +230,6 @@ sub show_active_record {
     };
     
     my $ttdata={
-        dbinfo      => $dbinfotable,
         thissession => $singlesession,
         queries     => \@queries,
         events      => \@events,

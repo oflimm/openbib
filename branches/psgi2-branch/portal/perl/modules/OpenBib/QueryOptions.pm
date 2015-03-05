@@ -62,7 +62,6 @@ sub new {
     bless ($self, $class);
 
     $self->connectDB();
-    $self->connectMemcached();
     
     $self->{_altered} = 0;
 
@@ -353,29 +352,6 @@ sub connectDB {
     }
 
     return $self;
-}
-
-sub connectMemcached {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config  = OpenBib::Config->instance;
-
-    if (!exists $config->{memcached}){
-      $logger->debug("No memcached configured");
-      return;
-    }
-
-    # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached($config->{memcached});
-
-    if (!$self->{memc}->set('isalive',1)){
-        $logger->fatal("Unable to connect to memcached");
-    }
-
-    return;
 }
 
 1;

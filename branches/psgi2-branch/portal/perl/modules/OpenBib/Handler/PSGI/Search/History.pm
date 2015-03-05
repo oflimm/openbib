@@ -104,8 +104,6 @@ sub show {
 
     my $database     = $query->param('db')     || '';
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my @queryids     = ();
     my @querystrings = ();
     my @queryhits    = ();
@@ -118,7 +116,6 @@ sub show {
     my $ttdata={
         queryid    => $queryid,
 
-        dbinfo     => $dbinfotable,
         qopts      => $queryoptions->get_options,
         queryoptions => $queryoptions,
         

@@ -46,7 +46,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -104,8 +103,6 @@ sub show_record {
         return $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
@@ -117,7 +114,6 @@ sub show_record {
         allrssfeeds  => $all_rssfeeds_ref,
         viewrssfeed  => $viewrssfeed_ref,
 
-        dbinfo     => $dbinfotable,
     };
     
     return $self->print_page($config->{tt_admin_views_rss_record_tname},$ttdata);
@@ -153,8 +149,6 @@ sub show_record_form {
         return $self->print_warning($msg->maketext("Es existiert kein View unter diesem Namen"));
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
@@ -166,7 +160,6 @@ sub show_record_form {
         allrssfeeds  => $all_rssfeeds_ref,
         viewrssfeed  => $viewrssfeed_ref,
 
-        dbinfo     => $dbinfotable,
     };
 
     return $self->print_page($config->{tt_admin_views_rss_record_edit_tname},$ttdata);

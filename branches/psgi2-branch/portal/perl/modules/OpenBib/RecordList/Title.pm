@@ -42,8 +42,6 @@ use XML::RSS;
 use YAML ();
 
 use OpenBib::Common::Util;
-use OpenBib::Config::CirculationInfoTable;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 

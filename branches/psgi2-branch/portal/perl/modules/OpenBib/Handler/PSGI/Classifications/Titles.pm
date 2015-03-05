@@ -48,8 +48,6 @@ use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Catalog::Factory;
 use OpenBib::Config;
-use OpenBib::Config::CirculationInfoTable;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::Catalog;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;

@@ -79,7 +79,7 @@
 
 <div class="ym-fbox-text">
 <label>[% msg.maketext("Kataloge") %]</label>
-<ul>[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]<li>[% dbinfo.dbnames.${dbname}.short %]</li>[% END %]</ul>
+<ul>[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]<li>[% dbinfo.get('dbnames').${dbname}.short %]</li>[% END %]</ul>
 </div>
 
 <div class="ym-fbox-button">

@@ -47,7 +47,6 @@ use URI::Escape;
 use XML::RSS;
 
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::User;
 

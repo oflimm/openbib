@@ -334,7 +334,7 @@ sub show_record {
         $atime=new Benchmark;
     }
     
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
     my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
     my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
     
@@ -383,17 +383,17 @@ sub show_record {
 
         # Anreicherung mit OLWS-Daten
         if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){
-            if (exists $circinfotable->{$database} && exists $circinfotable->{$database}{circcheckurl}){
-                $logger->debug("Endpoint: ".$circinfotable->{$database}{circcheckurl});
+            if (exists $circinfotable->get($database) && exists $circinfotable->get($database)->{circcheckurl}){
+                $logger->debug("Endpoint: ".$circinfotable->get($database)->{circcheckurl});
                 my $soapresult;
                 eval {
                     my $soap = SOAP::Lite
                         -> uri("urn:/Viewer")
-                            -> proxy($circinfotable->{$database}{circcheckurl});
+                            -> proxy($circinfotable->get($database)->{circcheckurl});
                 
                     my $result = $soap->get_item_info(
                         SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                            SOAP::Data->name(collection => $circinfotable->{$database}{circdb})->type('string'),
+                            SOAP::Data->name(collection => $circinfotable->get($database)->{circdb})->type('string'),
                             SOAP::Data->name(item       => $titleid)->type('string'))));
                     
                     unless ($result->fault) {

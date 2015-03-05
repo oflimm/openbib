@@ -2,7 +2,7 @@
 #
 #  OpenBib::Enrichment
 #
-#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -130,7 +130,7 @@ sub get_enriched_content {
     my $titles;
     
     if ($isbn){
-        $titles = $self->{schema}->resultset('EnrichedContentByIsbn')->search(
+        $titles = $self->get_schema->resultset('EnrichedContentByIsbn')->search(
             {
                 isbn => $isbn,
             },
@@ -143,7 +143,7 @@ sub get_enriched_content {
         );
     }
     elsif ($issn){
-        $titles = $self->{schema}->resultset('EnrichedContentByIsbn')->search(
+        $titles = $self->get_schema->resultset('EnrichedContentByIsbn')->search(
             {
                 issn => $issn,
             },
@@ -281,7 +281,7 @@ sub check_availability_by_isbn {
         # Normierung auf ISBN13
         my $isbn13 = OpenBib::Common::Util::to_isbn13($isbn);
 
-        my $title_count = $self->{schema}->resultset('AllTitleByIsbn')->search_rs(
+        my $title_count = $self->get_schema->resultset('AllTitleByIsbn')->search_rs(
             {
                 isbn => $isbn13,
                 -or => $dbname_args,
@@ -498,6 +498,18 @@ sub get_common_holdings {
     return $common_holdings_ref;
 }
 
+sub get_schema {
+    my $self = shift;
+
+    if (defined $self->{schema}){
+        return $self->{schema};
+    }
+
+    $self->connectDB;
+
+    return $self->{schema};
+}
+
 sub connectDB {
     my $self = shift;
     my $arg_ref = shift;
@@ -543,7 +555,7 @@ sub connectDB {
 
 }
 
-sub DESTROY {
+sub disconnectDB {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -558,6 +570,14 @@ sub DESTROY {
             $logger->error($@);
         }
     }
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
 
     return;
 }

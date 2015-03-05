@@ -58,8 +58,8 @@
 [%- END %]
      <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book"/>
      <dc:type>text</dc:type>
-[% IF dbinfo.locationid.${record.database} %]
-     <libris:held_by rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.locationid.${record.database} %]"/>
+[% IF dbinfo.get('locationid').${record.database} %]
+     <libris:held_by rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %]"/>
 [% END %]
      <rdfs:isDefinedBy rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].rdf"/>
 [%- FOREACH similar_record IN similar_records.get_records %]

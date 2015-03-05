@@ -42,7 +42,6 @@ use YAML::Syck;
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
@@ -87,8 +86,6 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $client_ip="";
     
@@ -137,8 +134,6 @@ sub show_collection_by_isbn {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $client_ip="";
     
@@ -211,7 +206,6 @@ sub show_collection_by_isbn {
 
     my $ttdata = {
         error                => $error,
-        dbinfo               => $dbinfotable,
         key                  => $id,
         available_recordlist => $recordlist,
     };
@@ -240,8 +234,6 @@ sub show_collection_by_bibkey {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $client_ip="";
     
@@ -336,7 +328,6 @@ sub show_collection_by_bibkey {
     $logger->debug("Enrich: $isbn -> $reqstring");
     
     my $ttdata = {
-        dbinfo               => $dbinfotable,
         have_bibkey          => 1,
         key                  => $id,
         available_recordlist => $recordlist,

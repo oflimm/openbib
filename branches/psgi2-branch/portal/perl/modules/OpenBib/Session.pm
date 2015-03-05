@@ -31,6 +31,7 @@ no warnings 'redefine';
 use utf8;
 
 use CGI::Cookie;
+use Cache::Memcached::libmemcached;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Benchmark ':hireswallclock';
 use Digest::MD5;
@@ -106,7 +107,7 @@ sub new {
     }
     
     if ($self->{ID} && !$self->{sid}){
-        my $search_sid = $self->{schema}->resultset('Sessioninfo')->single(
+        my $search_sid = $self->get_schema->resultset('Sessioninfo')->single(
             {
                 sessionid => $self->{ID},
             }
@@ -154,7 +155,7 @@ sub _init_new_session {
             $logger->info("Total time for stage 1 is ".timestr($timeall));
         }
 
-        my $anzahl=$self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $sessionID })->count;
+        my $anzahl=$self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $sessionID })->count;
 
         if ($config->{benchmark}) {
             $btime=new Benchmark;
@@ -170,7 +171,7 @@ sub _init_new_session {
 
             my $queryoptions = OpenBib::QueryOptions->get_session_defaults;
 
-            my $new_session = $self->{schema}->resultset('Sessioninfo')->create(
+            my $new_session = $self->get_schema->resultset('Sessioninfo')->create(
                 {
                     sessionid    => $sessionID,
                     createtime   => $createtime,
@@ -258,7 +259,7 @@ sub is_valid {
         return 1;
     }
 
-    my $anzahl = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->count;
+    my $anzahl = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->count;
 
     if ($anzahl == 1) {
         return 1;
@@ -276,7 +277,7 @@ sub get_profile {
     my $prevprofile;
 
     # DBI: "select profile from sessionprofile where sessionid = ?"
-    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} });
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->single({ sessionid => $self->{ID} });
 
     if ($sessioninfo){
         $prevprofile =$sessioninfo->searchprofile;
@@ -291,7 +292,7 @@ sub set_profile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} });
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} });
 
     if ($sessioninfo){
         $sessioninfo->update({ searchprofile => $profileid });
@@ -317,7 +318,7 @@ sub get_resultlists_offsets {
     my $logger = get_logger();
 
     # DBI: "select offset, hits from searchresults where sessionid = ? and queryid = ? and dbname = ? and hitrange = ? order by offset"
-    my $history = $self->{schema}->resultset('Searchhistory')->search_rs(
+    my $history = $self->get_schema->resultset('Searchhistory')->search_rs(
         {
             'sid.sessionid' => $self->{ID},
             'me.queryid'    => $queryid,
@@ -372,7 +373,7 @@ sub get_mask {
     my $logger = get_logger();
 
     # DBI ehemals: "select masktype from sessionmask where sessionid = ?"
-    my $form = $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->first->searchform;
+    my $form = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->first->searchform;
 
     return ($form)?$form:'simple';
 }
@@ -384,7 +385,7 @@ sub set_mask {
     my $logger = get_logger();
 
     # DBI ehemals: "update sessionmask set masktype = ? where sessionid = ?"
-    $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->update({ searchform => $mask });
+    $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->update({ searchform => $mask });
 
     return;
 }
@@ -397,15 +398,15 @@ sub set_dbchoice {
 
     my $config = OpenBib::Config->instance;    
 
-    my $sid             =  $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->id;
+    my $sid             =  $self->get_schema->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->id;
     my $searchprofileid =  $config->get_searchprofile_or_create($db_ref);
     
     # Datenbankverknuepfung zunaechst loeschen
     eval {
-        $self->{schema}->resultset('SessionSearchprofile')->search_rs({ sid => $sid })->delete;
+        $self->get_schema->resultset('SessionSearchprofile')->search_rs({ sid => $sid })->delete;
     };
 
-    $self->{schema}->resultset('SessionSearchprofile')->create(
+    $self->get_schema->resultset('SessionSearchprofile')->create(
         {
             sid             => $sid,
             searchprofileid => $searchprofileid,
@@ -423,7 +424,7 @@ sub get_dbchoice {
 
     my $config = OpenBib::Config->instance;
     
-    my $dbases = $self->{schema}->resultset('SessionSearchprofile')->search_rs(
+    my $dbases = $self->get_schema->resultset('SessionSearchprofile')->search_rs(
         {
             'sid.sessionID' => $self->{ID}
         },
@@ -462,7 +463,7 @@ sub clear_dbchoice {
 
     # Datenbanken zunaechst loeschen
     eval {
-        $self->{schema}->resultset('SessionSearchprofile')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' })->delete;
+        $self->get_schema->resultset('SessionSearchprofile')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' })->delete;
     };
 
     return;
@@ -488,7 +489,7 @@ sub get_number_of_items_in_resultlist {
     my $logger = get_logger();
 
     # DBI: "select count(sessionid) as rowcount from searchresults where sessionid = ?"
-    my $numofresults = $self->{schema}->resultset('Searchhistory')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' })->count;
+    my $numofresults = $self->get_schema->resultset('Searchhistory')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' })->count;
 
     return $numofresults;
 }
@@ -500,7 +501,7 @@ sub get_number_of_queries {
     my $logger = get_logger();
 
     # DBI: "select count(queryid) as rowcount from queries where sessionid = ?
-    my $numofqueries = $self->{schema}->resultset('Query')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
+    my $numofqueries = $self->get_schema->resultset('Query')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
 
     $logger->debug("Found $numofqueries queries in Session $self->{ID}");
     
@@ -529,7 +530,7 @@ sub get_all_searchqueries {
     }
 
     # DBI: "select queryid from queries where sessionid = ? order by queryid DESC "
-    my $searchqueries = $self->{schema}->resultset('Query')->search_rs(
+    my $searchqueries = $self->get_schema->resultset('Query')->search_rs(
         {
             'sid.id' => $thissid,
         },
@@ -566,7 +567,7 @@ sub get_number_of_items_in_collection {
     my $logger = get_logger();
 
     # DBI: "select count(*) as rowcount from treffer where sessionid = ?"
-    my $count = $self->{schema}->resultset('SessionCartitem')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
+    my $count = $self->get_schema->resultset('SessionCartitem')->search_rs({ 'sid.sessionid' => $self->{ID} }, { join => 'sid' } )->count;
 
     return $count;
 }
@@ -579,10 +580,10 @@ sub get_items_in_collection {
     
     my $recordlist = new OpenBib::RecordList::Title();
     
-    return $recordlist if (!defined $self->{schema});
+    return $recordlist if (!defined $self->get_schema);
 
     # DBI: "select dbname,singleidn from treffer where sessionid = ? order by dbname"
-    my $items = $self->{schema}->resultset('SessionCartitem')->search_rs(
+    my $items = $self->get_schema->resultset('SessionCartitem')->search_rs(
         {
             'sid.sessionid' => $self->{ID},
         },
@@ -621,7 +622,7 @@ sub get_single_item_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $cartitem = $self->{schema}->resultset('SessionCartitem')->search_rs(
+    my $cartitem = $self->get_schema->resultset('SessionCartitem')->search_rs(
         {
             'cartitemid.id' => $listid,
             'sid.sessionid'       => $self->{ID},
@@ -670,7 +671,7 @@ sub add_item_to_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('SessionCartitem')->search_rs(
+        my $have_title = $self->get_schema->resultset('SessionCartitem')->search_rs(
             {
                 'sid.id'                   => $self->{sid},
                 'cartitemid.dbname'  => $dbname,
@@ -688,7 +689,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Collection: $cached_title");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Cartitem')->create(
+            $new_title = $self->get_schema->resultset('Cartitem')->create(
                 {
                     dbname     => $dbname,
                     titleid    => $titleid,
@@ -698,7 +699,7 @@ sub add_item_to_collection {
                 }
             );
 
-            $self->{schema}->resultset('SessionCartitem')->create(
+            $self->get_schema->resultset('SessionCartitem')->create(
                 {
                     sid              => $self->{sid},
                     cartitemid => $new_title->id,
@@ -715,7 +716,7 @@ sub add_item_to_collection {
         my $record_json = encode_json $record;
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('SessionCartitem')->search_rs(
+        my $have_title = $self->get_schema->resultset('SessionCartitem')->search_rs(
             {
                 'sid.id'                      => $self->{sid},
                 'cartitemid.titlecache' => $record_json,
@@ -729,7 +730,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Collection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Cartitem')->create(
+            $new_title = $self->get_schema->resultset('Cartitem')->create(
                 {
                     titleid    => 0,
                     dbname     => '',
@@ -739,7 +740,7 @@ sub add_item_to_collection {
                 }
             );
 
-            $self->{schema}->resultset('SessionCartitem')->create(
+            $self->get_schema->resultset('SessionCartitem')->create(
                 {
                     sid              => $self->{sid},
                     cartitemid => $new_title->id,
@@ -772,7 +773,7 @@ sub update_item_in_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $title = $self->{schema}->resultset('Cartitem')->search_rs(
+        my $title = $self->get_schema->resultset('Cartitem')->search_rs(
             {
                 'session_cartitemids.sessionid'  => $self->{ID},
                 'me.id'                                => $itemid,
@@ -813,7 +814,7 @@ sub delete_item_from_collection {
 
     eval {
         # DBI: "delete from treffer where sessionid = ? and dbname = ? and singleidn = ?"
-        my $item = $self->{schema}->resultset('Cartitem')->search_rs(
+        my $item = $self->get_schema->resultset('Cartitem')->search_rs(
             {
                 'session_cartitems.sid' => $self->{sid},
                 'me.id'                       => $itemid
@@ -867,7 +868,7 @@ sub updatelastresultset {
     my $resultsetstring=encode_json(\@nresultset); #
 
     # DBI: "update session set lastresultset = ? where sessionid = ?"
-    $self->{schema}->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->update({ lastresultset => $resultsetstring });
+    $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->update({ lastresultset => $resultsetstring });
 
     return;
 }
@@ -886,7 +887,7 @@ sub save_eventlog_to_statisticsdb {
     my $view = $self->{view};
 
 #     eval {
-#         $view = $self->{schema}->resultset('Eventlog')->search_rs(
+#         $view = $self->get_schema->resultset('Eventlog')->search_rs(
 #             {
 #                 'sid.sessionid' => $self->{ID},
 #                 'me.type' => 100,
@@ -900,7 +901,7 @@ sub save_eventlog_to_statisticsdb {
 #     };
 
     # Rudimentaere Session-Informationen uebertragen
-    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->search_rs(
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->search_rs(
         {
             sessionid => $self->{ID},
         }
@@ -1028,7 +1029,7 @@ sub clear_data {
     }
     
     # dann Sessiondaten loeschen
-    my $sessioninfo = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
 
     if ($sessioninfo){
         $logger->debug("Trying to clear data for sessionID ".$sessioninfo->sessionid);
@@ -1123,22 +1124,22 @@ sub log_event {
     if (exists $log_only_unique_ref->{$type}){        
         # DBI: "delete from eventlog where sessionid=? and type=? and content=?"
         eval {
-            $self->{schema}->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete_all;
+            $self->get_schema->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete_all;
         };
     }
 
     
     $logger->debug("Getting sid for SessionID ".$self->{ID});
-    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
+    my $sid = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     # DBI: "insert into eventlog values (?,NOW(),?,?)"
     if ($serialize){
         # Backslashes Escapen fuer PostgreSQL!!!
         $contentstring=~s/\\/\\\\/g;
-        $self->{schema}->resultset('Eventlogjson')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
+        $self->get_schema->resultset('Eventlogjson')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
     }
     else {
-        $self->{schema}->resultset('Eventlog')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
+        $self->get_schema->resultset('Eventlog')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
     }
     
     return;
@@ -1171,16 +1172,16 @@ sub log_event {
 #     my $query_obj_string = $searchquery->to_json;
 
 #     # DBI: "select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?"
-#     my $rows = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid' })->count;
+#     my $rows = $self->get_schema->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid' })->count;
 
-#     my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
+#     my $sid = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
 #     # Neuer Query
 #     if ($rows <= 0) {
 #         # Abspeichern des Queries bis auf die Gesamttrefferzahl
 #         # DBI: "insert into queries (queryid,sessionid,query,hitrange,dbases) values (NULL,?,?,?,?)"
         
-#         $self->{schema}->resultset('Query')->insert({ queryid => 'NULL', sid => $sid, query => $query_obj_string, hitrange => $hitrange, dbases => $dbasesstring });
+#         $self->get_schema->resultset('Query')->insert({ queryid => 'NULL', sid => $sid, query => $query_obj_string, hitrange => $hitrange, dbases => $dbasesstring });
 #     }
 #     # Query existiert schon
 #     else {
@@ -1188,7 +1189,7 @@ sub log_event {
 #     }
 
 #     # DBI: "select queryid from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?"
-#     $queryid = $self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid', select => 'me.queryid', as => 'thisqueryid' })->single->get_column('thisqueryid');
+#     $queryid = $self->get_schema->resultset('Query')->search({ 'sid.sessionid' => $self->{ID}, 'me.query' => $query_obj_string, 'me.dbases' => $dbasesstring, 'me.hitrange' => $hitrange },{ join => 'sid', select => 'me.queryid', as => 'thisqueryid' })->single->get_column('thisqueryid');
 
 #     return ($queryalreadyexists,$queryid);
 # }
@@ -1207,7 +1208,7 @@ sub set_hits_of_query {
     my $logger = get_logger();
 
     # DBI: "update queries set hits = ? where queryid = ?"
-    $self->{schema}->resultset('Query')->search({ queryid => $queryid })->update({ hits => $hits });
+    $self->get_schema->resultset('Query')->search({ queryid => $queryid })->update({ hits => $hits });
 
     return;
 }
@@ -1231,7 +1232,7 @@ sub set_all_searchresults {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
+    my $sid = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     foreach my $db (keys %{$results_ref}) {
         my $res=$results_ref->{$db};
@@ -1239,7 +1240,7 @@ sub set_all_searchresults {
         my $storableres= ""; #unpack "H*",Storable::freeze($res);
 
         # DBI: "insert into searchresults values (?,?,0,?,?,?,?)"
-        $self->{schema}->resultset('Searchhistory')->insert(
+        $self->get_schema->resultset('Searchhistory')->insert(
             {
                 sid          => $sid,
                 dbname       => $db,
@@ -1281,11 +1282,11 @@ sub set_searchresult {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
+    my $sid = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     eval {
         # DBI: "delete from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?"
-        $self->{schema}->resultset('Searchhistory')->search(
+        $self->get_schema->resultset('Searchhistory')->search(
             {
                 sid          => $sid,
                 dbname       => $database,
@@ -1305,7 +1306,7 @@ sub set_searchresult {
     my $num=$recordlist->get_size();
 
     # DBI: "insert into searchresults values (?,?,?,?,?,?,?)"
-    $self->{schema}->resultset('Searchhistory')->insert(
+    $self->get_schema->resultset('Searchhistory')->insert(
         {
             sid          => $sid,
             dbname       => $database,
@@ -1339,10 +1340,10 @@ sub get_searchresult {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
+    my $sid = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     # DBI: "select searchresult from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?"
-    my $searchresult = $self->{schema}->resultset('Searchhistory')->search(
+    my $searchresult = $self->get_schema->resultset('Searchhistory')->search(
         {
             sid          => $sid,
             dbname       => $database,
@@ -1372,12 +1373,12 @@ sub get_db_histogram_of_query {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
-    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
+    my $sid = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;
 
     # DBI "select dbname,sum(hits) as hitcount from searchresults where sessionid = ? and queryid = ? group by dbname order by hitcount desc"
-    my $searchresult = $self->{schema}->resultset('Searchhistory')->search(
+    my $searchresult = $self->get_schema->resultset('Searchhistory')->search(
         {
             sid          => $sid,
             queryid      => $queryid,
@@ -1396,7 +1397,7 @@ sub get_db_histogram_of_query {
     foreach my $item ($searchresult->all){
         push @resultdbs, {
             trefferdb     => decode_utf8($item->get_column('thisdbname')),
-            trefferdbdesc => $dbinfotable->{dbnames}{decode_utf8($item->get_column('thisdbname'))},
+            trefferdbdesc => $dbinfotable->get('dbnames')->{decode_utf8($item->get_column('thisdbname'))},
             trefferzahl   => decode_utf8($item->get_column('thiscount')),
         };
         $hitcount+=$item->get_column('thiscount');
@@ -1416,7 +1417,7 @@ sub get_lastresultset {
     # vorausgegangenen Kurztitelliste
 
     # DBI: "select lastresultset from session where sessionid = ?"
-    my $lastresultset = $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->lastresultset;
+    my $lastresultset = $self->get_schema->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->lastresultset;
 
     return $lastresultset;
 }
@@ -1428,7 +1429,7 @@ sub set_user {
     my $logger = get_logger();
 
     # DBI: "update session set benutzernr = ? where sessionID = ?"
-    $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->update({ username => $user });
+    $self->get_schema->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->update({ username => $user });
 
     return;
 }
@@ -1440,7 +1441,7 @@ sub logout_user {
     my $logger = get_logger();
 
     eval {
-        $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID}, username => $user })->delete;
+        $self->get_schema->resultset('Sessioninfo')->search({ sessionid => $self->{ID}, username => $user })->delete;
     };
 
     return;
@@ -1453,7 +1454,7 @@ sub is_authenticated_as {
     my $logger = get_logger();
 
     # DBI: "select count(*) as rowcount from session where benutzernr = ? and sessionid = ?"
-    my $count = $self->{schema}->resultset('Sessioninfo')->search({ sessionid => $self->{ID}, username => $user })->count;
+    my $count = $self->get_schema->resultset('Sessioninfo')->search({ sessionid => $self->{ID}, username => $user })->count;
 
     # Authorized as    : 1
     # not Authorized as: 0
@@ -1467,7 +1468,7 @@ sub get_number_of_all_active_sessions {
     my $logger = get_logger();
 
     # DBI: "select * from session order by createtime"
-    return $self->{schema}->resultset('Sessioninfo')->count;
+    return $self->get_schema->resultset('Sessioninfo')->count;
 }
 
 sub get_info_of_all_active_sessions {
@@ -1483,7 +1484,7 @@ sub get_info_of_all_active_sessions {
     my $logger = get_logger();
 
     # DBI: "select * from session order by createtime"
-    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->search(
+    my $sessioninfos = $self->get_schema->resultset('Sessioninfo')->search(
         undef,
         {
             order_by => 'createtime DESC',
@@ -1499,7 +1500,7 @@ sub get_info_of_all_active_sessions {
         my $singlesessionid = $item->sessionid;
         my $createtime      = $item->createtime;
         my $username        = $item->username;
-        my $numqueries      = $item->queries->count; #$self->{schema}->resultset('Query')->search({ 'sid.sessionid' => $singlesessionid }, { join => 'sid' })->count;
+        my $numqueries      = $item->queries->count; #$self->get_schema->resultset('Query')->search({ 'sid.sessionid' => $singlesessionid }, { join => 'sid' })->count;
 
         if (!$username) {
             $username="Anonym";
@@ -1526,7 +1527,7 @@ sub get_info {
     my $singlesessionid=(defined $sessionid)?$sessionid:$self->{ID};
     
     # DBI: "select * from session where sessionID = ?"
-    my $sessioninfos = $self->{schema}->resultset('Sessioninfo')->single({ sessionid => $singlesessionid });
+    my $sessioninfos = $self->get_schema->resultset('Sessioninfo')->single({ sessionid => $singlesessionid });
 
     my $createtime;
     my $username;
@@ -1593,7 +1594,7 @@ sub get_recently_selected_titles {
     my $logger = get_logger();
 
     # DBI: "select content from eventlog where sessionid=? and type=10 order by tstamp DESC limit $offset,$hitrange"
-    my $lastrecords = $self->{schema}->resultset('Eventlogjson')->search(
+    my $lastrecords = $self->get_schema->resultset('Eventlogjson')->search(
         {
             'sid.sessionid' => $self->{ID},
             'me.type' => 10
@@ -1643,7 +1644,7 @@ sub get_authenticator {
     my $logger = get_logger();
 
     # DBI: select type from user_session,authenticator where user_session.sessionid = ? and user_session.targetid = authenticator.targetid"
-    my $authenticator = $self->{schema}->resultset('Authenticator')->search_rs(
+    my $authenticator = $self->get_schema->resultset('Authenticator')->search_rs(
         {
             'sid.sessionid' => $self->{ID},
         },
@@ -1689,6 +1690,18 @@ sub connectDB {
     return;
 }
 
+sub get_schema {
+    my $self = shift;
+
+    if (defined $self->{schema}){
+        return $self->{schema};
+    }
+
+    $self->connectDB;
+
+    return $self->{schema};
+}
+
 sub disconnectDB {
     my $self = shift;
 
@@ -1730,7 +1743,7 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached($config->{memcached});
+    $self->{memc} = new Cache::Memcached::libmemcached($config->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");

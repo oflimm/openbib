@@ -33,6 +33,7 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
+use Cache::Memcached::libmemcached;
 use DBI;
 use Encode 'decode_utf8';
 use JSON::XS;
@@ -65,6 +66,29 @@ sub connectDB {
 
     return;
 
+}
+
+sub connectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config::File->instance;
+    
+    if (!exists $config->{memcached}){
+        $logger->debug("No memcached configured");
+        return;
+    }
+
+    # Verbindung zu Memchached herstellen
+    $self->{memc} = new Cache::Memcached::libmemcached($config->{memcached});
+
+    if (!$self->{memc}->set('isalive',1)){
+        $logger->fatal("Unable to connect to memcached");
+    }
+
+    return;
 }
 
 sub connectEnrichmentDB {
@@ -350,7 +374,8 @@ sub DESTROY {
 
     if (defined $self->{schema}){
         eval {
-            $self->{schema}->storage->dbh->disconnect;
+            $self->{schema}->sth->finish;
+            $self->{schema}->storage->disconnect;
         };
 
         if ($@){
@@ -360,7 +385,8 @@ sub DESTROY {
 
     if (defined $self->{enrich_schema}){
         eval {
-            $self->{enrich_schema}->storage->dbh->disconnect;
+            $self->{enrich_schema}->sth->finish;
+            $self->{enrich_schema}->storage->disconnect;
         };
         
         if ($@){

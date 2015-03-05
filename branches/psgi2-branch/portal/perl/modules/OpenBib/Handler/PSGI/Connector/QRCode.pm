@@ -43,7 +43,6 @@ use GD::Barcode::QRcode;
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Enrichment;
 use OpenBib::L10N;
 use OpenBib::Search::Util;

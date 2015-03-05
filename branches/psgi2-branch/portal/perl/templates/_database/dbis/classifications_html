@@ -35,7 +35,7 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="#">[% msg.maketext("Fachgruppen") %]</a></li>
-         <li><a href="#" class="lastitem">[% dbinfo.dbnames.${database}.short %]</a></li>
+         <li><a href="#" class="lastitem">[% dbinfo.get('dbnames').${database}.short %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">

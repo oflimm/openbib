@@ -47,7 +47,7 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %].html?l=[% lang %]">Wolken</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% dbinfo.dbnames.${database}.short %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% dbinfo.get('dbnames').${database}.short %]</a></li>
          <li><a href="#" class="lastitem">[% msg.maketext("Personen") %]</a></li>
       </ul>
      </div>

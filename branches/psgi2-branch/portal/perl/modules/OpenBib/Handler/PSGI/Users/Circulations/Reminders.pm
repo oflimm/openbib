@@ -106,19 +106,19 @@ sub show_collection {
     my ($loginname,$password) = $user->get_credentials();
     $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     my $circexlist=undef;
     
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->get_reminders(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username => $loginname)->type('string'),
                 SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;

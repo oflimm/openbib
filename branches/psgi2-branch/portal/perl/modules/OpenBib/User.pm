@@ -31,6 +31,7 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
+use Cache::Memcached::libmemcached;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Digest::MD5;
 use Encode qw(decode_utf8 encode_utf8);
@@ -134,7 +135,7 @@ sub get_credentials {
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
     # DBI: "select username,pin from user where userid = ?"
-    my $credentials = $self->{schema}->resultset('Userinfo')->single(
+    my $credentials = $self->get_schema->resultset('Userinfo')->single(
         {
             id => $thisuserid,
         }
@@ -163,7 +164,7 @@ sub set_credentials {
 
     if ($username){
         # DBI: "update userinfo set pin = ? where username = ?"
-        my $userinfo = $self->{schema}->resultset('Userinfo')->single(
+        my $userinfo = $self->get_schema->resultset('Userinfo')->single(
             {
                 username => $username,
             }
@@ -171,7 +172,7 @@ sub set_credentials {
     }
     elsif ($self->{ID}) {
         # DBI: "update userinfo set pin = ? where id = ?"
-        my $userinfo = $self->{schema}->resultset('Userinfo')->single(
+        my $userinfo = $self->get_schema->resultset('Userinfo')->single(
             {
                 id => $self->{ID},
             }
@@ -192,7 +193,7 @@ sub user_exists {
     my $logger = get_logger();
 
     # DBI: "select count(userid) as rowcount from user where username = ?"
-    my $count = $self->{schema}->resultset('Userinfo')->search({ username => $username})->count;
+    my $count = $self->get_schema->resultset('Userinfo')->search({ username => $username})->count;
     
     return $count;    
 }
@@ -218,7 +219,7 @@ sub add {
     my $logger = get_logger();
 
     # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
-    my $new_user = $self->{schema}->resultset('Userinfo')->create({
+    my $new_user = $self->get_schema->resultset('Userinfo')->create({
         username  => $username,
         password  => $hashed_password,
         email     => $email,
@@ -252,7 +253,7 @@ sub set_password {
     my $logger = get_logger();
 
     # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
-    my $update_user = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $update_user = $self->get_schema->resultset('Userinfo')->search_rs(
         {
             username  => $username,
         }
@@ -289,7 +290,7 @@ sub add_confirmation_request {
     my $registrationid = $md5digest->hexdigest;
 
     # DBI: "insert into userregistration values (?,NULL,?,?)"
-    $self->{schema}->resultset('Registration')->create({
+    $self->get_schema->resultset('Registration')->create({
         id        => $registrationid,
         username  => $username,
         password  => \"crypt('$password', gen_salt('bf'))",
@@ -310,7 +311,7 @@ sub get_confirmation_request {
     my $logger = get_logger();
 
     # DBI: "select * from userregistration where registrationid = ?"
-    my $confirmationinfo = $self->{schema}->resultset('Registration')->single(
+    my $confirmationinfo = $self->get_schema->resultset('Registration')->single(
         {
             id => $registrationid,
         }
@@ -342,7 +343,7 @@ sub clear_confirmation_request {
     my $logger = get_logger();
 
     # DBI: "delete from userregistration where registrationid = ?"
-    my $confirmationinfo = $self->{schema}->resultset('Registration')->search_rs(
+    my $confirmationinfo = $self->get_schema->resultset('Registration')->search_rs(
         {
             id => $registrationid,
         }
@@ -358,7 +359,7 @@ sub get_username {
     my $logger = get_logger();
 
     # DBI: "select username from user where userid = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
@@ -380,7 +381,7 @@ sub get_username_for_userid {
     my $logger = get_logger();
 
     # DBI: "select username from user where userid = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single(
         {
             id => $userid,
         }
@@ -402,7 +403,7 @@ sub get_userid_for_username {
     my $logger = get_logger();
 
     # DBI: "select userid from user where username = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single(
         {
             username => $username,
         }
@@ -426,7 +427,7 @@ sub get_userid_of_session {
     $logger->debug("Getting UserID for SessionID $sessionID");
     
     # DBI: "select userid from user_session where sessionid = ?"
-    my $usersession = $self->{schema}->resultset('UserSession')->search_rs(
+    my $usersession = $self->get_schema->resultset('UserSession')->search_rs(
         {
             'sid.sessionid' => $sessionID,
         },
@@ -458,7 +459,7 @@ sub clear_cached_userdata {
     my $logger = get_logger();
 
     # DBI: "update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?"
-    $self->{schema}->resultset('Userinfo')->single(
+    $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
@@ -491,7 +492,7 @@ sub get_targetdb_of_session {
     my $logger = get_logger();
 
     # DBI: select db from user_session,authenticator where user_session.sessionid = ? and user_session.targetid = authenticator.targetid"
-    my $authenticator = $self->{schema}->resultset('UserSession')->search_rs(
+    my $authenticator = $self->get_schema->resultset('UserSession')->search_rs(
         {
             'sid.sessionid' => $sessionID,
         },
@@ -519,7 +520,7 @@ sub get_targettype_of_session {
     my $logger = get_logger();
 
     # DBI: select type from user_session,authenticator where user_session.sessionid = ? and user_session.targetid = authenticator.targetid"
-    my $authenticator = $self->{schema}->resultset('UserSession')->search_rs(
+    my $authenticator = $self->get_schema->resultset('UserSession')->search_rs(
         {
             'sid.sessionid' => $sessionID,
         },
@@ -546,7 +547,7 @@ sub get_usersearchprofile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $userprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    my $userprofile = $self->get_schema->resultset('UserSearchprofile')->search_rs(
         {
             'me.id'        => $profileid,
             'me.userid'    => $self->{ID},
@@ -583,7 +584,7 @@ sub get_profilename_of_usersearchprofileid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $usersearchprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    my $usersearchprofile = $self->get_schema->resultset('UserSearchprofile')->search_rs(
         {
             id     => $usersearchprofileid,
             userid => $self->{ID},
@@ -607,7 +608,7 @@ sub get_profiledbs_of_usersearchprofileid {
     my $logger = get_logger();
 
     # DBI: "select profildb.dbname as dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname"
-    my $usersearchprofile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    my $usersearchprofile = $self->get_schema->resultset('UserSearchprofile')->search_rs(
         {
             'me.id'        => $usersearchprofileid,
             'me.userid'    => $self->{ID},
@@ -644,7 +645,7 @@ sub get_number_of_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $numofitems = $self->{schema}->resultset('UserCartitem')->search_rs(
+    my $numofitems = $self->get_schema->resultset('UserCartitem')->search_rs(
         {
             'userid.id' => $self->{ID},
         },
@@ -664,7 +665,7 @@ sub get_number_of_tagged_titles {
     my $logger = get_logger();
 
     # DBI: "select count(distinct(titleid)) as rowcount from tittag"
-    my $numoftitles = $self->{schema}->resultset('TitTag')->search(
+    my $numoftitles = $self->get_schema->resultset('TitTag')->search(
         {
             id => { '>' => 0 }, # force Index-Scan
         },
@@ -683,7 +684,7 @@ sub get_number_of_tagging_users {
     my $logger = get_logger();
 
     # DBI: "select count(distinct(username)) as rowcount from tittag"
-    my $numofusers = $self->{schema}->resultset('TitTag')->search(
+    my $numofusers = $self->get_schema->resultset('TitTag')->search(
         {
             id => { '>' => 0 }, # force Index-Scan
         },
@@ -702,7 +703,7 @@ sub get_number_of_tags {
     my $logger = get_logger();
 
     # DBI: "select count(distinct(tagid)) as rowcount from tittag"
-    my $numoftags = $self->{schema}->resultset('TitTag')->search(
+    my $numoftags = $self->get_schema->resultset('TitTag')->search(
         {
             id => { '>' => 0 }, # force Index-Scan
         },
@@ -725,7 +726,7 @@ sub get_name_of_tag {
     my $logger = get_logger();
 
     $logger->debug("Getting Name for Tagid $tagid");
-    my $tag = $self->{schema}->resultset('Tag')->search_rs(
+    my $tag = $self->get_schema->resultset('Tag')->search_rs(
         {
             id => $tagid,
         }
@@ -754,7 +755,7 @@ sub get_id_of_tag {
     return undef if (!defined $tag);
 
     # DBI: "select id from tag where name=?"
-    my $id = $self->{schema}->resultset('Tag')->single(
+    my $id = $self->get_schema->resultset('Tag')->single(
         {
             name => $tag
         }
@@ -810,7 +811,7 @@ sub get_titles_of_tag {
     }
 
     # DBI: "select count(distinct titleid,dbname) as conncount from tittag where tagid=?"
-#    my $hits = $self->{schema}->resultset('TitTag')->search_rs(
+#    my $hits = $self->get_schema->resultset('TitTag')->search_rs(
 #        $where_ref,
 #        $attribute_ref
 #    )->count;
@@ -840,7 +841,7 @@ sub get_titles_of_tag {
     }
 
     # DBI: "select count(distinct titleid,dbname) as conncount from tittag where tagid=?"
-    my $hits = $self->{schema}->resultset('TitTag')->search_rs(
+    my $hits = $self->get_schema->resultset('TitTag')->search_rs(
         $where_ref,
         $attribute_ref
     )->count;
@@ -880,7 +881,7 @@ sub get_titles_of_tag {
     }
     
     # DBI: "select distinct titleid,dbname from tittag where tagid=?";
-    my $tagged_titles = $self->{schema}->resultset('TitTag')->search_rs(
+    my $tagged_titles = $self->get_schema->resultset('TitTag')->search_rs(
         $where_ref,
         $attribute_ref
     );
@@ -901,7 +902,7 @@ sub get_number_of_users {
     my $logger = get_logger();
 
     # DBI: "select count(userid) as rowcount from userinfo"
-    my $numofusers = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $numofusers = $self->get_schema->resultset('Userinfo')->search_rs(
         {
             id => { '>' => 0 }, # force Index-Scan
         }
@@ -917,7 +918,7 @@ sub get_number_of_dbprofiles {
     my $logger = get_logger();
 
     # DBI "select count(profilid) as rowcount from user_profile"
-    my $numofprofiles = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    my $numofprofiles = $self->get_schema->resultset('UserSearchprofile')->search_rs(
         {
             id => { '>' => 0 }, # force Index-Scan
         }
@@ -933,7 +934,7 @@ sub get_number_of_collections {
     my $logger = get_logger();
 
     # DBI: "select count(distinct(userid)) as rowcount from collection"
-    my $numofcollections = $self->{schema}->resultset('UserCartitem')->search_rs(
+    my $numofcollections = $self->get_schema->resultset('UserCartitem')->search_rs(
         {
             id => { '>' => 0 }, # force Index-Scan
         },
@@ -952,7 +953,7 @@ sub get_number_of_collection_entries {
     my $logger = get_logger();
 
     # DBI: "select count(userid) as rowcount from collection"
-    my $numofentries = $self->{schema}->resultset('UserCartitem')->search_rs(
+    my $numofentries = $self->get_schema->resultset('UserCartitem')->search_rs(
         {
             id => { '>' => 0 }, # force Index-Scan
         },
@@ -968,7 +969,7 @@ sub get_all_profiles {
     my $logger = get_logger();
 
     # DBI: "select profilid, profilename from userdbprofile where userid = ? order by profilename"
-    my $userprofiles = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    my $userprofiles = $self->get_schema->resultset('UserSearchprofile')->search_rs(
         {
             userid => $self->{ID},
         },
@@ -997,7 +998,7 @@ sub get_all_searchprofiles {
     my $logger = get_logger();
 
     # DBI: "select profilid, profilename from userdbprofile where userid = ? order by profilename"
-    my $userprofiles = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    my $userprofiles = $self->get_schema->resultset('UserSearchprofile')->search_rs(
         {
             userid => $self->{ID},
         },
@@ -1033,7 +1034,7 @@ sub authenticate_self_user {
     my $logger = get_logger();
 
     # DBI: "select userid from user where username = ? and password = ?"
-    my $authentication = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $authentication = $self->get_schema->resultset('Userinfo')->search_rs(
         {
             username  => $username,
         },
@@ -1088,7 +1089,7 @@ sub add_tags {
         });
 
         # DBI: "select id from tags where tag = ?"
-        my $tag = $self->{schema}->resultset('Tag')->search_rs(
+        my $tag = $self->get_schema->resultset('Tag')->search_rs(
             {
                 name => $tagname,
             }
@@ -1116,7 +1117,7 @@ sub add_tags {
             $logger->debug("Tag $tagname noch nicht verhanden");
 
             # DBI: "insert into tags (tag) values (?)"
-            my $new_tag = $self->{schema}->resultset('Tag')->create({ name => encode_utf8($tagname) });
+            my $new_tag = $self->get_schema->resultset('Tag')->create({ name => encode_utf8($tagname) });
 
             # DBI: "select id from tags where tag = ?"
             #      "insert into tittag (tagid,titleid,titisbn,dbname,username,type) values (?,?,?,?,?,?)"
@@ -1262,7 +1263,7 @@ sub rename_tag {
     #     ersetzen
 
     # DBI: "select id from tag where name = ?"
-    my $tag_old = $self->{schema}->resultset('Tag')->single(
+    my $tag_old = $self->get_schema->resultset('Tag')->single(
         {
             name => $from,
         }
@@ -1280,7 +1281,7 @@ sub rename_tag {
     }
 
     # DBI: "select id from tag where name = ?"
-    my $tag_new = $self->{schema}->resultset('Tag')->single(
+    my $tag_new = $self->get_schema->resultset('Tag')->single(
         {
             name => $to,
         }
@@ -1293,7 +1294,7 @@ sub rename_tag {
         $logger->debug("Tag $to noch nicht verhanden");
         # DBI: "insert into tag (name) values (?)"
         #      "select id from tag where name = ?"
-        my $created_tag = $self->{schema}->resultset('Tag')->create(
+        my $created_tag = $self->get_schema->resultset('Tag')->create(
             {
                 name => $to,
             }
@@ -1305,7 +1306,7 @@ sub rename_tag {
         
     if ($fromid && $toid){
         # DBI: "update tit_tag set tagid = ? where tagid = ? and userid = ?"
-        $self->{schema}->resultset('TitTag')->search_rs(
+        $self->get_schema->resultset('TitTag')->search_rs(
             {
                 tagid  => $fromid,
                 userid => $userid,
@@ -1347,7 +1348,7 @@ sub del_tags {
     if ($tags){
         foreach my $tag (split("\\s+",$tags)){
             # DBI: "delete from tit_tag where titleid=? and dbname=? and userid=? and tagid=?"
-            $self->{schema}->resultset('TitTag')->search_rs(
+            $self->get_schema->resultset('TitTag')->search_rs(
                 {
                     'me.titleid'      => $titleid,
                     'me.dbname'       => $dbname,
@@ -1363,7 +1364,7 @@ sub del_tags {
     }
     elsif ($tagid){
         # DBI: "delete from tit_tag where titleid=? and dbname=? and userid=? and tagid=?"
-        $self->{schema}->resultset('TitTag')->search_rs(
+        $self->get_schema->resultset('TitTag')->search_rs(
             {
                 'me.titleid'      => $titleid,
                 'me.dbname'       => $dbname,
@@ -1378,7 +1379,7 @@ sub del_tags {
     }
     else {
         # DBI: "delete from tittag where titleid=? and dbname=? and userid=?"
-        $self->{schema}->resultset('TitTag')->search_rs(
+        $self->get_schema->resultset('TitTag')->search_rs(
             {
                 'me.titleid'      => $titleid,
                 'me.dbname'       => $dbname,
@@ -1410,7 +1411,7 @@ sub del_tag {
     if ($tagid && $userid){
         # DBI: "delete from tit_tag where titleid=? and dbname=? and userid=? and tagid=?"
         eval {
-            $self->{schema}->resultset('TitTag')->single(
+            $self->get_schema->resultset('TitTag')->single(
                 {
                     id     => $tagid,
                     userid => $userid,
@@ -1437,7 +1438,7 @@ sub get_all_tags_of_db {
     my $logger = get_logger();
 
     # DBI: "select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where tt.dbname=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.name"
-    my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
+    my $tittags = $self->get_schema->resultset('TitTag')->search_rs(
         {
             'me.dbname' => $dbname,
             'me.type'   => 1,
@@ -1501,7 +1502,7 @@ sub get_all_tags_of_tit {
     }
     
     # DBI: "select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where tt.titleid=? and tt.dbname=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.name") or $logger->error($DBI::errstr);
-    my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
+    my $tittags = $self->get_schema->resultset('TitTag')->search_rs(
         {
             'me.titleid' => $titleid,
             'me.dbname'  => $dbname,
@@ -1566,7 +1567,7 @@ sub get_private_tags_of_tit {
     my $logger = get_logger();
 
     # DBI: "select t.id,t.name,tt.type from tag as t,tit_tag as tt where tt.userid=? and tt.titleid=? and tt.dbname=? and tt.tagid = t.id"
-    my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
+    my $tittags = $self->get_schema->resultset('TitTag')->search_rs(
         {
             'me.titleid'  => $titleid,
             'me.dbname'   => $dbname,
@@ -1660,7 +1661,7 @@ sub get_private_tags {
     }
 
     # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
-    my $tags = $self->{schema}->resultset('TitTag')->search(
+    my $tags = $self->get_schema->resultset('TitTag')->search(
         {
             'userid'   => $userid,
         },
@@ -1723,7 +1724,7 @@ sub get_private_tags_by_name {
     };
     
     # DBI: "select t.name, t.id, count(tt.tagid) as tagcount from tag as t, tit_tag as tt where t.id=tt.tagid and tt.userid=? group by tt.tagid order by t.name"
-    my $numoftags = $self->{schema}->resultset('TitTag')->search_rs(
+    my $numoftags = $self->get_schema->resultset('TitTag')->search_rs(
         {
             'userid.id' => $userid,
         },
@@ -1747,7 +1748,7 @@ sub get_private_tags_by_name {
         $attribute_ref->{order_by}   = "tagid.name ASC";
     }
 
-    my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
+    my $tittags = $self->get_schema->resultset('TitTag')->search_rs(
         {
             'userid.id' => $userid,
         },
@@ -1798,7 +1799,7 @@ sub get_private_tagged_titles {
     $logger->debug("username: $username");
 
     # DBI: "select t.name, tt.titleid, tt.dbname, tt.type from tag as t, tit_tag as tt where t.id=tt.tagid and tt.userid=? group by tt.tagid order by t.name"
-    my $tittags = $self->{schema}->resultset('TitTag')->search_rs(
+    my $tittags = $self->get_schema->resultset('TitTag')->search_rs(
         {
             'userid.username' => $username,
         },
@@ -1853,7 +1854,7 @@ sub get_recent_tags {
     
     if ($database){
         # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.dbname= ? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count"
-        my $tags = $self->{schema}->resultset('TitTag')->search(
+        my $tags = $self->get_schema->resultset('TitTag')->search(
             {
                 'me.type'   => 1,
                 'me.dbname' => $database,
@@ -1882,7 +1883,7 @@ sub get_recent_tags {
     }
     else {
         # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
-        my $tags = $self->{schema}->resultset('TitTag')->search(
+        my $tags = $self->get_schema->resultset('TitTag')->search(
             {
                 'me.type'   => 1,
             },
@@ -1928,7 +1929,7 @@ sub get_recent_tags_by_name {
     my $tags_ref = [];
     
     # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
-    my $tags = $self->{schema}->resultset('Tag')->search(
+    my $tags = $self->get_schema->resultset('Tag')->search(
         {
             'tit_tags.type'   => 1,
         },
@@ -1943,7 +1944,7 @@ sub get_recent_tags_by_name {
         }
     );
 
-    my $numoftags = $self->{schema}->resultset('Tag')->search(
+    my $numoftags = $self->get_schema->resultset('Tag')->search(
         {
             'tit_tags.type'   => 1,
         },
@@ -1995,7 +1996,7 @@ sub obsolete_get_recent_tags_by_name {
 
     my $tags_ref = [];
 
-    my $tittag = $self->{schema}->resultset('TitTag');
+    my $tittag = $self->get_schema->resultset('TitTag');
 
     my $tags_rs = $tittag->search_rs(
         {
@@ -2009,7 +2010,7 @@ sub obsolete_get_recent_tags_by_name {
         }
     );
 
-    my $numoftags = $self->{schema}->resultset('Tag')->search(
+    my $numoftags = $self->get_schema->resultset('Tag')->search(
         {
             'tit_tags.type'   => 1,
         },
@@ -2074,7 +2075,7 @@ sub get_public_tags {
     my $tags_ref = [];
     
     # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
-    my $tags = $self->{schema}->resultset('TitTag')->search(
+    my $tags = $self->get_schema->resultset('TitTag')->search(
         {
             'type'   => 1,
         },
@@ -2129,7 +2130,7 @@ sub get_public_tags_by_name {
     my $tags_ref = [];
     
     # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
-    my $tags = $self->{schema}->resultset('Tag')->search(
+    my $tags = $self->get_schema->resultset('Tag')->search(
         {
             'tit_tags.type'   => 1,
         },
@@ -2144,7 +2145,7 @@ sub get_public_tags_by_name {
         }
     );
 
-    my $numoftags = $self->{schema}->resultset('Tag')->search(
+    my $numoftags = $self->get_schema->resultset('Tag')->search(
         {
             'tit_tags.type'   => 1,
         },
@@ -2184,7 +2185,7 @@ sub get_number_of_public_tags {
     my $logger = get_logger();
 
     # DBI: "select count(distinct(titleid)) as rowcount from tittag"
-    my $numoftitles = $self->{schema}->resultset('TitTag')->search(
+    my $numoftitles = $self->get_schema->resultset('TitTag')->search(
         {
             type => 1,
         },
@@ -2207,7 +2208,7 @@ sub get_number_of_private_tags {
     my $logger = get_logger();
 
     # DBI: "select count(distinct(titleid)) as rowcount from tittag"
-    my $numoftitles = $self->{schema}->resultset('TitTag')->search(
+    my $numoftitles = $self->get_schema->resultset('TitTag')->search(
         {
             userid => $userid,
         },
@@ -2223,7 +2224,7 @@ sub get_number_of_public_tags_by_name {
     my $logger = get_logger();
 
     # DBI: "select count(distinct(titleid)) as rowcount from tittag"
-    my $numoftitles = $self->{schema}->resultset('TitTag')->search(
+    my $numoftitles = $self->get_schema->resultset('TitTag')->search(
         {
             'me.type' => 1,
             'tagid.name' => $tagname,
@@ -2257,7 +2258,7 @@ sub vote_for_review {
     $rating   =~s/[^0-9]//g;
     
     # DBI: "select reviewid from reviewrating where userid = ? and reviewid=?"
-    my $reviewrating = $self->{schema}->resultset('Reviewrating')->search_rs(
+    my $reviewrating = $self->get_schema->resultset('Reviewrating')->search_rs(
         {
             userid   => $self->get_userid_for_username($username),
             reviewid => $reviewid,
@@ -2269,7 +2270,7 @@ sub vote_for_review {
     }
     else {
         # DBI: "insert into reviewrating (reviewid,userid,rating) values (?,?,?)"
-        $self->{schema}->resultset('Reviewrating')->create(
+        $self->get_schema->resultset('Reviewrating')->create(
             {
                 reviewid => $reviewid,
                 userid   => $self->get_userid_for_username($username),
@@ -2295,7 +2296,7 @@ sub get_review_properties {
     return {} if (!$reviewid);
 
     # DBI: "select * from review where id = ?"
-    my $review = $self->{schema}->resultset('Review')->single({
+    my $review = $self->get_schema->resultset('Review')->single({
         id => $reviewid,
     });
     
@@ -2379,7 +2380,7 @@ sub add_review {
     $nickname   =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
 
     # DBI: "select id from review where userid = ? and titleid=? and dbname=?"
-    my $review = $self->{schema}->resultset('Review')->search_rs(
+    my $review = $self->get_schema->resultset('Review')->search_rs(
         {
             userid => $self->get_userid_for_username($username),
             titleid => $titleid,
@@ -2402,7 +2403,7 @@ sub add_review {
     }
     else {
         # DBI: "insert into review (titleid,titleisbn,dbname,userid,nickname,title,review,rating) values (?,?,?,?,?,?,?,?)"
-        $self->{schema}->create(
+        $self->get_schema->create(
             {
                 titleid    => $titleid,
                 dbname     => $dbname,
@@ -2435,7 +2436,7 @@ sub get_reviews_of_tit {
     my $logger = get_logger();
 
     # DBI: "select id,nickname,userid,title,review,rating from review where titleid=? and dbname=?"
-    my $reviews = $self->{schema}->resultset('Review')->search_rs(
+    my $reviews = $self->get_schema->resultset('Review')->search_rs(
         {
             titleid => $titleid,
             dbname  => $dbname,
@@ -2454,7 +2455,7 @@ sub get_reviews_of_tit {
         my $rating    = $review->rating;
 
         # DBI: "select count(id) as votecount from reviewrating where reviewid=?  group by id"
-        my $votecount = $self->{schema}->resultset('Reviewrating')->search_rs(
+        my $votecount = $self->get_schema->resultset('Reviewrating')->search_rs(
             {
                 reviewid => $review->id,
             },
@@ -2467,7 +2468,7 @@ sub get_reviews_of_tit {
         
         if ($votecount){
             # DBI: "select count(id) as posvotecount from reviewrating where reviewid=? and rating > 0 group by id"
-            $posvotecount = $self->{schema}->resultset('Reviewrating')->search_rs(
+            $posvotecount = $self->get_schema->resultset('Reviewrating')->search_rs(
                 {
                     reviewid => $review->id,
                     rating   => { '>' =>  0},
@@ -2513,7 +2514,7 @@ sub tit_reviewed_by_user {
     my $logger = get_logger();
 
     # DBI: "select id from review where titleid=? and dbname=? and userid=?"
-    my $review = $self->{schema}->resultset('Review')->search_rs(
+    my $review = $self->get_schema->resultset('Review')->search_rs(
         {
             titleid => $titleid,
             dbname  => $dbname,
@@ -2544,7 +2545,7 @@ sub get_review_of_user {
     my $logger = get_logger();
 
     # DBI: "select id,titleid,dbname,nickname,userid,title,review,rating from review where id=? and userid=?"
-    my $review = $self->{schema}->resultset('Review')->search_rs(
+    my $review = $self->get_schema->resultset('Review')->search_rs(
         {
             id => $id,
             userid => $self->get_userid_for_username($username),
@@ -2599,7 +2600,7 @@ sub del_review_of_user {
     my $logger = get_logger();
 
     # DBI: "delete from review where id=? and userid=?"
-    $self->{schema}->resultset('Review')->search_rs(
+    $self->get_schema->resultset('Review')->search_rs(
         {
             id     => $id,
             userid => $self->get_userid_for_username($username),
@@ -2621,7 +2622,7 @@ sub get_reviews {
     my $logger = get_logger();
 
     # DBI: "select id,titleid,dbname,nickname,userid,title,review,rating from review where userid=?"
-    my $reviews = $self->{schema}->resultset('Review')->search_rs(
+    my $reviews = $self->get_schema->resultset('Review')->search_rs(
         {
             userid => $self->get_userid_for_username($username),
         }
@@ -2675,7 +2676,7 @@ sub add_litlist {
 
     # Schon vorhanden
     # DBI: "select id from litlist where userid = ? and title = ? and type = ?"
-    my $litlist = $self->{schema}->resultset('Litlist')->search_rs(
+    my $litlist = $self->get_schema->resultset('Litlist')->search_rs(
         {
             userid => $self->{ID},
             title  => $title,
@@ -2689,7 +2690,7 @@ sub add_litlist {
 
     # DBI: "insert into litlist (userid,title,type) values (?,?,?)"
     # DBI: "select id from litlist where userid = ? and title = ? and type = ?"
-    my $new_litlist = $self->{schema}->resultset('Litlist')->create(
+    my $new_litlist = $self->get_schema->resultset('Litlist')->create(
         {
             userid => $self->{ID},
             tstamp => \'NOW()',
@@ -2739,7 +2740,7 @@ sub del_litlist {
 
     return if (!$litlistid);
 
-    my $litlist = $self->{schema}->resultset('Litlist')->search_rs(
+    my $litlist = $self->get_schema->resultset('Litlist')->search_rs(
         {
             id     => $litlistid,
             userid => $self->{ID},
@@ -2785,7 +2786,7 @@ sub change_litlist {
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
     $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
 
-    my $litlist = $self->{schema}->resultset('Litlist')->single(
+    my $litlist = $self->get_schema->resultset('Litlist')->single(
         {
             id     => $litlistid,
         }
@@ -2847,7 +2848,7 @@ sub add_litlistentry {
     
     if ($titleid && $dbname){
         # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
-        my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
+        my $litlistitem = $self->get_schema->resultset('Litlistitem')->search_rs(
             {        
                 litlistid => $litlistid,
                 dbname    => $dbname,
@@ -2862,7 +2863,7 @@ sub add_litlistentry {
         $logger->debug("Caching Bibliographic Data: $cached_title");
 
         # DBI: "insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)"
-        $new_litlistitem = $self->{schema}->resultset('Litlistitem')->create(
+        $new_litlistitem = $self->get_schema->resultset('Litlistitem')->create(
             {
                 litlistid  => $litlistid,
                 dbname     => $dbname,
@@ -2878,7 +2879,7 @@ sub add_litlistentry {
 
         my $record_json = encode_json $record;
         
-        my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
+        my $litlistitem = $self->get_schema->resultset('Litlistitem')->search_rs(
             {        
                 litlistid  => $litlistid,
                 titlecache => $record_json,
@@ -2890,7 +2891,7 @@ sub add_litlistentry {
         $logger->debug("Caching Bibliographic Data: $record_json");
         
         # DBI: "insert into litlistitem (litlistid,titleid,dbname) values (?,?,?)"
-        $new_litlistitem = $self->{schema}->resultset('Litlistitem')->create(
+        $new_litlistitem = $self->get_schema->resultset('Litlistitem')->create(
             {
                 litlistid  => $litlistid,
                 titleid    => 0,
@@ -2931,7 +2932,7 @@ sub update_litlistentry {
     my $logger = get_logger();
 
     # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
-    my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
+    my $litlistitem = $self->get_schema->resultset('Litlistitem')->search_rs(
         {        
             litlistid => $litlistid,
             id        => $itemid,
@@ -2991,7 +2992,7 @@ sub del_litlistentry {
     return if (!$litlistid && !$entryid );
 
     # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
-    my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs({        
+    my $litlistitem = $self->get_schema->resultset('Litlistitem')->search_rs({        
         litlistid => $litlistid,
         id        => $entryid,
     });
@@ -3015,7 +3016,7 @@ sub get_litlists {
     my $litlists_ref = [];
 
     # DBI: "select id from litlist where userid=?"
-    my $litlists = $self->{schema}->resultset('Litlist')->search_rs(
+    my $litlists = $self->get_schema->resultset('Litlist')->search_rs(
         {
             userid => $self->{ID},
         }
@@ -3048,7 +3049,7 @@ sub get_recent_litlists {
     my $litlists;
     
     if ($topicid){
-#        $litlists = $self->{schema}->resultset('Litlist')->search(
+#        $litlists = $self->get_schema->resultset('Litlist')->search(
 #             {
 #                 'topicid.id'  => $topicid,
 #                 'me.type'       => 1,
@@ -3062,7 +3063,7 @@ sub get_recent_litlists {
 #                 join     => [ 'litlist_topics' ],
 #             }
 #         );
-        $litlists = $self->{schema}->resultset('LitlistTopic')->search(
+        $litlists = $self->get_schema->resultset('LitlistTopic')->search(
             {
                 'topicid.id'   => $topicid,
                 'litlistid.type' => 1,
@@ -3077,7 +3078,7 @@ sub get_recent_litlists {
         );
     }
     elsif ($database){
-        $litlists = $self->{schema}->resultset('Litlist')->search(
+        $litlists = $self->get_schema->resultset('Litlist')->search(
             {
                 'type' => 1,
                 'litlistitems.dbname' => $database,
@@ -3093,7 +3094,7 @@ sub get_recent_litlists {
         );
     }
     else {
-        $litlists = $self->{schema}->resultset('Litlist')->search(
+        $litlists = $self->get_schema->resultset('Litlist')->search(
             {
                 'type' => 1,
             },
@@ -3133,7 +3134,7 @@ sub get_number_of_public_litlists {
     my $count;
     
     if ($topicid){
-        $count = $self->{schema}->resultset('Litlist')->search(
+        $count = $self->get_schema->resultset('Litlist')->search(
             {
                 'topicid.id'  => $topicid,
                 'me.type'     => 1,
@@ -3150,7 +3151,7 @@ sub get_number_of_public_litlists {
 #        push @sql_args, $topicid;
     }
     else {
-        $count = $self->{schema}->resultset('Litlist')->search(
+        $count = $self->get_schema->resultset('Litlist')->search(
             {
                 'type' => 1,
             },
@@ -3181,7 +3182,7 @@ sub get_public_litlists {
     my $litlists;
     
     if ($topicid){
-        $litlists = $self->{schema}->resultset('Litlist')->search(
+        $litlists = $self->get_schema->resultset('Litlist')->search(
             {
                 'topicid.id'  => $topicid,
                 'me.type'     => 1,
@@ -3203,7 +3204,7 @@ sub get_public_litlists {
 #        push @sql_args, $topicid;
     }
     else {
-        $litlists = $self->{schema}->resultset('Litlist')->search(
+        $litlists = $self->get_schema->resultset('Litlist')->search(
             {
                 'type' => 1,
             },
@@ -3252,9 +3253,9 @@ sub get_other_litlists {
     # Gleicher Nutzer
     # DBI: "select id,title from litlist where type = 1 and id != ? and userid in () order by title";
 
-    my $inside_same_user = $self->{schema}->resultset('Litlist')->search_rs({ id => $litlistid});
+    my $inside_same_user = $self->get_schema->resultset('Litlist')->search_rs({ id => $litlistid});
     
-    my $same_user = $self->{schema}->resultset('Litlist')->search_rs(
+    my $same_user = $self->get_schema->resultset('Litlist')->search_rs(
         {
             id   => { '!=' => $litlistid },
             type => 1,
@@ -3271,8 +3272,8 @@ sub get_other_litlists {
     # Gleicher Titel
     # DBI: "select distinct b.litlistid from litlistitems as a left join litlistitems as b on a.dbname=b.dbname where a.titleid=b.titleid and a.litlistid=? and b.litlistid!=?";
 
-    my $inside_same_title = $self->{schema}->resultset('Litlistitem')->search_rs({ litlistid => $litlistid});
-    my $same_title = $self->{schema}->resultset('Litlistitem')->search_rs(
+    my $inside_same_title = $self->get_schema->resultset('Litlistitem')->search_rs({ litlistid => $litlistid});
+    my $same_title = $self->get_schema->resultset('Litlistitem')->search_rs(
         {
             'me.litlistid'   => { '!=' => $litlistid },
             'litlistid.type' => 1,
@@ -3316,7 +3317,7 @@ sub get_litlistentries {
     my $logger = get_logger();
 
     # DBI: "select titleid,dbname,tstamp from litlistitem where litlistid=?"
-    my $litlistitems = $self->{schema}->resultset('Litlistitem')->search_rs(
+    my $litlistitems = $self->get_schema->resultset('Litlistitem')->search_rs(
         {
             litlistid => $litlistid,
         }
@@ -3357,7 +3358,7 @@ sub get_single_litlistentry {
     my $logger = get_logger();
 
     # DBI: "select titleid,dbname,tstamp from litlistitem where litlistid=?"
-    my $litlistitem = $self->{schema}->resultset('Litlistitem')->search_rs(
+    my $litlistitem = $self->get_schema->resultset('Litlistitem')->search_rs(
         {
             litlistid => $litlistid,
             id => $itemid,
@@ -3392,7 +3393,7 @@ sub get_number_of_litlistentries {
     my $logger = get_logger();
 
     # DBI: "select count(litlistid) as numofentries from litlistitem where litlistid=?"
-    my $numofentries = $self->{schema}->resultset('Litlistitem')->search(
+    my $numofentries = $self->get_schema->resultset('Litlistitem')->search(
         {
             litlistid => $litlistid,
         }
@@ -3409,14 +3410,14 @@ sub get_number_of_litlists {
     my $logger = get_logger();
 
     # DBI: "select count(id) as numoflitlists from litlist where type = 1"
-    my $public_lists = $self->{schema}->resultset('Litlist')->search(
+    my $public_lists = $self->get_schema->resultset('Litlist')->search(
         {
             type => 1,
         }
     )->count;
     
     # DBI: "select count(id) as numoflitlists from litlists where type = 2"
-    my $private_lists = $self->{schema}->resultset('Litlist')->search(
+    my $private_lists = $self->get_schema->resultset('Litlist')->search(
         {
             type => 2,
         }
@@ -3442,7 +3443,7 @@ sub get_litlist_properties {
     return {} if (!$litlistid);
 
     # DBI: "select * from litlist where id = ?"
-    my $litlist = $self->{schema}->resultset('Litlist')->single(
+    my $litlist = $self->get_schema->resultset('Litlist')->single(
         {
             id => $litlistid,
         }   
@@ -3458,7 +3459,7 @@ sub get_litlist_properties {
     my $itemcount = $self->get_number_of_litlistentries({litlistid => $litlistid});
 
     # DBI: "select s.* from litlist_topic as ls, topic as s where ls.litlistid=? and ls.topicid=s.id"
-    my $topics = $self->{schema}->resultset('LitlistTopic')->search_rs(
+    my $topics = $self->get_schema->resultset('LitlistTopic')->search_rs(
         {
             'litlistid.id' => $litlistid,
         },
@@ -3511,7 +3512,7 @@ sub get_topics {
     my $logger = get_logger();
 
     # DBI: "select * from topics order by name"
-    my $topics = $self->{schema}->resultset('Topic')->search_rs(
+    my $topics = $self->get_schema->resultset('Topic')->search_rs(
         undef,        
         {
             'order_by' => ['name'],
@@ -3543,7 +3544,7 @@ sub get_topics_of_litlist {
   
     my $logger = get_logger();
 
-    my $topics = $self->{schema}->resultset('LitlistTopic')->search_rs(
+    my $topics = $self->get_schema->resultset('LitlistTopic')->search_rs(
         {
             'litlistid.id' => $litlistid,
         },
@@ -3590,7 +3591,7 @@ sub get_classifications_of_topic {
     return [] if (!defined $topicid);
 
     # DBI: "select * from topicclassification where topicid = ? and type = ?"
-    my $classifications = $self->{schema}->resultset('Topicclassification')->search_rs(
+    my $classifications = $self->get_schema->resultset('Topicclassification')->search_rs(
         {
             topicid => $topicid,
             type      => $type,
@@ -3636,7 +3637,7 @@ sub set_classifications_of_topic {
     }
 
     # DBI: "delete from topicclassification where topicid=? and type = ?"
-    my $topicclassifications = $self->{schema}->resultset('Topicclassification')->search_rs(
+    my $topicclassifications = $self->get_schema->resultset('Topicclassification')->search_rs(
         {
             topicid   => $topicid,
             type      => $type,
@@ -3647,7 +3648,7 @@ sub set_classifications_of_topic {
         $logger->debug("Adding Classification $classification of type $type");
         
         # DBI: "insert into topicclassification values (?,?,?);"
-        $self->{schema}->resultset('Topicclassification')->create(
+        $self->get_schema->resultset('Topicclassification')->create(
             {
                 classification => $classification,
                 topicid        => $topicid,
@@ -3675,9 +3676,9 @@ sub get_number_of_litlists_by_topic {
 
     my $count_ref={};
 
-    #    $self->{schema}->storage->debug(1);
+    #    $self->get_schema->storage->debug(1);
     # DBI: "select count(distinct l2s.litlistid) as llcount from litlist_topic as l2s, litlist as l where l2s.litlistid=l.id and l2s.topicid=? and l.type=1 and (select count(li.litlistid) > 0 from litlistitem as li where l2s.litlistid=li.litlistid)"
-    $count_ref->{public} = $self->{schema}->resultset('Litlist')->search(
+    $count_ref->{public} = $self->get_schema->resultset('Litlist')->search(
         {
             'topicid.id'  => $topicid,
             'me.type' => 1,
@@ -3690,7 +3691,7 @@ sub get_number_of_litlists_by_topic {
 
     if ($type eq "all"){
         # "select count(distinct litlistid) as llcount from litlist2topic as l2s where topicid=? and (select count(li.litlistid) > 0 from litlistitems as li where l2s.litlistid=li.litlistid)"
-        $count_ref->{all}=$self->{schema}->resultset('Litlist')->search(
+        $count_ref->{all}=$self->get_schema->resultset('Litlist')->search(
             {
                 'topicid.id'  => $topicid,
             },
@@ -3723,7 +3724,7 @@ sub set_topics_of_litlist {
     my $logger = get_logger();
 
     # DBI: "delete from litlist_topic where litlistid=?"
-    $self->{schema}->resultset('LitlistTopic')->search_rs(
+    $self->get_schema->resultset('LitlistTopic')->search_rs(
         {
             litlistid => $litlistid,
         }   
@@ -3732,7 +3733,7 @@ sub set_topics_of_litlist {
     # DBI: "insert into litlist_topic values (?,?);"
 
     foreach my $topicid (@{$topics_ref}){
-        $self->{schema}->resultset('LitlistTopic')->create(
+        $self->get_schema->resultset('LitlistTopic')->create(
             {
                 litlistid => $litlistid,
                 topicid => $topicid,
@@ -3755,7 +3756,7 @@ sub get_topic {
     my $logger = get_logger();
 
     # DBI: "select * from topic where id = ?"
-    my $topic = $self->{schema}->resultset('Topic')->search_rs(
+    my $topic = $self->get_schema->resultset('Topic')->search_rs(
         {
             id => $id,
         }
@@ -3830,7 +3831,7 @@ sub get_litlists_of_tit {
 
     # DBI: "select ll.* from litlistitem as lli, litlist as ll where ll.id=lli.litlistid and lli.titleid=? and lli.dbname=?") or $logger->error($DBI::errstr);
 
-    my $litlists = $self->{schema}->resultset('Litlistitem')->search_rs(
+    my $litlists = $self->get_schema->resultset('Litlistitem')->search_rs(
         {
             'me.titleid'       => $titleid,
             'me.dbname'        => $dbname,
@@ -3859,7 +3860,7 @@ sub get_single_item_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $cartitem = $self->{schema}->resultset('UserCartitem')->search_rs(
+    my $cartitem = $self->get_schema->resultset('UserCartitem')->search_rs(
         {
             'cartitemid.id'  => $listid,
             'userid.id'             => $self->{ID},
@@ -3896,7 +3897,7 @@ sub get_items_in_collection {
     my $recordlist = new OpenBib::RecordList::Title();
 
     # DBI: "select * from collection where userid = ? order by dbname"
-    my $cartitems = $self->{schema}->resultset('UserCartitem')->search_rs(
+    my $cartitems = $self->get_schema->resultset('UserCartitem')->search_rs(
         {
             'userid.id' => $self->{ID},
         },
@@ -3960,7 +3961,7 @@ sub add_item_to_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('UserCartitem')->search_rs(
+        my $have_title = $self->get_schema->resultset('UserCartitem')->search_rs(
             {
                 'userid.id'                => $thisuserid,
                 'cartitemid.dbname'  => $dbname,
@@ -3978,7 +3979,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Usercollection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Cartitem')->create(
+            $new_title = $self->get_schema->resultset('Cartitem')->create(
                 {
                     dbname     => $dbname,
                     titleid    => $titleid,
@@ -3988,7 +3989,7 @@ sub add_item_to_collection {
                 }
             );
 
-            $self->{schema}->resultset('UserCartitem')->create(
+            $self->get_schema->resultset('UserCartitem')->create(
                 {
                     userid           => $thisuserid,
                     cartitemid => $new_title->id,
@@ -4002,7 +4003,7 @@ sub add_item_to_collection {
         my $record_json = encode_json $record;
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $have_title = $self->{schema}->resultset('UserCartitem')->search_rs(
+        my $have_title = $self->get_schema->resultset('UserCartitem')->search_rs(
             {
                 'userid.id'                   => $thisuserid,
                 'cartitemid.titlecache' => $record_json,
@@ -4016,7 +4017,7 @@ sub add_item_to_collection {
             $logger->debug("Adding Title to Usercollection: $record_json");
             
             # DBI "insert into treffer values (?,?,?,?)"
-            $new_title = $self->{schema}->resultset('Cartitem')->create(
+            $new_title = $self->get_schema->resultset('Cartitem')->create(
                 {
                     titleid    => '',
                     dbname     => '',
@@ -4026,7 +4027,7 @@ sub add_item_to_collection {
                 }
             );
 
-            $self->{schema}->resultset('UserCartitem')->create(
+            $self->get_schema->resultset('UserCartitem')->create(
                 {
                     userid           => $thisuserid,
                     cartitemid => $new_title->id,
@@ -4062,13 +4063,13 @@ sub move_cartitem_to_user {
 
     if ($itemid){
         eval {
-            $self->{schema}->resultset('UserCartitem')->create(
+            $self->get_schema->resultset('UserCartitem')->create(
                 {
                     userid           => $thisuserid,
                     cartitemid => $itemid,
                 }
             );
-            $self->{schema}->resultset('SessionCartitem')->single(
+            $self->get_schema->resultset('SessionCartitem')->single(
                 {
                     cartitemid => $itemid,
                 }
@@ -4107,7 +4108,7 @@ sub update_item_in_collection {
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
-        my $title = $self->{schema}->resultset('Cartitem')->search_rs(
+        my $title = $self->get_schema->resultset('Cartitem')->search_rs(
             {
                 'user_cartitemids.userid'  => $thisuserid,
                 'me.id'                          => $itemid,
@@ -4149,7 +4150,7 @@ sub delete_item_from_collection {
     
     eval {
         # DBI: "delete from treffer where sessionid = ? and dbname = ? and singleidn = ?"
-        my $item = $self->{schema}->resultset('Cartitem')->search_rs(
+        my $item = $self->get_schema->resultset('Cartitem')->search_rs(
             {
                 'user_cartitems.userid' => $thisuserid,
                 'me.id'                 => $itemid
@@ -4182,7 +4183,7 @@ sub update_user_rights_role {
     my $logger = get_logger();
 
     # DBI: "delete from user_role where userid=?"
-    $self->{schema}->resultset('UserRole')->search_rs(
+    $self->get_schema->resultset('UserRole')->search_rs(
         {
             userid => $userinfo_ref->{id},
         }
@@ -4192,7 +4193,7 @@ sub update_user_rights_role {
         $logger->debug("Adding Role $roleid to user $userinfo_ref->{id}");
 
         # DBI: "insert into user_role values (?,?)"
-        $self->{schema}->resultset('UserRole')->search_rs(
+        $self->get_schema->resultset('UserRole')->search_rs(
             {
                 userid => $userinfo_ref->{id},
             }
@@ -4213,7 +4214,7 @@ sub update_user_rights_template {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('UserTemplate')->search_rs(
+    $self->get_schema->resultset('UserTemplate')->search_rs(
         {
             userid => $userinfo_ref->{id},
         }
@@ -4222,7 +4223,7 @@ sub update_user_rights_template {
     foreach my $templateid (@{$userinfo_ref->{templates}}){
         $logger->debug("Adding Template $templateid to user $userinfo_ref->{id}");
 
-        $self->{schema}->resultset('UserTemplate')->search_rs(
+        $self->get_schema->resultset('UserTemplate')->search_rs(
             {
                 userid => $userinfo_ref->{id},
             }
@@ -4243,7 +4244,7 @@ sub update_user_rights_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('UserView')->search_rs(
+    $self->get_schema->resultset('UserView')->search_rs(
         {
             userid => $userinfo_ref->{id},
         }
@@ -4256,7 +4257,7 @@ sub update_user_rights_view {
 
         next unless ($viewid);
         
-        $self->{schema}->resultset('UserView')->search_rs(
+        $self->get_schema->resultset('UserView')->search_rs(
             {
                 userid => $userinfo_ref->{id},
             }
@@ -4279,7 +4280,7 @@ sub dbprofile_exists {
     my $logger = get_logger();
 
     # DBI: "select profileid,count(profileid) as rowcount from user_profile where userid = ? and profilename = ? group by profileid"
-    my $profile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    my $profile = $self->get_schema->resultset('UserSearchprofile')->search_rs(
         {
             profilename => $profilename,
             userid      => $self->{ID},
@@ -4308,7 +4309,7 @@ sub new_dbprofile {
     my $searchprofileid = $config->get_searchprofile_or_create($databases_ref);
     
     # DBI: "insert into user_profile values (NULL,?,?)"
-    my $new_profile = $self->{schema}->resultset('UserSearchprofile')->create(
+    my $new_profile = $self->get_schema->resultset('UserSearchprofile')->create(
         {
             profilename     => $profilename,
             userid          => $self->{ID},
@@ -4331,7 +4332,7 @@ sub update_dbprofile {
     my $searchprofileid = $config->get_searchprofile_or_create($databases_ref);
 
     # DBI: "insert into user_profile values (NULL,?,?)"
-    my $profile = $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    my $profile = $self->get_schema->resultset('UserSearchprofile')->search_rs(
         {
             userid           => $self->{ID},
             id               => $profileid,
@@ -4360,7 +4361,7 @@ sub delete_dbprofile {
     my $logger = get_logger();
 
     # DBI: "delete from user_profile where userid = ? and profileid = ?"
-    $self->{schema}->resultset('UserSearchprofile')->search_rs(
+    $self->get_schema->resultset('UserSearchprofile')->search_rs(
         {
             id     => $profileid,
             userid => $self->{ID},
@@ -4377,7 +4378,7 @@ sub wipe_account {
   
     my $logger = get_logger();
 
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single({
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single({
         id => $self->{ID}
     });
 
@@ -4436,7 +4437,7 @@ sub disconnect_session {
   
     my $logger = get_logger();
 
-    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->search_rs(
         {
             id => $self->{ID}
         }
@@ -4475,7 +4476,7 @@ sub connect_session {
     # Es darf keine Session assoziiert sein. Daher stumpf loeschen
 
     # DBI: "delete from user_session where sessionid = ?"
-    $self->{schema}->resultset('UserSession')->search_rs(
+    $self->get_schema->resultset('UserSession')->search_rs(
         {
             'sid.sessionid' => $sessionID,
         },
@@ -4484,10 +4485,10 @@ sub connect_session {
         }
     )->delete;
     
-    my $sid = $self->{schema}->resultset('Sessioninfo')->single({ 'sessionid' => $sessionID })->id;
+    my $sid = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $sessionID })->id;
 
     # DBI: "insert into user_session values (?,?,?)"
-    $self->{schema}->resultset('UserSession')->create(
+    $self->get_schema->resultset('UserSession')->create(
         {
             sid      => $sid,
             userid   => $userid,
@@ -4509,7 +4510,7 @@ sub delete_private_info {
     my $logger = get_logger();
 
     # DBI: "update userinfo set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where id = ?"
-    $self->{schema}->resultset('Userinfo')->single(
+    $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
@@ -4546,7 +4547,7 @@ sub set_private_info {
 
     # DBI: "update userinfo set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where username = ?"
     #      $userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$username
-    $self->{schema}->resultset('Userinfo')->single(
+    $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->get_userid_for_username($username),
         }
@@ -4582,7 +4583,7 @@ sub get_info {
     my $logger = get_logger();
 
     # DBI: "select * from userinfo where id = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single({ id => $self->{ID} });
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single({ id => $self->{ID} });
     
     my $userinfo_ref={};
 
@@ -4616,7 +4617,7 @@ sub get_info {
     # Rollen
 
     # DBI: "select * from role,user_role where user_role.userid = ? and user_role.roleid=role.id"
-    my $userroles = $self->{schema}->resultset('UserRole')->search_rs(
+    my $userroles = $self->get_schema->resultset('UserRole')->search_rs(
         {
             'me.userid' => $self->{ID},
         },
@@ -4633,7 +4634,7 @@ sub get_info {
 
     # Templates
 
-    my $usertemplates = $self->{schema}->resultset('UserTemplate')->search_rs(
+    my $usertemplates = $self->get_schema->resultset('UserTemplate')->search_rs(
         {
             'me.userid' => $self->{ID},
         },
@@ -4661,7 +4662,7 @@ sub get_all_roles {
     $logger->debug("Getting roles");
 
     # DBI: "select * from role"
-    my $roles = $self->{schema}->resultset('Role')->search_rs(undef);
+    my $roles = $self->get_schema->resultset('Role')->search_rs(undef);
 
     my $roles_ref = [];
     foreach my $role ($roles->all){
@@ -4688,7 +4689,7 @@ sub get_roles_of_user {
     $logger->debug("Getting roles");
 
     # DBI: "select role.name from role,user_role where user_role.userid=? and user_role.roleid=role.id"
-    my $userroles = $self->{schema}->resultset('UserRole')->search_rs(
+    my $userroles = $self->get_schema->resultset('UserRole')->search_rs(
         {
             'me.userid' => $self->{ID},
         },
@@ -4721,7 +4722,7 @@ sub get_all_templates {
     $logger->debug("Getting templates");
 
     # DBI: "select * from templateinfo"
-    my $templates = $self->{schema}->resultset('Templateinfo')->search_rs(undef);
+    my $templates = $self->get_schema->resultset('Templateinfo')->search_rs(undef);
 
     my $templates_ref = [];
     foreach my $template ($templates->all){
@@ -4751,7 +4752,7 @@ sub get_templates_of_user {
 
     my $thisuserid = ($userid)?$userid:$self->{ID};
     
-    my $usertemplates = $self->{schema}->resultset('UserTemplate')->search_rs(
+    my $usertemplates = $self->get_schema->resultset('UserTemplate')->search_rs(
         {
             'me.userid' => $thisuserid,
         },
@@ -4771,7 +4772,7 @@ sub has_template {
 
     my $thisuserid = ($userid)?$userid:$self->{ID};
     
-    my $has_template = $self->{schema}->resultset('UserTemplate')->search_rs(
+    my $has_template = $self->get_schema->resultset('UserTemplate')->search_rs(
         {
             'userid'     => $thisuserid,
             'templateid' => $templateid,
@@ -4789,7 +4790,7 @@ sub searchfields_exist {
     my $logger = get_logger();
 
     # DBI: "select count(userid) as rowcount from searchfield where userid = ?"
-    my $have_searchfields = $self->{schema}->resultset('Searchfield')->search_rs(
+    my $have_searchfields = $self->get_schema->resultset('Searchfield')->search_rs(
         {
             userid => $userid,
         }
@@ -4805,14 +4806,14 @@ sub set_default_searchfields {
   
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Searchfield')->search_rs(
+    $self->get_schema->resultset('Searchfield')->search_rs(
         {
             userid => $userid,
         }
     )->delete;
 
     # DBI: "insert into searchfield values (?,?,?)"
-    $self->{schema}->resultset('Searchfield')->populate(
+    $self->get_schema->resultset('Searchfield')->populate(
         [
             {
                 userid      => $userid,
@@ -4897,7 +4898,7 @@ sub get_searchfields {
     my $logger = get_logger();
 
     # DBI: "select * from searchfield where userid = ?") or $logger->error($DBI::errstr);
-    my $searchfields=$self->{schema}->resultset('Searchfield')->search_rs(
+    my $searchfields=$self->get_schema->resultset('Searchfield')->search_rs(
         {
             userid => $self->{ID},
         }
@@ -4922,7 +4923,7 @@ sub set_searchfields {
   
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Searchfield')->search_rs(
+    $self->get_schema->resultset('Searchfield')->search_rs(
         {
             userid => $self->{ID},
         }
@@ -4939,7 +4940,7 @@ sub set_searchfields {
     }
     
     # DBI: "insert into searchfield values (?,?,?)"
-    $self->{schema}->resultset('Searchfield')->populate($searchfields_ref);
+    $self->get_schema->resultset('Searchfield')->populate($searchfields_ref);
     
     return;
 }
@@ -4952,7 +4953,7 @@ sub get_spelling_suggestion {
     my $logger = get_logger();
 
     # DBI: "select * from userinfo where userid = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
@@ -4975,7 +4976,7 @@ sub set_default_spelling_suggestion {
   
     my $logger = get_logger();
 
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
@@ -5006,7 +5007,7 @@ sub set_spelling_suggestion {
   
     my $logger = get_logger();
 
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
@@ -5033,7 +5034,7 @@ sub get_livesearch {
     my $logger = get_logger();
 
     # DBI: "select * from livesearch where userid = ?"
-    my $livesearches=$self->{schema}->resultset('Livesearch')->search_rs(
+    my $livesearches=$self->get_schema->resultset('Livesearch')->search_rs(
         {
             userid => $self->{ID},
         }
@@ -5063,7 +5064,7 @@ sub livesearch_exists {
     my $logger = get_logger();
 
     # DBI: "select count(userid) as rowcount from livesearch where userid = ?"
-    my $have_livesearch = $self->{schema}->resultset('Livesearch')->search_rs(
+    my $have_livesearch = $self->get_schema->resultset('Livesearch')->search_rs(
         {
             userid => $userid,
         }
@@ -5079,14 +5080,14 @@ sub set_default_livesearch {
   
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Livesearch')->search_rs(
+    $self->get_schema->resultset('Livesearch')->search_rs(
         {
             userid => $userid,
         }
     )->delete;
 
     # DBI: "insert into livesearch values (?,?,?)"
-    $self->{schema}->resultset('Livesearch')->populate(
+    $self->get_schema->resultset('Livesearch')->populate(
         [
             {
                 userid      => $userid,
@@ -5132,14 +5133,14 @@ sub set_livesearch {
   
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Livesearch')->search_rs(
+    $self->get_schema->resultset('Livesearch')->search_rs(
         {
             userid => $self->{ID},
         }
     )->delete;
 
     # DBI: "insert into livesearch values (?,?,?)"
-    $self->{schema}->resultset('Livesearch')->populate(
+    $self->get_schema->resultset('Livesearch')->populate(
         [
             {
                 userid      => $self->{ID},
@@ -5173,7 +5174,7 @@ sub get_bibsonomy {
     my $logger = get_logger();
 
     # DBI: "select bibsonomy_sync,bibsonomy_user,bibsonomy_key from userinfo where userid = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->search_rs(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->search_rs(
         {
             id => $self->{ID},
         }
@@ -5209,7 +5210,7 @@ sub set_bibsonomy {
     my $logger = get_logger();
 
     # DBI: "update userinfo set bibsonomy_sync = ?, bibsonomy_user = ?, bibsonomy_key = ? where userid = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->{ID},
         }
@@ -5297,7 +5298,7 @@ sub get_mask {
     
     # Bestimmen des Recherchemasken-Typs
     # DBI: "select masktype from userinfo where id = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single({ id => $thisuserid });
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single({ id => $thisuserid });
 
     my $masktype = "simple";
     
@@ -5315,7 +5316,7 @@ sub set_mask {
     my $logger = get_logger();
 
     # DBI: "update userinfo set masktype = ? where id = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single({ id => $self->{ID} })->update(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single({ id => $self->{ID} })->update(
         {
             masktype => $masktype,
         }
@@ -5334,7 +5335,7 @@ sub get_autocompletion {
     
     # Bestimmen des Recherchemasken-Typs
     # DBI: "select autocompletiontype from userinfo where id = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single({ id => $thisuserid });
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single({ id => $thisuserid });
 
     my $autocompletiontype = "livesearch";
     
@@ -5355,7 +5356,7 @@ sub set_autocompletion {
     
     # Update des Autovervollstaendigung-Typs
     # DBI: "update userinfo set autocompletiontype = ? where id = ?"
-    my $userinfo = $self->{schema}->resultset('Userinfo')->single({ id => $self->{ID} })->update(
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single({ id => $self->{ID} })->update(
         {
             autocompletiontype => $autocompletiontype,
         }
@@ -5378,7 +5379,7 @@ sub is_admin {
     # Sonst: Normale Nutzer mit der der Admin-Role
     
     # DBI: "select count(ur.userid) as rowcount from userrole as ur, role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid"
-    my $count = $self->{schema}->resultset('UserRole')->search(
+    my $count = $self->get_schema->resultset('UserRole')->search(
         {
             'roleid.name' => 'admin',
             'userid.id'   => $self->{ID},
@@ -5402,7 +5403,7 @@ sub has_role {
     my $thisuserid = ($userid)?$userid:$self->{ID};
 
     # DBI: "select count(ur.userid) as rowcount from userrole as ur, role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid"
-    my $count = $self->{schema}->resultset('UserRole')->search(
+    my $count = $self->get_schema->resultset('UserRole')->search(
         {
             'roleid.name' => $role,
             'userid.id'   => $thisuserid,
@@ -5427,7 +5428,7 @@ sub del_topic {
 
     eval {
         # DBI: "delete from topic where id = ?"
-        $self->{schema}->resultset('Topic')->single({id => $id})->delete;
+        $self->get_schema->resultset('Topic')->single({id => $id})->delete;
     };
 
     return;
@@ -5448,7 +5449,7 @@ sub update_topic {
     my $logger = get_logger();
 
     # DBI: "update topic set name = ?, description = ? where id = ?"
-    $self->{schema}->resultset('Topic')->single({id => $id})->update(
+    $self->get_schema->resultset('Topic')->single({id => $id})->update(
         {
             name        => $name,
             description => $description,
@@ -5500,7 +5501,7 @@ sub new_topic {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $have_topic = $self->{schema}->resultset('Topic')->search_rs(
+    my $have_topic = $self->get_schema->resultset('Topic')->search_rs(
         {
             name        => $name,
         }   
@@ -5510,7 +5511,7 @@ sub new_topic {
       return -1;
     }
 
-    $self->{schema}->resultset('Topic')->create(
+    $self->get_schema->resultset('Topic')->create(
         {
             name        => $name,
             description => $description,
@@ -5527,7 +5528,7 @@ sub topic_exists {
     my $logger = get_logger();
 
     # DBI: "select count(*) as rowcount from topics where name = ?"
-    my $have_topic = $self->{schema}->resultset('Topic')->search_rs(
+    my $have_topic = $self->get_schema->resultset('Topic')->search_rs(
         {
             name        => $name,
         }   
@@ -5555,7 +5556,7 @@ sub search {
     my @found_userids = ();
     if ($roleid) {
         # DBI: "select userid from user_role where roleid=?"
-        my $userroles = $self->{schema}->resultset('UserRole')->search(
+        my $userroles = $self->get_schema->resultset('UserRole')->search(
             roleid => $roleid,
         );
         foreach my $userrole ($userroles->all){
@@ -5577,7 +5578,7 @@ sub search {
             $where_ref->{vorname} = $surname;
         }
 
-        my $users = $self->{schema}->resultset('Userinfo')->search($where_ref);
+        my $users = $self->get_schema->resultset('Userinfo')->search($where_ref);
         foreach my $user ($users->all){
             my $userid = $user->get_column('id');
             push @found_userids, $userid;
@@ -5616,7 +5617,7 @@ sub migrate_ugc {
     my $logger = get_logger();
 
     if ($migrate_collections){
-        my $collectionentries = $self->{schema}->resultset('UserCartitem')->search(
+        my $collectionentries = $self->get_schema->resultset('UserCartitem')->search(
             {
                 userid => $olduserid,
             }
@@ -5631,7 +5632,7 @@ sub migrate_ugc {
 
     
     if ($migrate_litlists){
-        my $litlists = $self->{schema}->resultset('Litlist')->search(
+        my $litlists = $self->get_schema->resultset('Litlist')->search(
             {
                 userid => $olduserid,
             }
@@ -5645,7 +5646,7 @@ sub migrate_ugc {
     }
 
     if ($migrate_tags){
-        my $tags = $self->{schema}->resultset('TitTag')->search(
+        my $tags = $self->get_schema->resultset('TitTag')->search(
             {
                 userid => $olduserid,
             }
@@ -5662,6 +5663,18 @@ sub migrate_ugc {
     }
     
     return;
+}
+
+sub get_schema {
+    my $self = shift;
+
+    if (defined $self->{schema}){
+        return $self->{schema};
+    }
+
+    $self->connectDB;
+
+    return $self->{schema};
 }
 
 sub connectDB {
@@ -5731,7 +5744,7 @@ sub connectMemcached {
     }
     
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached($config->{memcached});
+    $self->{memc} = new Cache::Memcached::libmemcached($config->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");

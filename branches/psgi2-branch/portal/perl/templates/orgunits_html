@@ -65,7 +65,7 @@
 <table class="ym-full">
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Nr") %]</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
 [% FOREACH thisorgunit IN orgunits.all %]
-<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('profiles_loc') %]/id/[% profilename %]/[% config.get('orgunits_loc')%]/id/[% thisorgunit.orgunitname %]/edit.html?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('profiles_loc') %]/id/[% profilename %]/[% config.get('orgunits_loc')%]/id/[% thisorgunit.orgunitname %]/edit.html?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td></tr>
 [% END %]
 </table>
 </td></tr>

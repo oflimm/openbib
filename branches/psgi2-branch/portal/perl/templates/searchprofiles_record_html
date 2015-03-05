@@ -65,12 +65,12 @@
 <ul>
 [% databases = {};
    FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) ;
-     dbdesc     = dbinfo.dbnames.${dbname}.short;
+     dbdesc     = dbinfo.get('dbnames').${dbname}.short;
      databases.${dbdesc} = dbname;
    END %]
 [% FOREACH dbdesc IN databases.keys.sort ;
      dbname = databases.${dbdesc} ;
-     locationid = dbinfo.locationid.${dbname};
+     locationid = dbinfo.get('locationid').${dbname};
 %]
 [%   IF locationid %]
 <li><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationid %].html?l=[% lang %]">[% dbdesc %]</a></li>

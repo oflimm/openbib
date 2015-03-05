@@ -30,8 +30,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Class::Singleton);
-
 use Benchmark ':hireswallclock';
 use OpenBib::Schema::System::Singleton;
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -42,7 +40,7 @@ use YAML::Syck;
 
 use OpenBib::Config;
 
-sub _new_instance {
+sub new {
     my ($class) = @_;
 
     # Log4perl logger erzeugen
@@ -52,6 +50,8 @@ sub _new_instance {
 
     bless ($self, $class);
 
+    $self->connectDB;
+    $self->connectMemcached;
     $self->load;
     
     return $self;
@@ -76,12 +76,23 @@ sub load {
         $atime=new Benchmark;
     }
 
-    # Bisherige Belegung loeschen
-    delete $self->{identifier};
-    
-    my $schema = OpenBib::Schema::System::Singleton->instance->get_schema;
+    my $memc_key = "config:locationinfotable";
 
-    my $locinfos = $schema->resultset('Locationinfo')->search_rs(
+    if ($self->{memc}){
+      $self->{circinfo} = $self->{memc}->get($memc_key);
+      
+      $logger->debug("Got locationinfo from memcached");
+      
+      if ($config->{benchmark}) {
+          $btime=new Benchmark;
+          $timeall=timediff($btime,$atime);
+          $logger->info("Total time for is ".timestr($timeall));
+      }
+
+      return $self if ($self->{identifier});
+    }
+    
+    my $locinfos = $self->{schema}->resultset('Locationinfo')->search_rs(
         undef,
         {
             select => ['identifier','description','type'],
@@ -110,6 +121,10 @@ sub load {
         $logger->info("Total time is ".timestr($timeall));
     }
 
+    if ($self->{memc}){
+        $self->{memc}->set($memc_key,$self->{identifier},$config->{memcached_expiration}{$memc_key});
+    }
+
     return $self;
 }
 
@@ -117,6 +132,101 @@ sub get {
     my ($self,$key) = @_;
 
     return $self->{$key};
+}
+
+sub connectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config::File->instance;
+
+    # UTF8: {'pg_enable_utf8'    => 1}
+    if ($config->{'systemdbsingleton'}){
+        eval {        
+            my $schema = OpenBib::Schema::System::Singleton->instance;
+            $self->{schema} = $schema->get_schema;
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $config->{systemdbname}");
+        }
+    }
+    else {
+        eval {        
+            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $config->{systemdbname}");
+        }
+    }
+        
+    
+    return;
+}
+
+sub get_schema {
+    my $self = shift;
+
+    if (defined $self->{schema}){
+        return $self->{schema};
+    }
+
+    $self->connectDB;
+
+    return $self->{schema};
+}
+
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
+
+    return;
+}
+
+sub connectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    if (!exists $config->{memcached}){
+      $logger->debug("No memcached configured");
+      return;
+    }
+
+    # Verbindung zu Memchached herstellen
+    $self->{memc} = new Cache::Memcached::libmemcached($config->{memcached});
+
+    if (!$self->{memc}->set('isalive',1)){
+        $logger->fatal("Unable to connect to memcached");
+    }
+
+    return;
 }
 
 1;

@@ -93,7 +93,6 @@ sub show_popular {
     my $useragent      = $self->param('useragent');
     
     my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
@@ -104,7 +103,6 @@ sub show_popular {
         database      => $database,
         profile       => $profile,
         viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
     };
@@ -136,7 +134,6 @@ sub show_recent {
     my $useragent      = $self->param('useragent');
     
     my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
@@ -154,7 +151,6 @@ sub show_recent {
         recordlist    => $recordlist,
         profile       => $profile,
         viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
     };
@@ -274,8 +270,8 @@ sub show_record {
         $atime=new Benchmark;
     }
     
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
     my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
 
@@ -286,7 +282,7 @@ sub show_record {
         
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid})->load_full_record;
 
-        my $poolname=$dbinfotable->{dbnames}{$database};
+        my $poolname=$dbinfotable->get('dbnames')->{$database};
 
         if ($queryid){
             $searchquery->load({sid => $session->{sid}, queryid => $queryid});
@@ -312,17 +308,17 @@ sub show_record {
 
         # Anreicherung mit OLWS-Daten
         if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){
-            if (exists $circinfotable->{$database} && exists $circinfotable->{$database}{circcheckurl}){
-                $logger->debug("Endpoint: ".$circinfotable->{$database}{circcheckurl});
+            if (exists $circinfotable->get($database) && exists $circinfotable->get($database)->{circcheckurl}){
+                $logger->debug("Endpoint: ".$circinfotable->get($database)->{circcheckurl});
                 my $soapresult;
                 eval {
                     my $soap = SOAP::Lite
                         -> uri("urn:/Viewer")
-                            -> proxy($circinfotable->{$database}{circcheckurl});
+                            -> proxy($circinfotable->get($database)->{circcheckurl});
                 
                     my $result = $soap->get_item_info(
                         SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                            SOAP::Data->name(collection => $circinfotable->{$database}{circdb})->type('string'),
+                            SOAP::Data->name(collection => $circinfotable->get($database)->{circdb})->type('string'),
                             SOAP::Data->name(item       => $titleid)->type('string'))));
                     
                     unless ($result->fault) {
@@ -354,7 +350,6 @@ sub show_record {
         # TT-Data erzeugen
         my $ttdata={
             database    => $database, # Zwingend wegen common/subtemplate
-            dbinfo      => $dbinfotable,
             userid      => $userid,
             poolname    => $poolname,
             prevurl     => $prevurl,
@@ -462,8 +457,6 @@ sub redirect_to_bibsonomy {
     my $path_prefix    = $self->param('path_prefix');
     my $servername     = $self->param('servername');
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    
     if ($titleid && $database){
         my $title_as_bibtex = OpenBib::Record::Title->new({id =>$titleid, database => $database})->load_full_record->to_bibtex({utf8 => 1});
         #        $title=~s/\n/ /g;

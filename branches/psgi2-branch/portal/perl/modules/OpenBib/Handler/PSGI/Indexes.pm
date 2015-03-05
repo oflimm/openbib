@@ -151,8 +151,8 @@ sub show_collection_by_field {
         next;
     }
 
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
 
     #####################################################################
     ## Eigentliche Suche (default)
@@ -160,21 +160,21 @@ sub show_collection_by_field {
     # Suche ueber OLWS (urn:/Viewer)
     
     if ($olws){
-        if (exists $circinfotable->{$database} && exists $circinfotable->{$database}{circcheckurl}){
-	    my $poolname=$dbinfotable->{sigel}{
-	      $dbinfotable->{dbases}{$database}};
+        if (exists $circinfotable->get($database) && exists $circinfotable->get($database){circcheckurl}){
+	    my $poolname=$dbinfotable->get('sigel')->{
+	      $dbinfotable->get('dbases')->{$database}};
             
             if ($olws_action eq "browse"){
 
                 if ($logger->is_debug){
-                    $logger->debug("Endpoint: ".$circinfotable->{$database}{circcheckurl});
+                    $logger->debug("Endpoint: ".$circinfotable->get($database)->{circcheckurl});
                 }
                 
                 my $soapresult;
                 eval {
                     my $soap = SOAP::Lite
                         -> uri("urn:/Viewer")
-                            -> proxy($circinfotable->{$database}{circcheckurl});
+                            -> proxy($circinfotable->get($database)->{circcheckurl});
 
                     my $result = $soap->browse(
                         SOAP::Data->name(parameter  =>\SOAP::Data->value(
@@ -218,7 +218,7 @@ sub show_collection_by_field {
             
             my $soap = SOAP::Lite
                 -> uri("urn:/Viewer")
-                    -> proxy($circinfotable->{$database}{circcheckurl});
+                    -> proxy($circinfotable->get($database)->{circcheckurl});
 
         }
     }

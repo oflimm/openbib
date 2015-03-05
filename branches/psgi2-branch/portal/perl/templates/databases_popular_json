@@ -13,7 +13,7 @@ FOREACH thisitem IN resultlist ;
           rel = 'self'
           href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}.json?l=${lang}"
     }
-    description = dbinfo.dbnames.${database}.short
+    description = dbinfo.get('dbnames').${database}.short
     count       = count
   };
   all_databases.push(this_databaseinfo);

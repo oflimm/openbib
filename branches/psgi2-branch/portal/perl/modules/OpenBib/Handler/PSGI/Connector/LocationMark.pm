@@ -45,7 +45,6 @@ use Encode qw(decode_utf8);
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::SearchQuery;

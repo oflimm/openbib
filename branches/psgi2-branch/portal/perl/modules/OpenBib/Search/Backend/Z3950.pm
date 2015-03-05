@@ -199,7 +199,7 @@ sub mab2openbib_full {
     my $listitem_ref    = {};
     my $mexlistitem_ref = [];
 
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
 
     my $convtab_ref = (exists $config->{convtab}{singlepool})?
         $config->{convtab}{singlepool}:$config->{convtab}{default};
@@ -299,16 +299,16 @@ sub mab2openbib_full {
                     }; 
 
                     # Es wird der Datenbankname zur Findung des Sigels herangezogen
-                    my $sigel=$dbinfotable->{dbases}{"USBK"};
-                    if (exists $dbinfotable->{sigel}{$sigel}) {
-                        $thismexlistitem_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
+                    my $sigel=$dbinfotable->get('dbases')->{"USBK"};
+                    if (exists $dbinfotable->get('sigel')->{$sigel}) {
+                        $thismexlistitem_ref->{X4000}{content}=$dbinfotable->get('sigel')->{$sigel};
                     }
                     
                     my $bibinfourl="";
                     
                     # Bestimmung der Bibinfo-Url
-                    if (exists $dbinfotable->{bibinfo}{$sigel}) {
-                        $thismexlistitem_ref->{X4001}{content}=$dbinfotable->{bibinfo}{$sigel};
+                    if (exists $dbinfotable->get('bibinfo')->{$sigel}) {
+                        $thismexlistitem_ref->{X4001}{content}=$dbinfotable->get('bibinfo'){$sigel};
                     }
 
                     push @{$mexlistitem_ref}, $thismexlistitem_ref;

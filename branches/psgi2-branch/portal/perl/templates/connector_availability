@@ -62,10 +62,10 @@
 <size>[% num_of_available_records %]</size>
 [% FOREACH record IN available_recordlist.get_records %]
 <catalogue>
-[% IF dbinfo.locationid.${record.database} -%]
-  <isil>[% dbinfo.locationid.${record.database} %]</isil>
+[% IF dbinfo.get('locationid').${record.database} -%]
+  <isil>[% dbinfo.get('locationid').${record.database} %]</isil>
 [% END -%]
-  <sigel>[% dbinfo.dbases.${record.database} %]</sigel>
+  <sigel>[% dbinfo.get('dbases').${record.database} %]</sigel>
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
   <description>[% dbinfo.get('dbnames').${record.database}.short %]</description>

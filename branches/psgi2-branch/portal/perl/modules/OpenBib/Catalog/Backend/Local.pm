@@ -295,7 +295,6 @@ sub load_full_title_record {
     my $logger = get_logger();
     
     my $config        = OpenBib::Config->instance;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     my ($atime,$btime,$timeall)=(0,0,0);
     

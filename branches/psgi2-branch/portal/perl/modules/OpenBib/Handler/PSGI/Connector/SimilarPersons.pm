@@ -42,7 +42,6 @@ use YAML::Syck;
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::Record::Person;
 use OpenBib::Record::Title;

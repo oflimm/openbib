@@ -14,9 +14,9 @@ FOREACH viewinfo IN views.all ;
 
             id     = item
             dbname = item
-            description       = dbinfo.dbnames.${item}.full
-            description_short = dbinfo.dbnames.${item}.short
-            url               = dbinfo.urls.${item}
+            description       = dbinfo.get('dbnames').${item}.full
+            description_short = dbinfo.get('dbnames').${item}.short
+            url               = dbinfo.get('urls').${item}
   });
   END ;
 

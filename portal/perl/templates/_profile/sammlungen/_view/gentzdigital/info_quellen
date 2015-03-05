@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: helpframe
+# Templatename: helpframe_22
 #
 # Typ         : Mastertemplate
 #
@@ -12,8 +12,7 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
-[% show_foot_banner = 1%]
-<body>
+  <body>
 
 <!-- skip link navigation -->
 <ul class="ym-skiplinks">
@@ -26,7 +25,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="cloud" %]
+[% PROCESS common/subtemplate name="mainnavigation" active_menu='info' %] 
 
     <!-- begin: main content area #main -->
     <div id="main">
@@ -35,8 +34,8 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="[% path_prefix%]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% msg.maketext("Wolken") %]</a></li>
-         <li><a href="#" class="lastitem">[% dbinfo.get('dbnames').${database}.short %]</a></li>
+         <li><a href="#">Einführung</a></li>
+         <li><a href="#" class="lastitem">Quellen</a></li>
       </ul>
      </div>
    </div>
@@ -44,8 +43,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_choice' %]
-[%# USE dumper;dumper.dump(dbinfo)%]
+[% PROCESS common/subtemplate name="subnavigation" active_submenu='quellen' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -53,16 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Wortwolken f&uuml;r verschiedene Felder des Bestands</h2>
-<p/>
-
-
-   <ul>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Jahr") %]</a></li>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]">[% msg.maketext("Autoren") %]</a></li>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]">[% msg.maketext("Am Umschlag Beteiligte") %]</a></li>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]">[% msg.maketext("Zusammenarbeit") %]</a></li>
-   </ul>
+[% config.get_templatetext('info_quellen','gentzdigital',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

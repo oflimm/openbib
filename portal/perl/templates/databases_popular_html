@@ -66,7 +66,7 @@
 [% item      = thisitem.item;
    itemcount = thisitem.count;
 %]
-<tr><td><b>[% loop.count %]</b></td><td><a href="[% path_prefix %]/[% config.get("databases_loc") %]/id/[% item %]/titles/popular.html?l=[% lang %]">[% dbinfo.dbnames.${item}.short %]</a></td></tr>
+<tr><td><b>[% loop.count %]</b></td><td><a href="[% path_prefix %]/[% config.get("databases_loc") %]/id/[% item %]/titles/popular.html?l=[% lang %]">[% dbinfo.get('dbnames').${item}.short %]</a></td></tr>
 [% END %]
 </table>
 

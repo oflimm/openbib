@@ -44,7 +44,6 @@ use YAML::Syck;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::SearchQuery;
@@ -97,7 +96,6 @@ sub show {
     my $queryid     = $query->param('queryid') || '';
 
     
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $statistics  = new OpenBib::Statistics();
 
     # Save Type in Session
@@ -181,7 +179,6 @@ sub show {
         alldbcount    => $alldbcount,
         userprofile   => $userprofile_ref,
         dbchoice      => $dbchoice_ref,
-        dbinfo        => $dbinfotable,
         prevprofile   => $prevprofile,
 
         available_searchfields => $searchfields_ref,

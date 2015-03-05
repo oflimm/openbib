@@ -39,8 +39,6 @@ use Encode qw/decode_utf8 encode_utf8/;
 
 use OpenBib::Record::Classification;
 use OpenBib::Catalog::Factory;
-use OpenBib::Config::DatabaseInfoTable;
-use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Common::Util;
 
 use base 'OpenBib::Handler::PSGI';
@@ -91,9 +89,6 @@ sub show_record {
     my $format        = $query->param('format')   || 'full';
     my $no_log        = $query->param('no_log')  || '';
 
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-
     if ($database && $classificationid ){ # Valide Informationen etc.
         $logger->debug("ID: $classificationid - DB: $database");
         
@@ -104,7 +99,6 @@ sub show_record {
         # TT-Data erzeugen
         my $ttdata={
             database      => $database, # Zwingend wegen common/subtemplate
-            dbinfo        => $dbinfotable,
             qopts         => $queryoptions->get_options,
             record        => $record,
             id            => $classificationid,
@@ -161,7 +155,6 @@ sub show_collection {
     my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
     my $no_log        = $query->param('no_log')   || '';
 
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     if ($database){ # Valide Informationen etc.
         
@@ -179,7 +172,6 @@ sub show_collection {
         
         # TT-Data erzeugen
         my $ttdata={
-            dbinfo          => $dbinfotable,
             database        => $database,
             classifications => $classifications_ref,
         };
@@ -231,8 +223,6 @@ sub show_collection_ezb {
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    
     my $colors = $access_green + $access_yellow*2 + $access_red*4;
 
     if (!$colors){
@@ -259,7 +249,6 @@ sub show_collection_ezb {
     
     # TT-Data erzeugen
     my $ttdata={
-        dbinfo        => $dbinfotable,
         database      => $database,
         type          => $type,
         access_green  => $access_green,
@@ -311,8 +300,6 @@ sub show_collectionxxx {
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    
     my $colors = $access_green + $access_yellow*2 + $access_red*4;
 
     if (!$colors){
@@ -339,7 +326,6 @@ sub show_collectionxxx {
     
     # TT-Data erzeugen
     my $ttdata={
-        dbinfo        => $dbinfotable,
         database      => $database,
         type          => $type,
         access_green  => $access_green,
@@ -394,8 +380,6 @@ sub show_collection_dbis {
     ###########                                               ###########
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $colors  = $access_green + $access_yellow*44;
     my $ocolors = $access_red*8 + $access_de*32;

@@ -30,7 +30,7 @@ thisrecord = {
            circulation = record.get_circulation
 };
 
-locationid = dbinfo.locationid.${record.database};
+locationid = dbinfo.get('locationid').${record.database};
 
 IF locationid ;
   thisrecord.database.location = {
@@ -38,7 +38,7 @@ IF locationid ;
               rel = 'self'
               href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${locationid}.json"
       }
-      id = dbinfo.locationid.${record.database}
+      id = dbinfo.get('locationid').${record.database}
             
   };
 END;

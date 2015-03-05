@@ -48,8 +48,6 @@ use XML::RSS;
 
 use OpenBib::Search::Util;
 use OpenBib::Config;
-use OpenBib::Config::CirculationInfoTable;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -324,7 +322,6 @@ sub show_collection_by_single_userxxx {
     my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
     my $topicid      = $query->param('topicid')   || undef;
 
-    my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
     my $topics_ref   = $user->get_topics;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
@@ -390,7 +387,6 @@ sub show_collection_by_single_userxxx {
         show           => $show,        
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,        
-        dbinfo         => $dbinfotable,
         targettype     => $targettype,
     };
     
@@ -440,7 +436,6 @@ sub show_collection_by_single_user {
     my $topicid      = $query->param('topicid')   || undef;
 
     
-    my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
     my $topics_ref   = $user->get_topics;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
@@ -506,7 +501,6 @@ sub show_collection_by_single_user {
         show           => $show,
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
-        dbinfo         => $dbinfotable,
         targettype     => $targettype,
     };
     
@@ -567,7 +561,6 @@ sub show_record {
     my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
     my $topicid      = $query->param('topicid')   || undef;
 
-    my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
     my $topics_ref   = $user->get_topics;
 
     $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
@@ -635,7 +628,6 @@ sub show_record {
         format         => $format,
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
-        dbinfo         => $dbinfotable,
         targettype     => $targettype,
     };
     

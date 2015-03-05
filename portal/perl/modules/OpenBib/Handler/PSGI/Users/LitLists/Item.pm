@@ -47,8 +47,6 @@ use XML::RSS;
 
 use OpenBib::Search::Util;
 use OpenBib::Config;
-use OpenBib::Config::CirculationInfoTable;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -141,8 +139,6 @@ sub show_record {
     # CGI Args
     my $method         = $query->param('_method')     || '';
 
-    my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-    
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
     my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
@@ -173,7 +169,6 @@ sub show_record {
     # TT-Data erzeugen
     my $ttdata={
         litlistitem    => $singlelitlistitem,
-        dbinfo         => $dbinfotable,
     };
     
     return $self->print_page($config->{tt_litlists_item_record_tname},$ttdata);

@@ -101,7 +101,7 @@
 </thead>
 <tbody>
 [% FOREACH profile IN profiles.all %]
-<tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profile.profilename %]/edit.html?l=[% lang %]">[% profile.description %]</a></td><td><ul>[% FOREACH item IN config.get_profiledbs(profile.profilename) %]<li>[% item %]: [% dbinfo.dbnames.${item}.full %]</li>[% END %]</ul></td></tr>
+<tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profile.profilename %]/edit.html?l=[% lang %]">[% profile.description %]</a></td><td><ul>[% FOREACH item IN config.get_profiledbs(profile.profilename) %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td></tr>
 [% END %]
 </tbody>
 </table>

@@ -185,8 +185,6 @@ sub show_search_header {
     
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
     $self->param('searchquery',$searchquery);
     
@@ -496,7 +494,7 @@ sub show_index {
 
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
     my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
 
     $self->param('searchquery',$searchquery);
@@ -581,7 +579,7 @@ sub show_index {
             
             push @{$index{$item_ref->{content}}{databases}}, {
                 'dbname'   => $database,
-                'dbdesc'   => $dbinfotable->{dbnames}{$database},
+                'dbdesc'   => $dbinfotable->get('dbnames')->{$database},
                 'id'       => $item_ref->{id},
                 'titcount' => $item_ref->{titcount},
             };
@@ -1019,12 +1017,10 @@ sub print_resultitem {
     my $database       = $self->param('database') || '';
     
     my $searchquery  = $self->param('searchquery');
-    my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->instance;
 
     # TT-Data erzeugen
     my $ttdata={
         database        => $database,
-        dbinfo          => $dbinfotable,
         
         searchquery     => $searchquery,
         

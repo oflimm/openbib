@@ -182,12 +182,12 @@ sub show {
 
                 my $enrichmnt = new OpenBib::Enrichment;
 
-                my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+                my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
                 my $result_ref = $enrichmnt->get_holdings({isbn => $identifier});
 
                 foreach my $content_ref (@{$result_ref}){
-                    my $content = $dbinfotable->{dbnames}{$content_ref->{dbname}};
+                    my $content = $dbinfotable->get('dbnames')->{$content_ref->{dbname}};
                     my $uri     = URI->new( "http://kug.ub.uni-koeln.de/portal/connector/permalink/$content.wikipedia.org/wiki/$content_ref->{dbname}/$content->{id}/1/kug/index.html" )->canonical;
                     $response->add($content,"Verfuegbarkeit des Titels im KUG","$uri");
                     $logger->debug("Added $content");

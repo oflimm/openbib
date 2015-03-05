@@ -46,7 +46,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -92,12 +91,9 @@ sub show_collection {
         return $self->print_authorization_error();
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    
     my $locationinfo_ref = $config->get_locationinfo_overview();
     
     my $ttdata={
-        dbinfo     => $dbinfotable,
         locations  => $locationinfo_ref,
     };
     

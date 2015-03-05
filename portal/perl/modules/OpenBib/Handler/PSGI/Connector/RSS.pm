@@ -100,12 +100,12 @@ sub show {
     my $servername     = $self->param('servername');
 
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
     my $sysprofile= $config->get_profilename_of_view($view);
 
     # Check
-    if (! exists $config->{rss_types}{$type} || ! exists $dbinfotable->{dbnames}{$database}{full}){
+    if (! exists $config->{rss_types}{$type} || ! exists $dbinfotable->get('dbnames')->{$database}{full}){
         OpenBib::Common::Util::print_warning("RSS-Feed ungueltig",$r);
     }
 
@@ -183,7 +183,7 @@ sub show {
         
         $logger->debug("Update des RSS-Caches");
         
-        my $dbdesc=$dbinfotable->{dbnames}{$database}{full};
+        my $dbdesc=$dbinfotable->get('dbnames')->{$database}{full};
    
         my $rss = new XML::RSS ( version => '1.0' );
         

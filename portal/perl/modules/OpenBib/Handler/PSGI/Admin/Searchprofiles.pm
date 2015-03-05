@@ -46,7 +46,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -94,11 +93,9 @@ sub show_collection {
         return $self->print_authorization_error();
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $statistics  = new OpenBib::Statistics();
 
     my $ttdata={
-        dbinfo     => $dbinfotable,
         statistics => $statistics,
         year       => $year,
     };
@@ -123,14 +120,11 @@ sub show_record {
         return $self->print_authorization_error();
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $searchprofile_obj = $config->get_searchprofile->single({ id => $searchprofileid });
 
     my $ttdata={
         searchprofileid => $searchprofileid,
         searchprofile   => $searchprofile_obj,
-        dbinfo          => $dbinfotable,
     };
     
     return $self->print_page($config->{tt_admin_searchprofiles_record_tname},$ttdata);
@@ -155,15 +149,12 @@ sub show_record_form {
 
     my $statistics  = new OpenBib::Statistics();
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $searchprofile_obj = $config->get_searchprofile->single({ id => $searchprofileid });
 
     my $ttdata={
         searchprofileid => $searchprofileid,
         searchprofile   => $searchprofile_obj,
         statistics      => $statistics,
-        dbinfo          => $dbinfotable,
     };
     
     return $self->print_page($config->{tt_admin_searchprofiles_record_edit_tname},$ttdata);

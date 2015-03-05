@@ -36,7 +36,7 @@
 [%
    dbnames_by_desc = { };
    FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid_of_view);
-     dbdesc = dbinfo.dbnames.${dbname}.full;
+     dbdesc = dbinfo.get('dbnames').${dbname}.full;
      dbnames.${dbdesc} = dbname;
    END;
 

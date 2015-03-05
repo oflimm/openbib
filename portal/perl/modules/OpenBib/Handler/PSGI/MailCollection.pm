@@ -43,7 +43,6 @@ use POSIX;
 use Template;
 
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -108,8 +107,6 @@ sub show {
         return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
     }	
 
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $recordlist = new OpenBib::RecordList::Title();
     
     if ($singleidn && $database) {
@@ -135,7 +132,6 @@ sub show {
 	qopts       => $queryoptions->get_options,
         type        => $type,
         recordlist  => $recordlist,
-        dbinfo      => $dbinfotable,
         
         config      => $config,
         user        => $user,

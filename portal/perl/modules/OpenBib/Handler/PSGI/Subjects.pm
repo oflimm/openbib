@@ -87,9 +87,6 @@ sub show_record {
     my $format        = $query->param('format')   || 'full';
     my $no_log        = $query->param('no_log')   || '';
 
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-
     if ($database && $subjectid ){ # Valide Informationen etc.
         $logger->debug("ID: $subjectid - DB: $database");
         
@@ -100,7 +97,6 @@ sub show_record {
         # TT-Data erzeugen
         my $ttdata={
             database      => $database, # Zwingend wegen common/subtemplate
-            dbinfo        => $dbinfotable,
             qopts         => $queryoptions->get_options,
             record        => $record,
             id            => $subjectid,
@@ -159,8 +155,6 @@ sub show_collection {
     my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
     my $no_log        = $query->param('no_log')   || '';
 
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-
     if ($database){ # Valide Informationen etc.
         
         my $catalog_args_ref = OpenBib::Common::Util::query2hashref($query);
@@ -181,7 +175,6 @@ sub show_collection {
         
         # TT-Data erzeugen
         my $ttdata={
-            dbinfo          => $dbinfotable,
             database        => $database,
             subjects        => $subjects_ref,
         };

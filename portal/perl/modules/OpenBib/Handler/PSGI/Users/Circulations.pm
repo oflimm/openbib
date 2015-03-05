@@ -205,19 +205,19 @@ sub show_reservations {
     my ($loginname,$password) = $user->get_credentials();
     #my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     my $circexlist=undef;
     
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->get_reservations(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username => $loginname)->type('string'),
                 SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -291,19 +291,19 @@ sub show_reminders {
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     my $circexlist=undef;
     
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->get_reminders(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username => $loginname)->type('string'),
                 SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -375,19 +375,19 @@ sub show_orders {
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     my $circexlist=undef;
     
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->get_orders(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username => $loginname)->type('string'),
                 SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -458,19 +458,19 @@ sub show_borrows {
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     my $circexlist=undef;
     
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->get_borrows(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username => $loginname)->type('string'),
                 SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -540,7 +540,7 @@ sub make_reservation {
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     if (! $user->{ID}){
         if ($self->param('representation') eq "html"){
@@ -562,7 +562,7 @@ sub make_reservation {
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->make_reservation(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
@@ -570,7 +570,7 @@ sub make_reservation {
                 SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
                 SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
                 SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -627,7 +627,7 @@ sub cancel_reservation {
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -640,14 +640,14 @@ sub cancel_reservation {
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->cancel_reservation(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
                 SOAP::Data->name(password     => $password)->type('string'),
                 SOAP::Data->name(mediennummer => $mediaid)->type('string'),
                 SOAP::Data->name(zweigstelle  => $branchid)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -709,7 +709,7 @@ sub make_order {
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     unless($sessionauthenticator eq $validtarget){
         # Aufruf-URL
@@ -728,7 +728,7 @@ sub make_order {
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->make_order(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
@@ -736,7 +736,7 @@ sub make_order {
                 SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
                 SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
                 SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -794,7 +794,7 @@ sub renew_loans {
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -805,12 +805,12 @@ sub renew_loans {
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->renew_loans(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
                 SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;

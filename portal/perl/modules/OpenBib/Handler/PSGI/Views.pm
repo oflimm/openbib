@@ -46,7 +46,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -84,8 +83,6 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    
     my $viewinfo_ref = $config->get_viewinfo_overview();
     
     my $ttdata={
@@ -114,8 +111,6 @@ sub show_record {
     unless ($config->view_exists($viewname)) {
         return $self->print_warning($msg->maketext("Ein View dieses Namens existiert nicht."));
     }
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
 

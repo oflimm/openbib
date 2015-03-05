@@ -43,8 +43,6 @@ use YAML ();
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::CirculationInfoTable;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;

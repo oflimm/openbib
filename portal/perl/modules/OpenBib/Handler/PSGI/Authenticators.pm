@@ -45,7 +45,6 @@ use POSIX;
 use Template;
 
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;

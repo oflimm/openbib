@@ -109,19 +109,19 @@ sub show_collection {
     my ($loginname,$password) = $user->get_credentials();
     #my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     my $circexlist=undef;
     
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->get_reservations(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username => $loginname)->type('string'),
                 SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -184,7 +184,7 @@ sub create_record {
     
     my ($loginname,$password) = $user->get_credentials();
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
         $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
@@ -204,7 +204,7 @@ sub create_record {
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->make_reservation(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
@@ -212,7 +212,7 @@ sub create_record {
                 SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
                 SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
                 SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -264,7 +264,7 @@ sub delete_record {
     
     my ($loginname,$password) = $user->get_credentials();
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
         if ($self->param('representation') eq "html"){
@@ -282,14 +282,14 @@ sub delete_record {
     eval {
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
+                -> proxy($circinfotable->get($database)->{circcheckurl});
         my $result = $soap->cancel_reservation(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
                 SOAP::Data->name(password     => $password)->type('string'),
                 SOAP::Data->name(mediennummer => $mediaid)->type('string'),
                 SOAP::Data->name(zweigstelle  => $branchid)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;

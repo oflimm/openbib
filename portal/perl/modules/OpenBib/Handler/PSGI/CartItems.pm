@@ -44,7 +44,6 @@ use POSIX;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -124,8 +123,6 @@ sub show_collection {
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     $logger->info("SessionID: $session->{ID}");
         
     my $recordlist = $self->get_items_in_collection();
@@ -145,7 +142,6 @@ sub show_collection {
         format            => $format,
 
         recordlist        => $recordlist,
-        dbinfo            => $dbinfotable,
     };
     
     return $self->print_page($config->{tt_cartitems_tname},$ttdata);
@@ -198,8 +194,6 @@ sub show_collection_count {
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     $logger->info("SessionID: $session->{ID}");
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
@@ -243,8 +237,6 @@ sub show_record {
         return $self->print_authorization_error();
     }
     
-    my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $record = $self->get_single_item_in_collection($id);
     
     # TT-Data erzeugen
@@ -253,7 +245,6 @@ sub show_record {
         query          => $query,
         qopts          => $queryoptions->get_options,
         
-        dbinfo         => $dbinfotable,
     };
     
     return $self->print_page($config->{tt_cartitems_record_tname},$ttdata);
@@ -543,8 +534,6 @@ sub print_collection {
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     $logger->info("SessionID: $session->{ID}");
 
     my $username=$user->get_username();
@@ -570,7 +559,6 @@ sub print_collection {
         id         => $id,
         database   => $database,
         recordlist => $recordlist,
-        dbinfo     => $dbinfotable,
     };
         
     return $self->print_page($config->{tt_cartitems_print_tname},$ttdata);
@@ -605,8 +593,6 @@ sub save_collection {
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     $logger->info("SessionID: $session->{ID}");
 
     my $username=$user->get_username();
@@ -627,7 +613,6 @@ sub save_collection {
         qopts       => $queryoptions->get_options,		
         format      => $format,
         recordlist  => $recordlist,
-        dbinfo      => $dbinfotable,
     };
     
     if ($format eq "short" || $format eq "full") {
@@ -674,8 +659,6 @@ sub mail_collection {
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     $logger->info("SessionID: $session->{ID}");
 
     my $username=$user->get_username();
@@ -700,7 +683,6 @@ sub mail_collection {
         titleid     => $id,
         database    => $database,
         recordlist  => $recordlist,
-        dbinfo      => $dbinfotable,
     };
     
     return $self->print_page($config->{tt_cartitems_mail_tname},$ttdata);
@@ -747,8 +729,6 @@ sub mail_collection_send {
         return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
     }	
 
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $recordlist = new OpenBib::RecordList::Title();
     
     if ($id && $database) {
@@ -769,7 +749,6 @@ sub mail_collection_send {
 	qopts       => $queryoptions->get_options,
         format      => $format,
         recordlist  => $recordlist,
-        dbinfo      => $dbinfotable,
         
         config      => $config,
         user        => $user,

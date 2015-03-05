@@ -46,7 +46,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -93,12 +92,9 @@ sub show_collection {
         return $self->print_authorization_error();
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    
     my $viewinfo_ref = $config->get_viewinfo_overview();
     
     my $ttdata={
-        dbinfo     => $dbinfotable,
         views      => $viewinfo_ref,
     };
     
@@ -128,8 +124,6 @@ sub show_record {
         return $self->print_warning($msg->maketext("Ein View dieses Namens existiert nicht."));
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
     my $profilename = $viewinfo->profileid->profilename;
@@ -143,7 +137,6 @@ sub show_record {
         dbnames     => \@profiledbs,
         viewdbs     => \@viewdbs,
         viewinfo    => $viewinfo,
-        dbinfo      => $dbinfotable,
         allrssfeeds => $all_rssfeeds_ref,
     };
     
@@ -231,8 +224,6 @@ sub show_record_form {
         return $self->print_authorization_error();
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $viewinfo    = $config->get_viewinfo->search({ viewname => $viewname })->single();
 
     my $viewdbs_ref      = {};
@@ -253,7 +244,6 @@ sub show_record_form {
 
         dbnames    => \@profiledbs,
         viewinfo   => $viewinfo,
-        dbinfo     => $dbinfotable,
     };
     
     return $self->print_page($config->{tt_admin_views_record_edit_tname},$ttdata);

@@ -64,7 +64,7 @@
 <td>
 <ul>
 [% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% dbname %]/edit">[% dbinfo.dbnames.${dbname}.short %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% dbname %]/edit">[% dbinfo.get('dbnames').${dbname}.short %]</a></li>
 [% END %]
 </ul>
 </td>

@@ -32,7 +32,7 @@
 [% END %]
 <optgroup label="[% msg.maketext("Suchradius") %]">
 [% IF viewdbs.size == 1 %]  
-<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% dbinfo.dbnames.${viewdbs.first}.short %]</option>
+<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% dbinfo.get('dbnames').${viewdbs.first}.short %]</option>
 [%  FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
      IF unit.orgunitname == orgunitname ;
       searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;

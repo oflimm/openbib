@@ -112,7 +112,7 @@
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 [% listrow = 'listrow2' %]
 [% FOREACH result IN thisquery.get_results %]
-<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];[% thisquery.to_cgi_params({ exclude = ['profile','db']}) %];db=[% result.first %];page=1"><b>[% dbinfo.dbnames.${result.first}.full %]</b></a></td><td align="right">
+<tr><td class="[% listrow %]"><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];[% thisquery.to_cgi_params({ exclude = ['profile','db']}) %];db=[% result.first %];page=1"><b>[% dbinfo.get('dbnames').${result.first}.full %]</b></a></td><td align="right">
 [% result.1 %]
 </td></tr>
 [%   IF listrow == 'listrow1' %]

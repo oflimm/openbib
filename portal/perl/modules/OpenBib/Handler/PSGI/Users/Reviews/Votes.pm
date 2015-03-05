@@ -45,7 +45,6 @@ use URI::Escape;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -108,8 +107,6 @@ sub update_record {
         }
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-    
     $logger->debug("Vote abgeben fuer Review");
 
     my $status = $user->vote_for_review({

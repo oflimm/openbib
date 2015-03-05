@@ -85,9 +85,6 @@ sub show_record {
     my $format        = $query->param('format')   || 'full';
     my $no_log         = $query->param('no_log')  || '';
 
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-
     if ($database && $personid ){ # Valide Informationen etc.
         $logger->debug("ID: $personid - DB: $database");
         
@@ -98,7 +95,6 @@ sub show_record {
         # TT-Data erzeugen
         my $ttdata={
             database      => $database, # Zwingend wegen common/subtemplate
-            dbinfo        => $dbinfotable,
             qopts         => $queryoptions->get_options,
             record        => $record,
             id            => $personid,

@@ -21,12 +21,12 @@
 [%-
 
   FOREACH database IN databases ;
-    json_info.push({ database => database, description => dbinfo.dbnames.${database}.full});
+    json_info.push({ database => database, description => dbinfo.get('dbnames').${database}.full});
 -%]
 
   <rdf:Description rdf:about="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/[%- database -%]">
-[%- IF dbinfo.dbnames.${database}.full %]
-     <dc:title>[% dbinfo.dbnames.${database}.full %]</dc:title>
+[%- IF dbinfo.get('dbnames').${database}.full %]
+     <dc:title>[% dbinfo.get('dbnames').${database}.full %]</dc:title>
 [%- END -%]
   </rdf:Description>
 [%- END %]

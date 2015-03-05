@@ -42,7 +42,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -95,7 +94,6 @@ sub show_collection {
     my $format         = $query->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
@@ -106,7 +104,6 @@ sub show_collection {
         queryoptions  => $queryoptions,
         query         => $query,
         viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
     };
@@ -139,7 +136,6 @@ sub show_collection_databases {
     my $format         = $query->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
@@ -150,7 +146,6 @@ sub show_collection_databases {
         queryoptions  => $queryoptions,
         query         => $query,
         viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
     };
@@ -184,7 +179,6 @@ sub show_collection_databases_record {
     my $format         = $query->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
@@ -196,7 +190,6 @@ sub show_collection_databases_record {
         queryoptions  => $queryoptions,
         query         => $query,
         viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
     };
@@ -231,7 +224,6 @@ sub show_record {
     my $format         = $query->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
     if ($database){
@@ -250,7 +242,6 @@ sub show_record {
         database      => $database,
         query         => $query,
         viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
     };

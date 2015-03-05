@@ -46,8 +46,6 @@ use Template;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::CirculationInfoTable;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -97,14 +95,11 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $locationlist_ref = $config->get_locationinfo_overview;
     
     # TT-Data erzeugen
     my $ttdata={
         queryoptions_ref => $queryoptions->get_options,
-        dbinfo           => $dbinfotable,
         locations        => $locationlist_ref,
     };
     
@@ -132,8 +127,6 @@ sub show_record {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if ( $locationid ){ # Valide Informationen etc.
         my $search_args_ref = {};
@@ -169,7 +162,6 @@ sub show_record {
         my $ttdata = {
             locationid     => $locationid,
             locationinfo   => $locationinfo_ref,
-            dbinfo         => $dbinfotable,
         };
 
         return $self->print_page($config->{tt_locations_record_tname},$ttdata);

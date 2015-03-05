@@ -32,6 +32,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Cache::Memcached::libmemcached;
 use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -1179,24 +1180,24 @@ sub load_circulation {
         }
     }
 
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
     
     # Ausleihinformationen der Exemplare
     my $circulation_ref = [];
     {
         my $circexlist=undef;
         
-        if (exists $circinfotable->{$self->{database}}{circ}) {
+        if (exists $circinfotable->get($self->{database})->{circ}) {
 
             eval {
                 my $soap = SOAP::Lite
                     -> uri("urn:/MediaStatus")
-                        -> proxy($circinfotable->{$self->{database}}{circcheckurl});
+                        -> proxy($circinfotable->get($self->{database})->{circcheckurl});
                 my $result = $soap->get_mediastatus(
                     SOAP::Data->name(parameter  =>\SOAP::Data->value(
                         SOAP::Data->name(katkey   => $id)->type('string'),
-                        SOAP::Data->name(database => $circinfotable->{$self->{database}}{circdb})->type('string'))));
+                        SOAP::Data->name(database => $circinfotable->get($self->{database})->{circdb})->type('string'))));
                 
                 unless ($result->fault) {
                     $circexlist=$result->result;
@@ -1221,32 +1222,32 @@ sub load_circulation {
         }
         
         # Anreichern mit Bibliotheksinformationen
-        if (exists $circinfotable->{$self->{database}}{circ}
+        if (exists $circinfotable->get($self->{database})->{circ}
                 && @{$circulation_ref}) {
             for (my $i=0; $i < scalar(@{$circulation_ref}); $i++) {
                 
                 my $bibliothek="-";
-                my $sigel=$dbinfotable->{dbases}{$self->{database}};
+                my $sigel=$dbinfotable->get('dbases')->{$self->{database}};
                 
                 if (length($sigel)>0) {
-                    if (exists $dbinfotable->{sigel}{$sigel}) {
-                        $bibliothek=$dbinfotable->{sigel}{$sigel};
+                    if (exists $dbinfotable->get('sigel')->{$sigel}) {
+                        $bibliothek=$dbinfotable->get('sigel')->{$sigel};
                     } else {
                         $bibliothek="($sigel)";
                     }
                 } else {
-                    if (exists $dbinfotable->{sigel}{$dbinfotable->{dbases}{$self->{database}}}) {
-                        $bibliothek=$dbinfotable->{sigel}{
-                            $dbinfotable->{dbases}{$self->{database}}};
+                    if (exists $dbinfotable->get('sigel')->{$dbinfotable->get('dbases')->{$self->{database}}}) {
+                        $bibliothek=$dbinfotable->get('sigel')->{
+                            $dbinfotable->get('dbases')->{$self->{database}}};
                     }
                 }
                 
-                my $bibinfourl=$dbinfotable->{bibinfo}{
-                    $dbinfotable->{dbases}{$self->{database}}};
+                my $bibinfourl=$dbinfotable->get('bibinfo')->{
+                    $dbinfotable->get('dbases')->{$self->{database}}};
                 
                 $circulation_ref->[$i]{'Bibliothek'} = $bibliothek;
                 $circulation_ref->[$i]{'Bibinfourl'} = $bibinfourl;
-                $circulation_ref->[$i]{'Ausleihurl'} = $circinfotable->{$self->{database}}{circurl};
+                $circulation_ref->[$i]{'Ausleihurl'} = $circinfotable->get($self->{database})->{circurl};
             }
         }
         else {
@@ -1283,24 +1284,23 @@ sub load_olwsviewer {
     my $logger = get_logger();
 
     my $config        = OpenBib::Config->instance;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
     # Anreicherung mit OLWS-Daten
-    if (exists $circinfotable->{$self->{database}} && exists $circinfotable->{$self->{database}}{circcheckurl}){
+    if (exists $circinfotable->get($self->{database}) && exists $circinfotable->get($self->{database})->{circcheckurl}){
         if ($logger->is_debug){                        
-            $logger->debug("Endpoint: ".$circinfotable->{$self->{database}}{circcheckurl});
+            $logger->debug("Endpoint: ".$circinfotable->get($self->{database})->{circcheckurl});
         }
         
         my $soapresult;
         eval {
             my $soap = SOAP::Lite
                 -> uri("urn:/Viewer")
-                    -> proxy($circinfotable->{$self->{database}}{circcheckurl});
+                    -> proxy($circinfotable->get($self->{database})->{circcheckurl});
             
             my $result = $soap->get_item_info(
                 SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                    SOAP::Data->name(collection => $circinfotable->{$self->{database}}{circdb})->type('string'),
+                    SOAP::Data->name(collection => $circinfotable->get($self->{database})->{circdb})->type('string'),
                     SOAP::Data->name(item       => $self->{id})->type('string'))));
             
             unless ($result->fault) {

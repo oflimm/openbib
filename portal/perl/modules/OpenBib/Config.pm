@@ -34,7 +34,7 @@ use base qw(Class::Singleton);
 
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
-use Cache::Memcached;
+use Cache::Memcached::libmemcached;
 use Encode 'decode_utf8';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
@@ -108,6 +108,18 @@ sub _new_instance {
     return $self;
 }
 
+sub get_schema {
+    my $self = shift;
+
+    if (defined $self->{schema}){
+        return $self->{schema};
+    }
+
+    $self->connectDB;
+
+    return $self->{schema};
+}
+
 sub get_number_of_dbs {
     my $self = shift;
     my $profilename = shift;
@@ -115,27 +127,13 @@ sub get_number_of_dbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $memc_key = "config:number_of_dbs:active:";
-
-    if ($profilename){
-        $memc_key.=$profilename;
-    }
-    else {
-        $memc_key.='all';
-    }
-
     my $alldbs;
-
-    if ($self->{memc}){
-      $alldbs = $self->{memc}->get($memc_key);
-      return $alldbs if ($alldbs);
-    }
-
-    # $self->{schema}->storage->debug(1);
+    
+    # $self->get_schema->storage->debug(1);
 
     if ($profilename){
         # DBI: "select count(orgunit_db.dbid) as rowcount from orgunit_db,databaseinfo,profileinfo,orgunitinfo where profileinfo.profilename = ? and profileinfo.id=orgunitinfo.profileid and orgunitinfo.id=orgunit_db.orgunitid and databaseinfo.id=orgunit_db.dbid and databaseinfo.active is true"
-        $alldbs = $self->{schema}->resultset('OrgunitDb')->search(
+        $alldbs = $self->get_schema->resultset('OrgunitDb')->search(
             {
                 'dbid.active'           => 1,
                 'profileid.profilename' => $profilename,
@@ -151,7 +149,7 @@ sub get_number_of_dbs {
     }
     else {
         # DBI: "select count(distinct dbname) from databaseinfo where active=true"
-        $alldbs = $self->{schema}->resultset('Databaseinfo')->search(
+        $alldbs = $self->get_schema->resultset('Databaseinfo')->search(
             {
                 'active' => 1
             }, 
@@ -172,7 +170,7 @@ sub get_number_of_all_dbs {
     my $logger = get_logger();
 
     # DBI: "select count(id) as rowcount from databaseinfo"
-    my $alldbs = $self->{schema}->resultset('Databaseinfo')->search(
+    my $alldbs = $self->get_schema->resultset('Databaseinfo')->search(
         undef,
         {
             columns => [ qw/dbname/ ],
@@ -189,7 +187,7 @@ sub get_number_of_views {
     my $logger = get_logger();
 
     # DBI: "select count(viewid) as rowcount from viewinfo where active is true"
-    my $allviews = $self->{schema}->resultset('Viewinfo')->search(
+    my $allviews = $self->get_schema->resultset('Viewinfo')->search(
         {
             'active' => 1,
         },
@@ -209,7 +207,7 @@ sub get_number_of_all_views {
     my $logger = get_logger();
 
     # DBI: "select count(viewid) as rowcount from viewinfo"
-    my $allviews = $self->{schema}->resultset('Viewinfo')->search(
+    my $allviews = $self->get_schema->resultset('Viewinfo')->search(
         undef,
         {
             columns => [ qw/viewname/ ],
@@ -239,7 +237,7 @@ sub get_number_of_titles {
     my $counts;
     my $request;
 
-#     $self->{schema}->storage->debug(1);
+#     $self->get_schema->storage->debug(1);
 
     if ($logger->is_debug){
         $logger->debug("Parameters: Database = $database") if (defined $database);
@@ -249,7 +247,7 @@ sub get_number_of_titles {
     
     if ($database){
         # DBI: "select allcount, journalcount, articlecount, digitalcount from databaseinfo where dbname = ? and databaseinfo.active is true"
-        $counts = $self->{schema}->resultset('Databaseinfo')->search(
+        $counts = $self->get_schema->resultset('Databaseinfo')->search(
             {
                 'active' => 1,
                 'dbname' => $database,
@@ -263,7 +261,7 @@ sub get_number_of_titles {
     }
     elsif ($view){
         # DBI: "select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,view_db,viewinfo where viewinfo.viewname=? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and databaseinfo.active is true"
-        my $databases =  $self->{schema}->resultset('ViewDb')->search(
+        my $databases =  $self->get_schema->resultset('ViewDb')->search(
             {
                 'dbid.active'           => 1,
                 'viewid.viewname'       => $view,
@@ -276,7 +274,7 @@ sub get_number_of_titles {
             }
         );
 
-        $counts = $self->{schema}->resultset('Databaseinfo')->search(
+        $counts = $self->get_schema->resultset('Databaseinfo')->search(
             {
                 'id'           => { -in => $databases->as_query },
             }, 
@@ -289,7 +287,7 @@ sub get_number_of_titles {
     }
     elsif ($profile){
         # DBI: "select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo,orgunit_db,profileinfo,orgunitinfo where profileinfo.profilename = ? and orgunitinfo.profileid=profileinfo.id and orgunit_db.orgunitid=orgunitinfo.id and orgunit_db.dbid=databaseinfo.id and databaseinfo.active is true"
-        my $databases =  $self->{schema}->resultset('OrgunitDb')->search(
+        my $databases =  $self->get_schema->resultset('OrgunitDb')->search(
             {
                 'dbid.active'           => 1,
                 'profileid.profilename' => $profile,
@@ -302,7 +300,7 @@ sub get_number_of_titles {
             }
         );
 
-        $counts = $self->{schema}->resultset('Databaseinfo')->search(
+        $counts = $self->get_schema->resultset('Databaseinfo')->search(
             {
                 'id'           => { -in => $databases->as_query },
             }, 
@@ -316,7 +314,7 @@ sub get_number_of_titles {
     }
     else {
         # DBI: "select sum(allcount) as allcount, sum(journalcount) as journalcount, sum(articlecount) as articlecount, sum(digitalcount) as digitalcount from databaseinfo where databaseinfo.active is true"
-        $counts = $self->{schema}->resultset('Databaseinfo')->search(
+        $counts = $self->get_schema->resultset('Databaseinfo')->search(
             {
                 'active' => 1,
             },
@@ -354,7 +352,7 @@ sub get_viewdesc_from_viewname {
     my $logger = get_logger();
 
     # DBI: "select description from viewinfo where viewname = ?"
-    my $desc = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->description;
+    my $desc = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname})->description;
     
     return $desc;
 }
@@ -370,7 +368,7 @@ sub get_startpage_of_view {
     
     # DBI: "select start_loc from viewinfo where viewname = ?"
     eval {
-        my $rs = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'start_loc' })->first;
+        my $rs = $self->get_schema->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'start_loc' })->first;
         if ($rs){
             $start_loc = $rs->start_loc;
         }
@@ -396,7 +394,7 @@ sub get_servername_of_view {
     my $logger = get_logger();
 
     # DBI: "select servername from viewinfo where viewname = ?"
-    my $servername = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'servername' })->first->servername;
+    my $servername = $self->get_schema->resultset('Viewinfo')->search({ viewname => $viewname}, { select => 'servername' })->first->servername;
 
     $logger->debug("Got Startpage $servername") if (defined $servername);
     
@@ -411,7 +409,7 @@ sub location_exists {
     my $logger = get_logger();
 
     # DBI: "select count(dbname) as rowcount from databaseinfo where dbname = ?"
-    my $count = $self->{schema}->resultset('Locationinfo')->search({ identifier => $identifier})->count;
+    my $count = $self->get_schema->resultset('Locationinfo')->search({ identifier => $identifier})->count;
     
     return $count;
 }
@@ -424,7 +422,7 @@ sub db_exists {
     my $logger = get_logger();
 
     # DBI: "select count(dbname) as rowcount from databaseinfo where dbname = ?"
-    my $count = $self->{schema}->resultset('Databaseinfo')->search({ dbname => $dbname})->count;
+    my $count = $self->get_schema->resultset('Databaseinfo')->search({ dbname => $dbname})->count;
     
     return $count;
 }
@@ -437,7 +435,7 @@ sub view_exists {
     my $logger = get_logger();
 
     # DBI: "select count(viewname) as rowcount from viewinfo where viewname = ?"
-    my $count = $self->{schema}->resultset('Viewinfo')->search({ viewname => $viewname})->count;
+    my $count = $self->get_schema->resultset('Viewinfo')->search({ viewname => $viewname})->count;
     
     return $count;
 }
@@ -451,7 +449,7 @@ sub template_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $template = $self->{schema}->resultset('Templateinfo')->search(
+    my $template = $self->get_schema->resultset('Templateinfo')->search(
         {
             "me.templatename" => $templatename,
             "me.templatelang" => $templatelang,
@@ -479,7 +477,7 @@ sub profile_exists {
     my $logger = get_logger();
 
     # DBI: "select count(profilename) as rowcount from profileinfo where profilename = ?"
-    my $count = $self->{schema}->resultset('Profileinfo')->search({ profilename => $profilename})->count;
+    my $count = $self->get_schema->resultset('Profileinfo')->search({ profilename => $profilename})->count;
     
     return $count;
 }
@@ -493,7 +491,7 @@ sub orgunit_exists {
     my $logger = get_logger();
 
     # DBI: "select count(orgunitname) as rowcount from orgunitinfo,profileinfo where profileinfo.profilename = ? and orgunitinfo.orgunitname = ? and orgunitinfo.profileid = profileinfo.id"
-    my $count = $self->{schema}->resultset('Orgunitinfo')->search(
+    my $count = $self->get_schema->resultset('Orgunitinfo')->search(
         {
             orgunitname             => $orgunitname,
             'profileid.profilename' => $profilename
@@ -525,13 +523,13 @@ sub get_valid_rsscache_entry {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->storage->debug(1);
+    $self->get_schema->storage->debug(1);
     
     # Bestimmung, ob ein valider Cacheeintrag existiert
 
     # DBI ehemals: "select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?"
 
-    my $rssinfo = $self->{schema}->resultset('Rssinfo')->search_rs(
+    my $rssinfo = $self->get_schema->resultset('Rssinfo')->search_rs(
         {
             'dbid.dbname'  => $database,
             'type'         => $type,
@@ -565,7 +563,7 @@ sub get_dbs_of_view {
     my $logger = get_logger();
 
     # DBI: "select databaseinfo.dbname from view_db,databaseinfo,orgunit_db,viewinfo,orgunitinfo where viewinfo.viewname = ? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and orgunit_db.dbid=view_db.dbid and databaseinfo.active is true order by orgunitinfo.orgunitname ASC, databaseinfo.description ASC"
-    my $dbnames = $self->{schema}->resultset('ViewDb')->search(
+    my $dbnames = $self->get_schema->resultset('ViewDb')->search(
         {
             'dbid.active'           => 1,
             'viewid.viewname'       => $view,
@@ -599,7 +597,7 @@ sub get_rssfeeds_of_view {
     my $logger = get_logger();
 
     # DBI: "select view_rss.rssid from view_rss,viewinfo where view_rss.viewid = viewinfo.id and viewinfo.viewname=?"
-    my $rssinfos = $self->{schema}->resultset('ViewRss')->search(
+    my $rssinfos = $self->get_schema->resultset('ViewRss')->search(
         {
             'viewid.viewname' => $viewname,
         },
@@ -627,7 +625,7 @@ sub get_rssfeed_overview {
     my $logger = get_logger();
 
     # DBI: "select rssinfo.*,databaseinfo.dbname from rssinfo, databaseinfo where rssinfo.dbid=databaseinfo.id order by databaseinfo.dbname,rssinfo.type,rssinfo.subtype"
-    my $rssinfos = $self->{schema}->resultset('Rssinfo')->search(
+    my $rssinfos = $self->get_schema->resultset('Rssinfo')->search(
         undef,
         {
             select => [ 'me.id', 'me.type', 'dbid.dbname'],
@@ -658,7 +656,7 @@ sub get_rssfeed_by_id {
     my $logger = get_logger();
 
     # DBI: "select * from rssinfo where id = ? order by type,subtype"
-    my $rssinfo = $self->{schema}->resultset('Rssinfo')->search(
+    my $rssinfo = $self->get_schema->resultset('Rssinfo')->search(
         {
             'me.id' => $id,
         },
@@ -688,7 +686,7 @@ sub get_rssfeeds_of_db {
     my $logger = get_logger();
 
     # DBI: "select * from rssinfo where dbname = ? order by type,subtype"
-    my $rssinfos = $self->{schema}->resultset('Rssinfo')->search(
+    my $rssinfos = $self->get_schema->resultset('Rssinfo')->search(
         {
             'dbid.dbname' => $dbname
         },
@@ -722,7 +720,7 @@ sub get_rssfeeds_of_db_by_type {
     my $logger = get_logger();
 
     # DBI: "select * from rssinfo where dbname = ? order by type,subtype"
-    my $rssinfos = $self->{schema}->resultset('Rssinfo')->search(
+    my $rssinfos = $self->get_schema->resultset('Rssinfo')->search(
         {
             'dbid.dbname' => $dbname
         },
@@ -756,7 +754,7 @@ sub get_primary_rssfeed_of_view  {
 
     # Assoziierten View zur Session aus Datenbank holen
     # DBI: "select databaseinfo.dbname as dbname,rssinfo.type as type, rssinfo.subtype as subtype from rssinfo,databaseinfo,viewinfo where rssinfo.dbid=databaseinfo.id and viewinfo.viewname = ? and rssinfo.id = viewinfo.rssid and rssinfo.active is true"
-    my $rssinfos = $self->{schema}->resultset('Viewinfo')->search(
+    my $rssinfos = $self->get_schema->resultset('Viewinfo')->search(
         {
             'me.viewname'  => $viewname,
             'rssid.active' => 1,
@@ -795,7 +793,7 @@ sub get_activefeeds_of_db  {
     my $logger = get_logger();
 
     # DBI: "select type from rssinfo where dbname = ? and active is true"
-    my $feeds = $self->{schema}->resultset('Rssinfo')->search(
+    my $feeds = $self->get_schema->resultset('Rssinfo')->search(
         {
             'dbid.dbname' => $dbname,
         },
@@ -840,7 +838,7 @@ sub get_rssfeedinfo  {
         # DBI: push @sql_where, ('view_rss.viewname = ?','view_rss.rssfeed=rssinfo.id');
         # DBI: push @sql_args,  $view;
 
-        $feedinfos = $self->{schema}->resultset('Rssinfo')->search(
+        $feedinfos = $self->get_schema->resultset('Rssinfo')->search(
             {
                 'me.active'       => 1,
                 'me.type'         => 1,
@@ -858,7 +856,7 @@ sub get_rssfeedinfo  {
         );
     }
     else {
-        $feedinfos = $self->{schema}->resultset('Rssinfo')->search(
+        $feedinfos = $self->get_schema->resultset('Rssinfo')->search(
             {
                 'me.active'   => 1,
                 'me.type'     => 1,
@@ -909,7 +907,7 @@ sub update_rsscache {
     my $logger = get_logger();
 
     # DBI: "update rssinfo,databaseinfo set rssinfo.cache_content = ? where databaseinfo.dbname = ? and rssinfo.type = ? and rssinfo.subtype = ? and databaseinfo.id=rssinfo.dbid"
-    my $rssinfo =$self->{schema}->resultset('Rssinfo')->search(
+    my $rssinfo =$self->get_schema->resultset('Rssinfo')->search(
         {
             'dbid.dbname' => $database,
             'me.type'     => $type,
@@ -942,7 +940,7 @@ sub get_dbinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbinfo = $self->{schema}->resultset('Databaseinfo')->search(
+    my $dbinfo = $self->get_schema->resultset('Databaseinfo')->search(
         $args_ref
     );
     
@@ -955,7 +953,7 @@ sub get_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $object = $self->{schema}->resultset('Databaseinfo');
+    my $object = $self->get_schema->resultset('Databaseinfo');
     
     return $object;
 }
@@ -966,7 +964,7 @@ sub get_databaseinfo {
 #     # Log4perl logger erzeugen
 #     my $logger = get_logger();
 
-#     my $object = $self->{schema}->resultset('ProfileDB');
+#     my $object = $self->get_schema->resultset('ProfileDB');
     
 #     return $object;
 # }
@@ -1017,7 +1015,7 @@ sub get_locationid_of_database {
     my $self   = shift;
     my $dbname = shift;
 
-    my $databaseinfo = $self->{schema}->resultset('Databaseinfo')->single(
+    my $databaseinfo = $self->get_schema->resultset('Databaseinfo')->single(
         {
             'dbname' => $dbname,
         },
@@ -1034,7 +1032,7 @@ sub get_locationinfo_by_id {
     my $self   = shift;
     my $id = shift;
 
-    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single(
+    my $locationinfo = $self->get_schema->resultset('Locationinfo')->single(
         {
             'identifier' => $id,
         },
@@ -1054,7 +1052,7 @@ sub get_locationinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $object = $self->{schema}->resultset('Locationinfo');
+    my $object = $self->get_schema->resultset('Locationinfo');
     
     return $object;
 }
@@ -1069,7 +1067,7 @@ sub get_locationinfo_fields {
     return {} if (!$locationid);
 
     # DBI: "select category,content,indicator from libraryinfo where dbname = ?"
-    my $locationfields = $self->{schema}->resultset('LocationinfoField')->search_rs(
+    my $locationfields = $self->get_schema->resultset('LocationinfoField')->search_rs(
         {
             'locationid.identifier' => $locationid,
         },
@@ -1143,7 +1141,7 @@ sub have_locationinfo {
     return 0 if (!$dbname);
     
     # DBI: "select count(dbid) as infocount from libraryinfo,databaseinfo where libraryinfo.dbid=databaseinfo.id and databaseinfo.dbname = ? and content != ''"
-    my $haveinfos = $self->{schema}->resultset('Databaseinfo')->search(
+    my $haveinfos = $self->get_schema->resultset('Databaseinfo')->search(
         {
             'dbname'     => $dbname,
             'locationid' => { '>' => 0 },
@@ -1268,7 +1266,7 @@ sub get_profileinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $profileinfo = $self->{schema}->resultset('Profileinfo');
+    my $profileinfo = $self->get_schema->resultset('Profileinfo');
 
     return $profileinfo;
 }
@@ -1321,7 +1319,7 @@ sub get_orgunitinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $orgunitinfo = $self->{schema}->resultset('Orgunitinfo');
+    my $orgunitinfo = $self->get_schema->resultset('Orgunitinfo');
     
     return $orgunitinfo;
 }
@@ -1364,7 +1362,7 @@ sub get_profiledbs {
     my @profiledbs=();
     my %profiledbs_done = ();
 
-    my $dbnames = $self->{schema}->resultset('Orgunitinfo')->search_rs(
+    my $dbnames = $self->get_schema->resultset('Orgunitinfo')->search_rs(
         {
             'profileid.profilename' => $profilename,
         },
@@ -1399,7 +1397,7 @@ sub get_profilename_of_view {
     my $profilename = "";
 
     eval {
-        $profilename = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname })->profileid->profilename;
+        $profilename = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname })->profileid->profilename;
     };
 
     $logger->debug("Got system profilename $profilename");
@@ -1419,7 +1417,7 @@ sub get_orgunitdbs {
     
     my @orgunitdbs=();
 
-    my $orgunitdatabases = $self->{schema}->resultset('OrgunitDb')->search_rs(
+    my $orgunitdatabases = $self->get_schema->resultset('OrgunitDb')->search_rs(
         {
             'me.orgunitid' => $orgunitid,
         },
@@ -1446,7 +1444,7 @@ sub get_viewinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $viewinfo = $self->{schema}->resultset('Viewinfo');
+    my $viewinfo = $self->get_schema->resultset('Viewinfo');
 
     return $viewinfo;
 }
@@ -1459,7 +1457,7 @@ sub get_viewdbs {
     my $logger = get_logger();
 
     # DBI: "select databaseinfo.dbname from view_db,databaseinfo,viewinfo where viewinfo.viewname = ? and viewinfo.id=view_db.viewid and view_db.dbid = databaseinfo.dbname and databaseinfo.active is true order by dbname"
-    my $dbnames = $self->{schema}->resultset('Viewinfo')->search(
+    my $dbnames = $self->get_schema->resultset('Viewinfo')->search(
         {
             'me.viewname' => $viewname,
             'dbid.active' => 1,
@@ -1490,7 +1488,7 @@ sub get_active_databases {
     my $logger = get_logger();
 
     # DBI: "select dbname from databaseinfo where active is true order by dbname ASC"
-    my $dbnames = $self->{schema}->resultset('Databaseinfo')->search(
+    my $dbnames = $self->get_schema->resultset('Databaseinfo')->search(
         {
             'active' => 1,
         },
@@ -1520,7 +1518,7 @@ sub get_active_databases_of_systemprofile {
     my $profilename = $self->get_profilename_of_view($view);
 
     # DBI: "select databaseinfo.dbname as dbname from databaseinfo,viewinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.profileid=viewinfo.profileid and viewinfo.viewname = ? order by dbname ASC"
-    my $dbnames = $self->{schema}->resultset('OrgunitDb')->search(
+    my $dbnames = $self->get_schema->resultset('OrgunitDb')->search(
         {
             'dbid.active'           => 1,
             'profileid.profilename' => $profilename,
@@ -1571,7 +1569,7 @@ sub get_active_views {
     my $logger = get_logger();
 
     # DBI: "select viewname from viewinfo where active is true order by description ASC"
-    my $views = $self->{schema}->resultset('Viewinfo')->search(
+    my $views = $self->get_schema->resultset('Viewinfo')->search(
         {
             'active' => 1,
         },
@@ -1598,7 +1596,7 @@ sub get_active_databases_of_orgunit {
     my $logger = get_logger();
 
     # DBI: "select databaseinfo.dbname from databaseinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.profilename = ? and orgunitinfo.orgunitname = ? order by databaseinfo.description ASC"
-    my $dbnames = $self->{schema}->resultset('OrgunitDb')->search(
+    my $dbnames = $self->get_schema->resultset('OrgunitDb')->search(
         {
             'dbid.active'           => 1,
             'profileid.profilename' => $profile,
@@ -1632,7 +1630,7 @@ sub get_system_of_db {
     my $logger = get_logger();
 
     # DBI: "select system from databaseinfo where dbname = ?"
-    my $system = $self->{schema}->resultset('Databaseinfo')->search(
+    my $system = $self->get_schema->resultset('Databaseinfo')->search(
         {
            dbname => $dbname,
         },
@@ -1669,7 +1667,7 @@ sub get_infomatrix_of_active_databases {
 
     if ($view){
         # DBI: "select databaseinfo.*,orgunitinfo.description as orgunitdescription, orgunitinfo.orgunitname from databaseinfo,orgunit_db,viewinfo,orgunitinfo,profileinfo where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.id=viewinfo.profileid and viewinfo.viewname = ? order by orgunitinfo.nr ASC, databaseinfo.description ASC"
-        $dbinfos = $self->{schema}->resultset('Viewinfo')->search(
+        $dbinfos = $self->get_schema->resultset('Viewinfo')->search(
             {
                 'me.viewname' => $view,
                 'dbid.active' => 1,
@@ -1685,7 +1683,7 @@ sub get_infomatrix_of_active_databases {
     }
     else {
         # DBI: "select * from databaseinfo where active is true order by description ASC"
-        $dbinfos = $self->{schema}->resultset('Databaseinfo')->search(
+        $dbinfos = $self->get_schema->resultset('Databaseinfo')->search(
             {
                 active => 1,
             },
@@ -1862,7 +1860,7 @@ sub get_serverinfo {
     my $logger = get_logger();
 
     # DBI: "select * from loadbalancertargets order by host"
-    my $object = $self->{schema}->resultset('Serverinfo');
+    my $object = $self->get_schema->resultset('Serverinfo');
 
     return $object;
 }
@@ -1889,7 +1887,7 @@ sub get_clusterinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $object = $self->{schema}->resultset('Clusterinfo');
+    my $object = $self->get_schema->resultset('Clusterinfo');
 
     return $object;
 }
@@ -2051,7 +2049,7 @@ sub get_templateinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $object = $self->{schema}->resultset('Templateinfo');
+    my $object = $self->get_schema->resultset('Templateinfo');
 
     return $object;
 }
@@ -2062,7 +2060,7 @@ sub get_templateinforevision {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $object = $self->{schema}->resultset('Templateinforevision');
+    my $object = $self->get_schema->resultset('Templateinforevision');
 
     return $object;
 }
@@ -2114,7 +2112,7 @@ sub disconnectDB {
 
     if (defined $self->{schema}){
         eval {
-            $self->{schema}->storage->dbh->disconnect;
+            $self->get_schema->storage->dbh->disconnect;
         };
 
         if ($@){
@@ -2145,11 +2143,29 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached($self->{memcached});
+    $self->{memc} = new Cache::Memcached::libmemcached($self->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");
+        $self->disconnectMemcached;
     }
+
+    return;
+}
+
+sub disconnectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (!exists $self->{memcached}){
+      $logger->debug("No memcached configured");
+      return;
+    }
+
+    $self->{memc}->disconnect_all;
+    delete $self->{memc};
 
     return;
 }
@@ -2163,7 +2179,7 @@ sub del_databaseinfo {
     my $logger = get_logger();
 
     eval {
-        my $databaseinfo =  $self->{schema}->resultset('Databaseinfo')->single({ dbname => $dbname});
+        my $databaseinfo =  $self->get_schema->resultset('Databaseinfo')->single({ dbname => $dbname});
 
         if ($databaseinfo){
             $databaseinfo->update({ locationid => \'NULL' });
@@ -2185,9 +2201,11 @@ sub del_databaseinfo {
 
     $logger->debug("Database $dbname deleted");
 
-    # Update der abhaengigen Singletons
-    OpenBib::Config::DatabaseInfoTable->instance->load;
-    OpenBib::Config::CirculationInfoTable->instance->load;
+    # Flushen und aktualisieren in Memcached
+    $self->{memc}->delete('config:databaseinfotable');
+    OpenBib::Config::DatabaseInfoTable->new;
+    $self->{memc}->delete('config:circulationinfotable');
+    OpenBib::Config::CirculationInfoTable->new;
     
     return;
 }
@@ -2198,11 +2216,13 @@ sub update_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Databaseinfo')->single({ dbname => $dbinfo_ref->{dbname}})->update($dbinfo_ref);
+    $self->get_schema->resultset('Databaseinfo')->single({ dbname => $dbinfo_ref->{dbname}})->update($dbinfo_ref);
 
-    # Update der abhaengigen Singletons
-    OpenBib::Config::DatabaseInfoTable->instance->load;
-    OpenBib::Config::CirculationInfoTable->instance->load;
+    # Flushen und aktualisieren in Memcached
+    $self->{memc}->delete('config:databaseinfotable');
+    OpenBib::Config::DatabaseInfoTable->new;
+    $self->{memc}->delete('config:circulationinfotable');
+    OpenBib::Config::CirculationInfoTable->new;
     
     return;
 }
@@ -2213,7 +2233,7 @@ sub new_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $new_database = $self->{schema}->resultset('Databaseinfo')->create($dbinfo_ref);
+    my $new_database = $self->get_schema->resultset('Databaseinfo')->create($dbinfo_ref);
 
     if ($self->get_system_of_db($dbinfo_ref->{dbname}) ne "Z39.50"){
         # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
@@ -2225,9 +2245,11 @@ sub new_databaseinfo {
 
     if ($new_database){
         
-        # Update der abhaengigen Singletons
-        OpenBib::Config::DatabaseInfoTable->instance->load;
-        OpenBib::Config::CirculationInfoTable->instance->load;
+        # Flushen und aktualisieren in Memcached
+        $self->{memc}->delete('config:databaseinfotable');
+        OpenBib::Config::DatabaseInfoTable->new;
+        $self->{memc}->delete('config:circulationinfotable');
+        OpenBib::Config::CirculationInfoTable->new;
 
         return $new_database->id;
     }
@@ -2241,7 +2263,7 @@ sub update_databaseinfo_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->{schema}->resultset('Rssinfo')->single({ id => $rss_ref->{id}})->update($rss_ref);
+    $self->get_schema->resultset('Rssinfo')->single({ id => $rss_ref->{id}})->update($rss_ref);
 
     return;
 }
@@ -2252,7 +2274,7 @@ sub new_databaseinfo_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $new_rss = $self->{schema}->resultset('Rssinfo')->create($rss_ref);
+    my $new_rss = $self->get_schema->resultset('Rssinfo')->create($rss_ref);
 
     if ($new_rss){
         return $new_rss->id;
@@ -2268,7 +2290,7 @@ sub del_databaseinfo_rss {
     my $logger = get_logger();
 
     eval {
-        $self->{schema}->resultset('Rssinfo')->single({ id => $id})->delete;
+        $self->get_schema->resultset('Rssinfo')->single({ id => $id})->delete;
     };
 
     if ($@){
@@ -2285,7 +2307,7 @@ sub del_view {
     my $logger = get_logger();
 
     eval {
-        my $view = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname});
+        my $view = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname});
         $view->view_dbs->delete;
         $view->view_rsses->delete;
         $view->delete;
@@ -2316,7 +2338,7 @@ sub new_locationinfo {
         $create_args->{description} = $locationinfo_ref->{description};
     }
 
-    my $new_location = $self->{schema}->resultset('Locationinfo')->create($create_args);
+    my $new_location = $self->get_schema->resultset('Locationinfo')->create($create_args);
 
     if (defined $locationinfo_ref->{field}){
         my $create_fields_ref = [];
@@ -2333,14 +2355,14 @@ sub new_locationinfo {
         }
 
         if (@$create_fields_ref){
-            $self->{schema}->resultset('LocationinfoField')->populare($create_fields_ref);
+            $self->get_schema->resultset('LocationinfoField')->populare($create_fields_ref);
         }
 
     }
     
     if ($new_location){
-        # Update der abhaengigen Singletons
-        OpenBib::Config::LocationInfoTable->instance->load;
+        $self->{memc}->delete('config:locationinfotable');
+        OpenBib::Config::LocationInfoTable->new;
 
         return $new_location->id;
     }
@@ -2367,7 +2389,7 @@ sub update_locationinfo {
         $update_args->{description} = $locationinfo_ref->{description};
     }
 
-    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single({ identifier => $locationinfo_ref->{identifier} });
+    my $locationinfo = $self->get_schema->resultset('Locationinfo')->single({ identifier => $locationinfo_ref->{identifier} });
 
     $locationinfo->update($update_args);
     
@@ -2397,12 +2419,12 @@ sub update_locationinfo {
         }
         
         if (@$update_fields_ref){
-            $self->{schema}->resultset('LocationinfoField')->populate($update_fields_ref);
+            $self->get_schema->resultset('LocationinfoField')->populate($update_fields_ref);
         }
     }
 
-    # Update der abhaengigen Singletons
-    OpenBib::Config::LocationInfoTable->instance->load;
+    $self->{memc}->delete('config:locationinfotable');
+    OpenBib::Config::LocationInfoTable->new;
     
     return;
 }
@@ -2413,7 +2435,7 @@ sub delete_locationinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $locationinfo = $self->{schema}->resultset('Locationinfo')->single({ identifier => $locationid });
+    my $locationinfo = $self->get_schema->resultset('Locationinfo')->single({ identifier => $locationid });
 
     eval {
         $locationinfo->databaseinfos->update({ locationid => \'NULL' });
@@ -2425,8 +2447,8 @@ sub delete_locationinfo {
         $logger->error("Can't delete locationinfo: ".$@);
     }
 
-    # Update der abhaengigen Singletons
-    OpenBib::Config::LocationInfoTable->instance->load;
+    $self->{memc}->delete('config:locationinfotable');
+    OpenBib::Config::LocationInfoTable->new;
     
     return;
 }
@@ -2463,7 +2485,7 @@ sub update_view {
     my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->update(
+    $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname})->update(
         {
             profileid   => $profileinfo_ref->id,
             viewname    => $viewname,
@@ -2476,7 +2498,7 @@ sub update_view {
     );
     
     # Datenbanken zunaechst loeschen
-    $self->{schema}->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
+    $self->get_schema->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
 
     if (@$databases_ref){
         my $this_db_ref = [];
@@ -2490,7 +2512,7 @@ sub update_view {
         }
         
         # Dann die zugehoerigen Datenbanken eintragen
-        $self->{schema}->resultset('ViewDb')->populate($this_db_ref);
+        $self->get_schema->resultset('ViewDb')->populate($this_db_ref);
     }
         
     return;
@@ -2511,10 +2533,10 @@ sub update_view_rss {
     my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
 
     # Zuerst die Aenderungen des primaeren RSS-Feeds in der Tabelle Viewinfo vornehmen
-    $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname})->update({ rssid => $primrssfeed });
+    $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname})->update({ rssid => $primrssfeed });
     
     # RSS-Feeds zunaechst loeschen
-    $self->{schema}->resultset('ViewRss')->search({ viewid => $viewid })->delete;
+    $self->get_schema->resultset('ViewRss')->search({ viewid => $viewid })->delete;
 
     if (@$rssfeeds_ref){
         my $this_rss_ref = [];
@@ -2527,7 +2549,7 @@ sub update_view_rss {
         }
         
         # Dann die zugehoerigen Feeds eintragen
-        $self->{schema}->resultset('ViewRss')->populate($this_rss_ref);
+        $self->get_schema->resultset('ViewRss')->populate($this_rss_ref);
     }
     
     return;
@@ -2540,7 +2562,7 @@ sub strip_view_from_uri {
     my $logger = get_logger();
 
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-    my $stripuri_rs = $self->{schema}->resultset('Viewinfo')->single({ viewname => $viewname});
+    my $stripuri_rs = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname});
 
     my $stripuri = 0;
 
@@ -2582,7 +2604,7 @@ sub new_view {
     
     my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
     
-    my $new_view = $self->{schema}->resultset('Viewinfo')->create(
+    my $new_view = $self->get_schema->resultset('Viewinfo')->create(
         {
             profileid   => $profileinfo_ref->id,
             viewname    => $viewname,
@@ -2597,7 +2619,7 @@ sub new_view {
     my $viewid = $new_view->id;
     
     # Datenbanken zunaechst loeschen
-    $self->{schema}->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
+    $self->get_schema->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
 
     my @profiledbs = $self->get_profiledbs($profilename);
 
@@ -2625,7 +2647,7 @@ sub new_view {
         }
         
         # Dann die zugehoerigen Datenbanken eintragen
-        $self->{schema}->resultset('ViewDb')->populate($this_db_ref);
+        $self->get_schema->resultset('ViewDb')->populate($this_db_ref);
     }
 
     if ($viewid){
@@ -2644,7 +2666,7 @@ sub del_profile {
     # DBI: "delete from profileinfo where profilename = ?"
 
     eval {
-        $self->{schema}->resultset('Profileinfo')->single(
+        $self->get_schema->resultset('Profileinfo')->single(
             {
                 profilename => $profilename,
             }
@@ -2678,7 +2700,7 @@ sub update_profile {
 
     # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
 
-    $self->{schema}->resultset('Profileinfo')->single({ profilename => $profilename })->update($arg_ref);
+    $self->get_schema->resultset('Profileinfo')->single({ profilename => $profilename })->update($arg_ref);
 
     return;
 }
@@ -2695,7 +2717,7 @@ sub new_profile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $new_profile = $self->{schema}->resultset('Profileinfo')->create($arg_ref);
+    my $new_profile = $self->get_schema->resultset('Profileinfo')->create($arg_ref);
 
     if ($new_profile){
         return $new_profile->id;
@@ -2712,7 +2734,7 @@ sub del_orgunit {
 
     # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
     eval {
-        my $orgunitinfo = $self->{schema}->resultset('Orgunitinfo')->search_rs(
+        my $orgunitinfo = $self->get_schema->resultset('Orgunitinfo')->search_rs(
             {
                 'me.orgunitname' => $orgunitname,
                 'profileid.profilename' => $profilename,
@@ -2762,7 +2784,7 @@ sub update_orgunit {
 
     # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
     # Datenbanken zunaechst loeschen
-    $self->{schema}->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitinfo_ref->id})->delete;
+    $self->get_schema->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitinfo_ref->id})->delete;
 
     # DBI: "insert into orgunit_db values (?,?,?)"
     if (@$databases_ref){
@@ -2781,7 +2803,7 @@ sub update_orgunit {
         }
         
         # Dann die zugehoerigen Datenbanken eintragen
-        $self->{schema}->resultset('OrgunitDb')->populate($this_db_ref);
+        $self->get_schema->resultset('OrgunitDb')->populate($this_db_ref);
     }
 
     return;
@@ -2808,13 +2830,13 @@ sub new_orgunit {
 
     my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
 
-    my $new_orgunit = $self->{schema}->resultset('Orgunitinfo')->create({ profileid => $profileinfo_ref->id, orgunitname => $orgunitname, description => $description, nr => $nr});
+    my $new_orgunit = $self->get_schema->resultset('Orgunitinfo')->create({ profileid => $profileinfo_ref->id, orgunitname => $orgunitname, description => $description, nr => $nr});
 
     my $orgunitid = $new_orgunit->id;
 
     # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
     # Datenbanken zunaechst loeschen
-    $self->{schema}->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitid})->delete;
+    $self->get_schema->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitid})->delete;
 
     # DBI: "insert into orgunit_db values (?,?,?)"
     if (@$databases_ref){
@@ -2833,7 +2855,7 @@ sub new_orgunit {
         }
         
         # Dann die zugehoerigen Datenbanken eintragen
-        $self->{schema}->resultset('OrgunitDb')->populate($this_db_ref);
+        $self->get_schema->resultset('OrgunitDb')->populate($this_db_ref);
     }
 
     if ($new_orgunit){
@@ -2857,7 +2879,7 @@ sub del_server {
 
     eval {
         # DBI: "delete from serverinfo where id = ?"
-        $self->{schema}->resultset('Serverinfo')->single({ id => $id })->delete;
+        $self->get_schema->resultset('Serverinfo')->single({ id => $id })->delete;
     };
 
     if ($@){
@@ -2904,7 +2926,7 @@ sub update_server {
     }
     
     # DBI: "update serverinfo set active = ? where id = ?"
-    $self->{schema}->resultset('Serverinfo')->search_rs({ id => $id })->update($update_args);
+    $self->get_schema->resultset('Serverinfo')->search_rs({ id => $id })->update($update_args);
 
     return;
 }
@@ -2932,7 +2954,7 @@ sub new_server {
     }
 
     # DBI: "insert into serverinfo (id,host,active) values (NULL,?,?)"
-    my $new_server = $self->{schema}->resultset('Serverinfo')->create({ hostip => $hostip, description => $description, status => $status, clusterid => $clusterid, active => $active });
+    my $new_server = $self->get_schema->resultset('Serverinfo')->create({ hostip => $hostip, description => $description, status => $status, clusterid => $clusterid, active => $active });
 
     if ($new_server){
         return $new_server->id;
@@ -2955,7 +2977,7 @@ sub del_cluster {
 
     eval {
         # DBI: "delete from clusterinfo where id = ?"
-        $self->{schema}->resultset('Clusterinfo')->single({ id => $id })->delete;
+        $self->get_schema->resultset('Clusterinfo')->single({ id => $id })->delete;
     };
     
     if ($@){
@@ -2990,7 +3012,7 @@ sub update_cluster {
     my $logger = get_logger();
 
     # DBI: "update clusterinfo set active = ? where id = ?"
-    my $cluster = $self->{schema}->resultset('Clusterinfo')->single({ id => $id });
+    my $cluster = $self->get_schema->resultset('Clusterinfo')->single({ id => $id });
 
     $cluster->update($update_args);
     $cluster->serverinfos->update({status => $arg_ref->{status}});
@@ -3013,7 +3035,7 @@ sub new_cluster {
     my $logger = get_logger();
 
     # DBI: "insert into clusterinfo (id,host,active) values (NULL,?,?)"
-    my $new_cluster = $self->{schema}->resultset('Clusterinfo')->create({ description => $description, status => $status, active => $active });
+    my $new_cluster = $self->get_schema->resultset('Clusterinfo')->create({ description => $description, status => $status, active => $active });
 
     if ($new_cluster){
         return $new_cluster->id;
@@ -3062,7 +3084,7 @@ sub del_template {
 
     eval {
         # DBI: "delete from templateinfo where id = ?"
-        $self->{schema}->resultset('Templateinfo')->single({ id => $id })->delete;
+        $self->get_schema->resultset('Templateinfo')->single({ id => $id })->delete;
     };
 
     if ($@){
@@ -3077,7 +3099,7 @@ sub get_templatetext {
 
     my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
 
-    my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $templatelang })->single;
+    my $template = $self->get_schema->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $templatelang })->single;
 
     if ($template){
         return $template->templatetext;
@@ -3087,7 +3109,7 @@ sub get_templatetext {
          foreach my $thislang (@{$self->{lang}}){
              next if ($thislang eq $templatelang);
 
-             my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $thislang })->single;
+             my $template = $self->get_schema->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $thislang })->single;
             
              if ($template){
                  return $template->templatetext;
@@ -3128,7 +3150,7 @@ sub update_template {
     $update_args_ref->{templatelang} = $templatelang if ($templatelang);
     
     # DBI: "update templateinfo set active = ? where id = ?"
-    my $template = $self->{schema}->resultset('Templateinfo')->search_rs({ id => $id })->single;
+    my $template = $self->get_schema->resultset('Templateinfo')->search_rs({ id => $id })->single;
 
     # Save old Text in new revision
     $template->create_related('templateinforevisions',{ tstamp => \'NOW()', templatetext => $template->templatetext });
@@ -3162,7 +3184,7 @@ sub new_template {
     }
 
     # DBI: "insert into templateinfo (id,host,active) values (NULL,?,?)"
-    my $new_template = $self->{schema}->resultset('Templateinfo')->create({ viewid => $viewid, templatename => $templatename, templatetext => $templatetext, templatelang => $templatelang });
+    my $new_template = $self->get_schema->resultset('Templateinfo')->create({ viewid => $viewid, templatename => $templatename, templatetext => $templatetext, templatelang => $templatelang });
 
     if ($new_template){
         return $new_template->id;
@@ -3179,7 +3201,7 @@ sub authentication_exists {
     my $logger = get_logger();
 
     # DBI: "select count(*) as rowcount from authenticator where targetid = ?"
-    my $targetcount = $self->{schema}->resultset('Authenticator')->search_rs(
+    my $targetcount = $self->get_schema->resultset('Authenticator')->search_rs(
         {
             id => $targetid,
         }
@@ -3196,7 +3218,7 @@ sub get_authenticators {
     my $logger = get_logger();
 
     # DBI: "select * from authenticator order by type DESC,description"
-    my $authenticators = $self->{schema}->resultset('Authenticator')->search_rs(
+    my $authenticators = $self->get_schema->resultset('Authenticator')->search_rs(
         undef,
         {
             order_by => ['type DESC','description'],
@@ -3229,7 +3251,7 @@ sub get_authenticator_by_id {
     my $logger = get_logger();
 
     # DBI: "select * from authenticator where targetid = ?"
-    my $authenticator = $self->{schema}->resultset('Authenticator')->single(
+    my $authenticator = $self->get_schema->resultset('Authenticator')->single(
         {
             id => $targetid,
         },
@@ -3263,7 +3285,7 @@ sub get_authenticator_by_dbname {
   
     my $logger = get_logger();
 
-    my $authenticator = $self->{schema}->resultset('Authenticator')->single(
+    my $authenticator = $self->get_schema->resultset('Authenticator')->single(
         {
             dbname => $dbname,
         },
@@ -3298,7 +3320,7 @@ sub get_authenticator_self {
     my $logger = get_logger();
 
     # DBI: "select * from authenticator where type = ?"
-    my $authenticator = $self->{schema}->resultset('Authenticator')->single(
+    my $authenticator = $self->get_schema->resultset('Authenticator')->single(
         {
             type => 'self',
         },
@@ -3332,7 +3354,7 @@ sub get_number_of_authenticators {
     my $logger = get_logger();
 
     # DBI: "select count(targetid) as rowcount from authenticator"
-    my $numoftargets = $self->{schema}->resultset('Authenticator')->search_rs(
+    my $numoftargets = $self->get_schema->resultset('Authenticator')->search_rs(
         undef,
     )->count;
 
@@ -3350,7 +3372,7 @@ sub authenticator_exists {
     my $logger = get_logger();
 
     # DBI: "select count(description) as rowcount from authenticator where description = ?"
-    my $targetcount = $self->{schema}->resultset('Authenticator')->search_rs(
+    my $targetcount = $self->get_schema->resultset('Authenticator')->search_rs(
         {
             description => $description,
         }   
@@ -3367,7 +3389,7 @@ sub delete_authenticator {
     my $logger = get_logger();
 
     eval {
-        $self->{schema}->resultset('Authenticator')->search_rs(
+        $self->get_schema->resultset('Authenticator')->search_rs(
             {
                 id => $targetid,
             }   
@@ -3393,7 +3415,7 @@ sub new_authenticator {
     }
     
     # DBI: "insert into authenticator (hostname,port,user,db,description,type) values (?,?,?,?,?,?)"
-    my $new_authenticator = $self->{schema}->resultset('Authenticator')->create(
+    my $new_authenticator = $self->get_schema->resultset('Authenticator')->create(
         $arg_ref,
     );
 
@@ -3410,7 +3432,7 @@ sub update_authenticator {
     my $logger = get_logger();
 
     # DBI: "update authenticator set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where id = ?"
-    $self->{schema}->resultset('Authenticator')->single(
+    $self->get_schema->resultset('Authenticator')->single(
         {
             id => $arg_ref->{id},
         }   
@@ -3439,7 +3461,7 @@ sub get_id_of_selfreg_authenticator {
     return undef if (!defined $dbh);
 
     # DBI: "select id from authenticator where type = 'self'"
-    my $authenticator = $self->{schema}->resultset('Authenticator')->search_rs(
+    my $authenticator = $self->get_schema->resultset('Authenticator')->search_rs(
         {
             type => 'self',
         }
@@ -3465,7 +3487,7 @@ sub get_searchprofile_or_create {
     $logger->debug("Databases of Searchprofile as JSON: $dbs_as_json");
 
     # Simplified lookup via JSON-Representation
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single(
+    my $searchprofile = $self->get_schema->resultset('Searchprofile')->single(
         {
             databases_as_json => $dbs_as_json,
         }
@@ -3479,7 +3501,7 @@ sub get_searchprofile_or_create {
     }
     else {
         $logger->debug("Creating new Searchprofile for databases $dbs_as_json");
-        my $new_searchprofile = $self->{schema}->resultset('Searchprofile')->create(
+        my $new_searchprofile = $self->get_schema->resultset('Searchprofile')->create(
             {
                 databases_as_json => $dbs_as_json,
             }
@@ -3488,7 +3510,7 @@ sub get_searchprofile_or_create {
         $searchprofileid = $new_searchprofile->id;
         
         foreach my $database (@{$dbs_ref}){
-            my $dbinfo = $self->{schema}->resultset('Databaseinfo')->single({dbname => $database});
+            my $dbinfo = $self->get_schema->resultset('Databaseinfo')->single({dbname => $database});
 
             if ($dbinfo){            
                 $new_searchprofile->create_related(
@@ -3516,7 +3538,7 @@ sub get_searchprofiles {
 
     my @searchprofiles;
     
-    my $searchprofiles = $self->{schema}->resultset('Searchprofile')->search_rs(undef,{ sort_by => ['id'] });
+    my $searchprofiles = $self->get_schema->resultset('Searchprofile')->search_rs(undef,{ sort_by => ['id'] });
 
     while (my $thissearchprofile = $searchprofiles->next){
         push @searchprofiles, $thissearchprofile;
@@ -3528,7 +3550,7 @@ sub get_searchprofiles {
 sub get_databases_of_isil {
     my ($self,$isil) = @_;
     
-    my $databaseinfo = $self->{schema}->resultset('Locationinfo')->search(
+    my $databaseinfo = $self->get_schema->resultset('Locationinfo')->search(
         {
             'identifier' => $isil,
             'type' => 'ISIL',
@@ -3554,7 +3576,7 @@ sub get_databases_of_searchprofile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $searchprofiledbs = $self->{schema}->resultset('SearchprofileDb')->search_rs(
+    my $searchprofiledbs = $self->get_schema->resultset('SearchprofileDb')->search_rs(
         {
             'me.searchprofileid' => $searchprofileid,
             'dbid.active'        => 1,
@@ -3600,7 +3622,7 @@ sub get_searchprofiles_with_database {
 
     my @searchprofileids = ();
 
-    my $searchprofiles = $self->{schema}->resultset('SearchprofileDb')->search_rs(
+    my $searchprofiles = $self->get_schema->resultset('SearchprofileDb')->search_rs(
         {
             'dbid.dbname'               => $database,
             'dbid.active'               => 1,
@@ -3670,7 +3692,7 @@ sub searchprofile_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $count = $self->{schema}->resultset('Searchprofile')->search({ id => $searchprofileid})->count;
+    my $count = $self->get_schema->resultset('Searchprofile')->search({ id => $searchprofileid})->count;
     
     return $count;
 }
@@ -3681,7 +3703,7 @@ sub update_searchprofile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $searchprofile = $self->{schema}->resultset('Searchprofile')->single({ id => $searchprofileid});
+    my $searchprofile = $self->get_schema->resultset('Searchprofile')->single({ id => $searchprofileid});
         
     if ($searchprofile){
         $searchprofile->update({own_index => $own_index});
@@ -3696,7 +3718,7 @@ sub get_searchprofile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return $self->{schema}->resultset('Searchprofile');
+    return $self->get_schema->resultset('Searchprofile');
 
 }
 
@@ -3708,7 +3730,7 @@ sub get_searchprofiles_with_own_index {
 
     my @searchprofiles;
     
-    my $searchprofiles = $self->{schema}->resultset('Searchprofile')->search_rs({ own_index => 1 });
+    my $searchprofiles = $self->get_schema->resultset('Searchprofile')->search_rs({ own_index => 1 });
 
     while (my $thissearchprofile = $searchprofiles->next){
         push @searchprofiles, $thissearchprofile->id;
@@ -3723,7 +3745,7 @@ sub delete_stale_searchprofile_indexes {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $searchprofiles = $self->{schema}->resultset('Searchprofile');
+    my $searchprofiles = $self->get_schema->resultset('Searchprofile');
 
     while (my $searchprofile = $searchprofiles->next){
         my $profileindex_path = $self->{xapian_index_base_path}."/_searchprofile/".$searchprofile->id;        
@@ -3767,7 +3789,7 @@ sub get_dbistopic_of_dbrtopic {
         $atime=new Benchmark;
     }
 
-    my $topic = $self->{schema}->resultset('DbrtopicDbistopic')->search(
+    my $topic = $self->get_schema->resultset('DbrtopicDbistopic')->search(
         {
             'dbrtopicid.topic' => $dbrtopic,
         },
@@ -3803,7 +3825,7 @@ sub get_dbisdbs_of_dbrtopic {
         $atime=new Benchmark;
     }
 
-    my $dbs = $self->{schema}->resultset('Dbistopic')->search(
+    my $dbs = $self->get_schema->resultset('Dbistopic')->search(
         {
             'dbrtopicid.topic' => $dbrtopic,
         },
@@ -3841,7 +3863,7 @@ sub get_description_of_dbrtopic {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $topic = $self->{schema}->resultset('Dbrtopic')->single(
+    my $topic = $self->get_schema->resultset('Dbrtopic')->single(
         {
             'topic' => $dbrtopic,
         },

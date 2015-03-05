@@ -163,7 +163,7 @@
 </style>
 
 <!-- content hier -->
-<h1>[% dbinfo.dbnames.${acq_config.dbname}.full %]</h1>
+<h1>[% dbinfo.get('dbnames').${acq_config.dbname}.full %]</h1>
 
 <p/>
 

@@ -73,11 +73,9 @@ sub show_collection {
     # CGI Args
     my $year           = $query->param('year');
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $statistics  = new OpenBib::Statistics();
 
     my $ttdata={
-        dbinfo     => $dbinfotable,
         statistics => $statistics,
         year       => $year,
     };
@@ -109,8 +107,6 @@ sub show_record {
 
     # CGI Args
 
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
-
     my @databases     = $config->get_databases_of_searchprofile($searchprofileid);
 
     my $searchprofile = $config->get_searchprofile->single({ id => $searchprofileid});
@@ -120,7 +116,6 @@ sub show_record {
         searchprofileid   => $searchprofileid,
         searchprofile     => $searchprofile,
         databases         => \@databases,
-        dbinfo            => $dbinfotable,
     };
 
     return $self->print_page($config->{tt_searchprofiles_record_tname},$ttdata);

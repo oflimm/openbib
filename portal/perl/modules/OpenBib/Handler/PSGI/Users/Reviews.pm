@@ -44,7 +44,6 @@ use Template;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -99,8 +98,6 @@ sub show_collection {
         return $self->print_authorization_error();
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $username       = $user->get_username();
     my $targettype     = $user->get_targettype_of_session($session->{ID});
     my $reviewlist_ref = $user->get_reviews({username => $username});
@@ -116,7 +113,6 @@ sub show_collection {
     my $ttdata={
         queryoptions_ref => $queryoptions->get_options,
         targettype       => $targettype,
-        dbinfo           => $dbinfotable,
         reviews          => $reviewlist_ref,
     };
     
@@ -184,8 +180,6 @@ sub update_record {
     ###########                                               ###########
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
-
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
         return $self->print_warning($msg->maketext("Ungültige Session"));
@@ -309,8 +303,6 @@ sub show_record_form {
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     if (!$session->is_valid()){
         return $self->print_warning($msg->maketext("Ungültige Session"));
     }
@@ -347,7 +339,6 @@ sub show_record_form {
         queryoptions_ref => $queryoptions->get_options,
         sessionID        => $session->{ID},
         targettype       => $targettype,
-        dbinfo           => $dbinfotable,
         review           => $review_ref,
         
         config           => $config,

@@ -47,8 +47,6 @@ use URI::Escape;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::CirculationInfoTable;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::Handler::PSGI::Users::LitLists::Item;
 use OpenBib::QueryOptions;
@@ -198,7 +196,6 @@ sub show_record {
     my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
     my $topicid      = $query->param('topicid')   || undef;
 
-    my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
     my $topics_ref   = $user->get_topics;
 
     $logger->debug("This request: SessionID: $session->{ID} - User? $user->{ID}");
@@ -269,7 +266,6 @@ sub show_record {
         format         => $format,
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
-        dbinfo         => $dbinfotable,
         targettype     => $targettype,
     };
     
@@ -316,7 +312,6 @@ sub show_record_form {
     my @topicids     = ($query->param('topicids'))?$query->param('topicids'):();
     my $topicid      = $query->param('topicid')   || undef;
 
-    my $dbinfotable    = OpenBib::Config::DatabaseInfoTable->instance;
     my $topics_ref   = $user->get_topics;
     
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
@@ -360,7 +355,6 @@ sub show_record_form {
         format         => $format,
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
-        dbinfo         => $dbinfotable,
         targettype     => $targettype,
     };
     

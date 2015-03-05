@@ -47,7 +47,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -85,12 +84,9 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $profileinfo_ref = $config->get_profileinfo_overview();
 
     my $ttdata = {
-        dbinfo     => $dbinfotable,
         profiles   => $profileinfo_ref,
     };
     
@@ -115,7 +111,6 @@ sub show_record {
         return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $profileinfo_ref = $config->get_profileinfo->search_rs({ profilename => $profilename })->single();
     my $orgunits_ref    = $config->get_orgunitinfo_overview($profilename);
     
@@ -127,7 +122,6 @@ sub show_record {
         profileinfo => $profileinfo_ref,
         profiledbs  => \@profiledbs,
         orgunits    => $orgunits_ref,
-        dbinfo      => $dbinfotable,
         activedbs   => $activedbs_ref,
     };
 

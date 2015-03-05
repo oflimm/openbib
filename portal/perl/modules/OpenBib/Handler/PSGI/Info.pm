@@ -42,7 +42,6 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -93,7 +92,6 @@ sub show_record {
     my $id             = $query->param('id')             || '';
     
     my $statistics  = new OpenBib::Statistics();
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $utils       = new OpenBib::Template::Utilities;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
@@ -104,7 +102,6 @@ sub show_record {
         stid          => $stid,
         id            => $id,
         viewdesc      => $viewdesc,
-        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
     };

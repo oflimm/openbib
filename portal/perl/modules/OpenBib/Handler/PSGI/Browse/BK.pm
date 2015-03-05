@@ -38,7 +38,6 @@ use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode_utf8/;
 
 use OpenBib::Statistics;
-use OpenBib::Config::DatabaseInfoTable;
 
 use base 'OpenBib::Handler::PSGI';
 
@@ -144,8 +143,6 @@ sub show_record_databases {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
     my $statistics  = new OpenBib::Statistics();
 
     # TT-Data erzeugen
@@ -153,7 +150,6 @@ sub show_record_databases {
         statistics   => $statistics,
         toplevelbkid => $toplevelbkid,
         bkid         => $bkid,
-        dbinfo       => $dbinfotable,
     };
     
     return $self->print_page($config->{'tt_browse_bks_record_databases_tname'},$ttdata);

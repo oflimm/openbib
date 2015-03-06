@@ -13,7 +13,7 @@ use Log::Log4perl qw(:levels get_logger);
 my $cgiapp = sub {
     my $env = shift;
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     Log::Log4perl->init($config->{log4perl_path});
     
     my $app = OpenBib::Handler::PSGI::Dispatch->as_psgi(

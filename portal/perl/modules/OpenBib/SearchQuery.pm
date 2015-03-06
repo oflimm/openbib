@@ -64,7 +64,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if ($logger->is_debug){
         $logger->debug("Session: ".YAML::Dump($session));
@@ -112,7 +112,7 @@ sub set_from_psgi_request {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $query = $self->{r};
 
@@ -379,7 +379,7 @@ sub save  {
         return $self;
     }
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     $logger->debug("sid: $sid");
     
@@ -493,7 +493,7 @@ sub to_cgi_params {
         $exclude_filter_ref->{$content} = 1;
     }
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my @cgiparams = ();
 
@@ -750,7 +750,7 @@ sub get_dbis_recommendations {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $atime;
     
@@ -830,7 +830,7 @@ sub get_spelling_suggestion {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $suggestions_ref = {};
     my $searchterms_ref = $self->get_searchterms;
@@ -1033,7 +1033,7 @@ sub _get_searchprofile {
     my $query = $self->{r};
     my $view  = $self->{'view'}                      || '';
 
-    my $config         = OpenBib::Config->instance;
+    my $config         = OpenBib::Config->new;
     my $session        = $self->get_session;
 
     if ($logger->is_debug){
@@ -1095,7 +1095,7 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
 
     eval {        
         $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);

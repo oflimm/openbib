@@ -55,7 +55,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
 
     my $self = {};
 
@@ -115,7 +115,7 @@ sub load_from_query {
 
     return unless (defined $self->{_query});
                    
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
 
     my $queryoptions_ref = $self->get_option_definition;
 
@@ -144,7 +144,7 @@ sub load_from_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
     my $session = $self->get_session;
 
     $logger->debug("SessionID:".$session->{ID}) if (defined $session->{ID});
@@ -183,7 +183,7 @@ sub dump_into_session {
     
     return unless ($self->{_altered});
     
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
     my $session = $self->get_session;
     
     my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({id => $session->{sid}});
@@ -281,7 +281,7 @@ sub set_session {
 sub get_option_definition {
     my ($class)=@_;
     
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
     
     return $config->{queryoptions};
 }
@@ -336,7 +336,7 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
 
     eval {        
         $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);

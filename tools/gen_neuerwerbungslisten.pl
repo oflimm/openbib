@@ -90,7 +90,7 @@ if (!$month || !$year){
   exit;
 }
 
-our $config      = OpenBib::Config->instance;
+our $config      = OpenBib::Config->new;
 our $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/gen_neuerwerbungslisten.log";

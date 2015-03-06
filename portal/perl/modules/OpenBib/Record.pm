@@ -44,6 +44,7 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Schema::Catalog;
+use OpenBib::Schema::Enrichment;
 use OpenBib::Schema::Enrichment::Singleton;
 
 sub connectDB {
@@ -52,7 +53,7 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1}
@@ -97,7 +98,7 @@ sub connectEnrichmentDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if ($self->{'enrichmntdbsingleton'}){
         eval {        
@@ -170,7 +171,7 @@ sub get_fields {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     # Anreicherung mit Feld-Bezeichnungen
     if (defined $msg){
@@ -374,7 +375,7 @@ sub DESTROY {
 
     if (defined $self->{schema}){
         eval {
-            $self->{schema}->sth->finish;
+#            $self->{schema}->sth->finish;
             $self->{schema}->storage->disconnect;
         };
 
@@ -385,7 +386,7 @@ sub DESTROY {
 
     if (defined $self->{enrich_schema}){
         eval {
-            $self->{enrich_schema}->sth->finish;
+#            $self->{enrich_schema}->sth->finish;
             $self->{enrich_schema}->storage->disconnect;
         };
         

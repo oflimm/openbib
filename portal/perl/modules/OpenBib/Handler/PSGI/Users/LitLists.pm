@@ -622,7 +622,7 @@ sub return_baseurl {
     my $lang           = $self->param('lang')           || '';
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{litlists_loc}.html?l=$lang";
 

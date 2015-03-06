@@ -129,7 +129,7 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = OpenBib::Config->instance;
+    my $config       = OpenBib::Config->new;
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
@@ -284,7 +284,7 @@ sub get_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config     = OpenBib::Config->instance;
+    my $config     = OpenBib::Config->new;
 
     my $recordlist = new OpenBib::RecordList::Title();
 
@@ -378,7 +378,7 @@ sub get_indexterms {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $dbh = undef;
     
@@ -429,7 +429,7 @@ sub get_values {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $dbh = undef;
     
@@ -477,7 +477,7 @@ sub parse_query {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     # Aufbau des elasticsearchquerystrings
     my @elasticsearchquerystrings = ();

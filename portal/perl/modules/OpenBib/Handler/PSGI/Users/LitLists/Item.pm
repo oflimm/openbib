@@ -381,7 +381,7 @@ sub return_baseurl {
     my $userid         = $self->param('userid')         || '';
     my $path_prefix    = $self->param('path_prefix');
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/litlists.html";
 

@@ -78,7 +78,7 @@ if ($mode ne "tex" && $mode ne "pdf"){
   exit;
 }
 
-my $config      = OpenBib::Config->instance;
+my $config      = OpenBib::Config->new;
 my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
 my $subset = new OpenBib::Catalog::Subset("instzs","who_cares");

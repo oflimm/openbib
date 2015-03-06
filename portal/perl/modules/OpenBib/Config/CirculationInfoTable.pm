@@ -37,7 +37,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use YAML::Syck;
 
-use OpenBib::Config;
+use OpenBib::Config::File;
 
 sub new {
     my ($class) = @_;
@@ -49,7 +49,8 @@ sub new {
 
     bless ($self, $class);
 
-    $self->connectDB;
+    $self->{circinfo} = {};
+    
     $self->connectMemcached;
     $self->load;
     
@@ -62,7 +63,7 @@ sub load {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config::File->instance;
     
     #####################################################################
     ## Ausleihkonfiguration fuer den Katalog einlesen
@@ -89,7 +90,7 @@ sub load {
       return $self if ($self->{circinfo});
     }
     
-    my $dbinfos = $config->{schema}->resultset('Databaseinfo')->search_rs(
+    my $dbinfos = $self->get_schema->resultset('Databaseinfo')->search_rs(
         {
             circ => 1,
         },
@@ -125,7 +126,9 @@ sub load {
 sub get {
     my ($self,$key) = @_;
 
-    return $self->{circinfo}{$key};
+    return $self->{circinfo}{$key} if (defined $self->{circinfo}{$key});
+
+    return;
 }
 
 sub connectDB {
@@ -206,7 +209,7 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config::File->instance;
 
     if (!exists $config->{memcached}){
       $logger->debug("No memcached configured");

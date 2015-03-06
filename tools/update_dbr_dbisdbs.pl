@@ -7,7 +7,7 @@ use LWP::UserAgent;
 use XML::LibXML;
 use Encode qw(decode decode_utf8);
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
 

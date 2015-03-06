@@ -105,7 +105,7 @@ sub sort {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $sortedoutputbuffer_ref = [];
 
@@ -232,7 +232,7 @@ sub to_rss {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $rss = new XML::RSS ( version => '1.0' );
         
@@ -341,7 +341,7 @@ sub to_rss {
 #     # Log4perl logger erzeugen
 #     my $logger = get_logger();
 
-#     my $config       = OpenBib::Config->instance;
+#     my $config       = OpenBib::Config->new;
 #     my $session      = OpenBib::Session->instance;
 #     my $user         = OpenBib::User->instance;
 
@@ -548,7 +548,7 @@ sub filter_by_profile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $db_in_profile_ref = {};
 

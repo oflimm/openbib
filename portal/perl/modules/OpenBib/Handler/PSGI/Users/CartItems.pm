@@ -152,7 +152,7 @@ sub return_baseurl {
     my $path_prefix    = $self->param('path_prefix');
     my $lang           = $self->param('lang');
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{cartitems_loc}.html?l=$lang";
 

@@ -52,7 +52,7 @@ sub create_searcher {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if ($logger->is_debug){
         $logger->debug("Trying to dispatch database $database") if (defined $database);

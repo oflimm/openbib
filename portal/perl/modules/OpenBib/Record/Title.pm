@@ -147,7 +147,7 @@ sub load_full_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # (Re-)Initialisierung
     delete $self->{_fields}         if (exists $self->{_fields});
@@ -226,7 +226,7 @@ sub load_brief_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     # (Re-)Initialisierung
     delete $self->{_fields}       if (exists $self->{_fields});
@@ -292,7 +292,7 @@ sub enrich_content {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall);
         
@@ -510,7 +510,7 @@ sub enrich_related_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall);
         
@@ -705,7 +705,7 @@ sub enrich_similar_records_old {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall);
         
@@ -839,7 +839,7 @@ sub enrich_similar_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall);
         
@@ -999,7 +999,7 @@ sub enrich_same_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall);
         
@@ -1153,7 +1153,7 @@ sub load_circulation {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config        = OpenBib::Config->instance;
+    my $config        = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall)=(0,0,0);
 
@@ -1188,7 +1188,7 @@ sub load_circulation {
     {
         my $circexlist=undef;
         
-        if (exists $circinfotable->get($self->{database})->{circ}) {
+        if (defined $circinfotable->get($self->{database}) && defined $circinfotable->get($self->{database})->{circ}) {
 
             eval {
                 my $soap = SOAP::Lite
@@ -1222,7 +1222,7 @@ sub load_circulation {
         }
         
         # Anreichern mit Bibliotheksinformationen
-        if (exists $circinfotable->get($self->{database})->{circ}
+        if (defined $circinfotable->get($self->{database})->{circ}
                 && @{$circulation_ref}) {
             for (my $i=0; $i < scalar(@{$circulation_ref}); $i++) {
                 
@@ -1230,13 +1230,13 @@ sub load_circulation {
                 my $sigel=$dbinfotable->get('dbases')->{$self->{database}};
                 
                 if (length($sigel)>0) {
-                    if (exists $dbinfotable->get('sigel')->{$sigel}) {
+                    if (defined $dbinfotable->get('sigel')->{$sigel}) {
                         $bibliothek=$dbinfotable->get('sigel')->{$sigel};
                     } else {
                         $bibliothek="($sigel)";
                     }
                 } else {
-                    if (exists $dbinfotable->get('sigel')->{$dbinfotable->get('dbases')->{$self->{database}}}) {
+                    if (defined $dbinfotable->get('sigel')->{$dbinfotable->get('dbases')->{$self->{database}}}) {
                         $bibliothek=$dbinfotable->get('sigel')->{
                             $dbinfotable->get('dbases')->{$self->{database}}};
                     }
@@ -1283,11 +1283,11 @@ sub load_olwsviewer {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config        = OpenBib::Config->instance;
+    my $config        = OpenBib::Config->new;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
     # Anreicherung mit OLWS-Daten
-    if (exists $circinfotable->get($self->{database}) && exists $circinfotable->get($self->{database})->{circcheckurl}){
+    if (defined $circinfotable->get($self->{database}) && defined $circinfotable->get($self->{database})->{circcheckurl}){
         if ($logger->is_debug){                        
             $logger->debug("Endpoint: ".$circinfotable->get($self->{database})->{circcheckurl});
         }
@@ -1333,7 +1333,7 @@ sub save_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall);
 
@@ -1448,7 +1448,7 @@ sub delete_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall);
 
@@ -2269,7 +2269,7 @@ sub set_record_exists {
 sub to_drilldown_term {
     my ($self,$term)=@_;
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     $term = OpenBib::Common::Util::normalize({
         content   => $term,
@@ -2291,7 +2291,7 @@ sub to_json {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $record = $self->to_hash;
 
@@ -2382,7 +2382,7 @@ sub set_from_psgi_request {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $query = $r;
 
@@ -2418,7 +2418,7 @@ sub set_from_psgi_request {
 #     # Log4perl logger erzeugen
 #     my $logger = get_logger();
 
-#     my $config = OpenBib::Config->instance;
+#     my $config = OpenBib::Config->new;
 
 #     my $is_new = (exists $self->{id})?1:0;
 
@@ -2546,7 +2546,7 @@ sub set_from_psgi_request {
 #     # Log4perl logger erzeugen
 #     my $logger = get_logger();
 
-#     my $config = OpenBib::Config->instance;
+#     my $config = OpenBib::Config->new;
 
 #     my $local_dbh = 0;
 #     if (!defined $dbh){
@@ -2577,7 +2577,7 @@ sub set_from_psgi_request {
 #     # Log4perl logger erzeugen
 #     my $logger = get_logger();
 
-#     my $config = OpenBib::Config->instance;
+#     my $config = OpenBib::Config->new;
 
 #     my $local_dbh = 0;
 #     if (!defined $dbh){
@@ -2611,7 +2611,7 @@ sub enrich_cdm {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Wenn kein URI, dann Default-URI
     $url = $config->{cdm_base}.$config->{cdm_path} unless ($url);
@@ -2643,7 +2643,7 @@ sub to_indexable_document {
     my $self = shift;
     my $database = shift;
 
-    my $config      = OpenBib::Config->instance;
+    my $config      = OpenBib::Config->new;
     my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
     my $doc = new OpenBib::Index::Document({ database => $self->{_database}, id => $self->{_id} });

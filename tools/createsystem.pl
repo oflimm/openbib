@@ -33,7 +33,7 @@
 
 use OpenBib::Config;
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 system("echo \"*:*:*:$config->{'systemdbuser'}:$config->{'systemdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
 system("/usr/bin/dropdb -U $config->{'systemdbuser'} $config->{systemdbname}");

@@ -47,7 +47,7 @@ use JSON::XS;
 use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 my ($inputfile_authors,$inputfile_titles,$inputfile_works,$logfile,$loglevel);
 

@@ -72,7 +72,7 @@ sub get_db_histogram_of_occurence {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -116,7 +116,7 @@ sub get_enriched_content {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     return {} unless (defined $isbn || defined $issn);
 
@@ -182,7 +182,7 @@ sub get_similar_isbns {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -221,7 +221,7 @@ sub get_all_holdings {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -305,7 +305,7 @@ sub enriched_content_to_bdb {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     # Ininitalisierung mit Default Config-Parametern
 
@@ -403,7 +403,7 @@ sub get_common_holdings {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
 
@@ -517,7 +517,7 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if (defined $arg_ref->{enrichmntdbname} && $arg_ref->{enrichmntdbname}){
         $config->{enrichmntdbname} = $arg_ref->{enrichmntdbname};

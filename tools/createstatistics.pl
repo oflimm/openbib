@@ -33,7 +33,7 @@
 
 use OpenBib::Config;
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 system("echo \"*:*:*:$config->{'statisticsdbuser'}:$config->{'statisticsdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
 system("/usr/bin/dropdb -U $config->{'statisticsdbuser'} $config->{'statisticsdbname'}");

@@ -35,7 +35,7 @@ $pool=$ARGV[0];
 
 use OpenBib::Config;
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 # Loeschen der Katalog-Datenbank
 

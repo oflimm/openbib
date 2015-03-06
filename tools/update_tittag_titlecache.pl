@@ -44,7 +44,7 @@ use OpenBib::Config;
 use OpenBib::Record::Title;
 use OpenBib::Common::Util;
 
-my $config     = OpenBib::Config->instance;
+my $config     = OpenBib::Config->new;
 
 my ($help,$logfile,$incr);
 

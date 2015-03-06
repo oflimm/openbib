@@ -30,8 +30,6 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw(Class::Singleton);
-
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
 use Cache::Memcached::libmemcached;
@@ -79,32 +77,8 @@ sub new {
         $self->{$key} = $config->{$key};
     }
     
-    $self->connectDB();
     $self->connectMemcached();
     
-    return $self;
-}
-
-sub _new_instance {
-    my $class = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config::File->instance;
-
-    # Ininitalisierung mit Config-Parametern
-    my $self = {};
-
-    bless ($self, $class);
-
-    foreach my $key (keys %$config){
-        $self->{$key} = $config->{$key};
-    }
-
-    $self->connectDB();
-    $self->connectMemcached();
-
     return $self;
 }
 
@@ -3451,7 +3425,7 @@ sub get_id_of_selfreg_authenticator {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->new;    
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -3781,7 +3755,7 @@ sub get_dbistopic_of_dbrtopic {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $atime;
     
@@ -3817,7 +3791,7 @@ sub get_dbisdbs_of_dbrtopic {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $atime;
     
@@ -3906,7 +3880,7 @@ Kataloge, Sichten, Profile usw. definiert.
 
  use OpenBib::Config;
 
- my $config = OpenBib::Config->instance;
+ my $config = OpenBib::Config->new;
 
  # Zugriff auf Konfigurationsvariable aus portal.yml
  my $servername = $config->get('servername'); # Zugriff über Accessor-Methode

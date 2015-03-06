@@ -49,7 +49,7 @@ use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::Conv::Config;
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 my ($database,$fromdate,$todate,$logfile);
 

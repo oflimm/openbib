@@ -65,7 +65,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $self = { };
 
@@ -135,7 +135,7 @@ sub get_subjects {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
         # Set defaults
     my $bibkey   = exists $arg_ref->{bibkey}

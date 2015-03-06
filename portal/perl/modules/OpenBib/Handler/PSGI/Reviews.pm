@@ -85,7 +85,7 @@ sub show_collection_by_isbn_negotiate {
     my $view           = $self->param('view')           || '';
     my $isbn           = $self->param('isbn')           || '';
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $query  = $r;
 

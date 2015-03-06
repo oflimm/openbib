@@ -65,7 +65,7 @@ if ($help){
    print_help();
 }
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/hbz_dt-enrichmnt.log";
 $filename=($filename)?$filename:"./isbndata.db";

@@ -1216,7 +1216,7 @@ sub get_loadbalanced_servername {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $view=$config->{defaultview};
     
@@ -1805,7 +1805,7 @@ sub get_cascaded_templatepath {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if ($profile && -e "$config->{tt_include_path}/_profile/$profile") {
 

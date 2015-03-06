@@ -105,7 +105,7 @@ sub show {
     my $sysprofile= $config->get_profilename_of_view($view);
 
     # Check
-    if (! exists $config->{rss_types}{$type} || ! exists $dbinfotable->get('dbnames')->{$database}{full}){
+    if (! exists $config->{rss_types}{$type} || ! defined $dbinfotable->get('dbnames')->{$database}{full}){
         OpenBib::Common::Util::print_warning("RSS-Feed ungueltig",$r);
     }
 

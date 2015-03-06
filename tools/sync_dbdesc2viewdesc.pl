@@ -34,7 +34,7 @@ use utf8;
 
 use OpenBib::Config;
 
-my $config     = OpenBib::Config->instance;
+my $config     = OpenBib::Config->new;
 
 foreach my $database ($config->{schema}->resultset('Databaseinfo')->all){
     my $corresponding_view = $config->{schema}->resultset('Viewinfo')->single({viewname => $database->dbname});

@@ -31,7 +31,7 @@ use OpenBib::Config;
 use OpenBib::Enrichment;
 use YAML::Syck;
 
-my $config    = OpenBib::Config->instance;
+my $config    = OpenBib::Config->new;
 
 my %enrichmntdata           = ();
 

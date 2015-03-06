@@ -62,7 +62,7 @@ if ($help || !$key || !$jsonfile){
    print_help();
 }
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/inject_enrichment.log";
 $loglevel=($loglevel)?$loglevel:"INFO";

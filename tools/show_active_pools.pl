@@ -37,7 +37,7 @@ use DBI;
 use OpenBib::Config;
 use YAML;
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 #####################################################################
 # Verbindung zur SQL-Datenbank herstellen

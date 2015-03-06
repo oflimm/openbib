@@ -45,7 +45,7 @@ use OpenBib::Conv::Common::Util;
 
 my $mexidn  =  1;
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 my ($inputfile,$configfile);
 

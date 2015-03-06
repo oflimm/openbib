@@ -90,7 +90,7 @@ if ($help) {
     print_help();
 }
 
-my $config      = OpenBib::Config->instance;
+my $config      = OpenBib::Config->new;
 my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$database.log";

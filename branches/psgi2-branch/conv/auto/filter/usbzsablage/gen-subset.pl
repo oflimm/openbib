@@ -50,7 +50,7 @@ if ($help){
     print_help();
 }
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 $rootdir=$config->{'autoconv_dir'};
 $pooldir=$rootdir."/pools";

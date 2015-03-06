@@ -76,7 +76,7 @@ sub load {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -104,7 +104,7 @@ sub store {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -137,7 +137,7 @@ sub update {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -165,7 +165,7 @@ sub add_record {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -193,7 +193,7 @@ sub del_record {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -218,7 +218,7 @@ sub _get_records {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -268,7 +268,7 @@ sub size {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -298,7 +298,7 @@ sub load_properties {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh

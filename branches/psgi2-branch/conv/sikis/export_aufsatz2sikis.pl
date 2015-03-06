@@ -122,7 +122,7 @@ open(OUTCORPORATEBODY, ">:utf8","$database-unload.KOE");
 open(OUTCLASSIFICATION,">:utf8","$database-unload.SYS");
 open(OUTSUBJECT,       ">:utf8","$database-unload.SWD");
 
-my $config      = OpenBib::Config->instance;
+my $config      = OpenBib::Config->new;
 
 my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database });
 

@@ -56,7 +56,7 @@ if ($help){
    print_help();
 }
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/usb_toc-enrichmnt.log";
 

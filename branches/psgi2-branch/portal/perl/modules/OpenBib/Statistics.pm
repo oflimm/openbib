@@ -418,7 +418,7 @@ sub get_number_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->new;    
 
     my $atime;
     
@@ -520,7 +520,7 @@ sub get_tstamp_range_of_events {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->new;    
     
     my $min_tstamp = 0;
     my $max_tstamp = 0;
@@ -593,7 +593,7 @@ sub get_number_of_queries_by_category {
     
     return 0 if (!$category);
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->new;    
     
     my $atime;
     
@@ -696,7 +696,7 @@ sub get_ranking_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->new;    
 
     my $atime;
     
@@ -818,7 +818,7 @@ sub log_query {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->new;    
 
     my $parsed_tstamp = new Date::Manip::Date;
     $parsed_tstamp->parse($tstamp);
@@ -1005,7 +1005,7 @@ sub get_sequencestat_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->new;    
 
     my $atime;
     

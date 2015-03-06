@@ -308,7 +308,7 @@ sub show_record {
 
         # Anreicherung mit OLWS-Daten
         if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){
-            if (exists $circinfotable->get($database) && exists $circinfotable->get($database)->{circcheckurl}){
+            if (defined $circinfotable->get($database) && defined $circinfotable->get($database)->{circcheckurl}){
                 $logger->debug("Endpoint: ".$circinfotable->get($database)->{circcheckurl});
                 my $soapresult;
                 eval {

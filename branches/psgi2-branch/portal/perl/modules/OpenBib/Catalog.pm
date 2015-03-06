@@ -117,7 +117,7 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1} 

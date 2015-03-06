@@ -74,7 +74,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     unless ($database || $searchprofile){
         $logger->error("No database or searchprofile argument given");
@@ -134,7 +134,7 @@ sub get_index {
 sub set_stopper {
     my $self         = shift;
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $stopwordfile = shift || $config->{stopword_filename};
 
@@ -245,7 +245,7 @@ sub create_document {
         $self->set_termgenerator;
     }
     
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $FLINT_BTREE_MAX_KEY_LEN = $config->{xapian_option}{max_key_length};
 
@@ -626,7 +626,7 @@ sub create_record {
 sub update_record {
     my ($self,$id,$new_doc) = @_;
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $key = $config->{xapian_search}{id}{prefix}.$id;
 

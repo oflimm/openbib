@@ -108,7 +108,7 @@ my $logger = get_logger();
 my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
 $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-my $config        = OpenBib::Config->instance;
+my $config        = OpenBib::Config->new;
 my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 my $img_base_path = $config->{image_root_path}."/openbib/geo";
 

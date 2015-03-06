@@ -80,7 +80,7 @@ sub show {
     my $logger = get_logger();
 
     my $r              = $self->param('r');
-    my $config         = OpenBib::Config->instance;    
+    my $config         = OpenBib::Config->new;    
 
     my $request = $config->{schema}->resultset("Serverinfo")->search_rs(
         {

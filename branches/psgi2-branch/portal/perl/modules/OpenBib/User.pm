@@ -63,7 +63,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $self = { };
 
@@ -108,7 +108,7 @@ sub userdb_accessible{
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -1493,7 +1493,7 @@ sub get_all_tags_of_tit {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my ($atime,$btime,$timeall)=(0,0,0);
 
@@ -4304,7 +4304,7 @@ sub new_dbprofile {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $searchprofileid = $config->get_searchprofile_or_create($databases_ref);
     
@@ -4327,7 +4327,7 @@ sub update_dbprofile {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $searchprofileid = $config->get_searchprofile_or_create($databases_ref);
 
@@ -5285,7 +5285,7 @@ sub get_mask {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -5371,7 +5371,7 @@ sub is_admin {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     # Statischer Admin-User aus portal.yml
     return 1 if (defined $self->{ID} && $self->{ID} eq $config->{adminuser});
@@ -5398,7 +5398,7 @@ sub has_role {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $thisuserid = ($userid)?$userid:$self->{ID};
 
@@ -5736,7 +5736,7 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if (!exists $config->{memcached}){
       $logger->debug("No memcached configured");

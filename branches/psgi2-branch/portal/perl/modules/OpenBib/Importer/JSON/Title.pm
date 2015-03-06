@@ -83,7 +83,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config      = OpenBib::Config->instance;
+    my $config      = OpenBib::Config->new;
 
     my $conv_config = OpenBib::Conv::Config->instance({dbname => $database}); 
 
@@ -146,7 +146,7 @@ sub process {
     my $logger = get_logger();
 
     return $self unless (defined $json);
-    my $config      = OpenBib::Config->instance;
+    my $config      = OpenBib::Config->new;
     my $storage     = OpenBib::Container->instance;
     my $database    = $self->{database};
 

@@ -38,7 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use YAML::Syck;
 
-use OpenBib::Config;
+use OpenBib::Config::File;
 
 sub new {
     my ($class) = @_;
@@ -50,7 +50,6 @@ sub new {
 
     bless ($self, $class);
 
-    $self->connectDB;
     $self->connectMemcached;
     $self->load;
     
@@ -63,7 +62,7 @@ sub load {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config::File->instance;
     
     #####################################################################
     # Dynamische Definition diverser Variablen
@@ -92,7 +91,7 @@ sub load {
       return $self if ($self->{identifier});
     }
     
-    my $locinfos = $self->{schema}->resultset('Locationinfo')->search_rs(
+    my $locinfos = $self->get_schema->resultset('Locationinfo')->search_rs(
         undef,
         {
             select => ['identifier','description','type'],
@@ -212,7 +211,7 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if (!exists $config->{memcached}){
       $logger->debug("No memcached configured");

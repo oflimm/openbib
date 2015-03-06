@@ -3,7 +3,7 @@
 use JSON::XS;
 use OpenBib::Config;
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 my $view   = "muenzen";
 
 my $path_prefix          = $config->get('base_loc');

@@ -101,7 +101,7 @@ sub load_full_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $fields_ref={};
 
@@ -190,7 +190,7 @@ sub load_name {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     $logger->debug("Loading main entry");
     my ($atime,$btime,$timeall);
@@ -245,7 +245,7 @@ sub save_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall);
 
@@ -360,7 +360,7 @@ sub delete_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall);
 
@@ -403,7 +403,7 @@ sub get_number_of_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my ($atime,$btime,$timeall);
 

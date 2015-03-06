@@ -58,7 +58,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Set defaults
     my $database        = exists $arg_ref->{database}
@@ -294,7 +294,7 @@ sub load_full_title_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config        = OpenBib::Config->instance;
+    my $config        = OpenBib::Config->new;
 
     my ($atime,$btime,$timeall)=(0,0,0);
     
@@ -655,7 +655,7 @@ sub load_brief_title_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
@@ -1233,7 +1233,7 @@ sub _get_holding {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config      = OpenBib::Config->instance;
+    my $config      = OpenBib::Config->new;
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
     my $fields_ref={};
@@ -1297,7 +1297,7 @@ sub _get_holding {
     # Ein im Exemplar-Datensatz gefundenes Sigel geht vor
     if (exists $fields_ref->{X3330}{content}) {
         $sigel=$fields_ref->{X3330}{content};
-        if (exists $dbinfotable->{sigel}{$sigel}) {
+        if (defined $dbinfotable->{sigel}{$sigel}) {
             $fields_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
         }
         else {
@@ -1310,7 +1310,7 @@ sub _get_holding {
     # sonst wird der Datenbankname zur Findung des Sigels herangezogen
     else {
         $sigel=$dbinfotable->{dbases}{$self->{database}};
-        if (exists $dbinfotable->{sigel}{$sigel}) {
+        if (defined $dbinfotable->{sigel}{$sigel}) {
             $fields_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
         }
     }
@@ -1318,7 +1318,7 @@ sub _get_holding {
     my $bibinfourl="";
 
     # Bestimmung der Bibinfo-Url
-    if (exists $dbinfotable->{bibinfo}{$sigel}) {
+    if (defined $dbinfotable->{bibinfo}{$sigel}) {
         $fields_ref->{X4001}{content}=$dbinfotable->{bibinfo}{$sigel};
     }
 
@@ -1343,7 +1343,7 @@ sub get_number_of_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my ($atime,$btime,$timeall);
 
@@ -1400,7 +1400,7 @@ sub get_connected_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     return () unless ($self->{schema});
 
@@ -1572,7 +1572,7 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     # pg_server_prepare => 0 keine Prepared Statements fuer pgbouncer transaction pooling mode
     eval {

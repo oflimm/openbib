@@ -96,7 +96,7 @@ our $entl_map_ref = {
       'W' => 4, # Wochenende
   };
 
-our $config = OpenBib::Config->instance;
+our $config = OpenBib::Config->new;
 
 our $acq_config = YAML::LoadFile($configfile);
 
@@ -334,7 +334,7 @@ sub update_status_index_from_db {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     $catalog->load_conv_config;
 

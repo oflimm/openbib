@@ -51,7 +51,7 @@ sub as_psgi {
 
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
 
     my $query = $args{args_to_new}->{QUERY};
 
@@ -90,7 +90,7 @@ sub as_psgi {
 
 #     my $logger = get_logger();
 
-#     my $config  = OpenBib::Config->instance;
+#     my $config  = OpenBib::Config->new;
 
 #     my ($atime,$btime,$timeall)=(0,0,0);
 
@@ -169,7 +169,7 @@ sub dispatch_args {
 
     my $logger=get_logger();
     
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
 
     my $table_ref = [];
 

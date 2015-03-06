@@ -100,7 +100,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $config      = OpenBib::Config->instance;
+my $config      = OpenBib::Config->new;
 my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
 my $catalog = OpenBib::Catalog::Factory->create_catalog({database => 'pruessen' });

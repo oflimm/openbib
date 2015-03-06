@@ -43,7 +43,7 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 my ($inputfile,$configfile);
 

@@ -70,7 +70,7 @@ sub get_result_navigation {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->new;
 
     # Bestimmen des vorigen und naechsten Treffer einer
     # vorausgegangenen Kurztitelliste
@@ -120,7 +120,7 @@ sub get_index {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $type_ref = {
         tit            => 1,

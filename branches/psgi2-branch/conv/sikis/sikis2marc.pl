@@ -91,7 +91,7 @@ $subjectfile        = $subjectfile        || 'meta.subject';
 $classificationfile = $classificationfile || 'meta.classification';
 $holdingfile        = $holdingfile        || 'meta.holding';
 
-my $config      = OpenBib::Config->instance;
+my $config      = OpenBib::Config->new;
 
 # Ininitalisierung mit Config-Parametern
 our $convconfig = YAML::Syck::LoadFile($configfile);

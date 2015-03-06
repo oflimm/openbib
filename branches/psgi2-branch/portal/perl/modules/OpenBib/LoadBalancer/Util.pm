@@ -40,7 +40,7 @@ sub benachrichtigung {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     # Benachrichtigung via mail
     open(MAIL,"| $config->{mail_prog} -s \"KUG-Probleme\" $config->{admin_email}") or $logger->error_die("Problem-Mail konnte nicht verschickt werden");

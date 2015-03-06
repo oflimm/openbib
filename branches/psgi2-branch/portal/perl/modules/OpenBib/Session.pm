@@ -66,7 +66,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
                                 # 
     my $self = { };
 
@@ -129,7 +129,7 @@ sub _init_new_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->new;    
 
     my $sessionID="";
 
@@ -396,7 +396,7 @@ sub set_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->new;    
 
     my $sid             =  $self->get_schema->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->id;
     my $searchprofileid =  $config->get_searchprofile_or_create($db_ref);
@@ -422,7 +422,7 @@ sub get_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $dbases = $self->get_schema->resultset('SessionSearchprofile')->search_rs(
         {
@@ -519,7 +519,7 @@ sub get_all_searchqueries {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $thissid = (defined $sid)?$sid:$self->{sid};
 
@@ -1022,7 +1022,7 @@ sub clear_data {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     if ($config->{statisticsdb_enable}){
         $self->save_eventlog_to_statisticsdb;
@@ -1735,7 +1735,7 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if (!exists $config->{memcached}){
       $logger->debug("No memcached configured");

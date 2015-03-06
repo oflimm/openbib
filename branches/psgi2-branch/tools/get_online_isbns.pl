@@ -47,7 +47,7 @@ use OpenBib::Common::Util;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
-my $config     = OpenBib::Config->instance;
+my $config     = OpenBib::Config->new;
 
 my ($database,$help,$logfile);
 

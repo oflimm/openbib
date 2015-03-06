@@ -40,7 +40,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use YAML::Syck;
 
-use OpenBib::Config;
+use OpenBib::Config::File;
 
 sub new {
     my ($class) = @_;
@@ -52,7 +52,6 @@ sub new {
 
     bless ($self, $class);
 
-    $self->connectDB;
     $self->connectMemcached;
     $self->load;
     
@@ -164,7 +163,9 @@ sub load {
 sub get {
     my ($self,$key) = @_;
 
-    return $self->{dbinfo}{$key};
+    return $self->{dbinfo}{$key} if (defined $self->{dbinfo}{$key});
+
+    return;
 }
 
 sub connectDB {
@@ -245,7 +246,7 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if (!exists $config->{memcached}){
       $logger->debug("No memcached configured");

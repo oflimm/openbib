@@ -80,7 +80,7 @@ sub cgiapp_init {
     my $r            = $self->param('r');
     my $view         = $self->param('view');
 
-    my $config       = OpenBib::Config->instance;
+    my $config       = OpenBib::Config->new;
 
     $self->param('config',$config);
     
@@ -637,7 +637,7 @@ sub negotiate_type {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
-    my $config         = OpenBib::Config->instance;    
+    my $config         = OpenBib::Config->new;    
 
     
     my $content_type = $r->header('Content-Type') || '';
@@ -1701,7 +1701,7 @@ sub set_cookieXX {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if (!($name || $value)){
         $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
@@ -1730,7 +1730,7 @@ sub set_cookie {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if (!($name || $value)){
         $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
@@ -1761,7 +1761,7 @@ sub finalize_cookies {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if (defined $self->param('cookie_jar')){
         $self->header_add('Set-Cookie', $self->param('cookie_jar'));
@@ -1875,7 +1875,7 @@ sub send_psgi_headers {
 sub teardown {
     my $self = shift;
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     $config->disconnectDB;
     

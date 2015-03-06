@@ -210,7 +210,7 @@ sub show_record {
     # Suche ueber OLWS (urn:/Viewer)
     
     if ($olws){
-        if (exists $circinfotable->get($database) && exists $circinfotable->get($database)->{circcheckurl}){
+        if (defined $circinfotable->get($database) && defined $circinfotable->get($database)->{circcheckurl}){
 	    my $poolname=$dbinfotable->get('sigel')->{
 	      $dbinfotable->get('dbases')->{$database}};
             

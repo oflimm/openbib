@@ -38,7 +38,7 @@ use URI::Escape;
 
 my $database=$ARGV[0];
 
-my $config = OpenBib::Config->instance;
+my $config = OpenBib::Config->new;
 
 my $s = scraper {
   process 'table.ZMSTable tr td ' => 'zeilen[]'   => 'HTML';

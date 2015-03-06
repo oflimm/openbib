@@ -45,7 +45,7 @@ use Getopt::Long;
 use Text::CSV_XS;
 use YAML::Syck;
 
-my $config      = OpenBib::Config->instance;
+my $config      = OpenBib::Config->new;
 
 my (@databases,$help,$logfile,$selector,$filename);
 

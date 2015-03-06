@@ -78,7 +78,7 @@ sub mab2openbib_list {
 
     my $listitem_ref = {};
     
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     my $convtab_ref = (exists $config->{convtab}{singlepool})?
         $config->{convtab}{singlepool}:$config->{convtab}{default};
@@ -194,7 +194,7 @@ sub mab2openbib_full {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
     
     my $listitem_ref    = {};
     my $mexlistitem_ref = [];
@@ -300,15 +300,15 @@ sub mab2openbib_full {
 
                     # Es wird der Datenbankname zur Findung des Sigels herangezogen
                     my $sigel=$dbinfotable->get('dbases')->{"USBK"};
-                    if (exists $dbinfotable->get('sigel')->{$sigel}) {
+                    if (defined $dbinfotable->get('sigel')->{$sigel}) {
                         $thismexlistitem_ref->{X4000}{content}=$dbinfotable->get('sigel')->{$sigel};
                     }
                     
                     my $bibinfourl="";
                     
                     # Bestimmung der Bibinfo-Url
-                    if (exists $dbinfotable->get('bibinfo')->{$sigel}) {
-                        $thismexlistitem_ref->{X4001}{content}=$dbinfotable->get('bibinfo'){$sigel};
+                    if (defined $dbinfotable->get('bibinfo')->{$sigel}) {
+                        $thismexlistitem_ref->{X4001}{content}=$dbinfotable->get('bibinfo')->{$sigel};
                     }
 
                     push @{$mexlistitem_ref}, $thismexlistitem_ref;

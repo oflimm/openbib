@@ -47,7 +47,7 @@ sub create_indexer {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
     if (!defined $sb){
         $sb = $config->{local_search_backend};

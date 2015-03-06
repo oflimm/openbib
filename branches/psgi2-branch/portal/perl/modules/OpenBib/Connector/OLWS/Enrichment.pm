@@ -49,7 +49,7 @@ sub get_enriched_content {
 
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
 
     if (!defined $isbn){
@@ -90,7 +90,7 @@ sub get_similar_isbns {
 
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config = OpenBib::Config->new;
 
 
     if (!defined $isbn){

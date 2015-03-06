@@ -31,7 +31,7 @@ use MLDBM qw(DB_File Storable);
 use OpenBib::Config;
 use OpenBib::Enrichment;
 
-my $config    = OpenBib::Config->instance;
+my $config    = OpenBib::Config->new;
 my $enrichmnt = new OpenBib::Enrichment;
 
 my $dumpdir   = $config->{autoconv_dir}."/data/enrichment";

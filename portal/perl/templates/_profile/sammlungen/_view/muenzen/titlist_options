@@ -11,8 +11,12 @@
 #
 #######################################################################
 -%]
-<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="srt" class="autosubmit">
+<b>[% msg.maketext("Anzahl") %]:</b>&nbsp;<select name="num" class="autosubmit">
+  <option value="20"[%- IF query.param('num') == 20 -%] selected="selected"[%- END -%]>20</option>
+  <option value="50"[%- IF query.param('num') == 50 -%] selected="selected"[%- END -%]>50</option>
+  <option value="100"[%- IF query.param('num') == 100 -%] selected="selected"[%- END -%]>100</option>
+  <option value="200"[%- IF query.param('num') == 200 -%] selected="selected"[%- END -%]>200</option>
+</select>&nbsp;&nbsp;<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;<select name="srt" class="autosubmit">
 [% IF NOT no_relevance %]  <option value="relevance_desc"[%- IF query.param('srt') == 'relevance_dsc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
   <option value="popularity_desc"[%- IF query.param('srt') == 'popularity_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
  <!-- <option value="year_desc"[%- IF query.param('srt') == 'year_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&darr;</option>

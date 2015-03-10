@@ -43,6 +43,7 @@ use Storable;
 use YAML ();
 
 use OpenBib::Config;
+use OpenBib::Config::File;
 use OpenBib::Schema::Catalog;
 use OpenBib::Schema::Enrichment;
 use OpenBib::Schema::Enrichment::Singleton;
@@ -53,7 +54,7 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = OpenBib::Config::File->instance;
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1}
@@ -375,8 +376,10 @@ sub DESTROY {
 
     if (defined $self->{schema}){
         eval {
-#            $self->{schema}->sth->finish;
-            $self->{schema}->storage->disconnect;
+            if (defined $self->get_schema->storage->dbh->sth) {
+                $self->get_schema->storage->dbh->sth->finish;
+            }
+            $self->{schema}->storage->dbh->disconnect;
         };
 
         if ($@){

@@ -881,30 +881,39 @@ sub print_page {
 
     my $content = "";
 
-    my $template = Template->new({ 
-        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config->{tt_include_path},
-	    ABSOLUTE       => 1,
+    eval {
+        my $template = Template->new({ 
+            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                INCLUDE_PATH   => $config->{tt_include_path},
+                ABSOLUTE       => 1,
+                STAT_TTL => 60,  # one minute
+            }) ],
+            COMPILE_EXT => '.ttc',
+            COMPILE_DIR => '/tmp/ttc',
             STAT_TTL => 60,  # one minute
-        }) ],
-        COMPILE_EXT => '.ttc',
-        COMPILE_DIR => '/tmp/ttc',
-        STAT_TTL => 60,  # one minute
-        OUTPUT         => \$content,    # Output geht in Scalar-Ref
-        RECURSION      => 1,
-    });
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time until stage 1 is ".timestr($timeall));
-    }
-
-    $template->process($templatename, $ttdata) || do {
-        $logger->fatal($template->error());
-        return;
+            OUTPUT         => \$content,    # Output geht in Scalar-Ref
+            RECURSION      => 1,
+        });
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 1 is ".timestr($timeall));
+        }
+        
+        $template->process($templatename, $ttdata) || do {
+            $logger->fatal($template->error());
+            return "Fehler";
+        };
     };
 
+    if ($@){
+        $logger->fatal($@);
+    }
+
+
+    $logger->debug("Template processed");
+    
     # Location- und Content-Location-Header setzen    
     $self->header_type('header');
     $self->header_add('Status' => $status) if ($status);
@@ -958,13 +967,6 @@ sub add_default_ttdata {
     my $sessionID = $session->{ID};
     
     my $sysprofile= $config->get_profilename_of_view($view);
-
-    # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
-    # Einloggen/Mein KUG automatisch deaktiviert
-    
-    if (!$user->userdb_accessible()){
-        $config->{login_active} = 0;
-    }
 
     my $username="";
     my $authenticator = {};
@@ -1861,7 +1863,7 @@ sub run {
     }
     
     # clean up operations
-    $self->call_hook('teardown');
+#    $self->call_hook('teardown');
     
     return $return_value;
 }
@@ -1872,14 +1874,14 @@ sub send_psgi_headers {
     return $self->_send_psgi_headers();
 }
 
-sub teardown {
-    my $self = shift;
+# sub teardown {
+#     my $self = shift;
 
-    my $config = OpenBib::Config->new;
+#     my $config = OpenBib::Config->new;
     
-    $config->disconnectDB;
+#     $config->disconnectDB;
     
-    return;
-}
+#     return;
+# }
 
 1;

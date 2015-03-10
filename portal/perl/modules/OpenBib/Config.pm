@@ -2086,6 +2086,9 @@ sub disconnectDB {
 
     if (defined $self->{schema}){
         eval {
+            if (defined $self->get_schema->storage->dbh->sth) {
+                $self->get_schema->storage->dbh->sth->finish;
+            }
             $self->get_schema->storage->dbh->disconnect;
         };
 

@@ -44,7 +44,6 @@ use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::File;
-use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
 use OpenBib::Record::Title;
@@ -102,26 +101,6 @@ sub new {
     return $self;
 }
 
-sub userdb_accessible{
-    my ($self)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->new;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Schema::DBI->connect("DBI:$config->{systemdbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-    
-    if ($dbh->ping()){
-        return 1;
-    }
-    
-    return 0;
-}
-    
 sub get_credentials {
     my ($self,$arg_ref)=@_;
 
@@ -5285,15 +5264,6 @@ sub get_mask {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
-    
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Schema::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    return undef if (!defined $dbh);
-
     my $thisuserid=($userid)?$userid:$self->{ID};
     
     # Bestimmen des Recherchemasken-Typs
@@ -5371,7 +5341,7 @@ sub is_admin {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = OpenBib::Config::File->instance;
 
     # Statischer Admin-User aus portal.yml
     return 1 if (defined $self->{ID} && $self->{ID} eq $config->{adminuser});
@@ -5719,6 +5689,9 @@ sub disconnectDB {
 
     if (defined $self->{schema}){
         eval {
+            if (defined $self->get_schema->storage->dbh->sth) {
+                $self->get_schema->storage->dbh->sth->finish;
+            }
             $self->{schema}->storage->dbh->disconnect;
         };
 

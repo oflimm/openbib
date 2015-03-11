@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-03-02 11:05+0100\n"
+"PO-Revision-Date: 2015-03-11 15:55+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -120,14 +120,14 @@ msgstr "${category}"
 #: ../templates/_profile/kug/_view/vwl/home_html_bottom_left:72
 #: ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left:72
 #: ../templates/_profile/kug/home_html_bottom_left:71
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:283
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:311
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:288
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:316
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:265
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:296
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:253
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:285
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:329
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:357
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:336
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:364
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:342
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:373
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:283
@@ -1057,7 +1057,7 @@ msgstr "Alle Kataloge"
 msgid "Alle Listen"
 msgstr "Alle Listen"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:126
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:121
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:19
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_navigation:21
 msgid "Alle Münzen"
@@ -1535,6 +1535,7 @@ msgstr ""
 "     Erfassung im Katalog lediglich die 10-stellige ISBN bekannt\n"
 "     war."
 
+#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:14
 #: ../templates/admin_databases_updates_html:78
 #: ../templates/admin_servers_record_edit:126
 #: ../templates/admin_templates_record_edit:116
@@ -2032,7 +2033,7 @@ msgstr "Beginnen Sie eine neue Recherche"
 #: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:41
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:37
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:38
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:27
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:37
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:37
@@ -2430,12 +2431,12 @@ msgstr "Beschreibung"
 #: ../templates/_profile/sammlungen/_database/artmann/circulation:123
 #: ../templates/_profile/sammlungen/_database/dante/circulation:123
 #: ../templates/_profile/sammlungen/_database/dirksen/circulation:123
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:316
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:321
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:301
 #: ../templates/_profile/sammlungen/_database/kempis/circulation:123
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:290
 #: ../templates/_profile/sammlungen/_database/lefort/circulation:123
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:362
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:369
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:378
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:319
 #: ../templates/_profile/sammlungen/_database/schmalenbach/circulation:123
@@ -3681,7 +3682,6 @@ msgstr "Diese Session existiert nicht."
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:510
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:455
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:455
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_record_html_actions:95
 #: ../templates/titles_record_html_actions:481
 #: ../templates/titles_record_include:753
 msgid "Diese Titel interessierten Sie bereits:"
@@ -4764,6 +4764,8 @@ msgstr ""
 msgid "Erscheinungsjahr"
 msgstr "Erscheinungsjahr"
 
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_year_html:51
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_year_html:70
 #: ../templates/clouds_databases_record_html:70
 #: ../templates/clouds_year_html:51 ../templates/clouds_year_html:70
 msgid "Erscheinungsjahre"
@@ -4798,10 +4800,10 @@ msgstr "Erscheinungsjahre"
 #: ../templates/_profile/kug/_database/usbhwa/titles_record_html_categories:441
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:441
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:441
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:320
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:325
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:305
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:294
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:366
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:373
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:382
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:323
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:325
@@ -4868,8 +4870,8 @@ msgstr "Erweitere Recherchemaske"
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:133
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:68
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:126
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:69
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:121
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:74
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:116
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:131
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_advanced:38
@@ -5485,7 +5487,7 @@ msgstr "Französisch"
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:2
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:86
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:91
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:72
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:77
@@ -5902,7 +5904,7 @@ msgstr ""
 "Hier sind auch Suchanfragen mit kombinierten UND- und ODER-Verkn&uuml;"
 "pfungen unter Verwendung von Klammern m&ouml;glich (siehe Beispiel 7)"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:124
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:119
 msgid "Hier suchen Sie im gesamten Münzbestand"
 msgstr "Hier suchen Sie im gesamten Münzbestand"
 
@@ -5979,7 +5981,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:161
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:271
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:178
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:181
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:137
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:143
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:151
@@ -6135,7 +6137,7 @@ msgstr "ISBN"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:77
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:82
 #: ../templates/admin_clusters_html:107
 #: ../templates/admin_clusters_record_edit:67
 #: ../templates/admin_searchprofiles_record_edit:67
@@ -7198,10 +7200,10 @@ msgstr "Inventarnummer"
 #: ../templates/_profile/kug/_database/usbhwa/titles_record_html_categories:440
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:440
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:440
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:319
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:324
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:304
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:293
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:365
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:372
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:381
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:324
@@ -7392,7 +7394,7 @@ msgstr "Ja"
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:66
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:68
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:169
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:154
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:157
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:124
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:126
 #: ../templates/_profile/sammlungen/_view/portrait/clouds_databases_record_html:61
@@ -8570,6 +8572,10 @@ msgstr "Lebenslauf"
 msgid "Legen Sie Literaturlisten an und vergeben Sie Tags"
 msgstr "Legen Sie Literaturlisten an und vergeben Sie Tags"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:100
+msgid "Legende"
+msgstr "Legende"
+
 #: ../templates/_profile/usbportal/clouds_year_include:49
 #: ../templates/clouds_year_include:51 ../templates/clouds_year_mobile:109
 msgid ""
@@ -8579,6 +8585,7 @@ msgstr ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine\n"
 "Wolke der Erscheinungsjahre anbieten."
 
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_year_html:102
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_year_html:102
 #: ../templates/clouds_year_html:102
 msgid ""
@@ -8862,10 +8869,10 @@ msgstr "Lokal"
 #: ../templates/_profile/kug/_database/usbhwa/titles_record_html_categories:439
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:439
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:439
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:318
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:323
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:303
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:292
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:364
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:371
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:380
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:321
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:323
@@ -9146,7 +9153,6 @@ msgstr "Medientyp"
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:69
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:80
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:91
-#: ../templates/_profile/sammlungen/_view/muenzen/titles_record_html_actions:79
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:102
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:114
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:126
@@ -9265,6 +9271,7 @@ msgstr "Mein OpenBib"
 msgid "Meine Sammlung"
 msgstr "Meine Sammlung"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/search_title_combined_html:55
 #: ../templates/authority_search_combined_html:55
 #: ../templates/search_title_combined_html:55
 msgid "Meinten Sie vielleicht:"
@@ -9378,8 +9385,8 @@ msgstr "Merken"
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:53
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:58
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:60
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:51
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:53
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:46
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:56
@@ -11468,6 +11475,7 @@ msgstr "Seite:"
 #: ../templates/_profile/kug/_database/dbis/search_title_item_html:133
 #: ../templates/_profile/kug/_database/ezb/search_title_item_html:132
 #: ../templates/_profile/rheinlandbib/titles_html:100
+#: ../templates/_profile/sammlungen/_view/muenzen/search_title_combined_html:95
 #: ../templates/_profile/sammlungen/titles_html:100
 #: ../templates/admin_databases_updates_html:102
 #: ../templates/authority_search_combined_html:95
@@ -12153,7 +12161,7 @@ msgstr ""
 "Soll ein Begriff beliebig enden,</b><br />\n"
 "schreiben Sie als <b>Trunkierungszeichen</b> ein *."
 
-#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:14
+#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:19
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:14
 #: ../templates/authlist_options:14 ../templates/tags_names_record_html:90
 #: ../templates/titlist_options:14 ../templates/users_tags_html:90
@@ -12383,10 +12391,10 @@ msgstr "Standort"
 #: ../templates/_profile/kug/_database/usbhwa/titles_record_html_categories:438
 #: ../templates/_profile/kug/_database/usbsab/titles_record_html_categories:438
 #: ../templates/_profile/kug/_database/wiso/titles_record_html_categories:438
-#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:317
+#: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/titles_record_html_categories:302
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:291
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:363
+#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:370
 #: ../templates/_profile/sammlungen/_database/portrait/titles_record_html_categories:379
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/titles_record_html_categories:320
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_categories:322
@@ -12481,6 +12489,7 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_corporatebody_html:48
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_databases_record_html:37
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_html:37
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_year_html:48
 #: ../templates/_profile/sammlungen/_view/gentzdigital/info_ansprechpartner:36
 #: ../templates/_profile/sammlungen/_view/gentzdigital/info_benutzung:36
 #: ../templates/_profile/sammlungen/_view/gentzdigital/info_einleitung:36
@@ -12884,9 +12893,9 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:130
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:131
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:271
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:123
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:124
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:178
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:118
+#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:119
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:181
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:113
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:128
@@ -13033,8 +13042,6 @@ msgstr "Suchhilfe"
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:53
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:55
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:46
-#: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/muenzen/search_history:38
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:38
@@ -13271,7 +13278,6 @@ msgstr "Herkunft"
 msgid "T0010"
 msgstr "Fremdnummer"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html_categories:20
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:16
 msgid "T0010-muenzen"
 msgstr "Inventarnummer"
@@ -13515,7 +13521,7 @@ msgid "T0100-landschaft"
 msgstr "Künstler"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:17
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:106
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:109
 msgid "T0100-muenzen"
 msgstr "Herrscher"
 
@@ -14224,27 +14230,27 @@ msgstr "Nominal"
 msgid "T0341"
 msgstr "Paralleltitel"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:43
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:44
 msgid "T0341-muenzen"
 msgstr "Legende Vorderseite: nicht aufgelöst"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:44
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:45
 msgid "T0342-muenzen"
 msgstr "Legende Vorderseite: aufgelöst, nur Text"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:45
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:46
 msgid "T0343-muenzen"
 msgstr "Legende Vorderseite: aufgelöst, Editionstext"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:46
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:47
 msgid "T0351-muenzen"
 msgstr "Legende Rückseite: nicht aufgelöst"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:47
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:48
 msgid "T0352-muenzen"
 msgstr "Legende Rückseite: aufgelöst, nur Text"
 
-#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:48
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:49
 msgid "T0353-muenzen"
 msgstr "Legende Rückseite: aufgelöst, Editionstext"
 
@@ -15812,7 +15818,6 @@ msgstr "Ergänzt. GesamtTitel"
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:85
-#: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:88
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/visible_categories_title:88
@@ -15823,6 +15828,10 @@ msgstr "Ergänzt. GesamtTitel"
 #: ../templates/visible_categories_title:88
 msgid "T0516"
 msgstr "Sprache"
+
+#: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:88
+msgid "T0516-schatzbehalter"
+msgstr "Schrift"
 
 #: ../templates/_database/bestellungen/visible_categories_title:74
 #: ../templates/_database/inst404card/visible_categories_title:71
@@ -16833,6 +16842,10 @@ msgstr "Bemerkung"
 msgid "T0600-inst404abklatsch"
 msgstr "Schublade"
 
+#: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:43
+msgid "T0600-muenzen"
+msgstr "Kommentar"
+
 #: ../templates/_database/bestellungen/visible_categories_title:87
 #: ../templates/_database/inst001/visible_categories_title:82
 #: ../templates/_database/inst404card/visible_categories_title:84
@@ -17164,7 +17177,7 @@ msgid "T0700-landschaft"
 msgstr "1. Ikonogr. Schlagwort"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:19
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:126
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:129
 msgid "T0700-muenzen"
 msgstr "Stadt"
 
@@ -17235,7 +17248,7 @@ msgid "T0710-landschaft"
 msgstr "2. Ikonogr. Schlagwort"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:21
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:116
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:119
 msgid "T0710-muenzen"
 msgstr "Region"
 
@@ -17352,7 +17365,7 @@ msgid "T0800-gentzdigital"
 msgstr "Brieftyp"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:30
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:136
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:139
 msgid "T0800-muenzen"
 msgstr "Material"
 
@@ -18819,7 +18832,6 @@ msgstr "Titelliste"
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:87
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:96
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:84
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:87
@@ -18881,6 +18893,7 @@ msgstr "Topogr. Schlagwort"
 #: ../templates/_profile/kug/_database/ezb/search_title_item_html:121
 #: ../templates/_profile/rheinlandbib/titles_html:77
 #: ../templates/_profile/sammlungen/_view/muenzen/search_history:76
+#: ../templates/_profile/sammlungen/_view/muenzen/search_title_combined_html:75
 #: ../templates/_profile/sammlungen/search_history:76
 #: ../templates/_profile/sammlungen/titles_html:77
 #: ../templates/_profile/usbportal/search_title_combined_include:48
@@ -19467,10 +19480,6 @@ msgstr "Virtueller Systematikindex"
 #: ../templates/search_person:44
 msgid "Virtueller Verfasserindex"
 msgstr "Virtueller Verfasserindex"
-
-#: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html:159
-msgid "Vollanzeige"
-msgstr "Vollanzeige"
 
 #: ../templates/_database/inst404card/titles_record_html_categories:325
 #: ../templates/_database/vubpda/titles_record_html_categories:240
@@ -20118,8 +20127,6 @@ msgstr "Wolke der h&auml;ufigsten Jahre"
 
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_corporatebody_html:73
 #: ../templates/_profile/sammlungen/_view/einbaende/clouds_subject_html:73
-#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_0410_html:73
-#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_corporatebody_html:73
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html:73
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_subject_html:73
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_corporatebody_html:73
@@ -20153,6 +20160,7 @@ msgstr "Wolke der von Nutzern vergebenen Tags"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_corporatebody_html:49
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_databases_record_html:38
 #: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_html:38
+#: ../templates/_profile/sammlungen/_view/gentzdigital/clouds_year_html:49
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html:49
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_databases_record_html:38
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_html:38
@@ -20338,8 +20346,8 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:153
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:259
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:263
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:166
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:170
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:169
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:173
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:134
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:131
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:135
@@ -20406,6 +20414,7 @@ msgstr "Zeitschriften/Serien"
 msgid "Zeitschriftenartikel"
 msgstr "Zeitschriftenartikel"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/search_title_combined_html:105
 #: ../templates/authority_search_combined_html:105
 #: ../templates/search_title_combined_html:105
 msgid "Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden."
@@ -20715,7 +20724,7 @@ msgstr "bestellt beim Lieferanten"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:133
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:153
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:263
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:170
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:173
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:134
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:135
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:143
@@ -21061,8 +21070,7 @@ msgstr "nach Einband"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/search_facet:229
 #: ../templates/_profile/sammlungen/_view/kapsel/search_facet:231
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:364
-#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:18
-#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:19
+#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:20
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:293
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:256
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_facet:291
@@ -21158,7 +21166,6 @@ msgstr "nach Person / Werkstatt(Werkzeug)"
 msgid "nach Personen"
 msgstr "nach Personen"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:17
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:17
 #: ../templates/_profile/usbportal/search_title_combined_include:68
 #: ../templates/titlist_options:17
@@ -21172,7 +21179,7 @@ msgid "nach Provenienz"
 msgstr "nach Provenienz"
 
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:361
-#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:20
+#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:21
 msgid "nach Regent"
 msgstr "nach Regent"
 
@@ -21182,7 +21189,6 @@ msgstr "nach Regent"
 msgid "nach Region"
 msgstr "nach Region"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:16
 #: ../templates/_profile/sammlungen/_view/totenzettel/titlist_options:16
 #: ../templates/_profile/usbportal/search_title_combined_include:61
 #: ../templates/titlist_options:16
@@ -21274,7 +21280,6 @@ msgstr "nach Themen"
 msgid "nach Themengebieten"
 msgstr "nach Themengebieten"
 
-#: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:21
 #: ../templates/_profile/usbportal/search_title_combined_include:63
 #: ../templates/tags_names_record_html:95 ../templates/titlist_options:21
 #: ../templates/users_tags_html:95
@@ -21501,7 +21506,8 @@ msgstr "Portal-Administrator"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:129
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:149
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:259
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:166
+#: ../templates/_profile/sammlungen/_view/muenzen/search_title_combined_html:75
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:169
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:131
 #: ../templates/_profile/sammlungen/_view/richter/titles_fields_record_mobile:36
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:139
@@ -21614,8 +21620,8 @@ msgstr "Übersicht"
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
 
-#~ msgid "T0516-schatzbehalter"
-#~ msgstr "Schrift"
+#~ msgid "Vollanzeige"
+#~ msgstr "Vollanzeige"
 
 #~ msgid "Zeit"
 #~ msgstr "Zeit"

@@ -4015,6 +4015,24 @@ convtab:
           'title': 50
           'titlestring': 50
           'freesearch': 50
+      '0344':         # 
+        index:
+          't0344': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0345':         # 
+        index:
+          't0345': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0346':         # 
+        index:
+          't0346': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
       '0351':         # 
         index:
           't0351': 50
@@ -4030,6 +4048,24 @@ convtab:
       '0353':         # 
         index:
           't0353': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0354':         # 
+        index:
+          't0354': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0355':         # 
+        index:
+          't0355': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0356':         # 
+        index:
+          't0356': 50
           'title': 50
           'titlestring': 50
           'freesearch': 50

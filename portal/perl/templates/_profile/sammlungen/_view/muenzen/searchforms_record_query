@@ -93,15 +93,13 @@ $(document).ready(function(){
 </div>
 [% END %]
 
-[% IF available_searchfields.title.active %]
 [%- cgiparam = searchfield.title.prefix;
     this_searchfield = 'title';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Titelworte") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Legende") %]</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" class="keyboardInput"/>
 </div>
-[% END %]
 
 [% IF available_searchfields.person.active %]
 [%- cgiparam = searchfield.person.prefix;

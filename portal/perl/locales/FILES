@@ -1252,6 +1252,7 @@
 ../templates/_profile/sammlungen/_view/gentzdigital/clouds_html
 ../templates/_profile/sammlungen/_view/gentzdigital/clouds_navigation
 ../templates/_profile/sammlungen/_view/gentzdigital/clouds_person_html
+../templates/_profile/sammlungen/_view/gentzdigital/clouds_year_html
 ../templates/_profile/sammlungen/_view/gentzdigital/corporate_banner
 ../templates/_profile/sammlungen/_view/gentzdigital/home
 ../templates/_profile/sammlungen/_view/gentzdigital/info_ansprechpartner
@@ -1368,6 +1369,7 @@
 ../templates/_profile/sammlungen/_view/muenzen/search_facet
 ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query
 ../templates/_profile/sammlungen/_view/muenzen/search_history
+../templates/_profile/sammlungen/_view/muenzen/search_title_combined_html
 ../templates/_profile/sammlungen/_view/muenzen/search_title_field
 ../templates/_profile/sammlungen/_view/muenzen/std_footer_html
 ../templates/_profile/sammlungen/_view/muenzen/std_header_html

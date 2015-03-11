@@ -1,3 +1,8 @@
+<link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib.css" %]" media="all" />
+
+<script type="text/javascript" src="/js/keyboard-greek.js"></script>
+<script type="text/javascript" src="/js/keyboard-muenzen.js"></script>
+
 [%- searchfield = config.get('searchfield') -%]
 [% IF user.is_authenticated %]
 [% autocompletion_type = user.get_autocompletion %]
@@ -94,7 +99,7 @@ $(document).ready(function(){
  -%]
 <div class="ym-fbox-text">
 <label for="[% cgiparam %]">[% msg.maketext("Titelworte") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" class="keyboardInput"/>
 </div>
 [% END %]
 

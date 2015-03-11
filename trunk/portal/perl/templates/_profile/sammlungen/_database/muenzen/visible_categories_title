@@ -40,6 +40,7 @@
 #                'T0508', # msg.maketext("T0508-muenzen") Referenz
                 'T0622', # msg.maketext("T0622-muenzen") Links
                 'T0451', # msg.maketext("T0451-muenzen") Forschungsliteratur
+                'T0600', # msg.maketext("T0600-muenzen") Kommentar
 #                'T0341', # msg.maketext("T0341-muenzen") Legende Vorderseite: nicht aufgelöst
 #                'T0342', # msg.maketext("T0342-muenzen") Legende Vorderseite: aufgelöst, nur Text
 #                'T0343', # msg.maketext("T0343-muenzen") Legende Vorderseite: aufgelöst, Editionstext

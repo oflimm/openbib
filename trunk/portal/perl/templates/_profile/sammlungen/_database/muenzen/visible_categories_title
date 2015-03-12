@@ -13,6 +13,8 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
+                'Vorderseite', # msg.maketext("Vorderseite") Vorderseite Legende+Beschreibung
+                'Rückseite', # msg.maketext("Rückseite") Rückseite Legende+Beschreibung
 #                'T0010', # msg.maketext("T0010-muenzen") Katalognummer
                 'T0100', # msg.maketext("T0100-muenzen") Herrscher (Regent)
                 'T0619', # msg.maketext("T0619-muenzen") Regierungsjahr (Praegejahr)
@@ -22,10 +24,8 @@
                 'T0428', # msg.maketext("T0428-muenzen") Datierung als Text
 #                'T0332', # msg.maketext("T0332-muenzen") Vorderseite Legende
 #                'T0334', # msg.maketext("T0334-muenzen") Vorderseite Beschreibung
-                'Vorderseite', # msg.maketext("Vorderseite") Vorderseite Legende+Beschreibung
 #                'T0335', # msg.maketext("T0335-muenzen") Rueckseite Legende
 #                'T0337', # msg.maketext("T0337-muenzen") Rueckseite Beschreibung
-                'Rückseite', # msg.maketext("Rückseite") Rückseite Legende+Beschreibung
                 'T0338', # msg.maketext("T0338-muenzen") Nominal
                 'T0800', # msg.maketext("T0800-muenzen") Material
                 'T0435', # msg.maketext("T0435-muenzen") Durchmesser 

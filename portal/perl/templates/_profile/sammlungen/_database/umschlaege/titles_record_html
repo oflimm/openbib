@@ -150,10 +150,10 @@ $(document).ready(function(){
            END ;
        END ;
 %]
-<center style="padding:10px;"><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% cdm_ptr %]&DMSCALE=7.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="600"/></a><br/><i>[% description %]</i></center>
+<center style="padding:10px;"><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=8000&DMHEIGHT=8000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% cdm_ptr %]&DMSCALE=7.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="600"/></a><br/><i>[% description %]</i></center>
 [%   END %]
 [% ELSE %]
-<center><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% record.id %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% record.id %]&DMSCALE=7.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="600"/></a></center>
+<center><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% record.id %]&DMSCALE=100.00000&DMWIDTH=8000&DMHEIGHT=8000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% record.id %]&DMSCALE=7.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="600"/></a></center>
 [% END %]
 <!-- Ende Umschlagbilder -->
 <p/>

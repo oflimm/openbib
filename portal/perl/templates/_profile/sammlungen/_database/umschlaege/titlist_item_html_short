@@ -220,24 +220,7 @@ $(document).ready(function(){
 
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
-<!-- Anfang Umschlagbilder -->
-[% IF normset.${"T6054"} ;
-     FOREACH item IN normset.${"T6054"} ;
-       cdm_ptr = item.content ;
-       thisindicator = item.indicator ;
-       FOREACH thisitem IN normset.${"T6050"} ;
-           IF thisitem.indicator == thisindicator ;
-              description = thisitem.content ;
-           END ;
-       END ;
-%]
-<img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% cdm_ptr %]&DMSCALE=3.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0"/>
-[%   END %]
-[% ELSE %]
-<img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/umschlaege&CISOPTR=[% record.id %]&DMSCALE=3.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0"/>
-[% END %]
-<!-- Ende Umschlagbilder -->
-
+   [% IF item.${'T2662'}.first.content %]<img src="[% item.${'T2662'}.first.content %]" title="Thumbnail des Objekts" /></a>[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]

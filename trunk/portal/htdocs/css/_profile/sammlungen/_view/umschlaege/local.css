@@ -141,18 +141,28 @@
     vertical-align:text-top;
   }
 
+ .ob-item {
+    height: 125px;
+    width: 100%;
+    position: relative;
+    border-style: solid;
+    border-color: #edebe3;
+    border-width: 1px;
+    margin-bottom: 5px;
+  }
+    
   .ob-item .ob-brieftitle {
     position: absolute;
     top: 26px;
-    left:160px;
+    left:210px;
     width: auto;
   }
 
     .ob-item .ob-thumbnail {
     position: relative;
-    top: 8px;
+    top: 10px;
     left: 35px;
-    width: 60px;
+    width: 160px;
     height: 90px;
 /*    border: 1px solid #000; */
     background: none repeat scroll 0 0;

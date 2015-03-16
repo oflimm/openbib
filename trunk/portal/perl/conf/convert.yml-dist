@@ -3874,6 +3874,9 @@ convtab:
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
+      '0010':
+        index:
+          'freesearch': 1
 #      '0014':         # Signatur, wenn nicht in den Exemplardaten
 #        index:
 #          'mark': 1
@@ -3997,6 +4000,10 @@ convtab:
           'title': 50
           'titlestring': 50
           'freesearch': 50
+      '0338':
+        index:
+          'freesearch': 1
+          't0338': 1
       '0341':         # 
         index:
           't0341': 50
@@ -4074,11 +4081,13 @@ convtab:
           't0407': 1
       '0410':         # Auflage
         index:
+          'freesearch': 1
           't0410': 1
       '0412':         # Verlag
         index:
           'publisher': 1
           'publisherstring': 1
+          'freesearch': 50
       '0413':         # Drucker
         index:
           'person': 1
@@ -4095,6 +4104,7 @@ convtab:
           'freesearch': 1
       '0508':
         index:
+          'freesearch': 1
           'source': 1
       '0540':         # ISBN
         index:
@@ -4128,9 +4138,12 @@ convtab:
         index:
           'source': 1
           'freesearch': 1
-      '0338':         # Nominal
+      '0600':
         index:
-          't0338': 1
+          'freesearch': 1
+      '0619':
+        index:
+          'freesearch': 1
       '0634':         # ISBN sekundaerform
         index:
           'isbn': 1

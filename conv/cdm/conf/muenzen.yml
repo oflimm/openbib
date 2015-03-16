@@ -49,7 +49,9 @@ title:
   'links': '0662'
   'forschungsliteratur': '0451'
   'provenienz': '1664'
-  'kommentar': ''
+  'kommentar': '0600' # Bemerkung
+  'institution': '0412' # Verlag
+  'sprache': '0015' # Sprache
   'type': ''
   'format': ''
   

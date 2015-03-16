@@ -210,7 +210,7 @@
 
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
      IF NOT title ;
-       title = "Zu dieser Münze wurden noch keine Daten erfasst.";
+       title = "Zu Münze";
      END;
  
      # Auflage konstruieren

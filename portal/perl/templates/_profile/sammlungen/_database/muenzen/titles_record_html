@@ -189,6 +189,46 @@ $(document).ready(function(){
 
 <div class="ob-bottominfo"><!-- Begin Bottominfo -->
 
+[% IF normdata.${"T0662"} %]
+
+<div class="ob-category_header">Verwandte Münzen</span></div>
+
+<br/>
+[%
+   idlist = normdata.${"T0662"}.first.content.split('\s+;\s+')
+
+   related_recordlist = create_title_recordlist();
+
+   FOREACH relid IN idlist;
+     dummy = related_recordlist.add(create_title_record({ database = 'muenzen', id = relid}));
+   END;
+
+   dummy = related_recordlist.load_brief_records;
+
+   start_range = 1;
+%]
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="left">
+    </div>
+    <div class="right">
+    </div>
+  </div>
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN related_recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
+[%- END -%]
+  <div class="ob-footer">
+  </div>
+ </div>
+</div>
+
+<div class="ob-similar-coins">
+
+
+</div>
+[% END %]
+
 <div class="ob-title_wikipedia_articles">
 [%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">

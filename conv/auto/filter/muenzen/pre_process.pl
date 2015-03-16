@@ -75,14 +75,14 @@ while (<>){
         $variante1=~s/\///g;
         $variante1=~s/\s+/ /g;
 
-        if ($sprache =~m/Griechisch/i){
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
             push @{$title_ref->{fields}{'0341'}}, {
                 content => $variante1,
                 subfield => "",
                 mult => 1,
             };
         }
-        elsif ($sprache =~m/Latein/i) {
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
             push @{$title_ref->{fields}{'0344'}}, {
                 content => $variante1,
                 subfield => "",
@@ -103,14 +103,14 @@ while (<>){
         $variante2=~s/-//g;
         $variante2=~s/\s+/ /g;
 
-        if ($sprache =~m/Griechisch/i){
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
             push @{$title_ref->{fields}{'0342'}}, {
                 content => $variante2,
                 subfield => "",
                 mult => 1,
             };
         }
-        elsif ($sprache =~m/Latein/i) {
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
             push @{$title_ref->{fields}{'0345'}}, {
                 content => $variante2,
                 subfield => "",
@@ -122,14 +122,14 @@ while (<>){
         $variante3=~s/]//g;
 
 
-        if ($sprache =~m/Griechisch/i){
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
             push @{$title_ref->{fields}{'0343'}}, {
                 content => $variante3,
                 subfield => "",
                 mult => 1,
             };
         }
-        elsif ($sprache =~m/Latein/i) {
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
             push @{$title_ref->{fields}{'0346'}}, {
                 content => $variante3,
                 subfield => "",
@@ -166,14 +166,14 @@ while (<>){
         $variante1=~s/-//g;
         $variante1=~s/\s+/ /g;
 
-        if ($sprache =~m/Griechisch/i){
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
             push @{$title_ref->{fields}{'0351'}}, {
                 content => $variante1,
                 subfield => "",
                 mult => 1,
             };
         }
-        elsif ($sprache =~m/Latein/i) {
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
             push @{$title_ref->{fields}{'0354'}}, {
                 content => $variante1,
                 subfield => "",
@@ -194,14 +194,14 @@ while (<>){
         $variante2=~s/-//g;
         $variante2=~s/\s+/ /g;
 
-        if ($sprache =~m/Griechisch/i){
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
             push @{$title_ref->{fields}{'0352'}}, {
                 content => $variante2,
                 subfield => "",
                 mult => 1,
             };
         }
-        elsif ($sprache =~m/Latein/i) {
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
             push @{$title_ref->{fields}{'0355'}}, {
                 content => $variante2,
                 subfield => "",
@@ -212,14 +212,14 @@ while (<>){
         $variante3=~s/\[//g;
         $variante3=~s/]//g;
 
-        if ($sprache =~m/Griechisch/i){
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
             push @{$title_ref->{fields}{'0353'}}, {
                 content => $variante3,
                 subfield => "",
                 mult => 1,
             };
         }
-        elsif ($sprache =~m/Latein/i) {
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
             push @{$title_ref->{fields}{'0356'}}, {
                 content => $variante3,
                 subfield => "",

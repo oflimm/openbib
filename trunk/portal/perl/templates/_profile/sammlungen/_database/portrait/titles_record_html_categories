@@ -325,6 +325,25 @@ FOREACH category IN categories;
          localurl  = "${path_prefix}/${config.get('search_loc')}?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
+    CASE "T5005";
+         super         = from_json(content);
+
+         searchterm    = super.id;
+         searchprefix  = config.get('searchfield').id.prefix;
+
+         super_title   = super.fields.${'0451'}.first.content;
+
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+         END ;
+
+         IF NOT super_title ;
+            super_title = "Zur &Uuml;berordnung";
+         END ;
+
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
+
     CASE ;
          content   = highlightquery(searchquery,item.content);
    END;

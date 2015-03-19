@@ -93,6 +93,31 @@ my @recordlist = ();
 foreach $titleid (keys %titleids){
     my $record = new OpenBib::Record::Title({database => 'instzs', id => $titleid})->load_full_record();
 
+    my $sortfield = "";
+    
+    my $urheber = $record->get_field({ field => 'T0200'});
+
+    $urheber = (defined $urheber)?$urheber->[0]{content}:"";
+
+    my $ast = $record->get_field({ field => 'T0310'});
+
+    $ast = (defined $ast)?$ast->[0]{content}:"";
+
+    if ($ast){
+        $ast = OpenBib::Common::Stopwords::strip_first_stopword($ast);
+        $sortfield = "$urheber$ast";
+    }
+    else {
+        my $hst = $record->get_field({ field => 'T0331'});
+        
+        $hst = (defined $hst)?$hst->[0]{content}:"";
+
+        $hst = OpenBib::Common::Stopwords::strip_first_stopword($hst);
+        $sortfield = "$urheber$hst";
+    }
+
+    $record->set_field({ field => 'sortfield', content => $sortfield});
+    
     my $mexnormdata_ref = $record->get_holding;
 
     # print YAML::Dump($record);
@@ -114,6 +139,7 @@ foreach $titleid (keys %titleids){
         $externzahl++;
     }
 
+#    print YAML::Dump($record->get_fields),"\n";
     push @recordlist, $record;
 }
 
@@ -126,6 +152,41 @@ my $outputbasename="zeitschriften-$sigel";
 if ($showall){
     $outputbasename.="-all";
 }
+
+# Sortierung nach Titel
+my $template = Template->new({
+    LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+        INCLUDE_PATH   => $config->{tt_include_path},
+        ABSOLUTE       => 1,
+    }) ],
+    #        INCLUDE_PATH   => $config->{tt_include_path},
+    #        ABSOLUTE       => 1,
+    OUTPUT_PATH   => '/var/www/zeitschriftenlisten',
+    OUTPUT        => "$outputbasename.$mode",
+});
+
+
+my $ttdata = {
+    sigel        => $sigel,
+    dbinfo       => $dbinfotable,
+    recordlist   => \@sortedrecordlist,
+    showall      => $showall,
+    gesamtzahl   => $#recordlist+1,
+    externzahl   => $externzahl,
+
+    filterchars  => \&filterchars,
+};
+
+$template->process("zsstlist_$mode", $ttdata) || do { 
+    print $template->error();
+};
+
+
+# Sortierung nach Urheber, dann Titel
+
+@sortedrecordlist = sort by_sortfield @recordlist;
+
+$outputbasename.="-bibsort";
 
 my $template = Template->new({
     LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -140,6 +201,7 @@ my $template = Template->new({
 
 
 my $ttdata = {
+    bibsort      => 1,
     sigel        => $sigel,
     dbinfo       => $dbinfotable,
     recordlist   => \@sortedrecordlist,
@@ -288,6 +350,17 @@ sub by_title {
     $line1=OpenBib::Common::Stopwords::strip_first_stopword($line1);
     $line2=OpenBib::Common::Stopwords::strip_first_stopword($line2);
     
+    $line1 cmp $line2;
+}
+
+
+sub by_sortfield {
+    my %line1=%{$a->get_fields()};
+    my %line2=%{$b->get_fields()};
+
+    my $line1=(exists $line1{sortfield}[0]{content} && defined $line1{sortfield}[0]{content})?cleanrl($line1{sortfield}[0]{content}):"";
+    my $line2=(exists $line2{sortfield}[0]{content} && defined $line2{sortfield}[0]{content})?cleanrl($line2{sortfield}[0]{content}):"";
+
     $line1 cmp $line2;
 }
 

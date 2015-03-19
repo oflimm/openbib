@@ -23,6 +23,20 @@
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
 [% END %]
 
+<!-- Default Language is german -->
+[%-
+     language_location_args = cgiapp.to_cgi_querystring({ change = {'l' = 'de' }});
+     language_location = "${cgiapp.param('scheme')}://${cgiapp.param('servername')}${cgiapp.param('path')}?${language_location_args}";
+%]
+<link rel="alternate" href="[% language_location %]" hreflang="x-default" />
+
+<!-- All Language Versions  -->
+[%- FOREACH thislang IN config.get('lang') ;
+     language_location_args = cgiapp.to_cgi_querystring({ change = {'l' = thislang }});
+     language_location = "${cgiapp.param('scheme')}://${cgiapp.param('servername')}${cgiapp.param('path')}?${language_location_args}" %]
+<link rel="alternate" href="[% language_location %]" hreflang="[% thislang %]-[% thislang %]" />
+[%- END %]
+
  <!-- mobile viewport optimisation -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

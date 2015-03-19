@@ -74,6 +74,10 @@ sammlungen = {
                                  },
 };
 
+   IF NOT searchprofileid_of_database ;
+      searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
+   END ;
+
 classifications  =  [];
 portals          =  [];
 sammlungen_done  =  {};

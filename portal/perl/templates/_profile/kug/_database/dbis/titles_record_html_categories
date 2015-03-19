@@ -26,6 +26,10 @@ view_searchprofile  = config.get_searchprofile_of_view(view) ;
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 
+   IF NOT searchprofileid_of_database ;
+      searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
+   END ;
+
 FOREACH category IN categories;
     FOREACH item IN normdata.$category;
     content = item.content;

@@ -20,6 +20,15 @@
      width-max: 1000px;
   }
 
+  .ob-resultheader .right {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 500px;
+    /*  padding: 5px; */
+    text-align: right;
+  }
+  
   footer {
     margin: 0.2em 0 0 0;
     height: 50px;
@@ -48,13 +57,17 @@
     padding-top: 18px;
     padding-left: 5px;
   }
-    
+
+  #topnav {
+    z-index:9999;
+  }
+      
   header {
-    padding-bottom:58px;  
+    padding-bottom:145px;  
   }
 
   header #logo {
-    padding: 0px;
+/*    padding: 0px; */
     position: absolute;
     top: 0px;
     left: 0px;
@@ -71,11 +84,11 @@
 
 
   #header_logo_image  {
-    background: url(/images/openbib/views/muenzen/logo.png) center no-repeat;
+    background: url(/images/openbib/views/muenzen/logo.jpg) center no-repeat;
     position: absolute;
     width: 1000px;
-    height: 100px;
-    top: 27px;
+    height: 217px;
+    top: 0px;
     left: 0px;    
   }
 

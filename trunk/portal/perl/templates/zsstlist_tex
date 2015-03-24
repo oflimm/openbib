@@ -162,6 +162,12 @@ http://www.ub.uni-koeln.de/bibliotheken/sigel/index_ger.html
 \end{verbatim}
 \end{center}
 
+[% IF bibsort %]
+\textbf{Bitte beachten Sie:} Die Zeitschriften erscheinen in einer
+bibliothekarischen Sortierung, d.h. bei vorhandenem Urheber wird
+nach diesem und erst dann nach Titel sortiert!
+[% END %]
+
 \section*{Aufstellung der Zeitschriften}
 
 [% FOREACH record IN recordlist %]

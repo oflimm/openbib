@@ -369,6 +369,8 @@ sub load_full_title_record {
             if ($title_persons){
                 my $mult = 1;
                 while (my $item = $title_persons->next){
+                    next unless (defined $item->{thisfield});
+                    
                     my $field      = "T".sprintf "%04d",$item->{thisfield};
                     my $personid   =                    $item->{thispersonid};
                     my $supplement =                    $item->{thissupplement};

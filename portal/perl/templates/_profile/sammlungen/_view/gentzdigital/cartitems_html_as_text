@@ -19,8 +19,8 @@
 [%- FOREACH record IN recordlist.load_full_records.get_records -%]
 [%- normset    = record.get_fields -%]
 [%- mexnormset = record.get_holding -%]
-[%-
-
+[% "Perma-Link" | format("%- 24s") %]: http://gentz-digital.ub.uni-koeln.de/portal/databases/id/gentzdigital/titles/id/[% record.id %]
+[%
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;

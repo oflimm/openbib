@@ -38,6 +38,7 @@
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
+<tr><td class="ob-field">Perma-Link</td><td>http://gentz-digital.ub.uni-koeln.de/portal/databases/id/gentzdigital/titles/id/[% record.id %]</td></tr>
 
 [%-
 

@@ -826,6 +826,13 @@ sub mail_collection_send {
     my $filename="kug-merkliste";
     my $datatemplatename=$config->{tt_cartitems_mail_html_tname};
 
+    $datatemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => $ttdata->{database},
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $datatemplatename,
+    });
+    
     if ($format eq "short" || $format eq "full") {
         $filename.=".html";
     }
@@ -861,7 +868,16 @@ sub mail_collection_send {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_cartitems_mail_message_tname}, $mainttdata ) || do { 
+    my $messagetemplatename = $config->{tt_cartitems_mail_message_tname};
+    
+    $messagetemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => $ttdata->{database},
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $messagetemplatename,
+    });
+    
+    $maintemplate->process($messagetemplatename, $mainttdata ) || do { 
         $r->log_error($maintemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
     };

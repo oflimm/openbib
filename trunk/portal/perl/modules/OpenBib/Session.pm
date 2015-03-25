@@ -1142,8 +1142,8 @@ sub save_eventlog_to_statisticsdb {
             sid       => $new_sid,
             tstamp    => $tstamp,
             type      => $type,
-#            content   => decode_utf8($content),
-            content   => $content,
+            content   => decode_utf8($content),
+#            content   => $content,
             serialize => 1, # in Eventlogjson
         });
         

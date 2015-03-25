@@ -333,9 +333,9 @@ sub threadB {
     
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['usbebooks'] });
 
-#    $logger->info("### Master: ZBMED");
+    $logger->info("### Master: ZBMED");
     
-#    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['zbmed'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['zbmed'] });
 
     return $thread_description;
 }

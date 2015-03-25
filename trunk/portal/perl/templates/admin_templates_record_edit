@@ -92,7 +92,7 @@
 </div>
 
 <div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Ändern") %]">
+<input type="submit" value="[% msg.maketext("Abspeichern") %]">
 
 &nbsp;&nbsp;&nbsp;
 

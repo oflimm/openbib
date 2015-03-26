@@ -775,6 +775,8 @@ sub mail_collection_send {
         return Apache2::Const::OK;
     }	
 
+    my $sysprofile= $config->get_profilename_of_view($view);
+
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $recordlist = new OpenBib::RecordList::Title();
@@ -792,6 +794,7 @@ sub mail_collection_send {
     
     my $ttdata={
         view        => $view,
+        sysprofile  => $sysprofile,
         stylesheet  => $stylesheet,
         sessionID   => $session->{ID},
 	qopts       => $queryoptions->get_options,
@@ -826,12 +829,7 @@ sub mail_collection_send {
     my $filename="kug-merkliste";
     my $datatemplatename=$config->{tt_cartitems_mail_html_tname};
 
-    $datatemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => $ttdata->{database},
-        view         => $ttdata->{view},
-        profile      => $ttdata->{sysprofile},
-        templatename => $datatemplatename,
-    });
+    $logger->debug("Using view $view in profile $sysprofile");
     
     if ($format eq "short" || $format eq "full") {
         $filename.=".html";
@@ -842,6 +840,14 @@ sub mail_collection_send {
         $datatemplatename=$config->{tt_cartitems_mail_plain_tname};
     }
 
+    $datatemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $datatemplatename,
+    });
+
+    $logger->debug("Using database/view specific Template $datatemplatename");
+    
     $datatemplate->process($datatemplatename, $ttdata) || do {
         $r->log_error($datatemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;
@@ -871,12 +877,13 @@ sub mail_collection_send {
     my $messagetemplatename = $config->{tt_cartitems_mail_message_tname};
     
     $messagetemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => $ttdata->{database},
         view         => $ttdata->{view},
         profile      => $ttdata->{sysprofile},
         templatename => $messagetemplatename,
     });
-    
+
+    $logger->debug("Using database/view specific Template $messagetemplatename");
+
     $maintemplate->process($messagetemplatename, $mainttdata ) || do { 
         $r->log_error($maintemplate->error(), $r->filename);
         return Apache2::Const::SERVER_ERROR;

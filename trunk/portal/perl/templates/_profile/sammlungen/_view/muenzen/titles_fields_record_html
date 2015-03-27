@@ -27,28 +27,28 @@
        searchfield = 'subjectstring' ;
     ELSIF field == '0410' ;
        field_description = msg.maketext("Bereich");
-       searchfield = 't0410' ;
+       searchfield = 'ft0410' ;
     ELSIF field == '0338' ;
        field_description = msg.maketext("Nominal");
-       searchfield = 't0338' ;
+       searchfield = 'ft0338' ;
     ELSIF field == '0341' ;
        field_description = "Legende Vorderseite: nicht aufgelöst";
-       searchfield = 't0341' ;
+       searchfield = 'ft0341' ;
     ELSIF field == '0342' ;
        field_description = "Legende Vorderseite: aufgelöst, nur Text";
-       searchfield = 't0342' ;
+       searchfield = 'ft0342' ;
     ELSIF field == '0343' ;
        field_description = "Legende Vorderseite: aufgelöst, Editionstext";
-       searchfield = 't0343' ;
+       searchfield = 'ft0343' ;
     ELSIF field == '0351' ;
        field_description = "Legende Rückseite: nicht aufgelöst";
-       searchfield = 't0351' ;
+       searchfield = 'ft0351' ;
     ELSIF field == '0352' ;
        field_description = "Legende Rückseite: aufgelöst, nur Text";
-       searchfield = 't0352' ;
+       searchfield = 'ft0352' ;
     ELSIF field == '0353' ;
        field_description = "Legende Rückseite: aufgelöst, Editionstext";
-       searchfield = 't0353' ;
+       searchfield = 'ft0353' ;
     END ; -%]
 
 <body>

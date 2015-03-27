@@ -34,7 +34,7 @@
 [%- FOREACH thislang IN config.get('lang') ;
      language_location_args = cgiapp.to_cgi_querystring({ change = {'l' = thislang }});
      language_location = "${cgiapp.param('scheme')}://${cgiapp.param('servername')}${cgiapp.param('path')}?${language_location_args}" %]
-<link rel="alternate" href="[% language_location %]" hreflang="[% thislang %]-[% thislang %]" />
+<link rel="alternate" href="[% language_location %]" hreflang="[% thislang %]" />
 [%- END %]
 
 <!-- mobile viewport optimisation -->
@@ -82,9 +82,9 @@
     <script type="text/javascript" src="/js/jquery-1.5.1.min.js"></script>
     <script type="text/javascript" src="/js/jquery-ui-1.8.14.custom.min.js"></script>
 
-    <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/js/cloud-zoom.1.0.2.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
+    <script type="text/javascript" src="/js/openbib.js"></script>
+    <script type="text/javascript" src="/js/cloud-zoom.1.0.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
 
 
     <title>[% IF page_title %][% page_title %][% ELSE %]Die digitale Münzsammlung des Instituts für Altertumskunde[% END %]</title>

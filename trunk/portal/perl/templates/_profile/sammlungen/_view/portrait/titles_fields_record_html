@@ -15,16 +15,16 @@
 
 [%- IF field == '0102' ;
        field_description = 'Dargestellte Person';
-       searchfield = 't0102' ;
+       searchfield = 'ft0102' ;
     ELSIF field == '0100' ;
        field_description = 'Maler / Zeichner';
-       searchfield = 't0100' ;
+       searchfield = 'ft0100' ;
     ELSIF field == '0101' ;
        field_description = 'Stecher / Lithograph';
-       searchfield = 't0101' ;
+       searchfield = 'ft0101' ;
     ELSIF field == '0103' ;
        field_description = 'Weitere Person';
-       searchfield = 't0103';
+       searchfield = 'ft0103';
     ELSIF field == '0710' ;
        field_description = 'Region';
        searchfield = 'subjectstring' ;

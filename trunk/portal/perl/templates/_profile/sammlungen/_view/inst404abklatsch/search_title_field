@@ -25,10 +25,10 @@
           "yearstring" = msg.maketext("Jahr")
           "tagstring" = msg.maketext("Tag")
           "litliststring" = msg.maketext("Literaturliste")
-          "t0200" = 'Ort der Inschrift'
-          "t0410" = 'Aufbewahrungsort der Inschrift'
-          "t0425" = 'Datierung der Inschrift'
-          "t0335" = 'Edition/SEG-Nummer'
-          "t0710" = 'Kategorie'
+          "ft0200" = 'Ort der Inschrift'
+          "ft0410" = 'Aufbewahrungsort der Inschrift'
+          "ft0425" = 'Datierung der Inschrift'
+          "ft0335" = 'Edition/SEG-Nummer'
+          "ft0710" = 'Kategorie'
 };
 %]

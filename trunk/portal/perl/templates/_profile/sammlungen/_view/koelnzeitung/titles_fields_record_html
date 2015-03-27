@@ -15,10 +15,10 @@
 
 [%- IF field == '0100' ;
        field_description = msg.maketext("Personen");
-       searchfield = 't0100' ;
+       searchfield = 'ft0100' ;
     ELSIF field == '0710' ;
        field_description = msg.maketext("Schlagwort");
-       searchfield = 't0710' ;
+       searchfield = 'ft0710' ;
      END ; -%]
 
 <body>

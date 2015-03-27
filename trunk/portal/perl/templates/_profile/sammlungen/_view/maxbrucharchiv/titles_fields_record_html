@@ -18,7 +18,7 @@
        searchfield = 'mediatypestring' ;
     ELSIF field == '0100' ;
        field_description = 'Absender';
-       searchfield = 't0100' ;
+       searchfield = 'ft0100' ;
     END ; -%]
 
 <body>

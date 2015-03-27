@@ -15,22 +15,22 @@
 
 [%- IF field == '0101' ;
        field_description = msg.maketext("Buchbinder/Werkstatt");
-       searchfield = 't0101' ;
+       searchfield = 'ft0101' ;
     ELSIF field == '0102' ;
        field_description = msg.maketext("Werkstatt/Werkzeug");
-       searchfield = 't0102' ;
+       searchfield = 'ft0102' ;
     ELSIF field == '0200' ;
        field_description = msg.maketext("Region");
-       searchfield = 't0200' ;
+       searchfield = 'ft0200' ;
     ELSIF field == '0201' ;
        field_description = msg.maketext("Region/Werkzeug");
-       searchfield = 't0201' ;
+       searchfield = 'ft0201' ;
     ELSIF field == '0413' ;
        field_description = msg.maketext("Drucker/Verleger/Verlag");
-       searchfield = 't0413' ;
+       searchfield = 'ft0413' ;
     ELSIF field == '0304' ;
        field_description =  msg.maketext("Motiv/Werkzeug");
-       searchfield = 't0304';
+       searchfield = 'ft0304';
     ELSIF field == '0710' ;
        field_description = msg.maketext("Jahrhundert");
        searchfield = 'subjectstring' ;

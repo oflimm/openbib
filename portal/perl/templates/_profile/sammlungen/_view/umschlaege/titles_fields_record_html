@@ -15,19 +15,19 @@
 
 [%- IF field == '0100' ;
        field_description = msg.maketext("Autor");
-       searchfield = 't0100' ;
+       searchfield = 'ft0100' ;
     ELSIF field == '0200' ;
        field_description = msg.maketext("Zusammenarbeit");
-       searchfield = 't0200' ;
+       searchfield = 'ft0200' ;
     ELSIF field == '0412' ;
        field_description = msg.maketext("T0412");
-       searchfield = 't0412' ;
+       searchfield = 'ft0412' ;
     ELSIF field == '0425' ;
        field_description =  msg.maketext("T0425");
-       searchfield = 't0425';
+       searchfield = 'ft0425';
     ELSIF field == '0710' ;
        field_description = msg.maketext("Am Umschlag Beteiligte");
-       searchfield = 't0710' ;
+       searchfield = 'ft0710' ;
      END ; -%]
 
 <body>

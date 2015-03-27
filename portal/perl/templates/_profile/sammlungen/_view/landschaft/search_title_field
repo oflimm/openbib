@@ -25,9 +25,9 @@
           "yearstring" = msg.maketext("Jahr")
           "tagstring" = msg.maketext("Tag")
           "litliststring" = msg.maketext("Literaturliste")
-          "t0101" = msg.maketext("Künstler")
-          "t0200" = msg.maketext("Topogr. Schlagwort")
-          "t0700" = msg.maketext("1. Ikonogr. Schlagwort")
-          "t0710" = msg.maketext("2. Ikonogr. Schlagwort")
+          "ft0101" = msg.maketext("Künstler")
+          "ft0200" = msg.maketext("Topogr. Schlagwort")
+          "ft0700" = msg.maketext("1. Ikonogr. Schlagwort")
+          "ft0710" = msg.maketext("2. Ikonogr. Schlagwort")
 };
 %]

@@ -25,11 +25,11 @@
           "yearstring" = msg.maketext("Jahr")
           "tagstring" = msg.maketext("Tag")
           "litliststring" = msg.maketext("Literaturliste")
-          "t0100" = msg.maketext("Autor")
-          "t0200" = msg.maketext("Zusammenarbeit")
-          "t0412" = msg.maketext("T0412")
-          "t0425" = msg.maketext("T0425")
-          "t4100" = msg.maketext("T4100")
-          "t0710" = msg.maketext("Am Umschlag Beteiligte")
+          "ft0100" = msg.maketext("Autor")
+          "ft0200" = msg.maketext("Zusammenarbeit")
+          "ft0412" = msg.maketext("T0412")
+          "ft0425" = msg.maketext("T0425")
+          "ft4100" = msg.maketext("T4100")
+          "ft0710" = msg.maketext("Am Umschlag Beteiligte")
 };
 %]

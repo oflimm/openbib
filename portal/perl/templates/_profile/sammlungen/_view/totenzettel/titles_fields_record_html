@@ -15,16 +15,16 @@
 
 [%- IF field == '0425' ;
        field_description = msg.maketext("Sterbejahre");
-       searchfield = 't0425' ;
+       searchfield = 'ft0425' ;
     ELSIF field == '0426' ;
        field_description = "Geburtsjahre";
-       searchfield = 't0426' ;
+       searchfield = 'ft0426' ;
     ELSIF field == '0410' ;
        field_description = msg.maketext("Sterbeorte");
-       searchfield = 't0410' ;
+       searchfield = 'ft0410' ;
     ELSIF field == '0411' ;
        field_description = msg.maketext("Geburtsorte");
-       searchfield = 't0411' ;
+       searchfield = 'ft0411' ;
      END ; -%]
 
 <body>

@@ -15,13 +15,13 @@
 
 [%- IF field == '0426' ;
        field_description = 'Briefe von Gentz';
-       searchfield = 't0426' ;
+       searchfield = 'ft0426' ;
     ELSIF field == '0427' ;
        field_description = 'Briefe an Gentz';
-       searchfield = 't0427' ;
+       searchfield = 'ft0427' ;
     ELSIF field == '0428' ;
        field_description = 'Briefe Dritter';
-       searchfield = 't0428' ;
+       searchfield = 'ft0428' ;
     ELSIF field == '0200' ;
        field_description = 'Briefempfänger';
        searchfield = 'corporatebodystring' ;

@@ -1,0 +1,1 @@
+OpenBib is a web discovery interface - aka catalogue 2.0 - for library catalogues and other resources. The projects primary language is german.

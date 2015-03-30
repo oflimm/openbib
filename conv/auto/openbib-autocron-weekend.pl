@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -88,6 +88,8 @@ my $blacklist_ref = {
     'inst105master' => 1,
     'inst128' => 1,
     'inst128master' => 1,
+    'inst132' => 1,
+    'inst132master' => 1,
     'inst157' => 1,
     'inst157master' => 1,
     'inst166' => 1,
@@ -116,13 +118,15 @@ my $blacklist_ref = {
     'inst323' => 1,
     'inst324' => 1,
     'inst325' => 1,
-    'inst132' => 1,
-    'inst132master' => 1,
     'inst420' => 1,
     'inst420master' => 1,
     'inst421' => 1,
     'inst422' => 1,
     'inst423' => 1,
+    'inst429master' => 1,
+    'inst448master' => 1,
+    'inst429' => 1,
+    'inst448' => 1,
     'lehrbuchsmlg' => 1,
     'lesesaal' => 1,
     'openlibrary' => 1,
@@ -165,8 +169,9 @@ if ($test){
     push @threads, threads->new(\&threadTest,'Testkatalog');
 }
 else {
-    push @threads, threads->new(\&threadA,'Einzelne Kataloge');
-    push @threads, threads->new(\&threadB,'Abhaengige Kataloge');
+    push @threads, threads->new(\&threadA,'Thread 1');
+    push @threads, threads->new(\&threadB,'Thread 2');
+    push @threads, threads->new(\&threadC,'Thread 3');
 }
 
 foreach my $thread (@threads) {
@@ -251,10 +256,57 @@ sub threadA {
     # Interimsloesung: Kataloge von aperol werden vorher im Bulk geholt
     autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, autoconv => 1});
 
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
+    ##############################
     
-    system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
+    $logger->info("### Rheinische Bibliotheken");
     
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bruehl','franzmg','gbroich','gdonck','geistingen','gleuel','hennef','kempen','kwinter','wickrath','xanten','zuelpich'] });
+    
+    ##############################
+
+    $logger->info("### Externe Katalog");
+
+#autoconvert({ sync => 1, databases => ['openlibrary','gutenberg','wikisource_de'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gutenberg'] });
+
+    $logger->info("### Sammlungen aus dem Universitaet");
+    
+    autoconvert({ updatemaster => $updatemaster, databases => ['inst404abklatsch'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst526earchive','kups'] });
+
+    return $thread_description;
+}
+
+sub threadB {
+    my $thread_description = shift;
+
+    $logger->info("### -> $thread_description");    
+
+    $logger->info("### Master: USB Katalog");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
+    
+    ##############################
+    
+    $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa', 'dissertationen'] });
+    
+    ##############################
+    
+    $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','baeumker','becker','dante','digitalis','dirksen','evang','fichte','gabel','gruen','gymnasialbibliothek','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
+
+    return $thread_description;
+}
+
+
+sub threadC {
+    my $thread_description = shift;
+
+    $logger->info("### -> $thread_description");    
+
     ##############################
 
     $logger->info("### Master: inst132master");
@@ -314,55 +366,17 @@ sub threadA {
     $logger->info("### Sammlungen aus dem Universitaet");
     
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alekiddr','digitalis','schatzbehalter'] });
-    
+
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
+
+    system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
+        
     ##############################
 
     $logger->info("### Diverse Kataloge");
     
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho','zbmed'] });
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho'] });
-
-    ##############################
-    
-    $logger->info("### Rheinische Bibliotheken");
-    
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bruehl','franzmg','gbroich','gdonck','geistingen','gleuel','hennef','kempen','kwinter','wickrath','xanten','zuelpich'] });
-    
-    ##############################
-
-    $logger->info("### Externe Katalog");
-
-#autoconvert({ sync => 1, databases => ['openlibrary','gutenberg','wikisource_de'] });
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gutenberg'] });
-
-    $logger->info("### Sammlungen aus dem Universitaet");
-    
-    autoconvert({ updatemaster => $updatemaster, databases => ['inst404abklatsch'] });
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst526earchive','kups'] });
-
-    return $thread_description;
-}
-
-sub threadB {
-    my $thread_description = shift;
-
-    $logger->info("### -> $thread_description");    
-
-    $logger->info("### Master: USB Katalog");
-    
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
-    
-    ##############################
-    
-    $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
-    
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa', 'dissertationen'] });
-    
-    ##############################
-    
-    $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
-    
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','baeumker','becker','dante','digitalis','dirksen','evang','fichte','gabel','gruen','gymnasialbibliothek','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
 
     return $thread_description;
 }

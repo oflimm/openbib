@@ -123,6 +123,10 @@ my $blacklist_ref = {
     'inst421' => 1,
     'inst422' => 1,
     'inst423' => 1,
+    'inst429master' => 1,
+    'inst448master' => 1,
+    'inst429' => 1,
+    'inst448' => 1,
     'lehrbuchsmlg' => 1,
     'lesesaal' => 1,
     'openlibrary' => 1,
@@ -166,8 +170,9 @@ if ($test){
     push @threads, threads->new(\&threadTest,'Testkatalog');
 }
 else {
-    push @threads, threads->new(\&threadA,'Einzelne Kataloge');
-    push @threads, threads->new(\&threadB,'Abhaengige Kataloge');
+    push @threads, threads->new(\&threadA,'Thread 1');
+    push @threads, threads->new(\&threadB,'Thread 2');
+    push @threads, threads->new(\&threadC,'Thread 3');
 }
 
 foreach my $thread (@threads) {
@@ -243,6 +248,34 @@ sub threadA {
     # Interimsloesung: Kataloge von aperol werden vorher im Bulk geholt
     autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, autoconv => 1});
     
+    return $thread_description;
+}
+
+sub threadB {
+    my $thread_description = shift;
+
+    $logger->info("### -> $thread_description");    
+
+    $logger->info("### Master: USB Katalog");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
+
+    $logger->info("### Aufgesplittete Kataloge aus USB Katalog");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['usbebooks'] });
+
+    $logger->info("### Master: ZBMED");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['zbmed'] });
+
+    return $thread_description;
+}
+
+sub threadC {
+    my $thread_description = shift;
+
+    $logger->info("### -> $thread_description");    
+
     ##############################
 
     # Wegen Interimsloesung: Andere Kataloge, die nicht von aperol geholt werden
@@ -266,6 +299,18 @@ sub threadA {
     $logger->info("### Aufgesplittete Kataloge inst132master");
     
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst132'] });
+    
+    ##############################
+
+    $logger->info("### Master: MEKUTH-Masterkataloge");
+    
+    autoconvert({ updatemaster => $updatemaster, databases => ['inst429master','inst448master'] });
+
+    ##############################
+    
+    $logger->info("### Aufgesplittete Kataloge MEKUTH");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst429','inst448'] });
     
     ##############################
 
@@ -316,22 +361,6 @@ sub threadA {
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alekiddr','digitalis'] });
     
     ##############################
-
-    return $thread_description;
-}
-
-sub threadB {
-    my $thread_description = shift;
-
-    $logger->info("### -> $thread_description");    
-
-    $logger->info("### Master: USB Katalog");
-    
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
-
-    $logger->info("### Aufgesplittete Kataloge aus USB Katalog");
-    
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['usbebooks'] });
 
     $logger->info("### Master: ZBMED");
     

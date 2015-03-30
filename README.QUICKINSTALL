@@ -10,7 +10,7 @@ Die generelle Vorgehensweise bei der Schnell-Installation ist im Folgenden darge
 
 1.) Installation der notwendigen Infrastruktur
 
-OpenBib setzt auf einer LAMP-Infrastruktur (Linux, Apache, Mysql, Perl) auf, die zusätzlich viele weitere Perl-Module sowie andere Programme umfasst.
+OpenBib setzt auf einer LAPP-Infrastruktur (Linux, Apache, PostgreSQL, Perl) auf, die zusätzlich viele weitere Perl-Module sowie andere Programme umfasst.
 
 Um den Aufwand für die Installation so gering wie möglich zu halten, verwenden wir die Paketeverwaltung der Linux-Distribution Debian und stellen für notwendige Pakete, die selbst nicht in dieser Distribution vorhanden sind, diese in einem eigenen Repository zur Verfügung.
 

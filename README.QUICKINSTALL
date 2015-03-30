@@ -1,10 +1,10 @@
 README.QUICKINSTALL:
 
-Mit dem Skript quickinstall.pl kann die OpenBib-Portalsoftware ausgehend von einem ausgecheckten Verzeichnisbaum des entsprechenden CVS-Repositories in einer Standard-Konfiguration mit geringem Aufwand installiert werden.
+Mit dem Skript quickinstall.pl kann die OpenBib-Portalsoftware ausgehend von einem ausgecheckten Verzeichnisbaum des entsprechenden git-Repositories in einer Standard-Konfiguration mit geringem Aufwand installiert werden.
 
-Das Skript legt unter /opt/openbib eine Standard-Verzeichnisstruktur für OpenBib an und verlinkt dabei alle notwendigen Verzeichnisse bzw. Dateien in den ausgecheckten CVS-Baum, während andere -- typischerweise lokal anzupassende -- (Konfigurations-)Dateien einfach kopiert werden.
+Das Skript legt unter /opt/openbib eine Standard-Verzeichnisstruktur für OpenBib an und verlinkt dabei alle notwendigen Verzeichnisse bzw. Dateien in den ausgecheckten git-Baum, während andere -- typischerweise lokal anzupassende -- (Konfigurations-)Dateien einfach kopiert werden.
 
-Der große Vorteil dieser Verlinkung in den CVS-Baum besteht darin, dass man auch nach der lokalen Installation durch ein einfaches cvs update von alle Fehlerbereinigungen und Erweiterungen lokal profitieren und auf dem aktuellen Stand bleiben kann.
+Der große Vorteil dieser Verlinkung in den git-Baum besteht darin, dass man auch nach der lokalen Installation durch ein einfaches cvs update von alle Fehlerbereinigungen und Erweiterungen lokal profitieren und auf dem aktuellen Stand bleiben kann.
 
 Die generelle Vorgehensweise bei der Schnell-Installation ist im Folgenden dargestellt. Für weitere Informationen zu den einzelnen Punkten sei auf die ausführliche Beschreibung in den folgenden Kapiteln verwiesen.
 
@@ -21,7 +21,7 @@ Um dieses Repository zu nutzen muss folgende Zeile in die Datei
 eingefügt werden:
 
 # OpenBib
-deb http://kug.ub.uni-koeln.de/debian lenny main
+deb http://kug.ub.uni-koeln.de/debian wheezy main
 
 Danach wird die aktuelle Pakete-Datenbank aktualisiert:
 
@@ -42,7 +42,7 @@ Zusätzlich ist nach der Installation das Modul apreq zu aktivieren:
 
 a2enmod apreq
 
-1.2) MySQL-Server
+1.2) PostgreSQL-Server
 
 Fuer die OpenBib-Installation wird folgendes benötigt:
 
@@ -50,18 +50,22 @@ Fuer die OpenBib-Installation wird folgendes benötigt:
 
 2.) Auschecken der aktuellen OpenBib-Version aus dem Repository
 
-Die folgenden Schritte führen Sie als root aus. Legen Sie zunächst ein Verzeichnis /opt/cvs an
+Die folgenden Schritte führen Sie als root aus. Legen Sie zunächst ein Verzeichnis /opt/git an
 
-mkdir /opt/cvs
+mkdir /opt/git
 
-und wechseln Sie dann in dieses Verzeichnis. Dort wird nun die aktuelle OpenBib-Version aus dem offiziellen Repository ausgecheckt. Als abstraktes OpenBib-Verzeichnis verwenden wir openbib-current, für die aktuell verwendete OpenBib-Version.
+und wechseln Sie dann in dieses Verzeichnis. Dort wird nun die aktuelle OpenBib-Version aus dem offiziellen Repository ausgecheckt. 
 
-cvs -d:pserver:anonymous@cvs.openbib.berlios.de:/cvsroot/openbib login
-cvs -z3 -d:pserver:anonymous@cvs.openbib.berlios.de:/cvsroot/openbib co -d openbib-current openbib
+git clone https://github.com/oflimm/openbib.git openbib-master
+
+Als abstraktes OpenBib-Verzeichnis verwenden wir openbib-current, für
+die aktuell verwendete OpenBib-Version.
+
+ln -s openbib-master openbib-current
 
 3.) Anpassen von quickinstall.pl
 
-Gehen Sie nun in das ausgecheckte CVS-Verzeichniss und passen folgende lokale Pfadangaben im Skript quickinstall.pl an:
+Gehen Sie nun in das ausgecheckte git-Verzeichniss und passen folgende lokale Pfadangaben im Skript quickinstall.pl an:
 
 $documentroot
     Wo ist der Basis-Pfad fuer die Dokumente Ihres Apache-Webservers 
@@ -82,24 +86,11 @@ Rufen Sie nun das Programm quickinstall.pl auf:
 
 5.) Rechte ändern und Verzeichnisse anpassen
 
-Bisher wurden alle Anweisung als Nutzer root gemacht. Diesem gehören auch alle Dateien der OpenBib-Installation. Aus Sicherheitsgründen ist es sehr ratsam fortan tagtäglich unter einem unprivilegierten Nutzer www-data zu arbeiten. Diesem müssen dazu alle Dateien gehören:
+Bisher wurden alle Anweisung als Nutzer root gemacht. Diesem gehören auch alle Dateien der OpenBib-Installation. Aus Sicherheitsgründen ist es sehr ratsam fortan tagtäglich unter einem unprivilegierten Nutzer openbib zu arbeiten. Diesem müssen dazu alle Dateien gehören:
 
-chown -R www-data.www-data /opt/openbib
-chown -R www-data.www-data /opt/cvs
-chown -R www-data.www-data /var/log/openbib/
-
-An dieser Stelle sollte das Verzeichnis openbib-current nun z.B. in openbib-HEAD umbenannt werden und ein symbolischer Link openbib-current angelegt werden, der darauf zeigt.
-
-cd /opt/cvs
-mv openbib-current openbib-HEAD
-ln -s openbib-HEAD openbib-current
-
-Auf diese Weise können Sie später ganz einfach verschiedene OpenBib-Version auschecken und diejenige, die Sie verwenden wollen, durch Umlegen des Links openbib-current aktivieren. Da sieht dann z.B. so aus:
-
-drwxr-xr-x  5 www-data www-data 4096 2008-03-30 14:39 openbib-2_0-stable-branch 
-drwxr-xr-x 10 www-data www-data 4096 2008-07-07 13:23 openbib-2_1-stable-branch
-lrwxrwxrwx  1 root     root       12 2008-05-16 14:11 openbib-current -> openbib-HEAD
-drwxr-xr-x 10 www-data www-data 4096 2008-09-19 15:14 openbib-HEAD
+chown -R openbib.www-data /opt/openbib
+chown -R openbib.www-data /opt/git
+chown -R openbib.www-data /var/log/openbib/
 
 6.) Konfiguration von portal.yml
 
@@ -107,7 +98,7 @@ Bitte passen Sie nun die Datei
 
 /opt/openbib/conf/portal.yml
 
-entsprechend Ihren lokalen Gegebenheiten an. Insbesondere sind hier der lokale Rechnername sowie die Verbindungsparameter der MySQL-Datenbanken abzuändern.
+entsprechend Ihren lokalen Gegebenheiten an. Insbesondere sind hier der lokale Rechnername sowie die Verbindungsparameter der PostgreSQL-Datenbanken abzuändern.
 
 7.) Datenbanken erzeugen
 
@@ -123,9 +114,6 @@ Danach führen Sie bitte folgende Programme zur Erzeugung der grundlegenden Date
 
 Danach sollten Sie eine funktionsfähige, aber rudimentäre OpenBib-Installation auf Ihrem Rechner vorfinden, die sie unter folgendem URL aufrufen koennen
 
-http://<lokaler.rechner>/portal/opac
+http://<lokaler.rechner>/portal/openbib/home
 
-bzw.
-
-http://<lokaler.rechner>/portal/admin
 

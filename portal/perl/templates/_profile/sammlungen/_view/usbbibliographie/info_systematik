@@ -159,6 +159,8 @@
       <li><b>02.04.05</b> <a [% IF NOT have_classification.${"02.04.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.05*">Katalogsaal bzw. Informationszentrum</a></li>
       <li><b>02.04.06</b> <a [% IF NOT have_classification.${"02.04.06"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.06*">Freihandbereiche</a></li>
       <li><b>02.04.07</b> <a [% IF NOT have_classification.${"02.04.07"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.07*">Selbstausleihbereich</a></li>
+      <li><b>02.04.08</b> <a [% IF NOT have_classification.${"02.04.08"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.08*">Lehrbuchsammlung</a></li>
+      <li><b>02.04.09</b> <a [% IF NOT have_classification.${"02.04.09"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.04.09*">Sortierzentrale</a></li>
     </ul>
   </li>
   <li><b>02.05</b> <a [% IF NOT have_classification.${"02.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.05*">Neue Medien-Dezernat</a>

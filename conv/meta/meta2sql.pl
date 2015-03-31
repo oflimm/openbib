@@ -822,6 +822,8 @@ while (my $jsonline=<IN>){
     $count++;
 }
 
+unlink $stammdateien_ref->{title}{infile};
+
 $logger->info("### $database: $count Titelsaetze bearbeitet");
 $logger->info("### $database: $importer->{stats_enriched_language} Titelsaetze mit Sprachcode angereichert");
 

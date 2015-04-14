@@ -192,6 +192,12 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['vubpda'] 
 
 ##############################
 
+$logger->info("### TMPEBOOKS");
+
+autoconvert({ updatemaster => $updatemaster, databases => ['tmpebooks'] });
+
+##############################
+
 $logger->info("### Offene Bestellungen");
 
 autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });

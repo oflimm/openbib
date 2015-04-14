@@ -185,6 +185,12 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'
 
 ##############################
 
+$logger->info("### TMPEBOOKS");
+
+autoconvert({ updatemaster => $updatemaster, databases => ['tmpebooks'] });
+
+##############################
+
 $logger->info("### VUBPDA");
 
 autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['vubpda'] });

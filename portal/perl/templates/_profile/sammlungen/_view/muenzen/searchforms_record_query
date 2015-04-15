@@ -1,7 +1,9 @@
 
 <script type="text/javascript" src="/js/keyboard-greek.js"></script>
 <script type="text/javascript" src="/js/keyboard-muenzen.js"></script>
+[% searchform_choices = statistics.get_result({ id => 'muenzen_searchform_choices', type => 1}) %]
 
+[%# USE dumper;dumper.dump(searchform_choices) %]
 [%- searchfield = config.get('searchfield') -%]
 [% IF user.is_authenticated %]
 [% autocompletion_type = user.get_autocompletion %]
@@ -65,6 +67,22 @@ $(document).ready(function(){
 </script>
 [%   END %]
 [% END %]
+
+<script type="text/javascript">
+[% regent_string = searchform_choices.regent.join('","') ;
+   regent_string = "\"${regent_string}\"";
+%]
+   var available_regents = [[% regent_string %]];
+  
+   $(function() {
+      $('#autocomplete_person').autocomplete({
+         source : available_regents, minLength : 0
+      });
+      $('#autocomplete_person').focus(function() {
+         $('#autocomplete_person').autocomplete("search", "");
+      });
+   });
+</script>
 
 <input type="hidden" name="db" value="[% config.get_dbs_of_view(view).first %]" />
 <input type="hidden" name="novrp" value="1" />

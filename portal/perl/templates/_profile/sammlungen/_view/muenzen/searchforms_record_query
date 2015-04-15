@@ -68,20 +68,91 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
+<style>
+	.ui-autocomplete {
+		max-height: 100px;
+		overflow-y: auto;
+	}
+        ul.ui-autocomplete li.ui-menu-item{text-align:left;}
+
+	/* IE 6 doesn't support max-height
+	 * we use height instead, but this forces the menu to always be this tall
+	 */
+	* html .ui-autocomplete {
+		height: 100px;
+	}
+</style>
+
 <script type="text/javascript">
-[% regent_string = searchform_choices.regent.join('","') ;
+[% regent_string = searchform_choices.regent.join('", "') ;
    regent_string = "\"${regent_string}\"";
+
+   region_string = searchform_choices.region.join('", "') ;
+   region_string = "\"${region_string}\"";
+
+   city_string = searchform_choices.stadt.join('", "') ;
+   city_string = "\"${city_string}\"";
+
+   nominal_string = searchform_choices.nominal.join('", "') ;
+   nominal_string = "\"${nominal_string}\"";
+
+   area_string = searchform_choices.area.join('", "') ;
+   area_string = "\"${area_string}\"";
+
 %]
-   var available_regents = [[% regent_string %]];
   
-   $(function() {
-      $('#autocomplete_person').autocomplete({
-         source : available_regents, minLength : 0
+$(document).ready(function(){
+      var available_regents = [ [% regent_string %] ];
+
+      $('#autocomplete_per').autocomplete({
+         source : available_regents,
+         minLength : 0
       });
-      $('#autocomplete_person').focus(function() {
-         $('#autocomplete_person').autocomplete("search", "");
+      $('#autocomplete_per').focus(function() {
+         $('#autocomplete_per').autocomplete("search", "");
       });
-   });
+
+      var available_regions = [ [% region_string %] ];
+
+      $('#autocomplete_subj').autocomplete({
+         source : available_regions,
+         minLength : 0
+      });
+      $('#autocomplete_subj').focus(function() {
+         $('#autocomplete_subj').autocomplete("search", "");
+      });
+
+      var available_cities = [ [% city_string %] ];
+
+      $('#autocomplete_cln').autocomplete({
+         source : available_cities,
+         minLength : 0
+      });
+      $('#autocomplete_cln').focus(function() {
+         $('#autocomplete_cln').autocomplete("search", "");
+      });
+
+      var available_nominals = [ [% nominal_string %] ];
+
+      $('#autocomplete_t0338').autocomplete({
+         source : available_nominals,
+         minLength : 0
+      });
+      $('#autocomplete_t0338').focus(function() {
+         $('#autocomplete_t0338').autocomplete("search", "");
+      });
+
+      var available_areas = [ [% area_string %] ];
+
+      $('#autocomplete_t0410').autocomplete({
+         source : available_areas,
+         minLength : 0
+      });
+      $('#autocomplete_t0410').focus(function() {
+         $('#autocomplete_t0410').autocomplete("search", "");
+      });
+
+});
 </script>
 
 <input type="hidden" name="db" value="[% config.get_dbs_of_view(view).first %]" />
@@ -125,7 +196,7 @@ $(document).ready(function(){
  -%]
 <div class="ym-fbox-text">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0100-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
 </div>
 [% END %]
 
@@ -144,8 +215,8 @@ $(document).ready(function(){
     this_searchfield = 'classification';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("T0700-muenzen") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0700-muenzen") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 [% END %]
 
@@ -197,16 +268,16 @@ $(document).ready(function(){
     this_searchfield = 't0338';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("T0338-muenzen") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0338-muenzen") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = searchfield.t0410.prefix;
     this_searchfield = 't0410';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("T0410-muenzen") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0410-muenzen") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = searchfield.t0508.prefix;

@@ -101,6 +101,25 @@ while (my $area = $areas->next()){
     push @{$result_store->{area}}, $area_content;
 }       
 
+# Material
+
+my $materials = $catalog->{schema}->resultset('TitleField')->search(
+    {
+        'field' => 800
+    },
+    {
+        group_by => ['content'],
+        order_by => ['content ASC'],
+        select => ['content'],
+    }
+);
+
+while (my $material = $materials->next()){
+    my $material_content = $material->content;
+    $material_content =~s/"/\%22/g;
+    push @{$result_store->{material}}, $material_content;
+}       
+
 my $statistics = new OpenBib::Statistics;
 
 $statistics->cache_data(

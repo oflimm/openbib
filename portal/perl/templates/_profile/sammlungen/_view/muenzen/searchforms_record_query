@@ -99,6 +99,9 @@ $(document).ready(function(){
    area_string = searchform_choices.area.join('", "') ;
    area_string = "\"${area_string}\"";
 
+   material_string = searchform_choices.material.join('", "') ;
+   material_string = "\"${material_string}\"";
+
 %]
   
 $(document).ready(function(){
@@ -150,6 +153,17 @@ $(document).ready(function(){
       });
       $('#autocomplete_t0410').focus(function() {
          $('#autocomplete_t0410').autocomplete("search", "");
+      });
+
+
+      var available_materials = [ [% material_string %] ];
+
+      $('#autocomplete_ftyp').autocomplete({
+         source : available_materials,
+         minLength : 0
+      });
+      $('#autocomplete_ftyp').focus(function() {
+         $('#autocomplete_ftyp').autocomplete("search", "");
       });
 
 });
@@ -220,23 +234,13 @@ $(document).ready(function(){
 </div>
 [% END %]
 
-[% IF available_searchfields.mediatype.active %]
 [%- cgiparam = searchfield.mediatypestring.prefix;
     this_searchfield = 'mediatypestring';
  -%]
-<div class="ym-fbox-select">
-<label for="[% cgiparam %]">[% msg.maketext("T0800-muenzen") %]</label>
-<select id="[% cgiparam %]" name="[% cgiparam %]">
-<option value="" selected="selected">Keines ausgewählt</option>
-<option value="AE">AE</option>
-<option value="Argentum">Argentum</option>
-<option value="Billon">Billon</option>
-<option value="Bronze">Bronze</option>
-<option value="Orichalcum">Orichalcum</option>
-<option value="Silber">Silber</option>
-</select>
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0800-muenzen") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]">
 </div>
-[% END %]
 
 [% IF available_searchfields.year.active %]
 [%- cgiparam      = searchfield.year.prefix;

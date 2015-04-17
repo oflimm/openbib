@@ -119,6 +119,8 @@ my $blacklist_ref = {
     'inst420' => 1,
     'inst132' => 1,
     'inst132master' => 1,
+    'inst418master' => 1,
+    'inst418' => 1,
     'inst420master' => 1,
     'inst421' => 1,
     'inst422' => 1,
@@ -249,10 +251,7 @@ sub threadA {
 
     $logger->info("### Standard-Institutskataloge");
 
-    #autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
-
-    # Interimsloesung: Kataloge von aperol werden vorher im Bulk geholt
-    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, autoconv => 1});
+    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
     
     return $thread_description;
 }
@@ -294,7 +293,7 @@ sub threadC {
 
     $logger->info("### Master: inst132master");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['inst132master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst132master'] });
 
     ##############################
     
@@ -306,7 +305,7 @@ sub threadC {
 
     $logger->info("### Master: MEKUTH-Masterkataloge");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['inst429master','inst448master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst429master','inst448master'] });
 
     ##############################
     
@@ -318,7 +317,7 @@ sub threadC {
 
     $logger->info("### Master: VWL-Masterkataloge");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['inst103master','inst105master','inst128master','inst157master','inst166master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst103master','inst105master','inst128master','inst157master','inst166master'] });
 
     ##############################
 
@@ -330,7 +329,7 @@ sub threadC {
 
     $logger->info("### Master: inst301");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['inst301'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst301'] });
     
     ##############################
     
@@ -342,7 +341,7 @@ sub threadC {
 
     $logger->info("### Master: inst420master");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['inst420master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst420master'] });
 
     ##############################
     
@@ -350,6 +349,30 @@ sub threadC {
     
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst420','inst421','inst422','inst423'] });
     
+    ##############################
+
+    $logger->info("### Master: inst427master");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst427master'] });
+
+    ##############################
+    
+    $logger->info("### Aufgesplittete Kataloge inst427master");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst427'] });
+
+    ##############################
+
+    $logger->info("### Master: inst418master");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst418master'] });
+
+    ##############################
+    
+    $logger->info("### Aufgesplittete Kataloge inst418master");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst418'] });
+
     ##############################
 
     $logger->info("### Master: inst323, inst137");

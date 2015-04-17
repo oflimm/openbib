@@ -14,6 +14,10 @@
 <h3><img style="vertical-align:bottom" src="[% config.get('news_img') %]" alt="News" />&nbsp[% msg.maketext("Aktuelles") %]</h3>
 
 <ul class="news">
+<li><b>20.4.2015</b>: Wegen Wartungsarbeiten stehen der KUG und die
+Recherche im USB-Portal in der Zeit zwischen 7.30 Uhr und 8.30 Uhr für
+etwas 5-10 Minuten nicht zur Verfügung.
+</li>
 <li><b>13.11.2014</b>: Andere Ausgaben eines Titels
 - Die Bestimmung anderer Ausgaben (Auflage/Sprache/online) eines
 Titels wurde im KUG komplett überarbeitet. Weitergehende Informationen in diesem

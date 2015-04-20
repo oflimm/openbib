@@ -986,6 +986,10 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
+      'id':           # Id
+        index:
+          'id': 1
+          'freesearch': 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -3950,6 +3954,10 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
+      'id':           # Id
+        index:
+          'id': 1
+          'freesearch': 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1

@@ -928,6 +928,10 @@ sub process {
     
     # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
     {
+        if ($logger->is_debug){
+            $logger->info("### $database: Configuration ".YAML::Dump($inverted_ref));
+        }
+        
         foreach my $field (keys %{$inverted_ref}){
             # a) Indexierung in der Suchmaschine
             if (exists $inverted_ref->{$field}->{index}){
@@ -942,6 +946,9 @@ sub process {
                 
                 foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
                     my $weight = $inverted_ref->{$field}->{index}{$searchfield};
+
+                    $logger->debug("### $database: Indexing field $field to searchfield $searchfield with weight $weight for id $id");
+                                                            
                     if    ($field eq "tag"){
                         if (exists $self->{storage}{listitemdata_tags}{$id}) {
                             
@@ -962,6 +969,10 @@ sub process {
                             
                             $logger->info("### $database: Adding Litlists to ID $id");
                         }
+                    }
+                    elsif ($field eq "id"){
+                        $index_doc->add_index($searchfield,$weight, ['id',$id]);
+                        $logger->debug("### $database: Adding searchable ID $id");
                     }
                     else {
                         next unless (defined $fields_ref->{$field});

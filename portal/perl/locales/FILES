@@ -1244,7 +1244,10 @@
 ../templates/_profile/sammlungen/_view/einbaende/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/einbaende/titlist_item_html_short
 ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_actions
+../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_as_text
 ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short
+../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_simple
+../templates/_profile/sammlungen/_view/gentzdigital/cartitems_mail_message
 ../templates/_profile/sammlungen/_view/gentzdigital/clouds_0410
 ../templates/_profile/sammlungen/_view/gentzdigital/clouds_0410_html
 ../templates/_profile/sammlungen/_view/gentzdigital/clouds_corporatebody_html
@@ -1273,6 +1276,7 @@
 ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation
 ../templates/_profile/sammlungen/_view/gentzdigital/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/gentzdigital/titles_navigation
+../templates/_profile/sammlungen/_view/gentzdigital/titles_popular_by_database_html
 ../templates/_profile/sammlungen/_view/gentzdigital/titles_record_html_images
 ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_corporatebody_html
 ../templates/_profile/sammlungen/_view/inst404abklatsch/clouds_databases_record_html
@@ -1302,6 +1306,7 @@
 ../templates/_profile/sammlungen/_view/kapsel/home_html
 ../templates/_profile/sammlungen/_view/kapsel/info_erster_weltkrieg
 ../templates/_profile/sammlungen/_view/kapsel/info_flora_botanik
+../templates/_profile/sammlungen/_view/kapsel/info_preussen
 ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html
 ../templates/_profile/sammlungen/_view/kapsel/search_facet
 ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query
@@ -1367,8 +1372,10 @@
 ../templates/_profile/sammlungen/_view/muenzen/info_project
 ../templates/_profile/sammlungen/_view/muenzen/mainnavigation
 ../templates/_profile/sammlungen/_view/muenzen/search_facet
+../templates/_profile/sammlungen/_view/muenzen/searchforms_record_advanced
 ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query
 ../templates/_profile/sammlungen/_view/muenzen/search_history
+../templates/_profile/sammlungen/_view/muenzen/search_more_tips
 ../templates/_profile/sammlungen/_view/muenzen/search_title_combined_html
 ../templates/_profile/sammlungen/_view/muenzen/search_title_field
 ../templates/_profile/sammlungen/_view/muenzen/std_footer_html

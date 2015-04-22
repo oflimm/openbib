@@ -4233,6 +4233,7 @@ convtab:
           't0600': 1
       '0619':
         index:
+          't0619': 1
           'freesearch': 1
       '0634':         # ISBN sekundaerform
         index:

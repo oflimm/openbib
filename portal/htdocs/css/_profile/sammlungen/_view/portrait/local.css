@@ -162,8 +162,20 @@
   }
 
   .ob-titleimage {
-
   }
 
+ 
+  .ob-title_record table {
+    table-layout:fixed;
+    width:100%;
+  }
+
+  .ob-title_record table td {
+    word-wrap: break-word;
+  }
+  
+  .ob-title_record table td.ob-field {
+    width:25%;
+  }
 
 }

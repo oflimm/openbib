@@ -15,19 +15,19 @@
 
 [%- IF field == '0200' ;
        field_description = 'Ort der Inschrift';
-       searchfield = 't0200' ;
+       searchfield = 'ft0200' ;
     ELSIF field == '0425' ;
        field_description = 'Datierung der Inschrift';
-       searchfield = 't0425' ;
+       searchfield = 'ft0425' ;
     ELSIF field == '0410' ;
        field_description = 'Aufbewahrungsort der Inschrift';
-       searchfield = 't0410' ;
+       searchfield = 'ft0410' ;
     ELSIF field == '0335' ;
        field_description =  'Edition/SEG-Nummer';
-       searchfield = 't0335';
+       searchfield = 'ft0335';
     ELSIF field == '0710' ;
        field_description = 'Kategorie';
-       searchfield = 't0710' ;
+       searchfield = 'ft0710' ;
     END ; -%]
 
 <body>

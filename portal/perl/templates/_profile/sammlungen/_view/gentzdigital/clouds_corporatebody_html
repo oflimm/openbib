@@ -70,7 +70,7 @@
 <h1>[% msg.maketext("T0200-gentzdigital") %]</h1>
 
 <table width="100%">
-<tr><th>[% msg.maketext("Wolke der häufigsten Begriffe") %]</th></tr>
+<tr><th>Wolke der häufigsten Briefempf&auml;nger</th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->
 [%

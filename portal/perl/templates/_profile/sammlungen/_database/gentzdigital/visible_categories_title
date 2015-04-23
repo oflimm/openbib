@@ -15,13 +15,13 @@
 [%- categories = [
                 'T0100', # msg.maketext("T0100-gentzdigital") Briefaussteller
                 'T0200', # msg.maketext("T0200-gentzdigital") Briefempfaenger
-                'T0335', # msg.maketext("T0335-gentzdigital") Incipit  
-                'T0433', # msg.maketext("T0433-gentzdigital") Format/Umfang
-                'T0424', # msg.maketext("T0424-gentzdigital") Datum
                 'T0410', # msg.maketext("T0410-gentzdigital") Aufstellungsort
-                'T0800', # msg.maketext("T0800-gentzdigital") Brieftyp
-                'T0594', # msg.maketext("T0594-gentzdigital") Druckorte
+                'T0424', # msg.maketext("T0424-gentzdigital") Datum
                 'T0412', # msg.maketext("T0412-gentzdigital") Handschriftl. Ueberlieferung
+                'T0433', # msg.maketext("T0433-gentzdigital") Format/Umfang
+                'T0594', # msg.maketext("T0594-gentzdigital") Druckorte
+                'T0335', # msg.maketext("T0335-gentzdigital") Incipit  
+                'T0800', # msg.maketext("T0800-gentzdigital") Brieftyp
                 'T6053', # msg.maketext("T6053") Text
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke

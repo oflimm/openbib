@@ -25,15 +25,16 @@
           "yearstring" = msg.maketext("Datierung")
           "tagstring" = msg.maketext("Tag")
           "litliststring" = msg.maketext("Literaturliste")
-          "t0338" = msg.maketext("Nominal")
-          "t0410" = msg.maketext("Bereich")
-          "t0341" = "Legende Vorderseite: nicht aufgelöst"
-          "t0342" = "Legende Vorderseite: aufgelöst, nur Text"
-          "t0343" = "Legende Vorderseite: aufgelöst, Editionstext"
-          "t0351" = "Legende Rückseite: nicht aufgelöst"
-          "t0352" = "Legende Rückseite: aufgelöst, nur Text"
-          "t0353" = "Legende Rückseite: aufgelöst, Editionstext"
-          "t0700" = msg.maketext("Stadt")
-          "t0710" = msg.maketext("Region")
+          "ft0338" = msg.maketext("Nominal")
+          "ft0410" = msg.maketext("Bereich")
+          "ft0341" = "Legende Vorderseite: nicht aufgelöst"
+          "ft0342" = "Legende Vorderseite: aufgelöst, nur Text"
+          "ft0343" = "Legende Vorderseite: aufgelöst, Editionstext"
+          "ft0351" = "Legende Rückseite: nicht aufgelöst"
+          "ft0352" = "Legende Rückseite: aufgelöst, nur Text"
+          "ft0353" = "Legende Rückseite: aufgelöst, Editionstext"
+          "ft0619" = msg.maketext("Regierungsjahr (Alexandrinische Münzen)")
+          "ft0700" = msg.maketext("Stadt")
+          "ft0710" = msg.maketext("Region")
 };
 %]

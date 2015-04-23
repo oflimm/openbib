@@ -74,7 +74,7 @@ aufgef&uuml;hrt.") %]
 
 <ul data-role="listview">
 [% FOREACH item IN browselist %]
-<li><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=richter;t0720=[% item.replace('&amp;','%26') %]">[% item %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=richter;ft0720=[% item.replace('&amp;','%26') %]">[% item %]</a></li>
 [% END %]
 </ul>
 

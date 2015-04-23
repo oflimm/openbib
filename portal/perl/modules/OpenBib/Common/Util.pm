@@ -53,8 +53,8 @@ my %char_replacements = (
     # $logger->debug("Checkpoint 3: $content");
 
     # Alte/Neue Schriftformen
-    "ph"  => "f",
-    "Ph"  => "F",
+#    "ph"  => "f",
+#    "Ph"  => "F",
 
     # Buchstabenersetzungen
     "u\x{0308}" => "ue",
@@ -838,6 +838,7 @@ my %lang_replacements = (
     'esl/spa' => 'spa',
     'et' => 'est',
     'ee' => 'ewe',
+    'Griechisch' => 'gre',
     'el' => 'gre',
     'ell' => 'gre',
     'eu' => 'baq',
@@ -902,6 +903,7 @@ my %lang_replacements = (
     'kj' => 'kua',
     'ku' => 'kur',
     'lo' => 'lao',
+    'Lateinisch' => 'lat',
     'la' => 'lat',
     'lv' => 'lav',
     'li' => 'lim',
@@ -1182,7 +1184,7 @@ sub normalize {
         }
         else {
             # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
-            $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/:* ']//g;
+            $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/:* '_]//g;
             
             # Verbundene Terme splitten
             $content=~s/(\w)\"(\w)/$1 $2/g;

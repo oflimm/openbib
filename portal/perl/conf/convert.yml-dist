@@ -122,6 +122,59 @@ convtab:
      #'4717': 1        # Markierung Fachbibliothek Versicherungswissenschaft
      #'4720': 1        # Testdaten Inhaltsverzeichnis-Scans
      #'4725': 1        # Temporaeres Schlagwort
+
+# Parametrisierung der Sortierung
+    sorting_order:
+      - 'P0800'
+      - 'C0800'
+      - 'S0800'
+      - 'PC0001'
+      - 'T0331'
+      - 'T5100'
+      - 'T0425' 
+      - 'T0424' # 424 hiner 425, d.h. 424 wichtiger, falls besetzt und gleiches Sortierungsfeld
+      - 'T0412'
+      - 'X0014'
+      - 'popularity'
+    sorting:
+      'P0800':
+        'sortfield': 'authority' # Normdaten-Ansetzungsform Person
+        'type': 'stringfield'
+      'C0800':
+        'sortfield': 'authority' # Normdaten-Ansetzungsform Koerperschaft
+        'type': 'stringfield'
+      'S0800':
+        'sortfield': 'authority' # Normdaten-Ansetzungsform Schlagwort
+        'type': 'stringfield'
+      'PC0001':
+        'sortfield': 'person'    # Verfasser/Koepeschaft
+        'type': 'stringfield'
+      'T0331':                   # Titel
+        'sortfield': 'title'
+        'type': 'stringfield'
+        'filter':
+           - 'filter_strip_nonsortable_word'
+      'T5100':
+        'sortfield': 'order'     # Zaehlung
+        'type': 'integerfield'
+      'T0425':
+        'sortfield': 'year'      # Jahr
+        'type': 'integerfield'       
+      'T0424':
+        'sortfield': 'year'      # Jahr
+        'type': 'integerfield'
+        'filter':
+           - 'filter_force_signed_year'
+      'T0412':
+        'sortfield': 'publisher' # Verlag
+        'type': 'stringfield'
+      'X0014':
+        'sortfield': 'mark'      # Signatur
+        'type': 'stringfield'
+      'popularity':
+        'sortfield': 'popularity'# Popularitaet
+        'type': 'integervalue'
+
 # Kategorien, die in den einzelnen Normdaten indexiert werden
 # Unter index werden die Recherchefelder aufgefuehrt, in dem der Inhalt der
 # Katagorie gesammelt wird, der Hashwert des Recherchefeldes
@@ -392,7 +445,7 @@ convtab:
           'freesearch': 50
       '0335':         # Zusatz zum HST
         index:
-          't0335': 1
+          'ft0335': 1
           'title': 1
           'titlestring': 1
           'freesearch': 1
@@ -423,7 +476,7 @@ convtab:
           'freesearch': 1
       '0410':         # Auflage
         index:
-          't0410': 1
+          'ft0410': 1
       '0412':         # Verlag
         index:
           'publisher': 1
@@ -715,6 +768,24 @@ convtab:
           'freesearch': 1
         facet:
           'mediatype': 1
+      '4710':         # Migriertes Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+      '4726':         # EUROP KatNr.
+        index:
+          'freesearch': 20
+      '4727':         # EUROP Laender Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+      '4728':         # EUROP Formales Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
       '5050':         # Bibkey
         index:
           'bkey': 1
@@ -915,6 +986,10 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
+      'id':           # Id
+        index:
+          'id': 1
+          'freesearch': 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
@@ -1320,6 +1395,24 @@ convtab:
           'freesearch': 1
         facet:
           'mediatype': 1
+      '4710':         # Migriertes Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+      '4726':         # EUROP KatNr.
+        index:
+          'freesearch': 20
+      '4727':         # EUROP Laender Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+      '4728':         # EUROP Formales Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
       '5050':         # Bibkey
         index:
           'bkey': 1
@@ -1364,7 +1457,7 @@ convtab:
           'freesearch': 1
       '0100':
         index:
-          't0100': 1 
+          'ft0100': 1 
 #          'freesearch': 1
 #	  'person': 1
 #          'personstring': 1
@@ -1443,7 +1536,7 @@ convtab:
           'freesearch': 50
       '0335':         # Zusatz zum HST
         index:
-          't0335': 1
+          'ft0335': 1
           'title': 1
           'titlestring': 1
           'freesearch': 1
@@ -1474,7 +1567,7 @@ convtab:
           'freesearch': 1
       '0410':         # Auflage
         index:
-          't0410': 1
+          'ft0410': 1
       '0412':         # Verlag
         index:
           'publisher': 1
@@ -1554,7 +1647,7 @@ convtab:
           'classification': 1
       '0710':
         index:
-          't0710': 1
+          'ft0710': 1
 #          'freesearch': 1
 #          'subject': 1
 #          'subjectstring': 1
@@ -1770,7 +1863,7 @@ convtab:
     inverted_authority_holding:
       '0016':         # Standort
         index:
-          't0016': 1
+          'ft0016': 1
       '0014':         # Signatur
         index:
           'mark': 1
@@ -1919,7 +2012,7 @@ convtab:
       '0720':         # Provenienz (Richter-Bibliothek)
         index:
            'freesearch': 1
-           't0720': 1
+           'ft0720': 1
       '0750':         # Abstract
         index:
           'content': 1
@@ -2048,13 +2141,13 @@ convtab:
           'language': 1
       '0100':
         index:
-          't0100': 1
+          'ft0100': 1
           'personstring': 1
         facet:
           'person': 1
       '0101':
         index:
-          't0101': 1
+          'ft0101': 1
           'personstring': 1
         facet:
           'person': 1
@@ -2161,7 +2254,7 @@ convtab:
       '0720':         # Provenienz (Richter-Bibliothek)
         index:
            'freesearch': 1
-           't0720': 1
+           'ft0720': 1
       '0750':         # Abstract
         index:
           'content': 1
@@ -2293,19 +2386,19 @@ convtab:
           'freesearch': 1
       '0100':
         index:
-          't0100': 1
+          'ft0100': 1
           'personstring': 1
         facet:
           'person': 1
       '0101':
         index:
-          't0101': 1
+          'ft0101': 1
           'personstring': 1
         facet:
           'person': 1
       '0102':
         index:
-          't0102': 1
+          'ft0102': 1
           'personstring': 1
         facet:
           'person': 1
@@ -2316,12 +2409,12 @@ convtab:
           'person': 1
       '0200':
         index:
-          't0200': 1
+          'ft0200': 1
         facet:
           'corporatebody': 1
       '0201':
         index:
-          't0201': 1
+          'ft0201': 1
         facet:
           'corporatebody': 1
       '0103':
@@ -2329,7 +2422,7 @@ convtab:
           'person': 1
       '0304':         # Hier: Werkzeug
         index:
-          't0304': 1
+          'ft0304': 1
           'source': 1
           'freesearch': 1
       '0310':         # AST
@@ -2364,7 +2457,7 @@ convtab:
           'freesearch': 1
       '0413':         # Drucker
         index:
-          't0413': 1
+          'ft0413': 1
           'person': 1
       '0424':
         index:
@@ -2403,12 +2496,12 @@ convtab:
           'freesearch': 1
       '0700':
         index:
-          't0700': 1      
+          'ft0700': 1      
         facet:
           'classification': 1
       '0710':
         index:
-          't0710': 1      
+          'ft0710': 1      
         facet:
           'subject': 1
       '0750':         # Abstract
@@ -2559,7 +2652,7 @@ convtab:
           'person': 1
       '0200':
         index:
-          't0200': 1
+          'ft0200': 1
         facet:
           'corporatebody': 1
       '0201':
@@ -2581,7 +2674,7 @@ convtab:
           'freesearch': 50
       '0335':         # Edition/SEG-Nummer
         index:
-          't0335': 1
+          'ft0335': 1
           'freesearch': 1
           'content': 1
       '0341':         # PSTVorlage
@@ -2602,10 +2695,10 @@ convtab:
       '0410':         # Aufbewahrungsort der Inschrift
         index:
           'freesearch': 1
-          't0410': 1
+          'ft0410': 1
       '0413':         # Drucker
         index:
-          't0413': 1
+          'ft0413': 1
           'person': 1
       '0424':
         index:
@@ -2614,7 +2707,7 @@ convtab:
           'freesearch': 1
       '0425':         # Datierung der Inschrift
         index:
-          't0425': 1
+          'ft0425': 1
           'year': 1
           'yearstring': 1
           'freesearch': 1
@@ -2645,12 +2738,12 @@ convtab:
           'freesearch': 1
       '0700':
         index:
-          't0700': 1      
+          'ft0700': 1      
         facet:
           'classification': 1
       '0710':         # Kategorie
         index:
-          't0710': 1      
+          'ft0710': 1      
         facet:
           'subject': 1
       '0750':         # Abstract
@@ -2814,7 +2907,7 @@ convtab:
       '0100':
         index:
           'personstring': 1
-          't0100': 1
+          'ft0100': 1
         facet:
           'person': 1
       '0101':
@@ -2834,7 +2927,7 @@ convtab:
           'person': 1
       '0200':
         index:
-          't0200': 1
+          'ft0200': 1
         facet:
           'corporatebody': 1
       '0201':
@@ -2880,7 +2973,7 @@ convtab:
           'freesearch': 1
       '0412':         # Hier: Verlag recherchierbar via source
         index:
-          't0412': 1
+          'ft0412': 1
           'source': 1
       '0413':         # Drucker
         index:
@@ -2892,7 +2985,7 @@ convtab:
           'freesearch': 1
       '0425':
         index:
-          't0425': 1
+          'ft0425': 1
           'year': 1
           'yearstring': 1
           'freesearch': 1
@@ -2926,7 +3019,7 @@ convtab:
           'classification': 1
       '0710':
         index:
-          't0710': 1
+          'ft0710': 1
         facet:
           'subject': 1
       '0750':         # Abstract
@@ -3040,7 +3133,7 @@ convtab:
           'person': 1
       '0101':
         index:
-          't0100': 1
+          'ft0100': 1
         facet:
           'person': 1
       '0102':
@@ -3051,7 +3144,7 @@ convtab:
           'person': 1
       '0200':
         index:
-          't0200': 1
+          'ft0200': 1
         facet:
           'corporatebody': 1
       '0201':
@@ -3108,7 +3201,7 @@ convtab:
           'freesearch': 1
       '0425':
         index:
-          't0425': 1
+          'ft0425': 1
           'year': 1
           'yearstring': 1
           'freesearch': 1
@@ -3139,12 +3232,12 @@ convtab:
           'freesearch': 1
       '0700':
         index:
-          't0700': 1
+          'ft0700': 1
         facet:
           'classification': 1
       '0710':
         index:
-          't0710': 1
+          'ft0710': 1
         facet:
           'subject': 1
       '0750':         # Abstract
@@ -3308,12 +3401,12 @@ convtab:
         index:
           'freesearch': 1
           'content': 1
-          't0410': 1
+          'ft0410': 1
       '0411':         # Geburtsorte
         index:
           'freesearch': 1
           'content': 1
-          't0411': 1
+          'ft0411': 1
       '0424': # Sterbedatum
         index:
           'year': 1
@@ -3321,7 +3414,7 @@ convtab:
           'freesearch': 1
       '0425':         # Sterbejahre
         index:
-          't0425': 1
+          'ft0425': 1
           'year': 1
           'yearstring': 1
           'freesearch': 1
@@ -3329,7 +3422,7 @@ convtab:
           'year': 1
       '0426':         # Geburtsjahre
         index:
-          't0426': 1
+          'ft0426': 1
           'year': 1
           'yearstring': 1
           'freesearch': 1
@@ -3397,14 +3490,14 @@ convtab:
           'freesearch': 1
       '0100':
         index:
-          't0100': 1
+          'ft0100': 1
 #	  'person': 1
 #          'personstring': 1
         facet:
           'person': 1
       '0101':
         index:
-          't0101': 1
+          'ft0101': 1
 #        index:
 #          'freesearch': 1
 #	  'person': 1
@@ -3413,7 +3506,7 @@ convtab:
           'person': 1
       '0102':
         index:
-          't0102': 1
+          'ft0102': 1
 #        index:
 #          'freesearch': 1
 #	  'person': 1
@@ -3422,7 +3515,7 @@ convtab:
           'person': 1
       '0103':
         index:
-          't0103': 1
+          'ft0103': 1
 #        index:
 #          'freesearch': 1
 #	  'person': 1
@@ -3481,7 +3574,7 @@ convtab:
           'freesearch': 50
       '0335':         # Zusatz zum HST
         index:
-          't0335': 1
+          'ft0335': 1
           'title': 1
           'titlestring': 1
           'freesearch': 1
@@ -3513,7 +3606,7 @@ convtab:
       '0410':         # Auflage
         index:
           'place': 1
-          't0410': 1
+          'ft0410': 1
       '0412':         # Verlag
         index:
           'publisher': 1
@@ -3535,13 +3628,13 @@ convtab:
           'year': 1
       '0426':
         index:
-          't0426': 1
+          'ft0426': 1
       '0427':
         index:
-          't0427': 1
+          'ft0427': 1
       '0428':
         index:
-          't0428': 1
+          'ft0428': 1
       '0451':
         index:
           'source': 1
@@ -3820,6 +3913,32 @@ convtab:
           'bkey': 1
           'freesearch': 1
   muenzen:
+    sorting_order:
+      - 'P0100' # Herrscher/Regent
+      - 'T0410' # Polit. Bereich
+      - 'T0426' # Datierung von
+      - 'C0700' # Stadt
+      - 'S0710' # Region
+      - 'id'
+    sorting:
+      'P0100':
+        'sortfield': 'person'    
+        'type': 'stringfield'
+      'T0410':
+        'sortfield': 'custom1'
+        'type': 'stringfield'
+      'T0426':
+        'sortfield': 'year'  
+        'type': 'integerfield'       
+      'C0700':
+        'sortfield': 'custom2' 
+        'type': 'stringfield'
+      'S0710':
+        'sortfield': 'custom3'
+        'type': 'stringfield'
+      'id':
+        'sortfield': 'id'
+        'type': 'integervalue'
     inverted_title:
       'tag':
         index:
@@ -3835,9 +3954,16 @@ convtab:
           'freesearch': 1
         facet:
           'litlist': 1
+      'id':           # Id
+        index:
+          'id': 1
+          'freesearch': 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
         index:
           'subid': 1
+      '0010':
+        index:
+          'freesearch': 1
 #      '0014':         # Signatur, wenn nicht in den Exemplardaten
 #        index:
 #          'mark': 1
@@ -3961,52 +4087,96 @@ convtab:
           'title': 50
           'titlestring': 50
           'freesearch': 50
+      '0338':
+        index:
+          'freesearch': 1
+          'ft0338': 1
+          't0338': 1
       '0341':         # 
         index:
-          't0341': 50
+          'ft0341': 50
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0342':         # 
         index:
-          't0342': 50
+          'ft0342': 50
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0343':         # 
         index:
-          't0343': 50
+          'ft0343': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0344':         # 
+        index:
+          'ft0344': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0345':         # 
+        index:
+          'ft0345': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0346':         # 
+        index:
+          'ft0346': 50
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0351':         # 
         index:
-          't0351': 50
+          'ft0351': 50
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0352':         # 
         index:
-          't0352': 50
+          'ft0352': 50
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0353':         # 
         index:
-          't0353': 50
+          'ft0353': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0354':         # 
+        index:
+          'ft0354': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0355':         # 
+        index:
+          'ft0355': 50
+          'title': 50
+          'titlestring': 50
+          'freesearch': 50
+      '0356':         # 
+        index:
+          'ft0356': 50
           'title': 50
           'titlestring': 50
           'freesearch': 50
       '0407':         # Stempelstellung
         index:
-          't0407': 1
+          'ft0407': 1
       '0410':         # Auflage
         index:
+          'freesearch': 1
+          'ft0410': 1
           't0410': 1
       '0412':         # Verlag
         index:
           'publisher': 1
           'publisherstring': 1
+          'freesearch': 50
       '0413':         # Drucker
         index:
           'person': 1
@@ -4023,7 +4193,8 @@ convtab:
           'freesearch': 1
       '0508':
         index:
-          'source': 1
+          'freesearch': 1
+          't0508': 1
       '0540':         # ISBN
         index:
           'isbn': 1
@@ -4056,9 +4227,14 @@ convtab:
         index:
           'source': 1
           'freesearch': 1
-      '0338':         # Nominal
+      '0600':
         index:
-          't0338': 1
+          'freesearch': 1
+          't0600': 1
+      '0619':
+        index:
+          't0619': 1
+          'freesearch': 1
       '0634':         # ISBN sekundaerform
         index:
           'isbn': 1
@@ -4310,14 +4486,18 @@ convtab:
       '0310': 1
       '0331': 1
       '0403': 1
+      '0410': 1
       '0412': 1
       '0424': 1
       '0425': 1
+      '0426': 1
       '0428': 1
       '0451': 1
       '0453': 1
       '0540': 1
       '0662': 1
+      '0700': 1
+      '0710': 1
       '2662': 1
       '1203': 1
       '4110': 1
@@ -4440,7 +4620,7 @@ convtab:
           'freesearch': 50
       '0335':         # Zusatz zum HST
         index:
-          't0335': 1
+          'ft0335': 1
           'title': 1
           'titlestring': 1
           'freesearch': 1
@@ -4471,7 +4651,7 @@ convtab:
           'freesearch': 1
       '0410':         # Auflage
         index:
-          't0410': 1
+          'ft0410': 1
       '0412':         # Verlag
         index:
           'publisher': 1
@@ -4807,14 +4987,14 @@ convtab:
           'freesearch': 1
       '0100':
         index:
-          't0100': 1
+          'ft0100': 1
 #	  'person': 1
 #          'personstring': 1
         facet:
           'person': 1
       '0101':
         index:
-          't0101': 1
+          'ft0101': 1
 #        index:
 #          'freesearch': 1
 #	  'person': 1
@@ -4823,7 +5003,7 @@ convtab:
           'person': 1
       '0102':
         index:
-          't0102': 1
+          'ft0102': 1
 #        index:
 #          'freesearch': 1
 #	  'person': 1
@@ -4832,7 +5012,7 @@ convtab:
           'person': 1
       '0103':
         index:
-          't0103': 1
+          'ft0103': 1
 #        index:
 #          'freesearch': 1
 #	  'person': 1
@@ -4891,7 +5071,7 @@ convtab:
           'freesearch': 50
       '0335':         # Zusatz zum HST
         index:
-          't0335': 1
+          'ft0335': 1
           'title': 1
           'titlestring': 1
           'freesearch': 1
@@ -4922,7 +5102,7 @@ convtab:
           'freesearch': 1
       '0410':         # Auflage
         index:
-          't0410': 1
+          'ft0410': 1
       '0412':         # Verlag
         index:
           'publisher': 1

@@ -113,6 +113,11 @@ sub connectEnrichmentDB {
         }
     }
     else {
+        if ($@){
+            $logger->fatal("Unable to connect to database $config->{enrichmntdbname}");
+        }
+    }
+    else {
         eval {
             # UTF8: {'pg_enable_utf8'    => 1}
             $self->{enrich_schema} = OpenBib::Schema::Enrichment->connect("DBI:$config->{enrichmntdbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},$config->{enrichmntdboptions}) or $logger->error_die($DBI::errstr);

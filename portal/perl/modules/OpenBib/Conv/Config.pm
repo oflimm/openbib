@@ -90,6 +90,12 @@ sub _new_instance {
     return $self;
 }
 
+sub get {
+    my ($self,$key) = @_;
+
+    return $self->{$key};
+}
+
 1;
 __END__
 

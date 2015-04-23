@@ -16,11 +16,11 @@
           "yearstring" = msg.maketext("Jahr")
           "tagstring" = msg.maketext("Tag")
           "litliststring" = msg.maketext("Literaturliste")
-          "t0410" = "Sterbeort"
-          "t0411" = "Geburtsort"
-          "t0425_from" = "Sterbejahr von"
-          "t0425_to" = "Sterbejahr bis"
-          "t0425" = "Sterbejahr"
-          "t0426" = "Geburtsjahr"
+          "ft0410" = "Sterbeort"
+          "ft0411" = "Geburtsort"
+          "ft0425_from" = "Sterbejahr von"
+          "ft0425_to" = "Sterbejahr bis"
+          "ft0425" = "Sterbejahr"
+          "ft0426" = "Geburtsjahr"
 };
 %]

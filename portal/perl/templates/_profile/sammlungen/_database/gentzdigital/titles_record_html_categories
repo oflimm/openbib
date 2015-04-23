@@ -58,6 +58,11 @@ FOREACH category IN categories;
 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
+
+         IF content == 'Gentz';
+            wikipediaurl = "http://de.wikipedia.org/wiki/Friedrich_von_Gentz";
+         END ;
+
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
@@ -71,7 +76,7 @@ FOREACH category IN categories;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
          END;
 
-         icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${rssfeed}&nbsp;${normdataicon}</div>";
+         icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" title=\"Mashup mit Wikipedia\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${rssfeed}&nbsp;${normdataicon}</div>";
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
@@ -146,7 +151,7 @@ FOREACH category IN categories;
 
     CASE [ "E4100" "T4100" ];
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t4100.prefix;
+         searchprefix  = config.get('searchfield').ft4100.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
          bkdesc      = bklookup.${content};
@@ -169,7 +174,7 @@ FOREACH category IN categories;
          thiscontent = item.content;
 
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t4300.prefix;
+         searchprefix  = config.get('searchfield').ft4300.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 

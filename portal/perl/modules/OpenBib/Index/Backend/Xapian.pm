@@ -40,13 +40,14 @@ use String::Tokenizer;
 use YAML ();
 
 use OpenBib::Config;
+use OpenBib::Conv::Config;
 use OpenBib::Common::Util;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::SearchQuery;
 use OpenBib::QueryOptions;
 
-use base qw(OpenBib::Search);
+use base qw(OpenBib::Index);
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -256,13 +257,15 @@ sub create_document {
 
     my $id         = $record_ref->{id};
     my $thisdbname = $record_ref->{database};
+
+    my $convconfig = OpenBib::Conv::Config->instance({dbname => $thisdbname});
     
     my $seen_token_ref = {};
     
     my $doc = Search::Xapian::Document->new();
     
     $self->{_tg}->set_document($doc);
-        
+       
     # Katalogname des Satzes recherchierbar machen
     $doc->add_term($config->{xapian_search}{'fdb'}{prefix}.$thisdbname);
     $doc->add_term($config->{xapian_search}{'floc'}{prefix}.$self->{_locationid_norm});
@@ -476,59 +479,6 @@ sub create_document {
     
     # Sortierung
     if ($withsorting){
-        my $sorting_ref = [
-            {
-                # Normdaten-Ansetzungsform Person
-                id         => $config->{xapian_sorttype_value}{'authority'},
-                category   => 'P0800',
-                type       => 'stringcategory',
-            },
-            {
-                # Normdaten-Ansetzungsform Koerperschaft
-                id         => $config->{xapian_sorttype_value}{'authority'},
-                category   => 'C0800',
-                type       => 'stringcategory',
-            },
-            {
-                # Normdaten-Ansetzungsform Schlagwort
-                id         => $config->{xapian_sorttype_value}{'authority'},
-                category   => 'S0800',
-                type       => 'stringcategory',
-            },
-            {
-                # Verfasser/Koepeschaft
-                id         => $config->{xapian_sorttype_value}{'person'},
-                category   => 'PC0001',
-                type       => 'stringcategory',
-            },
-            {
-                # Titel
-                id         => $config->{xapian_sorttype_value}{'title'},
-                category   => 'T0331',
-                type       => 'stringcategory',
-                filter     => sub {
-                    my $string=shift;
-                    $string=~s/^¬\w+¬?\s+//; # Mit Nichtsortierzeichen gekennzeichnetes Wort ausfiltern;
-                    return $string;
-                },
-            },
-            {
-                # Zaehlung
-                id         => $config->{xapian_sorttype_value}{'order'},
-                category   => 'T5100',
-                type       => 'integercategory',
-            },
-            {
-                # Jahr
-                id         => $config->{xapian_sorttype_value}{'year'},
-                category   => 'T0425',
-                type       => 'integercategory',
-            },
-            {
-                # Jahr
-                id         => $config->{xapian_sorttype_value}{'year'},
-                category   => 'T0424',
-                type       => 'integercategory',
                 filter     => sub {
                     my $string=shift;
                     ($string) = $string=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
@@ -536,37 +486,26 @@ sub create_document {
 
                     return $string;
                 },
-            },
-            {
-                # Verlag
-                id         => $config->{xapian_sorttype_value}{'publisher'},
-                category   => 'T0412',
-                type       => 'stringcategory',
-            },
-            {
-                # Signatur
-                id         => $config->{xapian_sorttype_value}{'mark'},
-                category   => 'X0014',
-                type       => 'stringcategory',
-            },
-            {
-                # Popularitaet
-                id         => $config->{xapian_sorttype_value}{'popularity'},
-                category   => 'popularity',
-                type       => 'integervalue',
-            },
-            
-        ];
+
+        if ($logger->is_debug){
+            $logger->debug("sorting_order: ".YAML::Dump($convconfig->get('sorting_order')));
+            $logger->debug("sorting: ".YAML::Dump($convconfig->get('sorting')));
+        }
         
-        foreach my $this_sorting_ref (@{$sorting_ref}){
-            next unless (defined $record_ref->{$this_sorting_ref->{category}});
-            
-            if ($this_sorting_ref->{type} eq "stringcategory"){
-                my $content = (defined $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:"";
+        foreach my $field (@{$convconfig->get('sorting_order')}){
+            next unless (defined $record_ref->{$field});
+
+            # Bibliogr. Feldinhalte mit Zeichenketten
+            if ($convconfig->get('sorting')->{$field}->{type} eq "stringfield"){
+                my $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
                 next unless ($content);
                 
-                if (defined $this_sorting_ref->{filter}){
-                    $content = &{$this_sorting_ref->{filter}}($content);
+                if (defined $convconfig->get('sorting')->{$field}{filter}){
+                    foreach my $filtername (@{$convconfig->get('sorting')->{$field}{filter}}){
+                        if ($self->can($filtername)){
+                            $content = $self->$filtername($content);
+                        }
+                    }
                 }
                 
                 $content = OpenBib::Common::Util::normalize({
@@ -576,34 +515,40 @@ sub create_document {
                 
                 if ($content){
                     $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($this_sorting_ref->{id},$content);
+                    $doc->add_value($config->{xapian_sorttype_value}{$convconfig->get('sorting')->{$field}{sortfield}},$content);
                 }
             }
-            elsif ($this_sorting_ref->{type} eq "integercategory"){
-                my $content = (defined $record_ref->{$this_sorting_ref->{category}}[0]{content})?$record_ref->{$this_sorting_ref->{category}}[0]{content}:0;
-                        next unless ($content);
+            # Bibliogr. Feldinhalte mit Integerwerten
+            elsif ($convconfig->get('sorting')->{$field}->{type} eq "integerfield"){
+                my $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:0;
+                next unless ($content);
 
-                if (defined $this_sorting_ref->{filter}){
-                    $content = &{$this_sorting_ref->{filter}}($content);
+                if (defined $convconfig->get('sorting')->{$field}{filter}){
+                    foreach my $filtername (@{$convconfig->get('sorting')->{$field}{filter}}){
+                        if ($self->can($filtername)){
+                            $content = $self->$filtername($content);
+                        }
+                    }
                 }
 
-                ($content) = $content=~m/^\D*(-?\d+)/;
+                ($content) = $content=~m/^\D*?(-?\d+)/;
                 
                 if ($content){
 #                    $content = sprintf "%08d",$content;
                     $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($this_sorting_ref->{id},Search::Xapian::sortable_serialise($content));
+                    $doc->add_value($config->{xapian_sorttype_value}{$convconfig->get('sorting')->{$field}{sortfield}},Search::Xapian::sortable_serialise($content));
                 }
             }
-            elsif ($this_sorting_ref->{type} eq "integervalue"){
+            # Integerwerte jenseits der bibliogr. Felder, also z.B. popularity
+            elsif ($convconfig->get('sorting')->{$field}->{type} eq "integervalue"){
                 my $content = 0 ;
-                if (defined $record_ref->{$this_sorting_ref->{category}}){
-                    ($content) = $record_ref->{$this_sorting_ref->{category}}=~m/^(-?\d+)/;
+                if (defined $record_ref->{$field}){
+                    ($content) = $record_ref->{$field}=~m/^(-?\d+)/;
                 }
                 if ($content){
  #                   $content = sprintf "%08d",$content;
                     $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($this_sorting_ref->{id},Search::Xapian::sortable_serialise($content));
+                    $doc->add_value($config->{xapian_sorttype_value}{$convconfig->get('sorting')->{$field}{sortfield}},Search::Xapian::sortable_serialise($content));
                 }
             }
         }
@@ -639,6 +584,20 @@ sub delete_record {
     $self->get_index->delete_document_by_term($key) ;
 }
 
+
+sub filter_force_signed_year {
+    my ($self, $string) = @_;
+    ($string) = $string=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
+    $string=~s/[^-0-9]//g;
+    
+    return $string;
+}
+
+sub filter_strip_nonsortable_word {
+    my ($self, $string) = @_;
+    $string=~s/^¬\w+¬?\s+//; # Mit Nichtsortierzeichen gekennzeichnetes Wort ausfiltern;
+    return $string;
+}
 
 1;
 

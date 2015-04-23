@@ -23,6 +23,20 @@
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
 [% END %]
 
+<!-- Default Language is german -->
+[%-
+     language_location_args = cgiapp.to_cgi_querystring({ change = {'l' = 'de' }});
+     language_location = "${cgiapp.param('scheme')}://${cgiapp.param('servername')}${cgiapp.param('path')}?${language_location_args}";
+%]
+<link rel="alternate" href="[% language_location %]" hreflang="x-default" />
+
+<!-- All Language Versions  -->
+[%- FOREACH thislang IN config.get('lang') ;
+     language_location_args = cgiapp.to_cgi_querystring({ change = {'l' = thislang }});
+     language_location = "${cgiapp.param('scheme')}://${cgiapp.param('servername')}${cgiapp.param('path')}?${language_location_args}" %]
+<link rel="alternate" href="[% language_location %]" hreflang="[% thislang %]-[% thislang %]" />
+[%- END %]
+
  <!-- mobile viewport optimisation -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -68,7 +82,7 @@
     <script type="text/javascript" src="/js/jquery-ui-1.8.24.min.js"></script>
 
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
-    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
+<!--    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script> -->
 
 
     <title>[% IF page_title %][% page_title %][% ELSE %][% msg.maketext("OpenBib - Demo-Portal") %][% END %]</title>
@@ -81,6 +95,10 @@
   <script src="/js/html5.js"></script>
 <![endif]-->
    </head>
+
+[% IF show_javascript %]
+[% show_javascript %]
+[% END %]
 
 [%# Immer/haeufig genutzte Variablen %]
 [%

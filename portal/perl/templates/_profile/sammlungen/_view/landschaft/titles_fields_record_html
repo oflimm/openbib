@@ -15,16 +15,16 @@
 
 [%- IF field == '0101' ;
        field_description = msg.maketext("Personen");
-       searchfield = 't0101' ;
+       searchfield = 'ft0101' ;
     ELSIF field == '0200' ;
        field_description = msg.maketext("Topogr. Schlagwort");
-       searchfield = 't0200' ;
+       searchfield = 'ft0200' ;
     ELSIF field == '0700' ;
        field_description = msg.maketext("1. Ikonogr. Schlagwort");
-       searchfield = 't0700' ;
+       searchfield = 'ft0700' ;
     ELSIF field == '0710' ;
        field_description = msg.maketext("2. Ikonogr. Schlagwort");
-       searchfield = 't0710' ;
+       searchfield = 'ft0710' ;
      END ; -%]
 
 <body>

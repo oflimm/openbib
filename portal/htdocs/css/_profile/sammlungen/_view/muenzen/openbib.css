@@ -1,4 +1,5 @@
 @import url("/css/_profile/sammlungen/openbib.css"); 
 
 /* import specific classes */
+@import url("keyboard.css");
 @import url("local.css");

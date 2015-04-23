@@ -15,10 +15,10 @@
 
 [%- IF field == '0720' ;
        field_description = 'Provenienzen';
-       searchfield = 't0720' ;
+       searchfield = 'ft0720' ;
 #    ELSIF field == '0501' ;
 #       field_description = 'Richter-Indizien';
-#       searchfield = 't0501' ;
+#       searchfield = 'ft0501' ;
      END ; -%]
 
 <body>

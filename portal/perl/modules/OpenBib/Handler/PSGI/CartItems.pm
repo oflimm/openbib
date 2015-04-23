@@ -729,6 +729,8 @@ sub mail_collection_send {
         return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
     }	
 
+    my $sysprofile= $config->get_profilename_of_view($view);
+
     my $recordlist = new OpenBib::RecordList::Title();
     
     if ($id && $database) {
@@ -744,6 +746,7 @@ sub mail_collection_send {
     
     my $ttdata={
         view        => $view,
+        sysprofile  => $sysprofile,
         stylesheet  => $stylesheet,
         sessionID   => $session->{ID},
 	qopts       => $queryoptions->get_options,
@@ -777,6 +780,8 @@ sub mail_collection_send {
     my $filename="kug-merkliste";
     my $datatemplatename=$config->{tt_cartitems_mail_html_tname};
 
+    $logger->debug("Using view $view in profile $sysprofile");
+    
     if ($format eq "short" || $format eq "full") {
         $filename.=".html";
     }
@@ -786,6 +791,14 @@ sub mail_collection_send {
         $datatemplatename=$config->{tt_cartitems_mail_plain_tname};
     }
 
+    $datatemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $datatemplatename,
+    });
+
+    $logger->debug("Using database/view specific Template $datatemplatename");
+    
     $datatemplate->process($datatemplatename, $ttdata) || do {
         $logger->error($datatemplate->error());
         $self->header_add('Status',400); # server error
@@ -813,10 +826,17 @@ sub mail_collection_send {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_cartitems_mail_message_tname}, $mainttdata ) || do { 
-        $logger->error($maintemplate->error());
-        $self->header_add('Status',400); # server error
-        return;
+    my $messagetemplatename = $config->{tt_cartitems_mail_message_tname};
+    
+    $messagetemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $messagetemplatename,
+    });
+
+    $logger->debug("Using database/view specific Template $messagetemplatename");
+
+    $maintemplate->process($messagetemplatename, $mainttdata ) || do { 
     };
 
     my $mailmsg = MIME::Lite->new(

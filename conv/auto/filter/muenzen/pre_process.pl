@@ -16,6 +16,8 @@ if (! $config->strip_view_from_uri($view)){
 while (<>){
     my $title_ref = decode_json $_;
 
+    my $sprache  = $title_ref->{fields}{'0015'}[0]{content};
+
     # Bildung einer Zeitspanne in 0425 aus 042[67[
     if (defined $title_ref->{fields}{'0426'} && defined $title_ref->{fields}{'0427'}){
         my $from = $title_ref->{fields}{'0426'}[0]{content};
@@ -47,9 +49,15 @@ while (<>){
     #
     # Vorderseite:
     #
+    # Grieschich
     # Variante 1 : 341
     # Variante 2 : 342
     # Variante 3 : 343
+
+    # Lateinisch
+    # Variante 1 : 344
+    # Variante 2 : 345
+    # Variante 3 : 346
 
     if (defined $title_ref->{fields}{'0332'}){
         my $grundform = $title_ref->{fields}{'0332'}[0]{content};
@@ -67,11 +75,20 @@ while (<>){
         $variante1=~s/\///g;
         $variante1=~s/\s+/ /g;
 
-        push @{$title_ref->{fields}{'0341'}}, {
-            content => $variante1,
-            subfield => "",
-            mult => 1,
-        };
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
+            push @{$title_ref->{fields}{'0341'}}, {
+                content => $variante1,
+                subfield => "",
+                mult => 1,
+            };
+        }
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
+            push @{$title_ref->{fields}{'0344'}}, {
+                content => $variante1,
+                subfield => "",
+                mult => 1,
+            };
+        }
 
         $variante2=~s/\[//g;
         $variante2=~s/]//g;
@@ -86,30 +103,53 @@ while (<>){
         $variante2=~s/-//g;
         $variante2=~s/\s+/ /g;
 
-        push @{$title_ref->{fields}{'0342'}}, {
-            content => $variante2,
-            subfield => "",
-            mult => 1,
-        };
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
+            push @{$title_ref->{fields}{'0342'}}, {
+                content => $variante2,
+                subfield => "",
+                mult => 1,
+            };
+        }
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
+            push @{$title_ref->{fields}{'0345'}}, {
+                content => $variante2,
+                subfield => "",
+                mult => 1,
+            };
+        }
         
         $variante3=~s/\[//g;
         $variante3=~s/]//g;
 
-        push @{$title_ref->{fields}{'0343'}}, {
-            content => $variante3,
-            subfield => "",
-            mult => 1,
-        };
-        
-    }    
+
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
+            push @{$title_ref->{fields}{'0343'}}, {
+                content => $variante3,
+                subfield => "",
+                mult => 1,
+            };
+        }
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
+            push @{$title_ref->{fields}{'0346'}}, {
+                content => $variante3,
+                subfield => "",
+                mult => 1,
+            };
+        }
+    }
     
     # Rueckseite:
     #
+    # Griechisch
     # Variante 1 : 351
     # Variante 2 : 352
     # Variante 3 : 353
     # 
     
+    # Lateinisch
+    # Variante 1 : 354
+    # Variante 2 : 355
+    # Variante 3 : 356
     if (defined $title_ref->{fields}{'0335'}){
         my $grundform = $title_ref->{fields}{'0335'}[0]{content};
 
@@ -126,11 +166,20 @@ while (<>){
         $variante1=~s/-//g;
         $variante1=~s/\s+/ /g;
 
-        push @{$title_ref->{fields}{'0351'}}, {
-            content => $variante1,
-            subfield => "",
-            mult => 1,
-        };
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
+            push @{$title_ref->{fields}{'0351'}}, {
+                content => $variante1,
+                subfield => "",
+                mult => 1,
+            };
+        }
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
+            push @{$title_ref->{fields}{'0354'}}, {
+                content => $variante1,
+                subfield => "",
+                mult => 1,
+            };
+        }
 
         $variante2=~s/\[//g;
         $variante2=~s/]//g;
@@ -145,38 +194,60 @@ while (<>){
         $variante2=~s/-//g;
         $variante2=~s/\s+/ /g;
 
-        push @{$title_ref->{fields}{'0352'}}, {
-            content => $variante2,
-            subfield => "",
-            mult => 1,
-        };
-        
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
+            push @{$title_ref->{fields}{'0352'}}, {
+                content => $variante2,
+                subfield => "",
+                mult => 1,
+            };
+        }
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
+            push @{$title_ref->{fields}{'0355'}}, {
+                content => $variante2,
+                subfield => "",
+                mult => 1,
+            };
+        }
+            
         $variante3=~s/\[//g;
         $variante3=~s/]//g;
 
-        push @{$title_ref->{fields}{'0353'}}, {
-            content => $variante3,
-            subfield => "",
-            mult => 1,
-        };
+        if ($sprache =~m/Griechisch/i || $sprache =~m/gre/i){
+            push @{$title_ref->{fields}{'0353'}}, {
+                content => $variante3,
+                subfield => "",
+                mult => 1,
+            };
+        }
+        elsif ($sprache =~m/Latein/i || $sprache =~m/lat/i) {
+            push @{$title_ref->{fields}{'0356'}}, {
+                content => $variante3,
+                subfield => "",
+                mult => 1,
+            };
+        }            
     }    
     
-    # Interne Verlinkungen
+    # Verlinkungen intern/extern
     if (defined $title_ref->{fields}{'0333'}){
         foreach my $item_ref (@{$title_ref->{fields}{'0333'}}){
             $item_ref->{content}=~s/(\w+)\s+\[\[(\w+)]]/<a href="$path_prefix\/databases\/id\/muenzen\/titles\/id\/$2">$1<\/a>/g;
+            $item_ref->{content}=~s/(\w+)\s+\[\[(http.+?)]]/<a href="$2">$1<\/a>/g;
         }
     }
     if (defined $title_ref->{fields}{'0336'}){
         foreach my $item_ref (@{$title_ref->{fields}{'0336'}}){
             $item_ref->{content}=~s/(\w+)\s+\[\[(\w+)]]/<a href="$path_prefix\/databases\/id\/muenzen\/titles\/id\/$2">$1<\/a>/g;
+            $item_ref->{content}=~s/(\w+)\s+\[\[(http.+?)]]/<a href="$2">$1<\/a>/g;
         }
     }
     if (defined $title_ref->{fields}{'0508'}){
         foreach my $item_ref (@{$title_ref->{fields}{'0508'}}){
             $item_ref->{content}=~s/(\w+)\s+\[\[(\w+)]]/<a href="$path_prefix\/databases\/id\/muenzen\/titles\/id\/$2">$1<\/a>/g;
+            $item_ref->{content}=~s/(\w+)\s+\[\[(http.+?)]]/<a href="$2">$1<\/a>/g;
         }
     }
-    
+
+
     print encode_json $title_ref, "\n";
 }

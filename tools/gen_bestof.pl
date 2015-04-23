@@ -48,7 +48,7 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$database,$profile,$field,$view,$help,$logfile);
+my ($type,$database,$profile,$field,$view,$help,$num,$logfile);
 
 &GetOptions("type=s"          => \$type,
             "database=s"      => \$database,
@@ -56,12 +56,15 @@ my ($type,$database,$profile,$field,$view,$help,$logfile);
             "view=s"          => \$view,
             "profile=s"       => \$profile,
             "field=s"         => \$field,
+            "num=s"           => \$num,
 	    "help"            => \$help
 	    );
 
 if ($help){
     print_help();
 }
+
+$num=($num)?$num:200;
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/gen_bestof.log';
 
@@ -241,7 +244,7 @@ if ($type == 3){
                 join     => ['subject_fields','title_subjects'],
                 group_by => ['title_subjects.subjectid','subject_fields.content'],
                 order_by => { -desc => \'count(title_subjects.titleid)' },
-                rows     => 200,
+                rows     => $num,
             }
         );
 
@@ -320,7 +323,7 @@ if ($type == 4){
                 join     => ['classification_fields','title_classifications'],
                 group_by => ['title_classifications.classificationid','classification_fields.content'],
                 order_by => { -desc => \'count(title_classifications.titleid)' },
-                rows     => 200,
+                rows     => $num,
             }
         );
 
@@ -397,7 +400,7 @@ if ($type == 5){
                 join     => ['corporatebody_fields','title_corporatebodies'],
                 group_by => ['title_corporatebodies.corporatebodyid','corporatebody_fields.content'],
                 order_by => { -desc => \'count(title_corporatebodies.titleid)' },
-                rows     => 200,
+                rows     => $num,
             }
         );
 
@@ -473,7 +476,7 @@ if ($type == 6){
                 join     => ['person_fields','title_people'],
                 group_by => ['title_people.personid','person_fields.content'],
                 order_by => { -desc => \'count(title_people.titleid)' },
-                rows     => 200,
+                rows     => $num,
             }
         );
 
@@ -548,7 +551,7 @@ if ($type == 7){
                 as       => ['thiscontent','thisid','titlecount',],
                 join     => ['tit_tags'],
                 group_by => ['tit_tags.tagid','me.name','me.id'],
-                rows     => 200,
+                rows     => $num,
             }
         );
         
@@ -724,7 +727,7 @@ if ($type == 9){
                 join     => ['title_fields'],
                 group_by => ['title_fields.content'],
                 order_by => { -desc => \'count(title_fields.titleid)' },
-                rows     => 200,
+                rows     => $num,
             }
         );
 
@@ -1040,7 +1043,7 @@ if ($type == 14 && $field){
                 join     => ['title_fields'],
                 group_by => ['title_fields.content'],
                 order_by => { -desc => \'count(title_fields.titleid)' },
-                rows     => 200,
+                rows     => $num,
             }
         );
 

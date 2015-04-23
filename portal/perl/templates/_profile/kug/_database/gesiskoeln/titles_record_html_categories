@@ -135,7 +135,7 @@ FOREACH category IN categories;
 
     CASE [ "E4100" "T4100" ];
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t4100.prefix;
+         searchprefix  = config.get('searchfield').ft4100.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
          bkdesc      = bklookup.${content};
@@ -158,7 +158,7 @@ FOREACH category IN categories;
          thiscontent = item.content;
 
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t4300.prefix;
+         searchprefix  = config.get('searchfield').ft4300.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
 

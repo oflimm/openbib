@@ -52,6 +52,8 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Config::LocationInfoTable;
 use OpenBib::Common::Util;
 use OpenBib::Container;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -1070,11 +1072,16 @@ sub add_default_ttdata {
         return decode_utf8($string);
     };
 
-    $ttdata->{'encode_utf8'}    = sub {
-        my $string=shift;
-        return encode_utf8($string);
+    $ttdata->{'create_title_record'}    = sub {
+        my ($arg_ref) = @_;
+        return OpenBib::Record::Title->new($arg_ref);
     };
 
+    $ttdata->{'create_title_recordlist'}    = sub {
+        my ($arg_ref) = @_;
+        return OpenBib::RecordList::Title->new($arg_ref);
+    };
+    
     return $ttdata;
 }
 
@@ -1883,5 +1890,4 @@ sub send_psgi_headers {
     
 #     return;
 # }
-
 1;

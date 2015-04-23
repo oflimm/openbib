@@ -119,7 +119,7 @@ FOREACH category IN categories;
 
     CASE [ "E4100" "T4100" ];
          searchterm    = item.content.replace('&amp;','%26');
-         searchprefix  = config.get('searchfield').t4100.prefix;
+         searchprefix  = config.get('searchfield').ft4100.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}.mobile?${request_base}db=${database};${searchprefix}=${searchterm}";
          bklookup    = config.load_bk ;
@@ -144,7 +144,7 @@ FOREACH category IN categories;
          thiscontent = item.content;
 
          searchterm    = item.content.replace('&amp;','%26');
-         searchprefix  = config.get('searchfield').t4300.prefix;
+         searchprefix  = config.get('searchfield').ft4300.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}.mobile?${request_base}db=${database};${searchprefix}=${searchterm}";
 

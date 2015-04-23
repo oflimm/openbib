@@ -25,6 +25,10 @@ view_searchprofile  = config.get_searchprofile_of_view(view) ;
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 
+   IF NOT searchprofileid_of_database ;
+      searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
+   END ;
+
 FOREACH category IN categories;
     FOREACH item IN normdata.$category;
     content = item.content;
@@ -93,7 +97,7 @@ FOREACH category IN categories;
 
     CASE [ "E4100" "T4100" ];
          searchterm    = item.content.replace('&amp;','%26');
-         searchprefix  = config.get('searchfield').t4100.prefix;
+         searchprefix  = config.get('searchfield').ft4100.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${searchterm}";
          bklookup    = config.load_bk ;
@@ -118,7 +122,7 @@ FOREACH category IN categories;
          thiscontent = item.content;
 
          searchterm    = item.content.replace('&amp;','%26');
-         searchprefix  = config.get('searchfield').t4300.prefix;
+         searchprefix  = config.get('searchfield').ft4300.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};${searchprefix}=${searchterm}";
 
@@ -187,6 +191,25 @@ FOREACH category IN categories;
 
          localurl  = "${path_prefix}/${config.get('search_loc')}?page=1;num=20;srt=order_asc;profile=${local_searchprofile};${searchprefix}=${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
+
+    CASE "T5005";
+         super         = from_json(content);
+
+         searchterm    = super.id;
+         searchprefix  = config.get('searchfield').id.prefix;
+
+         super_title   = super.fields.${'0451'}.first.content;
+
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+         END ;
+
+         IF NOT super_title ;
+            super_title = "Zur &Uuml;berordnung";
+         END ;
+
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

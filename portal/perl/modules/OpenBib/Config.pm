@@ -68,7 +68,10 @@ sub new {
 
     my $config = OpenBib::Config::File->instance;
 
+    my $config = OpenBib::Config::File->instance;
+
     # Ininitalisierung mit Config-Parametern
+    my $self = {};
     my $self = {};
 
     bless ($self, $class);
@@ -90,6 +93,9 @@ sub get_schema {
     }
 
     $self->connectDB;
+        $self->{$key} = $config->{$key};
+    }
+
 
     return $self->{schema};
 }

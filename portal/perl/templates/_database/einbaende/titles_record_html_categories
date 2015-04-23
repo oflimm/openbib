@@ -77,7 +77,7 @@ FOREACH category IN categories;
          wikicontent = wikicontent.replace('¬','');
 
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t0101.prefix;
+         searchprefix  = config.get('searchfield').ft0101.prefix;
 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
@@ -100,7 +100,7 @@ FOREACH category IN categories;
          wikicontent = wikicontent.replace('¬','');
 
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t0102.prefix;
+         searchprefix  = config.get('searchfield').ft0102.prefix;
 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
@@ -121,7 +121,7 @@ FOREACH category IN categories;
 
 
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t0200.prefix;
+         searchprefix  = config.get('searchfield').ft0200.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
@@ -142,7 +142,7 @@ FOREACH category IN categories;
 
 
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t0201.prefix;
+         searchprefix  = config.get('searchfield').ft0201.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
@@ -214,7 +214,7 @@ FOREACH category IN categories;
 
     CASE [ "E4100" "T4100" ];
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t4100.prefix;
+         searchprefix  = config.get('searchfield').ft4100.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
          bkdesc      = bklookup.${content};
@@ -237,7 +237,7 @@ FOREACH category IN categories;
          thiscontent = item.content;
 
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').t4300.prefix;
+         searchprefix  = config.get('searchfield').ft4300.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
 
@@ -315,6 +315,25 @@ FOREACH category IN categories;
 
          localurl  = "${path_prefix}/${config.get('search_loc')}?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
+
+    CASE "T5005";
+         super         = from_json(content);
+
+         searchterm    = super.id;
+         searchprefix  = config.get('searchfield').id.prefix;
+
+         super_title   = super.fields.${'0451'}.first.content;
+
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+         END ;
+
+         IF NOT super_title ;
+            super_title = "Zur &Uuml;berordnung";
+         END ;
+
+         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

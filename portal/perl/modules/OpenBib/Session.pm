@@ -943,6 +943,7 @@ sub save_eventlog_to_statisticsdb {
             tstamp    => $tstamp,
             type      => $type,
             content   => decode_utf8($content),
+#            content   => $content,
             serialize => 1, # in Eventlogjson
         });
         
@@ -992,7 +993,9 @@ sub save_eventlog_to_statisticsdb {
             $content_ref = decode_json $content;
         };
 
-        next if ($@);
+        if ($@){
+            $logger->error("Error decoding JSON content: $@");
+        }
 
         my $isbn          = $content_ref->{isbn};
         my $dbname        = $content_ref->{database};

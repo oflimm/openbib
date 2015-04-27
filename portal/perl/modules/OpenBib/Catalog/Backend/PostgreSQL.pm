@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Catalog::Backend::Local
+#  OpenBib::Catalog::Backend::PostgreSQL
 #
-#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -23,7 +23,7 @@
 #
 #####################################################################
 
-package OpenBib::Catalog::Backend::Local;
+package OpenBib::Catalog::Backend::PostgreSQL;
 
 use strict;
 use warnings;
@@ -1236,7 +1236,7 @@ sub _get_holding {
     my $logger = get_logger();
 
     my $config      = OpenBib::Config->new;
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
     
     my $fields_ref={};
 

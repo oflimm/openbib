@@ -68,10 +68,7 @@ sub new {
 
     my $config = OpenBib::Config::File->instance;
 
-    my $config = OpenBib::Config::File->instance;
-
     # Ininitalisierung mit Config-Parametern
-    my $self = {};
     my $self = {};
 
     bless ($self, $class);
@@ -91,12 +88,9 @@ sub get_schema {
     if (defined $self->{schema}){
         return $self->{schema};
     }
-
+    
     $self->connectDB;
-        $self->{$key} = $config->{$key};
-    }
-
-
+    
     return $self->{schema};
 }
 
@@ -2092,9 +2086,9 @@ sub disconnectDB {
 
     if (defined $self->{schema}){
         eval {
-            if (defined $self->get_schema->storage->dbh->sth) {
-                $self->get_schema->storage->dbh->sth->finish;
-            }
+#            if (defined $self->get_schema->storage->dbh->sth) {
+#                $self->get_schema->storage->dbh->sth->finish;
+#            }
             $self->get_schema->storage->dbh->disconnect;
         };
 

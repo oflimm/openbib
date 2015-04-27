@@ -65,10 +65,6 @@ sub new {
     if (defined $database){
         $self->{database} = $database;
 
-        if ($logger->is_debug){
-            $logger->debug("Subject schema:".YAML::Dump($schema));
-        }
-        
         if (defined $schema){
             $logger->debug("Setting Subject schema");
             $self->{schema} = $schema;

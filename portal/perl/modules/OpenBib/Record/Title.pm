@@ -177,16 +177,23 @@ sub load_full_record {
     
     if ($self->{memc}){
       $record = $self->{memc}->get($memc_key);
-      
-      $logger->debug("Got record from memcached");
-      
-      if ($config->{benchmark}) {
-          $btime=new Benchmark;
-          $timeall=timediff($btime,$atime);
-          $logger->info("Total time for is ".timestr($timeall));
+
+      if ($logger->is_debug){
+          $logger->debug("Got record from memcached: ".YAML::Dump($record));
       }
 
-      return $record if ($record);
+      if (defined $record->{fields} && defined $record->{holdings}){
+          $self->set_fields($record->{fields});
+          $self->set_holding($record->{holdings});
+          
+          if ($config->{benchmark}) {
+              $btime=new Benchmark;
+              $timeall=timediff($btime,$atime);
+              $logger->info("Total time for fetching fields/holdings from memcached is ".timestr($timeall));
+          }
+          
+          return $self;
+      }
     }
     
     my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}});
@@ -196,18 +203,21 @@ sub load_full_record {
     if ($logger->is_debug){
         $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
     }
-    
-    $self->set_fields($record->get_fields);
-    $self->set_holding($record->get_holding);
 
+    my $fields   = $record->get_fields;
+    my $holdings = $record->get_holding;
+
+    $self->set_fields($fields);
+    $self->set_holding($holdings);
+
+    if ($self->{memc}){
+        $self->{memc}->set($memc_key,{ fields => $fields, holdings => $holdings },$config->{memcached_expiration}{'record:title:full'});
+    }
+    
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Total time for is ".timestr($timeall));
-    }
-
-    if ($self->{memc}){
-        $self->{memc}->set($memc_key,$self,$config->{memcached_expiration}{'record:title:full'});
     }
     
     $logger->debug("Fetch record from db and store in memcached");
@@ -284,10 +294,10 @@ sub enrich_content {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}        : undef;
+        ? $arg_ref->{profilename}        : '';
     
     my $viewname = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}        : undef;
+        ? $arg_ref->{viewname}        : '';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -499,10 +509,10 @@ sub enrich_related_records {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}        : undef;
+        ? $arg_ref->{profilename}        : '';
     
     my $viewname = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}        : undef;
+        ? $arg_ref->{viewname}        : '';
 
     my $num      = exists $arg_ref->{num}
         ? $arg_ref->{num}             : 20;
@@ -521,23 +531,27 @@ sub enrich_related_records {
     my $memc_key = "record:title:enrich_related:$profilename:$viewname:$num:$self->{database}:$self->{id}";
     
     if ($self->{memc}){
-        my $related_recordlist = $self->{memc}->get($memc_key);
-                
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time for is ".timestr($timeall));
-        }
+        my $related_recordlist = $self->get_related_records;
+        
+        my $cached_records = $self->{memc}->get($memc_key);
+        
+        if ($cached_records){
+            $related_recordlist->set_records($cached_records);
 
-        if ($related_recordlist){
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Total time for is ".timestr($timeall));
+            }
+            
             $logger->debug("Got recordlist from memcached");
-
+            
             $self->set_related_records($related_recordlist);
-
+            
             return $self;
         }
     }
-
+    
     
     if (!exists $self->{enrich_schema}){
         $self->connectEnrichmentDB;
@@ -674,7 +688,7 @@ sub enrich_related_records {
         }
 
         if ($self->{memc}){
-            $self->{memc}->set($memc_key,$related_recordlist,$config->{memcached_expiration}{'record:title:enrich_related'});
+            $self->{memc}->set($memc_key,$related_recordlist->get_records,$config->{memcached_expiration}{'record:title:enrich_related'});
         }
         
         $self->set_related_records($related_recordlist);
@@ -831,10 +845,10 @@ sub enrich_similar_records {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}        : undef;
+        ? $arg_ref->{profilename}        : '';
     
     my $viewname = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}        : undef;
+        ? $arg_ref->{viewname}        : '';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -850,19 +864,23 @@ sub enrich_similar_records {
     my $memc_key = "record:title:enrich_similar:$profilename:$viewname:$self->{database}:$self->{id}";
     
     if ($self->{memc}){
-        my $similar_recordlist = $self->{memc}->get($memc_key);
-                
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time for is ".timestr($timeall));
-        }
+        my $similar_recordlist = $self->get_similar_records;
+        
+        my $cached_records = $self->{memc}->get($memc_key);
+        
+        if ($cached_records){
+            $similar_recordlist->set_records($cached_records);
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Total time for is ".timestr($timeall));
+            }
 
-        if ($similar_recordlist){
             $logger->debug("Got recordlist from memcached");
-
+            
             $self->set_similar_records($similar_recordlist);
-
+            
             return $self;
         }
     }
@@ -972,7 +990,7 @@ sub enrich_similar_records {
         }
 
         if ($self->{memc}){
-            $self->{memc}->set($memc_key,$similar_recordlist,$config->{memcached_expiration}{'record:title:enrich_similar'});
+            $self->{memc}->set($memc_key,$similar_recordlist->get_records,$config->{memcached_expiration}{'record:title:enrich_similar'});
         }
 
         $self->set_similar_records($similar_recordlist);
@@ -991,10 +1009,10 @@ sub enrich_same_records {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}        : undef;
+        ? $arg_ref->{profilename}        : '';
     
     my $viewname = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}        : undef;
+        ? $arg_ref->{viewname}        : '';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1010,19 +1028,23 @@ sub enrich_same_records {
     my $memc_key = "record:title:enrich_same:$profilename:$viewname:$self->{database}:$self->{id}";
     
     if ($self->{memc}){
-        my $same_recordlist = $self->{memc}->get($memc_key);
-                
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time for is ".timestr($timeall));
-        }
+        my $same_recordlist = $self->get_same_records;
 
-        if ($same_recordlist){
+        my $cached_records = $self->{memc}->get($memc_key);
+
+        if ($cached_records){
+            $same_recordlist->set_records($cached_records);
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Total time for is ".timestr($timeall));
+            }
+            
             $logger->debug("Got recordlist from memcached");
-
+            
             $self->set_same_records($same_recordlist);
-
+            
             return $self;
         }
     }
@@ -1127,7 +1149,7 @@ sub enrich_same_records {
         }
 
         if ($self->{memc}){
-            $self->{memc}->set($memc_key,$same_recordlist,$config->{memcached_expiration}{'record:title:enrich_same'});
+            $self->{memc}->set($memc_key,$same_recordlist->get_records,$config->{memcached_expiration}{'record:title:enrich_same'});
         }
         
         $self->set_same_records($same_recordlist);

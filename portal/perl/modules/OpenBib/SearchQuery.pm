@@ -66,10 +66,6 @@ sub new {
 
     my $config = OpenBib::Config->new;
 
-    if ($logger->is_debug){
-        $logger->debug("Session: ".YAML::Dump($session));
-    }
-    
     my $self = {
         _searchprofile         => 0,
         _filter                => [],
@@ -1036,10 +1032,6 @@ sub _get_searchprofile {
     my $config         = OpenBib::Config->new;
     my $session        = $self->get_session;
 
-    if ($logger->is_debug){
-        $logger->debug("Session: ".YAML::Dump($session));
-    }
-    
     # CGI Args
     my @databases     = ($query->param('db'))?$query->param('db'):();
     my $profile       = $query->param('profile')       || '';

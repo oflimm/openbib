@@ -280,7 +280,7 @@ bzw. Kataloge.
 
  use OpenBib::Config::DatabaseInfoTable;
 
- my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+ my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
  # Bibliothekssigel <-> Bibliotheksname
  my $full_db_info  = $dbinfotable->get("sigel")->{$sigel}->{full};
@@ -307,9 +307,9 @@ bzw. Kataloge.
 
 =over 4
 
-=item instance
+=item new
 
-Instanziierung des Apache-Singleton.
+Instanziierung des Objekts
 
 =item get($type)
 

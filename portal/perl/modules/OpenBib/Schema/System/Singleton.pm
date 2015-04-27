@@ -65,7 +65,7 @@ sub _new_instance {
 }
 sub get_schema {
     my $self = shift;
-   return $self->{schema};}
+    return $self->{schema};
 }
 
 sub disconnectDB {

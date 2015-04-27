@@ -66,10 +66,6 @@ sub new {
     if (defined $database){
         $self->{database} = $database;
 
-        if ($logger->is_debug){
-            $logger->debug("CorporateBody schema:".YAML::Dump($schema));
-        }
-        
         if (defined $schema){
             $logger->debug("Setting CorporateBody schema");
             $self->{schema} = $schema;

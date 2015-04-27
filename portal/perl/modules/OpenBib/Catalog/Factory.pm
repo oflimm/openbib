@@ -36,7 +36,7 @@ use OpenBib::Config;
 use OpenBib::Catalog::Backend::BibSonomy;
 use OpenBib::Catalog::Backend::EZB;
 use OpenBib::Catalog::Backend::DBIS;
-use OpenBib::Catalog::Backend::Local;
+use OpenBib::Catalog::Backend::PostgreSQL;
     
 sub create_catalog {
     my ($self,$arg_ref) = @_;
@@ -59,7 +59,7 @@ sub create_catalog {
     return new OpenBib::Catalog::Backend::BibSonomy($arg_ref)  if ($system eq "Backend: BibSonomy");
     return new OpenBib::Catalog::Backend::EZB($arg_ref)  if ($system eq "Backend: EZB");
     return new OpenBib::Catalog::Backend::DBIS($arg_ref) if ($system eq "Backend: DBIS");
-    return new OpenBib::Catalog::Backend::Local($arg_ref); # Default
+    return new OpenBib::Catalog::Backend::PostgreSQL($arg_ref); # Default
 }
 
 1;

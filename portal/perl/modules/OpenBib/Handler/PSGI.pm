@@ -52,8 +52,6 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Config::LocationInfoTable;
 use OpenBib::Common::Util;
 use OpenBib::Container;
-use OpenBib::Record::Title;
-use OpenBib::RecordList::Title;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -114,8 +112,6 @@ sub cgiapp_init {
     my $user         = OpenBib::User->new({sessionID => $session->{ID}});
     $self->param('user',$user);
 
-    $logger->debug("User: ".YAML::Dump($user));
-    
     my $dbinfo       = OpenBib::Config::DatabaseInfoTable->new;
     $self->param('dbinfo',$dbinfo);
 
@@ -240,8 +236,6 @@ sub cgiapp_prerun {
 
    my $r            = $self->param('r');
    my $user         = $self->param('user');
-   
-   $logger->debug("User: ".YAML::Dump($user));
    
    {
        # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
@@ -929,11 +923,17 @@ sub print_page {
         $logger->info("Total time until stage 2 is ".timestr($timeall));
     }
 
+    eval {
+        # PSGI-Spezifikation erwartet UTF8 bytestream
+        $content = encode_utf8($content);
+    };
+
+    if ($@){
+        $logger->fatal($@);
+    }
+
     $logger->debug("Template-Output: ".$content);
-
-    # PSGI-Spezifikation erwartet UTF8 bytestream
-    $content = encode_utf8($content);
-
+    
     return \$content;
 }
 
@@ -1072,16 +1072,11 @@ sub add_default_ttdata {
         return decode_utf8($string);
     };
 
-    $ttdata->{'create_title_record'}    = sub {
-        my ($arg_ref) = @_;
-        return OpenBib::Record::Title->new($arg_ref);
+    $ttdata->{'encode_utf8'}    = sub {
+        my $string=shift;
+        return encode_utf8($string);
     };
 
-    $ttdata->{'create_title_recordlist'}    = sub {
-        my ($arg_ref) = @_;
-        return OpenBib::RecordList::Title->new($arg_ref);
-    };
-    
     return $ttdata;
 }
 
@@ -1807,7 +1802,10 @@ sub _send_psgi_headersXX {
 sub run {
     my $self = shift;
     my $q = $self->query();
-    
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     my $rm_param = $self->mode_param();
     
     my $rm = $self->__get_runmode($rm_param);
@@ -1832,13 +1830,16 @@ sub run {
         $rm = $prerun_mode;
         $self->{__CURRENT_RUNMODE} = $rm;
     }
-    
+
+    $logger->debug("pre body");    
+
+
     # Process run mode!
     my $body = $self->__get_body($rm);
-    
+
     # Support scalar-ref for body return
     $body = $$body if ref $body eq 'SCALAR';
-    
+
     # Call cgiapp_postrun() hook
     $self->call_hook('postrun', \$body);
     
@@ -1890,4 +1891,5 @@ sub send_psgi_headers {
     
 #     return;
 # }
+
 1;

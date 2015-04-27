@@ -98,9 +98,9 @@ sub connectEnrichmentDB {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     my $config = OpenBib::Config->new;
-
+    
     if ($self->{'enrichmntdbsingleton'}){
         eval {        
             #            $self->{enrich_schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd}) or $logger->error_die($DBI::errstr);
@@ -108,11 +108,6 @@ sub connectEnrichmentDB {
             
         };
         
-        if ($@){
-            $logger->fatal("Unable to connect to database $config->{enrichmntdbname}");
-        }
-    }
-    else {
         if ($@){
             $logger->fatal("Unable to connect to database $config->{enrichmntdbname}");
         }

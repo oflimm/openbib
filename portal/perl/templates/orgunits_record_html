@@ -35,22 +35,20 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalog-Profile") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]/edit?l=[% lang %]">[% profileinfo.profilename %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]/orgunit.html?l=[% lang %]">[% msg.maketext("Organisationseinheiten") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('profiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalog-Profile") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %].html?l=[% lang %]">[% profileinfo.profilename %]</a></li>
+         <li><a href="#">[% msg.maketext("Organisationseinheiten") %]</a></li>
          <li><a href="#" class="lastitem">[% orgunitinfo.orgunitname %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_profiles_loc') %]/[% profileinfo.profilename %]/orgunit/[% orgunitinfo.orgunitname %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/profiles/id/[% profileinfo.profilename %]/orgunits/id/[% orgunitinfo.orgunitname %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
+      <div class="ym-col1 ob-hidden">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_profiles" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -58,24 +56,35 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>[% orgunitinfo.description %]</h1>
 
-<table width="100%">
-<tr><th>Organisationseinheit</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<h3>Organisationseinheit</h3>
+
 <table>
-<tr><td><b>Name</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td></td></tr>
 
-<tr><td><span style="color:blue">[% orgunitinfo.orgunitname %]</span></td><td>[% orgunitinfo.description %]</td><td>[% orgunitinfo.nr %]</td></tr>
+<tr><th>[% msg.maketext("Name") %]</th>
+<td>[% orgunitinfo.orgunitname %]</td>
+</tr>
+
+<tr><th>[% msg.maketext("Beschreibung") %]</th>
+<td>[% orgunitinfo.description %]</td>
+</tr>
+
+<tr><th>Nr.</th>
+<td>[% orgunitinfo.nr %]</td>
+</tr>
+
 </table>
-</form>
-<p />
 
-<p />
-<h2>Kataloge der Organisationseinheit</h2>
+[% IF orgunitdbs %]
+<h3>[% msg.maketext("Kataloge") %]</h3>
 
-[% FOREACH singledb IN orgunitdbs %]
-[% singledb %]<br/>
+<ul>
+[% FOREACH item IN orgunitdbs %]
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item %].html?l=[% lang %]">[% item %]</a>: [% dbinfo.get('dbnames').${item}.full %]</li>
+[% END %]
+</ul>
+[% ELSE %]
+<h3>[% msg.maketext("Sie haben dieser noch keine Kataloge zugeordnet.") %]</h3>
 [% END %]
 
         </div>

@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::Apache::Admin::OrganizationalUnits
+#  OpenBib::Handler::Apache::OrganizationalUnits
 #
 #  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Admin::OrganizationalUnits;
+package OpenBib::Handler::Apache::OrganizationalUnits;
 
 use strict;
 use warnings;

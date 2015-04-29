@@ -80,17 +80,21 @@ sub load {
     my $memc_key = "config:databaseinfotable";
 
     if ($self->{memc}){
-      $self->{dbinfo} = $self->{memc}->get($memc_key);
-      
-      $logger->debug("Got dbinfo from memcached");
-      
-      if ($config->{benchmark}) {
-          $btime=new Benchmark;
-          $timeall=timediff($btime,$atime);
-          $logger->info("Total time for is ".timestr($timeall));
-      }
+        my $dbinfo= $self->{memc}->get($memc_key);
 
-      return $self if ($self->{dbinfo});
+        if ($dbinfo){
+            $self->{dbinfo}= $dbinfo;
+            
+            $logger->debug("Got dbinfo from memcached");
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Total time for is ".timestr($timeall));
+            }
+            
+            return $self;
+        }
     }
 
     my $dbinfos = $self->get_schema->resultset('Databaseinfo')->search_rs(
@@ -166,6 +170,12 @@ sub get {
     return $self->{dbinfo}{$key} if (defined $self->{dbinfo}{$key});
 
     return;
+}
+
+sub has_dbinfo {
+    my ($self,$key) = @_;
+
+    return (defined $self->{dbinfo}{$key})?1:0;
 }
 
 sub connectDB {

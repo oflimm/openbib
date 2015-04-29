@@ -72,6 +72,13 @@ sub new {
     return $self;
 }
 
+sub get_generic_attribute {
+    my ($self,$attribute)=@_;
+
+    return (defined $self->{generic_attributes}{$attribute})?$self->{generic_attributes}{$attribute}:undef;
+}
+
+
 sub add {
     my ($self,$records)=@_;
 

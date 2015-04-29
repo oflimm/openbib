@@ -2141,7 +2141,7 @@ sub disconnectMemcached {
       return;
     }
 
-    $self->{memc}->disconnect_all;
+    $self->{memc}->disconnect_all if (defined $self->{memc});
     delete $self->{memc};
 
     return;
@@ -2179,9 +2179,9 @@ sub del_databaseinfo {
     $logger->debug("Database $dbname deleted");
 
     # Flushen und aktualisieren in Memcached
-    $self->{memc}->delete('config:databaseinfotable');
+    $self->{memc}->delete('config:databaseinfotable') if (defined $self->{memc});
     OpenBib::Config::DatabaseInfoTable->new;
-    $self->{memc}->delete('config:circulationinfotable');
+    $self->{memc}->delete('config:circulationinfotable') if (defined $self->{memc});
     OpenBib::Config::CirculationInfoTable->new;
     
     return;
@@ -2196,9 +2196,9 @@ sub update_databaseinfo {
     $self->get_schema->resultset('Databaseinfo')->single({ dbname => $dbinfo_ref->{dbname}})->update($dbinfo_ref);
 
     # Flushen und aktualisieren in Memcached
-    $self->{memc}->delete('config:databaseinfotable');
+    $self->{memc}->delete('config:databaseinfotable') if (defined $self->{memc});
     OpenBib::Config::DatabaseInfoTable->new;
-    $self->{memc}->delete('config:circulationinfotable');
+    $self->{memc}->delete('config:circulationinfotable') if (defined $self->{memc});
     OpenBib::Config::CirculationInfoTable->new;
     
     return;
@@ -2223,9 +2223,9 @@ sub new_databaseinfo {
     if ($new_database){
         
         # Flushen und aktualisieren in Memcached
-        $self->{memc}->delete('config:databaseinfotable');
+        $self->{memc}->delete('config:databaseinfotable') if (defined $self->{memc});
         OpenBib::Config::DatabaseInfoTable->new;
-        $self->{memc}->delete('config:circulationinfotable');
+        $self->{memc}->delete('config:circulationinfotable') if (defined $self->{memc});
         OpenBib::Config::CirculationInfoTable->new;
 
         return $new_database->id;
@@ -2338,7 +2338,7 @@ sub new_locationinfo {
     }
     
     if ($new_location){
-        $self->{memc}->delete('config:locationinfotable');
+        $self->{memc}->delete('config:locationinfotable') if (defined $self->{memc});
         OpenBib::Config::LocationInfoTable->new;
 
         return $new_location->id;
@@ -2400,7 +2400,7 @@ sub update_locationinfo {
         }
     }
 
-    $self->{memc}->delete('config:locationinfotable');
+    $self->{memc}->delete('config:locationinfotable') if (defined $self->{memc});
     OpenBib::Config::LocationInfoTable->new;
     
     return;
@@ -2424,7 +2424,7 @@ sub delete_locationinfo {
         $logger->error("Can't delete locationinfo: ".$@);
     }
 
-    $self->{memc}->delete('config:locationinfotable');
+    $self->{memc}->delete('config:locationinfotable') if (defined $self->{memc});
     OpenBib::Config::LocationInfoTable->new;
     
     return;

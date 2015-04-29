@@ -33,12 +33,14 @@ use utf8;
 use base qw(Class::Singleton);
 
 use Business::ISBN;
+use Cache::Memcached::libmemcached;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use MLDBM qw(DB_File Storable);
 use Storable ();
 
 use OpenBib::Config;
+use OpenBib::Config::File;
 use OpenBib::Schema::DBI;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
@@ -130,6 +132,29 @@ sub connectDB {
 
     return;
 
+}
+
+sub connectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config::File->instance;
+    
+    if (!exists $config->{memcached}){
+        $logger->debug("No memcached configured");
+        return;
+    }
+
+    # Verbindung zu Memchached herstellen
+    $self->{memc} = new Cache::Memcached::libmemcached($config->{memcached});
+
+    if (!$self->{memc}->set('isalive',1)){
+        $logger->fatal("Unable to connect to memcached");
+    }
+
+    return;
 }
 
 sub DESTROY {

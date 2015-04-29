@@ -68,16 +68,6 @@ sub new {
     $self->{api_user} = (defined $api_user)?$api_user:(defined $config->{bibsonomy_api_user})?$config->{bibsonomy_api_user}:undef;
     $self->{api_key}  = (defined $api_key )?$api_key :(defined $config->{bibsonomy_api_key} )?$config->{bibsonomy_api_key} :undef;
 
-    $self->{client}  = LWP::UserAgent->new;            # HTTP client
-
-    $logger->debug("Authenticating with credentials $self->{api_user}/$self->{api_key}");
-    
-    $self->{client}->credentials(                      # HTTP authentication
-        'www.bibsonomy.org:80',
-        'BibSonomyWebService',
-        $self->{api_user} => $self->{api_key}
-    );
-
     return $self;
 }
 
@@ -165,7 +155,7 @@ sub get_posts {
     
     $logger->debug("Request: $url");
 
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'utf-8');
+    my $response = $self->get_client->get($url)->decoded_content(charset => 'utf-8');
 
     $logger->debug("Response: $response");
     
@@ -177,18 +167,25 @@ sub get_posts {
         return new OpenBib::RecordList::Title;
     }
 
-    my $next = $root->findvalue('/bibsonomy/posts/@next');
+    my $next = 0;
 
-    $logger->debug("Next: $next");
-    
     if ($root->findvalue('/bibsonomy/posts/@next')){
         $next = $root->findvalue('/bibsonomy/posts/@next');
     }
 
+    $logger->debug("Next: $next");
+    
+
     if ($root->findvalue('/bibsonomy/posts/@end')){
-        $search_count = $root->findvalue('/bibsonomy/posts/@end');     
+        $end = $root->findvalue('/bibsonomy/posts/@end');     
     }
 
+    $logger->debug("End: $end");
+        
+    ($search_count) = $next =~m/end=(\d+)/;
+
+    $search_count = $end unless ($next);
+    
     my $recordlist = new OpenBib::RecordList::Title({
         generic_attributes => {
             hits   => $search_count,
@@ -326,9 +323,12 @@ sub get_posts {
         if ($generic_attributes_ref->{user}){
             $record->set_field({field => 'T4220', subfield => '', mult => 1, content => $self->conv($generic_attributes_ref->{user}) });
         }
-        
-        $logger->debug($post_node->toString());
 
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($record->get_fields()));
+            $logger->debug($post_node->toString());
+        }
+        
         my $enrichment = new OpenBib::Enrichment;
         
         # Anreicherung mit 'gleichen' (=gleicher bibkey) Titeln aus lokalen Katalogen
@@ -358,7 +358,7 @@ sub get_posts {
         }
 
         $record->set_circulation([]);
-        $record->set_holding([]);
+        $record->set_holding([{ 'X4000' => { 'content' => { 'dbname' => 'bibsonomy'}}}]);
         $recordlist->add($record);
     }
     
@@ -394,7 +394,7 @@ sub get_tags {
         $url="http://www.bibsonomy.org/api/tags?resourcetype=bibtex&resource=$bibkey";
         $logger->debug("Request: $url");
         
-        my $response = $self->{client}->get($url)->content;
+        my $response = $self->get_client->get($url)->content;
         
         $logger->debug("Response: $response");
         
@@ -427,7 +427,7 @@ sub get_tags {
             $url="http://www.bibsonomy.org/api/tags/$tag";
             $logger->debug("Request: $url");
             
-            my $response = $self->{client}->get($url)->content;
+            my $response = $self->get_client->get($url)->content;
         
             $logger->debug("Response: $response");
             
@@ -529,7 +529,7 @@ sub change_post {
         my $req = new HTTP::Request 'PUT' => $url;
         $req->content($newdata->toString());
 
-        my $response = $self->{client}->request($req)->decoded_content(charset => 'utf-8');
+        my $response = $self->get_client->request($req)->decoded_content(charset => 'utf-8');
 
         $logger->debug("Response: $response");
 
@@ -618,7 +618,7 @@ sub new_post {
     my $req = new HTTP::Request 'POST' => $url;
     $req->content($doc->toString());
 
-    my $response = $self->{client}->request($req)->decoded_content(charset => 'utf-8');
+    my $response = $self->get_client->request($req)->decoded_content(charset => 'utf-8');
 
     $logger->debug("Response: $response");
 
@@ -643,6 +643,37 @@ sub conv {
     $content=~s/</&lt;/g;
     
     return $content;
+}
+
+sub get_client {
+    my $self = shift;
+
+    if (defined $self->{client}){
+        return $self->{client};
+    }
+
+    $self->connectClient;
+
+    return $self->{client};
+}
+
+sub connectClient {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $self->{client}  = LWP::UserAgent->new;            # HTTP client
+
+    $logger->debug("Authenticating with credentials $self->{api_user}/$self->{api_key}");
+    
+    $self->{client}->credentials(                      # HTTP authentication
+        'www.bibsonomy.org:80',
+        'BibSonomyWebService',
+        $self->{api_user} => $self->{api_key}
+    );
+
+    return;
 }
 
 sub DESTROY {

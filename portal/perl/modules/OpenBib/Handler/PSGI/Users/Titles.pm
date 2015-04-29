@@ -374,7 +374,7 @@ sub show_record {
 
         my $isbn;
         
-        if (exists $record->get_fields->{T0540}[0]{content}){
+        if ($record->has_field("T0540") && defined $record->get_fields->{T0540}[0]{content}){
             $isbn = $record->get_fields->{T0540}[0]{content};
             $isbn =~s/ //g;
             $isbn =~s/-//g;

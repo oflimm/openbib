@@ -169,16 +169,10 @@ sub show_search_header {
 
     my $writer         = $self->param('writer');
     
-    if ($logger->is_debug){
-        $logger->debug("User: ".YAML::Dump($user));
-        $logger->debug("Session: ".YAML::Dump($session));
-    }
-    
     # CGI Args
     my $sb        = $query->param('sb')        || $config->{local_search_backend};
     
     my $trefferliste  = $query->param('trefferliste')  || '';
-
 
     my $container = OpenBib::Container->instance;
     $container->register('query',$query);
@@ -913,11 +907,6 @@ sub search {
     my $queryoptions = $self->param('qopts');
     my $searchquery  = $self->param('searchquery');
 
-    if ($logger->is_debug){
-        $logger->debug("SearchQuery: ".YAML::Syck::Dump($searchquery));
-        $logger->debug("QueryOptions: ".YAML::Syck::Dump($queryoptions));
-    }
-    
     my $atime=new Benchmark;
     my $timeall;
     
@@ -938,6 +927,8 @@ sub search {
     # heraussuchen.
     # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
 
+    $logger->debug("Args processed");
+    
     my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
 
     # Recherche starten

@@ -15,6 +15,7 @@
 <!-- Beginn Result Item -->
 [%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
     dburl    = dbinfo.get('urls').${database} ;
+
     request_base    = [] ;#num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
 
     IF searchquery.get_option('num') ;
@@ -32,8 +33,13 @@
 
     request_base = request_base.join(";");
 
-    start_range     = queryoptions.get_option('page')*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
-    end_range       = start_range - 1 + hits;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+#    start_range     = queryoptions.get_option('page')*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+#    end_range       = start_range - 1 + hits;
 
     allsubjects = {};
 
@@ -107,11 +113,14 @@
     </div>
   </div>
 
+[%# USE dumper;dumper.dump(recordlist.get_records) %]
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
 [%- END -%]
   <div class="ob-footer">
+[% query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page'] })%]
+[%# query_args_base = "${request_base};${searchquery.to_cgi_params}" %]
 [% PROCESS common/subtemplate name="pagination" %]
     <div class="ob-resulttime">
 <!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->

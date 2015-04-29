@@ -416,7 +416,14 @@ sub show_record {
 
         my $sysprofile= $config->get_profilename_of_view($view);
 
+        if ($logger->is_debug){
+            $logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
+        }
         $record->enrich_content({ profilename => $sysprofile });
+
+        if ($logger->is_debug){
+            $logger->debug("Nach Enrichment:".YAML::Dump($record->get_fields));
+        }
         
         if ($config->{benchmark}) {
             $btime=new Benchmark;
@@ -457,7 +464,7 @@ sub show_record {
 
         my $isbn;
         
-        if (exists $record->get_fields->{T0540}[0]{content}){
+        if ($record->has_field("T0540") && $record->get_fields->{T0540}[0]{content}){
             $isbn = $record->get_fields->{T0540}[0]{content};
             $isbn =~s/ //g;
             $isbn =~s/-//g;

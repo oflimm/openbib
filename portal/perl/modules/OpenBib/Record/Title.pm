@@ -1204,13 +1204,17 @@ sub load_circulation {
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($circinfotable->{circinfo}));
+    }
     
     # Ausleihinformationen der Exemplare
     my $circulation_ref = [];
     {
         my $circexlist=undef;
         
-        if (defined $circinfotable->get($self->{database}) && defined $circinfotable->get($self->{database})->{circ}) {
+        if ($circinfotable->has_circinfo($self->{database}) && defined $circinfotable->get($self->{database})->{circ}) {
 
             eval {
                 my $soap = SOAP::Lite
@@ -1244,7 +1248,7 @@ sub load_circulation {
         }
         
         # Anreichern mit Bibliotheksinformationen
-        if (defined $circinfotable->get($self->{database})->{circ}
+        if ($circinfotable->has_circinfo($self->{database}) && defined $circinfotable->get($self->{database})->{circ}
                 && @{$circulation_ref}) {
             for (my $i=0; $i < scalar(@{$circulation_ref}); $i++) {
                 
@@ -1665,7 +1669,7 @@ sub to_normalized_isbn13 {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $thisisbn = $self->{_fields}{"T0540"}[0]{content};
+    my $thisisbn = ($self->has_field("T0540"))?$self->{_fields}{"T0540"}[0]{content}:"";
 
     $logger->debug("ISBN: $thisisbn");
 

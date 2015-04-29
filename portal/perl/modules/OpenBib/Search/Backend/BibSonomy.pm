@@ -56,6 +56,15 @@ sub new {
     my $database        = exists $arg_ref->{database}
         ? $arg_ref->{database}                : undef;
 
+    my $options            = exists $arg_ref->{options}
+        ? $arg_ref->{options}                 : {};
+
+    my $searchquery        = exists $arg_ref->{searchquery}
+        ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
+
+    my $queryoptions       = exists $arg_ref->{queryoptions}
+        ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -65,15 +74,28 @@ sub new {
 
     bless ($self, $class);
 
-    $self->{_database}  = $database if ($database);
-    $self->{args}          = $arg_ref;
+    if ($database){
+        $self->{_database}      = $database;
+    }
+    
+    if ($options){
+        $self->{_options}       = $options;
+    }
+
+    $self->{_queryoptions}  = $queryoptions;
+    
+    $self->{_searchquery}   = $searchquery;
 
     return $self;
 }
 
 sub search {
-    my ($self) = @_;
+    my ($self,$arg_ref) = @_;
 
+    # Set defaults search parameters
+    my $options_ref          = exists $arg_ref->{options}
+        ? $arg_ref->{options}        : {};
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -81,9 +103,19 @@ sub search {
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
+    if ($logger->is_debug){
+        $logger->debug("Options: ".YAML::Dump($arg_ref));
+    }
+    
+    # Used Parameters
+    my $sorttype          = (defined $self->{_options}{srt})?$self->{_options}{srt}:$queryoptions->get_option('srt');
+    my $sortorder         = (defined $self->{_options}{srto})?$self->{_options}{srto}:$queryoptions->get_option('srto');
+    
     # Pagination parameters
-    my $page              = $queryoptions->get_option('page');
-    my $num               = $queryoptions->get_option('num');
+    # Pagination parameters
+    my $page              = (defined $self->{_options}{page})?$self->{_options}{page}:$queryoptions->get_option('page');
+    my $num               = (defined $self->{_options}{num})?$self->{_options}{num}:$queryoptions->get_option('num');
+    my $collapse          = (defined $self->{_options}{clp})?$self->{_options}{clp}:$queryoptions->get_option('clp');
 
     my $offset            = $page*$num-$num;
 
@@ -96,10 +128,14 @@ sub search {
     
     my $recordlist = OpenBib::BibSonomy->new()->get_posts($self->{_querystring});
 
-    $self->{resultcount}   = $recordlist->get_size();
-    $self->{_matches}      = $recordlist;
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($recordlist->get_records));
+    }
+
+    $self->{resultcount}    = $recordlist->get_generic_attribute("hits");
+    $self->{_matches}       = $recordlist;
     
-    return $self;
+    return;
 }
 
 sub get_records {

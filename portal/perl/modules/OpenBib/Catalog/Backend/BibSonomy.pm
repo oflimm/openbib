@@ -74,19 +74,22 @@ sub new {
     $self->{api_user} = (defined $api_user)?$api_user:(defined $config->{bibsonomy_api_user})?$config->{bibsonomy_api_user}:undef;
     $self->{api_key}  = (defined $api_key )?$api_key :(defined $config->{bibsonomy_api_key} )?$config->{bibsonomy_api_key} :undef;
 
-    $self->{client}  = LWP::UserAgent->new;            # HTTP client
-
-    $logger->debug("Authenticating with credentials $self->{api_user}/$self->{api_key}");
-    
-    $self->{client}->credentials(                      # HTTP authentication
-        'www.bibsonomy.org:80',
-        'BibSonomyWebService',
-        $self->{api_user} => $self->{api_key}
-    );
     $self->{database}  = $database if ($database);
-    $self->{args}          = $arg_ref;
+    $self->{args}      = $arg_ref;
 
     return $self;
+}
+
+sub get_client {
+    my $self = shift;
+
+    if (defined $self->{client}){
+        return $self->{client};
+    }
+
+    $self->connectClient;
+
+    return $self->{client};
 }
 
 sub load_full_title_record {
@@ -187,7 +190,7 @@ sub get_subjects {
             $url="http://www.bibsonomy.org/api/tags/$tag";
             $logger->debug("Request: $url");
             
-            my $response = $self->{client}->get($url)->content;
+            my $response = $self->get_client->get($url)->content;
         
             $logger->debug("Response: $response");
             
@@ -211,6 +214,25 @@ sub get_subjects {
     }
 
     return \@tags;
+}
+
+sub connectClient {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $self->{client}  = LWP::UserAgent->new;            # HTTP client
+
+    $logger->debug("Authenticating with credentials $self->{api_user}/$self->{api_key}");
+    
+    $self->{client}->credentials(                      # HTTP authentication
+        'www.bibsonomy.org:80',
+        'BibSonomyWebService',
+        $self->{api_user} => $self->{api_key}
+    );
+
+    return;
 }
 
 sub DESTROY {

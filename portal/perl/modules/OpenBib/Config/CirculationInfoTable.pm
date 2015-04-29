@@ -77,17 +77,21 @@ sub load {
     my $memc_key = "config:circulationinfotable";
 
     if ($self->{memc}){
-      $self->{circinfo} = $self->{memc}->get($memc_key);
-      
-      $logger->debug("Got circinfo from memcached");
-      
-      if ($config->{benchmark}) {
-          $btime=new Benchmark;
-          $timeall=timediff($btime,$atime);
-          $logger->info("Total time for is ".timestr($timeall));
-      }
+        my $circinfo = $self->{memc}->get($memc_key);
 
-      return $self if ($self->{circinfo});
+        if ($circinfo){
+            $self->{circinfo} = $circinfo;
+      
+            $logger->debug("Got circinfo from memcached");
+      
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Total time for is ".timestr($timeall));
+            }
+            
+            return $self;
+        }
     }
     
     my $dbinfos = $self->get_schema->resultset('Databaseinfo')->search_rs(
@@ -129,6 +133,12 @@ sub get {
     return $self->{circinfo}{$key} if (defined $self->{circinfo}{$key});
 
     return;
+}
+
+sub has_circinfo {
+    my ($self,$key) = @_;
+
+    return (defined $self->{circinfo}{$key})?1:0;
 }
 
 sub connectDB {

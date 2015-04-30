@@ -204,6 +204,9 @@
           <li><b>02.06.02.25</b> <a [% IF NOT have_classification.${"02.06.02.25"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.25*">Evangelische Bibliothek Köln</a>
           <li><b>02.06.02.26</b> <a [% IF NOT have_classification.${"02.06.02.26"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.26*">Poetica-Sammlung</a>
           <li><b>02.06.02.27</b> <a [% IF NOT have_classification.${"02.06.02.27"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.27*">Portraitsammlung</a>
+          <li><b>02.06.02.28</b> <a [% IF NOT have_classification.${"02.06.02.28"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.28*"></a>
+          <li><b>02.06.02.29</b> <a [% IF NOT have_classification.${"02.06.02.29"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.29*">Totenzettelsammlung</a>
+          <li><b>02.06.02.30</b> <a [% IF NOT have_classification.${"02.06.02.30"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.30*">Zeitungsausschnittsammlung</a>
         </ul>  
       </li>
       <li><b>02.06.03</b> <a [% IF NOT have_classification.${"02.06.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.03*">Einzelne herausragende Objekte</a></li>

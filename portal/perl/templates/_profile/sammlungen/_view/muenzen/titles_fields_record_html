@@ -28,6 +28,9 @@
     ELSIF field == '0410' ;
        field_description = msg.maketext("Bereich");
        searchfield = 'ft0410' ;
+    ELSIF field == '0531' ;
+       field_description = msg.maketext("T0531-muenzen");
+       searchfield = 'ft0531' ;
     ELSIF field == '0533' ;
        field_description = msg.maketext("T0533-muenzen");
        searchfield = 'ft0533' ;

@@ -65,6 +65,16 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Bereich") %]</a></li>
 [% END %]
+[% IF active_submenu == "register_0531" %]
+  <li class="active"><strong>[% msg.maketext("T0531-muenzen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0531.html?l=[% lang %];page=1">[% msg.maketext("T0531-muenzen") %]</a></li>
+[% END %]
+[% IF active_submenu == "register_0533" %]
+  <li class="active"><strong>[% msg.maketext("T0533-muenzen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0533.html?l=[% lang %];page=1">[% msg.maketext("T0533-muenzen") %]</a></li>
+[% END %]
 [% IF active_submenu == "register_0800" %]
   <li class="active"><strong>[% msg.maketext("Material") %]</strong></li>
 [% ELSE %]

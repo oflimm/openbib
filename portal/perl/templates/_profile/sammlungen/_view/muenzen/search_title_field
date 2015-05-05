@@ -33,6 +33,8 @@
           "ft0351" = "Legende Rückseite: nicht aufgelöst"
           "ft0352" = "Legende Rückseite: aufgelöst, nur Text"
           "ft0353" = "Legende Rückseite: aufgelöst, Editionstext"
+          "ft0531" = msg.maketext("T0531-muenzen")
+          "ft0533" = msg.maketext("T0533-muenzen")
           "ft0619" = msg.maketext("Regierungsjahr (Alexandrinische Münzen)")
           "ft0700" = msg.maketext("Stadt")
           "ft0710" = msg.maketext("Region")

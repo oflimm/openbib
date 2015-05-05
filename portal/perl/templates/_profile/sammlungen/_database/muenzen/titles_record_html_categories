@@ -175,7 +175,7 @@ FOREACH category IN categories;
 
     CASE "T0533";
          searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').ft0531.prefix;
+         searchprefix  = config.get('searchfield').ft0533.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";

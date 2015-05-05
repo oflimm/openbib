@@ -120,6 +120,25 @@ while (my $magistrate = $magistrates->next()){
     push @{$result_store->{magistrate}}, $magistrate_content;
 }       
 
+# Herrscherfamilie
+
+my $ruling_families = $catalog->{schema}->resultset('TitleField')->search(
+    {
+        'field' => 531
+    },
+    {
+        group_by => ['content'],
+        order_by => ['content ASC'],
+        select => ['content'],
+    }
+);
+
+while (my $ruling_family = $ruling_families->next()){
+    my $ruling_family_content = $ruling_family->content;
+    $ruling_family_content =~s/"/\%22/g;
+    push @{$result_store->{ruling_family}}, $ruling_family_content;
+}       
+
 # Material
 
 my $materials = $catalog->{schema}->resultset('TitleField')->search(

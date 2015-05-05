@@ -105,6 +105,9 @@ $(document).ready(function(){
    magistrate_string = searchform_choices.magistrate.join('", "') ;
    magistrate_string = "\"${magistrate_string}\"";
 
+   ruling_family_string = searchform_choices.ruling_family.join('", "') ;
+   ruling_family_string = "\"${ruling_family_string}\"";
+
 %]
   
 $(document).ready(function(){
@@ -168,6 +171,18 @@ $(document).ready(function(){
       $('#autocomplete_t0533').focus(function() {
          $('#autocomplete_t0533').autocomplete("search", "");
       });
+
+
+      var available_ruling_families = [ [% ruling_family_string %] ];
+
+      $('#autocomplete_t0531').autocomplete({
+         source : available_ruling_families,
+         minLength : 0
+      });
+      $('#autocomplete_t0531').focus(function() {
+         $('#autocomplete_t0531').autocomplete("search", "");
+      });
+
 
       var available_materials = [ [% material_string %] ];
 
@@ -304,6 +319,15 @@ $(document).ready(function(){
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0410-muenzen") %]</label>
 <input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
+
+[%- cgiparam = searchfield.t0531.prefix;
+    this_searchfield = 't0531';
+ -%]
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0531-muenzen") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
 
 [%- cgiparam = searchfield.t0533.prefix;
     this_searchfield = 't0533';

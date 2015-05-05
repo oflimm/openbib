@@ -284,6 +284,23 @@ $(document).ready(function(){
 <input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
+
+[%- cgiparam = searchfield.t0531.prefix;
+    this_searchfield = 't0531';
+ -%]
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0531-muenzen") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.t0533.prefix;
+    this_searchfield = 't0533';
+ -%]
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0533-muenzen") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
 [%- cgiparam = searchfield.t0410.prefix;
     this_searchfield = 't0410';
  -%]

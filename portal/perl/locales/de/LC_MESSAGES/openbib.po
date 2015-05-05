@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-04-22 11:11+0200\n"
+"PO-Revision-Date: 2015-05-05 09:00+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2363,7 +2363,7 @@ msgstr "Beruf/Weltanschauung"
 #: ../templates/authenticators_record_html:61 ../templates/clusters_html:62
 #: ../templates/clusters_record_html:61 ../templates/databases_html:92
 #: ../templates/databases_record_html:62 ../templates/locations_html:108
-#: ../templates/orgunits_html:66 ../templates/orgunits_record_html:67
+#: ../templates/orgunits_html:66 ../templates/orgunits_record_html:68
 #: ../templates/profiles_html:62 ../templates/profiles_record_html:65
 #: ../templates/profiles_record_html:75 ../templates/servers_html:64
 #: ../templates/servers_record_html:62 ../templates/topics_html:63
@@ -5993,7 +5993,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:161
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:271
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:314
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:331
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:137
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:143
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:151
@@ -7731,7 +7731,7 @@ msgstr "Katalog-Profil bearbeiten"
 #: ../templates/admin_profiles_record_edit:39
 #: ../templates/admin_profiles_record_html:39 ../templates/admin_views_html:78
 #: ../templates/admin_views_record_edit:84 ../templates/orgunits_html:39
-#: ../templates/orgunits_record_html:39 ../templates/profiles_html:39
+#: ../templates/orgunits_record_html:38 ../templates/profiles_html:39
 #: ../templates/profiles_html:59 ../templates/profiles_record_html:38
 #: ../templates/views_record_html:65
 msgid "Katalog-Profile"
@@ -7782,7 +7782,7 @@ msgstr "Katalogauswahl zu diesem View"
 #: ../templates/databases_record_html:38 ../templates/databases_rss_html:39
 #: ../templates/databases_rss_record_html:55
 #: ../templates/home_html_bottom_left:47 ../templates/orgunits_html:66
-#: ../templates/profiles_record_html:75
+#: ../templates/orgunits_record_html:79 ../templates/profiles_record_html:75
 #: ../templates/searchprofiles_record_html:63
 #: ../templates/titles_dbis_recommendations_html:40
 #: ../templates/titles_html:41 ../templates/titles_popular_by_database_html:44
@@ -9573,8 +9573,9 @@ msgstr "Nachname"
 #: ../templates/admin_templates_record_edit:85
 #: ../templates/cartitems_html_actions:44
 #: ../templates/cartitems_html_actions:63 ../templates/databases_html:92
-#: ../templates/orgunits_html:66 ../templates/profiles_record_html:75
-#: ../templates/templates_html:62 ../templates/templates_record_html:60
+#: ../templates/orgunits_html:66 ../templates/orgunits_record_html:64
+#: ../templates/profiles_record_html:75 ../templates/templates_html:62
+#: ../templates/templates_record_html:60
 #: ../templates/titles_record_html_actions:54
 #: ../templates/titles_record_html_actions:75
 #: ../templates/users_searchprofiles_html:84
@@ -10203,7 +10204,7 @@ msgstr "Organisationseinheit bearbeiten"
 #: ../templates/admin_orgunits_record_delete_confirm:41
 #: ../templates/admin_orgunits_record_edit:41
 #: ../templates/admin_orgunits_record_html:41 ../templates/orgunits_html:41
-#: ../templates/orgunits_record_html:41 ../templates/profiles_record_html:72
+#: ../templates/orgunits_record_html:40 ../templates/profiles_record_html:72
 msgid "Organisationseinheiten"
 msgstr "Organisationseinheiten"
 
@@ -11026,6 +11027,7 @@ msgstr "Regent"
 msgid "Regenten"
 msgstr "Regenten"
 
+#: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:36
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:249
 msgid "Regierungsjahr (Alexandrinische Münzen)"
 msgstr "Regierungsjahr (Alexandrinische Münzen)"
@@ -11047,7 +11049,7 @@ msgstr "Regierungsjahr (Alexandrinische Münzen)"
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_subject_html:70
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:165
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:20
-#: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:37
+#: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:38
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:8
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:59
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:61
@@ -11627,6 +11629,10 @@ msgstr ""
 #: ../modules/OpenBib/Handler/Apache.pm:759
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "Sie greifen auf eine nicht autorisierte Session zu"
+
+#: ../templates/orgunits_record_html:87
+msgid "Sie haben dieser noch keine Kataloge zugeordnet."
+msgstr "Sie haben dieser noch keine Kataloge zugeordnet."
 
 #: ../templates/users_circulations_make_order:60
 msgid "Sie haben dieses Medium bereits bestellt"
@@ -12334,7 +12340,7 @@ msgstr "Sprung in externe Recherchequellen"
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:59
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:166
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:21
-#: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:36
+#: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:37
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:9
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:54
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:56
@@ -12931,7 +12937,7 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:271
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:118
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:119
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:314
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:331
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:113
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:128
@@ -14732,7 +14738,7 @@ msgid "T0410-inst404abklatsch"
 msgstr "Aufbewahrungsort"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:22
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:291
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:308
 msgid "T0410-muenzen"
 msgstr "Politischer Bereich"
 
@@ -15561,7 +15567,7 @@ msgid "T0508-einbaende"
 msgstr "Bibl. Nachweis"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:40
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:299
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:316
 #: ../templates/_profile/sammlungen/_view/muenzen/titles_record_html_actions:14
 msgid "T0508-muenzen"
 msgstr "Referenz(en)"
@@ -16248,6 +16254,10 @@ msgstr "Bezugswerk"
 msgid "T0531"
 msgstr "Frühere Ausg."
 
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:292
+msgid "T0531-muenzen"
+msgstr "Mitglied Herrscherfamilie"
+
 #: ../templates/_database/bestellungen/visible_categories_title:84
 #: ../templates/_database/inst001/visible_categories_title:79
 #: ../templates/_database/inst404card/visible_categories_title:81
@@ -16331,6 +16341,10 @@ msgstr "Früherer Titel"
 #: ../templates/visible_categories_title:82
 msgid "T0533"
 msgstr "Spätere Ausg."
+
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:300
+msgid "T0533-muenzen"
+msgstr "Magistrat / Statthalter"
 
 #: ../templates/_database/bestellungen/visible_categories_title:77
 #: ../templates/_database/inst001/visible_categories_title:72
@@ -16882,7 +16896,7 @@ msgid "T0600-inst404abklatsch"
 msgstr "Schublade"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:43
-#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:307
+#: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:324
 msgid "T0600-muenzen"
 msgstr "Kommentar"
 

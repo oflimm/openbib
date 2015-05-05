@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-05-05 09:01+0200\n"
+"PO-Revision-Date: 2015-05-05 11:08+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -15910,7 +15910,7 @@ msgstr "Earlier edition"
 
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:292
 msgid "T0531-muenzen"
-msgstr "Mitglied Herrscherfamilie"
+msgstr "Member ruling family"
 
 #: ../templates/_database/bestellungen/visible_categories_title:84
 #: ../templates/_database/inst001/visible_categories_title:79
@@ -15998,7 +15998,7 @@ msgstr "Later edition"
 
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:300
 msgid "T0533-muenzen"
-msgstr "Magistrat / Statthalter"
+msgstr "Magistrate"
 
 #: ../templates/_database/bestellungen/visible_categories_title:77
 #: ../templates/_database/inst001/visible_categories_title:72

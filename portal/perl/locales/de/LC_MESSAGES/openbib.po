@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-05-05 09:00+0200\n"
+"PO-Revision-Date: 2015-05-05 11:09+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -16344,7 +16344,7 @@ msgstr "Spätere Ausg."
 
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:300
 msgid "T0533-muenzen"
-msgstr "Magistrat / Statthalter"
+msgstr "Magistrat"
 
 #: ../templates/_database/bestellungen/visible_categories_title:77
 #: ../templates/_database/inst001/visible_categories_title:72

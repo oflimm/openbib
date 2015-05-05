@@ -29,8 +29,8 @@ title:
   'katalognummer': '0010'
   'bereich': '0410' # Verlagsort
   'praegejahr': '0619'
-#  'vorderseite': '0331'
-#  'rueckseite': '0332'
+  'vorderseite': '0531' # Mitglied Herrscherfamilie
+  'rueckseite': '0533'  # Magistrat / Statthalter
   'datierung-von': '0426'
   'datierung-bis': '0427'
   'datierung': '0428'

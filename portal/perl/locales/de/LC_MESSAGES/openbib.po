@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-05-05 11:09+0200\n"
+"PO-Revision-Date: 2015-05-05 11:49+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -14543,7 +14543,7 @@ msgstr "Provenienz"
 
 #: ../templates/_profile/sammlungen/_database/totenzettel/visible_categories_title:18
 msgid "T0370-totenzettel"
-msgstr "Vorname"
+msgstr "Geburtsname"
 
 #: ../templates/_profile/sammlungen/_database/zpe/visible_categories_title:23
 msgid "T0370-zpe"

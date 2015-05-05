@@ -165,6 +165,22 @@ FOREACH category IN categories;
          content   = "${highlightquery(searchquery,content)}";
          content   = "<a href=\"${localurl}\">${content}</a>";
 
+    CASE "T0531";
+         searchterm    = uri_escape(item.content);
+         searchprefix  = config.get('searchfield').ft0531.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         content   = "${highlightquery(searchquery,content)}";
+         content   = "<a href=\"${localurl}\">${content}</a>";
+
+    CASE "T0533";
+         searchterm    = uri_escape(item.content);
+         searchprefix  = config.get('searchfield').ft0531.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         content   = "${highlightquery(searchquery,content)}";
+         content   = "<a href=\"${localurl}\">${content}</a>";
+
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;
 #            previssues = content.split("---&gt;: ");

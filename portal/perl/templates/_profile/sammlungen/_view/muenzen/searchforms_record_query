@@ -103,7 +103,7 @@ $(document).ready(function(){
    material_string = "\"${material_string}\"";
 
    magistrate_string = searchform_choices.magistrate.join('", "') ;
-   magistrate_string = "\"${material_string}\"";
+   magistrate_string = "\"${magistrate_string}\"";
 
 %]
   

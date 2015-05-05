@@ -17,9 +17,11 @@
                 'Rückseite', # msg.maketext("Rückseite") Rückseite Legende+Beschreibung
 #                'T0010', # msg.maketext("T0010-muenzen") Katalognummer
                 'T0100', # msg.maketext("T0100-muenzen") Herrscher (Regent)
+                'T0531', # msg.maketext("T0531-muenzen") Mitglied Herrscherfamilie
                 'T0619', # msg.maketext("T0619-muenzen") Regierungsjahr (Praegejahr)
                 'T0700', # msg.maketext("T0700-muenzen") Stadt
                 'T0410', # msg.maketext("T0410-muenzen") Politischer Bereich
+                'T0533', # msg.maketext("T0533-muenzen") Magistrat
                 'T0710', # msg.maketext("T0710-muenzen") Region
                 'T0428', # msg.maketext("T0428-muenzen") Datierung als Text
 #                'T0332', # msg.maketext("T0332-muenzen") Vorderseite Legende

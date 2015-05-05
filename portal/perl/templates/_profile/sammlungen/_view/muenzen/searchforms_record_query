@@ -102,6 +102,9 @@ $(document).ready(function(){
    material_string = searchform_choices.material.join('", "') ;
    material_string = "\"${material_string}\"";
 
+   magistrate_string = searchform_choices.magistrate.join('", "') ;
+   magistrate_string = "\"${material_string}\"";
+
 %]
   
 $(document).ready(function(){
@@ -155,6 +158,16 @@ $(document).ready(function(){
          $('#autocomplete_t0410').autocomplete("search", "");
       });
 
+
+      var available_magistrates = [ [% magistrate_string %] ];
+
+      $('#autocomplete_t0533').autocomplete({
+         source : available_magistrates,
+         minLength : 0
+      });
+      $('#autocomplete_t0533').focus(function() {
+         $('#autocomplete_t0533').autocomplete("search", "");
+      });
 
       var available_materials = [ [% material_string %] ];
 
@@ -284,12 +297,11 @@ $(document).ready(function(){
 <input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
-
-[%- cgiparam = searchfield.t0531.prefix;
-    this_searchfield = 't0531';
+[%- cgiparam = searchfield.t0410.prefix;
+    this_searchfield = 't0410';
  -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0531-muenzen") %]</label>
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0410-muenzen") %]</label>
 <input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
@@ -298,14 +310,6 @@ $(document).ready(function(){
  -%]
 <div class="ym-fbox-text">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0533-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-
-[%- cgiparam = searchfield.t0410.prefix;
-    this_searchfield = 't0410';
- -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0410-muenzen") %]</label>
 <input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 

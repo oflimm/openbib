@@ -100,7 +100,7 @@
     <div class="ym-gbox-left">
 
 <div class="ob-resultlist">
-  <h3>[% dbinfo.get('dbnames').${database}.short %]</h3>
+  <div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
   <div class="ob-resultheader">
     <div class="left">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>

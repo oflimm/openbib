@@ -4195,6 +4195,14 @@ convtab:
         index:
           'freesearch': 1
           't0508': 1
+      '0531':        # Mitglied Herrscherfamilie
+        index:
+          'freesearch': 1
+          't0531': 1
+      '0533':         # Magistrat / Statthalter
+        index:
+          'freesearch': 1
+          't0533': 1
       '0540':         # ISBN
         index:
           'isbn': 1

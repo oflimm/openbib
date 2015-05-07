@@ -204,11 +204,17 @@ sub load_full_record {
         $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
     }
 
-    my $fields   = $record->get_fields;
-    my $holdings = $record->get_holding;
+    my $fields          = $record->get_fields;
+    my $holdings        = $record->get_holding;
+    my $same_records    = $record->get_same_records;
+    my $similar_records = $record->get_similar_records;
+    my $related_records = $record->get_related_records;
 
     $self->set_fields($fields);
     $self->set_holding($holdings);
+    $self->set_same_records($same_records);
+    $self->set_related_records($related_records);
+    $self->set_similar_records($similar_records);
 
     if ($self->{memc}){
         $self->{memc}->set($memc_key,{ fields => $fields, holdings => $holdings },$config->{memcached_expiration}{'record:title:full'});
@@ -1562,6 +1568,12 @@ sub set_same_records {
     return $self;
 }
 
+sub has_same_records {
+    my ($self)=@_;
+
+    return ($self->{_same_records}->get_size())?1:0;
+}
+
 sub get_same_records {
     my ($self)=@_;
 
@@ -1660,7 +1672,7 @@ sub to_bibkey {
         'T0425' => $self->{_fields}->{'T0425'},
     };
 
-    return OpenBib::Common::Util::gen_bibkey({ fields => $bibkey_record_ref});
+    return ($self->has_field('T5050'))?$self->get_field({field => 'T5050', mult => 1}):OpenBib::Common::Util::gen_bibkey({ fields => $bibkey_record_ref});
 }
 
 sub to_normalized_isbn13 {

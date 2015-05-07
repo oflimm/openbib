@@ -409,6 +409,8 @@ sub get_common_holdings {
 
     return () unless (@{$databases_ref} && defined $dbh);
 
+    return () unless ($selector eq "ISBN13" || $selector eq "ISSN" || $selector eq "BibKey" || $selector eq "WorkKey");
+    
     my $common_holdings_ref = [];
 
     my %all_by_matchkey             = ();
@@ -417,7 +419,8 @@ sub get_common_holdings {
     
     my $sql_string = ($selector eq "ISBN13")?"select * from all_titles_by_isbn where dbname in ($in_select_string)":
         ($selector eq "ISSN")?"select * from all_titles_by_issn where dbname in ($in_select_string)":
-            ($selector eq "BibKey")?"select * from all_titles_by_bibkey where dbname in ($in_select_string)":"select * from all_titles_by_isbn where dbname in ($in_select_string)";
+            ($selector eq "BibKey")?"select * from all_titles_by_bibkey where dbname in ($in_select_string)":
+                ($selector eq "WorkKey")?"select * from all_titles_by_workkey where dbname in ($in_select_string)":"select * from all_titles_by_isbn where dbname in ($in_select_string)";
     
     $logger->debug($sql_string);
     
@@ -427,7 +430,8 @@ sub get_common_holdings {
 
     my $matchkey_column = ($selector eq "ISBN13")?'isbn':
         ($selector eq "ISSN")?'issn':
-            ($selector eq "BibKey")?'bibkey':'isbn';
+            ($selector eq "BibKey")?'bibkey':
+                ($selector eq "WorkKey")?'workkey':'isbn';
 
     $logger->debug("Matchkey Column for Selector $selector is $matchkey_column");
     

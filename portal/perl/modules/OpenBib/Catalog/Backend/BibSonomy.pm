@@ -104,6 +104,8 @@ sub load_full_title_record {
 
     # Retrieve information
 
+    $logger->debug("Loading Record with id $id");
+    
     my $recordlist = OpenBib::BibSonomy->new()->get_posts({ start => 0, end => 20 , bibkey => $id});
 
     # Record is fully qualified, so get first record in recordlist

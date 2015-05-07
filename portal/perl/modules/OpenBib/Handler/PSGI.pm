@@ -1077,6 +1077,16 @@ sub add_default_ttdata {
         return encode_utf8($string);
     };
 
+    $ttdata->{'create_title_record'}    = sub {
+        my ($arg_ref) = @_;
+        return OpenBib::Record::Title->new($arg_ref);
+    };
+
+    $ttdata->{'create_title_recordlist'}    = sub {
+        my ($arg_ref) = @_;
+        return OpenBib::RecordList::Title->new($arg_ref);
+    };
+    
     return $ttdata;
 }
 

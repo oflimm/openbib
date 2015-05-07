@@ -61,7 +61,9 @@
 
 <div class="ob-facets">
 
-<h4>[% msg.maketext("Weitere Optionen") %]</h4>
+<p/>
+
+<div class="ob-category_header">[% msg.maketext("Weitere Optionen") %]</div>
 
 [% cgi_querystring = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = ['typ'] })%]
 
@@ -106,7 +108,10 @@
     <div class="ym-gbox-left">
 
 <div class="ob-resultlist">
-  <h3>[% dbinfo.get('dbnames').${database}.short %]</h3>
+  <div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
+
+  <p/>
+
   <div class="ob-resultheader">
     <div class="left">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>

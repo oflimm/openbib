@@ -4,7 +4,7 @@
 #
 #  Objektorientiertes Interface zum BibSonomy API
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -108,21 +108,28 @@ sub get_posts {
     if (defined $user && $user eq "self"){
         $user = $self->{api_user};
     }
+
+    $logger->debug("Bibkey: $bibkey");
     
     my $url='http://www.bibsonomy.org/api/posts?';
 
     # Type prefix?
     if (defined $bibkey){
-        if ($bibkey =~/^bm_(.+)$/){
-            $bibkey=$1;
+        if ($bibkey =~/^bm_(.+?)_([a-z0-9]+)$/){
+            $user=$1;
+            $bibkey=$2;
             $type="bookmark";
         }
-        elsif ($bibkey =~/^bt_(.+)$/){
-            $bibkey=$1;
+        elsif ($bibkey =~/^bt_(.+?)_([a-z0-9]+)$/){
+            $user=$1;
+            $bibkey=$2;
             $type="publication";
         }
     }
 
+    $logger->debug("Effektiver Bibkey: $bibkey");
+    $logger->debug("Effektiver User: $user");
+    
     if (defined $type && defined $valid_type{$type}){
         $url.='resourcetype='.$valid_type{$type};
     }
@@ -193,30 +200,36 @@ sub get_posts {
         }
     });
 
+    # ISBNs zu gleichen Bibkeys merken und anreichern, um mehr Titel im
+    # eigenen Bestand ausfindig machen zu koennen
+
+    my $bibkey_isbn_ref = {};
+
     foreach my $post_node ($root->findnodes('/bibsonomy/posts/post')) {
         my $generic_attributes_ref = {} ;
         
         my $recordtype = ($post_node->findvalue('bibtex/@interhash'))?'publication':'bookmark';
+        $generic_attributes_ref->{user}      = $post_node->findvalue('user/@name');
 
         my $id;
         
         if ($recordtype eq "publication"){
-            $id = "bt_".$post_node->findvalue('bibtex/@interhash');
+            $id = "bt_".$generic_attributes_ref->{user}."_".$post_node->findvalue('bibtex/@interhash');
             $generic_attributes_ref->{bibkey}    = "1".$post_node->findvalue('bibtex/@interhash');
             $generic_attributes_ref->{interhash} = $post_node->findvalue('bibtex/@interhash');
             $generic_attributes_ref->{intrahash} = $post_node->findvalue('bibtex/@intrahash');
         }
         else {
-            $id = "bm_".$post_node->findvalue('bookmark/@interhash');
+            $id = "bm_".$generic_attributes_ref->{user}."_".$post_node->findvalue('bookmark/@interhash');
             $generic_attributes_ref->{bibkey}    = "1".$post_node->findvalue('bookmark/@interhash');
             $generic_attributes_ref->{interhash} = $post_node->findvalue('bookmark/@interhash');
             $generic_attributes_ref->{intrahash} = $post_node->findvalue('bookmark/@intrahash');
         }
 
         $generic_attributes_ref->{xmldata}   = $post_node->toString();
-        $generic_attributes_ref->{user}      = $post_node->findvalue('user/@name');
         $generic_attributes_ref->{desc}      = $post_node->findvalue('@description');
         $generic_attributes_ref->{subjects}      = [];
+
 
         foreach my $tag_node ($post_node->findnodes('tag')){
             push @{$generic_attributes_ref->{subjects}}, $tag_node->getAttribute('name');
@@ -227,6 +240,8 @@ sub get_posts {
         }
         
         my $record = new OpenBib::Record::Title({ database => 'bibsonomy', id => $id, generic_attributes => $generic_attributes_ref });
+
+        $record->set_field({field => 'T5050', subfield => '', mult => 1, content => $generic_attributes_ref->{bibkey}});
 
         my $mult = 1;
         foreach my $subject (@{$generic_attributes_ref->{subjects}}){
@@ -297,7 +312,9 @@ sub get_posts {
                 my $misc = $post_node->findvalue('bibtex/@misc');
 
                 if ($misc =~/isbn = \{([^}]+)\}/){
-                    $record->set_field({field => 'T0540', subfield => '', mult => 1, content => $self->conv($1) });
+                    my $isbn = $1;
+                    $bibkey_isbn_ref->{$generic_attributes_ref->{bibkey}} = $isbn;
+                    $record->set_field({field => 'T0540', subfield => '', mult => 1, content => $self->conv($isbn) });
                 }
             }
 
@@ -329,40 +346,113 @@ sub get_posts {
             $logger->debug($post_node->toString());
         }
         
+        $record->set_circulation([]);
+        $record->set_holding([]);
+        $recordlist->add($record);
+    }
+
+
+    my $enriched_recordlist = new OpenBib::RecordList::Title({
+        generic_attributes => {
+            hits   => $search_count,
+            next   => $next,
+        }
+    });
+
+    # Jetzt nachtraegliches Anreichern mit gefundenen ISBNs
+    
+    foreach my $record ($recordlist->get_records){
+        if (!$record->has_field('T0540') && defined $bibkey_isbn_ref->{$record->get_field({ field => 'T5050', mult => 1})}) {
+            $record->set_field({field => 'T0540', subfield => '', mult => 1, content => $self->conv($bibkey_isbn_ref->{$record->get_field({ field => 'T5050', mult => 1})}) });
+        }
+        
+        # Vorkommen in anderen Katalogen
+        
+        # Stage 1: Nach ISBN
+        
         my $enrichment = new OpenBib::Enrichment;
         
-        # Anreicherung mit 'gleichen' (=gleicher bibkey) Titeln aus lokalen Katalogen
-        {
-            my $same_recordlist = new OpenBib::RecordList::Title();
+        my $same_recordlist = new OpenBib::RecordList::Title();
+        
+        my $isbn   = $record->to_normalized_isbn13;
+        my $bibkey = $record->get_field({field => 'T5050', mult => 1});
+        
+        if ($isbn){
             
-            # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
-            my $same_titles = $enrichment->{schema}->resultset('AllTitleByBibkey')->search_rs(
+            $logger->debug("Looking for titles with isbn $isbn");
+            
+            my $same_titles = $enrichment->get_schema->resultset('AllTitleByIsbn')->search_rs(
                 {
-                    bibkey    => $generic_attributes_ref->{bibkey},
+                    isbn => $isbn,
                 },
-                {                        
-                    group_by => ['titleid','dbname','bibkey','tstamp','titlecache'],
+                {
+                    group_by => ['titleid','dbname','isbn','tstamp','titlecache'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
+            
+            if ($logger->is_debug){            
+                $logger->debug("Found ".($same_titles->count)." records");
+            }
+            
+            my $have_title_ref = {};
+            
+            while (my $item = $same_titles->next) {
+                my $id         = $item->{titleid};
+                my $database   = $item->{dbname};
+                my $titlecache = $item->{titlecache};
+                
+                next if (defined $have_title_ref->{"$database:$id"});
+                
+                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
 
-            $logger->debug("Checking bibkey ".$generic_attributes_ref->{bibkey});
+                $logger->debug("Found with isbn $isbn same item id=$id db=$database");
+                
+                $have_title_ref->{"$database:$id"} = 1;
+            }
+        }
+
+        # Stage 2: Ggf. nach BibKey
+        
+        if ( !$same_recordlist->get_size() && $bibkey){
+            # Anreicherung mit 'gleichen' (=gleicher bibkey) Titeln aus lokalen Katalogen            
+            
+            $logger->debug("Looking for titles with bibkey ".$bibkey);
+            
+            # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
+            my $same_titles = $enrichment->get_schema->resultset('AllTitleByBibkey')->search_rs(
+                {
+                    bibkey    => $bibkey,
+                },
+                {                        
+                    group_by => ['titleid','dbname','bibkey','tstamp','titlecache'], 
+               }
+            );
+
+            $logger->debug("Checking bibkey ".$bibkey);
+
             foreach my $item ($same_titles->all) {
                 my $id         = $item->titleid;
                 my $database   = $item->dbname;
 
-                $logger->debug("Found same item id=$id db=$database");
+                $logger->debug("Found with bibkey $bibkey same item id=$id db=$database");
                 $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
             }
             
-            $record->set_same_records($same_recordlist);
         }
 
-        $record->set_circulation([]);
-        $record->set_holding([{ 'X4000' => { 'content' => { 'dbname' => 'bibsonomy'}}}]);
-        $recordlist->add($record);
+        $record->set_same_records($same_recordlist);
+        
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($record->get_same_records()));
+        }
+
+        $enriched_recordlist->add($record);
+
     }
-    
-    return $recordlist;
+        
+
+    return $enriched_recordlist;
 }
 
 sub get_tags {

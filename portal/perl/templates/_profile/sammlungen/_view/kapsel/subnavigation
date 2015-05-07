@@ -37,22 +37,30 @@
 [% IF active_menu == "topic" %]
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("Themenschwerpunkte") %]</h6>
- <ul>
+<ul>
+<li><span  style="font-weight:normal">2015</span>
+    <ul>
 [% IF active_submenu == "preussen" %]
-  <li class="active"><strong>200 Jahre Zugehörigkeit des Rheinlandes zu Preußen</strong></li>
+      <li class="active"><strong>200 Jahre Zugehörigkeit des Rheinlandes zu Preußen</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/preussen.html?l=[% lang %];page=1">200 Jahre Zugehörigkeit des Rheinlandes zu Preußen</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/preussen.html?l=[% lang %];page=1">200 Jahre Zugehörigkeit des Rheinlandes zu Preußen</a></li>
 [% END %]
+    </ul>
+  </li>
+<li><span  style="font-weight:normal">2014</span>
+    <ul>
 [% IF active_submenu == "flora_botanik" %]
-  <li class="active"><strong>150 Jahre Flora und 100 Jahre Botanischer Garten</strong></li>
+      <li class="active"><strong>150 Jahre Flora und 100 Jahre Botanischer Garten</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/flora_botanik.html?l=[% lang %];page=1">150 Jahre Flora und 100 Jahre Botanischer Garten</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/flora_botanik.html?l=[% lang %];page=1">150 Jahre Flora und 100 Jahre Botanischer Garten</a></li>
 [% END %]
 [% IF active_submenu == "erster_weltkrieg" %]
-  <li class="active"><strong>Erster Weltkrieg</strong></li>
+      <li class="active"><strong>Erster Weltkrieg</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/erster_weltkrieg.html?l=[% lang %];page=1">Erster Weltkrieg (1914-1918)</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/erster_weltkrieg.html?l=[% lang %];page=1">Erster Weltkrieg (1914-1918)</a></li>
 [% END %]
+     </ul>
+   </li>
  </ul>
 </nav>
 [% END %]

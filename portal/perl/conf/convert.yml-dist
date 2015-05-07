@@ -4199,10 +4199,12 @@ convtab:
         index:
           'freesearch': 1
           't0531': 1
+          'ft0531': 1
       '0533':         # Magistrat / Statthalter
         index:
           'freesearch': 1
           't0533': 1
+          'ft0533': 1
       '0540':         # ISBN
         index:
           'isbn': 1

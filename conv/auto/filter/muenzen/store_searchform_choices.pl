@@ -101,6 +101,44 @@ while (my $area = $areas->next()){
     push @{$result_store->{area}}, $area_content;
 }       
 
+# Magistrat
+
+my $magistrates = $catalog->{schema}->resultset('TitleField')->search(
+    {
+        'field' => 533
+    },
+    {
+        group_by => ['content'],
+        order_by => ['content ASC'],
+        select => ['content'],
+    }
+);
+
+while (my $magistrate = $magistrates->next()){
+    my $magistrate_content = $magistrate->content;
+    $magistrate_content =~s/"/\%22/g;
+    push @{$result_store->{magistrate}}, $magistrate_content;
+}       
+
+# Herrscherfamilie
+
+my $ruling_families = $catalog->{schema}->resultset('TitleField')->search(
+    {
+        'field' => 531
+    },
+    {
+        group_by => ['content'],
+        order_by => ['content ASC'],
+        select => ['content'],
+    }
+);
+
+while (my $ruling_family = $ruling_families->next()){
+    my $ruling_family_content = $ruling_family->content;
+    $ruling_family_content =~s/"/\%22/g;
+    push @{$result_store->{ruling_family}}, $ruling_family_content;
+}       
+
 # Material
 
 my $materials = $catalog->{schema}->resultset('TitleField')->search(

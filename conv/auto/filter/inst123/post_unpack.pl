@@ -49,8 +49,11 @@ my $konvdir       = $config->{'conv_dir'};
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
+print "### $pool: Entfernung der Titel und Exemplare mit FBV-Signaturen \n";
 
-print "### $pool: Erweiterung um Standort DE-38-MEKUTH \n";
+system("cd $datadir/$pool ; $rootdir/filter/$pool/remove-fbv.pl");
+
+print "### $pool: Erweiterung um Standort DE-38-VERS \n";
 
 system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 

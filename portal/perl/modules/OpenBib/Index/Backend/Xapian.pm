@@ -479,13 +479,6 @@ sub create_document {
     
     # Sortierung
     if ($withsorting){
-                filter     => sub {
-                    my $string=shift;
-                    ($string) = $string=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
-                    $string=~s/[^-0-9]//g;
-
-                    return $string;
-                },
 
         if ($logger->is_debug){
             $logger->debug("sorting_order: ".YAML::Dump($convconfig->get('sorting_order')));

@@ -403,6 +403,7 @@ sub show_record {
             {
                 select   => ['content'],
                 as       => ['thiscontent'],
+                order_by => ['content'],
                 group_by => ['content','mult','subfield'],
                 rows     => $hitrange,
                 offset   => $offset,

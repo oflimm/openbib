@@ -227,7 +227,7 @@
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]
-         [% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %]<br/><br/>[%- IF gebdatum || gebort -%]*&nbsp;[%- IF gebdatum -%][% gebdatum%][% END %][% IF gebort %] in [% gebort %][% END %]<br/><br/>[% END %] [%- IF sterbedatum || sterbeort -%]&dagger;&nbsp;[%- IF sterbedatum -%][% sterbedatum %][% END %][% IF sterbeort %] in [% sterbeort %][% END %][% END %]    
+         [% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %]<br/><br/>[%- IF gebdatum || gebort -%]*&nbsp;[%- IF gebdatum -%][% gebdatum%][% END %][% IF gebort %] in [% gebort %][% END %]<br/><br/>[% END %] [%- IF sterbedatum || sterbeort -%]&dagger;&nbsp;[%- IF sterbedatum -%][% sterbedatum %][% END %][% IF sterbeort %] in [% sterbeort %][% END %][% END %]    
 [%- IF titleinfo -%]<br /><br />[ [% titleinfo %] ][%- END -%]
       </div>
       <div class="ob-titlemark"></div>

@@ -20,6 +20,7 @@
 
 [%-
 request_base = config.get('search_defaultparams');
+request_base = "l=${lang};${request_base}";
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};

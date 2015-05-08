@@ -278,7 +278,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base};isbn=${isbnitem.content}" -%]
+[%-   globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base};isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
 <tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
 [%-   END -%]

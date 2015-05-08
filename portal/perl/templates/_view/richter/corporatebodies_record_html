@@ -79,7 +79,7 @@ FOREACH category IN categories;
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').corporatebodyid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
          content   = "<a href=\"${localurl}\">${content}</a>";
     END;
 
@@ -103,7 +103,7 @@ END;
 [%
     searchterm        = normset.${"C0800"}.first.content;
     globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-    globalurl         = "${path_prefix}/${config.get('search_loc')}?searchall=1;kor=%22${searchterm}%22";
+    globalurl         = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;kor=%22${searchterm}%22";
 
 %]
 

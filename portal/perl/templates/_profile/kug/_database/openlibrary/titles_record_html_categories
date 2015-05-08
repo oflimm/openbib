@@ -24,6 +24,7 @@
 
 [%-
 request_base = config.get('search_defaultparams');
+request_base = "l=${lang};${request_base}";
 local_searchprofile = config.get_searchprofile_of_database(record.database) ;
 view_searchprofile  = config.get_searchprofile_of_view(view) ;
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
@@ -50,7 +51,7 @@ FOREACH category IN categories;
 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.2 ;
@@ -74,7 +75,7 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.3 ;
@@ -97,7 +98,7 @@ FOREACH category IN categories;
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;
 #            previssues = content.split("---&gt;: ");
-#            globalurl  = "${path_prefix}/${config.get('search_loc')}?searchall=1;hststring=${previssues.1}";
+#            globalurl  = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;hststring=${previssues.1}";
 #            localurl   = "${path_prefix}/${config.get('indexes_loc')}?fdb=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
 #            content    = "&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
 #         END ;
@@ -118,7 +119,7 @@ FOREACH category IN categories;
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft4100.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -142,7 +143,7 @@ FOREACH category IN categories;
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft4300.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
 	 content       = "<a href=\"${localurl}\">${content}</a>";
@@ -159,7 +160,7 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.4 ;
@@ -184,7 +185,7 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${view_searchprofile};${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.5 ;
@@ -217,14 +218,14 @@ FOREACH category IN categories;
             searchterms.push("id:${superid.content}");
          END;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${local_searchprofile};dop=or;fs=${searchterms.join(' ')}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${local_searchprofile};dop=or;fs=${searchterms.join(' ')}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}?page=1;num=20;srt=order_asc;profile=${local_searchprofile};${searchprefix}=${record.id}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${local_searchprofile};${searchprefix}=${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5005";
@@ -243,7 +244,7 @@ FOREACH category IN categories;
             super_title = "Zur &Uuml;berordnung";
          END ;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
          content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
 
     CASE ;

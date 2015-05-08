@@ -596,7 +596,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base};isbn=${isbnitem.content}" -%]
+[%-   globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base};isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
 <tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
 [%-   END -%]
@@ -639,7 +639,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
       thiscontent = item.content;
 
       NEXT IF rswkswt_done.${thiscontent} == 1;
-      localurl    = "${path_prefix}/${config.get('search_loc')}?${request_base};db=${record.database};ft4300=${thiscontent.replace('&amp;','%26')}";
+      localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base};db=${record.database};ft4300=${thiscontent.replace('&amp;','%26')}";
       content       = "<a href=\"${localurl}\">${thiscontent}</a>";
       rswkswt_done.${thiscontent} = 1;
 %]

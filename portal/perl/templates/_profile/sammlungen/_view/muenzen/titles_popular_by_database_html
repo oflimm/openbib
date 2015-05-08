@@ -95,7 +95,7 @@
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -122,7 +122,7 @@
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -145,7 +145,7 @@
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
@@ -168,7 +168,7 @@
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}?${request_base}${searchprefix}=${searchterm}";
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;

@@ -154,8 +154,7 @@ sub show_record {
     }
 
     if ($method eq "DELETE"){
-        $self->delete_record;
-        return;
+        return $self->delete_record;
     }
  
     my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
@@ -363,12 +362,11 @@ sub delete_record {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{litlists_loc}/id/$litlistid/edit.html?l=$lang";
 
+    $logger->debug("Redirecting to $new_location");
+    
     # TODO GET?
     $self->header_add('Content-Type' => 'text/html');
-    $self->redirect($new_location);
-
-    return;
-
+    return $self->redirect($new_location,303);
 }
 
 sub return_baseurl {
@@ -385,11 +383,11 @@ sub return_baseurl {
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/litlists.html";
 
+    $logger->debug("Redirecting to $new_location");
+
     # TODO GET?
     $self->header_add('Content-Type' => 'text/html');
-    $self->redirect($new_location);
-
-    return;
+    return $self->redirect($new_location,303);
 }
 
 sub get_input_definition {

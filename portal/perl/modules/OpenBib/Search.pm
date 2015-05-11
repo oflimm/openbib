@@ -91,9 +91,13 @@ sub new {
         $self->{_options}       = $options;
     }
 
-    $self->{_queryoptions}  = $queryoptions;
-    
-    $self->{_searchquery}   = $searchquery;
+    if ($queryoptions){
+        $self->{_queryoptions}  = $queryoptions;
+    }
+
+    if ($searchquery){    
+        $self->{_searchquery}   = $searchquery;
+    }
     
     # Achtung: searchprofile und database werden fuer search direkt aus dem SearchQuery-Objekt verwendet.
 

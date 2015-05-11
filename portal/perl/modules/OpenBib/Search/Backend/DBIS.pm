@@ -58,28 +58,73 @@ sub new {
     my $client_ip = exists $arg_ref->{client_ip}
         ? $arg_ref->{client_ip}   : undef;
 
-    my $colors    = exists $arg_ref->{colors}
-        ? $arg_ref->{colors}      : undef;
-
-    my $ocolors   = exists $arg_ref->{ocolors}
-        ? $arg_ref->{ocolors}     : undef;
-
     my $lang      = exists $arg_ref->{lang}
         ? $arg_ref->{lang}        : undef;
 
     my $database        = exists $arg_ref->{database}
         ? $arg_ref->{database}                : undef;
 
+    my $options            = exists $arg_ref->{options}
+        ? $arg_ref->{options}                 : {};
+
+    my $searchquery        = exists $arg_ref->{searchquery}
+        ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
+
+    my $queryoptions       = exists $arg_ref->{queryoptions}
+        ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
+
+    my $access_green           = exists $arg_ref->{access_green}
+        ? $arg_ref->{access_green}            :
+            ($options->{access_green})?$options->{access_green}:0;
+
+    my $access_yellow          = exists $arg_ref->{access_yellow}
+        ? $arg_ref->{access_yellow}           :
+            ($options->{access_yellow})?$options->{access_yellow}:0;
+
+    my $access_red             = exists $arg_ref->{access_red}
+        ? $arg_ref->{access_red}              :
+            ($options->{access_red})?$options->{access_red}:0;
+
+    my $access_national        = exists $arg_ref->{access_national}
+        ? $arg_ref->{access_national}         :
+            ($options->{access_national})?$options->{access_national}:0;
+    
+    my $colors  = $access_green + $access_yellow*44;
+    my $ocolors = $access_red*8 + $access_national*32;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->new;
     
+    my $config = OpenBib::Config->new;
+
+    # Wenn keine Parameter uebergeben wurden, dann Defaults nehmen
+    if (!$colors && !$ocolors){
+        $logger->debug("Using defaults for color and ocolor");
+
+        $colors  = $config->{dbis_colors};
+        $ocolors = $config->{dbis_ocolors};
+
+        my $colors_mask  = OpenBib::Common::Util::dec2bin($colors);
+        my $ocolors_mask = OpenBib::Common::Util::dec2bin($ocolors);
+        
+        $access_red      = ($ocolors_mask & 0b001000)?1:0;
+        $access_national = ($ocolors_mask & 0b100000)?1:0;
+        $access_green    = ($colors_mask  & 0b000001)?1:0;
+        $access_yellow   = ($colors_mask  & 0b101100)?1:0;
+    }
+    else {
+        $logger->debug("Using CGI values for color and ocolor");
+        $logger->debug("access_red: $access_red - access_national: $access_national - access_green: $access_green - access_yellow: $access_yellow");
+
+        $colors = "" unless ($colors);
+        $ocolors = "" unless ($ocolors);
+    }
+
     my $self = { };
 
     bless ($self, $class);
 
-    $logger->debug("Initializing with colors = ".(defined $colors || '')." and lang = ".(defined $lang || ''));
+    $logger->debug("Initializing with colors = $colors, ocolors = $ocolors and lang = ".(defined $lang || ''));
 
     $self->{bibid}      = (defined $bibid)?$bibid:(defined $config->{ezb_bibid})?$config->{ezb_bibid}:undef;
     $self->{colors}     = (defined $colors)?$colors:(defined $config->{dbis_colors})?$config->{dbis_colors}:undef;
@@ -91,11 +136,28 @@ sub new {
     $self->{_database}  = $database if ($database);
     $self->{args}          = $arg_ref;
 
+    if ($options){
+        $self->{_options}       = $options;
+    }
+
+    if ($queryoptions){
+        $self->{_queryoptions}  = $queryoptions;
+    }
+
+    if ($searchquery){    
+        $self->{_searchquery}   = $searchquery;
+    }
+
+    
     return $self;
 }
 
 sub search {
-    my ($self) = @_;
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults search parameters
+    my $options_ref          = exists $arg_ref->{options}
+        ? $arg_ref->{options}        : {};
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -104,9 +166,21 @@ sub search {
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
+    # Used Parameters
+    my $sorttype          = (defined $self->{_options}{srt})?$self->{_options}{srt}:$queryoptions->get_option('srt');
+    my $sortorder         = (defined $self->{_options}{srto})?$self->{_options}{srto}:$queryoptions->get_option('srto');
+    my $defaultop         = (defined $self->{_options}{dop})?$self->{_options}{dop}:$queryoptions->get_option('dop');
+    my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
+    my $gen_facets        = ($facets eq "none")?0:1;
+    
+    if ($logger->is_debug){
+        $logger->debug("Options: ".YAML::Dump($options_ref));
+    }
+    
     # Pagination parameters
-    my $page              = $queryoptions->get_option('page');
-    my $num               = $queryoptions->get_option('num');
+    my $page              = (defined $self->{_options}{page})?$self->{_options}{page}:$queryoptions->get_option('page');
+    my $num               = (defined $self->{_options}{num})?$self->{_options}{num}:$queryoptions->get_option('num');
+    my $collapse          = (defined $self->{_options}{clp})?$self->{_options}{clp}:$queryoptions->get_option('clp');
 
     my $offset            = $page*$num-$num;
 

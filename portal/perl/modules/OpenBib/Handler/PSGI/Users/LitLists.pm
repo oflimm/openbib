@@ -606,9 +606,7 @@ sub delete_record {
 
     $user->del_litlist({ litlistid => $litlistid});
 
-    $self->return_baseurl;
-
-    return;
+    return $self->return_baseurl;
 }
 
 sub return_baseurl {

@@ -99,14 +99,23 @@ sub new {
         $access_red    = ($colors_mask & 0b100)?1:0;
     }
 
+    my $options            = exists $arg_ref->{options}
+        ? $arg_ref->{options}                 : {};
+
+    my $searchquery        = exists $arg_ref->{searchquery}
+        ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
+
+    my $queryoptions       = exists $arg_ref->{queryoptions}
+        ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
+    
     my $self = { };
 
     bless ($self, $class);
 
     $logger->debug("Initializing with colors = ".(defined $colors || '')." and lang = ".(defined $lang || ''));
 
-    $self->{client}     = LWP::UserAgent->new;            # HTTP client
-    $self->{_database}      = $database if ($database);
+    $self->{client}        = LWP::UserAgent->new;            # HTTP client
+    $self->{_database}     = $database if ($database);
 
     # Backend Specific Attributes
     $self->{access_green}  = $access_green;
@@ -120,12 +129,27 @@ sub new {
     $self->{sindex}        = $sindex if ($sindex);
     $self->{args}          = $arg_ref;
 
+    if ($options){
+        $self->{_options}       = $options;
+    }
+
+    if ($queryoptions){
+        $self->{_queryoptions}  = $queryoptions;
+    }
+
+    if ($searchquery){    
+        $self->{_searchquery}   = $searchquery;
+    }
 
     return $self;
 }
 
 sub search {
-    my ($self) = @_;
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults search parameters
+    my $options_ref          = exists $arg_ref->{options}
+        ? $arg_ref->{options}        : {};
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -134,9 +158,21 @@ sub search {
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
+    # Used Parameters
+    my $sorttype          = (defined $self->{_options}{srt})?$self->{_options}{srt}:$queryoptions->get_option('srt');
+    my $sortorder         = (defined $self->{_options}{srto})?$self->{_options}{srto}:$queryoptions->get_option('srto');
+    my $defaultop         = (defined $self->{_options}{dop})?$self->{_options}{dop}:$queryoptions->get_option('dop');
+    my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
+    my $gen_facets        = ($facets eq "none")?0:1;
+    
+    if ($logger->is_debug){
+        $logger->debug("Options: ".YAML::Dump($options_ref));
+    }
+    
     # Pagination parameters
-    my $page              = $queryoptions->get_option('page');
-    my $num               = $queryoptions->get_option('num');
+    my $page              = (defined $self->{_options}{page})?$self->{_options}{page}:$queryoptions->get_option('page');
+    my $num               = (defined $self->{_options}{num})?$self->{_options}{num}:$queryoptions->get_option('num');
+    my $collapse          = (defined $self->{_options}{clp})?$self->{_options}{clp}:$queryoptions->get_option('clp');
 
     my $offset            = $page*$num-$num;
 

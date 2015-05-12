@@ -54,6 +54,7 @@ exclude:
         - ebooks
         - freebooks
         - nationallizenzen
+        - bestellungen
         - doab
         - tmpebooks
         - zbmed

@@ -50,6 +50,7 @@ exclude:
      databases:
         - inst001
         - ebookpda
+        - vubpda
         - ebooks
         - freebooks
         - zbmed

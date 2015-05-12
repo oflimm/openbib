@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2014-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -614,7 +614,7 @@ sub process {
     
 
     # Verfasser/Personen
-    foreach my $field ('0100','0101','0102','0103','1800') {
+    foreach my $field ('0100','0101','0102','0103','1800','4308') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
@@ -675,7 +675,7 @@ sub process {
     }
     
     #Koerperschaften/Urheber
-    foreach my $field ('0200','0201','1802') {
+    foreach my $field ('0200','0201','1802','4307') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert

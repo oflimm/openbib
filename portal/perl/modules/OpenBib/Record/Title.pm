@@ -2402,6 +2402,71 @@ sub set_database {
     return $self;
 }
 
+sub get_provenances_of_media {
+    my ($self,$medianumber) = @_;
+
+    my $logger = get_logger();
+    
+    my $provenances_ref = [];
+
+    return [] unless (defined $self->{_fields}{'T4309'});
+    
+    foreach my $medianumber_ref (@{$self->{_fields}{'T4309'}}){
+        my $mult = $medianumber_ref->{mult};
+
+        $logger->debug("$medianumber - $mult");
+        if ($medianumber eq $medianumber_ref->{content}){
+            my $this_provenance_ref = {};
+            foreach my $field ('T4307','T4308','T4310','T4311','T4312'){
+                my $fields_ref = $self->get_field({ field => $field });
+                next unless ($fields_ref);
+                
+                foreach my $field_ref (@{$fields_ref}){
+                    $logger->debug(YAML::Dump($field_ref));
+                    if ($field_ref->{mult} eq $mult){
+                        $this_provenance_ref->{$field} = $field_ref;
+                    }
+                }
+            }
+            push @$provenances_ref, $this_provenance_ref;
+        }
+    }
+    
+    return $provenances_ref;
+}
+
+sub get_provenances {
+    my ($self) = @_;
+
+    my $logger = get_logger();
+    
+    my $provenances_ref = [];
+
+    return [] unless (defined $self->{_fields}{'T4309'});
+    
+    foreach my $medianumber_ref (@{$self->{_fields}{'T4309'}}){
+        my $mult = $medianumber_ref->{mult};
+
+        my $this_provenance_ref = {};
+        $this_provenance_ref->{'T4309'} = $medianumber_ref->{content};
+        foreach my $field ('T4307','T4308','T4310','T4311','T4312'){
+            my $fields_ref = $self->get_field({ field => $field });
+            next unless ($fields_ref);
+            
+            foreach my $field_ref (@{$fields_ref}){
+                $logger->debug(YAML::Dump($field_ref));
+                if ($field_ref->{mult} eq $mult){
+                        $this_provenance_ref->{$field} = $field_ref;
+                    }
+            }
+        }
+        push @$provenances_ref, $this_provenance_ref;
+    }
+    
+    return $provenances_ref;
+}
+
+
 sub get_id {
     my ($self) = @_;
 

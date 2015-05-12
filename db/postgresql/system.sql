@@ -101,7 +101,8 @@ CREATE TABLE orgunitinfo (
 
  orgunitname TEXT NOT NULL,
  description TEXT,
- nr          INT
+ nr          INT,
+ own_index   BOOL
 );
 
 drop table IF EXISTS orgunit_db;
@@ -121,7 +122,8 @@ CREATE TABLE viewinfo (
  servername  TEXT,
  profileid   BIGINT NOT NULL,
  stripuri    BOOL,
- active      BOOL
+ active      BOOL,
+ own_index   BOOL
 );
 
 drop table IF EXISTS view_db;
@@ -398,8 +400,7 @@ CREATE TABLE user_session (
 DROP TABLE IF EXISTS searchprofile;
 CREATE TABLE searchprofile (
  id                BIGSERIAL,
- databases_as_json TEXT, -- for quick lookup having database list and initial state --
- own_index         BOOL
+ databases_as_json TEXT -- for quick lookup having database list and initial state --
 );
 
 drop table IF EXISTS searchprofile_db;

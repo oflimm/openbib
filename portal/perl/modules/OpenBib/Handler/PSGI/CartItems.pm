@@ -622,7 +622,6 @@ sub save_collection {
     }
     else {
         $self->param('content_type','text/plain');
-        $self->param('content_type','text/html');
         $self->header_add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
         return $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
     }

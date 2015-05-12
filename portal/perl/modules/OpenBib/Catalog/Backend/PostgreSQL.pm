@@ -827,7 +827,7 @@ sub create_index_document {
     # Inhalte aus Normdaten (Personen, Schlagworte, usw.) hinzufuegen
     {
         # Verfasser/Personen
-        foreach my $field ('0100','0101','0102','0103','1800') {
+        foreach my $field ('0100','0101','0102','0103','1800','4308') {
             # Anreicherung mit Informationen der Ueberordnung
 
             if ($record->has_field("T5005")) {
@@ -879,7 +879,7 @@ sub create_index_document {
         }
 
         #Koerperschaften/Urheber
-        foreach my $field ('0200','0201','1802') {
+        foreach my $field ('0200','0201','1802','4307') {
             if ($record->has_field("T".$field)) {
                 foreach my $item_ref (@{$record->get_field({ field => "T".$field })}) {
                     push @personcorporatebody, $item_ref->{content};

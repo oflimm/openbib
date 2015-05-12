@@ -397,6 +397,11 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'array',
         },
+        own_index => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },        
         
     };
 }

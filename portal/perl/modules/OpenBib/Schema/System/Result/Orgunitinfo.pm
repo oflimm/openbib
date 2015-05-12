@@ -47,6 +47,11 @@ __PACKAGE__->table("orgunitinfo");
   data_type: 'integer'
   is_nullable: 1
 
+=head2 own_index
+
+  data_type: 'boolean'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -65,6 +70,8 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "nr",
   { data_type => "integer", is_nullable => 1 },
+  "own_index",
+  { data_type => "boolean", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -101,8 +108,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-10-23 10:41:11
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cK0r0Ob7rh6HgkCBmVi0yw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-05-11 15:52:34
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:bW4HaLBKKciTAWQuCyagcw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -3674,21 +3674,6 @@ sub searchprofile_exists {
     return $count;
 }
 
-sub update_searchprofile {
-    my ($self,$searchprofileid,$own_index) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $searchprofile = $self->get_schema->resultset('Searchprofile')->single({ id => $searchprofileid});
-        
-    if ($searchprofile){
-        $searchprofile->update({own_index => $own_index});
-    }
-        
-    return;
-}
-
 sub get_searchprofile {
     my ($self) = @_;
 
@@ -3705,15 +3690,28 @@ sub get_searchprofiles_with_own_index {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my @searchprofiles;
-    
-    my $searchprofiles = $self->get_schema->resultset('Searchprofile')->search_rs({ own_index => 1 });
+    # own_index wird in viewinfo bzw. orginfo definiert
+    # Daher jetzt die zugehoerigen searchprofiles bestimmen;
 
-    while (my $thissearchprofile = $searchprofiles->next){
-        push @searchprofiles, $thissearchprofile->id;
+    my %searchprofiles;
+    
+    my $views = $self->get_schema->resultset('Viewinfo')->search_rs({ own_index => 1 });
+
+    while (my $thisview = $views->next){
+        my $searchprofile = $self->get_searchprofile_of_view($thisview->viewname);
+
+        $searchprofiles{$searchprofile} = 1 unless (defined $searchprofiles{$searchprofile});
     }
-        
-    return @searchprofiles;
+
+    my $orgunits = $self->get_schema->resultset('Orgunitinfo')->search_rs({ own_index => 1 });
+    
+    while (my $thisorgunit = $orgunits->next){
+        my $searchprofile = $self->get_searchprofile_of_orgunit($thisorgunit->profileid->profilename,$thisorgunit->orgunitname);
+
+        $searchprofiles{$searchprofile} = 1 unless (defined $searchprofiles{$searchprofile});
+    }
+    
+    return keys %searchprofiles;
 }
 
 sub delete_stale_searchprofile_indexes {

@@ -61,10 +61,7 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'           => 'show_collection',
-        'show_collection_form'      => 'show_collection_form',
         'show_record'               => 'show_record',
-        'show_record_form'          => 'show_record_form',
-        'update_record'             => 'update_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -128,88 +125,6 @@ sub show_record {
     };
     
     return $self->print_page($config->{tt_admin_searchprofiles_record_tname},$ttdata);
-}
-
-sub show_record_form {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view            = $self->param('view');
-    my $searchprofileid = $self->param('searchprofileid');
-
-    # Shared Args
-    my $config         = $self->param('config');
-
-    if (!$self->authorization_successful){
-        return $self->print_authorization_error();
-    }
-
-    my $statistics  = new OpenBib::Statistics();
-
-    my $searchprofile_obj = $config->get_searchprofile->single({ id => $searchprofileid });
-
-    my $ttdata={
-        searchprofileid => $searchprofileid,
-        searchprofile   => $searchprofile_obj,
-        statistics      => $statistics,
-    };
-    
-    return $self->print_page($config->{tt_admin_searchprofiles_record_edit_tname},$ttdata);
-}
-
-sub update_record {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $view            = $self->param('view');
-    my $searchprofileid = $self->param('searchprofileid');
-
-    # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');
-    my $msg            = $self->param('msg');
-    my $path_prefix    = $self->param('path_prefix');
-
-    # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input();
-    
-    if (!$self->authorization_successful){
-        return $self->print_authorization_error();
-    }
-
-    if (!$config->searchprofile_exists($searchprofileid)) {
-        return $self->print_warning($msg->maketext("Es existiert kein Suchprofil mit dieser ID"));
-    }
-
-    # POST oder PUT => Aktualisieren
-
-    $config->update_searchprofile($searchprofileid,$input_data_ref->{own_index});
-
-    if ($self->param('representation') eq "html"){
-        # TODO GET?
-        return $self->redirect("$path_prefix/$config->{searchprofiles_loc}");
-    }
-    else {
-        $logger->debug("Weiter zum Record $searchprofileid");
-        return $self->show_record;
-    }
-}
-
-sub get_input_definition {
-    my $self=shift;
-    
-    return {
-        own_index => {
-            default  => 'false',
-            encoding => 'none',
-            type     => 'scalar',
-        },        
-    };
 }
 
 1;

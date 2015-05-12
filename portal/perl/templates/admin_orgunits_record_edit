@@ -98,6 +98,14 @@
 </select>
 </div>
 
+<div class="ym-fbox-select">
+<label for="own_index">[% msg.maketext("Eigener Index") %]</label>
+<select id="own_index" name="own_index">
+<option value="1" [% IF orgunitinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="0" [% IF NOT orgunitinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Nein") %]</option>
+</select>
+</div>
+
 <div class="ym-fbox-button">
 
 <input type="submit" value="[% msg.maketext("Ändern") %]" />

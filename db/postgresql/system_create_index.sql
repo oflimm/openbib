@@ -40,6 +40,7 @@ ALTER TABLE orgunitinfo ADD CONSTRAINT fk_orgunitinfo_profile FOREIGN KEY (profi
 CREATE INDEX orgunitinfo_orgunitname ON orgunitinfo (orgunitname);
 CREATE INDEX orgunitinfo_profileid ON orgunitinfo (profileid);
 CREATE INDEX orgunitinfo_nr ON orgunitinfo (nr);
+CREATE INDEX orgunitinfo_own_index ON orgunitinfo (own_index);
 
 ALTER TABLE orgunit_db ADD CONSTRAINT fk_orgunitdb_db FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
 ALTER TABLE orgunit_db ADD CONSTRAINT fk_orgunitdb_orgunit FOREIGN KEY (orgunitid) REFERENCES orgunitinfo (id);
@@ -54,6 +55,7 @@ ALTER TABLE viewinfo ADD CONSTRAINT fk_viewinfo_rss FOREIGN KEY (rssid) REFERENC
 CREATE INDEX viewinfo_viewname ON viewinfo (viewname);
 CREATE INDEX viewinfo_profileid ON viewinfo (profileid);
 CREATE INDEX viewinfo_rssid ON viewinfo (rssid);
+CREATE INDEX viewinfo_own_index ON viewinfo (own_index);
 
 ALTER TABLE view_db ADD CONSTRAINT fk_viewdb_db FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
 ALTER TABLE view_db ADD CONSTRAINT fk_viewdb_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);

@@ -53,6 +53,9 @@ exclude:
         - vubpda
         - ebooks
         - freebooks
+        - nationallizenzen
+        - doab
+        - tmpebooks
         - zbmed
         - inst004
         - inst005

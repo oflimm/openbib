@@ -66,8 +66,8 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show'       => 'show_via_sql',
-#        'show'       => 'show_via_searchengine',
+#        'show'       => 'show_via_sql',
+        'show'       => 'show_via_searchengine',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 

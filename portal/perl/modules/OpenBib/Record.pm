@@ -265,6 +265,7 @@ sub set_field {
 
     if ($id){
         push @{$self->{_fields}{$field}}, {
+            mult       => $mult,
             id         => $id,
             content    => $content,
             supplement => $supplement,

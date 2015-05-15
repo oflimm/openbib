@@ -45,7 +45,7 @@
    </div>
 
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
+      <div class="ym-col1 ob-hidden">
         <div class="ym-cbox" class="ym-clearfix">
         </div>
       </div>
@@ -56,14 +56,26 @@
 
 <h2>Alle Provenienzen des Titels</h2>
 
-[% USE dumper;dumper.dump(provenances)%]
+[%
+   has_4312 = 0;
+
+   FOREACH provenance IN provenances ;
+     IF provenance.defined('T4312') ;
+       has_4312 = 1;
+     END;
+   END;
+%]
+
+[%# USE dumper;dumper.dump(provenances)%]
 <table class="ym-full">
 <thead>
-<tr align="center"><th>Mediennummer</th><th>Vorbesitzer</th><th>Provenienz</th><th>Sigel</th><th>Selektionskennzeichen</th></tr>
+<tr align="center"><th>Mediennummer</th><th>Vorbesitzer</th><th>Provenienz</th><th>Sigel</th>[% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %]</tr>
 </thead>
 <tbody>
 
-[% FOREACH provenance IN provenances ;
+[%
+
+   FOREACH provenance IN provenances ;
 
      owner = [];
 
@@ -89,10 +101,11 @@
 <td>
 [% provenance.${'T4311'}.content %]
 </td>
+[% IF has_4312 %]
 <td>
 [% provenance.${'T4312'}.content %]
 </td>
-</td>
+[% END %]
 </tr>
 [% END %]
 

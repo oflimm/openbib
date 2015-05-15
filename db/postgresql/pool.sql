@@ -158,6 +158,7 @@ drop table IF EXISTS title_title;
 create table title_title (
 id                BIGSERIAL,
 field             SMALLINT,
+mult              SMALLINT,
 source_titleid    TEXT     NOT NULL,
 target_titleid    TEXT     NOT NULL,
 supplement        TEXT
@@ -167,6 +168,7 @@ drop table IF EXISTS title_person;
 create table title_person (
 id         BIGSERIAL,
 field      SMALLINT,
+mult       SMALLINT,
 titleid    TEXT         NOT NULL,
 personid   TEXT          NOT NULL,
 supplement TEXT
@@ -176,6 +178,7 @@ drop table IF EXISTS title_corporatebody;
 create table title_corporatebody (
 id                BIGSERIAL,
 field             SMALLINT,
+mult       SMALLINT,
 titleid           TEXT NOT NULL,
 corporatebodyid   TEXT NOT NULL,
 supplement        TEXT
@@ -185,6 +188,7 @@ drop table IF EXISTS title_subject;
 create table title_subject (
 id         BIGSERIAL,
 field      SMALLINT,
+mult       SMALLINT,
 titleid    TEXT NOT NULL,
 subjectid  TEXT NOT NULL,
 supplement TEXT
@@ -194,6 +198,7 @@ drop table IF EXISTS title_classification;
 create table title_classification (
 id                BIGSERIAL,
 field             SMALLINT,
+mult       SMALLINT,
 titleid           TEXT NOT NULL,
 classificationid  TEXT NOT NULL,
 supplement        TEXT

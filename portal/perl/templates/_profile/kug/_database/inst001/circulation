@@ -99,8 +99,8 @@
 </td>
 <td><strong>[% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur %][% thiscirculation.Exemplar %][% ELSE %][% thiscirculation.Signatur %][% END %]</strong>
 [% provenances = record.get_provenances_of_media(thiscirculation.Mediennr) %]
-[% IF provenances %]
-<p><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];f[prov]=[% thiscirculation.Mediennr %]">Provenienzen</a></p>
+[% IF provenances.size > 0 %]
+<p><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% thiscirculation.Mediennr %]">Provenienzen</a></p>
 [% END %]
 </td>
 <td><strong>[%- IF thiscirculation.Status == 'bestellbar' -%]ausleihbar[% ELSIF

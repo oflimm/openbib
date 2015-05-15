@@ -666,7 +666,7 @@ if ($addsuperpers) {
         next unless (exists $listitemdata_superid{$id} && ref  $listitemdata_superid{$id} eq "HASH");
 
         # Anreichern mit content;
-        foreach my $field ('0100','0101','0102','0103','1800') {
+        foreach my $field ('0100','0101','0102','0103','1800','4308') {
             if (defined $record_ref->{fields}{$field}) {
                 foreach my $item_ref (@{$record_ref->{fields}{$field}}) {
                     my $personid   = $item_ref->{id};

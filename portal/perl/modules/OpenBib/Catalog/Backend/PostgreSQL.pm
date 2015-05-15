@@ -358,22 +358,23 @@ sub load_full_title_record {
                     'me.id' => $id,
                 },
                 {
-                    select => ['title_people.field','title_people.personid','title_people.supplement'],
-                    as     => ['thisfield','thispersonid','thissupplement'],
+                    select => ['title_people.field','title_people.mult','title_people.personid','title_people.supplement'],
+                    as     => ['thisfield','thismult','thispersonid','thissupplement'],
                     join   => ['title_people'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
 
             if ($title_persons){
-                my $mult = 1;
                 while (my $item = $title_persons->next){
                     next unless (defined $item->{thisfield});
                     
                     my $field      = "T".sprintf "%04d",$item->{thisfield};
+                    my $mult       =                    $item->{thismult};
                     my $personid   =                    $item->{thispersonid};
                     my $supplement =                    $item->{thissupplement};
-                    
+
+                    $logger->debug("$field - $mult - $personid - $supplement");
                     my $record = OpenBib::Record::Person->new({database=>$self->{database}, schema => $self->{schema}});
                     $record->load_name({id=>$personid});
                     my $content = $record->name_as_string;
@@ -385,8 +386,6 @@ sub load_full_title_record {
                         supplement => $supplement,
                         mult       => $mult,
                     });
-                    
-                    $mult++;
                 }
             }
             
@@ -397,18 +396,18 @@ sub load_full_title_record {
                     'me.id' => $id,
                 },
                 {
-                    select => ['title_corporatebodies.field','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
-                    as     => ['thisfield','thiscorporatebodyid','thissupplement'],
+                    select => ['title_corporatebodies.field','title_corporatebodies.mult','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
+                    as     => ['thisfield','thismult','thiscorporatebodyid','thissupplement'],
                     join   => ['title_corporatebodies'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
 
             if ($title_corporatebodies){
-                my $mult = 1;        
                 while (my $item = $title_corporatebodies->next){
                     next unless (defined $item->{thisfield});
                     my $field             = "T".sprintf "%04d",$item->{thisfield};
+                    my $mult              =                    $item->{thismult};
                     my $corporatebodyid   =                    $item->{thiscorporatebodyid};
                     my $supplement        =                    $item->{thissupplement};
                     
@@ -423,8 +422,6 @@ sub load_full_title_record {
                         supplement => $supplement,
                         mult       => $mult,
                     });
-                    
-                    $mult++;
                 }
             }
             
@@ -435,8 +432,8 @@ sub load_full_title_record {
                     'me.id' => $id,
                 },
                 {
-                    select => ['title_subjects.field','title_subjects.subjectid','title_subjects.supplement'],
-                    as     => ['thisfield','thissubjectid','thissupplement'],
+                    select => ['title_subjects.field','title_subjects.mult','title_subjects.subjectid','title_subjects.supplement'],
+                    as     => ['thisfield','thismult','thissubjectid','thissupplement'],
                     join   => ['title_subjects'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
@@ -447,6 +444,7 @@ sub load_full_title_record {
                 while (my $item = $title_subjects->next){
                     next unless (defined $item->{thisfield});
                     my $field             = "T".sprintf "%04d",$item->{thisfield};
+                    my $mult              =                    $item->{thismult};
                     my $subjectid         =                    $item->{thissubjectid};
                     my $supplement        =                    $item->{thissupplement};
                     
@@ -461,8 +459,6 @@ sub load_full_title_record {
                         supplement => $supplement,
                         mult       => $mult,
                     });
-                    
-                    $mult++;
                 }
             }
             
@@ -473,18 +469,18 @@ sub load_full_title_record {
                     'me.id' => $id,
                 },
                 {
-                    select => ['title_classifications.field','title_classifications.classificationid','title_classifications.supplement'],
-                    as     => ['thisfield','thisclassificationid','thissupplement'],
+                    select => ['title_classifications.field','title_classifications.mult','title_classifications.classificationid','title_classifications.supplement'],
+                    as     => ['thisfield','thismult','thisclassificationid','thissupplement'],
                     join   => ['title_classifications'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
 
             if ($title_classifications){
-                my $mult = 1;
                 while (my $item = $title_classifications->next){
                     next unless (defined $item->{thisfield});
                     my $field             = "T".sprintf "%04d",$item->{thisfield};
+                    my $mult              =                    $item->{thismult};
                     my $classificationid  =                    $item->{thisclassificationid};
                     my $supplement        =                    $item->{thissupplement};
                     
@@ -499,8 +495,6 @@ sub load_full_title_record {
                         supplement => $supplement,
                         mult       => $mult,
                     });
-                    
-                    $mult++;
                 }
                 
                 if ($config->{benchmark}) {
@@ -537,16 +531,13 @@ sub load_full_title_record {
                     mult       => 1,
                 });
                 
-                my $mult = 1;
-                foreach my $id (@sub){
+                foreach my $tt_ref (@sub){
                     $title_record->set_field({
                         field      => 'T5003',
-                        content    => $id,
+                        content    => $tt_ref->{id},
                         subfield   => '',
-                        mult       => $mult,
+                        mult       => $tt_ref->{mult},
                     });
-                    
-                    $mult++;
                 }
             }
             
@@ -575,16 +566,13 @@ sub load_full_title_record {
                     mult       => 1,
                 });
                 
-                my $mult = 1;
-                foreach my $id (@super){
+                foreach my $tt_ref (@super){
                     $title_record->set_field({                
                         field      => 'T5004',
-                        content    => $id,
+                        content    => $tt_ref->{id},
                         subfield   => '',
-                        mult       => $mult,
+                        mult       => $tt_ref->{mult},
                     });
-                    
-                    $mult++;
                 }
             }
             
@@ -641,6 +629,10 @@ sub load_full_title_record {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Zeit fuer gesamte Bestimmung der Titeldaten ist ".timestr($timeall));
+    }
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($title_record->get_fields));
     }
     
     return $title_record;
@@ -1423,9 +1415,9 @@ sub get_connected_titles {
                 'me.source_titleid'            => $id,
             },
             {
-                select   => ['target_titleid'],
-                as       => ['thistitleid' ], 
-                group_by => ['target_titleid'], # via group_by und nicht via distinct (Performance)
+                select   => ['target_titleid','mult'],
+                as       => ['thistitleid','thismult'], 
+                group_by => ['target_titleid','mult'], # via group_by und nicht via distinct (Performance)
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',                
             }
         );
@@ -1437,9 +1429,9 @@ sub get_connected_titles {
                 'me.target_titleid'                 => $id,
             },
             {
-                select   => ['source_titleid'],
-                as       => ['thistitleid'], 
-                group_by => ['source_titleid'], # via group_by und nicht via distinct (Performance)
+                select   => ['source_titleid','mult'],
+                as       => ['thistitleid','thismult'], 
+                group_by => ['source_titleid','mult'], # via group_by und nicht via distinct (Performance)
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',                
             }
         );
@@ -1450,7 +1442,10 @@ sub get_connected_titles {
 
     my @titles = ();
     while (my $item = $titles->next){
-        push @titles, $item->{thistitleid};
+        push @titles, {
+            id   => $item->{thistitleid},
+            mult => $item->{mult},
+        };
     }
 
     if ($logger->is_debug){

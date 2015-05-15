@@ -36,16 +36,17 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %].html?l=[% lang %]">[% msg.maketext("Titel") %]</a></li>
-         <li><a href="#" class="lastitem">Provenienzen</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]">Provenienzen</a></li>
+         <li><a href="#" class="lastitem">[% provenanceid %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.json?l=[% lang %];mnr=[% provenanceid %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
+      <div class="ym-col1 ob-hidden">
         <div class="ym-cbox" class="ym-clearfix">
         </div>
       </div>
@@ -54,11 +55,21 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h2>Alle Provenienzen des Titels</h2>
+[%
+   has_4312 = 0;
 
+   FOREACH provenance IN provenances ;
+     IF provenance.defined('T4312') ;
+       has_4312 = 1;
+     END;
+   END;
+%]
+
+<h2>Alle Provenienzen des Mediums [% provenanceid %]</h2>
+[%# USE dumper;dumper.dump(provenances)%]
 <table class="ym-full">
 <thead>
-<tr align="center"><th>Mediennummer</th><th>Vorbesitzer</th><th>Provenienz</th><th>Sigel</th><th>Selektionskennzeichen</th></tr>
+<tr align="center"><th>Vorbesitzer</th><th>Provenienz</th><th>Sigel</th>[% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %]</tr>
 </thead>
 <tbody>
 
@@ -66,32 +77,35 @@
 
      owner = [];
 
-     owner.push(provenance.${T4307}.first.content);
-     owner.push(provenance.${T4308}.first.content);
+     IF provenance.defined('T4307');
+       owner.push(provenance.${'T4307'}.content);
+     END ;
+     IF provenance.defined('T4308');
+       owner.push(provenance.${'T4308'}.content);
+     END;
 
      ownerstring = owner.join(' / ');
 %]
 <tr>
 <td>
-[% provenance.${T4309}.first.content %]
-</td>
-<td>
 [% ownerstring %]
 </td>
 <td>
-[% provenance.${T4310}.first.content %]
+[% provenance.${'T4310'}.content %]
 </td>
 <td>
-[% provenance.${T4311}.first.content %]
+[% provenance.${'T4311'}.content %]
 </td>
+[% IF has_4312 %]
 <td>
-[% provenance.${T4312}.first.content %]
+[% provenance.${'T4312'}.content %]
 </td>
-</td>
+[% END %]
 </tr>
 [% END %]
 
 </tbody>
+</table>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

@@ -2410,12 +2410,17 @@ sub get_provenances_of_media {
     my $provenances_ref = [];
 
     return [] unless (defined $self->{_fields}{'T4309'});
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($self->get_fields));
+    }
     
     foreach my $medianumber_ref (@{$self->{_fields}{'T4309'}}){
         my $mult = $medianumber_ref->{mult};
 
-        $logger->debug("$medianumber - $mult");
         if ($medianumber eq $medianumber_ref->{content}){
+            $logger->debug("Found Medianr $medianumber - $mult");
+
             my $this_provenance_ref = {};
             foreach my $field ('T4307','T4308','T4310','T4311','T4312'){
                 my $fields_ref = $self->get_field({ field => $field });
@@ -2443,12 +2448,16 @@ sub get_provenances {
     my $provenances_ref = [];
 
     return [] unless (defined $self->{_fields}{'T4309'});
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($self->get_fields));
+    }
     
     foreach my $medianumber_ref (@{$self->{_fields}{'T4309'}}){
         my $mult = $medianumber_ref->{mult};
 
         my $this_provenance_ref = {};
-        $this_provenance_ref->{'T4309'} = $medianumber_ref->{content};
+        $this_provenance_ref->{'T4309'} = { content => $medianumber_ref->{content}};
         foreach my $field ('T4307','T4308','T4310','T4311','T4312'){
             my $fields_ref = $self->get_field({ field => $field });
             next unless ($fields_ref);

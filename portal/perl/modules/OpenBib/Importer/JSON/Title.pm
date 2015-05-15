@@ -590,7 +590,7 @@ sub process {
             
             if (defined $self->{storage}{listitemdata_superid}{$target_titleid} && $source_titleid && $target_titleid){
                 $supplement = cleanup_content($supplement);
-                push @{$self->{_columns_title_title}}, [$self->{title_title_serialid},$field,$source_titleid,$target_titleid,$supplement];
+                push @{$self->{_columns_title_title}}, [$self->{title_title_serialid},$field,$mult,$source_titleid,$target_titleid,$supplement];
                 $self->{title_title_serialid}++;
             }
 
@@ -619,7 +619,8 @@ sub process {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
 	        $item_ref->{ignore} = 1;
-                
+
+                my $mult       = $item_ref->{mult};
                 my $personid   = $item_ref->{id};
                 my $titleid    = $id;
                 my $supplement = $item_ref->{supplement};
@@ -633,7 +634,7 @@ sub process {
                 
                 if (defined $self->{storage}{listitemdata_person}{$personid}){
                     $supplement = cleanup_content($supplement);
-                    push @{$self->{_columns_title_person}}, [$self->{title_person_serialid},$field,$id,$personid,$supplement];
+                    push @{$self->{_columns_title_person}}, [$self->{title_person_serialid},$field,$mult,$id,$personid,$supplement];
                     $self->{title_person_serialid}++;
                 }
                 
@@ -680,7 +681,8 @@ sub process {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
                 $item_ref->{ignore} = 1;
-                
+
+                my $mult            = $item_ref->{mult};
                 my $corporatebodyid = $item_ref->{id};
                 my $titleid    = $id;
                 my $supplement = "";
@@ -694,7 +696,7 @@ sub process {
                 
                 if (defined $self->{storage}{listitemdata_corporatebody}{$corporatebodyid}){
                     $supplement = cleanup_content($supplement);
-                    push @{$self->{_columns_title_corporatebody}}, [$self->{title_corporatebody_serialid},$field,$id,$corporatebodyid,$supplement];
+                    push @{$self->{_columns_title_corporatebody}}, [$self->{title_corporatebody_serialid},$field,$mult,$id,$corporatebodyid,$supplement];
                     $self->{title_corporatebody_serialid}++;
                 }
                 
@@ -747,7 +749,8 @@ sub process {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
                 $item_ref->{ignore} = 1;
-                
+
+                my $mult             = $item_ref->{mult};                
                 my $classificationid = $item_ref->{id};
                 my $titleid          = $id;
                 my $supplement       = "";
@@ -755,7 +758,7 @@ sub process {
                 next unless $classificationid;
                 
                 if (defined $self->{storage}{listitemdata_classification}{$classificationid}){
-                    push @{$self->{_columns_title_classification}}, [$self->{title_classification_serialid},$field,$id,$classificationid,$supplement];
+                    push @{$self->{_columns_title_classification}}, [$self->{title_classification_serialid},$field,$mult,$id,$classificationid,$supplement];
                     $self->{title_classification_serialid}++;
                 }
                 
@@ -791,8 +794,9 @@ sub process {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
                 $item_ref->{ignore} = 1;
-                
-                my $subjectid = $item_ref->{id};
+
+                my $mult       = $item_ref->{mult};                
+                my $subjectid  = $item_ref->{id};
                 my $titleid    = $id;
                 my $supplement = "";
                 
@@ -800,7 +804,7 @@ sub process {
                 
                 if (defined $self->{storage}{listitemdata_subject}{$subjectid}){
                     $supplement = cleanup_content($supplement);
-                    push @{$self->{_columns_title_subject}}, [$self->{title_subject_serialid},$field,$id,$subjectid,$supplement];
+                    push @{$self->{_columns_title_subject}}, [$self->{title_subject_serialid},$field,$mult,$id,$subjectid,$supplement];
                     $self->{title_subject_serialid}++;
                 }
                 

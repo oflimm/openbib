@@ -102,7 +102,7 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $provenanceid   = ($query->param('f[prov]'))?$query->param('f[prov]'):"";
+    my $provenanceid   = ($query->param('mnr'))?$query->param('mnr'):"";
     
     return unless ($database && $titleid);
 

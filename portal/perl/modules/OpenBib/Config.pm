@@ -2450,6 +2450,8 @@ sub update_view {
         ? $arg_ref->{profilename}         : undef;
     my $stripuri               = exists $arg_ref->{stripuri}
         ? $arg_ref->{stripuri}            : undef;
+    my $own_index              = exists $arg_ref->{own_index}
+        ? $arg_ref->{own_index}           : undef;
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
@@ -2470,6 +2472,7 @@ sub update_view {
             start_loc   => $start_loc,
             servername  => $servername,
             stripuri    => $stripuri,
+            own_index   => $own_index,
             active      => $active
         }
     );
@@ -2572,6 +2575,9 @@ sub new_view {
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
 
+    my $own_index              = exists $arg_ref->{own_index}
+        ? $arg_ref->{own_index}           : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -2589,6 +2595,7 @@ sub new_view {
             start_loc   => $start_loc,
             servername  => $servername,
             stripuri    => $stripuri,
+            own_index   => $own_index,
             active      => $active
         }
     );
@@ -2748,7 +2755,9 @@ sub update_orgunit {
         ? $arg_ref->{databases}           : [];
     my $nr                     = exists $arg_ref->{nr}
         ? $arg_ref->{nr}                  : 0;
-
+    my $own_index              = exists $arg_ref->{own_index}
+        ? $arg_ref->{own_index}           : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -2757,7 +2766,7 @@ sub update_orgunit {
     my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
     my $orgunitinfo_ref = $self->get_orgunitinfo->search_rs({ 'orgunitname' => $orgunitname, 'profileid' => $profileinfo_ref->id })->single();
 
-    $orgunitinfo_ref->update({ description => $description, nr => $nr });
+    $orgunitinfo_ref->update({ description => $description, nr => $nr, own_index => $own_index });
 
     # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
     # Datenbanken zunaechst loeschen
@@ -2798,6 +2807,8 @@ sub new_orgunit {
         ? $arg_ref->{description}            : undef;
     my $nr                     = exists $arg_ref->{nr}
         ? $arg_ref->{nr}                     : undef;
+    my $own_index              = exists $arg_ref->{own_index}
+        ? $arg_ref->{own_index}           : undef;
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}              : [];
@@ -2807,7 +2818,7 @@ sub new_orgunit {
 
     my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
 
-    my $new_orgunit = $self->get_schema->resultset('Orgunitinfo')->create({ profileid => $profileinfo_ref->id, orgunitname => $orgunitname, description => $description, nr => $nr});
+    my $new_orgunit = $self->get_schema->resultset('Orgunitinfo')->create({ profileid => $profileinfo_ref->id, orgunitname => $orgunitname, description => $description, nr => $nr, own_index => $own_index });
 
     my $orgunitid = $new_orgunit->id;
 

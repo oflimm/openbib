@@ -1645,7 +1645,7 @@ sub set_fields_from_json {
     my $json_ref = {};
 
     eval {
-        $json_ref = decode_json $json_string;
+        $json_ref = decode_json decode_utf8($json_string);
     };
     
     if ($@){

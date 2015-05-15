@@ -160,7 +160,7 @@ sub show_via_sql {
             if ($locmark=~m/^$base/){
                 $logger->debug("Location mark $locmark matches base $base");
 
-                if ($range_start > 0 && $range_end > 0){
+                if (defined $range_start && defined $range_end && $range_start > 0 && $range_end > 0){
                      my ($number)=$locmark=~m/^$base(\d+)/;
                      $logger->debug("Number part is $number");
 

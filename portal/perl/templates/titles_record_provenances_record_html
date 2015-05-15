@@ -78,10 +78,14 @@
      owner = [];
 
      IF provenance.defined('T4307');
-       owner.push(provenance.${'T4307'}.content);
+       field = provenance.${'T4307'} ;
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${field.id}.html?l=${lang}";
+       owner.push("<a href=\"${resourceurl}\">${field.content}</a>");
      END ;
      IF provenance.defined('T4308');
-       owner.push(provenance.${'T4308'}.content);
+       field = provenance.${'T4308'} ;
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${field.id}.html?l=${lang}";
+       owner.push("<a href=\"${resourceurl}\">${field.content}</a>");
      END;
 
      ownerstring = owner.join(' / ');

@@ -15,6 +15,7 @@
 [%- categories = [
                  'P0800', # msg.maketext("P0800") Ansetzung
 	         'P0830', # msg.maketext("P0830") Verweisung
+	         'P0806', # msg.maketext("P0806") Daten zur Person
 
                  # Erweiterungen
 	         'P0200', # msg.maketext("P0200") Lebensjahre

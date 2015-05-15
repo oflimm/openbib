@@ -84,11 +84,80 @@ title      = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordnam
 
 [%-
 
+# Subfelder 806
+# msg.maketext("Sonstige Daten")
+# msg.maketext("Lebensdaten")
+# msg.maketext("Wirkungsdaten")
+# msg.maketext("Geburtsort")
+# msg.maketext("Sterbeort")
+# msg.maketext("Nationalität")
+# msg.maketext("Sprache")
+# msg.maketext("Beruf")
+# msg.maketext("Funktion")
+# msg.maketext("Akademische Titel")
+# msg.maketext("Dienstgrad")
+# msg.maketext("Berufsbezeichnung")
+
+# Subfelder 830
+# msg.maketext("Pseudonym")
+# msg.maketext("Wirklicher Name")
+# msg.maketext("Früherer Name")
+# msg.maketext("Späterer Name")
+# msg.maketext("Zeitweiser Name")
+
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
-    content = item.content;
+    content  = item.content;
+    subfield = item.subfield;
+    categoryout = category;
 
     SWITCH category;
+
+    CASE "P0806";
+         SWITCH subfield ;
+            CASE "a";
+              categoryout = "Lebensdaten";
+            CASE "b";
+              categoryout = "Wirkungsdaten";
+            CASE "c";
+              categoryout = "Geburtsort";
+            CASE "d";
+              categoryout = "Sterbeort";
+            CASE "f";
+              categoryout = ""; # Geschlecht unterdrueckt
+            CASE "g";
+              categoryout = "Nationalität";
+            CASE "h";
+              categoryout = "Sprache";
+            CASE "i";
+              categoryout = "Beruf";
+            CASE "j";
+              categoryout = "Funktion";
+            CASE "k";
+              categoryout = "Akademische Titel";
+            CASE "l";
+              categoryout = "Dienstgrad";
+            CASE "m";
+              categoryout = "Berufsbezeichnung";
+            CASE "o";
+              categoryout = "Beziehungen";
+            CASE "u";
+              categoryout = "Sonstige Daten";
+         END;
+
+    CASE "P0830";
+         SWITCH subfield ;
+            CASE "a";
+              categoryout = "Pseudonym";
+            CASE "b";
+              categoryout = "Wirklicher Name";
+            CASE "c";
+              categoryout = "Früherer Name";
+            CASE "d";
+              categoryout = "Späterer Name";
+            CASE "e";
+              categoryout = "Zeitweiser Name";
+         END;
 
     CASE "P5000";
          searchterm    = record.id;
@@ -106,15 +175,17 @@ FOREACH category IN categories;
    # in Config.pm fuer die entsprechende Datenbank definiert
    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
    # kodiert.
-   thiscategory = category ;
+   thiscategory = categoryout ;
    IF config.get('categorymapping').${record.database}.$category ;
      thiscategory = "${category}-${record.database}" ;
    END;
 
 -%]
+[% IF thiscategory %]
 <tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-
    END;
+    END;
 END;
 -%]
 

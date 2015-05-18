@@ -111,10 +111,10 @@ sub show_collection {
     my $provenances_ref;
 
     if ($provenanceid){
-        $provenances_ref = $record->get_provenances_of_media($provenanceid);
+        $provenances_ref = $record->get_provenances_of_media($provenanceid,$msg);
     }
     else {
-        $provenances_ref = $record->get_provenances;
+        $provenances_ref = $record->get_provenances($msg);
     }
     
     my $ttdata = {

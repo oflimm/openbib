@@ -49,6 +49,7 @@ use OpenBib::BibSonomy;
 use OpenBib::Catalog::Factory;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::File;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Conv::Config;
@@ -2403,9 +2404,11 @@ sub set_database {
 }
 
 sub get_provenances_of_media {
-    my ($self,$medianumber) = @_;
+    my ($self,$medianumber,$msg) = @_;
 
     my $logger = get_logger();
+
+    my $config = OpenBib::Config::File->instance;
     
     my $provenances_ref = [];
 
@@ -2433,6 +2436,22 @@ sub get_provenances_of_media {
                     }
                 }
             }
+
+            # Anreicherung mit Feld-Bezeichnungen
+            if (defined $msg){
+                foreach my $fieldnumber (keys %{$this_provenance_ref}){
+                    my $effective_fieldnumber = $fieldnumber;
+                    my $mapping = $config->{'categorymapping'};
+                    if (defined $mapping->{$self->{database}}{$fieldnumber}){
+                        $effective_fieldnumber = $fieldnumber."-".$self->{database};
+                    }
+                    
+                    foreach my $fieldcontent_ref (@{$this_provenance_ref->{$fieldnumber}}){
+                        $fieldcontent_ref->{desc} = $msg->maketext($effective_fieldnumber);
+                    }
+                }
+            }
+
             push @$provenances_ref, $this_provenance_ref;
         }
     }
@@ -2441,10 +2460,12 @@ sub get_provenances_of_media {
 }
 
 sub get_provenances {
-    my ($self) = @_;
+    my ($self,$msg) = @_;
 
     my $logger = get_logger();
-    
+
+    my $config = OpenBib::Config::File->instance;
+
     my $provenances_ref = [];
 
     return [] unless (defined $self->{_fields}{'T4309'});
@@ -2457,7 +2478,7 @@ sub get_provenances {
         my $mult = $medianumber_ref->{mult};
 
         my $this_provenance_ref = {};
-        $this_provenance_ref->{'T4309'} = { content => $medianumber_ref->{content}};
+        $this_provenance_ref->{'T4309'} = [ { mult => $mult, content => $medianumber_ref->{content}} ];
         foreach my $field ('T4307','T4308','T4310','T4311','T4312'){
             my $fields_ref = $self->get_field({ field => $field });
             next unless ($fields_ref);
@@ -2469,6 +2490,22 @@ sub get_provenances {
                     }
             }
         }
+
+        # Anreicherung mit Feld-Bezeichnungen
+        if (defined $msg){
+            foreach my $fieldnumber (keys %{$this_provenance_ref}){
+                my $effective_fieldnumber = $fieldnumber;
+                my $mapping = $config->{'categorymapping'};
+                if (defined $mapping->{$self->{database}}{$fieldnumber}){
+                    $effective_fieldnumber = $fieldnumber."-".$self->{database};
+                }
+                
+                foreach my $fieldcontent_ref (@{$this_provenance_ref->{$fieldnumber}}){
+                    $fieldcontent_ref->{desc} = $msg->maketext($effective_fieldnumber);
+                }
+            }
+        }
+
         push @$provenances_ref, $this_provenance_ref;
     }
     

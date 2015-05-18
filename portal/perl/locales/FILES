@@ -1931,3 +1931,5 @@
 ../templates/admin_databases_rss_html
 ../templates/admin_profiles_record
 ../templates/std_footer
+../templates/titles_record_provenances_html
+../templates/titles_record_provenances_record_html

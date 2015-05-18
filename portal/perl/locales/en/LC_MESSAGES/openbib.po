@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-05-15 11:55+0200\n"
+"PO-Revision-Date: 2015-05-18 09:36+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -11265,7 +11265,7 @@ msgstr "Page:"
 #: ../templates/_profile/sammlungen/titles_html:100
 #: ../templates/admin_databases_updates_html:102
 #: ../templates/authority_search_combined_html:95
-#: ../templates/connector_locationmark_titlist_html:82
+#: ../templates/connector_locationmark_titlist_html:107
 #: ../templates/search_classification:57 ../templates/search_corporatebody:57
 #: ../templates/search_person:57 ../templates/search_subject:57
 #: ../templates/search_title_combined_html:95
@@ -17897,6 +17897,30 @@ msgstr "Subject headings (ext.)"
 msgid "T4301"
 msgstr "Language (ext.)"
 
+#: ../templates/titles_record_provenances_record_html:78
+msgid "T4307"
+msgstr "Previous owner - corporate body"
+
+#: ../templates/titles_record_provenances_record_html:79
+msgid "T4308"
+msgstr "Previous owner - person"
+
+#: ../templates/titles_record_provenances_record_html:80
+msgid "T4309"
+msgstr "Media number"
+
+#: ../templates/titles_record_provenances_record_html:81
+msgid "T4310"
+msgstr "Provenance"
+
+#: ../templates/titles_record_provenances_record_html:82
+msgid "T4311"
+msgstr "Sign"
+
+#: ../templates/titles_record_provenances_record_html:83
+msgid "T4312"
+msgstr "Provenance property"
+
 #: ../templates/all_categories_title:146
 msgid "T4400"
 msgstr "Availability"
@@ -18477,6 +18501,8 @@ msgstr "Hint: Digital Card Catalog"
 #: ../templates/titles_record_circulation_html:38
 #: ../templates/titles_record_html:131 ../templates/titles_record_html:316
 #: ../templates/titles_record_include:214
+#: ../templates/titles_record_provenances_html:38
+#: ../templates/titles_record_provenances_record_html:38
 #: ../templates/titles_record_related_records_html:38
 #: ../templates/titles_record_same_records_html:38
 #: ../templates/titles_record_similar_records_html:38

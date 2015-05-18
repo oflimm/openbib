@@ -73,6 +73,17 @@
 </thead>
 <tbody>
 
+[%-
+    categories = [
+                'T4307', # msg.maketext("T4307") Vorbesitzer Koerperschaft
+                'T4308', # msg.maketext("T4308") Vorbesitzer Person
+                'T4309', # msg.maketext("T4309") Mediennummer
+                'T4310', # msg.maketext("T4310") Provenienz
+                'T4311', # msg.maketext("T4311") Sigel
+                'T4312', # msg.maketext("T4312") Selektionskennzeichen
+    ]
+-%]
+
 [% FOREACH provenance IN provenances ;
 
      owner = [];

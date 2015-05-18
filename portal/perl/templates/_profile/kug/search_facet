@@ -258,7 +258,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% END %]
 
 <!-- Begin database facet -->
-[%         IF 1 == 0 && facets.database.size > 0 %]
+[%         IF 1 == 0 && facets.defined('database') && facets.database.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_databases_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
 [%             FOREACH termitem IN facets.database ;
@@ -283,7 +283,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End database facet -->
 
 <!-- Begin location facet -->
-[%         IF config.get('facets').location && facets.location.size > 0 %]
+[%         IF config.get('facets').location && facets.defined('location') && facets.location.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_location_[% database %]_anchor">[% msg.maketext("nach Standort") %]</dt>
 [%             FOREACH termitem IN facets.location ;
@@ -308,7 +308,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End location facet -->
 
 <!-- Begin availability facet -->
-[%         IF facets.availability.size > 0 %]
+[%         IF facets.defined('availability') && facets.availability.size > 0 %]
 <dl class="ob-items">
 [%
     # Availability Types
@@ -344,7 +344,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End availability facet -->
 
 <!-- Begin mediatype facet -->
-[%         IF config.get('facets').mediatype && facets.mediatype.size > 0 %]
+[%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Typ") %]</dt>
 [%             FOREACH termitem IN facets.mediatype ;
@@ -368,7 +368,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End mediatype facet -->
 <!-- Begin topic facet -->
-[%         IF config.get('facets').topic && facets.topic.size > 0 %]
+[%         IF config.get('facets').topic && facets.defined('topic') && facets.topic.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_topic_[% database %]_anchor">[% msg.maketext("nach Themengebieten") %]</dt>
 [%             FOREACH termitem IN facets.topic ;
@@ -392,7 +392,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End topic facet -->
 <!-- Begin subject facet -->
-[%         IF config.get('facets').subject && facets.subject.size > 0 %]
+[%         IF config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_subjects_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
 [%             FOREACH termitem IN facets.subject ;
@@ -416,7 +416,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End subject facet -->
 <!-- Begin year facet -->
-[%         IF config.get('facets').year && facets.year.size > 0 %]
+[%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</dt>
 [%             FOREACH termitem IN facets.year ;
@@ -444,7 +444,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End year facet -->
 <!-- Begin classification facet -->
-[%         IF config.get('facets').classification && facets.classification.size > 0 %]
+[%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</dt>
 [%             FOREACH termitem IN facets.classification ;
@@ -468,7 +468,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End classification facet -->
 <!-- Begin tag facet -->
-[%         IF config.get('facets').tag && facets.tag.size > 0 %]
+[%         IF config.get('facets').tag && facets.defined('tag') && facets.tag.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_tags_[% database %]_anchor">[% msg.maketext("nach Tags") %]</dt>
 [%             FOREACH termitem IN facets.tag ;
@@ -492,7 +492,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End tag facet -->
 <!-- Begin litlist facet -->
-[%         IF config.get('facets').litlist && facets.litlist.size > 0 %]
+[%         IF config.get('facets').litlist && facets.defined('litlist') && facets.litlist.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_litlists_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</dt>
 [%             FOREACH termitem IN facets.litlist ;
@@ -516,7 +516,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End litlist facet -->
 <!-- Begin person facet -->
-[%         IF config.get('facets').person && facets.person.size > 0 %]
+[%         IF config.get('facets').person && facets.defined('person') && facets.person.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Personen") %]</dt>
 [%             FOREACH termitem IN facets.person ;
@@ -540,7 +540,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End person facet -->
 <!-- Begin corporatebody facet -->
-[%         IF config.get('facets').corporatebody && facets.corporatebody.size > 0 %]
+[%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
 <tr><td>
@@ -565,7 +565,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End corporatebody facet -->
 <!-- Begin language facet -->
-[%         IF config.get('facets').language && facets.language.size > 0 %]
+[%         IF config.get('facets').language && facets.defined('language') && facets.language.size > 0 %]
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_language_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</dt>
 [%             FOREACH termitem IN facets.language ;

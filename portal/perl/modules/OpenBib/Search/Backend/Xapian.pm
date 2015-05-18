@@ -139,7 +139,8 @@ sub search {
     # Used Parameters
     my $sorttype          = (defined $self->{_options}{srt})?$self->{_options}{srt}:$queryoptions->get_option('srt');
     my $sortorder         = (defined $self->{_options}{srto})?$self->{_options}{srto}:$queryoptions->get_option('srto');
-    my $defaultop         = (defined $self->{_options}{dop})?$self->{_options}{dop}:$queryoptions->get_option('dop');
+    my $defaultop         = (defined $self->{_options}{dop})?$self->{_options}{dop}:
+        ($queryoptions->get_option('dop'))?$queryoptions->get_option('dop'):'and';
     my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
     my $gen_facets        = ($facets eq "none")?0:1;
 
@@ -299,6 +300,8 @@ sub search {
     my $default_op_ref = {
         'and' => Search::Xapian::OP_AND,
         'or'  => Search::Xapian::OP_OR,
+        'AND' => Search::Xapian::OP_AND,
+        'OR'  => Search::Xapian::OP_OR,
     };
     
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD

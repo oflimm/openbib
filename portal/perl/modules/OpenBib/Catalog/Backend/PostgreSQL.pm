@@ -374,7 +374,6 @@ sub load_full_title_record {
                     my $personid   =                    $item->{thispersonid};
                     my $supplement =                    $item->{thissupplement};
 
-                    $logger->debug("$field - $mult - $personid - $supplement");
                     my $record = OpenBib::Record::Person->new({database=>$self->{database}, schema => $self->{schema}});
                     $record->load_name({id=>$personid});
                     my $content = $record->name_as_string;
@@ -1291,7 +1290,7 @@ sub _get_holding {
     # Ein im Exemplar-Datensatz gefundenes Sigel geht vor
     if (exists $fields_ref->{X3330}{content}) {
         $sigel=$fields_ref->{X3330}{content};
-        if (defined $dbinfotable->{sigel}{$sigel}) {
+        if (defined $sigel && defined $dbinfotable->{sigel}{$sigel}) {
             $fields_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
         }
         else {
@@ -1304,7 +1303,7 @@ sub _get_holding {
     # sonst wird der Datenbankname zur Findung des Sigels herangezogen
     else {
         $sigel=$dbinfotable->{dbases}{$self->{database}};
-        if (defined $dbinfotable->{sigel}{$sigel}) {
+        if (defined $sigel && defined $dbinfotable->{sigel}{$sigel}) {
             $fields_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
         }
     }
@@ -1312,7 +1311,7 @@ sub _get_holding {
     my $bibinfourl="";
 
     # Bestimmung der Bibinfo-Url
-    if (defined $dbinfotable->{bibinfo}{$sigel}) {
+    if (defined $sigel && defined $dbinfotable->{bibinfo}{$sigel}) {
         $fields_ref->{X4001}{content}=$dbinfotable->{bibinfo}{$sigel};
     }
 

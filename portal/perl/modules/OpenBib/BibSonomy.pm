@@ -127,8 +127,8 @@ sub get_posts {
         }
     }
 
-    $logger->debug("Effektiver Bibkey: $bibkey");
-    $logger->debug("Effektiver User: $user");
+    $logger->debug("Effektiver Bibkey: $bibkey") if (defined $bibkey);
+    $logger->debug("Effektiver User: $user") if (defined $user);
     
     if (defined $type && defined $valid_type{$type}){
         $url.='resourcetype='.$valid_type{$type};

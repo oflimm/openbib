@@ -2429,7 +2429,7 @@ sub get_provenances_of_media {
                 foreach my $field_ref (@{$fields_ref}){
                     $logger->debug(YAML::Dump($field_ref));
                     if ($field_ref->{mult} eq $mult){
-                        $this_provenance_ref->{$field} = $field_ref;
+                        push @{$this_provenance_ref->{$field}}, $field_ref;
                     }
                 }
             }
@@ -2465,7 +2465,7 @@ sub get_provenances {
             foreach my $field_ref (@{$fields_ref}){
                 $logger->debug(YAML::Dump($field_ref));
                 if ($field_ref->{mult} eq $mult){
-                        $this_provenance_ref->{$field} = $field_ref;
+                        push @{$this_provenance_ref->{$field}}, $field_ref;
                     }
             }
         }

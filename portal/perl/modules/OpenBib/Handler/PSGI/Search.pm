@@ -883,7 +883,8 @@ sub sequential_search {
         $self->search({database => $database});
 
         my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
-        
+
+        $logger->debug("Result: $seq_content_searchresult");
         $writer->write(encode_utf8($seq_content_searchresult));
     }
 
@@ -1072,6 +1073,8 @@ sub print_resultitem {
         return;
     };
 
+    $logger->debug("Printed: $content");
+    
     return $content;
 }
 

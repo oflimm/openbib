@@ -37,7 +37,7 @@ use utf8;
 use Benchmark ':hireswallclock';
 use Data::Pageset;
 use DBI;
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
@@ -91,6 +91,7 @@ sub joined_search {
 
     my $config      = OpenBib::Config->new;
     my $searchquery = $self->param('searchquery');
+    my $writer      = $self->param('writer');
 
     $searchquery->set_type('authority');
     
@@ -100,9 +101,9 @@ sub joined_search {
     
     my $templatename = $self->get_templatename_of_joined_search();
 
-    my $search_content = "";
-    
-    $search_content.=$self->print_resultitem({templatename => $templatename});
+    my $content_searchresult = $self->print_resultitem({templatename => $templatename});
+
+    $writer->write(encode_utf8($content_searchresult));
 
     # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
     foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
@@ -113,12 +114,14 @@ sub joined_search {
             
             $self->search({database => $database});
             
-            $search_content.=$self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+            my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+
+            $writer->write(encode_utf8($seq_content_searchresult));
         }
     }
 
     
-    return $search_content;
+    return;
 }
 
 sub enforce_year_restrictions {

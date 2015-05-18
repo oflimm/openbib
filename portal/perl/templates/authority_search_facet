@@ -665,6 +665,7 @@ function update_fs (){
 
 <fieldset class="ym-full">
 
+
 [%- cgiparam = config.searchfield.freesearch.prefix ;
     this_searchfield = 'freesearch';
 -%]

@@ -82,7 +82,7 @@ sub show {
     my $r              = $self->param('r');
     my $config         = OpenBib::Config->new;    
 
-    my $request = $config->{schema}->resultset("Serverinfo")->search_rs(
+    my $request = $config->get_schema->resultset("Serverinfo")->search_rs(
         {
             hostip => $config->get('local_ip'),
         }

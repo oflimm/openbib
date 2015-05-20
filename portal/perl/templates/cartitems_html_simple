@@ -28,12 +28,14 @@
 [%- database = record.database -%]
 [%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${record.database} -%]
-[% normdata     = record.get_fields %]
+[% normdata    = record.get_fields %]
 [% holding     = record.get_holding  %]
 [% circulation = record.load_circulation.get_circulation %]
 
 <h3>[% msg.maketext("Titelaufnahme") %]</h3>
 <!-- Title begins here -->
+
+<div class="ob-fulltitle ob-title_record"><!-- Begin Fulltitle -->
 
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
@@ -42,8 +44,10 @@
 [%-
 
 FOREACH category IN categories;
+    NEXT IF category == 'T5005';
     FOREACH item IN normdata.$category;
-    content = item.content;
+      content = item.content;
+
 -%]
 <tr><td class="ob-field">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
 [%- END -%]
@@ -52,29 +56,33 @@ FOREACH category IN categories;
 
 [%# USE dumper;dumper.dump(record) %]
 [% IF circulation.size > 0 || holding.size > 0 %]
+<div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
+
+<ul>
+[%   IF circulation.size > 0 %]
+<li><a href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+[%   ELSE %]
+<li><a href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+[%   END %]
+</ul>
 
 [% IF circulation.size > 0 %]
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
-<tr><td class="boxedclear">
+<div id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
-</td></tr>
-</table>
-[% ELSIF holding.size > 0 %]
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("Bestand") %]</th></tr>
-<tr><td class="boxedclear">
+</div><!-- End Circulation -->
+[% ELSE %]
+<div id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
-</td></tr>
-</table>
+</div><!-- End Bestand -->
 [% END %]
+
+</div>
 [% END %]
 
 <p />
 <p />
 <!-- Title ends here -->
+</div><!-- fulltitle -->
 
 [% END %]
 

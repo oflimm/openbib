@@ -2344,7 +2344,7 @@ sub to_json {
             }
                     
             foreach my $fieldcontent_ref (@{$record->{fields}->{$fieldnumber}}){
-                $fieldcontent_ref->{desc} = $msg->maketext($effective_fieldnumber);
+                $fieldcontent_ref->{description} = $msg->maketext($effective_fieldnumber);
             }
         }
 
@@ -2358,7 +2358,7 @@ sub to_json {
                     $effective_fieldnumber = $fieldnumber."-".$record->{database};
                 }
                 
-                $item_ref->{$fieldnumber}->{desc} = $msg->maketext($effective_fieldnumber);
+                $item_ref->{$fieldnumber}->{description} = $msg->maketext($effective_fieldnumber);
             }
         }
     }
@@ -2447,7 +2447,7 @@ sub get_provenances_of_media {
                     }
                     
                     foreach my $fieldcontent_ref (@{$this_provenance_ref->{$fieldnumber}}){
-                        $fieldcontent_ref->{desc} = $msg->maketext($effective_fieldnumber);
+                        $fieldcontent_ref->{description} = $msg->maketext($effective_fieldnumber);
                     }
                 }
             }
@@ -2501,7 +2501,7 @@ sub get_provenances {
                 }
                 
                 foreach my $fieldcontent_ref (@{$this_provenance_ref->{$fieldnumber}}){
-                    $fieldcontent_ref->{desc} = $msg->maketext($effective_fieldnumber);
+                    $fieldcontent_ref->{description} = $msg->maketext($effective_fieldnumber);
                 }
             }
         }

@@ -114,6 +114,11 @@
             <li><b>02.01.04.03</b> <a [% IF NOT have_classification.${"02.01.04.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.03">hbz und zk</a></li>
             <li><b>02.01.04.04</b> <a [% IF NOT have_classification.${"02.01.04.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.04">EconBiz</a></li>
             <li><b>02.01.04.05</b> <a [% IF NOT have_classification.${"02.01.04.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.05">EconDoc</a></li>
+            <li><b>02.01.04.06</b> <a [% IF NOT have_classification.${"02.01.04.06"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.06">Kölner Bibliothekskonferenz</a></li>
+            <li><b>02.01.04.07</b> <a [% IF NOT have_classification.${"02.01.04.07"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.07">Internet-Portal für Sozialwissenschaften</a></li>
+            <li><b>02.01.04.08</b> <a [% IF NOT have_classification.${"02.01.04.08"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.08">Kölner Bibliotheks-Verbundkatalog</a></li>
+            <li><b>02.01.04.09</b> <a [% IF NOT have_classification.${"02.01.04.09"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.09">Deutsch-Finnische Bibliothekskonferenz</a></li>
+            <li><b>02.01.04.10</b> <a [% IF NOT have_classification.${"02.01.04.10"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.04.10">Fachportal ViFa Benelux</a></li>
           </ul>
         </li>
         <li><b>02.01.05</b> <a [% IF NOT have_classification.${"02.01.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.05">Beziehungen einzelner Personen zur USB</a></li>

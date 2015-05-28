@@ -17,6 +17,9 @@
           "mediatypestring" = msg.maketext("T0800-gentzdigital")
           "languagestring" = msg.maketext("Sprache")
           "yearstring" = msg.maketext("T0425")
+          "ft0426" = "Briefe von Gentz (Jahr)"
+          "ft0427" = "Briefe an Gentz (Jahr)"
+          "ft0428" = "Briefe Dritter (Jahr)"
           "tagstring" = msg.maketext("Tag")
           "litliststring" = msg.maketext("Literaturliste")
 };

@@ -766,9 +766,16 @@ my $importer = OpenBib::Importer::JSON::Title->new({
 
 while (my $jsonline=<IN>){
 
-    $importer->process({
-        json         => $jsonline
-    });
+    eval {
+	$importer->process({
+	    json         => $jsonline
+			   });
+    };
+
+    if ($@){
+	$logger->error($@," - $jsonline\n");
+	next ;
+    }
 
     my $columns_title_title_ref          = $importer->get_columns_title_title;
     my $columns_title_person_ref         = $importer->get_columns_title_person;

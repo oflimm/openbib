@@ -61,10 +61,11 @@ sub new {
     my $session     = exists $arg_ref->{session}
         ? $arg_ref->{session}               : undef;
 
+    my $config     = exists $arg_ref->{config}
+        ? $arg_ref->{config}                : OpenBib::Config->new;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->new;
 
     my $self = {
         _searchprofile         => 0,
@@ -83,8 +84,8 @@ sub new {
 
     bless ($self, $class);
 
-    $self->connectDB();
-
+    $self->{_config} = $config;
+    
     if (defined $session){
         $self->set_session($session);
     }
@@ -102,13 +103,19 @@ sub new {
     return $self;
 }
 
+sub get_config {
+    my $self = shift;
+
+    return $self->{_config};
+}
+
 sub set_from_psgi_request {
     my ($self)=@_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     my $query = $self->{r};
 
@@ -334,7 +341,7 @@ sub load  {
     my $logger = get_logger();
 
     # DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
-    my $query = $self->{schema}->resultset('Query')->search(
+    my $query = $self->get_schema->resultset('Query')->search(
         {
             'sid.id'        => $sid,
             'me.queryid'    => $queryid,
@@ -375,7 +382,7 @@ sub save  {
         return $self;
     }
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     $logger->debug("sid: $sid");
     
@@ -394,7 +401,7 @@ sub save  {
     $logger->debug("Query Object: ".$query_obj_string);
 
     # DBI: "select queryid from queries where query = ? and sessionid = ?"
-    my $searchquery = $self->{schema}->resultset('Query')->search(
+    my $searchquery = $self->get_schema->resultset('Query')->search(
         {
             'sid.id'        => $sid,
             'me.query'      => $query_obj_string,
@@ -411,7 +418,7 @@ sub save  {
 
     if (!$searchquery_exists){
         # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
-        my $new_query = $self->{schema}->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile, tstamp => \'NOW()' });
+        my $new_query = $self->get_schema->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile, tstamp => \'NOW()' });
 
         my $new_queryid = scalar $new_query->get_column('queryid');
         
@@ -489,7 +496,7 @@ sub to_cgi_params {
         $exclude_filter_ref->{$content} = 1;
     }
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my @cgiparams = ();
 
@@ -746,7 +753,7 @@ sub get_dbis_recommendations {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my $atime;
     
@@ -826,7 +833,7 @@ sub get_spelling_suggestion {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my $suggestions_ref = {};
     my $searchterms_ref = $self->get_searchterms;
@@ -1029,7 +1036,7 @@ sub _get_searchprofile {
     my $query = $self->{r};
     my $view  = $self->{'view'}                      || '';
 
-    my $config         = OpenBib::Config->new;
+    my $config         = $self->get_config;
     my $session        = $self->get_session;
 
     # CGI Args
@@ -1081,25 +1088,98 @@ sub _get_searchprofile {
     return $searchprofile;
 }
 
+sub get_schema {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting Schema $self");
+    
+    if (defined $self->{schema}){
+        $logger->debug("Reusing Schema $self");
+        return $self->{schema};
+    }
+    
+    $logger->debug("Creating new Schema $self");    
+    
+    $self->connectDB;
+    
+    return $self->{schema};
+}
+
 sub connectDB {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->new;
+    my $config = $self->get_config;
+    
+    # UTF8: {'pg_enable_utf8'    => 1}
+    if ($config->{'systemdbsingleton'}){
+        eval {        
+            my $schema = OpenBib::Schema::System::Singleton->instance;
+            $self->{schema} = $schema->get_schema;
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $config->{systemdbname}");
+        }
+    }
+    else {
+        eval {        
+            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
+            
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $config->{systemdbname}");
+        }
+    }
+        
+    
+    return;
+}
 
-    eval {        
-        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
+sub disconnectDB {
+    my $self = shift;
 
-    };
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-    if ($@){
-        $logger->fatal("Unable to connect to database $config->{systemdbname}");
+    $logger->debug("Try disconnecting from System-DB $self");
+    
+    if (defined $self->{schema}){
+        eval {
+            $logger->debug("Disconnect from System-DB now $self");
+            $self->{schema}->storage->dbh->disconnect;
+            delete $self->{schema};
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+    
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Destroying Config-Object $self");
+
+    if (defined $self->{schema}){
+        $self->disconnectDB;
     }
 
-    return $self;
+    return;
 }
+
 
 sub get_session {
     my ($self)=@_;

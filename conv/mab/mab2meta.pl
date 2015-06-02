@@ -43,7 +43,7 @@ use YAML::Syck;
 
 use OpenBib::Conv::Common::Util;
 
-my ($titlefile,$personfile,$corporatebodyfile,$subjectfile,$classificationfile,$holdingfile,$configfile);
+my ($titlefile,$personfile,$corporatebodyfile,$subjectfile,$classificationfile,$holdingfile,$holding_in_title,$configfile);
 
 &GetOptions(
 	    "titlefile=s"          => \$titlefile,
@@ -52,6 +52,7 @@ my ($titlefile,$personfile,$corporatebodyfile,$subjectfile,$classificationfile,$
             "subjectfile=s"        => \$subjectfile,
             "classificationfile=s" => \$classificationfile,
             "holdingfile=s"        => \$holdingfile,
+            "holding-in-title"     => \$holding_in_title,
             "configfile=s"         => \$configfile,
 	    );
 
@@ -416,7 +417,7 @@ if (-e $titlefile){
         };
 
         my $rec = MAB2::Record::Base->new($rawrec);
-#        print $rec->readable."\n----------------------\n";    
+        print $rec->readable."\n----------------------\n";    
         my $multcount_ref = {};
         
         foreach my $category_ref (@{$rec->_struct->[1]}){
@@ -424,7 +425,7 @@ if (-e $titlefile){
             my $indicator = $category_ref->[1];
             my $content   = $category_ref->[2];
             
-            # print "$category - $indicator - $content\n";
+            print "$category - $indicator - $content\n";
 
             $category = $category.$indicator;
 
@@ -601,8 +602,13 @@ if (-e $titlefile){
 
                 next;
             }
-            # 3) Felder mit Unterfeldern
-            elsif (exists $convconfig->{title}{$category}{subfield}){
+            # 4) Holdings im Titel mit Unterfeldern
+            elsif ($holding_in_title && exists $convconfig->{holding}{$category}{subfield}){
+                print STDERR "$content\n";
+                
+                my $holding_ref = {
+                    'fields' => {},
+                };
 
                 foreach my $item (split("",$content)){
                     if ($item=~/^(.)(.+)/){
@@ -630,19 +636,19 @@ if (-e $titlefile){
                             $thiscontent = filter_match($thiscontent,$convconfig->{filter}{$category}{filter_match});
                         }
 
-                        #print STDERR "$category - $subfield - $thiscontent\n";
-                        my $newcategory = $convconfig->{title}{$category}{subfield}{$subfield};
+                        print STDERR "$category - $subfield - $thiscontent\n";
+                        my $newcategory = $convconfig->{holding}{$category}{subfield}{$subfield};
 
-                        if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
+                        if ($newcategory && $convconfig->{holding}{$category}{mult} && $content){
                             my $multcount=++$multcount_ref->{$newcategory};
-                            push @{$title_ref->{fields}{$newcategory}},{
+                            push @{holding_ref->{fields}{$newcategory}},{
                                 mult     => $multcount,
                                 content  => $thiscontent,
                                 subfield => $subfield,
                             };
                         }
                         elsif ($newcategory && $content){
-                            push @{$title_ref->{fields}{$newcategory}},{
+                            push @{$holding_ref->{fields}{$newcategory}},{
                                 mult     => 1,
                                 content  => $thiscontent,
                                 subfield => $subfield,
@@ -650,7 +656,10 @@ if (-e $titlefile){
                         }
                     }
                 }
-            }
+
+                print MEXOUT encode_json $holding_ref, "\n";
+
+            } 
             # Ansonsten normale Umwandlung
             else {
                 $content = konv($content);

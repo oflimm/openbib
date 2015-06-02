@@ -51,18 +51,18 @@ sub new {
 
     my $session  = exists $arg_ref->{session}
         ? $arg_ref->{session}           : undef;
+
+    my $config   = exists $arg_ref->{config}
+        ? $arg_ref->{config}            : OpenBib::Config->new;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config  = OpenBib::Config->new;
 
     my $self = {};
 
     bless ($self, $class);
 
-    $self->connectDB();
-    
+    $self->{_config}  = $config;
     $self->{_altered} = 0;
 
     if (defined $query){
@@ -115,7 +115,7 @@ sub load_from_query {
 
     return unless (defined $self->{_query});
                    
-    my $config  = OpenBib::Config->new;
+    my $config  = $self->get_config;
 
     my $queryoptions_ref = $self->get_option_definition;
 
@@ -144,14 +144,14 @@ sub load_from_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->new;
+    my $config  = $self->get_config;
     my $session = $self->get_session;
 
     $logger->debug("SessionID:".$session->{ID}) if (defined $session->{ID});
 
     
     # DBI: "select queryoptions from sessioninfo where sessionid = ?"
-    my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({id => $session->{sid}});
+    my $queryoptions_rs = $self->get_schema->resultset('Sessioninfo')->single({id => $session->{sid}});
 
     if ($queryoptions_rs){
       my $queryoptions = $queryoptions_rs->queryoptions;
@@ -183,10 +183,10 @@ sub dump_into_session {
     
     return unless ($self->{_altered});
     
-    my $config  = OpenBib::Config->new;
+    my $config  = $self->get_config;
     my $session = $self->get_session;
     
-    my $queryoptions_rs = $self->{schema}->resultset('Sessioninfo')->single({id => $session->{sid}});
+    my $queryoptions_rs = $self->get_schema->resultset('Sessioninfo')->single({id => $session->{sid}});
     
     if ($queryoptions_rs){
         $queryoptions_rs->update(
@@ -199,6 +199,12 @@ sub dump_into_session {
     $logger->debug("Dumped Options: ".encode_json($self->get_session_options)." for session $session->{ID}");
     
     return;
+}
+
+sub get_config {
+    my $self = shift;
+
+    return $self->{_config};
 }
 
 sub get_options {
@@ -279,9 +285,9 @@ sub set_session {
 }
 
 sub get_option_definition {
-    my ($class)=@_;
+    my ($self)=@_;
     
-    my $config  = OpenBib::Config->new;
+    my $config  = $self->get_config;
     
     return $config->{queryoptions};
 }
@@ -330,24 +336,96 @@ sub to_cgi_querystring {
     return join(";",@cgiparams);
 }
 
+sub get_schema {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting Schema $self");
+    
+    if (defined $self->{schema}){
+        $logger->debug("Reusing Schema $self");
+        return $self->{schema};
+    }
+    
+    $logger->debug("Creating new Schema $self");    
+    
+    $self->connectDB;
+    
+    return $self->{schema};
+}
+
 sub connectDB {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->new;
+    my $config = $self->get_config;
+    
+    # UTF8: {'pg_enable_utf8'    => 1}
+    if ($config->{'systemdbsingleton'}){
+        eval {        
+            my $schema = OpenBib::Schema::System::Singleton->instance;
+            $self->{schema} = $schema->get_schema;
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $config->{systemdbname}");
+        }
+    }
+    else {
+        eval {        
+            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
+            
+        };
+        
+        if ($@){
+            $logger->fatal("Unable to connect to database $config->{systemdbname}");
+        }
+    }
+        
+    
+    return;
+}
 
-    eval {        
-        $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
+sub disconnectDB {
+    my $self = shift;
 
-    };
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-    if ($@){
-        $logger->fatal("Unable to connect to database $config->{systemdbname}");
+    $logger->debug("Try disconnecting from System-DB $self");
+    
+    if (defined $self->{schema}){
+        eval {
+            $logger->debug("Disconnect from System-DB now $self");
+            $self->{schema}->storage->dbh->disconnect;
+            delete $self->{schema};
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+    
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Destroying Config-Object $self");
+
+    if (defined $self->{schema}){
+        $self->disconnectDB;
     }
 
-    return $self;
+    return;
 }
 
 1;

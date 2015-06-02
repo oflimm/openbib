@@ -57,24 +57,26 @@ sub new {
         ? $arg_ref->{sessionID}             : undef;
 
     my $id          = exists $arg_ref->{ID}
-        ? $arg_ref->{ID}             : undef;
+        ? $arg_ref->{ID}                    : undef;
+
+    my $config     = exists $arg_ref->{config}
+        ? $arg_ref->{config}                : OpenBib::Config->new;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
-    
     my $self = { };
 
     bless ($self, $class);
 
+    $self->{_config} = $config;
+    
     my ($atime,$btime,$timeall)=(0,0,0);
 
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
-    $self->connectDB();
     $self->connectMemcached();
 
     if (defined $sessionID){
@@ -99,6 +101,12 @@ sub new {
     }
 
     return $self;
+}
+
+sub get_config {
+    my $self = shift;
+
+    return $self->{_config};
 }
 
 sub get_credentials {
@@ -1472,7 +1480,7 @@ sub get_all_tags_of_tit {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     my ($atime,$btime,$timeall)=(0,0,0);
 
@@ -4283,7 +4291,7 @@ sub new_dbprofile {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     my $searchprofileid = $config->get_searchprofile_or_create($databases_ref);
     
@@ -4306,7 +4314,7 @@ sub update_dbprofile {
   
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     my $searchprofileid = $config->get_searchprofile_or_create($databases_ref);
 
@@ -5341,7 +5349,7 @@ sub is_admin {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config::File->instance;
+    my $config = $self->get_config;
 
     # Statischer Admin-User aus portal.yml
     return 1 if (defined $self->{ID} && $self->{ID} eq $config->{adminuser});
@@ -5368,7 +5376,7 @@ sub has_role {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my $thisuserid = ($userid)?$userid:$self->{ID};
 
@@ -5638,12 +5646,20 @@ sub migrate_ugc {
 sub get_schema {
     my $self = shift;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting Schema $self");
+    
     if (defined $self->{schema}){
+        $logger->debug("Reusing Schema $self");
         return $self->{schema};
     }
-
+    
+    $logger->debug("Creating new Schema $self");    
+    
     $self->connectDB;
-
+    
     return $self->{schema};
 }
 
@@ -5653,8 +5669,8 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config::File->instance;
-
+    my $config = $self->get_config;
+    
     # UTF8: {'pg_enable_utf8'    => 1}
     if ($config->{'systemdbsingleton'}){
         eval {        
@@ -5687,17 +5703,37 @@ sub disconnectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Try disconnecting from System-DB $self");
+    
     if (defined $self->{schema}){
         eval {
-#            if (defined $self->get_schema->storage->dbh->sth) {
-#                $self->get_schema->storage->dbh->sth->finish;
-#            }
+            $logger->debug("Disconnect from System-DB now $self");
             $self->{schema}->storage->dbh->disconnect;
+            delete $self->{schema};
         };
 
         if ($@){
             $logger->error($@);
         }
+    }
+    
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Destroying User-Object $self");
+
+    if (defined $self->{schema}){
+        $self->disconnectDB;
+    }
+
+    if (defined $self->{memc}){
+        $self->disconnectMemcached;
     }
 
     return;
@@ -5709,7 +5745,7 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     if (!exists $config->{memcached}){
       $logger->debug("No memcached configured");
@@ -5726,10 +5762,16 @@ sub connectMemcached {
     return;
 }
 
-sub DESTROY {
+sub disconnectMemcached {
     my $self = shift;
 
-    $self->disconnectDB;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Disconnecting memcached");
+    
+    $self->{memc}->disconnect_all if (defined $self->{memc});
+    delete $self->{memc};
 
     return;
 }

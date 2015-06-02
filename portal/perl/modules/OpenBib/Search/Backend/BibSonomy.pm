@@ -49,46 +49,6 @@ use OpenBib::Catalog::Factory;
 
 use base qw(OpenBib::Search);
 
-sub new {
-    my ($class,$arg_ref) = @_;
-
-    # Set defaults
-    my $database        = exists $arg_ref->{database}
-        ? $arg_ref->{database}                : undef;
-
-    my $options            = exists $arg_ref->{options}
-        ? $arg_ref->{options}                 : {};
-
-    my $searchquery        = exists $arg_ref->{searchquery}
-        ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
-
-    my $queryoptions       = exists $arg_ref->{queryoptions}
-        ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->new;
-    
-    my $self = { };
-
-    bless ($self, $class);
-
-    if ($database){
-        $self->{_database}      = $database;
-    }
-    
-    if ($options){
-        $self->{_options}       = $options;
-    }
-
-    $self->{_queryoptions}  = $queryoptions;
-    
-    $self->{_searchquery}   = $searchquery;
-
-    return $self;
-}
-
 sub search {
     my ($self,$arg_ref) = @_;
 
@@ -99,7 +59,7 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = OpenBib::Config->new;
+    my $config       = $self->get_config;
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
@@ -153,7 +113,7 @@ sub parse_query {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my @searchterms = ();
     foreach my $field (keys %{$config->{searchfield}}){

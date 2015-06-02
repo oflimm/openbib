@@ -66,6 +66,9 @@ $chars_to_replace = qr/$chars_to_replace/;
 sub new {
     my $class = shift;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $config = OpenBib::Config::File->instance;
 
     # Ininitalisierung mit Config-Parametern
@@ -78,16 +81,26 @@ sub new {
     }
     
     $self->connectMemcached();
-    
+
+    $logger->debug("Creating Config-Object $self");
+        
     return $self;
 }
 
 sub get_schema {
     my $self = shift;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting Schema $self");
+    
     if (defined $self->{schema}){
+        $logger->debug("Reusing Schema $self");
         return $self->{schema};
     }
+    
+    $logger->debug("Creating new Schema $self");    
     
     $self->connectDB;
     
@@ -2084,27 +2097,39 @@ sub disconnectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Try disconnecting from System-DB $self");
+    
     if (defined $self->{schema}){
         eval {
-#            if (defined $self->get_schema->storage->dbh->sth) {
-#                $self->get_schema->storage->dbh->sth->finish;
-#            }
-            $self->get_schema->storage->dbh->disconnect;
+            $logger->debug("Disconnect from System-DB now $self");
+            $self->{schema}->storage->dbh->disconnect;
+            delete $self->{schema};
         };
 
         if ($@){
             $logger->error($@);
         }
     }
-
+    
     return;
 }
 
 sub DESTROY {
     my $self = shift;
 
-    $self->disconnectDB;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
+    $logger->debug("Destroying Config-Object $self");
+
+    if (defined $self->{schema}){
+        $self->disconnectDB;
+    }
+
+    if (defined $self->{memc}){
+        $self->disconnectMemcached;
+    }
+    
     return;
 }
 
@@ -2114,7 +2139,7 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if (!exists $self->{memcached}){
+    if (!defined $self->{memcached}){
       $logger->debug("No memcached configured");
       return;
     }
@@ -2136,11 +2161,8 @@ sub disconnectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if (!exists $self->{memcached}){
-      $logger->debug("No memcached configured");
-      return;
-    }
-
+    $logger->debug("Disconnecting memcached");
+    
     $self->{memc}->disconnect_all if (defined $self->{memc});
     delete $self->{memc};
 

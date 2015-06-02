@@ -51,8 +51,6 @@ sub as_psgi {
 
     my $logger = get_logger();
 
-    my $config  = OpenBib::Config->new;
-
     my $query = $args{args_to_new}->{QUERY};
 
     $logger->debug("Query: ".ref($query));
@@ -169,11 +167,11 @@ sub dispatch_args {
 
     my $logger=get_logger();
     
-    my $config  = OpenBib::Config->new;
+    my $configfile  = OpenBib::Config::File->instance;
 
     my $table_ref = [];
 
-    foreach my $item (@{$config->{dispatch_rules}}){
+    foreach my $item (@{$configfile->{dispatch_rules}}){
         my $rule       = $item->{rule};
         my $module     = $item->{module};
         my $runmode    = $item->{runmode};

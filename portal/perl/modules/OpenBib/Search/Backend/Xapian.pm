@@ -132,7 +132,7 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = OpenBib::Config->new;
+    my $config       = $self->get_config;
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
@@ -470,7 +470,7 @@ sub browse {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = OpenBib::Config->new;
+    my $config       = $self->get_config;
     my $queryoptions = $self->get_queryoptions;
 
     # Used Parameters
@@ -624,7 +624,7 @@ sub get_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config     = OpenBib::Config->new;
+    my $config     = $self->get_config;
 
     my $recordlist = new OpenBib::RecordList::Title();
 
@@ -656,7 +656,7 @@ sub get_records_as_json {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config     = OpenBib::Config->new;
+    my $config     = $self->get_config;
 
     my @matches = $self->matches;
 
@@ -678,7 +678,7 @@ sub get_facets {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     my $ddatime   = new Benchmark;
     
@@ -741,7 +741,7 @@ sub get_indexterms {
     my $logger = get_logger();
 
     $logger->debug("Getting indexterms for id $id in database $database");
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my $dbh = undef;
     
@@ -796,7 +796,7 @@ sub get_values {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my $dbh = undef;
     
@@ -857,7 +857,7 @@ sub parse_query {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = OpenBib::Config->new;
+    my $config       = $self->get_config;
     my $queryoptions = $self->get_queryoptions;
 
     # Used Parameters

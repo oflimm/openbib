@@ -63,22 +63,24 @@ sub new {
     my $view        = exists $arg_ref->{view}
         ? $arg_ref->{view}                  : undef;
 
+    my $config     = exists $arg_ref->{config}
+        ? $arg_ref->{config}                : OpenBib::Config->new;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
-                                # 
     my $self = { };
 
     bless ($self, $class);
 
+    $self->{_config} = $config;
+    
     my ($atime,$btime,$timeall)=(0,0,0);
 
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
     
-    $self->connectDB();
     $self->connectMemcached();
 
     $self->{servername} = $config->{servername};
@@ -123,13 +125,19 @@ sub new {
     return $self;
 }
 
+sub get_config {
+    my $self = shift;
+
+    return $self->{_config};
+}
+
 sub _init_new_session {
     my ($self,$r) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;    
+    my $config = $self->get_config;
 
     my $sessionID="";
 
@@ -396,7 +404,7 @@ sub set_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;    
+    my $config = $self->get_config;
 
     my $sid             =  $self->get_schema->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->id;
     my $searchprofileid =  $config->get_searchprofile_or_create($db_ref);
@@ -422,7 +430,7 @@ sub get_dbchoice {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     my $dbases = $self->get_schema->resultset('SessionSearchprofile')->search_rs(
         {
@@ -519,7 +527,7 @@ sub get_all_searchqueries {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     my $thissid = (defined $sid)?$sid:$self->{sid};
 
@@ -1025,7 +1033,7 @@ sub clear_data {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     if ($config->{statisticsdb_enable}){
         $self->save_eventlog_to_statisticsdb;
@@ -1660,14 +1668,34 @@ sub get_authenticator {
     return $authenticator;
 }
 
+sub get_schema {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting Schema $self");
+    
+    if (defined $self->{schema}){
+        $logger->debug("Reusing Schema $self");
+        return $self->{schema};
+    }
+    
+    $logger->debug("Creating new Schema $self");    
+    
+    $self->connectDB;
+    
+    return $self->{schema};
+}
+
 sub connectDB {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config::File->instance;
-
+    my $config = $self->get_config;
+    
     # UTF8: {'pg_enable_utf8'    => 1}
     if ($config->{'systemdbsingleton'}){
         eval {        
@@ -1682,6 +1710,7 @@ sub connectDB {
     else {
         eval {        
             $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
+            
         };
         
         if ($@){
@@ -1693,45 +1722,45 @@ sub connectDB {
     return;
 }
 
-sub get_schema {
-    my $self = shift;
-
-    if (defined $self->{schema}){
-        return $self->{schema};
-    }
-
-    $self->connectDB;
-
-    return $self->{schema};
-}
-
 sub disconnectDB {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Try disconnecting from System-DB $self");
+    
     if (defined $self->{schema}){
         eval {
-#            if (defined $self->get_schema->storage->dbh->sth) {
-#                $self->get_schema->storage->dbh->sth->finish;
-#            }
+            $logger->debug("Disconnect from System-DB now $self");
             $self->{schema}->storage->dbh->disconnect;
+            delete $self->{schema};
         };
 
         if ($@){
             $logger->error($@);
         }
     }
-
+    
     return;
 }
 
 sub DESTROY {
     my $self = shift;
 
-    $self->disconnectDB;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
+    $logger->debug("Destroying Session-Object $self");
+
+    if (defined $self->{schema}){
+        $self->disconnectDB;
+    }
+
+    if (defined $self->{memc}){
+        $self->disconnectMemcached;
+    }
+    
     return;
 }
 
@@ -1741,7 +1770,7 @@ sub connectMemcached {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     if (!exists $config->{memcached}){
       $logger->debug("No memcached configured");
@@ -1758,16 +1787,30 @@ sub connectMemcached {
     return;
 }
 
+sub disconnectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Disconnecting memcached");
+    
+    $self->{memc}->disconnect_all if (defined $self->{memc});
+    delete $self->{memc};
+
+    return;
+}
+
 1;
 __END__
 
 =head1 NAME
 
-OpenBib::Session - Singleton einer Session
+OpenBib::Session - Session-Objekt
 
 =head1 DESCRIPTION
 
-Dieses Singleton verwaltet eine Session im Portal
+Dieses Objekt verwaltet eine Session im Portal
 
 =head1 SYNOPSIS
 
@@ -1777,19 +1820,10 @@ Dieses Singleton verwaltet eine Session im Portal
 
 =over 4
 
-=item new({ sessionID => $sessionID })
+=item new({ sessionID => $sessionID [, config => $config] })
 
-Erzeugung als herkömmliches Objektes und nicht als
-Singleton.
-
-=item instance({ sessionID => $sessionID })
-
-Instanziierung des Singleton yur SessionID $sessionID. Wird
-keine sessionID übergeben, dann wird eine neue erzeugt.
-
-=item instance({ sessionID => $sessionID })
-
-Instanziierung des Singleton yur SessionID $sessionID. Wird keine sessionID übergeben, dann wird eine neue erzeugt.
+Erzeugung des Objektes. Um ein bestehendes Config-Objekt wiederzuverwenden, kann
+dieses als optionaler Parameter übergeben werden.
 
 =item _init_new_session
 

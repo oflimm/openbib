@@ -42,6 +42,9 @@ use OpenBib::Search::Backend::Xapian;
 sub create_searcher {
     my ($self,$arg_ref) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     # Set defaults
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}        : undef;
@@ -49,11 +52,9 @@ sub create_searcher {
     my $sb                 = exists $arg_ref->{sb}
         ? $arg_ref->{sb}              : undef;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->new;
-
+    my $config             = exists $arg_ref->{config}
+        ? $arg_ref->{config}          : OpenBib::Config->new;
+    
     if ($logger->is_debug){
         $logger->debug("Trying to dispatch database $database") if (defined $database);
         $logger->debug("Trying to dispatch with optional sb $sb") if (defined $sb);
@@ -61,6 +62,7 @@ sub create_searcher {
     
     if (!defined $database && !defined $sb){
         $sb = $config->{local_search_backend};
+        $logger->debug("Trying to dispatch with default backend $sb");
     }
     
     elsif (defined $database && !defined $sb){

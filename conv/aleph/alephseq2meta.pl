@@ -158,8 +158,8 @@ sub convert_buffer {
 
         $titleid = sprintf "%d", $titleid;
         
-#        print "-------------------------------------\n";
-#        print "$kateg,$indikator,$type,$content\n";
+        print "-------------------------------------\n";
+        print "$kateg,$indikator,$type,$content\n";
         my $is_mex=0;
         
         my $content_ref={};
@@ -170,14 +170,14 @@ sub convert_buffer {
             }
         }
 
-#        print "-------------------------------------\n";
-#        print YAML::Dump($content_ref);
-#        print "-------------------------------------\n";
+        print "-------------------------------------\n";
+        print YAML::Syck::Dump($content_ref);
+        print "-------------------------------------\n";
         
         foreach my $kategind (keys %$content_ref){
 
             # Verweisungen
-            if ($kateg eq "453" || $kateg eq "463" || $kateg eq "473"){
+            if ($kateg eq "453" || $kateg eq "463" || $kateg eq "473" || defined $convconfig->{'link-fields'}{$kateg}){
                 if (defined $ht2id_ref->{$content_ref->{"4531a"}} && $ht2id_ref->{$content_ref->{"4531a"}}){
                     my $multcount=++$multcount_ref->{'0004'};
 
@@ -201,6 +201,15 @@ sub convert_buffer {
 
                     push @{$title_ref->{fields}{'0004'}}, {
                         content  => $ht2id_ref->{$content_ref->{"4731a"}},
+                        subfield => '',
+                        mult     => $multcount,
+                    };
+                }
+                if (defined $ht2id_ref->{$content_ref->{$kateg}} && $ht2id_ref->{$content_ref->{$kateg}}){
+                    my $multcount=++$multcount_ref->{'0004'};
+
+                    push @{$title_ref->{fields}{'0004'}}, {
+                        content  => $ht2id_ref->{$content_ref->{$kateg}},
                         subfield => '',
                         mult     => $multcount,
                     };

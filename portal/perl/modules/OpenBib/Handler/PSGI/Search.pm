@@ -179,7 +179,7 @@ sub show_search_header {
     
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
-    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
+    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
     $self->param('searchquery',$searchquery);
     
     if ($logger->is_debug){
@@ -826,7 +826,7 @@ sub joined_search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config      = OpenBib::Config->new;
+    my $config      = $self->param('config');
     my $searchquery = $self->param('searchquery');
     my $writer      = $self->param('writer');
     
@@ -865,7 +865,7 @@ sub sequential_search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config      = OpenBib::Config->new;
+    my $config      = $self->param('config');
     my $searchquery = $self->param('searchquery');
     my $writer      = $self->param('writer');
 
@@ -916,10 +916,11 @@ sub search {
     my $nav;
 
     my $search_args_ref = {};
-    $search_args_ref->{options} = OpenBib::Common::Util::query2hashref($query);
-    $search_args_ref->{database} = $database if (defined $database);
-    $search_args_ref->{authority} = $authority if (defined $authority);
-    $search_args_ref->{searchquery} = $searchquery if (defined $searchquery);
+    $search_args_ref->{options}      = OpenBib::Common::Util::query2hashref($query);
+    $search_args_ref->{database}     = $database if (defined $database);
+    $search_args_ref->{authority}    = $authority if (defined $authority);
+    $search_args_ref->{searchquery}  = $searchquery if (defined $searchquery);
+    $search_args_ref->{config}       = $config if (defined $config);
     $search_args_ref->{queryoptions} = $queryoptions if (defined $queryoptions);
 
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes

@@ -67,6 +67,9 @@ sub new {
     my $options            = exists $arg_ref->{options}
         ? $arg_ref->{options}                 : {};
 
+    my $config             = exists $arg_ref->{config}
+        ? $arg_ref->{config}                  : OpenBib::Config->new;
+    
     my $searchquery        = exists $arg_ref->{searchquery}
         ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
 
@@ -95,8 +98,6 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->new;
-
     # Wenn keine Parameter uebergeben wurden, dann Defaults nehmen
     if (!$colors && !$ocolors){
         $logger->debug("Using defaults for color and ocolor");
@@ -140,6 +141,10 @@ sub new {
         $self->{_options}       = $options;
     }
 
+    if ($config){
+        $self->{_config}        = $config;
+    }
+    
     if ($queryoptions){
         $self->{_queryoptions}  = $queryoptions;
     }
@@ -162,7 +167,7 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = OpenBib::Config->new;
+    my $config       = $self->get_config;
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
@@ -292,7 +297,7 @@ sub get_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config     = OpenBib::Config->new;
+    my $config     = $self->get_config;
 
     my $catalog = OpenBib::Catalog::Factory->create_catalog($self->{args});
     
@@ -348,7 +353,7 @@ sub parse_query {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my @searchterms = ();
     foreach my $field (keys %{$config->{searchfield}}){

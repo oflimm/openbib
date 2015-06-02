@@ -55,12 +55,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
-
     # Set defaults
-    my $bibid     = exists $arg_ref->{bibid}
-        ? $arg_ref->{bibid}       : $config->{ezb_bibid};
-
     my $lang      = exists $arg_ref->{l}
         ? $arg_ref->{l}           : undef;
 
@@ -85,8 +80,14 @@ sub new {
     my $access_red             = exists $arg_ref->{access_red}
         ? $arg_ref->{access_red}              : 0;
 
-    my $colors = $access_green + $access_yellow*2 + $access_red*4;
+    my $config             = exists $arg_ref->{config}
+        ? $arg_ref->{config}                  : OpenBib::Config->new;
 
+    my $bibid              = exists $arg_ref->{bibid}
+        ? $arg_ref->{bibid}                   : $config->{ezb_bibid};
+    
+    my $colors = $access_green + $access_yellow*2 + $access_red*4;
+    
     if (!$colors){
         $colors=$config->{ezb_colors};
 
@@ -101,7 +102,7 @@ sub new {
 
     my $options            = exists $arg_ref->{options}
         ? $arg_ref->{options}                 : {};
-
+    
     my $searchquery        = exists $arg_ref->{searchquery}
         ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
 
@@ -133,6 +134,10 @@ sub new {
         $self->{_options}       = $options;
     }
 
+    if ($config){
+        $self->{_config}        = $config;
+    }
+    
     if ($queryoptions){
         $self->{_queryoptions}  = $queryoptions;
     }
@@ -154,7 +159,7 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = OpenBib::Config->new;
+    my $config       = $self->get_config;
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
@@ -290,7 +295,7 @@ sub get_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config     = OpenBib::Config->new;
+    my $config     = $self->get_config;
 
     my $catalog = OpenBib::Catalog::Factory->create_catalog($self->{args});
     
@@ -328,7 +333,7 @@ sub parse_query {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my @searchterms = ();
     foreach my $field (keys %{$config->{searchfield}}){

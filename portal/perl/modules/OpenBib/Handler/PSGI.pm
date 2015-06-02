@@ -96,7 +96,7 @@ sub cgiapp_init {
     
     my $sessionID     = $r->cookies->{sessionID} || '';
 
-    my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view });
+    my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view, config => $config });
     $self->param('session',$session);
 
     $logger->debug("Got sessionID $sessionID and effecitve sessionID is $session->{ID}");
@@ -109,7 +109,7 @@ sub cgiapp_init {
     # Neue Session, dann loggen
     $session->log_new_session_once($r);
 
-    my $user         = OpenBib::User->new({sessionID => $session->{ID}});
+    my $user         = OpenBib::User->new({sessionID => $session->{ID}, config => $config});
     $self->param('user',$user);
 
     my $dbinfo       = OpenBib::Config::DatabaseInfoTable->new;
@@ -633,7 +633,7 @@ sub negotiate_type {
     my $logger = get_logger();
     
     my $r              = $self->param('r');
-    my $config         = OpenBib::Config->new;    
+    my $config         = $self->param('config');
 
     
     my $content_type = $r->header('Content-Type') || '';
@@ -1715,7 +1715,7 @@ sub set_cookieXX {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->param('config');
 
     if (!($name || $value)){
         $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
@@ -1744,7 +1744,7 @@ sub set_cookie {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->param('config');
 
     if (!($name || $value)){
         $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
@@ -1775,7 +1775,7 @@ sub finalize_cookies {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->new;
+    my $config = $self->param('config');
 
     if (defined $self->param('cookie_jar')){
         $self->header_add('Set-Cookie', $self->param('cookie_jar'));
@@ -1881,7 +1881,7 @@ sub run {
     }
     
     # clean up operations
-#    $self->call_hook('teardown');
+    #$self->call_hook('teardown');
     
     return $return_value;
 }
@@ -1892,14 +1892,23 @@ sub send_psgi_headers {
     return $self->_send_psgi_headers();
 }
 
-# sub teardown {
-#     my $self = shift;
+sub teardown {
+    my $self = shift;
 
-#     my $config = OpenBib::Config->new;
+    # Disconnect from Systemdb
+    #my $config = $self->param('config');
+    #$config->disconnectDB;
+
+    #my $user = $self->param('user');
+    #$user->disconnectDB;
+
+    #my $session = $self->param('session');
+    #$session->disconnectDB;
+
+    #my $queryoptions = $self->param('qopts');
+    #$queryoptions->disconnectDB;
     
-#     $config->disconnectDB;
-    
-#     return;
-# }
+    return;
+}
 
 1;

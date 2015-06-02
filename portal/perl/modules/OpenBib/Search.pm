@@ -63,6 +63,9 @@ sub new {
     my $options            = exists $arg_ref->{options}
         ? $arg_ref->{options}                 : {};
 
+    my $config             = exists $arg_ref->{config}
+        ? $arg_ref->{config}                  : OpenBib::Config->new;
+    
     my $searchquery        = exists $arg_ref->{searchquery}
         ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
 
@@ -91,6 +94,10 @@ sub new {
         $self->{_options}       = $options;
     }
 
+    if ($config){
+        $self->{_config}        = $config;
+    }
+    
     if ($queryoptions){
         $self->{_queryoptions}  = $queryoptions;
     }
@@ -104,6 +111,12 @@ sub new {
     # Backend Specific Attributes
     
     return $self;
+}
+
+sub get_config {
+    my ($self) = @_;
+
+    return $self->{_config};
 }
 
 sub get_searchquery {

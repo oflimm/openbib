@@ -124,7 +124,7 @@ sub cgiapp_init {
     my $browser      = HTTP::BrowserDetect->new($useragent);
     $self->param('browser',$browser);
     
-    my $queryoptions = OpenBib::QueryOptions->new({ query => $r, session => $session });
+    my $queryoptions = OpenBib::QueryOptions->new({ query => $r, session => $session, config => $config });
     $self->param('qopts',$queryoptions);
     $self->param('servername',$r->get_server_name);
 

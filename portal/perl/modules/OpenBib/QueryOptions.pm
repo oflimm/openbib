@@ -202,7 +202,7 @@ sub dump_into_session {
 }
 
 sub get_config {
-    my $self = shift;
+    my ($self) = @_;
 
     return $self->{_config};
 }

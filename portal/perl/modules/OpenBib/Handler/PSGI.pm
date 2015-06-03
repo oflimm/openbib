@@ -97,6 +97,7 @@ sub cgiapp_init {
     my $sessionID     = $r->cookies->{sessionID} || '';
 
     my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view, config => $config });
+
     $self->param('session',$session);
 
     $logger->debug("Got sessionID $sessionID and effecitve sessionID is $session->{ID}");
@@ -123,8 +124,9 @@ sub cgiapp_init {
     
     my $browser      = HTTP::BrowserDetect->new($useragent);
     $self->param('browser',$browser);
-    
-    my $queryoptions = OpenBib::QueryOptions->new({ query => $r, session => $session, config => $config });
+
+    my $queryoptions = OpenBib::QueryOptions->new({ query => $r, session => $session });
+
     $self->param('qopts',$queryoptions);
     $self->param('servername',$r->get_server_name);
 

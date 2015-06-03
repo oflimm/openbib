@@ -38,7 +38,7 @@ use JSON::XS qw(encode_json decode_json);
 use YAML::Syck;
 
 
-use OpenBib::Config;
+use OpenBib::Config::File;
 use OpenBib::Schema::System;
 use OpenBib::Session;
 
@@ -52,9 +52,6 @@ sub new {
     my $session  = exists $arg_ref->{session}
         ? $arg_ref->{session}           : undef;
 
-    my $config   = exists $arg_ref->{config}
-        ? $arg_ref->{config}            : OpenBib::Config->new;
-    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -62,7 +59,6 @@ sub new {
 
     bless ($self, $class);
 
-    $self->{_config}  = $config;
     $self->{_altered} = 0;
 
     if (defined $query){
@@ -103,7 +99,6 @@ sub new {
         $logger->debug("QueryOptions-Object created with options ".YAML::Syck::Dump($self->get_options));
     }
 
-
     return $self;
 }
 
@@ -115,8 +110,6 @@ sub load_from_query {
 
     return unless (defined $self->{_query});
                    
-    my $config  = $self->get_config;
-
     my $queryoptions_ref = $self->get_option_definition;
 
     foreach my $option (keys %$queryoptions_ref){
@@ -144,7 +137,6 @@ sub load_from_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = $self->get_config;
     my $session = $self->get_session;
 
     $logger->debug("SessionID:".$session->{ID}) if (defined $session->{ID});
@@ -183,7 +175,6 @@ sub dump_into_session {
     
     return unless ($self->{_altered});
     
-    my $config  = $self->get_config;
     my $session = $self->get_session;
     
     my $queryoptions_rs = $self->get_schema->resultset('Sessioninfo')->single({id => $session->{sid}});
@@ -287,9 +278,9 @@ sub set_session {
 sub get_option_definition {
     my ($self)=@_;
     
-    my $config  = $self->get_config;
+    my $configfile  = OpenBib::Config::File->instance;
     
-    return $config->{queryoptions};
+    return $configfile->{queryoptions};
 }
 
 sub initialize_defaults {
@@ -362,27 +353,27 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = $self->get_config;
+    my $configfile = OpenBib::Config::File->instance;
     
     # UTF8: {'pg_enable_utf8'    => 1}
-    if ($config->{'systemdbsingleton'}){
+    if ($configfile->{'systemdbsingleton'}){
         eval {        
             my $schema = OpenBib::Schema::System::Singleton->instance;
             $self->{schema} = $schema->get_schema;
         };
         
         if ($@){
-            $logger->fatal("Unable to connect to database $config->{systemdbname}");
+            $logger->fatal("Unable to connect to database $configfile->{systemdbname}");
         }
     }
     else {
         eval {        
-            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$configfile->{systemdbname};host=$configfile->{systemdbhost};port=$configfile->{systemdbport}", $configfile->{systemdbuser}, $configfile->{systemdbpasswd},$configfile->{systemdboptions}) or $logger->error_die($DBI::errstr);
             
         };
         
         if ($@){
-            $logger->fatal("Unable to connect to database $config->{systemdbname}");
+            $logger->fatal("Unable to connect to database $configfile->{systemdbname}");
         }
     }
         

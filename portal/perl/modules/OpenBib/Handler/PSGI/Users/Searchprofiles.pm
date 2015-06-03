@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Searchprofiles
 #
-#  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -445,9 +445,8 @@ sub return_baseurl {
     my $userid         = $self->param('userid')         || '';
     my $path_prefix    = $self->param('path_prefix');
     my $lang           = $self->param('lang');
+    my $config         = $self->param('config');
     my $user           = $self->param('user');
-
-    my $config = OpenBib::Config->new;
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{searchprofiles_loc}.html?l=$lang";
 

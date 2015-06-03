@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::LitLists.pm
 #
-#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -516,8 +516,7 @@ sub return_baseurl {
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
     my $path_prefix    = $self->param('path_prefix');
-
-    my $config = OpenBib::Config->new;
+    my $config         = $self->param('config');
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/litlists.html";
 

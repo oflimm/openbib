@@ -80,13 +80,12 @@ sub show_collection_by_isbn_negotiate {
     my $r              = $self->param('r');
     my $queryoptions   = $self->param('qopts');
     my $user           = $self->param('user');
+    my $config         = $self->param('config');
     my $session        = $self->param('session');
 
     my $view           = $self->param('view')           || '';
     my $isbn           = $self->param('isbn')           || '';
 
-    my $config = OpenBib::Config->new;
-    
     my $query  = $r;
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);

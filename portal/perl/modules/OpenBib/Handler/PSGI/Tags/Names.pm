@@ -612,8 +612,7 @@ sub return_baseurl {
     my $view           = $self->param('view')           || '';
     my $userid         = $self->param('userid')         || '';
     my $path_prefix    = $self->param('path_prefix');
-
-    my $config = OpenBib::Config->new;
+    my $config         = $self->param('config');
 
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/tag.html";
 

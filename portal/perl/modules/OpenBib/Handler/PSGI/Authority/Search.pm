@@ -89,7 +89,7 @@ sub joined_search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config      = OpenBib::Config->new;
+    my $config      = $self->param('config');
     my $searchquery = $self->param('searchquery');
     my $writer      = $self->param('writer');
 

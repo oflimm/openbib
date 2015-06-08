@@ -90,20 +90,25 @@ sub new {
     my $comment   = exists $arg_ref->{comment}
         ? $arg_ref->{comment}        : undef;
 
+    my $config     = exists $arg_ref->{config}
+        ? $arg_ref->{config}         : OpenBib::Config->new();
+    
     my $generic_attributes = exists $arg_ref->{generic_attributes}
         ? $arg_ref->{generic_attributes}   : {};
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Creating Title-Object");
+    
     my $self = { };
 
+    $self->{_config}          = $config;
+    
     bless ($self, $class);
 
-    $self->{_same_records}    = new OpenBib::RecordList::Title();
-    $self->{_similar_records} = new OpenBib::RecordList::Title();
-    $self->{_related_records} = new OpenBib::RecordList::Title();
-
+    $logger->debug("Stage 1");
+    
     $self->connectMemcached;
     
     if (defined $database){
@@ -111,7 +116,7 @@ sub new {
     }
 
     if (defined $id){
-        $self->{id}           = $id;
+        $self->{id}       = $id;
     }
 
     if (defined $date){
@@ -133,8 +138,16 @@ sub new {
     if (defined $id && defined $database){
         $logger->debug("Title-Record-Object created with id $id in database $database");
     }
+
+    $logger->debug("Object created");
     
     return $self;
+}
+
+sub get_config {
+    my $self = shift;
+
+    return $self->{_config};
 }
 
 sub load_full_record {
@@ -148,7 +161,7 @@ sub load_full_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     # (Re-)Initialisierung
     delete $self->{_fields}         if (exists $self->{_fields});
@@ -211,6 +224,9 @@ sub load_full_record {
     my $similar_records = $record->get_similar_records;
     my $related_records = $record->get_related_records;
 
+
+    $logger->debug("Setting data from Backend");
+    
     $self->set_fields($fields);
     $self->set_holding($holdings);
     $self->set_same_records($same_records);
@@ -219,6 +235,7 @@ sub load_full_record {
 
     if ($self->{memc}){
         $self->{memc}->set($memc_key,{ fields => $fields, holdings => $holdings },$config->{memcached_expiration}{'record:title:full'});
+        $logger->debug("Fetch record from db and store in memcached");
     }
     
     if ($config->{benchmark}) {
@@ -226,9 +243,9 @@ sub load_full_record {
         $timeall=timediff($btime,$atime);
         $logger->info("Total time for is ".timestr($timeall));
     }
-    
-    $logger->debug("Fetch record from db and store in memcached");
 
+    $logger->debug("Full record loaded");
+    
     return $self;
 }
 
@@ -243,7 +260,7 @@ sub load_brief_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     # (Re-)Initialisierung
     delete $self->{_fields}       if (exists $self->{_fields});
@@ -309,7 +326,7 @@ sub enrich_content {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my ($atime,$btime,$timeall);
         
@@ -527,7 +544,7 @@ sub enrich_related_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my ($atime,$btime,$timeall);
         
@@ -672,11 +689,11 @@ sub enrich_related_records {
             
             if ($titlecache){
                 $logger->debug("Record from cache");
-                $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+                $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
             }
             else {
                 $logger->debug("Record from database");
-                    $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+                    $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
             }
             
             if ($config->{benchmark}) {
@@ -726,7 +743,7 @@ sub enrich_similar_records_old {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my ($atime,$btime,$timeall);
         
@@ -823,10 +840,10 @@ sub enrich_similar_records_old {
             $logger->debug("Found Title with id $id in database $database");
             
             if ($titlecache){
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
             }
             else {
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
             }
         }
         
@@ -860,7 +877,7 @@ sub enrich_similar_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my ($atime,$btime,$timeall);
         
@@ -981,10 +998,10 @@ sub enrich_similar_records {
             $logger->debug("Found Title with id $id in database $database");
             
             if ($titlecache){
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
             }
             else {
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
             }
             
             $have_title_ref->{"$database:$id"} = 1;
@@ -1024,7 +1041,7 @@ sub enrich_same_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my ($atime,$btime,$timeall);
         
@@ -1140,10 +1157,10 @@ sub enrich_same_records {
             next if (defined $have_title_ref->{"$database:$id"});
             
             if ($titlecache){
-                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
             }
             else {
-                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
             }
 
             $have_title_ref->{"$database:$id"} = 1;
@@ -1182,7 +1199,7 @@ sub load_circulation {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config        = OpenBib::Config->new;
+    my $config        = $self->get_config;
 
     my ($atime,$btime,$timeall)=(0,0,0);
 
@@ -1316,7 +1333,7 @@ sub load_olwsviewer {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config        = OpenBib::Config->new;
+    my $config        = $self->get_config;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
     # Anreicherung mit OLWS-Daten
@@ -1366,7 +1383,7 @@ sub save_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my ($atime,$btime,$timeall);
 
@@ -1481,7 +1498,7 @@ sub delete_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my ($atime,$btime,$timeall);
 
@@ -1578,11 +1595,19 @@ sub has_same_records {
 sub get_same_records {
     my ($self)=@_;
 
-    return $self->{_same_records}
+    unless (defined $self->{_same_records}){
+        $self->{_same_records}    = OpenBib::RecordList::Title->new();
+    }
+    
+    return $self->{_same_records};
 }
 
 sub get_similar_records {
     my ($self)=@_;
+
+    unless (defined $self->{_similar_records}){
+        $self->{_similar_records}    = OpenBib::RecordList::Title->new();
+    }
 
     return $self->{_similar_records}
 }
@@ -1597,6 +1622,10 @@ sub set_similar_records {
 
 sub get_related_records {
     my ($self)=@_;
+
+    unless (defined $self->{_related_records}){
+        $self->{_related_records}    = OpenBib::RecordList::Title->new();
+    }
 
     return $self->{_related_records}
 }
@@ -2308,7 +2337,7 @@ sub set_record_exists {
 sub to_drilldown_term {
     my ($self,$term)=@_;
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     $term = OpenBib::Common::Util::normalize({
         content   => $term,
@@ -2330,7 +2359,7 @@ sub to_json {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my $record = $self->to_hash;
 
@@ -2531,7 +2560,7 @@ sub set_from_psgi_request {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     my $query = $r;
 
@@ -2760,7 +2789,7 @@ sub enrich_cdm {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     # Wenn kein URI, dann Default-URI
     $url = $config->{cdm_base}.$config->{cdm_path} unless ($url);
@@ -2792,7 +2821,7 @@ sub to_indexable_document {
     my $self = shift;
     my $database = shift;
 
-    my $config      = OpenBib::Config->new;
+    my $config      = $self->get_config;
     my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
     my $doc = new OpenBib::Index::Document({ database => $self->{_database}, id => $self->{_id} });

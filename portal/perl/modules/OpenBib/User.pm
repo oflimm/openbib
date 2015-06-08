@@ -5655,6 +5655,11 @@ sub get_schema {
         $logger->debug("Reusing Schema $self");
         return $self->{schema};
     }
+
+    if (defined $self->{_config}){
+        $logger->debug("Reusing Config-Schema ".$self->get_config);
+        return $self->get_config->get_schema;        
+    }
     
     $logger->debug("Creating new Schema $self");    
     

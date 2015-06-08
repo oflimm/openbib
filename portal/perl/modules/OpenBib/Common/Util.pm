@@ -1956,6 +1956,47 @@ sub normalize_lang {
     return;
 }
 
+sub filter_recordlist_by_profile {
+    my ($recordlist,$profilename) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->new;
+
+    my $db_in_profile_ref = {};
+
+    $logger->debug("Checking profile $profilename");
+    
+    return $recordlist unless $config->profile_exists($profilename);
+
+    $logger->debug("Profile $profilename exists");
+    
+    foreach my $dbname ($config->get_profiledbs($profilename)){
+        $db_in_profile_ref->{$dbname} = 1;
+    }
+
+    if ($logger->is_debug){
+        $logger->debug("Databases: ".YAML::Dump($db_in_profile_ref));
+    }
+    
+    my $newrecords_ref = [];
+
+    foreach my $record ($recordlist->get_records){
+        if (defined $db_in_profile_ref->{$record->get_database}){
+            push @$newrecords_ref, $record;
+            $logger->debug("Used database: ".$record->get_database);
+        }
+        else {
+            $logger->debug("Ignored database: ".$record->get_database);
+        }
+    }
+
+    $recordlist->set_records($newrecords_ref);
+
+    return $recordlist;
+}
+
 1;
 __END__
 

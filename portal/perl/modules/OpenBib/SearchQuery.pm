@@ -61,8 +61,8 @@ sub new {
     my $session     = exists $arg_ref->{session}
         ? $arg_ref->{session}               : undef;
 
-    my $config     = exists $arg_ref->{config}
-        ? $arg_ref->{config}                : OpenBib::Config->new;
+    my $config      = exists $arg_ref->{config}
+        ? $arg_ref->{config}                : OpenBib::Config->new();
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -72,7 +72,13 @@ sub new {
         _filter                => [],
         _results               => {},
         _have_searchterms      => 0,
+        _config                => $config,
     };
+
+    $logger->debug("Creating");
+
+    $logger->debug(ref($self->{_config}));
+    $logger->debug($self->{_config});
 
     foreach my $searchfield (keys %{$config->{searchfield}}){
         $self->{_searchquery}{$searchfield} = {
@@ -81,11 +87,9 @@ sub new {
             bool => '',
         };
     }
-
+    
     bless ($self, $class);
 
-    $self->{_config} = $config;
-    
     if (defined $session){
         $self->set_session($session);
     }
@@ -99,13 +103,14 @@ sub new {
         $self->set_from_psgi_request;
     }
 
-
+    $logger->debug("Object created");
+    
     return $self;
 }
 
 sub get_config {
     my $self = shift;
-
+    
     return $self->{_config};
 }
 
@@ -1099,6 +1104,11 @@ sub get_schema {
     if (defined $self->{schema}){
         $logger->debug("Reusing Schema $self");
         return $self->{schema};
+    }
+
+    if (defined $self->{_config}){
+        $logger->debug("Reusing Config-Schema ".$self->get_config);
+        return $self->get_config->get_schema;        
     }
     
     $logger->debug("Creating new Schema $self");    

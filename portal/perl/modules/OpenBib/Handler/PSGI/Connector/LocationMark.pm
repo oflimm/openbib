@@ -308,7 +308,7 @@ sub show_via_searchengine {
 
     $self->param('searchquery',$searchquery);
 
-    my $searcher = OpenBib::Search::Factory->create_searcher({database => $database."_authority", query => $searchquery });
+    my $searcher = OpenBib::Search::Factory->create_searcher({database => $database."_authority", query => $searchquery, config => $config });
 
     if ($base && $location){
         $logger->debug("Bestimme Titel zur Grundsignatur '$base' und Standort '$location'");

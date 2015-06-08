@@ -42,12 +42,16 @@ use Encode 'decode_utf8';
 
 use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
+use OpenBib::Common::Util;
+use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Search::Factory;
 use OpenBib::Search::Backend::Xapian;
 use OpenBib::Search::Util;
+use OpenBib::SearchQuery;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Template::Utilities;
+use OpenBib::Statistics;
 
 use base 'OpenBib::Handler::PSGI';
 
@@ -229,10 +233,11 @@ sub show_collection {
 
 
     my $search_args_ref = {};
-    $search_args_ref->{options} = OpenBib::Common::Util::query2hashref($query);
-    $search_args_ref->{database} = $database if (defined $database);
-    $search_args_ref->{sb} = $sb if (defined $sb);
+    $search_args_ref->{options}      = OpenBib::Common::Util::query2hashref($query);
+    $search_args_ref->{database}     = $database if (defined $database);
+    $search_args_ref->{sb}           = $sb if (defined $sb);
     $search_args_ref->{queryoptions} = $queryoptions if (defined $queryoptions);
+    $search_args_ref->{config}       = $config if (defined $config);
     
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
     # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
@@ -335,7 +340,9 @@ sub show_record {
     }
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
-    my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
+    $logger->debug("Vor");
+    my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
+
     my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
     
     if ($config->{benchmark}) {
@@ -347,7 +354,7 @@ sub show_record {
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
         
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid})->load_full_record;
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_full_record;
 
         if ($config->{benchmark}) {
             $btime=new Benchmark;

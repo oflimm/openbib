@@ -40,7 +40,7 @@ use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Conv::Config;
-use OpenBib::Config;
+use OpenBib::Config::File;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Schema::Catalog;
 use OpenBib::Record::Title;
@@ -58,7 +58,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = OpenBib::Config::File->instance;
     
     # Set defaults
     my $database        = exists $arg_ref->{database}
@@ -294,7 +294,7 @@ sub load_full_title_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config        = OpenBib::Config->new;
+    my $config        = OpenBib::Config::File->instance;
 
     my ($atime,$btime,$timeall)=(0,0,0);
     
@@ -648,7 +648,7 @@ sub load_brief_title_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = OpenBib::Config::File->instance;
 
     my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
@@ -1226,7 +1226,7 @@ sub _get_holding {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config      = OpenBib::Config->new;
+    my $config      = OpenBib::Config::File->instance;
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
     
     my $fields_ref={};
@@ -1336,7 +1336,7 @@ sub get_number_of_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = OpenBib::Config::File->instance;
     
     my ($atime,$btime,$timeall);
 
@@ -1393,7 +1393,7 @@ sub get_connected_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = OpenBib::Config::File->instance;
 
     return () unless ($self->{schema});
 
@@ -1568,7 +1568,7 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = OpenBib::Config::File->instance;
 
     # pg_server_prepare => 0 keine Prepared Statements fuer pgbouncer transaction pooling mode
     eval {

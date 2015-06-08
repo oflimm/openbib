@@ -273,14 +273,14 @@ sub show_record {
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
-    my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
+    my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
 
     my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
 
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
         
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid})->load_full_record;
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_full_record;
 
         my $poolname=$dbinfotable->get('dbnames')->{$database};
 

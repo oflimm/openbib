@@ -1290,8 +1290,8 @@ sub _get_holding {
     # Ein im Exemplar-Datensatz gefundenes Sigel geht vor
     if (exists $fields_ref->{X3330}{content}) {
         $sigel=$fields_ref->{X3330}{content};
-        if (defined $sigel && defined $dbinfotable->{sigel}{$sigel}) {
-            $fields_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
+        if (defined $sigel && defined $dbinfotable->get('sigel')->{$sigel}) {
+            $fields_ref->{X4000}{content}=$dbinfotable->get('sigel')->{$sigel};
         }
         else {
             $fields_ref->{X4000}{content}= {
@@ -1302,17 +1302,20 @@ sub _get_holding {
     }
     # sonst wird der Datenbankname zur Findung des Sigels herangezogen
     else {
-        $sigel=$dbinfotable->{dbases}{$self->{database}};
-        if (defined $sigel && defined $dbinfotable->{sigel}{$sigel}) {
-            $fields_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
+        $sigel=$dbinfotable->get('dbases')->{$self->{database}};
+        if ($logger->is_debug){
+            $logger->debug("Sigel: $sigel ".YAML::Dump($dbinfotable));
+        }
+        if (defined $sigel && defined $dbinfotable->get('sigel')->{$sigel}) {
+            $fields_ref->{X4000}{content}=$dbinfotable->get('sigel')->{$sigel};
         }
     }
 
     my $bibinfourl="";
 
     # Bestimmung der Bibinfo-Url
-    if (defined $sigel && defined $dbinfotable->{bibinfo}{$sigel}) {
-        $fields_ref->{X4001}{content}=$dbinfotable->{bibinfo}{$sigel};
+    if (defined $sigel && defined $dbinfotable->get('bibinfo')->{$sigel}) {
+        $fields_ref->{X4001}{content}=$dbinfotable->get('bibinfo')->{$sigel};
     }
 
     if ($logger->is_debug){

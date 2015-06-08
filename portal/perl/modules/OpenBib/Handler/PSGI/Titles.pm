@@ -362,7 +362,7 @@ sub show_record {
             $logger->info("Total time until stage 0 is ".timestr($timeall));
         }
 
-        my $poolname=$dbinfotable->{dbnames}{$database};
+        my $poolname=$dbinfotable->get('dbnames')->{$database};
 
         if ($queryid){
             $searchquery->load({sid => $session->{sid}, queryid => $queryid});

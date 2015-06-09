@@ -38,7 +38,7 @@ use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
 use DBI;
 use Encode 'decode_utf8';
-use JSON::XS;
+use JSON::XS();
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 use Storable;
@@ -1687,7 +1687,7 @@ sub set_fields_from_json {
     my $json_ref = {};
 
     eval {
-        $json_ref = decode_json decode_utf8($json_string);
+        $json_ref = JSON::XS::decode_json decode_utf8($json_string);
     };
     
     if ($@){
@@ -2404,17 +2404,17 @@ sub to_json {
         }
     }
     
-    return encode_json $record;
+    return JSON::XS::encode_json $record;
 }
 
-sub from_json ($){
+sub from_json {
     my ($self,$json)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     eval {
-        my $json_ref = decode_json $json;
+        my $json_ref = JSON::XS::decode_json $json;
 
         $self->from_hash($json_ref);
     };
@@ -2823,7 +2823,7 @@ sub enrich_cdm {
     if ($content){
         $content=~s/<!--.+?-->//g;
         $logger->debug("CDM: Result for ID $id: ".$content);
-        $enrich_data_ref = decode_json($content);
+        $enrich_data_ref = JSON::XS::decode_json($content);
     }
 
     return $enrich_data_ref;

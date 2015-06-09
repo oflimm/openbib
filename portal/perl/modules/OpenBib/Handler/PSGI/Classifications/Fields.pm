@@ -161,7 +161,7 @@ sub show_record {
     
     if ($olws){
         if (defined $circinfotable->get($database) && defined $circinfotable->get($database)->{circcheckurl}){
-	    my $poolname=$dbinfotable->get('sigel'){
+	    my $poolname=$dbinfotable->get('sigel')->{
 	      $dbinfotable->get('dbases')->{$database}};
             
             if ($olws_action eq "browse"){

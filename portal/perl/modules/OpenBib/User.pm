@@ -876,7 +876,7 @@ sub get_titles_of_tag {
     );
 
     foreach my $title ($tagged_titles->all){
-        $recordlist->add(new OpenBib::Record::Title({database => $title->get_column('thisdbname') , id => $title->get_column('thistitleid') config => $config }));
+        $recordlist->add(new OpenBib::Record::Title({database => $title->get_column('thisdbname'), id => $title->get_column('thistitleid'), config => $config }));
     }
 
     $recordlist->load_brief_records;
@@ -1609,6 +1609,8 @@ sub get_private_tags {
   
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     my $tags_ref = [];
 
     my $attribute_ref =         {

@@ -116,7 +116,7 @@ $filename=~s/\s+/_/g;
 
 open(OUT,">:raw",$filename);
 
-my $h = new HTTP::OAI::Harvester(baseURL=>$iurl);
+my $h = new HTTP::OAI::Harvester(baseURL=>$url);
 
 my $response = $h->repository($h->Identify);
 if( $response->is_error ) {
@@ -177,7 +177,7 @@ while( my $rec = $response->next ) {
 
         print OUT " $header_string \n";
     };
-        y $recif ($rec->is_deleted){
+    if ($rec->is_deleted){
         print OUT " <is_deleted>1</is_deleted>\n";
     }
     else {

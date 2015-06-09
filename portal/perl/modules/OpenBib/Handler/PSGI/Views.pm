@@ -82,6 +82,7 @@ sub show_collection {
 
     # Shared Args
     my $config         = $self->param('config');
+    my $dbinfotable    = $self->param('dbinfo');
 
     my $viewinfo_ref = $config->get_viewinfo_overview();
     
@@ -106,6 +107,7 @@ sub show_record {
     # Shared Args
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
+    my $dbinfotable    = $self->param('dbinfo');
 
     # View muss existieren
     unless ($config->view_exists($viewname)) {

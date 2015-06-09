@@ -261,7 +261,7 @@ sub create_record {
             # Aufruf-URL
             my $return_uri = uri_escape($r->request_uri);
             
-            return $request->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
+            return $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?redirect_to=$return_uri");
         }
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));

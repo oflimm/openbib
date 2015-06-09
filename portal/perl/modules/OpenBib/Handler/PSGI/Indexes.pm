@@ -4,7 +4,7 @@
 #
 #  ehemals Search.pm
 #
-#  Copyright 1997-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 1997-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -160,7 +160,7 @@ sub show_collection_by_field {
     # Suche ueber OLWS (urn:/Viewer)
     
     if ($olws){
-        if (defined $circinfotable->get($database) && defined $circinfotable->get($database){circcheckurl}){
+        if (defined $circinfotable->get($database) && defined $circinfotable->get($database)->{circcheckurl}){
 	    my $poolname=$dbinfotable->get('sigel')->{
 	      $dbinfotable->get('dbases')->{$database}};
             

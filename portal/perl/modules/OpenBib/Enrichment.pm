@@ -467,7 +467,7 @@ sub get_common_holdings {
             if (exists $all_by_matchkey{$matchkey}{$database}){
                 my @signaturen = ();
                 foreach my $id (@{$all_by_matchkey{$matchkey}{$database}}){
-                    my $record=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record->get_fields;
+                    my $record=OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record->get_fields;
                     if (!$persons){
                         $persons=$record->{PC0001}[0]{content};
                     }

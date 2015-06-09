@@ -210,7 +210,7 @@ sub create_record {
         return;
     }
 
-    my $record = new OpenBib::Record::Title;
+    my $record = new OpenBib::Record::Title({ config => $config });
     $record->set_database($database);
     $record->set_from_psgi_request($r);
 
@@ -458,7 +458,7 @@ sub redirect_to_bibsonomy {
     my $servername     = $self->param('servername');
 
     if ($titleid && $database){
-        my $title_as_bibtex = OpenBib::Record::Title->new({id =>$titleid, database => $database})->load_full_record->to_bibtex({utf8 => 1});
+        my $title_as_bibtex = OpenBib::Record::Title->new({id =>$titleid, database => $database, config => $config })->load_full_record->to_bibtex({utf8 => 1});
         #        $title=~s/\n/ /g;
 
         $logger->debug("Title as BibTeX: $title_as_bibtex");

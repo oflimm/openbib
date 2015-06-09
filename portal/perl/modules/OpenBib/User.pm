@@ -779,6 +779,8 @@ sub get_titles_of_tag {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     # Zuerst Gesamtanzahl bestimmen
     my $where_ref     = {
         tagid => $tagid,
@@ -874,7 +876,7 @@ sub get_titles_of_tag {
     );
 
     foreach my $title ($tagged_titles->all){
-        $recordlist->add(new OpenBib::Record::Title({database => $title->get_column('thisdbname') , id => $title->get_column('thistitleid')}));
+        $recordlist->add(new OpenBib::Record::Title({database => $title->get_column('thisdbname') , id => $title->get_column('thistitleid') config => $config }));
     }
 
     $recordlist->load_brief_records;
@@ -1665,7 +1667,7 @@ sub get_private_tags {
         
         $logger->debug("Got tagname $tagname, tagid $tagid, titleid $titleid and dbname $dbname");
         
-        my $record = new OpenBib::Record::Title({ id => $titleid, database => $dbname })->load_brief_record;
+        my $record = new OpenBib::Record::Title({ id => $titleid, database => $dbname, config => $config })->load_brief_record;
         
         push @$tags_ref, {
             id        => $id,
@@ -2059,6 +2061,8 @@ sub get_public_tags {
   
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     my $tags_ref = [];
     
     # DBI: "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
@@ -2086,7 +2090,7 @@ sub get_public_tags {
         
         $logger->debug("Got tagname $tagname, tagid $tagid, titleid $titleid and dbname $dbname");
         
-        my $record = new OpenBib::Record::Title({ id => $titleid, database => $dbname })->load_brief_record;
+        my $record = new OpenBib::Record::Title({ id => $titleid, database => $dbname, config => $config })->load_brief_record;
         
         push @$tags_ref, {
             id        => $id,
@@ -2831,6 +2835,8 @@ sub add_litlistentry {
   
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     my $new_litlistitem;
     
     if ($titleid && $dbname){
@@ -2845,7 +2851,7 @@ sub add_litlistentry {
         
         return if ($litlistitem);
         
-        my $cached_title = OpenBib::Record::Title->new({ id => $titleid, database => $dbname })->load_brief_record->to_json;
+        my $cached_title = OpenBib::Record::Title->new({ id => $titleid, database => $dbname, config => $config })->load_brief_record->to_json;
         
         $logger->debug("Caching Bibliographic Data: $cached_title");
 
@@ -2918,6 +2924,8 @@ sub update_litlistentry {
   
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
     my $litlistitem = $self->get_schema->resultset('Litlistitem')->search_rs(
         {        
@@ -2930,7 +2938,7 @@ sub update_litlistentry {
 
     if ($titleid && $dbname){
         
-        my $cached_title = OpenBib::Record::Title->new({ id => $titleid, database => $dbname })->load_brief_record->to_json;
+        my $cached_title = OpenBib::Record::Title->new({ id => $titleid, database => $dbname, config => $config })->load_brief_record->to_json;
         
         $logger->debug("Caching Bibliographic Data: $cached_title Comment: $comment");
 
@@ -3303,6 +3311,8 @@ sub get_litlistentries {
   
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     # DBI: "select titleid,dbname,tstamp from litlistitem where litlistid=?"
     my $litlistitems = $self->get_schema->resultset('Litlistitem')->search_rs(
         {
@@ -3320,7 +3330,7 @@ sub get_litlistentries {
         my $comment    = $litlistitem->comment;
         my $titlecache = $litlistitem->titlecache;
         
-        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment })->set_fields_from_json($titlecache);
+        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config })->load_brief_record:OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config })->set_fields_from_json($titlecache);
         
         $recordlist->add($record);
     }
@@ -3344,6 +3354,8 @@ sub get_single_litlistentry {
   
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     # DBI: "select titleid,dbname,tstamp from litlistitem where litlistid=?"
     my $litlistitem = $self->get_schema->resultset('Litlistitem')->search_rs(
         {
@@ -3360,12 +3372,12 @@ sub get_single_litlistentry {
         my $comment    = $litlistitem->comment;
         my $titlecache = $litlistitem->titlecache;
         
-        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment })->set_fields_from_json($titlecache);
+        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config })->load_brief_record:OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config })->set_fields_from_json($titlecache);
 
         return $record;
     }
 
-    return OpenBib::Record::Title->new();
+    return OpenBib::Record::Title->new({config => $config});
 }
 
 sub get_number_of_litlistentries {
@@ -3847,6 +3859,8 @@ sub get_single_item_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     my $cartitem = $self->get_schema->resultset('UserCartitem')->search_rs(
         {
             'cartitemid.id'  => $listid,
@@ -3867,7 +3881,7 @@ sub get_single_item_in_collection {
         my $tstamp     = $cartitem->get_column('thiststamp');
         my $comment    = $cartitem->get_column('thiscomment');
         
-        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, listid => $listid, tstamp => $tstamp, comment => $comment })->load_brief_record:OpenBib::Record::Title->new({ listid => $listid })->set_fields_from_json($titlecache);
+        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, listid => $listid, tstamp => $tstamp, comment => $comment, config => $config })->load_brief_record:OpenBib::Record::Title->new({ listid => $listid, config => $config })->set_fields_from_json($titlecache);
 
         return $record;
     }
@@ -3881,6 +3895,8 @@ sub get_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     my $recordlist = new OpenBib::RecordList::Title();
 
     # DBI: "select * from collection where userid = ? order by dbname"
@@ -3906,10 +3922,10 @@ sub get_items_in_collection {
         $logger->debug("Processing Item $listid with DB: $database ID: $titleid / Record: $titlecache");
 
         if ($database && $titleid){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, , date => $tstamp, comment => $comment})->load_brief_record);
+            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, date => $tstamp, comment => $comment, config => $config })->load_brief_record);
         }
         elsif ($titlecache) {
-            my $record = new OpenBib::Record::Title({listid => $listid, date => $tstamp, comment => $comment});
+            my $record = new OpenBib::Record::Title({listid => $listid, date => $tstamp, comment => $comment, config => $config });
             $record->set_fields_from_json($titlecache);
             $recordlist->add($record);
         }
@@ -3939,6 +3955,8 @@ sub add_item_to_collection {
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = $self->get_config;
     
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
@@ -3960,7 +3978,7 @@ sub add_item_to_collection {
         )->count;
         
         if (!$have_title) {
-            my $cached_title = new OpenBib::Record::Title({ database => $dbname , id => $titleid});
+            my $cached_title = new OpenBib::Record::Title({ database => $dbname , id => $titleid, config => $config });
             my $record_json = $cached_title->load_brief_record->to_json;
             
             $logger->debug("Adding Title to Usercollection: $record_json");
@@ -5219,6 +5237,8 @@ sub sync_all_to_bibsonomy {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     my $bibsonomy_ref = $self->get_bibsonomy;
 
     return unless ($bibsonomy_ref->{user} || $bibsonomy_ref->{key});
@@ -5239,7 +5259,7 @@ sub sync_all_to_bibsonomy {
 
             # 1) Ueberpruefen, ob Titel bereits existiert
 
-            my $record    = new OpenBib::Record::Title({ database => $database , id => $id})->load_full_record;
+            my $record    = new OpenBib::Record::Title({ database => $database , id => $id, config => $config })->load_full_record;
             my $bibkey    = $record->to_bibkey;
             
             my $posts_ref = $bibsonomy->get_posts({ user => 'self', bibkey => $bibkey});

@@ -530,7 +530,7 @@ sub redirect_to_bibsonomy {
     my $dbinfotable    = $self->param('dbinfo');
     
     if ($titleid && $database){
-        my $title_as_bibtex = OpenBib::Record::Title->new({id =>$titleid, database => $database})->load_full_record->to_bibtex({utf8 => 1});
+        my $title_as_bibtex = OpenBib::Record::Title->new({id =>$titleid, database => $database, config => $config })->load_full_record->to_bibtex({utf8 => 1});
         #        $title=~s/\n/ /g;
 
         $logger->debug("Title as BibTeX: $title_as_bibtex");
@@ -581,7 +581,7 @@ sub show_availability {
     if ($titleid && $database){
         # Wenn Datenbank an Ausleihsystem gekoppelt, dann Medienstatus hollen und auswerten
         if ($config->get_databaseinfo->single({ dbname => $database })->get_column('circ')){
-            my $record = OpenBib::Record::Title->new({id =>$titleid, database => $database})->load_circulation;
+            my $record = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config })->load_circulation;
             # TT-Data erzeugen
             my $ttdata={
                 database    => $database, # Zwingend wegen common/subtemplate
@@ -618,7 +618,7 @@ sub show_record_circulation {
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
         
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid})->load_circulation;
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_circulation;
 
         # TT-Data erzeugen
         my $ttdata={
@@ -655,7 +655,7 @@ sub show_record_related_records {
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
         
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config });
 
         # TT-Data erzeugen
         my $ttdata={
@@ -692,7 +692,7 @@ sub show_record_similar_records {
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
         
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config});
 
         # TT-Data erzeugen
         my $ttdata={
@@ -729,7 +729,7 @@ sub show_record_same_records {
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
         
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid});
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config });
 
         # TT-Data erzeugen
         my $ttdata={

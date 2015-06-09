@@ -106,7 +106,7 @@ sub show_collection {
     
     return unless ($database && $titleid);
 
-    my $record = OpenBib::Record::Title->new({database => $database, id => $titleid})->load_full_record;
+    my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config })->load_full_record;
 
     my $provenances_ref;
 

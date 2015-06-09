@@ -184,7 +184,6 @@ sub load_full_record {
         $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
         return $self;
     }
-
     my $memc_key = "record:title:full:$self->{database}:$self->{id}";
 
     my $record;
@@ -1240,6 +1239,8 @@ sub load_circulation {
         
         if ($circinfotable->has_circinfo($self->{database}) && defined $circinfotable->get($self->{database})->{circ}) {
 
+            $logger->debug("Getting Circulation info via SOAP");
+            
             eval {
                 my $soap = SOAP::Lite
                     -> uri("urn:/MediaStatus")
@@ -1250,7 +1251,10 @@ sub load_circulation {
                         SOAP::Data->name(database => $circinfotable->get($self->{database})->{circdb})->type('string'))));
                 
                 unless ($result->fault) {
-                    $circexlist=$result->result;
+                    $circexlist = $result->result;
+                    if ($logger->is_debug){
+                        $logger->debug("SOAP Result: ".YAML::Dump($circexlist));
+                    }
                 }
                 else {
                     $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
@@ -1306,10 +1310,10 @@ sub load_circulation {
     }
 
     if ($self->{memc}){
+        $logger->debug("Fetch circulation from db and store in memcached");
         $self->{memc}->set($memc_key,$circulation_ref,$config->{memcached_expiration}{'record:title:circulation'});
     }
     
-    $logger->debug("Fetch circulation from db and store in memcached");
 
     $self->set_circulation($circulation_ref);
 
@@ -1573,6 +1577,14 @@ sub get_circulation {
 sub set_circulation {
     my ($self,$circulation_ref)=@_;
 
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
+    if ($logger->is_debug){
+        $logger->debug("Setting Circulation: ".YAML::Dump($circulation_ref));
+    }
+    
     $self->{_circulation} = $circulation_ref;
 
     return;

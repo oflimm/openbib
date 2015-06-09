@@ -237,7 +237,7 @@ sub show {
                     @{$similar_subjects_ref};
 
     my $ttdata = {
-        record           => OpenBib::Record::Title->new,
+        record           => OpenBib::Record::Title->new({config => $config}),
         format           => $format,
         similar_subjects => $sorted_similar_subjects_ref,
         database         => $database,

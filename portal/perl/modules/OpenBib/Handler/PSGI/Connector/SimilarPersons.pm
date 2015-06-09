@@ -258,7 +258,7 @@ sub show {
     }    
     
     my $ttdata = {
-        record          => OpenBib::Record::Title->new,
+        record          => OpenBib::Record::Title->new({config => $config}),
         format          => $format,
         similar_persons => $sorted_similar_persons_ref,
         database        => $database,

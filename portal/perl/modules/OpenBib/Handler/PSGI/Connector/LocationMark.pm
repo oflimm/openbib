@@ -220,7 +220,7 @@ sub show_via_sql {
             my $titleid_ref = $sortedtitleids[$i];
             my $id = $titleid_ref->{id};
             
-            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database})->load_full_record->get_fields;
+            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database, config => $config})->load_full_record->get_fields;
             
             # Bereinigung der Signaturen. Alle Signaturen, die nicht zur Grundsignatur gehoeren,
             # werden entfernt.
@@ -418,7 +418,7 @@ sub show_via_searchengine {
             my $titleid_ref = $sortedtitleids[$i];
             my $id          = $titleid_ref->{id};
             
-            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database})->load_brief_record->get_fields;
+            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database, config => $config})->load_brief_record->get_fields;
             
             # Bereinigung der Signaturen. Alle Signaturen, die nicht zur Grundsignatur gehoeren,
             # werden entfernt.

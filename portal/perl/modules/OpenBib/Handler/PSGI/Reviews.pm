@@ -78,9 +78,9 @@ sub show_collection_by_isbn_negotiate {
 
     $logger->debug("Entered show_collection");
     my $r              = $self->param('r');
+    my $config         = $self->param('config');
     my $queryoptions   = $self->param('qopts');
     my $user           = $self->param('user');
-    my $config         = $self->param('config');
     my $session        = $self->param('session');
 
     my $view           = $self->param('view')           || '';
@@ -148,7 +148,7 @@ sub show_collection_by_isbn_negotiate {
         my $titelidn = $review_ref->{titleid};
         my $database = $review_ref->{dbname};
         
-        $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
+        $review_ref->{titnormset} = OpenBib::Record::Title->new({ database => $database, config => $config })->load_brief_record({id=>$titelidn})->to_rawdata;
     }
     
     # TT-Data erzeugen
@@ -196,7 +196,7 @@ sub show_record {
         my $titleid  = $review_ref->{titleid};
         my $database = $review_ref->{dbname};
         
-        $review_ref->{record} = OpenBib::Record::Title->new({id => $titleid, database=>$database})->load_brief_record;
+        $review_ref->{record} = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config })->load_brief_record;
     }
 
     if (! exists $review_ref->{id}){

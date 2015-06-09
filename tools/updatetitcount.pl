@@ -42,17 +42,19 @@ use OpenBib::Config;
 use OpenBib::Catalog;
 
 # Definition der Programm-Optionen
-my ($database,$logfile);
+my ($database,$loglevel,$logfile);
 
 &GetOptions(
     "database=s" => \$database,
+    "loglevel=s" => \$loglevel,
     "logfile=s"  => \$logfile,    
 );
 
+$loglevel=($loglevel)?$loglevel:'INFO';
 $logfile=($logfile)?$logfile:'/var/log/openbib/updatetitcount.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -85,7 +87,7 @@ else {
 
 my ($allcount,$journalcount,$articlecount,$digitalcount)=(0,0,0,0);
 
-foreach $database (@databases){
+foreach my $database (@databases){
     eval {
 	my $catalog = new OpenBib::Catalog({ database => $database });
 	

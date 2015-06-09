@@ -136,7 +136,6 @@ sub get_recent_titles_of_subject {
 
 sub connectDB {
     my $self = shift;
-    my $database = shift;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -145,11 +144,11 @@ sub connectDB {
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1} 
-        $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:Pg:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},$config->{dboptions}) or $logger->error_die($DBI::errstr);
+        $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:Pg:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},$config->{dboptions}) or $logger->error_die($DBI::errstr);
     };
 
     if ($@){
-        $logger->fatal("Unable to connect schema to database $config->{dbname}: DBI:Pg:dbname=$config->{dbname};host=$config->{dbhost};port=$config->{dbport}");
+        $logger->fatal("Unable to connect schema to database $self->{database}: DBI:Pg:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}");
     }
 
     return;

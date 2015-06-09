@@ -410,7 +410,7 @@ sub DESTROY {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Destroying Config-Object $self");
+    $logger->debug("Destroying Object $self");
 
     if (defined $self->{schema}){
         $self->disconnectDB;

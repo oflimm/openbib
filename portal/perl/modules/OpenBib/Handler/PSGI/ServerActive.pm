@@ -63,6 +63,10 @@ sub setup {
 
 sub cgiapp_init {
 
+    my $config       = OpenBib::Config->new;
+
+    $self->param('config',$config);
+    
     # Explicitly do *nothing*
     return;
 }

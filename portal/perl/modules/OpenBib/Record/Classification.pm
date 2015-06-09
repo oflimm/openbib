@@ -69,10 +69,6 @@ sub new {
             $logger->debug("Setting Classification schema");
             $self->{schema} = $schema;
         }
-        else {
-            $logger->debug("Connecting to Classification schema");
-            $self->connectDB();
-        }
 
         $logger->debug("Setting Classification database: $database");    
     }
@@ -112,7 +108,7 @@ sub load_full_record {
     }
 
     # DBI "select category,content,indicator from classification where id = ?";
-    my $classification_fields = $self->{schema}->resultset('Classification')->search(
+    my $classification_fields = $self->get_schema->resultset('Classification')->search(
         {
             'me.id' => $id,
         },
@@ -196,7 +192,7 @@ sub load_name {
     }
 
     # DBI: "select content from classification whree id = ? and category=0001";
-    my $classification_fields = $self->{schema}->resultset('Classification')->search(
+    my $classification_fields = $self->get_schema->resultset('Classification')->search(
         {
             'me.id'                         => $id,
             'classification_fields.field'   => '0800',
@@ -250,7 +246,7 @@ sub save_record {
     }
 
     if ($id){
-        my $record_exists = $self->{schema}->resultset('Classification')->search(
+        my $record_exists = $self->get_schema->resultset('Classification')->search(
             {
                 'me.id' => $id,
             },
@@ -288,10 +284,10 @@ sub save_record {
                 $create_ref->{tstamp_update} = $update_tstamp;
             }
 
-            $self->{schema}->resultset('Classification')->create($create_ref);
+            $self->get_schema->resultset('Classification')->create($create_ref);
         }
 
-        my $record = $self->{schema}->resultset('Classification')->single(
+        my $record = $self->get_schema->resultset('Classification')->single(
             {
                 'me.id' => $id,
             },
@@ -365,7 +361,7 @@ sub delete_record {
     }
 
     # DBI "select category,content,indicator from classification where id = ?";
-    my $classification = $self->{schema}->resultset('Classification')->search(
+    my $classification = $self->get_schema->resultset('Classification')->search(
         {
             'me.id' => $id,
         },
@@ -408,7 +404,7 @@ sub get_number_of_titles {
     }
 
     # DBI: "select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=5";
-    my $titlecount = $self->{schema}->resultset('Classification')->search(
+    my $titlecount = $self->get_schema->resultset('Classification')->search(
         {
             'me.id'                 => $id,
         },

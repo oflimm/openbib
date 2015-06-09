@@ -112,7 +112,7 @@ my $isbn_insertcount = 0;
 
 my $enrichment = new OpenBib::Enrichment();
 
-my $all_isbns = $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
+my $all_isbns = $enrichment->get_schema->resultset('AllTitleByIsbn')->search_rs(
     {
 	-or   => $databases_ref,
     },

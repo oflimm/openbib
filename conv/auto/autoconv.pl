@@ -423,12 +423,12 @@ my $loading_error = 0;
         'TitleHolding'        => 'title_holding',
     };
     
-    my $catalog = new OpenBib::Catalog($databasetmp);
+    my $catalog = new OpenBib::Catalog({ database => $databasetmp });
 
     foreach my $resultset (keys %$table_map_ref){
         my $dumpfilename = "$config->{autoconv_dir}/data/$database/$table_map_ref->{$resultset}.dump";
         
-        my $count_in_db = $catalog->{schema}->resultset($resultset)->count;
+        my $count_in_db = $catalog->get_schema->resultset($resultset)->count;
         my ($count_in_file) = `wc -l $dumpfilename` =~m/(\d+)\s+/;
 
         if ($count_in_db != $count_in_file){

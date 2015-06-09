@@ -124,7 +124,7 @@ else {
 
 $logger->info("Loeschen der bisherigen Daten");
     
-$enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => '4100', origin => $origin })->delete;
+$enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4100', origin => $origin })->delete;
 
 $logger->info("Einladen der neuen Daten");
 
@@ -153,14 +153,14 @@ foreach my $thisisbn (keys %{$isbn_ref}){
     }
 
     if ($count % 10000 == 0){
-        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);
+        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);
         $enrich_data_ref = [];
     }
     $count++;    
 }
 
 if (@$enrich_data_ref){
-    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
 }
 
 sub print_help {

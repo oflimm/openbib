@@ -36,8 +36,8 @@ use OpenBib::Config;
 
 my $config     = OpenBib::Config->new;
 
-foreach my $database ($config->{schema}->resultset('Databaseinfo')->all){
-    my $corresponding_view = $config->{schema}->resultset('Viewinfo')->single({viewname => $database->dbname});
+foreach my $database ($config->get_schema->resultset('Databaseinfo')->all){
+    my $corresponding_view = $config->get_schema->resultset('Viewinfo')->single({viewname => $database->dbname});
 
     if ($corresponding_view){
         if ($corresponding_view->description ne $database->description){

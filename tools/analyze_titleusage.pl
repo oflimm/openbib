@@ -83,10 +83,10 @@ unless ($enrichmntdbname){
 my $enrichmnt  = new OpenBib::Enrichment({enrichmntdbname => $enrichmntdbname });
 my $statistics = new OpenBib::Statistics({statisticsdbname => $statisticsdbname });
 
-# $enrichmnt->{schema}->storage->debug(1);
+# $enrichmnt->get_schema->storage->debug(1);
 
 # "select distinct isbn from relevance where isbn != ''"
-my $isbns = $statistics->{schema}->resultset('Titleusage')->search_rs(
+my $isbns = $statistics->get_schema->resultset('Titleusage')->search_rs(
     {
         isbn => { '!=' => '' }, 
     },
@@ -123,7 +123,7 @@ foreach my $item ($isbns->all){
     # Bestimme alle Nutzer (=Sessions), die diese ISBN ausgeliehen/angeklickt haben
 
     # select distinct id from relevance where isbn=?;
-    my $sessions = $statistics->{schema}->resultset('Sessioninfo')->search_rs(
+    my $sessions = $statistics->get_schema->resultset('Sessioninfo')->search_rs(
         {
             'titleusages.isbn' => $processed_isbn,
         },
@@ -149,7 +149,7 @@ foreach my $item ($isbns->all){
     # daraus ein Nutzungshistogramm
 
     # "select isbn,dbname,katkey from relevance where isbn != ? and id in ($idstring)"
-    my $titles = $statistics->{schema}->resultset('Sessioninfo')->search_rs(
+    my $titles = $statistics->get_schema->resultset('Sessioninfo')->search_rs(
         {
             -or                => $ids_ref,
             'titleusages.isbn' => { '!=' => $processed_isbn },             
@@ -227,7 +227,7 @@ foreach my $item ($isbns->all){
         $logger->debug("Removing enriched content for isbn $processed_isbn");
         
         # DBI: 'delete from normdata where isbn=? and category=?'
-        $enrichmnt->{schema}->resultset('EnrichedContentByIsbn')->search_rs(
+        $enrichmnt->get_schema->resultset('EnrichedContentByIsbn')->search_rs(
             {
                 -or => [
                     'field' => '4000',
@@ -283,7 +283,7 @@ foreach my $item ($isbns->all){
                 $logger->debug(YAML::Dump($enriched_content_ref));
             }
             
-            $enrichmnt->{schema}->resultset('EnrichedContentByIsbn')->populate($enriched_content_ref);
+            $enrichmnt->get_schema->resultset('EnrichedContentByIsbn')->populate($enriched_content_ref);
 
         }
 

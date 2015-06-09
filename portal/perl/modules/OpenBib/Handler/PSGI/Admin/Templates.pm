@@ -278,7 +278,7 @@ sub delete_record {
         return $self->print_authorization_error();
     }
     
-    if (!$config->{schema}->resultset('Templateinfo')->search_rs({id => $templateid})->count){
+    if (!$config->get_schema->resultset('Templateinfo')->search_rs({id => $templateid})->count){
         return $self->print_warning($msg->maketext("Es existiert kein Template unter dieser ID"));
     }
 

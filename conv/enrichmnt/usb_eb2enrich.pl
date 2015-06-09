@@ -93,7 +93,7 @@ if ($importyml){
 else {
     $logger->info("Bestimmung der ebook-URL");
 
-    my $isbn_urls = $catalog->{schema}->resultset('Title')->search(
+    my $isbn_urls = $catalog->get_schema->resultset('Title')->search(
         {
             'title_fields.field' => '0662',
             -or => [
@@ -133,7 +133,7 @@ else {
 
 $logger->info("Loeschen der bisherigen Daten");
 
-$enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => '4120', origin => $origin })->delete;
+$enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4120', origin => $origin })->delete;
 
 $logger->info("Einladen der neuen Daten");
 
@@ -161,14 +161,14 @@ foreach my $thisisbn (keys %{$isbn_ref}){
     }
 
     if ($count % 1000 == 0){
-        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
         $enrich_data_ref = [];
     }
     $count++;
 }
 
 if (@$enrich_data_ref){
-    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
 }
 
 sub print_help {

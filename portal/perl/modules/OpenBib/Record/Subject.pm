@@ -69,10 +69,6 @@ sub new {
             $logger->debug("Setting Subject schema");
             $self->{schema} = $schema;
         }
-        else {
-            $logger->debug("Connecting to Subject schema");
-            $self->connectDB();
-        }
         $logger->debug("Setting subject database: $database");
     }
 
@@ -111,7 +107,7 @@ sub load_full_record {
     }
 
     # DBI "select category,content,indicator from subject where id = ?";
-    my $subject_fields = $self->{schema}->resultset('Subject')->search(
+    my $subject_fields = $self->get_schema->resultset('Subject')->search(
         {
             'me.id' => $id,
         },
@@ -195,7 +191,7 @@ sub load_name {
     }
 
     # DBI: "select content from subject where id = ? and category=0001";
-    my $subject_fields = $self->{schema}->resultset('SubjectField')->search(
+    my $subject_fields = $self->get_schema->resultset('SubjectField')->search(
         {
             'subjectid.id' => $id,
             'me.field'     => '0800',
@@ -255,7 +251,7 @@ sub save_record {
     }
 
     if ($id){
-        my $record_exists = $self->{schema}->resultset('Subject')->search(
+        my $record_exists = $self->get_schema->resultset('Subject')->search(
             {
                 'me.id' => $id,
             },
@@ -293,10 +289,10 @@ sub save_record {
                 $create_ref->{tstamp_update} = $update_tstamp;
             }
 
-            $self->{schema}->resultset('Subject')->create($create_ref);
+            $self->get_schema->resultset('Subject')->create($create_ref);
         }
 
-        my $record = $self->{schema}->resultset('Subject')->single(
+        my $record = $self->get_schema->resultset('Subject')->single(
             {
                 'me.id' => $id,
             },
@@ -370,7 +366,7 @@ sub delete_record {
     }
 
     # DBI "select category,content,indicator from subject where id = ?";
-    my $subject = $self->{schema}->resultset('Subject')->search(
+    my $subject = $self->get_schema->resultset('Subject')->search(
         {
             'me.id' => $id,
         },
@@ -413,7 +409,7 @@ sub get_number_of_titles {
     }
 
     # DBI: "select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=4";
-    my $titlecount = $self->{schema}->resultset('Subject')->search(
+    my $titlecount = $self->get_schema->resultset('Subject')->search(
         {
             'me.id'                 => $id,
         },

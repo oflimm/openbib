@@ -150,7 +150,7 @@ sub show_active_record {
         return $self->print_authorization_error();
     }
 
-    my $thissession = $session->{schema}->resultset('Sessioninfo')->search_rs(
+    my $thissession = $session->get_schema->resultset('Sessioninfo')->search_rs(
         {
             id => $sid,
         }
@@ -305,7 +305,7 @@ sub show_archived_search {
 
     my $statistics = new OpenBib::Statistics;
 
-    my $sessions = $statistics->{schema}->resultset('Sessioninfo')->search_rs(
+    my $sessions = $statistics->get_schema->resultset('Sessioninfo')->search_rs(
         {
             -and => [
                 { 'createtime' => { '>=' => $fromdate }},
@@ -372,7 +372,7 @@ sub show_archived_record {
 
     my $statistics = new OpenBib::Statistics;
 
-    my $thissession = $statistics->{schema}->resultset('Sessioninfo')->search_rs(
+    my $thissession = $statistics->get_schema->resultset('Sessioninfo')->search_rs(
         {
             id => $sid,
         }

@@ -118,7 +118,7 @@ sub show_via_sql {
             $atime=new Benchmark;
         }
 
-        my $locationholdings = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+        my $locationholdings = $catalog->get_schema->resultset('TitleHolding')->search_rs(
             {
                 'holding_fields.field' => 16,
 #                'holding_fields.content' => { '~' => $location },
@@ -132,7 +132,7 @@ sub show_via_sql {
             }
         );
 
-        my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+        my $titles = $catalog->get_schema->resultset('TitleHolding')->search_rs(
             {
                 'holdingid.id' => { -in => $locationholdings->as_query },
 

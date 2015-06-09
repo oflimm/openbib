@@ -11,11 +11,11 @@ my $config = OpenBib::Config->new;
 
 my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
 
-my $dbistopics = $config->{schema}->resultset('Dbistopic');
+my $dbistopics = $config->get_schema->resultset('Dbistopic');
 
 # Zuerst loeschen
-$config->{schema}->resultset('DbistopicDbisdb')->delete;
-$config->{schema}->resultset('Dbisdb')->delete;
+$config->get_schema->resultset('DbistopicDbisdb')->delete;
+$config->get_schema->resultset('Dbisdb')->delete;
 
 foreach my $thisdbistopic ($dbistopics->all){
     my $dbistopicid = $thisdbistopic->id;
@@ -59,15 +59,15 @@ foreach my $thisdbistopic ($dbistopics->all){
     
 
     foreach my $dbinfo (@$dbs_ref){
-        my $dbisdb   = $config->{schema}->resultset('Dbisdb')->single({ id => $dbinfo->{id} });
+        my $dbisdb   = $config->get_schema->resultset('Dbisdb')->single({ id => $dbinfo->{id} });
         
         if (!$dbisdb){
-            $dbisdb   = $config->{schema}->resultset('Dbisdb')->create({id => $dbinfo->{id}, description => $dbinfo->{title}, url => '1' });
+            $dbisdb   = $config->get_schema->resultset('Dbisdb')->create({id => $dbinfo->{id}, description => $dbinfo->{title}, url => '1' });
         }
         
         my $dbisdbid = $dbisdb->id;
 
-        $config->{schema}->resultset('DbistopicDbisdb')->create({dbisdbid => $dbisdbid, dbistopicid => $dbistopicid, rank => 1 });
+        $config->get_schema->resultset('DbistopicDbisdb')->create({dbisdbid => $dbisdbid, dbistopicid => $dbistopicid, rank => 1 });
         
     }
 }

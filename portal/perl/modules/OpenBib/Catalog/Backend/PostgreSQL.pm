@@ -92,7 +92,7 @@ sub get_recent_titles {
     my $recordlist = new OpenBib::RecordList::Title();
 
     eval {
-        my $titles = $self->{schema}->resultset('Title')->search_rs(
+        my $titles = $self->get_schema->resultset('Title')->search_rs(
             undef,
             {
                 order_by => ['tstamp_create DESC'],
@@ -131,7 +131,7 @@ sub get_recent_titles_of_person {
     my $recordlist = new OpenBib::RecordList::Title();
 
     eval {
-        my $titles = $self->{schema}->resultset('Title')->search_rs(
+        my $titles = $self->get_schema->resultset('Title')->search_rs(
             {
                 'title_people.personid' => $id,
             },
@@ -173,7 +173,7 @@ sub get_recent_titles_of_corporatebody {
     my $recordlist = new OpenBib::RecordList::Title();
 
     eval {
-        my $titles = $self->{schema}->resultset('Title')->search_rs(
+        my $titles = $self->get_schema->resultset('Title')->search_rs(
             {
                 'title_corporatebodies.corporatebodyid' => $id,
             },
@@ -215,7 +215,7 @@ sub get_recent_titles_of_classification {
     my $recordlist = new OpenBib::RecordList::Title();
 
     eval {
-        my $titles = $self->{schema}->resultset('Title')->search_rs(
+        my $titles = $self->get_schema->resultset('Title')->search_rs(
             {
                 'title_classifications.classificationid' => $id,
             },
@@ -257,7 +257,7 @@ sub get_recent_titles_of_subject {
     my $recordlist = new OpenBib::RecordList::Title();
 
     eval {
-        my $titles = $self->{schema}->resultset('Title')->search_rs(
+        my $titles = $self->get_schema->resultset('Title')->search_rs(
             {
                 'title_subjects.subjectid' => $id,
             },
@@ -309,7 +309,7 @@ sub load_full_title_record {
         {
                         
             # DBI: select * from title where id = ?
-            my $title_fields = $self->{schema}->resultset('Title')->search(
+            my $title_fields = $self->get_schema->resultset('Title')->search(
                 {
                     'me.id' => $id,
                 },
@@ -353,7 +353,7 @@ sub load_full_title_record {
             
             # Personen
             # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-            my $title_persons = $self->{schema}->resultset('Title')->search(
+            my $title_persons = $self->get_schema->resultset('Title')->search(
                 {
                     'me.id' => $id,
                 },
@@ -374,7 +374,7 @@ sub load_full_title_record {
                     my $personid   =                    $item->{thispersonid};
                     my $supplement =                    $item->{thissupplement};
 
-                    my $record = OpenBib::Record::Person->new({database=>$self->{database}, schema => $self->{schema}});
+                    my $record = OpenBib::Record::Person->new({database=>$self->{database}, schema => $self->get_schema});
                     $record->load_name({id=>$personid});
                     my $content = $record->name_as_string;
                     
@@ -390,7 +390,7 @@ sub load_full_title_record {
             
             # Koerperschaften
             # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-            my $title_corporatebodies = $self->{schema}->resultset('Title')->search(
+            my $title_corporatebodies = $self->get_schema->resultset('Title')->search(
                 {
                     'me.id' => $id,
                 },
@@ -410,7 +410,7 @@ sub load_full_title_record {
                     my $corporatebodyid   =                    $item->{thiscorporatebodyid};
                     my $supplement        =                    $item->{thissupplement};
                     
-                    my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}, schema => $self->{schema}});
+                    my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}, schema => $self->get_schema});
                     $record->load_name({id=>$corporatebodyid});
                     my $content = $record->name_as_string;
                     
@@ -426,7 +426,7 @@ sub load_full_title_record {
             
             # Schlagworte
             # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-            my $title_subjects = $self->{schema}->resultset('Title')->search(
+            my $title_subjects = $self->get_schema->resultset('Title')->search(
                 {
                     'me.id' => $id,
                 },
@@ -447,7 +447,7 @@ sub load_full_title_record {
                     my $subjectid         =                    $item->{thissubjectid};
                     my $supplement        =                    $item->{thissupplement};
                     
-                    my $record = OpenBib::Record::Subject->new({database=>$self->{database}, schema => $self->{schema}});
+                    my $record = OpenBib::Record::Subject->new({database=>$self->{database}, schema => $self->get_schema});
                     $record->load_name({id=>$subjectid});
                     my $content = $record->name_as_string;
                     
@@ -463,7 +463,7 @@ sub load_full_title_record {
             
             # Klassifikationen
             # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-            my $title_classifications = $self->{schema}->resultset('Title')->search(
+            my $title_classifications = $self->get_schema->resultset('Title')->search(
                 {
                     'me.id' => $id,
                 },
@@ -483,7 +483,7 @@ sub load_full_title_record {
                     my $classificationid  =                    $item->{thisclassificationid};
                     my $supplement        =                    $item->{thissupplement};
                     
-                    my $record = OpenBib::Record::Classification->new({database=>$self->{database}, schema => $self->{schema}});
+                    my $record = OpenBib::Record::Classification->new({database=>$self->{database}, schema => $self->get_schema});
                     $record->load_name({id=>$classificationid});
                     my $content = $record->name_as_string;
                     
@@ -589,7 +589,7 @@ sub load_full_title_record {
             
             # DBI: "select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
             
-            my $title_holdings = $self->{schema}->resultset('TitleHolding')->search(
+            my $title_holdings = $self->get_schema->resultset('TitleHolding')->search(
                 {
                     'titleid' => $id,
                 },
@@ -666,7 +666,7 @@ sub load_brief_title_record {
         $logger->debug("Getting cached brief title for id $id");
         
         # DBI: "select listitem from title_listitem where id = ?"
-        my $record = $self->{schema}->resultset('Title')->single(
+        my $record = $self->get_schema->resultset('Title')->single(
             {
                 'id' => $id,
             },
@@ -732,7 +732,7 @@ sub create_index_document {
     my $statistics = new OpenBib::Statistics;
     my $user       = new OpenBib::User;
 
-    my $popularity = $statistics->{schema}->resultset('Titleusage')->search(
+    my $popularity = $statistics->get_schema->resultset('Titleusage')->search(
         {
             dbname  => $self->{database},
             origin  => 1,
@@ -748,7 +748,7 @@ sub create_index_document {
     
     my $tags_ref = [];
     {
-        my $tags = $user->{schema}->resultset('TitTag')->search(
+        my $tags = $user->get_schema->resultset('TitTag')->search(
             {
                 'me.dbname' => $self->{database},
                 'me.titleid' => $titleid,
@@ -775,7 +775,7 @@ sub create_index_document {
     my $litlists_ref = [];
     
     {
-        my $litlists = $user->{schema}->resultset('Litlist')->search(
+        my $litlists = $user->get_schema->resultset('Litlist')->search(
             {
                 'litlistitems.dbname' => $self->{database},
                 'litlistitems.titleid' => $titleid,
@@ -1247,7 +1247,7 @@ sub _get_holding {
     }
 
     # DBI "select category,content,indicator from holding where id = ?";
-    my $holding_fields = $self->{schema}->resultset('Holding')->search(
+    my $holding_fields = $self->get_schema->resultset('Holding')->search(
         {
             'me.id' => $id,
         },
@@ -1350,11 +1350,11 @@ sub get_number_of_titles {
     # Ausgabe der Anzahl verk"upfter Titel
     my $titlecount;
 
-    return 0 unless ($self->{schema});
+    return 0 unless ($self->get_schema);
 
     if ($type eq "sub"){
         # DBI "select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
-        $titlecount = $self->{schema}->resultset('TitleTitle')->search(
+        $titlecount = $self->get_schema->resultset('TitleTitle')->search(
             {
                 'me.source_titleid'            => $id,
             },
@@ -1367,7 +1367,7 @@ sub get_number_of_titles {
     }
     elsif ($type eq "super"){
         # DBI "select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
-        $titlecount = $self->{schema}->resultset('TitleTitle')->search(
+        $titlecount = $self->get_schema->resultset('TitleTitle')->search(
             {
                 'me.target_titleid'                 => $id,
             },
@@ -1398,7 +1398,7 @@ sub get_connected_titles {
 
     my $config = OpenBib::Config::File->instance;
 
-    return () unless ($self->{schema});
+    return () unless ($self->get_schema);
 
     my ($atime,$btime,$timeall);
 
@@ -1412,7 +1412,7 @@ sub get_connected_titles {
 
     if ($type eq "sub"){
         # DBI "select distinct targetid as titleid from conn where sourceid=? and sourcetype=1 and targettype=1"
-        $titles = $self->{schema}->resultset('TitleTitle')->search(
+        $titles = $self->get_schema->resultset('TitleTitle')->search(
             {
                 'me.source_titleid'            => $id,
             },
@@ -1426,7 +1426,7 @@ sub get_connected_titles {
     }
     elsif ($type eq "super"){
         # DBI "select distinct sourceid as titleid from conn where targetid=? and sourcetype=1 and targettype=1";
-        $titles = $self->{schema}->resultset('TitleTitle')->search(
+        $titles = $self->get_schema->resultset('TitleTitle')->search(
             {
                 'me.target_titleid'                 => $id,
             },
@@ -1491,18 +1491,18 @@ sub get_bibliographic_counters {
         (0,0,0,0,0,0,0,0,0);
 
     eval {
-        $person_count = $self->{schema}->resultset('Person')->count;
-        $corporatebody_count = $self->{schema}->resultset('Corporatebody')->count;
-        $classification_count = $self->{schema}->resultset('Classification')->count;
-        $subject_count = $self->{schema}->resultset('Subject')->count;
-        $holding_count = $self->{schema}->resultset('Holding')->count;
+        $person_count = $self->get_schema->resultset('Person')->count;
+        $corporatebody_count = $self->get_schema->resultset('Corporatebody')->count;
+        $classification_count = $self->get_schema->resultset('Classification')->count;
+        $subject_count = $self->get_schema->resultset('Subject')->count;
+        $holding_count = $self->get_schema->resultset('Holding')->count;
         
 	# Gesamt-Titelzahl bestimmen;
-	$title_count = $self->{schema}->resultset('Title')->count;
+	$title_count = $self->get_schema->resultset('Title')->count;
 	
 	# Serien/Zeitschriften bestimmen
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'"
-	$title_journalcount = $self->{schema}->resultset('TitleField')->search(
+	$title_journalcount = $self->get_schema->resultset('TitleField')->search(
 	    {
 		'field'                   => '4410',
 		'content'                 => 'Zeitschrift/Serie',
@@ -1517,7 +1517,7 @@ sub get_bibliographic_counters {
 	
 	# Aufsaetze bestimmen
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'"
-	$title_articlecount = $self->{schema}->resultset('TitleField')->search(
+	$title_articlecount = $self->get_schema->resultset('TitleField')->search(
 	    {
 		'field'                   => '4410',
 		'content'                 => 'Aufsatz',
@@ -1532,7 +1532,7 @@ sub get_bibliographic_counters {
 	
 	# E-Median bestimmen
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Digital'"
-	$title_digitalcount = $self->{schema}->resultset('TitleField')->search(
+	$title_digitalcount = $self->get_schema->resultset('TitleField')->search(
 	    {
 		'field'                   => '4410',
 		'content'                 => 'Digital',
@@ -1564,47 +1564,4 @@ sub get_bibliographic_counters {
     };
 }
     
-sub connectDB {
-    my $self = shift;
-    my $database = shift;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config::File->instance;
-
-    # pg_server_prepare => 0 keine Prepared Statements fuer pgbouncer transaction pooling mode
-    eval {
-        # UTF8: {'pg_enable_utf8'    => 1} 
-        $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:Pg:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd},$config->{dboptions}) or $logger->error_die($DBI::errstr);
-#        $self->{schema} = OpenBib::Schema::Catalog->connect("DBI:Pg:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
-    };
-
-    if ($@){
-        $logger->fatal("Unable to connect schema to database $config->{dbname}: DBI:Pg:dbname=$config->{dbname};host=$config->{dbhost};port=$config->{dbport}");
-        return 0;
-    }
-
-    return 1;
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    if (defined $self->{schema}){
-        eval {
-            $self->{schema}->storage->dbh->disconnect;
-        };
-
-        if ($@){
-            $logger->error($@);
-        }
-    }
-
-    return;
-}
-
 1;

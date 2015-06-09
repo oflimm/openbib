@@ -1392,7 +1392,7 @@ sub save_record {
     }
 
     if ($id){
-        my $record_exists = $self->{schema}->resultset('Title')->search(
+        my $record_exists = $self->get_schema->resultset('Title')->search(
             {
                 'me.id' => $id,
             },
@@ -1430,10 +1430,10 @@ sub save_record {
                 $create_ref->{tstamp_update} = $update_tstamp;
             }
 
-            $self->{schema}->resultset('Title')->create($create_ref);
+            $self->get_schema->resultset('Title')->create($create_ref);
         }
 
-        my $record = $self->{schema}->resultset('Title')->single(
+        my $record = $self->get_schema->resultset('Title')->single(
             {
                 'me.id' => $id,
             },
@@ -1507,7 +1507,7 @@ sub delete_record {
     }
 
     # DBI "select category,content,indicator from title where id = ?";
-    my $title = $self->{schema}->resultset('Title')->search(
+    my $title = $self->get_schema->resultset('Title')->search(
         {
             'me.id' => $id,
         },

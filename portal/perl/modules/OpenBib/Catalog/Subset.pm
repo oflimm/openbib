@@ -77,6 +77,25 @@ sub new {
     return $self;
 }
 
+sub get_schema {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting Schema $self");
+    
+    if (defined $self->{schema}){
+        $logger->debug("Reusing Schema $self");
+        return $self->{schema};
+    }
+    else {
+        $logger->fatal("No Schema defined!");
+    }
+    
+    return;
+}
+
 sub set_source {
     my $self     = shift;
     my $source   = shift;
@@ -86,9 +105,9 @@ sub set_source {
 
     $self->{source} = $source;
 
-    my $catalog = new OpenBib::Catalog($source);
+    my $catalog = new OpenBib::Catalog({ database => $source });
 
-    $self->{schema} = $catalog->{schema};
+    $self->{schema} = $catalog->get_schema;
 
     return $self;
 }
@@ -127,7 +146,7 @@ sub identify_by_mark {
         $logger->debug("Searching for Mark $thismark");
         
         # DBI: "select distinct conn.sourceid as titleid from conn,holding where holding.category=14 and holding.content COLLATE utf8_bin rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6"
-        my $titles = $self->{schema}->resultset('TitleHolding')->search_rs(
+        my $titles = $self->get_schema->resultset('TitleHolding')->search_rs(
             {
                 'holding_fields.field' => 14,
                 'holding_fields.content' => { '~*' => $thismark },
@@ -165,7 +184,7 @@ sub identify_by_mark {
     foreach my $thismark (@marks){
         # Exemplardaten *nur* vom entsprechenden Institut!
         # DBI: "select distinct id from holding where category=14 and content rlike ?"
-        my $holdings = $self->{schema}->resultset('Holding')->search_rs(
+        my $holdings = $self->get_schema->resultset('Holding')->search_rs(
             {
                 'holding_fields.field' => 14,
                 'holding_fields.content' => { '~*' => $thismark },
@@ -235,7 +254,7 @@ sub identify_by_field_content {
     
     foreach my $criteria_ref (@$arg_ref){        
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
-        my $titles = $self->{schema}->resultset('TitleField')->search_rs(
+        my $titles = $self->get_schema->resultset('TitleField')->search_rs(
             {
                 'field'   => $criteria_ref->{field},
                 'content' => { '~*' => $criteria_ref->{content} },
@@ -249,7 +268,7 @@ sub identify_by_field_content {
         
         if ($table ne "title"){
             # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
-            $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
+            $titles = $self->get_schema->resultset($table_type{$table}{resultset})->search_rs(
                 {
                     $table_type{$table}{field} => $criteria_ref->{field},
                     'content' => { '~*' => $criteria_ref->{content} },
@@ -308,7 +327,7 @@ sub identify_by_field_content {
     # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
 
     foreach my $id (keys %{$self->{titleid}}){
-        my $holdings = $self->{schema}->resultset('TitleHolding')->search_rs(
+        my $holdings = $self->get_schema->resultset('TitleHolding')->search_rs(
             {
                 'titleid' => $id,
             },
@@ -376,7 +395,7 @@ sub identify_by_olws_circulation {
     # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
 
     foreach my $id (keys %{$self->{titleid}}){
-        my $holdings = $self->{schema}->resultset('TitleHolding')->search_rs(
+        my $holdings = $self->get_schema->resultset('TitleHolding')->search_rs(
             {
                 'titleid' => $id,
             },
@@ -423,7 +442,7 @@ sub get_title_hierarchy {
             
             # Ueberordnungen
             # DBI: "select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1"
-            my $supertitles = $self->{schema}->resultset('TitleTitle')->search_rs(
+            my $supertitles = $self->get_schema->resultset('TitleTitle')->search_rs(
                 {
                     'source_titleid' => $titleid,
                 },
@@ -470,7 +489,7 @@ sub get_title_normdata {
         
         # Verfasser/Personen
         # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=2"
-        my $persons = $self->{schema}->resultset('TitlePerson')->search_rs(
+        my $persons = $self->get_schema->resultset('TitlePerson')->search_rs(
             {
                 'titleid' => $id,
             },
@@ -489,7 +508,7 @@ sub get_title_normdata {
         
         # Urheber/Koerperschaften
         # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=3
-        my $corporatebodies = $self->{schema}->resultset('TitleCorporatebody')->search_rs(
+        my $corporatebodies = $self->get_schema->resultset('TitleCorporatebody')->search_rs(
             {
                 'titleid' => $id,
             },
@@ -508,7 +527,7 @@ sub get_title_normdata {
         
         # Notationen
         # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=5"
-        my $classifications = $self->{schema}->resultset('TitleClassification')->search_rs(
+        my $classifications = $self->get_schema->resultset('TitleClassification')->search_rs(
             {
                 'titleid' => $id,
             },
@@ -527,7 +546,7 @@ sub get_title_normdata {
         
         # Schlagworte
         # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=4"
-        my $subjects = $self->{schema}->resultset('TitleSubject')->search_rs(
+        my $subjects = $self->get_schema->resultset('TitleSubject')->search_rs(
             {
                 'titleid' => $id,
             },
@@ -735,7 +754,7 @@ sub titleid_by_field_content {
         my $operator = ($criteria_ref->{operator})?$criteria_ref->{operator}:'~*';
         
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
-        my $titles = $self->{schema}->resultset('TitleField')->search_rs(
+        my $titles = $self->get_schema->resultset('TitleField')->search_rs(
             {
                 'field'   => $criteria_ref->{field},
                 'content' => { $operator => $criteria_ref->{'content'} },
@@ -749,7 +768,7 @@ sub titleid_by_field_content {
         
         if ($table ne "title"){
             # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
-            $titles = $self->{schema}->resultset($table_type{$table}{resultset})->search_rs(
+            $titles = $self->get_schema->resultset($table_type{$table}{resultset})->search_rs(
                 {
                     $table_type{$table}{field} => $criteria_ref->{field},
                     'content' => { $operator => $criteria_ref->{'content'} },

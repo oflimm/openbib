@@ -111,7 +111,7 @@ if ($initorigin || $initfield){
         $where_ref->{field} = $initfield;
     }
 
-    $enrichment->{schema}->resultset($resultset)->search_rs($where_ref)->delete;
+    $enrichment->get_schema->resultset($resultset)->search_rs($where_ref)->delete;
 }
 
 if (! -e $jsonfile){
@@ -143,14 +143,14 @@ while (<JSON>){
 
     if ($count % 1000 == 0){
         $logger->info("$count Tupel eingeladen");
-        $enrichment->{schema}->resultset($resultset)->populate($enrich_data_ref);
+        $enrichment->get_schema->resultset($resultset)->populate($enrich_data_ref);
         $enrich_data_ref = [];
     }
     $count++;
 }
 
 if (@$enrich_data_ref){
-    $enrichment->{schema}->resultset($resultset)->populate($enrich_data_ref);
+    $enrichment->get_schema->resultset($resultset)->populate($enrich_data_ref);
 }
 
 $logger->info("$data_tuple_count Tupel eingefuegt");

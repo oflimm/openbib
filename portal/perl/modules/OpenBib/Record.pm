@@ -48,6 +48,26 @@ use OpenBib::Schema::Catalog;
 use OpenBib::Schema::Enrichment;
 use OpenBib::Schema::Enrichment::Singleton;
 
+sub get_schema {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting Schema $self");
+    
+    if (defined $self->{schema}){
+        $logger->debug("Reusing Schema $self");
+        return $self->{schema};
+    }
+
+    $logger->debug("Creating new Schema $self");    
+    
+    $self->connectDB;
+    
+    return $self->{schema};
+}
+
 sub connectDB {
     my $self = shift;
 
@@ -89,6 +109,89 @@ sub connectMemcached {
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");
     }
+
+    return;
+}
+
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Try disconnecting from Catalog-DB $self");
+    
+    if (defined $self->{schema}){
+        eval {
+            $logger->debug("Disconnect from Catalog-DB now $self");
+            $self->{schema}->storage->dbh->disconnect;
+            delete $self->{schema};
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+    
+    return;
+}
+
+sub disconnectEnrichmentDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Try disconnecting from Catalog-DB $self");
+    
+    if (defined $self->{enrich_schema}){
+        eval {
+            $logger->debug("Disconnect from Catalog-DB now $self");
+            $self->{enrich_schema}->storage->dbh->disconnect;
+            delete $self->{enrich_schema};
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+    
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Destroying Catalog-Object $self");
+
+    if (defined $self->{schema}){
+        $self->disconnectDB;
+    }
+
+    if (defined $self->{enrich_schema}){
+        $self->disconnectEnrichmentDB;
+    }
+    
+    if (defined $self->{memc}){
+        $self->disconnectMemcached;
+    }
+    
+    return;
+}
+
+sub disconnectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Disconnecting memcached");
+    
+    $self->{memc}->disconnect_all if (defined $self->{memc});
+    delete $self->{memc};
 
     return;
 }

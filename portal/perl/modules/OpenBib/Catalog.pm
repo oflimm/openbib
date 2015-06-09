@@ -46,18 +46,20 @@ use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 
 sub new {
-    my ($class,$database) = @_;
+    my ($class,$arg_ref) = @_;
 
+    # Set defaults
+    my $database        = exists $arg_ref->{database}
+        ? $arg_ref->{database}         : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $self = { };
 
     bless ($self, $class);
-
-    $self->{database} = $database;
     
-    $self->connectDB($database);
+    $self->{database} = $database;
     
     return $self;
 }
@@ -74,7 +76,7 @@ sub get_recent_titles {
     my $logger = get_logger();
 
 
-    my $titles = $self->{schema}->resultset('Title')->search_rs(
+    my $titles = $self->get_schema->resultset('Title')->search_rs(
         undef,
         {
             order_by => ['tstamp_create DESC'],
@@ -90,6 +92,26 @@ sub get_recent_titles {
     }
 
     return $recordlist;
+}
+
+sub get_schema {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting Schema $self");
+    
+    if (defined $self->{schema}){
+        $logger->debug("Reusing Schema $self");
+        return $self->{schema};
+    }
+
+    $logger->debug("Creating new Schema $self");    
+    
+    $self->connectDB;
+    
+    return $self->{schema};
 }
 
 sub get_recent_titles {
@@ -119,7 +141,7 @@ sub connectDB {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = OpenBib::Config::File->instance;
 
     eval {
         # UTF8: {'pg_enable_utf8'    => 1} 
@@ -157,8 +179,58 @@ sub connectMemcached {
     return;
 }
 
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Try disconnecting from Catalog-DB $self");
+    
+    if (defined $self->{schema}){
+        eval {
+            $logger->debug("Disconnect from Catalog-DB now $self");
+            $self->{schema}->storage->dbh->disconnect;
+            delete $self->{schema};
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+    
+    return;
+}
+
 sub DESTROY {
     my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Destroying Catalog-Object $self");
+
+    if (defined $self->{schema}){
+        $self->disconnectDB;
+    }
+
+    if (defined $self->{memc}){
+        $self->disconnectMemcached;
+    }
+    
+    return;
+}
+
+sub disconnectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Disconnecting memcached");
+    
+    $self->{memc}->disconnect_all if (defined $self->{memc});
+    delete $self->{memc};
 
     return;
 }

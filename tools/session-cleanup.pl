@@ -72,7 +72,7 @@ my $expiretimedate = Date::Manip::DateCalc($thistimedate,"-24hours");
 
 $expiretimedate = Date::Manip::UnixDate($expiretimedate,"%Y-%m-%d %H:%M:%S");
 
-my $open_sessions = $session->{schema}->resultset('Sessioninfo')->search(
+my $open_sessions = $session->get_schema->resultset('Sessioninfo')->search(
     {
         createtime => { '<' => $expiretimedate },
     },

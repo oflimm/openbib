@@ -76,7 +76,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $tittags = $config->{schema}->resultset('TitTag')->search_rs(
+my $tittags = $config->get_schema->resultset('TitTag')->search_rs(
     {
         srt_person => \'IS NULL',
         srt_title  => \'IS NULL',

@@ -138,7 +138,7 @@ if ($persistentnormdataids){
     
     $logger->info("### Persistente Normdaten-IDs");
 
-    my $persons = $catalog->{schema}->resultset("PersonField")->search(
+    my $persons = $catalog->get_schema->resultset("PersonField")->search(
         {
             field => 800,
         },
@@ -169,7 +169,7 @@ if ($persistentnormdataids){
 
     $logger->info("### Persistente Normdaten-IDs: $count Personen eingelesen");
 
-    my $corporatebodies = $catalog->{schema}->resultset("CorporatebodyField")->search(
+    my $corporatebodies = $catalog->get_schema->resultset("CorporatebodyField")->search(
         {
             field => 800,
         },
@@ -200,7 +200,7 @@ if ($persistentnormdataids){
 
     $logger->info("### Persistente Normdaten-IDs: $count Koerperschaften eingelesen");
 
-    my $classifications = $catalog->{schema}->resultset("ClassificationField")->search(
+    my $classifications = $catalog->get_schema->resultset("ClassificationField")->search(
         {
             field => 800,
         },
@@ -231,7 +231,7 @@ if ($persistentnormdataids){
 
     $logger->info("### Persistente Normdaten-IDs: $count Klassifikationen eingelesen");
     
-    my $subjects = $catalog->{schema}->resultset("SubjectField")->search(
+    my $subjects = $catalog->get_schema->resultset("SubjectField")->search(
         {
             field => 800,
         },

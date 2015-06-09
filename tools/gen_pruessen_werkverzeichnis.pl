@@ -118,7 +118,7 @@ my $buchillustrationen_year_min               = 9999;
     my %buchillustrationen_available_years_map        = ();
     my %buchillustrationen_titidns = ();
     
-    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+    my $titles = $catalog->get_schema->resultset('TitleHolding')->search_rs(
         {
             'holding_fields.field' => 14,
             'holding_fields.content' => { '~' => '^PrüssenB-' },
@@ -187,7 +187,7 @@ my $presseillustrationen_year_min               = 9999;
     my %presseillustrationen_available_years_map        = ();
     my %presseillustrationen_titidns = ();
     
-    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+    my $titles = $catalog->get_schema->resultset('TitleHolding')->search_rs(
         {
             'holding_fields.field' => 14,
             'holding_fields.content' => { '~' => '^PrüssenZ' },
@@ -257,7 +257,7 @@ my $plakate_year_min               = 9999;
     my %plakate_available_years_map        = ();
     my %plakate_titidns = ();
     
-    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+    my $titles = $catalog->get_schema->resultset('TitleHolding')->search_rs(
         {
             'holding_fields.field' => 14,
             'holding_fields.content' => { '~' => '^PrüssenP-' },
@@ -326,7 +326,7 @@ my $werbeillustrationen_year_min = 9999;
     my %werbeillustrationen_available_years_map = ();
     my %werbeillustrationen_titidns = ();
     
-    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+    my $titles = $catalog->get_schema->resultset('TitleHolding')->search_rs(
         {
             'holding_fields.field' => 14,
             'holding_fields.content' => { '~' => '^PrüssenW-' },
@@ -395,7 +395,7 @@ my $exlibris_year_min = 9999;
     my %exlibris_available_years_map = ();
     my %exlibris_titidns = ();
     
-    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+    my $titles = $catalog->get_schema->resultset('TitleHolding')->search_rs(
         {
             'holding_fields.field' => 14,
             'holding_fields.content' => { '~' => '^PrüssenExl-' },
@@ -463,7 +463,7 @@ my $donkeypress_year_min = 9999;
     my %donkeypress_available_years_map = ();
     my %donkeypress_titidns = ();
     
-    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+    my $titles = $catalog->get_schema->resultset('TitleHolding')->search_rs(
         {
             'holding_fields.field' => 14,
             'holding_fields.content' => { '~' => '^PrüssenPress-' },
@@ -531,7 +531,7 @@ my $gladbach_year_min = 9999;
     my %gladbach_available_years_map = ();
     my %gladbach_titidns = ();
     
-    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+    my $titles = $catalog->get_schema->resultset('TitleHolding')->search_rs(
         {
             'holding_fields.field' => 14,
             'holding_fields.content' => { '~' => '^PrüssenBG-' },
@@ -599,7 +599,7 @@ my $misc_year_min = 9999;
     my %misc_available_years_map = ();
     my %misc_titidns = ();
     
-    my $titles = $catalog->{schema}->resultset('TitleHolding')->search_rs(
+    my $titles = $catalog->get_schema->resultset('TitleHolding')->search_rs(
         {
             'holding_fields.field' => 14,
             'holding_fields.content' => { '~' => '^PrüssenV-' },

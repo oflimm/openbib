@@ -104,10 +104,10 @@ my $last_insertion_date = 0; # wird fuer inkrementelles Update benoetigt
 foreach my $database (@databases){
     $logger->info("### $database: Getting ISBNs from database $database and adding to enrichmntdb");
 
-    my $catalog = new OpenBib::Catalog($database);
+    my $catalog = new OpenBib::Catalog({ database => $database });
     
     if ($incr){
-        $last_insertion_date = $catalog->{schema}->resultset('Title')->get_column('tstamp_create')->max;
+        $last_insertion_date = $catalog->get_schema->resultset('Title')->get_column('tstamp_create')->max;
     }
     
     if (!$last_insertion_date && $incr){
@@ -117,25 +117,25 @@ foreach my $database (@databases){
     else {
         $logger->info("### $database: Bisherige Daten entfernen");
         
-        $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
+        $enrichment->get_schema->resultset('AllTitleByIsbn')->search_rs(
             {
                 dbname => $database
             }
         )->delete;
 
-        $enrichment->{schema}->resultset('AllTitleByBibkey')->search_rs(
+        $enrichment->get_schema->resultset('AllTitleByBibkey')->search_rs(
             {
                 dbname => $database
             }
         )->delete;
         
-        $enrichment->{schema}->resultset('AllTitleByIssn')->search_rs(
+        $enrichment->get_schema->resultset('AllTitleByIssn')->search_rs(
             {
                 dbname => $database
             }
         )->delete;
         
-        $enrichment->{schema}->resultset('AllTitleByWorkkey')->search_rs(
+        $enrichment->get_schema->resultset('AllTitleByWorkkey')->search_rs(
             {
                 dbname => $database
             }
@@ -145,7 +145,7 @@ foreach my $database (@databases){
     my $all_isbns;
     
     if ($incr){
-        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_isbns = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 -or => [
@@ -175,7 +175,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_isbns = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 -or => [
                     'title_fields.field' => '0540',
@@ -254,7 +254,7 @@ foreach my $database (@databases){
     }
 
     if (@$alltitlebyisbn_ref){
-        $enrichment->{schema}->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+        $enrichment->get_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
     }
     
     $logger->info("### $database: $isbn_insertcount ISBN's inserted");
@@ -264,7 +264,7 @@ foreach my $database (@databases){
     my $all_bibkeys;
 
     if ($incr){
-        $all_bibkeys = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_bibkeys = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 'title_fields.field' => '5050',
@@ -277,7 +277,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_bibkeys = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_bibkeys = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 'title_fields.field' => '5050',
             },
@@ -312,7 +312,7 @@ foreach my $database (@databases){
     }
 
     if (@$alltitlebybibkey_ref){
-        $enrichment->{schema}->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+        $enrichment->get_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
     }
     
     $logger->info("### $database: $bibkey_insertcount Bibkeys inserted");
@@ -322,7 +322,7 @@ foreach my $database (@databases){
     my $all_issns;
 
     if ($incr){
-        $all_issns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_issns = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 'title_fields.field' => '0543',
@@ -335,7 +335,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_issns = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_issns = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 'title_fields.field' => '0543',
             },
@@ -381,7 +381,7 @@ foreach my $database (@databases){
     }
 
     if (@$alltitlebyissn_ref){
-        $enrichment->{schema}->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+        $enrichment->get_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
     }
     
     $logger->info("### $database: $issn_insertcount ISSNs inserted");
@@ -391,7 +391,7 @@ foreach my $database (@databases){
     my $all_workkeys;
 
     if ($incr){
-        $all_workkeys = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_workkeys = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 'me.tstamp_create'   => { '>' => $last_insertion_date },
                 'title_fields.field' => '5055',
@@ -404,7 +404,7 @@ foreach my $database (@databases){
         );
     }
     else {
-        $all_workkeys = $catalog->{schema}->resultset('Title')->search_rs(
+        $all_workkeys = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 'title_fields.field' => '5055',
             },
@@ -443,7 +443,7 @@ foreach my $database (@databases){
     }
 
     if (@$alltitlebyworkkey_ref){
-        $enrichment->{schema}->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
+        $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
     }
     
     $logger->info("### $database: $workkey_insertcount Workkeys inserted");

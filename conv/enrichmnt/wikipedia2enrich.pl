@@ -114,7 +114,7 @@ if ($importyml){
     YAML::LoadFile($filename);
 }
 else {
-    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => $lang2article_cat_ref->{$lang}, origin => 30 })->delete;
+    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => $lang2article_cat_ref->{$lang}, origin => 30 })->delete;
 
     my $twig= XML::Twig->new(
         TwigHandlers => {
@@ -138,7 +138,7 @@ else {
 
 $logger->info("In Datenbank speichern");
 
-$enrichment->{schema}->resultset('RelatedTitleByIsbn')->search_rs({ origin => $lang2isbn_origin_ref->{$lang} })->delete;
+$enrichment->get_schema->resultset('RelatedTitleByIsbn')->search_rs({ origin => $lang2isbn_origin_ref->{$lang} })->delete;
 
 my %related_done = ();
 
@@ -159,7 +159,7 @@ foreach my $isbn (keys %$isbn_ref){
             
         %related_isbn = (%related_isbn,%{$article_isbn_ref->{"$articlename"}}) if (keys %{$article_isbn_ref->{"$articlename"}}); 
     }
-    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($populate_article_names_ref);
+    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($populate_article_names_ref);
 
     # b) Related ISBNs anreichern
 
@@ -180,7 +180,7 @@ foreach my $isbn (keys %$isbn_ref){
 
         $related_isbn_id++;
 
-        $enrichment->{schema}->resultset('RelatedTitleByIsbn')->populate($populate_related_isbn_ref);
+        $enrichment->get_schema->resultset('RelatedTitleByIsbn')->populate($populate_related_isbn_ref);
 
         $related_done{$isbnstring} = 1;
     }

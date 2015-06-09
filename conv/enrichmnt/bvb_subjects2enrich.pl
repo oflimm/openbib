@@ -103,7 +103,7 @@ $logger->debug("Origin: $origin");
 if ($init){
     $logger->info("Loeschen der bisherigen Daten");
     
-    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => '4300', origin => $origin })->delete;
+    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4300', origin => $origin })->delete;
 }
 
 $logger->info("Bestimmung der Schlagworte");
@@ -152,14 +152,14 @@ if ($importjson){
         $subject_tuple_count++;
         
         if ($count % 1000 == 0){
-            $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
             $enrich_data_ref = [];
         }
         $count++;
     }
 
     if (@$enrich_data_ref){
-        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
     }
     
     $logger->info("$subject_tuple_count ISBN-Schlagwort-Tupel eingefuegt");
@@ -273,7 +273,7 @@ else {
         }
         
         if ($count % 1000 == 0){
-            $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref) if ($import);
+            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref) if ($import);
             $enrich_data_ref = [];
         }
         $count++;
@@ -281,7 +281,7 @@ else {
     }
     
     if (@$enrich_data_ref && $import){
-        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
     }
     
     $logger->info("$subject_tuple_count ISBN-Schlagwort-Tupel eingefuegt");

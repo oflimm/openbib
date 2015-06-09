@@ -115,7 +115,7 @@ if ($type == 1){
         my $bestof_ref=[];
 
         # DBI "select id, count(sid) as sidcount from titleusage where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20"
-        my $titleusage = $statistics->{schema}->resultset('Titleusage')->search_rs(
+        my $titleusage = $statistics->get_schema->resultset('Titleusage')->search_rs(
             {
                 dbname => $database,
                 origin => 1,
@@ -176,7 +176,7 @@ if ($type == 2){
         
         my $bestof_ref=[];
         # DBI: "select dbname, count(katkey) as kcount from titleusage where origin=2 group by dbname order by kcount desc limit 20"
-        my $databaseusage = $statistics->{schema}->resultset('Titleusage')->search_rs(
+        my $databaseusage = $statistics->get_schema->resultset('Titleusage')->search_rs(
             {
                 -or    => $viewdb_ref,
                 origin => 1,
@@ -228,12 +228,12 @@ if ($type == 3){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $catalog = new OpenBib::Catalog($database);
+        my $catalog = new OpenBib::Catalog({ database => $database });
         
         my $bestof_ref=[];
 
         # DBI: "select subject.content , count(distinct sourceid) as scount from conn, subject where sourcetype=1 and targettype=4 and subject.category=1 and subject.id=conn.targetid group by targetid order by scount desc limit 200"
-        my $usage = $catalog->{schema}->resultset('Subject')->search_rs(
+        my $usage = $catalog->get_schema->resultset('Subject')->search_rs(
             {
                 'subject_fields.field' => 800,
                 'subject_fields.mult'  => 1,
@@ -308,12 +308,12 @@ if ($type == 4){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $catalog = new OpenBib::Catalog($database);
+        my $catalog = new OpenBib::Catalog({ database => $database });
 
         my $bestof_ref=[];
 
         # DBI: "select classification.content , count(distinct sourceid) as scount from conn, classification where sourcetype=1 and targettype=5 and classification.category=1 and classification.id=conn.targetid group by targetid order by scount desc limit 200"
-        my $usage = $catalog->{schema}->resultset('Classification')->search_rs(
+        my $usage = $catalog->get_schema->resultset('Classification')->search_rs(
             {
                 'classification_fields.field' => 800,
             },
@@ -385,12 +385,12 @@ if ($type == 5){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $catalog = new OpenBib::Catalog($database);
+        my $catalog = new OpenBib::Catalog({ database => $database });
 
         my $bestof_ref=[];
 
         # DBI: "select corporatebody.content , count(distinct sourceid) as scount from conn, corporatebody where sourcetype=1 and targettype=3 and corporatebody.category=1 and corporatebody.id=conn.targetid group by targetid order by scount desc limit 200"
-        my $usage = $catalog->{schema}->resultset('Corporatebody')->search_rs(
+        my $usage = $catalog->get_schema->resultset('Corporatebody')->search_rs(
             {
                 'corporatebody_fields.field' => 800,
             },
@@ -461,12 +461,12 @@ if ($type == 6){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $catalog = new OpenBib::Catalog($database);
+        my $catalog = new OpenBib::Catalog({ database => $database });
 
         my $bestof_ref=[];
 
         # DBI: "select person.content , count(distinct sourceid) as scount from conn, person where sourcetype=1 and targettype=2 and person.category=1 and person.id=conn.targetid group by targetid order by scount desc limit 200"
-        my $usage = $catalog->{schema}->resultset('Person')->search_rs(
+        my $usage = $catalog->get_schema->resultset('Person')->search_rs(
             {
                 'person_fields.field' => 800,
             },
@@ -712,12 +712,12 @@ if ($type == 9){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $catalog = new OpenBib::Catalog($database);
+        my $catalog = new OpenBib::Catalog({ database => $database });
 
         my $bestof_ref=[];
 
         # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
-        my $usage = $catalog->{schema}->resultset('Title')->search_rs(
+        my $usage = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 'title_fields.field' => 425,
             },
@@ -975,7 +975,7 @@ if ($type == 13){
 
         my $bestof_ref=[];
 
-        my $titleusage = $statistics->{schema}->resultset('Titleusage')->search_rs(
+        my $titleusage = $statistics->get_schema->resultset('Titleusage')->search_rs(
             {
                 -or    => $viewdb_ref,
                 origin => 1,
@@ -1028,12 +1028,12 @@ if ($type == 14 && $field){
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $catalog = new OpenBib::Catalog($database);
+        my $catalog = new OpenBib::Catalog({ database => $database });
 
         my $bestof_ref=[];
 
         # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
-        my $usage = $catalog->{schema}->resultset('Title')->search_rs(
+        my $usage = $catalog->get_schema->resultset('Title')->search_rs(
             {
                 'title_fields.field' => $field,
             },

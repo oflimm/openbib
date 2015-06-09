@@ -101,9 +101,9 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
-    my $catalog = new OpenBib::Catalog($database);
+    my $catalog = new OpenBib::Catalog({ database => $database });
 
-    my $fields = $catalog->{schema}->resultset('TitleField')->search_rs(
+    my $fields = $catalog->get_schema->resultset('TitleField')->search_rs(
         undef,
         {
             select => [{ 'distinct' => 'field'}],

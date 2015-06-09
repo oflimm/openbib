@@ -581,7 +581,9 @@ sub disconnectDB {
 sub DESTROY {
     my $self = shift;
 
-    $self->disconnectDB;
+    if (defined $self->{schema}){
+        $self->disconnectDB;
+    }
 
     return;
 }

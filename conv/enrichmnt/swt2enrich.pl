@@ -105,7 +105,7 @@ else {
 
     $logger->info("Bestimmung der Schlagworte");
     
-    my $isbn_swts = $catalog->{schema}->resultset('TitleSubject')->search(
+    my $isbn_swts = $catalog->get_schema->resultset('TitleSubject')->search(
         {
             'subject_fields.field' => '0800',
             -or => [
@@ -147,7 +147,7 @@ else {
 
 $logger->info("Loeschen der bisherigen Daten");
 
-$enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => '4300', origin => $origin })->delete;
+$enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4300', origin => $origin })->delete;
 
 $logger->info("Einladen der neuen Daten");
 
@@ -178,7 +178,7 @@ foreach my $thisisbn (keys %{$isbn_ref}){
     }
 
     if ($count % 1000 == 0){
-        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
         $enrich_data_ref = [];
     }
     $count++;
@@ -187,7 +187,7 @@ foreach my $thisisbn (keys %{$isbn_ref}){
 }
 
 if (@$enrich_data_ref){
-    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
 }
 
 $logger->info("Fuer $isbncount ISBNs wurden Schlagworte angereichert");

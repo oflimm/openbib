@@ -146,7 +146,7 @@ $subset->get_title_normdata;
 # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
 
 foreach my $id (keys %{$subset->{titleid}}){
-    my $holdings = $subset->{schema}->resultset('TitleHolding')->search_rs(
+    my $holdings = $subset->get_schema->resultset('TitleHolding')->search_rs(
         {
             'titleid' => $id,
         },

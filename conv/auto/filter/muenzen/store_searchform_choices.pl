@@ -10,7 +10,7 @@ my $result_store = {};
 
 # Regenten
 
-my $regenten = $catalog->{schema}->resultset('PersonField')->search(
+my $regenten = $catalog->get_schema->resultset('PersonField')->search(
     {
         'field' => 800
     },
@@ -29,7 +29,7 @@ while (my $regent = $regenten->next()){
 
 # Regionen
 
-my $regionen = $catalog->{schema}->resultset('SubjectField')->search(
+my $regionen = $catalog->get_schema->resultset('SubjectField')->search(
     {
         'field' => 800
     },
@@ -47,7 +47,7 @@ while (my $region = $regionen->next()){
 
 # Staedte
 
-my $staedte = $catalog->{schema}->resultset('ClassificationField')->search(
+my $staedte = $catalog->get_schema->resultset('ClassificationField')->search(
     {
         'field' => 800
     },
@@ -65,7 +65,7 @@ while (my $stadt = $staedte->next()){
 
 # Nominale
 
-my $nominale = $catalog->{schema}->resultset('TitleField')->search(
+my $nominale = $catalog->get_schema->resultset('TitleField')->search(
     {
         'field' => 338
     },
@@ -84,7 +84,7 @@ while (my $nominal = $nominale->next()){
 
 # Politischer Bereich
 
-my $areas = $catalog->{schema}->resultset('TitleField')->search(
+my $areas = $catalog->get_schema->resultset('TitleField')->search(
     {
         'field' => 410
     },
@@ -103,7 +103,7 @@ while (my $area = $areas->next()){
 
 # Magistrat
 
-my $magistrates = $catalog->{schema}->resultset('TitleField')->search(
+my $magistrates = $catalog->get_schema->resultset('TitleField')->search(
     {
         'field' => 533
     },
@@ -122,7 +122,7 @@ while (my $magistrate = $magistrates->next()){
 
 # Herrscherfamilie
 
-my $ruling_families = $catalog->{schema}->resultset('TitleField')->search(
+my $ruling_families = $catalog->get_schema->resultset('TitleField')->search(
     {
         'field' => 531
     },
@@ -141,7 +141,7 @@ while (my $ruling_family = $ruling_families->next()){
 
 # Material
 
-my $materials = $catalog->{schema}->resultset('TitleField')->search(
+my $materials = $catalog->get_schema->resultset('TitleField')->search(
     {
         'field' => 800
     },

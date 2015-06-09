@@ -171,7 +171,7 @@ sub show_collection_by_isbn {
         
         
         # DBI: "select distinct id,dbname from all_isbn where isbn=?";
-        my $alltitles = $enrichment->{schema}->resultset('AllTitleByIsbn')->search_rs(
+        my $alltitles = $enrichment->get_schema->resultset('AllTitleByIsbn')->search_rs(
             {
                 isbn => $isbn,
             },

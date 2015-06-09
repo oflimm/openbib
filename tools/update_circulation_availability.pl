@@ -116,7 +116,7 @@ tie %availability_status,           'MLDBM', 'availability_status.db',
 
 $logger->info("Processing old availability status");
 
-my $titles = $catalog->{schema}->resultset('TitleField')->search(
+my $titles = $catalog->get_schema->resultset('TitleField')->search(
     {
         field => '4400',
         content => {'!=' => 'online'},
@@ -263,7 +263,7 @@ sub get_mediastatus {
 sub update_status {
     my ($database,$titleid,$new_status) = @_;
 
-    if (!$catalog->{schema}->resultset('Title')->single({ id => $titleid})){
+    if (!$catalog->get_schema->resultset('Title')->single({ id => $titleid})){
         $logger->error("Title ID $titleid doesn't yet exisit");
 
         return;
@@ -289,7 +289,7 @@ sub update_status_db {
     my $logger = get_logger();
 
     eval {
-        my $availability = $catalog->{schema}->resultset('TitleField')->single(
+        my $availability = $catalog->get_schema->resultset('TitleField')->single(
             {
                 titleid => $titleid,
                 field   => '4400',
@@ -307,7 +307,7 @@ sub update_status_db {
         elsif (!$availability && $new_status){
             $logger->info("<-- Titleid $titleid jetzt ausleihbar");
 
-            $catalog->{schema}->resultset('TitleField')->create({
+            $catalog->get_schema->resultset('TitleField')->create({
                 titleid  => $titleid,
                 field    => 4400,
                 content  => $new_status,

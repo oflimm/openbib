@@ -87,14 +87,14 @@ my ($allcount,$journalcount,$articlecount,$digitalcount)=(0,0,0,0);
 
 foreach $database (@databases){
     eval {
-	my $catalog = new OpenBib::Catalog($database);
+	my $catalog = new OpenBib::Catalog({ database => $database });
 	
 	# Gesamt-Titelzahl bestimmen;
-	my $allcount = $catalog->{schema}->resultset('Title')->count;
+	my $allcount = $catalog->get_schema->resultset('Title')->count;
 	
 	# Serien/Zeitschriften bestimmen
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Zeitschrift/Serie'"
-	my $journalcount = $catalog->{schema}->resultset('TitleField')->search(
+	my $journalcount = $catalog->get_schema->resultset('TitleField')->search(
 	    {
 		'field'                   => '4410',
 		'content'                 => 'Zeitschrift/Serie',
@@ -109,7 +109,7 @@ foreach $database (@databases){
 	
 	# Aufsaetze bestimmen
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Aufsatz'"
-	my $articlecount = $catalog->{schema}->resultset('TitleField')->search(
+	my $articlecount = $catalog->get_schema->resultset('TitleField')->search(
 	    {
 		'field'                   => '4410',
 		'content'                 => 'Aufsatz',
@@ -124,7 +124,7 @@ foreach $database (@databases){
 	
 	# E-Median bestimmen
 	# DBI "select count(distinct id) as rowcount from title where category=800 and content = 'Digital'"
-	my $digitalcount = $catalog->{schema}->resultset('TitleField')->search(
+	my $digitalcount = $catalog->get_schema->resultset('TitleField')->search(
 	    {
 		'field'                   => '4410',
 		'content'                 => 'Digital',

@@ -93,7 +93,7 @@ if ($importyml){
 else {
     $logger->info("Bestimmung der TOC-URL's");
     
-    my $isbn_tocurls = $catalog->{schema}->resultset('Title')->search(
+    my $isbn_tocurls = $catalog->get_schema->resultset('Title')->search(
         {
 	    'title_fields_3.field'   => '0663',
             'title_fields_3.content' => { '~' => '.*Interna: Inhaltsverzeichnis.*'},
@@ -138,7 +138,7 @@ else {
 
 $logger->info("Loeschen der bisherigen Daten");
 
-$enrichment->{schema}->resultset('EnrichedContentByIsbn')->search_rs({ field => '4110', origin => $origin })->delete;
+$enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4110', origin => $origin })->delete;
 
 $logger->info("Einladen der neuen Daten in die Datenbank");
 
@@ -165,7 +165,7 @@ foreach my $thisisbn (keys %{$isbn_ref}){
     }
 
     if ($count % 1000 == 0){
-        $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
         $enrich_data_ref = [];
     }
     $count++;
@@ -173,7 +173,7 @@ foreach my $thisisbn (keys %{$isbn_ref}){
 }
 
 if (@$enrich_data_ref){
-    $enrichment->{schema}->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
 }
 
 unless ($importyml){

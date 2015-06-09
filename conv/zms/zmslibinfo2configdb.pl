@@ -112,7 +112,7 @@ foreach my $dbinfo ($config->get_dbinfo_overview->all){
             $type = "Generic";
         }
 
-        $location = $config->{schema}->resultset("Locationinfo")->create(
+        $location = $config->get_schema->resultset("Locationinfo")->create(
             {
                 identifier    => $identifier,
                 type          => $type,

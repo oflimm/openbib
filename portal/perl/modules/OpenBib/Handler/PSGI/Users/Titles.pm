@@ -139,7 +139,7 @@ sub show_recent {
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
     my $profile       = $config->get_profilename_of_view($view);
 
-    my $catalog = new OpenBib::Catalog($database);
+    my $catalog = new OpenBib::Catalog({ database => $database });
     
     my $recordlist = $catalog->get_recent_titles({
         limit    => 50,

@@ -126,7 +126,7 @@ my $config      = OpenBib::Config->new;
 
 my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database });
 
-my $titles_with_articles = $catalog->{schema}->resultset('Title')->search(
+my $titles_with_articles = $catalog->get_schema->resultset('Title')->search(
     {
         'title_fields.field' => '590',
     },

@@ -90,7 +90,7 @@ my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database}
 
 open(ISBNOUT,">online_isbns_$database.txt");
 
-my $online = $catalog->{schema}->resultset('TitleField')->search(
+my $online = $catalog->get_schema->resultset('TitleField')->search(
     {
         'field'   => '4400',
         'content' => 'online',
@@ -104,7 +104,7 @@ my $online = $catalog->{schema}->resultset('TitleField')->search(
 
 my $isbn_insertcount = 0;
 
-my $all_isbns = $catalog->{schema}->resultset('Title')->search_rs(
+my $all_isbns = $catalog->get_schema->resultset('Title')->search_rs(
     {
         'me.id'    => { -in => $online->as_query },
         -or   => [

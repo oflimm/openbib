@@ -62,6 +62,7 @@ sub setup {
 # 2) cgiapp_prerun : Benoetigte Informationen fuer die Handler sammeln und anbieten
 
 sub cgiapp_init {
+    my $self = shift;
 
     my $config       = OpenBib::Config->new;
 

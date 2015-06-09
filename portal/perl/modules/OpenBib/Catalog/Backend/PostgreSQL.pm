@@ -74,8 +74,6 @@ sub new {
     $self->{database} = $database;
     $self->{id}       = $id;
     
-    $self->connectDB($database);
-    
     return $self;
 }
 
@@ -374,8 +372,8 @@ sub load_full_title_record {
                     my $personid   =                    $item->{thispersonid};
                     my $supplement =                    $item->{thissupplement};
 
-                    my $record = OpenBib::Record::Person->new({database=>$self->{database}, schema => $self->get_schema});
-                    $record->load_name({id=>$personid});
+                    my $record = OpenBib::Record::Person->new({database => $self->{database}, schema => $self->get_schema});
+                    $record->load_name({id => $personid});
                     my $content = $record->name_as_string;
                     
                     $title_record->set_field({                

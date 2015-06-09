@@ -1,6 +1,6 @@
 #! /bin/sh
 ### BEGIN INIT INFO
-# Provides:          rc.local
+# Provides:          starman
 # Required-Start:    $all
 # Required-Stop:
 # Default-Start:     2 3 4 5

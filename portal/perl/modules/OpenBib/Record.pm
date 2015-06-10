@@ -480,9 +480,6 @@ sub DESTROY {
 
     if (defined $self->{schema}){
         eval {
-            if (defined $self->get_schema->storage->dbh->sth) {
-                $self->get_schema->storage->dbh->sth->finish;
-            }
             $self->{schema}->storage->dbh->disconnect;
         };
 

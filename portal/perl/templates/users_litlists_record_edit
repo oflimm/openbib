@@ -73,7 +73,7 @@
 </p>
 </div>
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/edit" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]" class="ym-form">
 <fieldset class="ym-full">
 <legend>[% msg.maketext("Einstellungen &auml;ndern") %]</legend>
 
@@ -134,7 +134,7 @@
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>
     <div class="right">
-<form method="get" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/edit">
+<form method="get" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/edit">
 
 [% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlists_loc')}/id/${litlist.properties.id}" no_relevance=1 %]
 

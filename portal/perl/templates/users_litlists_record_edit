@@ -73,7 +73,7 @@
 </p>
 </div>
 
-<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]" class="ym-form">
 <fieldset class="ym-full">
 <legend>[% msg.maketext("Einstellungen &auml;ndern") %]</legend>
 

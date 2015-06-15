@@ -1883,7 +1883,7 @@ sub run {
     }
     
     # clean up operations
-    #$self->call_hook('teardown');
+    $self->call_hook('teardown');
     
     return $return_value;
 }
@@ -1898,17 +1898,26 @@ sub teardown {
     my $self = shift;
 
     # Disconnect from Systemdb
-    #my $config = $self->param('config');
-    #$config->disconnectDB;
 
-    #my $user = $self->param('user');
-    #$user->disconnectDB;
-
-    #my $session = $self->param('session');
-    #$session->disconnectDB;
-
-    #my $queryoptions = $self->param('qopts');
-    #$queryoptions->disconnectDB;
+    my $queryoptions = $self->param('qopts');
+    if (defined $queryoptions){
+        $queryoptions->DESTROY;
+    }
+    
+    my $session = $self->param('session');
+    if (defined $session){
+        $session->DESTROY;
+    }
+    
+    my $user = $self->param('user');
+    if (defined $user){
+        $user->DESTROY;
+    }
+    
+    my $config = $self->param('config');
+    if (defined $config){
+        $config->DESTROY;
+    }
     
     return;
 }

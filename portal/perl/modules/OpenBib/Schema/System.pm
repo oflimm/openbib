@@ -8,6 +8,10 @@ use warnings;
 
 use base 'DBIx::Class::Schema';
 
+$SIG{INT} = sub {
+    __PACKAGE__->storage->dbh->disconnect;
+};
+
 __PACKAGE__->load_namespaces;
 
 

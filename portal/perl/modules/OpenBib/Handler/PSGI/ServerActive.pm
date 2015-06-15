@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::ServerActive
 #
-#  Dieses File ist (C) 2004-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -64,10 +64,6 @@ sub setup {
 sub cgiapp_init {
     my $self = shift;
 
-    my $config       = OpenBib::Config->new;
-
-    $self->param('config',$config);
-    
     # Explicitly do *nothing*
     return;
 }
@@ -85,7 +81,7 @@ sub show {
     my $logger = get_logger();
 
     my $r              = $self->param('r');
-    my $config         = $self->param('config');
+    my $config         = OpenBib::Config->new;
 
     my $request = $config->get_schema->resultset("Serverinfo")->search_rs(
         {
@@ -110,8 +106,12 @@ sub show {
 	    return;
 	}
     }
+    else {
+        $logger->error("No DB-Request-Object returned");
+        
+        $self->header_add('Status' => 404);
+    }
 
-    $self->header_add('Status' => 404);
     return;
 }
 

@@ -53,7 +53,6 @@ use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
-use OpenBib::Handler::Apache::Users::LitLists::Item;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::Record::Person;
@@ -351,7 +350,7 @@ sub show_record_form {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt')}),
         properties => $litlist_properties_ref,
     };
         

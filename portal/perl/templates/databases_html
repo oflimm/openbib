@@ -77,7 +77,7 @@ angesprochen werden sind davon ausgenommen.
 
 [% database_in_view = {};
 
-   FOREACH dbname IN config.get_profiledbs(sysprofile) ;
+   FOREACH dbname IN config.get_viewdbs(view) ;
      database_in_view.${dbname} = 1;
    END;
 

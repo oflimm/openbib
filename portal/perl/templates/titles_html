@@ -11,7 +11,21 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[%-
+database_in_view = {};
+
+FOREACH dbname IN config.get_viewdbs(view) ;
+   database_in_view.${dbname} = 1;
+END;
+
+redirect_url = "";
+
+IF NOT database_in_view.defined(databaseinfo.dbname) ;
+  redirect_url = "http://${servername}${path_prefix}/${config.get('home_loc')}";
+END;
+
+-%]
+[% PROCESS common/subtemplate name="std_header" redirect_url="${redirect_url}" %]
   <body>
 
 [%- ebook_i18n      = msg.maketext("E-Book") -%]

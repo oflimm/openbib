@@ -13,6 +13,18 @@
 -%]
 [%-
 
+database_in_view = {};
+
+FOREACH dbname IN config.get_viewdbs(view) ;
+   database_in_view.${dbname} = 1;
+END;
+
+redirect_url = "";
+
+IF NOT database_in_view.defined(database) ;
+  redirect_url = "http://${servername}${path_prefix}/${config.get('home_loc')}";
+END;
+
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
@@ -36,7 +48,7 @@
   title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
 
 -%]
-[% PROCESS common/subtemplate name="std_header" unapi=1 LinkedData="title" %]
+[% PROCESS common/subtemplate name="std_header" unapi=1 LinkedData="title"  redirect_url="${redirect_url}" %]
 
 <body>
 

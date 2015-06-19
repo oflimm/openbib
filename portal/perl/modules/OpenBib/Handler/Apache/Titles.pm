@@ -327,7 +327,7 @@ sub show_record {
     my $database_in_view = 0;
 
     foreach my $dbname ($config->get_viewdbs($view)){
-        if ($dbname eq $databaseid){
+        if ($dbname eq $database){
             $database_in_view = 1;
             last;
         }

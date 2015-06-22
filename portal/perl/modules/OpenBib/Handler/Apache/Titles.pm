@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Const -compile => qw(:common REDIRECT NOT_FOUND);
 use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
@@ -238,6 +238,19 @@ sub show_collection {
     # CGI Args
     my $sb        = $query->param('sb')        || $config->{local_search_backend};
 
+    my $database_in_view = 0;
+
+    foreach my $dbname ($config->get_viewdbs($view)){
+        if ($dbname eq $database){
+            $database_in_view = 1;
+            last;
+        }
+    }
+
+    unless ($database_in_view){
+	$r->status(Apache2::Const::NOT_FOUND);
+        return;
+    }
 
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
     # Backend - jenseits der Standard-Rechercheinformationen in OpenBib::SearchQuery
@@ -327,14 +340,15 @@ sub show_record {
     my $database_in_view = 0;
 
     foreach my $dbname ($config->get_viewdbs($view)){
-        if ($dbname eq $databaseid){
+        if ($dbname eq $database){
             $database_in_view = 1;
             last;
         }
     }
 
     unless ($database_in_view){
-        return Apache2::Const::NOT_FOUND;
+	$r->status(Apache2::Const::NOT_FOUND);
+        return;
     }
     
     if ($user->{ID} && !$userid){

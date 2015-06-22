@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache2::Const -compile => qw(:common REDIRECT);
+use Apache2::Const -compile => qw(:common REDIRECT NOT_FOUND);
 use Apache2::Reload;
 use Apache2::RequestRec ();
 use Apache2::Request ();
@@ -267,6 +267,20 @@ sub show_record {
     my $queryid       = $query->param('queryid')   || '';
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
+
+    my $database_in_view = 0;
+
+    foreach my $dbname ($config->get_viewdbs($view)){
+        if ($dbname eq $database){
+            $database_in_view = 1;
+            last;
+        }
+    }
+
+    unless ($database_in_view){
+	$r->status(Apache2::Const::NOT_FOUND);
+        return;
+    }
 
 #     if ($user->{ID} && !$userid){
 #         my $args = "?l=".$self->param('lang');

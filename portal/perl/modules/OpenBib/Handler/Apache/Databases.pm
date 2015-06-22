@@ -36,6 +36,8 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
+use Apache2::Const -compile => qw(:common REDIRECT NOT_FOUND);
+
 use OpenBib::Search::Backend::Xapian;
 use OpenBib::Record::Title;
 use OpenBib::Template::Utilities;
@@ -136,7 +138,8 @@ sub show_record {
     }
 
     unless ($database_in_view){
-        return Apache2::Const::NOT_FOUND;
+	$r->status(Apache2::Const::NOT_FOUND);
+        return;
     }
     
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $databaseid})->single;

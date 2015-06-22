@@ -83,36 +83,14 @@ sub show {
     my $r              = $self->param('r');
     my $config         = OpenBib::Config->new;
 
-    my $request = $config->get_schema->resultset("Serverinfo")->search_rs(
-        {
-            hostip => $config->get('local_ip'),
-        }
-    )->single;
 
-    $logger->debug("Local IP is ".$config->get('local_ip'));
-
-    if ($request){
-	my $is_active     = $request->get_column('active');
-        my $is_searchable = ($request->get_column('status') eq "searchable")?1:0;
-
-	$logger->debug("Server is active? $is_active");
-        $logger->debug("Server is searchable? $is_searchable");
-
-	if ($is_active && $is_searchable){
-	    return;
-	}
-	else {
-            $self->header_add('Status' => 404);
-	    return;
-	}
+    if ($config->local_server_is_active_and_searchable){
+        return;
     }
     else {
-        $logger->error("No DB-Request-Object returned");
-        
         $self->header_add('Status' => 404);
+        return;
     }
-
-    return;
 }
 
 1;

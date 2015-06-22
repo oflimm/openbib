@@ -69,15 +69,15 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = OpenBib::Config::File->instance;
+    my $configfile = OpenBib::Config::File->instance;
 
     # Ininitalisierung mit Config-Parametern
     my $self = {};
 
     bless ($self, $class);
 
-    foreach my $key (keys %$config){
-        $self->{$key} = $config->{$key};
+    foreach my $key (keys %$configfile){
+        $self->{$key} = $configfile->{$key};
     }
     
     $self->connectMemcached();
@@ -1914,6 +1914,19 @@ sub update_local_serverstatus {
 sub local_server_is_active_and_searchable {
     my ($self) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $active_and_searchable = 0;
+    
+    my $memc_key = "config:local_server_is_active_and_searchable:".$self->get('local_ip');
+
+    if ($self->{memc}){
+        $active_and_searchable = $self->{memc}->get($memc_key);
+
+        return $active_and_searchable if (defined $active_and_searchable);
+    }
+    
     my $request = $self->get_schema->resultset("Serverinfo")->search_rs(
         {
             hostip => $self->get('local_ip'),
@@ -1930,14 +1943,19 @@ sub local_server_is_active_and_searchable {
         $logger->debug("Server is searchable? $is_searchable");
 
 	if ($is_active && $is_searchable){
-	    return 1;
+	    $active_and_searchable = 1;
 	}
     }
     else {
         $logger->error("No DB-Request-Object returned");
     }
 
-    return;
+    if ($self->{memc}){
+        $self->{memc}->set($memc_key,$active_and_searchable,$self->{memcached_expiration}{'config:local_server_is_active_and_searchable'});
+        $logger->debug("Store status in memcached");
+    }
+    
+    return $active_and_searchable;
 }
 
 sub local_server_belongs_to_updatable_cluster {
@@ -2918,7 +2936,16 @@ sub del_server {
 
     eval {
         # DBI: "delete from serverinfo where id = ?"
-        $self->get_schema->resultset('Serverinfo')->single({ id => $id })->delete;
+        my $serverinfo = $self->get_schema->resultset('Serverinfo')->single({ id => $id });
+        
+        my $hostip = $serverinfo->host_ip;
+
+        if (defined $self->{memc} && $hostip eq $self->get('local_ip')){
+            # Flushen in Memcached
+            $self->{memc}->delete("config:local_server_is_active_and_searchable:".$self->get('local_ip'));
+        }
+
+        $serverinfo->delete;
     };
 
     if ($@){
@@ -2965,8 +2992,17 @@ sub update_server {
     }
     
     # DBI: "update serverinfo set active = ? where id = ?"
-    $self->get_schema->resultset('Serverinfo')->search_rs({ id => $id })->update($update_args);
+    my $serverinfo = $self->get_schema->resultset('Serverinfo')->single({ id => $id });
 
+    my $hostip = $serverinfo->host_ip;
+
+    if (defined $self->{memc} && $hostip eq $self->get('local_ip')){
+        # Flushen in Memcached
+        $self->{memc}->delete("config:local_server_is_active_and_searchable:".$self->get('local_ip'));
+    }
+    
+    $serverinfo->update($update_args);
+    
     return;
 }
 
@@ -3490,11 +3526,9 @@ sub get_id_of_selfreg_authenticator {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;    
-
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
-        = OpenBib::Schema::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd})
+        = OpenBib::Schema::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     return undef if (!defined $dbh);
@@ -3818,11 +3852,9 @@ sub get_dbistopic_of_dbrtopic {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
-    
     my $atime;
     
-    if ($config->{benchmark}) {
+    if ($self->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -3854,11 +3886,9 @@ sub get_dbisdbs_of_dbrtopic {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
-    
     my $atime;
     
-    if ($config->{benchmark}) {
+    if ($self->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -3882,7 +3912,7 @@ sub get_dbisdbs_of_dbrtopic {
         };
     }
 
-    if ($config->{benchmark}){
+    if ($self->{benchmark}){
        my $btime      = new Benchmark;
        my $timeall    = timediff($btime,$atime);
        my $resulttime = timestr($timeall,"nop");

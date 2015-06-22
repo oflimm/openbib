@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Titles.pm
 #
-#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -253,6 +253,20 @@ sub show_record {
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
 
+    my $database_in_view = 0;
+
+    foreach my $dbname ($config->get_viewdbs($view)){
+        if ($dbname eq $database){
+            $database_in_view = 1;
+            last;
+        }
+    }
+
+    unless ($database_in_view){
+        $self->header_add('Status' => 404); # NOT_FOUND
+        return;
+    }
+    
 #     if ($user->{ID} && !$userid){
 #         my $args = "?l=".$self->param('lang');
 

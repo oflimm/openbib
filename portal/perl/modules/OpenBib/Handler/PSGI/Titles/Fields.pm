@@ -4,7 +4,7 @@
 #
 #  Register ueber Titelfeld
 #
-#  Copyright 1997-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 1997-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -101,6 +101,20 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
+    my $database_in_view = 0;
+
+    foreach my $dbname ($config->get_viewdbs($view)){
+        if ($dbname eq $database){
+            $database_in_view = 1;
+            last;
+        }
+    }
+
+    unless ($database_in_view){
+        $self->header_add('Status' => 404); # NOT_FOUND
+        return;
+    }
+    
     my $catalog = new OpenBib::Catalog({ database => $database });
 
     my $fields = $catalog->get_schema->resultset('TitleField')->search_rs(
@@ -151,7 +165,7 @@ sub show_record {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
+    
     # CGI Args
     #####################################################################
     ## Hitrange: Anzahl gleichzeitig ausgegebener Treffer (Blaettern)
@@ -184,6 +198,21 @@ sub show_record {
     # Sub-Template ID
     my $stid              = $query->param('stid')              || '';
 
+
+    my $database_in_view = 0;
+
+    foreach my $dbname ($config->get_viewdbs($view)){
+        if ($dbname eq $database){
+            $database_in_view = 1;
+            last;
+        }
+    }
+
+    unless ($database_in_view){
+        $self->header_add('Status' => 404); # NOT_FOUND
+        return;
+    }
+    
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 

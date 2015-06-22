@@ -122,6 +122,20 @@ sub show_record {
 
     # CGI Args
 
+    my $database_in_view = 0;
+
+    foreach my $dbname ($config->get_viewdbs($view)){
+        if ($dbname eq $databaseid){
+            $database_in_view = 1;
+            last;
+        }
+    }
+
+    unless ($database_in_view){
+        $self->header_add('Status' => 404); # NOT_FOUND
+        return;
+    }
+    
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $databaseid})->single;
     
     my $ttdata={

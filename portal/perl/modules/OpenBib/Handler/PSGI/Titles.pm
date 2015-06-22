@@ -228,6 +228,20 @@ sub show_collection {
     my $representation = $self->param('represenation');
     my $dbinfotable    = $self->param('dbinfo');
 
+    my $database_in_view = 0;
+
+    foreach my $dbname ($config->get_viewdbs($view)){
+        if ($dbname eq $database){
+            $database_in_view = 1;
+            last;
+        }
+    }
+
+    unless ($database_in_view){
+        $self->header_add('Status' => 404); # NOT_FOUND
+        return;
+    }
+    
     # CGI Args
     my $sb        = $query->param('sb')        || $config->{local_search_backend};
 
@@ -322,6 +336,20 @@ sub show_record {
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
 
+    my $database_in_view = 0;
+
+    foreach my $dbname ($config->get_viewdbs($view)){
+        if ($dbname eq $database){
+            $database_in_view = 1;
+            last;
+        }
+    }
+
+    unless ($database_in_view){
+        $self->header_add('Status' => 404); # NOT_FOUND
+        return;
+    }
+    
     if ($user->{ID} && !$userid){
         my $args = "?l=".$self->param('lang');
 

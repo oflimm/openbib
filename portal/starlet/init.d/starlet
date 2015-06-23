@@ -1,0 +1,36 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          starlet
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Run Starlet
+### END INIT INFO
+
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+case "$1" in
+    start)
+        start_server --port=8008 --backlog=1024 --pid-file=/var/log/openbib/starlet.pid --daemonize --log-file=/var/log/openbib/starlet.log -- plackup -s Starlet --max-workers=30 /opt/openbib/conf/portal.psgi
+        ;;
+    reload|force-reload)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+    restart)
+        $0 stop
+        $0 start
+        ;;        
+    stop)
+        kill `cat /var/log/openbib/starlet.pid`
+        ;;
+    *)
+        echo "Usage: $0 start|stop" >&2
+        exit 3
+        ;;
+esac

@@ -239,6 +239,16 @@ sub dispatch_args {
 sub _run_app {
     my ($self, $module, $rm, $args,$env) = @_;
 
+    my $logger=get_logger();
+
+    my $config  = OpenBib::Config::File->instance;
+
+    my $atime;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
     if($DEBUG) {
         require Data::Dumper;
         warn "[Dispatch] Final args to pass to new(): " . Data::Dumper::Dumper($args) . "\n";
@@ -277,6 +287,15 @@ sub _run_app {
         $app->mode_param(sub { return $rm }) if($rm);
         $psgi = $app->run_as_psgi;
     };
+
+    if ($config->{benchmark}){
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $logger->info("Processing runmode $rm in module $module took $resulttime seconds");
+    }
 
     # App threw an HTTP::Exception? Cool. Bubble it up.
     my $e;

@@ -27,7 +27,7 @@ case "$1" in
         $0 start
         ;;        
     stop)
-        kill `cat /var/log/openbib/starlet.pid`
+        start_server --stop --pid-file=/var/log/openbib/starlet.pid
         ;;
     *)
         echo "Usage: $0 start|stop" >&2

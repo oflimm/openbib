@@ -85,7 +85,9 @@ sub show {
 
 
     if ($config->local_server_is_active_and_searchable){
-        return;
+        $self->header_add('Status' => 200);
+        $self->header_add('Content-Type' => 'text/plain');
+        return 'enabled';
     }
     else {
         $self->header_add('Status' => 404);

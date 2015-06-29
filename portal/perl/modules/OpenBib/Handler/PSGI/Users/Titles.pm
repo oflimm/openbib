@@ -255,13 +255,26 @@ sub show_record {
 
     my $database_in_view = 0;
 
-    foreach my $dbname ($config->get_viewdbs($view)){
+    my @dbs_in_view = $config->get_viewdbs($view);
+
+    # Add 'special' databases
+    push @dbs_in_view, ('bibsonomy','ezb','dbis');
+    
+    foreach my $dbname (@dbs_in_view){
         if ($dbname eq $database){
             $database_in_view = 1;
             last;
         }
     }
-
+    
+    # Databases with API are always considered
+#     foreach my $dbname ($config->get_apidbs){
+#         if ($dbname eq $database){
+#             $database_in_view = 1;
+#             last;
+#         }
+#     }
+    
     unless ($database_in_view){
         $self->header_add('Status' => 404); # NOT_FOUND
         return;

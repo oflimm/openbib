@@ -88,10 +88,6 @@ sub search {
     
     my $recordlist = OpenBib::BibSonomy->new()->get_posts($self->{_querystring});
 
-    if ($logger->is_debug){
-        $logger->debug(YAML::Dump($recordlist->get_records));
-    }
-
     $self->{resultcount}    = $recordlist->get_generic_attribute("hits");
     $self->{_matches}       = $recordlist;
     

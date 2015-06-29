@@ -125,11 +125,17 @@ sub show_search {
 
         $self->param('writer',$writer);
 
+        $logger->debug("Getting search header");
         $self->show_search_header();
-        
+        $logger->debug("Getting search header done");
+
+        $logger->debug("Getting search result");
         $self->show_search_result();
-        
+        $logger->debug("Getting search result done");
+
+        $logger->debug("Getting search footer");
         $self->show_search_footer();
+        $logger->debug("Getting search footer done");
         
 #        $writer->write($self->show_search_header());
         
@@ -361,6 +367,8 @@ sub show_search_footer {
     # Jetzt update der Trefferinformationen, wenn keine ID
     $searchquery->save({sid => $session->{sid}});
 
+    $logger->debug("Saving searchquery done");
+    
     # TT-Data erzeugen
     my $endttdata={
         total_hits    => $self->param('total_hits'),
@@ -404,6 +412,8 @@ sub show_search_footer {
         $self->header_add('Status',400); # server error
         return;
     };
+
+    $logger->debug("Template processed");
     
     # Wurde in allen Katalogen recherchiert?
     

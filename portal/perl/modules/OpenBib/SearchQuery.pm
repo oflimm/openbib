@@ -980,12 +980,9 @@ sub to_json {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if ($logger->is_debug){
-        $logger->debug("Searchquery: ".YAML::Dump($self->{_searchquery}));
-    }
-
     my $tmp_ref = {};
     foreach my $property (sort keys %{$self}){
+        next if ($property eq "_config"); # Config-Objekt wird nicht gewandelt
         next if ($property eq "_session"); # Session-Objekt wird nicht gewandelt
         next if ($property eq "schema"); # DBIx::Class wird nicht gewandelt
         next if ($property eq "r");      # OpenBib::Request wird nicht gewandelt
@@ -995,11 +992,17 @@ sub to_json {
         $tmp_ref->{$property} = $self->{$property};
     }
 
-    if ($logger->is_debug){
-        $logger->debug(YAML::Dump($tmp_ref));
+    my $json_out = "";
+
+    eval {
+        $json_out = JSON::XS->new->utf8->canonical->encode($tmp_ref);
+    };
+
+    if ($@){
+        $logger->error($@);
     }
     
-    return JSON::XS->new->utf8->canonical->encode($tmp_ref);
+    return $json_out; 
 }
 
 sub from_json {

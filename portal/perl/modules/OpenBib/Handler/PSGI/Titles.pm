@@ -237,6 +237,9 @@ sub show_collection {
         }
     }
 
+    # Databases with API don't deliver all titles so they are always NOT considered
+    # in contrast to a single title record
+    
     unless ($database_in_view){
         $self->header_add('Status' => 404); # NOT_FOUND
         return;
@@ -338,13 +341,30 @@ sub show_record {
 
     my $database_in_view = 0;
 
-    foreach my $dbname ($config->get_viewdbs($view)){
+    my @dbs_in_view = $config->get_viewdbs($view);
+
+    # Add 'special' databases
+    #push @dbs_in_view, "bibsonomy";#,"ezb","dbis");
+    
+    foreach my $dbname (@dbs_in_view){
         if ($dbname eq $database){
             $database_in_view = 1;
             last;
         }
     }
 
+    if ($database eq "bibsonomy" || $database eq "ezb" || $database eq "dbis"){
+        $database_in_view = 1;
+        
+    }
+    # Databases with API are always considered
+#     foreach my $dbname ($config->get_apidbs){
+#         if ($dbname eq $database){
+#             $database_in_view = 1;
+#             last;
+#         }
+#     }
+    
     unless ($database_in_view){
         $self->header_add('Status' => 404); # NOT_FOUND
         return;
@@ -381,9 +401,11 @@ sub show_record {
 
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
-        
+
+        $logger->debug("1");        
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_full_record;
 
+        $logger->debug("2");        
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
@@ -411,7 +433,7 @@ sub show_record {
             $timeall=timediff($btime,$atime);
             $logger->info("Total time until stage 1 is ".timestr($timeall));
         }
-        
+        $logger->debug("3");        
         # Literaturlisten finden
 
         my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database});
@@ -454,6 +476,7 @@ sub show_record {
         if ($logger->is_debug){
             $logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
         }
+        
         $record->enrich_content({ profilename => $sysprofile });
 
         if ($logger->is_debug){

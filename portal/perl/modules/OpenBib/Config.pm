@@ -1468,6 +1468,34 @@ sub get_viewdbs {
     return @viewdbs;
 }
 
+sub get_apidbs {
+    my $self     = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $dbnames = $self->get_schema->resultset('Databaseinfo')->search(
+        {
+            'protocol' => 'api',
+            'active' => 1,
+        },
+        {
+            select   => 'dbname',
+            as       => 'thisdbname',
+            order_by => 'dbname',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    my @apidbs=();
+
+    while (my $item = $dbnames->next){
+        push @apidbs, $item->{thisdbname};
+    }
+
+    return @apidbs;
+}
+
 sub get_active_databases {
     my $self = shift;
     

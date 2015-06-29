@@ -109,12 +109,12 @@ sub get_posts {
         $user = $self->{api_user};
     }
 
-    $logger->debug("Bibkey: $bibkey");
-    
     my $url='http://www.bibsonomy.org/api/posts?';
 
     # Type prefix?
     if (defined $bibkey){
+        $logger->debug("Bibkey: $bibkey");
+    
         if ($bibkey =~/^bm_(.+?)_([a-z0-9]+)$/){
             $user=$1;
             $bibkey=$2;
@@ -125,6 +125,9 @@ sub get_posts {
             $bibkey=$2;
             $type="publication";
         }
+    }
+    else {
+        $logger->debug("Kein Bibkey");
     }
 
     $logger->debug("Effektiver Bibkey: $bibkey") if (defined $bibkey);
@@ -376,6 +379,8 @@ sub get_posts {
         
         my $isbn   = $record->to_normalized_isbn13;
         my $bibkey = $record->get_field({field => 'T5050', mult => 1});
+
+        my $have_title_ref = {};
         
         if ($isbn){
             
@@ -395,8 +400,6 @@ sub get_posts {
                 $logger->debug("Found ".($same_titles->count)." records");
             }
             
-            my $have_title_ref = {};
-            
             while (my $item = $same_titles->next) {
                 my $id         = $item->{titleid};
                 my $database   = $item->{dbname};
@@ -414,7 +417,7 @@ sub get_posts {
 
         # Stage 2: Ggf. nach BibKey
         
-        if ( !$same_recordlist->get_size() && $bibkey){
+        if (!$same_recordlist->get_size() && $bibkey){
             # Anreicherung mit 'gleichen' (=gleicher bibkey) Titeln aus lokalen Katalogen            
             
             $logger->debug("Looking for titles with bibkey ".$bibkey);
@@ -435,22 +438,32 @@ sub get_posts {
                 my $id         = $item->titleid;
                 my $database   = $item->dbname;
 
+                next if (defined $have_title_ref->{"$database:$id"});
+                
                 $logger->debug("Found with bibkey $bibkey same item id=$id db=$database");
                 $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+
+                $have_title_ref->{"$database:$id"} = 1;
+
             }
             
         }
 
-        $record->set_same_records($same_recordlist);
+        $logger->debug("Setting same records");
         
-        if ($logger->is_debug){
-            $logger->debug(YAML::Dump($record->get_same_records()));
-        }
+        $record->set_same_records($same_recordlist);
 
+        $logger->debug("Setting same records done");
+
+        $logger->debug("Adding record to enriched recordlist");
+
+        $logger->debug(YAML::Dump($record->get_fields));
+        
         $enriched_recordlist->add($record);
 
+        $logger->debug("Adding record to enriched recordlist done");
+
     }
-        
 
     return $enriched_recordlist;
 }

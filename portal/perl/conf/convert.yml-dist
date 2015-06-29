@@ -753,7 +753,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
         facet:
           'subject': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
@@ -1382,7 +1382,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder visible_[immediate|order]
         index:
           'availabilitystring': 1
@@ -1836,7 +1836,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
         facet:
           'subject': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
@@ -2094,7 +2094,7 @@ convtab:
           'subject': 1
           'subjectstring': 1
           'freesearch': 1
-          't4300': 1
+          'ft4300': 1
       '5050':         # Bibkey
         index:
           'bkey': 1
@@ -2336,7 +2336,7 @@ convtab:
           'subject': 1
           'subjectstring': 1
           'freesearch': 1
-          't4300': 1
+          'ft4300': 1
       '5050':         # Bibkey
         index:
           'bkey': 1
@@ -2568,7 +2568,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
       '5050':         # Bibkey
         index:
           'bkey': 1
@@ -2810,7 +2810,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
       '5050':         # Bibkey
         index:
           'bkey': 1
@@ -3079,7 +3079,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
       '4410':         # Medientyp
         index:
           'mediatype': 1
@@ -3297,7 +3297,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
       '4410':         # Medientyp
         index:
           'mediatype': 1
@@ -3889,7 +3889,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
         facet:
           'subject': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
@@ -4460,7 +4460,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
         facet:
           'subject': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
@@ -4938,7 +4938,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
         facet:
           'subject': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
@@ -5379,7 +5379,7 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
-          't4300': 1
+          'ft4300': 1
         facet:
           'subject': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]

@@ -134,7 +134,8 @@
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>
     <div class="right">
-<form method="get" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/edit">
+<form method="get" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/edit.html">
+<input type="hidden" name="l" value="[% lang %]" />
 
 [% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlists_loc')}/id/${litlist.properties.id}" no_relevance=1 %]
 

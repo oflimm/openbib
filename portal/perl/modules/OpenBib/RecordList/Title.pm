@@ -635,7 +635,7 @@ sub _by_publisher_desc {
     $line2 cmp $line1;
 }
 
-sub _by_signature_asc {
+sub _by_mark_asc {
     my %line1=%{$a->get_fields()};
     my %line2=%{$b->get_fields()};
 
@@ -646,7 +646,7 @@ sub _by_signature_asc {
     $line1 cmp $line2;
 }
 
-sub _by_signature_desc {
+sub _by_mark_desc {
     my %line1=%{$a->get_fields()};
     my %line2=%{$b->get_fields()};
 

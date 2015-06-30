@@ -334,7 +334,7 @@ sub show_record_form {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt')}),
         properties => $litlist_properties_ref,
     };
         

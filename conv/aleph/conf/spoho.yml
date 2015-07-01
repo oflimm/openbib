@@ -11,6 +11,11 @@ subcat-splitter: '\$\$'
 parse-subcat: '^(.)(.+?)\s?$'                 # Liefert $type und $content
 mex-selector: 'Z30'
 
+link-fields:
+ '4531a': 1
+ '4631a': 1
+ '4731a': 1
+
 # Personen
 pers:
   '1001a': '0100' # Verfasser

@@ -6,7 +6,7 @@
 #
 #  Konverierung von Aleph 18 Sequential MAB Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -158,8 +158,8 @@ sub convert_buffer {
 
         $titleid = sprintf "%d", $titleid;
         
-#        print "-------------------------------------\n";
-#        print "$kateg,$indikator,$type,$content\n";
+        print "-------------------------------------\n";
+        print "$kateg,$indikator,$type,$content\n";
         my $is_mex=0;
         
         my $content_ref={};
@@ -175,32 +175,14 @@ sub convert_buffer {
 #        print "-------------------------------------\n";
         
         foreach my $kategind (keys %$content_ref){
-
+            print "Kategind: $kategind - ".YAML::Dump($convconfig->{$kategind}."\n");
             # Verweisungen
-            if ($kateg eq "453" || $kateg eq "463" || $kateg eq "473"){
-                if (defined $ht2id_ref->{$content_ref->{"4531a"}} && $ht2id_ref->{$content_ref->{"4531a"}}){
+            if (defined $convconfig->{'link-fields'}{$kategind}){
+                if (defined $ht2id_ref->{$content_ref->{$kategind}} && $ht2id_ref->{$content_ref->{$kategind}}){
                     my $multcount=++$multcount_ref->{'0004'};
 
                     push @{$title_ref->{fields}{'0004'}}, {
-                        content  => $ht2id_ref->{$content_ref->{"4531a"}},
-                        subfield => '',
-                        mult     => $multcount,
-                    };
-                }
-                if (defined $ht2id_ref->{$content_ref->{"4631a"}} && $ht2id_ref->{$content_ref->{"4631a"}}){
-                    my $multcount=++$multcount_ref->{'0004'};
-
-                    push @{$title_ref->{fields}{'0004'}}, {
-                        content  => $ht2id_ref->{$content_ref->{"4631a"}},
-                        subfield => '',
-                        mult     => $multcount,
-                    };
-                }
-                if (defined $ht2id_ref->{$content_ref->{"4731a"}} && $ht2id_ref->{$content_ref->{"4731a"}}){
-                    my $multcount=++$multcount_ref->{'0004'};
-
-                    push @{$title_ref->{fields}{'0004'}}, {
-                        content  => $ht2id_ref->{$content_ref->{"4731a"}},
+                        content  => $ht2id_ref->{$content_ref->{$kategind}},
                         subfield => '',
                         mult     => $multcount,
                     };
@@ -210,6 +192,8 @@ sub convert_buffer {
             if (defined $convconfig->{'title'}{$kategind}){
                 my $new_category = $convconfig->{'title'}{$kategind};
                 my $multcount=++$multcount_ref->{$new_category};
+
+                print "Konv: $kategind -> $new_category : $content_ref->{$kategind}\n";
                 
                 push @{$title_ref->{fields}{$new_category}}, {
                     content  => $content_ref->{$kategind},

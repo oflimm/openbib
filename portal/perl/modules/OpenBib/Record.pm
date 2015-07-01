@@ -67,6 +67,25 @@ sub connectDB {
 
 }
 
+sub disconnectDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{schema}){
+        eval {
+            $self->{schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
+    return;
+}
+
 sub connectEnrichmentDB {
     my $self = shift;
 
@@ -99,6 +118,25 @@ sub connectEnrichmentDB {
 
     }
     
+    return;
+}
+
+sub disconnectEnrichmentDB {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{enrich_schema}){
+        eval {
+            $self->{enrich_schema}->storage->dbh->disconnect;
+        };
+
+        if ($@){
+            $logger->error($@);
+        }
+    }
+
     return;
 }
 
@@ -269,6 +307,15 @@ sub set_fields {
     return $self;
 }
 
+sub DESTROY {
+    my $self = shift;
+
+    $self->disconnectDB;
+    $self->disconnectEnrichmentDB;
+
+    return;
+}
+
 # sub have_subfields {
 #     my ($self,$content) = @_;
 
@@ -342,4 +389,4 @@ sub set_fields {
 
 #     }
 
-1
+1;

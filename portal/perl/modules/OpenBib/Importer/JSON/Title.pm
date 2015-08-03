@@ -299,6 +299,21 @@ sub process {
         }
     }
 
+    # Originalsprachliche Schrift
+    foreach my $field ('0671') {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
+                my ($newfield,$mult,$content)=$item_ref->{content}=~m/^(\d\d\d\d)(\d\d\d\d)..........(.+)$/;
+                
+                push @{$fields_ref->{$newfield}}, {
+                    mult     => $mult,
+                    subfield => '',
+                    content  => $content,
+                };
+            }
+        }
+    }
+
     # Zentrale Anreicherungsdaten lokal einspielen
     if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref})) {
         @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique

@@ -725,7 +725,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
           'classificationstring': 1
       '4102':         # Topic
@@ -1356,7 +1356,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4102':         # Topic
         index:
           'topic': 1
@@ -1814,7 +1814,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
           'classificationstring': 1
         facet:
@@ -2076,7 +2076,7 @@ convtab:
           'subject': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -2318,7 +2318,7 @@ convtab:
           'subject': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -2550,7 +2550,7 @@ convtab:
           'mark': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -2792,7 +2792,7 @@ convtab:
           'mark': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -3061,7 +3061,7 @@ convtab:
           'mark': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -3279,7 +3279,7 @@ convtab:
           'mark': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -3868,7 +3868,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
         facet:
           'classification': 1
@@ -4439,7 +4439,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
         facet:
           'classification': 1
@@ -4910,7 +4910,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
           'classificationstring': 1
       '4102':         # Topic
@@ -5358,7 +5358,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
         facet:
           'classification': 1

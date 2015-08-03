@@ -36,7 +36,7 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="[% path_prefix%]/[% config.get('browse_loc') %].html?l=[% lang %]">[% msg.maketext("Browsen") %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Fachgebiete") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Themengebiete") %]</a></li>
       </ul>
      </div>
      <div class="ob-representation">

@@ -125,6 +125,8 @@ my $blacklist_ref = {
     'inst421' => 1,
     'inst422' => 1,
     'inst423' => 1,
+    'inst427' => 1,
+    'inst427master' => 1,
     'inst429master' => 1,
     'inst448master' => 1,
     'inst429' => 1,
@@ -346,9 +348,9 @@ sub threadC {
     
     ##############################
 
-    #$logger->info("### Master: inst427master");
+    $logger->info("### Master: inst427master");
     
-    #autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst427master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst427master'] });
 
     ##############################
     

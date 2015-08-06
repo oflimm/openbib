@@ -77,6 +77,8 @@ sub new {
 
     my $config = OpenBib::Config->new;
 
+    $self->{config} = $config;
+    
     unless ($database || $searchprofile){
         $logger->error("No database or searchprofile argument given");
         return $self;
@@ -135,7 +137,7 @@ sub get_index {
 sub set_stopper {
     my $self         = shift;
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->{config};
     
     my $stopwordfile = shift || $config->{stopword_filename};
 
@@ -246,7 +248,7 @@ sub create_document {
         $self->set_termgenerator;
     }
     
-    my $config = OpenBib::Config->new;
+    my $config = $self->{config};
 
     my $FLINT_BTREE_MAX_KEY_LEN = $config->{xapian_option}{max_key_length};
 
@@ -276,7 +278,7 @@ sub create_document {
         
         # IDs oder Integer
         if ($config->{searchfield}{$searchfield}{type} eq 'id' || $config->{searchfield}{$searchfield}{type} eq 'integer'){
-            next if (! exists $index_ref->{$searchfield});
+            next if (! defined $index_ref->{$searchfield});
             
             $logger->debug("Processing Searchfield $searchfield for id $id and type ".$config->{searchfield}{$searchfield}{type});
             
@@ -285,6 +287,8 @@ sub create_document {
                 foreach my $fields_ref (@{$index_ref->{$searchfield}{$weight}}){
                     my $field   = $fields_ref->[0];
                     my $content = $fields_ref->[1];
+
+                    $logger->debug("Field: $field - Content: $content");
                     
                     next if (!$content);
                     
@@ -301,8 +305,13 @@ sub create_document {
                     }
                     
                     next if (!$normcontent);
+                        
+                    $logger->debug("ID indexing searchfield $searchfield: $normcontent");
                     # IDs haben keine Position
-                    $doc->add_term($config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix}.$normcontent);
+                    my $term = $config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix}.$normcontent;
+                    $logger->debug("Term: $term");
+                    
+                    $doc->add_term($term);
                     
                     # $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
                 }
@@ -564,7 +573,7 @@ sub create_record {
 sub update_record {
     my ($self,$id,$new_doc) = @_;
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->{config};
 
     my $key = $config->{xapian_search}{id}{prefix}.$id;
 

@@ -1067,6 +1067,19 @@ sub normalize {
         
         return $content;
     }
+    elsif ($type eq "id"){
+        $logger->debug("Processing Type $type");
+        
+        # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+        # weil der Xapian QueryParser keine Recherche nach IDs mit Satzzeichen
+        # (z.B. -) zulaesst, daher effektiv ala String-Suche
+        #$content=~s/[^\p{Alphabetic}0-9]/_/g;
+        $content=~s/ //g;
+
+        $logger->debug("OUT: $content / Type $type");
+        
+        return $content;
+    }
 
     $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
     
@@ -1145,10 +1158,6 @@ sub normalize {
             # * wird fuer die Recherche als Wildcard nicht angefasst
             $content=~s/[^\p{Alphabetic}0-9*]/_/g;
         }
-        elsif ($type eq 'id'){
-            $logger->debug("Processing Type $type");
-            $content=~s/ //g;
-        }
         else {
             # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
             $content=~s/[^-+\p{Alphabetic}\p{Sc}0-9\/: '()"^*_]//g;
@@ -1177,10 +1186,6 @@ sub normalize {
             # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
             # * wird fuer die Indexierung auf _ normiert
             $content=~s/[^\p{Alphabetic}0-9]/_/g;
-        }
-        elsif ($type eq 'id'){
-            $logger->debug("Processing Type $type");
-            $content=~s/ //g;
         }
         else {
             # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)

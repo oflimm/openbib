@@ -4,7 +4,7 @@
 #
 #  examine_xapianindex.pl
 #
-#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,11 +40,11 @@ use Log::Log4perl qw(get_logger :levels);
 use YAML;
 
 use OpenBib::Config;
-use OpenBib::Search::Backend::Xapian;
+use OpenBib::Search::Factory;
 
 my ($database,$help,$titleid);
 
-&GetOptions("database=s"      => \$database,
+&GetOptions("database=s"        => \$database,
             "titleid=s"         => \$titleid,
 	    "help"            => \$help
 	    );
@@ -72,15 +72,19 @@ if (!$database || !$titleid){
   exit;
 }
 
+$logger->info("Index for id $titleid in database $database");
+
+my $searcher = OpenBib::Search::Factory->create_searcher({database => $database, config => $config });
+
 $logger->info("### POOL $database");
 
-my $terms_ref = OpenBib::Search::Backend::Xapian->get_indexterms({ database => $database, id => $titleid });
+my $terms_ref = $searcher->get_indexterms({ database => $database, id => $titleid });
 
 $logger->info("### Termlist");
 
 $logger->info(join(' ',@$terms_ref));
 
-my $values_ref = OpenBib::Search::Backend::Xapian->get_values({ database => $database, id => $titleid });
+my $values_ref = $searcher->get_values({ database => $database, id => $titleid });
 
 $logger->info("### Values");
 $logger->info(YAML::Dump($values_ref));

@@ -146,8 +146,8 @@ sub process {
     my $logger = get_logger();
 
     return $self unless (defined $json);
-    my $config      = OpenBib::Config->new;
-    my $storage     = OpenBib::Container->instance;
+#    my $config      = OpenBib::Config->new;
+#    my $storage     = OpenBib::Container->instance;
     my $database    = $self->{database};
 
     $logger->debug("Processing JSON: $json");

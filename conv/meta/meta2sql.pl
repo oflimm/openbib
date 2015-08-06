@@ -489,7 +489,7 @@ if (-f "meta.holding"){
     
         my $titleid;
 
-        if (exists $fields_ref->{'0004'} && exists $fields_ref->{'0004'}[0] ) {
+        if (defined $fields_ref->{'0004'} && defined $fields_ref->{'0004'}[0] ) {
             $titleid = $fields_ref->{'0004'}[0]{content};
         }
     
@@ -505,18 +505,21 @@ if (-f "meta.holding"){
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 next unless ($item_ref->{content});
             
-                if (exists $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}) {
+                if (defined $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}) {
                     foreach my $searchfield (keys %{$stammdateien_ref->{holding}{inverted_ref}{$field}->{index}}) {
                         my $weight = $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}{$searchfield};
                     
                         my $hash_ref = {};
-                        if (defined $indexed_holding{$titleid}) {
-                            $hash_ref = $indexed_holding{$titleid};
+                        
+                        if ($titleid) {
+                            if (defined $indexed_holding{$titleid}) {
+                                $hash_ref = $indexed_holding{$titleid};
+                            }
+                    
+                            push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$item_ref->{content}];
+                            
+                            $indexed_holding{$titleid} = $hash_ref;
                         }
-                    
-                        push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$item_ref->{content}];
-                    
-                        $indexed_holding{$titleid} = $hash_ref;
                     }
                 }
             

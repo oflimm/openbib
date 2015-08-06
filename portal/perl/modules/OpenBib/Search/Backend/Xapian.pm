@@ -761,7 +761,7 @@ sub get_indexterms {
     $qp->add_prefix('id', 'Q');
     $qp->set_default_op(Search::Xapian::OP_AND);
 
-    my $enq  = $dbh->enquire($qp->parse_query("id:$id"));
+    my $enq  = $dbh->enquire("Q$id"); #$qp->parse_query("id:$id"));
 
     my @matches = $enq->matches(0,10);
 

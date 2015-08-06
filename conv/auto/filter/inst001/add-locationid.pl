@@ -29,7 +29,7 @@ while (<HOLDING>){
         elsif ($location_ref->{content} =~m/Fachbibliothek VWL/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-101";
         }
-        elsif ($location_ref->{content} =~m/Fachbibliothek Sozialwissenschaften/){
+        elsif ($location_ref->{content} =~m/Fachbibliothek Soziologie/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-132";
         }
         elsif ($location_ref->{content} =~m/Theaterwiss. Sammlung/){

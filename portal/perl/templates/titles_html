@@ -20,7 +20,7 @@ END;
 
 redirect_url = "";
 
-IF NOT database_in_view.defined(databaseinfo.dbname) ;
+IF NOT database_in_view.defined(database) ;
   redirect_url = "http://${servername}${path_prefix}/${config.get('home_loc')}";
 END;
 

@@ -7,7 +7,7 @@
 #  Abgleich des Bestandes auf Mehrfachbesitz mehrerer Kataloge
 #  anhand des Selektors und Ausgabe in eine csv-Datei
 #
-#  Dieses File ist (C) 2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -104,6 +104,8 @@ my $out_ref = [
     'selector',
     'persons',
     'title',
+    'title_supplement',
+    'year',
 ];
 
 foreach my $database (sort @databases){
@@ -116,7 +118,9 @@ foreach my $item_ref (@{$common_holdings_ref}){
     my $out_ref = [
         $item_ref->{$selector},
         $item_ref->{persons},
-        $item_ref->{title}
+        $item_ref->{title},
+        $item_ref->{title_supplement},
+        $item_ref->{year}
     ];
 
     foreach my $database (sort @databases){

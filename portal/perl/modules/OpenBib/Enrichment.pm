@@ -461,8 +461,10 @@ sub get_common_holdings {
     foreach my $matchkey (keys %all_by_matchkey){
         my $this_item_ref = {};
         
-        my $persons = "";
-        my $title   = "";
+        my $persons          = "";
+        my $title            = "";
+        my $title_supplement = "";
+        my $year             = "";
         foreach my $database (@{$databases_ref}){
             if (exists $all_by_matchkey{$matchkey}{$database}){
                 my @signaturen = ();
@@ -475,6 +477,20 @@ sub get_common_holdings {
                     if (!$title){
                         $title=$record->{T0331}[0]{content};
                     }
+                    if (!$title_supplement){
+                        if (defined $record->{T0335}[0]{content}){
+                            $title_supplement=$record->{T0335}[0]{content};
+                        }
+                    }
+                    if (!$year){
+                        if (defined $record->{T0424}[0]{content}){
+                            $year=$record->{T0424}[0]{content};
+                        }
+                        elsif (defined $record->{T0425}[0]{content}){
+                            $year=$record->{T0425}[0]{content};
+                        }
+                    }
+
                     foreach my $signature_ref (@{$record->{X0014}}){
                         push @signaturen, $signature_ref->{content};
                     }
@@ -486,9 +502,11 @@ sub get_common_holdings {
             }
         }
 
-        $this_item_ref->{$selector}  = $matchkey;
-        $this_item_ref->{persons}    = $persons;
-        $this_item_ref->{title}      = $title;
+        $this_item_ref->{$selector}        = $matchkey;
+        $this_item_ref->{persons}          = $persons;
+        $this_item_ref->{title}            = $title;
+        $this_item_ref->{title_supplement} = $title_supplement;
+        $this_item_ref->{year}             = $year;
 
         if ($logger->is_debug){
             $logger->debug(YAML::Dump($this_item_ref));

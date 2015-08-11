@@ -725,7 +725,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
           'classificationstring': 1
       '4102':         # Topic
@@ -807,6 +807,7 @@ convtab:
       '0201': 1
       '0310': 1
       '0331': 1
+      '0335': 1
       '0403': 1
       '0412': 1
       '0424': 1
@@ -841,6 +842,7 @@ convtab:
       '0201': 1
       '0310': 1
       '0331': 1
+      '0335': 1
       '0403': 1
       '0412': 1
       '0424': 1
@@ -864,6 +866,7 @@ convtab:
       '0201': 1
       '0310': 1
       '0331': 1
+      '0335': 1
       '0403': 1
       '0412': 1
       '0424': 1
@@ -1356,7 +1359,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4102':         # Topic
         index:
           'topic': 1
@@ -1814,7 +1817,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
           'classificationstring': 1
         facet:
@@ -2076,7 +2079,7 @@ convtab:
           'subject': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -2318,7 +2321,7 @@ convtab:
           'subject': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -2550,7 +2553,7 @@ convtab:
           'mark': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -2590,6 +2593,7 @@ convtab:
       '0304': 1
       '0310': 1
       '0331': 1
+      '0335': 1
       '0403': 1
       '0412': 1
       '0413': 1
@@ -2792,7 +2796,7 @@ convtab:
           'mark': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -2860,6 +2864,7 @@ convtab:
       '0201': 1
       '0310': 1
       '0331': 1
+      '0335': 1
       '0403': 1
       '0412': 1
       '0424': 1
@@ -3061,7 +3066,7 @@ convtab:
           'mark': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -3279,7 +3284,7 @@ convtab:
           'mark': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -3447,6 +3452,7 @@ convtab:
       'popularity': 1
       '0100': 1
       '0331': 1
+      '0335': 1
       '0410': 1
       '0411': 1
       '0424': 1
@@ -3868,7 +3874,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
         facet:
           'classification': 1
@@ -4439,7 +4445,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
         facet:
           'classification': 1
@@ -4495,6 +4501,7 @@ convtab:
       '0201': 1
       '0310': 1
       '0331': 1
+      '0335': 1
       '0403': 1
       '0410': 1
       '0412': 1
@@ -4910,7 +4917,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
           'classificationstring': 1
       '4102':         # Topic
@@ -5358,7 +5365,7 @@ convtab:
           'freesearch': 1
       '4100':         # BK
         index:
-          't4100': 1
+          'ft4100': 1
           'classification': 1
         facet:
           'classification': 1

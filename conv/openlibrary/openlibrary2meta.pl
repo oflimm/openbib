@@ -528,6 +528,14 @@ while (<OL>){
         };
     }
 
+    if (exists $recordset->{notes}){
+        push @{$title_ref->{fields}{'0501'}}, {
+            mult     => 1,
+            subfield => '',
+            content  => konv($recordset->{notes}{value}),
+        };
+    }
+    
     push @{$title_ref->{fields}{'4410'}}, {
         mult     => 1,
         subfield => '',

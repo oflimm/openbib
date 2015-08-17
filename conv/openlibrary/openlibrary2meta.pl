@@ -529,11 +529,15 @@ while (<OL>){
     }
 
     if (exists $recordset->{notes}){
+
+        my $notes = (ref $recordset->{notes} eq "HASH" && defined $recordset->{notes}{value})?$recordset->{notes}{value}:
+            (ref $recordset->{notes} eq "SCALAR")?$recordset->{notes}:undef;
         push @{$title_ref->{fields}{'0501'}}, {
             mult     => 1,
             subfield => '',
-            content  => konv($recordset->{notes}{value}),
-        };
+            content  => konv($notes),
+        } if (defined $notes);
+
     }
     
     push @{$title_ref->{fields}{'4410'}}, {

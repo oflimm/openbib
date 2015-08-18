@@ -436,7 +436,7 @@ sub show_record {
         $logger->debug("3");        
         # Literaturlisten finden
 
-        my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database});
+        my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database, view => $view});
 
         # Anreicherung mit OLWS-Daten
         if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){

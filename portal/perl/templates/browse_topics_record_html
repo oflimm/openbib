@@ -132,7 +132,7 @@
 <p />
 [% END %]
 
-[% litlists = user.get_public_litlists({ topicid => topicid }) %]
+[% litlists = user.get_public_litlists({ topicid => topicid, view => view}) %]
 [% IF litlists.size > 0 %]
 <h4>[% msg.maketext("Literaturlisten") %]</h4>
 

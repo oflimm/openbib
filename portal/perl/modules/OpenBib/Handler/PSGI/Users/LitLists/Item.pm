@@ -104,7 +104,7 @@ sub show_collection {
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
 
-    my $items = $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype});
+    my $items = $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype, view => $view});
 
     # TT-Data erzeugen
     my $ttdata = {
@@ -157,7 +157,7 @@ sub show_record {
         return $self->delete_record;
     }
  
-    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
         
     my $singlelitlistitem = $user->get_single_litlistentry({ litlistid => $litlistid, itemid => $itemid });
 

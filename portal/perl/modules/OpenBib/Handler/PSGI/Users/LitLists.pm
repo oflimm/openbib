@@ -147,7 +147,7 @@ sub show_collection {
 
     my $topics_ref = $user->get_topics;
     my $userrole_ref = $user->get_roles_of_user($user->{ID});
-    my $litlists     = $user->get_litlists();
+    my $litlists     = $user->get_litlists({view => $view});
     my $targettype   = $user->get_targettype_of_session($session->{ID});
     
     # TT-Data erzeugen
@@ -253,7 +253,7 @@ sub show_record {
     # Thematische Einordnung
         
     my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
-    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
+    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid, view => $view});
     
     # TT-Data erzeugen
     my $ttdata={
@@ -342,7 +342,7 @@ sub show_record_form {
     # Thematische Einordnung
         
     my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
-    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
+    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid, view => $view});
     
     # TT-Data erzeugen
     my $ttdata={

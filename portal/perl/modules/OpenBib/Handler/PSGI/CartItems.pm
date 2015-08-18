@@ -318,7 +318,7 @@ sub create_record {
         
         
         if ($do_litlists_addentry) {
-            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
             
             foreach my $listid ($query->param('id')) {
                 my $record = $self->get_single_item_in_collection($listid);
@@ -339,7 +339,7 @@ sub create_record {
             
             my $new_litlistid = $user->add_litlist({ title =>$title, type => $littype});
 
-            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $new_litlistid});
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $new_litlistid, view => $view});
 
             $logger->debug("Created new Litlist with id $new_litlistid");
             

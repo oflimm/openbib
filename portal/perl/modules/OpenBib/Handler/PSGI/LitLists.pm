@@ -109,7 +109,7 @@ sub show_collection {
     my $num    = $queryoptions->get_option('num');
     
     my $topics_ref           = $user->get_topics;
-    my $public_litlists_ref  = $user->get_public_litlists({ offset => $offset, num => $num });
+    my $public_litlists_ref  = $user->get_public_litlists({ offset => $offset, num => $num, view => $view });
 
     my $nav = Data::Pageset->new({
         'total_entries'    => $user->get_number_of_public_litlists(),
@@ -153,7 +153,7 @@ sub show_collection_recent {
     my $hitrange       = $query->param('num')    || 50;
 
     my $topics_ref         = $user->get_topics;
-    my $public_litlists_ref  = $user->get_recent_litlists({ count => $hitrange });
+    my $public_litlists_ref  = $user->get_recent_litlists({ count => $hitrange, view => $view });
 
     # TT-Data erzeugen
     my $ttdata={
@@ -185,7 +185,7 @@ sub show_collection_by_topic {
     my $useragent      = $self->param('useragent');
 
     my $topics_ref           = $user->get_topics;
-    my $public_litlists_ref  = $user->get_public_litlists();
+    my $public_litlists_ref  = $user->get_public_litlists({view => $view});
 
     # TT-Data erzeugen
     my $ttdata={
@@ -222,7 +222,7 @@ sub show_collection_by_single_topic_recent {
     my $hitrange       = $query->param('num')    || 50;
 
     my $topics_ref           = $user->get_topics;
-    my $public_litlists_ref  = $user->get_recent_litlists({ topicid => $topicid, count => $hitrange });
+    my $public_litlists_ref  = $user->get_recent_litlists({ topicid => $topicid, count => $hitrange, view => $view });
 
     # TT-Data erzeugen
     my $ttdata={
@@ -260,7 +260,7 @@ sub show_collection_by_single_topic {
     my $num    = $queryoptions->get_option('num');
         
     my $topics_ref           = $user->get_topics;
-    my $public_litlists_ref  = $user->get_public_litlists({ topicid => $topicid, offset => $offset, num => $num });
+    my $public_litlists_ref  = $user->get_public_litlists({ topicid => $topicid, offset => $offset, num => $num, view => $view });
 
     my $nav = Data::Pageset->new({
         'total_entries'    => $user->get_number_of_public_litlists({ topicid => $topicid }),
@@ -359,13 +359,13 @@ sub show_collection_by_single_userxxx {
         return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
-    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
         
     my $targettype    = $user->get_targettype_of_session($session->{ID});
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype, view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -373,7 +373,7 @@ sub show_collection_by_single_userxxx {
     # Thematische Einordnung
         
     my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
-    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
+    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid, view => $view});
     
     # TT-Data erzeugen
     my $ttdata={
@@ -473,13 +473,13 @@ sub show_collection_by_single_user {
         return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
-    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
         
     my $targettype    = $user->get_targettype_of_session($session->{ID});
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype, view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -487,7 +487,7 @@ sub show_collection_by_single_user {
     # Thematische Einordnung
         
     my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
-    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
+    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid, view => $view});
     
     # TT-Data erzeugen
     my $ttdata={
@@ -600,13 +600,13 @@ sub show_record {
         return;
     }
     
-    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
         
     my $targettype    = $user->get_targettype_of_session($session->{ID});
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt')}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -614,7 +614,7 @@ sub show_record {
     # Thematische Einordnung
         
     my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
-    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
+    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid, view => $view});
     
     # TT-Data erzeugen
     my $ttdata={

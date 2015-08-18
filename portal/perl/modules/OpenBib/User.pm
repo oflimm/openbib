@@ -3002,12 +3002,15 @@ sub del_litlistentry {
 }
 
 sub get_litlists {
-    my ($self)=@_;
+    my ($self,$arg_ref)=@_;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
+    my $view                = exists $arg_ref->{view}
+        ? $arg_ref->{view}                : '';
+    
     return [] if (!$self->{ID});
 
     my $litlists_ref = [];
@@ -3020,7 +3023,7 @@ sub get_litlists {
     );
 
     foreach my $litlist ($litlists->all){
-      push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->id});
+      push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->id, view => $view});
     }
     
     return $litlists_ref;
@@ -3039,6 +3042,9 @@ sub get_recent_litlists {
     my $database     = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
 
+    my $view         = exists $arg_ref->{view}
+        ? $arg_ref->{view}              : '';
+    
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
@@ -3111,7 +3117,7 @@ sub get_recent_litlists {
 
     foreach my $litlist ($litlists->all){
         $logger->debug("Found Listlist with ID ".$litlist->get_column('thislitlistid'));
-        push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid')});
+        push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid'), view => $view});
     }
     
     return $litlists_ref;
@@ -3170,6 +3176,8 @@ sub get_public_litlists {
         ? $arg_ref->{offset}        : undef;
     my $num          = exists $arg_ref->{num}
         ? $arg_ref->{num}        : undef;
+    my $view         = exists $arg_ref->{view}
+        ? $arg_ref->{view}       : '';
 
     # Log4perl logger erzeugen
   
@@ -3222,7 +3230,7 @@ sub get_public_litlists {
     foreach my $litlist ($litlists->all){
       my $litlistid        = $litlist->get_column('thislitlistid');
 
-      my $properties_ref = $self->get_litlist_properties({litlistid => $litlistid});
+      my $properties_ref = $self->get_litlist_properties({litlistid => $litlistid, view => $view});
       push @$litlists_ref, $properties_ref;
     }
 
@@ -3235,6 +3243,8 @@ sub get_other_litlists {
     # Set defaults
     my $litlistid           = exists $arg_ref->{litlistid}
         ? $arg_ref->{litlistid}           : undef;
+    my $view                = exists $arg_ref->{view}
+        ? $arg_ref->{view}                : '';
 
     # Log4perl logger erzeugen
   
@@ -3263,7 +3273,7 @@ sub get_other_litlists {
     foreach my $litlist ($same_user->all){
       my $litlistid        = $litlist->id;
       
-      push @{$litlists_ref->{same_user}}, $self->get_litlist_properties({litlistid => $litlistid});
+      push @{$litlists_ref->{same_user}}, $self->get_litlist_properties({litlistid => $litlistid}, view => $view);
     }
 
     # Gleicher Titel
@@ -3287,7 +3297,7 @@ sub get_other_litlists {
     foreach my $litlist ($same_title->all){
         my $litlistid        = $litlist->litlistid;
         $logger->debug("Found litlist $litlistid with same title");
-        my $litlist_props    = $self->get_litlist_properties({litlistid => $litlistid});
+        my $litlist_props    = $self->get_litlist_properties({litlistid => $litlistid, view => $view});
         push @{$litlists_ref->{same_title}}, $litlist_props if ($litlist_props->{type} == 1);
     }
 
@@ -3303,6 +3313,9 @@ sub get_litlistentries {
     my $litlistid           = exists $arg_ref->{litlistid}
         ? $arg_ref->{litlistid}           : undef;
 
+    my $view                = exists $arg_ref->{view}
+        ? $arg_ref->{view}            : undef;
+    
     my $sorttype            = exists $arg_ref->{sorttype}
         ? $arg_ref->{sorttype}            : undef;
 
@@ -3314,14 +3327,40 @@ sub get_litlistentries {
     my $logger = get_logger();
 
     my $config = $self->get_config;
-    
-    # DBI: "select titleid,dbname,tstamp from litlistitem where litlistid=?"
-    my $litlistitems = $self->get_schema->resultset('Litlistitem')->search_rs(
-        {
-            litlistid => $litlistid,
-        }
-    );
 
+    my $litlistitems;
+
+    if ($view){
+        my $databases =  $self->get_schema->resultset('ViewDb')->search(
+            {
+                'dbid.active'           => 1,
+                'viewid.viewname'       => $view,
+            }, 
+            {
+                join => ['dbid','viewid'],
+                select   => [ 'dbid.id' ],
+                as       => ['dbid'],
+                group_by => ['dbid.id'],
+            }
+        );
+
+        $litlistitems = $self->get_schema->resultset('Litlistitem')->search_rs(
+            {
+                litlistid => $litlistid,
+                dbname    => { -in => $databases->as_query },
+            }
+        );
+
+    }
+    else {
+        # DBI: "select titleid,dbname,tstamp from litlistitem where litlistid=?"
+        $litlistitems = $self->get_schema->resultset('Litlistitem')->search_rs(
+            {
+                litlistid => $litlistid,
+            }
+        );
+    }
+    
     my $recordlist = new OpenBib::RecordList::Title();
 
     foreach my $litlistitem ($litlistitems->all){
@@ -3389,16 +3428,52 @@ sub get_number_of_litlistentries {
     my $litlistid           = exists $arg_ref->{litlistid}
         ? $arg_ref->{litlistid}           : undef;
 
+    my $view                = exists $arg_ref->{view}
+        ? $arg_ref->{view}                : '';
+    
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
-    # DBI: "select count(litlistid) as numofentries from litlistitem where litlistid=?"
-    my $numofentries = $self->get_schema->resultset('Litlistitem')->search(
-        {
-            litlistid => $litlistid,
-        }
-    )->count;
+    my $numofentries;
+    
+    if ($view){
+        my $databases =  $self->get_schema->resultset('ViewDb')->search(
+            {
+                -or => [
+                    {
+                        'dbid.active'           => 1,
+                        'viewid.viewname'       => $view,
+                    },
+                    {
+                        'dbid.active'           => 1,
+                        'dbid.system'           => { '~' => '^Backend' },
+                    },
+            }, 
+            {
+                join => ['dbid','viewid'],
+                select   => [ 'dbid.id' ],
+                as       => ['dbid'],
+                group_by => ['dbid.id'],
+            }
+        );
+        
+        $numofentries = $self->get_schema->resultset('Litlistitem')->search(
+            {
+                litlistid => $litlistid,
+                dbname    => { -in => $databases->as_query },
+            }
+        )->count;
+
+    }
+    else {
+        # DBI: "select count(litlistid) as numofentries from litlistitem where litlistid=?"
+        $numofentries = $self->get_schema->resultset('Litlistitem')->search(
+            {
+                litlistid => $litlistid,
+            }
+        )->count;
+    }
     
     return $numofentries;
 }
@@ -3437,6 +3512,9 @@ sub get_litlist_properties {
     my $litlistid           = exists $arg_ref->{litlistid}
         ? $arg_ref->{litlistid}           : undef;
 
+    my $view                = exists $arg_ref->{view}
+        ? $arg_ref->{view}                : '';
+    
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
@@ -3457,7 +3535,7 @@ sub get_litlist_properties {
     my $lecture   = $litlist->lecture;
     my $tstamp    = $litlist->tstamp;
     my $userid    = $litlist->userid->id;
-    my $itemcount = $self->get_number_of_litlistentries({litlistid => $litlistid});
+    my $itemcount = $self->get_number_of_litlistentries({litlistid => $litlistid, view => $view});
 
     # DBI: "select s.* from litlist_topic as ls, topic as s where ls.litlistid=? and ls.topicid=s.id"
     my $topics = $self->get_schema->resultset('LitlistTopic')->search_rs(
@@ -3821,8 +3899,10 @@ sub get_litlists_of_tit {
 
     my $titleid               = exists $arg_ref->{titleid}
         ? $arg_ref->{titleid}               : undef;
-    my $dbname               = exists $arg_ref->{dbname}
+    my $dbname                = exists $arg_ref->{dbname}
         ? $arg_ref->{dbname}               : undef;
+    my $view                  = exists $arg_ref->{view}
+        ? $arg_ref->{view}                 : '';
 
     # Log4perl logger erzeugen
   
@@ -3848,7 +3928,7 @@ sub get_litlists_of_tit {
 
     foreach my $litlist ($litlists->all){
         if ((defined $self->{ID} && defined $litlist->get_column('thisuserid') && $self->{ID} eq $litlist->get_column('thisuserid')) || (defined $litlist->get_column('thistype') && $litlist->get_column('thistype') eq "1")){
-            push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid')});
+            push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid'), view => $view});
         };
     }
 

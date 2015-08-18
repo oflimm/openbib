@@ -13,7 +13,7 @@ thisdbname = config.get_databases_of_isil(locationinfo.identifier).first;
 
 sigel = locationinfo.identifier.replace('DE-38-','');
 
-recent_litlists = user.get_recent_litlists({database = thisdbname});
+recent_litlists = user.get_recent_litlists({database = thisdbname, view = view});
 
 litlist_content = [];
 

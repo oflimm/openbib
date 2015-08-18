@@ -24,7 +24,7 @@
 [% 
       litlists = [] ;
       IF user.ID ;
-          litlists = user.get_litlists();
+          litlists = user.get_litlists({ view => view });
       END ;
 
       IF litlists.size > 0 ;

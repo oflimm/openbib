@@ -16,9 +16,9 @@
 <h5>[% msg.maketext("Die 5 zuletzt angelegten Literaturlisten") %]</h5>
 
 [%- IF view_config.${view}.subjectid ;
-       lastlitlists = user.get_recent_litlists({count => 5, subjectid => view_config.${view}.subjectid }) ;
+       lastlitlists = user.get_recent_litlists({count => 5, subjectid => view_config.${view}.subjectid, view => view}) ;
     ELSE ;
-       lastlitlists = user.get_recent_litlists({count => 5 }) ;
+       lastlitlists = user.get_recent_litlists({count => 5, view => view}) ;
     END ;
 -%]
 

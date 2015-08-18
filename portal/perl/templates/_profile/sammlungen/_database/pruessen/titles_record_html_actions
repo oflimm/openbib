@@ -40,7 +40,7 @@
 <div class="ob-headline"><span id="ob-litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-litlists_do"><!-- Begin Litlist do -->
 [%
-      userlitlists = user.get_litlists();
+      userlitlists = user.get_litlists({ view => view });
 
       IF userlitlists.size > 0 ;
 %]
